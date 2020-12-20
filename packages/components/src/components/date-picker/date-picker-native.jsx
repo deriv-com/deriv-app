@@ -43,6 +43,7 @@ const Native = ({
         <div
             className={classNames('dc-input', {
                 'dc-input--error': error,
+                'dc-input--disabled': disabled,
             })}
         >
             <div className='dc-datepicker__display'>
@@ -58,7 +59,7 @@ const Native = ({
             >
                 {label || (!value && placeholder)}
             </label>
-            <Icon icon='IcCalendar' className='dc-datepicker__calendar-icon' />
+            <Icon icon='IcCalendar' className='dc-datepicker__calendar-icon' {...(disabled && { color: 'disabled' })} />
             <input
                 ref={input_ref}
                 id={id}

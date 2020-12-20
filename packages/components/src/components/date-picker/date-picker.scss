@@ -101,6 +101,10 @@
             min-width: calc(100% - 1rem);
             position: absolute;
             height: 38px;
+
+            .dc-input--disabled & {
+                border-color: var(--general-disabled);
+            }
         }
         &__display {
             display: flex;
@@ -120,6 +124,9 @@
                 &--has-error {
                     padding-top: unset;
                     color: var(--brand-red-coral);
+                }
+                .dc-input--disabled & {
+                    color: var(--text-disabled);
                 }
             }
         }

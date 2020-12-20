@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Field from '../field';
+import Text from '../text';
 
 const Input = React.forwardRef(
     (
@@ -86,7 +87,11 @@ const Input = React.forwardRef(
                 )}
                 {error && <Field className={classNameError} message={error} type='error' />}
                 {warn && <Field className={classNameWarn} message={warn} type='warn' />}
-                {!error && hint && <p className='dc-input__hint'>{hint}</p>}
+                {!error && hint && (
+                    <Text as='p' color='less-prominent' size='xxs' line_height='m' className='dc-input__hint'>
+                        {hint}
+                    </Text>
+                )}
                 {has_character_counter && (
                     <div className='dc-input__counter'>
                         {counter}

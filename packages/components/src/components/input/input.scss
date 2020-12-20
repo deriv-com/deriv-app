@@ -190,12 +190,9 @@
         }
     }
     &__hint {
-        color: var(--text-less-prominent);
-        font-size: 1.2rem;
         margin-left: 1.2rem;
         position: absolute;
         top: 4rem;
-        line-height: 1.5;
     }
     &__counter {
         color: var(--text-less-prominent);

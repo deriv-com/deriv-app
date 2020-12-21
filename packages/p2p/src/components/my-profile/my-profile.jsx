@@ -120,7 +120,7 @@ const MyProfile = observer(() => {
                                     })}
                                 </Text>
                                 <Text color='prominent' weight='bold' line_height='l' as='p'>
-                                    {daily_buy || '-'}
+                                    {total_orders_count || '0'}
                                 </Text>
                             </Table.Cell>
                             <div className='my-profile__stats-cell-separator' />
@@ -295,4 +295,4 @@ MyProfile.propTypes = {
     validateForm: PropTypes.func,
 };
 
-export default MyProfile;
+export default observer(MyProfile);

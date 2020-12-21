@@ -54,6 +54,7 @@
             }
         }
         &-filter {
+            width: 6rem;
             @include mobile {
                 height: 4em;
             }
@@ -310,14 +311,21 @@
     &--filter {
         margin-left: 1em;
         margin-top: 0;
-        max-width: 17.6rem;
+        min-width: 6rem;
+        width: 6rem;
 
         @include mobile {
             height: 4em;
         }
     }
 }
+
 .icon_filter {
     position: absolute;
-    left: 15px;
+    left: 10px;
+}
+
+.dc-list-filter {
+    width: 100px !important;
+    left: -40px;
 }

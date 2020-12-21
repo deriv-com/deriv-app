@@ -50,7 +50,7 @@ const TransactionFilter = props => {
             classNameDisplay='dc-dropdown__display-filter'
             has_symbol={false}
             is_alignment_left={props.is_alignment_left}
-            is_filter={true}
+            is_filter
             onChange={e => {
                 setDefaultFilter(e.target.value);
                 props.handleFilterChange(e.target.value);
@@ -209,7 +209,7 @@ const Statement = ({
             <ReportsMeta
                 className={is_mx_mlt ? undefined : 'reports__meta--statement'}
                 filter_component={filter_component}
-                is_statement={true}
+                is_statement
                 optional_component={!is_switching && is_mx_mlt && getAccountStatistics()}
             />
             {is_switching ? (

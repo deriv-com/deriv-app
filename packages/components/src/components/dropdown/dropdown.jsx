@@ -23,6 +23,7 @@ const DropdownList = React.forwardRef((props, list_ref) => {
         is_alignment_left,
         is_alignment_top,
         is_align_text_left,
+        is_filter,
         is_large,
         list,
         nodes,
@@ -81,6 +82,7 @@ const DropdownList = React.forwardRef((props, list_ref) => {
         return classNames('dc-list', {
             'dc-list--left': is_alignment_left,
             'dc-list--large': is_large,
+            'dc-list-filter': is_filter,
         });
     };
 
@@ -373,18 +375,20 @@ const Dropdown = ({
                         ref={dropdown_ref}
                     >
                         {is_filter && <Icon className='icon_filter' icon='IcFilter' size={16} />}
-                        <DisplayText
-                            className={classNames('dc-dropdown__display-text', {
-                                'dc-dropdown__display-filter-text': is_filter,
-                            })}
-                            has_symbol={has_symbol}
-                            name={name}
-                            is_title={is_list_visible}
-                            placeholder={placeholder}
-                            value={value || 0}
-                            list={list}
-                            is_align_text_left={is_align_text_left}
-                        />
+                        {!is_filter && (
+                            <DisplayText
+                                className={classNames('dc-dropdown__display-text', {
+                                    'dc-dropdown__display-filter-text': is_filter,
+                                })}
+                                has_symbol={has_symbol}
+                                name={name}
+                                is_title={is_list_visible}
+                                placeholder={placeholder}
+                                value={value || 0}
+                                list={list}
+                                is_align_text_left={is_align_text_left}
+                            />
+                        )}
                     </div>
                     {!isSingleOption() && (
                         <Icon
@@ -408,6 +412,7 @@ const Dropdown = ({
                     ) : (
                         <DropdownList
                             ref={list_ref}
+                            is_filter={is_filter}
                             classNameItems={classNameItems}
                             classNameLabel={classNameLabel}
                             portal_id={list_portal_id}

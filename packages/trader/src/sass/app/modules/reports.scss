@@ -24,12 +24,6 @@ $side-padding: 1.2em;
                 max-width: 36rem;
                 margin-left: auto;
             }
-
-            &-statement {
-                @include desktop {
-                    max-width: 50rem;
-                }
-            }
         }
 
         @include desktop {

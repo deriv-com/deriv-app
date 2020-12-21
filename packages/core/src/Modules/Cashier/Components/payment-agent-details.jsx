@@ -15,7 +15,11 @@ class Detail extends React.Component {
                     href={`${action ? `${action}:` : ''}${value}`}
                     {...rest}
                 >
-                    <Text styles={is_bold && { color: 'var(--brand-red-coral)' }} weight={is_bold && 'bold'} size='xs'>
+                    <Text
+                        styles={is_bold ? { color: 'var(--brand-red-coral)' } : {}}
+                        weight={is_bold ? 'bold' : ''}
+                        size='xs'
+                    >
                         {value}
                     </Text>
                 </a>
@@ -31,6 +35,7 @@ Detail.propTypes = {
     rel: PropTypes.string,
     target: PropTypes.string,
     value: PropTypes.string,
+    is_bold: PropTypes.bool,
 };
 
 class PaymentAgentDetails extends React.Component {

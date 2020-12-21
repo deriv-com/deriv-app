@@ -498,7 +498,7 @@ const QuickStrategy = props => {
             {is_mobile ? (
                 <MobileFullPageModal
                     is_modal_open={is_strategy_modal_open}
-                    className='quick-strategy'
+                    className='quick-strategy__wrapper'
                     header={localize('Quick Strategy')}
                     onClickClose={toggleStrategyModal}
                     height_offset='80px'

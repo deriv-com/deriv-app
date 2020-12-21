@@ -3,7 +3,7 @@ import Text from '../text';
 
 const VerticalTabHeaderTitle = ({ header_title }) => (
     <div className='dc-vertical-tab__header-title'>
-        <Text as='p' size='s' color='prominent' align='center' weight='bold'>
+        <Text as='p' color='prominent' align='center' weight='bold'>
             {header_title}
         </Text>
     </div>

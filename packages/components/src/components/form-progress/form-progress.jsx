@@ -44,7 +44,7 @@ class FormProgress extends React.PureComponent {
                             }}
                         />
                         {steps.map((item, idx) => (
-                            <>
+                            <React.Fragment>
                                 {(active = idx === current_step)}
                                 <div key={idx + 1} className='dc-form-progress__step'>
                                     <Text
@@ -68,7 +68,7 @@ class FormProgress extends React.PureComponent {
                                         {item.header.title}
                                     </Text>
                                 </div>
-                            </>
+                            </React.Fragment>
                         ))}
                         <div ref={this.el_completed_bar} className='dc-form-progress__steps--after' />
                     </div>

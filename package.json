@@ -58,11 +58,12 @@
     "publish_package": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run publish_package $2 ;}; f",
     "serve": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run serve $npm_config_open;}; f",
     "start": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run start ;}; f",
-    "test": "f () { bash ./scripts/circleci-config.test.sh && npm run test:stylelint  && npm run test:eslint && npm run test:jest ;}; f",
+    "test": "f () { bash ./scripts/circleci-config.test.sh && npm run test:typecheck && npm run test:stylelint  && npm run test:eslint && npm run test:jest ;}; f",
     "test:eslint": "./node_modules/.bin/eslint \"./packages/*/src/**/*.?(ts|tsx|js|jsx)\"",
     "test:mocha": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run test:mocha ;}; f",
     "test:stylelint": "stylelint \"./packages/*/src/**/*.s(a|c)ss\"",
     "test:jest": "jest --all --maxWorkers=2",
+    "test:typecheck": "lerna exec --scope=@deriv/dashboard -- npm run test:typecheck",
     "stylelint:fix": "stylelint \"./packages/*/src/**/*.s(a|c)ss\" --fix",
     "translate": "f () { lerna exec --scope @deriv/translations -- npm run translate ;}; f",
     "stylelint-check": "stylelint-config-prettier-check"

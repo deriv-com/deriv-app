@@ -11,11 +11,11 @@
         "lib"
     ],
     "scripts": {
-        "test": "mocha ./scripts/**/**.spec.js",
+        "test:typecheck": "tsc --noEmit --preserveWatchOutput",
         "build": "rimraf lib && webpack --optimize-minimize --progress",
         "build:publish": "npm run publish_prepare; deriv-publisher postpublish",
         "build:travis": "rimraf lib && webpack --optimize-minimize",
-        "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --progress --watch",
+        "serve": "rimraf lib && concurrently \"cross-env BUILD_MODE='serve' webpack --progress --watch\" \"tsc -w --noEmit --preserveWatchOutput\"",
         "start": "rimraf lib && npm run test && npm run serve",
         "deploy": "echo \"No deploy specified\"",
         "deploy:clean": "echo \"No deploy:clean specified\"",
@@ -23,7 +23,7 @@
         "deploy:staging": "echo \"No deploy:staging specified\"",
         "deploy:production": "echo \"No deploy:production specified\"",
         "publish_package": "npm run publish_prepare && npm publish; deriv-publisher postpublish",
-        "publish_prepare": "deriv-publisher prepublish && lerna exec --scope=@deriv/shared --scope=@deriv/components -- npm run build:travis -- && rimraf lib && cross-env NODE_ENV=production NPM_PUBLISHING_MODE=1 webpack --optimize-minimze --progress"
+        "publish_prepare": "deriv-publisher prepublish && lerna exec --scope=@deriv/shared --scope=@deriv/components -- npm run build:travis -- && rimraf lib && cross-env NODE_ENV=production NPM_PUBLISHING_MODE=1 webpack --optimize-minimize --progress"
     },
     "author": "",
     "license": "ISC",
@@ -60,6 +60,7 @@
         "babel-jest": "^26.5.2",
         "babel-loader": "^8.1.0",
         "chai": "^4.2.0",
+        "concurrently": "^5.3.0",
         "cross-env": "^5.2.0",
         "css-loader": "^3.0.0",
         "css-modules-typescript-loader": "^4.0.1",

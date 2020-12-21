@@ -20,6 +20,8 @@ const OrderDetailsCancelModal = ({ hideCancelOrderModal, order_id, should_show_c
                 if (response.error) {
                     setErrorMessage(response.error.message);
                 }
+
+                hideCancelOrderModal();
             }
         });
     };

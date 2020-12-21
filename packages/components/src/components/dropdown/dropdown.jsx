@@ -390,7 +390,7 @@ const Dropdown = ({
                             />
                         )}
                     </div>
-                    {!isSingleOption() && (
+                    {!isSingleOption() && !is_filter && (
                         <Icon
                             icon={is_alignment_left ? 'IcChevronLeft' : 'IcChevronDown'}
                             className={classNames('dc-dropdown__select-arrow', {

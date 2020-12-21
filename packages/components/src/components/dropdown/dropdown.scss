@@ -54,7 +54,7 @@
             }
         }
         &-filter {
-            width: 6rem;
+            width: 3rem;
             @include mobile {
                 height: 4em;
             }
@@ -311,8 +311,8 @@
     &--filter {
         margin-left: 1em;
         margin-top: 0;
-        min-width: 6rem;
-        width: 6rem;
+        min-width: 3rem;
+        width: 3rem;
 
         @include mobile {
             height: 4em;
@@ -322,10 +322,9 @@
 
 .icon_filter {
     position: absolute;
-    left: 10px;
 }
 
 .dc-list-filter {
     width: 100px !important;
-    left: -40px;
+    left: -70px;
 }

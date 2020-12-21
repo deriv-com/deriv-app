@@ -12,6 +12,7 @@ import ThemedScrollbars from '../themed-scrollbars';
 
 class DataList extends React.PureComponent {
     state = {
+        is_mounted: false,
         scrollTop: 0,
         isScrolling: false,
     };
@@ -29,6 +30,16 @@ class DataList extends React.PureComponent {
             });
         }
         this.trackItemsForTransition();
+
+        this.is_mounted = false;
+    }
+
+    componentDidMount() {
+        this.is_mounted = true;
+    }
+
+    componentWillUnmount() {
+        this.is_mounted = false;
     }
 
     footerRowRenderer = () => {
@@ -87,7 +98,9 @@ class DataList extends React.PureComponent {
         }
 
         this.timeout = setTimeout(() => {
-            this.setState({ isScrolling: false });
+            if (this.is_mounted) {
+                this.setState({ isScrolling: false });
+            }
         }, 200);
 
         const { scrollTop } = ev.target;
@@ -113,8 +126,16 @@ class DataList extends React.PureComponent {
         });
     }
 
+    setRef(ref) {
+        this.list_ref = ref;
+
+        if (typeof this.props.setListRef === 'function') {
+            this.props.setListRef(ref);
+        }
+    }
+
     render() {
-        const { className, children, data_source, footer, getRowSize } = this.props;
+        const { className, children, data_source, footer, getRowSize, onRowsRendered } = this.props;
 
         return (
             <div
@@ -130,12 +151,13 @@ class DataList extends React.PureComponent {
                                 <TransitionGroup style={{ height, width }}>
                                     <ThemedScrollbars onScroll={this.handleScroll} autoHide is_bypassed={isMobile()}>
                                         <List
-                                            ref={ref => (this.list_ref = ref)}
+                                            ref={ref => this.setRef(ref)}
                                             className={className}
                                             deferredMeasurementCache={this.cache}
                                             width={width}
                                             height={height}
                                             overscanRowCount={1}
+                                            onRowsRendered={onRowsRendered}
                                             rowCount={data_source.length}
                                             rowHeight={this.is_dynamic_height ? this.cache.rowHeight : getRowSize}
                                             rowRenderer={this.rowRenderer}
@@ -171,6 +193,8 @@ DataList.propTypes = {
     getRowAction: PropTypes.func,
     getRowSize: PropTypes.func,
     rowRenderer: PropTypes.func,
+    setListRef: PropTypes.func,
+    onRowsRendered: PropTypes.func,
 };
 
 export default DataList;

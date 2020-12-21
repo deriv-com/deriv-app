@@ -9,7 +9,7 @@ const LinearProgressContainer = ({ timeout, action, render, className }) => {
 
     const getProgress = () => 100 - Math.round((current_tick / total_ticks) * 100);
 
-    const getRemaining = () => (timeout_state >= 0 ? timeout_state : 0);
+    const getRemaining = () => (timeout_state > 0 ? timeout_state : 0);
 
     const makeProgress = () => {
         setCurrentTick(current => current - 1);

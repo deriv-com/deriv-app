@@ -95,7 +95,6 @@ class Cashier extends React.Component {
             : null;
         const should_show_tab_headers_note =
             !this.props.is_virtual &&
-            !this.props.is_eu &&
             (location.pathname.startsWith(routes.cashier_deposit) ||
                 location.pathname.startsWith(routes.cashier_withdrawal));
 

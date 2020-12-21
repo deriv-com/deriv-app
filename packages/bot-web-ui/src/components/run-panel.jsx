@@ -1,9 +1,8 @@
-import { Button, Dialog, Drawer, Modal, Money, Tabs, ThemedScrollbars } from '@deriv/components';
+import { Button, Dialog, Drawer, Modal, Money, Tabs, ThemedScrollbars, Text } from '@deriv/components';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
-import { Text } from '@deriv/components';
 import Journal from './journal.jsx';
 import Summary from './summary.jsx';
 import Transactions from './transactions.jsx';

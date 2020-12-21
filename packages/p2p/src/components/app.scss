@@ -5,19 +5,24 @@
     background: transparent;
     height: 100%;
     width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 
     &__content {
         padding: 0 1.6rem;
     }
     & .dc-tabs {
-        position: static;
+        &--p2p-cashier__tabs {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
 
-        &--p2p-cashier {
-            & .dc-tabs__list {
-                &--header-fit-content {
-                    margin-bottom: 2.4rem;
-                }
-            }
+        > .dc-tabs__content {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
         }
     }
     & .dc-button-menu {

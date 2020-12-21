@@ -306,8 +306,8 @@ const RealAccountSignup = ({
                         if (Title && ![finished_set_currency, status_dialog].includes(getActiveModalIndex())) {
                             return (
                                 <Title
-                                    real_account_signup_target
-                                    currency
+                                    real_account_signup_target={real_account_signup_target}
+                                    currency={currency}
                                     is_isle_of_man_residence
                                     is_belgium_residence
                                 />
@@ -332,8 +332,8 @@ const RealAccountSignup = ({
                         if (Title) {
                             return (
                                 <Title
-                                    real_account_signup_target
-                                    currency
+                                    real_account_signup_target={real_account_signup_target}
+                                    currency={currency}
                                     is_isle_of_man_residence
                                     is_belgium_residence
                                 />

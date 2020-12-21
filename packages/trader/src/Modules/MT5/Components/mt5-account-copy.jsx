@@ -11,7 +11,6 @@ class Mt5AccountCopy extends React.PureComponent {
                     'Click here to copy account login number and paste into the login box in MT5 platform along with your password.'
                 )}
                 success_message={localize('Account login number copied!')}
-                className='mt5-account-card__clipboard'
             />
         );
     }

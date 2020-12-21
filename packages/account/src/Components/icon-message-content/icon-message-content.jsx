@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Div100vhContainer } from '@deriv/components';
+import { Div100vhContainer, Text } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 
 const IconMessageContent = ({ className, children, icon, icon_row, message, text }) => (
@@ -29,13 +29,16 @@ const IconMessageContent = ({ className, children, icon, icon_row, message, text
             </div>
             {text && (
                 <div className='account-management__text-container'>
-                    <p
-                        className={classNames('account-management__text', {
+                    <Text
+                        className={classNames({
                             [`${className}__text`]: className,
                         })}
+                        as='p'
+                        size='xs'
+                        align='center'
                     >
                         {text}
-                    </p>
+                    </Text>
                 </div>
             )}
             {children}

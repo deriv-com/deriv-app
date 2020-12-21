@@ -10,23 +10,29 @@ const ButtonToggle = ({ buttons_arr, className, id, is_animated, name, onChange,
         if (value === selected_value) return;
         onChange({ target: { value: selected_value, name } });
     };
-    const menu = buttons_arr.map((val, idx) => {
-        const menuClassNames = classNames('dc-button-menu__button', {
-            'dc-button-menu__button--active': val.value === value,
-        });
-        return (
-            <Button
-                id={`dc_${val.value}_toggle_item`}
-                key={idx}
-                onClick={() => changeValue(val.value)}
-                className={menuClassNames}
-                is_button_toggle
-            >
-                {`${val.text.charAt(0).toUpperCase()}${val.text.slice(1)}`}
-                {!!val.count && <Counter className='dc-button-menu__counter' count={val.count} />}
-            </Button>
-        );
-    });
+
+    const menu = React.useMemo(
+        () =>
+            buttons_arr.map((val, idx) => {
+                const menuClassNames = classNames('dc-button-menu__button', {
+                    'dc-button-menu__button--active': val.value === value,
+                });
+                return (
+                    <Button
+                        id={`dc_${val.value}_toggle_item`}
+                        key={idx}
+                        onClick={() => changeValue(val.value)}
+                        className={menuClassNames}
+                        is_button_toggle
+                    >
+                        {`${val.text.charAt(0).toUpperCase()}${val.text.slice(1)}`}
+                        {!!val.count && <Counter className='dc-button-menu__counter' count={val.count} />}
+                    </Button>
+                );
+            }),
+        [buttons_arr]
+    );
+
     return (
         <div id={id} className={classNames('dc-button-menu', className)}>
             {is_animated ? (

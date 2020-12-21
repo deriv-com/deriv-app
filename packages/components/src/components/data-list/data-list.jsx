@@ -15,7 +15,7 @@ const DataList = React.memo(props => {
     const [is_scrolling, setIsScrolling] = React.useState(false);
     const [is_loading, setLoading] = React.useState(true);
 
-    const { className, children, data_source, footer, getRowSize, keyMapper } = props;
+    const { className, children, data_source, footer, getRowSize, keyMapper, onRowsRendered, setListRef } = props;
     const cache = React.useRef();
     const list_ref = React.useRef();
     const items_transition_map = {};
@@ -92,12 +92,21 @@ const DataList = React.memo(props => {
             setIsScrolling(true);
         }
         const timeout = setTimeout(() => {
-            setIsScrolling(false);
+            if (!is_loading) {
+                setIsScrolling(false);
+            }
         }, 200);
 
         setScrollTop(ev.target.scrollTop);
         if (typeof props.onScroll === 'function') {
             props.onScroll(ev);
+        }
+    };
+
+    const setRef = ref => {
+        list_ref.current = ref;
+        if (typeof setListRef === 'function') {
+            setListRef(ref);
         }
     };
 
@@ -118,12 +127,13 @@ const DataList = React.memo(props => {
                             <TransitionGroup style={{ height, width }}>
                                 <ThemedScrollbars onScroll={handleScroll} autoHide is_bypassed={isMobile()}>
                                     <List
-                                        ref={list_ref}
+                                        ref={ref => setRef(ref)}
                                         className={className}
                                         deferredMeasurementCache={cache.current}
                                         width={width}
                                         height={height}
                                         overscanRowCount={1}
+                                        onRowsRendered={onRowsRendered}
                                         rowCount={data_source.length}
                                         rowHeight={is_dynamic_height ? cache?.current.rowHeight : getRowSize}
                                         rowRenderer={rowRenderer}
@@ -163,6 +173,8 @@ DataList.propTypes = {
     onScroll: PropTypes.func,
     row_gap: PropTypes.number,
     rowRenderer: PropTypes.func,
+    setListRef: PropTypes.func,
+    onRowsRendered: PropTypes.func,
 };
 
 export default DataList;

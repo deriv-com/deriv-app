@@ -11,7 +11,7 @@
             }
         }
         @include mobile {
-            padding: 2.4rem;
+            padding: 4rem 1.6rem;
             margin: 0rem;
         }
     }
@@ -27,13 +27,14 @@
             font-size: var(--text-size-s);
         }
     }
-    &__header {
-        background: var(--state-disabled);
+    &-tab__header {
         padding: 0.4rem;
         width: fit-content;
         border-radius: 4px;
         @include mobile {
-            margin: 2rem auto;
+            width: 100%;
+            display: flex;
+            justify-content: center;
             border-bottom: 1px solid var(--general-section-1);
         }
         &-filter {

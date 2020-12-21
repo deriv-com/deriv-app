@@ -38,7 +38,7 @@ const OrderRow = observer(({ style, row: order }) => {
             label: distance < 0 ? localize('expired') : secondsToTimer(distance),
         };
     };
-    const { general_store, order_store } = useStores();
+    const { general_store, order_store, sendbird_store } = useStores();
     const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
     const [is_timer_visible, setIsTimerVisible] = React.useState();
     const {

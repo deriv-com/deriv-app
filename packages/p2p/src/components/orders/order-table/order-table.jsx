@@ -27,11 +27,11 @@ const OrderTable = observer(({ showDetails }) => {
     const is_active_tab = general_store.order_table_type === order_list.ACTIVE;
     return (
         <React.Fragment>
-            <div className='orders__header'>
+            <div className='orders-tab__header'>
                 <ToggleContainer>
                     <ButtonToggle
                         buttons_arr={orders_list_filters}
-                        className='orders__header-filter'
+                        className='orders-tab__header-filter'
                         is_animated
                         name='filter'
                         onChange={({ target: { value } }) => general_store.setOrderTableType(value)}

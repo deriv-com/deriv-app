@@ -125,12 +125,9 @@
                 border-right: 1px solid var(--general-section-1);
             }
         }
-    }
-    &__popover-container {
-        margin-left: 0.8rem;
 
-        @include mobile {
-            margin-right: 0 1.6rem;
+        &-popover {
+            margin-left: 1.6rem;
         }
     }
     &__toggle {

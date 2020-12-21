@@ -187,6 +187,7 @@ const MyProfile = () => {
                     {isDesktop() && <div className='my-profile__stats-cell-separator' />}
                     <Table.Cell>
                         <PopoverMobile
+                            className='my-profile__stats-popover'
                             button_text={localize('Got it')}
                             is_open={is_statistics_tooltip_open}
                             message={localize(

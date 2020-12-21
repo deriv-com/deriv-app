@@ -248,9 +248,22 @@ const AccountSwitcher = props => {
         return getRemainingAccounts(getRealMT5());
     };
 
+    const canOpenMulti = () => {
+        if (props.available_crypto_currencies.length < 1 && !props.has_fiat) return true;
+        return !props.is_virtual;
+    };
+
     // SVG clients can't upgrade.
     const getRemainingRealAccounts = () => {
-        return canOpenMulti() ? [] : props.upgradeable_landing_companies;
+        if (
+            !canOpenMulti() ||
+            (props.is_eu &&
+                (props.landing_company_shortcode === 'malta' ||
+                    (props.landing_company_shortcode === 'iom' && props.upgradeable_landing_companies.length !== 0)))
+        ) {
+            return props.upgradeable_landing_companies;
+        }
+        return [];
     };
 
     const hasSetCurrency = () => {
@@ -259,18 +272,6 @@ const AccountSwitcher = props => {
 
     const canUpgrade = () => {
         return !!(props.is_virtual && props.can_upgrade_to);
-    };
-
-    const canOpenMulti = () => {
-        if (props.is_eu) {
-            if (props.landing_company_shortcode === 'malta') return false;
-            if (props.landing_company_shortcode === 'iom' && props.upgradeable_landing_companies.length !== 0) {
-                return false;
-            }
-            return true;
-        }
-        if (props.available_crypto_currencies.length < 1 && !props.has_fiat) return true;
-        return !props.is_virtual;
     };
 
     const getTotalDemoAssets = () => {

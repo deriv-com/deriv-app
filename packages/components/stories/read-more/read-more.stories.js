@@ -1,5 +1,7 @@
 import { storiesOf } from '@storybook/react';
+import { boolean } from '@storybook/addon-knobs';
 import React from 'react';
+import Wrapper from './wrapper';
 import ReadMore from 'Components/read-more';
 import notes from './README.md';
 
@@ -7,7 +9,7 @@ storiesOf('ReadMore', module).add(
     'Main function',
     () => {
         return (
-            <div style={{ width: '200px', margin: '50px', backgroundColor: '#f2f3f4', padding: '10px' }}>
+            <Wrapper is_dark={boolean('Dark Theme', false)}>
                 <ReadMore
                     expand_text={'read more'}
                     text={
@@ -16,7 +18,7 @@ storiesOf('ReadMore', module).add(
                     collapse_length={140}
                     className='on-ramp__read-more'
                 />
-            </div>
+            </Wrapper>
         );
     },
     {

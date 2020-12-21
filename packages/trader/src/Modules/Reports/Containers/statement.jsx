@@ -15,7 +15,7 @@ import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 
-const TransactionFilter = props => {
+const TransactionFilter = ({ is_alignment_left, handleFilterChange }) => {
     const [default_filter, setDefaultFilter] = React.useState('all');
 
     const filter_list = [
@@ -49,11 +49,11 @@ const TransactionFilter = props => {
             className='dropdown-statement-filter'
             classNameDisplay='dc-dropdown__display-filter'
             has_symbol={false}
-            is_alignment_left={props.is_alignment_left}
+            is_alignment_left={is_alignment_left}
             is_filter
             onChange={e => {
                 setDefaultFilter(e.target.value);
-                props.handleFilterChange(e.target.value);
+                handleFilterChange(e.target.value);
             }}
         />
     );

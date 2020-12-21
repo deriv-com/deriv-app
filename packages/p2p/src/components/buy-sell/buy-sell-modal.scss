@@ -1,0 +1,33 @@
+.buy-sell__modal {
+    &-body {
+        padding: 1.6rem;
+        position: relative;
+    }
+
+    &-field {
+        margin-bottom: 0 !important;
+        margin-right: 0.7rem;
+        flex: 1;
+
+        &-wrapper {
+            gap: 2.4rem;
+            display: flex;
+            margin-bottom: 1.6rem;
+            align-items: flex-start;
+
+            > .dc-input {
+                margin-top: 1rem; // Compensate for label.
+            }
+
+            &--no-flex {
+                display: block;
+            }
+        }
+    }
+}
+
+.buy-sell__modal-content {
+    .dc-input {
+        margin-bottom: unset;
+    }
+}

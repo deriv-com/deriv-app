@@ -40,9 +40,7 @@
         "react-dom": "^16.13.1",
         "react-i18next": "^11.0.0",
         "react-svg-loader": "^3.0.3",
-        "react-virtualized-auto-sizer": "^1.0.2",
-        "react-window": "^1.8.5",
-        "react-window-infinite-loader": "^1.0.5",
+        "react-transition-group": "^4.3.0",
         "sendbird": "^3.0.137"
     },
     "devDependencies": {

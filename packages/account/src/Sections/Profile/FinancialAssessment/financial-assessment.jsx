@@ -197,12 +197,9 @@ class FinancialAssessment extends React.Component {
                             this.setState({ api_initial_load_error: data.error.message });
                             return;
                         } else if (!needs_financial_assessment) {
-                            // Additional layer of error handling if non high risk user somehow manages to reach FA page, need to define error to prevent app crash
-                            this.setState({
-                                api_initial_load_error: localize(
-                                    'Error: Could not load financial assessment information'
-                                ),
-                            });
+                            // Additional layer of error handling if non high risk user somehow manages to reach FA page
+                            // need to redirect to default route for account to prevent app crash
+                            this.props.history.push(routes.personal_details);
                         }
                         this.setState({ ...data.get_financial_assessment, is_loading: false });
                     });
@@ -903,4 +900,4 @@ export default connect(({ client, ui }) => ({
     is_svg: client.is_svg,
     removeNotificationMessage: ui.removeNotificationMessage,
     removeNotificationByKey: ui.removeNotificationByKey,
-}))(FinancialAssessment);
+}))(withRouter(FinancialAssessment));

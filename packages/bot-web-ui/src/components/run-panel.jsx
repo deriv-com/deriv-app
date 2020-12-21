@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
+import { Text } from '@deriv/components';
 import Journal from './journal.jsx';
 import Summary from './summary.jsx';
 import Transactions from './transactions.jsx';
@@ -122,42 +123,54 @@ const StatisticsInfoModal = ({ is_mobile, is_statistics_info_modal_open, toggleS
             <Modal.Body>
                 <div className={classNames('statistics__modal-body', { 'statistics__modal-body--mobile': is_mobile })}>
                     <ThemedScrollbars className='statistics__modal-scrollbar'>
-                        <p className='statistics__modal-body--content no-margin'>{localize('Total stake')}</p>
-                        <p>
+                        <Text as='p' weight='bold' className='statistics__modal-body--content no-margin'>
+                            {localize('Total stake')}
+                        </Text>
+                        <Text as='p'>
                             {localize(
                                 'Total stake since you last cleared your stats. Refreshing the page will also clear your stats.'
                             )}
-                        </p>
-                        <p className='statistics__modal-body--content'>{localize('Total payout')}</p>
-                        <p>
+                        </Text>
+                        <Text as='p' weight='bold' className='statistics__modal-body--content'>
+                            {localize('Total payout')}
+                        </Text>
+                        <Text as='p'>
                             {localize(
                                 'Total payout since you last cleared your stats. Refreshing the page will also clear your stats.'
                             )}
-                        </p>
-                        <p className='statistics__modal-body--content'>{localize('No. of runs')}</p>
-                        <p>
+                        </Text>
+                        <Text as='p' weight='bold' className='statistics__modal-body--content'>
+                            {localize('No. of runs')}
+                        </Text>
+                        <Text as='p'>
                             {localize(
                                 'The number of times your bot has run since you last cleared your stats. Each run includes the execution of all the root blocks. Refreshing the page will also clear your stats.'
                             )}
-                        </p>
-                        <p className='statistics__modal-body--content'>{localize('Contracts lost')}</p>
-                        <p>
+                        </Text>
+                        <Text as='p' weight='bold' className='statistics__modal-body--content'>
+                            {localize('Contracts lost')}
+                        </Text>
+                        <Text as='p'>
                             {localize(
                                 'The number of contracts you have lost since you last cleared your stats. Refreshing the page will also clear your stats.'
                             )}
-                        </p>
-                        <p className='statistics__modal-body--content'>{localize('Contracts won')}</p>
-                        <p>
+                        </Text>
+                        <Text as='p' weight='bold' className='statistics__modal-body--content'>
+                            {localize('Contracts won')}
+                        </Text>
+                        <Text as='p'>
                             {localize(
                                 'The number of contracts you have won since you last cleared your stats. Refreshing the page will also clear your stats.'
                             )}
-                        </p>
-                        <p className='statistics__modal-body--content'>{localize('Profit/loss')}</p>
-                        <p>
+                        </Text>
+                        <Text as='p' weight='bold' className='statistics__modal-body--content'>
+                            {localize('Profit/loss')}
+                        </Text>
+                        <Text as='p'>
                             {localize(
                                 'Your total profit/loss since you last cleared your stats. It is the difference between your total payout and your total stake. Refreshing the page will also clear your stats.'
                             )}
-                        </p>
+                        </Text>
                     </ThemedScrollbars>
                 </div>
             </Modal.Body>

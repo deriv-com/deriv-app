@@ -44,9 +44,9 @@ class FormProgress extends React.PureComponent {
                             }}
                         />
                         {steps.map((item, idx) => (
-                            <React.Fragment>
+                            <React.Fragment key={idx + 1}>
                                 {(active = idx === current_step)}
-                                <div key={idx + 1} className='dc-form-progress__step'>
+                                <div className='dc-form-progress__step'>
                                     <Text
                                         align='center'
                                         size='xs'

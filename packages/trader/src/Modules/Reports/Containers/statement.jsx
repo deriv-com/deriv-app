@@ -209,7 +209,6 @@ const Statement = ({
             <ReportsMeta
                 className={is_mx_mlt ? undefined : 'reports__meta--statement'}
                 filter_component={filter_component}
-                is_statement
                 optional_component={!is_switching && is_mx_mlt && getAccountStatistics()}
             />
             {is_switching ? (

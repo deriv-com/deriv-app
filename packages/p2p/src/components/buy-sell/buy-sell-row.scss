@@ -1,0 +1,50 @@
+.buy-sell-row {
+    @include mobile {
+        border-bottom: 1px solid var(--general-section-1);
+        padding: 1.6rem;
+        height: 148px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__advertiser {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 1.6rem;
+
+        &-name {
+            margin-left: 0.8rem;
+        }
+        &-arrow {
+            margin-left: auto;
+        }
+    }
+
+    &__information {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    &__rate {
+        display: flex;
+        flex-direction: column;
+
+        > :last-child {
+            margin-top: 0.8rem;
+        }
+    }
+
+    &__table-cell {
+        &--left {
+            align-items: flex-start;
+            display: flex;
+            flex-direction: column;
+        }
+        &--right {
+            align-items: flex-end;
+        }
+    }
+}

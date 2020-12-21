@@ -14,7 +14,7 @@ const HorizontalSwipe = ({
     visible_component,
 }) => {
     const [should_show_left_hidden_component, setShouldShowLeftHiddenComponent] = React.useState(false);
-    const [should_show_right_hidden_component, setShouldShowRighttHiddenComponent] = React.useState(false);
+    const [should_show_right_hidden_component, setShouldShowRightHiddenComponent] = React.useState(false);
     const visible_component_height_ref = React.useRef();
 
     const onSwipeLeft = () => {

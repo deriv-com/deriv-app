@@ -94,6 +94,7 @@ const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
                 hover_message={localize('Drop files here..')}
                 max_size={max_document_size}
                 message={UploadMessage}
+                fname_char_limit={30}
                 multiple={false}
                 onDropAccepted={handleAcceptedFiles}
                 onDropRejected={handleRejectedFiles}

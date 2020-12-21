@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import Dropzone from 'react-dropzone';
+import { truncateFileName } from '@deriv/shared';
 
 const FadeInMessage = ({ is_visible, children, key, timeout }) => (
     <CSSTransition
@@ -72,12 +73,18 @@ const FileDropzone = ({ className, ...props }) => (
                         {props.multiple && props.value.length > 0 && !props.validation_error_message
                             ? props.value.map((file, idx) => (
                                   <span key={idx} className='dc-file-dropzone__filename'>
-                                      {file.name}
+                                      {props.fname_char_limit
+                                          ? truncateFileName(file, props.fname_char_limit)
+                                          : file.name}
                                   </span>
                               ))
                             : props.value[0] &&
                               !isDragActive && (
-                                  <span className='dc-file-dropzone__filename'>{props.value[0].name}</span>
+                                  <span className='dc-file-dropzone__filename'>
+                                      {props.fname_char_limit
+                                          ? truncateFileName(props.value[0], props.fname_char_limit)
+                                          : props.value[0].name}
+                                  </span>
                               )}
                         <FadeInMessage
                             // message shown if there are errors with the dragged file

@@ -73,16 +73,14 @@ const FileDropzone = ({ className, ...props }) => (
                         {props.multiple && props.value.length > 0 && !props.validation_error_message
                             ? props.value.map((file, idx) => (
                                   <span key={idx} className='dc-file-dropzone__filename'>
-                                      {props.fname_char_limit
-                                          ? truncateFileName(file, props.fname_char_limit)
-                                          : file.name}
+                                      {props.filename_limit ? truncateFileName(file, props.filename_limit) : file.name}
                                   </span>
                               ))
                             : props.value[0] &&
                               !isDragActive && (
                                   <span className='dc-file-dropzone__filename'>
-                                      {props.fname_char_limit
-                                          ? truncateFileName(props.value[0], props.fname_char_limit)
+                                      {props.filename_limit
+                                          ? truncateFileName(props.value[0], props.filename_limit)
                                           : props.value[0].name}
                                   </span>
                               )}

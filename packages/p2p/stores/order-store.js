@@ -1,36 +1,39 @@
-import { action, computed, observable } from 'mobx';
+import { cloneObject } from '@deriv/shared';
+import { action, computed, observable, reaction } from 'mobx';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS, subscribeWS } from 'Utils/websocket';
-import { height_constants } from 'Utils/height_constants';
 
 export default class OrderStore {
     constructor(root_store) {
         this.root_store = root_store;
+
+        reaction(
+            () => this.orders,
+            orders => {
+                this.root_store.general_store.handleNotifications(this.previous_orders, orders);
+            }
+        );
     }
 
     @observable api_error_message = '';
     @observable has_more_items_to_load = false;
     @observable is_loading = false;
+    @observable orders = [];
+    @observable order_id = null;
     @observable order_rerender_timeout = null;
 
-    height_values = [
-        height_constants.screen,
-        height_constants.core_header,
-        height_constants.page_overlay_header,
-        height_constants.page_overlay_content_padding,
-        height_constants.tabs,
-        height_constants.filters,
-        height_constants.filters_margin,
-        height_constants.table_header,
-        height_constants.core_footer,
-    ];
     interval;
-    item_height = 72;
     order_info_subscription = {};
+    previous_orders = [];
 
     @computed
     get order_information() {
-        return this.root_store.general_store.order_information;
+        const { general_store } = this.root_store;
+        const order = this.orders.find(o => o.id === this.order_id);
+
+        return order
+            ? createExtendedOrderDetails(order, general_store.client.loginid, general_store.props.server_time)
+            : null;
     }
 
     @computed
@@ -43,27 +46,37 @@ export default class OrderStore {
         if (should_navigate && this.nav) {
             this.root_store.general_store.redirectTo(this.nav.location);
         }
-        this.root_store.general_store.props.setOrderId(null);
-        this.setOrderInformation(null);
+
+        this.setOrderId(null);
     }
 
     @action.bound
-    loadMoreOrders() {
-        requestWS({
-            p2p_order_list: 1,
-            offset: this.root_store.general_store.order_offset,
-            limit: this.root_store.general_store.list_item_limit,
-            active: this.root_store.general_store.is_active_tab ? 1 : 0,
-        }).then(response => {
-            if (!response.error) {
-                const { list } = response.p2p_order_list;
-                this.setHasMoreItemsToLoad(list.length >= this.root_store.general_store.list_item_limit);
-                this.root_store.general_store.setOrders(this.root_store.general_store.orders.concat(list));
-                this.root_store.general_store.setOrderOffset(this.root_store.general_store.order_offset + list.length);
-            } else {
-                this.setApiErrorMessage(response.error.message);
-            }
-            this.setIsLoading(false);
+    loadMoreOrders({ startIndex }) {
+        return new Promise(resolve => {
+            const { general_store } = this.root_store;
+            const active = general_store.is_active_tab ? 1 : 0;
+
+            requestWS({
+                p2p_order_list: 1,
+                active,
+                offset: startIndex,
+                limit: general_store.list_item_limit,
+            }).then(response => {
+                if (!response.error) {
+                    // Ignore any responses that don't match our request. This can happen
+                    // due to quickly switching between Active/Past tabs.
+                    if (response.echo_req.active === active) {
+                        const { list } = response.p2p_order_list;
+                        this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
+                        this.setOrders(this.orders.concat(list));
+                    }
+                } else {
+                    this.setApiErrorMessage(response.error.message);
+                }
+
+                this.setIsLoading(false);
+                resolve();
+            });
         });
     }
 
@@ -71,19 +84,17 @@ export default class OrderStore {
     onOrderIdUpdate() {
         this.unsubscribeFromCurrentOrder();
 
-        if (this.root_store.general_store.props.order_id) {
+        if (this.order_id) {
             this.subscribeToCurrentOrder();
         }
     }
 
     @action.bound
     onOrdersUpdate() {
-        if (this.root_store.general_store.props.order_id) {
+        if (this.order_id) {
             // If orders was updated, find current viewed order (if any)
             // and trigger a re-render (in case status was updated).
-            const order = this.root_store.general_store.orders.find(
-                o => o.id === this.root_store.general_store.props.order_id
-            );
+            const order = this.orders.find(o => o.id === this.order_id);
 
             if (order) {
                 this.setQueryDetails(order);
@@ -126,8 +137,20 @@ export default class OrderStore {
     }
 
     @action.bound
-    setOrderInformation(order_information) {
-        this.root_store.general_store.setOrderInformation(order_information);
+    setOrderId(order_id) {
+        this.order_id = order_id;
+
+        const { general_store } = this.root_store;
+
+        if (typeof general_store.props.setOrderId === 'function') {
+            general_store.props.setOrderId(order_id);
+        }
+    }
+
+    @action.bound
+    setOrders(orders) {
+        this.previous_orders = cloneObject(this.orders);
+        this.orders = orders;
     }
 
     @action.bound
@@ -136,18 +159,20 @@ export default class OrderStore {
     }
 
     @action.bound
-    setQueryDetails = input_order => {
-        const { client, props } = this.root_store.general_store;
-        const input_order_information = createExtendedOrderDetails(input_order, client.loginid, props.server_time);
-
-        this.root_store.general_store.props.setOrderId(input_order_information.id); // Sets the id in URL
-        this.setOrderInformation(input_order_information);
+    setQueryDetails(input_order) {
+        const { general_store } = this.root_store;
+        const order_information = createExtendedOrderDetails(
+            input_order,
+            general_store.client.loginid,
+            general_store.props.server_time
+        );
+        this.setOrderId(order_information.id); // Sets the id in URL
 
         // When viewing specific order, update its read state in localStorage.
         const { notifications } = this.root_store.general_store.getLocalStorageSettingsForLoginId();
 
         if (notifications.length) {
-            const notification = notifications.find(n => n.order_id === input_order_information.id);
+            const notification = notifications.find(n => n.order_id === order_information.id);
 
             if (notification) {
                 notification.is_seen = true;
@@ -158,59 +183,63 @@ export default class OrderStore {
         // Force a refresh of this order when it's expired to correctly
         // reflect the status of the order. This is to work around a BE issue
         // where they only expire contracts once a minute rather than on expiry time.
-        const { remaining_seconds } = input_order_information;
+        const { remaining_seconds } = order_information;
 
         if (remaining_seconds > 0) {
             clearTimeout(this.order_rerender_timeout);
 
             this.setOrderRendererTimeout(
                 setTimeout(() => {
-                    this.setQueryDetails(input_order);
+                    if (typeof this.forceRerenderFn === 'function') {
+                        this.forceRerenderFn(order_information.id);
+                    }
                 }, (remaining_seconds + 1) * 1000)
             );
         }
-    };
+    }
 
     @action.bound
     setData(data) {
         this.data = data;
     }
+
     @action.bound
     subscribeToCurrentOrder() {
         this.order_info_subscription = subscribeWS(
             {
                 p2p_order_info: 1,
-                id: this.root_store.general_store.props.order_id,
+                id: this.order_id,
                 subscribe: 1,
             },
             [this.setOrderDetails]
         );
     }
 
+    @action.bound
     syncOrder(p2p_order_info) {
+        const { general_store } = this.root_store;
+
         const get_order_status = createExtendedOrderDetails(
             p2p_order_info,
-            this.root_store.general_store.client.loginid,
-            this.root_store.general_store.props.server_time
+            general_store.client.loginid,
+            general_store.props.server_time
         );
 
-        const order_idx = this.root_store.general_store.orders.findIndex(order => {
-            if (order.id === p2p_order_info.id) {
-                return true;
-            } else {
-                return false;
+        const order_idx = this.orders.findIndex(order => order.id === p2p_order_info.id);
+
+        if (this.order_id === null) {
+            // When we're looking at a list, it's safe to move orders from Active to Past.
+            if (order_idx === -1) {
+                this.orders.unshift(p2p_order_info);
+            } else if (get_order_status.is_inactive_order) {
+                this.orders.splice(order_idx, 1);
+            } else if (get_order_status.is_disputed_order || get_order_status.is_active_order) {
+                this.orders[order_idx] = p2p_order_info;
             }
-        });
-
-        if (order_idx < 0) {
-            this.root_store.general_store.orders.unshift(p2p_order_info);
-        }
-
-        if (get_order_status.is_inactive_order) {
-            this.root_store.general_store.orders.splice(order_idx, 1);
-        }
-        if (get_order_status.is_disputed_order || get_order_status.is_active_order) {
-            this.root_store.general_store.orders[order_idx] = p2p_order_info;
+        } else {
+            // When looking at a specific order, it's NOT safe to move orders between tabs
+            // in this case, only update the order details.
+            this.orders[order_idx] = p2p_order_info;
         }
     }
 
@@ -221,5 +250,9 @@ export default class OrderStore {
         if (this.order_info_subscription.unsubscribe) {
             this.order_info_subscription.unsubscribe();
         }
+    }
+
+    setForceRerenderOrders(forceRerenderFn) {
+        this.forceRerenderFn = forceRerenderFn;
     }
 }

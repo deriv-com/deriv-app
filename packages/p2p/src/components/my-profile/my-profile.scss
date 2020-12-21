@@ -1,23 +1,24 @@
 .my-profile {
-    &__content {
-        @include mobile {
-            margin-bottom: 10rem;
-        }
+    @include mobile {
+        overflow-y: auto;
     }
-    &__scrollbar {
+
+    @include tablet-up {
         height: calc(100% - 15rem);
         position: absolute;
         width: calc(100% - 4.8rem);
-        @include mobile {
-            width: 100%;
-            height: unset;
-        }
     }
+
     &__header {
         display: flex;
         height: fit-content;
         justify-content: space-between;
-        width: 657px;
+
+        @include tablet-up {
+            margin-top: 2.4rem;
+            width: 657px;
+        }
+
         @include mobile {
             margin: 1.6rem;
         }
@@ -39,19 +40,6 @@
             height: fit-content;
             width: fit-content;
         }
-        &-verification {
-            align-items: center;
-            display: flex;
-            flex: none;
-
-            &-status {
-                margin-left: 1.6rem;
-            }
-            &-icon {
-                margin-left: 0.4rem;
-                vertical-align: text-bottom;
-            }
-        }
     }
     &__stats {
         border-bottom: none;
@@ -60,7 +48,10 @@
         grid-template-rows: 46px;
         height: fit-content;
         margin: 2.4rem 0;
-        width: 657px;
+
+        @include tablet-up {
+            width: 657px;
+        }
 
         @include mobile {
             width: 100vw;
@@ -117,6 +108,7 @@
             border-bottom: 1px solid var(--general-section-1);
             margin-left: 1.6rem;
             width: 564px;
+
             @include mobile {
                 width: calc(100vw - 9rem);
             }
@@ -142,51 +134,49 @@
         }
     }
     &__form {
-        @include mobile {
-            margin-bottom: 18rem;
-            &--active-keyboard {
-                margin-bottom: 0;
-            }
-        }
         &-textarea {
             margin-top: 2.5rem;
-            width: 657px;
+
             @include mobile {
-                width: calc(100vw - 3.2rem);
-                margin: 4rem 1.6rem 0;
                 &:first-child {
                     margin-top: 2.5rem;
                 }
             }
+        }
 
-            .dc-input__hint {
-                top: 9.7rem;
-            }
-            .dc-input__counter {
-                right: 0rem;
-                top: 9.6rem;
+        .dc-input {
+            margin-bottom: unset;
+
+            &__wrapper {
+                @include mobile {
+                    margin: 1.6rem;
+                }
+                @include tablet-up {
+                    width: 657px;
+                }
             }
         }
     }
     &__footer {
+        background-color: var(--general-main-1);
         border-top: 2px solid var(--general-section-1);
         bottom: 36px;
+        display: flex;
+        justify-content: flex-end;
         left: unset;
         position: fixed;
-        width: 657px;
+
+        @include tablet-up {
+            width: 657px;
+        }
+
         @include mobile {
             background-color: var(--general-main-1);
             width: 100vw;
             bottom: 0px;
         }
-        &--active-keyboard {
-            position: absolute;
-            bottom: unset;
-            margin-top: 2.4rem;
-        }
 
         &-button {
-            float: right;
             margin: 1.6rem 2.4rem;
         }
     }

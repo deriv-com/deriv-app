@@ -26,7 +26,7 @@ const HorizontalSwipe = ({
                 return;
             }
             if (is_left_swipe && !should_show_right_hidden_component) {
-                setShouldShowRighttHiddenComponent(true);
+                setShouldShowRightHiddenComponent(true);
             }
             if (is_right_swipe && should_show_left_hidden_component) {
                 setShouldShowLeftHiddenComponent(false);
@@ -43,7 +43,7 @@ const HorizontalSwipe = ({
                 return;
             }
             if (is_left_swipe && should_show_right_hidden_component) {
-                setShouldShowRighttHiddenComponent(false);
+                setShouldShowRightHiddenComponent(false);
             }
 
             if (is_right_swipe && !should_show_left_hidden_component) {

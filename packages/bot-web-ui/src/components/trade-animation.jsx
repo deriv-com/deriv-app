@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon, Modal } from '@deriv/components';
+import { Button, Icon, Modal, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import ContractResultOverlay from './contract-result-overlay.jsx';
 import { connect } from '../stores/connect';
@@ -34,19 +34,19 @@ const AnimationInfoModal = ({ is_mobile, is_animation_info_modal_open, toggleAni
         >
             <Modal.Body>
                 <div className={classNames({ 'animation__modal-body--mobile': is_mobile })}>
-                    <p>
+                    <Text as='p'>
                         {localize(
                             'Stopping the bot will prevent further trades. Any ongoing trades will be completed by our system.'
                         )}
-                    </p>
-                    <p className='animation__modal-body--content'>
+                    </Text>
+                    <Text as='p' className='animation__modal-body--content'>
                         {localize(
                             'Please be aware that some completed transactions may not be displayed in the transaction table if the bot is stopped while placing trades.'
                         )}
-                    </p>
-                    <p className='animation__modal-body--content'>
+                    </Text>
+                    <Text as='p' className='animation__modal-body--content'>
                         {localize('You may refer to the statement page for details of all completed transactions.')}
-                    </p>
+                    </Text>
                 </div>
             </Modal.Body>
         </Modal>

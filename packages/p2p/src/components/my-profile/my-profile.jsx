@@ -41,7 +41,7 @@ const ContentWrapper = ({ children, className }) => {
     );
 };
 
-const MyProfile = observer(() => {
+const MyProfile = () => {
     const { general_store, my_profile_store } = useStores();
     const {
         daily_buy,
@@ -278,7 +278,7 @@ const MyProfile = observer(() => {
             </Formik>
         </ContentWrapper>
     );
-});
+};
 
 MyProfile.propTypes = {
     advertiser_info: PropTypes.object,

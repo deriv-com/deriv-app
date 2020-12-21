@@ -10,7 +10,7 @@ const MLTRegulatoryInformation = () => (
         </div>
         <p>
             <Localize
-                i18n_default_text='Synthetic indices in the EU and the UK are offered by Deriv (Europe) Limited, licensed by the Malta Gaming Authority (<0>licence no. MGA/B2C/102/2000</0>), by the UK Gambling Commission for clients in the UK (<1>account no. 39495</1>), and by the Revenue Commissioners for clients in Ireland (<2>licence no. 1010285</2>).'
+                i18n_default_text='Synthetic indices in the EU and the UK are offered by Deriv (Europe) Limited, W Business Centre, Level 3, Triq Dun Karm, Birkirkara BKR 9033, Malta, licensed and regulated by the Malta Gaming Authority (<0>licence no. MGA/B2C/102/2000</0>), by the Gambling Commission for clients in Great Britain under <1>account no. 39495</1>, and by the Revenue Commissioners for clients in Ireland (<2>licence no. 1010285</2>).'
                 components={[
                     <StaticUrl
                         href='/regulatory/Deriv_(Europe)_Limited.pdf'
@@ -40,13 +40,20 @@ const MXRegulatoryInformation = () => (
     <div className='footer-regulatory-information'>
         <p>
             <Localize
-                i18n_default_text='Synthetic indices in the Isle of Man and the UK are offered by Deriv (MX) Ltd, licensed by the Gambling Supervision Commission in the Isle of Man and by the UK Gambling Commission for clients in the UK (<0>account no. 39172</0>).'
+                i18n_default_text='Synthetic indices in the UK and the Isle of Man are offered by Deriv (MX) Ltd, Millennium House, Level 1, Victoria Road, Douglas IM2 4RW, Isle of Man, licensed and regulated in Great Britain by the Gambling Commission under <0>account no. 39172</0> and by the Gambling Supervision Commission in the Isle of Man (<1>view licence</1>).'
                 components={[
                     <a
                         href='https://secure.gamblingcommission.gov.uk/PublicRegister/Search/Detail/39172'
                         target='_blank'
                         rel='nofollow noreferrer'
                         key={0}
+                        className='footer-regulatory-information__link'
+                    />,
+                    <a
+                        href='https://deriv.com/regulatory/Deriv_(MX)_Ltd.pdf'
+                        target='_blank'
+                        rel='nofollow noreferrer'
+                        key={1}
                         className='footer-regulatory-information__link'
                     />,
                 ]}

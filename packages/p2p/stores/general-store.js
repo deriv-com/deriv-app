@@ -1,11 +1,11 @@
 import React from 'react';
 import { action, computed, observable } from 'mobx';
-import { isEmptyObject, mobileOSDetect, routes } from '@deriv/shared';
+import { isEmptyObject, isMobile, mobileOSDetect, routes } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
-import { createExtendedOrderDetails } from 'Utils/orders.js';
+import BaseStore from 'Stores/base_store';
+import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
 import { order_list } from '../src/constants/order-list';
-import BaseStore from 'Stores/base_store';
 
 export default class GeneralStore extends BaseStore {
     @observable active_index = 0;
@@ -18,17 +18,16 @@ export default class GeneralStore extends BaseStore {
     @observable nickname = null;
     @observable nickname_error = '';
     @observable notification_count = 0;
-    @observable order_id = null;
-    @observable.ref order_information = null;
     @observable order_offset = 0;
     @observable order_table_type = order_list.ACTIVE;
     @observable orders = [];
     @observable parameters = null;
     @observable poi_status = null;
+    @observable should_show_real_name = false;
     @observable show_popup = false;
 
     custom_string = this.props?.custom_string;
-    list_item_limit = 20;
+    list_item_limit = isMobile() ? 10 : 25;
     path = {
         buy_sell: 0,
         orders: 1,
@@ -68,9 +67,9 @@ export default class GeneralStore extends BaseStore {
         });
     }
 
-    getLocalStorageSettings() {
+    getLocalStorageSettings = () => {
         return JSON.parse(localStorage.getItem('p2p_settings') || '{}');
-    }
+    };
 
     getLocalStorageSettingsForLoginId() {
         const local_storage_settings = this.getLocalStorageSettings()[this.client.loginid];
@@ -84,13 +83,14 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     handleNotifications(old_orders, new_orders) {
+        const { order_store } = this.root_store;
         const { client, props } = this;
         const { is_cached, notifications } = this.getLocalStorageSettingsForLoginId();
         new_orders.forEach(new_order => {
             const order_info = createExtendedOrderDetails(new_order, client.loginid, props.server_time);
             const notification = notifications.find(n => n.order_id === new_order.id);
             const old_order = old_orders.find(o => o.id === new_order.id);
-            const is_current_order = new_order.id === this.props?.order_id;
+            const is_current_order = new_order.id === order_store.order_id;
             const notification_obj = {
                 order_id: new_order.id,
                 is_seen: is_current_order,
@@ -189,8 +189,7 @@ export default class GeneralStore extends BaseStore {
         this.setShowPopup(false);
     }
 
-    @action.bound
-    openApplicationStore() {
+    openApplicationStore = () => {
         if (mobileOSDetect() === 'Android') {
             window.location.href =
                 'https://play.app.goo.gl/?link=https://play.google.com/store/apps/details?id=com.deriv.dp2p';
@@ -199,10 +198,9 @@ export default class GeneralStore extends BaseStore {
         // if (mobileOSDetect() === 'iOS') {
         //     window.location.href = 'http://itunes.apple.com/lb/app/truecaller-caller-id-number/id448142450?mt=8';
         // }
-    }
+    };
 
-    @action.bound
-    poiStatusText(status) {
+    poiStatusText = status => {
         switch (status) {
             case 'pending':
             case 'rejected':
@@ -215,7 +213,7 @@ export default class GeneralStore extends BaseStore {
             case 'verified':
                 return <Localize i18n_default_text='Identity verification is complete.' />;
         }
-    }
+    };
 
     @action.bound
     redirectTo(path_name, params = null) {
@@ -283,32 +281,16 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    setOrderId(order_id) {
-        this.order_id = order_id;
-
-        if (typeof this.props.setOrderId === 'function') {
-            this.props.setOrderId(order_id);
-        }
-    }
-
-    @action.bound
-    setOrderInformation(order_information) {
-        this.order_information = order_information;
-    }
-
-    @action.bound
     setOrderOffset(order_offset) {
         this.order_offset = order_offset;
     }
 
     @action.bound
     setOrderTableType(order_table_type) {
-        this.order_table_type = order_table_type;
-    }
+        const { order_store } = this.root_store;
 
-    @action.bound
-    setOrders(orders) {
-        this.orders = orders;
+        order_store.setIsLoading(true);
+        this.order_table_type = order_table_type;
     }
 
     @action.bound
@@ -317,16 +299,18 @@ export default class GeneralStore extends BaseStore {
             this.ws_subscriptions.order_list_subscription.unsubscribe();
             return;
         }
+
         const { p2p_order_list, p2p_order_info } = order_response;
+        const { order_store } = this.root_store;
 
         if (p2p_order_list) {
             const { list } = p2p_order_list;
             // it's an array of orders from p2p_order_list
-            this.handleNotifications(this.orders, list);
+            this.handleNotifications(order_store.orders, list);
         } else if (p2p_order_info) {
             // it's a single order from p2p_order_info
-            const idx_order_to_update = this.orders.findIndex(order => order.id === p2p_order_info.id);
-            const updated_orders = [...this.orders];
+            const idx_order_to_update = order_store.orders.findIndex(order => order.id === p2p_order_info.id);
+            const updated_orders = [...order_store.orders];
             // if it's a new order, add it to the top of the list
             if (idx_order_to_update < 0) {
                 updated_orders.unshift(p2p_order_info);
@@ -335,8 +319,8 @@ export default class GeneralStore extends BaseStore {
                 updated_orders[idx_order_to_update] = p2p_order_info;
             }
 
-            this.handleNotifications(this.orders, updated_orders);
-            this.root_store.order_store.syncOrder(p2p_order_info);
+            this.handleNotifications(order_store.orders, updated_orders);
+            order_store.syncOrder(p2p_order_info);
         }
     }
 
@@ -348,6 +332,11 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     setPoiStatus(poi_status) {
         this.poi_status = poi_status;
+    }
+
+    @action.bound
+    setShouldShowRealName(should_show_real_name) {
+        this.should_show_real_name = should_show_real_name;
     }
 
     @action.bound
@@ -375,6 +364,7 @@ export default class GeneralStore extends BaseStore {
             this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
             this.setIsListed(!!p2p_advertiser_info.is_listed);
             this.setNickname(p2p_advertiser_info.name);
+            this.setShouldShowRealName(!!p2p_advertiser_info.show_name);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
 
@@ -422,8 +412,7 @@ export default class GeneralStore extends BaseStore {
         }
     }
 
-    @action.bound
-    validatePopup(values) {
+    validatePopup = values => {
         const validations = {
             nickname: [
                 v => !!v,
@@ -466,5 +455,5 @@ export default class GeneralStore extends BaseStore {
         });
 
         return errors;
-    }
+    };
 }

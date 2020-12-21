@@ -11,10 +11,18 @@ import {
 } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import LoginPrompt from 'App/Components/Elements/login-prompt.jsx';
+import Page404 from 'Modules/Page404';
 import { connect } from 'Stores/connect';
 
 const RouteWithSubRoutes = route => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
+
+    const validateRoute = pathname => {
+        if (pathname.startsWith('/cashier')) {
+            return route.path === pathname || !!(route.routes && route.routes.find(r => pathname === r.path));
+        }
+        return true;
+    };
 
     const renderFactory = props => {
         let result = null;
@@ -38,11 +46,17 @@ const RouteWithSubRoutes = route => {
         } else {
             const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
             const has_default_subroute = !isEmptyObject(default_subroute);
-            const pathname = removeBranchName(location.pathname);
+            const pathname = removeBranchName(location.pathname).replace(/\/$/, '');
+            const is_valid_route = validateRoute(pathname);
+
             result = (
                 <React.Fragment>
                     {has_default_subroute && pathname === route.path && <Redirect to={default_subroute.path} />}
-                    <route.component {...props} routes={route.routes} passthrough={route.passthrough} />
+                    {is_valid_route ? (
+                        <route.component {...props} routes={route.routes} passthrough={route.passthrough} />
+                    ) : (
+                        <Page404 />
+                    )}
                 </React.Fragment>
             );
         }

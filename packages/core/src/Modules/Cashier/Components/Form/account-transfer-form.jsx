@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -36,7 +37,7 @@ const AccountOption = ({ account, idx }) => {
             )}
 
             <div className='account-transfer__currency-wrapper'>
-                <Text size='xxs' line_height='s' styles={{ color: 'inherit', fontWeight: 'inherit' }}>
+                <Text size='xxs' line_height='xs' styles={{ color: 'inherit', fontWeight: 'inherit' }}>
                     {account.is_mt ? account.mt_icon : getCurrencyName(account.text)}
                 </Text>
                 <Text size='xxxs' align='left' color='less-prominent'>
@@ -83,9 +84,6 @@ const AccountTransferNote = ({ currency, transfer_fee, minimum_fee }) => (
 
 let remaining_transfers, transfer_to_hint;
 
-let from_accounts = {};
-let to_accounts = {};
-
 let accounts_from = [];
 let mt_accounts_from = [];
 let accounts_to = [];
@@ -109,6 +107,9 @@ const AccountTransferForm = ({
     setIsTransferConfirm,
     error,
 }) => {
+    const [from_accounts, setFromAccounts] = React.useState({});
+    const [to_accounts, setToAccounts] = React.useState({});
+
     const validateAmount = amount => {
         if (!amount) return localize('This field is required.');
 
@@ -127,7 +128,7 @@ const AccountTransferForm = ({
 
     React.useEffect(() => {
         onMount();
-    }, []);
+    }, [onMount]);
 
     React.useEffect(() => {
         accounts_from = [];
@@ -164,15 +165,15 @@ const AccountTransferForm = ({
             }
         });
 
-        from_accounts = {
+        setFromAccounts({
             ...(mt_accounts_from.length && { [localize('DMT5 accounts')]: mt_accounts_from }),
             ...(accounts_from.length && { [localize('Deriv accounts')]: accounts_from }),
-        };
+        });
 
-        to_accounts = {
+        setToAccounts({
             ...(mt_accounts_to.length && { [localize('DMT5 accounts')]: mt_accounts_to }),
             ...(accounts_to.length && { [localize('Deriv accounts')]: accounts_to }),
-        };
+        });
     }, [accounts_list, selected_to, selected_from]);
 
     React.useEffect(() => {
@@ -186,7 +187,7 @@ const AccountTransferForm = ({
                 />,
             ]);
         }
-    }, [transfer_fee, selected_from, minimum_fee]);
+    }, [transfer_fee, selected_from, minimum_fee, from_accounts]);
 
     React.useEffect(() => {
         const { daily_transfers } = account_limits;
@@ -209,7 +210,7 @@ const AccountTransferForm = ({
             </h2>
             <Formik
                 initialValues={{
-                    amount: account_transfer_amount,
+                    amount: account_transfer_amount || '',
                 }}
                 onSubmit={() => {
                     setIsTransferConfirm(true);
@@ -220,14 +221,13 @@ const AccountTransferForm = ({
                     isSubmitting,
                     isValid,
                     touched,
-                    validateField,
                     setFieldValue,
                     setFieldTouched,
                     setFieldError,
                     handleChange,
                 }) => (
                     <React.Fragment>
-                        {isSubmitting ? (
+                        {isSubmitting || accounts_list.length === 0 ? (
                             <div className='cashier__loader-wrapper'>
                                 <Loading className='cashier__loader' />
                             </div>
@@ -251,7 +251,6 @@ const AccountTransferForm = ({
                                             onChange={e => {
                                                 onChangeTransferFrom(e);
                                                 handleChange(e);
-                                                validateField('amount');
                                                 setFieldValue('amount', '');
                                                 setFieldError('amount', '');
                                                 setFieldTouched('amount', false);
@@ -271,7 +270,6 @@ const AccountTransferForm = ({
                                             onChange={e => {
                                                 onChangeTransferFrom(e);
                                                 handleChange(e);
-                                                validateField('amount');
                                                 setFieldValue('amount', '');
                                                 setFieldError('amount', '');
                                                 setFieldTouched('amount', false);
@@ -319,9 +317,9 @@ const AccountTransferForm = ({
                                             {...field}
                                             onChange={e => {
                                                 setErrorMessage('');
-                                                setFieldTouched('amount', true);
                                                 handleChange(e);
                                                 setAccountTransferAmount(e.target.value);
+                                                setFieldTouched('amount', true, false);
                                             }}
                                             className='cashier__input dc-input--no-placeholder account-transfer__input'
                                             type='text'
@@ -419,8 +417,8 @@ AccountTransferForm.propTypes = {
 
 export default connect(({ client, modules }) => ({
     account_limits: client.account_limits,
-    onMount: client.getLimits,
     account_transfer_amount: modules.cashier.config.account_transfer.account_transfer_amount,
+    onMount: client.getLimits,
     accounts_list: modules.cashier.config.account_transfer.accounts_list,
     minimum_fee: modules.cashier.config.account_transfer.minimum_fee,
     onChangeTransferFrom: modules.cashier.onChangeTransferFrom,

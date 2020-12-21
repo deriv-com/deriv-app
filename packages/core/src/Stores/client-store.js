@@ -3,7 +3,6 @@ import { action, computed, observable, reaction, runInAction, toJS, when } from 
 import moment from 'moment';
 import {
     redirectToLogin,
-    getMT5AccountType,
     getPropertyValue,
     getUrlSmartTrader,
     isDesktopOs,
@@ -57,10 +56,12 @@ export default class ClientStore extends BaseStore {
     @observable device_data = {};
     @observable is_logging_in = false;
     @observable has_logged_out = false;
-    @observable landing_companies = {
-        financial_company: {},
-        gaming_company: {},
-    };
+    // this will store the landing_company API response, including
+    // financial_company: {}
+    // gaming_company: {}
+    // mt_financial_company: {}
+    // mt_gaming_company: {}
+    @observable landing_companies = {};
 
     @observable upgradeable_landing_companies = [];
     @observable mt5_login_list = [];
@@ -214,9 +215,14 @@ export default class ClientStore extends BaseStore {
         if (!this.landing_companies) return [];
         if (this.root_store.ui && this.root_store.ui.real_account_signup_target) {
             const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
-            if (this.landing_companies[`${target}_company`]) {
-                return this.landing_companies[`${target}_company`].legal_allowed_currencies;
+            if (this.landing_companies[`${target}_company`] && this.current_landing_company && this.accounts) {
+                if (this.accounts[this.loginid] && !this.accounts[this.loginid].currency) {
+                    return this.landing_companies[`${target}_company`].legal_allowed_currencies.filter(currency =>
+                        this.current_landing_company.legal_allowed_currencies.includes(currency)
+                    );
+                }
             }
+            return this.landing_companies[`${target}_company`].legal_allowed_currencies;
         }
         if (this.landing_companies.gaming_company) {
             return this.landing_companies.gaming_company.legal_allowed_currencies;
@@ -531,7 +537,9 @@ export default class ClientStore extends BaseStore {
     }
 
     isMT5Allowed = landing_companies => {
-        if (!landing_companies || !Object.keys(landing_companies).length) return false;
+        // default allowing mt5 to true before landing_companies gets populated
+        // since most clients are allowed to use mt5
+        if (!landing_companies || !Object.keys(landing_companies).length) return true;
 
         return 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
     };
@@ -687,6 +695,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setWebsiteStatus(response) {
         this.website_status = response.website_status;
+        this.responseWebsiteStatus(response);
         setCurrencies(this.website_status);
     }
 
@@ -850,7 +859,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_website_status_ready() {
-        return this.website_status && this.website_status.site_status === 'up';
+        return this.website_status && !BinarySocket.getAvailability().is_down;
     }
 
     isAccountOfType = type => {
@@ -1725,13 +1734,10 @@ export default class ClientStore extends BaseStore {
         }, 60000);
 
         if (!response.error) {
-            this.mt5_login_list = response.mt5_login_list
-                .filter(account => !/inactive/.test(account.group)) // remove disabled mt5 accounts
-                .map(account => ({
-                    ...account,
-                    group: getMT5AccountType(account.group),
-                    display_login: account.login.replace(/^(MT[DR]?)/i, ''),
-                }));
+            this.mt5_login_list = response.mt5_login_list.map(account => ({
+                ...account,
+                display_login: account.login.replace(/^(MT[DR]?)/i, ''),
+            }));
         } else {
             this.mt5_login_list_error = response.error;
         }

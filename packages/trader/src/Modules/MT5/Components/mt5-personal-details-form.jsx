@@ -195,7 +195,7 @@ const MT5PersonalDetailsForm = ({
                                 max_autoheight_offset='179px'
                                 is_disabled={isDesktop()}
                             >
-                                <Text as='p' align='center' className='details-form__description'>
+                                <Text as='p' size='xxxs' align='center' className='details-form__description'>
                                     <Localize
                                         i18n_default_text={
                                             'Any information you provide is confidential and will be used for verification purposes only.'

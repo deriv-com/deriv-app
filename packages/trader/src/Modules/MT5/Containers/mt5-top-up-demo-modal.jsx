@@ -39,7 +39,13 @@ const Mt5TopUpDemoModal = ({
                 width='384px'
             >
                 <div className='dc-modal__container_top-up-virtual__body'>
-                    <Text as='p' align='center' size='xxs' className='dc-modal__container_top-up-virtual__description'>
+                    <Text
+                        as='p'
+                        align='center'
+                        size='xxs'
+                        line_height='xs'
+                        className='dc-modal__container_top-up-virtual__description'
+                    >
                         <Localize
                             i18n_default_text='You can top up your demo account with an additional <0></0> if your balance is <1></1> or less.'
                             components={[

@@ -81,6 +81,12 @@ class MT5ResetPasswordModal extends React.Component {
         return errors;
     };
 
+    componentDidMount() {
+        if (!this.props.is_logged_in) {
+            this.props.setMt5PasswordResetModal(false);
+        }
+    }
+
     resetPassword = (values, password_type, login, actions) => {
         const { setSubmitting } = actions;
         setSubmitting(true);

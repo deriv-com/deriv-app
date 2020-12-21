@@ -131,6 +131,7 @@ Tabs.propTypes = {
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
     className: PropTypes.string,
     fit_content: PropTypes.bool,
+    is_100vw: PropTypes.bool,
     header_fit_content: PropTypes.bool,
     history: PropTypes.object,
     onTabItemClick: PropTypes.func,

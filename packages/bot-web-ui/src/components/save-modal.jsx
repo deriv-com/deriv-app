@@ -10,6 +10,7 @@ import {
     Input,
     MobileFullPageModal,
     ThemedScrollbars,
+    Text,
 } from '@deriv/components';
 import { Formik, Form, Field } from 'formik';
 import { localize } from '@deriv/translations';
@@ -225,18 +226,26 @@ const IconRadio = ({ icon, text, google_drive_connected, onDriveConnect }) => {
                             icon.props.className
                         ),
                     })}
-                <p
-                    className={classNames('save-type__radio-text', {
-                        'save-type__radio-text--disabled': is_drive_radio && !google_drive_connected,
-                    })}
+                <Text
+                    as='p'
+                    color={is_drive_radio && !google_drive_connected ? 'disabled' : 'prominent'}
+                    line_height='s'
+                    size='xxs'
+                    className='save-type__radio-text'
                 >
                     {localize(text)}
-                </p>
+                </Text>
             </div>
             {is_drive_radio && (
-                <p className='save-type__drive-status' onClick={onDriveConnect}>
+                <Text
+                    as='p'
+                    weight='bold'
+                    styles={{ color: 'var(--brand-red-coral)' }}
+                    className='save-type__drive-status'
+                    onClick={onDriveConnect}
+                >
                     {localize(google_drive_connected ? localize('Disconnect') : localize('Connect'))}
-                </p>
+                </Text>
             )}
         </div>
     );

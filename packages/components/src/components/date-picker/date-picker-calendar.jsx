@@ -7,7 +7,7 @@ import Calendar from '../calendar';
 import { useBlockScroll } from '../../hooks';
 
 const DatePickerCalendar = React.forwardRef(
-    ({ alignment, is_datepicker_visible, parent_ref, portal_id, style, placement, ...props }, ref) => {
+    ({ alignment, calendar_el_ref, is_datepicker_visible, parent_ref, portal_id, style, placement, ...props }, ref) => {
         const css_transition_classnames = {
             enter: classNames('dc-datepicker__picker--enter', {
                 [`dc-datepicker__picker--${alignment}-enter`]: alignment,
@@ -43,7 +43,7 @@ const DatePickerCalendar = React.forwardRef(
                               }
                     }
                 >
-                    <Calendar forward_ref={ref} {...props} />
+                    <Calendar ref={ref} calendar_el_ref={calendar_el_ref} {...props} />
                 </div>
             </CSSTransition>
         );

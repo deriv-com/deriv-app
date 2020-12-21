@@ -19,8 +19,8 @@ const Checkbox = ({
     const input_ref = React.useRef();
 
     React.useEffect(() => {
-        setChecked(value);
-    }, [value]);
+        setChecked(defaultChecked || value);
+    }, [value, defaultChecked]);
 
     const onInputChange = e => {
         e.persist();

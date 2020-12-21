@@ -15,6 +15,7 @@ const FormAds = () => {
     const { general_store, my_ads_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => {
         my_ads_store.setApiErrorMessage('');
         my_ads_store.getAdvertiserInfo();
@@ -115,9 +116,6 @@ const FormAds = () => {
                                                         type='text'
                                                         error={touched.price_rate && errors.price_rate}
                                                         label={localize('Fixed rate (1 {{currency}})', {
-                                                            currency,
-                                                        })}
-                                                        hint={localize('Per 1 {{currency}}', {
                                                             currency,
                                                         })}
                                                         className='p2p-my-ads__form-field'

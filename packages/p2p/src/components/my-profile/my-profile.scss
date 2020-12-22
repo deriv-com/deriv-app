@@ -1,4 +1,6 @@
 .my-profile {
+    height: 100%;
+
     @include mobile {
         overflow-y: auto;
     }

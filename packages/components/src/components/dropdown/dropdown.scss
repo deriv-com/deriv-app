@@ -56,7 +56,8 @@
         &-filter {
             width: 3rem;
             @include mobile {
-                height: 4em;
+                width: 4rem;
+                height: 4rem;
             }
             &-text {
                 padding-right: 0 !important;
@@ -315,6 +316,8 @@
         width: 3rem;
 
         @include mobile {
+            min-width: 4rem;
+            width: 4rem;
             height: 4rem;
         }
     }

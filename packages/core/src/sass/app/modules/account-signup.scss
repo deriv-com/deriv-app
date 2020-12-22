@@ -40,7 +40,7 @@
         }
         .initial-loader__barspinner {
             @include mobile {
-                margin: 0rem;
+                margin: 0;
             }
         }
     }

@@ -211,7 +211,7 @@ Flyout.propTypes = {
     setActiveHelper: PropTypes.func,
     search_term: PropTypes.string,
     setHelpContent: PropTypes.func,
-    selected_category: PropTypes.string,
+    selected_category: PropTypes.object,
 };
 
 export default connect(({ flyout, flyout_help, gtm }) => ({

@@ -31,33 +31,6 @@ const getSymbol = (target_symbol, trading_times) => {
         }
     }
 };
-// eslint-disable-next-line consistent-return
-const whenMarketOpens = async (days_offset, target_symbol) => {
-    // days_offset is 0 for today, 1 for tomorrow, etc.
-    if (days_offset > days_to_check_before_exit) return {};
-    let remaining_time_to_open;
-    const target_date = moment(new Date()).add(days_offset, 'days');
-    const api_res = await getTradingTimes(target_date.format('YYYY-MM-DD'));
-    if (!api_res.api_initial_load_error) {
-        const { times } = getSymbol(target_symbol, api_res.trading_times);
-        const { open, close } = times;
-        const is_closed_all_day = open?.length === 1 && open[0] === '--' && close[0] === '--';
-        if (is_closed_all_day) {
-            // check tomorrow trading times
-            return whenMarketOpens(days_offset + 1, target_symbol);
-        }
-        const date_str = target_date.toISOString().substring(0, 11);
-        const getUTCDate = hour => new Date(`${date_str}${hour}Z`);
-        for (let i = 0; i < open?.length; i++) {
-            const diff = +getUTCDate(open[i]) - +new Date();
-            if (diff > 0) {
-                remaining_time_to_open = +getUTCDate(open[i]);
-                return { days_offset, opening_time: open[i], remaining_time_to_open };
-            }
-        }
-        return whenMarketOpens(days_offset + 1, target_symbol);
-    }
-};
 
 const calculateTimeLeft = remaining_time_to_open => {
     const difference = remaining_time_to_open - +new Date();
@@ -82,13 +55,38 @@ const MarketCountdownTimer = ({
     const [time_left, setTimeLeft] = React.useState(calculateTimeLeft(when_market_opens?.remaining_time_to_open));
 
     React.useEffect(() => {
-        async function fetchTradingTimes() {
-            const result = await whenMarketOpens(0, symbol);
-            if (isMounted()) setWhenMarketOpens(result);
-        }
+        // eslint-disable-next-line consistent-return
+        const whenMarketOpens = async (days_offset, target_symbol) => {
+            // days_offset is 0 for today, 1 for tomorrow, etc.
+            if (days_offset > days_to_check_before_exit) return {};
+            let remaining_time_to_open;
+            const target_date = moment(new Date()).add(days_offset, 'days');
+            const api_res = await getTradingTimes(target_date.format('YYYY-MM-DD'));
+            if (!api_res.api_initial_load_error) {
+                const { times } = getSymbol(target_symbol, api_res.trading_times);
+                const { open, close } = times;
+                const is_closed_all_day = open?.length === 1 && open[0] === '--' && close[0] === '--';
+                if (is_closed_all_day) {
+                    // check tomorrow trading times
+                    return whenMarketOpens(days_offset + 1, target_symbol);
+                }
+                const date_str = target_date.toISOString().substring(0, 11);
+                const getUTCDate = hour => new Date(`${date_str}${hour}Z`);
+                for (let i = 0; i < open?.length; i++) {
+                    const diff = +getUTCDate(open[i]) - +new Date();
+                    if (diff > 0) {
+                        remaining_time_to_open = +getUTCDate(open[i]);
+                        if (isMounted() && target_symbol === symbol) {
+                            return setWhenMarketOpens({ days_offset, opening_time: open[i], remaining_time_to_open });
+                        }
+                    }
+                }
+                whenMarketOpens(days_offset + 1, target_symbol);
+            }
+        };
 
-        fetchTradingTimes();
-    }, [symbol]);
+        whenMarketOpens(0, symbol);
+    }, [isMounted, symbol]);
 
     React.useEffect(() => {
         let timer;

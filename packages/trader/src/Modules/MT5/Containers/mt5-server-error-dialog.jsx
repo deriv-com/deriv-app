@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Dialog } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { getStaticUrl } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -13,7 +13,6 @@ const MT5ServerErrorDialog = ({
     enableApp,
     error_message,
     has_mt5_error,
-    history,
     error_type,
     createMT5Account,
     failed_password_attempts,
@@ -29,7 +28,7 @@ const MT5ServerErrorDialog = ({
 
     const handleConfirm = () => {
         if (is_password_reset) {
-            history.push(routes.deriv_password);
+            location.href = getStaticUrl('/reset-password');
         }
         clearMt5Error();
     };

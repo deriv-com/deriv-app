@@ -2,7 +2,6 @@ import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { NavLink } from 'react-router-dom';
 import {
     DesktopWrapper,
     FormSubmitButton,
@@ -13,9 +12,8 @@ import {
     PasswordInput,
     PasswordMeter,
     Text,
-    ButtonLink,
 } from '@deriv/components';
-import { isMobile, routes, validLength, validPassword, getErrorMessages } from '@deriv/shared';
+import { isMobile, routes, validLength, validPassword, getErrorMessages, getStaticUrl } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import 'Sass/app/modules/mt5/mt5.scss';
@@ -87,10 +85,11 @@ const MT5PasswordForm = props => (
                                                     i18n_default_text='Please confirm your Deriv/Binary.com password to create a DMT5/an MT5 account. <0 /> If you’ve forgotten your password, click <1>Reset password</1>.'
                                                     components={[
                                                         <br key={0} />,
-                                                        <NavLink
+                                                        <a
                                                             key={1}
-                                                            to={routes.deriv_password}
+                                                            href={getStaticUrl('/reset-password')}
                                                             className='dc-modal__container_mt5-password-modal__password-hint'
+                                                            target='_blank'
                                                         />,
                                                     ]}
                                                 />
@@ -196,6 +195,21 @@ const MT5PasswordModal = ({
     const should_show_success = !has_mt5_error && is_mt5_success_dialog_enabled;
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
 
+    const password_reset_body = (
+        <div className='dc-modal__container_mt5-reset-password-modal__body'>
+            <Icon icon='IcMt5OnePassword' size='128' />
+            <Text as='p' align='center' size='xxs'>
+                <Localize i18n_default_text='We’ve upgraded our system to support a single, more secure password across all of Deriv/Binary.com. Once you’ve set a new password, you can use it to log into all your Deriv/Binary.com, and DMT5/MT5 accounts.' />
+            </Text>
+            <a
+                href={getStaticUrl('reset-password')}
+                target='_blank'
+                className='dc-btn dc-btn--primary dc-btn__large dc-modal__container_mt5-reset-password-modal__button'
+            >
+                <Localize i18n_default_text='Reset password' />
+            </a>
+        </div>
+    );
     if (account_status.status.includes('password_reset_required')) {
         return (
             <React.Fragment>
@@ -210,19 +224,7 @@ const MT5PasswordModal = ({
                             return <Localize i18n_default_text='All you’ll need from now is one password' />;
                         }}
                     >
-                        <div className='dc-modal__container_mt5-reset-password-modal__body'>
-                            <Icon icon='IcMt5OnePassword' size='128' />
-                            <Text as='p' align='center' size='xxs'>
-                                <Localize i18n_default_text='We’ve upgraded our system to support a single, more secure password across all of Deriv/Binary.com. Once you’ve set a new password, you can use it to log into all your Deriv/Binary.com, and DMT5/MT5 accounts.' />
-                            </Text>
-                            <ButtonLink
-                                to={routes.deriv_password}
-                                size='large'
-                                className='dc-modal__container_mt5-reset-password-modal__button'
-                            >
-                                <Localize i18n_default_text='Reset password' />
-                            </ButtonLink>
-                        </div>
+                        {password_reset_body}
                     </Modal>
                 </DesktopWrapper>
                 <MobileWrapper>
@@ -233,7 +235,7 @@ const MT5PasswordModal = ({
                         onClose={closeModal}
                         wrapper_classname='mt5-password-modal'
                     >
-                        account reset required
+                        {password_reset_body}
                     </MobileDialog>
                 </MobileWrapper>
             </React.Fragment>

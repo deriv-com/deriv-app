@@ -58,20 +58,6 @@
         &-button {
             margin-left: 0.8rem;
         }
-        &-error {
-            display: flex;
-            align-items: center;
-            margin-right: auto;
-            font-size: var(--text-size-xxs);
-            font-weight: bold;
-            flex: 1;
-            color: var(--text-prominent);
-            padding-left: 2.4rem;
-
-            p {
-                padding-left: 1.6rem;
-            }
-        }
         &-footer {
             display: flex;
             align-items: center;

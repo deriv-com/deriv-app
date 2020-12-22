@@ -116,7 +116,7 @@ class AccountWizard extends React.Component {
     }
 
     componentWillUnmount() {
-        this.cancel?.();
+        this.cancel();
     }
 
     fetchFromStorage = () => {

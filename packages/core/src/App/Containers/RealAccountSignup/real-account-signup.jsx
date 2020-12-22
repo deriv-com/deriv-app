@@ -56,6 +56,8 @@ const RealAccountSignup = ({
     currency,
     has_real_account,
     history,
+    is_belgium_residence,
+    is_isle_of_man_residence,
     is_eu,
     is_logged_in,
     is_real_acc_signup_on,
@@ -308,8 +310,8 @@ const RealAccountSignup = ({
                                 <Title
                                     real_account_signup_target={real_account_signup_target}
                                     currency={currency}
-                                    is_isle_of_man_residence
-                                    is_belgium_residence
+                                    is_isle_of_man_residence={is_isle_of_man_residence}
+                                    is_belgium_residence={is_belgium_residence}
                                 />
                             );
                         }
@@ -334,8 +336,8 @@ const RealAccountSignup = ({
                                 <Title
                                     real_account_signup_target={real_account_signup_target}
                                     currency={currency}
-                                    is_isle_of_man_residence
-                                    is_belgium_residence
+                                    is_isle_of_man_residence={is_isle_of_man_residence}
+                                    is_belgium_residence={is_belgium_residence}
                                 />
                             );
                         }

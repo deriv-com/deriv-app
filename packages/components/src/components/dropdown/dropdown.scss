@@ -330,4 +330,7 @@
 .dc-list-filter {
     width: 100px !important;
     left: -70px;
+    @include mobile {
+        left: -60px;
+    }
 }

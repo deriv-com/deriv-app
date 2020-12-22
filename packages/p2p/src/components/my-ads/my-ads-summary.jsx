@@ -17,12 +17,12 @@ const AdSummary = observer(({ offer_amount, price_rate, type }) => {
 
     if (offer_amount) {
         const components = [<span key={0} className='p2p-my-ads__form-summary--bold' />];
-        const values = { target_amount: display_offer_amount, target_currency: local_currency_config.currency };
+        const values = { target_amount: display_offer_amount, target_currency: currency };
 
         if (price_rate) {
             Object.assign(values, {
                 local_amount: display_total,
-                local_currency: currency,
+                local_currency: local_currency_config.currency,
                 price_rate: display_price_rate,
             });
 

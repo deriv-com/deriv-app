@@ -149,7 +149,9 @@ export default class BuySellStore {
 
                         this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
 
-                        const new_items = [].concat(this.items).concat(list);
+                        const new_items = []
+                            .concat(this.items.filter(item => item.id !== 'WATCH_THIS_SPACE'))
+                            .concat(list);
 
                         if (new_items.length > 0 && isMobile()) {
                             // This allows for the sliding animation on the Buy/Sell toggle as it pushes

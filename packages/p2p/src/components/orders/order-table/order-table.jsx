@@ -8,7 +8,7 @@ import { order_list } from 'Constants/order-list';
 import { useStores } from 'Stores';
 import OrderTableContent from './order-table-content.jsx';
 
-const OrderTable = observer(({ showDetails }) => {
+const OrderTable = ({ showDetails }) => {
     const { general_store } = useStores();
 
     const orders_list_filters = [
@@ -43,10 +43,10 @@ const OrderTable = observer(({ showDetails }) => {
             <OrderTableContent showDetails={showDetails} is_active={is_active_tab} />
         </React.Fragment>
     );
-});
+};
 
 OrderTable.propTypes = {
     showDetails: PropTypes.func,
 };
 
-export default OrderTable;
+export default observer(OrderTable);

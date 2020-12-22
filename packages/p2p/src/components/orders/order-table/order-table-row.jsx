@@ -30,7 +30,7 @@ const Title = ({
     );
 };
 
-const OrderRow = observer(({ style, row: order }) => {
+const OrderRow = ({ style, row: order }) => {
     const getTimeLeft = time => {
         const distance = ServerTime.getDistanceToServerTime(time);
         return {
@@ -93,96 +93,94 @@ const OrderRow = observer(({ style, row: order }) => {
     const is_buy_order_type_for_user = (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad);
     const order_type = is_buy_order_type_for_user ? localize('Buy') : localize('Sell');
 
-    return (
-        <React.Fragment>
-            {isMobile() ? (
-                <div onClick={() => order_store.setQueryDetails(order)}>
-                    <Table.Row
-                        style={style}
-                        className={classNames('orders__mobile', {
-                            'orders__table-row--attention': !isOrderSeen(id),
+    if (isMobile()) {
+        return (
+            <div onClick={() => order_store.setQueryDetails(order)}>
+                <Table.Row
+                    style={style}
+                    className={classNames('orders__mobile', {
+                        'orders__table-row--attention': !isOrderSeen(id),
+                    })}
+                >
+                    <Table.Cell
+                        className={classNames('orders__mobile-header', {
+                            'orders__table-grid--active': general_store.is_active_tab,
                         })}
                     >
-                        <Table.Cell
-                            className={classNames('orders__mobile-header', {
-                                'orders__table-grid--active': general_store.is_active_tab,
+                        <div
+                            className={classNames('orders__mobile-status', {
+                                'orders__table-status--danger': should_highlight_danger,
+                                'orders__table-status--alert': should_highlight_alert,
+                                'orders__table-status--success': should_highlight_success,
+                                'orders__table-status--disabled': should_highlight_disabled,
                             })}
                         >
-                            <div
-                                className={classNames('orders__mobile-status', {
-                                    'orders__table-status--danger': should_highlight_danger,
-                                    'orders__table-status--alert': should_highlight_alert,
-                                    'orders__table-status--success': should_highlight_success,
-                                    'orders__table-status--disabled': should_highlight_disabled,
-                                })}
-                            >
-                                {status_string}
-                            </div>
-                        </Table.Cell>
-                        <Table.Cell className='orders__mobile-header-right'>
-                            {is_timer_visible && <div className='orders__mobile-time'>{remaining_time}</div>}
-                            <div className='orders__mobile-chat'>
-                                <Icon
-                                    icon='IcChat'
-                                    height={15}
-                                    width={16}
-                                    onClick={() => sendbird_store.setShouldShowChatModal(true)}
-                                />
-                            </div>
-                        </Table.Cell>
-                        <Table.Cell className='orders__mobile-title'>
-                            <Title
-                                is_buy_order_type_for_user={is_buy_order_type_for_user}
-                                offer_amount={offer_amount}
-                                order_purchase_datetime={order_purchase_datetime}
-                                order_type={order_type}
-                                transaction_amount={transaction_amount}
+                            {status_string}
+                        </div>
+                    </Table.Cell>
+                    <Table.Cell className='orders__mobile-header-right'>
+                        {is_timer_visible && <div className='orders__mobile-time'>{remaining_time}</div>}
+                        <div className='orders__mobile-chat'>
+                            <Icon
+                                icon='IcChat'
+                                height={15}
+                                width={16}
+                                onClick={() => sendbird_store.setShouldShowChatModal(true)}
                             />
-                        </Table.Cell>
-                    </Table.Row>
-                </div>
-            ) : (
-                <div onClick={() => order_store.setQueryDetails(order)}>
-                    <Table.Row
-                        className={classNames('orders__table-row orders__table-grid', {
-                            'orders__table-grid--active': general_store.is_active_tab,
-                            'orders__table-row--attention': !isOrderSeen(id),
+                        </div>
+                    </Table.Cell>
+                    <Table.Cell className='orders__mobile-title'>
+                        <Title
+                            is_buy_order_type_for_user={is_buy_order_type_for_user}
+                            offer_amount={offer_amount}
+                            order_purchase_datetime={order_purchase_datetime}
+                            order_type={order_type}
+                            transaction_amount={transaction_amount}
+                        />
+                    </Table.Cell>
+                </Table.Row>
+            </div>
+        );
+    }
+    return (
+        <div onClick={() => order_store.setQueryDetails(order)}>
+            <Table.Row
+                className={classNames('orders__table-row orders__table-grid', {
+                    'orders__table-grid--active': general_store.is_active_tab,
+                    'orders__table-row--attention': !isOrderSeen(id),
+                })}
+            >
+                <Table.Cell>{order_type}</Table.Cell>
+                <Table.Cell>{id}</Table.Cell>
+                <Table.Cell>{other_user_details.name}</Table.Cell>
+                <Table.Cell>
+                    <div
+                        className={classNames('orders__table-status', {
+                            'orders__table-status--danger': should_highlight_danger,
+                            'orders__table-status--alert': should_highlight_alert,
+                            'orders__table-status--success': should_highlight_success,
+                            'orders__table-status--disabled': should_highlight_disabled,
                         })}
                     >
-                        <Table.Cell>{order_type}</Table.Cell>
-                        <Table.Cell>{id}</Table.Cell>
-                        <Table.Cell>{other_user_details.name}</Table.Cell>
-                        <Table.Cell>
-                            <div
-                                className={classNames('orders__table-status', {
-                                    'orders__table-status--danger': should_highlight_danger,
-                                    'orders__table-status--alert': should_highlight_alert,
-                                    'orders__table-status--success': should_highlight_success,
-                                    'orders__table-status--disabled': should_highlight_disabled,
-                                })}
-                            >
-                                {status_string}
-                            </div>
-                        </Table.Cell>
-                        <Table.Cell>{is_buy_order_type_for_user ? transaction_amount : offer_amount}</Table.Cell>
-                        <Table.Cell>{is_buy_order_type_for_user ? offer_amount : transaction_amount}</Table.Cell>
-                        <Table.Cell>
-                            {general_store.is_active_tab ? (
-                                <div className='orders__table-time'>{remaining_time}</div>
-                            ) : (
-                                order_purchase_datetime
-                            )}
-                        </Table.Cell>
-                    </Table.Row>
-                </div>
-            )}
-        </React.Fragment>
+                        {status_string}
+                    </div>
+                </Table.Cell>
+                <Table.Cell>{is_buy_order_type_for_user ? transaction_amount : offer_amount}</Table.Cell>
+                <Table.Cell>{is_buy_order_type_for_user ? offer_amount : transaction_amount}</Table.Cell>
+                <Table.Cell>
+                    {general_store.is_active_tab ? (
+                        <div className='orders__table-time'>{remaining_time}</div>
+                    ) : (
+                        order_purchase_datetime
+                    )}
+                </Table.Cell>
+            </Table.Row>
+        </div>
     );
-});
+};
 
-OrderRow.displayName = 'OrderRow';
 OrderRow.propTypes = {
     order: PropTypes.object,
 };
 
-export default OrderRow;
+export default observer(OrderRow);

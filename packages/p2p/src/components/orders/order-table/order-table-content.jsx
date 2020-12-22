@@ -12,7 +12,14 @@ import OrderTableHeader from 'Components/orders/order-table/order-table-header.j
 import { useStores } from 'Stores';
 import { createExtendedOrderDetails } from 'Utils/orders';
 
-const OrderTableContent = observer(() => {
+const ContentWrapper = ({ children }) => {
+    if (isMobile()) {
+        return <Div100vhContainer height_offset='21rem'>{children}</Div100vhContainer>;
+    }
+    return <OrderTableHeader>{children}</OrderTableHeader>;
+};
+
+const OrderTableContent = () => {
     const { general_store, order_store } = useStores();
 
     React.useEffect(
@@ -46,32 +53,16 @@ const OrderTableContent = observer(() => {
 
         if (modified_list.length) {
             return (
-                <React.Fragment>
-                    {isMobile() ? (
-                        <Div100vhContainer height_offset='21rem'>
-                            <div className='orders__separator' />
-                            <InfiniteDataList
-                                data_list_className='orders__data-list'
-                                has_more_items_to_load={order_store.has_more_items_to_load}
-                                items={modified_list}
-                                keyMapperFn={item => item.id}
-                                loadMoreRowsFn={order_store.loadMoreOrders}
-                                rowRenderer={row_props => <OrderRow {...row_props} />}
-                            />
-                        </Div100vhContainer>
-                    ) : (
-                        <OrderTableHeader>
-                            <InfiniteDataList
-                                data_list_className='orders__data-list'
-                                has_more_items_to_load={order_store.has_more_items_to_load}
-                                items={modified_list}
-                                keyMapperFn={item => item.id}
-                                loadMoreRowsFn={order_store.loadMoreOrders}
-                                rowRenderer={row_props => <OrderRow {...row_props} />}
-                            />
-                        </OrderTableHeader>
-                    )}
-                </React.Fragment>
+                <ContentWrapper>
+                    <InfiniteDataList
+                        data_list_className='orders__data-list'
+                        has_more_items_to_load={order_store.has_more_items_to_load}
+                        items={modified_list}
+                        keyMapperFn={item => item.id}
+                        loadMoreRowsFn={order_store.loadMoreOrders}
+                        rowRenderer={row_props => <OrderRow {...row_props} />}
+                    />
+                </ContentWrapper>
             );
         }
     }
@@ -85,11 +76,11 @@ const OrderTableContent = observer(() => {
             )}
         </Empty>
     );
-});
+};
 
 OrderTableContent.propTypes = {
     is_active: PropTypes.bool,
     showDetails: PropTypes.func,
 };
 
-export default OrderTableContent;
+export default observer(OrderTableContent);

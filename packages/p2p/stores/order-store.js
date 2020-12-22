@@ -1,4 +1,4 @@
-import { cloneObject, isMobile } from '@deriv/shared';
+import { cloneObject } from '@deriv/shared';
 import { action, computed, observable, reaction } from 'mobx';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS, subscribeWS } from 'Utils/websocket';
@@ -23,7 +23,6 @@ export default class OrderStore {
     @observable order_rerender_timeout = null;
 
     interval;
-    item_height = isMobile() ? 115 : 72;
     order_info_subscription = {};
     previous_orders = [];
 

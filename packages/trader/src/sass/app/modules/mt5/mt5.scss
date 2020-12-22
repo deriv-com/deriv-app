@@ -38,6 +38,10 @@
         justify-content: flex-start;
         align-items: center;
     }
+    &__password-hint {
+        @include typeface(--small-left-bold-prominent);
+        text-decoration: none;
+    }
     .dc-modal-header {
         display: none;
     }

@@ -97,6 +97,7 @@
         }
         &--centered {
             align-self: center;
+            text-align: center;
         }
     }
     &__footer {
@@ -107,6 +108,9 @@
         @include mobile {
             flex-wrap: wrap;
             align-items: flex-start;
+        }
+        &--centered {
+            justify-content: center;
         }
     }
     &__button {

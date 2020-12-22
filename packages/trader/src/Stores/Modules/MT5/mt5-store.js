@@ -25,6 +25,9 @@ export default class MT5Store extends BaseStore {
 
     @observable current_account = undefined; // this is a tmp value, don't rely on it, unless you set it first.
 
+    @observable failed_password_attempts = 0;
+    @observable error_type = '';
+
     constructor({ root_store }) {
         super({ root_store });
     }
@@ -103,6 +106,7 @@ export default class MT5Store extends BaseStore {
 
     @action.bound
     createMT5Account({ category, type, set_password }) {
+        this.clearMt5Error();
         this.setAccountType({
             category,
             type,
@@ -202,7 +206,18 @@ export default class MT5Store extends BaseStore {
     @action.bound
     setError(state, obj) {
         this.has_mt5_error = state;
+        this.error_type = obj?.code ?? '';
+
+        if (this.error_type === 'PasswordError') {
+            this.incrementFailedPasswordAttempts();
+        }
+
         this.error_message = obj ? obj.message : '';
+    }
+
+    @action.bound
+    incrementFailedPasswordAttempts() {
+        this.failed_password_attempts += 1;
     }
 
     @action.bound

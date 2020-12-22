@@ -1,15 +1,29 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Formik } from 'formik';
-import { FormSubmitErrorMessage, Button, Loading, PasswordInput, PasswordMeter } from '@deriv/components';
+import { FormSubmitErrorMessage, Button, Loading, PasswordInput, PasswordMeter, Text, Icon } from '@deriv/components';
 import { withRouter } from 'react-router-dom';
 import { routes, isMobile, validPassword, validLength, getErrorMessages } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import FormSubHeader from 'Components/form-sub-header';
 import FormBody from 'Components/form-body';
 import FormFooter from 'Components/form-footer';
+
+const AlertBox = ({ is_dark_mode_on }) => (
+    <div className='account__alert-box'>
+        <Icon icon='IcWarning' size={30} height={16} />
+        <Text
+            as='p'
+            size='xxs'
+            color={is_dark_mode_on ? 'colored_background' : 'prominent'}
+            className='account__alert-box-text'
+        >
+            <Localize i18n_default_text='We’ve upgraded our system to support a single, more secure password across all of Deriv/Binary.com. Once you’ve set a new password, you can use it to log into all your Deriv/Binary.com, and DMT5/MT5 accounts.' />
+        </Text>
+    </div>
+);
 
 class ChangePasswordForm extends React.Component {
     state = {
@@ -97,39 +111,49 @@ class ChangePasswordForm extends React.Component {
                             ) : (
                                 <FormBody scroll_offset={isMobile() ? '200px' : '55px'}>
                                     <FormSubHeader title={localize('Change your Deriv password')} />
-                                    <fieldset className='account-form__fieldset'>
-                                        <PasswordInput
-                                            autoComplete='current-password'
-                                            label={localize('Current password')}
-                                            error={touched.old_password && errors.old_password}
-                                            name='old_password'
-                                            value={values.old_password}
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                        />
-                                    </fieldset>
-                                    <fieldset className='account-form__fieldset'>
-                                        <PasswordMeter
-                                            input={this.state.new_pw_input}
-                                            has_error={!!(touched.new_password && errors.new_password)}
-                                            custom_feedback_messages={getErrorMessages().password_warnings}
-                                        >
-                                            <PasswordInput
-                                                autoComplete='new-password'
-                                                label={localize('New password')}
-                                                error={touched.new_password && errors.new_password}
-                                                name='new_password'
-                                                value={values.new_password}
-                                                onBlur={handleBlur}
-                                                onChange={e => {
-                                                    const input = e.target;
-                                                    setFieldTouched('new_password', true);
-                                                    if (input) this.updateNewPassword(input.value);
-                                                    handleChange(e);
-                                                }}
-                                            />
-                                        </PasswordMeter>
-                                    </fieldset>
+                                    <div className='account-form__container'>
+                                        <div className='account-form__help-text'>
+                                            <Text as='p' size='xs'>
+                                                <Localize i18n_default_text='We recommend using a unique password — one that you don’t use for any other sites.' />
+                                            </Text>
+                                        </div>
+                                        <div>
+                                            <fieldset className='account-form__fieldset'>
+                                                <PasswordInput
+                                                    autoComplete='current-password'
+                                                    label={localize('Current password')}
+                                                    error={touched.old_password && errors.old_password}
+                                                    name='old_password'
+                                                    value={values.old_password}
+                                                    onBlur={handleBlur}
+                                                    onChange={handleChange}
+                                                />
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <PasswordMeter
+                                                    input={this.state.new_pw_input}
+                                                    has_error={!!(touched.new_password && errors.new_password)}
+                                                    custom_feedback_messages={getErrorMessages().password_warnings}
+                                                >
+                                                    <PasswordInput
+                                                        autoComplete='new-password'
+                                                        label={localize('New password')}
+                                                        error={touched.new_password && errors.new_password}
+                                                        name='new_password'
+                                                        value={values.new_password}
+                                                        onBlur={handleBlur}
+                                                        onChange={e => {
+                                                            const input = e.target;
+                                                            setFieldTouched('new_password', true);
+                                                            if (input) this.updateNewPassword(input.value);
+                                                            handleChange(e);
+                                                        }}
+                                                    />
+                                                </PasswordMeter>
+                                            </fieldset>
+                                            <AlertBox />
+                                        </div>
+                                    </div>
                                 </FormBody>
                             )}
                             <FormFooter>
@@ -178,7 +202,8 @@ class ChangePasswordForm extends React.Component {
 }
 
 // ChangePasswordForm.propTypes = {};
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
     logout: client.logout,
     email: client.email,
+    is_dark_mode_on: ui.is_dark_mode_on,
 }))(withRouter(ChangePasswordForm));

@@ -1171,6 +1171,19 @@
         }
     }
 }
+.dc-modal__container_mt5-reset-password-modal {
+    &__button {
+        margin-top: 2.4rem;
+        @include typeface(--paragraph-center-bold-active);
+    }
+    &__body {
+        padding: 2.4rem 2.4rem 4rem;
+        flex-direction: column;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
 .mt5-personal-details-form-error {
     @include typeface(--paragraph-left-normal-red);
     @include desktop {

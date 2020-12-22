@@ -29,7 +29,7 @@ const AdSummary = observer(({ offer_amount, price_rate, type }) => {
             if (type === buy_sell.BUY) {
                 return (
                     <Localize
-                        i18n_default_text="You're creating an ad to buy <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> ({{ price_rate }}/{{ target_currency }})"
+                        i18n_default_text="You're creating an ad to buy <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> ({{ price_rate }} {{local_currency}}/{{ target_currency }})"
                         components={components}
                         values={values}
                     />
@@ -38,7 +38,7 @@ const AdSummary = observer(({ offer_amount, price_rate, type }) => {
 
             return (
                 <Localize
-                    i18n_default_text="You're creating an ad to sell <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> ({{ price_rate }}/{{ target_currency }})"
+                    i18n_default_text="You're creating an ad to sell <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> ({{ price_rate }} {{local_currency}}/{{ target_currency }})"
                     components={components}
                     values={values}
                 />

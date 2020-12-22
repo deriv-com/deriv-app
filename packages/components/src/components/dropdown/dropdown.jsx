@@ -11,6 +11,7 @@ import DisplayText from './display-text.jsx';
 import { useBlockScroll, useOnClickOutside } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 import Icon from '../icon';
+import { connect } from 'Stores/connect';
 
 const DropdownList = React.forwardRef((props, list_ref) => {
     const {
@@ -180,6 +181,7 @@ const Dropdown = ({
     is_alignment_top,
     is_alignment_left,
     is_align_text_left,
+    is_dark_mode_on,
     is_large,
     is_nativepicker,
     is_nativepicker_visible,
@@ -374,7 +376,13 @@ const Dropdown = ({
                         id='dropdown-display'
                         ref={dropdown_ref}
                     >
-                        {is_filter && <Icon className='icon_filter' icon='IcFilter' size={16} />}
+                        {is_filter && (
+                            <Icon
+                                className='icon_filter'
+                                icon={is_dark_mode_on ? 'IcFilterDark' : 'IcFilter'}
+                                size={16}
+                            />
+                        )}
                         {!is_filter && (
                             <DisplayText
                                 className={classNames('dc-dropdown__display-text', {
@@ -448,6 +456,7 @@ Dropdown.propTypes = {
     has_symbol: PropTypes.bool,
     initial_offset: PropTypes.number,
     is_alignment_left: PropTypes.bool,
+    is_dark_mode_on: PropTypes.bool,
     is_large: PropTypes.bool,
     is_nativepicker: PropTypes.bool,
     is_nativepicker_visible: PropTypes.bool,
@@ -462,4 +471,6 @@ Dropdown.propTypes = {
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
-export default Dropdown;
+export default connect(({ ui }) => ({
+    is_dark_mode_on: ui.is_dark_mode_on,
+}))(Dropdown);

@@ -10,7 +10,7 @@ import { TableError } from 'Components/table/table-error.jsx';
 import { useStores } from 'Stores';
 import BuySellRow from './buy-sell-row.jsx';
 
-const BuySellRowRenderer = observer(row_props => {
+const BuySellRowRendererComponent = row_props => {
     const { buy_sell_store } = useStores();
 
     return (
@@ -21,25 +21,27 @@ const BuySellRowRenderer = observer(row_props => {
             showAdvertiserPage={buy_sell_store.showAdvertiserPage}
         />
     );
-});
+};
 
-BuySellRowRenderer.displayName = 'BuySellRowRenderer';
+const BuySellRowRenderer = observer(BuySellRowRendererComponent);
 
-const BuySellTable = observer(({ onScroll }) => {
+const BuySellTable = ({ onScroll }) => {
     const { buy_sell_store, general_store } = useStores();
 
-    React.useEffect(() => {
-        return reaction(
-            () => buy_sell_store.is_buy,
-            () => {
-                buy_sell_store.setItems([]);
-                buy_sell_store.setIsLoading(true);
-                buy_sell_store.loadMoreItems({ startIndex: 0 });
-            },
-            { fireImmediately: true }
-        );
+    React.useEffect(
+        () =>
+            reaction(
+                () => buy_sell_store.is_buy,
+                () => {
+                    buy_sell_store.setItems([]);
+                    buy_sell_store.setIsLoading(true);
+                    buy_sell_store.loadMoreItems({ startIndex: 0 });
+                },
+                { fireImmediately: true }
+            ),
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        []
+    );
 
     if (buy_sell_store.is_loading) {
         return <Loading is_fullscreen={false} />;
@@ -80,11 +82,11 @@ const BuySellTable = observer(({ onScroll }) => {
     }
 
     return <Empty className='buy-sell__empty' has_tabs icon='IcCashierNoAds' title={localize('No ads found')} />;
-});
+};
 
 BuySellTable.displayName = 'BuySellTable';
 BuySellTable.propTypes = {
     onScroll: PropTypes.func,
 };
 
-export default BuySellTable;
+export default observer(BuySellTable);

@@ -47,7 +47,7 @@ export default class BuySellStore {
 
     @computed
     get has_payment_info() {
-        return this.contact_info.length && this.payment_info.length       
+        return this.contact_info.length && this.payment_info.length;
     }
 
     @computed
@@ -146,16 +146,19 @@ export default class BuySellStore {
                     // due to quickly switching between Buy/Sell tabs.
                     if (response.echo_req.counterparty_type === counterparty_type) {
                         const { list } = response.p2p_advert_list;
+
                         this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
 
-                        if (isMobile() && list.length && this.items.length === 0) {
+                        const new_items = [].concat(this.items).concat(list);
+
+                        if (new_items.length > 0 && isMobile()) {
                             // This allows for the sliding animation on the Buy/Sell toggle as it pushes
                             // an empty item with an item that holds the same height of the toggle container.
                             // Also see: buy-sell-row.jsx
-                            this.setItems([{ id: 'WATCH_THIS_SPACE' }].concat(this.items).concat(list));
-                        } else {
-                            this.setItems(this.items.concat(list));
+                            new_items.unshift({ id: 'WATCH_THIS_SPACE' });
                         }
+
+                        this.setItems(new_items);
                     }
                 } else {
                     this.setApiErrorMessage(response.error.message);

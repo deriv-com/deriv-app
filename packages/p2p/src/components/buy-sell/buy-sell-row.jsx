@@ -9,7 +9,9 @@ import UserAvatar from 'Components/user/user-avatar';
 import { useStores } from 'Stores';
 import './buy-sell-row.scss';
 
-const BuySellRow = observer(({ row: advert }) => {
+const BuySellRow = ({ row: advert }) => {
+    const { buy_sell_store, general_store } = useStores();
+
     if (advert.id === 'WATCH_THIS_SPACE') {
         // This allows for the sliding animation on the Buy/Sell toggle as it pushes
         // an empty item with an item that holds the same height of the toggle container.
@@ -17,7 +19,6 @@ const BuySellRow = observer(({ row: advert }) => {
         return <div style={{ height: '77px' }} />;
     }
 
-    const { buy_sell_store, general_store } = useStores();
     const {
         account_currency,
         counterparty_type,
@@ -108,9 +109,8 @@ const BuySellRow = observer(({ row: advert }) => {
             )}
         </Table.Row>
     );
-});
+};
 
-BuySellRow.displayName = 'BuySellRow';
 BuySellRow.propTypes = {
     advert: PropTypes.object,
     is_buy: PropTypes.bool,
@@ -118,4 +118,4 @@ BuySellRow.propTypes = {
     style: PropTypes.object,
 };
 
-export default BuySellRow;
+export default observer(BuySellRow);

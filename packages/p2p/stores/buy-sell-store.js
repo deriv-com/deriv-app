@@ -69,6 +69,18 @@ export default class BuySellStore {
         return localize('Sell {{ account_currency }}', { account_currency: this.account_currency });
     }
 
+    @computed
+    get rendered_items() {
+        if (isMobile() && this.items.length > 0) {
+            // This allows for the sliding animation on the Buy/Sell toggle as it pushes
+            // an empty item with an item that holds the same height of the toggle container.
+            // Also see: buy-sell-row.jsx
+            return [{ id: 'WATCH_THIS_SPACE' }, ...this.items];
+        }
+
+        return this.items;
+    }
+
     @action.bound
     getAdvertiserInfo() {
         requestWS({
@@ -148,19 +160,7 @@ export default class BuySellStore {
                         const { list } = response.p2p_advert_list;
 
                         this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
-
-                        const new_items = []
-                            .concat(this.items.filter(item => item.id !== 'WATCH_THIS_SPACE'))
-                            .concat(list);
-
-                        if (new_items.length > 0 && isMobile()) {
-                            // This allows for the sliding animation on the Buy/Sell toggle as it pushes
-                            // an empty item with an item that holds the same height of the toggle container.
-                            // Also see: buy-sell-row.jsx
-                            new_items.unshift({ id: 'WATCH_THIS_SPACE' });
-                        }
-
-                        this.setItems(new_items);
+                        this.setItems([...this.items, ...list]);
                     }
                 } else {
                     this.setApiErrorMessage(response.error.message);

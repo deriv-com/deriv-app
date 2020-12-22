@@ -69,9 +69,10 @@ const BuySellTable = ({ onScroll }) => {
                 <Table.Body className='buy-sell__table-body'>
                     <InfiniteDataList
                         data_list_className='buy-sell__data-list'
-                        items={buy_sell_store.items}
+                        items={buy_sell_store.rendered_items}
                         rowRenderer={props => <BuySellRowRenderer {...props} />}
                         loadMoreRowsFn={buy_sell_store.loadMoreItems}
+                        has_filler
                         has_more_items_to_load={buy_sell_store.has_more_items_to_load}
                         keyMapperFn={item => item.id}
                         onScroll={onScroll}

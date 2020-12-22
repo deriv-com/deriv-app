@@ -53,6 +53,7 @@ class SelfExclusion extends React.Component {
 
     exclusion_fields_settings = {
         max_number: 9999999999999,
+        max_open_positions: 999999999,
         six_weeks: 60480, // in minutes
     };
 
@@ -105,6 +106,7 @@ class SelfExclusion extends React.Component {
         const errors = {};
         // Regex
         const max_number = this.exclusion_fields_settings.max_number;
+        const max_open_positions = this.exclusion_fields_settings.max_open_positions;
         const six_weeks = this.exclusion_fields_settings.six_weeks; // in minutes
 
         const more_than_zero_message = localize('Please input number greater than 0');
@@ -154,7 +156,7 @@ class SelfExclusion extends React.Component {
                     type: 'float',
                     decimals: getDecimalPlaces(currency),
                     min: is_eu ? getSmallestMinValue(getDecimalPlaces(currency)) : null,
-                    max: this.state.self_exclusions[item] || max_number,
+                    max: (is_eu && this.state.self_exclusions[item]) || max_number,
                 });
                 if (!is_ok) errors[item] = message;
             }
@@ -181,7 +183,7 @@ class SelfExclusion extends React.Component {
             const { is_ok, message } = validNumber(values.max_open_bets, {
                 type: 'integer',
                 min: is_eu ? 1 : null,
-                max: this.exclusion_limits.get_limits.open_positions,
+                max: (is_eu && this.exclusion_limits.get_limits.open_positions) || max_open_positions,
             });
             if (!is_ok) errors.max_open_bets = message;
         }
@@ -191,7 +193,7 @@ class SelfExclusion extends React.Component {
                 type: 'float',
                 decimals: getDecimalPlaces(currency),
                 min: is_eu ? getSmallestMinValue(getDecimalPlaces(currency)) : null,
-                max: this.exclusion_limits.get_limits.account_balance,
+                max: (is_eu && this.exclusion_limits.get_limits.account_balance) || max_number,
             });
             if (!is_ok) errors.max_balance = message;
         }
@@ -313,10 +315,10 @@ class SelfExclusion extends React.Component {
         const getLength = value =>
             value.toString().length + (isIntegerField(field) || decimals_length === 0 ? 0 : decimals_length + 1); // add 1 to allow typing dot
 
-        if (/max_open_bets/.test(field) && this.exclusion_limits.get_limits?.open_positions)
+        if (/max_open_bets/.test(field) && this.exclusion_limits.get_limits?.open_positions && !is_cr)
             return getLength(this.exclusion_limits.get_limits.open_positions);
 
-        if (/max_balance/.test(field) && this.exclusion_limits.get_limits?.account_balance)
+        if (/max_balance/.test(field) && this.exclusion_limits.get_limits?.account_balance && !is_cr)
             return getLength(this.exclusion_limits.get_limits.account_balance);
 
         if (!this.state.self_exclusions[field] || is_cr) {

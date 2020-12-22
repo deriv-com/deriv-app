@@ -1,17 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
-import { Dropdown, Loading, Icon, Input, Button, ThemedScrollbars } from '@deriv/components';
+import { Dropdown, Loading, Input, Button, ThemedScrollbars, Dialog } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import { useStores } from 'Stores';
+import { waitWS } from 'Utils/websocket';
 import AdSummary from './my-ads-summary.jsx';
 import { buy_sell } from '../../constants/buy-sell';
 
 const FormAds = observer(() => {
     const { general_store, my_ads_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
+    const [is_dialog_open, setDialogOpen] = React.useState();
+    const is_warning_visible = !!my_ads_store.api_error_message && is_dialog_open;
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => my_ads_store.getAdvertiserInfo(), []);
@@ -29,6 +32,13 @@ const FormAds = observer(() => {
         );
     }
 
+    const onSubmit = (values, props) => {
+        my_ads_store.handleSubmit(values, props);
+        waitWS('p2p_advert_create').then(() => {
+            setDialogOpen(true);
+        });
+    };
+
     return (
         <React.Fragment>
             <PageReturnComponent />
@@ -43,7 +53,7 @@ const FormAds = observer(() => {
                     price_rate: '',
                     type: 'buy',
                 }}
-                onSubmit={my_ads_store.handleSubmit}
+                onSubmit={onSubmit}
                 validate={my_ads_store.validateFormAds}
                 initialErrors={{
                     // Pass one error to ensure Post ad button is disabled initially.
@@ -226,12 +236,6 @@ const FormAds = observer(() => {
                                         )}
                                     </Field>
                                     <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
-                                        {my_ads_store.api_error_message && (
-                                            <div className='p2p-my-ads__form-error'>
-                                                <Icon icon='IcAlertDanger' />
-                                                <div>{my_ads_store.api_error_message}</div>
-                                            </div>
-                                        )}
                                         <Button
                                             className='p2p-my-ads__form-button'
                                             secondary
@@ -255,6 +259,15 @@ const FormAds = observer(() => {
                     );
                 }}
             </Formik>
+            <Dialog
+                title={localize('Something’s not right')}
+                is_visible={is_warning_visible}
+                confirm_button_text={localize('OK')}
+                onConfirm={() => setDialogOpen(false)}
+                is_mobile_full_width={false}
+            >
+                <div>{my_ads_store.api_error_message}</div>
+            </Dialog>
         </React.Fragment>
     );
 });

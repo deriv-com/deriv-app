@@ -1,4 +1,8 @@
 .orders {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
     &__empty {
         width: fit-content;
         margin: 0 auto;
@@ -12,11 +16,6 @@
         }
     }
     &__header {
-        background: var(--state-disabled);
-        padding: 0.4rem;
-        width: fit-content;
-        border-radius: 4px;
-
         &-filter {
             .dc-button-menu__wrapper {
                 button.dc-btn {
@@ -53,12 +52,20 @@
         }
     }
     &__table {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+
+        &-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
         &-row {
+            padding: 2.4rem;
             cursor: pointer;
 
-            & .dc-table__cell:first-child {
-                padding-left: 17px;
-            }
             &--attention {
                 background: var(--button-tertiary-hover);
             }
@@ -82,16 +89,16 @@
         }
         &-grid {
             // Sizes are different for inactive due to timeout being full time string.
-            grid-template-columns: 1fr 1.5fr 2fr 2.5fr 1.5fr 1.5fr 2fr;
+            grid-template-columns: 1.5fr 1.5fr 2fr 2.5fr 1.5fr 1.5fr 2fr;
 
             &--active {
-                grid-template-columns: 1fr 1.5fr 2fr 2.5fr 1.5fr 1.5fr 1.5fr;
+                grid-template-columns: 1.5fr 1.5fr 2fr 2.5fr 1.5fr 1.5fr 1.5fr;
             }
         }
         &-status {
             font-weight: bold;
             border-radius: 16px;
-            padding: 2px 16px;
+            padding: 0.2rem 1.6rem;
             white-space: nowrap;
 
             &--danger {
@@ -115,8 +122,23 @@
                 background-color: rgba(28, 90, 227, 0.16);
             }
         }
-        & .dc-table__head:first-child {
-            padding-left: 1.7rem;
+
+        .dc-table__header {
+            > .orders__table-grid {
+                padding: 0 2.4rem;
+            }
+        }
+    }
+
+    &__data-list {
+        flex: 1;
+
+        &__data-list-body {
+            flex: 1;
+        }
+
+        .data-list__body-wrapper {
+            flex: 1;
         }
     }
 }

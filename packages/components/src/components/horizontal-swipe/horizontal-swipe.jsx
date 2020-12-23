@@ -55,7 +55,7 @@ const HorizontalSwipe = ({
     return (
         <Swipeable onSwipedLeft={onSwipeLeft} onSwipedRight={onSwipeRight}>
             <div className='dc-horizontal-swipe'>
-                {should_show_left_hidden_component && (
+                {visible_component_height_ref && (
                     <div
                         className='dc-horizontal-swipe--left'
                         style={{
@@ -67,18 +67,17 @@ const HorizontalSwipe = ({
                     </div>
                 )}
                 <div
+                    className='dc-horizontal-swipe--main'
                     ref={visible_component_height_ref}
                     style={{
                         transform:
                             (should_show_left_hidden_component && `translate(${left_hidden_component_width})`) ||
                             (should_show_right_hidden_component && `translate(-${right_hidden_component_width})`),
-                        transition: `0.5s ease-in-out`,
-                        width: '100vw',
                     }}
                 >
                     {visible_component}
                 </div>
-                {should_show_right_hidden_component && (
+                {visible_component_height_ref && (
                     <div
                         className='dc-horizontal-swipe--right'
                         style={{
@@ -99,8 +98,11 @@ HorizontalSwipe.propTypes = {
     is_left_swipe_disabled: PropTypes.bool,
     is_right_swipe: PropTypes.bool,
     is_right_swipe_disabled: PropTypes.bool,
+    left_hidden_component: PropTypes.object,
     left_hidden_component_width: PropTypes.string,
+    right_hidden_component: PropTypes.object,
     right_hidden_component_width: PropTypes.string,
+    visible_component: PropTypes.object,
 };
 
 export default HorizontalSwipe;

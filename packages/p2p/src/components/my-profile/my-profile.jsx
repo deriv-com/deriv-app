@@ -34,14 +34,10 @@ const ContentWrapper = ({ children, className }) => {
         );
     }
 
-    return (
-        <ThemedScrollbars height='calc(100% - 16rem)' className={className}>
-            {children}
-        </ThemedScrollbars>
-    );
+    return <ThemedScrollbars className={className}>{children}</ThemedScrollbars>;
 };
 
-const MyProfile = observer(() => {
+const MyProfile = () => {
     const { general_store, my_profile_store } = useStores();
     const {
         daily_buy,
@@ -278,7 +274,7 @@ const MyProfile = observer(() => {
             </Formik>
         </ContentWrapper>
     );
-});
+};
 
 MyProfile.propTypes = {
     advertiser_info: PropTypes.object,

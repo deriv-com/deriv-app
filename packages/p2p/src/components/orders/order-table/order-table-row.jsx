@@ -1,4 +1,4 @@
-import { Table, Text, Icon } from '@deriv/components';
+import { Table, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -20,7 +20,7 @@ const Title = ({
     const send_amount = is_buy_order_type_for_user ? transaction_amount : offer_amount;
     return (
         <React.Fragment>
-            <Text size='sm' line_height='xxs' weight='bold' as='p'>
+            <Text size='sm' color='prominent' line_height='xxs' weight='bold' as='p'>
                 {order_type} {send_amount}
             </Text>
             <Text color='less-prominent' as='p' line_height='xxs' size='xxs' align='left'>
@@ -38,7 +38,7 @@ const OrderRow = ({ style, row: order }) => {
             label: distance < 0 ? localize('expired') : secondsToTimer(distance),
         };
     };
-    const { general_store, order_store, sendbird_store } = useStores();
+    const { general_store, order_store } = useStores();
     const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
     const [is_timer_visible, setIsTimerVisible] = React.useState();
     const {
@@ -81,6 +81,7 @@ const OrderRow = ({ style, row: order }) => {
                 setIsTimerVisible(false);
             } else {
                 setRemainingTime(label);
+                setIsTimerVisible(true);
             }
         };
 
@@ -119,15 +120,25 @@ const OrderRow = ({ style, row: order }) => {
                         </div>
                     </Table.Cell>
                     <Table.Cell className='orders__mobile-header-right'>
-                        {is_timer_visible && <div className='orders__mobile-time'>{remaining_time}</div>}
-                        <div className='orders__mobile-chat'>
+                        {is_timer_visible && (
+                            <Text
+                                size='xxs'
+                                color='prominent'
+                                align='center'
+                                line_height='l'
+                                className='orders__mobile-time'
+                            >
+                                {remaining_time}
+                            </Text>
+                        )}
+                        {/* <div className='orders__mobile-chat'>
                             <Icon
                                 icon='IcChat'
                                 height={15}
                                 width={16}
                                 onClick={() => sendbird_store.setShouldShowChatModal(true)}
                             />
-                        </div>
+                        </div> */}
                     </Table.Cell>
                     <Table.Cell className='orders__mobile-title'>
                         <Title

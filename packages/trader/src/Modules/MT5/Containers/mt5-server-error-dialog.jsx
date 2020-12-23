@@ -15,14 +15,12 @@ const MT5ServerErrorDialog = ({
     has_mt5_error,
     error_type,
     createMT5Account,
-    failed_password_attempts,
     is_mt5_success_dialog_enabled,
 }) => {
     const should_show_error = has_mt5_error && !is_mt5_success_dialog_enabled;
-    const MAX_FAILED_ATTEMPT = 2;
     const is_password_reset = error_type === 'PasswordReset';
     const is_password_error = error_type === 'PasswordError';
-    const is_try_again_enabled = is_password_error && failed_password_attempts <= MAX_FAILED_ATTEMPT;
+    const is_try_again_enabled = is_password_error;
     const title = error_type !== 'PasswordReset' ? localize('Something’s not right') : '';
     const confirm_label = is_password_reset ? localize('Reset password') : localize('OK');
 
@@ -69,6 +67,5 @@ export default connect(({ ui, modules }) => ({
     has_mt5_error: modules.mt5.has_mt5_error,
     is_mt5_success_dialog_enabled: modules.mt5.is_mt5_success_dialog_enabled,
     error_type: modules.mt5.error_type,
-    failed_password_attempts: modules.mt5.failed_password_attempts,
     createMT5Account: modules.mt5.createMT5Account,
 }))(withRouter(MT5ServerErrorDialog));

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Div100vhContainer, InfiniteDataList, Loading, Table } from '@deriv/components';
+import { Button, InfiniteDataList, Loading, Table } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -63,31 +63,18 @@ const MyAdsTable = () => {
                             </Table.Row>
                         </Table.Header>
                     )}
-
-                    {isMobile() ? (
-                        <Div100vhContainer height_offset='26rem'>
-                            <InfiniteDataList
-                                data_list_className='p2p-my-ads__data-list'
-                                items={my_ads_store.adverts}
-                                rowRenderer={row_props => <MyAdsRowRenderer {...row_props} />}
-                                has_more_items_to_load={my_ads_store.has_more_items_to_load}
-                                loadMoreRowsFn={my_ads_store.loadMoreAds}
-                                keyMapperFn={item => item.id}
-                            />
-                        </Div100vhContainer>
-                    ) : (
-                        <Table.Body>
-                            <InfiniteDataList
-                                data_list_className='p2p-my-ads__data-list'
-                                items={my_ads_store.adverts}
-                                rowRenderer={row_props => <MyAdsRowRenderer {...row_props} />}
-                                has_more_items_to_load={my_ads_store.has_more_items_to_load}
-                                loadMoreRowsFn={my_ads_store.loadMoreAds}
-                                keyMapperFn={item => item.id}
-                            />
-                        </Table.Body>
-                    )}
+                    <Table.Body className='p2p-my-ads__table-body'>
+                        <InfiniteDataList
+                            data_list_className='p2p-my-ads__data-list'
+                            items={my_ads_store.adverts}
+                            rowRenderer={row_props => <MyAdsRowRenderer {...row_props} />}
+                            has_more_items_to_load={my_ads_store.has_more_items_to_load}
+                            loadMoreRowsFn={my_ads_store.loadMoreAds}
+                            keyMapperFn={item => item.id}
+                        />
+                    </Table.Body>
                 </Table>
+
                 {isMobile() && (
                     <div className='p2p-my-ads__delete-container'>
                         <Button className='p2p-my-ads__delete' large primary onClick={my_ads_store.onClickCreate}>
@@ -101,7 +88,7 @@ const MyAdsTable = () => {
     }
 
     return (
-        <Empty icon='IcCashierNoAds' title={localize('You have no ads')}>
+        <Empty icon='IcCashierNoAds' title={localize('You have no ads.')}>
             <Button primary large className='p2p-empty__button' onClick={() => my_ads_store.onClickCreate()}>
                 {localize('Create new ad')}
             </Button>

@@ -30,19 +30,24 @@
             font-size: 1.4rem;
             margin-bottom: -1.6rem;
 
+            @include mobile {
+                margin-top: 1.6rem;
+            }
+
             &--bold {
                 font-weight: bold;
             }
         }
         &-scrollbar {
-            height: calc(100% - 2.4rem - 92px);
+            height: calc(100% - 2.4rem - 9.2rem);
             position: absolute;
             width: calc(100% - 4.8rem);
 
             @include mobile {
                 height: calc(100vh - 16rem);
+                margin: 0 1.6rem;
                 position: unset;
-                width: unset;
+                width: 90vw;
             }
         }
         &-container {
@@ -69,11 +74,10 @@
             }
             &--textarea {
                 height: 9.6rem;
-
                 margin-bottom: 0;
 
                 @include mobile {
-                    width: 100%;
+                    width: 88vw;
                 }
 
                 .dc-input__hint {
@@ -83,10 +87,6 @@
                     top: 9.7rem;
                     right: 0rem;
                 }
-            }
-
-            @include mobile {
-                margin-bottom: unset;
             }
 
             &--trailing {
@@ -180,6 +180,10 @@
 
             &-progress {
                 margin-bottom: 0.4rem;
+
+                @include mobile {
+                    margin: 0.4rem 0;
+                }
             }
         }
         &-row {

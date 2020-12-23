@@ -90,6 +90,7 @@ const MT5PasswordForm = props => (
                                                             href={getStaticUrl('/reset-password')}
                                                             className='dc-modal__container_mt5-password-modal__password-hint'
                                                             target='_blank'
+                                                            rel='noreferrer'
                                                         />,
                                                     ]}
                                                 />
@@ -145,7 +146,7 @@ const MT5PasswordModal = ({
     submitMt5Password,
 }) => {
     const handleCancel = () => {
-        history.push(routes.deriv_password);
+        location.href(getStaticUrl('/reset-password'));
         closeModal();
     };
 
@@ -204,6 +205,7 @@ const MT5PasswordModal = ({
             <a
                 href={getStaticUrl('reset-password')}
                 target='_blank'
+                rel='noreferrer'
                 className='dc-btn dc-btn--primary dc-btn__large dc-modal__container_mt5-reset-password-modal__button'
             >
                 <Localize i18n_default_text='Reset password' />

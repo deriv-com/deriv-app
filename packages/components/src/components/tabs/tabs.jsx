@@ -96,17 +96,21 @@ class Tabs extends React.Component {
             className,
             fit_content,
             header_fit_content,
+            is_100vw,
             is_full_width,
             single_tab_has_no_label,
             top,
         } = this.props;
         const { active_index } = this.state;
-        const tab_width = fit_content ? '150px' : `${(100 / children.length).toFixed(2)}%`;
+        const valid_children = children.filter(child => child);
+        const tab_width = fit_content ? '150px' : `${(100 / valid_children.length).toFixed(2)}%`;
 
         return (
             <div
                 className={classNames('dc-tabs', {
                     [`dc-tabs dc-tabs--${className}`]: className,
+                    'dc-tabs--top': top,
+                    'dc-tabs--100vw': is_100vw,
                 })}
                 style={{ '--tab-width': `${tab_width}` }}
             >

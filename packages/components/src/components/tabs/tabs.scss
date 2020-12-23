@@ -10,6 +10,13 @@
         }
     }
 
+    &--top {
+        grid-template-rows: auto 1fr;
+    }
+    &--100vw {
+        width: 100vw;
+    }
+
     &__list {
         width: 100%;
         line-height: 38px;

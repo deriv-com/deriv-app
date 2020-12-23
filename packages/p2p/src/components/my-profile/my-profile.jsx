@@ -34,11 +34,7 @@ const ContentWrapper = ({ children, className }) => {
         );
     }
 
-    return (
-        <ThemedScrollbars height='calc(100% - 16rem)' className={className}>
-            {children}
-        </ThemedScrollbars>
-    );
+    return <ThemedScrollbars className={className}>{children}</ThemedScrollbars>;
 };
 
 const MyProfile = () => {

@@ -12,10 +12,7 @@ const MT5POI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
     const [poi_state, setPOIState] = React.useState('none');
     const validateForm = React.useCallback(() => {
         const errors = {};
-        if (
-            (!['pending', 'verified'].includes(poi_state) && identity_status !== 'verified') ||
-            identity_status !== 'pending'
-        ) {
+        if (!['pending', 'verified'].includes(poi_state) && !['pending', 'verified'].includes(identity_status)) {
             errors.poi_state = true;
         }
         return errors;
@@ -47,10 +44,9 @@ const MT5POI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                                         getAccountStatus={WS.authorized.getAccountStatus}
                                         height={height}
                                         onStateChange={({ status }) => {
-                                            const poi_status =
-                                                identity_status === 'verified' || identity_status === 'pending'
-                                                    ? identity_status
-                                                    : status;
+                                            const poi_status = ['pending', 'verified'].includes(identity_status)
+                                                ? identity_status
+                                                : status;
                                             setPOIState(poi_status);
                                         }}
                                         is_trading_button_enabled={false}

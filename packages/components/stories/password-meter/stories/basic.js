@@ -11,6 +11,7 @@ const Basic = () => {
         <Wrapper is_dark={boolean('Dark Theme', false)}>
             <PasswordMeter input={new_password}>
                 <PasswordInput
+                    autoComplete='new-password'
                     className='password-meter-storybook'
                     label='New password'
                     onChange={e => updateNewPassword(e.target.value)}

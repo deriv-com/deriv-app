@@ -1,11 +1,18 @@
 import React from 'react';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import Icon from '../icon/icon.jsx';
 
-const FormSubmitErrorMessage = ({ message }) => (
-    <div className='dc-form-submit-error-message'>
+const FormSubmitErrorMessage = ({ className, message }) => (
+    <div className={classNames('dc-form-submit-error-message', className)}>
         <Icon icon='IcAlertDanger' />
         <p>{message}</p>
     </div>
 );
+
+FormSubmitErrorMessage.propTypes = {
+    className: PropTypes.string,
+    message: PropTypes.string,
+};
 
 export default FormSubmitErrorMessage;

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import WS from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import AccountTransferNoAccount from '../Components/Error/account-transfer-no-account.jsx';
 import Error from '../Components/Error/error.jsx';
@@ -31,19 +32,31 @@ const AccountTransfer = ({
     setIsTransferConfirm,
     setSideNotes,
 }) => {
+    const [is_loading_status, setIsLoadingStatus] = React.useState(true);
     React.useEffect(() => {
         setActiveTab(container);
         onMount();
+
+        WS.wait('authorize', 'website_status', 'get_settings', 'paymentagent_list').then(() => {
+            setIsLoadingStatus(false);
+        });
+
         return () => {
             setAccountTransferAmount('');
             setIsTransferConfirm(false);
         };
     }, []);
 
+    const hideNotes = () => {
+        if (typeof setSideNotes === 'function') {
+            setSideNotes(null);
+        }
+    };
+
     if (is_virtual) {
         return <Virtual />;
     }
-    if (is_loading || is_switching) {
+    if (is_loading || is_switching || is_loading_status) {
         return <Loading className='cashier__loader' />;
     }
     if (is_cashier_locked) {
@@ -61,20 +74,18 @@ const AccountTransfer = ({
         return <AccountTransferNoAccount />;
     }
     if (has_no_accounts_balance) {
+        hideNotes();
         return <NoBalance />;
     }
     if (is_transfer_confirm) {
-        if (typeof setSideNotes === 'function') {
-            setSideNotes(null);
-        }
+        hideNotes();
         return <AccountTransferConfirm />;
     }
     if (is_transfer_successful) {
-        if (typeof setSideNotes === 'function') {
-            setSideNotes(null);
-        }
+        hideNotes();
         return <AccountTransferReceipt />;
     }
+
     return <AccountTransferForm error={error} setSideNotes={setSideNotes} />;
 };
 

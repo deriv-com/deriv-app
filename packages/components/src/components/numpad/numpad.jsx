@@ -165,7 +165,7 @@ const Numpad = ({
                         onSelect(-1);
                     }}
                     is_disabled={is_backspace_disabled}
-                    rendertext={() =>
+                    renderText={() =>
                         is_backspace_disabled && (
                             <Text styles={{ fontSize: '1.8rem' }} weight='bold' align='center' color='disabled'>
                                 ⌫
@@ -193,7 +193,7 @@ const Numpad = ({
                         onSubmit(formatNumber(default_value));
                     }}
                     is_disabled={is_button_disabled}
-                    rendertext={() =>
+                    renderText={() =>
                         is_button_disabled && (
                             <Text styles={{ fontSize: '1.8rem' }} weight='bold' align='center' color='disabled'>
                                 {submit_label}

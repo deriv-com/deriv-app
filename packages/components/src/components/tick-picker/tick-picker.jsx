@@ -86,7 +86,7 @@ const TickPicker = ({
                 <Button
                     rounded
                     onClick={handleClick}
-                    rendertext={() =>
+                    renderText={() =>
                         is_submit_disabled && (
                             <Text size='s' weight='bold' align='center' color='disabled'>
                                 {submit_label}

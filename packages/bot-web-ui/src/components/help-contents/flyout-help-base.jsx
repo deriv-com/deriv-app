@@ -78,7 +78,7 @@ const HelpBase = ({
                         text={localize('Previous')}
                         type='button'
                         is_disabled={should_previous_disable}
-                        rendertext={text =>
+                        renderText={text =>
                             should_previous_disable && (
                                 <Text size='xs' weight='bold' align='center' color='disabled'>
                                     {text}
@@ -93,7 +93,7 @@ const HelpBase = ({
                         text={localize('Next')}
                         type='button'
                         is_disabled={should_next_disable}
-                        rendertext={text =>
+                        renderText={text =>
                             should_next_disable && (
                                 <Text size='xs' weight='bold' align='center' color='disabled'>
                                     {text}

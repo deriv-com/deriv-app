@@ -33,6 +33,7 @@ const Button = ({
     secondary,
     small,
     tertiary,
+    renderText,
     ...props
 }) => {
     const classes = classNames(
@@ -64,8 +65,7 @@ const Button = ({
             {icon && <div className='dc-btn__icon'>{icon}</div>}
             {text &&
                 !(is_loading || is_submit_success) &&
-                ((typeof props.rendertext === 'function' &&
-                    props.rendertext(text[0].toUpperCase() + text.substr(1))) || (
+                ((typeof renderText === 'function' && renderText(text[0].toUpperCase() + text.substr(1))) || (
                     <Text size='xs' weight='bold' align='center' className={classNames('dc-btn__text', classNameSpan)}>
                         {text[0].toUpperCase() + text.substr(1)}
                     </Text>
@@ -75,7 +75,7 @@ const Button = ({
 
             {!text &&
                 children &&
-                ((typeof props.rendertext === 'function' && props.rendertext(children)) || (
+                ((typeof renderText === 'function' && renderText(children)) || (
                     <Text size='xs' weight='bold' align='center' className={classNames('dc-btn__text', classNameSpan)}>
                         {children}
                     </Text>

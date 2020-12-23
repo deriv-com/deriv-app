@@ -70,7 +70,7 @@
     "react-div-100vh": "^0.3.8",
     "react-dom": "^16.13.1",
     "react-drag-drawer": "^3.3.4",
-    "react-dropzone": "^9.0.0",
+    "react-dropzone": "11.0.1",
     "react-pose": "^4.0.10",
     "react-router-dom": "^5.2.0",
     "react-swipeable": "^5.5.1",

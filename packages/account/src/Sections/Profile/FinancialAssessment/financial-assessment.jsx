@@ -49,7 +49,7 @@ import {
 const ConfirmationContent = ({ className }) => {
     return (
         <React.Fragment>
-            <p className={className}>
+            <Text as='p' className={className}>
                 <Localize
                     i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you (that is, whether you possess the experience and knowledge to understand the risks involved).<0/><1/>'
                     components={[<br key={0} />, <br key={1} />]}
@@ -59,7 +59,7 @@ const ConfirmationContent = ({ className }) => {
                     components={[<br key={0} />, <br key={1} />]}
                 />
                 <Localize i18n_default_text='By clicking Accept below and proceeding with the Account Opening you should note that you may be exposing yourself to risks (which may be significant, including the risk of loss of the entire sum invested) that you may not have the knowledge and experience to properly assess or mitigate.' />
-            </p>
+            </Text>
         </React.Fragment>
     );
 };
@@ -197,12 +197,9 @@ class FinancialAssessment extends React.Component {
                             this.setState({ api_initial_load_error: data.error.message });
                             return;
                         } else if (!needs_financial_assessment) {
-                            // Additional layer of error handling if non high risk user somehow manages to reach FA page, need to define error to prevent app crash
-                            this.setState({
-                                api_initial_load_error: localize(
-                                    'Error: Could not load financial assessment information'
-                                ),
-                            });
+                            // Additional layer of error handling if non high risk user somehow manages to reach FA page
+                            // need to redirect to default route for account to prevent app crash
+                            this.props.history.push(routes.personal_details);
                         }
                         this.setState({ ...data.get_financial_assessment, is_loading: false });
                     });
@@ -903,4 +900,4 @@ export default connect(({ client, ui }) => ({
     is_svg: client.is_svg,
     removeNotificationMessage: ui.removeNotificationMessage,
     removeNotificationByKey: ui.removeNotificationByKey,
-}))(FinancialAssessment);
+}))(withRouter(FinancialAssessment));

@@ -169,7 +169,7 @@ const MT5AccountCard = ({
                 {((!existing_data && commission_message) || !is_logged_in) && (
                     <div className='mt5-account-card__commission'>
                         <p className='mt5-account-card__commission-paragraph'>{commission_message}</p>
-                        {((!existing_data && commission_message_crypto_warning) || !is_logged_in) && (
+                        {commission_message_crypto_warning && (
                             <p className='mt5-account-card__commission-paragraph-crypto'>
                                 {commission_message_crypto_warning}
                             </p>

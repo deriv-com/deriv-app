@@ -110,7 +110,7 @@ class PaymentAgentTransferForm extends React.Component {
                                         label={localize('Amount')}
                                         error={touched.amount && errors.amount}
                                         required
-                                        leading_icon={
+                                        trailing_icon={
                                             <span
                                                 className={classNames(
                                                     'symbols',

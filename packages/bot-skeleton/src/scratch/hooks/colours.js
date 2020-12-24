@@ -44,30 +44,30 @@ if (isDarkModeEnabled()) {
     Blockly.Colours.RootBlock = {
         colour: '#064e72',
         colourSecondary: '#064e72',
-        colourTertiary: '#064e72',
+        colourTertiary: '#6d7278',
     };
 
     Blockly.Colours.Base = {
         colour: '#e5e5e5',
         colourSecondary: '#ffffff',
-        colourTertiary: '#ffffff',
+        colourTertiary: '#6d7278',
     };
 
     Blockly.Colours.Special1 = {
         colour: '#e5e5e5',
         colourSecondary: '#ffffff',
-        colourTertiary: '#ffffff',
+        colourTertiary: '#6d7278',
     };
 
     Blockly.Colours.Special2 = {
         colour: '#e5e5e5',
         colourSecondary: '#ffffff',
-        colourTertiary: '#ffffff',
+        colourTertiary: '#6d7278',
     };
 
     Blockly.Colours.Special3 = {
         colour: '#e5e5e5',
         colourSecondary: '#ffffff',
-        colourTertiary: '#ffffff',
+        colourTertiary: '#6d7278',
     };
 }

@@ -210,7 +210,7 @@
         }
     }
     &__heading {
-        @include typeface(--title-center-bold-black);
+        @include typeface(--paragraph-center-bold-black);
         margin: 1.6rem 0 0;
     }
     &__hint {

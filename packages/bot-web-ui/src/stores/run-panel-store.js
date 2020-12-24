@@ -1,4 +1,5 @@
 import { observable, action, reaction, computed, runInAction } from 'mobx';
+import LZString from 'lz-string';
 import { localize } from '@deriv/translations';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { contract_stages } from '../constants/contract-stage';
@@ -30,7 +31,10 @@ export default class RunPanelStore {
                 const new_statistics = { statistics };
                 stored_statistics[client.loginid] = new_statistics;
 
-                sessionStorage.setItem(this.statistics_storage_key, JSON.stringify(stored_statistics));
+                sessionStorage.setItem(
+                    this.statistics_storage_key,
+                    LZString.compress(JSON.stringify(stored_statistics))
+                );
             }
         );
 
@@ -85,7 +89,11 @@ export default class RunPanelStore {
     error_type = undefined;
 
     getSessionStorage = key => {
-        return JSON.parse(sessionStorage.getItem(key)) ?? {};
+        try {
+            return JSON.parse(LZString.decompress(sessionStorage.getItem(key))) ?? {};
+        } catch (e) {
+            return {};
+        }
     };
 
     getAccountStatisticsInfo = (key, type) => {
@@ -548,6 +556,7 @@ export default class RunPanelStore {
         observer.register('ui.log.error', this.showErrorMessage);
         observer.register('ui.log.notify', journal.onNotify);
         observer.register('ui.log.success', journal.onLogSuccess);
+        observer.register('client.invalid_token', this.handleInvalidToken);
     }
 
     @action.bound
@@ -562,6 +571,7 @@ export default class RunPanelStore {
         observer.unregisterAll('ui.log.error');
         observer.unregisterAll('ui.log.notify');
         observer.unregisterAll('ui.log.success');
+        observer.unregisterAll('client.invalid_token');
     }
 
     disposeListeners() {
@@ -576,5 +586,12 @@ export default class RunPanelStore {
         if (typeof this.disposeSwitchAccountListener === 'function') {
             this.disposeSwitchAccountListener();
         }
+    }
+
+    @action.bound
+    async handleInvalidToken() {
+        const { client } = this.root_store.core;
+        await client.logout();
+        this.setActiveTabIndex(run_panel.SUMMARY);
     }
 }

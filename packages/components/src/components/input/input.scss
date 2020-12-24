@@ -8,7 +8,7 @@
     margin-bottom: 3.2rem;
     line-height: 1.43;
 
-    &:hover:not(.dc-input__disabled) {
+    &:hover:not(.dc-input--disabled) {
         border-color: var(--border-hover);
     }
     &:focus-within {
@@ -18,7 +18,7 @@
             border-color: var(--brand-secondary);
         }
     }
-    &__disabled {
+    &--disabled {
         border-color: var(--general-disabled);
         color: var(--text-disabled);
     }
@@ -153,13 +153,22 @@
         }
     }
     &__trailing-icon {
-        margin: 0 1.2rem 0 0 !important;
+        margin-right: 1rem;
+        position: absolute;
+        right: 0;
+        font-size: var(--text-size-xs);
 
-        .color1-fill {
-            fill: var(--text-less-prominent);
-        }
-        .color1-stroke {
-            fill: var(--text-less-prominent);
+        &.symbols {
+            top: 0.9rem;
+
+            + .dc-input__field {
+                // default padding for three letter currency symbols
+                padding-right: calc(1.6rem + 2.4rem);
+            }
+            &--usdc + .dc-input__field,
+            &--ust + .dc-input__field {
+                padding-right: calc(1.6rem + 3.2rem);
+            }
         }
     }
     &__label {
@@ -181,20 +190,20 @@
         }
     }
     &__hint {
-        color: var(--text-less-prominent);
-        font-size: 1.2rem;
         margin-left: 1.2rem;
         position: absolute;
         top: 4rem;
-        line-height: 1.5;
+
+        &--relative {
+            margin-left: 1.2rem;
+            position: relative;
+            top: unset;
+        }
     }
     &__counter {
         color: var(--text-less-prominent);
         font-size: 1.2rem;
         margin-left: 1.2rem;
-        position: absolute;
-        top: 4rem;
-        right: 20px;
     }
     &--no-placeholder {
         label {
@@ -211,7 +220,19 @@
             color: var(--brand-red-coral) !important;
         }
     }
-    &__error {
-        color: var(--text-loss-danger);
+    &__footer {
+        display: flex;
+        flex-direction: row;
+
+        > :not(.dc-input__counter) {
+            margin-right: 1.2rem;
+        }
+
+        > .dc-input__counter {
+            margin-left: auto;
+        }
+    }
+    &__wrapper {
+        margin-bottom: 1.6rem;
     }
 }

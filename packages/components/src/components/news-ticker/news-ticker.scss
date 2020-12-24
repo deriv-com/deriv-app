@@ -1,0 +1,37 @@
+@keyframes dc-news-ticker {
+    0% {
+        transform: translate3d(100%, 0, 0);
+    }
+    100% {
+        transform: translate3d(-100%, 0, 0);
+    }
+}
+
+@keyframes dc-news-ticker-2 {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    100% {
+        transform: translate3d(-200%, 0, 0);
+    }
+}
+
+.dc-news-ticker {
+    display: flex;
+    white-space: nowrap;
+    overflow: hidden;
+
+    &__children {
+        animation-iteration-count: infinite;
+        animation-name: dc-news-ticker;
+        animation-timing-function: linear;
+        will-change: transform;
+
+        &:nth-child(2) {
+            animation-name: dc-news-ticker-2;
+        }
+    }
+    &__item {
+        display: inline-block;
+    }
+}

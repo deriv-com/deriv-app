@@ -104,6 +104,11 @@ export default class ContractStore extends BaseStore {
         if (!isEqualObject(this.contract_update_config, contract_update_config)) {
             Object.assign(this, contract_update_config);
             this.contract_update_config = contract_update_config;
+
+            const { contract_update, error } = response;
+            if (contract_update && !error) {
+                this.contract_info.limit_order = Object.assign(this.contract_info.limit_order || {}, contract_update);
+            }
         }
     }
 

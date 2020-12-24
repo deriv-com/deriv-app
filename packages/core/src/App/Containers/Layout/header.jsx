@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { routes, isMobile, getDecimalPlaces, getPlatformHeader } from '@deriv/shared';
+import { routes, isMobile, getDecimalPlaces, getPlatformInformation } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
@@ -19,6 +19,7 @@ const Header = ({
     acc_switcher_disabled_message,
     account_status,
     addNotificationMessage,
+    should_allow_authentication,
     app_routing_history,
     balance,
     currency,
@@ -36,6 +37,7 @@ const Header = ({
     is_notifications_visible,
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
+    is_onramp_tab_visible,
     is_payment_agent_visible,
     is_route_modal_on,
     is_virtual,
@@ -50,19 +52,24 @@ const Header = ({
     toggleNotifications,
 }) => {
     const toggle_menu_drawer_ref = React.useRef(null);
+    const addUpdateNotification = () => addNotificationMessage(clientNotifications().new_version_available);
+    const removeUpdateNotification = React.useCallback(
+        () => removeNotificationMessage({ key: 'new_version_available' }),
+        [removeNotificationMessage]
+    );
 
     React.useEffect(() => {
         document.addEventListener('IgnorePWAUpdate', removeUpdateNotification);
         return () => document.removeEventListener('IgnorePWAUpdate', removeUpdateNotification);
-    }, []);
+    }, [removeUpdateNotification]);
 
-    const addUpdateNotification = () => addNotificationMessage(clientNotifications().new_version_available);
-    const removeUpdateNotification = () => removeNotificationMessage({ key: 'new_version_available' });
     const onClickDeposit = () => history.push(routes.cashier_deposit);
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
-            // non-CR clients cannot open MT5 account
-            return !(is_logged_in && config.link_to === routes.mt5 && !is_mt5_allowed);
+            if (config.link_to === routes.mt5) {
+                return !is_logged_in || is_mt5_allowed;
+            }
+            return true;
         });
 
     return (
@@ -82,6 +89,7 @@ const Header = ({
                     <MobileWrapper>
                         <ToggleMenuDrawer
                             ref={toggle_menu_drawer_ref}
+                            should_allow_authentication={should_allow_authentication}
                             account_status={account_status}
                             enableApp={enableApp}
                             disableApp={disableApp}
@@ -91,11 +99,12 @@ const Header = ({
                             is_logged_in={is_logged_in}
                             is_p2p_enabled={is_p2p_enabled}
                             is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
+                            is_onramp_tab_visible={is_onramp_tab_visible}
                             is_payment_agent_visible={is_payment_agent_visible}
                             is_virtual={is_virtual}
                             needs_financial_assessment={needs_financial_assessment}
                             toggleTheme={setDarkMode}
-                            platform_header={getPlatformHeader(app_routing_history)}
+                            platform_header={getPlatformInformation(app_routing_history).header}
                             platform_switcher={
                                 <PlatformSwitcher
                                     app_routing_history={app_routing_history}
@@ -113,7 +122,7 @@ const Header = ({
                 </div>
                 <div
                     className={classNames('header__menu-right', {
-                        'header__menu-right--mobile': isMobile(),
+                        'header__menu-right--hidden': isMobile() && is_logging_in,
                     })}
                 >
                     {is_logging_in && (
@@ -156,6 +165,7 @@ const Header = ({
 
 Header.propTypes = {
     acc_switcher_disabled_message: PropTypes.string,
+    should_allow_authentication: PropTypes.bool,
     account_status: PropTypes.object,
     addNotificationMessage: PropTypes.func,
     app_routing_history: PropTypes.array,
@@ -191,6 +201,7 @@ Header.propTypes = {
 export default connect(({ client, common, ui, modules }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_status: client.account_status,
+    should_allow_authentication: client.should_allow_authentication,
     addNotificationMessage: ui.addNotificationMessage,
     app_routing_history: common.app_routing_history,
     balance: client.balance,
@@ -209,12 +220,13 @@ export default connect(({ client, common, ui, modules }) => ({
     is_notifications_visible: ui.is_notifications_visible,
     is_p2p_enabled: modules.cashier.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
+    is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
     is_route_modal_on: ui.is_route_modal_on,
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
     needs_financial_assessment: client.needs_financial_assessment,
-    notifications_count: ui.notifications.length,
+    notifications_count: ui.filtered_notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
     removeNotificationMessage: ui.removeNotificationMessage,
     setDarkMode: ui.setDarkMode,

@@ -1,6 +1,6 @@
 import { flow } from 'mobx';
-import { redirectToLogin, State, getPropertyValue } from '@deriv/shared';
-import { getLanguage, localize } from '@deriv/translations';
+import { State, getActivePlatform, getPropertyValue, routes } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
 import WS from './ws-methods';
@@ -158,14 +158,18 @@ const BinarySocketGeneral = (() => {
                 if (!['reset_password', 'new_account_virtual'].includes(msg_type)) {
                     if (window.TrackJS) window.TrackJS.track('Custom InvalidToken error');
                 }
+                // eslint-disable-next-line no-case-declarations
+                const active_platform = getActivePlatform(common_store.app_routing_history);
+
+                // DBot handles this internally. Special case: 'client.invalid_token'
+                if (active_platform === 'DBot') return;
+
                 client_store.logout().then(() => {
-                    common_store.setError(true, {
-                        header: response.error.message,
-                        message: localize('Please Log in'),
-                        should_show_refresh: false,
-                        redirect_label: localize('Log in'),
-                        redirectOnClick: () => redirectToLogin(false, getLanguage()),
-                    });
+                    let redirect_to = routes.trade;
+                    if (active_platform === 'DMT5') {
+                        redirect_to = routes.mt5;
+                    }
+                    common_store.routeTo(redirect_to);
                 });
                 break;
             case 'AuthorizationRequired':
@@ -229,20 +233,24 @@ const BinarySocketGeneral = (() => {
 export default BinarySocketGeneral;
 
 const ResponseHandlers = (() => {
-    let is_available = false;
     const websiteStatus = response => {
         if (response.website_status) {
-            is_available = /^up$/i.test(response.website_status.site_status);
-            if (is_available && !BinarySocket.availability()) {
+            const is_available = !BinarySocket.isSiteDown(response.website_status.site_status);
+            if (is_available && BinarySocket.getAvailability().is_down) {
                 window.location.reload();
                 return;
             }
-            if (response.website_status.message) {
-                // Footer.displayNotification(response.website_status.message);
-            } else {
-                // Footer.clearNotification();
+            const is_updating = BinarySocket.isSiteUpdating(response.website_status.site_status);
+            if (is_updating && !BinarySocket.getAvailability().is_updating) {
+                // the existing connection is alive for one minute while status is updating
+                // switch to the new connection somewhere between 1-30 seconds from now
+                // to avoid everyone switching to the new connection at the same time
+                const rand_timeout = Math.floor(Math.random() * 30) + 1;
+                window.setTimeout(() => {
+                    BinarySocket.closeAndOpenNewConnection();
+                }, rand_timeout * 1000);
             }
-            BinarySocket.availability(is_available);
+            BinarySocket.setAvailability(response.website_status.site_status);
             client_store.setWebsiteStatus(response);
         }
     };

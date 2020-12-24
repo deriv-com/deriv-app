@@ -90,7 +90,6 @@ stories
                     data_source={mock_data}
                     getRowSize={() => 72}
                     rowRenderer={rowRenderer}
-                    custom_width={`${number('Width', 70)}%`}
                 />
             </div>
         </Theme>

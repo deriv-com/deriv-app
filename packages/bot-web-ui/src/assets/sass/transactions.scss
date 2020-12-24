@@ -8,12 +8,23 @@
         flex-direction: column;
         justify-content: center;
 
+        &-box {
+            display: grid;
+            flex: 1;
+            height: 100%;
+        }
+
         &__header {
             font-size: 1.4rem;
             font-weight: bold;
             text-align: center;
             color: var(--text-less-prominent);
             padding: 0.8rem;
+        }
+        &__icon-box {
+            display: flex;
+            justify-content: center;
+            margin-top: 0.3rem;
         }
         &__icon {
             align-self: center;
@@ -23,6 +34,7 @@
             font-size: 1.2rem;
             color: var(--text-less-prominent);
             margin: 0 auto;
+            margin-bottom: 2rem;
         }
         &__list {
             list-style-type: circle;
@@ -55,7 +67,7 @@
         }
     }
     &__content {
-        height: calc(100% - 8.4rem);
+        height: calc(100% - 9.2rem);
 
         &--mobile {
             height: calc(100% - 4.2rem);
@@ -63,6 +75,10 @@
     }
     &__scrollbar {
         height: 100%;
+        & .dc-themed-scrollbars {
+            height: 100%;
+            width: 100%;
+        }
     }
     &__item {
         display: grid;

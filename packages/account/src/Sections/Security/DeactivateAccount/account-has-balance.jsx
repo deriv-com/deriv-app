@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Icon, Money, ThemedScrollbars } from '@deriv/components';
+import { Button, Icon, Money, ThemedScrollbars, Text } from '@deriv/components';
 import { formatMoney, getMT5Account, getMT5AccountDisplay } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
@@ -11,7 +11,16 @@ const getCurrMT5Account = (mt5_login_list, login_id) =>
 
 const Wrapper = ({ children, title }) => (
     <div className='deactivate-account-error'>
-        <p className='deactivate-account-error__title'>{title}</p>
+        <Text
+            as='p'
+            line_height='s'
+            size='xs'
+            weight='bold'
+            color='prominent'
+            className='deactivate-account-error__title'
+        >
+            {title}
+        </Text>
         {children}
     </div>
 );
@@ -21,8 +30,12 @@ const Content = ({ currency_icon, loginid, title, value }) => (
         <div className='deactivate-account-error__account-details'>
             <Icon icon={currency_icon} size={24} />
             <div className='deactivate-account-error__account'>
-                <span className='deactivate-account-error__accounts-currency'>{title}</span>
-                <span className='deactivate-account-error__accounts-loginid'>{loginid}</span>
+                <Text line_height='x' color='prominent' size='xs'>
+                    {title}
+                </Text>
+                <Text color='prominent' size='xxxs' line_height='x'>
+                    {loginid}
+                </Text>
             </div>
         </div>
         <div className='deactivate-account-error__details'>{value}</div>
@@ -113,9 +126,9 @@ const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_acco
                     {mt5_open_positions.map(account => (
                         <Content
                             key={account.login}
-                            currency_icon={`IcMt5-${getMT5Account(account.group)}`}
+                            currency_icon={`IcMt5-${getMT5Account(account.market_type, account.sub_account_type)}`}
                             loginid={account.display_login}
-                            title={getMT5AccountDisplay(account.group)}
+                            title={getMT5AccountDisplay(account.market_type, account.sub_account_type)}
                             value={
                                 <Localize
                                     i18n_default_text='{{number_of_positions}} position(s)'
@@ -131,9 +144,9 @@ const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_acco
                     {mt5_balance.map(account => (
                         <Content
                             key={account.login}
-                            currency_icon={`IcMt5-${getMT5Account(account.group)}`}
+                            currency_icon={`IcMt5-${getMT5Account(account.market_type, account.sub_account_type)}`}
                             loginid={account.display_login}
-                            title={getMT5AccountDisplay(account.group)}
+                            title={getMT5AccountDisplay(account.market_type, account.sub_account_type)}
                             value={
                                 <Money
                                     currency={account.currency}

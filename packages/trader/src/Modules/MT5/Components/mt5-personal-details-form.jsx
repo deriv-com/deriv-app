@@ -225,6 +225,7 @@ const MT5PersonalDetailsForm = ({
                                                                     true
                                                                 )
                                                             }
+                                                            list_portal_id='modal_root'
                                                             required
                                                         />
                                                     )}
@@ -232,6 +233,7 @@ const MT5PersonalDetailsForm = ({
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    placeholder={localize('Please select')}
                                                     label={localize('Citizenship')}
                                                     value={values.citizen}
                                                     list_items={residence_list}
@@ -252,7 +254,6 @@ const MT5PersonalDetailsForm = ({
                                                             id='real_mt5_tax_residence'
                                                             data-lpignore='true'
                                                             type='text'
-                                                            list_height='160px'
                                                             autoComplete='off'
                                                             label={localize('Tax residence')}
                                                             error={touched.tax_residence && errors.tax_residence}
@@ -261,6 +262,7 @@ const MT5PersonalDetailsForm = ({
                                                             onItemSelection={({ value: v, text }) =>
                                                                 setFieldValue('tax_residence', v ? text : '', true)
                                                             }
+                                                            list_portal_id='modal_root'
                                                             {...field}
                                                         />
                                                     )}
@@ -268,6 +270,7 @@ const MT5PersonalDetailsForm = ({
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    placeholder={localize('Please select')}
                                                     label={localize('Tax residence')}
                                                     value={values.tax_residence}
                                                     error={touched.tax_residence && errors.tax_residence}
@@ -298,7 +301,6 @@ const MT5PersonalDetailsForm = ({
                                                         <Dropdown
                                                             placeholder={localize('Account opening reason')}
                                                             is_align_text_left
-                                                            is_alignment_top
                                                             name={field.name}
                                                             list={account_opening_reason}
                                                             value={values.account_opening_reason}
@@ -308,11 +310,13 @@ const MT5PersonalDetailsForm = ({
                                                                 touched.account_opening_reason &&
                                                                 errors.account_opening_reason
                                                             }
+                                                            list_portal_id='modal_root'
                                                             {...field}
                                                         />
                                                     </DesktopWrapper>
                                                     <MobileWrapper>
                                                         <SelectNative
+                                                            placeholder={localize('Please select')}
                                                             name={field.name}
                                                             label={localize('Account opening reason')}
                                                             list_items={account_opening_reason}

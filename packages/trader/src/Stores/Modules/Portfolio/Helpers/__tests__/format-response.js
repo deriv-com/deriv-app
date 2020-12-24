@@ -23,6 +23,7 @@ describe('formatPortfolioPosition', () => {
             indicative: 0,
             is_unsupported: true,
             payout: 3500.1,
+            contract_update: undefined,
             purchase: 2500.5,
             reference: +5678,
             type: 'ASIANU',

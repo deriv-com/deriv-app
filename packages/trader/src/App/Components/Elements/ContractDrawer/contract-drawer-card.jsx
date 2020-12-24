@@ -5,10 +5,13 @@ import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard } from '@deriv
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import { connect } from 'Stores/connect';
+import { getSymbolDisplayName } from 'Stores/Modules/Trading/Helpers/active-symbols';
 import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
+import { getMarketInformation } from 'Modules/Reports/Helpers/market-underlying';
 import { SwipeableContractDrawer } from './swipeable-components.jsx';
 
 const ContractDrawerCard = ({
+    active_symbols,
     addToast,
     contract_info,
     contract_update,
@@ -34,10 +37,12 @@ const ContractDrawerCard = ({
 }) => {
     const { profit } = contract_info;
     const is_sold = !!getEndTime(contract_info);
+    const display_name = getSymbolDisplayName(active_symbols, getMarketInformation(contract_info.shortcode).underlying);
 
     const card_header = (
         <ContractCard.Header
             contract_info={contract_info}
+            display_name={display_name}
             getCardLabels={getCardLabels}
             getContractTypeDisplay={getContractTypeDisplay}
             has_progress_slider={!is_multiplier}
@@ -51,36 +56,36 @@ const ContractDrawerCard = ({
 
     const card_body = (
         <ContractCard.Body
+            addToast={addToast}
+            connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
             contract_update={contract_update}
             currency={currency}
+            current_focus={current_focus}
             getCardLabels={getCardLabels}
+            getContractById={getContractById}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
             is_sold={is_sold}
-            status={status}
+            removeToast={removeToast}
             server_time={server_time}
+            setCurrentFocus={setCurrentFocus}
+            should_show_cancellation_warning={should_show_cancellation_warning}
+            status={status}
+            toggleCancellationWarning={toggleCancellationWarning}
         />
     );
 
     const card_footer = (
         <ContractCard.Footer
-            addToast={addToast}
-            connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
-            current_focus={current_focus}
             getCardLabels={getCardLabels}
-            getContractById={getContractById}
             is_multiplier={is_multiplier}
             is_sell_requested={is_sell_requested}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
-            removeToast={removeToast}
-            setCurrentFocus={setCurrentFocus}
             server_time={server_time}
-            should_show_cancellation_warning={should_show_cancellation_warning}
             status={status}
-            toggleCancellationWarning={toggleCancellationWarning}
         />
     );
 
@@ -141,6 +146,7 @@ ContractDrawerCard.propTypes = {
 };
 
 export default connect(({ modules, ui }) => ({
+    active_symbols: modules.trade.active_symbols,
     addToast: ui.addToast,
     current_focus: ui.current_focus,
     getContractById: modules.contract_trade.getContractById,

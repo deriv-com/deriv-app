@@ -16,7 +16,7 @@ import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import InputWithCheckbox from '../../input-wth-checkbox';
 
-class ContractUpdateForm extends React.Component {
+class ContractUpdateForm extends React.PureComponent {
     componentWillUnmount() {
         this.props.contract.clearContractUpdateConfigValues();
     }

@@ -8,6 +8,7 @@ import {
     MobileWrapper,
     PageOverlay,
     VerticalTab,
+    Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { getSelectedRoute, isCryptocurrency, isMobile, isTouchDevice, routes } from '@deriv/shared';
@@ -24,16 +25,15 @@ class Cashier extends React.Component {
         this.props.toggleCashier();
         // we still need to populate the tabs shown on cashier
         await WS.wait('authorize');
-        if (!this.props.is_virtual) {
-            this.props.onMount();
-            this.props.setAccountSwitchListener();
 
-            // TODO: Remove L21, L31, and L38 code blocks once landscape design is ready
-            // doughflow iframe inconjunction with android's virtual keyboard causes issues with css screen height calculation (thus falsely triggering landscape blocker in Android)
-            // this is due to the onscreen virtual keyboard resizing the innerHeight of the window and ignoring the actual height of content within the iframe
-            if (isMobile() && isTouchDevice()) {
-                window.addEventListener('resize', this.handleOnScreenKeyboard);
-            }
+        this.props.onMount();
+        this.props.setAccountSwitchListener();
+
+        // TODO: Remove L21, L31, and L38 code blocks once landscape design is ready
+        // doughflow iframe inconjunction with android's virtual keyboard causes issues with css screen height calculation (thus falsely triggering landscape blocker in Android)
+        // this is due to the onscreen virtual keyboard resizing the innerHeight of the window and ignoring the actual height of content within the iframe
+        if (isMobile() && isTouchDevice()) {
+            window.addEventListener('resize', this.handleOnScreenKeyboard);
         }
     }
 
@@ -71,7 +71,8 @@ class Cashier extends React.Component {
                     (route.path !== routes.cashier_pa || this.props.is_payment_agent_visible) &&
                     (route.path !== routes.cashier_pa_transfer || this.props.is_payment_agent_transfer_visible) &&
                     (route.path !== routes.cashier_p2p || this.props.is_p2p_enabled) &&
-                    (route.path !== routes.cashier_onramp || this.props.is_onramp_tab_visible)
+                    (route.path !== routes.cashier_onramp || this.props.is_onramp_tab_visible) &&
+                    (route.path !== routes.cashier_acc_transfer || this.props.is_account_transfer_visible)
                 ) {
                     options.push({
                         ...(route.path === routes.cashier_p2p && { count: this.props.p2p_notification_count }),
@@ -126,7 +127,7 @@ class Cashier extends React.Component {
                                 list={menu_options()}
                                 tab_headers_note={
                                     should_show_tab_headers_note ? (
-                                        <p className='cashier__tab-header-note'>
+                                        <Text as='p' size='xxs' className='cashier__tab-header-note'>
                                             <Localize
                                                 i18n_default_text='Want to exchange between e-wallet currencies? Try <0>bestchange.com</0>'
                                                 components={[
@@ -139,7 +140,7 @@ class Cashier extends React.Component {
                                                     />,
                                                 ]}
                                             />
-                                        </p>
+                                        </Text>
                                     ) : undefined
                                 }
                             />
@@ -147,7 +148,11 @@ class Cashier extends React.Component {
                         <MobileWrapper>
                             <Div100vhContainer className='cashier__wrapper--is-mobile' height_offset='80px'>
                                 {selected_route && (
-                                    <selected_route.component component_icon={selected_route.icon_component} />
+                                    <selected_route.component
+                                        component_icon={selected_route.icon_component}
+                                        history={this.props.history}
+                                        menu_options={menu_options()}
+                                    />
                                 )}
                             </Div100vhContainer>
                         </MobileWrapper>
@@ -163,6 +168,7 @@ Cashier.propTypes = {
     is_onramp_tab_visible: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_p2p_enabled: PropTypes.bool,
+    is_account_transfer_visible: PropTypes.bool,
     is_payment_agent_transfer_visible: PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
     is_visible: PropTypes.bool,
@@ -185,6 +191,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_p2p_enabled: modules.cashier.is_p2p_enabled,
     is_virtual: client.is_virtual,
     is_visible: ui.is_cashier_visible,
+    is_account_transfer_visible: modules.cashier.is_account_transfer_visible,
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     onMount: modules.cashier.onMountCommon,

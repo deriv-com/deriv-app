@@ -1,25 +1,34 @@
 .my-profile {
-    &__error {
-        color: var(--text-loss-danger);
-        font-size: var(--text-size-xs);
+    height: 100%;
+
+    @include mobile {
+        overflow-y: auto;
     }
-    &__scrollbar {
-        height: calc(100% - 150px);
+
+    @include tablet-up {
+        height: calc(100% - 15rem);
         position: absolute;
         width: calc(100% - 4.8rem);
     }
+
     &__header {
         display: flex;
         height: fit-content;
         justify-content: space-between;
-        width: 657px;
+
+        @include tablet-up {
+            margin-top: 2.4rem;
+            width: 657px;
+        }
+
+        @include mobile {
+            margin: 1.6rem;
+        }
 
         &-avatar {
             align-items: center;
             border-radius: 50%;
-            color: var(--text-colored-background);
             display: flex;
-            font-size: var(--text-size-xs);
             height: 3.2rem;
             justify-content: center;
             margin-right: 0.8rem;
@@ -30,25 +39,8 @@
         }
         &-name {
             align-self: center;
-            color: var(--text-prominent);
-            font-size: var(--text-size-s);
-            font-weight: bold;
             height: fit-content;
             width: fit-content;
-        }
-        &-verification {
-            align-items: center;
-            color: var(--text-less-prominent);
-            display: flex;
-            font-size: var(--text-size-xs);
-
-            &-status {
-                margin-left: 1.6rem;
-            }
-            &-icon {
-                margin-left: 0.4rem;
-                vertical-align: bottom;
-            }
         }
     }
     &__stats {
@@ -58,22 +50,27 @@
         grid-template-rows: 46px;
         height: fit-content;
         margin: 2.4rem 0;
-        width: 657px;
+
+        @include tablet-up {
+            width: 657px;
+        }
+
+        @include mobile {
+            width: 100vw;
+            grid-template-columns: unset;
+            justify-content: center;
+        }
 
         &-cell {
-            display: block;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
             text-align: center;
             width: 158px;
 
-            &-header {
-                color: var(--text-less-prominent);
-                font-size: var(--text-size-xs);
-                line-height: 20px;
-            }
-            &-info {
-                font-size: var(--text-size-s);
-                font-weight: bold;
-                line-height: 24px;
+            @include mobile {
+                width: unset;
+                margin: auto;
             }
             &-separator {
                 border-right: 1px solid var(--general-section-1);
@@ -86,48 +83,128 @@
         }
         &-text {
             margin-right: 2rem;
+            @include mobile {
+                margin-right: 0;
+            }
         }
     }
     &__separator {
         display: flex;
 
         &-text {
-            color: var(--text-prominent);
             display: flex;
-            font-size: var(--text-size-xs);
-            font-weight: bold;
+            @include mobile {
+                margin-left: 1.6rem;
+                width: 10rem;
+            }
+
+            &--privacy {
+                @include mobile {
+                    margin-left: 1.6rem;
+                    width: 12.5rem;
+                }
+            }
         }
         &-horizontal_line {
             align-self: center;
             border-bottom: 1px solid var(--general-section-1);
             margin-left: 1.6rem;
             width: 564px;
+
+            @include mobile {
+                width: calc(100vw - 9rem);
+            }
+        }
+    }
+    &__toggle {
+        &-container {
+            align-items: center;
+            display: flex;
+            margin: 1rem 0;
+
+            @include mobile {
+                margin: 0.5rem 1.8rem;
+            }
+        }
+        &-name {
+            margin-left: -1rem;
+            max-width: calc(100% - 25rem);
+
+            @include mobile {
+                max-width: calc(100% - 6rem);
+            }
         }
     }
     &__form {
         &-textarea {
             margin-top: 2.5rem;
-            width: 657px;
 
-            .dc-input__hint {
-                top: 9.7rem;
+            @include mobile {
+                &:first-child {
+                    margin-top: 2.5rem;
+                }
             }
-            .dc-input__counter {
-                right: 0rem;
-                top: 9.6rem;
+        }
+
+        .dc-input {
+            margin-bottom: unset;
+
+            &__wrapper {
+                @include mobile {
+                    margin: 1.6rem;
+                }
+                @include tablet-up {
+                    width: 657px;
+                }
             }
         }
     }
     &__footer {
+        background-color: var(--general-main-1);
         border-top: 2px solid var(--general-section-1);
         bottom: 36px;
+        display: flex;
+        justify-content: flex-end;
         left: unset;
         position: fixed;
-        width: 657px;
+
+        @include tablet-up {
+            width: 657px;
+        }
+
+        @include mobile {
+            background-color: var(--general-main-1);
+            width: 100vw;
+            bottom: 0px;
+        }
 
         &-button {
-            float: right;
             margin: 1.6rem 2.4rem;
         }
+    }
+}
+
+.p2p-toggle-name {
+    align-items: center;
+    display: flex;
+    font-size: var(--text-size-s);
+    justify-items: flex-start;
+    margin-right: -50px; // Minus half of &__switch width
+
+    &__switch {
+        height: 35px;
+        transform: scale(0.5) translateX(-50%);
+        width: 65px;
+
+        .dc-toggle-switch__button {
+            top: unset;
+        }
+    }
+
+    &--on {
+        color: var(--text-profit-success);
+    }
+    &--off {
+        color: var(--text-less-prominent);
     }
 }

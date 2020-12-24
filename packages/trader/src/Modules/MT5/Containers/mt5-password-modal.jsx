@@ -73,10 +73,14 @@ const MT5PasswordForm = ({ ...props }) => (
                     </h2>
                     <div className='dc-modal__container_mt5-password-modal__body'>
                         <div className='input-element'>
-                            <PasswordMeter input={values.password} has_error={!!(touched.password && errors.password)}>
+                            <PasswordMeter
+                                input={values.password}
+                                has_error={!!(touched.password && errors.password)}
+                                custom_feedback_messages={getErrorMessages().password_warnings}
+                            >
                                 {({ has_warning }) => (
                                     <PasswordInput
-                                        autoComplete='password'
+                                        autoComplete='new-password'
                                         label={localize('Create a password')}
                                         error={touched.password && errors.password}
                                         hint={

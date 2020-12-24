@@ -92,7 +92,7 @@ class ChangePasswordForm extends React.Component {
                         <form className='account-form account__password-wrapper' onSubmit={handleSubmit}>
                             {this.state.is_loading ? (
                                 <FormBody>
-                                    <Loading is_fullscreen={false} className='account___intial-loader' />;
+                                    <Loading is_fullscreen={false} className='account__initial-loader' />;
                                 </FormBody>
                             ) : (
                                 <FormBody scroll_offset={isMobile() ? '200px' : '55px'}>
@@ -112,6 +112,7 @@ class ChangePasswordForm extends React.Component {
                                         <PasswordMeter
                                             input={this.state.new_pw_input}
                                             has_error={!!(touched.new_password && errors.new_password)}
+                                            custom_feedback_messages={getErrorMessages().password_warnings}
                                         >
                                             <PasswordInput
                                                 autoComplete='new-password'
@@ -132,7 +133,12 @@ class ChangePasswordForm extends React.Component {
                                 </FormBody>
                             )}
                             <FormFooter>
-                                {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
+                                {status?.msg && (
+                                    <FormSubmitErrorMessage
+                                        className={classNames({ 'account-form__error-message': isMobile() })}
+                                        message={status.msg}
+                                    />
+                                )}
                                 <Button
                                     className={classNames('account-form__footer-btn', {
                                         'account-form__footer-btn--has-bottom-margin': isMobile(),

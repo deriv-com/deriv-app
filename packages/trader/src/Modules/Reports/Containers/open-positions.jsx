@@ -10,7 +10,7 @@ import {
     DataList,
     DataTable,
     ContractCard,
-    ThemedScrollbars,
+    usePrevious,
 } from '@deriv/components';
 import { urlFor, isMobile, isMultiplierContract, getTimePercentage, website_name, getTotalProfit } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -42,6 +42,86 @@ const EmptyPlaceholderWrapper = props => (
     </React.Fragment>
 );
 
+const MobileRowRenderer = ({ row, is_footer, columns_map, server_time, onClickCancel, onClickSell, measure }) => {
+    React.useEffect(() => {
+        if (!is_footer) {
+            measure();
+        }
+    }, [row.contract_info?.underlying, measure, is_footer]);
+
+    if (is_footer) {
+        return (
+            <>
+                <div className='open-positions__data-list-footer--content'>
+                    <div>
+                        <DataList.Cell row={row} column={columns_map.purchase} />
+                        <DataList.Cell row={row} column={columns_map.payout} />
+                    </div>
+                    <div>
+                        <DataList.Cell
+                            className='data-list__row-cell--amount'
+                            row={row}
+                            column={columns_map.indicative}
+                        />
+                        <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.profit} />
+                    </div>
+                </div>
+            </>
+        );
+    }
+
+    const { contract_info, contract_update, type, is_sell_requested } = row;
+    const { currency, status, date_expiry, date_start } = contract_info;
+    const duration_type = getContractDurationType(contract_info.longcode);
+    const progress_value = getTimePercentage(server_time, date_start, date_expiry) / 100;
+
+    if (isMultiplierContract(type)) {
+        return (
+            <PositionsCard
+                contract_info={contract_info}
+                contract_update={contract_update}
+                currency={currency}
+                is_multiplier
+                is_link_disabled
+                onClickCancel={onClickCancel}
+                onClickSell={onClickSell}
+                server_time={server_time}
+                status={status}
+            />
+        );
+    }
+
+    return (
+        <>
+            <div className='data-list__row'>
+                <DataList.Cell row={row} column={columns_map.type} />
+                <ProgressBar label={duration_type} value={progress_value} />
+            </div>
+            <div className='data-list__row'>
+                <DataList.Cell row={row} column={columns_map.reference} />
+                <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.currency} />
+            </div>
+            <div className='data-list__row'>
+                <DataList.Cell row={row} column={columns_map.purchase} />
+                <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.indicative} />
+            </div>
+            <div className='data-list__row'>
+                <DataList.Cell row={row} column={columns_map.payout} />
+                <DataList.Cell className='data-list__row-cell--amount' row={row} column={columns_map.profit} />
+            </div>
+            <div className='data-list__row-divider' />
+            <div className='data-list__row'>
+                <ContractCard.Sell
+                    contract_info={contract_info}
+                    is_sell_requested={is_sell_requested}
+                    getCardLabels={getCardLabels}
+                    onClickSell={onClickSell}
+                />
+            </div>
+        </>
+    );
+};
+
 const OpenPositionsTable = ({
     className,
     columns,
@@ -49,7 +129,6 @@ const OpenPositionsTable = ({
     currency,
     active_positions,
     is_loading,
-    is_multiplier_tab,
     getRowAction,
     mobileRowRenderer,
     preloaderCheck,
@@ -66,7 +145,7 @@ const OpenPositionsTable = ({
             />
         ) : (
             currency && (
-                <ThemedScrollbars className='reports__scrollbar' is_bypassed={isMobile()} is_only_horizontal>
+                <div className='reports__content'>
                     <DesktopWrapper>
                         <EmptyPlaceholderWrapper
                             component_icon={component_icon}
@@ -80,7 +159,6 @@ const OpenPositionsTable = ({
                                 data_source={active_positions}
                                 getRowAction={getRowAction}
                                 getRowSize={() => row_size}
-                                custom_width={'100%'}
                                 content_loader={ReportsTableRowLoader}
                             >
                                 <PlaceholderComponent is_loading={is_loading} />
@@ -98,362 +176,274 @@ const OpenPositionsTable = ({
                                 footer={totals}
                                 rowRenderer={mobileRowRenderer}
                                 getRowAction={getRowAction}
-                                custom_width='100%'
-                                getRowSize={() => {
-                                    if (isMobile() && is_multiplier_tab) return 253;
-                                    if (isMobile()) return 245;
-                                    return 194;
-                                }}
+                                row_gap={8}
                             >
                                 <PlaceholderComponent is_loading={is_loading} />
                             </DataList>
                         </EmptyPlaceholderWrapper>
                     </MobileWrapper>
-                </ThemedScrollbars>
+                </div>
             )
         )}
     </React.Fragment>
 );
 
-class OpenPositions extends React.Component {
-    state = {
-        active_index: this.props.is_multiplier ? 1 : 0,
-        // Tabs should be visible only when there is atleast one active multiplier contract
-        has_multiplier_contract: false,
-    };
+const getRowAction = row_obj =>
+    row_obj.is_unsupported
+        ? {
+              component: (
+                  <Localize
+                      i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
+                      values={{
+                          website_name,
+                      }}
+                      components={[
+                          <a
+                              key={0}
+                              className='link link--orange'
+                              rel='noopener noreferrer'
+                              target='_blank'
+                              href={urlFor('user/portfoliows', { legacy: true })}
+                          />,
+                      ]}
+                  />
+              ),
+          }
+        : getContractPath(row_obj.id);
 
-    componentDidMount() {
-        // For mobile, we show portfolio stepper in header even for reports pages.
-        // `onMount` in portfolio store will be invoked from portfolio stepper component in `trade-header-extensions.jsx`
-        if (!isMobile()) {
-            this.props.onMount();
-        }
-        this.checkForMultiplierContract();
-    }
+/*
+ * After refactoring transactionHandler for creating positions,
+ * purchase property in contract positions object is somehow NaN or undefined in the first few responses.
+ * So we set it to true in these cases to show a preloader for the data-table-row until the correct value is set.
+ */
+const isPurchaseReceived = item => isNaN(item.purchase) || !item.purchase;
 
-    componentDidUpdate(prev_props) {
-        this.checkForMultiplierContract(prev_props.active_positions);
-    }
+const getOpenPositionsTotals = (active_positions_filtered, is_multiplier_selected) => {
+    let totals;
 
-    componentWillUnmount() {
-        if (!isMobile()) {
-            this.props.onUnmount();
-        }
-    }
+    if (is_multiplier_selected) {
+        let ask_price = 0;
+        let profit = 0;
+        let buy_price = 0;
+        let bid_price = 0;
+        let purchase = 0;
 
-    checkForMultiplierContract(prev_active_positions = []) {
-        if (!this.state.has_multiplier_contract && this.props.active_positions !== prev_active_positions) {
-            const has_multiplier_contract = this.props.active_positions.some(p =>
-                isMultiplierContract(p.contract_info?.contract_type)
-            );
-            this.setState({
-                has_multiplier_contract,
-            });
-        }
-    }
+        active_positions_filtered.forEach(portfolio_pos => {
+            buy_price += +portfolio_pos.contract_info.buy_price;
+            bid_price += +portfolio_pos.contract_info.bid_price;
+            purchase += +portfolio_pos.purchase;
+            if (portfolio_pos.contract_info) {
+                profit += getTotalProfit(portfolio_pos.contract_info);
 
-    mobileRowRenderer = ({ row, is_footer }) => {
-        if (is_footer) {
-            return (
-                <>
-                    <div className='open-positions__data-list-footer--content'>
-                        <div>
-                            <DataList.Cell row={row} column={this.columns_map.purchase} />
-                            <DataList.Cell row={row} column={this.columns_map.payout} />
-                        </div>
-                        <div>
-                            <DataList.Cell
-                                className='data-list__row-cell--amount'
-                                row={row}
-                                column={this.columns_map.indicative}
-                            />
-                            <DataList.Cell
-                                className='data-list__row-cell--amount'
-                                row={row}
-                                column={this.columns_map.profit}
-                            />
-                        </div>
-                    </div>
-                </>
-            );
-        }
-
-        const { server_time, onClickCancel, onClickSell } = this.props;
-        const { contract_info, contract_update, type, is_sell_requested } = row;
-        const { currency, status, date_expiry, date_start } = contract_info;
-        const duration_type = getContractDurationType(contract_info.longcode);
-        const progress_value = getTimePercentage(server_time, date_start, date_expiry) / 100;
-
-        if (isMultiplierContract(type)) {
-            return (
-                <PositionsCard
-                    contract_info={contract_info}
-                    contract_update={contract_update}
-                    currency={currency}
-                    is_multiplier
-                    is_link_disabled
-                    onClickCancel={onClickCancel}
-                    onClickSell={onClickSell}
-                    server_time={server_time}
-                    status={status}
-                />
-            );
-        }
-
-        return (
-            <>
-                <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.type} />
-                    <ProgressBar label={duration_type} value={progress_value} />
-                </div>
-                <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.reference} />
-                    <DataList.Cell
-                        className='data-list__row-cell--amount'
-                        row={row}
-                        column={this.columns_map.currency}
-                    />
-                </div>
-                <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.purchase} />
-                    <DataList.Cell
-                        className='data-list__row-cell--amount'
-                        row={row}
-                        column={this.columns_map.indicative}
-                    />
-                </div>
-                <div className='data-list__row'>
-                    <DataList.Cell row={row} column={this.columns_map.payout} />
-                    <DataList.Cell className='data-list__row-cell--amount' row={row} column={this.columns_map.profit} />
-                </div>
-                <div className='data-list__row-divider' />
-                <div className='data-list__row'>
-                    <ContractCard.Sell
-                        contract_info={contract_info}
-                        is_sell_requested={is_sell_requested}
-                        getCardLabels={getCardLabels}
-                        onClickSell={onClickSell}
-                    />
-                </div>
-            </>
-        );
-    };
-
-    getRowAction = row_obj =>
-        row_obj.is_unsupported
-            ? {
-                  component: (
-                      <Localize
-                          i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
-                          values={{
-                              website_name,
-                          }}
-                          components={[
-                              <a
-                                  key={0}
-                                  className='link link--orange'
-                                  rel='noopener noreferrer'
-                                  target='_blank'
-                                  href={urlFor('user/portfoliows', { legacy: true })}
-                              />,
-                          ]}
-                      />
-                  ),
-              }
-            : getContractPath(row_obj.id);
-
-    // After refactoring transactionHandler for creating positions,
-    // purchase property in contract positions object is somehow NaN or undefined in the first few responses.
-    // So we set it to true in these cases to show a preloader for the data-table-row until the correct value is set.
-    isPurchaseReceived = item => isNaN(item.purchase) || !item.purchase;
-
-    getTotals = (active_positions_filtered, is_multiplier_selected) => {
-        let totals;
-
-        if (is_multiplier_selected) {
-            let ask_price = 0;
-            let profit = 0;
-            let buy_price = 0;
-            let bid_price = 0;
-            let purchase = 0;
-
-            active_positions_filtered.forEach(portfolio_pos => {
-                buy_price += +portfolio_pos.contract_info.buy_price;
-                bid_price += +portfolio_pos.contract_info.bid_price;
-                purchase += +portfolio_pos.purchase;
-                if (portfolio_pos.contract_info) {
-                    profit += getTotalProfit(portfolio_pos.contract_info);
-
-                    if (portfolio_pos.contract_info.cancellation) {
-                        ask_price += portfolio_pos.contract_info.cancellation.ask_price || 0;
-                    }
+                if (portfolio_pos.contract_info.cancellation) {
+                    ask_price += portfolio_pos.contract_info.cancellation.ask_price || 0;
                 }
-            });
-            totals = {
-                contract_info: {
-                    profit,
-                    buy_price,
-                    bid_price,
-                },
-                purchase,
-            };
-
-            if (ask_price > 0) {
-                totals.contract_info.cancellation = {
-                    ask_price,
-                };
             }
-        } else {
-            let indicative = 0;
-            let purchase = 0;
-            let profit_loss = 0;
-            let payout = 0;
-
-            active_positions_filtered.forEach(portfolio_pos => {
-                indicative += +portfolio_pos.indicative;
-                purchase += +portfolio_pos.purchase;
-                profit_loss += portfolio_pos.profit_loss;
-                payout += portfolio_pos.payout;
-            });
-            totals = {
-                indicative,
-                purchase,
-                profit_loss,
-                payout,
-            };
-        }
-        return totals;
-    };
-
-    setActiveTabIndex = index => {
-        this.setState({ active_index: index });
-    };
-
-    render() {
-        const {
-            active_positions,
-            component_icon,
-            is_loading,
-            error,
-            currency,
-            NotificationMessages,
-            onClickCancel,
-            onClickSell,
-            getPositionById,
-            server_time,
-        } = this.props;
-
-        const { has_multiplier_contract, active_index } = this.state;
-
-        if (error) {
-            return <p>{error}</p>;
-        }
-
-        const is_multiplier_selected = has_multiplier_contract && active_index === 1;
-
-        const active_positions_filtered = active_positions.filter(p => {
-            if (p.contract_info) {
-                return is_multiplier_selected
-                    ? isMultiplierContract(p.contract_info.contract_type)
-                    : !isMultiplierContract(p.contract_info.contract_type);
-            }
-            return true;
         });
-
-        const active_positions_filtered_totals = this.getTotals(active_positions_filtered, is_multiplier_selected);
-
-        const shared_props = {
-            active_positions: active_positions_filtered,
-            component_icon,
-            currency,
-            is_loading,
-            mobileRowRenderer: this.mobileRowRenderer,
-            getRowAction: this.getRowAction,
-            preloaderCheck: this.isPurchaseReceived,
-            totals: active_positions_filtered_totals,
+        totals = {
+            contract_info: {
+                profit,
+                buy_price,
+                bid_price,
+            },
+            purchase,
         };
-        this.columns = is_multiplier_selected
-            ? getMultiplierOpenPositionsColumnsTemplate({
-                  currency,
-                  onClickCancel,
-                  onClickSell,
-                  getPositionById,
-                  server_time,
-              })
-            : getOpenPositionsColumnsTemplate(currency);
 
-        this.columns_map = this.columns.reduce((map, item) => {
-            map[item.col_index] = item;
-            return map;
-        }, {});
+        if (ask_price > 0) {
+            totals.contract_info.cancellation = {
+                ask_price,
+            };
+        }
+    } else {
+        let indicative = 0;
+        let purchase = 0;
+        let profit_loss = 0;
+        let payout = 0;
 
-        return (
-            <React.Fragment>
-                <NotificationMessages />
-                {has_multiplier_contract ? (
-                    <Tabs
-                        active_index={active_index}
-                        className='open-positions'
-                        onTabItemClick={this.setActiveTabIndex}
-                        top
-                        header_fit_content={!isMobile()}
-                    >
-                        <div label={localize('Options')}>
-                            <OpenPositionsTable
-                                className='open-positions'
-                                columns={this.columns}
-                                {...shared_props}
-                                row_size={isMobile() ? 5 : 63}
-                            />
-                        </div>
-                        <div label={localize('Multipliers')}>
-                            <OpenPositionsTable
-                                className='open-positions-multiplier open-positions'
-                                is_multiplier_tab
-                                columns={this.columns}
-                                row_size={isMobile() ? 3 : 68}
-                                {...shared_props}
-                            />
-                        </div>
-                    </Tabs>
-                ) : (
-                    <OpenPositionsTable
-                        className='open-positions'
-                        columns={this.columns}
-                        {...shared_props}
-                        row_size={isMobile() ? 5 : 63}
-                    />
-                )}
-            </React.Fragment>
-        );
+        active_positions_filtered.forEach(portfolio_pos => {
+            indicative += +portfolio_pos.indicative;
+            purchase += +portfolio_pos.purchase;
+            profit_loss += portfolio_pos.profit_loss;
+            payout += portfolio_pos.payout;
+        });
+        totals = {
+            indicative,
+            purchase,
+            profit_loss,
+            payout,
+        };
     }
-}
+    return totals;
+};
+
+const OpenPositions = ({
+    active_positions,
+    component_icon,
+    currency,
+    error,
+    getPositionById,
+    is_loading,
+    is_multiplier,
+    NotificationMessages,
+    onClickCancel,
+    onClickSell,
+    onMount,
+    onUnmount,
+    server_time,
+}) => {
+    const [active_index, setActiveIndex] = React.useState(is_multiplier ? 1 : 0);
+    // Tabs should be visible only when there is at least one active multiplier contract
+    const [has_multiplier_contract, setMultiplierContract] = React.useState(false);
+
+    const previous_active_positions = usePrevious(active_positions);
+
+    React.useEffect(() => {
+        /*
+         * For mobile, we show portfolio stepper in header even for reports pages.
+         * `onMount` in portfolio store will be invoked from portfolio stepper component in `trade-header-extensions.jsx`
+         */
+        if (!isMobile()) onMount();
+
+        checkForMultiplierContract();
+
+        return () => {
+            if (!isMobile()) onUnmount();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    React.useEffect(() => {
+        checkForMultiplierContract(previous_active_positions);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [previous_active_positions]);
+
+    const checkForMultiplierContract = (prev_active_positions = []) => {
+        if (!has_multiplier_contract && active_positions !== prev_active_positions) {
+            setMultiplierContract(active_positions.some(p => isMultiplierContract(p.contract_info?.contract_type)));
+        }
+    };
+
+    const setActiveTabIndex = index => setActiveIndex(index);
+
+    if (error) return <p>{error}</p>;
+
+    const is_multiplier_selected = has_multiplier_contract && active_index === 1;
+
+    const active_positions_filtered = active_positions.filter(p => {
+        if (p.contract_info) {
+            return is_multiplier_selected
+                ? isMultiplierContract(p.contract_info.contract_type)
+                : !isMultiplierContract(p.contract_info.contract_type);
+        }
+        return true;
+    });
+
+    const active_positions_filtered_totals = getOpenPositionsTotals(active_positions_filtered, is_multiplier_selected);
+
+    const columns = is_multiplier_selected
+        ? getMultiplierOpenPositionsColumnsTemplate({
+              currency,
+              onClickCancel,
+              onClickSell,
+              getPositionById,
+              server_time,
+          })
+        : getOpenPositionsColumnsTemplate(currency);
+
+    const columns_map = columns.reduce((map, item) => {
+        map[item.col_index] = item;
+        return map;
+    }, {});
+
+    const mobileRowRenderer = props => (
+        <MobileRowRenderer
+            {...props}
+            columns_map={columns_map}
+            server_time={server_time}
+            onClickCancel={onClickCancel}
+            onClickSell={onClickSell}
+        />
+    );
+
+    const shared_props = {
+        active_positions: active_positions_filtered,
+        component_icon,
+        currency,
+        is_loading,
+        mobileRowRenderer,
+        getRowAction,
+        preloaderCheck: isPurchaseReceived,
+        totals: active_positions_filtered_totals,
+    };
+
+    return (
+        <React.Fragment>
+            <NotificationMessages />
+            {has_multiplier_contract ? (
+                <Tabs
+                    active_index={active_index}
+                    className='open-positions'
+                    onTabItemClick={setActiveTabIndex}
+                    top
+                    header_fit_content={!isMobile()}
+                >
+                    <div label={localize('Options')}>
+                        <OpenPositionsTable
+                            className='open-positions'
+                            columns={columns}
+                            {...shared_props}
+                            row_size={isMobile() ? 5 : 63}
+                        />
+                    </div>
+                    <div label={localize('Multipliers')}>
+                        <OpenPositionsTable
+                            className='open-positions-multiplier open-positions'
+                            is_multiplier_tab
+                            columns={columns}
+                            row_size={isMobile() ? 3 : 68}
+                            {...shared_props}
+                        />
+                    </div>
+                </Tabs>
+            ) : (
+                <OpenPositionsTable
+                    className='open-positions'
+                    columns={columns}
+                    {...shared_props}
+                    row_size={isMobile() ? 5 : 63}
+                />
+            )}
+        </React.Fragment>
+    );
+};
 
 OpenPositions.propTypes = {
     active_positions: MobxPropTypes.arrayOrObservableArray,
     component_icon: PropTypes.string,
     currency: PropTypes.string,
     error: PropTypes.string,
-    history: PropTypes.object,
+    getPositionById: PropTypes.func,
     is_loading: PropTypes.bool,
-    is_tablet: PropTypes.bool,
+    is_multiplier: PropTypes.bool,
+    NotificationMessages: PropTypes.node,
+    onClickCancel: PropTypes.func,
+    onClickSell: PropTypes.func,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     server_time: PropTypes.object,
-    totals: PropTypes.object,
 };
 
 export default connect(({ modules, client, common, ui }) => ({
-    currency: client.currency,
     active_positions: modules.portfolio.active_positions,
+    currency: client.currency,
     error: modules.portfolio.error,
     getPositionById: modules.portfolio.getPositionById,
     is_loading: modules.portfolio.is_loading,
+    is_multiplier: modules.trade.is_multiplier,
+    NotificationMessages: ui.notification_messages_ui,
     onClickCancel: modules.portfolio.onClickCancel,
     onClickSell: modules.portfolio.onClickSell,
     onMount: modules.portfolio.onMount,
     onUnmount: modules.portfolio.onUnmount,
-    is_multiplier: modules.trade.is_multiplier,
-    NotificationMessages: ui.notification_messages_ui,
     server_time: common.server_time,
 }))(withRouter(OpenPositions));

@@ -1,16 +1,20 @@
 import React from 'react';
+import { Icon, Text } from '@deriv/components';
 import PropTypes from 'prop-types';
-import IconBack from 'Assets/icon-back.jsx';
 import './page-return.scss';
 
-const PageReturn = ({ onClick, page_title }) => (
-    <div className='page-return'>
-        <div onClick={onClick} className='page-return__button'>
-            <IconBack />
+const PageReturn = ({ onClick, page_title }) => {
+    return (
+        <div className='page-return'>
+            <div onClick={onClick} className='page-return__button'>
+                <Icon icon='IcArrowLeftBold' size={16} />
+            </div>
+            <Text size='s' color='general' line_height='m' weight='bold'>
+                {page_title}
+            </Text>
         </div>
-        <span>{page_title}</span>
-    </div>
-);
+    );
+};
 
 PageReturn.propTypes = {
     onClick: PropTypes.func,

@@ -1,17 +1,25 @@
 .p2p-my-ads {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    .dc-input__wrapper {
+        width: 67.2rem; // TODO: Kill these fixed widths.
+    }
+
     &__header {
         display: flex;
         align-items: center;
-        margin-bottom: 1.6rem;
+        margin: 2.4rem 0 1.6rem;
         justify-content: space-between;
         min-height: 50px;
     }
-    &__form {
-        margin: 2.4rem 0;
 
+    &__form {
         &-summary {
             color: var(--text-less-prominent);
             font-size: 1.4rem;
+            margin-bottom: -1.6rem;
 
             &--bold {
                 font-weight: bold;
@@ -35,29 +43,12 @@
             &:not(:last-child) {
                 margin-right: 2.4rem;
             }
-            & .dc-input__label {
-                top: 1.2rem;
-            }
-            & .dc-input__hint {
-                padding-top: 0.4rem;
-            }
-            & .dc-input__field[type='textarea'] ~ .dc-field-error {
-                top: 9.7rem;
-            }
             &--single {
                 width: 18.9rem;
             }
             &--textarea {
-                width: 67.2rem;
                 height: 9.6rem;
-
-                .dc-input__hint {
-                    top: 9.7rem;
-                }
-                .dc-input__counter {
-                    top: 9.7rem;
-                    right: 0rem;
-                }
+                margin-bottom: 0;
             }
             &--trailing {
                 font-size: var(--text-size-xxs);
@@ -87,11 +78,19 @@
             justify-content: flex-end;
             background-color: var(--general-main-1);
         }
-        .dc-input__hint {
-            font-size: var(--text-size-xxs);
-        }
     }
+
     &__table {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+
+        &-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
         &-price {
             color: var(--text-profit-success);
             font-weight: bold;
@@ -114,6 +113,7 @@
             }
         }
         &-row {
+            padding: 1.6rem;
             grid-template-columns: 2fr 2fr 2fr 2fr 1fr;
         }
         &--disabled {
@@ -130,6 +130,7 @@
             }
         }
     }
+
     &__popup {
         &-header {
             border-bottom: 1px solid var(--general-section-2);
@@ -246,6 +247,7 @@
             fill: var(--text-general);
         }
     }
+
     &__empty {
         width: fit-content;
         margin: 0 auto;
@@ -260,12 +262,25 @@
             height: 40px;
         }
     }
+
     &__state {
         text-align: center;
         margin: 0 auto;
 
         &-button {
             margin-top: 12px;
+        }
+    }
+
+    &__data-list {
+        flex: 1;
+
+        &__data-list-body {
+            flex: 1;
+        }
+
+        .data-list__body-wrapper {
+            flex: 1;
         }
     }
 }
@@ -275,7 +290,6 @@
     display: flex;
     font-size: var(--text-size-s);
     justify-items: flex-start;
-    margin-right: -50px; // Minus half of &__switch width
 
     &__switch {
         transform: scale(0.5) translateX(-50%);

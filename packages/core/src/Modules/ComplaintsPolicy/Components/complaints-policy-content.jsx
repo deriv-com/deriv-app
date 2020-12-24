@@ -4,8 +4,10 @@ import { connect } from 'Stores/connect';
 import 'Sass/app/modules/complaints-policy.scss';
 
 const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
-    const has_vanuatu = mt5_login_list.some(item => /vanuatu/.test(item.group));
-    const has_labuan = mt5_login_list.some(item => /labuan/.test(item.group));
+    // * mt5_login_list returns these:
+    // landing_company_short: "svg" | "malta" | "maltainvest" |  "vanuatu"  | "labuan" | "bvi"
+    const has_vanuatu = mt5_login_list.some(item => item.landing_company_short === 'vanuatu');
+    const has_labuan = mt5_login_list.some(item => item.landing_company_short === 'labuan');
 
     switch (landing_company_shortcode) {
         case 'iom':
@@ -197,7 +199,7 @@ const Content = ({ landing_company_shortcode, mt5_login_list }) => {
                         title: localize('3.1. Submission of a complaint'),
                         text: (
                             <Localize
-                                i18n_default_text='To file a complaint about our service, send an email to <0>complaints@deriv.com</0> and state your complaint in detail. Please submit any relevant screenshots of your trading or system for our better understanding.'
+                                i18n_default_text='To file a complaint about our service, send an email to <0>complaints@deriv.com</0> and state your complaint in detail. Please submit any relevant screenshots of your trading or system for our better understanding. You may also call <1>+447723580049</1> to place your complaint.'
                                 components={[
                                     <a
                                         key={0}
@@ -205,6 +207,13 @@ const Content = ({ landing_company_shortcode, mt5_login_list }) => {
                                         rel='noopener noreferrer'
                                         target='_blank'
                                         href='mailto:complaints@deriv.com'
+                                    />,
+                                    <a
+                                        key={1}
+                                        className='link link--orange'
+                                        rel='noopener noreferrer'
+                                        target='_blank'
+                                        href='tel:+447723580049'
                                     />,
                                 ]}
                             />

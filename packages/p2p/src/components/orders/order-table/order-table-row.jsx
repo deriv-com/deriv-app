@@ -4,18 +4,22 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
-import Dp2pContext from 'Components/context/dp2p-context';
 import { secondsToTimer } from 'Utils/date-time';
+import { createExtendedOrderDetails } from 'Utils/orders';
 import ServerTime from 'Utils/server-time';
-import { createExtendedOrderDetails } from '../../../utils/orders';
-import { useStores } from '../../../../stores';
+import { useStores } from 'Stores';
 
-const OrderRowComponent = observer(({ data: order, onOpenDetails, style, is_active }) => {
-    const { general_store } = useStores();
+const OrderRow = observer(({ row: order }) => {
+    const getTimeLeft = time => {
+        const distance = ServerTime.getDistanceToServerTime(time);
+        return {
+            distance,
+            label: distance < 0 ? localize('expired') : secondsToTimer(distance),
+        };
+    };
+
+    const { general_store, order_store } = useStores();
     const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
-    const [remaining_time, setRemainingTime] = React.useState();
-    const { getLocalStorageSettingsForLoginId } = React.useContext(Dp2pContext);
-
     const {
         account_currency,
         amount_display,
@@ -35,41 +39,41 @@ const OrderRowComponent = observer(({ data: order, onOpenDetails, style, is_acti
         status_string,
     } = order_state;
 
-    let interval;
+    const [remaining_time, setRemainingTime] = React.useState(getTimeLeft(order_expiry_milliseconds).label);
+
+    const interval = React.useRef(null);
 
     const isOrderSeen = order_id => {
-        const { notifications } = getLocalStorageSettingsForLoginId();
+        const { notifications } = general_store.getLocalStorageSettingsForLoginId();
         return notifications.some(notification => notification.order_id === order_id && notification.is_seen === true);
     };
 
-    const countDownTimer = () => {
-        const distance = ServerTime.getDistanceToServerTime(order_expiry_milliseconds);
-        const timer = secondsToTimer(distance);
-
-        if (distance < 1) {
-            const { client, props } = general_store;
-            setRemainingTime(localize('expired'));
-            setOrderState(createExtendedOrderDetails(order.order_details, client.loginid, props.server_time));
-            clearInterval(interval);
-        } else {
-            setRemainingTime(timer);
-        }
-    };
-
     React.useEffect(() => {
-        countDownTimer();
-        interval = setInterval(countDownTimer, 1000);
-        return () => clearInterval(interval);
-    }, []);
+        const countDownTimer = () => {
+            const { distance, label } = getTimeLeft(order_expiry_milliseconds);
+
+            if (distance < 0) {
+                const { client, props } = general_store;
+                setRemainingTime(label);
+                setOrderState(createExtendedOrderDetails(order.order_details, client.loginid, props.server_time));
+                clearInterval(interval.current);
+            } else {
+                setRemainingTime(label);
+            }
+        };
+
+        interval.current = setInterval(countDownTimer, 1000);
+        return () => clearInterval(interval.current);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const offer_amount = `${amount_display} ${account_currency}`;
     const transaction_amount = `${price_display} ${local_currency}`;
 
     return (
-        <div onClick={() => onOpenDetails(order)} style={style}>
+        <div onClick={() => order_store.setQueryDetails(order)}>
             <Table.Row
                 className={classNames('orders__table-row orders__table-grid', {
-                    'orders__table-grid--active': is_active,
+                    'orders__table-grid--active': general_store.is_active_tab,
                     'orders__table-row--attention': !isOrderSeen(id),
                 })}
             >
@@ -101,28 +105,20 @@ const OrderRowComponent = observer(({ data: order, onOpenDetails, style, is_acti
                     {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad) ? offer_amount : transaction_amount}
                 </Table.Cell>
                 <Table.Cell>
-                    {is_active ? <div className='orders__table-time'>{remaining_time}</div> : order_purchase_datetime}
+                    {general_store.is_active_tab ? (
+                        <div className='orders__table-time'>{remaining_time}</div>
+                    ) : (
+                        order_purchase_datetime
+                    )}
                 </Table.Cell>
             </Table.Row>
         </div>
     );
 });
 
-OrderRowComponent.propTypes = {
-    data: PropTypes.shape({
-        account_currency: PropTypes.string,
-        amount_display: PropTypes.string,
-        display_status: PropTypes.string,
-        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        is_buy_order: PropTypes.bool,
-        local_currency: PropTypes.string,
-        order_purchase_datetime: PropTypes.string,
-        price_display: PropTypes.string,
-    }),
-    onOpenDetails: PropTypes.func,
-    style: PropTypes.object,
+OrderRow.displayName = 'OrderRow';
+OrderRow.propTypes = {
+    order: PropTypes.object,
 };
 
-OrderRowComponent.displayName = 'OrderRowComponent';
-
-export default OrderRowComponent;
+export default OrderRow;

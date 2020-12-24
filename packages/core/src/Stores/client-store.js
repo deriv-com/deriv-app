@@ -3,10 +3,8 @@ import { action, computed, observable, reaction, runInAction, toJS, when } from 
 import moment from 'moment';
 import {
     redirectToLogin,
-    getMT5AccountType,
     getPropertyValue,
     getUrlSmartTrader,
-    isBot,
     isDesktopOs,
     isEmptyObject,
     LocalStore,
@@ -24,7 +22,7 @@ import { isEuCountry } from '_common/utility';
 import BaseStore from './base-store';
 import { getClientAccountType, getAccountTitle } from './Helpers/client';
 import { createDeviceDataObject, setDeviceDataCookie } from './Helpers/device';
-import { handleClientNotifications } from './Helpers/client-notifications';
+import { handleClientNotifications, clientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const storage_key = 'client.accounts';
@@ -58,10 +56,12 @@ export default class ClientStore extends BaseStore {
     @observable device_data = {};
     @observable is_logging_in = false;
     @observable has_logged_out = false;
-    @observable landing_companies = {
-        financial_company: {},
-        gaming_company: {},
-    };
+    // this will store the landing_company API response, including
+    // financial_company: {}
+    // gaming_company: {}
+    // mt_financial_company: {}
+    // mt_gaming_company: {}
+    @observable landing_companies = {};
 
     @observable upgradeable_landing_companies = [];
     @observable mt5_login_list = [];
@@ -142,30 +142,12 @@ export default class ClientStore extends BaseStore {
             : undefined;
     }
 
-    /**
-     * Temporary property. should be removed once we are fully migrated from the old app.
-     *
-     * @returns {boolean}
-     */
-    @computed
-    get is_client_allowed_to_visit() {
-        // TODO: [deriv-eu] Remove this after complete EU merge into production
-        return !!(
-            this.root_store.ui.is_eu_enabled || // TODO: [deriv-eu] Remove this after complete EU merge into production
-            !this.is_logged_in ||
-            this.is_virtual ||
-            this.accounts[this.loginid].landing_company_shortcode === 'samoa' ||
-            this.accounts[this.loginid].landing_company_shortcode === 'svg' ||
-            isBot()
-        );
-    }
-
     @computed
     get is_reality_check_visible() {
         if (!this.loginid || !this.landing_company) {
             return false;
         }
-        return !!(this.has_reality_check && !this.reality_check_dismissed && this.root_store.ui.is_eu_enabled); // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
+        return !!(this.has_reality_check && !this.reality_check_dismissed);
     }
 
     @computed
@@ -233,9 +215,14 @@ export default class ClientStore extends BaseStore {
         if (!this.landing_companies) return [];
         if (this.root_store.ui && this.root_store.ui.real_account_signup_target) {
             const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
-            if (this.landing_companies[`${target}_company`]) {
-                return this.landing_companies[`${target}_company`].legal_allowed_currencies;
+            if (this.landing_companies[`${target}_company`] && this.current_landing_company && this.accounts) {
+                if (this.accounts[this.loginid] && !this.accounts[this.loginid].currency) {
+                    return this.landing_companies[`${target}_company`].legal_allowed_currencies.filter(currency =>
+                        this.current_landing_company.legal_allowed_currencies.includes(currency)
+                    );
+                }
             }
+            return this.landing_companies[`${target}_company`].legal_allowed_currencies;
         }
         if (this.landing_companies.gaming_company) {
             return this.landing_companies.gaming_company.legal_allowed_currencies;
@@ -371,9 +358,14 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get should_allow_authentication() {
+        const allow_document_upload = this.account_status?.status?.some(status => status === 'allow_document_upload');
+        return allow_document_upload || !!this.is_authentication_needed;
+    }
+
+    @computed
     get is_authentication_needed() {
-        if (!this.account_status.status) return false;
-        return this.account_status.authentication.needs_verification.length;
+        return this.account_status?.authentication?.needs_verification?.length;
     }
 
     @computed
@@ -388,34 +380,36 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_financial_information_incomplete() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status => status === 'financial_information_not_complete');
+        return this.account_status?.status?.some(status => status === 'financial_information_not_complete');
     }
 
     @computed
     get is_withdrawal_lock() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status_name =>
+        return this.account_status?.status?.some(status_name =>
             /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status_name)
         );
     }
 
     @computed
     get is_trading_experience_incomplete() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status => status === 'trading_experience_not_complete');
+        return this.account_status?.status?.some(status => status === 'trading_experience_not_complete');
+    }
+
+    @computed
+    get authentication_status() {
+        const document_status = this.account_status?.authentication?.document?.status;
+        const identity_status = this.account_status?.authentication?.identity?.status;
+        return { document_status, identity_status };
     }
 
     @computed
     get is_fully_authenticated() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status => status === 'authenticated');
+        return this.account_status?.status?.some(status => status === 'authenticated');
     }
 
     @computed
     get is_pending_authentication() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status => status === 'document_under_review');
+        return this.account_status?.status?.some(status => status === 'document_under_review');
     }
 
     @computed
@@ -426,8 +420,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_age_verified() {
-        if (!this.account_status.status) return false;
-        return this.account_status.status.some(status => status === 'age_verification');
+        return this.account_status?.status?.some(status => status === 'age_verification');
     }
 
     @computed
@@ -484,14 +477,7 @@ export default class ClientStore extends BaseStore {
     // this is true when a user needs to have a active real account for trading
     @computed
     get should_have_real_account() {
-        // TODO [deriv-eu] remove is_eu_enabled check once EU is ready for production
-        return (
-            this.standpoint.iom &&
-            this.is_uk &&
-            !this.has_any_real_account &&
-            this.root_store.ui &&
-            this.root_store.ui.is_eu_enabled
-        );
+        return this.standpoint.iom && this.is_uk && !this.has_any_real_account;
     }
 
     // Shows all possible landing companies of user between all
@@ -558,15 +544,11 @@ export default class ClientStore extends BaseStore {
     }
 
     isMT5Allowed = landing_companies => {
-        if (!landing_companies || !Object.keys(landing_companies).length) return false;
-        const has_mt5 = 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
+        // default allowing mt5 to true before landing_companies gets populated
+        // since most clients are allowed to use mt5
+        if (!landing_companies || !Object.keys(landing_companies).length) return true;
 
-        // TODO: [deriv-eu] Remove the if statement once EU is enabled in dev
-        if (this.is_eu && !this.root_store.ui.is_eu_enabled) {
-            return false;
-        }
-
-        return has_mt5;
+        return 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
     };
 
     @computed
@@ -720,6 +702,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setWebsiteStatus(response) {
         this.website_status = response.website_status;
+        this.responseWebsiteStatus(response);
         setCurrencies(this.website_status);
     }
 
@@ -883,7 +866,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_website_status_ready() {
-        return this.website_status && this.website_status.site_status === 'up';
+        return this.website_status && !BinarySocket.getAvailability().is_down;
     }
 
     isAccountOfType = type => {
@@ -900,18 +883,17 @@ export default class ClientStore extends BaseStore {
     getRiskAssessment = () => {
         if (!this.account_status) return false;
 
-        const status = this.account_status.status;
-        const is_high_risk = /high/.test(this.account_status.risk_classification);
+        const status = this.account_status?.status;
 
         return this.isAccountOfType('financial')
             ? /(financial_assessment|trading_experience)_not_complete/.test(status)
-            : is_high_risk && /financial_assessment_not_complete/.test(status);
+            : /financial_assessment_not_complete/.test(status);
     };
 
     shouldCompleteTax = () => {
         if (!this.isAccountOfType('financial')) return false;
 
-        return !/crs_tin_information/.test((this.account_status || {}).status);
+        return !/crs_tin_information/.test((this.account_status || {})?.status);
     };
 
     @action.bound
@@ -939,10 +921,17 @@ export default class ClientStore extends BaseStore {
     async switchAccount(loginid) {
         this.setPreSwitchAccount(true);
         this.setIsLoggingIn(true);
-        this.root_store.ui.removeNotifications();
-        this.root_store.ui.removeAllNotificationMessages();
+        this.root_store.ui.removeNotifications(true);
+        this.root_store.ui.removeAllNotificationMessages(true);
         this.setSwitched(loginid);
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
+    }
+
+    @action.bound
+    async resetVirtualBalance() {
+        this.root_store.ui.removeNotificationByKey({ key: 'reset_virtual_balance' });
+        this.root_store.ui.removeNotificationMessage({ key: 'reset_virtual_balance', should_show_again: true });
+        await WS.authorized.topupVirtual();
     }
 
     @action.bound
@@ -952,10 +941,15 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     refreshNotifications() {
-        this.root_store.ui.removeNotifications();
+        this.root_store.ui.removeNotifications(true);
         this.root_store.ui.removeAllNotificationMessages();
         const client = this.accounts[this.loginid];
-        const { has_missing_required_field } = handleClientNotifications(client, this, this.root_store.ui);
+        const { has_missing_required_field } = handleClientNotifications(
+            client,
+            this,
+            this.root_store.ui,
+            this.root_store.modules.cashier
+        );
         this.setHasMissingRequiredField(has_missing_required_field);
     }
 
@@ -1012,10 +1006,10 @@ export default class ClientStore extends BaseStore {
         }
 
         /**
-         * Set up reaction for account_settings, account_status
+         * Set up reaction for account_settings, account_status, is_p2p_visible
          */
         reaction(
-            () => [this.account_settings, this.account_status],
+            () => [this.account_settings, this.account_status, this.root_store.modules.cashier.is_p2p_visible],
             () => {
                 client = this.accounts[this.loginid];
                 BinarySocket.wait('landing_company').then(() => {
@@ -1025,7 +1019,8 @@ export default class ClientStore extends BaseStore {
                         const { has_missing_required_field } = handleClientNotifications(
                             client,
                             this,
-                            this.root_store.ui
+                            this.root_store.ui,
+                            this.root_store.modules.cashier
                         );
                         this.setHasMissingRequiredField(has_missing_required_field);
                     }
@@ -1264,7 +1259,10 @@ export default class ClientStore extends BaseStore {
         this.root_store.gtm.setLoginFlag();
 
         await this.init();
-        this.broadcastAccountChange();
+
+        // broadcastAccountChange is already called after new connection is authorized
+        if (!should_switch_socket_connection) this.broadcastAccountChange();
+
         if (!this.is_virtual) this.getLimits();
 
         runInAction(() => (this.is_switching = false));
@@ -1278,7 +1276,7 @@ export default class ClientStore extends BaseStore {
             () => {
                 // Remove real account notifications upon switching to virtual
                 if (this.accounts[this.switched]?.is_virtual) {
-                    this.root_store.ui.removeNotifications();
+                    this.root_store.ui.removeNotifications(true);
                     this.root_store.ui.removeAllNotificationMessages();
                 }
 
@@ -1288,9 +1286,40 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    resetVirtualBalanceNotification(loginid) {
+        if (!this.is_logged_in) return;
+        if (!this.accounts[loginid].is_virtual) return;
+        const min_reset_limit = 1000;
+        const max_reset_limit = 999000;
+        const balance = parseInt(this.accounts[loginid].balance);
+
+        // Display notification message to user with virtual account to reset their balance
+        // if the balance is less than equals to 1000 or more than equals to 999000
+        if (balance <= min_reset_limit || balance >= max_reset_limit) {
+            let message = localize(
+                'Your demo account balance is low. Reset your balance to continue trading from your demo account.'
+            );
+            if (balance >= max_reset_limit)
+                message = localize(
+                    'Your demo account balance has reached the maximum limit, and you will not be able to place new trades. Reset your balance to continue trading from your demo account.'
+                );
+            this.root_store.ui.addNotificationMessage(
+                clientNotifications({}, { resetVirtualBalance: this.resetVirtualBalance, message })
+                    .reset_virtual_balance
+            );
+        } else {
+            this.root_store.ui.removeNotificationByKey({ key: 'reset_virtual_balance' });
+            this.root_store.ui.removeNotificationMessage({ key: 'reset_virtual_balance', should_show_again: true });
+        }
+    }
+
+    @action.bound
     setBalanceActiveAccount(obj_balance) {
         if (this.accounts[obj_balance?.loginid] && obj_balance.loginid === this.loginid) {
             this.accounts[obj_balance.loginid].balance = obj_balance.balance;
+            if (this.accounts[obj_balance.loginid].is_virtual) {
+                this.resetVirtualBalanceNotification(obj_balance.loginid);
+            }
             this.resetLocalStorageValues(this.loginid);
         }
     }
@@ -1375,7 +1404,7 @@ export default class ClientStore extends BaseStore {
         runInAction(async () => {
             this.responsePayoutCurrencies(await WS.payoutCurrencies());
         });
-        this.root_store.ui.removeAllNotificationMessages();
+        this.root_store.ui.removeAllNotificationMessages(true);
         this.syncWithSmartTrader(this.loginid, this.accounts);
         this.cleanupRealityCheck();
     }
@@ -1415,24 +1444,11 @@ export default class ClientStore extends BaseStore {
         const client_object = {};
         let active_loginid;
 
-        let is_allowed_real = true;
-        // Performs check to avoid login of landing companies that are currently not supported in app
-        // TODO: [deriv-eu] Remove this after full merging of EU. When EU is enabled all landing companies are allowed.
-        account_list.forEach(account => {
-            if (
-                !this.root_store.ui &&
-                this.root_store.ui.is_eu_enabled &&
-                !/^virtual|svg$/.test(account.landing_company_name)
-            ) {
-                is_allowed_real = false;
-            }
-        });
-
         account_list.forEach(function (account) {
             Object.keys(account).forEach(function (param) {
                 if (param === 'loginid') {
                     if (!active_loginid && !account.is_disabled) {
-                        if (is_allowed_real && !account.is_virtual) {
+                        if (!account.is_virtual) {
                             active_loginid = account[param];
                         } else if (account.is_virtual) {
                             // TODO: [only_virtual] remove this to stop logging non-SVG clients into virtual
@@ -1628,9 +1644,7 @@ export default class ClientStore extends BaseStore {
                     event: 'virtual_signup',
                 });
 
-                if (this.root_store.ui.is_eu_enabled) {
-                    this.root_store.ui.showAccountTypesModalForEuropean();
-                }
+                this.root_store.ui.showAccountTypesModalForEuropean();
 
                 if (this.is_mt5_allowed) {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
@@ -1727,13 +1741,10 @@ export default class ClientStore extends BaseStore {
         }, 60000);
 
         if (!response.error) {
-            this.mt5_login_list = response.mt5_login_list
-                .filter(account => !/inactive/.test(account.group)) // remove disabled mt5 accounts
-                .map(account => ({
-                    ...account,
-                    group: getMT5AccountType(account.group),
-                    display_login: account.login.replace(/^(MT[DR]?)/i, ''),
-                }));
+            this.mt5_login_list = response.mt5_login_list.map(account => ({
+                ...account,
+                display_login: account.login.replace(/^(MT[DR]?)/i, ''),
+            }));
         } else {
             this.mt5_login_list_error = response.error;
         }
@@ -1791,7 +1802,7 @@ export default class ClientStore extends BaseStore {
     @computed
     get needs_financial_assessment() {
         if (this.is_virtual) return false;
-        if (this.is_high_risk || this.is_financial_information_incomplete) return true;
+        if (this.is_financial_information_incomplete) return true;
         if (!this.is_svg) {
             if (this.is_financial_account || this.is_trading_experience_incomplete) return true;
         }

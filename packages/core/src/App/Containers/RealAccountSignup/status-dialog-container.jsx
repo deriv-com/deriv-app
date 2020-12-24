@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Div100vhContainer, Icon } from '@deriv/components';
-import { routes, isDesktop } from '@deriv/shared';
+import { routes, isDesktop, isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { EXPERIAN, getExperianResult } from './helpers/constants';
 import { DialogHeading } from './helpers/dialog-heading.jsx';
@@ -85,7 +85,11 @@ class StatusDialogContainer extends React.Component {
                     {this.status === EXPERIAN.WARN && <Warning className='bottom-right-overlay' />}
                     {this.status === EXPERIAN.DANGER && <Danger className='bottom-right-overlay' />}
                 </div>
-                <div className='status-dialog__body-area'>
+                <div
+                    className={classNames('status-dialog__body-area', {
+                        'status-dialog__body-area--no-grow': isMobile(),
+                    })}
+                >
                     <DialogHeading status={this.status} landing_company_shortcode={landing_company_shortcode} />
                     <DialogMessage
                         status={this.status}
@@ -111,6 +115,7 @@ class StatusDialogContainer extends React.Component {
 
 StatusDialogContainer.propTypes = {
     currency: PropTypes.string,
+    closeModal: PropTypes.func,
     has_cancel: PropTypes.bool,
     has_submit: PropTypes.bool,
     heading: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
@@ -121,17 +126,15 @@ StatusDialogContainer.propTypes = {
     is_belgium_residence: PropTypes.bool,
     is_real: PropTypes.bool,
     message: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    onCancel: PropTypes.func,
     onSubmit: PropTypes.func,
     text_submit: PropTypes.string,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client }) => ({
     landing_company_shortcode: client.landing_company_shortcode,
     is_fully_authenticated: client.is_fully_authenticated,
     is_age_verified: client.is_age_verified,
     is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
     is_belgium_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
-    closeModal: ui.closeRealAccountSignup,
     switchToVirtual: () => client.switchAccount(client.virtual_account_loginid),
 }))(withRouter(StatusDialogContainer));

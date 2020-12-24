@@ -7,12 +7,14 @@ import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import ServerTime from '_common/base/server_time';
 import { routes } from '@deriv/shared';
+import { Loading } from '@deriv/components';
 
 /* P2P will use the same websocket connection as Deriv/Binary, we need to pass it as a prop */
 const P2PCashier = ({
     currency,
     history,
     is_dark_mode_on,
+    is_logging_in,
     is_mobile,
     is_virtual,
     local_currency_config,
@@ -60,6 +62,10 @@ const P2PCashier = ({
         [history, location.hash, location.search, order_id]
     );
 
+    if (is_logging_in) {
+        return <Loading is_fullscreen={false} />;
+    }
+
     return (
         <P2P
             client={{ currency, local_currency_config, is_virtual, residence, loginid }}
@@ -82,6 +88,7 @@ P2PCashier.propTypes = {
     currency: PropTypes.string,
     history: PropTypes.object,
     is_dark_mode_on: PropTypes.bool,
+    is_logging_in: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_virtual: PropTypes.bool,
     local_currency_config: PropTypes.object,
@@ -97,6 +104,7 @@ export default withRouter(
         local_currency_config: client.local_currency_config,
         loginid: client.loginid,
         is_dark_mode_on: ui.is_dark_mode_on,
+        is_logging_in: client.is_logging_in,
         is_virtual: client.is_virtual,
         residence: client.residence,
         setNotificationCount: modules.cashier.setNotificationCount,

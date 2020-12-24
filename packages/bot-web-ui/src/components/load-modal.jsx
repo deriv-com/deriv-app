@@ -27,7 +27,7 @@ const LoadModal = ({
         return (
             <MobileFullPageModal
                 is_modal_open={is_load_modal_open}
-                className='load-strategy'
+                className='load-strategy__wrapper'
                 header={localize('Load strategy')}
                 onClickClose={toggleLoadModal}
                 height_offset='80px'
@@ -54,7 +54,7 @@ const LoadModal = ({
         <Modal
             title={header_text}
             className='load-strategy'
-            width='1092px'
+            width='1000px'
             height='80vh'
             is_open={is_load_modal_open}
             toggleModal={toggleLoadModal}

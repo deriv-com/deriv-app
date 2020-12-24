@@ -1,12 +1,12 @@
 /** @define dc-input-field; weak */
 .dc-input-field {
-    margin: 0.8em 0 0;
+    margin: 0.8rem 0 0;
     position: relative;
 
     &__label {
         @include typeface(--paragraph-left-normal-black);
         color: var(--text-general);
-        margin-bottom: 0.2em;
+        margin-bottom: 0.2rem;
         display: inline-block;
         text-align: center;
         width: 100%;
@@ -41,7 +41,7 @@
         border: none;
         padding: 0;
         margin: initial;
-        min-width: 3.2em;
+        min-width: 3.2rem;
         border-radius: 3px;
         background-color: initial;
         display: flex;
@@ -89,7 +89,7 @@
     display: inline-block;
     width: 100%;
     height: 32px;
-    padding-left: 0.8em;
+    padding-left: 0.8rem;
     border-radius: $BORDER_RADIUS;
     transition: transform 0.3s;
     background-color: var(--fill-normal);
@@ -97,7 +97,7 @@
     color: var(--text-prominent);
 
     &[type='checkbox'] {
-        font-size: 1.2em;
+        font-size: 1.2rem;
         cursor: pointer;
         display: inline-block;
         vertical-align: middle;

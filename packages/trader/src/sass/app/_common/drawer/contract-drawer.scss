@@ -5,7 +5,7 @@ $header-height: 4em;
     // removing 2px below for borders
     height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - 2px - (#{$POSITIONS_DRAWER_MARGIN} * 4));
     z-index: 2;
-    padding: 8px;
+    padding: 0 0.8rem;
     box-sizing: border-box;
     will-change: transform, opacity;
     transition: opacity 0.3s ease, transform 0.3s ease;
@@ -21,6 +21,9 @@ $header-height: 4em;
         margin-left: 8px;
         text-transform: none;
         color: var(--text-prominent);
+    }
+    .currency-badge {
+        margin-bottom: 5px;
     }
     &--contract-mode {
         &:before {
@@ -59,14 +62,12 @@ $header-height: 4em;
         margin-right: 16px;
     }
     &__body {
-        height: 100%;
         display: flex;
         flex-direction: column;
-    }
-    .dc-contract-card-dialog-toggle {
-        top: 114px;
-        right: 8px;
-        width: 108px;
+
+        @include desktop {
+            height: 100%;
+        }
     }
 }
 

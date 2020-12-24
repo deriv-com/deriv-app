@@ -29,22 +29,23 @@
             margin-left: 20px;
         }
     }
-    &__scrollbars {
-        height: 100%;
-    }
     &__item {
         padding: 16px;
 
         &-list {
-            height: 100%;
+            height: calc(100% - 4.2rem);
         }
         &-content {
             > * {
                 width: 100%;
             }
         }
-        &:nth-child(even) {
-            background: var(--status-default);
+    }
+    &__data-list {
+        .ReactVirtualized__Grid__innerScrollContainer {
+            > div:nth-child(even) {
+                background: var(--status-default);
+            }
         }
     }
     &-tools {

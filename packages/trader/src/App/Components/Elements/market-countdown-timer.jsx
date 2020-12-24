@@ -33,7 +33,7 @@ const getSymbol = (target_symbol, trading_times) => {
 };
 
 const calculateTimeLeft = remaining_time_to_open => {
-    const difference = remaining_time_to_open - +new Date();
+    const difference = remaining_time_to_open - Date.now();
     return difference > 0
         ? {
               days: Math.floor(difference / (1000 * 60 * 60 * 24)),
@@ -61,9 +61,9 @@ const MarketCountdownTimer = ({
             if (days_offset > days_to_check_before_exit) return {};
             let remaining_time_to_open;
             const target_date = moment(new Date()).add(days_offset, 'days');
-            const api_res = await getTradingTimes(target_date.format('YYYY-MM-DD'));
-            if (!api_res.api_initial_load_error) {
-                const { times } = getSymbol(target_symbol, api_res.trading_times);
+            const api_response = await getTradingTimes(target_date.format('YYYY-MM-DD'));
+            if (!api_response.api_initial_load_error) {
+                const { times } = getSymbol(target_symbol, api_response.trading_times);
                 const { open, close } = times;
                 const is_closed_all_day = open?.length === 1 && open[0] === '--' && close[0] === '--';
                 if (is_closed_all_day) {
@@ -73,7 +73,7 @@ const MarketCountdownTimer = ({
                 const date_str = target_date.toISOString().substring(0, 11);
                 const getUTCDate = hour => new Date(`${date_str}${hour}Z`);
                 for (let i = 0; i < open?.length; i++) {
-                    const diff = +getUTCDate(open[i]) - +new Date();
+                    const diff = +getUTCDate(open[i]) - Date.now();
                     if (diff > 0) {
                         remaining_time_to_open = +getUTCDate(open[i]);
                         if (isMounted() && target_symbol === symbol) {
@@ -86,13 +86,13 @@ const MarketCountdownTimer = ({
         };
 
         whenMarketOpens(0, symbol);
-    }, [isMounted, symbol]);
+    }, [symbol]);
 
     React.useEffect(() => {
         let timer;
         if (when_market_opens?.remaining_time_to_open) {
             timer = setTimeout(async () => {
-                setTimeLeft(calculateTimeLeft(when_market_opens?.remaining_time_to_open));
+                setTimeLeft(calculateTimeLeft(when_market_opens.remaining_time_to_open));
                 if (when_market_opens.remaining_time_to_open <= 1 && typeof setActiveSymbols === 'function')
                     await setActiveSymbols();
             }, 1000);
@@ -119,6 +119,8 @@ const MarketCountdownTimer = ({
                     : ` ${localize('and')} ${value} ${localize(time_left.minutes > 1 ? 'mins' : 'min')}`;
         }
     });
+
+    if (!(when_market_opens && timer_components)) return null;
 
     const { opening_time, days_offset } = when_market_opens;
     let opening_time_banner = null;
@@ -154,8 +156,6 @@ const MarketCountdownTimer = ({
             </Text>
         );
     }
-
-    if (!(when_market_opens && timer_components)) return null;
 
     if (is_main_page && is_market_close_overlay_loading) setMarketCloseOverlayLoading(false);
 
@@ -201,6 +201,9 @@ const MarketCountdownTimer = ({
 
 MarketCountdownTimer.propTypes = {
     is_main_page: PropTypes.bool,
+    is_market_close_overlay_loading: PropTypes.bool,
+    setActiveSymbols: PropTypes.func,
+    setMarketCloseOverlayLoading: PropTypes.func,
     symbol: PropTypes.string.isRequired,
 };
 

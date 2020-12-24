@@ -52,7 +52,17 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                         </div>
                         <div className='p2p-my-ads__table-row-details'>
                             <Text line_height='m' size='s' weight='bold'>
-                                {type[advert.type]} {account_currency}
+                                {type === buy_sell.BUY ? (
+                                    <Localize
+                                        i18n_default_text='Buy {{ account_currency }}'
+                                        values={{ account_currency }}
+                                    />
+                                ) : (
+                                    <Localize
+                                        i18n_default_text='Sell {{ account_currency }}'
+                                        values={{ account_currency }}
+                                    />
+                                )}
                             </Text>
                             <Text color='profit-success' line_height='m' size='s' weight='bold'>
                                 {price_display} {local_currency}

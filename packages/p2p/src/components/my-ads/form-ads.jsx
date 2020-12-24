@@ -95,9 +95,13 @@ const FormAds = () => {
                                                         label={localize('Total amount')}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={
-                                                            <span className='p2p-my-ads__form-field--trailing'>
+                                                            <Text
+                                                                color={isDesktop() ? 'less-prominent' : 'prominent'}
+                                                                line_height='m'
+                                                                size={isDesktop() ? 'xxs' : 's'}
+                                                            >
                                                                 {currency}
-                                                            </span>
+                                                            </Text>
                                                         }
                                                         onChange={e => {
                                                             my_ads_store.restrictLength(e, handleChange);
@@ -120,9 +124,13 @@ const FormAds = () => {
                                                         })}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={
-                                                            <span className='p2p-my-ads__form-field--trailing'>
+                                                            <Text
+                                                                color={isDesktop() ? 'less-prominent' : 'prominent'}
+                                                                line_height='m'
+                                                                size={isDesktop() ? 'xxs' : 's'}
+                                                            >
                                                                 {local_currency_config.currency}
-                                                            </span>
+                                                            </Text>
                                                         }
                                                         onChange={e => {
                                                             my_ads_store.restrictLength(e, handleChange);
@@ -141,9 +149,13 @@ const FormAds = () => {
                                                         label={localize('Min order')}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={
-                                                            <span className='p2p-my-ads__form-field--trailing'>
+                                                            <Text
+                                                                color={isDesktop() ? 'less-prominent' : 'prominent'}
+                                                                line_height='m'
+                                                                size={isDesktop() ? 'xxs' : 's'}
+                                                            >
                                                                 {currency}
-                                                            </span>
+                                                            </Text>
                                                         }
                                                         onChange={e => {
                                                             my_ads_store.restrictLength(e, handleChange);
@@ -162,9 +174,13 @@ const FormAds = () => {
                                                         label={localize('Max order')}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={
-                                                            <span className='p2p-my-ads__form-field--trailing'>
+                                                            <Text
+                                                                color={isDesktop() ? 'less-prominent' : 'prominent'}
+                                                                line_height='m'
+                                                                size={isDesktop() ? 'xxs' : 's'}
+                                                            >
                                                                 {currency}
-                                                            </span>
+                                                            </Text>
                                                         }
                                                         onChange={e => {
                                                             my_ads_store.restrictLength(e, handleChange);

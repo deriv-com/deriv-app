@@ -41,4 +41,5 @@ export const messageWithImage = (message, image) => (
     </>
 );
 
+// eslint-disable-next-line react/display-name
 export const arrayAsMessage = parsedArray => measure => <ExpansionPanel message={parsedArray} onResize={measure} />;

@@ -310,7 +310,6 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
     granularity: modules.contract_trade.granularity,
     chart_type: modules.contract_trade.chart_type,
     settings: {
-        assetInformation: false, // ui.is_chart_asset_info_visible,
         countdown: ui.is_chart_countdown_visible,
         isHighestLowestMarkerEnabled: false, // TODO: Pending UI,
         language: common.current_language.toLowerCase(),

@@ -54,36 +54,18 @@ const App = ({ root_store }) => {
         if (isTouchDevice()) {
             const el_landscape_blocker = document.getElementById('landscape_blocker');
 
-            const onFocus = () => {
-                /* Prevent from showing Landscape blocker UI when keyboard is visible */
-                el_landscape_blocker.classList.add('landscape-blocker--keyboard-visible');
-                root_store.ui.setIsNativepickerVisible(true);
-            };
-
-            const onFocusOut = e => {
-                if (e.target.classList.contains('dc-dropdown__display')) {
-                    // if the next target is a dropdown, keep native picker open
-                    return;
-                }
-                root_store.ui.setIsNativepickerVisible(false);
-            };
-
             const handleResize = () => {
-                if (window.innerWidth <= window.innerHeight) {
+                if (window.outerWidth <= window.outerHeight) {
                     root_store.ui.onOrientationChange(false);
+                    el_landscape_blocker.classList.remove('landscape-blocker--visible');
                 } else {
                     root_store.ui.onOrientationChange(true);
+                    el_landscape_blocker.classList.add('landscape-blocker--visible');
                 }
             };
 
             handleResize();
             window.addEventListener('resize', debounce(handleResize, 400));
-
-            const onTouchStart = () => {
-                if (document.activeElement.tagName !== 'INPUT') {
-                    el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
-                }
-            };
             /**
              * Adding `focus` and `focusout` event listeners to document here to detect for on-screen keyboard on mobile browsers
              * and storing this value in UI-store to be used across the app stores.
@@ -93,14 +75,8 @@ const App = ({ root_store }) => {
              *          remove `landscape-blocker--keyboard-visible` class as late as possible
              * [TODO]: find an alternative solution to detect for on-screen keyboard
              */
-            document.addEventListener('focus', onFocus, true);
-            document.addEventListener('focusout', onFocusOut, false);
-            document.addEventListener('touchstart', onTouchStart, true);
 
             return () => {
-                document.removeEventListener('focus', onFocus);
-                document.removeEventListener('focusout', onFocusOut);
-                document.removeEventListener('touchstart', onTouchStart);
                 window.removeEventListener('resize', debounce(handleResize, 400));
             };
         }

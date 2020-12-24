@@ -109,14 +109,19 @@ const MarketCountdownTimer = ({
     Object.keys(time_left).forEach(interval => {
         if (interval === 'days') {
             if (time_left.days) {
-                timer_components += `${time_left.days} ${localize(time_left.days > 1 ? 'days' : 'day')}`;
+                const days_text = time_left.days > 1 ? 'days' : 'day';
+                timer_components += `${time_left.days} ${localize('{{days_text}}', { days_text })}`;
             }
         } else if (time_left[interval] !== 0) {
             const value = time_left[interval];
             timer_components +=
                 interval === 'hours'
-                    ? `${time_left.days ? ', ' : ''}${value} ${localize(time_left.hours > 1 ? 'hrs' : 'hr')}`
-                    : ` ${localize('and')} ${value} ${localize(time_left.minutes > 1 ? 'mins' : 'min')}`;
+                    ? `${time_left.days ? ', ' : ''}${value} ${localize('{{hrs}}', {
+                          hrs: time_left.hours > 1 ? 'hrs' : 'hr',
+                      })}`
+                    : ` ${localize('and')} ${value} ${localize('{{mins}}', {
+                          mins: time_left.minutes > 1 ? 'mins' : 'min',
+                      })}`;
         }
     });
 

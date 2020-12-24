@@ -3,9 +3,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from '../icon';
 
-const ExpansionPanel = ({ message }) => {
+const ExpansionPanel = ({ message, onResize }) => {
     const [open_ids, setOpenIds] = React.useState([]);
     const [is_open, setIsOpen] = React.useState(false);
+
+    React.useEffect(() => {
+        if (typeof onResize === 'function') {
+            onResize();
+        }
+    }, [is_open]);
 
     const onClick = () => {
         // close if clicking the expansion panel that's open, otherwise open the new one

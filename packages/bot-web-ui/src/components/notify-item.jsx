@@ -41,4 +41,4 @@ export const messageWithImage = (message, image) => (
     </>
 );
 
-export const arrayAsMessage = parsedArray => <ExpansionPanel message={parsedArray} />;
+export const arrayAsMessage = parsedArray => measure => <ExpansionPanel message={parsedArray} onResize={measure} />;

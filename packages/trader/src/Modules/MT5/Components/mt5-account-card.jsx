@@ -168,11 +168,13 @@ const MT5AccountCard = ({
 
                 {((!existing_data && commission_message) || !is_logged_in) && (
                     <div className='mt5-account-card__commission'>
-                        <p className='mt5-account-card__commission-paragraph'>{commission_message}</p>
+                        <Text as='p' color='general' size='xs'>
+                            {commission_message}
+                        </Text>
                         {commission_message_crypto_warning && (
-                            <p className='mt5-account-card__commission-paragraph-crypto'>
+                            <Text as='p' color='general' size='xxxs' styles={{ marginLeft: '0.8rem' }}>
                                 {commission_message_crypto_warning}
-                            </p>
+                            </Text>
                         )}
                     </div>
                 )}

@@ -537,20 +537,9 @@
     }
 
     &__commission {
-        @include typeface(--paragraph-center-normal-black, none);
         margin: 1.6rem auto;
         display: flex;
         align-items: center;
-
-        &-paragraph {
-            float: left;
-
-            &-crypto {
-                float: right;
-                font-size: var(--text-size-xxxs);
-                margin-left: 0.8rem;
-            }
-        }
     }
     &__account-selection {
         align-items: center;

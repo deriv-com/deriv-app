@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Text } from '@deriv/components';
 import './empty.scss';
-import { isMobile } from '@deriv/shared';
 
 const P2pEmpty = ({ className, children, has_tabs, icon, title }) => {
     return (

@@ -20,12 +20,14 @@ const BuySell = () => {
     const previous_scroll_top = React.useRef(0);
 
     const onScroll = event => {
-        if (isMounted() && event.target.scrollTop !== previous_scroll_top.current) {
-            const is_scrolling_down = event.target.scrollTop > previous_scroll_top.current;
-            setIsToggleVisible(!is_scrolling_down);
-        }
+        if (!buy_sell_store.show_advertiser_page) {
+            if (isMounted() && event.target.scrollTop !== previous_scroll_top.current) {
+                const is_scrolling_down = event.target.scrollTop > previous_scroll_top.current;
+                setIsToggleVisible(!is_scrolling_down);
+            }
 
-        previous_scroll_top.current = event.target.scrollTop;
+            previous_scroll_top.current = event.target.scrollTop;
+        }
     };
 
     if (buy_sell_store.should_show_verification) {

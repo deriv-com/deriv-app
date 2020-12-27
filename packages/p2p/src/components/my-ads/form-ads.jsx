@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, Form, Formik } from 'formik';
-import { Button, Dropdown, Icon, Input, Loading, Text, ThemedScrollbars } from '@deriv/components';
+import { Button, Dropdown, Icon, Input, Text, ThemedScrollbars } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -14,6 +14,7 @@ import { buy_sell } from '../../constants/buy-sell';
 const FormAds = () => {
     const { general_store, my_ads_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
+    const [is_submit_disabled, setIsSubmitDisabled] = React.useState(true);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => {
@@ -25,19 +26,10 @@ const FormAds = () => {
         return <PageReturn onClick={() => my_ads_store.setShowAdForm(false)} page_title={localize('Create new ad')} />;
     };
 
-    if (my_ads_store.is_form_loading) {
-        return (
-            <React.Fragment>
-                {isDesktop() && <PageReturnComponent />}
-                <Loading is_fullscreen={false} />
-            </React.Fragment>
-        );
-    }
-
     return (
         <React.Fragment>
-            <PageReturnComponent />
-            <FormAdsWrapper>
+            <FormAdsWrapper is_submit_disabled={is_submit_disabled}>
+                {isDesktop() && <PageReturnComponent />}
                 <Formik
                     initialValues={{
                         contact_info: my_ads_store.contact_info,
@@ -58,6 +50,7 @@ const FormAds = () => {
                 >
                     {({ errors, handleChange, isSubmitting, isValid, touched, values }) => {
                         const is_sell_advert = values.type === buy_sell.SELL;
+                        setIsSubmitDisabled(isSubmitting || !isValid);
                         return (
                             <div className='p2p-my-ads__form'>
                                 <Form noValidate>
@@ -263,8 +256,9 @@ const FormAds = () => {
                                                 </Text>
                                             </div>
                                         )}
+
                                         <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
-                                            {isDesktop() && my_ads_store.api_error_message && (
+                                            {my_ads_store.api_error_message && isDesktop() && (
                                                 <div className='p2p-my-ads__form-error'>
                                                     <Icon icon='IcAlertDanger' />
                                                     <Text color='prominent' weight='bold' line_height='m' size='xxs'>

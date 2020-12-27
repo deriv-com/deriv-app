@@ -31,17 +31,12 @@
     &__form {
         @include mobile {
             .dc-input__footer {
-                width: 100%;
+                justify-content: space-between;
+                width: 86vw;
             }
 
             .dc-input__hint--relative {
                 margin-left: unset;
-            }
-
-            .dc-input__counter {
-                display: flex;
-                margin-left: unset;
-                right: 0;
             }
         }
 
@@ -64,7 +59,7 @@
             width: calc(100% - 4.8rem);
 
             @include mobile {
-                height: calc(100vh - 16rem);
+                height: calc(100vh - 21rem);
                 margin: 0 1.6rem;
                 position: unset;
                 width: 90vw;
@@ -120,10 +115,6 @@
         }
         &-button {
             margin-left: 0.8rem;
-
-            @include mobile {
-                margin-top: 1.4rem;
-            }
         }
         &-error {
             align-items: center;
@@ -155,8 +146,12 @@
 
             @include mobile {
                 border-top: 2px solid var(--general-section-1);
+                bottom: 0;
                 flex-direction: row;
-                margin-top: 4.2rem;
+                padding: 1.6rem;
+                position: fixed;
+                right: 0;
+                width: 100vw;
             }
         }
     }
@@ -377,7 +372,7 @@
             margin-top: 12px;
         }
     }
-    &__delete {
+    &__create {
         margin: 1.6rem;
         width: 90vw;
     }

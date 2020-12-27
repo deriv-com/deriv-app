@@ -76,8 +76,8 @@ const MyAdsTable = () => {
                 </Table>
 
                 {isMobile() && (
-                    <div className='p2p-my-ads__delete-container'>
-                        <Button className='p2p-my-ads__delete' large primary onClick={my_ads_store.onClickCreate}>
+                    <div className='p2p-my-ads__create-container'>
+                        <Button className='p2p-my-ads__create' large primary onClick={my_ads_store.onClickCreate}>
                             {localize('Create new ad')}
                         </Button>
                     </div>

@@ -77,7 +77,7 @@ const MT5PasswordForm = props => (
                                 {({ has_warning }) => (
                                     <PasswordInput
                                         autoComplete='new-password'
-                                        label={localize('Create a password')}
+                                        label={localize('Password')}
                                         error={touched.password && errors.password}
                                         hint={
                                             !has_warning && (

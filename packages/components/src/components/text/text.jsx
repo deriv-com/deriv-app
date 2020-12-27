@@ -19,19 +19,7 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
     };
 
     const class_names = classNames('dc-text', className);
-    const is_header = as === 'h1' || as === 'h2' || as === 'h3' || as === 'h4' || as === 'h5';
-    return (
-        (is_header && React.createElement(as, { className: class_names, style: setStyle(), ...props }, children)) ||
-        (as === 'p' && (
-            <p {...props} className={class_names} style={setStyle()}>
-                {children}
-            </p>
-        )) || (
-            <span {...props} className={class_names} style={setStyle()}>
-                {children}
-            </span>
-        )
-    );
+    return React.createElement(as || 'span', { className: class_names, style: setStyle(), ...props }, children);
 };
 
 Text.propTypes = {

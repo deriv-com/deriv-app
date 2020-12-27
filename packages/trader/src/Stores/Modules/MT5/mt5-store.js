@@ -78,8 +78,8 @@ export default class MT5Store extends BaseStore {
     checkShouldOpenAccount() {
         const account_type = sessionStorage.getItem('open_mt5_account_type');
         if (account_type) {
-            const [category, type] = account_type.split('.');
-            this.createMT5Account({ category, type });
+            const [category, type, set_password] = account_type.split('.');
+            this.createMT5Account({ category, type, set_password });
             sessionStorage.removeItem('open_mt5_account_type');
         }
     }
@@ -102,14 +102,14 @@ export default class MT5Store extends BaseStore {
     }
 
     @action.bound
-    createMT5Account({ category, type }) {
+    createMT5Account({ category, type, set_password }) {
         this.setAccountType({
             category,
             type,
         });
 
         if (category === 'real') {
-            this.realMt5Signup();
+            this.realMt5Signup(set_password);
         } else {
             this.demoMt5Signup();
         }
@@ -159,7 +159,7 @@ export default class MT5Store extends BaseStore {
         this.root_store.ui.openRealAccountSignup();
     }
 
-    realMt5Signup() {
+    realMt5Signup(set_password) {
         switch (this.account_type.type) {
             case 'financial':
                 this.enableMt5PasswordModal();
@@ -168,7 +168,8 @@ export default class MT5Store extends BaseStore {
                 this.root_store.client.fetchResidenceList();
                 this.root_store.client.fetchStatesList();
                 this.root_store.client.fetchAccountSettings();
-                this.enableMt5FinancialStpModal();
+                if (set_password) this.enableMt5PasswordModal();
+                else this.enableMt5FinancialStpModal();
                 break;
             case 'synthetic':
                 this.enableMt5PasswordModal();

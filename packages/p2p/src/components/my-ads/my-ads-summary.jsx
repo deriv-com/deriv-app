@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import { Text } from '@deriv/components';
 
 const AdSummary = observer(({ offer_amount, price_rate, type }) => {
     const { general_store } = useStores();
@@ -16,7 +17,7 @@ const AdSummary = observer(({ offer_amount, price_rate, type }) => {
         offer_amount && price_rate ? formatMoney(local_currency_config.currency, offer_amount * price_rate, true) : '';
 
     if (offer_amount) {
-        const components = [<span key={0} className='p2p-my-ads__form-summary--bold' />];
+        const components = [<Text key={0} weight='bold' size='xs' color='less-prominent' />];
         const values = { target_amount: display_offer_amount, target_currency: local_currency_config.currency };
 
         if (price_rate) {

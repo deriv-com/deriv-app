@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
-import { Dropdown, Loading, Icon, Input, Button, ThemedScrollbars } from '@deriv/components';
+import { Dropdown, Loading, Icon, Input, Button, ThemedScrollbars, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return/page-return.jsx';
@@ -89,9 +89,9 @@ const FormAds = observer(() => {
                                                     label={localize('Total amount')}
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
-                                                        <span className='p2p-my-ads__form-field--trailing'>
+                                                        <Text size='xxs' color='less-prominent'>
                                                             {currency}
-                                                        </span>
+                                                        </Text>
                                                     }
                                                     onChange={e => {
                                                         my_ads_store.restrictLength(e, handleChange);
@@ -114,9 +114,9 @@ const FormAds = observer(() => {
                                                     })}
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
-                                                        <span className='p2p-my-ads__form-field--trailing'>
+                                                        <Text size='xxs' color='less-prominent'>
                                                             {local_currency_config.currency}
-                                                        </span>
+                                                        </Text>
                                                     }
                                                     onChange={e => {
                                                         my_ads_store.restrictLength(e, handleChange);
@@ -135,9 +135,9 @@ const FormAds = observer(() => {
                                                     label={localize('Min order')}
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
-                                                        <span className='p2p-my-ads__form-field--trailing'>
+                                                        <Text size='xxs' color='less-prominent'>
                                                             {currency}
-                                                        </span>
+                                                        </Text>
                                                     }
                                                     onChange={e => {
                                                         my_ads_store.restrictLength(e, handleChange);
@@ -156,9 +156,9 @@ const FormAds = observer(() => {
                                                     label={localize('Max order')}
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
-                                                        <span className='p2p-my-ads__form-field--trailing'>
+                                                        <Text size='xxs' color='less-prominent'>
                                                             {currency}
-                                                        </span>
+                                                        </Text>
                                                     }
                                                     onChange={e => {
                                                         my_ads_store.restrictLength(e, handleChange);

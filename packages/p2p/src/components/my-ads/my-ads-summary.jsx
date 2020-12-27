@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { formatMoney } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
+import { Text } from '@deriv/components';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import { Text } from '@deriv/components';
 
 const AdSummary = observer(({ offer_amount, price_rate, type }) => {
     const { general_store } = useStores();

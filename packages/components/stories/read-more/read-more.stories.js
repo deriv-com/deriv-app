@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/react';
 import { boolean } from '@storybook/addon-knobs';
 import React from 'react';
-import Wrapper from './wrapper';
+import Wrapper from '../shared/wrapper';
 import ReadMore from 'Components/read-more';
 import notes from './README.md';
 

@@ -1,5 +1,5 @@
 import { Table, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isMobile, formatMoney } from '@deriv/shared';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -10,18 +10,11 @@ import { createExtendedOrderDetails } from 'Utils/orders';
 import ServerTime from 'Utils/server-time';
 import { useStores } from 'Stores';
 
-const Title = ({
-    is_buy_order_type_for_user,
-    transaction_amount,
-    offer_amount,
-    order_purchase_datetime,
-    order_type,
-}) => {
-    const send_amount = is_buy_order_type_for_user ? transaction_amount : offer_amount;
+const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) => {
     return (
         <React.Fragment>
             <Text size='sm' color='prominent' line_height='xxs' weight='bold' as='p'>
-                {order_type} {send_amount}
+                {order_type} {formatMoney(currency, send_amount, true)} {currency}
             </Text>
             <Text color='less-prominent' as='p' line_height='xxs' size='xxs' align='left'>
                 {order_purchase_datetime}
@@ -100,7 +93,7 @@ const OrderRow = ({ style, row: order }) => {
                 <Table.Row
                     style={style}
                     className={classNames('orders__mobile', {
-                        'orders__table-row--attention': !isOrderSeen(id),
+                        'orders__mobile--attention': !isOrderSeen(id),
                     })}
                 >
                     <Table.Cell
@@ -142,11 +135,10 @@ const OrderRow = ({ style, row: order }) => {
                     </Table.Cell>
                     <Table.Cell className='orders__mobile-title'>
                         <Title
-                            is_buy_order_type_for_user={is_buy_order_type_for_user}
-                            offer_amount={offer_amount}
+                            send_amount={amount_display}
+                            currency={account_currency}
                             order_purchase_datetime={order_purchase_datetime}
                             order_type={order_type}
-                            transaction_amount={transaction_amount}
                         />
                     </Table.Cell>
                 </Table.Row>

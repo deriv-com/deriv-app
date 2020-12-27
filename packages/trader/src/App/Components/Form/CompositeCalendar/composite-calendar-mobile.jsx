@@ -20,7 +20,13 @@ export const RadioButton = ({ id, className, selected_value, value, label, onCha
                     'composite-calendar-modal__radio-circle--selected': selected_value === value,
                 })}
             />
-            <Text as='p' color='prominent'>
+            <Text
+                as='p'
+                color='prominent'
+                size='xs'
+                line_height='unset'
+                weight={selected_value === value ? 'bold' : 'normal'}
+            >
                 {label}
             </Text>
         </label>

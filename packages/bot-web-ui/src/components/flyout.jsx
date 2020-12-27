@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { localize } from '@deriv/translations';
-import { Icon, ThemedScrollbars } from '@deriv/components';
+import { Icon, ThemedScrollbars, Text } from '@deriv/components';
 import { help_content_config } from '@deriv/bot-skeleton';
 import FlyoutBlockGroup from './flyout-block-group.jsx';
 import HelpBase from './help-contents/flyout-help-base.jsx';
@@ -11,15 +11,15 @@ import '../assets/sass/flyout.scss';
 
 const SearchResult = ({ search_term, total_result }) => (
     <div className='flyout__search-header'>
-        <span className='flyout__search-header-text'>
+        <Text weight='bold' className='flyout__search-header-text'>
             {localize('Results for "{{ search_term }}"', {
                 search_term,
                 interpolation: { escapeValue: false },
             })}
-        </span>
-        <span className={classNames('flyout__search-header-text', 'flyout__search-header-results')}>
+        </Text>
+        <Text weight='bold' color='profit-success' className='flyout__search-header-text'>
             {`${total_result} ${total_result > 1 ? localize('results') : localize('result')}`}
-        </span>
+        </Text>
     </div>
 );
 

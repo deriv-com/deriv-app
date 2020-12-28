@@ -20,7 +20,6 @@ const FormAdsWrapper = ({ children }) => {
     return isMobile() ? (
         <MobileFullPageModal
             className='p2p-my-ads__form'
-            height_offset='80px'
             is_modal_open={my_ads_store.show_ad_form}
             page_header_text={localize('Create new ad')}
             pageHeaderReturnFn={() => my_ads_store.setShowAdForm(false)}

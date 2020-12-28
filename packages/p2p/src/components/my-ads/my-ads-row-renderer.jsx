@@ -23,6 +23,8 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         type,
     } = advert;
 
+    const amount_dealt = amount - remaining_amount;
+
     if (isMobile()) {
         return (
             <HorizontalSwipe
@@ -70,12 +72,12 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                         </div>
                         <ProgressIndicator
                             className={'p2p-my-ads__table-available-progress'}
-                            value={remaining_amount}
+                            value={amount_dealt}
                             total={amount}
                         />
                         <div className='p2p-my-ads__table-row-details'>
                             <Text color='profit-success' line_height='m' size='xxs'>
-                                {remaining_amount_display} {account_currency}&nbsp;
+                                {amount_dealt} {account_currency}&nbsp;
                                 {type === buy_sell.BUY ? localize('Bought') : localize('Sold')}
                             </Text>
                             <Text color='less-prominent' line_height='m' size='xxs'>

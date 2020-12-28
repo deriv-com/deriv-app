@@ -15,6 +15,7 @@ const MyAdsDeleteModal = () => {
     const [error_message, setErrorMessage] = React.useState('');
 
     const onClickCancel = () => {
+        setErrorMessage('');
         my_ads_store.setSelectedAdId('');
         my_ads_store.setIsDeleteModalOpen(false);
     };
@@ -38,7 +39,7 @@ const MyAdsDeleteModal = () => {
         <Modal
             className='delete-modal'
             is_open={my_ads_store.is_delete_modal_open}
-            toggleModal={() => my_ads_store.setIsDeleteModalOpen(false)}
+            toggleModal={onClickCancel}
             has_close_icon
             renderTitle={() => (
                 <Text color='prominent' line-height='m' size={isDesktop() ? 's' : 'xs'} weight='bold'>

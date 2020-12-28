@@ -14,7 +14,6 @@ import { buy_sell } from '../../constants/buy-sell';
 const FormAds = () => {
     const { general_store, my_ads_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
-    const [is_submit_disabled, setIsSubmitDisabled] = React.useState(true);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => {
@@ -28,7 +27,7 @@ const FormAds = () => {
 
     return (
         <React.Fragment>
-            <FormAdsWrapper is_submit_disabled={is_submit_disabled}>
+            <FormAdsWrapper>
                 {isDesktop() && <PageReturnComponent />}
                 <Formik
                     initialValues={{
@@ -50,7 +49,7 @@ const FormAds = () => {
                 >
                     {({ errors, handleChange, isSubmitting, isValid, touched, values }) => {
                         const is_sell_advert = values.type === buy_sell.SELL;
-                        setIsSubmitDisabled(isSubmitting || !isValid);
+
                         return (
                             <div className='p2p-my-ads__form'>
                                 <Form noValidate>

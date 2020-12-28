@@ -25,17 +25,23 @@ const Tabs = ({
     const tabs_wrapper_ref = React.useRef();
 
     React.useEffect(() => {
-        onClickTabItem(active_index || 0);
-    }, []);
-
-    React.useEffect(() => {
+        let initial_index = active_index;
+        if (should_update_hash) {
+            const hash = location.hash.slice(1);
+            const hash_index = children.findIndex(child => child.props && child.props['data-hash'] === hash);
+            if (hash_index !== -1) {
+                initial_index = hash_index;
+                history.push({ hash });
+            }
+        }
+        onClickTabItem(initial_index || 0);
         setActiveLineStyle();
-    }, [active_tab_index]);
+    }, [active_tab_index, location.hash]);
 
     const onClickTabItem = index => {
         if (should_update_hash) {
             const hash = children[index].props['data-hash'];
-            if (hash) {
+            if (hash && hash !== location.hash.slice(1)) {
                 history.push({ hash });
             }
         }

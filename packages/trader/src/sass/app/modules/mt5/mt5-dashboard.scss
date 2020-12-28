@@ -529,7 +529,6 @@
             &-data {
                 .mt5-account-card--paragraph {
                     @include typeface(--paragraph-left-bold-black, none);
-                    color: var(--text-general);
                     line-height: 1.45;
                 }
             }

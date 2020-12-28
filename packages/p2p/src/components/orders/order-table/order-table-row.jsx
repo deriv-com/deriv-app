@@ -74,7 +74,7 @@ const OrderRow = ({ style, row: order }) => {
                 setIsTimerVisible(false);
             } else {
                 setRemainingTime(label);
-                setIsTimerVisible(true);
+                setIsTimerVisible(general_store.is_active_tab);
             }
         };
 

@@ -30,7 +30,7 @@ const ContentExpander = ({
     }, [is_visible, onToggle, toggleVisibility]);
 
     React.useEffect(() => {
-        if (measure && typeof measure === 'function') {
+        if (typeof measure === 'function') {
             measure();
         }
     }, [is_visible]);

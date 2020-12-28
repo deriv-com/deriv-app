@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import WS from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import AccountTransferNoAccount from '../Components/Error/account-transfer-no-account.jsx';
 import Error from '../Components/Error/error.jsx';
@@ -12,56 +13,81 @@ import AccountTransferReceipt from '../Components/Receipt/account-transfer-recei
 import Loading from '../../../templates/_common/components/loading.jsx';
 import AccountTransferConfirm from '../Components/Confirm/account-transfer-confirm.jsx';
 
-class AccountTransfer extends React.Component {
-    componentDidMount() {
-        this.props.setActiveTab(this.props.container);
-        this.props.onMount();
+const AccountTransfer = ({
+    accounts_list,
+    container,
+    error,
+    has_no_account,
+    has_no_accounts_balance,
+    is_cashier_locked,
+    is_loading,
+    is_switching,
+    is_transfer_confirm,
+    is_transfer_lock,
+    is_transfer_successful,
+    is_virtual,
+    onMount,
+    setAccountTransferAmount,
+    setActiveTab,
+    setIsTransferConfirm,
+    setSideNotes,
+}) => {
+    const [is_loading_status, setIsLoadingStatus] = React.useState(true);
+    React.useEffect(() => {
+        setActiveTab(container);
+        onMount();
+
+        WS.wait('authorize', 'website_status', 'get_settings', 'paymentagent_list').then(() => {
+            setIsLoadingStatus(false);
+        });
+
+        return () => {
+            setAccountTransferAmount('');
+            setIsTransferConfirm(false);
+        };
+    }, []);
+
+    const hideNotes = () => {
+        if (typeof setSideNotes === 'function') {
+            setSideNotes(null);
+        }
+    };
+
+    if (is_virtual) {
+        return <Virtual />;
+    }
+    if (is_loading || is_switching || is_loading_status) {
+        return <Loading className='cashier__loader' />;
+    }
+    if (is_cashier_locked) {
+        return <CashierLocked />;
+    }
+    if (is_transfer_lock) {
+        return <TransferLock />;
+    }
+    if (error.is_show_full_page || (error.message && !accounts_list.length)) {
+        // for errors with CTA hide the form and show the error,
+        // for others show them at the bottom of the form next to submit button
+        return <Error error={error} />;
+    }
+    if (has_no_account) {
+        return <AccountTransferNoAccount />;
+    }
+    if (has_no_accounts_balance) {
+        hideNotes();
+        return <NoBalance />;
+    }
+    if (is_transfer_confirm) {
+        hideNotes();
+        return <AccountTransferConfirm />;
+    }
+    if (is_transfer_successful) {
+        hideNotes();
+        return <AccountTransferReceipt />;
     }
 
-    componentWillUnmount() {
-        this.props.setAccountTransferAmount('');
-        this.props.setIsTransferConfirm(false);
-    }
-
-    render() {
-        if (this.props.is_virtual) {
-            return <Virtual />;
-        }
-        if (this.props.is_loading || this.props.is_switching) {
-            return <Loading className='cashier__loader' />;
-        }
-        if (this.props.is_cashier_locked) {
-            return <CashierLocked />;
-        }
-        if (this.props.is_transfer_lock) {
-            return <TransferLock />;
-        }
-        if (this.props.error.is_show_full_page || (this.props.error.message && !this.props.accounts_list.length)) {
-            // for errors with CTA hide the form and show the error,
-            // for others show them at the bottom of the form next to submit button
-            return <Error error={this.props.error} />;
-        }
-        if (this.props.has_no_account) {
-            return <AccountTransferNoAccount />;
-        }
-        if (this.props.has_no_accounts_balance) {
-            return <NoBalance />;
-        }
-        if (this.props.is_transfer_confirm) {
-            if (typeof this.props.setSideNotes === 'function') {
-                this.props.setSideNotes(null);
-            }
-            return <AccountTransferConfirm />;
-        }
-        if (this.props.is_transfer_successful) {
-            if (typeof this.props.setSideNotes === 'function') {
-                this.props.setSideNotes(null);
-            }
-            return <AccountTransferReceipt />;
-        }
-        return <AccountTransferForm error={this.props.error} setSideNotes={this.props.setSideNotes} />;
-    }
-}
+    return <AccountTransferForm error={error} setSideNotes={setSideNotes} />;
+};
 
 AccountTransfer.propTypes = {
     accounts_list: PropTypes.array,
@@ -71,10 +97,15 @@ AccountTransfer.propTypes = {
     has_no_accounts_balance: PropTypes.bool,
     is_cashier_locked: PropTypes.bool,
     is_loading: PropTypes.bool,
+    is_switching: PropTypes.bool,
+    is_transfer_confirm: PropTypes.bool,
     is_transfer_successful: PropTypes.bool,
+    is_transfer_lock: PropTypes.bool,
     is_virtual: PropTypes.bool,
     onMount: PropTypes.func,
+    setAccountTransferAmount: PropTypes.func,
     setActiveTab: PropTypes.func,
+    setIsTransferConfirm: PropTypes.func,
     setSideNotes: PropTypes.func,
 };
 

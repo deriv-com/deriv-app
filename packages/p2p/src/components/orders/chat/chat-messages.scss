@@ -1,0 +1,71 @@
+&__messages {
+    background-color: var(--general-main-1);
+    margin-top: auto;
+    margin-right: 0.8rem;
+    flex: 1 1 0;
+
+    &-date {
+        margin-top: 1.6rem;
+        text-align: center;
+    }
+    &-item {
+        display: flex;
+        flex-direction: column;
+        margin: 1.6rem 1.2rem 1.6rem 2.4rem;
+
+        &-file {
+            color: inherit;
+        }
+        &-image {
+            width: 50%;
+
+            > img {
+                border: 1px solid var(--border-normal);
+                border-radius: $BORDER_RADIUS;
+                width: 100%;
+                height: auto;
+
+                &:hover {
+                    border: 1px solid var(--border-hover);
+                }
+            }
+        }
+        &-message {
+            border-radius: 1.6rem;
+            max-width: 100%;
+            padding: 0.8rem 1.6rem;
+            width: fit-content;
+            word-break: break-word;
+
+            > p {
+                white-space: pre-wrap;
+            }
+        }
+        &-timestamp {
+            align-items: center;
+            display: flex;
+            margin-top: 0.4rem;
+
+            &-receipt {
+                margin-left: 0.4rem;
+            }
+        }
+
+        &--incoming {
+            align-items: flex-start;
+
+            .order-chat__messages-item-message {
+                background-color: var(--general-active);
+                border-bottom-left-radius: $BORDER_RADIUS;
+            }
+        }
+        &--outgoing {
+            align-items: flex-end;
+
+            .order-chat__messages-item-message {
+                background-color: var(--brand-secondary);
+                border-bottom-right-radius: $BORDER_RADIUS;
+            }
+        }
+    }
+}

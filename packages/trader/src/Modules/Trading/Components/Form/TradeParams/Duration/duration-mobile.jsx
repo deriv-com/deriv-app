@@ -26,66 +26,63 @@ const updateAmountChanges = (obj, stake_value, payout_value, basis, trade_basis,
     }
 };
 
-class Ticks extends React.Component {
-    componentDidMount() {
-        this.props.setDurationError(false);
-    }
+const Ticks = ({
+    setDurationError,
+    basis_option,
+    toggleModal,
+    onChangeMultiple,
+    duration_min_max,
+    has_amount_error,
+    trade_duration,
+    trade_basis,
+    trade_amount,
+    trade_duration_unit,
+    payout_value,
+    stake_value,
+    selected_duration,
+    setSelectedDuration,
+}) => {
+    React.useEffect(() => {
+        setDurationError(false);
+    }, []);
 
-    render() {
-        const {
-            basis_option,
-            toggleModal,
-            onChangeMultiple,
-            duration_min_max,
-            has_amount_error,
-            trade_duration,
-            trade_basis,
-            trade_amount,
-            trade_duration_unit,
-            payout_value,
-            stake_value,
-            selected_duration,
-            setSelectedDuration,
-        } = this.props;
+    const [min_tick, max_tick] = getDurationMinMaxValues(duration_min_max, 'tick', 't');
 
-        const [min_tick, max_tick] = getDurationMinMaxValues(duration_min_max, 'tick', 't');
+    const setTickDuration = value => {
+        const { value: duration } = value.target;
+        const on_change_obj = {};
 
-        const setTickDuration = value => {
-            const { value: duration } = value.target;
-            const on_change_obj = {};
+        // check for any amount changes from Amount trade params tab before submitting onChange object
+        if (!has_amount_error)
+            updateAmountChanges(on_change_obj, stake_value, payout_value, basis_option, trade_basis, trade_amount);
 
-            // check for any amount changes from Amount trade params tab before submitting onChange object
-            if (!has_amount_error)
-                updateAmountChanges(on_change_obj, stake_value, payout_value, basis_option, trade_basis, trade_amount);
+        if (trade_duration !== duration || trade_duration_unit !== 't') {
+            on_change_obj.duration_unit = 't';
+            on_change_obj.duration = duration;
+        }
 
-            if (trade_duration !== duration || trade_duration_unit !== 't') {
-                on_change_obj.duration_unit = 't';
-                on_change_obj.duration = duration;
-            }
+        if (!isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
+        toggleModal();
+    };
 
-            if (!isEmptyObject(on_change_obj)) onChangeMultiple(on_change_obj);
-            toggleModal();
-        };
-
-        const onTickChange = tick => setSelectedDuration('t', tick);
-        const should_reset_tick_value = trade_duration_unit === 't' && trade_duration >= min_tick;
-        const tick_duration = trade_duration < min_tick && selected_duration < min_tick ? min_tick : selected_duration;
-        return (
-            <div className='trade-params__duration-tickpicker'>
-                <TickPicker
-                    default_value={should_reset_tick_value ? trade_duration : tick_duration}
-                    submit_label={submit_label}
-                    max_value={max_tick}
-                    min_value={min_tick}
-                    onSubmit={setTickDuration}
-                    onValueChange={onTickChange}
-                    singular_label={localize('Tick')}
-                    plural_label={localize('Ticks')}
-                />
-            </div>
-        );
-    }
-}
+    const onTickChange = tick => setSelectedDuration('t', tick);
+    const should_reset_tick_value = trade_duration_unit === 't' && trade_duration >= min_tick;
+    const tick_duration = trade_duration < min_tick && selected_duration < min_tick ? min_tick : selected_duration;
+    return (
+        <div className='trade-params__duration-tickpicker'>
+            <TickPicker
+                default_value={should_reset_tick_value ? trade_duration : tick_duration}
+                submit_label={submit_label}
+                max_value={max_tick}
+                min_value={min_tick}
+                onSubmit={setTickDuration}
+                onValueChange={onTickChange}
+                singular_label={localize('Tick')}
+                plural_label={localize('Ticks')}
+            />
+        </div>
+    );
+};
 
 const TicksWrapper = connect(({ modules }) => ({
     duration_min_max: modules.trade.duration_min_max,

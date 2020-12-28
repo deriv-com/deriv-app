@@ -154,12 +154,13 @@
             background: var(--border-disabled);
         }
         &__cta-button {
+            padding: 0.3rem 0.8rem;
             margin: 0.8rem 0 0.8rem auto;
             height: 2.4rem;
             width: auto;
 
             @include mobile {
-                margin: 0.8px 0 1.6rem auto;
+                margin: 0.8rem 0 1.6rem auto;
             }
         }
         &__link-wrapper {

@@ -73,7 +73,9 @@ class NotificationsDialog extends React.Component {
                                                 )}
                                                 to={item.action.route}
                                             >
-                                                <Text size='xxs'>{item.action.text}</Text>
+                                                <Text weight='bold' size='xxs'>
+                                                    {item.action.text}
+                                                </Text>
                                             </BinaryLink>
                                         ) : (
                                             <Button
@@ -82,8 +84,11 @@ class NotificationsDialog extends React.Component {
                                                     'notifications-item__cta-button'
                                                 )}
                                                 onClick={item.action.onClick}
-                                                text={item.action.text}
-                                            />
+                                            >
+                                                <Text weight='bold' size='xxs'>
+                                                    {item.action.text}
+                                                </Text>
+                                            </Button>
                                         )}
                                     </>
                                 )}
@@ -150,6 +155,9 @@ NotificationsDialog.propTypes = {
     toggleDialog: PropTypes.func,
 };
 
-export default connect(({ ui }) => ({
-    notifications: ui.notifications,
+export default connect(({ ui, common }) => ({
+    notifications: ui.filtered_notifications,
+    app_routing_history: common.app_routing_history,
+    removeNotificationByKey: ui.removeNotificationByKey,
+    removeNotificationMessage: ui.removeNotificationMessage,
 }))(NotificationsDialog);

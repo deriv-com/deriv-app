@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Button } from '@deriv/components';
+import { Icon, Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -9,9 +9,9 @@ const AccountTransferNoAccount = ({ toggleAccountsDialog }) => (
         <h2 className='withdraw__header'>
             <Localize i18n_default_text='You need at least two accounts' />
         </h2>
-        <p className='cashier__text'>
+        <Text as='p' size='xs' line_height='s' className='cashier__text'>
             <Localize i18n_default_text='Please create a second account (Deriv or DMT5) to enable fund transfers.' />
-        </p>
+        </Text>
         <Button className='cashier__button' primary large onClick={toggleAccountsDialog}>
             <Localize i18n_default_text='Create account' />
         </Button>

@@ -9,6 +9,7 @@ import { DesktopWrapper } from '@deriv/components';
 import {
     checkAndSetEndpointFromUrl,
     setUrlLanguage,
+    isMobile,
     isTouchDevice,
     initFormErrorMessages,
     setSharedMT5Text,
@@ -51,7 +52,7 @@ const App = ({ root_store }) => {
     }, []);
 
     React.useEffect(() => {
-        if (isTouchDevice()) {
+        if (isTouchDevice() && isMobile()) {
             const el_landscape_blocker = document.getElementById('landscape_blocker');
 
             const handleResize = () => {
@@ -66,15 +67,6 @@ const App = ({ root_store }) => {
 
             handleResize();
             window.addEventListener('resize', debounce(handleResize, 400));
-            /**
-             * Adding `focus` and `focusout` event listeners to document here to detect for on-screen keyboard on mobile browsers
-             * and storing this value in UI-store to be used across the app stores.
-             *  - when document gets `focus` event - keyboard is visible
-             *  - when document gets `focusout` or `touchstart` event - keyboard is hidden
-             *  - note: the `touchstart` event comes after `focusout` and and we want to
-             *          remove `landscape-blocker--keyboard-visible` class as late as possible
-             * [TODO]: find an alternative solution to detect for on-screen keyboard
-             */
 
             return () => {
                 window.removeEventListener('resize', debounce(handleResize, 400));

@@ -251,12 +251,12 @@ const FormAds = observer(() => {
             </Formik>
             <Modal
                 className='p2p-my-ads__modal-error'
-                is_open={!!my_ads_store?.api_error_message}
+                is_open={my_ads_store.api_error_message}
                 small
                 has_close_icon={false}
                 title={localize('Something’s not right')}
             >
-                <Modal.Body>{my_ads_store?.api_error_message}</Modal.Body>
+                <Modal.Body>{my_ads_store.api_error_message}</Modal.Body>
                 <Modal.Footer>
                     <Button
                         has_effect

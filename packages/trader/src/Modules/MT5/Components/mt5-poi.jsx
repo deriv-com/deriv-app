@@ -7,17 +7,16 @@ import { WS } from 'Services/ws-methods';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-const MT5POI = ({ form_error, index, onCancel, onSubmit, value, ...props }) => {
+const MT5POI = ({ authentication_status, form_error, index, onCancel, onSubmit, value, ...props }) => {
+    const { identity_status } = authentication_status;
     const [poi_state, setPOIState] = React.useState('none');
-
     const validateForm = React.useCallback(() => {
         const errors = {};
-        if (!['pending', 'verified'].includes(poi_state)) {
+        if (!['pending', 'verified'].includes(poi_state) && !['pending', 'verified'].includes(identity_status)) {
             errors.poi_state = true;
         }
-
         return errors;
-    }, [poi_state]);
+    }, [poi_state, identity_status]);
 
     return (
         <Formik
@@ -44,7 +43,12 @@ const MT5POI = ({ form_error, index, onCancel, onSubmit, value, ...props }) => {
                                         notificationEvent={WS.notificationEvent}
                                         getAccountStatus={WS.authorized.getAccountStatus}
                                         height={height}
-                                        onStateChange={({ status }) => setPOIState(status)}
+                                        onStateChange={({ status }) => {
+                                            const poi_status = ['pending', 'verified'].includes(identity_status)
+                                                ? identity_status
+                                                : status;
+                                            setPOIState(poi_status);
+                                        }}
                                         is_trading_button_enabled={false}
                                         is_description_enabled={false}
                                     />
@@ -70,6 +74,7 @@ const MT5POI = ({ form_error, index, onCancel, onSubmit, value, ...props }) => {
 };
 
 MT5POI.propTypes = {
+    authentication_status: PropTypes.object,
     form_error: PropTypes.string,
     index: PropTypes.number,
     onCancel: PropTypes.func,

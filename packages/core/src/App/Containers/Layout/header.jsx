@@ -37,6 +37,7 @@ const Header = ({
     is_notifications_visible,
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
+    is_onramp_tab_visible,
     is_payment_agent_visible,
     is_route_modal_on,
     is_virtual,
@@ -65,8 +66,10 @@ const Header = ({
     const onClickDeposit = () => history.push(routes.cashier_deposit);
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
-            // non-CR clients cannot open MT5 account
-            return !(is_logged_in && config.link_to === routes.mt5 && !is_mt5_allowed);
+            if (config.link_to === routes.mt5) {
+                return !is_logged_in || is_mt5_allowed;
+            }
+            return true;
         });
 
     return (
@@ -96,6 +99,7 @@ const Header = ({
                             is_logged_in={is_logged_in}
                             is_p2p_enabled={is_p2p_enabled}
                             is_payment_agent_transfer_visible={is_payment_agent_transfer_visible}
+                            is_onramp_tab_visible={is_onramp_tab_visible}
                             is_payment_agent_visible={is_payment_agent_visible}
                             is_virtual={is_virtual}
                             needs_financial_assessment={needs_financial_assessment}
@@ -118,7 +122,7 @@ const Header = ({
                 </div>
                 <div
                     className={classNames('header__menu-right', {
-                        'header__menu-right--mobile': isMobile(),
+                        'header__menu-right--hidden': isMobile() && is_logging_in,
                     })}
                 >
                     {is_logging_in && (
@@ -216,6 +220,7 @@ export default connect(({ client, common, ui, modules }) => ({
     is_notifications_visible: ui.is_notifications_visible,
     is_p2p_enabled: modules.cashier.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
+    is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
     is_route_modal_on: ui.is_route_modal_on,
     is_virtual: client.is_virtual,

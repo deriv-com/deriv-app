@@ -2,13 +2,13 @@ import { action, autorun, computed, observable } from 'mobx';
 import {
     getPathname,
     getPlatformInformation,
-    isEmptyObject,
     LocalStore,
     unique,
     isTouchDevice,
     platform_name,
+    isMobile,
 } from '@deriv/shared';
-import { sortNotifications } from 'App/Components/Elements/NotificationMessage';
+import { sortNotifications, sortNotificationsMobile } from 'App/Components/Elements/NotificationMessage';
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import BaseStore from './base-store';
 import { clientNotifications, excluded_notifications } from './Helpers/client-notifications';
@@ -490,6 +490,11 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    removeNotificationMessageByKey({ key }) {
+        this.notification_messages = this.notification_messages.filter(n => n.key !== key);
+    }
+
+    @action.bound
     addNotificationMessageByKey(key) {
         if (key) this.addNotificationMessage(clientNotifications(this)[key]);
     }
@@ -503,20 +508,23 @@ export default class UIStore extends BaseStore {
     addNotificationMessage(notification) {
         if (!notification) return;
         if (!this.notification_messages.find(item => item.header === notification.header)) {
-            this.notification_messages = [...this.notification_messages, notification].sort(sortNotifications);
-            if (!excluded_notifications.includes(notification.key)) {
-                this.updateNotifications(this.notification_messages);
-            }
             // Remove notification messages if it was already closed by user and exists in LocalStore
             const active_loginid = LocalStore.get('active_loginid');
             const messages = LocalStore.getObject('notification_messages');
-            if (active_loginid && !isEmptyObject(messages)) {
+            if (active_loginid) {
                 // Check if is existing message to remove already closed messages stored in LocalStore
                 const is_existing_message = Array.isArray(messages[active_loginid])
                     ? messages[active_loginid].includes(notification.key)
                     : false;
                 if (is_existing_message) {
                     this.markNotificationMessage({ key: notification.key });
+                } else {
+                    this.notification_messages = [...this.notification_messages, notification].sort(
+                        isMobile() ? sortNotificationsMobile : sortNotifications
+                    );
+                    if (!excluded_notifications.includes(notification.key)) {
+                        this.updateNotifications(this.notification_messages);
+                    }
                 }
             }
         }

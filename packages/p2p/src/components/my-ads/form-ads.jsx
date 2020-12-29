@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
-import { Dropdown, Loading, Icon, Input, Button, ThemedScrollbars } from '@deriv/components';
+import { Dropdown, Loading, Modal, Input, Button, ThemedScrollbars } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return/page-return.jsx';
@@ -226,12 +226,6 @@ const FormAds = observer(() => {
                                         )}
                                     </Field>
                                     <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
-                                        {my_ads_store.api_error_message && (
-                                            <div className='p2p-my-ads__form-error'>
-                                                <Icon icon='IcAlertDanger' />
-                                                <div>{my_ads_store.api_error_message}</div>
-                                            </div>
-                                        )}
                                         <Button
                                             className='p2p-my-ads__form-button'
                                             secondary
@@ -255,6 +249,24 @@ const FormAds = observer(() => {
                     );
                 }}
             </Formik>
+            <Modal
+                className='p2p-my-ads__modal-error'
+                is_open={!!my_ads_store?.api_error_message}
+                small
+                has_close_icon={false}
+                title={localize('Something’s not right')}
+            >
+                <Modal.Body>{my_ads_store?.api_error_message}</Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        has_effect
+                        text={localize('Ok')}
+                        onClick={() => my_ads_store.setApiErrorMessage('')}
+                        primary
+                        large
+                    />
+                </Modal.Footer>
+            </Modal>
         </React.Fragment>
     );
 });

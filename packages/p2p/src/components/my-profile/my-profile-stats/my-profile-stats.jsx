@@ -48,7 +48,7 @@ const MyProfileStats = () => {
                                 />
                             </Text>
                             <Text color='prominent' weight='bold' line_height='l' as='p'>
-                                {total_orders_count || '0'}
+                                {daily_buy || '0'}
                             </Text>
                         </Table.Cell>
                         <Table.Cell className='my-profile-stats__cell'>

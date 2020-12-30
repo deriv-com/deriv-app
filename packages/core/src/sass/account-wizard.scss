@@ -364,18 +364,10 @@
 .change-currency {
     padding-bottom: 1.6rem;
 
-    &__title,
-    &__sub-title {
-        @include typeface(--title-left-bold-black);
-        color: var(--text-prominent);
-        text-align: center;
-    }
     &__title {
         margin-top: 3rem;
     }
     &__sub-title {
-        font-size: var(--text-size-xxs);
-        font-weight: normal;
         margin-bottom: 1rem;
     }
     &__button {

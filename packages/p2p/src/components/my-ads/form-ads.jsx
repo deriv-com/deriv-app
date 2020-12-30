@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Dropdown, Loading, Modal, Input, Button, ThemedScrollbars } from '@deriv/components';
+import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return/page-return.jsx';
@@ -14,11 +16,17 @@ const FormAds = observer(() => {
     const { currency, local_currency_config } = general_store.client;
     const [is_api_error_modal_visible, setIsApiErrorModalVisible] = React.useState(false);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    React.useEffect(() => my_ads_store.getAdvertiserInfo(), []);
-    React.useEffect(() => setIsApiErrorModalVisible(!!my_ads_store.api_error_message), [
-        my_ads_store.api_error_message,
-    ]);
+    React.useEffect(() => {
+        my_ads_store.getAdvertiserInfo();
+        return () => my_ads_store.setApiErrorMessage('');
+    }, []);
+
+    React.useEffect(() => {
+        return reaction(
+            () => my_ads_store.api_error_message,
+            () => toggleApiErrorModal(!!my_ads_store.api_error_message)
+        );
+    }, []);
 
     const toggleApiErrorModal = value => setIsApiErrorModalVisible(value);
 

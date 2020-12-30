@@ -1,4 +1,6 @@
 .dc-page-overlay {
+    opacity: 0;
+
     &-portal {
         position: absolute;
         height: 100%;
@@ -19,7 +21,7 @@
     }
     &--enter-done {
         transform: translateY(0);
-        opacity: 1 !important;
+        opacity: 1;
         pointer-events: auto;
     }
     &__header {
@@ -100,6 +102,5 @@
         display: flex;
         flex-direction: column;
         height: 100%;
-        opacity: 0;
     }
 }

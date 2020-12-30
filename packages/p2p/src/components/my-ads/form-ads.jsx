@@ -12,9 +12,15 @@ import { buy_sell } from '../../constants/buy-sell';
 const FormAds = observer(() => {
     const { general_store, my_ads_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
+    const [is_api_error_modal_visible, setIsApiErrorModalVisible] = React.useState(false);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => my_ads_store.getAdvertiserInfo(), []);
+    React.useEffect(() => setIsApiErrorModalVisible(!!my_ads_store.api_error_message), [
+        my_ads_store.api_error_message,
+    ]);
+
+    const toggleApiErrorModal = value => setIsApiErrorModalVisible(value);
 
     const PageReturnComponent = () => {
         return <PageReturn onClick={() => my_ads_store.setShowAdForm(false)} page_title={localize('Create new ad')} />;
@@ -251,20 +257,14 @@ const FormAds = observer(() => {
             </Formik>
             <Modal
                 className='p2p-my-ads__modal-error'
-                is_open={my_ads_store.api_error_message}
+                is_open={is_api_error_modal_visible}
                 small
                 has_close_icon={false}
                 title={localize('Something’s not right')}
             >
                 <Modal.Body>{my_ads_store.api_error_message}</Modal.Body>
                 <Modal.Footer>
-                    <Button
-                        has_effect
-                        text={localize('Ok')}
-                        onClick={() => my_ads_store.setApiErrorMessage('')}
-                        primary
-                        large
-                    />
+                    <Button has_effect text={localize('Ok')} onClick={() => toggleApiErrorModal(false)} primary large />
                 </Modal.Footer>
             </Modal>
         </React.Fragment>

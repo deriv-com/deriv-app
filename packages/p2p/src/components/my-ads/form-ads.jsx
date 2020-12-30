@@ -1,8 +1,7 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
-import { Dropdown, Loading, Modal, Input, Button, ThemedScrollbars } from '@deriv/components';
+import { Dropdown, Loading, Modal, Input, Button, Text, ThemedScrollbars } from '@deriv/components';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -18,14 +17,16 @@ const FormAds = observer(() => {
 
     React.useEffect(() => {
         my_ads_store.getAdvertiserInfo();
-        return () => my_ads_store.setApiErrorMessage('');
-    }, []);
 
-    React.useEffect(() => {
-        return reaction(
+        const disposeApiErrorReaction = reaction(
             () => my_ads_store.api_error_message,
             () => toggleApiErrorModal(!!my_ads_store.api_error_message)
         );
+        return () => {
+            disposeApiErrorReaction();
+            my_ads_store.setApiErrorMessage('');
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const toggleApiErrorModal = value => setIsApiErrorModalVisible(value);
@@ -270,7 +271,11 @@ const FormAds = observer(() => {
                 has_close_icon={false}
                 title={localize('Something’s not right')}
             >
-                <Modal.Body>{my_ads_store.api_error_message}</Modal.Body>
+                <Modal.Body>
+                    <Text as='p' size='xs' color='prominent'>
+                        {my_ads_store.api_error_message}
+                    </Text>
+                </Modal.Body>
                 <Modal.Footer>
                     <Button has_effect text={localize('Ok')} onClick={() => toggleApiErrorModal(false)} primary large />
                 </Modal.Footer>

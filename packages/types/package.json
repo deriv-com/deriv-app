@@ -1,0 +1,12 @@
+{
+  "name": "@deriv/types",
+  "version": "0.0.2",
+  "description": "Deriv API declaration files",
+  "main": "index.d.ts",
+  "author": "",
+  "license": "ISC",
+  "private": false,
+    "publishConfig": {
+        "access": "public"
+    }
+}

@@ -56,7 +56,7 @@ const App = ({ root_store }) => {
             const el_landscape_blocker = document.getElementById('landscape_blocker');
 
             const handleResize = () => {
-                if (window.outerWidth <= window.outerHeight) {
+                if (screen.availWidth <= screen.availHeight) {
                     root_store.ui.onOrientationChange(false);
                     el_landscape_blocker.classList.remove('landscape-blocker--visible');
                 } else {

@@ -51,29 +51,27 @@ const App = ({ root_store }) => {
         setSharedMT5Text(MT5_TEXT);
     }, []);
 
-    React.useEffect(() => {
+    const handleResize = React.useCallback(() => {
         if (isTouchDevice() && isMobile()) {
             const el_landscape_blocker = document.getElementById('landscape_blocker');
-
-            const handleResize = () => {
-                if (screen.availWidth <= screen.availHeight) {
-                    root_store.ui.onOrientationChange(false);
-                    el_landscape_blocker.classList.remove('landscape-blocker--visible');
-                } else {
-                    root_store.ui.onOrientationChange(true);
-                    el_landscape_blocker.classList.add('landscape-blocker--visible');
-                }
-            };
-
-            handleResize();
-            window.addEventListener('resize', debounce(handleResize, 400));
-
-            return () => {
-                window.removeEventListener('resize', debounce(handleResize, 400));
-            };
+            if (screen.availWidth <= screen.availHeight) {
+                root_store.ui.onOrientationChange(false);
+                el_landscape_blocker.classList.remove('landscape-blocker--visible');
+            } else {
+                root_store.ui.onOrientationChange(true);
+                el_landscape_blocker.classList.add('landscape-blocker--visible');
+            }
         }
-        return () => {};
     }, [root_store.ui]);
+
+    React.useEffect(() => {
+        const debouncedHandleResize = debounce(handleResize, 400);
+        window.addEventListener('resize', debouncedHandleResize);
+
+        return () => {
+            window.removeEventListener('resize', debouncedHandleResize);
+        };
+    }, [handleResize]);
 
     const platform_passthrough = {
         root_store,

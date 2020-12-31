@@ -19,14 +19,6 @@ const ExpansionPanel = ({ message, onResize }) => {
         setIsOpen(!is_open);
     };
 
-    const onArrayItemClick = id => {
-        if (open_ids.includes(id)) {
-            setOpenIds(open_ids.filter(open_id => open_id !== id));
-        } else {
-            setOpenIds([...open_ids, id]);
-        }
-    };
-
     return (
         <>
             <div
@@ -37,7 +29,7 @@ const ExpansionPanel = ({ message, onResize }) => {
                 {message.header}
                 <Icon icon='IcChevronDownBold' className='dc-expansion-panel__header-chevron-icon' onClick={onClick} />
             </div>
-            {is_open && (Array.isArray(message.content) ? ArrayRenderer(message.content) : message.content)}
+            {is_open && (Array.isArray(message.content) ? ArrayRenderer(message.content, open_ids) : message.content)}
         </>
     );
 };

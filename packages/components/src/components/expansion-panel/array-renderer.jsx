@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from '../icon';
 
-const ArrayRenderer = (array, open_ids, setOpenIds) => {
+const ArrayRenderer = ({ array, open_ids, setOpenIds }) => {
     const onArrayItemClick = id => {
         if (open_ids.includes(id)) {
             setOpenIds(open_ids.filter(open_id => open_id !== id));
@@ -13,9 +13,9 @@ const ArrayRenderer = (array, open_ids, setOpenIds) => {
     };
 
     return (
-        <div>
+        <React.Fragment>
             {array.map((item, index) => {
-                if (Array.isArray(item?.value))
+                if (Array.isArray(item?.value)) {
                     return (
                         <div key={index} className='dc-expansion-panel__content-array'>
                             <div
@@ -23,26 +23,28 @@ const ArrayRenderer = (array, open_ids, setOpenIds) => {
                                     'dc-expansion-panel__content-active': open_ids.includes(item.id),
                                 })}
                             >
-                                <span className='dc-expansion-panel__content-array-item-index'>{index + 1}: </span>(
-                                {item.value.length})
+                                <span className='dc-expansion-panel__content-array-item-index'>{`${index + 1}: `}</span>
+                                ({`${item.value.length}`})
                                 <Icon
                                     className='dc-expansion-panel__content-chevron-icon'
                                     icon='IcChevronRight'
                                     onClick={() => onArrayItemClick(item.id)}
                                 />
                             </div>
-                            {open_ids.includes(item.id) ? ArrayRenderer(item.value.slice()) : null}
+                            {open_ids.includes(item.id) ? (
+                                <ArrayRenderer array={item.value} open_ids={open_ids} setOpenIds={setOpenIds} />
+                            ) : null}
                         </div>
                     );
                 }
                 return (
                     <div key={index} className='dc-expansion-panel__content-array'>
-                        <span className='dc-expansion-panel__content-array-item-index'>{index + 1}:</span>
+                        <span className='dc-expansion-panel__content-array-item-index'>{`${index + 1}: `}</span>
                         {item?.value?.toString()}
                     </div>
                 );
             })}
-        </div>
+        </React.Fragment>
     );
 };
 

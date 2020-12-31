@@ -20,7 +20,7 @@ const ExpansionPanel = ({ message, onResize }) => {
     };
 
     return (
-        <>
+        <React.Fragment>
             <div
                 className={classNames('dc-expansion-panel__header-container', {
                     'dc-expansion-panel__header-active': is_open,
@@ -30,10 +30,12 @@ const ExpansionPanel = ({ message, onResize }) => {
                 <Icon icon='IcChevronDownBold' className='dc-expansion-panel__header-chevron-icon' onClick={onClick} />
             </div>
             {is_open &&
-                (Array.isArray(message.content)
-                    ? ArrayRenderer(message.content, open_ids, setOpenIds)
-                    : message.content)}
-        </>
+                (Array.isArray(message.content) ? (
+                    <ArrayRenderer array={message.content} open_ids={open_ids} setOpenIds={setOpenIds} />
+                ) : (
+                    message.content
+                ))}
+        </React.Fragment>
     );
 };
 

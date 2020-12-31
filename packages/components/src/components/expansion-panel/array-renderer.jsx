@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from '../icon';
 
-const ArrayRenderer = (array, open_ids) => {
+const ArrayRenderer = array => {
+    const [open_ids, setOpenIds] = React.useState([]);
     const onArrayItemClick = id => {
         if (open_ids.includes(id)) {
             setOpenIds(open_ids.filter(open_id => open_id !== id));

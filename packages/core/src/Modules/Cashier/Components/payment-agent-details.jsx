@@ -30,9 +30,15 @@ Detail.propTypes = {
 const PaymentAgentDetails = ({ className, payment_agent_phone, payment_agent_url, payment_agent_email }) => {
     return (
         <div className={classNames('payment-agent__accordion-content', className)}>
-            {payment_agent_phone && <Detail action='tel' value={payment_agent_phone} icon='Phone' />}
+            {payment_agent_phone && (
+                <Detail action='tel' icon='Phone'>
+                    {payment_agent_phone}
+                </Detail>
+            )}
             {payment_agent_url && (
-                <Detail value={payment_agent_url} icon='Website' target='_blank' rel='noopener noreferrer' />
+                <Detail icon='Website' target='_blank' rel='noopener noreferrer'>
+                    {payment_agent_url}
+                </Detail>
             )}
             {payment_agent_email && (
                 <Detail action='mailto' icon='EmailOutline' is_last_child target='_blank' rel='noopener noreferrer'>

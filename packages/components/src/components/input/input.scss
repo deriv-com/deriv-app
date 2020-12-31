@@ -82,7 +82,7 @@
                 opacity: 0.4;
             }
         }
-        &:not(.dc-input--no-placeholder):not(:focus):not([value='']) {
+        &:not(.dc-input--no-placeholder):not(:focus):not(:disabled):not([value='']) {
             & ~ label {
                 color: var(--text-general);
             }

@@ -17,7 +17,7 @@ const MyProfileForm = () => {
                 <Text size='xs' color='prominent' weight='bold'>
                     <Localize i18n_default_text='Ad template' />
                 </Text>
-                <MyProfileSeparatorContainer.Line />
+                <MyProfileSeparatorContainer.Line has_single_child />
             </MyProfileSeparatorContainer>
             <Formik
                 enableReinitialize

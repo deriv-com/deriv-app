@@ -13,7 +13,7 @@
             background-color: inherit;
         }
 
-        &--single-child {
+        &:last-child {
             margin-right: 0;
         }
     }

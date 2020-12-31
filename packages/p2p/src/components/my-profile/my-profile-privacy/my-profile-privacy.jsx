@@ -14,7 +14,7 @@ const MyProfilePrivacy = () => {
                 <Text size='xs' color='prominent' weight='bold'>
                     <Localize i18n_default_text='Privacy setting' />
                 </Text>
-                <MyProfileSeparatorContainer.Line />
+                <MyProfileSeparatorContainer.Line has_single_child />
             </MyProfileSeparatorContainer>
             <div className='my-profile-privacy__toggle-container'>
                 <ToggleSwitch

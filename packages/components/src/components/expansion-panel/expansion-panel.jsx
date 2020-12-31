@@ -5,6 +5,7 @@ import ArrayRenderer from './array-renderer.jsx';
 import Icon from '../icon';
 
 const ExpansionPanel = ({ message, onResize }) => {
+    const [open_ids, setOpenIds] = React.useState([]);
     const [is_open, setIsOpen] = React.useState(false);
 
     React.useEffect(() => {
@@ -28,7 +29,10 @@ const ExpansionPanel = ({ message, onResize }) => {
                 {message.header}
                 <Icon icon='IcChevronDownBold' className='dc-expansion-panel__header-chevron-icon' onClick={onClick} />
             </div>
-            {is_open && (Array.isArray(message.content) ? ArrayRenderer(message.content) : message.content)}
+            {is_open &&
+                (Array.isArray(message.content)
+                    ? ArrayRenderer(message.content, open_ids, setOpenIds)
+                    : message.content)}
         </>
     );
 };

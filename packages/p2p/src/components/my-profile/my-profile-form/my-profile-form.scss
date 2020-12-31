@@ -33,8 +33,8 @@
     }
 
     &__footer {
-        border-top: 1px solid var(--general-section-2);
-        background-color: var(--general-main-2);
+        border-top: 1px solid var(--general-section-1);
+        background-color: var(--general-main-1);
         text-align: right;
 
         @include mobile {

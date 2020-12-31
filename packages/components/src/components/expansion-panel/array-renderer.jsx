@@ -15,7 +15,7 @@ const ArrayRenderer = (array, open_ids, setOpenIds) => {
     return (
         <div>
             {array.map((item, index) => {
-                if (item && item.value !== undefined && item.value !== null && Array.isArray(item.value)) {
+                if (Array.isArray(item?.value))
                     return (
                         <div key={index} className='dc-expansion-panel__content-array'>
                             <div
@@ -38,7 +38,7 @@ const ArrayRenderer = (array, open_ids, setOpenIds) => {
                 return (
                     <div key={index} className='dc-expansion-panel__content-array'>
                         <span className='dc-expansion-panel__content-array-item-index'>{index + 1}:</span>
-                        {item && item.value !== undefined && item.value !== null ? item.value.toString() : undefined}
+                        {item?.value?.toString()}
                     </div>
                 );
             })}

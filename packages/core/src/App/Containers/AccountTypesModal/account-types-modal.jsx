@@ -31,7 +31,14 @@ const Box = ({ title, description, footer_text, icons, cards }) => {
     return (
         <div className='account-types__box'>
             <div className='account-types__box-left'>
-                <h2 className='account-types__box-title'>{title}</h2>
+                <Text
+                    as='h2'
+                    styles={{ color: 'var(--brand-red-coral)' }}
+                    weight='bold'
+                    className='account-types__box-title'
+                >
+                    {title}
+                </Text>
                 <Text as='p' size='xs' line_height='s' className='account-types__box-description'>
                     {description}
                 </Text>

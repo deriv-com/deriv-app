@@ -43,7 +43,13 @@ class NotificationsDialog extends React.Component {
                 {this.props.notifications && this.props.notifications.length ? (
                     this.props.notifications.map((item, idx) => (
                         <div className='notifications-item' key={idx}>
-                            <h2 className='notifications-item__title'>
+                            <Text
+                                as='h2'
+                                size='xs'
+                                weight='bold'
+                                color='prominent'
+                                className='notifications-item__title'
+                            >
                                 {item.type && (
                                     <Icon
                                         icon={
@@ -57,7 +63,7 @@ class NotificationsDialog extends React.Component {
                                     />
                                 )}
                                 {item.header}
-                            </h2>
+                            </Text>
                             <div className='notifications-item__message'>{item.message}</div>
                             <div className='notifications-item__action'>
                                 {!isEmptyObject(item.action) && (
@@ -105,7 +111,9 @@ class NotificationsDialog extends React.Component {
         const notifications_dialog_el = (
             <div className='notifications-dialog' ref={this.setWrapperRef}>
                 <div className='notifications-dialog__header'>
-                    <h2 className='notifications-dialog__header-text'>{localize('Notifications')}</h2>
+                    <Text as='h2' weight='bold' color='prominent' className='notifications-dialog__header-text'>
+                        {localize('Notifications')}
+                    </Text>
                 </div>
                 <div
                     className={classNames('notifications-dialog__content', {

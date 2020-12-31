@@ -82,6 +82,7 @@ class VerticalTab extends React.Component {
                             item_groups={this.props.list_groups}
                             onChange={this.changeSelected}
                             selected={selected}
+                            is_collapsible={this.props.is_collapsible}
                             is_floating={this.props.is_floating}
                             is_routed={this.props.is_routed}
                             header_title={this.props.header_title}

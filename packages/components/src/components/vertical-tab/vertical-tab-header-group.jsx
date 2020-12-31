@@ -13,17 +13,20 @@ const HeaderIcon = ({ icon, is_active }) => (
 
 const Header = ({ text }) => <div className='dc-vertical-tab__header-group__link'>{text}</div>;
 
-const VerticalTabHeaderGroup = ({ children, className, group, selected, onToggle }) => {
+const VerticalTabHeaderGroup = ({ children, className, group, selected, is_collapsible = true, onToggle }) => {
     const [show_items, setShowItems] = React.useState(true);
     React.useEffect(() => {
         onToggle(true);
     }, [show_items]);
     const label = group.label || group.title; // group.label.charAt(0).toUpperCase() + group.label.slice(1).toLowerCase();
     const handleClick = () => {
-        if (!selected) setShowItems(!show_items);
+        if (is_collapsible && !selected) setShowItems(!show_items);
     };
     const id = `dt_${label}_link`;
     const is_disabled = !!group.is_disabled;
+
+    console.log('props');
+    console.log(is_collapsible);
 
     return (
         <>
@@ -37,12 +40,14 @@ const VerticalTabHeaderGroup = ({ children, className, group, selected, onToggle
             >
                 <HeaderIcon icon={group.icon} is_active={selected} />
                 <Header text={label} />
-                <Icon
-                    icon='IcChevronUpBold' // Point up because default state of tab header group is open
-                    className={classNames('dc-vertical-tab__header-group-chevron', {
-                        'dc-vertical-tab__header-group-chevron--invert': !show_items,
-                    })}
-                />
+                {is_collapsible && (
+                    <Icon
+                        icon='IcChevronUpBold' // Point up because default state of tab header group is open
+                        className={classNames('dc-vertical-tab__header-group-chevron', {
+                            'dc-vertical-tab__header-group-chevron--invert': !show_items,
+                        })}
+                    />
+                )}
             </div>
             {show_items && <div>{children}</div>}
         </>

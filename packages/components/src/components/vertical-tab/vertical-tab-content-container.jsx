@@ -17,9 +17,9 @@ const SideNotes = ({ side_notes }) => {
 };
 
 const Content = ({ is_routed, items, selected }) => {
-    const selected_item = items.find(item => item.label === selected.label);
+    const selected_item = items.find(item => item?.label === selected?.label);
     const previous_selected_item = usePrevious(selected_item);
-    const TabContent = selected_item.value;
+    const TabContent = selected_item?.value;
     const [side_notes, setSideNotes] = React.useState(null);
 
     const notes_array = [];
@@ -52,9 +52,9 @@ const Content = ({ is_routed, items, selected }) => {
                     })}
                 </Switch>
             ) : (
-                <TabContent key={selected_item.label} className='item-id' setSideNotes={addToNotesQueue} />
+                <TabContent key={selected_item?.label} className='item-id' setSideNotes={addToNotesQueue} />
             )}
-            {selected.has_side_note && (
+            {selected?.has_side_note && (
                 // for components that have side note, even if no note is passed currently,
                 // we want to keep the column space for side note
                 <SideNotes selected_item={selected_item} side_notes={side_notes} />
@@ -106,7 +106,7 @@ export default class VerticalTabContentContainer extends React.PureComponent {
                     </div>
                 )}
                 <div className={classNames('dc-vertical-tab__content-container', tab_container_classname)}>
-                    {selected.has_side_note ? (
+                    {selected?.has_side_note ? (
                         <div className='dc-vertical-tab__content-inner'>
                             <Content is_routed={is_routed} items={items} selected={selected} />
                         </div>

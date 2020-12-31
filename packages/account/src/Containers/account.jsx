@@ -22,6 +22,8 @@ const Account = ({
     toggleAccount,
     needs_financial_assessment,
 }) => {
+    console.log('account routes');
+    console.log(routes);
     const [is_loading, setIsLoading] = React.useState(true);
     const subroutes = flatten(routes.map(i => i.subroutes));
     let list_groups = [...routes];

@@ -47,7 +47,7 @@ class VerticalTabHeaders extends React.PureComponent {
         }
 
         if (selected_el) {
-            const extra_offset = this.props.is_floating ? 18 : 10;
+            const extra_offset = this.props.is_floating ? 12 : 10;
             calculated_offset = selected_el.offsetTop - extra_offset;
         }
 
@@ -55,6 +55,8 @@ class VerticalTabHeaders extends React.PureComponent {
     }
 
     render() {
+        console.log('item groups: ');
+        console.log(this.props.item_groups);
         return (
             <VerticalTabWrapper
                 wrapper_ref={this.ref}
@@ -74,6 +76,7 @@ class VerticalTabHeaders extends React.PureComponent {
                                   this.props.items.findIndex(i => i === this.props.selected)
                               )}
                               items={this.props.items}
+                              is_collapsible={this.props.is_collapsible}
                               group={group}
                               key={idx}
                           >

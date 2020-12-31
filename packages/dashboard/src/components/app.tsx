@@ -12,7 +12,8 @@ const App: React.FC<TAppProps> = ({ className, client, config, ui, ws }) => {
 
     // Different consumers of this package have different sized headers and footers so they
     // need to be offset in order to fill the entire page.
-    const dashboard_height = ui.height_offset ? `calc(100vh - ${ui.height_offset})` : '100vh';
+    //const dashboard_height = ui.height_offset ? `calc(100vh - ${ui.height_offset})` : '100vh';
+    const dashboard_height = '100%';
 
     useDeepEffect(() => {
         ui_store.init(ui);

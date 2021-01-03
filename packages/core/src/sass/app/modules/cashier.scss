@@ -508,7 +508,6 @@
     margin: 4rem auto 0;
 
     &__title {
-        @include typeface(--title-center-bold-black);
         margin-bottom: 3.2rem;
     }
     &__desc {

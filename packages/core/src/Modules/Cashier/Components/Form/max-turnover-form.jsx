@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
 import { getDecimalPlaces, routes, validNumber } from '@deriv/shared';
-import { Button, Input } from '@deriv/components';
+import { Button, Input, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
@@ -47,7 +47,9 @@ const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
 
     return (
         <div className='max-turnover'>
-            <h2 className='max-turnover__title'>{localize('30 days max total stake')}</h2>
+            <Text as='h2' weight='bold' align='center' className='max-turnover__title'>
+                {localize('30 days max total stake')}
+            </Text>
 
             <Formik initialValues={initial_values} onSubmit={handleSubmit} validate={validateFields}>
                 {({ values, errors, isValid, handleChange, handleBlur, isSubmitting, dirty, status }) => (

@@ -422,10 +422,6 @@
             margin-bottom: 1.6rem;
         }
         &__header {
-            color: var(--text-loss-danger);
-            font-weight: bold;
-            font-size: 1.6rem;
-            line-height: 1.5;
             margin-bottom: 0.8rem;
         }
         &__button {
@@ -434,9 +430,6 @@
             @include mobile {
                 width: calc(100% - 3.2rem);
             }
-        }
-        &__footer {
-            font-size: 1.2rem;
         }
     }
 }

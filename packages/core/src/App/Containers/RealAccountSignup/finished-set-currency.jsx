@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Button, Icon, Div100vhContainer } from '@deriv/components';
+import { Button, Icon, Div100vhContainer, Text } from '@deriv/components';
 import { getCurrencyDisplayCode, isDesktop, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
@@ -51,9 +51,9 @@ const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
             <div
                 className={classNames('status-dialog__body-area', { 'status-dialog__body-area--no-grow': isMobile() })}
             >
-                <h2>
+                <Text as='h2' weight='bold' align='center'>
                     <Localize i18n_default_text='Success!' />
-                </h2>
+                </Text>
                 <SuccessMessage prev={prev} current={current} />
             </div>
             <div className='status-dialog__btn-area'>

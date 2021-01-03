@@ -213,10 +213,8 @@
         flex-grow: 1;
 
         h2 {
-            @include typeface(--title-center-bold-black);
             margin-top: 1rem;
             margin-bottom: 1rem;
-            color: var(--text-general);
 
             @include mobile {
                 line-height: 24px;

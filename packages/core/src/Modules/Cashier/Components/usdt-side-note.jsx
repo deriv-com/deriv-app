@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal } from '@deriv/components';
+import { Modal, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
 const USDTSideNote = () => {
@@ -11,9 +11,9 @@ const USDTSideNote = () => {
 
     return (
         <div className='cashier__usdt-side-note'>
-            <h2 className='cashier__usdt-side-note--header'>
+            <Text as='h2' weight='bold' color='prominent'>
                 <Localize i18n_default_text='About Tether' />
-            </h2>
+            </Text>
             <p>
                 <Localize
                     i18n_default_text='Deriv currently supports withdrawals of Tether USDT to Omni wallet and Tether eUSDT to Ethereum wallet. To ensure a successful transaction, enter a wallet address compatible with the tokens you wish to withdraw. <0>Learn more</0>'

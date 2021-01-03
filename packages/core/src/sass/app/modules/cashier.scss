@@ -561,11 +561,7 @@
 /** @define withdraw */
 .withdraw {
     &__header {
-        font-weight: bold;
         margin-bottom: 8px;
-        font-size: 1.6rem;
-        line-height: 1.5;
-        color: var(--text-general);
     }
 
     &__verify-button {

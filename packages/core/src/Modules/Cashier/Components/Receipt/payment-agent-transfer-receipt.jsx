@@ -17,9 +17,9 @@ class PaymentAgentTransferReceipt extends React.Component {
         return (
             <div className='cashier__wrapper payment-agent-transfer__wrapper'>
                 <div className='cashier__success'>
-                    <h2 className='cashier__header'>
+                    <Text as='h2' color='prominent' weight='bold' className='cashier__header'>
                         <Localize i18n_default_text='Your funds have been transferred' />
-                    </h2>
+                    </Text>
                     <div className='cashier__transferred-amount cashier__text--bold'>
                         {formatMoney(this.props.currency, this.props.receipt.amount_transferred, true)}
                         <span className={classNames('symbols', `symbols--${this.props.currency.toLowerCase()}`)}>

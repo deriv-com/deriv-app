@@ -26,7 +26,6 @@
         background: var(--status-default);
 
         &-header {
-            text-align: center;
             margin-bottom: 3.2rem;
 
             @include mobile {
@@ -111,11 +110,6 @@
         }
     }
     &__header {
-        font-size: 1.6rem;
-        line-height: 1.5;
-        font-weight: bold;
-        color: var(--text-prominent);
-
         @include mobile {
             font-size: 1.4rem;
         }
@@ -725,8 +719,6 @@
     &__list {
         &-header {
             margin-top: 32px;
-            font-size: 1.4rem;
-            line-height: 1.43;
         }
         &-selector {
             margin-bottom: 8px;

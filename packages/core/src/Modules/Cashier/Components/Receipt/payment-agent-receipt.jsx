@@ -27,9 +27,9 @@ class PaymentAgentReceipt extends React.Component {
         return (
             <div className='cashier__wrapper--align-left payment-agent__receipt '>
                 <div className='cashier__success'>
-                    <h2 className='cashier__header'>
+                    <Text as='h2' color='prominent' weight='bold' className='cashier__header'>
                         <Localize i18n_default_text='Your funds have been transferred' />
-                    </h2>
+                    </Text>
                     <div className='cashier__transferred-amount cashier__text--bold'>
                         {formatMoney(currency, receipt.amount_transferred, true)}
                         <span className={classNames('symbols', `symbols--${currency_lowercase}`)}>
@@ -53,9 +53,9 @@ class PaymentAgentReceipt extends React.Component {
                         </span>
                     </div>
                 </div>
-                <h2 className='cashier__header'>
+                <Text as='h2' color='prominent' weight='bold' className='cashier__header'>
                     <Localize i18n_default_text='IMPORTANT NOTICE TO RECEIVE YOUR FUNDS' />
-                </h2>
+                </Text>
                 <Text as='p' size='xs' line_height='s' className='payment-agent__explanation cashier__paragraph'>
                     <Localize
                         i18n_default_text={

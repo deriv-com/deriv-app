@@ -174,9 +174,9 @@ class PaymentAgentWithdrawForm extends React.Component {
         const should_fill_id = !this.props.payment_agent_name && this.props.payment_agent_id;
         return (
             <div className='cashier__wrapper--align-left payment-agent__withdrawal'>
-                <h2 className='cashier__header'>
+                <Text as='h2' color='prominent' weight='bold' className='cashier__header'>
                     <Localize i18n_default_text='Payment agent withdrawal' />
-                </h2>
+                </Text>
                 <Formik
                     initialValues={{
                         // in case coming back from confirmation screen, populate the recent data to be edited

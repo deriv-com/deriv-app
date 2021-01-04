@@ -15,7 +15,7 @@ import { header_links } from 'App/Constants/header-links';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 
-const Header = ({
+const DefaultHeader = ({
     acc_switcher_disabled_message,
     account_status,
     addNotificationMessage,
@@ -163,7 +163,7 @@ const Header = ({
     );
 };
 
-Header.propTypes = {
+DefaultHeader.propTypes = {
     acc_switcher_disabled_message: PropTypes.string,
     should_allow_authentication: PropTypes.bool,
     account_status: PropTypes.object,
@@ -232,4 +232,4 @@ export default connect(({ client, common, ui, modules }) => ({
     setDarkMode: ui.setDarkMode,
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: ui.toggleNotificationsModal,
-}))(withRouter(Header));
+}))(withRouter(DefaultHeader));

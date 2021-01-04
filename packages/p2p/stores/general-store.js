@@ -86,6 +86,7 @@ export default class GeneralStore extends BaseStore {
         const { order_store } = this.root_store;
         const { client, props } = this;
         const { is_cached, notifications } = this.getLocalStorageSettingsForLoginId();
+
         new_orders.forEach(new_order => {
             const order_info = createExtendedOrderDetails(new_order, client.loginid, props.server_time);
             const notification = notifications.find(n => n.order_id === new_order.id);
@@ -307,6 +308,7 @@ export default class GeneralStore extends BaseStore {
             const { list } = p2p_order_list;
             // it's an array of orders from p2p_order_list
             this.handleNotifications(order_store.orders, list);
+            list.forEach(order => order_store.syncOrder(order));
         } else if (p2p_order_info) {
             // it's a single order from p2p_order_info
             const idx_order_to_update = order_store.orders.findIndex(order => order.id === p2p_order_info.id);

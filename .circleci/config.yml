@@ -63,6 +63,7 @@ commands:
             - "packages/cashier/node_modules"
             - "packages/components/node_modules"
             - "packages/core/node_modules"
+            - "packages/dashboard/node_modules"
             - "packages/indicators/node_modules"
             - "packages/p2p/node_modules"
             - "packages/shared/node_modules"

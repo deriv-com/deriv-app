@@ -24,10 +24,12 @@
     }
     &__upload-icons {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         height: 10rem;
         grid-gap: 1rem;
-
+        @include desktop {
+            grid-template-columns: repeat(4, 1fr);
+        }
         &--no-margin {
             margin: 0;
             text-align: center;

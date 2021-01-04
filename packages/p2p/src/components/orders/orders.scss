@@ -67,7 +67,7 @@
             cursor: pointer;
 
             &--attention {
-                background: var(--button-tertiary-hover);
+                background: var(--transparen-row);
             }
             &:not(.orders__table-row--header) {
                 cursor: pointer;

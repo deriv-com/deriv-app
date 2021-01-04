@@ -14,7 +14,7 @@ const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSi
     };
 
     return (
-        <div className='cashier__wrapper cashier__wrapper--no-margin'>
+        <div className='cashier__wrapper'>
             {has_real_account && (
                 <div
                     className={classNames(

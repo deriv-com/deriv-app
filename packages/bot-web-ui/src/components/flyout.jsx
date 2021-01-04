@@ -56,7 +56,7 @@ const FlyoutContent = props => {
             className={classNames('flyout__content', { 'flyout__normal-content': !is_search_flyout })}
         >
             <ThemedScrollbars className='flyout__content-scrollbar'>
-                {selected_category.getAttribute('id') === 'indicators' && (
+                {selected_category?.getAttribute('id') === 'indicators' && (
                     <div className='flyout__content-disclaimer'>
                         <span className='flyout__content-disclaimer-icon'>
                             <Icon

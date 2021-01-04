@@ -42,7 +42,6 @@ const App = ({ root_store }) => {
     const l = window.location;
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);
-    const url_params = new URLSearchParams(l.search);
     const [is_translation_loaded] = useOnLoadTranslation();
     React.useEffect(initCashierStore, []);
     React.useEffect(() => {
@@ -121,7 +120,7 @@ const App = ({ root_store }) => {
                             <DesktopWrapper>
                                 <Footer />
                             </DesktopWrapper>
-                            <AppModals url_action_param={url_params.get('action')} />
+                            <AppModals />
                             <SmartTraderIFrame />
                             <AppToastMessages />
                         </PlatformContainer>

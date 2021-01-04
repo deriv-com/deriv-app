@@ -21,7 +21,7 @@ import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
 import AppContents from './Containers/Layout/app-contents.jsx';
 import PlatformContainer from './Containers/PlatformContainer/PlatformContainer.jsx';
 import Footer from './Containers/Layout/footer.jsx';
-import Header from './Containers/Layout/header.jsx';
+import Header from './Containers/Layout/header';
 import AppNotificationMessages from './Containers/app-notification-messages.jsx';
 import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';

@@ -42,8 +42,7 @@ export default Engine =>
                 const contract_id = this.contractId;
 
                 const sellContractAndGetContractInfo = () => {
-                    return this.api
-                        .sell(contract_id, 0)
+                    return doUntilDone(() => this.api.send({ sell: contract_id, price: 0 }))
                         .then(sell_response => {
                             doUntilDone(() => this.api.send({ proposal_open_contract: 1, contract_id })).then(
                                 () => sell_response

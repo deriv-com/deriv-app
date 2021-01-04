@@ -41,5 +41,6 @@ module.exports = {
     "extends": [
         // other configs ...
         "stylelint-config-prettier"
-    ]
+    ],
+    ignoreFiles: ['packages/*/dist/*.css'],
 };

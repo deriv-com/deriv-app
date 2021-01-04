@@ -13,6 +13,7 @@ import {
     setSharedMT5Text,
 } from '@deriv/shared';
 import { initializeTranslations, getLanguage, useOnLoadTranslation } from '@deriv/translations';
+import { CashierStore } from '@deriv/cashier';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
@@ -21,7 +22,7 @@ import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
 import AppContents from './Containers/Layout/app-contents.jsx';
 import PlatformContainer from './Containers/PlatformContainer/PlatformContainer.jsx';
 import Footer from './Containers/Layout/footer.jsx';
-import Header from './Containers/Layout/header.jsx';
+import Header from './Containers/Layout/header';
 import AppNotificationMessages from './Containers/app-notification-messages.jsx';
 import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';
@@ -33,11 +34,16 @@ import { MT5_TEXT } from '../Constants/mt5-text';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
 
+const initCashierStore = () => {
+    root_store.modules.attachModule('cashier', new CashierStore({ root_store, WS }));
+};
+
 const App = ({ root_store }) => {
     const l = window.location;
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);
     const [is_translation_loaded] = useOnLoadTranslation();
+    React.useEffect(initCashierStore, []);
     React.useEffect(() => {
         checkAndSetEndpointFromUrl();
         initializeTranslations();

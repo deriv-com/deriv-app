@@ -88,6 +88,7 @@
         "@deriv/account": "^1.0.0",
         "@deriv/bot-web-ui": "^1.0.0",
         "@deriv/components": "^1.0.0",
+        "@deriv/dashboard": "^0.0.4",
         "@deriv/deriv-api": "^1.0.7",
         "@deriv/deriv-charts": "^0.3.10",
         "@deriv/p2p": "^0.7.3",

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, Form, Formik } from 'formik';
-import { Button, Dropdown, Icon, Input, Loading, Text, ThemedScrollbars } from '@deriv/components';
+import { Button, Dropdown, Div100vhContainer, Icon, Input, Loading, Text, ThemedScrollbars } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -9,6 +9,14 @@ import PageReturn from 'Components/page-return/page-return.jsx';
 import { useStores } from 'Stores';
 import AdSummary from './my-ads-summary.jsx';
 import { buy_sell } from '../../constants/buy-sell';
+
+const FormAdsWrapper = ({ children }) => {
+    if (isMobile()) {
+        return <Div100vhContainer height_offset='138px'>{children}</Div100vhContainer>;
+    }
+
+    return children;
+};
 
 const FormAds = () => {
     const { general_store, my_ads_store } = useStores();
@@ -29,7 +37,7 @@ const FormAds = () => {
     }
 
     return (
-        <React.Fragment>
+        <FormAdsWrapper>
             <PageReturn
                 className={('', { 'p2p-my-ads__page-return': isMobile() })}
                 onClick={() => my_ads_store.setShowAdForm(false)}
@@ -292,7 +300,7 @@ const FormAds = () => {
                     );
                 }}
             </Formik>
-        </React.Fragment>
+        </FormAdsWrapper>
     );
 };
 

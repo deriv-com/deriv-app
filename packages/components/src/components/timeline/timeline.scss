@@ -3,6 +3,7 @@
         display: flex;
         border-left: var(--brand-red-coral) solid 1px;
         position: relative;
+        margin-left: 1.2rem;
 
         &--no-border {
             border-left: unset;
@@ -27,6 +28,10 @@
         position: absolute;
         padding-left: 1px;
         left: -13px;
+
+        &--disabled {
+            background-color: var(--text-general);
+        }
     }
     &__number {
         color: var(--text-colored-background);

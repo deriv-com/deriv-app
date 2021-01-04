@@ -91,7 +91,10 @@ const Onfido = ({ documents_supported, handleComplete, height, onfido_service_to
         }
     }, [initOnfido, previous_onfido_service_token, onfido_service_token, status]);
 
-    if (onfido_init_error || onfido_service_token?.error) return <OnfidoFailed {...props} />;
+    const no_manual_upload_available =
+        onfido_service_token?.error && onfido_service_token.error.code !== 'UnsupportedCountry';
+
+    if (onfido_init_error || no_manual_upload_available) return <OnfidoFailed {...props} />;
 
     if (status === onfido_status_codes.onfido) return <OnfidoContainer height={height} />;
 

@@ -36,6 +36,11 @@ const Bot = React.lazy(() => {
     return import(/* webpackChunkName: "bot" */ '@deriv/bot-web-ui');
 });
 
+const Dashboard = React.lazy(() => {
+    // eslint-disable-next-line import/no-unresolved
+    return import(/* webpackChunkName: "dashboard" */ 'Modules/Dashboard');
+});
+
 const getModules = ({ is_deriv_crypto }) => {
     const modules = [
         {
@@ -43,6 +48,28 @@ const getModules = ({ is_deriv_crypto }) => {
             component: Bot,
             // Don't use `Localize` component since native html tag like `option` cannot render them
             getTitle: () => localize('Bot'),
+        },
+        {
+            path: routes.dashboard,
+            component: Dashboard,
+            getTitle: () => localize('Dashboard'),
+            routes: [
+                {
+                    path: routes.explore,
+                    component: Dashboard,
+                    getTitle: () => localize('Explore'),
+                },
+                {
+                    path: routes.about_us,
+                    component: Dashboard,
+                    getTitle: () => localize('About Us'),
+                },
+                {
+                    path: routes.resources,
+                    component: Dashboard,
+                    getTitle: () => localize('Resources'),
+                },
+            ],
         },
         {
             path: routes.account_deactivated,

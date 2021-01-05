@@ -1,8 +1,10 @@
 .add-or-manage {
     flex-direction: row; /* fix for Safari */
     flex-wrap: wrap;
+    height: 100%;
 
-    form {
+    .dc-tabs__content {
+        display: flex;
         flex-direction: column;
     }
     .dc-tabs__list--header-fit-content {
@@ -62,12 +64,8 @@
             margin-right: auto;
             width: 768px;
         }
-        .add-crypto-currency {
-            padding-bottom: 2rem;
-        }
         .dc-form-submit-button--absolute {
-            position: fixed;
-            padding: 1.4rem;
+            padding: 1.6rem;
             width: 100%;
             right: 0;
         }

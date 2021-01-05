@@ -17,6 +17,11 @@ const copyConfig = base => {
                 flatten: true,
             },
             {
+                from: path.resolve(__dirname, '../node_modules/@deriv/dashboard/lib/assets/images'),
+                to: 'js/dashboard/assets/images',
+                flatten: true,
+            },
+            {
                 from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/*.*'),
                 to: 'js/bot/',
                 flatten: true,
@@ -48,6 +53,13 @@ const copyConfig = base => {
                 to: 'account/css/',
                 flatten: true,
             },
+            {
+                from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/js/**'),
+                to: 'js',
+                flatten: true,
+            },
+            { from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/css/**'), to: 'css', flatten: true },
+            { from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/js/*.*'), to: 'js', flatten: true },
             {
                 from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/js/trader.*.js'),
                 to: 'js',

@@ -17,19 +17,19 @@ const AdSummary = observer(({ offer_amount, price_rate, type }) => {
 
     if (offer_amount) {
         const components = [<span key={0} className='p2p-my-ads__form-summary--bold' />];
-        const values = { target_amount: display_offer_amount, target_currency: local_currency_config.currency };
+        const values = { target_amount: display_offer_amount, target_currency: currency };
 
         if (price_rate) {
             Object.assign(values, {
                 local_amount: display_total,
-                local_currency: currency,
+                local_currency: local_currency_config.currency,
                 price_rate: display_price_rate,
             });
 
             if (type === buy_sell.BUY) {
                 return (
                     <Localize
-                        i18n_default_text="You're creating an ad to buy <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> ({{ price_rate }}/{{ target_currency }})"
+                        i18n_default_text="You're creating an ad to buy <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> ({{ price_rate }} {{local_currency}}/{{ target_currency }})"
                         components={components}
                         values={values}
                     />
@@ -38,7 +38,7 @@ const AdSummary = observer(({ offer_amount, price_rate, type }) => {
 
             return (
                 <Localize
-                    i18n_default_text="You're creating an ad to sell <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> ({{ price_rate }}/{{ target_currency }})"
+                    i18n_default_text="You're creating an ad to sell <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> ({{ price_rate }} {{local_currency}}/{{ target_currency }})"
                     components={components}
                     values={values}
                 />

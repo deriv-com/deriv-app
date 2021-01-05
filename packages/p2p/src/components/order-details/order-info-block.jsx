@@ -10,7 +10,7 @@ const OrderInfoBlock = ({ label, value }) => (
 
 OrderInfoBlock.propTypes = {
     label: PropTypes.string,
-    value: PropTypes.string,
+    value: PropTypes.any,
 };
 
 export default OrderInfoBlock;

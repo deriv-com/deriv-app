@@ -1,5 +1,5 @@
 import React from 'react';
-import Loadable from 'react-loadable';
+import Loadable from 'react-loadable-hooks';
 import { Loading } from '@deriv/components';
 import { routes } from '@deriv/shared';
 

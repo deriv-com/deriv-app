@@ -197,7 +197,7 @@
 
         &-icon {
             margin-right: 0.8rem;
-            margin-top: 0.2rem;
+            margin-top: -0.2rem;
         }
         &-text {
             text-align: left;
@@ -533,12 +533,6 @@
                 }
             }
         }
-    }
-
-    &__commission {
-        margin: 1.6rem auto;
-        display: flex;
-        align-items: center;
     }
     &__account-selection {
         align-items: center;

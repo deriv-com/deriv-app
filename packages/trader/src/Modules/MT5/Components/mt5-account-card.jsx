@@ -85,7 +85,6 @@ const MT5AccountCardAction = ({
 const MT5AccountCard = ({
     button_label,
     commission_message,
-    commission_message_crypto_warning,
     descriptor,
     existing_data,
     has_mt5_account,
@@ -169,14 +168,9 @@ const MT5AccountCard = ({
 
                 {((!existing_data && commission_message) || !is_logged_in) && (
                     <div className='mt5-account-card__commission'>
-                        <Text as='p' color='general' size='xs'>
+                        <Text as='p' color='general' size='xs' styles={{ margin: '1.6rem auto' }}>
                             {commission_message}
                         </Text>
-                        {commission_message_crypto_warning && (
-                            <Text as='p' color='general' size='xxxs' styles={{ marginLeft: '0.8rem' }}>
-                                {commission_message_crypto_warning}
-                            </Text>
-                        )}
                     </div>
                 )}
                 {existing_data && is_logged_in && (

@@ -655,7 +655,9 @@ Blockly.Toolbox.prototype.refreshCategory = function () {
 Blockly.Toolbox.prototype.setVisibility = function (is_open) {
     const { flyout } = DBotStore.instance;
 
-    flyout.setVisibility(false);
+    if (!flyout.is_search_flyout) {
+        flyout.setVisibility(false);
+    }
 
     if (is_open) {
         this.removeStyle('toolbox--hidden');

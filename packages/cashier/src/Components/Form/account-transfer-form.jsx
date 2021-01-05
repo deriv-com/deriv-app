@@ -46,7 +46,12 @@ const AccountOption = ({ account, idx }) => {
             </div>
 
             <span className='account-transfer__balance'>
-                <Money amount={account.balance} currency={account.currency} show_currency />
+                <Money
+                    amount={account.balance}
+                    currency={account.currency}
+                    has_sign={account.balance < 0}
+                    show_currency
+                />
             </span>
         </React.Fragment>
     );

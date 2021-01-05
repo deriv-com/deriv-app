@@ -22,6 +22,7 @@ class Table extends React.Component {
                         has_horizontal
                         width={this.props.scroll_width || '100%'}
                         height={this.props.scroll_height}
+                        className={'dc-table--scrollbar'}
                     >
                         {this.props.children}
                     </ThemedScrollbars>

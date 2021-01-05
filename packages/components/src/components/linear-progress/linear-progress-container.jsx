@@ -5,15 +5,15 @@ import { LinearProgress } from './linear-progress.jsx';
 const LinearProgressContainer = ({ timeout, action, render, className }) => {
     const [timeout_state, setTimeout] = React.useState(timeout / 1000);
     const [current_tick, setCurrentTick] = React.useState(Math.round(timeout / 1000));
-    const total_ticks = React.useState(Math.round(timeout / 1000));
+    const [total_ticks] = React.useState(Math.round(timeout / 1000));
 
     const getProgress = () => 100 - Math.round((current_tick / total_ticks) * 100);
 
-    const getRemaining = () => (timeout >= 0 ? timeout : 0);
+    const getRemaining = () => (timeout_state > 0 ? timeout_state : 0);
 
     const makeProgress = () => {
-        setCurrentTick(current_tick - 1);
-        setTimeout(timeout_state - 1);
+        setCurrentTick(current => current - 1);
+        setTimeout(timeout_current => timeout_current - 1);
     };
 
     React.useEffect(() => {

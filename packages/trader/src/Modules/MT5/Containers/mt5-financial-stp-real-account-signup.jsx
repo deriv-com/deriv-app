@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { FormProgress, DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
 import { getPropertyValue, isDesktop } from '@deriv/shared';
-
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
@@ -52,6 +51,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                     },
                     props: [
                         'addNotificationByKey',
+                        'authentication_status',
                         'refreshNotifications',
                         'removeNotificationMessage',
                         'removeNotificationByKey',
@@ -278,6 +278,7 @@ MT5FinancialStpRealAccountSignup.propTypes = {
 
 export default connect(({ client, modules: { mt5 }, ui }) => ({
     addNotificationByKey: ui.addNotificationMessageByKey,
+    authentication_status: client.authentication_status,
     get_settings: client.account_settings,
     is_fully_authenticated: client.is_fully_authenticated,
     landing_company: client.landing_company,

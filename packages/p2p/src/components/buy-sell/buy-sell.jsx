@@ -13,11 +13,13 @@ import BuySellModal from './buy-sell-modal.jsx';
 import BuySellTable from './buy-sell-table.jsx';
 import './buy-sell.scss';
 
-const BuySell = observer(() => {
+const BuySell = () => {
     const isMounted = useIsMounted();
     const { buy_sell_store } = useStores();
     const [is_toggle_visible, setIsToggleVisible] = React.useState(true);
     const previous_scroll_top = React.useRef(0);
+
+    React.useEffect(() => buy_sell_store.registerIsListedReaction(), []);
 
     const onScroll = event => {
         if (isMounted() && event.target.scrollTop !== previous_scroll_top.current) {
@@ -68,7 +70,7 @@ const BuySell = observer(() => {
             />
         </div>
     );
-});
+};
 
 BuySell.propTypes = {
     error_message: PropTypes.string,
@@ -92,4 +94,4 @@ BuySell.propTypes = {
     table_type: PropTypes.string,
 };
 
-export default BuySell;
+export default observer(BuySell);

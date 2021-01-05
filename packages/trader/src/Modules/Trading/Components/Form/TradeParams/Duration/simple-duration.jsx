@@ -81,5 +81,6 @@ export default connect(({ modules, ui }) => ({
     contract_expiry_type: modules.trade.contract_expiry_type,
     current_focus: ui.current_focus,
     setCurrentFocus: ui.setCurrentFocus,
+    simple_duration_unit: ui.simple_duration_unit,
     validation_errors: modules.trade.validation_errors,
 }))(SimpleDuration);

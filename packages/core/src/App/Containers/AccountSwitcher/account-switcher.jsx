@@ -511,7 +511,7 @@ const AccountSwitcher = props => {
                                             secondary
                                             small
                                             is_disabled={
-                                                (!props.is_eu && !props.has_active_real_account) ||
+                                                !props.has_active_real_account ||
                                                 (account.type === 'financial_stp' &&
                                                     (props.is_pending_authentication || !!props.mt5_login_list_error))
                                             }

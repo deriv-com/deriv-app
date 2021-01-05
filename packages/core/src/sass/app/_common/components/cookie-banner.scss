@@ -15,7 +15,7 @@
     height: 152px;
     text-align: center;
     transition: top 0.3s ease-in-out;
-    z-index: 10;
+    z-index: 1000;
 
     @include mobile {
         font-size: 12px;

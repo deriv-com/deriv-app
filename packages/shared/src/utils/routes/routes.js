@@ -49,4 +49,9 @@ export const routes = {
     smarttrader: getUrlSmartTrader(),
     endpoint: '/endpoint',
     complaints_policy: '/complaints-policy',
+
+    dashboard: '/dashboard',
+    about_us: '/dashboard/about-us',
+    explore: '/dashboard/explore',
+    resources: '/dashboard/resources',
 };

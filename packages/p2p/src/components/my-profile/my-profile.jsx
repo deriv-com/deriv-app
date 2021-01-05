@@ -18,6 +18,7 @@ import {
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
+import { useUpdatingAvailableBalance } from 'Components/hooks';
 import { localize, Localize } from 'Components/i18next';
 import FormError from 'Components/form/error.jsx';
 import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
@@ -51,6 +52,7 @@ const MyProfile = () => {
         total_orders_count,
     } = my_profile_store.advertiser_info;
 
+    const available_balance = useUpdatingAvailableBalance(balance_available);
     const [is_balance_tooltip_open, setIsBalanceTooltipOpen] = React.useState(false);
     const [is_statistics_tooltip_open, setIsStatisticsTooltipOpen] = React.useState(false);
 
@@ -103,7 +105,7 @@ const MyProfile = () => {
                         size={isMobile() ? 'xs' : 's'}
                         weight='bold'
                     >
-                        <Money amount={balance_available} currency={currency} show_currency />
+                        <Money amount={available_balance} currency={currency} show_currency />
                     </Text>
                     <PopoverMobile
                         button_text={localize('Got it')}

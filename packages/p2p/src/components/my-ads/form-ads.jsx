@@ -2,41 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Dropdown, Loading, Icon, Input, Button, ThemedScrollbars } from '@deriv/components';
-import { useIsMounted } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
+import { useUpdatingAvailableBalance } from 'Components/hooks';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
-import { requestWS } from 'Utils/websocket';
 import AdSummary from './my-ads-summary.jsx';
 
 const FormAds = () => {
     const { general_store, my_ads_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
-    const [available_balance, setAvailableBalance] = React.useState(null);
-    const isMounted = useIsMounted();
-
-    const updateAvailableBalance = () => {
-        requestWS({ p2p_advertiser_info: 1 }).then(response => {
-            if (!isMounted()) return;
-            if (response.p2p_advertiser_info) {
-                const { balance_available } = response.p2p_advertiser_info;
-                setAvailableBalance(balance_available);
-            }
-        });
-    };
+    const available_balance = useUpdatingAvailableBalance();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    React.useEffect(() => {
-        const limits_interval = setInterval(() => updateAvailableBalance(), 10000);
-
-        updateAvailableBalance();
-        my_ads_store.getAdvertiserInfo();
-
-        return () => clearInterval(limits_interval);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    React.useEffect(() => my_ads_store.getAdvertiserInfo(), []);
 
     const PageReturnComponent = () => {
         return <PageReturn onClick={() => my_ads_store.setShowAdForm(false)} page_title={localize('Create new ad')} />;
@@ -119,7 +99,7 @@ const FormAds = () => {
                                                         my_ads_store.restrictLength(e, handleChange);
                                                     }}
                                                     hint={
-                                                        Number.isNaN(available_balance)
+                                                        available_balance == null
                                                             ? undefined
                                                             : localize('Your DP2P balance is {{ dp2p_balance }}', {
                                                                   dp2p_balance: `${available_balance} ${currency}`,

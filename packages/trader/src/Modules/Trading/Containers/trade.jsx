@@ -1,12 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-    DesktopWrapper,
-    Div100vhContainer,
-    MobileWrapper,
-    SwipeableWrapper,
-    usePreviousState,
-} from '@deriv/components';
+import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper, usePrevious } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
@@ -217,7 +211,7 @@ const Chart = props => {
     const props_ref = React.useRef();
     props_ref.current = props;
 
-    const prev_should_refresh = usePreviousState(should_refresh);
+    const prev_should_refresh = usePrevious(should_refresh);
     if (prev_should_refresh) resetRefresh();
 
     const bottomWidgets = React.useCallback(

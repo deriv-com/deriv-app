@@ -70,47 +70,53 @@ class AccountWizard extends React.Component {
 
     componentDidMount() {
         this.props.fetchStatesList();
-        const { cancel, promise } = makeCancellablePromise(this.props.fetchResidenceList());
-        this.cancel = cancel;
-        const { cancel: cancelFinancialAssessment, promise: financial_assessment_promise } = makeCancellablePromise(
-            this.props.fetchFinancialAssessment()
+
+        const { cancel, promise } = makeCancellablePromise(
+            Promise.all([this.props.fetchResidenceList(), this.props.fetchFinancialAssessment()])
         );
-        this.cancelFinancialAssessment = cancelFinancialAssessment;
+        this.cancel = cancel;
 
-        Promise.all([promise, financial_assessment_promise]).then(() => {
-            this.setState({
-                items: getItems(this.props),
-                mounted: false,
-            });
-
-            // If residence list is present, attempt to set phone field with the proper default value
-            // Otherwise, leave empty.
-            if (!this.residence_list?.length) {
-                const setDefaultPhone = country_code => {
-                    const items = [...this.state.items];
-                    if (items.length > 1 && 'phone' in items[1]?.form_value) {
-                        items[1].form_value.phone = items[1].form_value.phone || country_code || '';
-                        this.setState(items);
-                    }
-                };
-
-                this.getCountryCode().then(setDefaultPhone);
-            }
-
-            const previous_data = this.fetchFromStorage();
-            if (previous_data.length > 0) {
-                const items = [...this.state.items];
-                previous_data.forEach((item, index) => {
-                    if (item instanceof Object) {
-                        items[index].form_value = item;
-                    }
-                });
+        promise.then(
+            () => {
                 this.setState({
-                    items,
-                    has_previous_data: true,
+                    items: getItems(this.props),
+                    mounted: false,
                 });
-            }
-        });
+
+                // If residence list is present, attempt to set phone field with the proper default value
+                // Otherwise, leave empty.
+                if (!this.residence_list?.length) {
+                    const setDefaultPhone = country_code => {
+                        const items = [...this.state.items];
+                        if (items.length > 1 && 'phone' in items[1]?.form_value) {
+                            items[1].form_value.phone = items[1].form_value.phone || country_code || '';
+                            this.setState(items);
+                        }
+                    };
+
+                    this.getCountryCode().then(setDefaultPhone);
+                }
+
+                const previous_data = this.fetchFromStorage();
+                if (previous_data.length > 0) {
+                    const items = [...this.state.items];
+                    previous_data.forEach((item, index) => {
+                        if (item instanceof Object) {
+                            items[index].form_value = item;
+                        }
+                    });
+                    this.setState({
+                        items,
+                        has_previous_data: true,
+                    });
+                }
+            },
+            () => {}
+        );
+    }
+
+    componentWillUnmount() {
+        this.cancel();
     }
 
     fetchFromStorage = () => {
@@ -181,8 +187,6 @@ class AccountWizard extends React.Component {
 
     prevStep = (current_step, goToPreviousStep) => {
         if (current_step - 1 < 0) {
-            this.cancel();
-            this.cancelFinancialAssessment();
             this.props.onClose();
             return;
         }

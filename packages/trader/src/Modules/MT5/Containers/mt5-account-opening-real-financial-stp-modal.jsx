@@ -10,7 +10,7 @@ const MT5AccountOpeningRealFinancialStpModal = ({
     enableApp,
     is_mt5_financial_stp_modal_open,
 }) => (
-    <>
+    <React.Fragment>
         <DesktopWrapper>
             <Modal
                 id='mt5_financial_stp_signup_modal'
@@ -38,7 +38,7 @@ const MT5AccountOpeningRealFinancialStpModal = ({
                 <MT5FinancialStpRealAccountSignup toggleModal={disableMt5FinancialStpModal} />
             </MobileDialog>
         </MobileWrapper>
-    </>
+    </React.Fragment>
 );
 
 export default connect(({ ui, modules }) => ({

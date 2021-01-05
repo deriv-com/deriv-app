@@ -40,6 +40,22 @@ export default class SendbirdStore extends BaseStore {
     }
 
     @action.bound
+    createChatForNewOrder(id) {
+        if (!this.chat_channel_url) {
+            // If order_information doesn't have chat_channel_url this is a new order
+            // and we need to instruct BE to create a chat on Sendbird's side.
+            requestWS({ p2p_chat_create: 1, order_id: id }).then(response => {
+                if (response.error) {
+                    // TODO: Handle error.
+                    return;
+                }
+
+                this.setChatChannelUrl(response.p2p_chat_create.channel_url);
+            });
+        }
+    }
+
+    @action.bound
     replaceChannelMessage(idx_to_replace, num_items_to_delete, chat_message) {
         this.chat_messages.splice(idx_to_replace, num_items_to_delete, chat_message);
     }
@@ -260,7 +276,7 @@ export default class SendbirdStore extends BaseStore {
 
     registerMobXReactions() {
         this.disposeOrderIdReaction = reaction(
-            () => this.root_store.general_store.order_id,
+            () => this.root_store.order_store.order_id,
             order_id => {
                 if (!order_id) {
                     this.setChatChannelUrl(null);

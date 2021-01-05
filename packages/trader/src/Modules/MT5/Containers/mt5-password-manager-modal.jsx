@@ -249,6 +249,7 @@ class MT5PasswordManagerModal extends React.Component {
                                 {({ field }) => (
                                     <PasswordInput
                                         {...field}
+                                        autoComplete='current-password'
                                         label={localize('Current password')}
                                         error={touched.old_password && errors.old_password}
                                         required
@@ -265,7 +266,7 @@ class MT5PasswordManagerModal extends React.Component {
                                         {({ has_warning }) => (
                                             <PasswordInput
                                                 {...field}
-                                                autoComplete='password'
+                                                autoComplete='new-password'
                                                 label={localize('New password')}
                                                 hint={
                                                     !has_warning &&
@@ -346,6 +347,7 @@ class MT5PasswordManagerModal extends React.Component {
                                     {({ field }) => (
                                         <PasswordInput
                                             {...field}
+                                            autoComplete='current-password'
                                             label={localize('Current investor password')}
                                             error={touched.old_password && errors.old_password}
                                             required
@@ -362,7 +364,7 @@ class MT5PasswordManagerModal extends React.Component {
                                             {({ has_warning }) => (
                                                 <PasswordInput
                                                     {...field}
-                                                    autoComplete='password'
+                                                    autoComplete='new-password'
                                                     label={localize('New investor password')}
                                                     hint={
                                                         !has_warning &&

@@ -1,85 +1,82 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import { TransitionGroup } from 'react-transition-group';
 import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellMeasurer';
 import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
 import { List } from 'react-virtualized/dist/es/List';
 import { isMobile, isDesktop } from '@deriv/shared';
 import DataListCell from './data-list-cell.jsx';
+import DataListRow from './data-list-row.jsx';
 import ThemedScrollbars from '../themed-scrollbars';
 
-class DataList extends React.PureComponent {
-    state = {
-        is_mounted: false,
-        scrollTop: 0,
-        isScrolling: false,
-    };
-    items_transition_map = {};
+const DataList = React.memo(props => {
+    const [scroll_top, setScrollTop] = React.useState(0);
+    const [is_scrolling, setIsScrolling] = React.useState(false);
+    const [is_loading, setLoading] = React.useState(true);
 
-    constructor(props) {
-        super(props);
-        const { getRowSize } = props;
-        this.is_dynamic_height = !getRowSize;
+    const { className, children, data_source, footer, getRowSize, keyMapper, onRowsRendered, setListRef } = props;
+    const cache = React.useRef();
+    const list_ref = React.useRef();
+    const items_transition_map = {};
+    const is_dynamic_height = !getRowSize;
 
-        if (this.is_dynamic_height) {
-            this.cache = new CellMeasurerCache({
+    const trackItemsForTransition = React.useCallback(() => {
+        data_source.forEach((item, index) => {
+            const row_key = keyMapper?.(item) || `${index}-0`;
+            items_transition_map[row_key] = true;
+        });
+    }, [data_source, items_transition_map, keyMapper]);
+
+    React.useEffect(() => {
+        if (is_dynamic_height) {
+            cache.current = new CellMeasurerCache({
                 fixedWidth: true,
-                keyMapper: row_index => this.props.keyMapper?.(this.props.data_source[row_index]) || row_index,
+                keyMapper: row_index => {
+                    if (row_index < data_source.length) return keyMapper?.(data_source[row_index]) || row_index;
+                    return row_index;
+                },
             });
         }
-        this.trackItemsForTransition();
+        trackItemsForTransition();
+        setLoading(false);
+    }, []);
 
-        this.is_mounted = false;
-    }
+    React.useEffect(() => {
+        if (is_dynamic_height) {
+            list_ref.current?.recomputeGridSize(0);
+        }
+        trackItemsForTransition();
+    }, [data_source, is_dynamic_height, trackItemsForTransition]);
 
-    componentDidMount() {
-        this.is_mounted = true;
-    }
-
-    componentWillUnmount() {
-        this.is_mounted = false;
-    }
-
-    footerRowRenderer = () => {
-        const { footer, rowRenderer } = this.props;
-        return <React.Fragment>{rowRenderer({ row: footer, is_footer: true })}</React.Fragment>;
+    const footerRowRenderer = () => {
+        return <React.Fragment>{props.rowRenderer({ row: footer, is_footer: true })}</React.Fragment>;
     };
 
-    rowRenderer = ({ style, index, key, parent }) => {
-        const { data_source, rowRenderer, getRowAction, keyMapper, row_gap } = this.props;
-        const { isScrolling } = this.state;
+    const rowRenderer = ({ style, index, key, parent }) => {
+        const { getRowAction, row_gap } = props;
         const row = data_source[index];
-        const to = getRowAction && getRowAction(row);
+        const action = getRowAction && getRowAction(row);
+        const destination_link = typeof action === 'string' ? action : undefined;
+        const acion_desc = typeof action === 'object' ? action : undefined;
         const row_key = keyMapper?.(row) || key;
-        const is_new_row = !this.items_transition_map[row_key];
 
         const getContent = ({ measure } = {}) => (
-            <div style={{ paddingBottom: `${row_gap || 0}px` }}>
-                {typeof to === 'string' ? (
-                    <NavLink
-                        className='data-list__item--wrapper'
-                        id={`dt_reports_contract_${row_key}`}
-                        to={{
-                            pathname: to,
-                            state: {
-                                from_table_row: true,
-                            },
-                        }}
-                    >
-                        <div className='data-list__item'>{rowRenderer({ row, measure, isScrolling, is_new_row })}</div>
-                    </NavLink>
-                ) : (
-                    <div className='data-list__item--wrapper'>
-                        <div className='data-list__item'>{rowRenderer({ row, measure, isScrolling, is_new_row })}</div>
-                    </div>
-                )}
-            </div>
+            <DataListRow
+                destination_link={destination_link}
+                acion_desc={acion_desc}
+                row_key={row_key}
+                row_gap={row_gap}
+                rowRenderer={props.rowRenderer}
+                row={row}
+                is_scrolling={is_scrolling}
+                is_new_row={!items_transition_map[row_key]}
+                measure={measure}
+            />
         );
 
-        return this.is_dynamic_height ? (
-            <CellMeasurer cache={this.cache} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
+        return is_dynamic_height ? (
+            <CellMeasurer cache={cache.current} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
                 {({ measure }) => <div style={style}>{getContent({ measure })}</div>}
             </CellMeasurer>
         ) : (
@@ -89,109 +86,92 @@ class DataList extends React.PureComponent {
         );
     };
 
-    handleScroll = ev => {
-        clearTimeout(this.timeout);
-
-        const { isScrolling } = this.state;
-        if (!isScrolling) {
-            this.setState({ isScrolling: true });
+    const handleScroll = ev => {
+        clearTimeout(timeout);
+        if (!is_scrolling) {
+            setIsScrolling(true);
         }
-
-        this.timeout = setTimeout(() => {
-            if (this.is_mounted) {
-                this.setState({ isScrolling: false });
+        const timeout = setTimeout(() => {
+            if (!is_loading) {
+                setIsScrolling(false);
             }
         }, 200);
 
-        const { scrollTop } = ev.target;
-        this.setState({ scrollTop });
-        if (typeof this.props.onScroll === 'function') {
-            this.props.onScroll(ev);
+        setScrollTop(ev.target.scrollTop);
+        if (typeof props.onScroll === 'function') {
+            props.onScroll(ev);
         }
     };
 
-    componentDidUpdate(prev_props) {
-        if (this.is_dynamic_height) {
-            if (this.props.data_source !== prev_props.data_source) {
-                this.list_ref.recomputeGridSize(0);
-            }
+    const setRef = ref => {
+        list_ref.current = ref;
+        if (typeof setListRef === 'function') {
+            setListRef(ref);
         }
-        this.trackItemsForTransition();
+    };
+
+    if (is_loading) {
+        return <div />;
     }
-
-    trackItemsForTransition() {
-        this.props.data_source.forEach((item, index) => {
-            const row_key = this.props.keyMapper?.(item) || `${index}-0`;
-            this.items_transition_map[row_key] = true;
-        });
-    }
-
-    setRef(ref) {
-        this.list_ref = ref;
-
-        if (typeof this.props.setListRef === 'function') {
-            this.props.setListRef(ref);
-        }
-    }
-
-    render() {
-        const { className, children, data_source, footer, getRowSize, onRowsRendered } = this.props;
-
-        return (
-            <div
-                className={classNames(className, 'data-list', {
-                    [`${className}__data-list`]: className,
-                })}
-            >
-                <div className='data-list__body-wrapper'>
-                    <div className={classNames('data-list__body', { [`${className}__data-list-body`]: className })}>
-                        <AutoSizer>
-                            {({ width, height }) => (
-                                // Don't remove `TransitionGroup`. When `TransitionGroup` is removed, transition life cycle events like `onEntered` won't be fired sometimes on it's `CSSTransition` children
-                                <TransitionGroup style={{ height, width }}>
-                                    <ThemedScrollbars onScroll={this.handleScroll} autoHide is_bypassed={isMobile()}>
-                                        <List
-                                            ref={ref => this.setRef(ref)}
-                                            className={className}
-                                            deferredMeasurementCache={this.cache}
-                                            width={width}
-                                            height={height}
-                                            overscanRowCount={1}
-                                            onRowsRendered={onRowsRendered}
-                                            rowCount={data_source.length}
-                                            rowHeight={this.is_dynamic_height ? this.cache.rowHeight : getRowSize}
-                                            rowRenderer={this.rowRenderer}
-                                            scrollingResetTimeInterval={0}
-                                            {...(isDesktop()
-                                                ? { scrollTop: this.state.scrollTop, autoHeight: true }
-                                                : { onScroll: target => this.handleScroll({ target }) })}
-                                        />
-                                    </ThemedScrollbars>
-                                </TransitionGroup>
-                            )}
-                        </AutoSizer>
-                    </div>
-                    {children}
+    return (
+        <div
+            className={classNames(className, 'data-list', {
+                [`${className}__data-list`]: className,
+            })}
+        >
+            <div className='data-list__body-wrapper'>
+                <div className={classNames('data-list__body', { [`${className}__data-list-body`]: className })}>
+                    <AutoSizer>
+                        {({ width, height }) => (
+                            // Don't remove `TransitionGroup`. When `TransitionGroup` is removed, transition life cycle events like `onEntered` won't be fired sometimes on it's `CSSTransition` children
+                            <TransitionGroup style={{ height, width }}>
+                                <ThemedScrollbars onScroll={handleScroll} autoHide is_bypassed={isMobile()}>
+                                    <List
+                                        ref={ref => setRef(ref)}
+                                        className={className}
+                                        deferredMeasurementCache={cache.current}
+                                        width={width}
+                                        height={height}
+                                        overscanRowCount={1}
+                                        onRowsRendered={onRowsRendered}
+                                        rowCount={data_source.length}
+                                        rowHeight={is_dynamic_height ? cache?.current.rowHeight : getRowSize}
+                                        rowRenderer={rowRenderer}
+                                        scrollingResetTimeInterval={0}
+                                        {...(isDesktop()
+                                            ? { scrollTop: scroll_top, autoHeight: true }
+                                            : { onScroll: target => handleScroll({ target }) })}
+                                    />
+                                </ThemedScrollbars>
+                            </TransitionGroup>
+                        )}
+                    </AutoSizer>
                 </div>
-                {footer && (
-                    <div
-                        className={classNames('data-list__footer', {
-                            [`${className}__data-list-footer`]: className,
-                        })}
-                    >
-                        {this.footerRowRenderer()}
-                    </div>
-                )}
+                {children}
             </div>
-        );
-    }
-}
+            {footer && (
+                <div
+                    className={classNames('data-list__footer', {
+                        [`${className}__data-list-footer`]: className,
+                    })}
+                >
+                    {footerRowRenderer()}
+                </div>
+            )}
+        </div>
+    );
+});
+
 DataList.Cell = DataListCell;
 DataList.propTypes = {
     className: PropTypes.string,
     data_source: PropTypes.array,
+    footer: PropTypes.object,
     getRowAction: PropTypes.func,
     getRowSize: PropTypes.func,
+    keyMapper: PropTypes.func,
+    onScroll: PropTypes.func,
+    row_gap: PropTypes.number,
     rowRenderer: PropTypes.func,
     setListRef: PropTypes.func,
     onRowsRendered: PropTypes.func,

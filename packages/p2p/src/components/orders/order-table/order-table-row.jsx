@@ -9,7 +9,7 @@ import { createExtendedOrderDetails } from 'Utils/orders';
 import ServerTime from 'Utils/server-time';
 import { useStores } from 'Stores';
 
-const OrderRow = observer(({ row: order }) => {
+const OrderRow = ({ row: order }) => {
     const getTimeLeft = time => {
         const distance = ServerTime.getDistanceToServerTime(time);
         return {
@@ -114,11 +114,10 @@ const OrderRow = observer(({ row: order }) => {
             </Table.Row>
         </div>
     );
-});
+};
 
-OrderRow.displayName = 'OrderRow';
 OrderRow.propTypes = {
     order: PropTypes.object,
 };
 
-export default OrderRow;
+export default observer(OrderRow);

@@ -5,6 +5,53 @@
         overflow-y: auto;
     }
 
+    &__ad-template {
+        &-wrapper {
+            @include tablet-up {
+                width: 657px;
+            }
+
+            @include mobile {
+                margin: 0 1.6rem;
+            }
+        }
+    }
+    &__balance {
+        &-wrapper {
+            @include tablet-up {
+                width: 657px;
+                margin: 1.6rem 0;
+            }
+
+            @include mobile {
+                margin: 1.6rem;
+            }
+        }
+
+        display: flex;
+        align-items: center;
+
+        &-amount {
+            margin: 0.4rem 0.8rem 0.4rem 0;
+        }
+    }
+    &__privacy-setting {
+        &-wrapper {
+            @include tablet-up {
+                width: 657px;
+            }
+
+            @include mobile {
+                margin: 0 1.6rem;
+            }
+        }
+    }
+    &__content {
+        @include mobile {
+            margin-bottom: 10rem;
+        }
+    }
+
     @include tablet-up {
         height: calc(100% - 15rem);
         position: absolute;
@@ -56,9 +103,10 @@
         }
 
         @include mobile {
-            width: 100vw;
+            width: calc(100% - 3.2rem);
             grid-template-columns: unset;
             justify-content: center;
+            margin: 2.4rem 1.6rem;
         }
 
         &-cell {
@@ -71,59 +119,31 @@
             @include mobile {
                 width: unset;
                 margin: auto;
+
+                &:first-child {
+                    margin-left: 0;
+                }
+                &:last-child {
+                    margin-right: 0;
+                }
             }
             &-separator {
                 border-right: 1px solid var(--general-section-1);
             }
         }
-    }
-    &__popover {
-        &-icon {
-            margin: 0 0.8rem;
-        }
-        &-text {
-            margin-right: 2rem;
-            @include mobile {
-                margin-right: 0;
-            }
-        }
-    }
-    &__separator {
-        display: flex;
 
-        &-text {
-            display: flex;
-            @include mobile {
-                margin-left: 1.6rem;
-                width: 10rem;
-            }
-
-            &--privacy {
-                @include mobile {
-                    margin-left: 1.6rem;
-                    width: 12.5rem;
-                }
-            }
-        }
-        &-horizontal_line {
-            align-self: center;
-            border-bottom: 1px solid var(--general-section-1);
+        &-popover {
             margin-left: 1.6rem;
-            width: 564px;
-
-            @include mobile {
-                width: calc(100vw - 9rem);
-            }
         }
     }
     &__toggle {
         &-container {
             align-items: center;
             display: flex;
-            margin: 1rem 0;
+            margin: 1rem 0 2rem;
 
             @include mobile {
-                margin: 0.5rem 1.8rem;
+                margin: 1rem 1.6rem 2rem;
             }
         }
         &-name {

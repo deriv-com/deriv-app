@@ -61,6 +61,26 @@ const DurationWrapper = props => {
         }
     };
 
+    const assertDurationIsWithinBoundary = React.useCallback(
+        current_duration => {
+            const [min_value, max_value] = getDurationMinMaxValues(
+                duration_min_max,
+                contract_expiry_type,
+                duration_unit
+            );
+            if (contract_expiry_type === 'tick' && current_duration < min_value) {
+                onChangeUiStore({ name: `duration_${duration_unit}`, value: min_value });
+                onChange({ target: { name: 'duration', value: min_value } });
+            }
+
+            if (!(current_duration < min_value) && current_duration > max_value && duration_unit !== 'd') {
+                onChangeUiStore({ name: `duration_${duration_unit}`, value: max_value });
+                onChange({ target: { name: 'duration', value: max_value } });
+            }
+        },
+        [contract_expiry_type, duration_unit, duration_min_max, onChange, onChangeUiStore]
+    );
+
     React.useEffect(() => {
         const current_unit = is_advanced_duration ? advanced_duration_unit : simple_duration_unit;
         const current_duration = getDurationFromUnit(current_unit);
@@ -85,7 +105,7 @@ const DurationWrapper = props => {
         if (is_advanced_duration && expiry_type !== advanced_expiry_type) {
             onChange({ target: { name: 'expiry_type', value: advanced_expiry_type } });
         }
-    }, [is_advanced_duration, expiry_type, advanced_expiry_type]);
+    }, [is_advanced_duration, expiry_type, advanced_expiry_type, onChange]);
 
     // intercept changes to contract duration and check that trade_store and ui_store are aligned.
     React.useEffect(() => {
@@ -102,20 +122,16 @@ const DurationWrapper = props => {
         }
 
         assertDurationIsWithinBoundary(current_duration);
-    }, [duration_unit, is_advanced_duration, expiry_type, duration]);
-
-    const assertDurationIsWithinBoundary = current_duration => {
-        const [min_value, max_value] = getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
-        if (contract_expiry_type === 'tick' && current_duration < min_value) {
-            onChangeUiStore({ name: `duration_${duration_unit}`, value: min_value });
-            onChange({ target: { name: 'duration', value: min_value } });
-        }
-
-        if (!(current_duration < min_value) && current_duration > max_value && duration_unit !== 'd') {
-            onChangeUiStore({ name: `duration_${duration_unit}`, value: max_value });
-            onChange({ target: { name: 'duration', value: max_value } });
-        }
-    };
+    }, [
+        duration_unit,
+        is_advanced_duration,
+        expiry_type,
+        duration,
+        assertDurationIsWithinBoundary,
+        onChange,
+        onChangeUiStore,
+        getDurationFromUnit,
+    ]);
 
     const current_duration_unit = is_advanced_duration ? advanced_duration_unit : simple_duration_unit;
     const has_missing_duration_unit = !hasDurationUnit(current_duration_unit, is_advanced_duration);

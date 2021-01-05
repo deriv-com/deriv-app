@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Loadable from 'react-loadable';
+import Loadable from 'react-loadable-hooks';
 import { isMobile } from '@deriv/shared';
 
 const Screen = Loadable({

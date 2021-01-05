@@ -2,7 +2,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import Loadable from 'react-loadable';
+import Loadable from 'react-loadable-hooks';
 import { UILoader } from '@deriv/components';
 import { urlForLanguage } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';

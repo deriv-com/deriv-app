@@ -1,0 +1,38 @@
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    z-index: 99;
+    box-sizing: border-box;
+    height: $HEADER_HEIGHT;
+    width: 100%;
+    top: 0;
+    transition: opacity 0.3s;
+    backface-visibility: hidden;
+    background-color: var(--brand-dark-grey);
+    color: var(--text-colored-background);
+
+    &__menu-items {
+        margin: 0 1.6rem;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+
+        > * {
+            align-items: center;
+            display: flex;
+        }
+
+        &-middle {
+            position: fixed;
+            height: 48px;
+            left: 50%;
+            top: 0;
+            transform: translate(-50%, 0);
+
+            > :not(:first-child) {
+                margin-left: 2.4rem;
+            }
+        }
+    }
+}

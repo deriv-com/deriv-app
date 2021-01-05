@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ThemedScrollbars } from '@deriv/components';
+import { Text, ThemedScrollbars } from '@deriv/components';
 import { getFormattedText } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
@@ -11,11 +11,10 @@ import OrderDetailsTimer from 'Components/order-details/order-details-timer.jsx'
 import OrderInfoBlock from 'Components/order-details/order-info-block.jsx';
 import OrderDetailsWrapper from 'Components/order-details/order-details-wrapper.jsx';
 import { useStores } from 'Stores';
-import { requestWS } from 'Utils/websocket';
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(({ onPageReturn }) => {
-    const { general_store, order_details_store, sendbird_store } = useStores();
+    const { order_store, sendbird_store } = useStores();
     const {
         account_currency,
         advert_details,
@@ -41,39 +40,27 @@ const OrderDetails = observer(({ onPageReturn }) => {
         should_highlight_success,
         should_show_order_footer,
         status_string,
-    } = general_store.order_information;
+    } = order_store.order_information;
 
-    const { chat_channel_url, setChatChannelUrl } = sendbird_store;
+    const { chat_channel_url } = sendbird_store;
+
+    const has_full_name = other_user_details.first_name && other_user_details.last_name;
 
     React.useEffect(() => {
-        order_details_store.setChatChannelUrl(chat_channel_url);
-        order_details_store.createChatForNewOrder(id);
-
         const disposeListeners = sendbird_store.registerEventListeners();
         const disposeReactions = sendbird_store.registerMobXReactions();
+
+        if (order_channel_url) {
+            sendbird_store.setChatChannelUrl(order_channel_url);
+        } else {
+            sendbird_store.createChatForNewOrder(order_store.order_id);
+        }
 
         return () => {
             disposeListeners();
             disposeReactions();
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-    React.useEffect(() => {
-        if (order_channel_url) {
-            setChatChannelUrl(order_channel_url);
-        } else {
-            // If order_information doesn't have "order_channel_url" this is a new order
-            // and we need to instruct BE to create a chat on Sendbird's side.
-            requestWS({ p2p_chat_create: 1, order_id: id }).then(response => {
-                if (response.error) {
-                    // TODO: Handle error.
-                    return;
-                }
-
-                setChatChannelUrl(response.p2p_chat_create);
-            });
-        }
-    }, [id, order_channel_url, setChatChannelUrl]);
 
     const page_title =
         (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
@@ -118,7 +105,27 @@ const OrderDetails = observer(({ onPageReturn }) => {
                     <ThemedScrollbars height='unset' className='order-details-card__info'>
                         <div className='order-details-card__info-columns'>
                             <div className='order-details-card__info--left'>
-                                <OrderInfoBlock label={labels.other_party_role} value={other_user_details.name} />
+                                <OrderInfoBlock
+                                    label={labels.other_party_role}
+                                    value={
+                                        <React.Fragment>
+                                            <Text
+                                                size={has_full_name ? 's' : 'xs'}
+                                                color='prominent'
+                                                line_height='m'
+                                                weight={has_full_name && 'bold'}
+                                            >
+                                                {other_user_details.name}
+                                            </Text>
+
+                                            {has_full_name && (
+                                                <Text size='xs' line_height='xs'>
+                                                    {` ${other_user_details.first_name} ${other_user_details.last_name}`}
+                                                </Text>
+                                            )}
+                                        </React.Fragment>
+                                    }
+                                />
                             </div>
                             <div className='order-details-card__info--right'>
                                 <OrderInfoBlock
@@ -147,7 +154,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                         <OrderInfoBlock label={labels.instructions} value={advert_details.description || '-'} />
                     </ThemedScrollbars>
                     {should_show_order_footer && (
-                        <OrderDetailsFooter order_information={general_store.order_information} />
+                        <OrderDetailsFooter order_information={order_store.order_information} />
                     )}
                 </div>
                 {chat_channel_url && <Chat />}

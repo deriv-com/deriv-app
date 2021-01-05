@@ -287,6 +287,7 @@ export class PersonalDetailsForm extends React.Component {
 
             const hidden_settings = [
                 'account_opening_reason',
+                'allow_copiers',
                 !this.props.is_eu && 'tax_residence',
                 !this.props.is_eu && 'tax_identification_number',
                 'client_tnc_status',
@@ -850,7 +851,9 @@ export class PersonalDetailsForm extends React.Component {
                                             }}
                                             label={localize('Get updates about Deriv products, services and events.')}
                                             defaultChecked={!!values.email_consent}
-                                            disabled={!this.isChangeableField('email_consent')}
+                                            disabled={
+                                                !this.isChangeableField('email_consent') && !this.props.is_virtual
+                                            }
                                         />
                                     </fieldset>
                                 </FormBody>

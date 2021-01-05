@@ -57,12 +57,9 @@ class MT5Dashboard extends React.Component {
         this.props.onUnmount();
     }
 
-    componentDidUpdate(prev_props) {
+    componentDidUpdate() {
         this.updateActiveIndex();
         this.props.checkShouldOpenAccount();
-        if (prev_props.is_mt5_allowed !== this.props.is_mt5_allowed && !this.props.is_mt5_allowed) {
-            this.props.history.push(routes.trade);
-        }
     }
 
     openResetPassword = () => {
@@ -139,6 +136,7 @@ class MT5Dashboard extends React.Component {
             is_fully_authenticated,
             is_loading,
             is_logged_in,
+            is_logging_in,
             is_mt5_allowed,
             is_pending_authentication,
             is_virtual,
@@ -154,7 +152,7 @@ class MT5Dashboard extends React.Component {
             toggleShouldShowRealAccountsList,
         } = this.props;
         const should_show_missing_real_account = !is_eu && is_logged_in && !has_real_account;
-        if (!country && is_logged_in) return <Loading />; // Wait for country name to be loaded before rendering
+        if ((!country && is_logged_in) || is_logging_in) return <Loading />; // Wait for country name to be loaded before rendering
 
         return (
             <React.Fragment>
@@ -408,6 +406,7 @@ export default withRouter(
         current_list: modules.mt5.current_list,
         landing_companies: client.landing_companies,
         is_logged_in: client.is_logged_in,
+        is_logging_in: client.is_logging_in,
         is_eu: client.is_eu,
         is_eu_country: client.is_eu_country,
         is_virtual: client.is_virtual,
@@ -424,7 +423,6 @@ export default withRouter(
         openAccountNeededModal: ui.openAccountNeededModal,
         is_loading: client.is_populating_mt5_account_list,
         residence: client.residence,
-        isMT5Allowed: client.isMT5Allowed,
         has_mt5_account: modules.mt5.has_mt5_account,
         has_real_account: client.has_active_real_account,
         setAccountType: modules.mt5.setAccountType,

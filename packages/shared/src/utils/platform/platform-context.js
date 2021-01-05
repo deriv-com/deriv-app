@@ -1,5 +1,5 @@
 import React from 'react';
 
-export const PlatformContext = React.createContext(null);
+export const PlatformContext = React.createContext({});
 
 PlatformContext.displayName = 'DerivCryptoPlatformContext';

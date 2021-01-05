@@ -197,7 +197,11 @@
 
         &-icon {
             margin-right: 0.8rem;
-            margin-top: -0.2rem;
+            margin-top: 0.2rem;
+
+            @include mobile {
+                margin-top: -0.2rem;
+            }
         }
         &-text {
             text-align: left;

@@ -3,7 +3,7 @@ import { withRouter } from 'react-router';
 import { DesktopWrapper, Icon, MobileWrapper, Tabs, PageError, Loading } from '@deriv/components';
 // TODO: [mt5-redesign] replace tabs with radiogroup once card component is ready
 // import { DesktopWrapper, Icon, MobileWrapper, RadioGroup } from '@deriv/components';
-import { isEmptyObject, routes } from '@deriv/shared';
+import { isEmptyObject, isMobile, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import LoadingMT5RealAccountDisplay from './loading-mt5-real-account-display.jsx';
@@ -325,7 +325,11 @@ class MT5Dashboard extends React.Component {
                                 </div>
                                 <CompareAccountsModal />
                                 <div className='mt5-dashboard__maintenance'>
-                                    <Icon icon='IcAlertWarning' size={28} className='mt5-dashboard__maintenance-icon' />
+                                    <Icon
+                                        icon='IcAlertWarning'
+                                        size={isMobile() ? 28 : 16}
+                                        className='mt5-dashboard__maintenance-icon'
+                                    />
                                     <div className='mt5-dashboard__maintenance-text'>
                                         <Localize
                                             i18n_default_text='Server maintenance starting 03:00 GMT every Sunday. This process may take up to 2 hours to complete. <0 />Service may be disrupted during this time.'

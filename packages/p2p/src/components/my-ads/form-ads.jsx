@@ -99,6 +99,8 @@ const FormAds = () => {
                                                         my_ads_store.restrictLength(e, handleChange);
                                                     }}
                                                     hint={
+                                                        // Using two "==" is intentional as we're checking for nullish
+                                                        // rather than falsy values.
                                                         available_balance == null
                                                             ? undefined
                                                             : localize('Your DP2P balance is {{ dp2p_balance }}', {

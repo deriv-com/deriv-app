@@ -87,7 +87,6 @@ const MyProfileForm = () => {
                                                 'dc-btn--green': my_profile_store.is_submit_success,
                                             })}
                                             is_disabled={!dirty || isSubmitting || !isValid}
-                                            is_loading={my_profile_store.is_button_loading}
                                             is_submit_success={my_profile_store.is_submit_success}
                                             text={localize('Save')}
                                             has_effect

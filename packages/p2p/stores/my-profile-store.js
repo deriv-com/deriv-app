@@ -51,8 +51,6 @@ export default class MyProfileStore extends BaseStore {
 
     @action.bound
     handleSubmit(values) {
-        this.setIsButtonLoading(true);
-
         requestWS({
             p2p_advertiser_update: 1,
             contact_info: values.contact_info,
@@ -68,7 +66,6 @@ export default class MyProfileStore extends BaseStore {
             } else {
                 this.setFormError(response.error);
             }
-            this.setIsButtonLoading(false);
 
             setTimeout(() => {
                 this.setIsSubmitSuccess(false);
@@ -115,11 +112,6 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     setFullName(full_name) {
         this.full_name = full_name;
-    }
-
-    @action.bound
-    setIsButtonLoading(is_button_loading) {
-        this.is_button_loading = is_button_loading;
     }
 
     @action.bound

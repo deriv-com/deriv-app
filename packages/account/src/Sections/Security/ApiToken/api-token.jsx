@@ -13,6 +13,7 @@ import {
     MobileWrapper,
     Clipboard,
     Loading,
+    Text,
 } from '@deriv/components';
 import { getPropertyValue, formatDate } from '@deriv/shared';
 
@@ -76,7 +77,7 @@ class ApiToken extends React.Component {
         const replace_filter = string.replace(/-|_/g, ' ');
         const sentenced_case = replace_filter[0].toUpperCase() + replace_filter.slice(1).toLowerCase();
 
-        return sentenced_case;
+        return localize(sentenced_case);
     };
 
     getScopeValue = token => {
@@ -92,31 +93,28 @@ class ApiToken extends React.Component {
         };
     };
 
-    handleSubmit = async (values, { setSubmitting, setFieldError, resetForm }) => {
-        const new_token_scopes = Object.keys(values).filter(item => item !== 'token_name' && values[item]);
-        if (new_token_scopes.length) {
-            const request = {
-                api_token: 1,
-                new_token: values.token_name,
-                new_token_scopes,
-            };
+    selectedTokenScope = values => Object.keys(values).filter(item => item !== 'token_name' && values[item]);
 
-            const token_response = await WS.apiToken(request);
-            if (token_response.error) {
-                setFieldError('token_name', token_response.error.message);
-            } else {
-                this.setState({
-                    is_success: true,
-                    api_tokens: getPropertyValue(token_response, ['api_token', 'tokens']),
-                });
-                setTimeout(() => {
-                    this.setState({ is_success: false });
-                }, 500);
-            }
-            resetForm();
+    handleSubmit = async (values, { setSubmitting, setFieldError, resetForm }) => {
+        const request = {
+            api_token: 1,
+            new_token: values.token_name,
+            new_token_scopes: this.selectedTokenScope(values),
+        };
+
+        const token_response = await WS.apiToken(request);
+        if (token_response.error) {
+            setFieldError('token_name', token_response.error.message);
         } else {
-            setFieldError('token_name', localize('Must choose at least one scope'));
+            this.setState({
+                is_success: true,
+                api_tokens: getPropertyValue(token_response, ['api_token', 'tokens']),
+            });
+            setTimeout(() => {
+                this.setState({ is_success: false });
+            }, 500);
         }
+        resetForm();
 
         setSubmitting(false);
     };
@@ -187,7 +185,7 @@ class ApiToken extends React.Component {
         } = this.state;
         const { is_switching } = this.props;
 
-        if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account___intial-loader' />;
+        if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account__initial-loader' />;
 
         if (error_message) return <LoadErrorMessage error_message={error_message} />;
 
@@ -227,6 +225,7 @@ class ApiToken extends React.Component {
                                 values,
                                 errors,
                                 isValid,
+                                dirty,
                                 touched,
                                 handleChange,
                                 handleBlur,
@@ -314,7 +313,12 @@ class ApiToken extends React.Component {
                                                         'api-token__button--success': is_success,
                                                     })}
                                                     type='submit'
-                                                    is_disabled={isSubmitting || !isValid}
+                                                    is_disabled={
+                                                        !dirty ||
+                                                        isSubmitting ||
+                                                        !isValid ||
+                                                        !this.selectedTokenScope(values).length
+                                                    }
                                                     has_effect
                                                     is_loading={isSubmitting}
                                                     is_submit_success={is_success}
@@ -344,7 +348,7 @@ class ApiToken extends React.Component {
                                                                     <Table.Cell>{token.display_name}</Table.Cell>
                                                                     <Table.Cell>
                                                                         <div className='api-token__clipboard-wrapper'>
-                                                                            <span>{token.token}</span>
+                                                                            <Text size='xs'>{token.token}</Text>
                                                                             <Clipboard
                                                                                 text_copy={token.token}
                                                                                 info_message={localize(
@@ -385,9 +389,7 @@ class ApiToken extends React.Component {
                                                                     <h5 className='api-token__scope--title'>
                                                                         {localize('Name')}
                                                                     </h5>
-                                                                    <p className='api-token__scope--text'>
-                                                                        {token.display_name}
-                                                                    </p>
+                                                                    <Text as='p'>{token.display_name}</Text>
                                                                 </div>
                                                             </div>
                                                             <div className='api-token__scope-item'>
@@ -395,20 +397,18 @@ class ApiToken extends React.Component {
                                                                     <h5 className='api-token__scope--title'>
                                                                         {localize('Token')}
                                                                     </h5>
-                                                                    <p className='api-token__scope--text'>
+                                                                    <Text as='p'>
                                                                         <div className='api-token__clipboard-wrapper'>
-                                                                            <span>{token.token}</span>
+                                                                            <Text size='xs'>{token.token}</Text>
                                                                             <Clipboard token={token.token} />
                                                                         </div>
-                                                                    </p>
+                                                                    </Text>
                                                                 </div>
                                                                 <div>
                                                                     <h5 className='api-token__scope--title'>
                                                                         {localize('Last Used')}
                                                                     </h5>
-                                                                    <p className='api-token__scope--text'>
-                                                                        {token.last_used}
-                                                                    </p>
+                                                                    <Text as='p'>{token.last_used}</Text>
                                                                 </div>
                                                             </div>
                                                             <div className='api-token__scope-item'>
@@ -416,9 +416,7 @@ class ApiToken extends React.Component {
                                                                     <h5 className='api-token__scope--title'>
                                                                         {localize('Scope')}
                                                                     </h5>
-                                                                    <p className='api-token__scope--text'>
-                                                                        {token.scopes}
-                                                                    </p>
+                                                                    <Text as='p'>{token.scopes}</Text>
                                                                 </div>
                                                                 <div>
                                                                     <Button

@@ -143,6 +143,7 @@ class AccountSignup extends React.Component {
                                                 >
                                                     <PasswordInput
                                                         {...field}
+                                                        autoComplete='new-password'
                                                         className='account-signup__password-field'
                                                         label={localize('Create a password')}
                                                         error={touched.password && errors.password}
@@ -159,7 +160,7 @@ class AccountSignup extends React.Component {
                                                 </PasswordMeter>
                                             )}
                                         </Field>
-                                        <Text as='p' size='xxs' className='account-signup__subtext'>
+                                        <Text align='center' as='p' size='xxs' className='account-signup__subtext'>
                                             <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
                                         </Text>
 

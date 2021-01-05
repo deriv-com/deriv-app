@@ -11,32 +11,28 @@ configure({ adapter: new Adapter() });
 
 describe('AccountInfo', () => {
     it('should render one <AccountInfo /> component', () => {
-        const wrapper = shallow(<AccountInfo />);
+        const wrapper = shallow(<AccountInfo currency='USD' />);
         expect(wrapper).to.have.length(1);
     });
     it('should have .acc-info--show if is_dialog_on is true', () => {
-        const wrapper = shallow(<AccountInfo is_dialog_on={true} />);
+        const wrapper = shallow(<AccountInfo currency='USD' is_dialog_on={true} />);
         expect(wrapper.find('.acc-info--show').exists()).to.be.true;
     });
     it('should not have .acc-info--show if is_dialog_on is false', () => {
-        const wrapper = shallow(<AccountInfo is_dialog_on={false} />);
+        const wrapper = shallow(<AccountInfo currency='USD' is_dialog_on={false} />);
         expect(wrapper.find('.acc-info--show').exists()).to.be.false;
     });
     it('should have .acc-info--is-virtual if is_virtual is true', () => {
-        const wrapper = shallow(<AccountInfo is_virtual={true} />);
+        const wrapper = shallow(<AccountInfo currency='USD' is_virtual={true} />);
         expect(wrapper.find('.acc-info--is-virtual').exists()).to.be.true;
     });
     it('should not have .acc-info--is-virtual if is_virtual is false', () => {
-        const wrapper = shallow(<AccountInfo is_virtual={false} />);
+        const wrapper = shallow(<AccountInfo currency='USD' is_virtual={false} />);
         expect(wrapper.find('.acc-info--is-virtual').exists()).to.be.false;
-    });
-    it("should have <Icon icon='IcChevronDown' />", () => {
-        const wrapper = shallow(<AccountInfo />);
-        expect(wrapper.contains(<Icon icon='IcChevronDown' className='acc-info__select-arrow' />)).to.be.true;
     });
     it('should contain <CSSTransition /> and children', () => {
         const wrapper = shallow(
-            <AccountInfo is_dialog_on={false} toggleDialog={() => true} is_upgrade_enabled={true} />
+            <AccountInfo currency='USD' is_dialog_on={false} toggleDialog={() => true} is_upgrade_enabled={true} />
         );
         expect(
             wrapper.contains(
@@ -50,56 +46,34 @@ describe('AccountInfo', () => {
     });
     it("should have CSSTransition's prop 'in' equal to false when is_dialog_on is false", () => {
         const wrapper = shallow(
-            <AccountInfo is_dialog_on={false} toggleDialog={() => true} is_upgrade_enabled={true} />
+            <AccountInfo currency='USD' is_dialog_on={false} toggleDialog={() => true} is_upgrade_enabled={true} />
         );
         expect(wrapper.find(CSSTransition).prop('in')).to.be.false;
     });
     it("should have CSSTransition's prop 'in' equal to true when is_dialog_on is true", () => {
         const wrapper = shallow(
-            <AccountInfo is_dialog_on={true} toggleDialog={() => true} is_upgrade_enabled={true} />
+            <AccountInfo currency='USD' is_dialog_on={true} toggleDialog={() => true} is_upgrade_enabled={true} />
         );
         expect(wrapper.find(CSSTransition).prop('in')).to.be.true;
     });
     it("should have AccountSwitcher's prop 'is_visible' equal to true when is_dialog_on is true", () => {
         const wrapper = shallow(
-            <AccountInfo is_dialog_on={true} toggleDialog={() => true} is_upgrade_enabled={true} />
+            <AccountInfo currency='USD' is_dialog_on={true} toggleDialog={() => true} is_upgrade_enabled={true} />
         );
         expect(wrapper.find(AccountSwitcher).prop('is_visible')).to.be.true;
     });
     it("should have AccountSwitcher's prop 'is_visible' equal to false when is_dialog_on is false", () => {
         const wrapper = shallow(
-            <AccountInfo is_dialog_on={false} toggleDialog={() => true} is_upgrade_enabled={true} />
+            <AccountInfo currency='USD' is_dialog_on={false} toggleDialog={() => true} is_upgrade_enabled={true} />
         );
         expect(wrapper.find(AccountSwitcher).prop('is_visible')).to.be.false;
     });
     it('should not have .acc-balance-amount when balance is undefined', () => {
-        const wrapper = shallow(<AccountInfo />);
+        const wrapper = shallow(<AccountInfo currency={'USD'} />);
         expect(wrapper.find('.acc-balance-amount').exists()).to.be.false;
     });
     it('should render balance when balance is passed in props', () => {
-        const wrapper = shallow(<AccountInfo balance='123456789' />);
-        expect(
-            wrapper.contains(
-                <p className='acc-info__balance'>
-                    <span className='symbols' />
-                    123456789
-                </p>
-            )
-        ).to.be.true;
-    });
-    it('should have currency string passed in props, toLoweCase as a class', () => {
-        const wrapper = shallow(<AccountInfo balance='123456789' currency='EUR' />);
-        expect(wrapper.find('.symbols--eur').exists()).to.be.true;
-    });
-    it('should render balance and currency when balance and currency are passed in props', () => {
-        const wrapper = shallow(<AccountInfo balance='123456789' currency='USD' />);
-        expect(
-            wrapper.contains(
-                <p className='acc-info__balance'>
-                    <span className='symbols symbols--usd' />
-                    123456789
-                </p>
-            )
-        ).to.be.true;
+        const wrapper = shallow(<AccountInfo currency='USD' balance='123456789' />);
+        expect(wrapper.contains(<p className='acc-info__balance'>123456789 USD</p>)).to.be.true;
     });
 });

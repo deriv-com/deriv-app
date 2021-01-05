@@ -3,22 +3,30 @@ const stylelintFormatter = require('stylelint-formatter-pretty');
 const { IS_RELEASE } = require('./constants');
 // const { transformContentUrlBase } = require('./helpers');
 
-const copyConfig = base => [
-    {
-        from: path.resolve(__dirname, '../node_modules/@deriv/deriv-charts/dist/*.smartcharts.*'),
-        to: 'js/smartcharts/',
-        flatten: true,
-    },
-    {
-        from: path.resolve(__dirname, '../node_modules/@deriv/deriv-charts/dist/smartcharts.css*'),
-        to: 'css/',
-        flatten: true,
-    },
-    // { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file' },
-    { from: path.resolve(__dirname, '../src/public/images/favicons/favicon.ico'), to: 'favicon.ico', toType: 'file' },
-    { from: path.resolve(__dirname, '../src/public/images/favicons/**') },
-    { from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/**') },
-];
+const copyConfig = base => {
+    return {
+        patterns: [
+            {
+                from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist/*.smartcharts.*'),
+                to: 'js/smartcharts/',
+                flatten: true,
+            },
+            {
+                from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist/smartcharts.css*'),
+                to: 'css/',
+                flatten: true,
+            },
+            // { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file' },
+            {
+                from: path.resolve(__dirname, '../src/public/images/favicons/favicon.ico'),
+                to: 'favicon.ico',
+                toType: 'file',
+            },
+            { from: path.resolve(__dirname, '../src/public/images/favicons/**') },
+            { from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/**') },
+        ],
+    };
+};
 
 const generateSWConfig = () => ({
     importWorkboxFrom: 'local',

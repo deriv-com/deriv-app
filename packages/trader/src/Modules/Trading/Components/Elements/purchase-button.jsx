@@ -26,6 +26,7 @@ const PurchaseButton = ({
     buy_info,
     basis, // mobile-only
     currency,
+    has_deal_cancellation,
     index,
     info,
     is_disabled,
@@ -58,6 +59,7 @@ const PurchaseButton = ({
                 'btn-purchase--1': index === 0,
                 'btn-purchase--2': index === 1,
                 'btn-purchase--multiplier': is_multiplier,
+                'btn-purchase--multiplier-deal-cancel': has_deal_cancellation,
             })}
             onClick={() => {
                 setPurchaseState(index);
@@ -122,6 +124,7 @@ const PurchaseButton = ({
 PurchaseButton.propTypes = {
     buy_info: PropTypes.object,
     currency: PropTypes.string,
+    has_deal_cancellation: PropTypes.bool,
     index: PropTypes.number,
     info: PropTypes.object,
     is_disabled: PropTypes.bool,

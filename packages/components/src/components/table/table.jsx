@@ -16,7 +16,12 @@ const Table = ({ className, fixed, children, scroll_width, scroll_height }) => (
         })}
     >
         {fixed ? (
-            <ThemedScrollbars has_horizontal width={scroll_width || '100%'} height={scroll_height}>
+            <ThemedScrollbars
+                has_horizontal
+                width={scroll_width || '100%'}
+                height={scroll_height}
+                className={'dc-table--scrollbar'}
+            >
                 {children}
             </ThemedScrollbars>
         ) : (

@@ -95,7 +95,7 @@ export class PersonalDetailsForm extends React.Component {
             request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
         }
 
-        if (this.props.is_eu) {
+        if (this.props.is_mf) {
             if (request.tax_residence) {
                 request.tax_residence = getLocation(this.props.residence_list, request.tax_residence, 'value');
             }
@@ -111,6 +111,8 @@ export class PersonalDetailsForm extends React.Component {
 
         if (request.place_of_birth) {
             request.place_of_birth = getLocation(this.props.residence_list, request.place_of_birth, 'value');
+        } else {
+            delete request.place_of_birth;
         }
 
         if (request.address_state) {
@@ -139,7 +141,10 @@ export class PersonalDetailsForm extends React.Component {
             'address_city',
         ];
         if (this.props.is_eu) {
-            const required_tax_fields = ['citizen', 'tax_residence', 'tax_identification_number'];
+            required_fields.push('citizen');
+        }
+        if (this.props.is_mf) {
+            const required_tax_fields = ['tax_residence', 'tax_identification_number'];
             required_fields.push(...required_tax_fields);
         }
 
@@ -272,7 +277,8 @@ export class PersonalDetailsForm extends React.Component {
         if (
             Object.values(this.props.account_settings).join('|') !==
                 Object.values(prevProps.account_settings).join('|') ||
-            this.props.is_eu !== prevProps.is_eu
+            this.props.is_eu !== prevProps.is_eu ||
+            this.props.is_mf !== prevProps.is_mf
         ) {
             this.initializeFormValues();
         }
@@ -288,8 +294,8 @@ export class PersonalDetailsForm extends React.Component {
             const hidden_settings = [
                 'account_opening_reason',
                 'allow_copiers',
-                !this.props.is_eu && 'tax_residence',
-                !this.props.is_eu && 'tax_identification_number',
+                !this.props.is_mf && 'tax_residence',
+                !this.props.is_mf && 'tax_identification_number',
                 'client_tnc_status',
                 'country_code',
                 'has_secret_answer',
@@ -341,7 +347,7 @@ export class PersonalDetailsForm extends React.Component {
         } else {
             form_initial_values.address_state = '';
         }
-        if (this.props.is_eu) {
+        if (this.props.is_mf) {
             form_initial_values.tax_residence = form_initial_values.tax_residence
                 ? getLocation(residence_list, form_initial_values.tax_residence, 'text')
                 : '';
@@ -448,9 +454,13 @@ export class PersonalDetailsForm extends React.Component {
                                                                 data-lpignore='true'
                                                                 autoComplete='new-password' // prevent chrome autocomplete
                                                                 type='text'
-                                                                label={localize('Place of birth*')}
+                                                                label={
+                                                                    this.props.is_svg
+                                                                        ? localize('Place of birth')
+                                                                        : localize('Place of birth*')
+                                                                }
                                                                 error={touched.place_of_birth && errors.place_of_birth}
-                                                                required
+                                                                required={!this.props.is_svg}
                                                                 disabled={!this.isChangeableField('place_of_birth')}
                                                                 list_items={this.props.residence_list}
                                                                 onItemSelection={({ value, text }) =>
@@ -467,8 +477,12 @@ export class PersonalDetailsForm extends React.Component {
                                                 <MobileWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
-                                                        label={localize('Place of birth*')}
-                                                        required
+                                                        label={
+                                                            this.props.is_svg
+                                                                ? localize('Place of birth')
+                                                                : localize('Place of birth*')
+                                                        }
+                                                        required={!this.props.is_svg}
                                                         disabled={!this.isChangeableField('place_of_birth')}
                                                         value={values.place_of_birth}
                                                         list_items={this.props.residence_list}
@@ -616,7 +630,7 @@ export class PersonalDetailsForm extends React.Component {
                                             {/*        /> */}
                                             {/*    )} */}
                                             {/* </fieldset> */}
-                                            {this.props.is_eu && (
+                                            {this.props.is_mf && (
                                                 <React.Fragment>
                                                     <FormSubHeader title={localize('Tax information')} />
                                                     {'tax_residence' in values && (
@@ -883,12 +897,12 @@ export class PersonalDetailsForm extends React.Component {
                                                       !values.last_name ||
                                                       errors.phone ||
                                                       !values.phone ||
-                                                      (this.props.is_eu && errors.tax_residence) ||
-                                                      (this.props.is_eu && !values.tax_residence) ||
-                                                      (this.props.is_eu && errors.tax_identification_number) ||
-                                                      (this.props.is_eu && !values.tax_identification_number) ||
-                                                      errors.place_of_birth ||
-                                                      !values.place_of_birth ||
+                                                      (this.props.is_mf && errors.tax_residence) ||
+                                                      (this.props.is_mf && !values.tax_residence) ||
+                                                      (this.props.is_mf && errors.tax_identification_number) ||
+                                                      (this.props.is_mf && !values.tax_identification_number) ||
+                                                      (!this.props.is_svg && errors.place_of_birth) ||
+                                                      (!this.props.is_svg && !values.place_of_birth) ||
                                                       // (errors.account_opening_reason || !values.account_opening_reason) ||
                                                       errors.address_line_1 ||
                                                       !values.address_line_1 ||
@@ -922,6 +936,8 @@ export default connect(({ client }) => ({
     has_residence: client.has_residence,
     getChangeableFields: client.getChangeableFields,
     is_eu: client.is_eu,
+    is_mf: client.landing_company_shortcode === 'maltainvest',
+    is_svg: client.is_svg,
     is_virtual: client.is_virtual,
     residence_list: client.residence_list,
     states_list: client.states_list,

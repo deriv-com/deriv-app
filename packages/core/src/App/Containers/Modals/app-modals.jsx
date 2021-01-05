@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import { connect } from 'Stores/connect';
 
@@ -7,6 +8,9 @@ const AccountSignupModal = React.lazy(() =>
 );
 const ResetPasswordModal = React.lazy(() =>
     import(/* webpackChunkName: "reset-password-modal" */ '../ResetPasswordModal')
+);
+const RedirectToLoginModal = React.lazy(() =>
+    import(/* webpackChunkName: "reset-password-modal" */ '../RedirectToLoginModal')
 );
 const SetResidenceModal = React.lazy(() =>
     import(/* webpackChunkName: "set-residence-modal"  */ '../SetResidenceModal')
@@ -25,10 +29,15 @@ const AppModals = ({
     is_welcome_modal_visible,
     is_reality_check_visible,
     is_set_residence_modal_visible,
-    url_action_param,
 }) => {
+    const url_params = new URLSearchParams(useLocation().search);
+    const url_action_param = url_params.get('action');
+
     let ComponentToLoad = null;
     switch (url_action_param) {
+        case 'redirect_to_login':
+            ComponentToLoad = <RedirectToLoginModal />;
+            break;
         case 'reset_password':
             ComponentToLoad = <ResetPasswordModal />;
             break;

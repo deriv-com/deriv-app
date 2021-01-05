@@ -24,7 +24,7 @@
     &__form {
         > :nth-child(3) {
             @include mobile {
-                margin-bottom: 1.6rem;
+                margin-bottom: 7.4rem;
             }
             @include tablet-up {
                 margin-bottom: 7.4rem + 2.4rem;
@@ -40,8 +40,9 @@
         @include mobile {
             width: 100vw;
             padding: 1.6rem;
-            margin-left: -1.6rem;
-            margin-bottom: -1.6rem;
+            position: fixed;
+            bottom: 0;
+            left: 0;
         }
 
         @include tablet-up {

@@ -7,15 +7,16 @@ import PageOverlay from '../page-overlay/page-overlay.jsx';
 import Icon from '../icon/icon.jsx';
 import Text from '../text/text.jsx';
 
-const MobileFullPageModalBodyWrapper = ({ children, should_wrap_body }) => {
+const MobileFullPageModalBodyWrapper = ({ className, children, should_wrap_body }) => {
     if (should_wrap_body) {
-        return <div className='dc-mobile-full-page-modal__body'>{children}</div>;
+        return <div className={classNames('dc-mobile-full-page-modal__body', className)}>{children}</div>;
     }
 
     return children;
 };
 
 const MobileFullPageModal = ({
+    body_className,
     className,
     header,
     height_offset = '0px',
@@ -24,17 +25,21 @@ const MobileFullPageModal = ({
     onClickClose,
     page_footer_children,
     page_footer_className,
+    page_footer_parent,
+    page_footer_parent_className,
     page_header_className,
     page_header_text,
     page_header_trailing_icon,
     pageHeaderReturnFn,
     renderPageHeaderText,
-    should_wrap_body, // opt-in for backward compatibility.
+    // TODO: Refactor all MobileFullPageModal to allow its body to be wrapped (should_wrap_body).
+    // opt-in for backward compatibility.
+    should_wrap_body,
     children,
 }) => (
     <FadeWrapper
         is_visible={is_modal_open}
-        className={classNames('dc-mobile-full-page-modal', `${className}__wrapper`)}
+        className={classNames('dc-mobile-full-page-modal', className)}
         keyname={`${className}__wrapper`}
     >
         <PageOverlay header={header} onClickClose={onClickClose}>
@@ -67,13 +72,25 @@ const MobileFullPageModal = ({
                         )}
                     </div>
                 )}
-                <MobileFullPageModalBodyWrapper should_wrap_body={should_wrap_body}>
+                <MobileFullPageModalBodyWrapper className={body_className} should_wrap_body={should_wrap_body}>
                     {children}
                 </MobileFullPageModalBodyWrapper>
                 {page_footer_children && (
-                    <div className={classNames('dc-mobile-full-page-modal__footer', page_footer_className)}>
-                        {page_footer_children}
-                    </div>
+                    <React.Fragment>
+                        {page_footer_parent && (
+                            <div
+                                className={classNames(
+                                    'dc-mobile-full-page-modal__footer-parent',
+                                    page_footer_parent_className
+                                )}
+                            >
+                                {page_footer_parent}
+                            </div>
+                        )}
+                        <div className={classNames('dc-mobile-full-page-modal__footer', page_footer_className)}>
+                            {page_footer_children}
+                        </div>
+                    </React.Fragment>
                 )}
             </Div100vhContainer>
         </PageOverlay>

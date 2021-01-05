@@ -48,7 +48,7 @@ const LoginHistoryContent = ({ data }) => {
 };
 
 const renderTable = (fields, login_history) => (
-    <Table className='login-history__table'>
+    <Table fixed className='login-history__table'>
         <Table.Header>
             <Table.Row className='login-history__table__header'>
                 <Table.Head>{fields.date}</Table.Head>

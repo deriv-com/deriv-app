@@ -1,31 +1,37 @@
-import { observable, action, computed, reaction } from 'mobx';
-import LZString from 'lz-string';
+import { observable, action, computed, reaction, when } from 'mobx';
 import { localize } from '@deriv/translations';
 import { formatDate } from '@deriv/shared';
-import { message_types } from '@deriv/bot-skeleton';
+import { log_types, message_types } from '@deriv/bot-skeleton';
 import { config } from '@deriv/bot-skeleton/src/constants/config';
 import { storeSetting, getSetting } from '../utils/settings';
 import { isCustomJournalMessage } from '../utils/journal-notifications';
+import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';
 
 export default class JournalStore {
     constructor(root_store) {
         this.root_store = root_store;
-        this.dbot = this.root_store.dbot;
-        this.journal_storage_key = 'journal_cache';
+        this.disposeReactionsFn = this.registerReactions();
 
-        this.disposeJournalMessageListener = reaction(
+        // Add a "Welcome back!" message when messages were restored.
+        when(
             () => this.unfiltered_messages,
-            messages => {
-                const { client } = this.root_store.core;
-                const stored_journals = this.getJournalSessionStorage();
-
-                const new_messages = { journal_messages: messages.slice(0, 5000) };
-                stored_journals[client.loginid] = new_messages;
-
-                sessionStorage.setItem(this.journal_storage_key, LZString.compress(JSON.stringify(stored_journals)));
+            () => {
+                if (this.unfiltered_messages.length > 0) {
+                    this.welcomeBackUser();
+                }
             }
         );
     }
+
+    JOURNAL_CACHE = 'journal_cache';
+
+    @observable is_filter_dialog_visible = false;
+    @observable.shallow journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
+    @observable.shallow unfiltered_messages = getStoredItemsByUser(
+        this.JOURNAL_CACHE,
+        this.root_store.core.client.loginid,
+        []
+    );
 
     getServerTime() {
         return this.root_store.core.common.server_time.get();
@@ -43,20 +49,6 @@ export default class JournalStore {
         { id: message_types.NOTIFY, label: localize('Notifications') },
         { id: message_types.SUCCESS, label: localize('System') },
     ];
-
-    @observable is_filter_dialog_visible = false;
-    @observable unfiltered_messages =
-        this.getJournalSessionStorage()?.[this.root_store.core.client.loginid]?.journal_messages ?? [];
-
-    @observable journal_filters = getSetting('journal_filter') || this.filters.map(filter => filter.id);
-
-    getJournalSessionStorage = () => {
-        try {
-            return JSON.parse(LZString.decompress(sessionStorage.getItem(this.journal_storage_key))) ?? {};
-        } catch (e) {
-            return {};
-        }
-    };
 
     @action.bound
     toggleFilterDialog() {
@@ -76,14 +68,14 @@ export default class JournalStore {
 
     @action.bound
     onNotify(data) {
-        const { run_panel } = this.root_store;
+        const { run_panel, dbot } = this.root_store;
         const { message, className, message_type, sound, block_id, variable_name } = data;
 
         if (
             isCustomJournalMessage(
                 { message, block_id, variable_name },
                 run_panel.showErrorMessage,
-                () => this.dbot.centerAndHighlightBlock(block_id, true),
+                () => dbot.centerAndHighlightBlock(block_id, true),
                 parsed_message => this.pushMessage(parsed_message, message_type || message_types.NOTIFY, className)
             )
         ) {
@@ -135,13 +127,49 @@ export default class JournalStore {
 
     @action.bound
     clear() {
-        this.unfiltered_messages = this.unfiltered_messages.slice(0, 0); // force array update
+        this.unfiltered_messages = this.unfiltered_messages.slice(0, 0);
     }
 
-    @action.bound
-    disposeListeners() {
-        if (typeof this.disposeJournalMessageListener === 'function') {
-            this.disposeJournalMessageListener();
-        }
+    welcomeBackUser() {
+        this.pushMessage(log_types.WELCOME_BACK, message_types.SUCCESS, 'journal__text--info');
+    }
+
+    registerReactions() {
+        const { client } = this.root_store.core;
+
+        // Write journal messages to session storage on each change in unfiltered messages.
+        const disposeWriteJournalMessageListener = reaction(
+            () => this.unfiltered_messages,
+            unfiltered_messages => {
+                const stored_journals = getStoredItemsByKey(this.JOURNAL_CACHE, {});
+
+                stored_journals[client.loginid] = unfiltered_messages.slice(0, 5000).filter(unfiltered_message => {
+                    // Filter out "Welcome back!" message. This can be extended.
+                    const is_welcome_back =
+                        unfiltered_message.message_type === message_types.SUCCESS &&
+                        unfiltered_message.message === log_types.WELCOME_BACK;
+
+                    return !is_welcome_back;
+                });
+                setStoredItemsByKey(this.JOURNAL_CACHE, stored_journals);
+            }
+        );
+
+        // Attempt to load cached journal messages on client loginid change.
+        const disposeJournalMessageListener = reaction(
+            () => client.loginid,
+            () => {
+                this.unfiltered_messages = getStoredItemsByUser(this.JOURNAL_CACHE, client.loginid, []);
+
+                if (this.unfiltered_messages.length > 0) {
+                    this.welcomeBackUser();
+                }
+            }
+        );
+
+        return () => {
+            disposeWriteJournalMessageListener();
+            disposeJournalMessageListener();
+        };
     }
 }

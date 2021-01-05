@@ -75,6 +75,9 @@ const FormatMessage = ({ logType, className, extra }) => {
                     />
                 );
             }
+            case log_types.WELCOME_BACK: {
+                return <Localize i18n_default_text='Welcome back! Your messages have been restored.' />;
+            }
             default:
                 return null;
         }

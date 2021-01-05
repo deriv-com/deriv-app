@@ -5,6 +5,7 @@
     --text-size-xxs: 1.2rem;
     --text-size-xs: 1.4rem;
     --text-size-s: 1.6rem;
+    --text-size-xsm: 1.8rem;
     --text-size-sm: 2rem;
     --text-size-m: 2.4rem;
     --text-size-l: 3.2rem;
@@ -16,6 +17,7 @@
     --text-lh-s: 1.4;
     --text-lh-m: 1.5;
     --text-lh-l: 1.75;
+    --text-lh-xl: 2;
 
     //Font Weight
     --text-weight-lighter: lighter;
@@ -23,12 +25,31 @@
     --text-weight-bold: bold;
     --text-weight-bolder: bolder;
 
+    //Text Align
+    --text-align-left: start;
+    --text-align-right: right;
+    --text-align-center: center;
+
     // Brand primary colors
     --brand-dark-grey: #{$color-black};
     --brand-red-coral: #{$color-red};
     --brand-orange: #{$color-orange};
     // Brand secondary colors
     --brand-secondary: #{$color-green};
+
+    // Wallet gradient background
+    --wallet-airtm: #{$gradient-airtm};
+    --wallet-bitcoin: #{$gradient-bitcoin};
+    --wallet-credit: #{$gradient-credit};
+    --wallet-dp2p: #{$gradient-dp2p};
+    --wallet-jeton: #{$gradient-jeton};
+    --wallet-mastercard: #{$gradient-mastercard};
+    --wallet-neteller: #{$gradient-neteller};
+    --wallet-skrill: #{$gradient-skrill};
+    --wallet-sticpay: #{$gradient-sticpay};
+    --wallet-virtual: #{$gradient-virtual};
+    --wallet-visa: #{$gradient-visa};
+    --wallet-webmoney: #{$gradient-webmoney};
 
     .theme--light {
         // General

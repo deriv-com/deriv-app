@@ -215,6 +215,13 @@ export default class ClientStore extends BaseStore {
         if (!this.landing_companies) return [];
         if (this.root_store.ui && this.root_store.ui.real_account_signup_target) {
             const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
+            if (this.landing_companies[`${target}_company`] && this.current_landing_company && this.accounts) {
+                if (this.accounts[this.loginid] && !this.accounts[this.loginid].currency) {
+                    return this.landing_companies[`${target}_company`].legal_allowed_currencies.filter(currency =>
+                        this.current_landing_company.legal_allowed_currencies.includes(currency)
+                    );
+                }
+            }
             if (this.landing_companies[`${target}_company`]) {
                 return this.landing_companies[`${target}_company`].legal_allowed_currencies;
             }
@@ -388,6 +395,13 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_trading_experience_incomplete() {
         return this.account_status?.status?.some(status => status === 'trading_experience_not_complete');
+    }
+
+    @computed
+    get authentication_status() {
+        const document_status = this.account_status?.authentication?.document?.status;
+        const identity_status = this.account_status?.authentication?.identity?.status;
+        return { document_status, identity_status };
     }
 
     @computed
@@ -615,8 +629,8 @@ export default class ClientStore extends BaseStore {
     setCookieAccount() {
         const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
         const { loginid, email, landing_company_shortcode, currency, residence, account_settings } = this;
-        const { first_name, last_name } = account_settings;
-        if (loginid && email && first_name) {
+        const { first_name, last_name, name } = account_settings;
+        if (loginid && email) {
             const client_information = {
                 loginid,
                 email,
@@ -625,6 +639,7 @@ export default class ClientStore extends BaseStore {
                 residence,
                 first_name,
                 last_name,
+                name,
             };
             Cookies.set('client_information', client_information, { domain });
             this.has_cookie_account = true;
@@ -997,7 +1012,7 @@ export default class ClientStore extends BaseStore {
          * Set up reaction for account_settings, account_status, is_p2p_visible
          */
         reaction(
-            () => [this.account_settings, this.account_status, this.root_store.modules.cashier.is_p2p_visible],
+            () => [this.account_settings, this.account_status, this.root_store.modules?.cashier?.is_p2p_visible],
             () => {
                 client = this.accounts[this.loginid];
                 BinarySocket.wait('landing_company').then(() => {

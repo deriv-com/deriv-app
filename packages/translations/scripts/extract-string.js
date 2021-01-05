@@ -14,9 +14,9 @@ const getStringsFromInput = (input, i18n_marker = getRegexPattern()) => {
     }
 
     return messages;
-}
+};
 
-const getStringsFromXmlFile = (input) => {
+const getStringsFromXmlFile = input => {
     const messages = [];
     const parsed_xml = new DOMParser().parseFromString(input, 'application/xml');
     const el_categories = parsed_xml.getElementsByTagName('category');
@@ -24,8 +24,8 @@ const getStringsFromXmlFile = (input) => {
     Array.from(el_categories).forEach(el_category => {
         const name = el_category.getAttribute('name');
         const description = el_category.getAttribute('description');
-        
-        if (name) messages.push(name)
+
+        if (name) messages.push(name);
         if (description) messages.push(description);
     });
 
@@ -33,7 +33,7 @@ const getStringsFromXmlFile = (input) => {
 };
 
 const getTranslatableFiles = () => {
-    const packages_with_translations = ['bot-skeleton', 'bot-web-ui', 'trader', 'core', 'account'];
+    const packages_with_translations = ['account', 'bot-web-ui', 'core', 'dashboard', 'trader', 'bot-skeleton'];
     const globs = ['**/*.js', '**/*.jsx', '**/xml/*.xml'];
     const file_paths = [];
 
@@ -48,7 +48,7 @@ const getTranslatableFiles = () => {
     }
 
     return file_paths;
-}
+};
 
 module.exports = {
     getStringsFromInput,

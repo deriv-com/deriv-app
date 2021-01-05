@@ -190,20 +190,20 @@
         }
     }
     &__hint {
-        color: var(--text-less-prominent);
-        font-size: 1.2rem;
         margin-left: 1.2rem;
         position: absolute;
         top: 4rem;
-        line-height: 1.5;
+
+        &--relative {
+            margin-left: 1.2rem;
+            position: relative;
+            top: unset;
+        }
     }
     &__counter {
         color: var(--text-less-prominent);
         font-size: 1.2rem;
         margin-left: 1.2rem;
-        position: absolute;
-        top: 4rem;
-        right: 20px;
     }
     &--no-placeholder {
         label {
@@ -220,7 +220,19 @@
             color: var(--brand-red-coral) !important;
         }
     }
-    &__error {
-        color: var(--text-loss-danger);
+    &__footer {
+        display: flex;
+        flex-direction: row;
+
+        > :not(.dc-input__counter) {
+            margin-right: 1.2rem;
+        }
+
+        > .dc-input__counter {
+            margin-left: auto;
+        }
+    }
+    &__wrapper {
+        margin-bottom: 1.6rem;
     }
 }

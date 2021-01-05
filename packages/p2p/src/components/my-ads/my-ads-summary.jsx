@@ -6,7 +6,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 
-const AdSummary = observer(({ offer_amount, price_rate, type }) => {
+const AdSummary = ({ offer_amount, price_rate, type }) => {
     const { general_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
 
@@ -69,7 +69,7 @@ const AdSummary = observer(({ offer_amount, price_rate, type }) => {
     ) : (
         <Localize i18n_default_text="You're creating an ad to sell..." />
     );
-});
+};
 
 AdSummary.propTypes = {
     client: PropTypes.object,
@@ -78,4 +78,4 @@ AdSummary.propTypes = {
     type: PropTypes.string,
 };
 
-export default AdSummary;
+export default observer(AdSummary);

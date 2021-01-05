@@ -139,6 +139,7 @@ const MT5AccountCard = ({
                             <Money
                                 amount={existing_data.display_balance}
                                 currency={existing_data.currency}
+                                has_sign={existing_data.balance < 0}
                                 show_currency
                             />
                         </p>

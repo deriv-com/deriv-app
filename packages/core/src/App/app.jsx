@@ -12,6 +12,7 @@ import {
     isMobile,
     isTouchDevice,
     initFormErrorMessages,
+    mobileOSDetect,
     setSharedMT5Text,
 } from '@deriv/shared';
 import { initializeTranslations, getLanguage, useOnLoadTranslation } from '@deriv/translations';
@@ -58,12 +59,15 @@ const App = ({ root_store }) => {
 
     const handleResize = React.useCallback(() => {
         if (isTouchDevice() && isMobile()) {
+            const is_android_device = mobileOSDetect() === 'Android';
+            const view_width = is_android_device ? screen.availWidth : window.innerWidth;
+            const view_height = is_android_device ? screen.availHeight : window.innerHeight;
             const el_landscape_blocker = document.getElementById('landscape_blocker');
-            if (screen.availWidth <= screen.availHeight) {
-                root_store.ui.onOrientationChange(false);
+            if (view_width <= view_height) {
+                root_store.ui.onOrientationChange({ is_landscape_orientation: false });
                 el_landscape_blocker.classList.remove('landscape-blocker--visible');
             } else {
-                root_store.ui.onOrientationChange(true);
+                root_store.ui.onOrientationChange({ is_landscape_orientation: true });
                 el_landscape_blocker.classList.add('landscape-blocker--visible');
             }
         }

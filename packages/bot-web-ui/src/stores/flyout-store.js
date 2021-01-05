@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import { config } from '@deriv/bot-skeleton';
 import GTM from '../utils/gtm';
 
@@ -250,5 +250,15 @@ export default class FlyoutStore {
         const { toolbox } = this.root_store;
         const flyout_content = toolbox.getCategoryContents(category);
         this.setContents(flyout_content);
+    }
+
+    @computed
+    get variables_blocks_count() {
+        return this.flyout_content.filter(block => block.getAttribute('type') === 'variables_get').length;
+    }
+
+    @computed
+    get first_get_variable_block_index() {
+        return this.flyout_content.length - this.variables_blocks_count;
     }
 }

@@ -13,6 +13,7 @@
     "scripts": {
         "test": "mocha ./scripts/**/**.spec.js",
         "build": "rimraf lib && webpack --optimize-minimize --progress",
+        "build:publish": "deriv-publisher prepublish && lerna exec --scope=@deriv/shared --scope=@deriv/components -- npm run build:travis -- && rimraf lib && cross-env NODE_ENV=production NPM_PUBLISHING_MODE=1 webpack --optimize-minimze --progress; deriv-publisher postpublish",
         "build:travis": "rimraf lib && webpack --optimize-minimize",
         "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --progress --watch",
         "start": "rimraf lib && npm run test && npm run serve",
@@ -40,9 +41,7 @@
         "react-dom": "^16.13.1",
         "react-i18next": "^11.0.0",
         "react-svg-loader": "^3.0.3",
-        "react-virtualized-auto-sizer": "^1.0.2",
-        "react-window": "^1.8.5",
-        "react-window-infinite-loader": "^1.0.5",
+        "react-transition-group": "^4.3.0",
         "sendbird": "^3.0.137"
     },
     "devDependencies": {

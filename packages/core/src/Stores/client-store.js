@@ -222,7 +222,9 @@ export default class ClientStore extends BaseStore {
                     );
                 }
             }
-            return this.landing_companies[`${target}_company`].legal_allowed_currencies;
+            if (this.landing_companies[`${target}_company`]) {
+                return this.landing_companies[`${target}_company`].legal_allowed_currencies;
+            }
         }
         if (this.landing_companies.gaming_company) {
             return this.landing_companies.gaming_company.legal_allowed_currencies;
@@ -393,6 +395,13 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_trading_experience_incomplete() {
         return this.account_status?.status?.some(status => status === 'trading_experience_not_complete');
+    }
+
+    @computed
+    get authentication_status() {
+        const document_status = this.account_status?.authentication?.document?.status;
+        const identity_status = this.account_status?.authentication?.identity?.status;
+        return { document_status, identity_status };
     }
 
     @computed
@@ -1002,7 +1011,7 @@ export default class ClientStore extends BaseStore {
          * Set up reaction for account_settings, account_status, is_p2p_visible
          */
         reaction(
-            () => [this.account_settings, this.account_status, this.root_store.modules.cashier.is_p2p_visible],
+            () => [this.account_settings, this.account_status, this.root_store.modules?.cashier?.is_p2p_visible],
             () => {
                 client = this.accounts[this.loginid];
                 BinarySocket.wait('landing_company').then(() => {

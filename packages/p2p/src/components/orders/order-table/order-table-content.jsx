@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Loading, Button, InfiniteDataList } from '@deriv/components';
+import { Loading, Button, InfiniteDataList, Div100vhContainer } from '@deriv/components';
 import { reaction } from 'mobx';
+import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
@@ -11,7 +12,14 @@ import OrderTableHeader from 'Components/orders/order-table/order-table-header.j
 import { useStores } from 'Stores';
 import { createExtendedOrderDetails } from 'Utils/orders';
 
-const OrderTableContent = observer(() => {
+const ContentWrapper = ({ children }) => {
+    if (isMobile()) {
+        return <Div100vhContainer height_offset='21rem'>{children}</Div100vhContainer>;
+    }
+    return <OrderTableHeader>{children}</OrderTableHeader>;
+};
+
+const OrderTableContent = () => {
     const { general_store, order_store } = useStores();
 
     React.useEffect(
@@ -45,7 +53,7 @@ const OrderTableContent = observer(() => {
 
         if (modified_list.length) {
             return (
-                <OrderTableHeader>
+                <ContentWrapper>
                     <InfiniteDataList
                         data_list_className='orders__data-list'
                         has_more_items_to_load={order_store.has_more_items_to_load}
@@ -54,7 +62,7 @@ const OrderTableContent = observer(() => {
                         loadMoreRowsFn={order_store.loadMoreOrders}
                         rowRenderer={row_props => <OrderRow {...row_props} />}
                     />
-                </OrderTableHeader>
+                </ContentWrapper>
             );
         }
     }
@@ -68,11 +76,11 @@ const OrderTableContent = observer(() => {
             )}
         </Empty>
     );
-});
+};
 
 OrderTableContent.propTypes = {
     is_active: PropTypes.bool,
     showDetails: PropTypes.func,
 };
 
-export default OrderTableContent;
+export default observer(OrderTableContent);

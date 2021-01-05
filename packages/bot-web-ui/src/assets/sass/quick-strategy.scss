@@ -34,10 +34,10 @@
     }
     &__form {
         @include mobile {
-            height: 100%;
-
-            form {
-                height: inherit;
+            height: calc(100% - 8rem);
+            overflow: scroll;
+            &--active-keyboard {
+                height: 100%;
             }
         }
 
@@ -75,11 +75,11 @@
             }
         }
         &-content {
-            margin-bottom: 80px;
+            margin-bottom: 8rem;
             padding: 0 1.6rem;
 
             &--active-keyboard {
-                margin-bottom: 0px;
+                margin-bottom: 0;
             }
         }
         &-footer {

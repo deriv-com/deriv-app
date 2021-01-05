@@ -3,7 +3,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import { isMobile } from '@deriv/shared';
-import { Tabs, Modal } from '@deriv/components';
+import { Tabs, Modal, Text } from '@deriv/components';
 import ServerTime from 'Utils/server-time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
@@ -59,9 +59,9 @@ const App = observer(props => {
     // TODO: remove allowed_currency check once we publish this to everyone
     if (general_store.client.is_virtual || general_store.client.currency !== allowed_currency) {
         return (
-            <h1 className='p2p-not-allowed'>
+            <Text as='h1' align='center' size='xs' className='p2p-not-allowed'>
                 {localize('This feature is only available for real-money USD accounts right now.')}
-            </h1>
+            </Text>
         );
     }
 

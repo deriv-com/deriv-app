@@ -1,31 +1,43 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
+import OrderDetails from 'Components/order-details/order-details.jsx';
 import { useStores } from 'Stores';
-import OrderTable from './order-table.jsx';
-import OrderDetails from '../order-details/order-details.jsx';
+import OrderTable from './order-table/order-table.jsx';
 import './orders.scss';
 
 const Orders = observer(() => {
-    const { general_store, order_store } = useStores();
-    const { order_information } = general_store;
+    const { order_store } = useStores();
+
+    // This is a bit hacky, but it allows us to force re-render this
+    // component when the timer expired. This is created due to BE
+    // not expiring orders on time. Remove this when they do.
+    const [, forceRerender] = React.useState();
+    order_store.setForceRerenderOrders(forceRerender);
 
     React.useEffect(() => {
-        return () => order_store.onUnmount();
+        const disposeOrderIdReaction = reaction(
+            () => order_store.order_id,
+            () => order_store.onOrderIdUpdate(),
+            { fireImmediately: true }
+        );
+
+        const disposeOrdersUpdateReaction = reaction(
+            () => order_store.orders,
+            () => order_store.onOrdersUpdate(),
+            { fireImmediately: true }
+        );
+
+        return () => {
+            disposeOrderIdReaction();
+            disposeOrdersUpdateReaction();
+            order_store.onUnmount();
+        };
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    React.useEffect(() => {
-        order_store.onOrderIdUpdate();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [general_store.props.order_id]);
-
-    React.useEffect(() => {
-        order_store.onOrdersUpdate();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [general_store.orders]);
-
-    if (order_information) {
+    if (order_store.order_information) {
         return (
             <div className='orders'>
                 <OrderDetails onPageReturn={() => order_store.hideDetails(true)} />
@@ -40,9 +52,6 @@ const Orders = observer(() => {
     );
 });
 
-Orders.propTypes = {
-    navigate: PropTypes.func,
-    params: PropTypes.object,
-};
+Orders.displayName = 'Orders';
 
 export default Orders;

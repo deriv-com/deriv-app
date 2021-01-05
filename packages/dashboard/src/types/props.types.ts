@@ -15,6 +15,18 @@ export type TRoutesProps = {
     about_us: string;
     explore: string;
     resources: string;
+    dmt5: string;
+    dtrader: string;
+    dbot: string;
+    smarttrader: string;
+    binary_bot: string;
+    cfds: string;
+    multipliers: string;
+    options: string;
+    forex: string;
+    synthetic_indices: string;
+    stock_indices: string;
+    commodities: string;
 };
 
 export interface TUIProps {

@@ -10,6 +10,18 @@ export default class ConfigStore extends BaseStore {
         explore: '/explore',
         about_us: '/about-us',
         resources: '/resources',
+        dmt5: '/dmt5',
+        dtrader: '/dtrader',
+        dbot: '/dbot',
+        smarttrader: '/smarttrader',
+        binary_bot: '/binary-bot',
+        cfds: '/cfds',
+        multipliers: '/multipliers',
+        options: '/options',
+        forex: '/forex',
+        synthetic_indices: '/synthetic-indices',
+        stock_indices: '/stock-indices',
+        commodities: '/commodities',
     };
 
     public setConfig(config: TConfigProps): void {
@@ -17,5 +29,8 @@ export default class ConfigStore extends BaseStore {
         this.is_deriv_crypto = config.is_deriv_crypto;
         this.asset_path = config.asset_path;
         this.routes = config.routes;
+
+        console.log('setRoutes');
+        console.log(this.routes);
     }
 }

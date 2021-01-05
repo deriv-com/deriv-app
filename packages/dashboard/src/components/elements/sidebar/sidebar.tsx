@@ -6,9 +6,10 @@ import { Localize } from '@deriv/translations';
 import { useStores } from 'Stores';
 import { flatten } from '../../../../../account/src/Helpers/flatten';
 
-const SideBar: React.FC = ({ routes }) => {
+const SideBar: React.FC = () => {
     // const history = useHistory();
-    // const { config_store } = useStores();
+    const { config_store } = useStores();
+    const routes = config_store.routes;
 
     // let list_groups = [...routes];
     // list_groups = list_groups.map(route_group => ({
@@ -32,6 +33,8 @@ const SideBar: React.FC = ({ routes }) => {
 
     //     return options;
     // };
+    console.log('our routes');
+    console.log(routes);
 
     const list = [
         {
@@ -128,11 +131,12 @@ const SideBar: React.FC = ({ routes }) => {
             subroutes: [
                 {
                     label: 'CFDs',
-                    value: () => (
-                        <Text>
-                            CFDs
-                        </Text>
-                    ),
+                    // value: () => (
+                    //     <Text>
+                    //         CFDs
+                    //     </Text>
+                    // ),
+                    value: routes.cfds,
                 },
                 {
                     label: 'Multipliers',

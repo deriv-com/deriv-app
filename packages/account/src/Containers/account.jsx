@@ -26,6 +26,8 @@ const Account = ({
     console.log(routes);
     const [is_loading, setIsLoading] = React.useState(true);
     const subroutes = flatten(routes.map(i => i.subroutes));
+    console.log('subroutes');
+    console.log(subroutes);
     let list_groups = [...routes];
     list_groups = list_groups.map(route_group => ({
         icon: route_group.icon,

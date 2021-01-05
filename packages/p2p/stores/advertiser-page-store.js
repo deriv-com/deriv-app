@@ -1,8 +1,7 @@
 import { action, computed, observable } from 'mobx';
-import { getShortNickname } from 'Utils/string';
-import { height_constants } from 'Utils/height_constants';
-import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
+import { getShortNickname } from 'Utils/string';
+import { localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 import BaseStore from 'Stores/base_store';
 
@@ -16,24 +15,12 @@ export default class AdvertiserPageStore extends BaseStore {
     @observable counterparty_type = buy_sell.BUY;
     @observable api_error_message = '';
     @observable form_error_message = '';
+    @observable has_more_adverts_to_load = false;
     @observable is_loading = true;
+    @observable is_loading_adverts = true;
     @observable is_submit_disabled = true;
     @observable show_ad_popup = false;
     @observable submitForm = () => {};
-
-    height_values = [
-        height_constants.screen,
-        height_constants.advertiser_page_content,
-        height_constants.core_header,
-        height_constants.core_footer,
-        height_constants.filters,
-        height_constants.filters_margin,
-        height_constants.page_overlay_header,
-        height_constants.page_overlay_content_padding,
-        height_constants.table_header,
-        height_constants.tabs,
-    ];
-    item_height = 56;
 
     @computed
     get account_currency() {
@@ -69,9 +56,9 @@ export default class AdvertiserPageStore extends BaseStore {
     get modal_title() {
         if (this.counterparty_type === buy_sell.BUY) {
             return localize('Buy {{ currency }}', { currency: this.account_currency });
-        } else {
-            return localize('Sell {{ currency }}', { currency: this.account_currency });
         }
+
+        return localize('Sell {{ currency }}', { currency: this.account_currency });
     }
 
     @computed
@@ -79,19 +66,29 @@ export default class AdvertiserPageStore extends BaseStore {
         return getShortNickname(this.advertiser_details_name);
     }
 
-    @action.bound
-    getAdvertiserAdverts() {
-        requestWS({
-            p2p_advert_list: 1,
-            counterparty_type: this.counterparty_type,
-            advertiser_id: this.advertiser_details_id,
-        }).then(response => {
-            if (!response.error) {
-                const { list } = response.p2p_advert_list;
-                this.setAdverts(list);
-            } else {
-                this.setErrorMessage(response.error);
-            }
+    loadMoreAdvertiserAdverts({ startIndex }) {
+        const { general_store } = this.root_store;
+        this.setIsLoadingAdverts(true);
+
+        return new Promise(resolve => {
+            requestWS({
+                p2p_advert_list: 1,
+                counterparty_type: this.counterparty_type,
+                advertiser_id: this.advertiser_details_id,
+                offset: startIndex,
+                limit: general_store.list_item_limit,
+            }).then(response => {
+                if (response.error) {
+                    this.setErrorMessage(response.error);
+                } else {
+                    const { list } = response.p2p_advert_list;
+                    this.setAdverts(list);
+                    this.setHasMoreAdvertsToLoad(list.length >= general_store.list_item_limit);
+                }
+
+                this.setIsLoadingAdverts(false);
+                resolve();
+            });
         });
     }
 
@@ -139,13 +136,12 @@ export default class AdvertiserPageStore extends BaseStore {
 
     @action.bound
     onMount() {
-        this.getAdvertiserAdverts();
         this.getAdvertiserInfo();
     }
 
-    @action.bound
     onTabChange() {
-        this.getAdvertiserAdverts();
+        this.setAdverts([]);
+        this.loadMoreAdvertiserAdverts({ startIndex: 0 });
     }
 
     @action.bound
@@ -194,8 +190,18 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     @action.bound
+    setHasMoreAdvertsToLoad(has_more_adverts_to_load) {
+        this.has_more_adverts_to_load = has_more_adverts_to_load;
+    }
+
+    @action.bound
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
+    }
+
+    @action.bound
+    setIsLoadingAdverts(is_loading_adverts) {
+        this.is_loading_adverts = is_loading_adverts;
     }
 
     @action.bound

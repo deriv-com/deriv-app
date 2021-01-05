@@ -101,7 +101,7 @@ const FormAds = () => {
                                                     hint={
                                                         // Using two "==" is intentional as we're checking for nullish
                                                         // rather than falsy values.
-                                                        available_balance == null
+                                                        !is_sell_advert || available_balance == null
                                                             ? undefined
                                                             : localize('Your DP2P balance is {{ dp2p_balance }}', {
                                                                   dp2p_balance: `${available_balance} ${currency}`,

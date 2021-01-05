@@ -15,7 +15,6 @@ import {
     useOnClickOutside,
 } from '@deriv/components';
 import {
-    urlFor,
     routes,
     isCryptocurrency,
     formatMoney,
@@ -79,6 +78,15 @@ const AccountSwitcher = props => {
         props.history.push(`${routes.mt5}#${account_type}`);
     };
 
+    const hasRequiredCredentials = () => {
+        // for MT5 Real Financial STP, if true, users can instantly create a new account by setting password
+        if (!props.account_settings) return false;
+        const { citizen, tax_identification_number, tax_residence } = props.account_settings;
+        return !!(citizen && tax_identification_number && tax_residence);
+    };
+
+    const should_redirect_fstp_password = props.is_fully_authenticated && hasRequiredCredentials();
+
     const openMt5RealAccount = account_type => {
         const has_required_account =
             account_type === 'synthetic' ? props.has_malta_account : props.has_maltainvest_account;
@@ -91,17 +99,15 @@ const AccountSwitcher = props => {
                 account_type === 'synthetic' ? localize('DMT5 Synthetic') : localize('DMT5 Financial')
             );
         } else {
-            sessionStorage.setItem('open_mt5_account_type', `real.${account_type}`);
+            if (should_redirect_fstp_password)
+                sessionStorage.setItem('open_mt5_account_type', `real.${account_type}.set_password`);
+            else sessionStorage.setItem('open_mt5_account_type', `real.${account_type}`);
             redirectToMt5Real();
         }
     };
 
     const redirectToMt5Real = () => {
-        if (!props.is_logged_in || props.is_mt5_allowed) {
-            redirectToMt5('real');
-        } else {
-            window.open(urlFor('user/metatrader', { legacy: true }));
-        }
+        redirectToMt5('real');
     };
 
     const openMt5DemoAccount = account_type => {
@@ -182,13 +188,6 @@ const AccountSwitcher = props => {
 
     // Real accounts is always the first tab index based on design
     const isRealAccountTab = active_tab_index === 0;
-
-    const hasRequiredCredentials = () => {
-        // for MT5 Real Financial STP, if true, users can instantly create a new account by setting password
-        if (!props.account_settings) return false;
-        const { citizen, tax_identification_number, tax_residence } = props.account_settings;
-        return !!(citizen && tax_identification_number && tax_residence);
-    };
 
     const getSortedAccountList = () => {
         // sort accounts as follows:
@@ -514,9 +513,7 @@ const AccountSwitcher = props => {
                                             is_disabled={
                                                 (!props.is_eu && !props.has_any_real_account) ||
                                                 (account.type === 'financial_stp' &&
-                                                    (props.is_pending_authentication ||
-                                                        (props.is_fully_authenticated && hasRequiredCredentials()))) ||
-                                                !!props.mt5_login_list_error
+                                                    (props.is_pending_authentication || !!props.mt5_login_list_error))
                                             }
                                         >
                                             {localize('Add')}

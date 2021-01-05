@@ -634,6 +634,11 @@
     width: 100%;
     height: 100%;
 
+    @media only screen and (max-height: 645px) {
+        margin-top: 1.5rem;
+        overflow: auto;
+    }
+
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-general);

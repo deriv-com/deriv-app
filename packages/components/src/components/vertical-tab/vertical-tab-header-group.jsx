@@ -15,9 +15,11 @@ const Header = ({ text }) => <div className='dc-vertical-tab__header-group__link
 
 const VerticalTabHeaderGroup = ({ children, className, group, selected, onToggle }) => {
     const [show_items, setShowItems] = React.useState(true);
+
     React.useEffect(() => {
         onToggle(true);
     }, [show_items]);
+
     const label = group.label || group.title; // group.label.charAt(0).toUpperCase() + group.label.slice(1).toLowerCase();
     const handleClick = () => {
         if (!selected) setShowItems(!show_items);

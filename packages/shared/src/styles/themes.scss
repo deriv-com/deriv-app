@@ -37,6 +37,20 @@
     // Brand secondary colors
     --brand-secondary: #{$color-green};
 
+    // Wallet gradient background
+    --wallet-airtm: #{$gradient-airtm};
+    --wallet-bitcoin: #{$gradient-bitcoin};
+    --wallet-credit: #{$gradient-credit};
+    --wallet-dp2p: #{$gradient-dp2p};
+    --wallet-jeton: #{$gradient-jeton};
+    --wallet-mastercard: #{$gradient-mastercard};
+    --wallet-neteller: #{$gradient-neteller};
+    --wallet-skrill: #{$gradient-skrill};
+    --wallet-sticpay: #{$gradient-sticpay};
+    --wallet-virtual: #{$gradient-virtual};
+    --wallet-visa: #{$gradient-visa};
+    --wallet-webmoney: #{$gradient-webmoney};
+
     .theme--light {
         // General
         --general-main-1: #{$color-white};

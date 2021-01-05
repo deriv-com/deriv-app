@@ -23,6 +23,11 @@
     --text-weight-bold: bold;
     --text-weight-bolder: bolder;
 
+    //Text Align
+    --text-align-left: start;
+    --text-align-right: right;
+    --text-align-center: center;
+
     // Brand primary colors
     --brand-dark-grey: #{$color-black};
     --brand-red-coral: #{$color-red};

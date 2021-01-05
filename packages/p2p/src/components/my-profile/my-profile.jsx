@@ -6,8 +6,10 @@ import {
     Div100vhContainer,
     Icon,
     Input,
+    LineSeparatedComponents,
     Loading,
-    Popover,
+    Money,
+    PopoverMobile,
     Table,
     ThemedScrollbars,
     Text,
@@ -39,13 +41,18 @@ const ContentWrapper = ({ children, className }) => {
 
 const MyProfile = () => {
     const { general_store, my_profile_store } = useStores();
+    const { currency } = general_store.client;
     const {
+        balance_available,
         daily_buy,
         daily_buy_limit,
         daily_sell,
         daily_sell_limit,
         total_orders_count,
     } = my_profile_store.advertiser_info;
+
+    const [is_balance_tooltip_open, setIsBalanceTooltipOpen] = React.useState(false);
+    const [is_statistics_tooltip_open, setIsStatisticsTooltipOpen] = React.useState(false);
 
     React.useEffect(() => {
         my_profile_store.getSettings();
@@ -84,6 +91,33 @@ const MyProfile = () => {
                     </div>
                 </div>
             </div>
+            <LineSeparatedComponents className='my-profile__balance-wrapper' is_invisible_line={isMobile()}>
+                <Text size='xs' line_height='m' color='less-prominent'>
+                    <Localize i18n_default_text='Available DP2P balance' />
+                </Text>
+                <div className='my-profile__balance'>
+                    <Text
+                        className='my-profile__balance-amount'
+                        color='prominent'
+                        line_height='m'
+                        size={isMobile() ? 'xs' : 's'}
+                        weight='bold'
+                    >
+                        <Money amount={balance_available} currency={currency} show_currency />
+                    </Text>
+                    <PopoverMobile
+                        button_text={localize('Got it')}
+                        is_open={is_balance_tooltip_open}
+                        message={localize(
+                            'DP2P balance = deposits that can’t be reversed (bank transfers, etc.) + a portion of deposits that might be reversed (credit card payments, etc.)'
+                        )}
+                        setIsOpen={setIsBalanceTooltipOpen}
+                        title={localize('Available balance')}
+                    >
+                        <Icon icon='IcInfoOutline' size={16} />
+                    </PopoverMobile>
+                </div>
+            </LineSeparatedComponents>
             <Table>
                 <Table.Row className='my-profile__stats'>
                     <div className='my-profile__stats-cell-separator' />
@@ -148,27 +182,27 @@ const MyProfile = () => {
                     </Table.Cell>
                     {isDesktop() && <div className='my-profile__stats-cell-separator' />}
                     <Table.Cell>
-                        <Popover
-                            classNameBubble='my-profile__popover-text'
-                            alignment='top'
+                        <PopoverMobile
+                            className='my-profile__stats-popover'
+                            button_text={localize('Got it')}
+                            is_open={is_statistics_tooltip_open}
                             message={localize(
                                 "These fields are based on the last 24 hours' activity: Buy, Sell, and Limit."
                             )}
-                            zIndex={2}
+                            setIsOpen={setIsStatisticsTooltipOpen}
                         >
-                            <Icon className='my-profile__popover-icon' icon='IcInfoOutline' size={16} />
-                        </Popover>
+                            <Icon icon='IcInfoOutline' size={16} />
+                        </PopoverMobile>
                     </Table.Cell>
                 </Table.Row>
             </Table>
-            <div className='my-profile__separator'>
+            <LineSeparatedComponents className='my-profile__privacy-setting-wrapper'>
                 <div className='my-profile__separator-text--privacy'>
                     <Text size='xs' color='prominent' weight='bold'>
-                        {localize('Privacy setting')}
+                        <Localize i18n_default_text={localize('Privacy setting')} />
                     </Text>
                 </div>
-                <div className='my-profile__separator-horizontal_line' />
-            </div>
+            </LineSeparatedComponents>
             <div className='my-profile__toggle-container'>
                 <ToggleSwitch
                     id='p2p-toggle-name'
@@ -183,14 +217,11 @@ const MyProfile = () => {
                     />
                 </Text>
             </div>
-            <div className='my-profile__separator'>
-                <div className='my-profile__separator-text'>
-                    <Text size='xs' color='prominent' weight='bold'>
-                        <Localize i18n_default_text='Ad template' />
-                    </Text>
-                </div>
-                <div className='my-profile__separator-horizontal_line' />
-            </div>
+            <LineSeparatedComponents className='my-profile__ad-template-wrapper'>
+                <Text size='xs' color='prominent' weight='bold'>
+                    <Localize i18n_default_text='Ad template' />
+                </Text>
+            </LineSeparatedComponents>
             <Formik
                 enableReinitialize
                 initialValues={{

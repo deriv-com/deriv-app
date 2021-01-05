@@ -129,6 +129,7 @@ class ConfigVerification {
     is_button_clicked = false;
     timeout_button = '';
 
+    @observable error = new ConfigError();
     @observable is_email_sent = false;
     @observable is_resend_clicked = false;
     @observable resend_timeout = 60;
@@ -471,9 +472,9 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setErrorMessage(error, onClickButton, is_show_full_page) {
+    setErrorMessage(error, onClickButton, is_show_full_page, is_verification_error) {
         // for errors that need to show a button, reset the form
-        this.config[this.active_container].error = {
+        const error_object = {
             onClickButton,
             code: error.code,
             message: error.message,
@@ -482,7 +483,14 @@ export default class CashierStore extends BaseStore {
                 fields: error.details.fields,
             }),
         };
+
+        if (is_verification_error) {
+            this.config[this.active_container].verification.error = error_object;
+        } else {
+            this.config[this.active_container].error = error_object;
+        }
     }
+
     @action.bound
     handleCashierError(error) {
         switch (error.code) {
@@ -620,11 +628,18 @@ export default class CashierStore extends BaseStore {
         const withdrawal_type = `payment${
             this.active_container === this.config.payment_agent.container ? 'agent' : ''
         }_withdraw`;
+        
         const response_verify_email = await this.WS.verifyEmail(this.root_store.client.email, withdrawal_type);
-
         if (response_verify_email.error) {
             this.clearVerification();
-            this.setErrorMessage(response_verify_email.error);
+            this.setErrorMessage(
+                response_verify_email.error,
+                () => {
+                    this.setErrorMessage('', null, null, true);
+                },
+                null,
+                true
+            );
         } else {
             this.setVerificationEmailSent(true);
             this.setTimeoutVerification();
@@ -665,6 +680,7 @@ export default class CashierStore extends BaseStore {
         this.setVerificationEmailSent(false, container);
         this.setVerificationResendClicked(false, container);
         this.setVerificationResendTimeout(60, container);
+        this.setErrorMessage('', null, null, true);
         this.root_store.client.setVerificationCode('', this.map_action[container]);
     }
 

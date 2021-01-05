@@ -8,7 +8,7 @@ import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
 import { getAllowedLanguages, currentLanguage, changeLanguage } from 'Utils/Language';
-import LiveChat from '../../Elements/live-chat.jsx';
+import LiveChat from '../../Elements/LiveChat';
 
 const MenuLink = ({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink }) => {
     if (is_language) {

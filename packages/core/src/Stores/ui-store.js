@@ -33,7 +33,7 @@ export default class UIStore extends BaseStore {
     @observable settings_extension = undefined;
     @observable notification_messages_ui = undefined;
 
-    @observable is_dark_mode_on = false;
+    @observable is_dark_mode_on = window.matchMedia('(prefers-color-scheme: dark)').matches && isMobile();
     @observable is_settings_modal_on = false;
     @observable is_accounts_switcher_on = false;
     @observable account_switcher_disabled_message = '';

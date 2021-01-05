@@ -5,8 +5,6 @@
     width: 100%;
 
     &__input {
-        border: 1px solid var(--border-normal);
-
         .dc-input__field {
             width: 100%;
             border-radius: $BORDER_RADIUS;
@@ -113,13 +111,17 @@
 
             &-text {
                 font-size: 1.4rem;
-                color: var(--text-prominent);
                 background-color: inherit;
                 padding-top: 0.2rem;
+                color: var(--text-prominent);
 
                 &--has-error {
                     padding-top: unset;
                     color: var(--brand-red-coral);
+                }
+
+                &--disabled {
+                    color: var(--text-disabled);
                 }
             }
         }

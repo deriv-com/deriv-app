@@ -1,9 +1,11 @@
-import { ButtonLink } from '@deriv/components';
+import { ButtonLink, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import React from 'react';
 
 export const ContinueTradingButton = () => (
     <ButtonLink to='/'>
-        <p className='dc-btn__text'>{localize('Continue trading')}</p>
+        <Text className='dc-btn__text' as='p' weight='bold'>
+            {localize('Continue trading')}
+        </Text>
     </ButtonLink>
 );

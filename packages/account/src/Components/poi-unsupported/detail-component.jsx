@@ -9,7 +9,7 @@ const root_class = 'unsupported-country-poi';
 
 const FileUploaderContainer = ({ children }) => <div className={`${root_class}__upload-container`}>{children}</div>;
 
-const DetailComponent = ({ onClickBack, icon, title, description, onChange, required_documents = 1 }) => {
+const DetailComponent = ({ onClickBack, required_documents = 1 }) => {
     const ref = React.useRef();
     const [image_preview, setImagePreview] = React.useState(null);
     const [temp_file, setTempFile] = React.useState(null);
@@ -62,62 +62,11 @@ const DetailComponent = ({ onClickBack, icon, title, description, onChange, requ
                 ))}
             </div>
             <div className={`${root_class}__detail-grid`}>
-                {matches('selfie') && !image_preview && (
-                    <React.Fragment>
-                        <Icon icon='IcSelfie' size={236} />
-                        <Text as='p' size='s' weight='bold' color='prominent'>
-                            {localize('Upload your selfie')}
-                        </Text>
-                        <Text as='p' size='xs'>
-                            {localize(
-                                'Face forward and remove your glasses if necessary. Make sure your eyes are clearly visible and your face is within the frame.'
-                            )}
-                        </Text>
-                        <FileUploaderContainer>
-                            <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} />
-                        </FileUploaderContainer>
-                        <DetailGrid root_class={root_class} />
-                    </React.Fragment>
-                )}
                 {matches('selfie') && image_preview && (
                     <React.Fragment>
                         <ImagePreview image_preview={image_preview} root_class={root_class} />
                         <Text as='p' size='s' weight='bold' color='prominent'>
                             {localize('Confirm your documents')}
-                        </Text>
-                        <div className={`${root_class}__confirm-buttons`}>
-                            <Button large onClick={resetFileUpload} secondary>
-                                {localize('Upload a different file')}
-                            </Button>
-                            <Button large onClick={confirm} primary>
-                                {localize('Confirm')}
-                            </Button>
-                        </div>
-                    </React.Fragment>
-                )}
-                {matches('upload') && !image_preview && (
-                    <React.Fragment>
-                        <Icon icon={icon} size={236} />
-                        <Text as='p' size='s' weight='bold' color='prominent'>
-                            {title}
-                        </Text>
-                        <Text as='p' size='xs'>
-                            {description}
-                        </Text>
-                        <FileUploaderContainer>
-                            <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} />
-                        </FileUploaderContainer>
-                        <DetailGrid root_class={root_class} />
-                    </React.Fragment>
-                )}
-                {matches('upload') && image_preview && (
-                    <React.Fragment>
-                        <ImagePreview image_preview={image_preview} root_class={root_class} />
-                        <Text as='p' size='s' weight='bold' color='prominent'>
-                            {localize('Confirm your document')}
-                        </Text>
-                        <Text as='p' size='xs'>
-                            {localize('After confirming, you’ll be asked to upload the back of your identity card.')}
                         </Text>
                         <div className={`${root_class}__confirm-buttons`}>
                             <Button large onClick={resetFileUpload} secondary>

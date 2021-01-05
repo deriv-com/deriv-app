@@ -2,6 +2,48 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { DetailComponent } from './detail-component.jsx';
 
+const nimc_machine = {
+    initial_state: 'nimc_pending',
+    nimc_pending: {
+        transition: {
+            forward: {
+                target: 'file_confirmation',
+            },
+        },
+    },
+    file_confirmation: {
+        transition: {
+            backward: {
+                target: 'nimc_pending',
+            },
+            forward: {
+                target: 'age_declaration',
+            },
+        },
+    },
+    age_declaration: {
+        transition: {
+            forward: {
+                target: 'age_declaration_confirmation',
+            },
+            backward: {
+                target: 'age_declaration',
+            },
+        },
+    },
+    age_declaration_confirmation: {
+        transition: {
+            forward: 'selfie_upload',
+            backward: 'age_declaration',
+        },
+    },
+    selfie_upload: {
+        transition: {
+            forward: 'selfie_confirmation',
+        },
+    },
+};
+
 export const getDocumentIndex = ({ setDetail, residence }) => [
     {
         title: localize('Passports'),

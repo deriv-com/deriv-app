@@ -54,6 +54,7 @@ class MT5ResetPasswordModal extends React.Component {
     clearAddressBar = () => {
         localStorage.removeItem('mt5_reset_password_intent');
         localStorage.removeItem('mt5_reset_password_type');
+        localStorage.removeItem('mt5_reset_password_code');
         this.props.history.push(`${routes.mt5}`);
     };
 
@@ -82,13 +83,12 @@ class MT5ResetPasswordModal extends React.Component {
 
     resetPassword = (values, password_type, login, actions) => {
         const { setSubmitting } = actions;
-        const url_params = new URLSearchParams(window.location.search);
         setSubmitting(true);
         const request = {
             login,
             password_type,
             new_password: values.new_password,
-            verification_code: url_params.get('code'),
+            verification_code: localStorage.getItem('mt5_reset_password_code'),
         };
 
         WS.mt5PasswordReset(request).then(response => {
@@ -154,6 +154,7 @@ class MT5ResetPasswordModal extends React.Component {
                                                     >
                                                         {({ has_warning }) => (
                                                             <PasswordInput
+                                                                autoComplete='new-password'
                                                                 className='mt5-reset-password__password-field'
                                                                 name='new_password'
                                                                 label={localize('New {{type}} password', { type })}

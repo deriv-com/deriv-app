@@ -31,8 +31,8 @@ export default class PortfolioStore extends BaseStore {
     @observable.shallow active_positions = [];
 
     @action.bound
-    initializePortfolio = async () => {
-        if (this.is_subscribed_to_poc) {
+    initializePortfolio = async should_clear_table => {
+        if (this.is_subscribed_to_poc || should_clear_table) {
             this.clearTable();
         }
         this.is_loading = true;
@@ -339,7 +339,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     async accountSwitcherListener() {
-        await this.initializePortfolio();
+        await this.initializePortfolio(true);
         return Promise.resolve();
     }
 

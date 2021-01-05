@@ -22,7 +22,16 @@ class ChangePasswordForm extends React.Component {
     };
 
     handlePasswordChange = () => {
-        this.props.history.push(routes.trade);
+        const params = {
+            action: 'redirect_to_login',
+            header: 'password_changed',
+        };
+        const search_params = new URLSearchParams(params).toString();
+
+        this.props.history.push({
+            pathname: routes.root,
+            search: `?${search_params}`,
+        });
     };
 
     onSubmit = (values, { setSubmitting, setStatus }) => {
@@ -68,6 +77,8 @@ class ChangePasswordForm extends React.Component {
     };
 
     render() {
+        const { is_loading, new_pw_input, is_btn_loading, is_submit_success } = this.state;
+
         return (
             <React.Fragment>
                 <Formik
@@ -90,9 +101,9 @@ class ChangePasswordForm extends React.Component {
                         isSubmitting,
                     }) => (
                         <form className='account-form account__password-wrapper' onSubmit={handleSubmit}>
-                            {this.state.is_loading ? (
+                            {is_loading ? (
                                 <FormBody>
-                                    <Loading is_fullscreen={false} className='account___intial-loader' />;
+                                    <Loading is_fullscreen={false} className='account__initial-loader' />;
                                 </FormBody>
                             ) : (
                                 <FormBody scroll_offset={isMobile() ? '200px' : '55px'}>
@@ -110,7 +121,7 @@ class ChangePasswordForm extends React.Component {
                                     </fieldset>
                                     <fieldset className='account-form__fieldset'>
                                         <PasswordMeter
-                                            input={this.state.new_pw_input}
+                                            input={new_pw_input}
                                             has_error={!!(touched.new_password && errors.new_password)}
                                             custom_feedback_messages={getErrorMessages().password_warnings}
                                         >
@@ -133,7 +144,12 @@ class ChangePasswordForm extends React.Component {
                                 </FormBody>
                             )}
                             <FormFooter>
-                                {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
+                                {status?.msg && (
+                                    <FormSubmitErrorMessage
+                                        className={classNames({ 'account-form__error-message': isMobile() })}
+                                        message={status.msg}
+                                    />
+                                )}
                                 <Button
                                     className={classNames('account-form__footer-btn', {
                                         'account-form__footer-btn--has-bottom-margin': isMobile(),
@@ -156,8 +172,8 @@ class ChangePasswordForm extends React.Component {
                                             !values.old_password
                                         )
                                     }
-                                    is_loading={this.state.is_btn_loading}
-                                    is_submit_success={this.state.is_submit_success}
+                                    is_loading={is_btn_loading}
+                                    is_submit_success={is_submit_success}
                                     has_effect
                                     text={localize('Change password')}
                                     primary

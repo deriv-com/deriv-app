@@ -12,6 +12,7 @@
     }
 
     @include mobile {
+        max-width: calc(100% - 3.2rem);
         left: 1.6rem;
         right: 1.6rem;
     }
@@ -122,10 +123,8 @@
         margin-bottom: 16px;
     }
     @include mobile {
-        max-width: 348px;
-
-        &--small {
-            max-width: unset;
-        }
+        max-width: 328px;
+        width: calc(100% - 0.8rem);
+        margin-right: 0.4rem;
     }
 }

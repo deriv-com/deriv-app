@@ -233,20 +233,24 @@ const BinarySocketGeneral = (() => {
 export default BinarySocketGeneral;
 
 const ResponseHandlers = (() => {
-    let is_available = false;
     const websiteStatus = response => {
         if (response.website_status) {
-            is_available = /^up$/i.test(response.website_status.site_status);
-            if (is_available && !BinarySocket.availability()) {
+            const is_available = !BinarySocket.isSiteDown(response.website_status.site_status);
+            if (is_available && BinarySocket.getAvailability().is_down) {
                 window.location.reload();
                 return;
             }
-            if (response.website_status.message) {
-                // Footer.displayNotification(response.website_status.message);
-            } else {
-                // Footer.clearNotification();
+            const is_updating = BinarySocket.isSiteUpdating(response.website_status.site_status);
+            if (is_updating && !BinarySocket.getAvailability().is_updating) {
+                // the existing connection is alive for one minute while status is updating
+                // switch to the new connection somewhere between 1-30 seconds from now
+                // to avoid everyone switching to the new connection at the same time
+                const rand_timeout = Math.floor(Math.random() * 30) + 1;
+                window.setTimeout(() => {
+                    BinarySocket.closeAndOpenNewConnection();
+                }, rand_timeout * 1000);
             }
-            BinarySocket.availability(is_available);
+            BinarySocket.setAvailability(response.website_status.site_status);
             client_store.setWebsiteStatus(response);
         }
     };

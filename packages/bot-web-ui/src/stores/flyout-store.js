@@ -68,20 +68,6 @@ export default class FlyoutStore {
         workspace.flyout_ = this.flyout;
     }
 
-    @action.bound
-    initFlyoutButton(flyout_button) {
-        const workspace = Blockly.derivWorkspace;
-        const callback_key = flyout_button.getAttribute('callbackKey');
-
-        const callback = button => {
-            const button_workspace = button.getTargetWorkspace();
-            Blockly.Variables.createVariable(button_workspace, this.refreshCategory, '');
-        };
-
-        flyout_button.setAttribute('callbackKey', callback_key);
-        workspace.registerButtonCallback(callback_key, callback);
-    }
-
     /**
      * Intialises a workspace unique to the passed block_node
      * @param {Element} el_block_workspace Element where Blockly.Workspace will be mounted on

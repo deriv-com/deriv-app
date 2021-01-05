@@ -130,7 +130,6 @@ const FlyoutContent = props => {
                             case Blockly.Xml.NODE_BUTTON: {
                                 const callback_key = node.getAttribute('callbackKey');
                                 const callback_id = node.getAttribute('id');
-                                initFlyoutButton(node);
 
                                 return (
                                     <button

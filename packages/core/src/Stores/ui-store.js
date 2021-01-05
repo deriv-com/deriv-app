@@ -653,7 +653,6 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     onOrientationChange({ is_landscape_orientation }) {
-        console.log(is_landscape_orientation);
         this.is_landscape = is_landscape_orientation;
     }
 

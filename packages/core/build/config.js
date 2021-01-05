@@ -54,6 +54,13 @@ const copyConfig = base => {
                 flatten: true,
             },
             {
+                from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/js/**'),
+                to: 'js',
+                flatten: true,
+            },
+            { from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/css/**'), to: 'css', flatten: true },
+            { from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/js/*.*'), to: 'js', flatten: true },
+            {
                 from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/js/trader.*.js'),
                 to: 'js',
                 flatten: true,

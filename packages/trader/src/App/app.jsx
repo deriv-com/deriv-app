@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Loadable from 'react-loadable-hooks';
+import Loadable from 'react-loadable';
 import Routes from 'App/Containers/Routes/routes.jsx';
 import TradeHeaderExtensions from 'App/Containers/trade-header-extensions.jsx';
 import TradeFooterExtensions from 'App/Containers/trade-footer-extensions.jsx';

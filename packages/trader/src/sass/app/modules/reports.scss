@@ -312,6 +312,9 @@ $side-padding: 1.2em;
             color: var(--text-prominent);
             margin: auto;
 
+            @include desktop {
+                margin-left: 1rem;
+            }
             @include mobile {
                 font-size: 1.4rem;
             }

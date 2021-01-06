@@ -32,6 +32,7 @@ const makeLazyLoader = importFn => component_name =>
             return <ComponentLazy {...props} />;
         },
         loading: handleLoading,
+        delay: 0,
     });
 
 const lazyLoadReportComponent = makeLazyLoader(() => import(/* webpackChunkName: "reports" */ 'Modules/Reports'));

@@ -22,4 +22,5 @@ export const makeLazyLoader = importFn => component_name =>
             return <ComponentLazy {...props} />;
         },
         loading: handleLoading,
+        delay: 0,
     });

@@ -291,6 +291,9 @@ $side-padding: 1.2em;
             @include desktop {
                 padding: 0.4rem 1.6rem;
             }
+            @include mobile {
+                flex-flow: column;
+            }
         }
         &-title {
             text-align: left;
@@ -308,7 +311,6 @@ $side-padding: 1.2em;
             font-size: 1.6rem;
             color: var(--text-prominent);
             margin: auto;
-            margin-left: 10px;
 
             @include mobile {
                 font-size: 1.4rem;

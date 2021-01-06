@@ -131,7 +131,9 @@ const Statement = ({
             <div className='statement__account-statistics'>
                 <div className='statement__account-statistics-item'>
                     <div className='statement__account-statistics--is-rectangle'>
-                        <span className='statement__account-statistics-title'>{localize('Total deposits')}</span>
+                        <span className='statement__account-statistics-title'>
+                            {localize('Total deposits')} {is_mobile && <>({currency})</>}
+                        </span>
                         <span className='statement__account-statistics-amount'>
                             <Money amount={account_statistics.total_deposits} currency={currency} />
                         </span>
@@ -139,7 +141,9 @@ const Statement = ({
                 </div>
                 <div className='statement__account-statistics-item statement__account-statistics-total-withdrawal'>
                     <div className='statement__account-statistics--is-rectangle'>
-                        <span className='statement__account-statistics-title'>{localize('Total withdrawals')}</span>
+                        <span className='statement__account-statistics-title'>
+                            {localize('Total withdrawals')} {is_mobile && <>({currency})</>}
+                        </span>
                         <span className='statement__account-statistics-amount'>
                             <Money amount={account_statistics.total_withdrawals} currency={currency} />
                         </span>
@@ -147,7 +151,9 @@ const Statement = ({
                 </div>
                 <div className='statement__account-statistics-item'>
                     <div className='statement__account-statistics--is-rectangle'>
-                        <span className='statement__account-statistics-title'>{localize('Net deposits')}</span>
+                        <span className='statement__account-statistics-title'>
+                            {localize('Net deposits')} {is_mobile && <>({currency})</>}
+                        </span>
                         <span className='statement__account-statistics-amount'>
                             <Money
                                 amount={account_statistics.total_deposits - account_statistics.total_withdrawals}

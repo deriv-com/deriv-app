@@ -297,9 +297,6 @@ $side-padding: 1.2em;
             color: var(--text-less-prominent);
             font-size: 1.6rem;
             margin: auto;
-            &-dark {
-                color: #6e6e6e;
-            }
 
             @include mobile {
                 font-size: 1rem;
@@ -312,9 +309,6 @@ $side-padding: 1.2em;
             color: var(--text-prominent);
             margin: auto;
             margin-left: 10px;
-            &-dark {
-                color: #ffffff;
-            }
 
             @include mobile {
                 font-size: 1.4rem;

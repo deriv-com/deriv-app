@@ -144,7 +144,9 @@ const ProfitTable = ({
                             empty_message_component={EmptyTradeHistoryMessage}
                             component_icon={component_icon}
                             localized_message={localize('You have no trading activity yet.')}
-                            localized_period_message={localize('You have no trading activity for this period.')}
+                            localized_period_message={localize(
+                                "You've made no transactions of this type during this period."
+                            )}
                         />
                     ) : (
                         <div className='reports__content'>

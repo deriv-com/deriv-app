@@ -375,26 +375,22 @@ const Dropdown = ({
                         id='dropdown-display'
                         ref={dropdown_ref}
                     >
-                        {is_filter && !is_mobile && (
+                        {is_filter && (
                             <React.Fragment>
                                 <Icon className='icon_filter' icon='IcFilter' size={16} fill />
-                                <DisplayText
-                                    className={classNames('dc-dropdown__display-text', {
-                                        'dc-dropdown__display-filter-text': is_filter,
-                                    })}
-                                    has_symbol={has_symbol}
-                                    name={name}
-                                    is_title={is_list_visible}
-                                    placeholder={placeholder}
-                                    value={value || 0}
-                                    list={list}
-                                />
-                            </React.Fragment>
-                        )}
-
-                        {is_filter && is_mobile && (
-                            <React.Fragment>
-                                <Icon className='icon_filter' icon='IcFilter' size={16} />
+                                {!is_mobile && (
+                                    <DisplayText
+                                        className={classNames('dc-dropdown__display-text', {
+                                            'dc-dropdown__display-filter-text': is_filter,
+                                        })}
+                                        has_symbol={has_symbol}
+                                        name={name}
+                                        is_title={is_list_visible}
+                                        placeholder={placeholder}
+                                        value={value || 0}
+                                        list={list}
+                                    />
+                                )}
                             </React.Fragment>
                         )}
 
@@ -413,7 +409,7 @@ const Dropdown = ({
                             />
                         )}
                     </div>
-                    {!isSingleOption() && !is_filter && (
+                    {!(isSingleOption() || is_filter) && (
                         <Icon
                             icon={is_alignment_left ? 'IcChevronLeft' : 'IcChevronDown'}
                             className={classNames('dc-dropdown__select-arrow', {

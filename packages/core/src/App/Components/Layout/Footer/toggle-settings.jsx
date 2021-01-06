@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Loadable from 'react-loadable';
+import Loadable from 'react-loadable-hooks';
 import { Icon, Modal, Popover, VerticalTab, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import 'Sass/app/modules/settings.scss';

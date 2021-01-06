@@ -27,6 +27,7 @@ const ProofOfIdentityContainer = ({
     const [api_error, setAPIError] = React.useState(false);
     const [status, setStatus] = React.useState('');
     const [documents_supported, setDocumentsSupported] = React.useState(null);
+    const [country_code_key, setCountryCode] = React.useState(null);
     const [onfido_service_token, setOnfidoServiceToken] = React.useState(null);
     const [verification_status, setVerificationStatus] = useStateCallback({});
     const previous_account_status = usePrevious(account_status);
@@ -71,6 +72,7 @@ const ProofOfIdentityContainer = ({
                 needs_poa,
                 is_unwelcome,
                 onfido_supported_docs,
+                country_code,
             } = populateVerificationStatus(account_status_obj);
 
             const { identity, needs_verification } = account_status_obj.authentication;
@@ -83,6 +85,7 @@ const ProofOfIdentityContainer = ({
                     setOnfidoServiceToken(onfido_token);
                 }
                 setDocumentsSupported(onfido_supported_docs);
+                setCountryCode(country_code);
                 refreshNotifications();
                 if (onStateChange) onStateChange({ status });
             });
@@ -146,6 +149,7 @@ const ProofOfIdentityContainer = ({
 
     return (
         <Onfido
+            country_code={country_code_key}
             documents_supported={documents_supported}
             status={status}
             onfido_service_token={onfido_service_token}

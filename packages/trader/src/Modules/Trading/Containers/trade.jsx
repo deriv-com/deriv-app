@@ -11,6 +11,35 @@ import { ChartBottomWidgets, ChartToolbarWidgets, ChartTopWidgets, DigitsWidget 
 import FormLayout from '../Components/Form/form-layout.jsx';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 
+function masterData() {
+    const _date = new Date();
+    _date.setMinutes(_date.getMinutes(), 0, 0);
+
+    let price = 8350.41;
+    price += parseFloat((price * 0.02 * Math.random() - price * 0.01).toFixed(2));
+    const mock_items = [
+        {
+            Date: _date.toISOString().slice(0, 19),
+            Close: price,
+        },
+    ];
+    for (let i = 1; i < 10; i++) {
+        const old_price = mock_items[mock_items.length - 1].Close;
+        const change = old_price * 0.02 * Math.random() - old_price * 0.01; // random between +/-1% of current price
+        const new_price = parseFloat(old_price + parseFloat(change.toFixed(2))).toFixed(4);
+        _date.setMinutes(_date.getMinutes() - i * 2, 0, 0);
+        const item = {
+            Date: _date.toISOString().slice(0, 19),
+            Open: parseFloat(new_price - 10.5),
+            High: parseFloat(new_price + 15.5),
+            Low: parseFloat(new_price - 15),
+            Close: parseFloat(new_price),
+        };
+        mock_items.push(item);
+    }
+    return mock_items;
+}
+
 const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
     React.useEffect(() => {
         setTick(tick);
@@ -252,6 +281,7 @@ class ChartTradeClass extends React.Component {
             extra_barriers = [],
             symbol,
             active_symbols,
+            trading_times,
         } = this.props;
 
         const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;
@@ -259,10 +289,17 @@ class ChartTradeClass extends React.Component {
         // max ticks to display for mobile view for tick chart
         const max_ticks = this.props.granularity === 0 ? 8 : 24;
 
-        if (!symbol || active_symbols.length === 0) return null;
+        if (!symbol || !active_symbols || active_symbols.length === 0) return null;
 
         return (
             <SmartChart
+                initialData={{
+                    masterData: masterData(),
+                    activeSymbols: active_symbols,
+                    tradingTimes: {
+                        trading_times: trading_times,
+                    },
+                }}
                 ref={ref => (this.charts_ref = ref)}
                 barriers={barriers}
                 bottomWidgets={show_digits_stats && isDesktop() ? this.bottomWidgets : this.props.bottomWidgets}
@@ -305,7 +342,7 @@ class ChartTradeClass extends React.Component {
     }
 }
 
-const ChartTrade = connect(({ modules, ui, common }) => ({
+const ChartTrade = connect(({ client, modules, ui, common }) => ({
     is_socket_opened: common.is_socket_opened,
     granularity: modules.contract_trade.granularity,
     chart_type: modules.contract_trade.chart_type,
@@ -334,7 +371,8 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
     wsForgetStream: modules.trade.wsForgetStream,
     wsSendRequest: modules.trade.wsSendRequest,
     wsSubscribe: modules.trade.wsSubscribe,
-    active_symbols: modules.trade.active_symbols,
+    active_symbols: client.active_symbols,
+    trading_times: client.trading_times,
     should_refresh: modules.trade.should_refresh_active_symbols,
     resetRefresh: modules.trade.resetRefresh,
     has_alternative_source: modules.trade.has_alternative_source,

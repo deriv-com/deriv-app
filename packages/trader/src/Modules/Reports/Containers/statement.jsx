@@ -2,6 +2,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import classNames from 'classnames';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money, Dropdown } from '@deriv/components';
 import { extractInfoFromShortcode, urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -15,12 +16,12 @@ import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 
-const TransactionFilter = ({ is_alignment_left, handleFilterChange }) => {
+const TransactionFilter = ({ is_alignment_left, handleFilterChange, is_mobile }) => {
     const [default_filter, setDefaultFilter] = React.useState('all');
 
     const filter_list = [
         {
-            text: localize('All'),
+            text: localize('All transactions'),
             value: 'all',
         },
         {
@@ -51,6 +52,7 @@ const TransactionFilter = ({ is_alignment_left, handleFilterChange }) => {
             has_symbol={false}
             is_alignment_left={is_alignment_left}
             is_filter
+            is_mobile={is_mobile}
             onChange={e => {
                 setDefaultFilter(e.target.value);
                 handleFilterChange(e.target.value);
@@ -109,8 +111,10 @@ const Statement = ({
     handleFilterChange,
     handleScroll,
     has_selected_date,
+    is_dark_mode_on,
     is_empty,
     is_loading,
+    is_mobile,
     is_mx_mlt,
     is_switching,
     onMount,
@@ -126,33 +130,61 @@ const Statement = ({
 
     const getAccountStatistics = () => (
         <React.Fragment>
-            <div className='statement__account-statistics'>
+            <div
+                className={classNames('statement__account-statistics', {
+                    'statement__account-statistics-dark': is_dark_mode_on,
+                })}
+            >
                 <div className='statement__account-statistics-item'>
                     <div className='statement__account-statistics--is-rectangle'>
-                        <span className='statement__account-statistics-title'>
-                            {localize('Total deposits')} {`(${currency})`}
+                        <span
+                            className={classNames('statement__account-statistics-title', {
+                                'statement__account-statistics-title-dark': is_dark_mode_on,
+                            })}
+                        >
+                            {localize('Total deposits')}
                         </span>
-                        <span className='statement__account-statistics-amount'>
+                        <span
+                            className={classNames('statement__account-statistics-amount', {
+                                'statement__account-statistics-amount-dark': is_dark_mode_on,
+                            })}
+                        >
                             <Money amount={account_statistics.total_deposits} currency={currency} />
                         </span>
                     </div>
                 </div>
                 <div className='statement__account-statistics-item statement__account-statistics-total-withdrawal'>
                     <div className='statement__account-statistics--is-rectangle'>
-                        <span className='statement__account-statistics-title'>
-                            {localize('Total withdrawals')} {`(${currency})`}
+                        <span
+                            className={classNames('statement__account-statistics-title', {
+                                'statement__account-statistics-title-dark': is_dark_mode_on,
+                            })}
+                        >
+                            {localize('Total withdrawals')}
                         </span>
-                        <span className='statement__account-statistics-amount'>
+                        <span
+                            className={classNames('statement__account-statistics-amount', {
+                                'statement__account-statistics-amount-dark': is_dark_mode_on,
+                            })}
+                        >
                             <Money amount={account_statistics.total_withdrawals} currency={currency} />
                         </span>
                     </div>
                 </div>
                 <div className='statement__account-statistics-item'>
                     <div className='statement__account-statistics--is-rectangle'>
-                        <span className='statement__account-statistics-title'>
-                            {localize('Net deposits')} {`(${currency})`}
+                        <span
+                            className={classNames('statement__account-statistics-title', {
+                                'statement__account-statistics-title-dark': is_dark_mode_on,
+                            })}
+                        >
+                            {localize('Net deposits')}
                         </span>
-                        <span className='statement__account-statistics-amount'>
+                        <span
+                            className={classNames('statement__account-statistics-amount', {
+                                'statement__account-statistics-amount-dark': is_dark_mode_on,
+                            })}
+                        >
                             <Money
                                 amount={account_statistics.total_deposits - account_statistics.total_withdrawals}
                                 currency={currency}
@@ -174,7 +206,7 @@ const Statement = ({
                 from={date_from}
                 to={date_to}
             />
-            <TransactionFilter handleFilterChange={handleFilterChange} />
+            <TransactionFilter handleFilterChange={handleFilterChange} is_mobile={is_mobile} />
         </React.Fragment>
     );
 
@@ -209,6 +241,7 @@ const Statement = ({
             <ReportsMeta
                 className={is_mx_mlt ? undefined : 'reports__meta--statement'}
                 filter_component={filter_component}
+                is_statement
                 optional_component={!is_switching && is_mx_mlt && getAccountStatistics()}
             />
             {is_switching ? (
@@ -223,7 +256,9 @@ const Statement = ({
                             empty_message_component={EmptyTradeHistoryMessage}
                             component_icon={component_icon}
                             localized_message={localize('You have no transactions yet.')}
-                            localized_period_message={localize('You have no transactions for this period.')}
+                            localized_period_message={localize(
+                                "You've made no transactions of this type during this period."
+                            )}
                         />
                     ) : (
                         <div className='reports__content'>
@@ -273,6 +308,7 @@ Statement.propTypes = {
     handleFilterChange: PropTypes.func,
     handleScroll: PropTypes.func,
     has_selected_date: PropTypes.bool,
+    is_dark_mode_on: PropTypes.bool,
     is_empty: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_mx_mlt: PropTypes.bool,
@@ -281,7 +317,7 @@ Statement.propTypes = {
     onUnmount: PropTypes.func,
 };
 
-export default connect(({ modules, client }) => ({
+export default connect(({ modules, client, ui }) => ({
     account_statistics: modules.statement.account_statistics,
     currency: client.currency,
     data: modules.statement.data,
@@ -293,8 +329,10 @@ export default connect(({ modules, client }) => ({
     handleFilterChange: modules.statement.handleFilterChange,
     handleScroll: modules.statement.handleScroll,
     has_selected_date: modules.statement.has_selected_date,
+    is_dark_mode_on: ui.is_dark_mode_on,
     is_empty: modules.statement.is_empty,
     is_loading: modules.statement.is_loading,
+    is_mobile: ui.is_mobile,
     is_mx_mlt: client.standpoint.iom || client.standpoint.malta,
     is_switching: client.is_switching,
     onMount: modules.statement.onMount,

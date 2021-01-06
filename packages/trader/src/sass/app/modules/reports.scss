@@ -16,6 +16,9 @@ $side-padding: 1.2em;
             padding: 0 1.6rem 1.6rem;
         }
 
+        flex-direction: column-reverse;
+        padding-bottom: 0;
+
         &-filter {
             position: relative;
             display: flex;
@@ -23,6 +26,11 @@ $side-padding: 1.2em;
             @include desktop {
                 max-width: 36rem;
                 margin-left: auto;
+            }
+            &-statement {
+                @include desktop {
+                    max-width: 50rem;
+                }
             }
         }
 
@@ -234,8 +242,13 @@ $side-padding: 1.2em;
         justify-content: flex-end;
     }
     &__account-statistics {
+        background-color: #f2f3f4;
+        &-dark {
+            background-color: #151717;
+        }
         @include desktop {
-            width: 52rem;
+            width: 100%;
+            margin: 1.6rem 0;
         }
         @include mobile {
             margin: 0.8rem 0 1.6rem;
@@ -249,9 +262,7 @@ $side-padding: 1.2em;
 
         &-item {
             flex: 1;
-            border-right: 1px solid var(--border-normal);
             display: flex;
-            max-width: 19rem;
 
             &:last-child {
                 border-right: unset;
@@ -276,8 +287,8 @@ $side-padding: 1.2em;
         &--is-rectangle {
             height: 100%;
             display: flex;
-            flex-direction: column;
             justify-content: center;
+            margin: auto;
 
             @include desktop {
                 padding: 0.4rem 1.6rem;
@@ -286,8 +297,11 @@ $side-padding: 1.2em;
         &-title {
             text-align: left;
             color: var(--text-less-prominent);
-            font-size: 1.4rem;
-            margin-bottom: 9px;
+            font-size: 1.6rem;
+            margin: auto;
+            &-dark {
+                color: #6e6e6e;
+            }
 
             @include mobile {
                 font-size: 1rem;
@@ -298,6 +312,11 @@ $side-padding: 1.2em;
             font-weight: bold;
             font-size: 1.6rem;
             color: var(--text-prominent);
+            margin: auto;
+            margin-left: 10px;
+            &-dark {
+                color: #ffffff;
+            }
 
             @include mobile {
                 font-size: 1.4rem;

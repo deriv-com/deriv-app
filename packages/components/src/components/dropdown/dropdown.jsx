@@ -183,6 +183,7 @@ const Dropdown = ({
     is_align_text_left,
     is_dark_mode_on,
     is_large,
+    is_mobile,
     is_nativepicker,
     is_nativepicker_visible,
     is_filter,
@@ -376,13 +377,38 @@ const Dropdown = ({
                         id='dropdown-display'
                         ref={dropdown_ref}
                     >
-                        {is_filter && (
-                            <Icon
-                                className='icon_filter'
-                                icon={is_dark_mode_on ? 'IcFilterDark' : 'IcFilter'}
-                                size={16}
-                            />
+                        {is_filter && !is_mobile && (
+                            <React.Fragment>
+                                <Icon
+                                    className='icon_filter'
+                                    icon={is_dark_mode_on ? 'IcFilterDark' : 'IcFilter'}
+                                    size={16}
+                                    fill
+                                />
+                                <DisplayText
+                                    className={classNames('dc-dropdown__display-text', {
+                                        'dc-dropdown__display-filter-text': is_filter,
+                                    })}
+                                    has_symbol={has_symbol}
+                                    name={name}
+                                    is_title={is_list_visible}
+                                    placeholder={placeholder}
+                                    value={value || 0}
+                                    list={list}
+                                />
+                            </React.Fragment>
                         )}
+
+                        {is_filter && is_mobile && (
+                            <React.Fragment>
+                                <Icon
+                                    className='icon_filter'
+                                    icon={is_dark_mode_on ? 'IcFilterDark' : 'IcFilter'}
+                                    size={16}
+                                />
+                            </React.Fragment>
+                        )}
+
                         {!is_filter && (
                             <DisplayText
                                 className={classNames('dc-dropdown__display-text', {

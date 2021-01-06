@@ -9,6 +9,7 @@ import Icon from '../icon/icon.jsx';
 import { useOnClickOutside } from '../../hooks';
 
 const ModalElement = ({
+    close_icon_color,
     elements_to_ignore,
     has_close_icon,
     onMount,
@@ -19,10 +20,12 @@ const ModalElement = ({
     title,
     className,
     is_confirmation_modal,
+    is_items_align_centered,
     is_vertical_centered,
     is_vertical_bottom,
     is_vertical_top,
     is_title_centered,
+    has_header_border,
     header,
     portalId,
     children,
@@ -30,6 +33,7 @@ const ModalElement = ({
     width,
     renderTitle,
     small,
+    header_backgound_color,
 }) => {
     const el_ref = React.useRef(document.createElement('div'));
     const el_portal_node = document.getElementById(portalId);
@@ -97,9 +101,14 @@ const ModalElement = ({
             {(header || title || rendered_title) && (
                 <div
                     className={classNames('dc-modal-header', {
+                        'dc-modal-header__border-bottom': has_header_border,
                         [`dc-modal-header--${className}`]: className,
                         [`dc-modal-header--is-title-centered`]: is_title_centered,
+                        [`dc-modal-header--is-items-align-centered`]: is_items_align_centered,
                     })}
+                    style={{
+                        background: header_backgound_color,
+                    }}
                 >
                     {rendered_title && (
                         <h3
@@ -129,8 +138,8 @@ const ModalElement = ({
                         </div>
                     )}
                     {has_close_icon && (
-                        <div onClick={toggleModal} className='dc-modal-header__close'>
-                            <Icon icon='IcCross' />
+                        <div onClick={toggleModal} className={'dc-modal-header__close'}>
+                            <Icon icon='IcCross' color={close_icon_color} />
                         </div>
                     )}
                 </div>
@@ -143,14 +152,20 @@ const ModalElement = ({
 
 ModalElement.defaultProps = {
     has_close_icon: true,
+    has_header_border: true,
+    is_items_align_centered: true,
 };
 
 ModalElement.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
+    close_icon_color: PropTypes.string,
     has_close_icon: PropTypes.bool,
+    header_backgound_color: PropTypes.string,
+    has_header_border: PropTypes.bool,
     header: PropTypes.node,
     id: PropTypes.string,
+    is_items_align_centered: PropTypes.bool,
     is_open: PropTypes.bool,
     is_title_centered: PropTypes.bool,
     onMount: PropTypes.func,
@@ -165,10 +180,14 @@ ModalElement.propTypes = {
 const Modal = ({
     children,
     className,
+    close_icon_color,
     header,
     id,
+    is_items_align_centered,
     is_open,
     has_close_icon,
+    has_header_border,
+    header_backgound_color,
     height,
     onEntered,
     onExited,
@@ -203,8 +222,11 @@ const Modal = ({
     >
         <ModalElement
             className={className}
+            close_icon_color={close_icon_color}
             header={header}
+            header_backgound_color={header_backgound_color}
             id={id}
+            is_items_align_centered={is_items_align_centered}
             is_open={is_open}
             is_confirmation_modal={is_confirmation_modal}
             is_vertical_bottom={is_vertical_bottom}
@@ -214,6 +236,7 @@ const Modal = ({
             title={title}
             toggleModal={toggleModal}
             has_close_icon={has_close_icon}
+            has_header_border={has_header_border}
             height={height}
             onMount={onMount}
             onUnmount={onUnmount}
@@ -233,17 +256,23 @@ Modal.Footer = Footer;
 
 Modal.defaultProps = {
     has_close_icon: true,
+    has_header_border: true,
+    is_items_align_centered: true,
 };
 
 Modal.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
+    close_icon_color: PropTypes.string,
     has_close_icon: PropTypes.bool,
+    has_header_border: PropTypes.bool,
     header: PropTypes.node,
+    header_backgound_color: PropTypes.string,
     height: PropTypes.string,
     id: PropTypes.string,
     is_open: PropTypes.bool,
     is_confirmation_modal: PropTypes.bool,
+    is_items_align_centered: PropTypes.bool,
     is_vertical_bottom: PropTypes.bool,
     is_vertical_centered: PropTypes.bool,
     is_vertical_top: PropTypes.bool,

@@ -90,13 +90,18 @@ class Tabs extends React.Component {
 
     render() {
         const {
+            active_icon_color,
             children,
             className,
             top,
+            background_color,
             bottom,
             center,
+            icon_color,
             is_100vw,
             fit_content,
+            has_active_line,
+            has_bottom_line,
             header_fit_content,
             single_tab_has_no_label,
         } = this.props;
@@ -107,15 +112,16 @@ class Tabs extends React.Component {
         return (
             <div
                 className={classNames('dc-tabs', {
-                    [`dc-tabs dc-tabs--${className}`]: className,
+                    [`dc-tabs--${className}`]: className,
                     'dc-tabs--top': top,
                     'dc-tabs--100vw': is_100vw,
                 })}
-                style={{ '--tab-width': `${tab_width}` }}
+                style={{ '--tab-width': `${tab_width}`, background: background_color }}
             >
                 <ul
                     className={classNames('dc-tabs__list', {
                         'dc-tabs__list--top': top,
+                        'dc-tabs__list--top__border-bottom': has_bottom_line,
                         'dc-tabs__list--bottom': bottom,
                         'dc-tabs__list--center': center,
                         'dc-tabs__list--header-fit-content': header_fit_content,
@@ -124,12 +130,16 @@ class Tabs extends React.Component {
                 >
                     {React.Children.map(children, (child, index) => {
                         if (!child) return null;
-                        const { count, header_content, label } = child.props;
+                        const { count, header_content, icon, label } = child.props;
                         const data_hash = child.props && child.props['data-hash'];
 
                         return (
                             <Tab
+                                active_icon_color={active_icon_color}
+                                className={className}
                                 count={count}
+                                icon={icon}
+                                icon_color={icon_color}
                                 is_active={index === active_index}
                                 key={label}
                                 is_label_hidden={children.length === 1 && single_tab_has_no_label}
@@ -144,18 +154,24 @@ class Tabs extends React.Component {
                             />
                         );
                     })}
-                    <span
-                        className={classNames('dc-tabs__active-line', {
-                            'dc-tabs__active-line--top': top,
-                            'dc-tabs__active-line--bottom': bottom,
-                            'dc-tabs__active-line--fit-content': fit_content,
-                            'dc-tabs__active-line--header-fit-content': header_fit_content,
-                            'dc-tabs__active-line--is-hidden': children.length === 1 && single_tab_has_no_label,
-                        })}
-                        style={this.state.active_line_style}
-                    />
+                    {has_active_line && (
+                        <span
+                            className={classNames('dc-tabs__active-line', {
+                                'dc-tabs__active-line--top': top,
+                                'dc-tabs__active-line--bottom': bottom,
+                                'dc-tabs__active-line--fit-content': fit_content,
+                                'dc-tabs__active-line--header-fit-content': header_fit_content,
+                                'dc-tabs__active-line--is-hidden': children.length === 1 && single_tab_has_no_label,
+                            })}
+                            style={this.state.active_line_style}
+                        />
+                    )}
                 </ul>
-                <div className='dc-tabs__content'>
+                <div
+                    className={classNames('dc-tabs__content', {
+                        [`dc-tabs__content--${className}`]: className,
+                    })}
+                >
                     {React.Children.map(children, (child, index) => {
                         if (index !== active_index) {
                             return undefined;
@@ -168,8 +184,17 @@ class Tabs extends React.Component {
     }
 }
 
+Tabs.defaultProps = {
+    has_active_line: true,
+    has_bottom_line: true,
+};
+
 Tabs.propTypes = {
+    active_icon_color: PropTypes.string,
     children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
+    has_active_line: PropTypes.bool,
+    has_bottom_line: PropTypes.bool,
+    icon_color: PropTypes.string,
 };
 
 export default withRouter(Tabs);

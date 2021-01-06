@@ -1,0 +1,42 @@
+.dc-pop-up {
+    &__header {
+        display: flex;
+        align-items: center;
+
+        &__icon {
+            position: absolute;
+            left: 86%;
+        }
+    }
+}
+
+.dc-modal {
+    &-header {
+        &--pop-up {
+            height: 124px;
+        }
+    }
+    &-body {
+        &--pop-up {
+            padding: 0 !important;
+        }
+    }
+}
+
+.dc-tabs {
+    &__content--pop-up {
+        background: var(--general-main-1);
+    }
+
+    &__item--pop-up {
+        border-radius: 16px 16px 0px 0px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__active--pop-up {
+        background: var(--general-main-1);
+    }
+}

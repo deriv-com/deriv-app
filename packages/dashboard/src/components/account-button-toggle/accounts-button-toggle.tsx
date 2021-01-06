@@ -6,9 +6,10 @@ import { ButtonToggle } from '@deriv/components';
 type TAccountsButtonToggleProps = {
     onChangeAccount: (item: string) => void;
     className?: string;
+    [k: string]: unknown;
 };
 
-const AccountsButtonToggle: React.FC<TAccountsButtonToggleProps> = ({ onChangeAccount, className }) => {
+const AccountsButtonToggle: React.FC<TAccountsButtonToggleProps> = ({ onChangeAccount, className, ...props }) => {
     const [selected, setSelected] = React.useState<string>('DEMO');
     const getAccountTypes = () => {
         return [
@@ -38,6 +39,7 @@ const AccountsButtonToggle: React.FC<TAccountsButtonToggleProps> = ({ onChangeAc
                     });
                 }}
                 value={selected}
+                {...props}
             />
         </div>
     );

@@ -77,6 +77,7 @@ import './common/ic-account-limits.svg';
 import './common/ic-account-missing-details.svg';
 import './common/ic-account-transfer.svg';
 import './common/ic-account-trash-can.svg';
+import './common/ic-add-bold.svg';
 import './common/ic-add-rounded.svg';
 import './common/ic-add.svg';
 import './common/ic-adjustment.svg';

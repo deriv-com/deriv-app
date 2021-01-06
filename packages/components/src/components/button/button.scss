@@ -45,6 +45,15 @@
     &__rounded {
         border-radius: 24px;
     }
+    &--plus {
+        width: 2.4rem;
+        height: 2.4rem !important;
+        border: 1px solid var(--border-hover) !important;
+        padding: 0 !important;
+        background: inherit;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
     &--primary {
         background: var(--button-primary-default);
         color: var(--text-colored-background);

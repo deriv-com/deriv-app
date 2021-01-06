@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">
+    <g fill="none" fill-rule="evenodd">
+        <path fill="var(--fill-color1)"  d="M8 2c.552 0 1 .448 1 1v4h4c.552 0 1 .448 1 1s-.448 1-1 1H9v4c0 .552-.448 1-1 1s-1-.448-1-1V9H3c-.552 0-1-.448-1-1s.448-1 1-1h4V3c0-.552.448-1 1-1z" transform="translate(-675 -255) translate(23) translate(256 119) translate(24 132) translate(368) translate(4 4)"/>
+    </g>
+</svg>

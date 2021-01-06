@@ -39,12 +39,6 @@
     &__popover {
         display: flex;
         align-items: center;
-
-        @include tablet-up {
-            margin-left: 1.6rem;
-        }
-        @include mobile {
-            margin-left: auto;
-        }
+        margin-left: auto;
     }
 }

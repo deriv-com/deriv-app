@@ -2,6 +2,7 @@ import React from 'react';
 import { AutoSizer, Loading, Text, ThemedScrollbars } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
+import MyProfileBalance from './my-profile-balance';
 import MyProfileForm from './my-profile-form';
 import MyProfileHeader from './my-profile-header';
 import MyProfilePrivacy from './my-profile-privacy';
@@ -36,6 +37,7 @@ const MyProfile = () => {
                 <ThemedScrollbars className='my-profile' height={height} style={{ width }}>
                     <div className='my-profile__content'>
                         <MyProfileHeader />
+                        <MyProfileBalance />
                         <MyProfileStats />
                         <MyProfilePrivacy />
                         <MyProfileForm />

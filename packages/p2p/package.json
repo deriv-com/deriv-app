@@ -16,6 +16,7 @@
         "build:publish": "deriv-publisher prepublish && lerna exec --scope=@deriv/shared --scope=@deriv/components -- npm run build:travis -- && rimraf lib && cross-env NODE_ENV=production NPM_PUBLISHING_MODE=1 webpack --optimize-minimze --progress; deriv-publisher postpublish",
         "build:travis": "rimraf lib && webpack --optimize-minimize",
         "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --progress --watch",
+        "serve:poll": "npm run serve -- --watch-poll",
         "start": "rimraf lib && npm run test && npm run serve",
         "deploy": "echo \"No deploy specified\"",
         "deploy:clean": "echo \"No deploy:clean specified\"",

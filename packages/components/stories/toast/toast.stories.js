@@ -20,14 +20,18 @@ stories
         ),
         { notes }
     )
-    .add('with timeout', () => (
-        <Theme is_dark={boolean('Theme', false)}>
-            <Toast
-                is_open={boolean('is open?', true)}
-                timeout={number('Timeout', 3000)}
-                onClose={console.log('Closed')}
-            >
-                Message
-            </Toast>
-        </Theme>
-    ));
+    .add(
+        'with timeout',
+        () => (
+            <Theme is_dark={boolean('Theme', false)}>
+                <Toast
+                    is_open={boolean('is open?', true)}
+                    timeout={number('Timeout', 3000)}
+                    onClose={console.log('Closed')}
+                >
+                    Message
+                </Toast>
+            </Theme>
+        ),
+        { notes }
+    );

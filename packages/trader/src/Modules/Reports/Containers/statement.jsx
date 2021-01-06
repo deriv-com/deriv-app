@@ -2,7 +2,6 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import classNames from 'classnames';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money, Dropdown } from '@deriv/components';
 import { extractInfoFromShortcode, urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -111,7 +110,6 @@ const Statement = ({
     handleFilterChange,
     handleScroll,
     has_selected_date,
-    is_dark_mode_on,
     is_empty,
     is_loading,
     is_mobile,
@@ -130,61 +128,27 @@ const Statement = ({
 
     const getAccountStatistics = () => (
         <React.Fragment>
-            <div
-                className={classNames('statement__account-statistics', {
-                    'statement__account-statistics-dark': is_dark_mode_on,
-                })}
-            >
+            <div className='statement__account-statistics'>
                 <div className='statement__account-statistics-item'>
                     <div className='statement__account-statistics--is-rectangle'>
-                        <span
-                            className={classNames('statement__account-statistics-title', {
-                                'statement__account-statistics-title-dark': is_dark_mode_on,
-                            })}
-                        >
-                            {localize('Total deposits')}
-                        </span>
-                        <span
-                            className={classNames('statement__account-statistics-amount', {
-                                'statement__account-statistics-amount-dark': is_dark_mode_on,
-                            })}
-                        >
+                        <span className='statement__account-statistics-title'>{localize('Total deposits')}</span>
+                        <span className='statement__account-statistics-amount'>
                             <Money amount={account_statistics.total_deposits} currency={currency} />
                         </span>
                     </div>
                 </div>
                 <div className='statement__account-statistics-item statement__account-statistics-total-withdrawal'>
                     <div className='statement__account-statistics--is-rectangle'>
-                        <span
-                            className={classNames('statement__account-statistics-title', {
-                                'statement__account-statistics-title-dark': is_dark_mode_on,
-                            })}
-                        >
-                            {localize('Total withdrawals')}
-                        </span>
-                        <span
-                            className={classNames('statement__account-statistics-amount', {
-                                'statement__account-statistics-amount-dark': is_dark_mode_on,
-                            })}
-                        >
+                        <span className='statement__account-statistics-title'>{localize('Total withdrawals')}</span>
+                        <span className='statement__account-statistics-amount'>
                             <Money amount={account_statistics.total_withdrawals} currency={currency} />
                         </span>
                     </div>
                 </div>
                 <div className='statement__account-statistics-item'>
                     <div className='statement__account-statistics--is-rectangle'>
-                        <span
-                            className={classNames('statement__account-statistics-title', {
-                                'statement__account-statistics-title-dark': is_dark_mode_on,
-                            })}
-                        >
-                            {localize('Net deposits')}
-                        </span>
-                        <span
-                            className={classNames('statement__account-statistics-amount', {
-                                'statement__account-statistics-amount-dark': is_dark_mode_on,
-                            })}
-                        >
+                        <span className='statement__account-statistics-title'>{localize('Net deposits')}</span>
+                        <span className='statement__account-statistics-amount'>
                             <Money
                                 amount={account_statistics.total_deposits - account_statistics.total_withdrawals}
                                 currency={currency}
@@ -308,7 +272,6 @@ Statement.propTypes = {
     handleFilterChange: PropTypes.func,
     handleScroll: PropTypes.func,
     has_selected_date: PropTypes.bool,
-    is_dark_mode_on: PropTypes.bool,
     is_empty: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_mx_mlt: PropTypes.bool,
@@ -329,7 +292,6 @@ export default connect(({ modules, client, ui }) => ({
     handleFilterChange: modules.statement.handleFilterChange,
     handleScroll: modules.statement.handleScroll,
     has_selected_date: modules.statement.has_selected_date,
-    is_dark_mode_on: ui.is_dark_mode_on,
     is_empty: modules.statement.is_empty,
     is_loading: modules.statement.is_loading,
     is_mobile: ui.is_mobile,

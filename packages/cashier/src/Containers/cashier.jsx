@@ -11,7 +11,7 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { getSelectedRoute, isCryptocurrency, isMobile, isTouchDevice, routes } from '@deriv/shared';
+import { getSelectedRoute, isMobile, isTouchDevice, routes } from '@deriv/shared';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import 'Sass/cashier.scss';
@@ -95,8 +95,6 @@ class Cashier extends React.Component {
             : null;
         const should_show_tab_headers_note =
             !this.props.is_virtual &&
-            !this.props.is_eu &&
-            !isCryptocurrency(this.props.loggedin_currency) &&
             (location.pathname.startsWith(routes.cashier_deposit) ||
                 location.pathname.startsWith(routes.cashier_withdrawal));
 
@@ -129,11 +127,11 @@ class Cashier extends React.Component {
                                     should_show_tab_headers_note ? (
                                         <Text as='p' size='xxs' className='cashier__tab-header-note'>
                                             <Localize
-                                                i18n_default_text='Want to exchange between e-wallet currencies? Try <0>bestchange.com</0>'
+                                                i18n_default_text='Want to exchange between e-wallet currencies? Try <0>Ewallet.Exchange</0>'
                                                 components={[
                                                     <a
                                                         key={0}
-                                                        href='https://www.bestchange.com/?p=1095016'
+                                                        href='https://ewallet.exchange'
                                                         rel='noopener noreferrer'
                                                         target='_blank'
                                                         className='link'

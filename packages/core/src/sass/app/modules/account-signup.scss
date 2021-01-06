@@ -38,6 +38,11 @@
         & .dc-field--error {
             top: 4.4rem;
         }
+        .initial-loader__barspinner {
+            @include mobile {
+                margin: 0;
+            }
+        }
     }
     &__heading {
         margin-bottom: 0.8rem;

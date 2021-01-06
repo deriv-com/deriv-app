@@ -628,7 +628,7 @@ export default class CashierStore extends BaseStore {
         const withdrawal_type = `payment${
             this.active_container === this.config.payment_agent.container ? 'agent' : ''
         }_withdraw`;
-
+        
         const response_verify_email = await this.WS.verifyEmail(this.root_store.client.email, withdrawal_type);
         if (response_verify_email.error) {
             this.clearVerification();

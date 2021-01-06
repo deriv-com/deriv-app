@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
-import WS from 'Services/ws-methods';
+import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import AccountTransferNoAccount from '../Components/Error/account-transfer-no-account.jsx';
 import Error from '../Components/Error/error.jsx';

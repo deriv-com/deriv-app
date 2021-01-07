@@ -425,3 +425,8 @@ import './underlying/ic-underlying-WLDAUD.svg';
 import './underlying/ic-underlying-WLDEUR.svg';
 import './underlying/ic-underlying-WLDGBP.svg';
 import './underlying/ic-underlying-WLDUSD.svg';
+import './wallet/ic-wallet-deriv.svg';
+import './wallet/ic-wallet-neteller.svg';
+import './wallet/ic-wallet-sticpay.svg';
+import './wallet/ic-wallet-transactions.svg';
+import './wallet/ic-wallet-webmoney.svg';

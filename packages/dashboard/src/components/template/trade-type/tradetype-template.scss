@@ -3,9 +3,11 @@
 
     &__banner {
         height: 100%;
+        padding-left: 8.1rem;
         width: 93.6rem;
         border-radius: 10px;
         background-image: url('~Assets/images/banner-background.png');
+        background-repeat: no-repeat;
 
         &--container {
             margin-top: 17.7rem;

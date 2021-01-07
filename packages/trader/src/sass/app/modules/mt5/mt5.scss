@@ -72,9 +72,6 @@
         width: 30rem;
         margin: auto;
 
-        .dc-password-input__field {
-            margin-bottom: 9.7rem;
-        }
         @include mobile {
             width: calc(100vw - 4.8rem);
             max-width: 30rem;
@@ -83,6 +80,9 @@
     & .mt5-password-field {
         margin-bottom: 1em;
         width: 80%;
+    }
+    &__hint {
+        margin: 0 0 2.4rem;
     }
     .input-element {
         width: 100%;

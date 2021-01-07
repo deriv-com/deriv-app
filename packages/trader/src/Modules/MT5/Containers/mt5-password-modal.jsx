@@ -74,28 +74,11 @@ const MT5PasswordForm = props => (
                                 has_error={!!(touched.password && errors.password)}
                                 custom_feedback_messages={getErrorMessages().password_warnings}
                             >
-                                {({ has_warning }) => (
+                                {() => (
                                     <PasswordInput
                                         autoComplete='new-password'
                                         label={localize('Password')}
                                         error={touched.password && errors.password}
-                                        hint={
-                                            !has_warning && (
-                                                <Localize
-                                                    i18n_default_text='Please confirm your Deriv/Binary.com password to create a DMT5/an MT5 account. <0 /> If you’ve forgotten your password, click <1>Reset password</1>.'
-                                                    components={[
-                                                        <br key={0} />,
-                                                        <a
-                                                            key={1}
-                                                            href={getStaticUrl('/reset-password')}
-                                                            className='dc-modal__container_mt5-password-modal__password-hint'
-                                                            target='_blank'
-                                                            rel='noreferrer'
-                                                        />,
-                                                    ]}
-                                                />
-                                            )
-                                        }
                                         name='password'
                                         value={values.password}
                                         onBlur={handleBlur}
@@ -107,6 +90,21 @@ const MT5PasswordForm = props => (
                                 )}
                             </PasswordMeter>
                         </div>
+                        <Text as='p' align='center' size='xxs' className='dc-modal__container_mt5-password-modal__hint'>
+                            <Localize
+                                i18n_default_text='Please confirm your Deriv/Binary.com password to create a DMT5/an MT5 account. <0 /> If you’ve forgotten your password, click <1>Reset password</1>.'
+                                components={[
+                                    <br key={0} />,
+                                    <a
+                                        key={1}
+                                        href={getStaticUrl('/reset-password')}
+                                        className='dc-modal__container_mt5-password-modal__password-hint'
+                                        target='_blank'
+                                        rel='noreferrer'
+                                    />,
+                                ]}
+                            />
+                        </Text>
                         {props.is_real_financial_stp && (
                             <div className='dc-modal__container_mt5-password-modal__description'>
                                 <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA). All other accounts, including your Deriv account, are not subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA).' />

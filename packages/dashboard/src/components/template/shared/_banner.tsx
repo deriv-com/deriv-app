@@ -5,8 +5,8 @@ import { observer } from 'mobx-react-lite';
 const Banner: React.FC<TBannerProps> = ({ type, title }) => {
     return (
         <React.Fragment>
-            <div className='tradetype-template__banner'>
-                <div className='tradetype-template__banner-container'>
+            <div className='template__banner'>
+                <div className='template__banner-container'>
                     <Text size='m' color='colored-background' align='center' styles={{ lineHeight: '3rem' }}>
                         {type}
                     </Text>

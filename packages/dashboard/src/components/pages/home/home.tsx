@@ -1,7 +1,7 @@
 import * as React from 'react';
 // import { Text } from '@deriv/components';
 // import TempButtons from 'Components/temp-buttons';
-import TradetypeTemplate from '../../template/trade-type';
+import CFDTest from '../trade-type/cfd-test';
 
 const Home: React.FC = () => {
     return (
@@ -11,7 +11,7 @@ const Home: React.FC = () => {
                     Home
                 </Text>
                 <TempButtons /> */}
-                <TradetypeTemplate />
+                <CFDTest />
             </div>
         </React.Fragment>
     );

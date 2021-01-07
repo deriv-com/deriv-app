@@ -1,4 +1,4 @@
-.tradetype-template {
+.template {
     width: 105.2rem;
 
     &__banner {
@@ -44,5 +44,11 @@
         .dc-btn--primary {
             background-color: $color-apple-blue;
         }
+    }
+    &__pair {
+        display: flex;
+    }
+    &__app-to-trade-benefit {
+        display: flex;
     }
 }

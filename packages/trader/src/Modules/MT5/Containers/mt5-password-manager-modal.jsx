@@ -1,6 +1,7 @@
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import {
     Icon,
     Modal,
@@ -15,9 +16,10 @@ import {
     PageOverlay,
     ThemedScrollbars,
     UILoader,
+    Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isMobile, validLength, validPassword, getErrorMessages } from '@deriv/shared';
+import { isMobile, validLength, validPassword, getErrorMessages, getStaticUrl, routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import MT5Store from 'Stores/Modules/MT5/mt5-store';
 
@@ -232,94 +234,53 @@ class MT5PasswordManagerModal extends React.Component {
         };
 
         const MainPasswordManager = () => {
-            if (this.state.is_submit_success_main) {
-                return <MT5PasswordSuccessMessage toggleModal={toggleModal} />;
-            }
+            const is_existing_user = this.props.account_status.status.includes('password_reset_required');
 
-            const initial_values = { old_password: '', new_password: '', password_type: 'main' };
-
-            return (
-                <Formik initialValues={initial_values} validate={validatePassword} onSubmit={onSubmit}>
-                    {({ isSubmitting, errors, setFieldTouched, values, touched }) => (
-                        <Form className='mt5-password-manager__main-form' noValidate>
-                            {this.state.error_message_main && (
-                                <p className='mt5-password-manager--error-message'>{this.state.error_message_main}</p>
-                            )}
-                            <Field name='old_password'>
-                                {({ field }) => (
-                                    <PasswordInput
-                                        {...field}
-                                        autoComplete='current-password'
-                                        label={localize('Current password')}
-                                        error={touched.old_password && errors.old_password}
-                                        required
-                                    />
-                                )}
-                            </Field>
-                            <Field name='new_password'>
-                                {({ field }) => (
-                                    <PasswordMeter
-                                        input={field.value}
-                                        has_error={!!(touched.new_password && errors.new_password)}
-                                        custom_feedback_messages={getErrorMessages().password_warnings}
-                                    >
-                                        {({ has_warning }) => (
-                                            <PasswordInput
-                                                {...field}
-                                                autoComplete='new-password'
-                                                label={localize('New password')}
-                                                hint={
-                                                    !has_warning &&
-                                                    localize(
-                                                        'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
-                                                    )
-                                                }
-                                                error={touched.new_password && errors.new_password}
-                                                onChange={e => {
-                                                    setFieldTouched('new_password', true, true);
-                                                    field.onChange(e);
-                                                }}
-                                                className='mt5-password-manager__new-password'
-                                                required
-                                            />
-                                        )}
-                                    </PasswordMeter>
-                                )}
-                            </Field>
-                            <div className='mt5-password-manager__actions'>
-                                <Button
-                                    className='mt5-password-manager--button'
-                                    is_disabled={
-                                        isSubmitting ||
-                                        !values.old_password ||
-                                        !values.new_password ||
-                                        Object.keys(errors).length > 0
-                                    }
-                                    is_loading={isSubmitting}
-                                    text={localize('Change password')}
-                                    primary
-                                    large
-                                />
-                                <Button
-                                    className='mt5-password-manager--button'
-                                    type='button'
-                                    onClick={() => {
-                                        this.setState(
-                                            {
-                                                password_type: 'main',
-                                            },
-                                            () => this.multi_step_ref.current?.nextStep()
-                                        );
-                                    }}
-                                    text={localize('Reset main password')}
-                                    tertiary
-                                    large
-                                />
-                            </div>
-                        </Form>
+            const password_reset_body = (
+                <div className='mt5-password-manager__main-wrapper'>
+                    <Icon icon='IcMt5OnePassword' size='128' />
+                    <Text as='p' align='center' size='s' weight='bold'>
+                        <Localize i18n_default_text='All you need from now is one password' />
+                    </Text>
+                    <Text as='p' align='center' size='xxs'>
+                        {is_existing_user && (
+                            <Localize
+                                i18n_default_text='Your DMT5 password is now the same as your Deriv account login password. To reset, please go to <0>Settings</0> page to change your password.'
+                                components={[
+                                    <NavLink
+                                        className='mt5-password-manager__inline-link'
+                                        key={0}
+                                        to={routes.deriv_password}
+                                    />,
+                                ]}
+                            />
+                        )}
+                        {!is_existing_user && (
+                            <Localize i18n_default_text='We’ve upgraded our system to support a single, more secure password across all of Deriv/Binary.com. Once you’ve set a new password, you can use it to log into all your Deriv/Binary.com, and DMT5/MT5 accounts.' />
+                        )}
+                    </Text>
+                    {is_existing_user && (
+                        <NavLink
+                            to={routes.deriv_password}
+                            className='dc-btn dc-btn--primary dc-btn__large dc-modal__container_mt5-reset-password-modal__button'
+                        >
+                            <Localize i18n_default_text='Go to Settings' />
+                        </NavLink>
                     )}
-                </Formik>
+                    {!is_existing_user && (
+                        <a
+                            href={getStaticUrl('reset-password')}
+                            target='_blank'
+                            rel='noreferrer'
+                            className='dc-btn dc-btn--primary dc-btn__large dc-modal__container_mt5-reset-password-modal__button'
+                        >
+                            <Localize i18n_default_text='Reset password' />
+                        </a>
+                    )}
+                </div>
             );
+
+            return password_reset_body;
         };
 
         const InvestorPasswordManager = () => {
@@ -434,12 +395,12 @@ class MT5PasswordManagerModal extends React.Component {
                                 is_bypassed={isMobile()}
                                 autohide={false}
                             >
-                                <MainPasswordManager />
+                                <MainPasswordManager status={status} />
                             </ThemedScrollbars>
                         </DesktopWrapper>
                         <MobileWrapper>
                             <Div100vhContainer className='mt5-password-manager__scroll-wrapper' height_offset='120px'>
-                                <MainPasswordManager />
+                                <MainPasswordManager status={status} />
                             </Div100vhContainer>
                         </MobileWrapper>
                     </div>
@@ -535,5 +496,6 @@ export default connect(({ modules: { mt5 }, client, ui }) => ({
     email: client.email,
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
+    account_status: client.account_status,
     sendVerifyEmail: mt5.sendVerifyEmail,
 }))(MT5PasswordManagerModal);

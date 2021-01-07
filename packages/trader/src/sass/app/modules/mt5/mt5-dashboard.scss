@@ -649,7 +649,17 @@
         color: var(--text-loss-danger);
         margin-bottom: 1em;
     }
-    &__main-form,
+    &__inline-link {
+        @include typeface(--small-left-bold-prominent);
+        text-decoration: none;
+    }
+    &__main-wrapper {
+        display: grid;
+        grid-template-rows: auto;
+        grid-gap: 1rem;
+        justify-items: center;
+        margin: 2rem 0 0;
+    }
     &__investor-wrapper {
         margin: 3.2rem 0.5rem 0;
 

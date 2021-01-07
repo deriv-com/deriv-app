@@ -218,8 +218,12 @@ const MT5PasswordModal = ({
     };
 
     const IconType = () => getIconFromType(account_type.type);
+    const is_password_error = error_type === 'PasswordError';
     const is_password_reset = error_type === 'PasswordReset';
-    const should_show_password = is_mt5_password_modal_enabled && !is_mt5_success_dialog_enabled;
+    const should_show_password =
+        is_mt5_password_modal_enabled &&
+        !is_mt5_success_dialog_enabled &&
+        (!has_mt5_error || is_password_reset || is_password_error);
     const should_show_success = !has_mt5_error && is_mt5_success_dialog_enabled;
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
 

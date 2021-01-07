@@ -367,6 +367,7 @@ class SelfExclusion extends React.Component {
 
         const currency_display = getCurrencyDisplayCode(currency);
         const session_duration_digits = six_weeks.toString().length;
+        const now = new Date();
 
         return (
             <section className='self-exclusion'>
@@ -732,7 +733,13 @@ class SelfExclusion extends React.Component {
                                                     </Text>
                                                     <Field name='timeout_until'>
                                                         {({ field }) => (
-                                                            <DatePicker
+                                                            <DatePicker 
+                                                                min_date={toMoment(now).format(
+                                                                    'YYYY-MM-DD'
+                                                                )}
+                                                                max_date={toMoment(now).add(6,'weeks').format(
+                                                                    'YYYY-MM-DD'
+                                                                )} 
                                                                 {...field}
                                                                 className='self-exclusion__input'
                                                                 label={localize('Date')}
@@ -763,6 +770,12 @@ class SelfExclusion extends React.Component {
                                                     <Field name='exclude_until'>
                                                         {({ field }) => (
                                                             <DatePicker
+                                                                min_date={toMoment(now).add(6,'weeks').format(
+                                                                    'YYYY-MM-DD'
+                                                                )}
+                                                                max_date={toMoment(now).add(5,'years').format(
+                                                                    'YYYY-MM-DD'
+                                                                )}
                                                                 {...field}
                                                                 alignment={is_tablet ? 'bottom' : 'left'}
                                                                 className='self-exclusion__input'

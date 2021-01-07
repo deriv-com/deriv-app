@@ -190,34 +190,36 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
     }
 };
 
-const getSubmissionOfAComplaintText = landing_company_shortcode => {
-    let text =
-        'To file a complaint about our service, send an email to <0>complaints@deriv.com</0> and state your complaint in detail. Please submit any relevant screenshots of your trading or system for our better understanding.';
-    const components = [
-        <a
-            key={0}
-            className='link link--orange'
-            rel='noopener noreferrer'
-            target='_blank'
-            href='mailto:complaints@deriv.com'
-        />,
-    ];
-
-    if (landing_company_shortcode !== 'maltainvest') {
-        text += ' You may also call <1>+447723580049</1> to place your complaint.';
-        components.push(
-            <a
-                key={1}
-                className='link link--orange'
-                rel='noopener noreferrer'
-                target='_blank'
-                href='tel:+447723580049'
+const getSubmissionOfAComplaintText = landing_company_shortcode => (
+    <React.Fragment>
+        <Localize
+            i18n_default_text='To file a complaint about our service, send an email to <0>complaints@deriv.com</0> and state your complaint in detail. Please submit any relevant screenshots of your trading or system for our better understanding.'
+            components={[
+                <a
+                    key={0}
+                    className='link link--orange'
+                    rel='noopener noreferrer'
+                    target='_blank'
+                    href='mailto:complaints@deriv.com'
+                />,
+            ]}
+        />
+        {landing_company_shortcode !== 'maltainvest' && (
+            <Localize
+                i18n_default_text=' You may also call <0>+447723580049</0> to place your complaint.'
+                components={[
+                    <a
+                        key={0}
+                        className='link link--orange'
+                        rel='noopener noreferrer'
+                        target='_blank'
+                        href='tel:+447723580049'
+                    />,
+                ]}
             />
-        );
-    }
-
-    return <Localize i18n_default_text={text} components={components} />;
-};
+        )}
+    </React.Fragment>
+);
 
 const Content = ({ is_uk, landing_company_shortcode, mt5_login_list }) => {
     const policy_content = [

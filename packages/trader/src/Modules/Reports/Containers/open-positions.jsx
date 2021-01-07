@@ -425,7 +425,7 @@ OpenPositions.propTypes = {
     getPositionById: PropTypes.func,
     is_loading: PropTypes.bool,
     is_multiplier: PropTypes.bool,
-    NotificationMessages: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+    NotificationMessages: PropTypes.func,
     onClickCancel: PropTypes.func,
     onClickSell: PropTypes.func,
     onMount: PropTypes.func,

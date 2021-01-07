@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Banner from './_banner';
-import AppToTradeCard from './_app-to-trade-card';
+import Banner from '../components/_banner';
+import AppToTradeCard from '../components/_app-to-trade-card';
 
 const TradetypeTemplate: React.FC = () => {
     return (

@@ -154,7 +154,6 @@ export const icons = {
         'IcEmail',
         'IcEmptyFolder',
         'IcEye',
-        'IcFilterDark',
         'IcFilter',
         'IcFolderOpenFilled',
         'IcFolderOpen',

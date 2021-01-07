@@ -11,7 +11,6 @@ import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
 import { connect } from 'Stores/connect';
 import { clientNotifications } from 'Stores/Helpers/client-notifications';
-import { header_links } from 'App/Constants/header-links';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
 
@@ -43,6 +42,7 @@ const DefaultHeader = ({
     is_virtual,
     location,
     logoutClient,
+    menu_items,
     needs_financial_assessment,
     notifications_count,
     openRealAccountSignup,
@@ -118,7 +118,7 @@ const DefaultHeader = ({
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
                     </MobileWrapper>
-                    <MenuLinks is_logged_in={is_logged_in} items={header_links} />
+                    <MenuLinks is_logged_in={is_logged_in} items={menu_items} />
                 </div>
                 <div
                     className={classNames('header__menu-right', {
@@ -183,9 +183,9 @@ DefaultHeader.propTypes = {
     is_logging_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
-    is_p2p_enabled: PropTypes.bool,
-    is_payment_agent_transfer_visible: PropTypes.bool,
-    is_payment_agent_visible: PropTypes.bool,
+    // is_p2p_enabled: PropTypes.bool,
+    // is_payment_agent_transfer_visible: PropTypes.bool,
+    // is_payment_agent_visible: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
     is_virtual: PropTypes.bool,
     logoutClient: PropTypes.func,
@@ -198,7 +198,7 @@ DefaultHeader.propTypes = {
     toggleNotifications: PropTypes.func,
 };
 
-export default connect(({ client, common, ui, modules }) => ({
+export default connect(({ client, common, ui, menu, modules }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_status: client.account_status,
     should_allow_authentication: client.should_allow_authentication,
@@ -225,6 +225,7 @@ export default connect(({ client, common, ui, modules }) => ({
     is_route_modal_on: ui.is_route_modal_on,
     is_virtual: client.is_virtual,
     logoutClient: client.logout,
+    menu_items: menu.extensions,
     needs_financial_assessment: client.needs_financial_assessment,
     notifications_count: ui.filtered_notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,

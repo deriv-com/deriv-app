@@ -49,10 +49,12 @@ const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
 };
 
 const getYourDecisionText = (is_uk, landing_company_shortcode) => {
+    const texts = [];
+
     switch (landing_company_shortcode) {
         case 'iom':
         case 'malta': {
-            const texts = [
+            texts.push(
                 <Localize
                     key={0}
                     i18n_default_text='If you are not satisfied with the outcome, you can escalate your complaint to the <0>Independent Betting Adjudication Service (IBAS)</0> by filling the IBAS adjudication form. Please note that IBAS only deals with disputes that result from transactions.'
@@ -80,8 +82,8 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
                             href='https://ec.europa.eu/odr/'
                         />,
                     ]}
-                />,
-            ];
+                />
+            );
             if (landing_company_shortcode === 'iom') {
                 texts.push(
                     <Localize
@@ -127,31 +129,10 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
                     />
                 );
             }
-
-            if (is_uk) {
-                texts.push(
-                    <Localize
-                        key={texts.length}
-                        i18n_default_text='<0/><1/>If you reside in the UK and you are unhappy with our response you may escalate your complaint to the <2>Financial Ombudsman Service</2>.'
-                        components={[
-                            <br key={0} />,
-                            <br key={1} />,
-                            <a
-                                key={2}
-                                className='link link--orange'
-                                rel='noopener noreferrer'
-                                target='_blank'
-                                href='https://www.financial-ombudsman.org.uk/'
-                            />,
-                        ]}
-                    />
-                );
-            }
-
-            return texts;
+            break;
         }
         default: {
-            const texts = [
+            texts.push(
                 <Localize
                     key={0}
                     i18n_default_text='If you are not satisfied with the outcome, you can escalate your complaint to the <0>Financial Commission</0>.'
@@ -164,8 +145,8 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
                             href='https://financialcommission.org/resolving-a-dispute/how-to-file-a-complaintdispute/'
                         />,
                     ]}
-                />,
-            ];
+                />
+            );
             if (landing_company_shortcode === 'maltainvest') {
                 texts.push(
                     <Localize
@@ -185,9 +166,30 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
                     />
                 );
             }
-            return texts;
+            break;
         }
     }
+    if (is_uk) {
+        texts.push(
+            <Localize
+                key={texts.length}
+                i18n_default_text='<0/><1/>If you reside in the UK and you are unhappy with our response you may escalate your complaint to the <2>Financial Ombudsman Service</2>.'
+                components={[
+                    <br key={0} />,
+                    <br key={1} />,
+                    <a
+                        key={2}
+                        className='link link--orange'
+                        rel='noopener noreferrer'
+                        target='_blank'
+                        href='https://www.financial-ombudsman.org.uk/'
+                    />,
+                ]}
+            />
+        );
+    }
+
+    return texts;
 };
 
 const getSubmissionOfAComplaintText = landing_company_shortcode => (

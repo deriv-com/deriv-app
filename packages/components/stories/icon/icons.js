@@ -245,6 +245,7 @@ export const icons = {
         'IcSuccess',
         'IcTheme',
         'IcTrade',
+        'IcTransactions',
         'IcUndo',
         'IcUnknownOutline',
         'IcUnknown',
@@ -438,5 +439,5 @@ export const icons = {
         'IcUnderlyingWLDGBP',
         'IcUnderlyingWLDUSD',
     ],
-    wallet: ['IcWalletDeriv', 'IcWalletNeteller', 'IcWalletSticpay', 'IcWalletTransactions', 'IcWalletWebmoney'],
+    wallet: ['IcWalletDeriv', 'IcWalletNeteller', 'IcWalletSticpay', 'IcWalletWebmoney'],
 };

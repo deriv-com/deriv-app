@@ -15,7 +15,7 @@ import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 
-const TransactionFilter = ({ is_alignment_left, handleFilterChange, is_mobile }) => {
+const TransactionFilter = ({ is_alignment_left, handleFilterChange }) => {
     const [default_filter, setDefaultFilter] = React.useState('all');
 
     const filter_list = [
@@ -51,7 +51,6 @@ const TransactionFilter = ({ is_alignment_left, handleFilterChange, is_mobile })
             has_symbol={false}
             is_alignment_left={is_alignment_left}
             is_filter
-            is_mobile={is_mobile}
             onChange={e => {
                 setDefaultFilter(e.target.value);
                 handleFilterChange(e.target.value);
@@ -112,7 +111,6 @@ const Statement = ({
     has_selected_date,
     is_empty,
     is_loading,
-    is_mobile,
     is_mx_mlt,
     is_switching,
     onMount,
@@ -132,7 +130,7 @@ const Statement = ({
                 <div className='statement__account-statistics-item'>
                     <div className='statement__account-statistics--is-rectangle'>
                         <span className='statement__account-statistics-title'>
-                            {localize('Total deposits')} {is_mobile && `(${currency})`}
+                            {localize('Total deposits')} <MobileWrapper> ({currency}) </MobileWrapper>
                         </span>
                         <span className='statement__account-statistics-amount'>
                             <Money amount={account_statistics.total_deposits} currency={currency} />
@@ -142,7 +140,7 @@ const Statement = ({
                 <div className='statement__account-statistics-item statement__account-statistics-total-withdrawal'>
                     <div className='statement__account-statistics--is-rectangle'>
                         <span className='statement__account-statistics-title'>
-                            {localize('Total withdrawals')} {is_mobile && `(${currency})`}
+                            {localize('Total withdrawals')} <MobileWrapper> ({currency}) </MobileWrapper>
                         </span>
                         <span className='statement__account-statistics-amount'>
                             <Money amount={account_statistics.total_withdrawals} currency={currency} />
@@ -152,7 +150,7 @@ const Statement = ({
                 <div className='statement__account-statistics-item'>
                     <div className='statement__account-statistics--is-rectangle'>
                         <span className='statement__account-statistics-title'>
-                            {localize('Net deposits')} {is_mobile && `(${currency})`}
+                            {localize('Net deposits')} <MobileWrapper> ({currency}) </MobileWrapper>
                         </span>
                         <span className='statement__account-statistics-amount'>
                             <Money
@@ -176,7 +174,7 @@ const Statement = ({
                 from={date_from}
                 to={date_to}
             />
-            <TransactionFilter handleFilterChange={handleFilterChange} is_mobile={is_mobile} />
+            <TransactionFilter handleFilterChange={handleFilterChange} />
         </React.Fragment>
     );
 
@@ -286,7 +284,7 @@ Statement.propTypes = {
     onUnmount: PropTypes.func,
 };
 
-export default connect(({ modules, client, ui }) => ({
+export default connect(({ modules, client }) => ({
     account_statistics: modules.statement.account_statistics,
     currency: client.currency,
     data: modules.statement.data,
@@ -300,7 +298,6 @@ export default connect(({ modules, client, ui }) => ({
     has_selected_date: modules.statement.has_selected_date,
     is_empty: modules.statement.is_empty,
     is_loading: modules.statement.is_loading,
-    is_mobile: ui.is_mobile,
     is_mx_mlt: client.standpoint.iom || client.standpoint.malta,
     is_switching: client.is_switching,
     onMount: modules.statement.onMount,

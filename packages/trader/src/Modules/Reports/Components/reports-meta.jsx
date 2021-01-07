@@ -7,7 +7,7 @@ const ReportsMeta = ({ filter_component, className, optional_component, is_state
         {filter_component && (
             <div
                 className={classNames('reports__meta-filter', {
-                    'reports__meta-filter-statement': is_statement,
+                    'reports__meta-filter--statement': is_statement,
                 })}
             >
                 {filter_component}

@@ -10,6 +10,7 @@ import NativeSelect from './native-select.jsx';
 import DisplayText from './display-text.jsx';
 import { useBlockScroll, useOnClickOutside } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
+import DesktopWrapper from '../desktop-wrapper';
 import Icon from '../icon';
 
 const DropdownList = React.forwardRef((props, list_ref) => {
@@ -181,7 +182,6 @@ const Dropdown = ({
     is_alignment_left,
     is_align_text_left,
     is_large,
-    is_mobile,
     is_nativepicker,
     is_nativepicker_visible,
     is_filter,
@@ -378,7 +378,7 @@ const Dropdown = ({
                         {is_filter && (
                             <React.Fragment>
                                 <Icon className='icon_filter' icon='IcFilter' size={16} fill />
-                                {!is_mobile && (
+                                <DesktopWrapper>
                                     <DisplayText
                                         className={classNames('dc-dropdown__display-text', {
                                             'dc-dropdown__display-filter-text': is_filter,
@@ -390,7 +390,7 @@ const Dropdown = ({
                                         value={value || 0}
                                         list={list}
                                     />
-                                )}
+                                </DesktopWrapper>
                             </React.Fragment>
                         )}
 

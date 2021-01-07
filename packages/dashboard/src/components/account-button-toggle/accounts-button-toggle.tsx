@@ -33,10 +33,8 @@ const AccountsButtonToggle: React.FC<TAccountsButtonToggleProps> = ({ onChangeAc
                 has_rounded_button
                 name='account types'
                 onChange={(item: React.ChangeEvent<HTMLInputElement>) => {
-                    setSelected(() => {
-                        onChangeAccount(item.target.value);
-                        return item.target.value;
-                    });
+                    onChangeAccount(item.target.value);
+                    setSelected(item.target.value);
                 }}
                 value={selected}
                 {...props}

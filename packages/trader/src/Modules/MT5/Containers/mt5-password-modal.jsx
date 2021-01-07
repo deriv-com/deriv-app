@@ -172,7 +172,7 @@ const MT5PasswordModal = ({
     submitMt5Password,
 }) => {
     const handleCancel = () => {
-        location.href(getStaticUrl('/reset-password'));
+        location.href = getStaticUrl('/reset-password');
         closeModal();
     };
 

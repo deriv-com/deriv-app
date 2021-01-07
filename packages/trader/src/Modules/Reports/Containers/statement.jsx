@@ -132,7 +132,7 @@ const Statement = ({
                 <div className='statement__account-statistics-item'>
                     <div className='statement__account-statistics--is-rectangle'>
                         <span className='statement__account-statistics-title'>
-                            {localize('Total deposits')} {is_mobile && <>({currency})</>}
+                            {localize('Total deposits')} {is_mobile && `(${currency})`}
                         </span>
                         <span className='statement__account-statistics-amount'>
                             <Money amount={account_statistics.total_deposits} currency={currency} />
@@ -142,7 +142,7 @@ const Statement = ({
                 <div className='statement__account-statistics-item statement__account-statistics-total-withdrawal'>
                     <div className='statement__account-statistics--is-rectangle'>
                         <span className='statement__account-statistics-title'>
-                            {localize('Total withdrawals')} {is_mobile && <>({currency})</>}
+                            {localize('Total withdrawals')} {is_mobile && `(${currency})`}
                         </span>
                         <span className='statement__account-statistics-amount'>
                             <Money amount={account_statistics.total_withdrawals} currency={currency} />
@@ -152,7 +152,7 @@ const Statement = ({
                 <div className='statement__account-statistics-item'>
                     <div className='statement__account-statistics--is-rectangle'>
                         <span className='statement__account-statistics-title'>
-                            {localize('Net deposits')} {is_mobile && <>({currency})</>}
+                            {localize('Net deposits')} {is_mobile && `(${currency})`}
                         </span>
                         <span className='statement__account-statistics-amount'>
                             <Money

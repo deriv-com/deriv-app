@@ -292,7 +292,7 @@ $side-padding: 1.2em;
                 padding: 0.4rem 1.6rem;
             }
             @include mobile {
-                flex-flow: column;
+                flex-direction: column;
             }
         }
         &-title {

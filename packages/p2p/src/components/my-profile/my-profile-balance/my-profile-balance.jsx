@@ -6,7 +6,7 @@ import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import MyProfileSeparatorContainer from '../my-profile-separator-container';
 
-const MyProfilePrivacy = () => {
+const MyProfileBalance = () => {
     const { general_store, my_profile_store } = useStores();
     const [is_balance_tooltip_open, setIsBalanceTooltipOpen] = React.useState(false);
 
@@ -46,4 +46,4 @@ const MyProfilePrivacy = () => {
     );
 };
 
-export default observer(MyProfilePrivacy);
+export default observer(MyProfileBalance);

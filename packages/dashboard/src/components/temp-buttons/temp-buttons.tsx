@@ -20,6 +20,9 @@ const TempButtons: React.FC = () => {
                 <Button primary large onClick={() => history.push(config_store.routes.resources)}>
                     <Localize i18n_default_text='Resources' />
                 </Button>
+                <Button primary large onClick={() => history.push(config_store.routes.platform_dmt5_synthetic)}>
+                    <Localize i18n_default_text='Platform DMT5 Synthetic' />
+                </Button>
             </Button.Group>
         </div>
     );

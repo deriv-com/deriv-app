@@ -15,6 +15,7 @@ export type TRoutesProps = {
     about_us: string;
     explore: string;
     resources: string;
+    platform_dmt5_synthetic: string;
 };
 
 export interface TUIProps {

@@ -330,3 +330,24 @@
         margin-top: 4rem;
     }
 }
+
+.mt5-password-hint {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    &__header {
+        margin: 5rem 0 2rem;
+    }
+    &__description {
+        margin: 2rem 0;
+        padding: 0 6rem;
+    }
+    &__buttons {
+        display: grid;
+        grid-template-columns: repeat(2, min-content);
+        grid-gap: 1rem;
+        margin: 2rem;
+    }
+}

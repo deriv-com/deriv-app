@@ -95,6 +95,7 @@ class ChangePasswordForm extends React.Component {
 
         return (
             <React.Fragment>
+                <AlertBox />
                 <Formik
                     initialValues={{
                         old_password: '',
@@ -162,7 +163,6 @@ class ChangePasswordForm extends React.Component {
                                                     />
                                                 </PasswordMeter>
                                             </fieldset>
-                                            <AlertBox />
                                         </div>
                                     </div>
                                 </FormBody>

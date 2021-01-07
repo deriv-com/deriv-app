@@ -2,47 +2,34 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Dialog } from '@deriv/components';
-import { getStaticUrl } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
 const MT5ServerErrorDialog = ({
-    account_type,
     clearMt5Error,
     disableApp,
     enableApp,
     error_message,
     has_mt5_error,
     error_type,
-    createMT5Account,
     is_mt5_success_dialog_enabled,
 }) => {
-    const should_show_error = has_mt5_error && !is_mt5_success_dialog_enabled;
-    const is_password_reset = error_type === 'PasswordReset';
-    const is_password_error = error_type === 'PasswordError';
-    const is_try_again_enabled = is_password_error;
+    const should_show_error =
+        has_mt5_error && !is_mt5_success_dialog_enabled && !['PasswordError', 'PasswordReset'].includes(error_type);
     const title = error_type !== 'PasswordReset' ? localize('Something’s not right') : '';
-    const confirm_label = is_password_reset ? localize('Reset password') : localize('OK');
+    const confirm_label = localize('OK');
 
-    const handleConfirm = () => {
-        if (is_password_reset) {
-            location.href = getStaticUrl('/reset-password');
-        }
-        clearMt5Error();
-    };
+    const handleConfirm = () => clearMt5Error();
 
     return (
         <Dialog
             title={title}
             confirm_button_text={confirm_label}
-            cancel_button_text={is_try_again_enabled ? localize('Try again') : undefined}
             onConfirm={handleConfirm}
-            onCancel={is_try_again_enabled ? () => createMT5Account(account_type) : undefined}
             disableApp={disableApp}
             enableApp={enableApp}
             is_visible={should_show_error}
             is_closed_on_cancel
-            is_content_centered={is_password_reset}
         >
             {error_message || <Localize i18n_default_text='Sorry, an error occurred while processing your request.' />}
         </Dialog>

@@ -12,12 +12,38 @@ import {
     PasswordInput,
     PasswordMeter,
     Text,
+    Button,
 } from '@deriv/components';
 import { isMobile, routes, validLength, validPassword, getErrorMessages, getStaticUrl } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import 'Sass/app/modules/mt5/mt5.scss';
 import { connect } from 'Stores/connect';
+
+const MT5PasswordResetHint = ({ closeModal }) => {
+    const onResetPasswordClick = () => {
+        location.href = getStaticUrl('/reset-password');
+    };
+
+    return (
+        <div className='mt5-password-hint'>
+            <Text as='p' size='s' weight='bold' align='center' className='mt5-password-hint__header'>
+                <Localize i18n_default_text='Too many failed attempts' />
+            </Text>
+            <Text as='p' size='xxs' align='center' className='mt5-password-hint__description'>
+                <Localize i18n_default_text='Unavailable because of too many failed attempts. Please try again in an hour or reset your account password to continue.' />
+            </Text>
+            <div className='mt5-password-hint__buttons'>
+                <Button large onClick={closeModal} secondary>
+                    <Localize i18n_default_text='Cancel' />
+                </Button>
+                <Button large onClick={onResetPasswordClick} primary>
+                    <Localize i18n_default_text='Reset password' />
+                </Button>
+            </div>
+        </div>
+    );
+};
 
 const getSubmitText = (account_title, category) => {
     if (category === 'real') {
@@ -49,6 +75,7 @@ const MT5PasswordForm = props => (
         validate={props.validatePassword}
         onSubmit={(values, actions) => {
             props.submitMt5Password(values.password, actions.setSubmitting);
+            actions.setFieldValue('password', '');
         }}
     >
         {({
@@ -78,7 +105,7 @@ const MT5PasswordForm = props => (
                                     <PasswordInput
                                         autoComplete='new-password'
                                         label={localize('Password')}
-                                        error={touched.password && errors.password}
+                                        error={touched.password && (errors.password || props.error_message)}
                                         name='password'
                                         value={values.password}
                                         onBlur={handleBlur}
@@ -133,7 +160,8 @@ const MT5PasswordModal = ({
     account_type,
     disableMt5PasswordModal,
     email,
-    // error_message,
+    error_message,
+    error_type,
     form_error,
     history,
     has_mt5_error,
@@ -190,7 +218,8 @@ const MT5PasswordModal = ({
     };
 
     const IconType = () => getIconFromType(account_type.type);
-    const should_show_password = is_mt5_password_modal_enabled && !has_mt5_error && !is_mt5_success_dialog_enabled;
+    const is_password_reset = error_type === 'PasswordReset';
+    const should_show_password = is_mt5_password_modal_enabled && !is_mt5_success_dialog_enabled;
     const should_show_success = !has_mt5_error && is_mt5_success_dialog_enabled;
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
 
@@ -251,14 +280,19 @@ const MT5PasswordModal = ({
                     toggleModal={closeModal}
                     has_close_icon
                 >
-                    <MT5PasswordForm
-                        account_title={account_title}
-                        handleCancel={handleCancel}
-                        form_error={form_error}
-                        submitMt5Password={submitMt5Password}
-                        is_real_financial_stp={is_real_financial_stp}
-                        validatePassword={validatePassword}
-                    />
+                    {!is_password_reset && (
+                        <MT5PasswordForm
+                            account_title={account_title}
+                            handleCancel={handleCancel}
+                            form_error={form_error}
+                            error_type={error_type}
+                            error_message={error_message}
+                            submitMt5Password={submitMt5Password}
+                            is_real_financial_stp={is_real_financial_stp}
+                            validatePassword={validatePassword}
+                        />
+                    )}
+                    {is_password_reset && <MT5PasswordResetHint closeModal={closeModal} />}
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
@@ -269,14 +303,19 @@ const MT5PasswordModal = ({
                     onClose={closeModal}
                     wrapper_classname='mt5-password-modal'
                 >
-                    <MT5PasswordForm
-                        account_title={account_title}
-                        handleCancel={handleCancel}
-                        form_error={form_error}
-                        is_real_financial_stp={is_real_financial_stp}
-                        submitMt5Password={submitMt5Password}
-                        validatePassword={validatePassword}
-                    />
+                    {!is_password_reset && (
+                        <MT5PasswordForm
+                            account_title={account_title}
+                            handleCancel={handleCancel}
+                            form_error={form_error}
+                            error_type={error_type}
+                            error_message={error_message}
+                            submitMt5Password={submitMt5Password}
+                            is_real_financial_stp={is_real_financial_stp}
+                            validatePassword={validatePassword}
+                        />
+                    )}
+                    {is_password_reset && <MT5PasswordResetHint closeModal={closeModal} />}
                 </MobileDialog>
             </MobileWrapper>
             <SuccessDialog
@@ -317,6 +356,7 @@ export default connect(({ client, modules }) => ({
     account_type: modules.mt5.account_type,
     disableMt5PasswordModal: modules.mt5.disableMt5PasswordModal,
     error_message: modules.mt5.error_message,
+    error_type: modules.mt5.error_type,
     has_mt5_error: modules.mt5.has_mt5_error,
     is_mt5_success_dialog_enabled: modules.mt5.is_mt5_success_dialog_enabled,
     is_mt5_password_modal_enabled: modules.mt5.is_mt5_password_modal_enabled,

@@ -6,8 +6,9 @@ import CashierContainer from './cashier-container.jsx';
 const Withdraw = ({ container, iframe_height, iframe_url, is_loading, onMount, setActiveTab, verification_code }) => {
     React.useEffect(() => {
         setActiveTab(container);
-        if (verification_code) onMount(verification_code);
-    }, [container, onMount, setActiveTab, verification_code]);
+        onMount(verification_code);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return <CashierContainer iframe_height={iframe_height} iframe_url={iframe_url} is_loading={is_loading} />;
 };

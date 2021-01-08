@@ -60,15 +60,25 @@
         }
     }
     &__block-workspace {
-        margin-bottom: $default-margin;
+        &--top {
+            margin-bottom: $default-margin;
+        }
+
+        &--center {
+            margin-top: 0.6em;
+        }
+        &__header {
+            display: flex;
+        }
     }
     &__button {
         &-new {
-            width: 100%;
-            font-size: 100%;
-            box-shadow: 0 2px 8px 0 $COLOR_LIGHT_BLACK_2;
-            margin: $default-margin 0;
-            background-color: var(--general-main-1);
+            width: 20%;
+            height: 4rem !important;
+            font-size: var(--text-size-xs);
+            font-weight: bold;
+            border-top-left-radius: 0rem !important;
+            border-bottom-left-radius: 0rem !important;
         }
         &-add {
             color: var(--general-main-1);
@@ -115,11 +125,6 @@
             display: flex;
             margin-top: $default-margin;
             margin-bottom: 10px;
-        }
-        &-label {
-            font-weight: bold;
-            font-size: 18px;
-            line-height: 2em;
         }
         &-buttons {
             margin-left: auto;
@@ -214,5 +219,23 @@
         &-content {
             height: 100%;
         }
+    }
+    &__input {
+        width: 80% !important;
+        height: 4rem;
+        border-top-right-radius: 0rem !important;
+        border-bottom-right-radius: 0rem !important;
+        border: solid 1px $color-grey-5 !important;
+        display: inline-block !important;
+        margin-top: 3.3rem;
+    }
+    &__hr {
+        height: 2px;
+        width: 100%;
+        border-top: 1px solid var(--general-section-1);
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: 0;
     }
 }

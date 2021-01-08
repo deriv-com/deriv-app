@@ -43,7 +43,7 @@ const BuySellForm = observer(props => {
     });
 
     const { setPageFooterParent } = props;
-    const { advertiser_details, description, local_currency, price } = buy_sell_store?.advert;
+    const { advertiser_details, description, local_currency, price } = buy_sell_store?.advert || {};
 
     React.useEffect(
         () => {

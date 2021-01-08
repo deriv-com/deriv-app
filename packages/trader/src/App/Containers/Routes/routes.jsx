@@ -2,7 +2,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter, matchPath } from 'react-router';
-import Loadable from 'react-loadable-hooks';
+import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import BinaryRoutes from 'App/Components/Routes';
@@ -38,7 +38,16 @@ const Error = Loadable({
     },
 });
 
-const Routes = ({ error, has_error, history, is_logged_in, passthrough, setPromptHandler, setTradeMountingPolicy }) => {
+const Routes = ({
+    error,
+    has_error,
+    history,
+    is_logged_in,
+    is_logging_in,
+    passthrough,
+    setPromptHandler,
+    setTradeMountingPolicy,
+}) => {
     React.useEffect(() => {
         if (setPromptHandler) {
             setPromptHandler(true, (route_to, action) =>
@@ -50,7 +59,7 @@ const Routes = ({ error, has_error, history, is_logged_in, passthrough, setPromp
 
     if (has_error) return <Error {...error} />;
 
-    return <BinaryRoutes is_logged_in={is_logged_in} passthrough={passthrough} />;
+    return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;
 };
 
 Routes.propTypes = {
@@ -58,6 +67,7 @@ Routes.propTypes = {
     has_error: PropTypes.bool,
     history: PropTypes.object,
     is_logged_in: PropTypes.bool,
+    is_logging_in: PropTypes.bool,
     passthrough: PropTypes.object,
     setPromptHandler: PropTypes.func,
     setTradeMountingPolicy: PropTypes.func,
@@ -70,6 +80,7 @@ export default withRouter(
         error: common.error,
         has_error: common.has_error,
         is_logged_in: client.is_logged_in,
+        is_logging_in: client.is_logging_in,
         setPromptHandler: ui.setPromptHandler,
         setTradeMountingPolicy: modules.trade.setSkipPrePostLifecycle,
     }))(Routes)

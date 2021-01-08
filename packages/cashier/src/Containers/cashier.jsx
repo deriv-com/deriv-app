@@ -9,14 +9,13 @@ import {
     PageOverlay,
     VerticalTab,
     Text,
+    Loading,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { getSelectedRoute, isMobile, isTouchDevice, routes } from '@deriv/shared';
+import { getSelectedRoute, isMobile, routes } from '@deriv/shared';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import 'Sass/cashier.scss';
-
-const el_landscape_blocker = document.getElementById('landscape_blocker');
 
 class Cashier extends React.Component {
     state = { device_height: window.innerHeight };
@@ -28,37 +27,11 @@ class Cashier extends React.Component {
 
         this.props.onMount();
         this.props.setAccountSwitchListener();
-
-        // TODO: Remove L21, L31, and L38 code blocks once landscape design is ready
-        // doughflow iframe inconjunction with android's virtual keyboard causes issues with css screen height calculation (thus falsely triggering landscape blocker in Android)
-        // this is due to the onscreen virtual keyboard resizing the innerHeight of the window and ignoring the actual height of content within the iframe
-        if (isMobile() && isTouchDevice()) {
-            window.addEventListener('resize', this.handleOnScreenKeyboard);
-        }
     }
 
     componentWillUnmount() {
         this.props.toggleCashier();
-
-        // cleanup onscreen keyboard class suffix and eventlistener for landscape blocker upon unMount
-        if (isMobile() && isTouchDevice()) {
-            window.removeEventListener('resize', this.handleOnScreenKeyboard);
-            if (el_landscape_blocker) el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
-        }
     }
-
-    handleOnScreenKeyboard = () => {
-        // We are listening to resize window resize events on mobile,
-        // and comparing the android device's height onMount and the height after the keyboard causes the resize event
-        const is_android_keyboard = this.state.device_height !== window.innerHeight;
-        if (el_landscape_blocker) {
-            if (is_android_keyboard) {
-                el_landscape_blocker.classList.add('landscape-blocker--keyboard-visible');
-            } else {
-                el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
-            }
-        }
-    };
 
     onClickClose = () => this.props.routeBackInApp(this.props.history);
     render() {
@@ -100,6 +73,9 @@ class Cashier extends React.Component {
 
         const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: location.pathname }).default;
 
+        if (!this.props.is_logged_in && this.props.is_logging_in) {
+            return <Loading is_fullscreen />;
+        }
         return (
             <FadeWrapper
                 is_visible={this.props.is_visible}
@@ -163,38 +139,42 @@ class Cashier extends React.Component {
 
 Cashier.propTypes = {
     history: PropTypes.object,
-    is_onramp_tab_visible: PropTypes.bool,
-    is_eu: PropTypes.bool,
-    is_p2p_enabled: PropTypes.bool,
     is_account_transfer_visible: PropTypes.bool,
+    is_eu: PropTypes.bool,
+    is_logged_in: PropTypes.bool,
+    is_logging_in: PropTypes.bool,
+    is_onramp_tab_visible: PropTypes.bool,
+    is_p2p_enabled: PropTypes.bool,
     is_payment_agent_transfer_visible: PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
     is_visible: PropTypes.bool,
     location: PropTypes.object,
     onMount: PropTypes.func,
     p2p_notification_count: PropTypes.number,
+    routes: PropTypes.arrayOf(PropTypes.object),
     setTabIndex: PropTypes.func,
     tab_index: PropTypes.number,
-    routes: PropTypes.arrayOf(PropTypes.object),
     toggleCashier: PropTypes.func,
 };
 
 export default connect(({ client, common, modules, ui }) => ({
-    routeBackInApp: common.routeBackInApp,
-    tab_index: modules.cashier.cashier_route_tab_index,
-    setTabIndex: modules.cashier.setCashierTabIndex,
     loggedin_currency: client.currency,
-    is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
+    is_account_transfer_visible: modules.cashier.is_account_transfer_visible,
     is_eu: client.is_eu,
+    is_logged_in: client.is_logged_in,
+    is_logging_in: client.is_logging_in,
+    is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
     is_p2p_enabled: modules.cashier.is_p2p_enabled,
+    is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
+    is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
     is_virtual: client.is_virtual,
     is_visible: ui.is_cashier_visible,
-    is_account_transfer_visible: modules.cashier.is_account_transfer_visible,
-    is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
-    is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
     onMount: modules.cashier.onMountCommon,
     p2p_notification_count: modules.cashier.p2p_notification_count,
+    routeBackInApp: common.routeBackInApp,
     routeTo: common.routeTo,
     setAccountSwitchListener: modules.cashier.setAccountSwitchListener,
+    setTabIndex: modules.cashier.setCashierTabIndex,
+    tab_index: modules.cashier.cashier_route_tab_index,
     toggleCashier: ui.toggleCashier,
 }))(withRouter(Cashier));

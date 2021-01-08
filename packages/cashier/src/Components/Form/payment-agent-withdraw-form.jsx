@@ -165,7 +165,7 @@ class PaymentAgentWithdrawForm extends React.Component {
             amount: values.amount,
             verification_code: this.props.verification_code,
         });
-        if (payment_agent_withdraw.error) {
+        if (payment_agent_withdraw?.error) {
             actions.setSubmitting(false);
         }
     };

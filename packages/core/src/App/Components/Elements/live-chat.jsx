@@ -1,47 +1,22 @@
 import React from 'react';
 import Cookies from 'js-cookie';
-import { useHistory } from 'react-router-dom';
 import { connect } from 'Stores/connect';
 import { Popover, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { liveChatInitialization } from './live-chat';
 
 const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
     const [is_livechat_interactive, setLiveChatInteractive] = React.useState(false);
-    const [reload, setReload] = React.useState(false);
-    const history = useHistory();
+    const [has_client_information, setClientInformation] = React.useState(false);
 
     React.useEffect(() => {
-        history.listen(handleHistoryChange);
         if (window.LiveChatWidget) {
             window.LiveChatWidget.on('ready', () => {
                 setLiveChatInteractive(true);
             });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
-        if (has_cookie_account) {
-            liveChatSetup(true);
-        } else {
-            liveChatSetup(false);
-        }
-    }, [has_cookie_account]);
-
-    React.useEffect(() => {
-        if (reload === true) {
-            if (has_cookie_account) {
-                liveChatSetup(true);
-            } else {
-                liveChatSetup(false);
-            }
-            setReload(false);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [reload]);
-
-    const liveChatSetup = is_logged_in => {
         if (window.LiveChatWidget) {
             window.LiveChatWidget.on('ready', () => {
                 let session_variables = {
@@ -51,13 +26,14 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                     residence: '',
                     email: '',
                 };
-                if (is_logged_in) {
-                    // client logged in
+
+                if (has_cookie_account) {
                     const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
                     const client_information = Cookies.get('client_information', {
                         domain,
                     });
                     if (client_information) {
+                        setClientInformation(true);
                         const {
                             loginid,
                             email,
@@ -74,46 +50,30 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                             ...(residence && { residence }),
                             ...(email && { email }),
                         };
-                        // prefill name and email fields
+
                         window.LiveChatWidget.call('set_session_variables', session_variables);
                         window.LiveChatWidget.call('set_customer_email', email);
                         window.LiveChatWidget.call('set_customer_name', `${first_name} ${last_name}`);
-                        // prefill name and email fields after chat has ended
-                        window.LC_API.on_chat_ended = () => {
-                            window.LiveChatWidget.call('set_customer_email', email);
-                            window.LiveChatWidget.call('set_customer_name', `${first_name} ${last_name}`);
-                        };
+                    } else {
+                        setClientInformation(false);
                     }
-                } else {
-                    // client not logged in
-                    // clear name and email fields
-                    window.LiveChatWidget.call('set_customer_email', ' ');
-                    window.LiveChatWidget.call('set_customer_name', ' ');
-                    // clear name and email fields after chat has ended
-                    window.LC_API.on_chat_ended = () => {
-                        window.LiveChatWidget.call('set_customer_email', ' ');
-                        window.LiveChatWidget.call('set_customer_name', ' ');
-                    };
                 }
             });
         }
-    };
+    }, [has_cookie_account]);
 
-    const handleHistoryChange = () => {
+    React.useEffect(() => {
         if (window.LiveChatWidget) {
             window.LiveChatWidget.on('ready', () => {
-                if (window.LiveChatWidget.get('customer_data').status !== 'chatting') {
-                    setLiveChatInteractive(false);
-                    window.LiveChatWidget.call('destroy');
-                    liveChatInitialization().then(() => {
-                        setReload(true);
-                        setLiveChatInteractive(true);
-                        setReload(false);
-                    });
-                }
+                window.LC_API.on_chat_ended = () => {
+                    if (!has_client_information) {
+                        window.LiveChatWidget.call('set_customer_email', ' ');
+                        window.LiveChatWidget.call('set_customer_name', ' ');
+                    }
+                };
             });
         }
-    };
+    }, [has_client_information]);
 
     return (
         <>

@@ -56,7 +56,7 @@ const Transactions: React.FC<TTransactionsProps> = () => {
 
     const loadMoreTransactions = ({ startIndex }: { startIndex: number }) => {
         return new Promise<void>(resolve => {
-            ws.authorized.statement('FETCH_LIMIT', startIndex).then((response: StatementResponse) => {
+            ws.authorized.statement(FETCH_LIMIT, startIndex).then((response: StatementResponse) => {
                 if (response.statement?.transactions) {
                     const { transactions } = response.statement;
 

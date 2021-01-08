@@ -13,40 +13,26 @@ const AccountInfo = React.lazy(() =>
     import(/* webpackChunkName: "account-info", webpackPreload: true */ 'App/Components/Layout/Header/account-info.jsx')
 );
 
-export class AccountActions extends React.Component {
-    static contextType = PlatformContext;
-    shouldComponentUpdate(nextProps) {
-        return (
-            nextProps.is_acc_switcher_disabled !== this.props.is_acc_switcher_disabled ||
-            nextProps.balance !== this.props.balance ||
-            nextProps.currency !== this.props.currency ||
-            nextProps.is_acc_switcher_on !== this.props.is_acc_switcher_on ||
-            nextProps.is_notifications_visible !== this.props.is_notifications_visible ||
-            nextProps.is_logged_in !== this.props.is_logged_in ||
-            nextProps.is_virtual !== this.props.is_virtual ||
-            nextProps.loginid !== this.props.loginid ||
-            nextProps.notifications_count !== this.props.notifications_count
-        );
-    }
+const AccountActions = React.memo(
+    ({
+        acc_switcher_disabled_message,
+        balance,
+        currency,
+        disableApp,
+        enableApp,
+        is_acc_switcher_on,
+        is_acc_switcher_disabled,
+        is_logged_in,
+        is_notifications_visible,
+        is_virtual,
+        notifications_count,
+        onClickDeposit,
+        openRealAccountSignup,
+        toggleAccountsDialog,
+        toggleNotifications,
+    }) => {
+        const context_type = React.useContext(PlatformContext);
 
-    render() {
-        const {
-            acc_switcher_disabled_message,
-            balance,
-            currency,
-            disableApp,
-            enableApp,
-            is_acc_switcher_on,
-            is_acc_switcher_disabled,
-            is_logged_in,
-            is_notifications_visible,
-            is_virtual,
-            notifications_count,
-            onClickDeposit,
-            openRealAccountSignup,
-            toggleAccountsDialog,
-            toggleNotifications,
-        } = this.props;
         if (is_logged_in) {
             return (
                 <React.Fragment>
@@ -131,11 +117,13 @@ export class AccountActions extends React.Component {
         return (
             <React.Fragment>
                 <LoginButton className='acc-info__button' />
-                <SignupButton is_deriv_crypto={this.context.is_deriv_crypto} className='acc-info__button' />
+                <SignupButton is_deriv_crypto={context_type.is_deriv_crypto} className='acc-info__button' />
             </React.Fragment>
         );
     }
-}
+);
+
+AccountActions.displayName = 'AccountActions';
 
 AccountActions.propTypes = {
     acc_switcher_disabled_message: PropTypes.any,
@@ -154,3 +142,5 @@ AccountActions.propTypes = {
     toggleAccountsDialog: PropTypes.any,
     toggleNotifications: PropTypes.any,
 };
+
+export { AccountActions };

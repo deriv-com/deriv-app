@@ -187,7 +187,7 @@ const MyProfile = () => {
                             button_text={localize('Got it')}
                             is_open={is_statistics_tooltip_open}
                             message={localize(
-                                "These fields are based on the last 24 hours' activity: Buy, Sell, and Limit."
+                                'These fields are based on activities since 00:00 GMT: Buy, Sell, and Buy/Sell limit.'
                             )}
                             setIsOpen={setIsStatisticsTooltipOpen}
                         >

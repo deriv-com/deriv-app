@@ -58,7 +58,7 @@ const createChangellyProvider = store => ({
     name: 'Changelly',
     getDescription: () =>
         localize(
-            'Your simple access to crypto. Fast and secure way to exchange and purchase 150+ cryptocurrencies. 24/7 live-chat support.'
+            'Your simple access to crypto. Fast and secure way to exchange and purchase cryptocurrencies. 24/7 live chat support.'
         ),
     getAllowedResidencies: () => ['*'],
     getPaymentIcons: () => [

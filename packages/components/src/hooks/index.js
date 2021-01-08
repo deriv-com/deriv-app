@@ -4,4 +4,5 @@ export * from './use-interval';
 export * from './use-onclickoutside';
 export * from './use-onlongpress';
 export * from './use-previous';
+export * from './use-deep-effect';
 export * from './use-state-callback';

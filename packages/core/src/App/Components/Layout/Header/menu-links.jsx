@@ -20,7 +20,12 @@ const MenuLinks = ({ is_logged_in, items }) => (
                         >
                             <React.Fragment>
                                 {item.text && (
-                                    <Text title={item.text()} className='header__menu-link-text'>
+                                    <Text
+                                        size='m'
+                                        line_height='xs'
+                                        title={item.text()}
+                                        className='header__menu-link-text'
+                                    >
                                         {item.icon}
                                         {item.text()}
                                         {item.logo}

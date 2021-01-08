@@ -1,14 +1,14 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import { Button, Text } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv/components';
 import { PlatformContext, redirectToLogin, redirectToSignUp, routes } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
-import { Icon } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import DerivLogo from 'Assets/SvgComponents/header/deriv-logo.svg';
 import DerivText from 'Assets/SvgComponents/header/deriv-text.svg';
 import DerivLogoLight from 'Assets/SvgComponents/header/deriv-logo-light.svg';
-import { HeaderItemsLoader } from '../../../Components/Layout/Header/Components/Preloader/header-items';
+import { HeaderItemsLoader } from '../../../Components/Layout/Header/Components/Preloader/header-items.jsx';
 
 const DashboardHeader = ({ is_logged_in, is_logging_in }) => {
     const history = useHistory();
@@ -68,13 +68,13 @@ const DashboardHeader = ({ is_logged_in, is_logging_in }) => {
                                     className='logged-out-dashboard-header__buttons-secondary'
                                     text='Log in'
                                     onClick={() => redirectToLogin(false, getLanguage())}
-                                ></Button>
+                                />
                                 <Button
                                     primary
                                     className='logged-out-dashboard-header__buttons-primary'
                                     text='Create free demo account'
                                     onClick={() => redirectToSignUp({ is_deriv_crypto })}
-                                ></Button>
+                                />
                             </Button.Group>
                         </div>
                     </div>
@@ -82,6 +82,11 @@ const DashboardHeader = ({ is_logged_in, is_logging_in }) => {
             )}
         </>
     );
+};
+
+DashboardHeader.propTypes = {
+    is_logged_in: PropTypes.bool,
+    is_logging_in: PropTypes.bool,
 };
 
 export default connect(({ client }) => ({

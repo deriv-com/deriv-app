@@ -2,7 +2,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter, matchPath } from 'react-router';
-import Loadable from 'react-loadable-hooks';
+import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import BinaryRoutes from 'App/Components/Routes';

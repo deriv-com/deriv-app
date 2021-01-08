@@ -186,6 +186,7 @@ class MT5Dashboard extends React.Component {
                                     is_logged_in={is_logged_in}
                                     loading_component={LoadingMT5RealAccountDisplay}
                                     onTabItemClick={this.updateActiveIndex}
+                                    should_update_hash
                                 >
                                     <div label={localize('Demo account')} data-hash='demo'>
                                         <MT5DemoAccountDisplay

@@ -40,7 +40,7 @@ type TAppProps = {
     client: TClientProps;
     config: TConfigProps;
     ui: TUIProps;
-    ws: unknown;
+    ws: any;
 };
 
 export default observer(App);

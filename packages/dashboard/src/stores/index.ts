@@ -12,6 +12,7 @@ export const useStores = (ws?: unknown): TRootStore => {
             ui_store: root_store.ui_store,
             client_store: root_store.client_store,
             config_store: root_store.config_store,
+            ws: root_store.ws,
         });
     }
 

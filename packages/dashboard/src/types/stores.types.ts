@@ -2,6 +2,8 @@ import { TClientProps, TConfigProps, TRoutesProps, TUIProps } from 'Types';
 
 export type TClientStore = {
     init: (client_props: TClientProps) => void;
+    is_logged_in: boolean;
+    loginid: string;
 };
 
 export type TConfigStore = {
@@ -17,6 +19,7 @@ export type TRootStore = {
     ui_store: TUIStore;
     client_store: TClientStore;
     config_store: TConfigStore;
+    ws: any;
 };
 
 export type TUIStore = {

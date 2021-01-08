@@ -12,6 +12,7 @@
 export { default as Accordion } from './components/accordion';
 export { default as AutoHeightWrapper } from './components/auto-height-wrapper';
 export { default as Autocomplete } from './components/autocomplete';
+export { default as AutoSizer } from './components/autosizer';
 export { default as Button } from './components/button';
 export { default as ButtonLink } from './components/button-link';
 export { default as ButtonToggle } from './components/button-toggle';
@@ -54,7 +55,6 @@ export { default as InputField } from './components/input-field';
 export { default as InputWithCheckbox } from './components/input-wth-checkbox';
 export { default as Label } from './components/label';
 export { default as LinearProgress } from './components/linear-progress';
-export { default as LineSeparatedComponents } from './components/line-separated-components';
 export { default as Loading } from './components/loading';
 export { default as MobileCarousel } from './components/mobile-carousel';
 export { default as MobileDialog } from './components/mobile-dialog';

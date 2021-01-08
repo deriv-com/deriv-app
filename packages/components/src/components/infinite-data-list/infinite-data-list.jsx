@@ -6,6 +6,7 @@ import DataList from '../data-list/data-list.jsx';
 const InfiniteDataList = ({
     className,
     data_list_className,
+    has_filler, // Can be used as a top offset.
     has_more_items_to_load,
     items,
     keyMapperFn,
@@ -13,15 +14,20 @@ const InfiniteDataList = ({
     onScroll,
     rowRenderer,
 }) => {
-    const item_count = has_more_items_to_load ? items.length + 1 : items.length;
-    const isRowLoaded = ({ index }) => (index < items.length ? !!items[index] : false);
+    const item_count = has_filler ? items.length - 1 : items.length;
+    const row_count = has_more_items_to_load ? item_count + 1 : item_count;
+
+    const isRowLoaded = ({ index }) => {
+        const data_items = has_filler ? items.slice(1) : items;
+        return index < data_items.length ? !!data_items[index] : false;
+    };
 
     return (
         <InfiniteLoader
             className={className}
             isRowLoaded={isRowLoaded}
             loadMoreRows={loadMoreRowsFn}
-            rowCount={item_count}
+            rowCount={row_count}
         >
             {({ onRowsRendered, registerChild }) => (
                 <DataList

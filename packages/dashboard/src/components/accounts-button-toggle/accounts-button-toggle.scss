@@ -1,8 +1,5 @@
 .button-toggle {
     &__container {
-        width: 20.8rem;
-        height: 4.8rem;
-        margin: 3rem auto;
         padding: 0.8rem;
         background-color: var(--general-section-1);
         border-radius: 0.8rem;
@@ -20,7 +17,7 @@
                     line-height: var(--text-lh-m) !important;
                 }
                 &--active span {
-                    color: var(--general-main-1);
+                    color: var(--text-colored-background);
                 }
             }
         }

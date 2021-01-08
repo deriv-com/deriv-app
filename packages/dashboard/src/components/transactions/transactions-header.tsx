@@ -13,7 +13,7 @@ const TransactionsHeader: React.FC<TTransactionsHeaderProps> = ({ id, transactio
 
 type TTransactionsHeaderProps = {
     id: string;
-    transaction_time: number;
+    transaction_time: string;
 };
 
 export default TransactionsHeader;

@@ -58,20 +58,6 @@
         &-button {
             margin-left: 0.8rem;
         }
-        &-error {
-            display: flex;
-            align-items: center;
-            margin-right: auto;
-            font-size: var(--text-size-xxs);
-            font-weight: bold;
-            flex: 1;
-            color: var(--text-prominent);
-            padding-left: 2.4rem;
-
-            p {
-                padding-left: 1.6rem;
-            }
-        }
         &-footer {
             display: flex;
             align-items: center;
@@ -302,5 +288,15 @@
     }
     &--off {
         color: var(--text-less-prominent);
+    }
+}
+
+.dc-modal-header__title--p2p-my-ads__modal-error {
+    padding: 2.4rem 2.4rem 0 !important;
+}
+
+.dc-modal__container_p2p-my-ads__modal-error {
+    .dc-modal-footer {
+        padding-top: 0 !important;
     }
 }

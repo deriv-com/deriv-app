@@ -57,7 +57,7 @@ DataListRow.propTypes = {
     measure: PropTypes.func,
     row: PropTypes.object,
     row_gap: PropTypes.number,
-    row_key: PropTypes.string,
+    row_key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     rowRenderer: PropTypes.func,
 };
 

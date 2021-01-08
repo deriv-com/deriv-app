@@ -2,7 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-const ToggleSwitch = ({ className, classNameButton, classNameLabel, id, is_enabled, handleToggle }) => {
+const ToggleSwitch = ({ className, classNameButton, classNameLabel, handleToggle, id, is_enabled }) => {
     return (
         <React.Fragment>
             <input

@@ -17,7 +17,6 @@ const LoadModal = ({
     onEntered,
     recent_strategies,
     setActiveTabIndex,
-    should_rerender_tabs,
     tab_name,
     toggleLoadModal,
 }) => {
@@ -33,12 +32,7 @@ const LoadModal = ({
                 height_offset='80px'
                 page_overlay
             >
-                <Tabs
-                    active_index={active_index}
-                    onTabItemClick={setActiveTabIndex}
-                    should_delay_render={should_rerender_tabs}
-                    top
-                >
+                <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
                     <div label={localize('Local')}>
                         <Local />
                     </div>
@@ -62,13 +56,7 @@ const LoadModal = ({
             elements_to_ignore={[document.querySelector('.injectionDiv')]}
         >
             <Modal.Body>
-                <Tabs
-                    active_index={active_index}
-                    onTabItemClick={setActiveTabIndex}
-                    should_delay_render={should_rerender_tabs}
-                    top
-                    header_fit_content
-                >
+                <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top header_fit_content>
                     <div label={localize('Recent')}>
                         <Recent />
                     </div>
@@ -102,7 +90,6 @@ LoadModal.propTypes = {
     onEntered: PropTypes.func,
     recent_strategies: PropTypes.array,
     setActiveTabIndex: PropTypes.func,
-    should_rerender_tabs: PropTypes.bool,
     toggleLoadModal: PropTypes.func,
 };
 
@@ -114,7 +101,6 @@ export default connect(({ load_modal, ui }) => ({
     onEntered: load_modal.onEntered,
     recent_strategies: load_modal.recent_strategies,
     setActiveTabIndex: load_modal.setActiveTabIndex,
-    should_rerender_tabs: load_modal.should_rerender_tabs,
     tab_name: load_modal.tab_name,
     toggleLoadModal: load_modal.toggleLoadModal,
 }))(LoadModal);

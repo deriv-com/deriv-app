@@ -118,15 +118,16 @@
 
             &-text {
                 font-size: 1.4rem;
-                color: var(--text-prominent);
                 background-color: inherit;
                 padding-top: 0.2rem;
+                color: var(--text-prominent);
 
                 &--has-error {
                     padding-top: unset;
                     color: var(--brand-red-coral);
                 }
-                .dc-input--disabled & {
+
+                &--disabled {
                     color: var(--text-disabled);
                 }
             }

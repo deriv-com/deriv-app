@@ -42,12 +42,20 @@ const Native = ({
     return (
         <div
             className={classNames('dc-input', {
-                'dc-input--error': error,
                 'dc-input--disabled': disabled,
+                'dc-input--error': error,
             })}
         >
             <div className='dc-datepicker__display'>
-                {value && <span className='dc-datepicker__display-text'>{toMoment(value).format(display_format)}</span>}
+                {value && (
+                    <span
+                        className={classNames('dc-datepicker__display-text', {
+                            'dc-datepicker__display-text--disabled': disabled,
+                        })}
+                    >
+                        {toMoment(value).format(display_format)}
+                    </span>
+                )}
             </div>
             <label
                 className={classNames('dc-datepicker__placeholder', {
@@ -59,7 +67,7 @@ const Native = ({
             >
                 {label || (!value && placeholder)}
             </label>
-            <Icon icon='IcCalendar' className='dc-datepicker__calendar-icon' {...(disabled && { color: 'disabled' })} />
+            <Icon icon='IcCalendar' className='dc-datepicker__calendar-icon' color={disabled && 'disabled'} />
             <input
                 ref={input_ref}
                 id={id}

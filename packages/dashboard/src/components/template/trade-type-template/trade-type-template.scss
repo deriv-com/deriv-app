@@ -37,6 +37,24 @@
             margin-bottom: 4.4rem;
         }
     }
+    &__indices {
+        margin-top: 4rem;
+
+        &-container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 4rem;
+        }
+        &-pair-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-gap: 2.4rem;
+            margin-top: 2.4rem;
+        }
+        .trade-type-template__line {
+            margin-bottom: 0;
+        }
+    }
     &__line {
         width: 93.6rem;
         height: 1px;

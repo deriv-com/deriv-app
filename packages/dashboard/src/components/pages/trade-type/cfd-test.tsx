@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AppToTrade, Instrument } from '../../template/trade-type-template';
+import { AppToTrade, Instrument, Indices } from '../../template/trade-type-template';
 import { Banner } from '../../template/shared';
 
 const card_data = [
@@ -54,6 +54,36 @@ const pair_data = [
     },
 ];
 
+const indice_data = [
+    {
+        title: 'Volatility indices',
+        sub_title:
+            'These indices correspond to simulated markets with constant volatilities of 10%, 25%, 50%, 75%, and 100%. One tick is generated every two seconds for volatility indices 10, 25, 50, 75, and 100. One tick is generated every second for volatility indices 10 (1s), 25 (1s), 50 (1s), 75 (1s), and 100 (1s).',
+        line: true,
+        data: [
+            { icon: 'IcUnderlyingCRASH500', description: 'Volatility 10 Index' },
+            { icon: 'IcUnderlyingCRASH1000', description: 'Volatility 10 Index' },
+            { icon: 'IcUnderlyingBOOM1000', description: 'Volatility 50 Index' },
+            { icon: 'IcUnderlyingCRASH500', description: 'Volatility 75 Index' },
+            { icon: 'IcUnderlyingBOOM1000', description: 'Volatility 100 Index' },
+            { icon: 'IcUnderlyingCRASH500', description: 'Volatility 10 (1s) Index' },
+            { icon: 'IcUnderlyingCRASH500', description: 'Volatility 25 (1s) Index' },
+        ],
+    },
+
+    {
+        title: 'Crash/Boom',
+        sub_title:
+            'With these indices, there is an average of one drop (crash) or one spike (boom) in prices that occurs in a series of 1,000 or 500 ticks.',
+        data: [
+            { icon: 'IcUnderlyingCRASH500', description: 'Boom 1000 Index' },
+            { icon: 'IcUnderlyingCRASH500', description: 'Boom 500 Index' },
+            { icon: 'IcUnderlyingBOOM1000', description: 'Boom 1000 Index' },
+            { icon: 'IcUnderlyingCRASH500', description: 'Boom 5000 Index' },
+        ],
+    },
+];
+
 const CFDTest: React.FC = () => {
     return (
         <React.Fragment>
@@ -66,6 +96,7 @@ const CFDTest: React.FC = () => {
                     benefit_data={benefit_data}
                 />
                 <Instrument title='Markets and instruments for trading CFDs' pair_data={pair_data} />
+                <Indices indice_data={indice_data} />
             </div>
         </React.Fragment>
     );

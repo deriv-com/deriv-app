@@ -58,6 +58,13 @@
             margin-right: 1.6rem;
         }
     }
+    &__indice {
+        display: flex;
+
+        &-icon {
+            margin-right: 0.8rem;
+        }
+    }
     &__app-to-trade-benefit {
         display: flex;
         max-width: 20rem;

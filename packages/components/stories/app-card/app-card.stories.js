@@ -3,6 +3,7 @@ import { withKnobs, boolean, text } from '@storybook/addon-knobs';
 import AppCard from 'Components/app-card';
 import React from 'react';
 import notes from './README.md';
+import { getCardLabels } from './statics/labels';
 import Wrapper from '../shared/wrapper';
 
 storiesOf('AppCard', module)
@@ -18,6 +19,7 @@ storiesOf('AppCard', module)
                         app_name='Deriv Apps'
                         broker='Deriv Limited'
                         currency='USD'
+                        getCardLabels={getCardLabels}
                         is_swap_free={boolean('isSwapFree', true)}
                         is_virtual={boolean('isVirtual', true)}
                         linked_wallet='Virtual USD Wallet'

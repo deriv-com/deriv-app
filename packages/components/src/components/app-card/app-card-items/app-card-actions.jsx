@@ -6,13 +6,13 @@ import { useHover } from '../hooks/use-hover';
 
 const Action = ({ icon, is_hovered, is_virtual, label, onClickHandler, wrapper_ref }) => {
     return (
-        <div className='dc-app-card__actions-content-wrapper' onClick={onClickHandler} ref={wrapper_ref}>
+        <div className='dc-app-card-actions__content-wrapper' onClick={onClickHandler} ref={wrapper_ref}>
             <Icon
                 icon={icon}
-                className={classNames('dc-app-card__actions-icon', {
-                    'dc-app-card__actions-icon--hover': is_hovered,
-                    'dc-app-card__actions-icon--hover-virtual': is_hovered && is_virtual,
-                    'dc-app-card__actions-icon--hover-real': is_hovered && !is_virtual,
+                className={classNames('dc-app-card-actions__icon', {
+                    'dc-app-card-actions__icon--hover': is_hovered,
+                    'dc-app-card-actions__icon--hover-virtual': is_hovered && is_virtual,
+                    'dc-app-card-actions__icon--hover-real': is_hovered && !is_virtual,
                 })}
                 custom_color={is_virtual ? 'var(--icon-dark-background)' : 'var(--icon-light-background)'}
             />
@@ -26,6 +26,7 @@ const Action = ({ icon, is_hovered, is_virtual, label, onClickHandler, wrapper_r
 };
 
 const AppCardActions = ({
+    getCardLabels,
     is_virtual,
     onDepositClick,
     onPlayClick,
@@ -39,13 +40,13 @@ const AppCardActions = ({
     const [settings_ref, is_settings_hovered] = useHover();
 
     return (
-        <div className='dc-app-card__actions-wrapper'>
+        <div className='dc-app-card-actions__wrapper'>
             <Action
                 wrapper_ref={deposit_ref}
                 icon='IcAdd'
                 is_hovered={is_deposit_hovered}
                 is_virtual={is_virtual}
-                label='Deposit'
+                label={getCardLabels().ADD}
                 onClickHandler={onDepositClick}
             />
             {!is_virtual && (
@@ -54,7 +55,7 @@ const AppCardActions = ({
                     icon='IcMinus'
                     is_hovered={is_withdraw_hovered}
                     is_virtual={is_virtual}
-                    label='Withdraw'
+                    label={getCardLabels().WITHDRAW}
                     onClickHandler={onWithdrawClick}
                 />
             )}
@@ -64,7 +65,7 @@ const AppCardActions = ({
                     icon='IcTransactions'
                     is_hovered={is_transactions_hovered}
                     is_virtual={is_virtual}
-                    label='Transactions'
+                    label={getCardLabels().TRANSACTIONS}
                     onClickHandler={onTransactionsClick}
                 />
             )}
@@ -73,10 +74,10 @@ const AppCardActions = ({
                 icon='IcGear'
                 is_hovered={is_settings_hovered}
                 is_virtual={is_virtual}
-                label='Settings'
+                label={getCardLabels().SETTINGS}
                 onClickHandler={onSettingsClick}
             />
-            <div className='dc-app-card__actions-icon--play' onClick={onPlayClick}>
+            <div className='dc-app-card-actions__icon--play' onClick={onPlayClick}>
                 <Icon icon='IcPlay' custom_color='var(--icon-dark-background)' size={12} />
             </div>
         </div>

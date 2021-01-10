@@ -64,19 +64,19 @@
         padding: 0.2rem 0.8rem;
         border-radius: 1.2rem;
     }
-    &__header {
-        &-wrapper {
+    &-header {
+        &__wrapper {
             width: 100%;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
         }
-        &-container {
+        &__container {
             display: flex;
             flex-direction: row;
         }
-        &-badge {
+        &__badge {
             &--demo {
                 background: var(--badge-white);
                 cursor: text;
@@ -103,8 +103,8 @@
             }
         }
     }
-    &__body {
-        &-wrapper {
+    &-body {
+        &__wrapper {
             width: 100%;
             display: flex;
             flex-direction: column;
@@ -140,51 +140,43 @@
                 }
             }
         }
-        &-app-info {
+        &__app-info {
             &-wrapper {
                 display: flex;
-                flex-direction: row;
-                justify-content: space-between;
                 align-items: center;
-                width: 100%;
             }
-            &-content {
-                display: flex;
-                align-items: center;
+            &-icon {
+                &--default {
+                    height: 48px;
+                    width: 48px;
 
-                &--icon {
-                    &-default {
-                        height: 48px;
-                        width: 48px;
-
-                        @include mobile {
-                            height: 32px;
-                            width: 32px;
-                        }
-                    }
-                    &-mini {
-                        height: 24px;
-                        width: 24px;
-                    }
-                    &-micro {
-                        height: 18px;
-                        width: 18px;
+                    @include mobile {
+                        height: 32px;
+                        width: 32px;
                     }
                 }
-                &--name {
-                    &-default {
-                        margin-left: 0.8rem;
-                    }
-                    &-mini {
-                        margin-left: 0.6rem;
-                    }
-                    &-micro {
-                        margin-left: 0.4rem;
-                    }
+                &--mini {
+                    height: 24px;
+                    width: 24px;
+                }
+                &--micro {
+                    height: 18px;
+                    width: 18px;
+                }
+            }
+            &-name {
+                &--default {
+                    margin-left: 0.8rem;
+                }
+                &--mini {
+                    margin-left: 0.6rem;
+                }
+                &--micro {
+                    margin-left: 0.4rem;
                 }
             }
         }
-        &-balance-info {
+        &__balance-info {
             &-wrapper {
                 display: flex;
                 flex-direction: row;
@@ -197,22 +189,22 @@
                 flex-direction: column;
                 justify-content: center;
 
-                &-default {
+                &--default {
                     margin-top: 1.6rem;
 
                     @include mobile {
                         margin-top: 0.8rem;
                     }
                 }
-                &-mini {
+                &--mini {
                     margin-top: 0.8rem;
                 }
-                &-micro {
+                &--micro {
                     margin-top: 0.4rem;
                 }
             }
         }
-        &-badge {
+        &__badge {
             &--swap-free {
                 background: var(--badge-violet);
                 cursor: text;
@@ -223,8 +215,8 @@
             }
         }
     }
-    &__footer {
-        &-wrapper {
+    &-footer {
+        &__wrapper {
             width: calc(100% - 3.2rem);
             height: 3.2rem;
             display: flex;
@@ -234,10 +226,10 @@
             position: absolute;
             bottom: 1.6rem;
 
-            &-default {
+            &--default {
                 bottom: 1.8rem;
             }
-            &-mini {
+            &--mini {
                 bottom: 1.2rem;
             }
 
@@ -246,14 +238,14 @@
                 bottom: 1.2rem;
             }
         }
-        &-info {
+        &__info {
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
     }
-    &__actions {
-        &-wrapper {
+    &-actions {
+        &__wrapper {
             height: 3.2rem;
             width: calc(100% - 2.4rem);
             display: flex;
@@ -263,7 +255,7 @@
             position: absolute;
             bottom: 1.2rem;
         }
-        &-content {
+        &__content {
             &-wrapper {
                 display: flex;
                 flex-direction: column;
@@ -277,7 +269,7 @@
                 }
             }
         }
-        &-icon {
+        &__icon {
             height: 1.6rem;
             width: 1.6rem;
 

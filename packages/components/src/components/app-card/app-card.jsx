@@ -39,6 +39,7 @@ const AppCard = ({
     app_name,
     broker,
     currency,
+    getCardLabels,
     is_swap_free,
     is_virtual,
     linked_wallet,
@@ -72,13 +73,18 @@ const AppCard = ({
             >
                 {!is_virtual && <RealAppCardBAckground is_swap_free={is_swap_free} variant={variant} />}
                 {is_virtual && variant === 'default' && (
-                    <AppCardHeader is_swap_free={is_swap_free} onAddRealClick={onAddRealClick} />
+                    <AppCardHeader
+                        getCardLabels={getCardLabels}
+                        is_swap_free={is_swap_free}
+                        onAddRealClick={onAddRealClick}
+                    />
                 )}
                 <AppCardBody
                     amount={amount}
                     app_icon={app_icon}
                     app_name={app_name}
                     currency={currency}
+                    getCardLabels={getCardLabels}
                     getFontColor={getFontColor}
                     is_swap_free={is_swap_free}
                     is_virtual={is_virtual}
@@ -92,6 +98,7 @@ const AppCard = ({
                 {show_footer && variant !== 'micro' && !is_hovered && (
                     <AppCardFooter
                         broker={broker}
+                        getCardLabels={getCardLabels}
                         getFontColor={getFontColor}
                         login_id={login_id}
                         server={server}
@@ -100,6 +107,7 @@ const AppCard = ({
                 )}
                 {show_hover_actions && variant !== 'micro' && !isMobile() && is_hovered && (
                     <AppCardActions
+                        getCardLabels={getCardLabels}
                         is_virtual={is_virtual}
                         onDepositClick={onDepositClick}
                         onPlayClick={onPlayClick}

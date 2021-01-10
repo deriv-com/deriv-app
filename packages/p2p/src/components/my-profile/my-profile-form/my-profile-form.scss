@@ -1,0 +1,55 @@
+.my-profile-form {
+    .dc-input {
+        margin-bottom: unset;
+
+        &__wrapper {
+            margin-bottom: unset;
+        }
+    }
+
+    > *:first-child {
+        margin-bottom: 1.6rem;
+    }
+
+    &__textarea {
+        margin-top: 2.5rem;
+
+        @include mobile {
+            &:first-child {
+                margin-top: 2.5rem;
+            }
+        }
+    }
+
+    &__form {
+        > :nth-child(3) {
+            @include mobile {
+                margin-bottom: 7.4rem;
+            }
+            @include tablet-up {
+                margin-bottom: 7.4rem + 2.4rem;
+            }
+        }
+    }
+
+    &__footer {
+        border-top: 2px solid var(--general-section-1);
+        background-color: var(--general-main-1);
+        text-align: right;
+
+        @include mobile {
+            width: 100vw;
+            padding: 1.6rem;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+        }
+
+        @include tablet-up {
+            position: fixed;
+            bottom: 36px;
+            width: 672px;
+            padding: 1.6rem 2.4rem;
+        }
+    }
+}

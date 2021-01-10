@@ -127,6 +127,7 @@ AppCard.propTypes = {
     app_name: PropTypes.string,
     broker: PropTypes.string,
     currency: PropTypes.string,
+    getCardLabels: PropTypes.func.isRequired,
     is_swap_free: PropTypes.bool,
     is_virtual: PropTypes.bool,
     linked_wallet: PropTypes.string,

@@ -1,6 +1,4 @@
 .template {
-    width: 105.2rem;
-
     &__banner {
         padding: 17.7rem 8.1rem;
         width: 93.6rem;
@@ -19,20 +17,28 @@
         display: flex;
         max-width: 29.6rem;
         width: 100%;
-        padding: 1.6rem 1.6rem 1.9rem;
+        padding: 1.6rem;
         box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05), 0px 16px 20px rgba(0, 0, 0, 0.05);
         border-radius: 4px;
 
+        &--big-size {
+            max-width: 45.6rem;
+            padding: 3.2rem;
+        }
         &-container {
             max-width: 16.8rem;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             margin-left: 1.6rem;
+
+            &--big-size {
+                max-width: 26rem;
+            }
         }
         &-wrapper {
             display: flex;
-            margin-top: 3.7rem;
+            margin-top: 1.6rem;
         }
         &-link {
             color: $color-apple-blue;
@@ -47,8 +53,17 @@
     }
     &__pair {
         display: flex;
+
+        &-icon {
+            margin-right: 1.6rem;
+        }
     }
     &__app-to-trade-benefit {
         display: flex;
+        max-width: 20rem;
+
+        &-icon {
+            margin-right: 1.6rem;
+        }
     }
 }

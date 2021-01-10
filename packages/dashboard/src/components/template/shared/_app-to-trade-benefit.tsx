@@ -6,8 +6,8 @@ const AppToTradeBenefit: React.FC<TAppToTradeBenefitProps> = ({ icon, descriptio
     return (
         <React.Fragment>
             <div className='template__app-to-trade-benefit'>
-                <Icon icon={icon} size={32} />
-                <Text size='xs' line_height='xl'>
+                <Icon icon={icon} size={32} className='template__app-to-trade-benefit-icon' />
+                <Text size='xs' line_height='m'>
                     {description}
                 </Text>
             </div>

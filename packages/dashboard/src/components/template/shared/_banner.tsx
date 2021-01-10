@@ -7,16 +7,10 @@ const Banner: React.FC<TBannerProps> = ({ type, title }) => {
         <React.Fragment>
             <div className='template__banner'>
                 <div className='template__banner-container'>
-                    <Text size='m' color='colored-background' align='center' styles={{ lineHeight: '3rem' }}>
+                    <Text size='m' color='colored-background' styles={{ lineHeight: '3rem' }}>
                         {type}
                     </Text>
-                    <Text
-                        size='xl'
-                        weight='bold'
-                        color='colored-background'
-                        align='center'
-                        styles={{ lineHeight: '6rem' }}
-                    >
+                    <Text size='xl' weight='bold' color='colored-background' styles={{ lineHeight: '6rem' }}>
                         {title}
                     </Text>
                 </div>

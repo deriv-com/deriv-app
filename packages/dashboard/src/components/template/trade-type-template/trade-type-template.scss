@@ -1,5 +1,47 @@
 .trade-type-template {
     &__app-to-trade {
-        display: flex;
+        margin-top: 4rem;
+
+        &-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 2.4rem;
+            margin-top: 2.4rem;
+
+            &--three-column {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+        &-benefit {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-gap: 2.4rem;
+            margin-top: 2.4rem;
+
+            &--three-column {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+    }
+    &__instrument {
+        margin-top: 4rem;
+
+        &-container {
+            margin-top: 2.4rem;
+        }
+        &-pair-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-gap: 3.6rem;
+            margin-top: 3rem;
+            margin-bottom: 4.4rem;
+        }
+    }
+    &__line {
+        width: 93.6rem;
+        height: 1px;
+        border: 1px solid var(--general-section-1);
+        margin-top: 4rem;
+        margin-bottom: 4rem;
     }
 }

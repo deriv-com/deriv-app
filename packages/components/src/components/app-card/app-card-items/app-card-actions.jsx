@@ -11,8 +11,8 @@ const Action = ({ icon, is_hovered, is_virtual, label, onClickHandler, wrapper_r
                 icon={icon}
                 className={classNames('dc-app-card__actions-icon', {
                     'dc-app-card__actions-icon--hover': is_hovered,
-                    'dc-app-card__actions-icon--hover-virtual': is_hovered & is_virtual,
-                    'dc-app-card__actions-icon--hover-real': is_hovered & !is_virtual,
+                    'dc-app-card__actions-icon--hover-virtual': is_hovered && is_virtual,
+                    'dc-app-card__actions-icon--hover-real': is_hovered && !is_virtual,
                 })}
                 custom_color={is_virtual ? 'var(--icon-dark-background)' : 'var(--icon-light-background)'}
             />

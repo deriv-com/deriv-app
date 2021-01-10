@@ -511,7 +511,7 @@ const AccountSwitcher = props => {
                                             secondary
                                             small
                                             is_disabled={
-                                                (!props.is_eu && !props.has_any_real_account) ||
+                                                !props.has_active_real_account ||
                                                 (account.type === 'financial_stp' &&
                                                     (props.is_pending_authentication || !!props.mt5_login_list_error))
                                             }
@@ -616,6 +616,7 @@ AccountSwitcher.propTypes = {
     can_upgrade_to: PropTypes.string,
     has_fiat: PropTypes.bool,
     has_any_real_account: PropTypes.bool,
+    has_active_real_account: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_fully_authenticated: PropTypes.bool,
     is_loading_mt5: PropTypes.bool,
@@ -666,6 +667,7 @@ const account_switcher = withRouter(
         resetVirtualBalance: client.resetVirtualBalance,
         has_malta_account: client.has_malta_account,
         has_maltainvest_account: client.has_maltainvest_account,
+        has_active_real_account: client.has_active_real_account,
         openAccountNeededModal: ui.openAccountNeededModal,
         logoutClient: client.logout,
         landing_companies: client.landing_companies,

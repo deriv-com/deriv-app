@@ -183,6 +183,7 @@ export const icons = {
         'IcInstallationApple',
         'IcInstallationGoogle',
         'IcInstallationLinux',
+        'IcInstallationMacos',
         'IcInstallationWebDemo',
         'IcInstallationWebReal',
         'IcInstallationWindows',

@@ -1,15 +1,16 @@
 import classNames from 'classnames';
 import React from 'react';
+import { isMobile } from '@deriv/shared';
 import Icon from '../../icon';
 import Money from '../../money';
 import Text from '../../text';
-import { isMobile } from '@deriv/shared';
 
 const AppCardBody = ({
     amount,
     app_icon,
     app_name,
     currency,
+    getFontColor,
     is_swap_free,
     is_virtual,
     linked_wallet,
@@ -42,7 +43,7 @@ const AppCardBody = ({
                     size={variant === 'default' ? 48 : 18}
                 />
                 <Text
-                    color={is_virtual ? 'colored-background' : 'general'}
+                    color={getFontColor()}
                     className={`dc-app-card__body-app-info-content--name dc-app-card__body-app-info-content--name-${variant}`}
                     size={variant === 'default' ? (isMobile() ? 'xsm' : 'sm') : isMobile() ? 'xxs' : 'xs'}
                     weight='bold'
@@ -55,7 +56,7 @@ const AppCardBody = ({
                     className={`dc-app-card__body-balance-info-content dc-app-card__body-balance-info-content-${variant}`}
                 >
                     <Text
-                        color={is_virtual ? 'colored-background' : 'general'}
+                        color={getFontColor()}
                         size={variant === 'default' ? (isMobile() ? 'xs' : 's') : 'xs'}
                         weight='bold'
                         line_height={variant === 'default' ? 'm' : 's'}
@@ -63,7 +64,7 @@ const AppCardBody = ({
                         <Money amount={amount} currency={currency} show_currency />
                     </Text>
                     <Text
-                        color={is_virtual ? 'colored-background' : 'general'}
+                        color={getFontColor()}
                         size={isMobile() ? 'xxxxs' : 'xxxs'}
                         line_height={variant === 'default' ? 'm' : 's'}
                     >

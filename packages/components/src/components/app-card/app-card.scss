@@ -204,7 +204,9 @@
                         margin-top: 0.8rem;
                     }
                 }
-                &-mini,
+                &-mini {
+                    margin-top: 0.8rem;
+                }
                 &-micro {
                     margin-top: 0.4rem;
                 }
@@ -230,6 +232,7 @@
             justify-content: space-between;
             align-items: center;
             position: absolute;
+            bottom: 1.6rem;
 
             &-default {
                 bottom: 1.8rem;

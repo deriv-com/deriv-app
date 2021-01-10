@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { isMobile } from '@deriv/shared';
 import AppCardHeader from './app-card-items/app-card-header.jsx';
 import AppCardBody from './app-card-items/app-card-body.jsx';
@@ -54,7 +55,10 @@ const AppCard = ({
     variant = 'default',
 }) => {
     const [card_ref, is_hovered] = useHover();
-
+    const getFontColor = () => {
+        if (is_virtual) return 'colored-background';
+        return 'general';
+    };
     return (
         <React.Fragment>
             <div
@@ -75,6 +79,7 @@ const AppCard = ({
                     app_icon={app_icon}
                     app_name={app_name}
                     currency={currency}
+                    getFontColor={getFontColor}
                     is_swap_free={is_swap_free}
                     is_virtual={is_virtual}
                     linked_wallet={linked_wallet}
@@ -86,8 +91,8 @@ const AppCard = ({
 
                 {show_footer && variant !== 'micro' && !is_hovered && (
                     <AppCardFooter
-                        is_virtual={is_virtual}
                         broker={broker}
+                        getFontColor={getFontColor}
                         login_id={login_id}
                         server={server}
                         variant={variant}
@@ -106,6 +111,28 @@ const AppCard = ({
             </div>
         </React.Fragment>
     );
+};
+
+AppCard.propTypes = {
+    amount: PropTypes.string,
+    app_icon: PropTypes.string,
+    app_name: PropTypes.string,
+    broker: PropTypes.string,
+    currency: PropTypes.string,
+    is_swap_free: PropTypes.bool,
+    is_virtual: PropTypes.bool,
+    linked_wallet: PropTypes.string,
+    login_id: PropTypes.string,
+    onAddRealClick: PropTypes.func,
+    onDepositClick: PropTypes.func,
+    onPlayClick: PropTypes.func,
+    onSettingsClick: PropTypes.func,
+    onTransactionsClick: PropTypes.func,
+    onWithdrawClick: PropTypes.func,
+    server: PropTypes.string,
+    show_footer: PropTypes.bool,
+    show_hover_actions: PropTypes.bool,
+    variant: PropTypes.oneOf(['default', 'mini', 'micro']),
 };
 
 export default AppCard;

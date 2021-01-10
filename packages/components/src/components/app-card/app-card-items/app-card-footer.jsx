@@ -1,28 +1,25 @@
 import React from 'react';
+import { isMobile } from '@deriv/shared';
 import Text from '../../text';
 
-const FooterItem = ({ info, is_virtual, label }) => {
+const FooterItem = ({ info, getFontColor, label }) => {
     return (
         <div className='dc-app-card__footer-info'>
-            <Text color={is_virtual ? 'colored-background' : 'general'} size={isMobile() ? 'xxxxs' : 'xxxs'}>
+            <Text color={getFontColor()} size={isMobile() ? 'xxxxs' : 'xxxs'}>
                 {label}
             </Text>
-            <Text
-                color={is_virtual ? 'colored-background' : 'general'}
-                size={isMobile() ? 'xxxxs' : 'xxxs'}
-                weight='bold'
-            >
+            <Text color={getFontColor()} size={isMobile() ? 'xxxxs' : 'xxxs'} weight='bold'>
                 {info}
             </Text>
         </div>
     );
 };
 
-const AppCardFooter = ({ broker, is_virtual, login_id, server, variant }) => (
+const AppCardFooter = ({ broker, getFontColor, login_id, server, variant }) => (
     <div className={`dc-app-card__footer-wrapper dc-app-card__footer-wrapper-${variant}`}>
-        <FooterItem info={login_id} is_virtual={is_virtual} label='Login ID' />
-        <FooterItem info={broker} is_virtual={is_virtual} label='Broker' />
-        <FooterItem info={server} is_virtual={is_virtual} label='Server' />
+        <FooterItem info={login_id} getFontColor={getFontColor} label='Login ID' />
+        <FooterItem info={broker} getFontColor={getFontColor} label='Broker' />
+        <FooterItem info={server} getFontColor={getFontColor} label='Server' />
     </div>
 );
 

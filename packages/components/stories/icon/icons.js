@@ -1,7 +1,18 @@
 // auto-generated file. DO NOT MODIFY.
 
 export const icons = {
-    brand: ['IcBrandDbot', 'IcBrandDeriv', 'IcBrandDmt5', 'IcBrandDtrader', 'IcBrandSmarttrader'],
+    brand: [
+        'IcBrandBinarybot',
+        'IcBrandDbot',
+        'IcBrandDerivApps',
+        'IcBrandDeriv',
+        'IcBrandDmt5FinancialStp',
+        'IcBrandDmt5Financial',
+        'IcBrandDmt5Synthetics',
+        'IcBrandDmt5',
+        'IcBrandDtrader',
+        'IcBrandSmarttrader',
+    ],
     cashier: [
         'IcCashierAliPayDark',
         'IcCashierAliPayLight',

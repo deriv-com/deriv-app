@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AppToTrade, Instrument, Indices } from '../../template/trade-type-template';
+import { AppToTrade, Instrument, Indices, YouMightLike } from '../../template/trade-type-template';
 import { Banner } from '../../template/shared';
 
 const card_data = [
@@ -97,6 +97,7 @@ const CFDTest: React.FC = () => {
                 />
                 <Instrument title='Markets and instruments for trading CFDs' pair_data={pair_data} />
                 <Indices indice_data={indice_data} />
+                <YouMightLike trade_type='3' />
             </div>
         </React.Fragment>
     );

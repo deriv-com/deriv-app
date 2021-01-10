@@ -3,7 +3,6 @@
         padding: 17.7rem 8.1rem;
         width: 93.6rem;
         border-radius: 10px;
-        background-image: url('~Assets/images/banner-background.png');
         background-repeat: no-repeat;
 
         &-container {
@@ -51,6 +50,14 @@
             background-color: $color-apple-blue;
         }
     }
+    &__app-to-trade-benefit {
+        display: flex;
+        max-width: 20rem;
+
+        &-icon {
+            margin-right: 1.6rem;
+        }
+    }
     &__pair {
         display: flex;
 
@@ -65,12 +72,16 @@
             margin-right: 0.8rem;
         }
     }
-    &__app-to-trade-benefit {
+    &__you-might-like-card {
         display: flex;
-        max-width: 20rem;
+        flex-direction: column;
+        max-width: 29.6rem;
+        margin-right: 2.4rem;
+        border-radius: 10px;
 
-        &-icon {
-            margin-right: 1.6rem;
+        &-image {
+            margin-bottom: 1.6rem;
+            margin-top: 4rem;
         }
     }
 }

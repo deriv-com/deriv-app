@@ -55,6 +55,13 @@
             margin-bottom: 0;
         }
     }
+    &__you-might-like {
+        background-color: var(--general-hover);
+
+        &-wrapper {
+            display: flex;
+        }
+    }
     &__line {
         width: 93.6rem;
         height: 1px;

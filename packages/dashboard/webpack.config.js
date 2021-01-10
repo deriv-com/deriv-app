@@ -89,18 +89,6 @@ module.exports = {
                     },
                 ],
             },
-            {
-                test: /\.(png|jpg|gif|woff|woff2|eot|ttf|otf)$/,
-                exclude: /node_modules/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: 'public/images/[name].[ext]',
-                        },
-                    },
-                ],
-            },
         ],
     },
     plugins: [

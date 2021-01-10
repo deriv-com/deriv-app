@@ -18,7 +18,7 @@ const copyConfig = base => {
             },
             {
                 from: path.resolve(__dirname, '../node_modules/@deriv/dashboard/lib/assets/images'),
-                to: 'public/images',
+                to: 'js/dashboard/assets/images',
                 flatten: true,
             },
             {

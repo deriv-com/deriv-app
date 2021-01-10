@@ -66,7 +66,7 @@ const AppCard = ({
                 className={classNames('dc-app-card__wrapper', {
                     'dc-app-card__wrapper--virtual': is_virtual,
                     'dc-app-card__wrapper--real': !is_virtual,
-                    [`dc-app-card__wrapper--${variant}`]: true,
+                    [`dc-app-card__wrapper--${variant}`]: variant,
                     'dc-app-card__wrapper--virtual-swap-free': is_virtual && is_swap_free,
                 })}
                 ref={isMobile() || !show_hover_actions ? null : card_ref}

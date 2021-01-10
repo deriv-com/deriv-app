@@ -23,6 +23,53 @@ import { isMobile, validLength, validPassword, getErrorMessages, getStaticUrl, r
 import { connect } from 'Stores/connect';
 import MT5Store from 'Stores/Modules/MT5/mt5-store';
 
+const MainPasswordManager = ({ status }) => {
+    const is_existing_user = status.includes('password_reset_required');
+    return (
+        <div className='mt5-password-manager__main-wrapper'>
+            <Icon icon='IcMt5OnePassword' size='128' />
+            <Text as='p' align='center' size='s' weight='bold'>
+                <Localize i18n_default_text='All you need from now is one password' />
+            </Text>
+            <Text as='p' align='center' size='xxs'>
+                {is_existing_user && (
+                    <Localize
+                        i18n_default_text='Your DMT5 password is now the same as your Deriv account login password. To reset, please go to <0>Settings</0> page to change your password.'
+                        components={[
+                            <NavLink
+                                className='mt5-password-manager__inline-link'
+                                key={0}
+                                to={routes.deriv_password}
+                            />,
+                        ]}
+                    />
+                )}
+                {!is_existing_user && (
+                    <Localize i18n_default_text='We’ve upgraded our system to support a single, more secure password across all of Deriv/Binary.com. Once you’ve set a new password, you can use it to log into all your Deriv/Binary.com, and DMT5/MT5 accounts.' />
+                )}
+            </Text>
+            {is_existing_user && (
+                <NavLink
+                    to={routes.deriv_password}
+                    className='dc-btn dc-btn--primary dc-btn__large dc-modal__container_mt5-reset-password-modal__button'
+                >
+                    <Localize i18n_default_text='Go to Settings' />
+                </NavLink>
+            )}
+            {!is_existing_user && (
+                <a
+                    href={getStaticUrl('reset-password')}
+                    target='_blank'
+                    rel='noreferrer'
+                    className='dc-btn dc-btn--primary dc-btn__large dc-modal__container_mt5-reset-password-modal__button'
+                >
+                    <Localize i18n_default_text='Reset password' />
+                </a>
+            )}
+        </div>
+    );
+};
+
 const CountdownComponent = ({ count_from = 60, onTimeout }) => {
     const [count, setCount] = React.useState(count_from);
 
@@ -233,56 +280,6 @@ class MT5PasswordManagerModal extends React.Component {
             }
         };
 
-        const MainPasswordManager = () => {
-            const is_existing_user = this.props.account_status.status.includes('password_reset_required');
-
-            const password_reset_body = (
-                <div className='mt5-password-manager__main-wrapper'>
-                    <Icon icon='IcMt5OnePassword' size='128' />
-                    <Text as='p' align='center' size='s' weight='bold'>
-                        <Localize i18n_default_text='All you need from now is one password' />
-                    </Text>
-                    <Text as='p' align='center' size='xxs'>
-                        {is_existing_user && (
-                            <Localize
-                                i18n_default_text='Your DMT5 password is now the same as your Deriv account login password. To reset, please go to <0>Settings</0> page to change your password.'
-                                components={[
-                                    <NavLink
-                                        className='mt5-password-manager__inline-link'
-                                        key={0}
-                                        to={routes.deriv_password}
-                                    />,
-                                ]}
-                            />
-                        )}
-                        {!is_existing_user && (
-                            <Localize i18n_default_text='We’ve upgraded our system to support a single, more secure password across all of Deriv/Binary.com. Once you’ve set a new password, you can use it to log into all your Deriv/Binary.com, and DMT5/MT5 accounts.' />
-                        )}
-                    </Text>
-                    {is_existing_user && (
-                        <NavLink
-                            to={routes.deriv_password}
-                            className='dc-btn dc-btn--primary dc-btn__large dc-modal__container_mt5-reset-password-modal__button'
-                        >
-                            <Localize i18n_default_text='Go to Settings' />
-                        </NavLink>
-                    )}
-                    {!is_existing_user && (
-                        <a
-                            href={getStaticUrl('reset-password')}
-                            target='_blank'
-                            rel='noreferrer'
-                            className='dc-btn dc-btn--primary dc-btn__large dc-modal__container_mt5-reset-password-modal__button'
-                        >
-                            <Localize i18n_default_text='Reset password' />
-                        </a>
-                    )}
-                </div>
-            );
-
-            return password_reset_body;
-        };
-
         const InvestorPasswordManager = () => {
             if (this.state.is_submit_success_investor) {
                 return <MT5PasswordSuccessMessage toggleModal={toggleModal} is_investor />;
@@ -384,6 +381,7 @@ class MT5PasswordManagerModal extends React.Component {
 
         // view height - margin top and bottom of modal - modal title - modal content margin top and bottom - table title
         const password_container_height = 'calc(100vh - 84px - 5.6rem - 8.8rem - 4rem)';
+        const status = this.props.account_status.status;
 
         const MT5PasswordManagerTabContent = () => (
             <>

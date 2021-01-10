@@ -53,6 +53,7 @@
             }
         }
         &:disabled {
+            -webkit-text-fill-color: var(--text-disabled);
             color: var(--text-disabled);
 
             & ~ label {

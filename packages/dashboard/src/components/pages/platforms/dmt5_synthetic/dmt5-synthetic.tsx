@@ -1,14 +1,12 @@
 import * as React from 'react';
-import { Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import Wrapper from '../components/wrapper'
+import GetSection from '../components/get-section'
 
 const DMT5Synthetic: React.FC = () => {
     return (
-        <div className='dw-about-us'>
-            <Text className='dw-about-us__text dw-about-us__title' as='h1' size='l' color='general' align='center'>
-                {localize('DMT5 Synthetic')}
-            </Text>
-        </div>
+        <Wrapper>
+            <GetSection />
+        </Wrapper>
     );
 };
 

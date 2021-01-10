@@ -30,8 +30,8 @@ const Button = ({
     type,
     primary,
     secondary,
-    small,
     tertiary,
+    small,
     ...props
 }) => {
     const classes = classNames(

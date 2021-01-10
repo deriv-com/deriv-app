@@ -1,0 +1,21 @@
+.dw-get {
+    display: flex;
+
+    &__icon {
+        margin-right: 2.4rem;
+    }
+    &__header {
+        display: flex;
+
+        &--left {
+            display: flex;
+            flex-direction: column;
+        }
+        &--right {
+            display: flex;
+        }
+        &-center {
+            margin: 0 1.6rem;
+        }
+    }
+}

@@ -112,6 +112,10 @@
         --status-warning: #{$color-yellow};
         --status-info: #{$color-blue};
         --status-colored-background: #{$color-white};
+        // Dashboard
+        --dashboard-primary: #{$color-blue-3};
+        --dashboard-hover: #{$color-blue-4};
+        --dashboard-alpha: #{$alpha-color-blue-2};
         // Transparentize
         --transparent-success: #{$alpha-color-green-1};
         --transparent-info: #{$alpha-color-blue-1};
@@ -181,6 +185,10 @@
         --status-success: #{$color-green-3};
         --status-info: #{$color-blue};
         --status-colored-background: #{$color-white};
+        // Dashboard
+        --dashboard-primary: #{$color-blue-2};
+        --dashboard-hover: #{$color-blue-3};
+        --dashboard-alpha: #{$alpha-color-blue-2};
         // Transparentize
         --transparent-success: #{$alpha-color-green-2};
         --transparent-info: #{$alpha-color-blue-1};

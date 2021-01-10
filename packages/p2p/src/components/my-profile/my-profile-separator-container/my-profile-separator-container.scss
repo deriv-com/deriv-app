@@ -1,7 +1,8 @@
-.dc-line-separated-components {
+.my-profile-separator-container {
     align-items: center;
     display: flex;
     flex-direction: row;
+    width: 100%;
 
     &__line {
         background-color: var(--general-section-1);
@@ -13,7 +14,7 @@
             background-color: inherit;
         }
 
-        &--single-child {
+        &:last-child {
             margin-right: 0;
         }
     }

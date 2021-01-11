@@ -281,10 +281,11 @@ const MT5PasswordModal = ({
         <React.Fragment>
             <DesktopWrapper>
                 <Modal
-                    className='mt5-password-modal'
+                    className={is_password_reset ? 'mt5-password-reset-modal' : 'mt5-password-modal'}
                     is_open={should_show_password}
                     toggleModal={closeModal}
                     has_close_icon
+                    is_title_blank
                 >
                     {!is_password_reset && (
                         <MT5PasswordForm

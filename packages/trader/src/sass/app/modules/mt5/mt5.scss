@@ -1,3 +1,9 @@
+.dc-modal__container_mt5-password-reset-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: 38rem;
+}
 .dc-modal__container_mt5-password-modal,
 .dc-mobile-dialog__mt5-password-modal {
     max-width: 424px;
@@ -338,11 +344,10 @@
     align-items: center;
 
     &__header {
-        margin: 5rem 0 2rem;
+        margin: 0 0 2rem;
     }
     &__description {
-        margin: 2rem 0;
-        padding: 0 6rem;
+        padding: 0 3rem;
     }
     &__buttons {
         display: grid;

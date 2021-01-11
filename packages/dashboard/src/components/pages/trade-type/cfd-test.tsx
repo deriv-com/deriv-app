@@ -3,7 +3,7 @@ import AppToTrade from '../../template/app-to-trade';
 import Instruments from '../../template/instruments';
 import Indices from '../../template/indices';
 import YouMightLike from '../../template/you-might-like';
-import Banner from '../../template/hero';
+import Banner from '../../template/banner';
 
 const card_data = [
     {

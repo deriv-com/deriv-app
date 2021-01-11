@@ -13,7 +13,7 @@ const VirtualWalletCardFooterActions = ({ getWalletLabels, onClickReset, onClick
         <div className='dc-virtual-wallet-card__actions-container'>
             <div className='dc-virtual-wallet-card__action' onClick={onClickReset} ref={hover_ref_reset}>
                 <Icon
-                    className={classNames('', { 'dc-virtual-wallet-card__action--icon': is_reset_hovered })}
+                    className={classNames({ 'dc-virtual-wallet-card__action--icon': is_reset_hovered })}
                     custom_color='var(--general-main-1)'
                     icon='IcAdd'
                     size={16}
@@ -31,7 +31,7 @@ const VirtualWalletCardFooterActions = ({ getWalletLabels, onClickReset, onClick
             </div>
             <div className='dc-virtual-wallet-card__action' onClick={onClickTransactions} ref={hover_ref_transactions}>
                 <Icon
-                    className={classNames('', { 'dc-virtual-wallet-card__action--icon': is_transactions_hovered })}
+                    className={classNames({ 'dc-virtual-wallet-card__action--icon': is_transactions_hovered })}
                     icon='IcWalletTransactions'
                     size={16}
                 />

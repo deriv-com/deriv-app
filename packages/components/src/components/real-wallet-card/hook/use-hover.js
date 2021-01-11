@@ -5,18 +5,18 @@ export const useHover = refSetter => {
     const default_ref = React.useRef(null);
     const ref = refSetter || default_ref;
 
-    const handleMouseOver = () => setValue(true);
-    const handleMouseOut = () => setValue(false);
+    const handleMouseEnter = () => setValue(true);
+    const handleMouseLeave = () => setValue(false);
 
     React.useEffect(() => {
         const node = ref.current;
         if (node) {
-            node.addEventListener('mouseenter', handleMouseOver);
-            node.addEventListener('mouseleave', handleMouseOut);
+            node.addEventListener('mouseenter', handleMouseEnter);
+            node.addEventListener('mouseleave', handleMouseLeave);
 
             return () => {
-                node.removeEventListener('mouseenter', handleMouseOver);
-                node.removeEventListener('mouseleave', handleMouseOut);
+                node.removeEventListener('mouseenter', handleMouseEnter);
+                node.removeEventListener('mouseleave', handleMouseLeave);
             };
         }
         return undefined;

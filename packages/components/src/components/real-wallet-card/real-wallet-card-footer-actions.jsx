@@ -28,7 +28,7 @@ const RealWalletCardFooterActions = ({
         >
             <div className='dc-real-wallet-card__action' onClick={onClickDeposit} ref={hover_ref_deposit}>
                 <Icon
-                    className={classNames('', { 'dc-real-wallet-card__action--icon': is_deposit_hovered })}
+                    className={classNames({ 'dc-real-wallet-card__action--icon': is_deposit_hovered })}
                     custom_color='var(--general-main-1)'
                     icon='IcAdd'
                     size={16}
@@ -46,7 +46,7 @@ const RealWalletCardFooterActions = ({
             </div>
             <div className='dc-real-wallet-card__action' onClick={onClickWithdrawal} ref={hover_ref_withdrawal}>
                 <Icon
-                    className={classNames('', { 'dc-real-wallet-card__action--icon': is_withdrawal_hovered })}
+                    className={classNames({ 'dc-real-wallet-card__action--icon': is_withdrawal_hovered })}
                     custom_color='var(--general-main-1)'
                     icon='IcMinus'
                     size={16}
@@ -64,7 +64,7 @@ const RealWalletCardFooterActions = ({
             </div>
             <div className='dc-real-wallet-card__action' onClick={onClickTransfer} ref={hover_ref_transfer}>
                 <Icon
-                    className={classNames('', { 'dc-real-wallet-card__action--icon': is_transfer_hovered })}
+                    className={classNames({ 'dc-real-wallet-card__action--icon': is_transfer_hovered })}
                     custom_color='var(--general-main-1)'
                     icon='IcAccountTransfer'
                     size={16}
@@ -82,7 +82,7 @@ const RealWalletCardFooterActions = ({
             </div>
             <div className='dc-real-wallet-card__action' onClick={onClickTransactions} ref={hover_ref_transactions}>
                 <Icon
-                    className={classNames('', { 'dc-real-wallet-card__action--icon': is_transactions_hovered })}
+                    className={classNames({ 'dc-real-wallet-card__action--icon': is_transactions_hovered })}
                     icon='IcWalletTransactions'
                     size={16}
                 />
@@ -99,7 +99,7 @@ const RealWalletCardFooterActions = ({
             </div>
             <div className='dc-real-wallet-card__action' onClick={onClickSettings} ref={hover_ref_settings}>
                 <Icon
-                    className={classNames('', { 'dc-real-wallet-card__action--icon': is_settings_settings })}
+                    className={classNames({ 'dc-real-wallet-card__action--icon': is_settings_settings })}
                     custom_color='var(--general-main-1)'
                     icon='IcGear'
                     size={16}

@@ -26,7 +26,8 @@ const OnfidoContainer = ({ height }) => {
 
 const Onfido = ({
     documents_supported,
-    country_code,
+    // TODO: Enable below once BE is released
+    // country_code,
     handleComplete,
     height,
     onfido_service_token,
@@ -72,18 +73,21 @@ const Onfido = ({
                         options: {
                             documentTypes: {
                                 passport: documents_supported.some(doc => /Passport/g.test(doc)),
-                                driving_licence: documents_supported.some(doc => /Driving Licence/g.test(doc))
-                                    ? {
-                                          country: country_code,
-                                      }
-                                    : false,
+                                driving_licence: documents_supported.some(doc => /Driving Licence/g.test(doc)),
+                                // TODO: Enable below once BE is released
+                                // driving_licence: documents_supported.some(doc => /Driving Licence/g.test(doc))
+                                //     ? {
+                                //           country: country_code,
+                                //       }
+                                //     : false,
                                 national_identity_card: documents_supported.some(doc =>
                                     /National Identity Card/g.test(doc)
-                                )
-                                    ? {
-                                          country: country_code,
-                                      }
-                                    : false,
+                                ),
+
+                                // ? {
+                                //       country: country_code,
+                                //   }
+                                // : false,
                             },
                         },
                     },

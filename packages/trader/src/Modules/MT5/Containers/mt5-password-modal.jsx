@@ -11,6 +11,7 @@ import {
     Modal,
     PasswordInput,
     PasswordMeter,
+    RadioGroup,
 } from '@deriv/components';
 import { isMobile, routes, validLength, validPassword, getErrorMessages } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -46,9 +47,14 @@ const MT5PasswordForm = ({ ...props }) => (
             password: '',
         }}
         validate={props.validatePassword}
-        onSubmit={(values, actions) => {
-            props.submitMt5Password(values.password, actions.setSubmitting);
-        }}
+        onSubmit={
+            values => {
+                props.submitMt5Password(values.password);
+            }
+            // (values, actions) => {
+            //     props.submitMt5Password(values.password, actions.setSubmitting);
+            // }
+        }
     >
         {({
             handleSubmit,
@@ -108,19 +114,78 @@ const MT5PasswordForm = ({ ...props }) => (
                     </div>
                 </div>
                 <FormSubmitButton
-                    is_disabled={isSubmitting || !values.password || Object.keys(errors).length > 0}
+                    is_disabled={!values.password || Object.keys(errors).length > 0}
                     has_cancel
                     cancel_label={localize('Cancel')}
                     onCancel={props.closeModal}
                     is_absolute={isMobile()}
-                    is_loading={isSubmitting}
-                    label={localize('Add account')}
+                    // is_loading={isSubmitting}
+                    label={localize('Next')}
                     form_error={props.form_error}
                 />
             </form>
         )}
     </Formik>
 );
+
+const MT5ServerForm = ({ ...props }) => {
+    return (
+        <Formik
+            initialValues={{
+                password: props.password,
+                server: '',
+            }}
+            validate={props.validateServer}
+            onSubmit={(values, actions) => {
+                props.submitMt5Form(values.password, actions.setSubmitting);
+            }}
+        >
+            {({ handleSubmit, setFieldTouched, handleChange, handleBlur, errors, values, isSubmitting, touched }) => (
+                <form onSubmit={handleSubmit}>
+                    <div className='mt5-password-modal__content'>
+                        <h2>
+                            <Localize
+                                i18n_default_text='Choose a server for your DMT5 {{ account_type }} account'
+                                values={{
+                                    account_type: props.account_title,
+                                }}
+                            />
+                        </h2>
+                        <div className='dc-modal__container_mt5-password-modal__body'>
+                            <div className='input-element'>
+                                <RadioGroup
+                                    className='mt5-password-modal__radio'
+                                    name='server'
+                                    // TODO: Change this
+                                    onToggle={e => {
+                                        e.persist();
+                                        console.log(e.target.value);
+                                    }}
+                                    items={[
+                                        { id: 1, label: 'Africa server', value: 'africa' },
+                                        { id: 2, label: 'Europe 1 server', value: 'europe1' },
+                                        { id: 3, label: 'Europe 2 server', value: 'europe2' },
+                                        { id: 4, label: 'Asia server', value: 'asia' },
+                                    ]}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <FormSubmitButton
+                        is_disabled={isSubmitting || !values.server || Object.keys(errors).length > 0}
+                        has_cancel
+                        cancel_label={localize('Back')}
+                        onCancel={props.onBack}
+                        is_absolute={isMobile()}
+                        is_loading={isSubmitting}
+                        label={localize('Next')}
+                        form_error={props.form_error}
+                    />
+                </form>
+            )}
+        </Formik>
+    );
+};
 
 const MT5PasswordModal = ({
     account_title,
@@ -137,6 +202,7 @@ const MT5PasswordModal = ({
     setMt5Error,
     submitMt5Password,
 }) => {
+    const [password, setPassword] = React.useState('');
     const validatePassword = values => {
         const errors = {};
 
@@ -163,6 +229,7 @@ const MT5PasswordModal = ({
     const closeDialogs = () => {
         setMt5SuccessDialog(false);
         setMt5Error(false);
+        setPassword('');
     };
 
     const closeModal = () => {
@@ -192,14 +259,24 @@ const MT5PasswordModal = ({
                     toggleModal={closeModal}
                     has_close_icon
                 >
-                    <MT5PasswordForm
-                        account_title={account_title}
-                        closeModal={closeModal}
-                        form_error={form_error}
-                        submitMt5Password={submitMt5Password}
-                        is_real_financial_stp={is_real_financial_stp}
-                        validatePassword={validatePassword}
-                    />
+                    {password ? (
+                        <MT5ServerForm
+                            account_title={account_title}
+                            password={password}
+                            submitMt5Form={submitMt5Password} //TODO: Revise this
+                            onBack={() => setPassword('')}
+                        />
+                    ) : (
+                        <MT5PasswordForm
+                            account_title={account_title}
+                            closeModal={closeModal}
+                            form_error={form_error}
+                            submitMt5Password={setPassword}
+                            // submitMt5Password={submitMt5Password}
+                            is_real_financial_stp={is_real_financial_stp}
+                            validatePassword={validatePassword}
+                        />
+                    )}
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
@@ -210,14 +287,24 @@ const MT5PasswordModal = ({
                     onClose={closeModal}
                     wrapper_classname='mt5-password-modal'
                 >
-                    <MT5PasswordForm
-                        account_title={account_title}
-                        closeModal={closeModal}
-                        form_error={form_error}
-                        is_real_financial_stp={is_real_financial_stp}
-                        submitMt5Password={submitMt5Password}
-                        validatePassword={validatePassword}
-                    />
+                    {password ? (
+                        <MT5ServerForm
+                            account_title={account_title}
+                            password={password}
+                            submitMt5Form={submitMt5Password} //TODO: Revise this
+                            onBack={() => setPassword('')}
+                        />
+                    ) : (
+                        <MT5PasswordForm
+                            account_title={account_title}
+                            closeModal={closeModal}
+                            form_error={form_error}
+                            is_real_financial_stp={is_real_financial_stp}
+                            submitMt5Password={setPassword}
+                            // submitMt5Password={submitMt5Password}
+                            validatePassword={validatePassword}
+                        />
+                    )}
                 </MobileDialog>
             </MobileWrapper>
             <SuccessDialog

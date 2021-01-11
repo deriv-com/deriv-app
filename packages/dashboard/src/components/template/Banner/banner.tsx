@@ -3,12 +3,15 @@ import { Text } from '@deriv/components';
 import Frame from 'Components/elements/frame';
 import { useStores } from 'Stores';
 
-const Banner: React.FC<TBannerProps> = ({ bg_image, type, title }) => {
+const Banner: React.FC<TBannerProps> = ({ bg_image_url, type, title }) => {
     const { config_store } = useStores();
 
     return (
         <div className='dw-banner'>
-            <Frame src={`${config_store.asset_path}/images/trade-type/${bg_image}.png`} alt={bg_image} />
+            <Frame
+                src={`${config_store.asset_path}/images/${bg_image_url}`}
+                alt={bg_image_url.split('/')[bg_image_url.split('/').length - 1]}
+            />
             <div className='dw-banner__container'>
                 <Text size='m' color='colored-background' line_height='xs'>
                     {type}
@@ -22,7 +25,7 @@ const Banner: React.FC<TBannerProps> = ({ bg_image, type, title }) => {
 };
 
 type TBannerProps = {
-    bg_image: string;
+    bg_image_url: string;
     type: string;
     title: string;
 };

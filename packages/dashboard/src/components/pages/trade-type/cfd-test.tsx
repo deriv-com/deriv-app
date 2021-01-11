@@ -91,7 +91,7 @@ const CFDTest: React.FC = () => {
     return (
         <React.Fragment>
             <div style={{ maxWidth: '93.6rem', margin: 'auto', backgroundColor: 'white' }}>
-                <Banner bg_image='banner-background' type='Margin' title='Trade positions larger than your capital' />
+                <Banner bg_image_url='trade-type/banner-background.png' type='Margin' title='Trade positions larger than your capital' />
                 <AppToTrade
                     title='Apps to trade CFDs'
                     cards={card_data}

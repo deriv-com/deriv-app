@@ -4,14 +4,14 @@ import { observer } from 'mobx-react-lite';
 import Frame from 'Components/elements/frame';
 import { useStores } from 'Stores';
 
-const YouMightLikeCard: React.FC<TYouMightLikeCardProps> = ({ bg_image, title, sub_title }) => {
+const YouMightLikeCard: React.FC<TYouMightLikeCardProps> = ({ bg_image_url, title, sub_title }) => {
     const { config_store } = useStores();
 
     return (
         <div className='dw-you-might-like__card'>
             <Frame
-                src={`${config_store.asset_path}/images/trade-type/${bg_image}.png`}
-                alt={bg_image}
+                src={`${config_store.asset_path}/images/${bg_image_url}`}
+                alt={bg_image_url.split('/')[bg_image_url.split('/').length - 1]}
                 className='dw-you-might-like__card-image'
             />
             <Text weight='bold' line_height='l'>
@@ -25,7 +25,7 @@ const YouMightLikeCard: React.FC<TYouMightLikeCardProps> = ({ bg_image, title, s
 };
 
 type TYouMightLikeCardProps = {
-    bg_image: string;
+    bg_image_url: string;
     title: string;
     sub_title: string;
 };

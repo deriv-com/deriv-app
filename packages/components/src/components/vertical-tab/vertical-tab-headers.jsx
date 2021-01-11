@@ -7,6 +7,7 @@ import VerticalTabHeaderTitle from './vertical-tab-header-title.jsx';
 
 const offsetTop = (extra_offset, is_floating, ref, selected) => {
     let calculated_offset = 0;
+    let item_offset = 0;
 
     const headers = ref.current.querySelectorAll(
         '.dc-vertical-tab__header__link, .dc-vertical-tab__header-group__link'
@@ -20,8 +21,8 @@ const offsetTop = (extra_offset, is_floating, ref, selected) => {
     }
 
     if (selected_el) {
-        extra_offset = is_floating ? extra_offset || 18 : 10;
-        calculated_offset = selected_el.offsetTop - extra_offset;
+        item_offset = is_floating ? extra_offset || 18 : 10;
+        calculated_offset = selected_el.offsetTop - item_offset;
     }
 
     return calculated_offset;

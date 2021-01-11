@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import * as React from 'react';
 import { DesktopWrapper, Text, VerticalTab } from '@deriv/components';
 
@@ -7,7 +8,7 @@ const Home: React.FC = () => {
     const list = [
         {
             default: true,
-            icon: 'IcBrandDtrader',
+            icon: 'IcUserOutline',
             label: 'My Deriv',
             is_routed: true,
             value: () => (
@@ -23,7 +24,7 @@ const Home: React.FC = () => {
         },
         {
             default: false,
-            icon: 'IcBrandDbot',
+            icon: 'IcWalletExplore',
             label: 'Discover',
             is_routed: true,
             value: () => (
@@ -32,7 +33,7 @@ const Home: React.FC = () => {
         },
         {
             default: false,
-            icon: 'IcBrandDbot',
+            icon: 'IcWalletPlatforms',
             label: 'Platforms',
             subroutes: [
                 {
@@ -79,7 +80,7 @@ const Home: React.FC = () => {
         },
         {
             default: false,
-            icon: 'IcBrandDbot',
+            icon: 'IcWalletTradeTypes',
             label: 'Trade Types',
             subroutes: [
                 {
@@ -110,7 +111,7 @@ const Home: React.FC = () => {
         },
         {
             default: false,
-            icon: 'IcBrandDbot',
+            icon: 'IcWalletMarkets',
             label: 'Markets',
             subroutes: [
                 {
@@ -146,11 +147,11 @@ const Home: React.FC = () => {
                     ),
                 },
             ],
-        }
+        },
     ];
 
-    const list_groups:object[] = [];
-    const subroutes:object[] = [];
+    const list_groups:any[] = [];
+    const subroutes:any[] = [];
     list.forEach(list_item => {
         if (!list_item.subroutes){
             subroutes.push(list_item);
@@ -166,9 +167,9 @@ const Home: React.FC = () => {
             list_groups.push({
                 icon: list_item.icon,
                 label: list_item.label,
-                subitems: (list_item.subroutes as object[]).map((subroute:object) => {
+                subitems: (list_item.subroutes as any[]).map((subroute:any) => {
                     return subroutes.findIndex((sub) => subroute === sub);
-                })
+                }),
             });
         }
     })

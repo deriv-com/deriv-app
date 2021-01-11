@@ -1,4 +1,4 @@
-import './trade-type-template.scss';
+import './template.scss';
 
 export { default as AppToTrade } from './_app-to-trade';
 export { default as Instrument } from './_instrument';

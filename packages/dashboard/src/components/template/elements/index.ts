@@ -1,4 +1,4 @@
-import './template.scss';
+import './element-template.scss';
 
 export { default as AppToTradeCard } from './_app-to-trade-card';
 export { default as Banner } from './_banner';

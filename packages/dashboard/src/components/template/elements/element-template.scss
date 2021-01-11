@@ -1,4 +1,4 @@
-.template {
+.dw-element-template {
     &__banner {
         padding: 17.7rem 8.1rem;
         width: 93.6rem;
@@ -82,6 +82,7 @@
         &-image {
             margin-bottom: 1.6rem;
             margin-top: 4rem;
+            height: 15rem;
         }
     }
 }

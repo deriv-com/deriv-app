@@ -2,17 +2,17 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
-import { AppToTradeBenefit, AppToTradeCard } from '../shared';
+import { AppToTradeBenefit, AppToTradeCard } from './elements';
 
 const AppToTrade: React.FC<TAppToTradeProps> = ({ title, card_data, benefit_description, benefit_data }) => {
     return (
-        <div className='trade-type-template__app-to-trade'>
+        <div className='dw-template__app-to-trade'>
             <Text size='m' weight='bold' styles={{ lineHeight: '36px' }}>
                 {title}
             </Text>
             <div
-                className={classNames('trade-type-template__app-to-trade-card', {
-                    'trade-type-template__app-to-trade-card--three-column': card_data.length === 3,
+                className={classNames('dw-template__app-to-trade-card', {
+                    'dw-template__app-to-trade-card--three-column': card_data.length === 3,
                 })}
             >
                 {card_data.map((data, idx) => (
@@ -26,12 +26,12 @@ const AppToTrade: React.FC<TAppToTradeProps> = ({ title, card_data, benefit_desc
                     </div>
                 ))}
             </div>
-            <div className='trade-type-template__line' />
+            <div className='dw-template__line' />
             <div>
                 <Text styles={{ lineHeight: '24px' }}>{benefit_description}</Text>
                 <div
-                    className={classNames('trade-type-template__app-to-trade-benefit', {
-                        'trade-type-template__app-to-trade-benefit--three-column': benefit_data.length / 2 === 3,
+                    className={classNames('dw-template__app-to-trade-benefit', {
+                        'dw-template__app-to-trade-benefit--three-column': benefit_data.length / 2 === 3,
                     })}
                 >
                     {benefit_data.map((data, idx) => (
@@ -41,7 +41,7 @@ const AppToTrade: React.FC<TAppToTradeProps> = ({ title, card_data, benefit_desc
                     ))}
                 </div>
             </div>
-            <div className='trade-type-template__line' />
+            <div className='dw-template__line' />
         </div>
     );
 };

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { AppToTrade, Instrument, Indices, YouMightLike } from '../../template/trade-type-template';
-import { Banner } from '../../template/shared';
+import { AppToTrade, Instrument, Indices, YouMightLike } from '../../template';
+import { Banner } from '../../template/elements';
 
 const card_data = [
     {

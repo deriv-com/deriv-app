@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { observer } from 'mobx-react-lite';
-import { YouMightLikeCard } from '../shared';
+import { YouMightLikeCard } from './elements';
 
 const tradertypes = [
     {
@@ -26,11 +26,11 @@ const tradertypes = [
 ];
 const YouMightLike: React.FC<TYouMightLikeProps> = ({ trade_type }) => {
     return (
-        <div className='trade-type-template__you-might-like'>
+        <div className='dw-template__you-might-like'>
             <Text size='sm' weight='bold'>
                 {localize('You might also like')}
             </Text>
-            <div className='trade-type-template__you-might-like-wrapper'>
+            <div className='dw-template__you-might-like-wrapper'>
                 {tradertypes.map(
                     (item, id) =>
                         trade_type !== item.code && (

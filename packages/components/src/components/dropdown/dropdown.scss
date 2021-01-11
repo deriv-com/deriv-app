@@ -53,7 +53,7 @@
                 pointer-events: none;
             }
         }
-        &-filter {
+        &--suffix-icon {
             width: 17.6rem;
             @include mobile {
                 width: 4rem;
@@ -278,6 +278,10 @@
             top: 0;
             opacity: 0;
 
+            &--suffix-icon {
+                left: -50px;
+            }
+
             @supports not (-webkit-touch-callout: none) {
                 /* non-iOS devices hack
     * because .focus() doesn't open <select /> in Android OS,
@@ -313,7 +317,7 @@
             right: 16px;
         }
     }
-    &--filter {
+    &--suffix-icon {
         margin-left: 1rem;
         margin-top: 0;
         max-width: fit-content;
@@ -323,17 +327,14 @@
     }
 }
 
-.icon_filter {
+.suffix-icon {
     position: absolute;
-    left: 10px;
+    left: 20px;
     @include mobile {
         left: 12px;
     }
 }
 
-.dc-list-filter {
+.dc-list--suffix-icon {
     width: 17.6rem !important;
-    @include mobile {
-        left: -137px;
-    }
 }

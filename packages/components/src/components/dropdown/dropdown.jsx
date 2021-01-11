@@ -11,6 +11,7 @@ import DisplayText from './display-text.jsx';
 import { useBlockScroll, useOnClickOutside } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 import DesktopWrapper from '../desktop-wrapper';
+import MobileWrapper from '../mobile-wrapper';
 import Icon from '../icon';
 
 const DropdownList = React.forwardRef((props, list_ref) => {
@@ -24,12 +25,12 @@ const DropdownList = React.forwardRef((props, list_ref) => {
         is_alignment_left,
         is_alignment_top,
         is_align_text_left,
-        is_filter,
         is_large,
         list,
         nodes,
         onKeyPressed,
         portal_id,
+        suffix_icon,
         value,
         parent_ref,
     } = props;
@@ -83,7 +84,7 @@ const DropdownList = React.forwardRef((props, list_ref) => {
         return classNames('dc-list', {
             'dc-list--left': is_alignment_left,
             'dc-list--large': is_large,
-            'dc-list-filter': is_filter,
+            'dc-list--suffix-icon': suffix_icon,
         });
     };
 
@@ -184,13 +185,13 @@ const Dropdown = ({
     is_large,
     is_nativepicker,
     is_nativepicker_visible,
-    is_filter,
     label,
     list,
     list_portal_id,
     name,
     no_border,
     placeholder,
+    suffix_icon,
     onChange,
     value,
 }) => {
@@ -228,7 +229,7 @@ const Dropdown = ({
             'dc-dropdown--show': is_list_visible,
             'dc-dropdown--disabled': isSingleOption() || disabled,
             'dc-dropdown--error': error,
-            'dc-dropdown--filter': is_filter,
+            'dc-dropdown--suffix-icon': suffix_icon,
         });
     };
 
@@ -357,7 +358,11 @@ const Dropdown = ({
                 value={value || 0}
             />
             <div ref={wrapper_ref} className={containerClassName()}>
-                <div className='dc-dropdown__container'>
+                <div
+                    className={classNames('dc-dropdown__container', {
+                        'dc-dropdown__container--suffix-icon': suffix_icon,
+                    })}
+                >
                     {label && (
                         <span
                             className={classNames('dc-dropdown__label', {
@@ -375,29 +380,11 @@ const Dropdown = ({
                         id='dropdown-display'
                         ref={dropdown_ref}
                     >
-                        {is_filter && (
-                            <React.Fragment>
-                                <Icon className='icon_filter' icon='IcFilter' size={16} fill />
-                                <DesktopWrapper>
-                                    <DisplayText
-                                        className={classNames('dc-dropdown__display-text', {
-                                            'dc-dropdown__display-filter-text': is_filter,
-                                        })}
-                                        has_symbol={has_symbol}
-                                        name={name}
-                                        is_title={is_list_visible}
-                                        placeholder={placeholder}
-                                        value={value || 0}
-                                        list={list}
-                                    />
-                                </DesktopWrapper>
-                            </React.Fragment>
-                        )}
-
-                        {!is_filter && (
+                        {suffix_icon && <Icon className='suffix-icon' icon={suffix_icon} size={16} fill />}
+                        <DesktopWrapper>
                             <DisplayText
                                 className={classNames('dc-dropdown__display-text', {
-                                    'dc-dropdown__display-filter-text': is_filter,
+                                    'dc-dropdown__display--suffix-icon-text': suffix_icon,
                                 })}
                                 has_symbol={has_symbol}
                                 name={name}
@@ -405,11 +392,10 @@ const Dropdown = ({
                                 placeholder={placeholder}
                                 value={value || 0}
                                 list={list}
-                                is_align_text_left={is_align_text_left}
                             />
-                        )}
+                        </DesktopWrapper>
                     </div>
-                    {!(isSingleOption() || is_filter) && (
+                    {!(isSingleOption() || suffix_icon) && (
                         <Icon
                             icon={is_alignment_left ? 'IcChevronLeft' : 'IcChevronDown'}
                             className={classNames('dc-dropdown__select-arrow', {
@@ -420,18 +406,9 @@ const Dropdown = ({
                         />
                     )}
                     {error && <p className='dc-field--error'>{error}</p>}
-                    {is_nativepicker ? (
-                        <NativeSelect
-                            ref={native_select_ref}
-                            name={name}
-                            value={value}
-                            list={list}
-                            onChange={onChange}
-                        />
-                    ) : (
+                    <DesktopWrapper>
                         <DropdownList
                             ref={list_ref}
-                            is_filter={is_filter}
                             classNameItems={classNameItems}
                             classNameLabel={classNameLabel}
                             portal_id={list_portal_id}
@@ -448,8 +425,18 @@ const Dropdown = ({
                             onKeyPressed={onKeyPressed}
                             value={value}
                             parent_ref={dropdown_ref}
+                            suffix_icon={suffix_icon}
                         />
-                    )}
+                    </DesktopWrapper>
+                    <MobileWrapper>
+                        <NativeSelect
+                            ref={native_select_ref}
+                            name={name}
+                            value={value}
+                            list={list}
+                            onChange={onChange}
+                        />
+                    </MobileWrapper>
                 </div>
                 {!error && hint && <p className='dc-dropdown__hint'>{hint}</p>}
             </div>
@@ -470,7 +457,6 @@ Dropdown.propTypes = {
     is_large: PropTypes.bool,
     is_nativepicker: PropTypes.bool,
     is_nativepicker_visible: PropTypes.bool,
-    is_filter: PropTypes.bool,
     label: PropTypes.string,
     list: listPropType(),
     list_height: PropTypes.string,

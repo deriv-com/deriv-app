@@ -47,10 +47,10 @@ const TransactionFilter = ({ is_alignment_left, handleFilterChange }) => {
             value={default_filter}
             name='transaction-filter-dropdown'
             className='dropdown-statement-filter'
-            classNameDisplay='dc-dropdown__display-filter'
+            classNameDisplay='dc-dropdown__display--suffix-icon'
             has_symbol={false}
             is_alignment_left={is_alignment_left}
-            is_filter
+            suffix_icon={'IcFilter'}
             onChange={e => {
                 setDefaultFilter(e.target.value);
                 handleFilterChange(e.target.value);

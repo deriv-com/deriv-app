@@ -53,7 +53,8 @@
             }
         }
         &:disabled {
-            -webkit-text-fill-color: var(--text-disabled);
+            -webkit-text-fill-color: var(--text-disabled); // iOS
+            opacity: 1; // iOS
             color: var(--text-disabled);
 
             & ~ label {

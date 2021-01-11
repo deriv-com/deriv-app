@@ -57,11 +57,14 @@ const QuickStrategyForm = ({
             const validation_errors = validateQuickStrategy(values);
             const is_valid = Object.keys(validation_errors).length === 0;
             const is_submit_enabled = !isSubmitting && is_valid;
-            const form_margin = is_mobile ? 'calc(100% - 72px)' : '430px';
 
             return (
-                <Form className='quick-strategy__form'>
-                    <ThemedScrollbars height={form_margin} autohide>
+                <Form
+                    className={classNames('quick-strategy__form', {
+                        'quick-strategy__form--active-keyboard': is_onscreen_keyboard_active,
+                    })}
+                >
+                    <ThemedScrollbars height='430px' autohide is_bypassed={is_mobile}>
                         <div
                             className={classNames('quick-strategy__form-content', {
                                 'quick-strategy__form-content--active-keyboard': is_onscreen_keyboard_active,
@@ -364,41 +367,41 @@ const QuickStrategyForm = ({
                                 </Field>
                             </div>
                         </div>
-                    </ThemedScrollbars>
-                    <div
-                        className={classNames('quick-strategy__form-footer', {
-                            'quick-strategy__form-footer--active-keyboard': is_onscreen_keyboard_active,
-                        })}
-                    >
-                        <Button.Group>
-                            {!is_mobile && (
+                        <div
+                            className={classNames('quick-strategy__form-footer', {
+                                'quick-strategy__form-footer--active-keyboard': is_onscreen_keyboard_active,
+                            })}
+                        >
+                            <Button.Group>
+                                {!is_mobile && (
+                                    <Button
+                                        type='button'
+                                        id='db-quick-strategy__button-edit'
+                                        text={localize('Create and edit')}
+                                        is_disabled={!is_submit_enabled}
+                                        secondary
+                                        large
+                                        onClick={() => {
+                                            setFieldValue('button', 'edit');
+                                            submitForm();
+                                        }}
+                                    />
+                                )}
                                 <Button
                                     type='button'
-                                    id='db-quick-strategy__button-edit'
-                                    text={localize('Create and edit')}
-                                    is_disabled={!is_submit_enabled}
-                                    secondary
+                                    id='db-quick-strategy__button-run'
+                                    text={localize('Run')}
+                                    is_disabled={!is_submit_enabled || is_stop_button_visible}
+                                    primary
                                     large
                                     onClick={() => {
-                                        setFieldValue('button', 'edit');
+                                        setFieldValue('button', 'run');
                                         submitForm();
                                     }}
                                 />
-                            )}
-                            <Button
-                                type='button'
-                                id='db-quick-strategy__button-run'
-                                text={localize('Run')}
-                                is_disabled={!is_submit_enabled || is_stop_button_visible}
-                                primary
-                                large
-                                onClick={() => {
-                                    setFieldValue('button', 'run');
-                                    submitForm();
-                                }}
-                            />
-                        </Button.Group>
-                    </div>
+                            </Button.Group>
+                        </div>
+                    </ThemedScrollbars>
                 </Form>
             );
         }}

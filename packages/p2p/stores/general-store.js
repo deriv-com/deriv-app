@@ -18,7 +18,6 @@ export default class GeneralStore extends BaseStore {
     @observable nickname = null;
     @observable nickname_error = '';
     @observable notification_count = 0;
-    @observable order_offset = 0;
     @observable order_table_type = order_list.ACTIVE;
     @observable orders = [];
     @observable parameters = null;
@@ -279,11 +278,6 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     setNotificationCount(notification_count) {
         this.notification_count = notification_count;
-    }
-
-    @action.bound
-    setOrderOffset(order_offset) {
-        this.order_offset = order_offset;
     }
 
     @action.bound

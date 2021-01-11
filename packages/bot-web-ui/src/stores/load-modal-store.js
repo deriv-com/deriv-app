@@ -34,7 +34,6 @@ export default class LoadModalStore {
     @observable loaded_local_file = null;
     @observable recent_strategies = [];
     @observable selected_strategy_id = undefined;
-    @observable should_rerender_tabs = false;
 
     @computed
     get preview_workspace() {
@@ -180,8 +179,6 @@ export default class LoadModalStore {
         if (this.tab_name === tabs_title.TAB_RECENT && this.selected_strategy) {
             this.previewRecentStrategy(this.selected_strategy.id);
         }
-
-        this.setShouldRerenderTabs(true);
     }
 
     @action.bound
@@ -197,7 +194,6 @@ export default class LoadModalStore {
 
         this.setActiveTabIndex(0); // Reset to first tab.
         this.setLoadedLocalFile(null);
-        this.setShouldRerenderTabs(false);
     }
 
     @action.bound
@@ -256,11 +252,6 @@ export default class LoadModalStore {
     @action.bound
     setSelectedStrategyId(selected_strategy_id) {
         this.selected_strategy_id = selected_strategy_id;
-    }
-
-    @action.bound
-    setShouldRerenderTabs(should_rerender_tabs) {
-        this.should_rerender_tabs = should_rerender_tabs;
     }
 
     @action.bound

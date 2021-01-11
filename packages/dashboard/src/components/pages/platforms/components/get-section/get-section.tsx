@@ -13,7 +13,7 @@ const GetSection: React.FC = () => {
                         <Text size='l' weight='bold'>
                             {localize('DMT5 Synthetic')}
                         </Text>
-                        <Text>
+                        <Text size='xs'>
                             {localize('Trade CFDs on synthetic indices that simulate real-world market movements.')}
                         </Text>
                     </div>
@@ -28,10 +28,27 @@ const GetSection: React.FC = () => {
                     </div>
                 </div>
                 <hr className='dw-get__divider' />
-                <div className='dw-get__wrapper'>
-                    <Text>{localize('Trade')}</Text>
-                    
+                <div className='dw-get__wrapper dw-get__trade'>
+                    <div className='dw-get__wrapper dw-get__item-wrapper'>
+                        <Text className='dw-get__item-title' color='less-prominent' size='xxs'>{localize('Trade')}</Text>
+                        <div className='dw-get__wrapper dw-get__item'>
+                            <Icon className='dw-get__item-icon' icon='IcMt5MarginTrading' width='16' height='16' />
+                            <Text size='xxxs'>{localize('Margin')}</Text>
+                        </div>
+                    </div>
+
+                    <hr className='dw-get__divider dw-get__divider--vertical' />
+
+                    <div className='dw-get__wrapper dw-get__item-wrapper'>
+                        <Text className='dw-get__item-title' color='less-prominent' size='xxs'>{localize('Markets')}</Text>
+                        <div className='dw-get__wrapper dw-get__item'>
+                            <Icon className='dw-get__item-icon' icon='IcMt5SyntheticIndices' width='16' height='16' />
+                            <Text size='xxxs'>{localize('Synthetic indices')}</Text>
+                        </div>
+                    </div>
                 </div>
+
+                <hr className='dw-get__divider' />
             </div>
         </section>
     );

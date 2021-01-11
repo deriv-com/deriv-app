@@ -1,4 +1,6 @@
 .dw-get {
+    margin-bottom: 2.8rem;
+
     &__icon {
         margin-right: 2.4rem;
     }
@@ -7,11 +9,13 @@
     }
     &__full-width {
         width: 100%;
+        flex-direction: column;
     }
     &__header {
-        align-items: center;
+        align-items: flex-end;
         justify-content: space-between;
         width: 100%;
+        margin-bottom: 1.6rem;
 
         &--left {
             flex-direction: column;
@@ -20,7 +24,36 @@
             margin: 0 1.6rem;
         }
     }
+    &__divider {
+        border: none;
+        width: 100%;
+        height: 1px;
+        background-color: var(--general-section-1);
+
+        &--vertical {
+            width: 1px;
+            height: 100%;
+            margin: 0 1.6rem;
+        }
+    }
     &__share {
         cursor: pointer;
+    }
+    &__trade {
+        width: fit-content;
+        margin: 1.6rem 0;
+    }
+    &__item {
+        align-items: center;
+
+        &-wrapper {
+            flex-direction: column;
+        }
+        &-title {
+            margin-bottom: 0.8rem;
+        }
+        &-icon {
+            margin-right: 0.8rem;
+        }
     }
 }

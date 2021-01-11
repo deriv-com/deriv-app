@@ -1,0 +1,22 @@
+.dw-preview {
+    display: flex;
+    flex-direction: column;
+
+    &__item {
+        border-radius: 6px;
+        max-width: 45.6rem;
+        max-height: 25.7rem;
+
+        &-wrapper {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.6rem;
+        }
+        &--middle {
+            margin: 0 2.4rem;
+        }
+    }
+    &__icon {
+        cursor: pointer;
+    }
+}

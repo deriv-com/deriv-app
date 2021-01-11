@@ -331,6 +331,7 @@ export const icons = {
         'IcMt5MarginTrading',
         'IcMt5PasswordUpdated',
         'IcMt5SyntheticDashboard',
+        'IcMt5SyntheticIndices',
         'IcMt5SyntheticPlatform',
         'IcMt5Synthetic',
     ],

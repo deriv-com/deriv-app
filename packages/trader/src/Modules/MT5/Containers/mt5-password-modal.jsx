@@ -23,6 +23,9 @@ import { connect } from 'Stores/connect';
 const PasswordResetBody = () => (
     <div className='dc-modal__container_mt5-reset-password-modal__body'>
         <Icon icon='IcMt5OnePassword' size='128' />
+        <Text as='p' align='center' weight='bold' size='xs' className='dc-modal-header__title'>
+            <Localize i18n_default_text='All you’ll need from now is one password' />
+        </Text>
         <Text as='p' align='center' size='xxs'>
             <Localize i18n_default_text='We’ve upgraded our system to support a single, more secure password across all of Deriv/Binary.com. Once you’ve set a new password, you can use it to log into all your Deriv/Binary.com, and DMT5/MT5 accounts.' />
         </Text>
@@ -244,19 +247,18 @@ const MT5PasswordModal = ({
     const should_show_success = !has_mt5_error && is_mt5_success_dialog_enabled;
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
 
-    if (account_status.status.includes('password_reset_required')) {
+    // if (account_status.status.includes('password_reset_required')) {
+    if (true) {
         return (
             <React.Fragment>
                 <DesktopWrapper>
                     <Modal
-                        width='50rem'
+                        width='38rem'
                         className='mt5-reset-password-modal'
                         is_open={should_show_password}
                         toggleModal={closeModal}
                         has_close_icon
-                        renderTitle={() => {
-                            return <Localize i18n_default_text='All you’ll need from now is one password' />;
-                        }}
+                        is_title_blank
                     >
                         <PasswordResetBody />
                     </Modal>

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { AppToTrade, Instrument, Indices, YouMightLike } from '../../template/trade-type-template';
-import { Banner } from '../../template/shared';
+import { AppToTrade, Instrument, Indices, YouMightLike } from '../../template';
+import { Banner } from '../../template/elements';
 
 const card_data = [
     {
@@ -88,7 +88,7 @@ const CFDTest: React.FC = () => {
     return (
         <React.Fragment>
             <div style={{ maxWidth: '93.6rem', margin: 'auto', backgroundColor: 'white' }}>
-                <Banner type='Margin' title='Trade positions larger than your capital' />
+                <Banner bg_image='banner-background' type='Margin' title='Trade positions larger than your capital' />
                 <AppToTrade
                     title='Apps to trade CFDs'
                     card_data={card_data}

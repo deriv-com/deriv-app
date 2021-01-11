@@ -1,30 +1,30 @@
 import * as React from 'react';
 import { Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
-import { Indice } from '../shared';
+import { Indice } from './elements';
 
 const Indices: React.FC<TIndicesProps> = ({ indice_data }) => {
     return (
-        <div className='trade-type-template__indices'>
+        <div className='dw-template__indices'>
             <div>
                 {indice_data.map((item, idx) => (
-                    <div key={idx} className='trade-type-template__indices-container'>
+                    <div key={idx} className='dw-template__indices-container'>
                         <Text size='sm' weight='bold'>
                             {item.title}
                         </Text>
                         <Text>{item.sub_title}</Text>
-                        <div className='trade-type-template__indices-pair-wrapper'>
+                        <div className='dw-template__indices-pair-wrapper'>
                             {item.data.map((pair, id) => (
                                 <div key={id}>
                                     <Indice icon={pair.icon} description={pair.description} />
                                 </div>
                             ))}
                         </div>
-                        {item.line && <div className='trade-type-template__line' />}
+                        {item.line && <div className='dw-template__line' />}
                     </div>
                 ))}
             </div>
-            <div className='trade-type-template__line' />
+            <div className='dw-template__line' />
         </div>
     );
 };

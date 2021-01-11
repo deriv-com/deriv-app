@@ -9,14 +9,14 @@ const AppToTradeCard: React.FC<TAppToTradeCardProps> = ({ icon, title, sub_title
     return (
         <React.Fragment>
             <div
-                className={classNames('template__app-to-trade-card', {
-                    'template__app-to-trade-card--big-size': is_big_size,
+                className={classNames('dw-element-template__app-to-trade-card', {
+                    'dw-element-template__app-to-trade-card--big-size': is_big_size,
                 })}
             >
                 <Icon icon={icon} size={is_big_size ? 108 : 80} />
                 <div
-                    className={classNames('template__app-to-trade-card-container', {
-                        'template__app-to-trade-card-container--big-size': is_big_size,
+                    className={classNames('dw-element-template__app-to-trade-card-container', {
+                        'dw-element-template__app-to-trade-card-container--big-size': is_big_size,
                     })}
                 >
                     <Text size='xs' weight='bold' line_height='l'>
@@ -25,8 +25,8 @@ const AppToTradeCard: React.FC<TAppToTradeCardProps> = ({ icon, title, sub_title
                     <Text size='xxs' color='less-prominent' line_height='m'>
                         {sub_title}
                     </Text>
-                    <div className='template__app-to-trade-card-wrapper'>
-                        <Link to='/' className='template__app-to-trade-card-link'>
+                    <div className='dw-element-template__app-to-trade-card-wrapper'>
+                        <Link to='/' className='dw-element-template__app-to-trade-card-link'>
                             {localize('Try demo')}
                         </Link>
                         <Button type='button' text={localize('Get')} primary />

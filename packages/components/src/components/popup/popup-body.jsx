@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '../tabs';
 
-const render_body = body => (typeof body === 'function' ? body() : null);
+const renderBody = body => (typeof body === 'function' ? body() : null);
 const Body = ({ active_tab_icon_color, background_color, tab_icon_color, tabs_detail }) => {
     return (
         <Tabs
@@ -19,7 +19,7 @@ const Body = ({ active_tab_icon_color, background_color, tab_icon_color, tabs_de
             {tabs_detail.map(detail => {
                 return (
                     <div key={detail.id} label={detail.title} icon={detail.icon}>
-                        {render_body(detail.render_body)}
+                        {renderBody(detail.render_body)}
                     </div>
                 );
             })}

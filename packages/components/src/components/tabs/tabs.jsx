@@ -87,7 +87,7 @@ const Tabs = ({
             <ul
                 className={classNames('dc-tabs__list', {
                     'dc-tabs__list--top': top,
-                    'dc-tabs__list--top__border-bottom': has_bottom_line,
+                    'dc-tabs__list--border-bottom': has_bottom_line,
                     'dc-tabs__list--bottom': bottom,
                     'dc-tabs__list--center': center,
                     'dc-tabs__list--header-fit-content': header_fit_content,

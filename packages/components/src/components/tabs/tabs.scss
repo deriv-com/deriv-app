@@ -18,12 +18,12 @@
             justify-content: center;
         }
 
+        &--border-bottom {
+            border-bottom: 2px solid var(--general-section-1);
+        }
+
         &--top {
             order: 0;
-
-            &__border-bottom {
-                border-bottom: 2px solid var(--general-section-1);
-            }
         }
         &--bottom {
             order: 1;

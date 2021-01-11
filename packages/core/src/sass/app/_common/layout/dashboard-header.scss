@@ -9,12 +9,7 @@
     top: 0;
     transition: opacity 0.3s;
     backface-visibility: hidden;
-}
-
-@mixin sharedMenuItemStyles {
-    margin: 0 4rem;
-    width: 100%;
-    display: flex;
+    padding: 0 4rem;
     justify-content: space-between;
 
     > * {
@@ -22,7 +17,7 @@
         display: flex;
     }
 
-    &-left {
+    &--left {
         > * {
             cursor: pointer;
         }
@@ -34,22 +29,18 @@
     background-color: var(--brand-dark-grey);
     color: var(--text-colored-background);
 
-    &__menu-items {
-        @include sharedMenuItemStyles;
+    &--middle {
+        > :not(:first-child) {
+            margin-left: 4.8rem;
+        }
 
-        &-middle {
-            > :not(:first-child) {
-                margin-left: 4.8rem;
-            }
-
-            > * {
-                cursor: pointer;
-            }
+        > * {
+            cursor: pointer;
         }
     }
 
     &__buttons {
-        &-secondary {
+        &--secondary {
             border: 2px solid var(--button-primary-default);
 
             &:hover:not([disabled]) {
@@ -68,16 +59,12 @@
     background-color: var(--general-main-1);
     color: var(--brand-dark-grey);
 
-    &__menu-items {
-        @include sharedMenuItemStyles;
-
-        &-right {
-            > * {
-                cursor: pointer;
-            }
-            &-icon {
-                margin-right: 0.8rem;
-            }
+    &--right {
+        > * {
+            cursor: pointer;
+        }
+        &-icon {
+            margin-right: 0.8rem;
         }
     }
 }

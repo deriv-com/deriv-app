@@ -18,4 +18,4 @@ HeaderItemsLoader.propTypes = {
     speed: PropTypes.number,
 };
 
-export { HeaderItemsLoader };
+export default HeaderItemsLoader;

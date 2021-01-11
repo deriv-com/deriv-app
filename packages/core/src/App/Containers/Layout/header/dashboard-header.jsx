@@ -8,23 +8,21 @@ import { connect } from 'Stores/connect';
 import DerivLogo from 'Assets/SvgComponents/header/deriv-logo.svg';
 import DerivText from 'Assets/SvgComponents/header/deriv-text.svg';
 import DerivLogoLight from 'Assets/SvgComponents/header/deriv-logo-light.svg';
-import { HeaderItemsLoader } from '../../../Components/Layout/Header/Components/Preloader/header-items.jsx';
+import HeaderItemsLoader from '../../../Components/Layout/Header/Components/Preloader/header-items.jsx';
 
 const LoggedInHeader = () => {
     const history = useHistory();
 
     return (
         <header className='logged-in-dashboard-header'>
-            <div className='logged-in-dashboard-header__menu-items'>
-                <div className='logged-in-dashboard-header__menu-items-left'>
-                    <div onClick={() => history.push(routes.dashboard)}>
-                        <DerivLogoLight />
-                    </div>
+            <div className='logged-in-dashboard-header--left'>
+                <div onClick={() => history.push(routes.dashboard)}>
+                    <DerivLogoLight />
                 </div>
-                <div className='logged-in-dashboard-header__menu-items-right'>
-                    <Icon icon={'IcProfile'} size={32} className='logged-in-dashboard-header__menu-items-right-icon' />
-                    <Icon icon={'IcNotification'} size={32} />
-                </div>
+            </div>
+            <div className='logged-in-dashboard-header--right'>
+                <Icon icon={'IcProfile'} size={32} className='logged-in-dashboard-header--right-icon' />
+                <Icon icon={'IcNotification'} size={32} />
             </div>
         </header>
     );
@@ -36,42 +34,39 @@ const LoggedOutHeader = () => {
 
     return (
         <header className='logged-out-dashboard-header'>
-            <div className='logged-out-dashboard-header__menu-items'>
-                <div className='logged-out-dashboard-header__menu-items-left'>
-                    <div onClick={() => history.push(routes.dashboard)}>
-                        <DerivLogo style={{ marginRight: '0.684rem' }} />
-                        <DerivText />
-                    </div>
+            <div className='logged-out-dashboard-header--left'>
+                <div onClick={() => history.push(routes.dashboard)}>
+                    <DerivLogo style={{ marginRight: '0.684rem' }} />
+                    <DerivText />
                 </div>
-                <div className='logged-out-dashboard-header__menu-items-middle'>
-                    <Text color='colored-background' size='s' onClick={() => history.push(routes.explore)}>
-                        {localize('Explore')}
-                    </Text>
-                    <Text color='colored-background' size='s' onClick={() => history.push(routes.about_us)}>
-                        {localize('About us')}
-                    </Text>
-                    <Text color='colored-background' size='s' onClick={() => history.push(routes.resources)}>
-                        {localize('Resources')}
-                    </Text>
-                </div>
-                <div className='logged-out-dashboard-header__menu-items-right'>
-                    <Button.Group>
-                        <Button
-                            tertiary
-                            medium
-                            has_effect
-                            className='logged-out-dashboard-header__buttons-secondary'
-                            text={localize('Log in')}
-                            onClick={() => redirectToLogin(false, getLanguage())}
-                        />
-                        <Button
-                            primary
-                            className='logged-out-dashboard-header__buttons-primary'
-                            text={localize('Create free demo account')}
-                            onClick={() => redirectToSignUp({ is_deriv_crypto })}
-                        />
-                    </Button.Group>
-                </div>
+            </div>
+            <div className='logged-out-dashboard-header--middle'>
+                <Text color='colored-background' size='s' onClick={() => history.push(routes.explore)}>
+                    {localize('Explore')}
+                </Text>
+                <Text color='colored-background' size='s' onClick={() => history.push(routes.about_us)}>
+                    {localize('About us')}
+                </Text>
+                <Text color='colored-background' size='s' onClick={() => history.push(routes.resources)}>
+                    {localize('Resources')}
+                </Text>
+            </div>
+            <div className='logged-out-dashboard-header--right'>
+                <Button.Group>
+                    <Button
+                        tertiary
+                        medium
+                        has_effect
+                        className='logged-out-dashboard-header__buttons--secondary'
+                        text={localize('Log in')}
+                        onClick={() => redirectToLogin(false, getLanguage())}
+                    />
+                    <Button
+                        primary
+                        text={localize('Create free demo account')}
+                        onClick={() => redirectToSignUp({ is_deriv_crypto })}
+                    />
+                </Button.Group>
             </div>
         </header>
     );

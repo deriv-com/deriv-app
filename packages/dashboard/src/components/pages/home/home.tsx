@@ -1,6 +1,8 @@
 /* eslint-disable react/display-name */
 import * as React from 'react';
 import { DesktopWrapper, Text, VerticalTab } from '@deriv/components';
+import { localize } from '@deriv/translations';
+import { TRoute, TRouteGroup } from 'Types';
 
 import TempButtons from 'Components/temp-buttons';
 
@@ -9,7 +11,7 @@ const Home: React.FC = () => {
         {
             default: true,
             icon: 'IcUserOutline',
-            label: 'My Deriv',
+            label: localize('My Deriv'),
             is_routed: true,
             value: () => (
                 <Text>
@@ -25,7 +27,7 @@ const Home: React.FC = () => {
         {
             default: false,
             icon: 'IcWalletExplore',
-            label: 'Discover',
+            label: localize('Discover'),
             is_routed: true,
             value: () => (
                 <TempButtons />
@@ -34,10 +36,10 @@ const Home: React.FC = () => {
         {
             default: false,
             icon: 'IcWalletPlatforms',
-            label: 'Platforms',
+            label: localize('Platforms'),
             subroutes: [
                 {
-                    label: 'DMT5',
+                    label: localize('DMT5'),
                     value: () => (
                         <Text>
                             DMT5
@@ -45,7 +47,7 @@ const Home: React.FC = () => {
                     ),
                 },
                 {
-                    label: 'DTrader',
+                    label: localize('DTrader'),
                     value: () => (
                         <Text>
                             DTrader
@@ -53,7 +55,7 @@ const Home: React.FC = () => {
                     ),
                 },
                 {
-                    label: 'DBot',
+                    label: localize('DBot'),
                     value: () => (
                         <Text>
                             DBot
@@ -61,7 +63,7 @@ const Home: React.FC = () => {
                     ),
                 },
                 {
-                    label: 'SmartTrader',
+                    label: localize('SmartTrader'),
                     value: () => (
                         <Text>
                             SmartTrader
@@ -69,7 +71,7 @@ const Home: React.FC = () => {
                     ),
                 },
                 {
-                    label: 'Binary Bot',
+                    label: localize('Binary Bot'),
                     value: () => (
                         <Text>
                             Binary Bot
@@ -81,10 +83,10 @@ const Home: React.FC = () => {
         {
             default: false,
             icon: 'IcWalletTradeTypes',
-            label: 'Trade Types',
+            label: localize('Trade Types'),
             subroutes: [
                 {
-                    label: 'CFDs',
+                    label: localize('CFDs'),
                     value: () => (
                         <Text>
                             CFDs
@@ -92,7 +94,7 @@ const Home: React.FC = () => {
                     ),
                 },
                 {
-                    label: 'Multipliers',
+                    label: localize('Multipliers'),
                     value: () => (
                         <Text>
                             Multipliers
@@ -100,7 +102,7 @@ const Home: React.FC = () => {
                     ),
                 },
                 {
-                    label: 'Options',
+                    label: localize('Options'),
                     value: () => (
                         <Text>
                             Options
@@ -112,10 +114,10 @@ const Home: React.FC = () => {
         {
             default: false,
             icon: 'IcWalletMarkets',
-            label: 'Markets',
+            label: localize('Markets'),
             subroutes: [
                 {
-                    label: 'Forex',
+                    label: localize('Forex'),
                     value: () => (
                         <Text>
                             Forex
@@ -123,7 +125,7 @@ const Home: React.FC = () => {
                     ),
                 },
                 {
-                    label: 'Synthetic Indices',
+                    label: localize('Synthetic Indices'),
                     value: () => (
                         <Text>
                             Synthetic Indices
@@ -131,7 +133,7 @@ const Home: React.FC = () => {
                     ),
                 },
                 {
-                    label: 'Stock Indices',
+                    label: localize('Stock Indices'),
                     value: () => (
                         <Text>
                             Stock Indices
@@ -139,7 +141,7 @@ const Home: React.FC = () => {
                     ),
                 },
                 {
-                    label: 'Commodities',
+                    label: localize('Commodities'),
                     value: () => (
                         <Text>
                             Commodities
@@ -150,24 +152,19 @@ const Home: React.FC = () => {
         },
     ];
 
-    const list_groups:any[] = [];
-    const subroutes:any[] = [];
-    list.forEach(list_item => {
-        if (!list_item.subroutes){
-            subroutes.push(list_item);
-        } else {
-            list_item.subroutes.forEach(item => subroutes.push(item));
-        }
-    })
+    const list_groups:TRouteGroup[] = [];
+    const subroutes:TRoute[] = [];
 
     list.forEach(list_item => {
         if (!list_item.subroutes){
+            subroutes.push(list_item);
             list_groups.push(list_item);
         } else {
+            list_item.subroutes.forEach(item => subroutes.push(item));
             list_groups.push({
                 icon: list_item.icon,
                 label: list_item.label,
-                subitems: (list_item.subroutes as any[]).map((subroute:any) => {
+                subitems: (list_item.subroutes as number[]).map((subroute:number) => {
                     return subroutes.findIndex((sub) => subroute === sub);
                 }),
             });

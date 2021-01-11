@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import PropTypes from 'prop-types';
 import Icon from '../../icon';
 import Text from '../../text';
 
@@ -40,5 +41,11 @@ const AppCardHeader = ({ getCardLabels, is_swap_free, onAddRealClick }) => (
         </div>
     </div>
 );
+
+AppCardHeader.propTypes = {
+    getCardLabels: PropTypes.func,
+    is_swap_free: PropTypes.bool,
+    onAddRealClick: PropTypes.func,
+};
 
 export default AppCardHeader;

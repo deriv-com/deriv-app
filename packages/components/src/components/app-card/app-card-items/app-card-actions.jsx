@@ -1,29 +1,8 @@
-import classNames from 'classnames';
 import React from 'react';
+import PropTypes from 'prop-types';
+import AppCardActionItem from './app-card-action-item.jsx';
 import Icon from '../../icon';
-import Text from '../../text';
-import { useHover } from '../hooks/use-hover';
-
-const Action = ({ icon, is_hovered, is_virtual, label, onClickHandler, wrapper_ref }) => {
-    return (
-        <div className='dc-app-card-actions__content-wrapper' onClick={onClickHandler} ref={wrapper_ref}>
-            <Icon
-                icon={icon}
-                className={classNames('dc-app-card-actions__icon', {
-                    'dc-app-card-actions__icon--hover': is_hovered,
-                    'dc-app-card-actions__icon--hover-virtual': is_hovered && is_virtual,
-                    'dc-app-card-actions__icon--hover-real': is_hovered && !is_virtual,
-                })}
-                custom_color={is_virtual ? 'var(--icon-dark-background)' : 'var(--icon-light-background)'}
-            />
-            {is_hovered && (
-                <Text size='xxxxs' color={is_virtual ? 'colored-background' : 'general'}>
-                    {label}
-                </Text>
-            )}
-        </div>
-    );
-};
+import { useHover } from '../../../hooks/use-hover';
 
 const AppCardActions = ({
     getCardLabels,
@@ -34,15 +13,15 @@ const AppCardActions = ({
     onTransactionsClick,
     onWithdrawClick,
 }) => {
-    const [deposit_ref, is_deposit_hovered] = useHover();
-    const [withdraw_ref, is_withdraw_hovered] = useHover();
-    const [transactions_ref, is_transactions_hovered] = useHover();
-    const [settings_ref, is_settings_hovered] = useHover();
+    const [deposit_ref, is_deposit_hovered] = useHover(null, true);
+    const [withdraw_ref, is_withdraw_hovered] = useHover(null, true);
+    const [transactions_ref, is_transactions_hovered] = useHover(null, true);
+    const [settings_ref, is_settings_hovered] = useHover(null, true);
 
     return (
         <div className='dc-app-card-actions__wrapper'>
-            <Action
-                wrapper_ref={deposit_ref}
+            <AppCardActionItem
+                ref={deposit_ref}
                 icon='IcAdd'
                 is_hovered={is_deposit_hovered}
                 is_virtual={is_virtual}
@@ -50,8 +29,8 @@ const AppCardActions = ({
                 onClickHandler={onDepositClick}
             />
             {!is_virtual && (
-                <Action
-                    wrapper_ref={withdraw_ref}
+                <AppCardActionItem
+                    ref={withdraw_ref}
                     icon='IcMinus'
                     is_hovered={is_withdraw_hovered}
                     is_virtual={is_virtual}
@@ -60,8 +39,8 @@ const AppCardActions = ({
                 />
             )}
             {!is_virtual && (
-                <Action
-                    wrapper_ref={transactions_ref}
+                <AppCardActionItem
+                    ref={transactions_ref}
                     icon='IcTransactions'
                     is_hovered={is_transactions_hovered}
                     is_virtual={is_virtual}
@@ -69,8 +48,8 @@ const AppCardActions = ({
                     onClickHandler={onTransactionsClick}
                 />
             )}
-            <Action
-                wrapper_ref={settings_ref}
+            <AppCardActionItem
+                ref={settings_ref}
                 icon='IcGear'
                 is_hovered={is_settings_hovered}
                 is_virtual={is_virtual}
@@ -82,6 +61,16 @@ const AppCardActions = ({
             </div>
         </div>
     );
+};
+
+AppCardActions.propTypes = {
+    getCardLabels: PropTypes.func,
+    is_virtual: PropTypes.bool,
+    onDepositClick: PropTypes.func,
+    onPlayClick: PropTypes.func,
+    onSettingsClick: PropTypes.func,
+    onTransactionsClick: PropTypes.func,
+    onWithdrawClick: PropTypes.func,
 };
 
 export default AppCardActions;

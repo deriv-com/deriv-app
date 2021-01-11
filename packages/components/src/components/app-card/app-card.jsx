@@ -2,36 +2,12 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { isMobile } from '@deriv/shared';
+import RealAppCardBackground from './app-card-items/real-app-card-background.jsx';
 import AppCardHeader from './app-card-items/app-card-header.jsx';
 import AppCardBody from './app-card-items/app-card-body.jsx';
 import AppCardActions from './app-card-items/app-card-actions.jsx';
 import AppCardFooter from './app-card-items/app-card-footer.jsx';
-import { useHover } from './hooks/use-hover';
-
-const RealAppCardBAckground = ({ is_swap_free, variant }) => (
-    <svg className='dc-app-card__wrapper--real-background'>
-        <path
-            d={
-                variant === 'default'
-                    ? isMobile()
-                        ? 'M0 0h272v12L0 44V0z'
-                        : 'M0 0h280v16L0 60V0z'
-                    : 'M0 0h216v9L0 32V0z'
-            }
-            fill={is_swap_free ? '#D8E4E6' : '#F0F0F0'}
-        />
-        <path
-            d={
-                variant === 'default'
-                    ? isMobile()
-                        ? 'M0 0h272v12L0 30V0z'
-                        : 'M0 0h280v16L0 40V0z'
-                    : 'M0 0h216v9L0 21V0z'
-            }
-            fill={is_swap_free ? '#BDD2D5' : '#F9F9F9'}
-        />
-    </svg>
-);
+import { useHover } from '../../hooks/use-hover';
 
 const AppCard = ({
     amount,
@@ -55,7 +31,7 @@ const AppCard = ({
     show_hover_actions,
     variant = 'default',
 }) => {
-    const [card_ref, is_hovered] = useHover();
+    const [card_ref, is_hovered] = useHover(null, true);
     const getFontColor = () => {
         if (is_virtual) return 'colored-background';
         return 'general';
@@ -66,12 +42,14 @@ const AppCard = ({
                 className={classNames('dc-app-card__wrapper', {
                     'dc-app-card__wrapper--virtual': is_virtual,
                     'dc-app-card__wrapper--real': !is_virtual,
-                    [`dc-app-card__wrapper--${variant}`]: variant,
+                    'dc-app-card__wrapper--default': variant === 'default',
+                    'dc-app-card__wrapper--mini': variant === 'mini',
+                    'dc-app-card__wrapper--micro': variant === 'micro',
                     'dc-app-card__wrapper--virtual-swap-free': is_virtual && is_swap_free,
                 })}
                 ref={isMobile() || !show_hover_actions ? null : card_ref}
             >
-                {!is_virtual && <RealAppCardBAckground is_swap_free={is_swap_free} variant={variant} />}
+                {!is_virtual && <RealAppCardBackground is_swap_free={is_swap_free} variant={variant} />}
                 {is_virtual && variant === 'default' && (
                     <AppCardHeader
                         getCardLabels={getCardLabels}
@@ -94,7 +72,6 @@ const AppCard = ({
                     show_hover_actions={show_hover_actions}
                     variant={variant}
                 />
-
                 {show_footer && variant !== 'micro' && !is_hovered && (
                     <AppCardFooter
                         broker={broker}

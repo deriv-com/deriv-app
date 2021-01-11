@@ -1,26 +1,29 @@
+import classNames from 'classnames';
 import React from 'react';
-import { isMobile } from '@deriv/shared';
-import Text from '../../text';
-
-const FooterItem = ({ info, getFontColor, label }) => {
-    return (
-        <div className='dc-app-card-footer__info'>
-            <Text color={getFontColor()} size={isMobile() ? 'xxxxs' : 'xxxs'}>
-                {label}
-            </Text>
-            <Text color={getFontColor()} size={isMobile() ? 'xxxxs' : 'xxxs'} weight='bold'>
-                {info}
-            </Text>
-        </div>
-    );
-};
+import PropTypes from 'prop-types';
+import AppCardFooterItem from './app-card-footer-item.jsx';
 
 const AppCardFooter = ({ broker, getCardLabels, getFontColor, login_id, server, variant }) => (
-    <div className={`dc-app-card-footer__wrapper dc-app-card-footer__wrapper--${variant}`}>
-        <FooterItem info={login_id} getFontColor={getFontColor} label={getCardLabels().LOGIN_ID} />
-        <FooterItem info={broker} getFontColor={getFontColor} label={getCardLabels().BROKER} />
-        <FooterItem info={server} getFontColor={getFontColor} label={getCardLabels().SERVER} />
+    <div
+        className={classNames('dc-app-card-footer__wrapper', {
+            'dc-app-card-footer__wrapper--default': variant === 'default',
+            'dc-app-card-footer__wrapper--mini': variant === 'mini',
+            'dc-app-card-footer__wrapper--micro': variant === 'micro',
+        })}
+    >
+        <AppCardFooterItem info={login_id} getFontColor={getFontColor} label={getCardLabels().LOGIN_ID} />
+        <AppCardFooterItem info={broker} getFontColor={getFontColor} label={getCardLabels().BROKER} />
+        <AppCardFooterItem info={server} getFontColor={getFontColor} label={getCardLabels().SERVER} />
     </div>
 );
+
+AppCardFooter.propTypes = {
+    broker: PropTypes.string,
+    getCardLabels: PropTypes.func,
+    getFontColor: PropTypes.func,
+    login_id: PropTypes.string,
+    server: PropTypes.string,
+    variant: PropTypes.oneOf(['default', 'mini', 'micro']),
+};
 
 export default AppCardFooter;

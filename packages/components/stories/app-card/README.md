@@ -43,7 +43,8 @@ const DummyComponent = props => (
 | app_name            | {string}   | null      | App name to be shown on the AppCard                        |
 | broker              | {string}   | null      | Broker name to be shown on the AppCard                     |
 | currency            | {string}   | null      | Currency linked to the AppCard.                            |
-| is_swap_free        | {boolean}  | null      | Defines whether the AppCard is Swap-Free or not.           |
+| getCardLabels       | {function} | null      | Function returns the labels to show in the card.           |
+| is\_swap\_free        | {boolean}  | null      | Defines whether the AppCard is Swap-Free or not.           |
 | is_virtual          | {boolean}  | null      | Defines whether the AppCard is virtual or not.             |
 | linked_wallet       | {string}   | null      | Linked wallet name to be shown on the AppCard.             |
 | login_id            | {string}   | null      | Login ID to be shown on the AppCard                        |
@@ -55,7 +56,7 @@ const DummyComponent = props => (
 | onWithdrawClick     | {function} | null      | Function triggers when user clicks on `Withdraw` icon.     |
 | server              | {string}   | null      | Server name to be shown on the AppCard.                    |
 | show_footer         | {boolean}  | null      | Define whether the AppCard should render Footer.           |
-| show_hover_actions  | {boolean}  | null      | Define whether the AppCard should show Actions on hover.   |
+| show\_hover\_actions  | {boolean}  | null      | Define whether the AppCard should show Actions on hover.   |
 | variant             | {string}   | `default` | The variant to use.                                        |
 
 # Full example:

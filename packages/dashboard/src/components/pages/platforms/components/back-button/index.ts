@@ -1,4 +1,4 @@
-import GetSection from './back-button';
+import BackButton from './back-button';
 import './back-button.scss';
 
-export default GetSection;
+export default BackButton;

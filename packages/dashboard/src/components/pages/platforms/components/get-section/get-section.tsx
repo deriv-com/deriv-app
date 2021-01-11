@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Text, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Button from 'Components/elements/button';
+import Divider from 'Components/elements/divider';
 
 const GetSection: React.FC = () => {
     return (
@@ -27,20 +28,22 @@ const GetSection: React.FC = () => {
                         <Icon className='dw-get__share' icon='IcGetPlatform' width='40' height='40' />
                     </div>
                 </div>
-                <hr className='dw-get__divider' />
+                <Divider horizontal />
                 <div className='dw-get__wrapper dw-get__trade'>
                     <div className='dw-get__wrapper dw-get__item-wrapper'>
-                        <Text className='dw-get__item-title' color='less-prominent' size='xxs'>{localize('Trade')}</Text>
+                        <Text className='dw-get__item-title' color='less-prominent' size='xxs'>
+                            {localize('Trade')}
+                        </Text>
                         <div className='dw-get__wrapper dw-get__item'>
                             <Icon className='dw-get__item-icon' icon='IcMt5MarginTrading' width='16' height='16' />
                             <Text size='xxxs'>{localize('Margin')}</Text>
                         </div>
                     </div>
 
-                    <hr className='dw-get__divider dw-get__divider--vertical' />
-
                     <div className='dw-get__wrapper dw-get__item-wrapper'>
-                        <Text className='dw-get__item-title' color='less-prominent' size='xxs'>{localize('Markets')}</Text>
+                        <Text className='dw-get__item-title' color='less-prominent' size='xxs'>
+                            {localize('Markets')}
+                        </Text>
                         <div className='dw-get__wrapper dw-get__item'>
                             <Icon className='dw-get__item-icon' icon='IcMt5SyntheticIndices' width='16' height='16' />
                             <Text size='xxxs'>{localize('Synthetic indices')}</Text>
@@ -48,7 +51,7 @@ const GetSection: React.FC = () => {
                     </div>
                 </div>
 
-                <hr className='dw-get__divider' />
+                <Divider horizontal />
             </div>
         </section>
     );

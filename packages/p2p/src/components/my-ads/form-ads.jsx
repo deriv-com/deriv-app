@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import { useStores } from 'Stores';
-import AdSummary from './my-ads-summary.jsx';
+import CreateAdSummary from './create-ad-summary.jsx';
 import { buy_sell } from '../../constants/buy-sell';
 
 const FormAds = observer(() => {
@@ -72,7 +72,7 @@ const FormAds = observer(() => {
                             <Form noValidate>
                                 <ThemedScrollbars className='p2p-my-ads__form-scrollbar'>
                                     <div className='p2p-my-ads__form-summary'>
-                                        <AdSummary
+                                        <CreateAdSummary
                                             offer_amount={errors.offer_amount ? '' : values.offer_amount}
                                             price_rate={errors.price_rate ? '' : values.price_rate}
                                             type={values.type}

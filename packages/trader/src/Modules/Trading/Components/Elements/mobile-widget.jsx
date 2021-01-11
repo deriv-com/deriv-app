@@ -43,6 +43,9 @@ class MobileWidget extends React.Component {
 
     getHumanReadableDuration() {
         const { duration, duration_unit } = this.props;
+
+        if (!duration_unit) return '';
+
         const lookup = {
             t: [localize('tick'), localize('ticks')],
             s: [localize('second'), localize('seconds')],

@@ -21,7 +21,7 @@ import * as SocketCache from '_common/base/socket_cache';
 import { isEuCountry } from '_common/utility';
 import BaseStore from './base-store';
 import { getClientAccountType, getAccountTitle } from './Helpers/client';
-import { createDeviceDataObject, setDeviceDataCookie } from './Helpers/device';
+import { createDeviceDataObject, getCookieObject, setDeviceDataCookie } from './Helpers/device';
 import { handleClientNotifications, clientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
@@ -56,10 +56,12 @@ export default class ClientStore extends BaseStore {
     @observable device_data = {};
     @observable is_logging_in = false;
     @observable has_logged_out = false;
-    @observable landing_companies = {
-        financial_company: {},
-        gaming_company: {},
-    };
+    // this will store the landing_company API response, including
+    // financial_company: {}
+    // gaming_company: {}
+    // mt_financial_company: {}
+    // mt_gaming_company: {}
+    @observable landing_companies = {};
 
     @observable upgradeable_landing_companies = [];
     @observable mt5_login_list = [];
@@ -213,6 +215,13 @@ export default class ClientStore extends BaseStore {
         if (!this.landing_companies) return [];
         if (this.root_store.ui && this.root_store.ui.real_account_signup_target) {
             const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
+            if (this.landing_companies[`${target}_company`] && this.current_landing_company && this.accounts) {
+                if (this.accounts[this.loginid] && !this.accounts[this.loginid].currency) {
+                    return this.landing_companies[`${target}_company`].legal_allowed_currencies.filter(currency =>
+                        this.current_landing_company.legal_allowed_currencies.includes(currency)
+                    );
+                }
+            }
             if (this.landing_companies[`${target}_company`]) {
                 return this.landing_companies[`${target}_company`].legal_allowed_currencies;
             }
@@ -389,6 +398,13 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get authentication_status() {
+        const document_status = this.account_status?.authentication?.document?.status;
+        const identity_status = this.account_status?.authentication?.identity?.status;
+        return { document_status, identity_status };
+    }
+
+    @computed
     get is_fully_authenticated() {
         return this.account_status?.status?.some(status => status === 'authenticated');
     }
@@ -530,7 +546,9 @@ export default class ClientStore extends BaseStore {
     }
 
     isMT5Allowed = landing_companies => {
-        if (!landing_companies || !Object.keys(landing_companies).length) return false;
+        // default allowing mt5 to true before landing_companies gets populated
+        // since most clients are allowed to use mt5
+        if (!landing_companies || !Object.keys(landing_companies).length) return true;
 
         return 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
     };
@@ -611,8 +629,8 @@ export default class ClientStore extends BaseStore {
     setCookieAccount() {
         const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
         const { loginid, email, landing_company_shortcode, currency, residence, account_settings } = this;
-        const { first_name, last_name } = account_settings;
-        if (loginid && email && first_name) {
+        const { first_name, last_name, name } = account_settings;
+        if (loginid && email) {
             const client_information = {
                 loginid,
                 email,
@@ -621,6 +639,7 @@ export default class ClientStore extends BaseStore {
                 residence,
                 first_name,
                 last_name,
+                name,
             };
             Cookies.set('client_information', client_information, { domain });
             this.has_cookie_account = true;
@@ -993,7 +1012,7 @@ export default class ClientStore extends BaseStore {
          * Set up reaction for account_settings, account_status, is_p2p_visible
          */
         reaction(
-            () => [this.account_settings, this.account_status, this.root_store.modules.cashier.is_p2p_visible],
+            () => [this.account_settings, this.account_status, this.root_store.modules?.cashier?.is_p2p_visible],
             () => {
                 client = this.accounts[this.loginid];
                 BinarySocket.wait('landing_company').then(() => {
@@ -1566,14 +1585,38 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setDeviceData() {
         // Set client URL params on init
+        const affiliate_token = Cookies.getJSON('affiliate_tracking');
         const date_first_contact_cookie = setDeviceDataCookie(
             'date_first_contact',
             this.root_store.common.server_time.format('YYYY-MM-DD')
         );
         const signup_device_cookie = setDeviceDataCookie('signup_device', isDesktopOs() ? 'desktop' : 'mobile');
-        const device_data = createDeviceDataObject(date_first_contact_cookie, signup_device_cookie);
+        const cookies_list = [
+            'gclid',
+            'utm_source',
+            'utm_ad_id',
+            'utm_adgroup_id',
+            'utm_adrollclk_id',
+            'utm_campaign_id',
+            'utm_campaign',
+            'utm_fbcl_id',
+            'utm_gl_client_id',
+            'utm_msclk_id',
+            'utm_medium',
+            'utm_term',
+            'utm_content',
+        ];
+        const cookies = {
+            signup_device: signup_device_cookie,
+            date_first_contact: date_first_contact_cookie,
+        };
 
-        this.device_data = { ...this.device_data, ...device_data };
+        cookies_list.forEach(element => {
+            cookies[element] = getCookieObject(element);
+        });
+
+        const device_data = createDeviceDataObject(cookies);
+        this.device_data = { ...this.device_data, ...device_data, affiliate_token };
     }
 
     @action.bound

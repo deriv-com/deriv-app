@@ -1,21 +1,26 @@
 .dw-get {
-    display: flex;
-
     &__icon {
         margin-right: 2.4rem;
     }
-    &__header {
+    &__wrapper {
         display: flex;
+    }
+    &__full-width {
+        width: 100%;
+    }
+    &__header {
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
 
         &--left {
-            display: flex;
             flex-direction: column;
-        }
-        &--right {
-            display: flex;
         }
         &-center {
             margin: 0 1.6rem;
         }
+    }
+    &__share {
+        cursor: pointer;
     }
 }

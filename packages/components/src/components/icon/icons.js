@@ -319,6 +319,7 @@ import './mt5/ic-mt5-financial-platform.svg';
 import './mt5/ic-mt5-financial-stp-platform.svg';
 import './mt5/ic-mt5-financial-stp.svg';
 import './mt5/ic-mt5-financial.svg';
+import './mt5/ic-mt5-margin-trading.svg';
 import './mt5/ic-mt5-password-updated.svg';
 import './mt5/ic-mt5-synthetic-dashboard.svg';
 import './mt5/ic-mt5-synthetic-platform.svg';

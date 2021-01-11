@@ -26,3 +26,5 @@ export interface TUIProps {
         Page404: React.ComponentType | React.ElementType | null;
     };
 }
+
+export type TStringTranslation = string | React.ReactElement

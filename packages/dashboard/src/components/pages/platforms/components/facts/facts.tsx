@@ -2,8 +2,9 @@ import * as React from 'react';
 import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Divider from 'Components/elements/divider';
+import { TStringTranslation } from 'Types';
 
-const Facts: React.FC = () => {
+const Facts: React.FC<IFactsType> = ({ leverage, margin_call, stop_out, assets, min_stake, duration }) => {
     return (
         <section className='dw-facts'>
             <Divider horizontal />
@@ -12,42 +13,51 @@ const Facts: React.FC = () => {
                     <Text size='xxs' color='less-prominent'>
                         {localize('Leverage')}
                     </Text>
-                    <Text weight='bold'>{localize('Up to 1:4000')}</Text>
+                    <Text weight='bold'>{leverage}</Text>
                 </div>
                 <div className='dw-facts__item'>
                     <Text size='xxs' color='less-prominent'>
                         {localize('Margin call')}
                     </Text>
-                    <Text weight='bold'>{localize('100%')}</Text>
+                    <Text weight='bold'>{margin_call}</Text>
                 </div>
                 <div className='dw-facts__item'>
                     <Text size='xxs' color='less-prominent'>
                         {localize('Stop out')}
                     </Text>
-                    <Text weight='bold'>{localize('50%')}</Text>
+                    <Text weight='bold'>{stop_out}</Text>
                 </div>
                 <div className='dw-facts__item'>
                     <Text size='xxs' color='less-prominent'>
                         {localize('Assets')}
                     </Text>
-                    <Text weight='bold'>{localize('10')}</Text>
+                    <Text weight='bold'>{assets}</Text>
                 </div>
                 <div className='dw-facts__item'>
                     <Text size='xxs' color='less-prominent'>
                         {localize('Min. stake')}
                     </Text>
-                    <Text weight='bold'>{localize('$5')}</Text>
+                    <Text weight='bold'>{min_stake}</Text>
                 </div>
                 <div className='dw-facts__item'>
                     <Text size='xxs' color='less-prominent'>
                         {localize('Duration')}
                     </Text>
-                    <Text weight='bold'>{localize('1 tick - 365 days')}</Text>
+                    <Text weight='bold'>{duration}</Text>
                 </div>
             </div>
             <Divider horizontal />
         </section>
     );
+};
+
+type IFactsType = {
+    leverage: TStringTranslation;
+    margin_call: TStringTranslation;
+    stop_out: TStringTranslation;
+    assets: TStringTranslation;
+    min_stake: TStringTranslation;
+    duration: TStringTranslation;
 };
 
 export default Facts;

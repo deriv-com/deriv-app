@@ -3,29 +3,49 @@ import { Text, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Button from 'Components/elements/button';
 import Divider from 'Components/elements/divider';
+import { TStringTranslation } from 'Types';
 
-const GetSection: React.FC = () => {
+const GetSection: React.FC<IGetSectionType> = ({
+    icon,
+    title,
+    subtitle,
+    trades = [],
+    markets = [],
+    onClickDemo,
+    onClickGet,
+    link,
+}) => {
+    const shareLink = () => {
+        // TODO: [dashboard] add share functionality
+        // eslint-disable-next-line no-console
+        console.log(link);
+    };
+
     return (
         <section className='dw-get dw-get__wrapper'>
-            <Icon className='dw-get__icon' icon='IcMt5SyntheticDashboard' width='136' height='136' />
+            <Icon className='dw-get__icon' icon={icon} width='136' height='136' />
             <div className='dw-get__wrapper dw-get__full-width'>
                 <div className='dw-get__wrapper dw-get__header'>
                     <div className='dw-get__wrapper dw-get__header--left'>
                         <Text size='l' weight='bold'>
-                            {localize('DMT5 Synthetic')}
+                            {title}
                         </Text>
-                        <Text size='xs'>
-                            {localize('Trade CFDs on synthetic indices that simulate real-world market movements.')}
-                        </Text>
+                        <Text size='xs'>{subtitle}</Text>
                     </div>
                     <div className='dw-get__wrapper dw-get__header--right'>
-                        <Button large tertiary>
+                        <Button large tertiary onClick={onClickDemo}>
                             {localize('Try demo')}
                         </Button>
-                        <Button large className='dw-get__header-center' primary>
+                        <Button large className='dw-get__header-center' primary onClick={onClickGet}>
                             {localize('Get')}
                         </Button>
-                        <Icon className='dw-get__share' icon='IcGetPlatform' width='40' height='40' />
+                        <Icon
+                            onClick={shareLink}
+                            className='dw-get__share'
+                            icon='IcGetPlatform'
+                            width='40'
+                            height='40'
+                        />
                     </div>
                 </div>
                 <Divider horizontal />
@@ -34,9 +54,13 @@ const GetSection: React.FC = () => {
                         <Text className='dw-get__item-title' color='less-prominent' size='xxs'>
                             {localize('Trade')}
                         </Text>
-                        <div className='dw-get__wrapper dw-get__item'>
-                            <Icon className='dw-get__item-icon' icon='IcMt5MarginTrading' width='16' height='16' />
-                            <Text size='xxxs'>{localize('Margin')}</Text>
+                        <div className='dw-get__item-grid'>
+                            {trades.map((trade, idx) => (
+                                <div key={idx} className='dw-get__wrapper dw-get__item'>
+                                    <Icon className='dw-get__item-icon' icon={trade.icon} width='16' height='16' />
+                                    <Text size='xxxs'>{trade.name}</Text>
+                                </div>
+                            ))}
                         </div>
                     </div>
 
@@ -44,9 +68,13 @@ const GetSection: React.FC = () => {
                         <Text className='dw-get__item-title' color='less-prominent' size='xxs'>
                             {localize('Markets')}
                         </Text>
-                        <div className='dw-get__wrapper dw-get__item'>
-                            <Icon className='dw-get__item-icon' icon='IcMt5SyntheticIndices' width='16' height='16' />
-                            <Text size='xxxs'>{localize('Synthetic indices')}</Text>
+                        <div className='dw-get__item-grid'>
+                            {markets.map((market, idx) => (
+                                <div key={idx} className='dw-get__wrapper dw-get__item'>
+                                    <Icon className='dw-get__item-icon' icon={market.icon} width='16' height='16' />
+                                    <Text size='xxxs'>{market.name}</Text>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -55,6 +83,22 @@ const GetSection: React.FC = () => {
             </div>
         </section>
     );
+};
+
+type TradeMarketType = {
+    icon?: string;
+    name?: TStringTranslation;
+};
+
+type IGetSectionType = {
+    icon: string;
+    title: TStringTranslation;
+    subtitle: TStringTranslation;
+    trades: TradeMarketType[];
+    markets: TradeMarketType[];
+    onClickDemo: React.MouseEventHandler<HTMLButtonElement>;
+    onClickGet: React.MouseEventHandler<HTMLButtonElement>;
+    link?: string;
 };
 
 export default GetSection;

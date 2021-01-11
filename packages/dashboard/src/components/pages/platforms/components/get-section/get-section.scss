@@ -50,5 +50,10 @@
         &-icon {
             margin-right: 0.8rem;
         }
+        &-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
+            grid-gap: 1.6rem;
+        }
     }
 }

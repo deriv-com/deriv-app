@@ -41,7 +41,8 @@ const Tabs = ({
         }
         onClickTabItem(initial_index || 0);
         setActiveLineStyle();
-    }, [active_tab_index, location.hash]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [location.hash]);
 
     const onClickTabItem = index => {
         if (should_update_hash) {

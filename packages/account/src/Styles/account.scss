@@ -187,8 +187,10 @@ $MIN_HEIGHT_FLOATING: calc(
         &__fieldset {
             position: relative;
             max-width: 400px;
-            margin-top: 9px;
             margin-bottom: 18px;
+            &:not(:first-child) {
+                margin-top: 3rem;
+            }
 
             &--2-cols {
                 display: grid;

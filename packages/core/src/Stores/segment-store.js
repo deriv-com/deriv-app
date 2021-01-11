@@ -27,7 +27,7 @@ export default class SegmentStore extends BaseStore {
                 BinarySocket.wait('authorize').then(() => {
                     const user_id = this.root_store.client.user_id;
                     if (user_id) {
-                        window.analytics.identify(user_id, {
+                        window.rudderanalytics.identify(user_id, {
                             language: getLanguage().toLowerCase(),
                             ...data,
                         });
@@ -56,7 +56,7 @@ export default class SegmentStore extends BaseStore {
             this.has_identified &&
             current_page !== this.current_page
         ) {
-            window.analytics.page();
+            window.rudderanalytics.page();
             this.current_page = current_page;
         }
     }
@@ -68,7 +68,7 @@ export default class SegmentStore extends BaseStore {
     @action.bound
     reset() {
         if (this.is_applicable) {
-            window.analytics.reset();
+            window.rudderanalytics.reset();
             this.has_identified = false;
         }
     }
@@ -79,7 +79,7 @@ export default class SegmentStore extends BaseStore {
     @action.bound
     track(event_name, options) {
         if (this.is_applicable && this.has_identified) {
-            window.analytics.track(event_name, options);
+            window.rudderanalytics.track(event_name, options);
         }
     }
 }

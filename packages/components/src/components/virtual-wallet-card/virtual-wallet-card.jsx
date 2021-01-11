@@ -39,7 +39,7 @@ const VirtualWalletCard = ({
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
         >
-            {/* Creating an overlay to add opacity to background but not to deposit button */}
+            {/* Creating an overlay to add opacity to background but not to top-up button */}
             {has_no_funds && (
                 <div
                     className='dc-virtual-wallet-card--no-funds'

@@ -39,61 +39,59 @@ const RealWalletCard = ({
     };
 
     return (
-        <React.Fragment>
-            <div
-                className={classNames('dc-real-wallet-card', {
-                    'dc-real-wallet-card--linked': is_linked || is_selected,
-                })}
-                onMouseEnter={onMouseEnter}
-                onMouseLeave={onMouseLeave}
-                style={{
-                    background: `var(--wallet-${wallet_type.toLowerCase()})`,
-                    height: `${height}px`,
-                    width: `${width}px`,
-                }}
-            >
-                {/* Creating an overlay to add opacity to background but not to deposit button */}
-                {has_no_funds && (
-                    <div
-                        className='dc-real-wallet-card--no-funds'
-                        style={{
-                            height: `${height}px`,
-                            width: `${width}px`,
-                        }}
-                    />
-                )}
-                <RealWalletCardHeader
+        <div
+            className={classNames('dc-real-wallet-card', {
+                'dc-real-wallet-card--linked': is_linked || is_selected,
+            })}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            style={{
+                background: `var(--wallet-${wallet_type.toLowerCase()})`,
+                height: `${height}px`,
+                width: `${width}px`,
+            }}
+        >
+            {/* Creating an overlay to add opacity to background but not to deposit button */}
+            {has_no_funds && (
+                <div
+                    className='dc-real-wallet-card--no-funds'
+                    style={{
+                        height: `${height}px`,
+                        width: `${width}px`,
+                    }}
+                />
+            )}
+            <RealWalletCardHeader
+                amount={amount}
+                currency={currency}
+                is_selected={is_selected}
+                is_temporarily_unavailable={is_temporarily_unavailable}
+                wallet_name={wallet_name}
+                wallet_type={wallet_type}
+            />
+            {!is_temporarily_unavailable && (
+                <RealWalletCardContent
                     amount={amount}
                     currency={currency}
-                    is_selected={is_selected}
-                    is_temporarily_unavailable={is_temporarily_unavailable}
+                    has_footer={has_footer}
                     wallet_name={wallet_name}
-                    wallet_type={wallet_type}
                 />
-                {!is_temporarily_unavailable && (
-                    <RealWalletCardContent
-                        amount={amount}
-                        currency={currency}
-                        has_footer={has_footer}
-                        wallet_name={wallet_name}
-                    />
-                )}
-                {has_footer && (
-                    <RealWalletCardFooter
-                        getWalletLabels={getWalletLabels}
-                        is_actions_footer={is_actions_footer}
-                        is_deposit_footer={is_deposit_footer}
-                        is_temporarily_unavailable={is_temporarily_unavailable}
-                        onClickDeposit={onClickDeposit}
-                        onClickSettings={onClickSettings}
-                        onClickTransactions={onClickTransactions}
-                        onClickTransfer={onClickTransfer}
-                        onClickWithdrawal={onClickWithdrawal}
-                        should_show_footer_actions={should_show_footer_actions}
-                    />
-                )}
-            </div>
-        </React.Fragment>
+            )}
+            {has_footer && (
+                <RealWalletCardFooter
+                    getWalletLabels={getWalletLabels}
+                    is_actions_footer={is_actions_footer}
+                    is_deposit_footer={is_deposit_footer}
+                    is_temporarily_unavailable={is_temporarily_unavailable}
+                    onClickDeposit={onClickDeposit}
+                    onClickSettings={onClickSettings}
+                    onClickTransactions={onClickTransactions}
+                    onClickTransfer={onClickTransfer}
+                    onClickWithdrawal={onClickWithdrawal}
+                    should_show_footer_actions={should_show_footer_actions}
+                />
+            )}
+        </div>
     );
 };
 

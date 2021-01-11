@@ -17,21 +17,6 @@ const RealWalletCardFooter = ({
     onClickWithdrawal,
     should_show_footer_actions,
 }) => {
-    if (is_deposit_footer) {
-        return (
-            <Button
-                className='dc-real-wallet-card__footer--deposit'
-                icon={<Icon icon='IcAddOutline' />}
-                onClick={onClickDeposit}
-                rounded
-            >
-                <Text color='general' line_height='m' size='xxxs' weight='bold'>
-                    {getWalletLabels().DEPOSIT}
-                </Text>
-            </Button>
-        );
-    }
-
     if (is_actions_footer || is_temporarily_unavailable) {
         return (
             <React.Fragment>
@@ -53,6 +38,21 @@ const RealWalletCardFooter = ({
                     </div>
                 )}
             </React.Fragment>
+        );
+    }
+
+    if (is_deposit_footer) {
+        return (
+            <Button
+                className='dc-real-wallet-card__footer--deposit'
+                icon={<Icon icon='IcAddOutline' />}
+                onClick={onClickDeposit}
+                rounded
+            >
+                <Text color='general' line_height='m' size='xxxs' weight='bold'>
+                    {getWalletLabels().DEPOSIT}
+                </Text>
+            </Button>
         );
     }
 

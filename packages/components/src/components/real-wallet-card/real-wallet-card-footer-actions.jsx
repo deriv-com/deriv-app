@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useHover } from './hook/use-hover';
+import { useHover } from '../../hooks/use-hover';
 import Icon from '../icon';
 import Text from '../text';
 
@@ -14,11 +14,11 @@ const RealWalletCardFooterActions = ({
     onClickTransfer,
     onClickWithdrawal,
 }) => {
-    const [hover_ref_deposit, is_deposit_hovered] = useHover();
-    const [hover_ref_settings, is_settings_settings] = useHover();
-    const [hover_ref_transactions, is_transactions_hovered] = useHover();
-    const [hover_ref_transfer, is_transfer_hovered] = useHover();
-    const [hover_ref_withdrawal, is_withdrawal_hovered] = useHover();
+    const [hover_ref_deposit, is_deposit_hovered] = useHover(null, true);
+    const [hover_ref_settings, is_settings_settings] = useHover(null, true);
+    const [hover_ref_transactions, is_transactions_hovered] = useHover(null, true);
+    const [hover_ref_transfer, is_transfer_hovered] = useHover(null, true);
+    const [hover_ref_withdrawal, is_withdrawal_hovered] = useHover(null, true);
 
     return (
         <div

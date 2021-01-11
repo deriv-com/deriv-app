@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useHover } from '../real-wallet-card/hook/use-hover';
+import { useHover } from '../../hooks/use-hover';
 import Icon from '../icon';
 import Text from '../text';
 
 const VirtualWalletCardFooterActions = ({ getWalletLabels, onClickReset, onClickTransactions }) => {
-    const [hover_ref_reset, is_reset_hovered] = useHover();
-    const [hover_ref_transactions, is_transactions_hovered] = useHover();
+    const [hover_ref_reset, is_reset_hovered] = useHover(null, true);
+    const [hover_ref_transactions, is_transactions_hovered] = useHover(null, true);
 
     return (
         <div className='dc-virtual-wallet-card__actions-container'>

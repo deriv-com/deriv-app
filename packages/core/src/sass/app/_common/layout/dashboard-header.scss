@@ -38,20 +38,6 @@
             cursor: pointer;
         }
     }
-
-    &__buttons {
-        &--secondary {
-            border: 2px solid var(--button-primary-default);
-
-            &:hover:not([disabled]) {
-                background: var(--button-primary-default);
-
-                .dc-btn__text {
-                    color: var(--text-colored-background);
-                }
-            }
-        }
-    }
 }
 
 .logged-in-dashboard-header {

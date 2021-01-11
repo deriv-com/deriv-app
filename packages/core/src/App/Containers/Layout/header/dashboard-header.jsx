@@ -54,10 +54,8 @@ const LoggedOutHeader = () => {
             <div className='logged-out-dashboard-header--right'>
                 <Button.Group>
                     <Button
-                        tertiary
-                        medium
+                        alternate
                         has_effect
-                        className='logged-out-dashboard-header__buttons--secondary'
                         text={localize('Log in')}
                         onClick={() => redirectToLogin(false, getLanguage())}
                     />

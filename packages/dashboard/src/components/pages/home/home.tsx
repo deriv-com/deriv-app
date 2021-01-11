@@ -1,40 +1,9 @@
 import * as React from 'react';
-// import { useHistory } from 'react-router-dom';
 import { DesktopWrapper, Text, VerticalTab } from '@deriv/components';
-// import { Localize } from '@deriv/translations';
-// import { useStores } from 'Stores';
-import { flatten } from '../../../../../account/src/Helpers/flatten';
 
 import TempButtons from 'Components/temp-buttons';
 
 const Home: React.FC = () => {
-    // const history = useHistory();
-    // const { config_store } = useStores();
-    // const routes = config_store.routes;
-
-    // let list_groups = [...routes];
-    // list_groups = list_groups.map(route_group => ({
-    //     icon: route_group.icon,
-    //     label: route_group.getTitle(),
-    //     subitems: route_group.subroutes.map(sub => subroutes.indexOf(sub)),
-    // }));
-
-    // const menu_options = () => {
-    //     const options = [];
-
-    //     routes.forEach(route => {
-    //         options.push({
-    //             default: route.default,
-    //             icon: route.icon_component,
-    //             label: route.getTitle(),
-    //             value: route.component,
-    //             path: route.path,
-    //         });
-    //     });
-
-    //     return options;
-    // };
-
     const list = [
         {
             default: true,
@@ -120,8 +89,6 @@ const Home: React.FC = () => {
                             CFDs
                         </Text>
                     ),
-                    // path: () => routes.cfds,
-                    // component: TempButtons,
                 },
                 {
                     label: 'Multipliers',
@@ -182,55 +149,31 @@ const Home: React.FC = () => {
         }
     ];
 
-    const subroutes = flatten(list.map(i => i.subroutes || i));
-    let list_groups = [...list];
-    list_groups = list_groups.map(route_group => {  
-        let result = {
-            icon: route_group.icon,
-            label: route_group.label,
+    const list_groups:object[] = [];
+    const subroutes:object[] = [];
+    list.forEach(list_item => {
+        if (!list_item.subroutes){
+            subroutes.push(list_item);
+        } else {
+            list_item.subroutes.forEach(item => subroutes.push(item));
         }
+    })
 
-        if (route_group.subroutes) {
-            result.subitems = route_group.subroutes.map(sub => subroutes.indexOf(sub));
+    list.forEach(list_item => {
+        if (!list_item.subroutes){
+            list_groups.push(list_item);
+        } else {
+            list_groups.push({
+                icon: list_item.icon,
+                label: list_item.label,
+                subitems: (list_item.subroutes as object[]).map((subroute:object) => {
+                    return subroutes.findIndex((sub) => subroute === sub);
+                })
+            });
         }
-
-        return route_group.subroutes ? result : route_group;
-    });
+    })
 
     return (
-        // <DesktopWrapper>
-        //     <VerticalTab
-        //         alignment='center'
-        //         id='cashier'
-        //         classNameHeader='cashier__tab-header'
-        //         current_path={this.props.location.pathname}
-        //         is_floating
-        //         setVerticalTabIndex={this.props.setTabIndex}
-        //         vertical_tab_index={is_default_route ? 0 : this.props.tab_index}
-        //         is_full_width
-        //         is_routed
-        //         // list={menu_options()}
-        //         list={list}
-        //         tab_headers_note={
-        //             should_show_tab_headers_note ? (
-        //                 <Text as='p' size='xxs' className='cashier__tab-header-note'>
-        //                     <Localize
-        //                         i18n_default_text='Want to exchange between e-wallet currencies? Try <0>bestchange.com</0>'
-        //                         components={[
-        //                             <a
-        //                                 key={0}
-        //                                 href='https://www.bestchange.com/?p=1095016'
-        //                                 rel='noopener noreferrer'
-        //                                 target='_blank'
-        //                                 className='link'
-        //                             />,
-        //                         ]}
-        //                     />
-        //                 </Text>
-        //             ) : undefined
-        //         }
-        //     />
-        // </DesktopWrapper>
         <DesktopWrapper>
             <VerticalTab
                 alignment='left'
@@ -241,7 +184,7 @@ const Home: React.FC = () => {
                 is_collapsible={false}
                 is_floating
                 list={subroutes}
-                list_groups={list_groups} 
+                list_groups={list_groups}
             />
         </DesktopWrapper>
     );

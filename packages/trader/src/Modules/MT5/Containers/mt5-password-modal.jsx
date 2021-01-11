@@ -247,8 +247,7 @@ const MT5PasswordModal = ({
     const should_show_success = !has_mt5_error && is_mt5_success_dialog_enabled;
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
 
-    // if (account_status.status.includes('password_reset_required')) {
-    if (true) {
+    if (account_status.status.includes('password_reset_required')) {
         return (
             <React.Fragment>
                 <DesktopWrapper>

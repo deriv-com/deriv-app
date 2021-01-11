@@ -1,48 +1,10 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { DetailComponent } from './detail-component.jsx';
+import Passport from './passport.jsx';
+import IdentityCard from './identity-card.jsx';
 
-const nimc_machine = {
-    initial_state: 'nimc_pending',
-    nimc_pending: {
-        transition: {
-            forward: {
-                target: 'file_confirmation',
-            },
-        },
-    },
-    file_confirmation: {
-        transition: {
-            backward: {
-                target: 'nimc_pending',
-            },
-            forward: {
-                target: 'age_declaration',
-            },
-        },
-    },
-    age_declaration: {
-        transition: {
-            forward: {
-                target: 'age_declaration_confirmation',
-            },
-            backward: {
-                target: 'age_declaration',
-            },
-        },
-    },
-    age_declaration_confirmation: {
-        transition: {
-            forward: 'selfie_upload',
-            backward: 'age_declaration',
-        },
-    },
-    selfie_upload: {
-        transition: {
-            forward: 'selfie_confirmation',
-        },
-    },
-};
+const root_class = 'unsupported-country-poi';
 
 export const getDocumentIndex = ({ setDetail, residence }) => [
     {
@@ -50,13 +12,9 @@ export const getDocumentIndex = ({ setDetail, residence }) => [
         description: localize('Upload the page that contains your photo.'),
         icon: 'IcPoiPassport',
         detail: (
-            <DetailComponent
-                title={localize('Upload the page of your passport that contains your photo')}
-                icon='IcPassport'
-                icon_back='IcIdCardBack'
-                required_documents={1}
-                onClickBack={() => setDetail(null)}
-            />
+            <DetailComponent root_class={root_class} onClickBack={() => setDetail(null)}>
+                <Passport />
+            </DetailComponent>
         ),
     },
     {
@@ -80,14 +38,9 @@ export const getDocumentIndex = ({ setDetail, residence }) => [
         description: localize('Upload the front and back of your identity card.'),
         icon: 'IcPoiIdentityCard',
         detail: (
-            <DetailComponent
-                title={localize('Upload the front of your identity card')}
-                description={localize('You’ll be asked to upload your age declaration document next.')}
-                icon='IcPoiIdentityCard'
-                icon_back='IcIdCardBack'
-                required_documents={2}
-                onClickBack={() => setDetail(null)}
-            />
+            <DetailComponent root_class={root_class} onClickBack={() => setDetail(null)}>
+                <IdentityCard />
+            </DetailComponent>
         ),
     },
     ...(residence === 'ng'

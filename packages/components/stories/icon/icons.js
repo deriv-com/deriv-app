@@ -167,6 +167,7 @@ export const icons = {
         'IcHelpCentre',
         'IcHighsLows',
         'IcIdCardBack',
+        'IcIdCardFront',
         'IcIdentityCard',
         'IcInfoBlue',
         'IcInfoOutline',

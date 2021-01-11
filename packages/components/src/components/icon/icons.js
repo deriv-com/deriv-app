@@ -167,6 +167,7 @@ import './common/ic-hamburger.svg';
 import './common/ic-help-centre.svg';
 import './common/ic-highs-lows.svg';
 import './common/ic-id-card-back.svg';
+import './common/ic-id-card-front.svg';
 import './common/ic-identity-card.svg';
 import './common/ic-info-blue.svg';
 import './common/ic-info-outline.svg';

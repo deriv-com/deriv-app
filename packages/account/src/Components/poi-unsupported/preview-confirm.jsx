@@ -40,7 +40,7 @@ PreviewConfirm.propTypes = {
     onCancel: PropTypes.func.isRequired,
     onConfirm: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
+    description: PropTypes.string,
     cancel_btn_text: PropTypes.string.isRequired,
     confirm_btn_text: PropTypes.string.isRequired,
 };

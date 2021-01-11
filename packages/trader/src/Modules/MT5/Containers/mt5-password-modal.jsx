@@ -95,7 +95,7 @@ const MT5PasswordForm = props => (
         validate={props.validatePassword}
         onSubmit={(values, actions) => {
             props.submitMt5Password(values.password, actions.setSubmitting);
-            actions.setFieldValue('password', '');
+            actions.setFieldValue('password', '', false);
         }}
     >
         {({

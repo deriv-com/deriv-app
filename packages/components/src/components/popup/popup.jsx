@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import Body from './pop-up-body.jsx';
-import Footer from './pop-up-footer.jsx';
-import Header from './pop-up-header.jsx';
+import Body from './popup-body.jsx';
+import Footer from './popup-footer.jsx';
+import Header from './popup-header.jsx';
 import Modal from '../modal';
 
-const PopUp = ({
+const Popup = ({
     active_tab_icon_color,
     balance,
     className,
@@ -39,20 +39,20 @@ const PopUp = ({
 
     return (
         <Modal
-            className='pop-up'
+            className='popup'
             close_icon_color={close_icon_color}
             has_header_border={false}
             header_backgound_color={header_backgound_color}
             height='636px'
-            is_items_align_centered={false}
+            is_item_align_centered={false}
             is_open={should_show_popup}
             renderTitle={() => header()}
             toggleModal={togglePopupModal}
             width='776px'
         >
             <Modal.Body
-                className={classNames('pop-up', {
-                    [`pop-up--${className}`]: className,
+                className={classNames('popup', {
+                    [`popup--${className}`]: className,
                 })}
             >
                 <Body
@@ -66,7 +66,7 @@ const PopUp = ({
                 <Modal.Footer
                     has_separator
                     className={classNames({
-                        [`pop-up--${className}`]: className,
+                        [`popup--${className}`]: className,
                     })}
                 >
                     <Footer>{render_footer}</Footer>
@@ -76,7 +76,7 @@ const PopUp = ({
     );
 };
 
-PopUp.propTypes = {
+Popup.propTypes = {
     active_tab_icon_color: PropTypes.string,
     balance: PropTypes.string,
     className: PropTypes.string,
@@ -100,4 +100,4 @@ PopUp.propTypes = {
     togglePopupModal: PropTypes.fun,
 };
 
-export default PopUp;
+export default Popup;

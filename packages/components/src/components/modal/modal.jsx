@@ -20,7 +20,7 @@ const ModalElement = ({
     title,
     className,
     is_confirmation_modal,
-    is_items_align_centered,
+    is_item_align_centered,
     is_vertical_centered,
     is_vertical_bottom,
     is_vertical_top,
@@ -104,7 +104,7 @@ const ModalElement = ({
                         'dc-modal-header__border-bottom': has_header_border,
                         [`dc-modal-header--${className}`]: className,
                         [`dc-modal-header--is-title-centered`]: is_title_centered,
-                        [`dc-modal-header--is-items-align-centered`]: is_items_align_centered,
+                        [`dc-modal-header--is-item-align-centered`]: is_item_align_centered,
                     })}
                     style={{
                         background: header_backgound_color,
@@ -153,7 +153,7 @@ const ModalElement = ({
 ModalElement.defaultProps = {
     has_close_icon: true,
     has_header_border: true,
-    is_items_align_centered: true,
+    is_item_align_centered: true,
 };
 
 ModalElement.propTypes = {
@@ -165,7 +165,7 @@ ModalElement.propTypes = {
     has_header_border: PropTypes.bool,
     header: PropTypes.node,
     id: PropTypes.string,
-    is_items_align_centered: PropTypes.bool,
+    is_item_align_centered: PropTypes.bool,
     is_open: PropTypes.bool,
     is_title_centered: PropTypes.bool,
     onMount: PropTypes.func,
@@ -183,7 +183,7 @@ const Modal = ({
     close_icon_color,
     header,
     id,
-    is_items_align_centered,
+    is_item_align_centered,
     is_open,
     has_close_icon,
     has_header_border,
@@ -226,7 +226,7 @@ const Modal = ({
             header={header}
             header_backgound_color={header_backgound_color}
             id={id}
-            is_items_align_centered={is_items_align_centered}
+            is_item_align_centered={is_item_align_centered}
             is_open={is_open}
             is_confirmation_modal={is_confirmation_modal}
             is_vertical_bottom={is_vertical_bottom}
@@ -257,7 +257,7 @@ Modal.Footer = Footer;
 Modal.defaultProps = {
     has_close_icon: true,
     has_header_border: true,
-    is_items_align_centered: true,
+    is_item_align_centered: true,
 };
 
 Modal.propTypes = {
@@ -272,7 +272,7 @@ Modal.propTypes = {
     id: PropTypes.string,
     is_open: PropTypes.bool,
     is_confirmation_modal: PropTypes.bool,
-    is_items_align_centered: PropTypes.bool,
+    is_item_align_centered: PropTypes.bool,
     is_vertical_bottom: PropTypes.bool,
     is_vertical_centered: PropTypes.bool,
     is_vertical_top: PropTypes.bool,

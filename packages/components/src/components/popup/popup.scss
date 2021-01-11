@@ -1,4 +1,4 @@
-.dc-pop-up {
+.dc-popup {
     &__header {
         display: flex;
         align-items: center;
@@ -12,23 +12,23 @@
 
 .dc-modal {
     &-header {
-        &--pop-up {
+        &--popup {
             height: 124px;
         }
     }
     &-body {
-        &--pop-up {
+        &--popup {
             padding: 0 !important;
         }
     }
 }
 
 .dc-tabs {
-    &__content--pop-up {
+    &__content--popup {
         background: var(--general-main-1);
     }
 
-    &__item--pop-up {
+    &__item--popup {
         border-radius: 16px 16px 0px 0px;
         height: 44px;
         display: flex;
@@ -36,7 +36,7 @@
         justify-content: center;
     }
 
-    &__active--pop-up {
+    &__active--popup {
         background: var(--general-main-1);
     }
 }

@@ -11,11 +11,11 @@ const Header = ({ balance, header, header_icon, text_color, title }) => {
             <Text size='s' as='p' styles={{ color: text_color }}>
                 {title}
             </Text>
-            <div className='dc-pop-up__header'>
+            <div className='dc-popup__header'>
                 <Text size='m' weight='bold' styles={{ color: text_color }}>
                     {balance}
                 </Text>
-                {header_icon && <Icon icon={header_icon} size={50} className='dc-pop-up__header__icon' />}
+                {header_icon && <Icon icon={header_icon} size={50} className='dc-popup__header__icon' />}
             </div>
         </div>
     );

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 const Body = ({ children, className }) => (
@@ -10,5 +11,10 @@ const Body = ({ children, className }) => (
         {children}
     </div>
 );
+
+Body.propTypes = {
+    children: PropTypes.node,
+    className: PropTypes.string,
+};
 
 export default Body;

@@ -214,7 +214,7 @@ const MT5POA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                 });
             });
         });
-    }, [form_state, refreshNotifications, setFormState]);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const isFormDisabled = (dirty, errors) => {
         if (form_state.poa_status === PoaStatusCodes.verified) {

@@ -10,6 +10,10 @@ import { useStores } from 'Stores';
 import AdSummary from './my-ads-summary.jsx';
 import { buy_sell } from '../../constants/buy-sell';
 
+const PageReturnComponent = ({ handleClick }) => {
+    return <PageReturn onClick={handleClick} page_title={localize('Create new ad')} />;
+};
+
 const FormAds = observer(() => {
     const { general_store, my_ads_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
@@ -31,14 +35,12 @@ const FormAds = observer(() => {
 
     const toggleApiErrorModal = value => setIsApiErrorModalVisible(value);
 
-    const PageReturnComponent = () => {
-        return <PageReturn onClick={() => my_ads_store.setShowAdForm(false)} page_title={localize('Create new ad')} />;
-    };
+    const onClickPageReturn = () => my_ads_store.setShowAdForm(false);
 
     if (my_ads_store.is_form_loading) {
         return (
             <React.Fragment>
-                <PageReturnComponent />
+                <PageReturnComponent handleClick={onClickPageReturn} />
                 <Loading is_fullscreen={false} />
             </React.Fragment>
         );
@@ -46,7 +48,7 @@ const FormAds = observer(() => {
 
     return (
         <React.Fragment>
-            <PageReturnComponent />
+            <PageReturnComponent handleClick={onClickPageReturn} />
             <Formik
                 initialValues={{
                     contact_info: my_ads_store.contact_info,

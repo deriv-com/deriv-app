@@ -1,6 +1,9 @@
 import * as React from 'react';
-import { AppToTrade, Instrument, Indices, YouMightLike } from '../../template';
-import { Banner } from '../../template/elements';
+import AppToTrade from '../../template/app-to-trade';
+import Instruments from '../../template/instruments';
+import Indices from '../../template/indices';
+import YouMightLike from '../../template/you-might-like';
+import Banner from '../../template/banner';
 
 const card_data = [
     {
@@ -91,11 +94,11 @@ const CFDTest: React.FC = () => {
                 <Banner bg_image='banner-background' type='Margin' title='Trade positions larger than your capital' />
                 <AppToTrade
                     title='Apps to trade CFDs'
-                    card_data={card_data}
+                    cards={card_data}
                     benefit_description='Trade with margin, and leverage your positions. With leverage, you can trade positions larger than your capital and maximise your returns when the market moves in your favour.'
                     benefit_data={benefit_data}
                 />
-                <Instrument title='Markets and instruments for trading CFDs' pair_data={pair_data} />
+                <Instruments title='Markets and instruments for trading CFDs' pair_data={pair_data} />
                 <Indices indice_data={indice_data} />
                 <YouMightLike trade_type='3' />
             </div>

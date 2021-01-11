@@ -8,11 +8,11 @@ const YouMightLikeCard: React.FC<TYouMightLikeCardProps> = ({ bg_image, title, s
     const { config_store } = useStores();
 
     return (
-        <div className='dw-element-template__you-might-like-card'>
+        <div className='dw-you-might-like__card'>
             <Frame
                 src={`${config_store.asset_path}/images/trade-type/${bg_image}.png`}
                 alt={bg_image}
-                className='dw-element-template__you-might-like-card-image'
+                className='dw-you-might-like__card-image'
             />
             <Text weight='bold' line_height='l'>
                 {title}

@@ -1,21 +1,20 @@
 import * as React from 'react';
 import { Text } from '@deriv/components';
-import { observer } from 'mobx-react-lite';
-import { Pair } from './elements';
+import Pair from './pair';
 
-const Instrument: React.FC<TInstrumentProps> = ({ title, pair_data }) => {
+const Instruments: React.FC<TInstrumentsProps> = ({ title, pair_data }) => {
     return (
-        <div className='dw-template__instrument'>
+        <div className='dw-instruments'>
             <Text size='m' weight='bold' styles={{ lineHeight: '36px' }}>
                 {title}
             </Text>
-            <div className='dw-template__instrument-container'>
+            <div className='dw-instruments__container'>
                 {pair_data.map((item, idx) => (
                     <div key={idx}>
                         <Text size='sm' weight='bold'>
                             {item.title}
                         </Text>
-                        <div className='dw-template__instrument-pair-wrapper'>
+                        <div className='dw-instruments__pair-wrapper'>
                             {item.data.map((pair, id) => (
                                 <div key={id}>
                                     <Pair icon={pair.icon} description={pair.description} />
@@ -25,7 +24,7 @@ const Instrument: React.FC<TInstrumentProps> = ({ title, pair_data }) => {
                     </div>
                 ))}
             </div>
-            <div className='dw-template__line' />
+            <div className='dw-instruments__line' />
         </div>
     );
 };
@@ -38,8 +37,8 @@ type TPairDataItem = {
     title: string;
     data: Array<TDataItem>;
 };
-type TInstrumentProps = {
+type TInstrumentsProps = {
     title: string;
     pair_data: Array<TPairDataItem>;
 };
-export default observer(Instrument);
+export default Instruments;

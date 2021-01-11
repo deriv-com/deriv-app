@@ -1,30 +1,29 @@
 import * as React from 'react';
 import { Text } from '@deriv/components';
-import { observer } from 'mobx-react-lite';
-import { Indice } from './elements';
+import Indice from './indice';
 
 const Indices: React.FC<TIndicesProps> = ({ indice_data }) => {
     return (
-        <div className='dw-template__indices'>
+        <div className='dw-indices'>
             <div>
                 {indice_data.map((item, idx) => (
-                    <div key={idx} className='dw-template__indices-container'>
+                    <div key={idx} className='dw-indices__container'>
                         <Text size='sm' weight='bold'>
                             {item.title}
                         </Text>
                         <Text>{item.sub_title}</Text>
-                        <div className='dw-template__indices-pair-wrapper'>
+                        <div className='dw-indices__pair-wrapper'>
                             {item.data.map((pair, id) => (
                                 <div key={id}>
                                     <Indice icon={pair.icon} description={pair.description} />
                                 </div>
                             ))}
                         </div>
-                        {item.line && <div className='dw-template__line' />}
+                        {item.line && <div className='dw-indices__line' />}
                     </div>
                 ))}
             </div>
-            <div className='dw-template__line' />
+            <div className='dw-indices__line' />
         </div>
     );
 };
@@ -42,4 +41,4 @@ type TPairDataItem = {
 type TIndicesProps = {
     indice_data: Array<TPairDataItem>;
 };
-export default observer(Indices);
+export default Indices;

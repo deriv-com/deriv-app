@@ -1,18 +1,17 @@
-.dw-element-template {
-    &__banner {
-        padding: 17.7rem 8.1rem;
-        width: 93.6rem;
-        border-radius: 10px;
-        background-repeat: no-repeat;
+.dw-app-to-trade {
+    margin-top: 4rem;
 
-        &-container {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            max-width: 49.1rem;
+    &__cards-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 2.4rem;
+        margin-top: 2.4rem;
+
+        &--three-column {
+            grid-template-columns: 1fr 1fr 1fr;
         }
     }
-    &__app-to-trade-card {
+    &__card {
         display: flex;
         max-width: 29.6rem;
         width: 100%;
@@ -24,7 +23,7 @@
             max-width: 45.6rem;
             padding: 3.2rem;
         }
-        &-container {
+        &-content-wrapper {
             max-width: 16.8rem;
             display: flex;
             flex-direction: column;
@@ -35,7 +34,7 @@
                 max-width: 26rem;
             }
         }
-        &-wrapper {
+        &-button-wrapper {
             display: flex;
             margin-top: 1.6rem;
         }
@@ -50,7 +49,17 @@
             background-color: $color-apple-blue;
         }
     }
-    &__app-to-trade-benefit {
+    &__benefits-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-gap: 2.4rem;
+        margin-top: 2.4rem;
+
+        &--three-column {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+    }
+    &__benefit {
         display: flex;
         max-width: 20rem;
 
@@ -58,31 +67,11 @@
             margin-right: 1.6rem;
         }
     }
-    &__pair {
-        display: flex;
-
-        &-icon {
-            margin-right: 1.6rem;
-        }
-    }
-    &__indice {
-        display: flex;
-
-        &-icon {
-            margin-right: 0.8rem;
-        }
-    }
-    &__you-might-like-card {
-        display: flex;
-        flex-direction: column;
-        max-width: 29.6rem;
-        margin-right: 2.4rem;
-        border-radius: 10px;
-
-        &-image {
-            margin-bottom: 1.6rem;
-            margin-top: 4rem;
-            height: 15rem;
-        }
+    &__line {
+        width: 93.6rem;
+        height: 1px;
+        border: 1px solid var(--general-section-1);
+        margin-top: 4rem;
+        margin-bottom: 4rem;
     }
 }

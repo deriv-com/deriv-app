@@ -12,6 +12,7 @@
 export { default as Accordion } from './components/accordion';
 export { default as AutoHeightWrapper } from './components/auto-height-wrapper';
 export { default as Autocomplete } from './components/autocomplete';
+export { default as AutoSizer } from './components/autosizer';
 export { default as Button } from './components/button';
 export { default as ButtonLink } from './components/button-link';
 export { default as ButtonToggle } from './components/button-toggle';
@@ -70,6 +71,7 @@ export { default as PageOverlay } from './components/page-overlay';
 export { default as PasswordInput } from './components/password-input';
 export { default as PasswordMeter } from './components/password-meter';
 export { default as Popover } from './components/popover';
+export { default as PopoverMobile } from './components/popover-mobile';
 export { default as PopoverMessageCheckbox } from './components/popover-message-checkbox';
 export { default as ProgressBar } from './components/progress-bar';
 export { default as ProgressIndicator } from './components/progress-indicator';

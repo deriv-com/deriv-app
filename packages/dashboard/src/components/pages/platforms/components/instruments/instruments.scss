@@ -1,0 +1,40 @@
+.dw-instruments {
+    &__market {
+        display: flex;
+        align-items: center;
+        margin-top: 2.4rem;
+        margin-bottom: 4rem;
+
+        &-icon {
+            margin-right: 1.6rem;
+        }
+        &-title {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+    &__submarket {
+        display: flex;
+        flex-direction: column;
+
+        &-title {
+            margin-bottom: 0.8rem;
+        }
+        &-subtitle {
+            margin-bottom: 2.4rem;
+        }
+    }
+    &__symbol {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(216px, 1fr));
+        grid-gap: 2.4rem;
+
+        &-item {
+            display: flex;
+            align-items: center;
+        }
+        &-icon {
+            margin-right: 0.8rem;
+        }
+    }
+}

@@ -4,6 +4,8 @@ import BackButton from '../components/back-button'
 import GetSection from '../components/get-section'
 import Preview from '../components/preview'
 import Facts from '../components/facts'
+import Description from '../components/description'
+import Instruments from '../components/instruments'
 
 const DMT5Synthetic: React.FC = () => {
     return (
@@ -12,6 +14,8 @@ const DMT5Synthetic: React.FC = () => {
             <GetSection />
             <Preview />
             <Facts />
+            <Description />
+            <Instruments />
         </Wrapper>
     );
 };

@@ -21,7 +21,7 @@ const AppToTrade: React.FC<TAppToTradeProps> = ({ title, cards, benefit_descript
                             title={data.title}
                             subtitle={data.sub_title}
                             icon={data.icon}
-                            is_big_size={cards.length === 2}
+                            is_big_size={cards.length <= 2}
                         />
                     </div>
                 ))}

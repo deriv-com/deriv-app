@@ -12,7 +12,6 @@ const Frame: React.FC<TFrameProps> = ({ src, alt, className }) => {
             src={src}
             alt={alt}
             width='200'
-            height='200'
         />
     );
 };

@@ -413,7 +413,6 @@ const AccountSwitcher = props => {
                                         currency_icon={`IcCurrency-${account.icon}`}
                                         display_type={'currency'}
                                         has_balance={'balance' in props.accounts[account.loginid]}
-                                        has_error={account.has_error}
                                         is_disabled={account.is_disabled}
                                         is_virtual={account.is_virtual}
                                         is_eu={props.is_eu}
@@ -491,6 +490,7 @@ const AccountSwitcher = props => {
                                                     account.sub_account_type
                                                 )}`}
                                                 has_balance={'balance' in account}
+                                                has_error={account.has_error}
                                                 loginid={account.display_login}
                                                 onClickAccount={redirectToMt5Real}
                                             />

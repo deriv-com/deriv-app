@@ -1,9 +1,12 @@
 .dw-banner {
-    padding: 17.7rem 8.1rem;
     width: 93.6rem;
+    height: 50rem;
     border-radius: 10px;
     background-repeat: no-repeat;
 
+    &__frame {
+        width: 100%;
+    }
     &__container {
         display: flex;
         flex-direction: column;

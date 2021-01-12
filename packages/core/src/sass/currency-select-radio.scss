@@ -19,7 +19,6 @@
 
         @include mobile {
             display: grid;
-            margin-bottom: 5rem;
             grid-template-columns: 1fr 1fr;
             justify-items: center;
             width: 100%;
@@ -126,13 +125,13 @@
     &__radio-group--with-margin {
         &--is-header {
             font-size: 1.6rem;
-            margin: 1rem 0;
+            margin: 0.4rem 0 0;
             font-weight: bold;
             color: var(--text-prominent);
         }
 
         @include desktop {
-            margin-bottom: 2rem;
+            margin-bottom: 0.4rem;
             margin-left: auto;
             margin-right: auto;
             width: 768px;

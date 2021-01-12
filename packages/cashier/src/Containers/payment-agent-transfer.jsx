@@ -9,42 +9,53 @@ import PaymentAgentTransferConfirm from '../Components/Confirm/payment-agent-tra
 import PaymentAgentTransferForm from '../Components/Form/payment-agent-transfer-form.jsx';
 import PaymentAgentTransferReceipt from '../Components/Receipt/payment-agent-transfer-receipt.jsx';
 
-class PaymentAgentTransfer extends React.Component {
-    componentDidMount() {
-        this.props.setActiveTab(this.props.container);
-        if (!this.props.is_virtual) {
-            this.props.onMount();
+const PaymentAgentTransfer = ({
+    balance,
+    container,
+    error,
+    is_loading,
+    is_transfer_successful,
+    is_try_transfer_successful,
+    is_virtual,
+    onMount,
+    onUnMount,
+    setActiveTab,
+}) => {
+    React.useEffect(() => {
+        setActiveTab(container);
+        if (!is_virtual) {
+            onMount();
         }
-    }
+    }, [container, is_virtual, onMount, setActiveTab]);
 
-    componentWillUnmount() {
-        this.props.onUnMount();
-    }
+    React.useEffect(() => {
+        return () => {
+            onUnMount();
+        };
+    }, [onUnMount]);
 
-    render() {
-        if (this.props.is_virtual) {
-            return <Virtual />;
-        }
-        if (this.props.is_loading) {
-            return <Loading className='cashier__loader' is_fullscreen={false} />;
-        }
-        if (this.props.error.is_show_full_page) {
-            // for errors with CTA hide the form and show the error,
-            // for others show them at the bottom of the form next to submit button
-            return <Error error={this.props.error} />;
-        }
-        if (!+this.props.balance) {
-            return <NoBalance />;
-        }
-        if (this.props.is_try_transfer_successful) {
-            return <PaymentAgentTransferConfirm />;
-        }
-        if (this.props.is_transfer_successful) {
-            return <PaymentAgentTransferReceipt />;
-        }
-        return <PaymentAgentTransferForm error={this.props.error} />;
+    if (is_virtual) {
+        return <Virtual />;
     }
-}
+    if (is_loading) {
+        return <Loading className='cashier__loader' />;
+    }
+    if (error.is_show_full_page) {
+        // for errors with CTA hide the form and show the error,
+        // for others show them at the bottom of the form next to submit button
+        return <Error error={error} />;
+    }
+    if (!+balance) {
+        return <NoBalance />;
+    }
+    if (is_try_transfer_successful) {
+        return <PaymentAgentTransferConfirm />;
+    }
+    if (is_transfer_successful) {
+        return <PaymentAgentTransferReceipt />;
+    }
+    return <PaymentAgentTransferForm error={error} />;
+};
 
 PaymentAgentTransfer.propTypes = {
     balance: PropTypes.string,

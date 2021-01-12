@@ -97,7 +97,7 @@ Popup.propTypes = {
     renderFooter: PropTypes.func,
     tab_icon_color: PropTypes.string,
     title: PropTypes.string,
-    togglePopupModal: PropTypes.fun,
+    togglePopupModal: PropTypes.func,
 };
 
 export default Popup;

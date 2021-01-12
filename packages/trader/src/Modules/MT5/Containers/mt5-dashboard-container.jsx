@@ -11,41 +11,43 @@ const MT5DashboardContainer = () => (
 
         <div className='mt5-dashboard__download-center-options'>
             <div className='mt5-dashboard__download-center-options--desktop'>
-                <div className='mt5-dashboard__download-center-options--desktop-devices'>
-                    <Icon icon='IcMt5DeviceDesktop' width={118} height={85} />
-                    <Icon icon='IcMt5DeviceLaptop' width={75} height={51} />
-                    <a href={getMT5WebTerminalLink({ category: 'demo' })} target='_blank' rel='noopener noreferrer'>
-                        <Icon icon='IcInstallationWebDemo' width={138} height={40} />
-                    </a>
-                </div>
                 <div className='mt5-dashboard__download-center-options--desktop-links'>
-                    <a
-                        className='mt5-dashboard__download-center-options--desktop-link'
-                        href={getPlatformMt5DownloadLink('windows')}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                    >
-                        <Icon icon='IcInstallationWindows' width={138} height={40} />
-                    </a>
-                    <a
-                        className='mt5-dashboard__download-center-options--desktop-link'
-                        href={getPlatformMt5DownloadLink('linux')}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                    >
-                        <Icon icon='IcInstallationLinux' width={138} height={40} />
-                    </a>
-                    <a
-                        className='mt5-dashboard__download-center-options--desktop-link--top'
-                        href={getMT5WebTerminalLink({ category: 'real' })}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                    >
-                        <Icon icon='IcInstallationWebReal' width={138} height={40} />
-                    </a>
+                    <div>
+                        <div className='mt5-dashboard__download-center-options--desktop-row'>
+                            <Icon icon='IcMt5DeviceDesktop' width={118} height={85} />
+                            <Icon icon='IcMt5DeviceLaptop' width={75} height={51} />
+                        </div>
+                        <div className='mt5-dashboard__download-center-options--desktop-row'>
+                            <a
+                                href={getMT5WebTerminalLink({ category: 'demo' })}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                            >
+                                <Icon icon='IcInstallationWebDemo' width={138} height={40} />
+                            </a>
+                            <a
+                                href={getMT5WebTerminalLink({ category: 'real' })}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                            >
+                                <Icon icon='IcInstallationWebReal' width={138} height={40} />
+                            </a>
+                        </div>
+                    </div>
+                    <div className='mt5-dashboard__download-center-options--desktop-download'>
+                        <a href={getPlatformMt5DownloadLink('windows')} target='_blank' rel='noopener noreferrer'>
+                            <Icon icon='IcInstallationWindows' width={138} height={40} />
+                        </a>
+                        <a href={getPlatformMt5DownloadLink('macos')} target='_blank' rel='noopener noreferrer'>
+                            <Icon icon='IcInstallationMacos' width={138} height={40} />
+                        </a>
+                        <a href={getPlatformMt5DownloadLink('linux')} target='_blank' rel='noopener noreferrer'>
+                            <Icon icon='IcInstallationLinux' width={138} height={40} />
+                        </a>
+                    </div>
                 </div>
                 <p className='mt5-dashboard__download-center--hint'>
-                    <Localize i18n_default_text='The MT5 desktop app is not supported by macOS, Windows XP, Windows 2003, and Windows Vista.' />
+                    <Localize i18n_default_text='The MT5 desktop app is not supported by Windows XP, Windows 2003, and Windows Vista.' />
                 </p>
             </div>
             <div className='mt5-dashboard__download-center-options--mobile'>

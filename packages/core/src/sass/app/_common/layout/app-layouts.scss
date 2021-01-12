@@ -59,7 +59,8 @@
     display: none;
 
     /* enable temporary landscape blocker UI in landscape */
-    @include mobile-landscape {
+    &--visible {
+        display: flex;
         position: fixed;
         top: 0;
         left: 0;
@@ -75,9 +76,6 @@
         z-index: 9999;
         font-weight: bold;
 
-        &--keyboard-visible {
-            display: none !important;
-        }
         &__icon {
             width: 59px;
             height: 64px;
@@ -85,9 +83,6 @@
         &__message {
             padding: 1.6rem 11rem;
             line-height: 1.4;
-        }
-        @include touch-device {
-            display: flex;
         }
     }
 }

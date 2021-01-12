@@ -78,7 +78,7 @@
 
         &--heading {
             @include typeface(--title-left-bold-black, none);
-            color: var(--text-prominent);
+            color: var(--text-general);
             line-height: 1.5;
         }
     }
@@ -115,44 +115,48 @@
     }
     &__download-center {
         border-top: 2px solid var(--general-section-1);
-        padding-top: 4rem;
-        padding-bottom: 6.8rem;
+        padding-top: 2rem;
+        padding-bottom: 5.8rem;
 
         &-options {
             display: flex;
             justify-content: center;
 
-            &--desktop,
+            &--desktop {
+                display: block;
+                align-items: baseline;
+                flex-flow: column nowrap;
+
+                &-links {
+                    display: flex;
+                }
+                &-row {
+                    display: flex;
+                    align-items: baseline;
+                    justify-content: center;
+
+                    > svg:first-child {
+                        margin-bottom: 0.4rem;
+                        margin-right: 0.8rem;
+                    }
+                    a > svg {
+                        margin-top: 0.8rem;
+                        margin-right: 0.8rem;
+                    }
+                }
+                &-download {
+                    display: grid;
+                    align-content: end;
+
+                    a {
+                        margin-top: 0.4rem;
+                    }
+                }
+            }
             &--mobile {
                 align-items: center;
                 display: flex;
                 flex-flow: column nowrap;
-            }
-            &--desktop {
-                &-devices {
-                    display: flex;
-                    align-items: baseline;
-                    > svg:first-child {
-                        margin-left: 4.3rem;
-                        margin-right: 0.4rem;
-                    }
-                    > svg:not(:last-child) {
-                        margin-bottom: 1.1rem;
-                    }
-                    a svg {
-                        margin-left: 5.2rem;
-                    }
-                }
-                &-links {
-                    display: flex;
-                }
-                &-link {
-                    &:not(:last-child) {
-                        margin-right: 0.8rem;
-                    }
-                }
-            }
-            &--mobile {
                 margin-left: 4.7rem;
 
                 &-devices {
@@ -172,7 +176,7 @@
         }
         &--heading {
             @include typeface(--title-left-bold-black, none);
-            color: var(--text-prominent);
+            color: var(--text-general);
             line-height: 1.5;
             margin-left: 2.1rem;
             margin-bottom: 4.2rem;
@@ -194,6 +198,10 @@
         &-icon {
             margin-right: 0.8rem;
             margin-top: 0.2rem;
+
+            @include mobile {
+                margin-top: -0.2rem;
+            }
         }
         &-text {
             text-align: left;
@@ -425,7 +433,7 @@
     }
     &--heading {
         @include typeface(--title-left-bold-black, none);
-        color: var(--text-prominent);
+        color: var(--text-general);
         line-height: 1.5;
     }
     &--paragraph {
@@ -525,20 +533,9 @@
             &-data {
                 .mt5-account-card--paragraph {
                     @include typeface(--paragraph-left-bold-black, none);
-                    color: var(--text-prominent);
                     line-height: 1.45;
                 }
             }
-        }
-    }
-
-    &__commission {
-        text-align: center;
-        margin-top: 1.6rem;
-        margin-bottom: 1.6rem;
-
-        &.mt5-account-card--paragraph {
-            line-height: 1.4;
         }
     }
     &__account-selection {

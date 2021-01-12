@@ -141,7 +141,7 @@ export default class GTMStore extends BaseStore {
 
         const affiliate_token = Cookies.getJSON('affiliate_tracking');
         if (affiliate_token) {
-            this.pushDataLayer({ affiliate_token: affiliate_token.t });
+            this.pushDataLayer({ affiliate_token });
         }
 
         // Get current time (moment, set by server), else fallback to client time

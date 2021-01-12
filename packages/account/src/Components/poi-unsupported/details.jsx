@@ -39,6 +39,8 @@ const Details = ({ step, active_step, root_class, onConfirm }) => {
             cancel_btn_text={localize('Upload a different file')}
             confirm_btn_text={localize('Confirm')}
             title={localize('Confirm your document')}
+            description={step.confirm_description}
+            is_selfie={active_step === 'selfie'}
         />
     );
 };

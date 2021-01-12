@@ -9,12 +9,14 @@ const ACTIONS = {
     REMOVE_FILE: 'REMOVE_FILE',
 };
 
-const reducerFiles = (state = [], { type, payload }) => {
+const reducerFiles = (state, { type, payload }) => {
+    const target_index = state.findIndex(el => el.step === payload);
+
     switch (type) {
         case ACTIONS.ADD_FILE:
             return [...state, payload];
         case ACTIONS.REMOVE_FILE:
-            return [...state.slice(0, payload), ...state.slice(payload + 1)];
+            return [...state.slice(0, target_index), ...state.slice(target_index + 1)];
         default:
             return state;
     }
@@ -37,39 +39,20 @@ const getActiveStep = (files, steps) => {
 };
 
 const DetailComponent = ({ steps, onClickBack, root_class }) => {
-    // const ref = React.useRef();
-    // const [image_preview, setImagePreview] = React.useState(null);
-    // const [temp_file, setTempFile] = React.useState(null);
     const [is_completed, setIsCompleted] = React.useState(false);
     const [file_list, dispatchFileList] = React.useReducer(reducerFiles, []);
     const active_step = getActiveStep(file_list, steps);
-    // const [state_machine, setMachineState] = React.useState('upload');
-    //
-    // React.useEffect(() => {
-    //     if (file_list.length === required_documents) {
-    //         setMachineState('selfie');
-    //     }
-    // }, [setMachineState, required_documents, file_list]);
 
     const getSocketFunc = (...args) => console.log('func called with ', ...args);
-    // const onFileDrop = e => {
-    //     // TODO add proper validation for image selection
-    //     setImagePreview(URL.createObjectURL(e.files[0]));
-    //     setTempFile(e.files[0]);
-    // };
-    //
-    // const resetFileUpload = () => {
-    //     setImagePreview(null);
-    // };
-    //
-    // const matches = which => state_machine === which;
-    //
     const confirm = (data, callback) => {
         dispatchFileList({ type: ACTIONS.ADD_FILE, payload: data });
         callback();
     };
 
-    const confirmSelfie = file => {
+    const confirmSelfie = selfie => {
+        const files = file_list.map(item => item.file);
+        files.push(selfie.file);
+        console.log(files);
         setIsCompleted(true);
     };
 

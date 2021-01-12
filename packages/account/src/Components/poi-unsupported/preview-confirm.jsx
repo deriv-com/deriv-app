@@ -12,10 +12,11 @@ const PreviewConfirm = ({
     confirm_btn_text,
     title,
     description,
+    is_selfie,
 }) => {
     return (
         <React.Fragment>
-            <ImagePreview image_preview={image_preview} root_class={root_class} />
+            <ImagePreview image_preview={image_preview} root_class={root_class} is_selfie={is_selfie} />
             <Text as='p' size='s' weight='bold' color='prominent'>
                 {title}
             </Text>

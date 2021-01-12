@@ -320,6 +320,11 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get has_account_error_in_mt5_list() {
+        return this.mt5_login_list?.some(account => !!account.has_error);
+    }
+
+    @computed
     get active_accounts() {
         return this.accounts instanceof Object
             ? Object.values(this.accounts).filter(account => !account.is_disabled)
@@ -1768,10 +1773,24 @@ export default class ClientStore extends BaseStore {
         }, 60000);
 
         if (!response.error) {
-            this.mt5_login_list = response.mt5_login_list.map(account => ({
-                ...account,
-                display_login: account.login.replace(/^(MT[DR]?)/i, ''),
-            }));
+            this.mt5_login_list = response.mt5_login_list.map(account => {
+                const display_login = (account.error ? account.error.details.login : account.login).replace(
+                    /^(MT[DR]?)/i,
+                    ''
+                );
+                if (account.error) {
+                    const is_real_account = /^MTR/.test(account.error.details.login);
+                    return {
+                        account_type: is_real_account ? 'real' : 'demo',
+                        display_login,
+                        has_error: true,
+                    };
+                }
+                return {
+                    ...account,
+                    display_login,
+                };
+            });
         } else {
             this.mt5_login_list_error = response.error;
         }

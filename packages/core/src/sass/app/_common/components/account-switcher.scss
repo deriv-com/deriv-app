@@ -392,6 +392,10 @@
         font-size: 1rem;
         color: var(--text-less-prominent);
         line-height: 1.4;
+
+        &--disabled {
+            color: var(--text-disabled);
+        }
     }
     &__loader {
         margin: 1rem auto !important;

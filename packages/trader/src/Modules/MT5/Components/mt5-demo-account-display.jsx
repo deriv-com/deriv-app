@@ -8,6 +8,7 @@ const MT5DemoAccountDisplay = ({
     is_eu,
     is_eu_country,
     has_maltainvest_account,
+    has_mt5_account_error,
     openAccountNeededModal,
     standpoint,
     is_loading,
@@ -44,6 +45,7 @@ const MT5DemoAccountDisplay = ({
                         category: 'demo',
                         type: 'synthetic',
                     }}
+                    is_disabled={has_mt5_account_error}
                     is_logged_in={is_logged_in}
                     existing_data={current_list['demo.synthetic']}
                     commission_message={localize('No commission')}
@@ -76,6 +78,7 @@ const MT5DemoAccountDisplay = ({
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
                     title={localize('Financial')}
+                    is_disabled={has_mt5_account_error}
                     is_logged_in={is_logged_in}
                     type={{
                         category: 'demo',
@@ -121,6 +124,7 @@ const MT5DemoAccountDisplay = ({
                         type: 'financial_stp',
                     }}
                     is_logged_in={is_logged_in}
+                    is_disabled={has_mt5_account_error}
                     existing_data={current_list['demo.financial_stp']}
                     commission_message={localize('No commission')}
                     onSelectAccount={() =>

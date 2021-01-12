@@ -359,6 +359,7 @@ const AccountSwitcher = props => {
                                                     account.sub_account_type
                                                 )}`}
                                                 has_balance={'balance' in account}
+                                                has_error={account.has_error}
                                                 loginid={account.display_login}
                                                 onClickAccount={redirectToMt5Demo}
                                             />
@@ -374,6 +375,7 @@ const AccountSwitcher = props => {
                                         <Button
                                             onClick={() => openMt5DemoAccount(account.type)}
                                             className='acc-switcher__new-account-btn'
+                                            is_disabled={props.has_mt5_account_error}
                                             secondary
                                             small
                                         >
@@ -411,6 +413,7 @@ const AccountSwitcher = props => {
                                         currency_icon={`IcCurrency-${account.icon}`}
                                         display_type={'currency'}
                                         has_balance={'balance' in props.accounts[account.loginid]}
+                                        has_error={account.has_error}
                                         is_disabled={account.is_disabled}
                                         is_virtual={account.is_virtual}
                                         is_eu={props.is_eu}
@@ -511,6 +514,7 @@ const AccountSwitcher = props => {
                                             secondary
                                             small
                                             is_disabled={
+                                                props.has_mt5_account_error ||
                                                 !props.has_active_real_account ||
                                                 (account.type === 'financial_stp' &&
                                                     (props.is_pending_authentication || !!props.mt5_login_list_error))
@@ -617,6 +621,7 @@ AccountSwitcher.propTypes = {
     has_fiat: PropTypes.bool,
     has_any_real_account: PropTypes.bool,
     has_active_real_account: PropTypes.bool,
+    has_mt5_account_error: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_fully_authenticated: PropTypes.bool,
     is_loading_mt5: PropTypes.bool,
@@ -660,6 +665,7 @@ const account_switcher = withRouter(
         is_virtual: client.is_virtual,
         has_fiat: client.has_fiat,
         has_any_real_account: client.has_any_real_account,
+        has_mt5_account_error: client.has_account_error_in_mt5_list,
         mt5_login_list: client.mt5_login_list,
         mt5_login_list_error: client.mt5_login_list_error,
         obj_total_balance: client.obj_total_balance,

@@ -4,61 +4,50 @@ import React from 'react';
 import TinyPopover, { ArrowContainer } from 'react-tiny-popover';
 import Icon from '../icon';
 import Text from '../text';
-import { useHover } from '../../hooks/use-hover';
+import { useHover, useHoverCallback } from '../../hooks/use-hover';
 
-const Popover = ({ ...props }) => {
+const Popover = ({
+    alignment,
+    children,
+    className,
+    classNameBubble,
+    classNameTarget,
+    classNameTargetIcon,
+    counter,
+    disable_message_icon,
+    disable_target_icon,
+    has_error,
+    icon,
+    id,
+    is_open,
+    is_bubble_hover_enabled,
+    margin,
+    message,
+    onBubbleClose,
+    onBubbleOpen,
+    relative_render,
+    should_disable_pointer_events,
+    window_border,
+    zIndex,
+}) => {
     const ref = React.useRef();
-
-    const [is_bubble_open, setIsBubbleOpen] = React.useState(false);
     const [popover_ref, setPopoverRef] = React.useState(undefined);
-    const bubble_ref = React.useRef(is_bubble_open);
     const [hover_ref, is_hovered] = useHover();
-
-    React.useEffect(() => {
-        bubble_ref.current = is_bubble_open;
-    }, [is_bubble_open]);
+    const [bubble_hover_ref, is_bubble_hovered] = useHoverCallback();
 
     React.useEffect(() => {
         if (ref.current) {
             setPopoverRef(ref.current);
         }
-    }, [ref.current, props.has_error]);
+    }, [has_error]);
 
-    const onClick = React.useCallback(() => {
-        setIsBubbleOpen(!is_bubble_open);
-    }, [is_bubble_open]);
+    const onMouseEnter = () => {
+        if (onBubbleOpen) onBubbleOpen();
+    };
 
-    const onMouseEnter = React.useCallback(() => {
-        setIsBubbleOpen(true);
-        if (props.onBubbleOpen) props.onBubbleOpen();
-    }, [props.onBubbleOpen]);
-
-    const onMouseLeave = React.useCallback(() => {
-        setIsBubbleOpen(false);
-        if (props.onBubbleClose) props.onBubbleClose();
-    }, [props.onBubbleClose]);
-
-    const {
-        alignment,
-        children,
-        className,
-        classNameBubble,
-        classNameTarget,
-        classNameTargetIcon,
-        counter,
-        disable_message_icon,
-        disable_target_icon,
-        has_error,
-        icon,
-        id,
-        is_open,
-        margin,
-        message,
-        zIndex,
-        relative_render,
-        should_disable_pointer_events,
-        window_border,
-    } = props;
+    const onMouseLeave = () => {
+        if (onBubbleClose) onBubbleClose();
+    };
 
     const icon_class_name = classNames(classNameTargetIcon, icon);
 
@@ -71,7 +60,7 @@ const Popover = ({ ...props }) => {
             )}
             {(popover_ref || !relative_render) && (
                 <TinyPopover
-                    isOpen={is_open ?? (is_hovered && message)}
+                    isOpen={is_open ?? ((is_hovered && message) || (is_bubble_hover_enabled && is_bubble_hovered))}
                     position={alignment}
                     transitionDuration={0.25}
                     padding={margin + 8}
@@ -149,10 +138,10 @@ const Popover = ({ ...props }) => {
                                     id={id}
                                     onMouseEnter={onMouseEnter}
                                     onMouseLeave={onMouseLeave}
-                                    onClick={onClick}
                                     className={classNames(classNameBubble, 'dc-popover__bubble', {
                                         'dc-popover__bubble--error': has_error,
                                     })}
+                                    ref={bubble_hover_ref}
                                 >
                                     {!disable_message_icon && icon === 'info' && (
                                         <i className='dc-popover__bubble__icon'>

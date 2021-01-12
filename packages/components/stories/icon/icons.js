@@ -439,5 +439,16 @@ export const icons = {
         'IcUnderlyingWLDGBP',
         'IcUnderlyingWLDUSD',
     ],
-    wallet: ['IcWalletDeriv', 'IcWalletNeteller', 'IcWalletSticpay', 'IcWalletTransactions', 'IcWalletWebmoney'],
+    wallet: [
+        'IcWalletDeriv',
+        'IcWalletExplore',
+        'IcWalletMarkets',
+        'IcWalletNeteller',
+        'IcWalletPlatforms',
+        'IcWalletSticpay',
+        'IcWalletTradeTypes',
+        'IcWalletTransactions',
+        'IcWalletWallets',
+        'IcWalletWebmoney',
+    ],
 };

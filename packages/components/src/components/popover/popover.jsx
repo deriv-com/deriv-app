@@ -160,7 +160,7 @@ const Popover = ({ ...props }) => {
                                         </i>
                                     )}
                                     {(has_error && <Text color='colored-background'> {message}</Text>) || (
-                                        <Text line_height='m' weight='bold' className='dc-popover__bubble__text'>
+                                        <Text line_height='m' size='xxs' className='dc-popover__bubble__text'>
                                             {message}
                                         </Text>
                                     )}

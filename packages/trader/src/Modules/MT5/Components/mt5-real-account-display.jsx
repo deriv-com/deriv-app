@@ -45,9 +45,10 @@ const MT5RealAccountDisplay = ({
     toggleShouldShowRealAccountsList,
     trading_servers,
 }) => {
+    const should_show_trade_servers = is_logged_in ? !is_eu : !is_eu_country;
     const [is_new_trade_server_visible, setNewTradeServerVisibility] = React.useState(false);
     React.useEffect(() => {
-        if (current_list['real.synthetic'] && !is_eu) {
+        if (current_list['real.synthetic'] && should_show_trade_servers) {
             setNewTradeServerVisibility(true);
         } else {
             setNewTradeServerVisibility(false);
@@ -122,7 +123,7 @@ const MT5RealAccountDisplay = ({
                             type: 'synthetic',
                         }}
                         is_logged_in={is_logged_in}
-                        is_eu={is_eu}
+                        should_show_trade_servers={should_show_trade_servers}
                         existing_data={current_list['real.synthetic']}
                         commission_message={localize('No commission')}
                         onSelectAccount={onSelectRealSynthetic}
@@ -193,27 +194,29 @@ const MT5RealAccountDisplay = ({
                     />
                 )}
             </div>
-            <CSSTransition
-                in={is_new_trade_server_visible && !is_eu}
-                timeout={50}
-                classNames='mt5-real-accounts-display__add-trading-server'
-                unmountOnExit={true}
-            >
-                <div>
-                    <div onClick={onSelectRealSynthetic} className='mt5-real-accounts-display__add-trading-server'>
-                        <span size='s' className='mt5-real-accounts-display__add-trading-server-icon'>
-                            +
-                        </span>
-                        <Text
-                            size='xs'
-                            color='prominent'
-                            className='mt5-real-accounts-display__add-trading-server-text'
-                        >
-                            <Localize i18n_default_text='Add more trade servers' />
-                        </Text>
+            {should_show_trade_servers && (
+                <CSSTransition
+                    in={is_new_trade_server_visible}
+                    timeout={50}
+                    classNames='mt5-real-accounts-display__add-trading-server'
+                    unmountOnExit={true}
+                >
+                    <div>
+                        <div onClick={onSelectRealSynthetic} className='mt5-real-accounts-display__add-trading-server'>
+                            <span size='s' className='mt5-real-accounts-display__add-trading-server-icon'>
+                                +
+                            </span>
+                            <Text
+                                size='xs'
+                                color='prominent'
+                                className='mt5-real-accounts-display__add-trading-server-text'
+                            >
+                                <Localize i18n_default_text='Add more trade servers' />
+                            </Text>
+                        </div>
                     </div>
-                </div>
-            </CSSTransition>
+                </CSSTransition>
+            )}
         </React.Fragment>
     );
 };

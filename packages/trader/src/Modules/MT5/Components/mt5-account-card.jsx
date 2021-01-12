@@ -100,7 +100,6 @@ const MT5AccountCard = ({
     is_accounts_switcher_on,
     is_button_primary,
     is_disabled,
-    is_eu,
     is_logged_in,
     is_virtual,
     onHover,
@@ -110,6 +109,7 @@ const MT5AccountCard = ({
     onSelectAccount,
     onClickFund,
     onPasswordManager,
+    should_show_trade_servers,
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
     trading_servers,
@@ -124,8 +124,8 @@ const MT5AccountCard = ({
 
     React.useEffect(() => {
         const show = () => {
-            setHoverState(true);
             onHover?.(true);
+            setHoverState(true);
         };
         const hide = () => {
             onHover?.(false);
@@ -143,7 +143,7 @@ const MT5AccountCard = ({
             add_server_ref?.current?.removeEventListener('mouseenter', show);
             add_server_ref?.current?.removeEventListener('mouseleave', hide);
         };
-    }, []);
+    }, [onHover]);
 
     const getServerName = React.useCallback(
         data => {
@@ -166,7 +166,7 @@ const MT5AccountCard = ({
         <div
             className={classNames('mt5-account-card__wrapper')}
             style={{
-                '--mt5-card-wrapper-grid': has_server_banner && !is_eu ? '1fr 4rem' : '1fr 4rem',
+                '--mt5-card-wrapper-grid': has_server_banner && should_show_trade_servers ? '1fr 4rem' : '1fr 4rem',
             }}
         >
             <div
@@ -305,7 +305,7 @@ const MT5AccountCard = ({
                         />
                     )}
                 </div>
-                {has_server_banner && !is_eu && (
+                {has_server_banner && should_show_trade_servers && (
                     <MobileWrapper>
                         <AddTradeServerButton onSelectAccount={onSelectAccount} add_server_ref={add_server_ref} />
                     </MobileWrapper>
@@ -313,7 +313,7 @@ const MT5AccountCard = ({
             </div>
             <DesktopWrapper>
                 <CSSTransition
-                    in={has_server_banner && is_hovered && !is_eu}
+                    in={has_server_banner && is_hovered && should_show_trade_servers}
                     timeout={400}
                     classNames='mt5-account-card__add-server'
                     unmountOnExit

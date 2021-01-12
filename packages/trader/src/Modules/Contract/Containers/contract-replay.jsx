@@ -207,6 +207,7 @@ class Chart extends React.Component {
     render() {
         return (
             <SmartChart
+                id='contract-replay-chart'
                 barriers={this.props.barriers_array}
                 bottomWidgets={this.is_bottom_widget_visible ? ChartBottomWidgets : null}
                 chartControlsWidgets={null}
@@ -275,8 +276,6 @@ const ReplayChart = connect(({ modules, ui, common }) => {
     const contract_replay = modules.contract_replay;
     const contract_store = contract_replay.contract_store;
     const contract_config = contract_store.contract_config;
-    const allow_scroll_to_epoch =
-        contract_replay.chart_state === 'READY' || contract_replay.chart_state === 'SCROLL_TO_LEFT';
     /**
      * TODO: remove forcing light theme once DBot supports dark theme
      * DBot does not support for dark theme since till now,
@@ -300,7 +299,7 @@ const ReplayChart = connect(({ modules, ui, common }) => {
         chart_type: contract_config.chart_type,
         start_epoch: contract_config.start_epoch,
         granularity: contract_config.granularity,
-        scroll_to_epoch: allow_scroll_to_epoch ? contract_config.scroll_to_epoch : undefined,
+        scroll_to_epoch: contract_replay.is_chart_scaling ? contract_config.scroll_to_epoch : undefined,
         settings,
         is_mobile: ui.is_mobile,
         is_socket_opened: common.is_socket_opened,

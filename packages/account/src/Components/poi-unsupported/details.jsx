@@ -2,8 +2,9 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import PreviewConfirm from './preview-confirm.jsx';
 import FilePending from './file-pending.jsx';
+import { DOCUMENT_TYPES } from './constants';
 
-const Details = ({ step, active_step, root_class, onConfirm }) => {
+const Details = ({ step, root_class, onConfirm }) => {
     const [image_preview, setImagePreview] = React.useState(null);
     const [file, setFile] = React.useState(null);
 
@@ -18,7 +19,7 @@ const Details = ({ step, active_step, root_class, onConfirm }) => {
         setImagePreview(URL.createObjectURL(uploaded_file));
     };
     const handleConfirm = () => {
-        onConfirm({ file, step: active_step }, () => {
+        onConfirm({ file, document_type: step.document_type }, () => {
             setImagePreview(null);
         });
     };
@@ -30,6 +31,8 @@ const Details = ({ step, active_step, root_class, onConfirm }) => {
     if (!image_preview) {
         return <FilePending {...step} getSocketFunc={getSocketFunc} onFileDrop={onFileDrop} root_class={root_class} />;
     }
+    const is_selfie = step.document_type === DOCUMENT_TYPES.selfie;
+
     return (
         <PreviewConfirm
             image_preview={image_preview}
@@ -38,9 +41,9 @@ const Details = ({ step, active_step, root_class, onConfirm }) => {
             onConfirm={handleConfirm}
             cancel_btn_text={localize('Upload a different file')}
             confirm_btn_text={localize('Confirm')}
-            title={localize('Confirm your document')}
+            title={is_selfie ? localize('Confirm your documents') : localize('Confirm your document')}
             description={step.confirm_description}
-            is_selfie={active_step === 'selfie'}
+            is_selfie={is_selfie}
         />
     );
 };

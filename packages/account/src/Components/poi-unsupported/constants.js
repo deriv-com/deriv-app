@@ -1,4 +1,14 @@
 import { localize } from '@deriv/translations';
+export const DOCUMENT_TYPES = {
+    passport: 'passport',
+    driving_licence_front: 'driving_licence_front',
+    driving_licence_back: 'driving_licence_back',
+    national_identity_card_front: 'national_identity_card_front',
+    national_identity_card_back: 'national_identity_card_back',
+    nimc: 'nimc',
+    dob: 'dob',
+    selfie: 'selfie',
+};
 
 export const getDocumentIndex = ({ residence }) => [
     {
@@ -7,6 +17,7 @@ export const getDocumentIndex = ({ residence }) => [
         icon: 'IcPoiPassport',
         steps: [
             {
+                document_type: DOCUMENT_TYPES.passport,
                 icon: 'IcPassport',
                 title: localize('Upload the page of your passport that contains your photo'),
             },
@@ -18,6 +29,7 @@ export const getDocumentIndex = ({ residence }) => [
         icon: 'IcPoiDrivingLicence',
         steps: [
             {
+                document_type: DOCUMENT_TYPES.driving_licence_front,
                 icon: 'IcDrivingLicenceFront',
                 title: localize('Upload the front of your driving licence'),
                 description: localize('You’ll be asked to upload the back of your driving licence next.'),
@@ -26,6 +38,7 @@ export const getDocumentIndex = ({ residence }) => [
                 ),
             },
             {
+                document_type: DOCUMENT_TYPES.driving_licence_back,
                 icon: 'IcIdCardBack',
                 title: localize('Upload the back of your driving licence'),
             },
@@ -37,6 +50,7 @@ export const getDocumentIndex = ({ residence }) => [
         icon: 'IcPoiIdentityCard',
         steps: [
             {
+                document_type: DOCUMENT_TYPES.national_identity_card_front,
                 icon: 'IcIdCardFront',
                 title: localize('Upload the front of your identity card'),
                 description: localize('You’ll be asked to upload the back of your identity card next.'),
@@ -45,6 +59,7 @@ export const getDocumentIndex = ({ residence }) => [
                 ),
             },
             {
+                document_type: DOCUMENT_TYPES.national_identity_card_back,
                 icon: 'IcIdCardBack',
                 title: localize('Upload the back of your identity card'),
             },
@@ -58,6 +73,7 @@ export const getDocumentIndex = ({ residence }) => [
                   icon: 'IcPoiNimcSlip',
                   steps: [
                       {
+                          document_type: DOCUMENT_TYPES.nimc,
                           icon: 'IcPoiNimcSlipHorizontal',
                           title: localize('Upload your NIMC slip'),
                           description: localize('You’ll be asked to upload your age declaration document next.'),
@@ -66,6 +82,7 @@ export const getDocumentIndex = ({ residence }) => [
                           ),
                       },
                       {
+                          document_type: DOCUMENT_TYPES.dob,
                           icon: 'IcDop',
                           title: localize('Upload your age declaration document'),
                       },

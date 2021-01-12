@@ -1,8 +1,7 @@
 import React from 'react';
-import { Button, Icon, Text } from '@deriv/components';
+import { Loading, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Details from './details.jsx';
-import Selfi from './selfie.jsx';
 
 const ACTIONS = {
     ADD_FILE: 'ADD_FILE',
@@ -10,7 +9,7 @@ const ACTIONS = {
 };
 
 const reducerFiles = (state, { type, payload }) => {
-    const target_index = state.findIndex(el => el.step === payload);
+    const target_index = state.findIndex(el => el.document_type === payload);
 
     switch (type) {
         case ACTIONS.ADD_FILE:
@@ -28,10 +27,11 @@ const getActiveStep = (files, steps) => {
         return 0;
     }
     const confirmed_steps = files.map(file => {
-        return file.step;
+        return file.document_type;
     });
+
     steps.forEach((step, index) => {
-        if (active_step === null && !confirmed_steps.includes(index)) {
+        if (active_step === null && !confirmed_steps.includes(step.document_type)) {
             active_step = index;
         }
     });
@@ -50,20 +50,15 @@ const DetailComponent = ({ steps, onClickBack, root_class }) => {
     };
 
     const confirmSelfie = selfie => {
-        const files = file_list.map(item => item.file);
-        files.push(selfie.file);
+        const files = [...file_list, selfie];
         console.log(files);
         setIsCompleted(true);
     };
 
-    const removeImagePreview = index => dispatchFileList({ type: ACTIONS.REMOVE_FILE, payload: index });
+    const removeImagePreview = document_type => dispatchFileList({ type: ACTIONS.REMOVE_FILE, payload: document_type });
 
     if (is_completed) {
-        return (
-            <Text size='xxxs' color='less-prominent' weight='bold'>
-                Your proof of identity was submitted successfully
-            </Text>
-        );
+        return <Loading is_fullscreen={false} is_slow_loading status={[localize('Uploading documents')]} />;
     }
 
     return (
@@ -81,7 +76,7 @@ const DetailComponent = ({ steps, onClickBack, root_class }) => {
                             <Text size='xxxs' color='less-prominent' weight='bold'>
                                 {item.file.name}
                             </Text>
-                            <Icon icon='IcCloseCircle' onClick={() => removeImagePreview(item.step)} />
+                            <Icon icon='IcCloseCircle' onClick={() => removeImagePreview(item.document_type)} />
                         </div>
                     );
                 })}
@@ -90,7 +85,6 @@ const DetailComponent = ({ steps, onClickBack, root_class }) => {
                 {active_step !== null ? (
                     <Details
                         step={steps[active_step]}
-                        active_step={active_step}
                         nCancel={onClickBack}
                         onConfirm={confirm}
                         root_class={root_class}
@@ -98,13 +92,13 @@ const DetailComponent = ({ steps, onClickBack, root_class }) => {
                 ) : (
                     <Details
                         step={{
+                            document_type: 'selfie',
                             icon: 'IcSelfie',
                             title: localize('Upload your selfie'),
                             description: localize(
                                 'Face forward and remove your glasses if necessary. Make sure your eyes are clearly visible and your face is within the frame.'
                             ),
                         }}
-                        active_step='selfie'
                         nCancel={onClickBack}
                         onConfirm={confirmSelfie}
                         root_class={root_class}

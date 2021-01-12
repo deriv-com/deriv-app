@@ -1,21 +1,29 @@
 import * as React from 'react';
 import { Text, Icon } from '@deriv/components';
-import { localize } from '@deriv/translations';
 import { useStores } from 'Stores';
+import { TStringTranslation } from 'Types'
 
-const GetSection: React.FC = () => {
+
+const GetSection: React.FC<IGetSectionType> = ({ availability_text, images }) => {
     const { config_store } = useStores();
 
     return (
         <section className='dw-preview'>
             <div className='dw-preview__item-wrapper'>
-                <img className='dw-preview__item' src={`${config_store.asset_path}/images/dmt5-synthetic-1.png`} />
-                <img className='dw-preview__item dw-preview__item--middle' src={`${config_store.asset_path}/images/dmt5-synthetic-2.png`} />
+                {images.map((image, idx) => (
+                    <img key={idx} className='dw-preview__item' src={`${config_store.asset_path}/images/${image}`} />
+                ))}
+
                 <Icon className='dw-preview__icon' icon='IcChevronRightBold' width='16' height='16' />
             </div>
-            <Text color='less-prominent' size='xs'>{localize('Available on desktop and mobile')}</Text>
+            <Text color='less-prominent' size='xs'>{availability_text}</Text>
         </section>
     );
 };
+
+type IGetSectionType = {
+    availability_text: TStringTranslation;
+    images: string[];
+}
 
 export default GetSection;

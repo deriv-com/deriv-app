@@ -91,6 +91,8 @@ export default class ClientStore extends BaseStore {
 
     @observable financial_assessment = null;
 
+    @observable trading_servers = [];
+
     is_mt5_account_list_updated = false;
 
     constructor(root_store) {
@@ -1036,6 +1038,7 @@ export default class ClientStore extends BaseStore {
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
             WS.storage.mt5LoginList().then(this.responseMt5LoginList);
+            WS.tradingServers().then(this.responseTradingServers);
             this.responseStatement(
                 await BinarySocket.send({
                     statement: 1,
@@ -1751,6 +1754,15 @@ export default class ClientStore extends BaseStore {
             const response = await WS.mt5LoginList();
             this.responseMt5LoginList(response);
         }
+    }
+
+    @action.bound
+    responseTradingServers(response) {
+        if (response.error) {
+            this.trading_servers = [];
+            return;
+        }
+        this.trading_servers = response.trading_servers;
     }
 
     @action.bound

@@ -129,6 +129,9 @@ const MT5PasswordForm = ({ ...props }) => (
 );
 
 const MT5ServerForm = ({ ...props }) => {
+    const available_servers = React.useMemo(() => {
+        return props.trading_servers.filter;
+    }, [props.trading_servers]);
     return (
         <Formik
             initialValues={{
@@ -201,6 +204,8 @@ const MT5PasswordModal = ({
     setMt5SuccessDialog,
     setMt5Error,
     submitMt5Password,
+    trading_servers,
+    mt5_login_list,
 }) => {
     const [password, setPassword] = React.useState('');
     const validatePassword = values => {
@@ -261,6 +266,8 @@ const MT5PasswordModal = ({
                 >
                     {password ? (
                         <MT5ServerForm
+                            trading_servers={trading_servers}
+                            mt5_login_list={mt5_login_list}
                             account_title={account_title}
                             password={password}
                             submitMt5Form={submitMt5Password} //TODO: Revise this
@@ -289,6 +296,8 @@ const MT5PasswordModal = ({
                 >
                     {password ? (
                         <MT5ServerForm
+                            trading_servers={trading_servers}
+                            mt5_login_list={mt5_login_list}
                             account_title={account_title}
                             password={password}
                             submitMt5Form={submitMt5Password} //TODO: Revise this
@@ -350,4 +359,6 @@ export default connect(({ client, modules }) => ({
     setMt5Error: modules.mt5.setError,
     setMt5SuccessDialog: modules.mt5.setMt5SuccessDialog,
     submitMt5Password: modules.mt5.submitMt5Password,
+    trading_servers: client.trading_servers,
+    mt5_login_list: client.mt5_login_list,
 }))(withRouter(MT5PasswordModal));

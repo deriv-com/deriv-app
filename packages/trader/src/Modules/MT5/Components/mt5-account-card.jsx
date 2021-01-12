@@ -104,8 +104,9 @@ const MT5AccountCard = ({
     toggleShouldShowRealAccountsList,
 }) => {
     const icon = type.type ? <Icon icon={account_icons[type.type]} size={64} /> : null;
-    const has_popular_banner = type.type === 'synthetic' && type.category === 'real';
+    const has_popular_banner = type.type === 'synthetic' && type.category === 'real' && !existing_data;
     const has_demo_banner = type.category === 'demo';
+    const has_server_banner = existing_data && type.category === 'real';
 
     const handleClickSwitchAccount = () => {
         toggleShouldShowRealAccountsList(true);
@@ -122,6 +123,18 @@ const MT5AccountCard = ({
             {has_demo_banner && (
                 <div className='mt5-account-card__banner mt5-account-card__banner--demo'>
                     <Localize i18n_default_text='DEMO' />
+                </div>
+            )}
+            {has_server_banner && (
+                <div className='mt5-account-card__banner mt5-account-card__banner--server'>
+                    {/* TODO: add server name */}
+                    <Localize i18n_default_text='Server' />
+                </div>
+            )}
+            {existing_data && (
+                <div className='mt5-account-card__add-server'>
+                    <span className='mt5-account-card__add-server--icon'>+</span>
+                    <Localize i18n_default_text='Add more trade servers' />
                 </div>
             )}
             <div
@@ -164,6 +177,13 @@ const MT5AccountCard = ({
                         </tbody>
                     </table>
                 </div>
+                {existing_data && (
+                    <div className='mt5-account-card__server'>
+                        <Localize i18n_default_text='Trade server: ' />
+                        {/* //TODO: Add this later */}
+                        <span className='mt5-account-card__server--value'>{'{ServerName}'}</span>
+                    </div>
+                )}
                 {existing_data?.login && is_logged_in && <LoginBadge display_login={existing_data.display_login} />}
 
                 {((!existing_data && commission_message) || !is_logged_in) && (

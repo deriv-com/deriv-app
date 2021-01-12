@@ -406,6 +406,7 @@
     display: flex;
     justify-content: center;
     margin-top: 2.4em;
+    margin-bottom: 2rem;
     justify-content: center;
 
     @include mobile {
@@ -420,9 +421,44 @@
     flex-flow: column nowrap;
     min-height: 35.8rem;
     width: 30.4em;
+    position: relative;
 
     &__logged-out {
         min-height: 29rem;
+    }
+
+    &__add-server {
+        position: absolute;
+        font-size: 1.4rem;
+        bottom: -3rem;
+        cursor: pointer;
+        display: grid;
+        grid-auto-flow: column;
+        grid-gap: 0.4rem;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        &--icon {
+            color: var(--status-colored-background);
+            background-color: var(--brand-red-coral);
+            border-radius: 100%;
+            width: 2.4rem;
+            height: 2.4rem;
+            font-size: 1.8rem;
+            display: block;
+            text-align: center;
+            padding: 0.2rem;
+        }
+    }
+
+    &__server {
+        font-size: 1.4rem;
+        text-align: left;
+        width: 27.2rem;
+        margin-top: 2.4rem;
+        &--value {
+            font-weight: bold;
+        }
     }
 
     &:not(:last-child) {
@@ -465,6 +501,10 @@
 
         &--demo {
             border-bottom-color: var(--brand-secondary);
+        }
+        &--server {
+            // TODO: Add a CSS variable
+            border-bottom-color: $color-blue-2;
         }
         @include mobile {
             left: calc(100vw - 11.6rem);
@@ -577,7 +617,7 @@
         display: flex;
         padding: 0.8rem;
         justify-content: center;
-        margin: 2.4rem 0 1.6rem;
+        margin: 1rem 0 1.6rem;
         width: 272px;
 
         strong {

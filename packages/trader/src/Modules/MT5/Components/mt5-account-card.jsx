@@ -102,11 +102,24 @@ const MT5AccountCard = ({
     onPasswordManager,
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
+    trading_servers,
 }) => {
     const icon = type.type ? <Icon icon={account_icons[type.type]} size={64} /> : null;
     const has_popular_banner = type.type === 'synthetic' && type.category === 'real' && !existing_data;
     const has_demo_banner = type.category === 'demo';
-    const has_server_banner = existing_data && type.category === 'real';
+    const has_server_banner = existing_data && type.category === 'real' && type.type === 'synthetic';
+
+    const getServerName = React.useCallback(
+        data => {
+            const server = trading_servers.find(s => s.id === data.server);
+            if (server) {
+                return `${server.geolocation.region} ${server.geolocation.sequence}`;
+            }
+
+            return '';
+        },
+        [existing_data, trading_servers]
+    );
 
     const handleClickSwitchAccount = () => {
         toggleShouldShowRealAccountsList(true);
@@ -127,8 +140,7 @@ const MT5AccountCard = ({
             )}
             {has_server_banner && (
                 <div className='mt5-account-card__banner mt5-account-card__banner--server'>
-                    {/* TODO: add server name */}
-                    <Localize i18n_default_text='Server' />
+                    {getServerName(existing_data)}
                 </div>
             )}
             {existing_data && (
@@ -180,8 +192,7 @@ const MT5AccountCard = ({
                 {existing_data && (
                     <div className='mt5-account-card__server'>
                         <Localize i18n_default_text='Trade server: ' />
-                        {/* //TODO: Add this later */}
-                        <span className='mt5-account-card__server--value'>{'{ServerName}'}</span>
+                        <span className='mt5-account-card__server--value'>{getServerName(existing_data)}</span>
                     </div>
                 )}
                 {existing_data?.login && is_logged_in && <LoginBadge display_login={existing_data.display_login} />}

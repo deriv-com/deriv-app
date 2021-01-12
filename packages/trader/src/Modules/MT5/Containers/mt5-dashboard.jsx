@@ -217,6 +217,7 @@ class MT5Dashboard extends React.Component {
                                                 standpoint={standpoint}
                                                 toggleAccountsDialog={toggleAccountsDialog}
                                                 toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
+                                                trading_servers={this.props.trading_servers}
                                             />
                                         </React.Fragment>
                                     </div>
@@ -442,5 +443,6 @@ export default withRouter(
         onUnmount: modules.mt5.onUnmount,
         toggleAccountsDialog: ui.toggleAccountsDialog,
         toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
+        trading_servers: client.trading_servers,
     }))(MT5Dashboard)
 );

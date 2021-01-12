@@ -41,6 +41,7 @@ const MT5RealAccountDisplay = ({
     is_logged_in,
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
+    trading_servers,
 }) => {
     const has_required_credentials =
         account_settings.citizen && account_settings.tax_identification_number && account_settings.tax_residence;
@@ -116,6 +117,7 @@ const MT5RealAccountDisplay = ({
                         'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
                     )}
                     specs={real_synthetic_specs}
+                    trading_servers={trading_servers}
                 />
             )}
 

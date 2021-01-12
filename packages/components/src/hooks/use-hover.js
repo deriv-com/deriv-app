@@ -24,3 +24,30 @@ export const useHover = refSetter => {
 
     return [ref, value];
 };
+
+export const useHoverCallback = () => {
+    const [value, setValue] = React.useState(false);
+
+    const handleMouseOver = React.useCallback(() => setValue(true), []);
+    const handleMouseOut = React.useCallback(() => setValue(false), []);
+    const ref = React.useRef();
+
+    const callbackRef = React.useCallback(
+        node => {
+            if (ref.current) {
+                ref.current.removeEventListener('mouseover', handleMouseOver);
+                ref.current.removeEventListener('mouseout', handleMouseOut);
+            }
+
+            ref.current = node;
+
+            if (ref.current) {
+                ref.current.addEventListener('mouseover', handleMouseOver);
+                ref.current.addEventListener('mouseout', handleMouseOut);
+            }
+        },
+        [handleMouseOver, handleMouseOut]
+    );
+
+    return [callbackRef, value];
+};

@@ -60,7 +60,12 @@ export const validNumber = (value, opts) => {
     } else if ('min' in options && 'max' in options && +options.min === +options.max && +value !== +options.min) {
         is_ok = false;
         message = form_error_messages.value(addComma(options.min));
-    } else if ('min' in options && 'max' in options && (+value < +options.min || isMoreThanMax(value, options))) {
+    } else if (
+        'min' in options &&
+        'max' in options &&
+        options.min > 0 &&
+        (+value < +options.min || isMoreThanMax(value, options))
+    ) {
         is_ok = false;
         const min_value = addComma(options.min);
         const max_value = addComma(options.max);

@@ -406,11 +406,50 @@
     display: flex;
     justify-content: center;
     margin-top: 2.4em;
-    margin-bottom: 2rem;
-    justify-content: center;
 
     @include mobile {
         flex-direction: column;
+    }
+}
+
+.mt5-real-accounts-display {
+    transition: margin-bottom 0.3s ease-in-out;
+    margin-bottom: var(--mt5-real-acc-margin-bottom);
+    &__add-trading-server {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        height: 4rem;
+        position: relative;
+        margin-top: -4rem;
+
+        &-text {
+            margin-left: 1rem;
+        }
+        &-icon {
+            color: var(--status-colored-background);
+            background-color: var(--brand-red-coral);
+            border-radius: 50%;
+            width: 2.4rem;
+            height: 2.4rem;
+            font-size: 1.8rem;
+            display: block;
+            text-align: center;
+            padding: 0.2rem;
+        }
+        &-exit,
+        &-enter-done {
+            transition: all 0.3s ease-in-out;
+            opacity: 1;
+        }
+        &-enter,
+        &-exit-done {
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+        }
     }
 }
 
@@ -422,15 +461,23 @@
     min-height: 35.8rem;
     width: 30.4em;
     position: relative;
+    height: 100%;
+
+    &__wrapper {
+        --mt5-card-wrapper-grid: 1fr;
+        display: grid;
+        grid-template-rows: var(--mt5-card-wrapper-grid);
+        &:not(:last-child) {
+            margin-right: 2.4rem;
+        }
+    }
 
     &__logged-out {
         min-height: 29rem;
     }
 
     &__add-server {
-        position: absolute;
         font-size: 1.4rem;
-        bottom: -3rem;
         cursor: pointer;
         display: grid;
         grid-auto-flow: column;
@@ -438,6 +485,20 @@
         justify-content: center;
         align-items: center;
         width: 100%;
+        height: 4rem;
+
+        &-exit,
+        &-enter-done {
+            transition: all 0.3s ease-in-out;
+            opacity: 1;
+            height: 4rem;
+        }
+        &-enter,
+        &-exit-done {
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+            height: 0;
+        }
         &--icon {
             color: var(--status-colored-background);
             background-color: var(--brand-red-coral);
@@ -455,15 +516,11 @@
         font-size: 1.4rem;
         text-align: left;
         width: 27.2rem;
-        margin-top: 2.4rem;
         &--value {
             font-weight: bold;
         }
     }
 
-    &:not(:last-child) {
-        margin-right: 2.4rem;
-    }
     &:hover {
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
     }
@@ -484,7 +541,7 @@
         color: var(--text-profit-success);
     }
     &__banner {
-        position: relative;
+        position: absolute;
         transform: rotate(45deg);
         border-bottom: 2.3rem solid var(--brand-red-coral);
         border-left: 2.3rem solid transparent;
@@ -642,7 +699,6 @@
         }
     }
     &__action-wrapper {
-        height: 4rem;
         margin: 0 auto 1.3rem;
         padding-top: 1rem;
         width: 75%;

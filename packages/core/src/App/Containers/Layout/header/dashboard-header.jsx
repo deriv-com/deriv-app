@@ -14,14 +14,14 @@ const LoggedInHeader = () => {
     const history = useHistory();
 
     return (
-        <header className='logged-in-dashboard-header'>
-            <div className='logged-in-dashboard-header--left'>
+        <header className='dashboard-header dashboard-header--logged-in'>
+            <div className='dashboard-header__left'>
                 <div onClick={() => history.push(routes.dashboard)}>
                     <DerivLogoLight />
                 </div>
             </div>
-            <div className='logged-in-dashboard-header--right'>
-                <Icon icon={'IcProfile'} size={32} className='logged-in-dashboard-header--right-icon' />
+            <div className='dashboard-header__right--logged-in'>
+                <Icon icon={'IcProfile'} size={32} className='dashboard-header__right--logged-in-icon' />
                 <Icon icon={'IcNotification'} size={32} />
             </div>
         </header>
@@ -33,14 +33,14 @@ const LoggedOutHeader = () => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
 
     return (
-        <header className='logged-out-dashboard-header'>
-            <div className='logged-out-dashboard-header--left'>
+        <header className='dashboard-header dashboard-header--logged-out'>
+            <div className='dashboard-header__left'>
                 <div onClick={() => history.push(routes.dashboard)}>
                     <DerivLogo style={{ marginRight: '0.684rem' }} />
                     <DerivText />
                 </div>
             </div>
-            <div className='logged-out-dashboard-header--middle'>
+            <div className='dashboard-header__middle--logged-out'>
                 <Text color='colored-background' size='s' onClick={() => history.push(routes.explore)}>
                     {localize('Explore')}
                 </Text>
@@ -51,7 +51,7 @@ const LoggedOutHeader = () => {
                     {localize('Resources')}
                 </Text>
             </div>
-            <div className='logged-out-dashboard-header--right'>
+            <div className='dashboard-header__right--logged-out'>
                 <Button.Group>
                     <Button
                         alternate
@@ -71,7 +71,7 @@ const LoggedOutHeader = () => {
 };
 
 const HeaderPreloader = () => (
-    <div className={'header-items__preloader'}>
+    <div className={'dashboard-header__preloader'}>
         <HeaderItemsLoader speed={3} />
     </div>
 );

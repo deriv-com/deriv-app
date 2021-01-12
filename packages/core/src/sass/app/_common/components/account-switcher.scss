@@ -425,20 +425,3 @@
     line-height: 1.5;
     text-align: right;
 }
-
-/** Header Items Preloader **/
-.header-items {
-    &__preloader {
-        display: flex;
-        padding: 0 4rem;
-        align-items: center;
-        justify-content: flex-end;
-        position: fixed;
-        z-index: 100;
-        box-sizing: border-box;
-        height: $HEADER_HEIGHT;
-        width: 100%;
-        top: 0;
-        background-color: var(--general-main-1);
-    }
-}

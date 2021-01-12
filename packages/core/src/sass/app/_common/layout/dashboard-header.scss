@@ -1,4 +1,4 @@
-@mixin sharedHeaderStyles {
+.dashboard-header {
     display: flex;
     align-items: center;
     position: fixed;
@@ -17,19 +17,32 @@
         display: flex;
     }
 
-    &--left {
+    &__left {
         > * {
             cursor: pointer;
         }
     }
-}
 
-.logged-out-dashboard-header {
-    @include sharedHeaderStyles;
-    background-color: var(--brand-dark-grey);
-    color: var(--text-colored-background);
+    &--logged-in {
+        background-color: var(--general-main-1);
+        color: var(--brand-dark-grey);
+    }
 
-    &--middle {
+    &__right--logged-in {
+        > * {
+            cursor: pointer;
+        }
+        &-icon {
+            margin-right: 0.8rem;
+        }
+    }
+
+    &--logged-out {
+        background-color: var(--brand-dark-grey);
+        color: var(--text-colored-background);
+    }
+
+    &__middle--logged-out {
         > :not(:first-child) {
             margin-left: 4.8rem;
         }
@@ -38,19 +51,18 @@
             cursor: pointer;
         }
     }
-}
 
-.logged-in-dashboard-header {
-    @include sharedHeaderStyles;
-    background-color: var(--general-main-1);
-    color: var(--brand-dark-grey);
-
-    &--right {
-        > * {
-            cursor: pointer;
-        }
-        &-icon {
-            margin-right: 0.8rem;
-        }
+    &__preloader {
+        display: flex;
+        padding: 0 4rem;
+        align-items: center;
+        justify-content: flex-end;
+        position: fixed;
+        z-index: 100;
+        box-sizing: border-box;
+        height: $HEADER_HEIGHT;
+        width: 100%;
+        top: 0;
+        background-color: var(--general-main-1);
     }
 }

@@ -19,12 +19,13 @@ const Carousel = ({
     onItemSelect,
     autoplay_time,
     width,
+    item_per_window,
 }) => {
     const [active_index, setActiveIndex] = React.useState(initial_index);
 
     const handleNextClick = () => {
         const next_idx = active_index + 1;
-        const has_reached_end = next_idx === list.length;
+        const has_reached_end = next_idx === list.length - item_per_window + 1;
 
         if (!has_reached_end) {
             setActiveIndex(next_idx);
@@ -39,7 +40,7 @@ const Carousel = ({
         if (prev_idx > -1) {
             setActiveIndex(prev_idx);
         } else {
-            setActiveIndex(list.length - 1);
+            setActiveIndex(list.length - item_per_window);
         }
     };
 
@@ -52,7 +53,7 @@ const Carousel = ({
     return (
         <Swipeable onSwipedLeft={handleNextClick} onSwipedRight={handlePrevClick} className={className}>
             <div className='dc-carousel'>
-                {list.length > 1 && (
+                {list.slice(item_per_window - 1).length > 1 && (
                     <Nav
                         active_index={active_index}
                         bullet_color={bullet_color}
@@ -64,10 +65,11 @@ const Carousel = ({
                         show_bullet={show_bullet && bullet_position === 'top'}
                         show_nav={show_nav && nav_position === 'top'}
                         list={list}
+                        item_per_window={item_per_window}
                     />
                 )}
                 <div className='dc-carousel__container'>
-                    {nav_position === 'middle' && (
+                    {show_nav && nav_position === 'middle' && list.slice(item_per_window - 1).length > 1 && (
                         <span className='dc-carousel__icon' onClick={handlePrevClick}>
                             <Icon icon='IcChevronLeft' size='24' />
                         </span>
@@ -76,7 +78,7 @@ const Carousel = ({
                     <div
                         className='dc-carousel__box'
                         style={{
-                            width: `${width}px`,
+                            width: `${item_per_window * width}px`,
                         }}
                     >
                         <div
@@ -91,13 +93,13 @@ const Carousel = ({
                         </div>
                     </div>
 
-                    {nav_position === 'middle' && (
+                    {show_nav && nav_position === 'middle' && list.slice(item_per_window - 1).length > 1 && (
                         <span className='dc-carousel__icon' onClick={handleNextClick}>
                             <Icon icon='IcChevronRight' size='24' />
                         </span>
                     )}
                 </div>
-                {list.length > 1 && (
+                {list.slice(item_per_window - 1).length > 1 && (
                     <Nav
                         active_index={active_index}
                         bullet_color={bullet_color}
@@ -109,6 +111,7 @@ const Carousel = ({
                         show_bullet={show_bullet && bullet_position === 'bottom'}
                         show_nav={show_nav && nav_position === 'bottom'}
                         list={list}
+                        item_per_window={item_per_window}
                     />
                 )}
             </div>
@@ -126,6 +129,7 @@ Carousel.defaultProps = {
     show_nav: true,
     autoplay_time: null,
     width: 400,
+    item_per_window: 1,
 };
 Carousel.propTypes = {
     className: PropTypes.string,

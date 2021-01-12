@@ -172,6 +172,7 @@ import './common/ic-ins-outs.svg';
 import './common/ic-installation-apple.svg';
 import './common/ic-installation-google.svg';
 import './common/ic-installation-linux.svg';
+import './common/ic-installation-macos.svg';
 import './common/ic-installation-web-demo.svg';
 import './common/ic-installation-web-real.svg';
 import './common/ic-installation-windows.svg';

@@ -2,6 +2,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { Timeline } from '@deriv/components';
 import { connect } from 'Stores/connect';
+import { DetailComponent } from './detail-component.jsx';
 import { Documents } from './documents.jsx';
 import { getDocumentIndex } from './constants';
 
@@ -14,7 +15,13 @@ const Unsupported = ({ residence }) => {
     });
 
     if (detail !== null) {
-        return documents[detail].detail;
+        return (
+            <DetailComponent
+                steps={documents[detail].steps}
+                root_class='unsupported-country-poi'
+                onClickBack={() => setDetail(null)}
+            />
+        );
     }
 
     return (

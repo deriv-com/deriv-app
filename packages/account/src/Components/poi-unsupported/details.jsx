@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 import PreviewConfirm from './preview-confirm.jsx';
 import FilePending from './file-pending.jsx';
 
-const Passport = ({ root_class, onConfirm }) => {
+const Details = ({ step, active_step, root_class, onConfirm }) => {
     const [image_preview, setImagePreview] = React.useState(null);
     const [file, setFile] = React.useState(null);
 
@@ -18,7 +18,7 @@ const Passport = ({ root_class, onConfirm }) => {
         setImagePreview(URL.createObjectURL(uploaded_file));
     };
     const handleConfirm = () => {
-        onConfirm({ file }, () => {
+        onConfirm({ file, step: active_step }, () => {
             setImagePreview(null);
         });
     };
@@ -28,15 +28,7 @@ const Passport = ({ root_class, onConfirm }) => {
     };
 
     if (!image_preview) {
-        return (
-            <FilePending
-                title={localize('Upload the page of your passport that contains your photo')}
-                icon='IcPassport'
-                getSocketFunc={getSocketFunc}
-                onFileDrop={onFileDrop}
-                root_class={root_class}
-            />
-        );
+        return <FilePending {...step} getSocketFunc={getSocketFunc} onFileDrop={onFileDrop} root_class={root_class} />;
     }
     return (
         <PreviewConfirm
@@ -51,4 +43,4 @@ const Passport = ({ root_class, onConfirm }) => {
     );
 };
 
-export default Passport;
+export default Details;

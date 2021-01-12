@@ -8,9 +8,15 @@ const root_class = 'unsupported-country-poi';
 
 export const getDocumentIndex = ({ setDetail, residence }) => [
     {
-        title: localize('Passports'),
+        title: localize('Passport'),
         description: localize('Upload the page that contains your photo.'),
         icon: 'IcPoiPassport',
+        steps: [
+            {
+                icon: 'IcPassport',
+                title: localize('Upload the page of your passport that contains your photo'),
+            },
+        ],
         detail: (
             <DetailComponent root_class={root_class} onClickBack={() => setDetail(null)}>
                 <Passport />

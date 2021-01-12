@@ -450,6 +450,14 @@
             transition: all 0.3s ease-in-out;
             opacity: 0;
         }
+        &-wrapper {
+            @include mobile {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: 2rem;
+            }
+        }
     }
 }
 
@@ -486,6 +494,9 @@
         align-items: center;
         width: 100%;
         height: 4rem;
+        @include mobile {
+            height: 6rem;
+        }
 
         &-exit,
         &-enter-done {
@@ -541,7 +552,7 @@
         color: var(--text-profit-success);
     }
     &__banner {
-        position: absolute;
+        position: relative;
         transform: rotate(45deg);
         border-bottom: 2.3rem solid var(--brand-red-coral);
         border-left: 2.3rem solid transparent;

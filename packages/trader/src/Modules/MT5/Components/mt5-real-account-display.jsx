@@ -1,7 +1,7 @@
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { localize, Localize } from '@deriv/translations';
-import { Text } from '@deriv/components';
+import { Button, Text, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import {
     eu_real_financial_specs,
     real_financial_stp_specs,
@@ -47,7 +47,7 @@ const MT5RealAccountDisplay = ({
 }) => {
     const [is_new_trade_server_visible, setNewTradeServerVisibility] = React.useState(false);
     React.useEffect(() => {
-        if (current_list['real.synthetic']) {
+        if (current_list['real.synthetic'] && !is_eu) {
             setNewTradeServerVisibility(true);
         } else {
             setNewTradeServerVisibility(false);

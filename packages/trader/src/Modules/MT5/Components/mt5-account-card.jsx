@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, Money, Button, Text } from '@deriv/components';
+import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { Mt5AccountCopy } from './mt5-account-copy.jsx';
 import { getMT5WebTerminalLink } from '../Helpers/constants';
@@ -11,6 +11,13 @@ const account_icons = {
     financial: 'IcMt5FinancialPlatform',
     financial_stp: 'IcMt5FinancialStpPlatform',
 };
+
+const AddTradeServerButton = ({ onSelectAccount, add_server_ref }) => (
+    <div onClick={onSelectAccount} className={classNames('mt5-account-card__add-server')} ref={add_server_ref}>
+        <span className='mt5-account-card__add-server--icon'>+</span>
+        <Localize i18n_default_text='Add more trade servers' />
+    </div>
+);
 
 const LoginBadge = ({ display_login }) => (
     <div className='mt5-account-card__login'>
@@ -131,16 +138,16 @@ const MT5AccountCard = ({
         add_server_ref?.current?.addEventListener('mouseleave', hide);
 
         return () => {
-            ref.current.removeEventListener(show);
-            ref.current.removeEventListener(hide);
-            add_server_ref?.current?.removeEventListener(show);
-            add_server_ref?.current?.removeEventListener(hide);
+            ref.current.removeEventListener('mouseenter', show);
+            ref.current.removeEventListener('mouseleave', hide);
+            add_server_ref?.current?.removeEventListener('mouseenter', show);
+            add_server_ref?.current?.removeEventListener('mouseleave', hide);
         };
     }, []);
 
     const getServerName = React.useCallback(
         data => {
-            const server = trading_servers.find(s => s.id === data.server);
+            const server = trading_servers?.find(s => s.id === data.server);
             if (server) {
                 return `${server.geolocation.region} ${server.geolocation.sequence}`;
             }
@@ -298,22 +305,22 @@ const MT5AccountCard = ({
                         />
                     )}
                 </div>
+                {has_server_banner && !is_eu && (
+                    <MobileWrapper>
+                        <AddTradeServerButton onSelectAccount={onSelectAccount} add_server_ref={add_server_ref} />
+                    </MobileWrapper>
+                )}
             </div>
-            <CSSTransition
-                in={has_server_banner && is_hovered && !is_eu}
-                timeout={400}
-                classNames='mt5-account-card__add-server'
-                unmountOnExit
-            >
-                <div
-                    onClick={onSelectAccount}
-                    className={classNames('mt5-account-card__add-server')}
-                    ref={add_server_ref}
+            <DesktopWrapper>
+                <CSSTransition
+                    in={has_server_banner && is_hovered && !is_eu}
+                    timeout={400}
+                    classNames='mt5-account-card__add-server'
+                    unmountOnExit
                 >
-                    <span className='mt5-account-card__add-server--icon'>+</span>
-                    <Localize i18n_default_text='Add more trade servers' />
-                </div>
-            </CSSTransition>
+                    <AddTradeServerButton onSelectAccount={onSelectAccount} add_server_ref={add_server_ref} />
+                </CSSTransition>
+            </DesktopWrapper>
         </div>
     );
 };

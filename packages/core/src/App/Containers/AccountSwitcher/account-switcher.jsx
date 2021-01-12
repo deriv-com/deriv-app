@@ -244,6 +244,8 @@ const AccountSwitcher = props => {
         return getSortedMT5List().filter(account => !isDemo(account));
     };
 
+    const findServerForAccount = acc => props.trading_servers.find(server => server.id === acc.server);
+
     const getRemainingRealMT5 = () => {
         return getRemainingAccounts(getRealMT5());
     };
@@ -312,6 +314,7 @@ const AccountSwitcher = props => {
                         .filter(account => account.is_virtual)
                         .map(account => (
                             <AccountList
+                                is_dark_mode_on={props.is_dark_mode_on}
                                 key={account.loginid}
                                 balance={props.accounts[account.loginid].balance}
                                 currency={props.accounts[account.loginid].currency}
@@ -349,6 +352,7 @@ const AccountSwitcher = props => {
                                     <div className='acc-switcher__accounts'>
                                         {getDemoMT5().map(account => (
                                             <AccountList
+                                                is_dark_mode_on={props.is_dark_mode_on}
                                                 key={account.login}
                                                 market_type={account.market_type}
                                                 sub_account_type={account.sub_account_type}
@@ -405,6 +409,7 @@ const AccountSwitcher = props => {
                             .map(account => {
                                 return (
                                     <AccountList
+                                        is_dark_mode_on={props.is_dark_mode_on}
                                         key={account.loginid}
                                         balance={props.accounts[account.loginid].balance}
                                         currency={props.accounts[account.loginid].currency}
@@ -478,6 +483,7 @@ const AccountSwitcher = props => {
                                     <div className='acc-switcher__accounts'>
                                         {getRealMT5().map(account => (
                                             <AccountList
+                                                is_dark_mode_on={props.is_dark_mode_on}
                                                 key={account.login}
                                                 market_type={account.market_type}
                                                 sub_account_type={account.sub_account_type}
@@ -490,6 +496,7 @@ const AccountSwitcher = props => {
                                                 has_balance={'balance' in account}
                                                 loginid={account.display_login}
                                                 onClickAccount={redirectToMt5Real}
+                                                server={findServerForAccount(account)}
                                             />
                                         ))}
                                     </div>
@@ -650,6 +657,7 @@ const account_switcher = withRouter(
         account_list: client.account_list,
         can_upgrade_to: client.can_upgrade_to,
         client_residence: client.residence,
+        is_dark_mode_on: ui.is_dark_mode_on,
         is_eu: client.is_eu,
         is_fully_authenticated: client.is_fully_authenticated,
         is_loading_mt5: client.is_populating_mt5_account_list,
@@ -677,6 +685,7 @@ const account_switcher = withRouter(
         standpoint: client.standpoint,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         openRealAccountSignup: ui.openRealAccountSignup,
+        trading_servers: client.trading_servers,
         toggleAccountsDialog: ui.toggleAccountsDialog,
         toggleAccountTypesModal: ui.toggleAccountTypesModal,
         togglePositionsDrawer: ui.togglePositionsDrawer,

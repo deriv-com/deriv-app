@@ -76,9 +76,6 @@
         left: 0;
         top: 0;
         position: absolute;
-        &--hide-selected-value {
-            opacity: 1;
-        }
     }
     &--disabled {
         .dc-select-native__display-text {

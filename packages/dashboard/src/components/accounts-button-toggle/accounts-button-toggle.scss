@@ -13,8 +13,7 @@
                 width: 9.6rem;
                 height: 3.2rem;
                 span {
-                    font-size: var(--text-size-s) !important;
-                    line-height: var(--text-lh-m) !important;
+                    font-size: var(--text-size-s);
                 }
                 &--active span {
                     color: var(--text-colored-background);

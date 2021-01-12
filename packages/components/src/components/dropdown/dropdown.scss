@@ -278,10 +278,6 @@
             top: 0;
             opacity: 0;
 
-            &--suffix-icon {
-                left: -50px;
-            }
-
             @supports not (-webkit-touch-callout: none) {
                 /* non-iOS devices hack
     * because .focus() doesn't open <select /> in Android OS,
@@ -295,6 +291,7 @@
                 &__select {
                     width: 100%;
                     height: 100%;
+                    left: -40px;
                 }
             }
         }

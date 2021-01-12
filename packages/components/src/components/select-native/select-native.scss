@@ -2,11 +2,20 @@
     width: 100%;
     position: relative;
 
+    &--hide-selected-value {
+        margin-left: 10px;
+        width: 40px;
+    }
+
     &__wrapper {
         height: 38px;
 
         .dc-input {
             margin-bottom: 0px;
+        }
+
+        &--hide-selected-value {
+            width: 40px;
         }
     }
     &__arrow {
@@ -67,6 +76,9 @@
         left: 0;
         top: 0;
         position: absolute;
+        &--hide-selected-value {
+            opacity: 1;
+        }
     }
     &--disabled {
         .dc-select-native__display-text {

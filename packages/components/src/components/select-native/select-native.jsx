@@ -20,10 +20,12 @@ const SelectNative = ({
     disabled,
     error,
     hint,
+    hide_selected_value,
     label,
     list_items,
     placeholder,
     should_show_empty_option = true,
+    suffix_icon,
     use_text,
     value,
     ...props
@@ -32,9 +34,14 @@ const SelectNative = ({
         className={classNames(className, 'dc-select-native', {
             'dc-select-native--disabled': disabled,
             'dc-select-native--error': error,
+            'dc-select-native--hide-selected-value': hide_selected_value,
         })}
     >
-        <div className='dc-select-native__wrapper'>
+        <div
+            className={classNames(className, 'dc-select-native__wrapper', {
+                'dc-select-native__wrapper--hide-selected-value': hide_selected_value,
+            })}
+        >
             <div
                 className={classNames('dc-input', {
                     'dc-input--disabled': disabled,
@@ -44,7 +51,7 @@ const SelectNative = ({
                 <div className='dc-select-native__display'>
                     {list_items && value && (
                         <div className={classNames('dc-select-native__display-text', classNameDisplay)}>
-                            {use_text ? value : getDisplayText(list_items, value)}
+                            {!hide_selected_value && (use_text ? value : getDisplayText(list_items, value))}
                         </div>
                     )}
                 </div>
@@ -56,8 +63,16 @@ const SelectNative = ({
                 >
                     {label}
                 </div>
-                <Icon icon='IcChevronDown' className='dc-select-native__arrow' />
-                <select className='dc-select-native__picker' value={value} disabled={disabled} {...props}>
+                {!suffix_icon && <Icon icon='IcChevronDown' className='dc-select-native__arrow' />}
+                {suffix_icon && <Icon className='suffix-icon' icon={suffix_icon} size={16} fill />}
+                <select
+                    className={classNames(className, 'dc-select-native__picker', {
+                        'dc-select-native__picker--hide-selected-value': hide_selected_value,
+                    })}
+                    value={value}
+                    disabled={disabled}
+                    {...props}
+                >
                     {Array.isArray(list_items) ? (
                         <React.Fragment>
                             {/*

@@ -6,8 +6,8 @@ import { CSSTransition } from 'react-transition-group';
 import { mobileOSDetect, getPosition } from '@deriv/shared';
 import { listPropType, findNextFocusableNode, findPreviousFocusableNode } from './dropdown';
 import Items from './items.jsx';
-import NativeSelect from './native-select.jsx';
 import DisplayText from './display-text.jsx';
+import SelectNative from '../select-native';
 import { useBlockScroll, useOnClickOutside } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 import DesktopWrapper from '../desktop-wrapper';
@@ -349,64 +349,64 @@ const Dropdown = ({
 
     return (
         <React.Fragment>
-            <input
-                className='dc-dropdown__inner'
-                autoComplete='off'
-                name={name}
-                readOnly='readonly'
-                type='hidden'
-                value={value || 0}
-            />
-            <div ref={wrapper_ref} className={containerClassName()}>
-                <div
-                    className={classNames('dc-dropdown__container', {
-                        'dc-dropdown__container--suffix-icon': suffix_icon,
-                    })}
-                >
-                    {label && (
-                        <span
-                            className={classNames('dc-dropdown__label', {
-                                'dc-dropdown__label--clicked': is_list_visible,
-                            })}
-                        >
-                            {label}
-                        </span>
-                    )}
+            <DesktopWrapper>
+                <input
+                    className='dc-dropdown__inner'
+                    autoComplete='off'
+                    name={name}
+                    readOnly='readonly'
+                    type='hidden'
+                    value={value || 0}
+                />
+                <div ref={wrapper_ref} className={containerClassName()}>
                     <div
-                        className={dropdownDisplayClassName()}
-                        tabIndex={isSingleOption() ? '-1' : '0'}
-                        onClick={handleVisibility}
-                        onKeyDown={onKeyPressed}
-                        id='dropdown-display'
-                        ref={dropdown_ref}
+                        className={classNames('dc-dropdown__container', {
+                            'dc-dropdown__container--suffix-icon': suffix_icon,
+                        })}
                     >
-                        {suffix_icon && <Icon className='suffix-icon' icon={suffix_icon} size={16} fill />}
-                        <DesktopWrapper>
-                            <DisplayText
-                                className={classNames('dc-dropdown__display-text', {
-                                    'dc-dropdown__display--suffix-icon-text': suffix_icon,
+                        {label && (
+                            <span
+                                className={classNames('dc-dropdown__label', {
+                                    'dc-dropdown__label--clicked': is_list_visible,
                                 })}
-                                has_symbol={has_symbol}
-                                name={name}
-                                is_title={is_list_visible}
-                                placeholder={placeholder}
-                                value={value || 0}
-                                list={list}
+                            >
+                                {label}
+                            </span>
+                        )}
+                        <div
+                            className={dropdownDisplayClassName()}
+                            tabIndex={isSingleOption() ? '-1' : '0'}
+                            onClick={handleVisibility}
+                            onKeyDown={onKeyPressed}
+                            id='dropdown-display'
+                            ref={dropdown_ref}
+                        >
+                            {suffix_icon && <Icon className='suffix-icon' icon={suffix_icon} size={16} fill />}
+                            <DesktopWrapper>
+                                <DisplayText
+                                    className={classNames('dc-dropdown__display-text', {
+                                        'dc-dropdown__display--suffix-icon-text': suffix_icon,
+                                    })}
+                                    has_symbol={has_symbol}
+                                    name={name}
+                                    is_title={is_list_visible}
+                                    placeholder={placeholder}
+                                    value={value || 0}
+                                    list={list}
+                                />
+                            </DesktopWrapper>
+                        </div>
+                        {!(isSingleOption() || suffix_icon) && (
+                            <Icon
+                                icon={is_alignment_left ? 'IcChevronLeft' : 'IcChevronDown'}
+                                className={classNames('dc-dropdown__select-arrow', {
+                                    'dc-dropdown__select-arrow--left': is_alignment_left,
+                                    'dc-dropdown__select-arrow--up': is_list_visible,
+                                    'dc-dropdown__select-arrow--error': error || hint,
+                                })}
                             />
-                        </DesktopWrapper>
-                    </div>
-                    {!(isSingleOption() || suffix_icon) && (
-                        <Icon
-                            icon={is_alignment_left ? 'IcChevronLeft' : 'IcChevronDown'}
-                            className={classNames('dc-dropdown__select-arrow', {
-                                'dc-dropdown__select-arrow--left': is_alignment_left,
-                                'dc-dropdown__select-arrow--up': is_list_visible,
-                                'dc-dropdown__select-arrow--error': error || hint,
-                            })}
-                        />
-                    )}
-                    {error && <p className='dc-field--error'>{error}</p>}
-                    <DesktopWrapper>
+                        )}
+                        {error && <p className='dc-field--error'>{error}</p>}
                         <DropdownList
                             ref={list_ref}
                             classNameItems={classNameItems}
@@ -427,8 +427,8 @@ const Dropdown = ({
                             parent_ref={dropdown_ref}
                             suffix_icon={suffix_icon}
                         />
-                    </DesktopWrapper>
-                    <MobileWrapper>
+
+                        {/* <MobileWrapper>
                         <NativeSelect
                             ref={native_select_ref}
                             name={name}
@@ -436,10 +436,21 @@ const Dropdown = ({
                             list={list}
                             onChange={onChange}
                         />
-                    </MobileWrapper>
+                    </MobileWrapper> */}
+                    </div>
+                    {!error && hint && <p className='dc-dropdown__hint'>{hint}</p>}
                 </div>
-                {!error && hint && <p className='dc-dropdown__hint'>{hint}</p>}
-            </div>
+            </DesktopWrapper>
+            <MobileWrapper>
+                <SelectNative
+                    hide_selected_value={true}
+                    suffix_icon={suffix_icon}
+                    should_show_empty_option={false}
+                    value={value}
+                    list_items={list}
+                    onChange={onChange}
+                />
+            </MobileWrapper>
         </React.Fragment>
     );
 };

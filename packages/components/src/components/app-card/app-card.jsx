@@ -37,64 +37,62 @@ const AppCard = ({
         return 'general';
     };
     return (
-        <React.Fragment>
-            <div
-                className={classNames('dc-app-card__wrapper', {
-                    'dc-app-card__wrapper--virtual': is_virtual,
-                    'dc-app-card__wrapper--real': !is_virtual,
-                    'dc-app-card__wrapper--default': variant === 'default',
-                    'dc-app-card__wrapper--mini': variant === 'mini',
-                    'dc-app-card__wrapper--micro': variant === 'micro',
-                    'dc-app-card__wrapper--virtual-swap-free': is_virtual && is_swap_free,
-                })}
-                ref={isMobile() || !show_hover_actions ? null : card_ref}
-            >
-                {!is_virtual && <RealAppCardBackground is_swap_free={is_swap_free} variant={variant} />}
-                {is_virtual && variant === 'default' && (
-                    <AppCardHeader
-                        getCardLabels={getCardLabels}
-                        is_swap_free={is_swap_free}
-                        onAddRealClick={onAddRealClick}
-                    />
-                )}
-                <AppCardBody
-                    amount={amount}
-                    app_icon={app_icon}
-                    app_name={app_name}
-                    currency={currency}
+        <div
+            className={classNames('dc-app-card__wrapper', {
+                'dc-app-card__wrapper--virtual': is_virtual,
+                'dc-app-card__wrapper--real': !is_virtual,
+                'dc-app-card__wrapper--default': variant === 'default',
+                'dc-app-card__wrapper--mini': variant === 'mini',
+                'dc-app-card__wrapper--micro': variant === 'micro',
+                'dc-app-card__wrapper--virtual-swap-free': is_virtual && is_swap_free,
+            })}
+            ref={isMobile() || !show_hover_actions ? null : card_ref}
+        >
+            {!is_virtual && <RealAppCardBackground is_swap_free={is_swap_free} variant={variant} />}
+            {is_virtual && variant === 'default' && (
+                <AppCardHeader
+                    getCardLabels={getCardLabels}
+                    is_swap_free={is_swap_free}
+                    onAddRealClick={onAddRealClick}
+                />
+            )}
+            <AppCardBody
+                amount={amount}
+                app_icon={app_icon}
+                app_name={app_name}
+                currency={currency}
+                getCardLabels={getCardLabels}
+                getFontColor={getFontColor}
+                is_swap_free={is_swap_free}
+                is_virtual={is_virtual}
+                linked_wallet={linked_wallet}
+                onPlayClick={onPlayClick}
+                show_footer={show_footer}
+                show_hover_actions={show_hover_actions}
+                variant={variant}
+            />
+            {show_footer && variant !== 'micro' && !is_hovered && (
+                <AppCardFooter
+                    broker={broker}
                     getCardLabels={getCardLabels}
                     getFontColor={getFontColor}
-                    is_swap_free={is_swap_free}
-                    is_virtual={is_virtual}
-                    linked_wallet={linked_wallet}
-                    onPlayClick={onPlayClick}
-                    show_footer={show_footer}
-                    show_hover_actions={show_hover_actions}
+                    login_id={login_id}
+                    server={server}
                     variant={variant}
                 />
-                {show_footer && variant !== 'micro' && !is_hovered && (
-                    <AppCardFooter
-                        broker={broker}
-                        getCardLabels={getCardLabels}
-                        getFontColor={getFontColor}
-                        login_id={login_id}
-                        server={server}
-                        variant={variant}
-                    />
-                )}
-                {show_hover_actions && variant !== 'micro' && !isMobile() && is_hovered && (
-                    <AppCardActions
-                        getCardLabels={getCardLabels}
-                        is_virtual={is_virtual}
-                        onDepositClick={onDepositClick}
-                        onPlayClick={onPlayClick}
-                        onSettingsClick={onSettingsClick}
-                        onTransactionsClick={onTransactionsClick}
-                        onWithdrawClick={onWithdrawClick}
-                    />
-                )}
-            </div>
-        </React.Fragment>
+            )}
+            {show_hover_actions && variant !== 'micro' && !isMobile() && is_hovered && (
+                <AppCardActions
+                    getCardLabels={getCardLabels}
+                    is_virtual={is_virtual}
+                    onDepositClick={onDepositClick}
+                    onPlayClick={onPlayClick}
+                    onSettingsClick={onSettingsClick}
+                    onTransactionsClick={onTransactionsClick}
+                    onWithdrawClick={onWithdrawClick}
+                />
+            )}
+        </div>
     );
 };
 

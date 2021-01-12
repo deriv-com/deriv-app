@@ -362,6 +362,15 @@
     }
 }
 
+.mt5-dashboard__accounts-error {
+    background-color: rgba(255, 173, 58, 0.16);
+    margin: 1.2rem 0;
+
+    &-message {
+        padding: 0.8rem 2.4rem;
+    }
+}
+
 // TODO: [mt5-redesign] replace tabs with radiogroup once card component is ready
 //.mt5-dashboard__accounts-display {
 //    div.radio-group__save-type {

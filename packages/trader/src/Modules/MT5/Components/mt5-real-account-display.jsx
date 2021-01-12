@@ -25,6 +25,7 @@ const MT5RealAccountDisplay = ({
     is_eu_country,
     has_malta_account,
     has_maltainvest_account,
+    has_mt5_account_error,
     is_fully_authenticated,
     is_pending_authentication,
     is_virtual,
@@ -101,7 +102,7 @@ const MT5RealAccountDisplay = ({
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
                     title={localize('Synthetic')}
-                    is_disabled={!is_eu && !has_real_account}
+                    is_disabled={(!is_eu && !has_real_account) || has_mt5_account_error}
                     type={{
                         category: 'real',
                         type: 'synthetic',
@@ -122,7 +123,7 @@ const MT5RealAccountDisplay = ({
             {(landing_companies?.mt_financial_company?.financial || !is_logged_in) && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
-                    is_disabled={!is_eu && !has_real_account}
+                    is_disabled={(!is_eu && !has_real_account) || has_mt5_account_error}
                     title={localize('Financial')}
                     type={{
                         category: 'real',
@@ -166,7 +167,7 @@ const MT5RealAccountDisplay = ({
                         'Trade major, minor, exotic currency pairs, and cryptocurrencies with Straight-Through Processing (STP) of your orders direct to the market.'
                     )}
                     specs={real_financial_stp_specs}
-                    is_disabled={!is_eu && is_real_financial_stp_disabled}
+                    is_disabled={(!is_eu && is_real_financial_stp_disabled) || has_mt5_account_error}
                     is_virtual={is_virtual}
                     has_real_account={has_real_account}
                     toggleAccountsDialog={toggleAccountsDialog}

@@ -4,7 +4,7 @@ import { Text, Icon, Button } from '@deriv/components';
 import { Link } from 'react-router-dom';
 import { localize } from '@deriv/translations';
 
-const AppToTradeCard: React.FC<TAppToTradeCardProps> = ({ icon, title, sub_title, is_big_size }) => {
+const AppToTradeCard: React.FC<TAppToTradeCardProps> = ({ icon, title, subtitle, is_big_size }) => {
     return (
         <div
             className={classNames('dw-app-to-trade__card', {
@@ -21,7 +21,7 @@ const AppToTradeCard: React.FC<TAppToTradeCardProps> = ({ icon, title, sub_title
                     {title}
                 </Text>
                 <Text size='xxs' color='less-prominent' line_height='m'>
-                    {sub_title}
+                    {subtitle}
                 </Text>
                 <div className='dw-app-to-trade__card-button-wrapper'>
                     <Link to='/' className='dw-app-to-trade__card-link'>
@@ -37,7 +37,7 @@ const AppToTradeCard: React.FC<TAppToTradeCardProps> = ({ icon, title, sub_title
 type TAppToTradeCardProps = {
     icon: string;
     is_big_size: boolean;
-    sub_title: string;
+    subtitle: string;
     title: string;
 };
 

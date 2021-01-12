@@ -37,7 +37,7 @@ const YouMightLike: React.FC<TYouMightLikeProps> = ({ trade_type }) => {
                                 <YouMightLikeCard
                                     bg_image_url={item.bg}
                                     title={item.title}
-                                    sub_title={item.sub_title}
+                                    subtitle={item.sub_title}
                                 />
                             </div>
                         )

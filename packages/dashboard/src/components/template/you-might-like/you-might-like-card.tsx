@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import Frame from 'Components/elements/frame';
 import { useStores } from 'Stores';
 
-const YouMightLikeCard: React.FC<TYouMightLikeCardProps> = ({ bg_image_url, title, sub_title }) => {
+const YouMightLikeCard: React.FC<TYouMightLikeCardProps> = ({ bg_image_url, title, subtitle }) => {
     const { config_store } = useStores();
 
     return (
@@ -18,7 +18,7 @@ const YouMightLikeCard: React.FC<TYouMightLikeCardProps> = ({ bg_image_url, titl
                 {title}
             </Text>
             <Text size='xs' color='less-prominent' line_height='m'>
-                {sub_title}
+                {subtitle}
             </Text>
         </div>
     );
@@ -27,7 +27,7 @@ const YouMightLikeCard: React.FC<TYouMightLikeCardProps> = ({ bg_image_url, titl
 type TYouMightLikeCardProps = {
     bg_image_url: string;
     title: string;
-    sub_title: string;
+    subtitle: string;
 };
 
 export default observer(YouMightLikeCard);

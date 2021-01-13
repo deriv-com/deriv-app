@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 
-const Divider: React.FC<TDividerProps> = ({ className, horizontal, vertical, ...props }) => {
+const Divider: React.FC<IDividerProps> = ({ className, horizontal, vertical, ...props }) => {
     return (
         <hr
             className={classNames(
@@ -17,10 +17,10 @@ const Divider: React.FC<TDividerProps> = ({ className, horizontal, vertical, ...
     );
 };
 
-type TDividerProps = {
+interface IDividerProps {
     className?: string;
     horizontal?: boolean;
     vertical?: boolean;
-};
+}
 
 export default Divider;

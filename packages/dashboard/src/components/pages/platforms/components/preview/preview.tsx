@@ -1,10 +1,10 @@
 import * as React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Text, Icon } from '@deriv/components';
 import { useStores } from 'Stores';
-import { TStringTranslation } from 'Types'
+import { TStringTranslation } from 'Types';
 
-
-const GetSection: React.FC<IGetSectionType> = ({ availability_text, images }) => {
+const GetSection: React.FC<IGetSectionProps> = ({ availability_text, images }) => {
     const { config_store } = useStores();
 
     return (
@@ -16,14 +16,16 @@ const GetSection: React.FC<IGetSectionType> = ({ availability_text, images }) =>
 
                 <Icon className='dw-preview__icon' icon='IcChevronRightBold' width='16' height='16' />
             </div>
-            <Text color='less-prominent' size='xs'>{availability_text}</Text>
+            <Text color='less-prominent' size='xs'>
+                {availability_text}
+            </Text>
         </section>
     );
 };
 
-type IGetSectionType = {
+interface IGetSectionProps {
     availability_text: TStringTranslation;
     images: string[];
 }
 
-export default GetSection;
+export default observer(GetSection);

@@ -3,7 +3,7 @@ import { Text, Icon } from '@deriv/components';
 import Divider from 'Components/elements/divider';
 import { TStringTranslation } from 'Types'
 
-const Description: React.FC<IDescriptionType> = ({ description, advantages = [] }) => {
+const Description: React.FC<IDescriptionProps> = ({ description, advantages = [] }) => {
     return (
         <React.Fragment>
             <section className='dw-description'>
@@ -24,14 +24,14 @@ const Description: React.FC<IDescriptionType> = ({ description, advantages = [] 
     );
 };
 
-type IDescriptionItem = {
+type TDescriptionItem = {
     icon: string;
     title: TStringTranslation;
 }
 
-type IDescriptionType = {
+interface IDescriptionProps {
     description: TStringTranslation;
-    advantages: IDescriptionItem[];
+    advantages: TDescriptionItem[];
 }
 
 export default Description;

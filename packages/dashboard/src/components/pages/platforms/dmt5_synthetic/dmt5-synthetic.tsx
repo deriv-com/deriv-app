@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Localize } from '@deriv/translations';
 import Wrapper from '../components/wrapper';
 import BackButton from '../components/back-button';
 import GetSection from '../components/get-section';
@@ -17,18 +18,18 @@ const DMT5Synthetic: React.FC = () => {
             />
             <GetSection
                 icon='IcMt5SyntheticDashboard'
-                title='DMT5 Synthetic'
-                subtitle='Trade CFDs on synthetic indices that simulate real-world market movements.'
+                title={<Localize i18n_translate_text='DMT5 Synthetic' />}
+                subtitle={<Localize i18n_translate_text='Trade CFDs on synthetic indices that simulate real-world market movements.' />}
                 trades={[
                     {
                         icon: 'IcMt5MarginTrading',
-                        title: 'Margin',
+                        title: <Localize i18n_translate_text='Margin' />,
                     },
                 ]}
                 markets={[
                     {
                         icon: 'IcMt5SyntheticIndices',
-                        title: 'Synthetic indices',
+                        title: <Localize i18n_translate_text='Synthetic indices' />,
                     },
                 ]}
                 onClickDemo={() => {
@@ -40,116 +41,116 @@ const DMT5Synthetic: React.FC = () => {
                 link='TODO: add share link'
             />
             <Preview
-                availability_text='Available on desktop and mobile'
+                availability_text={<Localize i18n_translate_text='Available on desktop and mobile' />}
                 images={['platforms/dmt5-synthetic-1.png', 'platforms/dmt5-synthetic-2.png']}
             />
             <Facts
-                leverage='Up to 1:4000'
-                margin_call='100%'
-                stop_out='50%'
-                assets='10'
-                min_stake='$5'
-                duration='1 tick - 365 days'
+                leverage={<Localize i18n_translate_text='Up to 1:4000' />}
+                margin_call={<Localize i18n_translate_text='100%' />}
+                stop_out={<Localize i18n_translate_text='50%' />}
+                assets={<Localize i18n_translate_text='10' />}
+                min_stake={<Localize i18n_translate_text='$5' />}
+                duration={<Localize i18n_translate_text='1 tick - 365 days' />}
             />
             <Description
-                description='Trade synthetic indices with leverage on MT5. Our synthetic indices are based on a cryptographically secure random number generator audited for fairness by an independent third party. These indices are engineered to simulate real-world market movement and are unaffected by natural events and disruptions. Synthetic indices are available 24/7, have constant volatility, fixed generation intervals, and are free of market and liquidity risks.'
+                description={<Localize i18n_translate_text='Trade synthetic indices with leverage on MT5. Our synthetic indices are based on a cryptographically secure random number generator audited for fairness by an independent third party. These indices are engineered to simulate real-world market movement and are unaffected by natural events and disruptions. Synthetic indices are available 24/7, have constant volatility, fixed generation intervals, and are free of market and liquidity risks.' />}
                 advantages={[
                     {
                         icon: 'IcMt5HighLeverage',
-                        title: 'High leverage on margin trading, tight spreads',
+                        title: <Localize i18n_translate_text='High leverage on margin trading, tight spreads' />,
                     },
                     {
                         icon: 'IcMt5LiquidRisk',
-                        title: 'Free from real-world market and liquidity risks',
+                        title: <Localize i18n_translate_text='Free from real-world market and liquidity risks' />,
                     },
                     {
                         icon: 'IcMt5Responsive',
-                        title: 'Responsive, easy-to-use platforms',
+                        title: <Localize i18n_translate_text='Responsive, easy-to-use platforms' />,
                     },
                     {
                         icon: 'IcMt5TradeTypes',
-                        title: 'Exclusive access to innovative trade types',
+                        title: <Localize i18n_translate_text='Exclusive access to innovative trade types' />,
                     },
                     {
                         icon: 'IcMt5Support',
-                        title: 'Smart and friendly support, 7 days a week',
+                        title: <Localize i18n_translate_text='Smart and friendly support, 7 days a week' />,
                     },
                     {
                         icon: 'IcMt5OpenMarkets',
-                        title: '24/7 trading on ever-open markets',
+                        title: <Localize i18n_translate_text='24/7 trading on ever-open markets' />,
                     },
                 ]}
             />
-            <Instruments title='Markets and instruments to trade on DMT5 Synthetics' active_symbols={[
+            <Instruments title={<Localize i18n_translate_text='Markets and instruments to trade on DMT5 Synthetics' />} active_symbols={[
                 {
                     icon: 'IcMt5SyntheticIndices',
-                    title: 'Synthetic indices',
+                    title: <Localize i18n_translate_text='Synthetic indices' />,
                     submarkets: [
                         {
-                            title: 'Volatility indices',
-                            description: 'These indices correspond to simulated markets with constant volatilities of 10%, 25%, 50%, 75%, and 100%. One tick is generated every two seconds for volatility indices 10, 25, 50, 75, and 100. One tick is generated every second for volatility indices 10 (1s), 25 (1s), 50 (1s), 75 (1s), and 100 (1s).',
+                            title: <Localize i18n_translate_text='Volatility indices' />,
+                            description: <Localize i18n_translate_text='These indices correspond to simulated markets with constant volatilities of 10%, 25%, 50%, 75%, and 100%. One tick is generated every two seconds for volatility indices 10, 25, 50, 75, and 100. One tick is generated every second for volatility indices 10 (1s), 25 (1s), 50 (1s), 75 (1s), and 100 (1s).' />,
                             symbols: [
                                 {
                                     icon: 'IcUnderlyingR_100',
-                                    title: 'Volatility 10 Index',
+                                    title: <Localize i18n_translate_text='Volatility 10 Index' />,
                                 },
                                 {
                                     icon: 'IcUnderlyingR_100',
-                                    title: 'Volatility 10 Index',
+                                    title: <Localize i18n_translate_text='Volatility 10 Index' />,
                                 },
                                 {
                                     icon: 'IcUnderlyingR_100',
-                                    title: 'Volatility 10 Index',
+                                    title: <Localize i18n_translate_text='Volatility 10 Index' />,
                                 },
                                 {
                                     icon: 'IcUnderlyingR_100',
-                                    title: 'Volatility 10 Index',
+                                    title: <Localize i18n_translate_text='Volatility 10 Index' />,
                                 },
                                 {
                                     icon: 'IcUnderlyingR_100',
-                                    title: 'Volatility 10 Index',
+                                    title: <Localize i18n_translate_text='Volatility 10 Index' />,
                                 },
                                 {
                                     icon: 'IcUnderlyingR_100',
-                                    title: 'Volatility 10 Index',
+                                    title: <Localize i18n_translate_text='Volatility 10 Index' />,
                                 },
                                 {
                                     icon: 'IcUnderlyingR_100',
-                                    title: 'Volatility 10 Index',
+                                    title: <Localize i18n_translate_text='Volatility 10 Index' />,
                                 },
                                 {
                                     icon: 'IcUnderlyingR_100',
-                                    title: 'Volatility 10 Index',
+                                    title: <Localize i18n_translate_text='Volatility 10 Index' />,
                                 },
                                 {
                                     icon: 'IcUnderlyingR_100',
-                                    title: 'Volatility 10 Index',
+                                    title: <Localize i18n_translate_text='Volatility 10 Index' />,
                                 },
                                 {
                                     icon: 'IcUnderlyingR_100',
-                                    title: 'Volatility 10 Index',
+                                    title: <Localize i18n_translate_text='Volatility 10 Index' />,
                                 },
                             ],
                         },
                         {
-                            title: 'Crash/Boom',
-                            description: 'With these indices, there is an average of one drop (crash) or one spike (boom) in prices that occur in a series of 1,000 or 500 ticks.',
+                            title: <Localize i18n_translate_text='Crash/Boom' />,
+                            description: <Localize i18n_translate_text='With these indices, there is an average of one drop (crash) or one spike (boom) in prices that occur in a series of 1,000 or 500 ticks.' />,
                             symbols: [
                                 {
                                     icon: 'IcUnderlyingR_100',
-                                    title: 'Volatility 10 Index',
+                                    title: <Localize i18n_translate_text='Volatility 10 Index' />,
                                 },
                                 {
                                     icon: 'IcUnderlyingR_100',
-                                    title: 'Volatility 10 Index',
+                                    title: <Localize i18n_translate_text='Volatility 10 Index' />,
                                 },
                                 {
                                     icon: 'IcUnderlyingR_100',
-                                    title: 'Volatility 10 Index',
+                                    title: <Localize i18n_translate_text='Volatility 10 Index' />,
                                 },
                                 {
                                     icon: 'IcUnderlyingR_100',
-                                    title: 'Volatility 10 Index',
+                                    title: <Localize i18n_translate_text='Volatility 10 Index' />,
                                 },
                             ],
                         },

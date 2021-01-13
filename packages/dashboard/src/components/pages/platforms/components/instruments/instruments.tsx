@@ -2,14 +2,14 @@ import * as React from 'react';
 import { Text, Icon } from '@deriv/components';
 import { TStringTranslation } from 'Types'
 
-const Instruments: React.FC<IInstrumentsType> = ({ title, active_symbols = [] }) => {
+const Instruments: React.FC<TInstrumentsProps> = ({ title, active_symbols = [] }) => {
     return (
         <div className='dw-instruments'>
             <Text className='dw-instruments__title' size='m' weight='bold'>
                 {title}
             </Text>
-            {active_symbols.map((market, idx) => (
-                <React.Fragment key={idx}>
+            {active_symbols.map((market, market_index) => (
+                <React.Fragment key={market_index}>
                     <div className='dw-instruments__market'>
                         <Icon className='dw-instruments__market-icon' icon={market.icon} width='48' height='48' />
                         <div className='dw-instruments__market-title'>
@@ -19,8 +19,8 @@ const Instruments: React.FC<IInstrumentsType> = ({ title, active_symbols = [] })
                             {market.description && <Text>{market.description}</Text>}
                         </div>
                     </div>
-                    {market.submarkets.map((submarket, idy) => (
-                        <div key={idy} className='dw-instruments__submarket'>
+                    {market.submarkets.map((submarket, submarket_index) => (
+                        <div key={submarket_index} className='dw-instruments__submarket'>
                             <Text className='dw-instruments__submarket-title' size='sm' weight='bold'>
                                 {submarket.title}
                             </Text>
@@ -29,8 +29,8 @@ const Instruments: React.FC<IInstrumentsType> = ({ title, active_symbols = [] })
                             )}
 
                             <div className='dw-instruments__symbol'>
-                                {submarket.symbols.map((symbol, idz) => (
-                                    <div key={idz} className='dw-instruments__symbol-item'>
+                                {submarket.symbols.map((symbol, symbol_index) => (
+                                    <div key={symbol_index} className='dw-instruments__symbol-item'>
                                         <Icon
                                             className='dw-instruments__symbol-icon'
                                             icon={symbol.icon}
@@ -54,7 +54,7 @@ type SymbolType = {
     title: TStringTranslation;
 }
 
-type SubmrketType = {
+type SubmarketType = {
     title: TStringTranslation;
     description?: TStringTranslation;
     symbols: SymbolType[]
@@ -64,10 +64,10 @@ type MarketType = {
     icon: string;
     title: TStringTranslation;
     description?: TStringTranslation;
-    submarkets: SubmrketType[];
+    submarkets: SubmarketType[];
 }
 
-type IInstrumentsType = {
+type TInstrumentsProps = {
     title: TStringTranslation;
     active_symbols: MarketType[]
 }

@@ -5,7 +5,7 @@ import Button from 'Components/elements/button';
 import Divider from 'Components/elements/divider';
 import { TStringTranslation } from 'Types';
 
-const GetSection: React.FC<IGetSectionType> = ({
+const GetSection: React.FC<IGetSectionProps> = ({
     icon,
     title,
     subtitle,
@@ -90,7 +90,7 @@ type TradeMarketType = {
     title: TStringTranslation;
 };
 
-type IGetSectionType = {
+interface IGetSectionProps {
     icon: string;
     title: TStringTranslation;
     subtitle: TStringTranslation;
@@ -99,6 +99,6 @@ type IGetSectionType = {
     onClickDemo: React.MouseEventHandler<HTMLButtonElement>;
     onClickGet: React.MouseEventHandler<HTMLButtonElement>;
     link: string;
-};
+}
 
 export default GetSection;

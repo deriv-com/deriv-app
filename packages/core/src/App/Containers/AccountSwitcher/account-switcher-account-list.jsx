@@ -108,7 +108,8 @@ const AccountDisplay = ({ market_type, sub_account_type, server, is_dark_mode_on
             {getMT5AccountDisplay(market_type, sub_account_type)}
             {server?.geolocation && (
                 <Text color={is_dark_mode_on ? 'general' : 'colored-background'} size='xxs' className='badge-server'>
-                    {server.geolocation.region}&nbsp;{server.geolocation.sequence}
+                    {server.geolocation.region}&nbsp;
+                    {server.geolocation.sequence !== 1 ? server.geolocation.sequence : ''}
                 </Text>
             )}
         </div>

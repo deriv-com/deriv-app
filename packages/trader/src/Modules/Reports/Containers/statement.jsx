@@ -13,6 +13,7 @@ import { connect } from 'Stores/connect';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import AccountStatistics from '../Components/account-statistics.jsx';
+import FilterComponent from '../Components/filter-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 
@@ -127,16 +128,12 @@ const Statement = ({
 
     if (error) return <p>{error}</p>;
 
-    const filter_component = (
-        <React.Fragment>
-            <CompositeCalendar
-                input_date_range={filtered_date_range}
-                onChange={handleDateChange}
-                from={date_from}
-                to={date_to}
-            />
-            <TransactionFilter handleFilterChange={handleFilterChange} />
-        </React.Fragment>
+    const filter_component = FilterComponent(
+        filtered_date_range,
+        handleDateChange,
+        date_from,
+        date_to,
+        handleFilterChange
     );
 
     const columns = getStatementTableColumnsTemplate(currency);

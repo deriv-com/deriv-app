@@ -63,8 +63,11 @@ const SelectNative = ({
                 >
                     {label}
                 </div>
-                {!suffix_icon && <Icon icon='IcChevronDown' className='dc-select-native__arrow' />}
-                {suffix_icon && <Icon className='dc-select-native__suffix-icon' icon={suffix_icon} size={16} fill />}
+                {!suffix_icon ? (
+                    <Icon icon='IcChevronDown' className='dc-select-native__arrow' />
+                ) : (
+                    <Icon className='dc-select-native__suffix-icon' icon={suffix_icon} size={16} fill />
+                )}
                 <select
                     className={classNames(className, 'dc-select-native__picker', {
                         'dc-select-native__picker--hide-selected-value': hide_selected_value,

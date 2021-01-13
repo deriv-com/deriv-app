@@ -45,7 +45,20 @@ const MT5RealAccountDisplay = ({
     toggleShouldShowRealAccountsList,
     trading_servers,
 }) => {
-    const should_show_trade_servers = is_logged_in ? !is_eu : !is_eu_country;
+    const show_add_more_servers = React.useMemo(() => {
+        let number_of_current_synthetic = Object.keys(current_list).reduce(
+            (acc, cur) => (cur.startsWith('real.synthetic') ? acc + 1 : acc),
+            0
+        );
+        let number_of_available_synthetic = trading_servers.reduce(
+            (acc, cur) => (cur.supported_accounts.includes('gaming') && !cur.disabled ? acc + 1 : acc),
+            0
+        );
+        return number_of_current_synthetic < number_of_available_synthetic;
+    }, [current_list, trading_servers]);
+
+    const should_show_trade_servers = (is_logged_in ? !is_eu : !is_eu_country) && show_add_more_servers;
+    console.log(show_add_more_servers);
     const [is_new_trade_server_visible, setNewTradeServerVisibility] = React.useState(false);
     React.useEffect(() => {
         if (Object.keys(current_list).some(key => key.startsWith('real.synthetic')) && should_show_trade_servers) {

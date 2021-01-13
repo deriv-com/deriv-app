@@ -2,7 +2,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money, Dropdown } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, DataList, DataTable, Dropdown } from '@deriv/components';
 import { extractInfoFromShortcode, urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
@@ -12,6 +12,7 @@ import { getSupportedContracts } from 'Constants';
 import { connect } from 'Stores/connect';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
+import AccountStatistics from '../Components/account-statistics.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 
@@ -124,46 +125,6 @@ const Statement = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const getAccountStatistics = () => (
-        <React.Fragment>
-            <div className='statement__account-statistics'>
-                <div className='statement__account-statistics-item'>
-                    <div className='statement__account-statistics--is-rectangle'>
-                        <span className='statement__account-statistics-title'>
-                            {localize('Total deposits')} <MobileWrapper> ({currency}) </MobileWrapper>
-                        </span>
-                        <span className='statement__account-statistics-amount'>
-                            <Money amount={account_statistics.total_deposits} currency={currency} />
-                        </span>
-                    </div>
-                </div>
-                <div className='statement__account-statistics-item statement__account-statistics-total-withdrawal'>
-                    <div className='statement__account-statistics--is-rectangle'>
-                        <span className='statement__account-statistics-title'>
-                            {localize('Total withdrawals')} <MobileWrapper> ({currency}) </MobileWrapper>
-                        </span>
-                        <span className='statement__account-statistics-amount'>
-                            <Money amount={account_statistics.total_withdrawals} currency={currency} />
-                        </span>
-                    </div>
-                </div>
-                <div className='statement__account-statistics-item'>
-                    <div className='statement__account-statistics--is-rectangle'>
-                        <span className='statement__account-statistics-title'>
-                            {localize('Net deposits')} <MobileWrapper> ({currency}) </MobileWrapper>
-                        </span>
-                        <span className='statement__account-statistics-amount'>
-                            <Money
-                                amount={account_statistics.total_deposits - account_statistics.total_withdrawals}
-                                currency={currency}
-                            />
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </React.Fragment>
-    );
-
     if (error) return <p>{error}</p>;
 
     const filter_component = (
@@ -210,7 +171,7 @@ const Statement = ({
                 className={is_mx_mlt ? undefined : 'reports__meta--statement'}
                 filter_component={filter_component}
                 is_statement
-                optional_component={!is_switching && is_mx_mlt && getAccountStatistics()}
+                optional_component={!is_switching && is_mx_mlt && AccountStatistics(account_statistics, currency)}
             />
             {is_switching ? (
                 <PlaceholderComponent is_loading />

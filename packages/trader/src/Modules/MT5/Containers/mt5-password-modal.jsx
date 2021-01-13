@@ -289,7 +289,7 @@ const MT5PasswordModal = ({
     React.useEffect(() => {
         if (!should_show_server_form && password && !is_submitting) {
             setIsSubmitting(true);
-        } else if (is_submitting && password) {
+        } else if (is_submitting && password && is_logged_in) {
             submitMt5Password({ password }, state => {
                 setPassword('');
                 setIsSubmitting(state);

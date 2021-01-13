@@ -243,10 +243,9 @@ $side-padding: 1.2em;
     }
     &__account-statistics {
         background-color: var(--general-section-1);
-
+        margin: 1.6rem 0;
         @include desktop {
             width: 100%;
-            margin: 1.6rem 0;
         }
         @include mobile {
             order: 1;

@@ -4,9 +4,9 @@ import { getLanguage } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
 import BaseStore from './base-store';
 
-export default class SegmentStore extends BaseStore {
+export default class RudderStackStore extends BaseStore {
     // only available on production (bot and deriv)
-    is_applicable = /^(16929|19111)$/.test(getAppId());
+    is_applicable = /^(16929|19111|24091)$/.test(getAppId());
     has_identified = false;
     current_page = '';
 
@@ -14,12 +14,6 @@ export default class SegmentStore extends BaseStore {
         super({ root_store });
     }
 
-    /**
-     * Pushes identify event to segment
-     * identify event will store userid in localstorage to be used by
-     * other segment call
-     * @param {object} data
-     */
     @action.bound
     identifyEvent = async data =>
         new Promise(resolve => {
@@ -44,7 +38,7 @@ export default class SegmentStore extends BaseStore {
         });
 
     /**
-     * Pushes page view track event to segment
+     * Pushes page view track event to rudderstack
      */
     @action.bound
     pageView() {
@@ -62,8 +56,7 @@ export default class SegmentStore extends BaseStore {
     }
 
     /**
-     * Pushes reset event to segment
-     * segment will remove userId from localstorage when logout
+     * Pushes reset event to rudderstack
      */
     @action.bound
     reset() {
@@ -74,7 +67,7 @@ export default class SegmentStore extends BaseStore {
     }
 
     /**
-     * Pushes track event to segment
+     * Pushes track event to rudderstack
      */
     @action.bound
     track(event_name, options) {

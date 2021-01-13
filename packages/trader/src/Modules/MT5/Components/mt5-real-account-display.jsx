@@ -257,7 +257,7 @@ const MT5RealAccountDisplay = ({
         />
     );
 
-    const items = [...synthetic_account_items, financial_account, financial_stp_account].filter(Boolean);
+    const items = [...(synthetic_account_items || []), financial_account, financial_stp_account].filter(Boolean);
 
     return (
         <React.Fragment>

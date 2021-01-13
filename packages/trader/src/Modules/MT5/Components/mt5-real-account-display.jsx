@@ -1,7 +1,6 @@
 import React from 'react';
-import { CSSTransition } from 'react-transition-group';
 import { localize, Localize } from '@deriv/translations';
-import { Text, DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
 import {
     eu_real_financial_specs,
     real_financial_stp_specs,
@@ -249,7 +248,7 @@ const MT5RealAccountDisplay = ({
             <DesktopWrapper>
                 <Carousel
                     list={items}
-                    width={310}
+                    width={328}
                     nav_position='middle'
                     show_bullet={false}
                     item_per_window={3}

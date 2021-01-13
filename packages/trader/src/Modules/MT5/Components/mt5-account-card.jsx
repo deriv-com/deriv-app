@@ -145,7 +145,9 @@ const MT5AccountCard = ({
         data => {
             const server = trading_servers?.find(s => s.id === data.server);
             if (server) {
-                return `${server.geolocation.region} ${server.geolocation.sequence}`;
+                return `${server.geolocation.region} ${
+                    server.geolocation.sequence === 1 ? '' : server.geolocation.sequence
+                }`;
             }
 
             return '';

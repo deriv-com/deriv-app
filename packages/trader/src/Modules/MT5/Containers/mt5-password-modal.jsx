@@ -128,7 +128,7 @@ const MT5ServerForm = ({ ...props }) => {
                 // Transform properties to support radiogroup
                 server.label = `${server.geolocation.region} ${
                     server.geolocation.sequence === 1 ? '' : server.geolocation.sequence
-                } ${server.recommended ? localize('(recommended)') : ''}`;
+                }`;
                 server.value = server.id;
                 server.disabled = props.mt5_login_list.some(login_item => login_item.server === server.id);
                 return server;

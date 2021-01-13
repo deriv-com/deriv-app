@@ -12,8 +12,8 @@ const account_icons = {
     financial_stp: 'IcMt5FinancialStpPlatform',
 };
 
-const AddTradeServerButton = ({ onSelectAccount, add_server_ref }) => (
-    <div onClick={onSelectAccount} className={classNames('mt5-account-card__add-server')} ref={add_server_ref}>
+const AddTradeServerButton = ({ onSelectAccount }) => (
+    <div onClick={onSelectAccount} className={classNames('mt5-account-card__add-server')}>
         <span className='mt5-account-card__add-server--icon'>+</span>
         <Localize i18n_default_text='Add more trade servers' />
     </div>
@@ -120,7 +120,7 @@ const MT5AccountCard = ({
     const has_demo_banner = type.category === 'demo';
     const has_server_banner = existing_data && type.category === 'real' && type.type === 'synthetic';
     const ref = React.useRef();
-    const add_server_ref = React.useRef();
+    const wrapper_ref = React.useRef();
 
     React.useEffect(() => {
         const show = () => {
@@ -133,15 +133,11 @@ const MT5AccountCard = ({
         };
 
         ref.current.addEventListener('mouseenter', show);
-        ref.current.addEventListener('mouseleave', hide);
-        add_server_ref?.current?.addEventListener('mouseenter', show);
-        add_server_ref?.current?.addEventListener('mouseleave', hide);
+        wrapper_ref?.current?.addEventListener('mouseleave', hide);
 
         return () => {
             ref.current.removeEventListener('mouseenter', show);
-            ref.current.removeEventListener('mouseleave', hide);
-            add_server_ref?.current?.removeEventListener('mouseenter', show);
-            add_server_ref?.current?.removeEventListener('mouseleave', hide);
+            wrapper_ref?.current?.removeEventListener('mouseleave', hide);
         };
     }, [onHover]);
 
@@ -164,6 +160,7 @@ const MT5AccountCard = ({
 
     return (
         <div
+            ref={wrapper_ref}
             className={classNames('mt5-account-card__wrapper')}
             style={{
                 '--mt5-card-wrapper-grid': has_server_banner && should_show_trade_servers ? '1fr 4rem' : '1fr 4rem',
@@ -307,7 +304,7 @@ const MT5AccountCard = ({
                 </div>
                 {has_server_banner && should_show_trade_servers && (
                     <MobileWrapper>
-                        <AddTradeServerButton onSelectAccount={onSelectAccount} add_server_ref={add_server_ref} />
+                        <AddTradeServerButton onSelectAccount={onSelectAccount} />
                     </MobileWrapper>
                 )}
             </div>
@@ -318,7 +315,7 @@ const MT5AccountCard = ({
                     classNames='mt5-account-card__add-server'
                     unmountOnExit
                 >
-                    <AddTradeServerButton onSelectAccount={onSelectAccount} add_server_ref={add_server_ref} />
+                    <AddTradeServerButton onSelectAccount={onSelectAccount} />
                 </CSSTransition>
             </DesktopWrapper>
         </div>

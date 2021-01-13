@@ -112,7 +112,7 @@ const MT5PasswordForm = props => (
                     onCancel={props.closeModal}
                     is_absolute={isMobile()}
                     is_loading={props.is_submitting}
-                    label={localize('Next')}
+                    label={props.should_show_server_form ? localize('Next') : localize('Add account')}
                     form_error={props.form_error}
                 />
             </form>
@@ -187,7 +187,7 @@ const MT5ServerForm = ({ ...props }) => {
                         onCancel={props.onBack}
                         is_absolute={isMobile()}
                         is_loading={isSubmitting}
-                        label={localize('Next')}
+                        label={localize('Add account')}
                         form_error={props.form_error}
                     />
                 </form>
@@ -306,6 +306,7 @@ const MT5PasswordModal = ({
                             submitMt5Password={setPassword}
                             is_real_financial_stp={is_real_financial_stp}
                             validatePassword={validatePassword}
+                            should_show_server_form={should_show_server_form}
                         />
                     )}
                 </Modal>
@@ -335,6 +336,7 @@ const MT5PasswordModal = ({
                             is_real_financial_stp={is_real_financial_stp}
                             submitMt5Password={setPassword}
                             validatePassword={validatePassword}
+                            should_show_server_form={should_show_server_form}
                         />
                     )}
                 </MobileDialog>

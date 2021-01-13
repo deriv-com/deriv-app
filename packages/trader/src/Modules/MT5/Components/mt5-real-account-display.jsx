@@ -113,39 +113,65 @@ const MT5RealAccountDisplay = ({
 
     const synthetic_account_items =
         (landing_companies?.mt_gaming_company?.financial || !is_logged_in) &&
-        Object.keys(current_list)
-            .filter(key => key.startsWith('real.synthetic'))
-            .reduce((acc, cur) => {
-                acc.push(current_list[cur]);
-                return acc;
-            }, [])
-            .map((acc, index) => {
-                return (
-                    <MT5AccountCard
-                        key={index}
-                        has_mt5_account={has_mt5_account}
-                        title={localize('Synthetic')}
-                        is_disabled={!has_real_account}
-                        type={{
-                            category: 'real',
-                            type: 'synthetic',
-                        }}
-                        is_logged_in={is_logged_in}
-                        should_show_trade_servers={should_show_trade_servers}
-                        existing_data={acc}
-                        commission_message={localize('No commission')}
-                        onSelectAccount={onSelectRealSynthetic}
-                        onPasswordManager={openPasswordManager}
-                        onClickFund={onClickFundRealSynthetic}
-                        descriptor={localize(
-                            'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
-                        )}
-                        specs={real_synthetic_specs}
-                        trading_servers={trading_servers}
-                        onHover={hideTradeServerOnHover}
-                    />
-                );
-            });
+        (Object.keys(current_list).some(key => key.startsWith('real.synthetic'))
+            ? Object.keys(current_list)
+                  .filter(key => key.startsWith('real.synthetic'))
+                  .reduce((acc, cur) => {
+                      acc.push(current_list[cur]);
+                      return acc;
+                  }, [])
+                  .map((acc, index) => {
+                      return (
+                          <MT5AccountCard
+                              key={index}
+                              has_mt5_account={has_mt5_account}
+                              title={localize('Synthetic')}
+                              is_disabled={!has_real_account}
+                              type={{
+                                  category: 'real',
+                                  type: 'synthetic',
+                              }}
+                              is_logged_in={is_logged_in}
+                              should_show_trade_servers={should_show_trade_servers}
+                              existing_data={acc}
+                              commission_message={localize('No commission')}
+                              onSelectAccount={onSelectRealSynthetic}
+                              onPasswordManager={openPasswordManager}
+                              onClickFund={onClickFundRealSynthetic}
+                              descriptor={localize(
+                                  'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
+                              )}
+                              specs={real_synthetic_specs}
+                              trading_servers={trading_servers}
+                              onHover={hideTradeServerOnHover}
+                          />
+                      );
+                  })
+            : [
+                  <MT5AccountCard
+                      key={0}
+                      has_mt5_account={has_mt5_account}
+                      title={localize('Synthetic')}
+                      is_disabled={!has_real_account}
+                      type={{
+                          category: 'real',
+                          type: 'synthetic',
+                      }}
+                      is_logged_in={is_logged_in}
+                      should_show_trade_servers={should_show_trade_servers}
+                      existing_data={undefined}
+                      commission_message={localize('No commission')}
+                      onSelectAccount={onSelectRealSynthetic}
+                      onPasswordManager={openPasswordManager}
+                      onClickFund={onClickFundRealSynthetic}
+                      descriptor={localize(
+                          'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
+                      )}
+                      specs={real_synthetic_specs}
+                      trading_servers={trading_servers}
+                      onHover={hideTradeServerOnHover}
+                  />,
+              ]);
 
     const financial_stp_account = (landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && (
         <MT5AccountCard

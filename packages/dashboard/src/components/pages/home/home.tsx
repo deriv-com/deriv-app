@@ -35,6 +35,45 @@ const Home: React.FC = () => {
         },
         {
             default: false,
+            icon: 'IcWalletWallets',
+            label: localize('Wallets'),
+            subroutes: [
+                {
+                    label: localize('Credit/Debit Cards'),
+                    value: () => (
+                        <Text>
+                            Credit/Debit Cards
+                        </Text>
+                    ),
+                },
+                {
+                    label: localize('E-wallet'),
+                    value: () => (
+                        <Text>
+                            E-wallet
+                        </Text>
+                    ),
+                },
+                {
+                    label: localize('Cryptocurrency'),
+                    value: () => (
+                        <Text>
+                            Cryptocurrency
+                        </Text>
+                    ),
+                },
+                {
+                    label: localize('Bank Wire'),
+                    value: () => (
+                        <Text>
+                            Bank Wire
+                        </Text>
+                    ),
+                },
+            ],
+        },
+        {
+            default: false,
             icon: 'IcWalletPlatforms',
             label: localize('Platforms'),
             subroutes: [

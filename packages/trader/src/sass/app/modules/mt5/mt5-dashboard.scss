@@ -406,6 +406,7 @@
     display: flex;
     justify-content: center;
     margin-top: 2.4em;
+    height: 100%;
 
     @include mobile {
         flex-direction: column;
@@ -415,6 +416,9 @@
 .mt5-real-accounts-display {
     transition: margin-bottom 0.3s ease-in-out;
     margin-bottom: var(--mt5-real-acc-margin-bottom);
+    &__carousel {
+        margin-bottom: -4rem;
+    }
     &__add-trading-server {
         width: 100%;
         display: flex;
@@ -475,6 +479,7 @@
         --mt5-card-wrapper-grid: 1fr;
         display: grid;
         grid-template-rows: var(--mt5-card-wrapper-grid);
+        height: 100%;
         &:not(:last-child) {
             margin-right: 2.4rem;
         }

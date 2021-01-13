@@ -47,7 +47,11 @@ export default class MT5Store extends BaseStore {
 
         this.root_store.client.mt5_login_list.forEach(account => {
             // e.g. real.financial_stp
-            list[`${account.account_type}.${getMT5AccountKey(account.market_type, account.sub_account_type)}`] = {
+            list[
+                `${account.account_type}.${getMT5AccountKey(account.market_type, account.sub_account_type)}@${
+                    account.server
+                }`
+            ] = {
                 ...account,
             };
         });

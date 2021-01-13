@@ -1,7 +1,7 @@
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { localize, Localize } from '@deriv/translations';
-import { Button, Text, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { Button, Text, DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
 import {
     eu_real_financial_specs,
     real_financial_stp_specs,
@@ -48,7 +48,7 @@ const MT5RealAccountDisplay = ({
     const should_show_trade_servers = is_logged_in ? !is_eu : !is_eu_country;
     const [is_new_trade_server_visible, setNewTradeServerVisibility] = React.useState(false);
     React.useEffect(() => {
-        if (current_list['real.synthetic'] && should_show_trade_servers) {
+        if (Object.keys(current_list).some(key => key.startsWith('real.synthetic')) && should_show_trade_servers) {
             setNewTradeServerVisibility(true);
         } else {
             setNewTradeServerVisibility(false);
@@ -110,11 +110,19 @@ const MT5RealAccountDisplay = ({
         setNewTradeServerVisibility(!state);
     };
     const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
-    return (
-        <React.Fragment>
-            <div className='mt5-real-accounts-display'>
-                {(landing_companies?.mt_gaming_company?.financial || !is_logged_in) && (
+
+    const synthetic_account_items =
+        (landing_companies?.mt_gaming_company?.financial || !is_logged_in) &&
+        Object.keys(current_list)
+            .filter(key => key.startsWith('real.synthetic'))
+            .reduce((acc, cur) => {
+                acc.push(current_list[cur]);
+                return acc;
+            }, [])
+            .map((acc, index) => {
+                return (
                     <MT5AccountCard
+                        key={index}
                         has_mt5_account={has_mt5_account}
                         title={localize('Synthetic')}
                         is_disabled={!has_real_account}
@@ -124,7 +132,7 @@ const MT5RealAccountDisplay = ({
                         }}
                         is_logged_in={is_logged_in}
                         should_show_trade_servers={should_show_trade_servers}
-                        existing_data={current_list['real.synthetic']}
+                        existing_data={acc}
                         commission_message={localize('No commission')}
                         onSelectAccount={onSelectRealSynthetic}
                         onPasswordManager={openPasswordManager}
@@ -136,63 +144,79 @@ const MT5RealAccountDisplay = ({
                         trading_servers={trading_servers}
                         onHover={hideTradeServerOnHover}
                     />
-                )}
+                );
+            });
 
-                {(landing_companies?.mt_financial_company?.financial || !is_logged_in) && (
-                    <MT5AccountCard
-                        has_mt5_account={has_mt5_account}
-                        is_disabled={!has_real_account}
-                        title={localize('Financial')}
-                        type={{
-                            category: 'real',
-                            type: 'financial',
-                        }}
-                        existing_data={current_list['real.financial']}
-                        commission_message={localize('No commission')}
-                        onSelectAccount={onSelectRealFinancial}
-                        onPasswordManager={openPasswordManager}
-                        onClickFund={onClickFundRealFinancial}
-                        descriptor={
-                            is_eu || is_eu_country
-                                ? localize(
-                                      'Trade commodities, cryptocurrencies, major (standard) and minor currency pairs with high leverage.'
-                                  )
-                                : localize(
-                                      'Trade commodities, cryptocurrencies, major (standard and micro-lots) and minor currency pairs with high leverage.'
-                                  )
-                        }
-                        specs={should_show_eu ? eu_real_financial_specs : real_financial_specs}
-                        is_logged_in={is_logged_in}
-                    />
-                )}
-                {(landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && (
-                    <MT5AccountCard
-                        has_mt5_account={has_mt5_account}
-                        title={localize('Financial STP')}
-                        type={{
-                            category: 'real',
-                            type: 'financial_stp',
-                        }}
-                        is_logged_in={is_logged_in}
-                        existing_data={current_list['real.financial_stp']}
-                        commission_message={localize('No commission')}
-                        onSelectAccount={onSelectRealFinancialStp}
-                        button_label={button_label}
-                        is_button_primary={is_pending_authentication}
-                        onPasswordManager={openPasswordManager}
-                        onClickFund={onClickFundRealFinancialStp}
-                        descriptor={localize(
-                            'Trade major, minor, exotic currency pairs, and cryptocurrencies with Straight-Through Processing (STP) of your orders direct to the market.'
-                        )}
-                        specs={real_financial_stp_specs}
-                        is_disabled={is_real_financial_stp_disabled}
-                        is_virtual={is_virtual}
-                        has_real_account={has_real_account}
-                        toggleAccountsDialog={toggleAccountsDialog}
-                        toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
-                        is_accounts_switcher_on={is_accounts_switcher_on}
-                    />
-                )}
+    const financial_stp_account = (landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && (
+        <MT5AccountCard
+            has_mt5_account={has_mt5_account}
+            title={localize('Financial STP')}
+            type={{
+                category: 'real',
+                type: 'financial_stp',
+            }}
+            is_logged_in={is_logged_in}
+            existing_data={current_list['real.financial_stp']}
+            commission_message={localize('No commission')}
+            onSelectAccount={onSelectRealFinancialStp}
+            button_label={button_label}
+            is_button_primary={is_pending_authentication}
+            onPasswordManager={openPasswordManager}
+            onClickFund={onClickFundRealFinancialStp}
+            descriptor={localize(
+                'Trade major, minor, exotic currency pairs, and cryptocurrencies with Straight-Through Processing (STP) of your orders direct to the market.'
+            )}
+            specs={real_financial_stp_specs}
+            is_disabled={is_real_financial_stp_disabled}
+            is_virtual={is_virtual}
+            has_real_account={has_real_account}
+            toggleAccountsDialog={toggleAccountsDialog}
+            toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
+            is_accounts_switcher_on={is_accounts_switcher_on}
+        />
+    );
+
+    const financial_account = (landing_companies?.mt_financial_company?.financial || !is_logged_in) && (
+        <MT5AccountCard
+            has_mt5_account={has_mt5_account}
+            is_disabled={!has_real_account}
+            title={localize('Financial')}
+            type={{
+                category: 'real',
+                type: 'financial',
+            }}
+            existing_data={current_list['real.financial']}
+            commission_message={localize('No commission')}
+            onSelectAccount={onSelectRealFinancial}
+            onPasswordManager={openPasswordManager}
+            onClickFund={onClickFundRealFinancial}
+            descriptor={
+                is_eu || is_eu_country
+                    ? localize(
+                          'Trade commodities, cryptocurrencies, major (standard) and minor currency pairs with high leverage.'
+                      )
+                    : localize(
+                          'Trade commodities, cryptocurrencies, major (standard and micro-lots) and minor currency pairs with high leverage.'
+                      )
+            }
+            specs={should_show_eu ? eu_real_financial_specs : real_financial_specs}
+            is_logged_in={is_logged_in}
+        />
+    );
+
+    const items = [...synthetic_account_items, financial_account, financial_stp_account];
+
+    return (
+        <React.Fragment>
+            <div className='mt5-real-accounts-display'>
+                <Carousel
+                    list={items}
+                    width={310}
+                    nav_position='middle'
+                    show_bullet={false}
+                    item_per_window={3}
+                    className='mt5-real-accounts-display__carousel'
+                />
             </div>
             {should_show_trade_servers && (
                 <CSSTransition

@@ -1,7 +1,7 @@
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { localize, Localize } from '@deriv/translations';
-import { Text, DesktopWrapper, MobileWrapper, Carousel, MobileCarousel } from '@deriv/components';
+import { Text, DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
 import {
     eu_real_financial_specs,
     real_financial_stp_specs,

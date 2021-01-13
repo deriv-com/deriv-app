@@ -3,7 +3,7 @@ import { withRouter } from 'react-router';
 import { DesktopWrapper, Icon, MobileWrapper, Tabs, PageError, Loading } from '@deriv/components';
 // TODO: [mt5-redesign] replace tabs with radiogroup once card component is ready
 // import { DesktopWrapper, Icon, MobileWrapper, RadioGroup } from '@deriv/components';
-import { isEmptyObject, routes } from '@deriv/shared';
+import { isEmptyObject, isMobile, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import LoadingMT5RealAccountDisplay from './loading-mt5-real-account-display.jsx';
@@ -73,7 +73,7 @@ class MT5Dashboard extends React.Component {
     getIndexToSet = () => {
         const hash = this.props.location.hash;
         if (hash) {
-            return /demo/.test(this.props.location.hash) ? 0 : 1;
+            return /demo/.test(this.props.location.hash) ? 1 : 0;
         }
         return undefined;
     };
@@ -81,8 +81,8 @@ class MT5Dashboard extends React.Component {
     updateActiveIndex = index => {
         const updated_state = {};
         // updateActiveIndex is called in componentDidUpdate causing tab_index to always revert back to 0
-        if (index === 0) updated_state.is_demo_tab = true;
-        else if (index === 1) updated_state.is_demo_tab = false;
+        if (index === 1) updated_state.is_demo_tab = true;
+        else if (index === 0) updated_state.is_demo_tab = false;
 
         const index_to_set = this.getIndexToSet();
         if (this.state.active_index !== index_to_set) {
@@ -188,22 +188,6 @@ class MT5Dashboard extends React.Component {
                                     onTabItemClick={this.updateActiveIndex}
                                     should_update_hash
                                 >
-                                    <div label={localize('Demo account')} data-hash='demo'>
-                                        <MT5DemoAccountDisplay
-                                            is_eu={is_eu}
-                                            is_logged_in={is_logged_in}
-                                            has_maltainvest_account={has_maltainvest_account}
-                                            openAccountNeededModal={openAccountNeededModal}
-                                            standpoint={standpoint}
-                                            is_loading={is_loading}
-                                            has_mt5_account={has_mt5_account}
-                                            current_list={current_list}
-                                            onSelectAccount={createMT5Account}
-                                            landing_companies={landing_companies}
-                                            openAccountTransfer={this.openAccountTransfer}
-                                            openPasswordManager={this.togglePasswordManagerModal}
-                                        />
-                                    </div>
                                     <div label={localize('Real account')} data-hash='real'>
                                         <React.Fragment>
                                             {should_show_missing_real_account && (
@@ -235,6 +219,22 @@ class MT5Dashboard extends React.Component {
                                                 toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
                                             />
                                         </React.Fragment>
+                                    </div>
+                                    <div label={localize('Demo account')} data-hash='demo'>
+                                        <MT5DemoAccountDisplay
+                                            is_eu={is_eu}
+                                            is_logged_in={is_logged_in}
+                                            has_maltainvest_account={has_maltainvest_account}
+                                            openAccountNeededModal={openAccountNeededModal}
+                                            standpoint={standpoint}
+                                            is_loading={is_loading}
+                                            has_mt5_account={has_mt5_account}
+                                            current_list={current_list}
+                                            onSelectAccount={createMT5Account}
+                                            landing_companies={landing_companies}
+                                            openAccountTransfer={this.openAccountTransfer}
+                                            openPasswordManager={this.togglePasswordManagerModal}
+                                        />
                                     </div>
                                 </LoadTab>
                                 {/* TODO: [mt5-redesign] replace tabs with radiogroup once card component is ready */}
@@ -326,7 +326,11 @@ class MT5Dashboard extends React.Component {
                                 </div>
                                 <CompareAccountsModal />
                                 <div className='mt5-dashboard__maintenance'>
-                                    <Icon icon='IcAlertWarning' className='mt5-dashboard__maintenance-icon' />
+                                    <Icon
+                                        icon='IcAlertWarning'
+                                        size={isMobile() ? 28 : 16}
+                                        className='mt5-dashboard__maintenance-icon'
+                                    />
                                     <div className='mt5-dashboard__maintenance-text'>
                                         <Localize
                                             i18n_default_text='Server maintenance starting 03:00 GMT every Sunday. This process may take up to 2 hours to complete. <0 />Service may be disrupted during this time.'
@@ -341,7 +345,7 @@ class MT5Dashboard extends React.Component {
                             <MobileWrapper>
                                 <div className='mt5-dashboard__download-center'>
                                     <h1 className='mt5-dashboard__download-center--heading'>
-                                        <Localize i18n_default_text='Run MT5 from your browser or download the MT5 app for your devices' />
+                                        <Localize i18n_default_text='Download the MT5 app' />
                                     </h1>
                                     <div className='mt5-dashboard__download-center-options--mobile'>
                                         <div className='mt5-dashboard__download-center-options--mobile-devices'>

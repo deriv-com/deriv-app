@@ -90,7 +90,7 @@ const getModules = ({ is_deriv_crypto }) => {
         {
             path: routes.account,
             component: Account,
-            getTitle: () => localize('Accounts Settings'),
+            getTitle: () => localize('Account Settings'),
             icon_component: 'IcUserOutline',
             is_authenticated: true,
             // TODO: Revisit this workaround for subroutes [app-routing]

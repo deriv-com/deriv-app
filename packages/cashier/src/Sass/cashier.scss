@@ -37,17 +37,9 @@
     }
     &__wrapper {
         text-align: center;
-        margin: 0 auto;
 
         @include desktop {
             max-width: 672px;
-
-            &--confirm,
-            &.account-transfer__receipt,
-            &.payment-agent-transfer__container,
-            &.payment-agent-transfer__wrapper {
-                margin-left: 0;
-            }
         }
 
         &,
@@ -334,8 +326,8 @@
     }
     &__account-switch-icon {
         box-sizing: border-box;
-        width: 299px;
-        height: 200px;
+        width: 33.6rem;
+        height: 20.8rem;
         background-repeat: no-repeat;
         background-size: 100%;
         margin: 0 auto 1rem;

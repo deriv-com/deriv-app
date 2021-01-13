@@ -116,28 +116,6 @@
         &-button {
             margin-left: 0.8rem;
         }
-        &-error {
-            align-items: center;
-            color: var(--text-prominent);
-            display: flex;
-            flex: 1;
-            margin-right: auto;
-            padding-left: 2.4rem;
-
-            p {
-                padding-left: 1.6rem;
-            }
-
-            @include mobile {
-                margin-top: 3rem;
-                padding: unset;
-            }
-
-            &--message {
-                padding-left: 1rem;
-                width: calc(100vw - 3.6rem);
-            }
-        }
         &-footer {
             align-items: center;
             background-color: var(--general-main-1);
@@ -417,5 +395,15 @@
         @include mobile {
             padding-right: 1.6rem;
         }
+    }
+}
+
+.dc-modal-header__title--p2p-my-ads__modal-error {
+    padding: 2.4rem 2.4rem 0 !important;
+}
+
+.dc-modal__container_p2p-my-ads__modal-error {
+    .dc-modal-footer {
+        padding-top: 0 !important;
     }
 }

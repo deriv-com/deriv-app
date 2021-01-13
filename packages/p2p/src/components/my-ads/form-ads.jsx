@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field, Form, Formik } from 'formik';
-import { Button, Dropdown, Div100vhContainer, Icon, Input, Loading, Text, ThemedScrollbars } from '@deriv/components';
+import { Formik, Field, Form } from 'formik';
+import { Div100vhContainer, Dropdown, Loading, Modal, Input, Button, Text, ThemedScrollbars } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
+import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return/page-return.jsx';
@@ -21,12 +22,23 @@ const FormAdsWrapper = ({ children }) => {
 const FormAds = () => {
     const { general_store, my_ads_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
+    const [is_api_error_modal_visible, setIsApiErrorModalVisible] = React.useState(false);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => {
-        my_ads_store.setApiErrorMessage('');
         my_ads_store.getAdvertiserInfo();
+
+        const disposeApiErrorReaction = reaction(
+            () => my_ads_store.api_error_message,
+            () => toggleApiErrorModal(!!my_ads_store.api_error_message)
+        );
+        return () => {
+            disposeApiErrorReaction();
+            my_ads_store.setApiErrorMessage('');
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const toggleApiErrorModal = value => setIsApiErrorModalVisible(value);
 
     if (my_ads_store.is_form_loading) {
         return (
@@ -253,30 +265,7 @@ const FormAds = () => {
                                             />
                                         )}
                                     </Field>
-                                    {isMobile() && my_ads_store.api_error_message && (
-                                        <div className='p2p-my-ads__form-error'>
-                                            <Icon icon='IcAlertDanger' size={16} />
-                                            <Text
-                                                color='prominent'
-                                                weight='bold'
-                                                line_height='m'
-                                                size='xxxs'
-                                                className='p2p-my-ads__form-error--message'
-                                            >
-                                                {my_ads_store.api_error_message}
-                                            </Text>
-                                        </div>
-                                    )}
-
                                     <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
-                                        {my_ads_store.api_error_message && isDesktop() && (
-                                            <div className='p2p-my-ads__form-error'>
-                                                <Icon icon='IcAlertDanger' />
-                                                <Text color='prominent' weight='bold' line_height='m' size='xxs'>
-                                                    {my_ads_store.api_error_message}
-                                                </Text>
-                                            </div>
-                                        )}
                                         <Button
                                             className='p2p-my-ads__form-button'
                                             secondary
@@ -300,6 +289,22 @@ const FormAds = () => {
                     );
                 }}
             </Formik>
+            <Modal
+                className='p2p-my-ads__modal-error'
+                is_open={is_api_error_modal_visible}
+                small
+                has_close_icon={false}
+                title={localize('Something’s not right')}
+            >
+                <Modal.Body>
+                    <Text as='p' size='xs' color='prominent'>
+                        {my_ads_store.api_error_message}
+                    </Text>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button has_effect text={localize('Ok')} onClick={() => toggleApiErrorModal(false)} primary large />
+                </Modal.Footer>
+            </Modal>
         </FormAdsWrapper>
     );
 };

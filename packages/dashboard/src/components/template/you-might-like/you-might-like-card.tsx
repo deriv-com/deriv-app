@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import Frame from 'Components/elements/frame';
+import { localize } from '@deriv/translations';
 import { useStores } from 'Stores';
 
 const YouMightLikeCard: React.FC<TYouMightLikeCardProps> = ({ bg_image_url, title, subtitle }) => {
@@ -15,10 +16,10 @@ const YouMightLikeCard: React.FC<TYouMightLikeCardProps> = ({ bg_image_url, titl
                 className='dw-you-might-like__card-image'
             />
             <Text weight='bold' line_height='l'>
-                {title}
+                {localize(title)}
             </Text>
             <Text size='xs' color='less-prominent' line_height='m'>
-                {subtitle}
+                {localize(subtitle)}
             </Text>
         </div>
     );

@@ -8,19 +8,19 @@ const trader_types = [
         code: '1',
         bg: 'trade-type/bg-digital-option.png',
         title: 'Digital options',
-        sub_title: localize('Earn fixed payouts by predicting an asset price movements'),
+        sub_title: 'Earn fixed payouts by predicting an asset price movements',
     },
     {
         code: '2',
         bg: 'trade-type/bg-multipliers.png',
         title: 'Multipliers',
-        sub_title: localize('Amplify your gains without losing more than your stake.'),
+        sub_title: 'Amplify your gains without losing more than your stake.',
     },
     {
         code: '3',
         bg: 'trade-type/bg-margin.png',
         title: 'Margin',
-        sub_title: localize('Trade with leverage and low spreads for better returns on successful trades.'),
+        sub_title: 'Trade with leverage and low spreads for better returns on successful trades.',
     },
 ];
 const YouMightLike: React.FC<TYouMightLikeProps> = ({ trade_type }) => {
@@ -34,11 +34,7 @@ const YouMightLike: React.FC<TYouMightLikeProps> = ({ trade_type }) => {
                     item =>
                         trade_type !== item.code && (
                             <div key={item.code}>
-                                <YouMightLikeCard
-                                    bg_image_url={item.bg}
-                                    title={item.title}
-                                    subtitle={item.sub_title}
-                                />
+                                <YouMightLikeCard bg_image_url={item.bg} title={item.title} subtitle={item.sub_title} />
                             </div>
                         )
                 )}

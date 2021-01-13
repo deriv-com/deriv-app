@@ -2,13 +2,13 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import PreviewConfirm from './preview-confirm.jsx';
 import FilePending from './file-pending.jsx';
-import { DOCUMENT_TYPES } from './constants';
 
-const Details = ({ step, root_class, onConfirm }) => {
+const Details = ({ step, active_step, root_class, onConfirm }) => {
     const [image_preview, setImagePreview] = React.useState(null);
     const [file, setFile] = React.useState(null);
 
-    const getSocketFunc = () => console.log('socketFunc');
+    const getSocketFunc = () => {};
+
     const onFileDrop = e => {
         if (!e.files) {
             return;
@@ -18,11 +18,21 @@ const Details = ({ step, root_class, onConfirm }) => {
         setFile(uploaded_file);
         setImagePreview(URL.createObjectURL(uploaded_file));
     };
+
     const handleConfirm = () => {
-        onConfirm({ file, document_type: step.document_type }, () => {
+        const { document_type, page_type } = step;
+        const file_data = {
+            file,
+            step: active_step,
+            document_type,
+            page_type,
+        };
+
+        onConfirm(file_data, () => {
             setImagePreview(null);
         });
     };
+
     const handleCancel = () => {
         setImagePreview(null);
         setFile(null);
@@ -31,7 +41,8 @@ const Details = ({ step, root_class, onConfirm }) => {
     if (!image_preview) {
         return <FilePending {...step} getSocketFunc={getSocketFunc} onFileDrop={onFileDrop} root_class={root_class} />;
     }
-    const is_selfie = step.document_type === DOCUMENT_TYPES.selfie;
+
+    const is_selfie = step.document_type === 'selfie';
 
     return (
         <PreviewConfirm

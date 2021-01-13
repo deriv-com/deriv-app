@@ -2,7 +2,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { Timeline } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import { DetailComponent } from './detail-component.jsx';
+import DetailComponent from './detail-component.jsx';
 import { Documents } from './documents.jsx';
 import { getDocumentIndex } from './constants';
 

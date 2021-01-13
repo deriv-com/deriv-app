@@ -143,23 +143,44 @@ const AccountSwitcher = props => {
     // mt_financial_company: { financial: {}, financial_stp: {}, swap_free: {} }
     // mt_gaming_company: { financial: {}, swap_free: {} }
     const getRemainingAccounts = existing_mt5_accounts => {
-        const gaming_config = getMtConfig('gaming', props.landing_companies?.mt_gaming_company, existing_mt5_accounts);
+        const gaming_config = getMtConfig(
+            'gaming',
+            props.landing_companies?.mt_gaming_company,
+            existing_mt5_accounts,
+            props.trading_servers
+        );
         const financial_config = getMtConfig(
             'financial',
             props.landing_companies?.mt_financial_company,
-            existing_mt5_accounts
+            existing_mt5_accounts,
+            props.trading_servers
         );
 
         return [...gaming_config, ...financial_config];
     };
 
-    const getMtConfig = (market_type, landing_company, existing_mt5_accounts) => {
+    const getMtConfig = (market_type, landing_company, existing_mt5_accounts, trading_servers) => {
         const mt5_config = [];
         if (landing_company) {
             Object.keys(landing_company).forEach(company => {
-                const has_account = existing_mt5_accounts.find(
-                    account => account.sub_account_type === company && account.market_type === market_type
+                let has_account = existing_mt5_accounts.find(
+                    account =>
+                        account.sub_account_type === company &&
+                        account.market_type === market_type &&
+                        trading_servers.find(server => server.id === account.server)
                 );
+                if (has_account) {
+                    const is_market_type_available = trading_servers.filter(s =>
+                        s.supported_accounts.includes(market_type)
+                    ).length;
+                    if (is_market_type_available) {
+                        has_account =
+                            has_account &&
+                            existing_mt5_accounts.filter(acc => acc.market_type === market_type).length ===
+                                is_market_type_available;
+                    }
+                }
+
                 if (!has_account) {
                     const type = getMT5AccountKey(market_type, company);
                     if (type) {

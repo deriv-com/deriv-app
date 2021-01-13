@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import { PlatformContext, isMobile } from '@deriv/shared';
 import { Route, Switch } from 'react-router-dom';
 import { usePrevious } from '../../hooks';
 import Icon from '../icon/icon.jsx';
@@ -21,6 +22,7 @@ const Content = ({ is_routed, items, selected }) => {
     const previous_selected_item = usePrevious(selected_item);
     const TabContent = selected_item.value;
     const [side_notes, setSideNotes] = React.useState(null);
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     const notes_array = [];
 
@@ -46,7 +48,13 @@ const Content = ({ is_routed, items, selected }) => {
                             <Route
                                 key={idx}
                                 path={path}
-                                render={() => <Component component_icon={icon} setSideNotes={addToNotesQueue} />}
+                                render={() => (
+                                    <Component
+                                        is_dashboard={is_dashboard && !isMobile()}
+                                        component_icon={icon}
+                                        setSideNotes={addToNotesQueue}
+                                    />
+                                )}
                             />
                         );
                     })}
@@ -67,6 +75,7 @@ const VerticalTabContentContainer = ({
     action_bar,
     action_bar_classname,
     id,
+    is_dashboard,
     is_floating,
     is_routed,
     items,
@@ -76,6 +85,7 @@ const VerticalTabContentContainer = ({
     <div
         className={classNames('dc-vertical-tab__content', {
             'dc-vertical-tab__content--floating': is_floating,
+            'dc-vertical-tab__content--dashboard': is_dashboard,
         })}
     >
         {!is_floating && action_bar && (

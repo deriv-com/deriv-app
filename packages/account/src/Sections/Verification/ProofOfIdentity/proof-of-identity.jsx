@@ -50,6 +50,8 @@ class ProofOfIdentity extends React.Component {
                                     </Button>
                                 )
                             }
+                            is_description_enabled={this.props.is_dashboard}
+                            is_dashboard={this.props.is_dashboard}
                         />
                     </div>
                 )}

@@ -11,7 +11,7 @@ import PoaStatusCodes from 'Components/poa-status-codes';
 import { WS } from 'Services/ws-methods';
 import ProofOfAddressForm from './proof-of-address-form.jsx';
 
-const ProofOfAddressContainer = ({ is_mx_mlt, refreshNotifications }) => {
+const ProofOfAddressContainer = ({ is_mx_mlt, refreshNotifications, is_dashboard }) => {
     const [is_loading, setIsLoading] = React.useState(true);
     const [authentication_status, setAuthenticationStatus] = useStateCallback({
         allow_resubmission: false,
@@ -52,31 +52,32 @@ const ProofOfAddressContainer = ({ is_mx_mlt, refreshNotifications }) => {
     const { allow_resubmission, document_status, needs_poi, resubmit_poa, submitted_poa } = authentication_status;
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    if (!allow_resubmission && status === 'none' && is_mx_mlt) return <NotRequired />;
-    if (submitted_poa) return <Submitted needs_poi={needs_poi} />;
+    if (!allow_resubmission && status === 'none' && is_mx_mlt) return <NotRequired is_dashboard={is_dashboard} />;
+    if (submitted_poa) return <Submitted needs_poi={needs_poi} is_dashboard={is_dashboard} />;
     if (resubmit_poa || allow_resubmission) {
-        return <ProofOfAddressForm onSubmit={() => onSubmit({ needs_poi })} />;
+        return <ProofOfAddressForm onSubmit={() => onSubmit({ needs_poi })} is_dashboard={is_dashboard} />;
     }
 
     switch (document_status) {
         case PoaStatusCodes.none:
-            return <ProofOfAddressForm onSubmit={() => onSubmit({ needs_poi })} />;
+            return <ProofOfAddressForm onSubmit={() => onSubmit({ needs_poi })} is_dashboard={is_dashboard} />;
         case PoaStatusCodes.pending:
-            return <NeedsReview />;
+            return <NeedsReview is_dashboard={is_dashboard} />;
         case PoaStatusCodes.verified:
-            return <Verified needs_poi={needs_poi} />;
+            return <Verified needs_poi={needs_poi} is_dashboard={is_dashboard} />;
         case PoaStatusCodes.expired:
-            return <Expired onClick={handleResubmit} />;
+            return <Expired onClick={handleResubmit} is_dashboard={is_dashboard} />;
         case PoaStatusCodes.rejected:
-            return <Unverified />;
+            return <Unverified is_dashboard={is_dashboard} />;
         case PoaStatusCodes.suspected:
-            return <Unverified />;
+            return <Unverified is_dashboard={is_dashboard} />;
         default:
             return null;
     }
 };
 
 ProofOfAddressContainer.propTypes = {
+    is_dashboard: PropTypes.bool,
     is_mx_mlt: PropTypes.bool,
     refreshNotifications: PropTypes.func,
 };

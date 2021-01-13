@@ -14,6 +14,7 @@ class DerivPassword extends React.Component {
             {
                 component: (
                     <ChangePasswordForm
+                        is_dashboard={this.props.is_dashboard}
                         onClickSendEmail={() => {
                             WS.verifyEmail(this.props.email, 'reset_password');
                             this.node.nextStep(); // go to the next step
@@ -24,6 +25,7 @@ class DerivPassword extends React.Component {
             {
                 component: (
                     <ForgotYourPassword
+                        is_dashboard={this.props.is_dashboard}
                         onClickSendEmail={() => {
                             WS.verifyEmail(this.props.email, 'reset_password');
                         }}

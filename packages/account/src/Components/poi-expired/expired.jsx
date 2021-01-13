@@ -1,9 +1,10 @@
+import React from 'react';
+import { PropTypes } from 'prop-types';
 import { Icon } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import React from 'react';
 import IconMessageContent from 'Components/icon-message-content';
 
-export const Expired = () => (
+const Expired = ({ is_dashboard }) => (
     <IconMessageContent
         message={localize('New proof of identity document needed')}
         text={
@@ -20,6 +21,19 @@ export const Expired = () => (
                 ]}
             />
         }
-        icon={<Icon icon='IcPoiUpload' size={128} />}
+        icon={
+            is_dashboard ? (
+                <Icon icon='IcPoiUploadDashboard' height={128} width={237} />
+            ) : (
+                <Icon icon='IcPoiUpload' size={128} />
+            )
+        }
+        className='account-management-dashboard'
     />
 );
+
+Expired.propTypes = {
+    is_dashboard: PropTypes.bool,
+};
+
+export default Expired;

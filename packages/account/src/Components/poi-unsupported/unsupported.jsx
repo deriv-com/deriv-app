@@ -1,12 +1,13 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import { Localize, localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
 import IconMessageContent from 'Components/icon-message-content';
 
-const UnsupportedIconRow = () => (
+const UnsupportedIconRow = ({ is_dashboard }) => (
     <div className='poi-icon-row'>
         <div className='poi-icon-row__icon-container'>
-            <Icon icon='IcIdentityCard' size={90} />
+            <Icon icon={is_dashboard ? 'IcIdentityCardDashboard' : 'IcIdentityCard'} size={90} />
             <Text color='less-prominent' as='p'>
                 {localize('Identity card')}
             </Text>
@@ -15,7 +16,7 @@ const UnsupportedIconRow = () => (
             </Text>
         </div>
         <div className='poi-icon-row__icon-container'>
-            <Icon icon='IcDrivingLicense' size={90} />
+            <Icon icon={is_dashboard ? 'IcDrivingLicenseDashboard' : 'IcDrivingLicense'} size={90} />
             <Text color='less-prominent' as='p'>
                 {localize('Driving license')}
             </Text>
@@ -24,7 +25,7 @@ const UnsupportedIconRow = () => (
             </Text>
         </div>
         <div className='poi-icon-row__icon-container'>
-            <Icon icon='IcPassport' size={90} />
+            <Icon icon={is_dashboard ? 'IcPassportDashboard' : 'IcPassport'} size={90} />
             <Text color='less-prominent' as='p'>
                 {localize('Passport')}
             </Text>
@@ -35,7 +36,7 @@ const UnsupportedIconRow = () => (
     </div>
 );
 
-export const Unsupported = () => (
+const Unsupported = ({ is_dashboard }) => (
     <IconMessageContent
         message={localize('Verify your identity')}
         text={
@@ -46,6 +47,12 @@ export const Unsupported = () => (
                 ]}
             />
         }
-        icon_row={<UnsupportedIconRow />}
+        icon_row={<UnsupportedIconRow is_dashboard={is_dashboard} />}
     />
 );
+
+Unsupported.propTypes = {
+    is_dashboard: PropTypes.bool,
+};
+
+export default Unsupported;

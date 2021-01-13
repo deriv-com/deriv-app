@@ -1,5 +1,5 @@
 import React from 'react';
-import { routes } from '@deriv/shared';
+import { routes, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
     AccountLimits,
@@ -22,7 +22,7 @@ import {
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
 // Order matters
-const initRoutesConfig = ({ is_deriv_crypto }) => [
+const initRoutesConfig = ({ is_deriv_crypto, is_dashboard }) => [
     {
         path: routes.account_deactivated,
         component: AccountDeactivated,
@@ -90,12 +90,12 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
                     {
                         path: routes.self_exclusion,
                         component: SelfExclusion,
-                        getTitle: () => localize('Self exclusion'),
+                        getTitle: () => (is_dashboard ? localize('Self-exclusion') : localize('Self exclusion')),
                     },
                     {
                         path: routes.account_limits,
                         component: AccountLimits,
-                        getTitle: () => localize('Account limits'),
+                        getTitle: () => (is_dashboard ? localize('Withdrawal limits') : localize('Account limits')),
                     },
                     {
                         path: routes.login_history,
@@ -133,9 +133,10 @@ let routesConfig;
 // For default page route if page/path is not found, must be kept at the end of routes_config array
 const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
-const getRoutesConfig = ({ is_deriv_crypto }) => {
+const getRoutesConfig = ({ is_deriv_crypto, is_dashboard }) => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig({ is_deriv_crypto });
+        const is_dashboard_item = is_dashboard && !isMobile();
+        routesConfig = initRoutesConfig({ is_deriv_crypto, is_dashboard_item });
         routesConfig.push(route_default);
     }
     return routesConfig;

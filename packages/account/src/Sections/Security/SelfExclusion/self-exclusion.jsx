@@ -30,8 +30,16 @@ import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 import DemoMessage from 'Components/demo-message';
 import LoadErrorMessage from 'Components/load-error-message';
+import FormSubHeader from 'Components/form-sub-header';
 import Article from './article.jsx';
 import ArticleContent from './article-content.jsx';
+
+const SectionHeader = ({ title, is_dashboard }) => {
+    if (is_dashboard) {
+        return <FormSubHeader title={title} />;
+    }
+    return <h2 className='self-exclusion__header'>{title}</h2>;
+};
 
 class SelfExclusion extends React.Component {
     exclusion_data = {
@@ -358,8 +366,8 @@ class SelfExclusion extends React.Component {
         } = this.state;
         const { is_virtual, is_switching, currency, is_eu, is_tablet } = this.props;
         const { six_weeks } = this.exclusion_fields_settings;
-
-        if (is_virtual) return <DemoMessage />;
+        if (is_virtual)
+            return <DemoMessage has_demo_icon={this.props.is_dashboard} full_width={this.props.is_dashboard} />;
 
         if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account__initial-loader' />;
 
@@ -452,9 +460,10 @@ class SelfExclusion extends React.Component {
                                                 </Text>
                                             </div>
                                             <div className='self-exclusion__confirm'>
-                                                <h2 className='self-exclusion__confirm-header'>
-                                                    {localize('You have set the following limits:')}
-                                                </h2>
+                                                <SectionHeader
+                                                    title={localize('You have set the following limits:')}
+                                                    is_dashboard={this.props.is_dashboard}
+                                                />
                                                 {changed_attributes.map((key, idx) => {
                                                     const need_date_format = ['exclude_until', 'timeout_until'];
                                                     const need_money_format = [
@@ -565,9 +574,8 @@ class SelfExclusion extends React.Component {
                                         </React.Fragment>
                                     ) : (
                                         <React.Fragment>
-                                            <h2 className='self-exclusion__header'>
-                                                {localize('Your stake and loss limits')}
-                                            </h2>
+                                            <SectionHeader title={localize('Your stake and loss limits')} />
+
                                             <div className='self-exclusion__item-wrapper'>
                                                 <div className='self-exclusion__item'>
                                                     <h3 className='self-exclusion__item-title'>
@@ -697,9 +705,7 @@ class SelfExclusion extends React.Component {
                                                     </Field>
                                                 </div>
                                             </div>
-                                            <h2 className='self-exclusion__header'>
-                                                {localize('Your session and login limits')}
-                                            </h2>
+                                            <SectionHeader title={localize('Your session and login limits')} />
                                             <div className='self-exclusion__item-wrapper'>
                                                 <div className='self-exclusion__item'>
                                                     <Text as='p' size='xs' className='self-exclusion__item-field'>
@@ -848,9 +854,7 @@ class SelfExclusion extends React.Component {
                                             )}
                                             {(this.props.is_mlt || this.props.is_mf || this.props.is_mx) && (
                                                 <React.Fragment>
-                                                    <h2 className='self-exclusion__header'>
-                                                        {localize('Your maximum deposit limit')}
-                                                    </h2>
+                                                    <SectionHeader title={localize('Your maximum deposit limit')} />
                                                     <div className='self-exclusion__item-wrapper'>
                                                         <div className='self-exclusion__item'>
                                                             <h3 className='self-exclusion__item-title'>
@@ -943,9 +947,9 @@ class SelfExclusion extends React.Component {
                                                     </div>
                                                 </React.Fragment>
                                             )}
-                                            <h2 className='self-exclusion__header'>
-                                                {localize('Your maximum account balance and open positions')}
-                                            </h2>
+                                            <SectionHeader
+                                                title={localize('Your maximum account balance and open positions')}
+                                            />
                                             <div className='self-exclusion__item-wrapper'>
                                                 <div className='self-exclusion__item'>
                                                     <Text as='p' size='xs' className='self-exclusion__item-field'>
@@ -1011,7 +1015,7 @@ class SelfExclusion extends React.Component {
                         </Formik>
                     </ThemedScrollbars>
                     <DesktopWrapper>
-                        <Article toggleArticle={this.toggleArticle} />
+                        <Article toggleArticle={this.toggleArticle} is_dashboard={this.props.is_dashboard} />
                     </DesktopWrapper>
                 </Div100vhContainer>
             </section>

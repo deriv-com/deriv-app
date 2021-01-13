@@ -1,10 +1,17 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import classNames from 'classnames';
 import { Div100vhContainer, Text } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 
-const IconMessageContent = ({ className, children, icon, icon_row, message, text }) => (
-    <Div100vhContainer className='account-management__message-wrapper' is_disabled={isDesktop()} height_offset='110px'>
+const IconMessageContent = ({ children, className, full_width, icon, icon_row, message, text }) => (
+    <Div100vhContainer
+        className={classNames('account-management__message-wrapper', {
+            'account-management__message-wrapper-full-width': full_width,
+        })}
+        is_disabled={isDesktop()}
+        height_offset='110px'
+    >
         <div
             className={classNames('account-management__message-content', {
                 [`${className}__message-content`]: className,
@@ -46,4 +53,13 @@ const IconMessageContent = ({ className, children, icon, icon_row, message, text
     </Div100vhContainer>
 );
 
+IconMessageContent.propTypes = {
+    children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+    className: PropTypes.string,
+    full_width: PropTypes.bool,
+    icon: PropTypes.object,
+    icon_row: PropTypes.oneOfType([PropTypes.obj, PropTypes.string]),
+    message: PropTypes.oneOfType([PropTypes.obj, PropTypes.string]),
+    text: PropTypes.string,
+};
 export default IconMessageContent;

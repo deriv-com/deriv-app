@@ -1,11 +1,12 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { PoiButton } from 'Components/poi-button/poi-button.jsx';
 import IconMessageContent from 'Components/icon-message-content';
 import { ContinueTradingButton } from 'Components/poa-continue-trading-button/continue-trading-button.jsx';
 
-export const Verified = ({ needs_poi, is_description_disabled = false }) => {
+const Verified = ({ needs_poi, is_description_disabled = false }) => {
     const message = localize('Your proof of address is verified');
     if (needs_poi) {
         return (
@@ -24,3 +25,10 @@ export const Verified = ({ needs_poi, is_description_disabled = false }) => {
         </IconMessageContent>
     );
 };
+
+Verified.PropTypes = {
+    needs_poi: PropTypes.bool,
+    is_description_disabled: PropTypes.bool,
+};
+
+export default Verified;

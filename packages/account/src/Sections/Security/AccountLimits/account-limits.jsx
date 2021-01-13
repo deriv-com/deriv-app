@@ -65,7 +65,15 @@ const ExtraInfo = ({ message, ...props }) => {
     );
 };
 
-const AccountLimits = ({ account_limits, currency, getLimits, is_fully_authenticated, is_switching, is_virtual }) => {
+const AccountLimits = ({
+    account_limits,
+    currency,
+    getLimits,
+    is_fully_authenticated,
+    is_switching,
+    is_virtual,
+    is_dashboard,
+}) => {
     const [is_loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
@@ -78,7 +86,7 @@ const AccountLimits = ({ account_limits, currency, getLimits, is_fully_authentic
     }, [account_limits, is_virtual, is_loading]);
 
     if (is_switching) return <Loading />;
-    if (is_virtual) return <DemoMessage />;
+    if (is_virtual) return <DemoMessage has_demo_icon={is_dashboard} full_width={is_dashboard} />;
 
     const {
         api_initial_load_error,
@@ -102,7 +110,11 @@ const AccountLimits = ({ account_limits, currency, getLimits, is_fully_authentic
 
     return (
         <section className='account-limit-container'>
-            <div className='account-limit-container__wrapper'>
+            <div
+                className={classNames('account-limit-container__wrapper', {
+                    'account-limit-container__wrapper-dashboard': is_dashboard,
+                })}
+            >
                 <ThemedScrollbars is_bypassed={isMobile()} className='account-limit-container__scrollbars'>
                     <MobileWrapper>
                         <Article />
@@ -247,6 +259,7 @@ AccountLimits.propTypes = {
     account_limits: PropTypes.object,
     currency: PropTypes.string,
     getLimits: PropTypes.func,
+    is_dashboard: PropTypes.bool,
     is_fully_authenticated: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_switching: PropTypes.bool,

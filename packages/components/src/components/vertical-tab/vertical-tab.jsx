@@ -8,6 +8,7 @@ import VerticalTabHeaders from './vertical-tab-headers.jsx';
 import VerticalTabHeaderTitle from './vertical-tab-header-title.jsx';
 import VerticalTabLayout from './vertical-tab-layout.jsx';
 import VerticalTabWrapper from './vertical-tab-wrapper.jsx';
+import Icon from '../icon';
 
 const setSelectedIndex = ({ current_path, list, is_routed, selected_index, setCurrTabIndex, setVerticalTabIndex }) => {
     let index;
@@ -33,16 +34,21 @@ const VerticalTab = ({
     action_bar,
     action_bar_classname,
     current_path,
+    extra_content,
     header_classname,
     header_title,
+    is_dashboard,
     is_floating,
+    is_grid,
     is_full_width,
     is_routed,
     is_sidebar_enabled,
     list,
     list_groups,
+    onClickClose,
     setVerticalTabIndex,
     tab_headers_note,
+    title,
     vertical_tab_index,
 }) => {
     const [curr_tab_index, setCurrTabIndex] = React.useState(vertical_tab_index || 0);
@@ -72,12 +78,28 @@ const VerticalTab = ({
                 'dc-vertical-tab--floating': is_floating, // This is currently only configured for use in PageOverlay
                 'dc-vertical-tab--full-screen': is_full_width,
                 'dc-vertical-tab--grouped': Array.isArray(list_groups),
+                'dc-vertical-tab--grid': is_grid,
+                'dc-vertical-tab--dashboard': is_dashboard,
             })}
         >
+            {!!title && (
+                <div className='dc-vertical-tab__title'>
+                    <div className='dc-vertical-tab__title-wrapper'>
+                        <div className='dc-vertical-tab__title-text'>{title}</div>
+                        {onClickClose && (
+                            <div className='dc-vertical-tab__title-close' onClick={onClickClose || window.history.back}>
+                                <Icon icon='IcCross' />
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+
             {is_sidebar_enabled && (
                 <div
                     className={classNames('dc-vertical-tab__tab-meta-wrapper', {
                         'dc-vertical-tab__tab-meta-wrapper--floating': is_floating,
+                        'dc-vertical-tab__tab-meta-wrapper--dashboard': is_dashboard,
                     })}
                 >
                     <VerticalTabHeaders
@@ -91,6 +113,7 @@ const VerticalTab = ({
                         header_title={header_title}
                         tab_headers_note={tab_headers_note}
                     />
+                    {extra_content && extra_content}
                     {is_floating && tab_headers_note && (
                         <div className='dc-vertical-tab__tab-bottom-note'>{tab_headers_note}</div>
                     )}
@@ -99,6 +122,7 @@ const VerticalTab = ({
             <VerticalTabContentContainer
                 action_bar={action_bar}
                 action_bar_classname={action_bar_classname}
+                is_dashboard={is_dashboard}
                 is_floating={is_floating}
                 items={list}
                 selected={list[curr_tab_index]}

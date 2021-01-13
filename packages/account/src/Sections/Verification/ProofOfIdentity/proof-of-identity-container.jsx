@@ -1,5 +1,6 @@
 import * as Cookies from 'js-cookie';
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import { Loading, usePrevious, useStateCallback } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Unverified from 'Components/poi-unverified';
@@ -13,6 +14,7 @@ const ProofOfIdentityContainer = ({
     account_status,
     addNotificationByKey,
     getAccountStatus,
+    is_dashboard,
     serviceToken,
     notificationEvent,
     removeNotificationByKey,
@@ -115,7 +117,6 @@ const ProofOfIdentityContainer = ({
             if (onStateChange) onStateChange({ status: 'pending' });
         });
     };
-
     // component didMount hook
     React.useEffect(() => {
         getAccountStatus().then(response => {
@@ -136,16 +137,18 @@ const ProofOfIdentityContainer = ({
             }
         }
     }, [createVerificationConfig, previous_account_status, account_status]);
-
     const { has_poa, is_unwelcome, allow_document_upload } = verification_status;
-
     if (api_error)
         return (
-            <ErrorMessage error_message={localize('Sorry, there was a connection error. Please try again later.')} />
+            <ErrorMessage
+                error_message={localize('Sorry, there was a connection error. Please try again later.')}
+                is_dashboard={is_dashboard}
+            />
         );
-    if (is_loading || status.length === 0) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    if (is_unwelcome && !allow_document_upload) return <Unverified />;
-    if (status === 'not_required') return <NotRequired />;
+    if (is_loading || status.length === 0)
+        return <Loading is_fullscreen={false} className='account__initial-loader' is_dashboard={is_dashboard} />;
+    if (is_unwelcome && !allow_document_upload) return <Unverified is_dashboard={is_dashboard} />;
+    if (status === 'not_required') return <NotRequired is_dashboard={is_dashboard} />;
 
     return (
         <Onfido
@@ -157,8 +160,25 @@ const ProofOfIdentityContainer = ({
             height={height ?? null}
             handleComplete={handleComplete}
             redirect_button={redirect_button}
+            is_dashboard={is_dashboard}
         />
     );
+};
+
+ProofOfIdentityContainer.propTypes = {
+    account_status: PropTypes.object,
+    addNotificationByKey: PropTypes.func,
+    getAccountStatus: PropTypes.func,
+    is_dashboard: PropTypes.bool,
+    serviceToken: PropTypes.func,
+    notificationEvent: PropTypes.func,
+    removeNotificationByKey: PropTypes.func,
+    refreshNotifications: PropTypes.func,
+    removeNotificationMessage: PropTypes.func,
+    onStateChange: PropTypes.func,
+    is_mx_mlt: PropTypes.bool,
+    height: PropTypes.number,
+    redirect_button: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
 };
 
 export default ProofOfIdentityContainer;

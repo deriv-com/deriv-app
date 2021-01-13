@@ -1,3 +1,3 @@
-import { Verified } from './verified.jsx';
+import Verified from './verified.jsx';
 
 export default Verified;

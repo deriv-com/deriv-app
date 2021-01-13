@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import React from 'react';
 import QRCode from 'qrcode.react';
 import {
@@ -19,7 +20,7 @@ import LoadErrorMessage from 'Components/load-error-message';
 import DigitForm from './digit-form.jsx';
 import Article from './article.jsx';
 
-const TwoFactorAuthentication = ({ email_address, is_switching }) => {
+const TwoFactorAuthentication = ({ email_address, is_switching, is_dashboard }) => {
     const [is_loading, setLoading] = React.useState(true);
     const [is_two_factor_enabled, setTwoFactorEnabled] = React.useState(false);
     const [is_qr_loading, setQrLoading] = React.useState(false);
@@ -177,13 +178,20 @@ const TwoFactorAuthentication = ({ email_address, is_switching }) => {
 
     return (
         <section className='two-factor'>
-            <div className='two-factor__wrapper'>{is_two_factor_enabled ? TwoFactorEnabled : TwoFactorDisabled}</div>
+            <div
+                className={classNames('two-factor__wrapper', {
+                    'two-factor__wrapper-dashboard': is_dashboard,
+                })}
+            >
+                {is_two_factor_enabled ? TwoFactorEnabled : TwoFactorDisabled}
+            </div>
         </section>
     );
 };
 
 TwoFactorAuthentication.propTypes = {
     email_address: PropTypes.string,
+    is_dashboard: PropTypes.bool,
     is_switching: PropTypes.bool,
 };
 

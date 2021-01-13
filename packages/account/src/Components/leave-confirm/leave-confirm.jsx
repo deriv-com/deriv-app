@@ -1,4 +1,5 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { FormikConsumer } from 'formik';
 import { Button, Icon, Modal } from '@deriv/components';
@@ -6,12 +7,14 @@ import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
 
-const LeaveConfirmMessage = ({ back, leave }) => (
+const LeaveConfirmMessage = ({ back, leave, is_dashboard }) => (
     <IconMessageContent
         className='leave-confirm'
         message={localize('Unsaved changes')}
         text={localize('You have unsaved changes. Are you sure you want to discard changes and leave this page?')}
-        icon={<Icon icon='IcUnsavedChanges' size={isMobile() ? 93 : 128} />}
+        icon={
+            <Icon icon={is_dashboard ? 'IcUnsavedChangesDashboard' : 'IcUnsavedChanges'} size={isMobile() ? 93 : 128} />
+        }
     >
         <div className='account-management-flex-wrapper account-management-leave-confirm'>
             <Button
@@ -78,7 +81,11 @@ class TransitionBlocker extends React.Component {
                 ) : (
                     <Modal is_open={show} small toggleModal={this.back}>
                         <Modal.Body>
-                            <LeaveConfirmMessage back={this.back} leave={this.leave} />
+                            <LeaveConfirmMessage
+                                is_dashboard={this.props.is_dashboard}
+                                back={this.back}
+                                leave={this.leave}
+                            />
                         </Modal.Body>
                     </Modal>
                 )}
@@ -88,8 +95,15 @@ class TransitionBlocker extends React.Component {
 }
 const TransitionBlockerWithRouter = withRouter(TransitionBlocker);
 
-export const LeaveConfirm = ({ onDirty }) => (
-    <FormikConsumer>
+const LeaveConfirm = ({ onDirty, is_dashboard }) => (
+    <FormikConsumer is_dashboard={is_dashboard}>
         {formik => <TransitionBlockerWithRouter onDirty={onDirty} dirty={formik.dirty && formik.submitCount === 0} />}
     </FormikConsumer>
 );
+
+LeaveConfirm.propTypes = {
+    onDirty: PropTypes.func,
+    is_dashboard: PropTypes.bool,
+};
+
+export default LeaveConfirm;

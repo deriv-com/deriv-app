@@ -9,6 +9,7 @@ import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import FormSubHeader from 'Components/form-sub-header';
 import FormBody from 'Components/form-body';
+import FormBodySection from 'Components/form-body-section';
 import FormFooter from 'Components/form-footer';
 
 class ChangePasswordForm extends React.Component {
@@ -100,7 +101,10 @@ class ChangePasswordForm extends React.Component {
                         handleSubmit,
                         isSubmitting,
                     }) => (
-                        <form className='account-form account__password-wrapper' onSubmit={handleSubmit}>
+                        <form
+                            className='account-form account__password-wrapper account-form__password-wrapper'
+                            onSubmit={handleSubmit}
+                        >
                             {is_loading ? (
                                 <FormBody>
                                     <Loading is_fullscreen={false} className='account__initial-loader' />;
@@ -108,42 +112,49 @@ class ChangePasswordForm extends React.Component {
                             ) : (
                                 <FormBody scroll_offset={isMobile() ? '200px' : '55px'}>
                                     <FormSubHeader title={localize('Change your Deriv password')} />
-                                    <fieldset className='account-form__fieldset'>
-                                        <PasswordInput
-                                            autoComplete='current-password'
-                                            label={localize('Current password')}
-                                            error={touched.old_password && errors.old_password}
-                                            name='old_password'
-                                            value={values.old_password}
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                        />
-                                    </fieldset>
-                                    <fieldset className='account-form__fieldset'>
-                                        <PasswordMeter
-                                            input={new_pw_input}
-                                            has_error={!!(touched.new_password && errors.new_password)}
-                                            custom_feedback_messages={getErrorMessages().password_warnings}
-                                        >
+                                    <FormBodySection
+                                        has_side_note={this.props.is_dashboard}
+                                        side_note={localize(
+                                            'We recommend using a unique password — one that you don’t use for any other sites.'
+                                        )}
+                                    >
+                                        <fieldset className='account-form__fieldset'>
                                             <PasswordInput
-                                                autoComplete='new-password'
-                                                label={localize('New password')}
-                                                error={touched.new_password && errors.new_password}
-                                                name='new_password'
-                                                value={values.new_password}
+                                                autoComplete='current-password'
+                                                label={localize('Current password')}
+                                                error={touched.old_password && errors.old_password}
+                                                name='old_password'
+                                                value={values.old_password}
                                                 onBlur={handleBlur}
-                                                onChange={e => {
-                                                    const input = e.target;
-                                                    setFieldTouched('new_password', true);
-                                                    if (input) this.updateNewPassword(input.value);
-                                                    handleChange(e);
-                                                }}
+                                                onChange={handleChange}
                                             />
-                                        </PasswordMeter>
-                                    </fieldset>
+                                        </fieldset>
+                                        <fieldset className='account-form__fieldset'>
+                                            <PasswordMeter
+                                                input={new_pw_input}
+                                                has_error={!!(touched.new_password && errors.new_password)}
+                                                custom_feedback_messages={getErrorMessages().password_warnings}
+                                            >
+                                                <PasswordInput
+                                                    autoComplete='new-password'
+                                                    label={localize('New password')}
+                                                    error={touched.new_password && errors.new_password}
+                                                    name='new_password'
+                                                    value={values.new_password}
+                                                    onBlur={handleBlur}
+                                                    onChange={e => {
+                                                        const input = e.target;
+                                                        setFieldTouched('new_password', true);
+                                                        if (input) this.updateNewPassword(input.value);
+                                                        handleChange(e);
+                                                    }}
+                                                />
+                                            </PasswordMeter>
+                                        </fieldset>
+                                    </FormBodySection>
                                 </FormBody>
                             )}
-                            <FormFooter>
+                            <FormFooter is_dashboard={this.props.is_dashboard}>
                                 {status?.msg && (
                                     <FormSubmitErrorMessage
                                         className={classNames({ 'account-form__error-message': isMobile() })}
@@ -153,6 +164,7 @@ class ChangePasswordForm extends React.Component {
                                 <Button
                                     className={classNames('account-form__footer-btn', {
                                         'account-form__footer-btn--has-bottom-margin': isMobile(),
+                                        'account-form__footer-btn-dashboard': this.props.is_dashboard,
                                     })}
                                     type='button'
                                     onClick={this.props.onClickSendEmail}

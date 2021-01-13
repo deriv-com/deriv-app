@@ -1,10 +1,42 @@
 import React from 'react';
-import { Icon } from '@deriv/components';
+import PropTypes from 'prop-types';
+import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import FileUploader from './file-uploader.jsx';
 
-const FileUploaderContainer = ({ is_description_disabled, getSocket, onFileDrop, onRef }) => {
+const FileProperties = () => {
+    const properties = [
+        { name: 'size', icon: 'IcPoaFileEightMb', text: 'Less than 8MB' },
+        { name: 'format', icon: 'IcPoaFileFormat', text: 'JPEG  JPG  PNG  PDF  GIF' },
+        { name: 'time', icon: 'IcPoaFileTime', text: '1 - 6 months old' },
+        { name: 'clear', icon: 'IcPoaFileClear', text: 'A clear colour photo or scanned image' },
+        {
+            name: 'with-address',
+            icon: 'IcPoaFileWithAddress',
+            text: 'Issued under your name with your current address',
+        },
+    ];
+    return (
+        <div className='account-poa__upload-property'>
+            {properties.map(item => (
+                <div
+                    className={`account-poa__upload-property-item account-poa__upload-property-${item.name}`}
+                    key={item.name}
+                >
+                    <div className='account-poa__upload-property-wrapper'>
+                        <Icon icon={item.icon} className='account-poa__upload-icon-dashboard' size={40} />
+                        <Text size='xxxs' weight='bold' align='center'>
+                            {item.text}
+                        </Text>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+};
+
+const FileUploaderContainer = ({ is_dashboard, is_description_disabled, getSocket, onFileDrop, onRef }) => {
     const ref = React.useRef();
 
     const getSocketFunc = getSocket ?? WS.getSocket;
@@ -15,6 +47,23 @@ const FileUploaderContainer = ({ is_description_disabled, getSocket, onFileDrop,
         }
         return () => onRef(undefined);
     }, [onRef, ref]);
+    if (is_dashboard) {
+        return (
+            <div className='account-poa__upload-section account-poa__upload-section-dashboard'>
+                <div className='account-poa__upload-file account-poa__upload-file-dashboard'>
+                    <FileProperties />
+                    <div className='account-poa__upload-file-zone'>
+                        <FileUploader
+                            getSocket={getSocketFunc}
+                            ref={ref}
+                            onFileDrop={onFileDrop}
+                            is_dashboard={is_dashboard}
+                        />
+                    </div>
+                </div>
+            </div>
+        );
+    }
     return (
         <div className='account-poa__upload-section'>
             {!is_description_disabled && (
@@ -66,6 +115,14 @@ const FileUploaderContainer = ({ is_description_disabled, getSocket, onFileDrop,
 
 FileUploaderContainer.defaultProps = {
     is_description_disabled: false,
+};
+
+FileUploaderContainer.propTypes = {
+    is_dashboard: PropTypes.bool,
+    is_description_disabled: PropTypes.bool,
+    getSocket: PropTypes.func,
+    onFileDrop: PropTypes.func,
+    onRef: PropTypes.func,
 };
 
 export default FileUploaderContainer;

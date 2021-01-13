@@ -54,7 +54,9 @@
             }
         }
         &--suffix-icon {
-            width: 17.6rem;
+            width: 21rem;
+            padding-left: 3rem;
+            justify-content: start;
             @include mobile {
                 width: 4rem;
                 height: 4rem;
@@ -327,11 +329,8 @@
 .suffix-icon {
     position: absolute;
     left: 20px;
-    @include mobile {
-        left: 12px;
-    }
 }
 
 .dc-list--suffix-icon {
-    width: 17.6rem !important;
+    width: 21rem !important;
 }

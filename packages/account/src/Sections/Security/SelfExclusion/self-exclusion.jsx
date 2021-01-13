@@ -24,6 +24,7 @@ import {
     getDecimalPlaces,
     getCurrencyDisplayCode,
     validNumber,
+
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -367,7 +368,6 @@ class SelfExclusion extends React.Component {
 
         const currency_display = getCurrencyDisplayCode(currency);
         const session_duration_digits = six_weeks.toString().length;
-        const now = new Date();
 
         return (
             <section className='self-exclusion'>
@@ -734,10 +734,10 @@ class SelfExclusion extends React.Component {
                                                     <Field name='timeout_until'>
                                                         {({ field }) => (
                                                             <DatePicker 
-                                                                min_date={toMoment(now).format(
+                                                                min_date={toMoment().format(
                                                                     'YYYY-MM-DD'
                                                                 )}
-                                                                max_date={toMoment(now).add(6,'weeks').format(
+                                                                max_date={toMoment().add(6,'weeks').format(
                                                                     'YYYY-MM-DD'
                                                                 )} 
                                                                 {...field}
@@ -770,10 +770,10 @@ class SelfExclusion extends React.Component {
                                                     <Field name='exclude_until'>
                                                         {({ field }) => (
                                                             <DatePicker
-                                                                min_date={toMoment(now).add(6,'weeks').format(
+                                                                min_date={toMoment().add(6,'weeks').format(
                                                                     'YYYY-MM-DD'
                                                                 )}
-                                                                max_date={toMoment(now).add(5,'years').format(
+                                                                max_date={toMoment().add(5,'years').format(
                                                                     'YYYY-MM-DD'
                                                                 )}
                                                                 {...field}

@@ -382,19 +382,17 @@ const Dropdown = ({
                             ref={dropdown_ref}
                         >
                             {suffix_icon && <Icon className='suffix-icon' icon={suffix_icon} size={16} fill />}
-                            <DesktopWrapper>
-                                <DisplayText
-                                    className={classNames('dc-dropdown__display-text', {
-                                        'dc-dropdown__display--suffix-icon-text': suffix_icon,
-                                    })}
-                                    has_symbol={has_symbol}
-                                    name={name}
-                                    is_title={is_list_visible}
-                                    placeholder={placeholder}
-                                    value={value || 0}
-                                    list={list}
-                                />
-                            </DesktopWrapper>
+                            <DisplayText
+                                className={classNames('dc-dropdown__display-text', {
+                                    'dc-dropdown__display--suffix-icon-text': suffix_icon,
+                                })}
+                                has_symbol={has_symbol}
+                                name={name}
+                                is_title={is_list_visible}
+                                placeholder={placeholder}
+                                value={value || 0}
+                                list={list}
+                            />
                         </div>
                         {!(isSingleOption() || suffix_icon) && (
                             <Icon
@@ -427,16 +425,6 @@ const Dropdown = ({
                             parent_ref={dropdown_ref}
                             suffix_icon={suffix_icon}
                         />
-
-                        {/* <MobileWrapper>
-                        <NativeSelect
-                            ref={native_select_ref}
-                            name={name}
-                            value={value}
-                            list={list}
-                            onChange={onChange}
-                        />
-                    </MobileWrapper> */}
                     </div>
                     {!error && hint && <p className='dc-dropdown__hint'>{hint}</p>}
                 </div>

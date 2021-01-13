@@ -83,14 +83,6 @@ const Statement = ({
 
     if (error) return <p>{error}</p>;
 
-    const filter_component = FilterComponent(
-        filtered_date_range,
-        handleDateChange,
-        date_from,
-        date_to,
-        handleFilterChange
-    );
-
     const columns = getStatementTableColumnsTemplate(currency);
     const columns_map = columns.reduce((map, item) => {
         map[item.col_index] = item;
@@ -121,9 +113,20 @@ const Statement = ({
         <React.Fragment>
             <ReportsMeta
                 className={is_mx_mlt ? undefined : 'reports__meta--statement'}
-                filter_component={filter_component}
+                filter_component={
+                    <FilterComponent
+                        filtered_date_range={filtered_date_range}
+                        date_from={date_from}
+                        date_to={date_to}
+                        handleDateChange={handleDateChange}
+                        handleFilterChange={handleFilterChange}
+                    />
+                }
                 is_statement
-                optional_component={!is_switching && is_mx_mlt && AccountStatistics(account_statistics, currency)}
+                optional_component={
+                    !is_switching &&
+                    is_mx_mlt && <AccountStatistics account_statistics={account_statistics} currency={currency} />
+                }
             />
             {is_switching ? (
                 <PlaceholderComponent is_loading />

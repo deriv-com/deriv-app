@@ -122,7 +122,8 @@ const MT5AccountCard = ({
     const icon = type.type ? <Icon icon={account_icons[type.type]} size={64} /> : null;
     const has_popular_banner = type.type === 'synthetic' && type.category === 'real' && !existing_data;
     const has_demo_banner = type.category === 'demo';
-    const has_server_banner = existing_data && type.category === 'real' && type.type === 'synthetic';
+    const has_server_banner =
+        trading_servers?.length > 1 && existing_data && type.category === 'real' && type.type === 'synthetic';
     const ref = React.useRef();
     const wrapper_ref = React.useRef();
     const button_ref = React.useRef();
@@ -229,20 +230,23 @@ const MT5AccountCard = ({
                                         </td>
                                     </tr>
                                 ))}
-                                {existing_data && type.type === 'synthetic' && type.category === 'real' && (
-                                    <tr key={existing_data.server} className='mt5-account-card__specs-table-row'>
-                                        <td className='mt5-account-card__specs-table-attribute'>
-                                            <p className='mt5-account-card--paragraph'>
-                                                <Localize i18n_default_text='Trade server: ' />
-                                            </p>
-                                        </td>
-                                        <td className='mt5-account-card__specs-table-data'>
-                                            <p className='mt5-account-card--paragraph'>
-                                                {getServerName(existing_data)}
-                                            </p>
-                                        </td>
-                                    </tr>
-                                )}
+                                {has_server_banner &&
+                                    existing_data &&
+                                    type.type === 'synthetic' &&
+                                    type.category === 'real' && (
+                                        <tr key={existing_data.server} className='mt5-account-card__specs-table-row'>
+                                            <td className='mt5-account-card__specs-table-attribute'>
+                                                <p className='mt5-account-card--paragraph'>
+                                                    <Localize i18n_default_text='Trade server: ' />
+                                                </p>
+                                            </td>
+                                            <td className='mt5-account-card__specs-table-data'>
+                                                <p className='mt5-account-card--paragraph'>
+                                                    {getServerName(existing_data)}
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    )}
                             </tbody>
                         </table>
                     </div>

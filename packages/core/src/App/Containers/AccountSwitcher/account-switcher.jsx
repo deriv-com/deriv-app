@@ -265,7 +265,8 @@ const AccountSwitcher = props => {
         return getSortedMT5List().filter(account => !isDemo(account));
     };
 
-    const findServerForAccount = acc => props.trading_servers.find(server => server.id === acc.server);
+    const findServerForAccount = acc =>
+        props.trading_servers.length > 1 ? props.trading_servers.find(server => server.id === acc.server) : null;
 
     const getRemainingRealMT5 = () => {
         return getRemainingAccounts(getRealMT5());

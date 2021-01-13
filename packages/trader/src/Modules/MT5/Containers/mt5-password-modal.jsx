@@ -140,7 +140,7 @@ const MT5ServerForm = ({ ...props }) => {
         <Formik
             initialValues={{
                 password: props.password,
-                server: available_servers.find(server => server.recommended).id,
+                server: available_servers.find(server => server.recommended)?.id ?? '',
             }}
             validate={props.validateServer}
             onSubmit={(values, actions) => {

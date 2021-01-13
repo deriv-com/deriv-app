@@ -23,9 +23,13 @@ const Carousel = ({
 }) => {
     const [active_index, setActiveIndex] = React.useState(initial_index);
 
+    const computed_item_per_window = React.useMemo(() => {
+        return Math.min(item_per_window, list.length);
+    }, [item_per_window, list]);
+
     const handleNextClick = () => {
         const next_idx = active_index + 1;
-        const has_reached_end = next_idx === list.length - item_per_window + 1;
+        const has_reached_end = next_idx === list.length - computed_item_per_window + 1;
 
         if (!has_reached_end) {
             setActiveIndex(next_idx);
@@ -40,7 +44,7 @@ const Carousel = ({
         if (prev_idx > -1) {
             setActiveIndex(prev_idx);
         } else {
-            setActiveIndex(list.length - item_per_window);
+            setActiveIndex(list.length - computed_item_per_window);
         }
     };
 
@@ -53,7 +57,7 @@ const Carousel = ({
     return (
         <Swipeable onSwipedLeft={handleNextClick} onSwipedRight={handlePrevClick} className={className}>
             <div className='dc-carousel'>
-                {list.slice(item_per_window - 1).length > 1 && (
+                {list.slice(computed_item_per_window - 1).length > 1 && (
                     <Nav
                         active_index={active_index}
                         bullet_color={bullet_color}
@@ -65,11 +69,11 @@ const Carousel = ({
                         show_bullet={show_bullet && bullet_position === 'top'}
                         show_nav={show_nav && nav_position === 'top'}
                         list={list}
-                        item_per_window={item_per_window}
+                        item_per_window={computed_item_per_window}
                     />
                 )}
                 <div className='dc-carousel__container'>
-                    {show_nav && nav_position === 'middle' && list.slice(item_per_window - 1).length > 1 && (
+                    {show_nav && nav_position === 'middle' && list.slice(computed_item_per_window - 1).length > 1 && (
                         <span className='dc-carousel__icon' onClick={handlePrevClick}>
                             <Icon icon='IcChevronLeft' size='24' />
                         </span>
@@ -78,7 +82,7 @@ const Carousel = ({
                     <div
                         className='dc-carousel__box'
                         style={{
-                            width: `${item_per_window * width}px`,
+                            width: `${computed_item_per_window * width}px`,
                         }}
                     >
                         <div
@@ -93,13 +97,13 @@ const Carousel = ({
                         </div>
                     </div>
 
-                    {show_nav && nav_position === 'middle' && list.slice(item_per_window - 1).length > 1 && (
+                    {show_nav && nav_position === 'middle' && list.slice(computed_item_per_window - 1).length > 1 && (
                         <span className='dc-carousel__icon' onClick={handleNextClick}>
                             <Icon icon='IcChevronRight' size='24' />
                         </span>
                     )}
                 </div>
-                {list.slice(item_per_window - 1).length > 1 && (
+                {list.slice(computed_item_per_window - 1).length > 1 && (
                     <Nav
                         active_index={active_index}
                         bullet_color={bullet_color}
@@ -111,7 +115,7 @@ const Carousel = ({
                         show_bullet={show_bullet && bullet_position === 'bottom'}
                         show_nav={show_nav && nav_position === 'bottom'}
                         list={list}
-                        item_per_window={item_per_window}
+                        item_per_window={computed_item_per_window}
                     />
                 )}
             </div>

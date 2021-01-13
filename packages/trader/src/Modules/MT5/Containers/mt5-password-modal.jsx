@@ -61,7 +61,7 @@ const MT5PasswordForm = props => (
         }) => (
             <form onSubmit={handleSubmit}>
                 <div className='mt5-password-modal__content'>
-                    <h2>
+                    <h2 className='mt5-password-modal__title'>
                         <Localize
                             i18n_default_text='Choose a password for your DMT5 {{ account_type }} account'
                             values={{
@@ -126,13 +126,17 @@ const MT5ServerForm = ({ ...props }) => {
             .filter(server => !server.disabled)
             .map(server => {
                 // Transform properties to support radiogroup
-                return Object.assign({}, server, {
-                    label: `${server.geolocation.region} ${
-                        server.geolocation.sequence === 1 ? '' : server.geolocation.sequence
-                    }`,
-                    value: server.id,
-                    disabled: props.mt5_login_list.some(login_item => login_item.server === server.id),
-                });
+                const is_disabled = props.mt5_login_list.some(login_item => login_item.server === server.id);
+                return {
+                    ...server,
+                    ...{
+                        label: `${server.geolocation.region} ${
+                            server.geolocation.sequence === 1 ? '' : server.geolocation.sequence
+                        } ${is_disabled ? '(Account created)' : ''}`,
+                        value: server.id,
+                        disabled: is_disabled,
+                    },
+                };
             })
             .sort((a, b) => (a.recommended ? a : b));
     }, [props.trading_servers]);
@@ -141,7 +145,12 @@ const MT5ServerForm = ({ ...props }) => {
         <Formik
             initialValues={{
                 password: props.password,
-                server: available_servers.find(server => server.recommended)?.id ?? '',
+                server:
+                    props.trading_servers.find(
+                        server =>
+                            !server.disabled &&
+                            !props.mt5_login_list.some(login_item => login_item.server === server.id)
+                    )?.id ?? '',
             }}
             validate={props.validateServer}
             onSubmit={(values, actions) => {
@@ -171,7 +180,15 @@ const MT5ServerForm = ({ ...props }) => {
                                     className='mt5-password-modal__radio'
                                     name='server'
                                     required
-                                    selected={values.server}
+                                    selected={
+                                        props.trading_servers.find(
+                                            server =>
+                                                !server.disabled &&
+                                                !props.mt5_login_list.some(
+                                                    login_item => login_item.server === server.id
+                                                )
+                                        )?.id
+                                    }
                                     onToggle={e => {
                                         e.persist();
                                         setFieldValue('server', e.target.value);

@@ -14,7 +14,7 @@ const Description: React.FC<IDescriptionType> = ({ description, advantages = [] 
                     {advantages.map((advantage, idx) => (
                         <div key={idx} className='dw-description__item'>
                             <Icon className='dw-description__item-icon' icon={advantage.icon} width='32' height='32' />
-                            <Text>{advantage.text}</Text>
+                            <Text>{advantage.title}</Text>
                         </div>
                     ))}
                 </div>
@@ -25,13 +25,13 @@ const Description: React.FC<IDescriptionType> = ({ description, advantages = [] 
 };
 
 type IDescriptionItem = {
-    icon?: string;
-    text: TStringTranslation;
+    icon: string;
+    title: TStringTranslation;
 }
 
 type IDescriptionType = {
-    description?: TStringTranslation;
-    advantages?: IDescriptionItem[];
+    description: TStringTranslation;
+    advantages: IDescriptionItem[];
 }
 
 export default Description;

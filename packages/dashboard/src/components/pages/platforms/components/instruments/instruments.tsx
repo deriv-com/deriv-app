@@ -55,16 +55,15 @@ type SymbolType = {
 }
 
 type SubmrketType = {
-    icon: string;
     title: TStringTranslation;
-    description: TStringTranslation;
+    description?: TStringTranslation;
     symbols: SymbolType[]
 }
 
 type MarketType = {
     icon: string;
     title: TStringTranslation;
-    description: TStringTranslation;
+    description?: TStringTranslation;
     submarkets: SubmrketType[];
 }
 

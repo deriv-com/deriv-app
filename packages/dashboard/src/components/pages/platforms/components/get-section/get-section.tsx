@@ -58,7 +58,7 @@ const GetSection: React.FC<IGetSectionType> = ({
                             {trades.map((trade, idx) => (
                                 <div key={idx} className='dw-get__wrapper dw-get__item'>
                                     <Icon className='dw-get__item-icon' icon={trade.icon} width='16' height='16' />
-                                    <Text size='xxxs'>{trade.name}</Text>
+                                    <Text size='xxxs'>{trade.title}</Text>
                                 </div>
                             ))}
                         </div>
@@ -72,7 +72,7 @@ const GetSection: React.FC<IGetSectionType> = ({
                             {markets.map((market, idx) => (
                                 <div key={idx} className='dw-get__wrapper dw-get__item'>
                                     <Icon className='dw-get__item-icon' icon={market.icon} width='16' height='16' />
-                                    <Text size='xxxs'>{market.name}</Text>
+                                    <Text size='xxxs'>{market.title}</Text>
                                 </div>
                             ))}
                         </div>
@@ -86,8 +86,8 @@ const GetSection: React.FC<IGetSectionType> = ({
 };
 
 type TradeMarketType = {
-    icon?: string;
-    name?: TStringTranslation;
+    icon: string;
+    title: TStringTranslation;
 };
 
 type IGetSectionType = {
@@ -98,7 +98,7 @@ type IGetSectionType = {
     markets: TradeMarketType[];
     onClickDemo: React.MouseEventHandler<HTMLButtonElement>;
     onClickGet: React.MouseEventHandler<HTMLButtonElement>;
-    link?: string;
+    link: string;
 };
 
 export default GetSection;

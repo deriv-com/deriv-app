@@ -16,12 +16,16 @@
     &__submarket {
         display: flex;
         flex-direction: column;
+        margin-bottom: 4rem;
 
         &-title {
             margin-bottom: 0.8rem;
         }
         &-subtitle {
             margin-bottom: 2.4rem;
+        }
+        &:last-child {
+            margin-bottom: 0;
         }
     }
     &__symbol {

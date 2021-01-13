@@ -46,11 +46,11 @@ const MT5RealAccountDisplay = ({
     trading_servers,
 }) => {
     const show_add_more_servers = React.useMemo(() => {
-        let number_of_current_synthetic = Object.keys(current_list).reduce(
+        const number_of_current_synthetic = Object.keys(current_list).reduce(
             (acc, cur) => (cur.startsWith('real.synthetic') ? acc + 1 : acc),
             0
         );
-        let number_of_available_synthetic = trading_servers.reduce(
+        const number_of_available_synthetic = trading_servers.reduce(
             (acc, cur) => (cur.supported_accounts.includes('gaming') && !cur.disabled ? acc + 1 : acc),
             0
         );
@@ -59,6 +59,7 @@ const MT5RealAccountDisplay = ({
 
     const should_show_trade_servers = (is_logged_in ? !is_eu : !is_eu_country) && show_add_more_servers;
     const [is_new_trade_server_visible, setNewTradeServerVisibility] = React.useState(false);
+    const [hovered_cards, setHoveredCards] = React.useState([]);
     React.useEffect(() => {
         if (Object.keys(current_list).some(key => key.startsWith('real.synthetic')) && should_show_trade_servers) {
             setNewTradeServerVisibility(true);
@@ -118,9 +119,21 @@ const MT5RealAccountDisplay = ({
             category: 'real',
             type: 'financial_stp',
         });
-    const hideTradeServerOnHover = state => {
-        setNewTradeServerVisibility(!state);
+    const hideTradeServerOnHover = (state, name) => {
+        if (!state) {
+            setHoveredCards([...hovered_cards.filter(card => name !== card)]);
+        } else {
+            setHoveredCards([...new Set([...hovered_cards, name])]);
+        }
     };
+
+    React.useEffect(() => {
+        if (hovered_cards.length === 0) {
+            setNewTradeServerVisibility(true);
+        } else {
+            setNewTradeServerVisibility(false);
+        }
+    }, [hovered_cards]);
     const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
     const synthetic_account_items =

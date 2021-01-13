@@ -12,12 +12,16 @@ const account_icons = {
     financial_stp: 'IcMt5FinancialStpPlatform',
 };
 
-const AddTradeServerButton = ({ onSelectAccount }) => (
-    <div onClick={onSelectAccount} className={classNames('mt5-account-card__add-server')}>
-        <span className='mt5-account-card__add-server--icon'>+</span>
-        <Localize i18n_default_text='Add more trade servers' />
-    </div>
-);
+const AddTradeServerButton = React.forwardRef(({ onSelectAccount }, ref) => {
+    return (
+        <div onClick={onSelectAccount} className={classNames('mt5-account-card__add-server')} ref={ref}>
+            <span className='mt5-account-card__add-server--icon'>+</span>
+            <Localize i18n_default_text='Add more trade servers' />
+        </div>
+    );
+});
+
+AddTradeServerButton.displayName = 'AddTradeServerButton';
 
 const LoginBadge = ({ display_login }) => (
     <div className='mt5-account-card__login'>
@@ -121,24 +125,30 @@ const MT5AccountCard = ({
     const has_server_banner = existing_data && type.category === 'real' && type.type === 'synthetic';
     const ref = React.useRef();
     const wrapper_ref = React.useRef();
+    const button_ref = React.useRef();
 
     React.useEffect(() => {
-        const show = () => {
-            onHover?.(true);
-            setHoverState(true);
-        };
-        const hide = () => {
-            onHover?.(false);
-            setHoverState(false);
-        };
+        if (existing_data) {
+            const show = () => {
+                onHover?.(true, existing_data.group);
+                setHoverState(true);
+            };
+            const hide = () => {
+                onHover?.(false, existing_data.group);
+                setHoverState(false);
+            };
 
-        ref.current.addEventListener('mouseenter', show);
-        wrapper_ref?.current?.addEventListener('mouseleave', hide);
+            ref.current.addEventListener('mouseenter', show);
+            button_ref?.current?.addEventListener('mouseenter', show);
+            wrapper_ref?.current?.addEventListener('mouseleave', hide);
 
-        return () => {
-            ref.current.removeEventListener('mouseenter', show);
-            wrapper_ref?.current?.removeEventListener('mouseleave', hide);
-        };
+            return () => {
+                ref.current.removeEventListener('mouseenter', show);
+                wrapper_ref?.current?.removeEventListener('mouseleave', hide);
+                button_ref?.current?.removeEventListener('mouseenter', () => show);
+            };
+        }
+        return () => {};
     }, [onHover]);
 
     const getServerName = React.useCallback(
@@ -306,7 +316,7 @@ const MT5AccountCard = ({
                 </div>
                 {has_server_banner && should_show_trade_servers && (
                     <MobileWrapper>
-                        <AddTradeServerButton onSelectAccount={onSelectAccount} />
+                        <AddTradeServerButton ref={button_ref} onSelectAccount={onSelectAccount} />
                     </MobileWrapper>
                 )}
             </div>
@@ -317,7 +327,7 @@ const MT5AccountCard = ({
                     classNames='mt5-account-card__add-server'
                     unmountOnExit
                 >
-                    <AddTradeServerButton onSelectAccount={onSelectAccount} />
+                    <AddTradeServerButton ref={button_ref} onSelectAccount={onSelectAccount} />
                 </CSSTransition>
             </DesktopWrapper>
         </div>

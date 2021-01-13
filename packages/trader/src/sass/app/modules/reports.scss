@@ -251,7 +251,7 @@ $side-padding: 1.2em;
         @include mobile {
             margin: 0.8rem 0 1.6rem;
             order: 1;
-            height: 4rem;
+            height: 7rem;
         }
         height: 4.8rem;
         display: flex;
@@ -303,6 +303,7 @@ $side-padding: 1.2em;
 
             @include mobile {
                 font-size: 1rem;
+                margin-bottom: 0;
             }
         }
         &-amount {
@@ -317,6 +318,7 @@ $side-padding: 1.2em;
             }
             @include mobile {
                 font-size: 1.4rem;
+                margin-top: 1rem;
             }
         }
     }

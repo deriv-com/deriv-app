@@ -57,10 +57,7 @@
             width: 21rem;
             padding-left: 3rem;
             justify-content: start;
-            @include mobile {
-                width: 4rem;
-                height: 4rem;
-            }
+
             &-text {
                 padding-right: 0 !important;
             }
@@ -270,10 +267,6 @@
         min-width: 15rem;
         width: 100%;
 
-        @include mobile {
-            min-width: 4rem;
-        }
-
         // keep <select /> element on top of .dc_dropdown__label
         .dc-native-select {
             position: absolute;
@@ -320,9 +313,6 @@
         margin-left: 1rem;
         margin-top: 0;
         max-width: fit-content;
-        @include mobile {
-            height: 4rem;
-        }
     }
 }
 

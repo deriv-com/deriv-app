@@ -1,7 +1,7 @@
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { localize, Localize } from '@deriv/translations';
-import { Button, Text, DesktopWrapper, MobileWrapper, Carousel, MobileCarousel } from '@deriv/components';
+import { Text, DesktopWrapper, MobileWrapper, Carousel, MobileCarousel } from '@deriv/components';
 import {
     eu_real_financial_specs,
     real_financial_stp_specs,
@@ -149,6 +149,7 @@ const MT5RealAccountDisplay = ({
 
     const financial_stp_account = (landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && (
         <MT5AccountCard
+            key='real.financial_stp'
             has_mt5_account={has_mt5_account}
             title={localize('Financial STP')}
             type={{
@@ -156,7 +157,7 @@ const MT5RealAccountDisplay = ({
                 type: 'financial_stp',
             }}
             is_logged_in={is_logged_in}
-            existing_data={current_list['real.financial_stp']}
+            existing_data={current_list[Object.keys(current_list).find(key => key.startsWith('real.financial_stp'))]}
             commission_message={localize('No commission')}
             onSelectAccount={onSelectRealFinancialStp}
             button_label={button_label}
@@ -178,6 +179,7 @@ const MT5RealAccountDisplay = ({
 
     const financial_account = (landing_companies?.mt_financial_company?.financial || !is_logged_in) && (
         <MT5AccountCard
+            key='real.financial'
             has_mt5_account={has_mt5_account}
             is_disabled={!has_real_account}
             title={localize('Financial')}
@@ -185,7 +187,7 @@ const MT5RealAccountDisplay = ({
                 category: 'real',
                 type: 'financial',
             }}
-            existing_data={current_list['real.financial']}
+            existing_data={current_list[Object.keys(current_list).find(key => key.startsWith('real.financial'))]}
             commission_message={localize('No commission')}
             onSelectAccount={onSelectRealFinancial}
             onPasswordManager={openPasswordManager}

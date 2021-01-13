@@ -226,7 +226,7 @@ const MT5AccountCard = ({
                                         </td>
                                     </tr>
                                 ))}
-                                {existing_data && (
+                                {existing_data && type.type === 'synthetic' && type.category === 'real' && (
                                     <tr key={existing_data.server} className='mt5-account-card__specs-table-row'>
                                         <td className='mt5-account-card__specs-table-attribute'>
                                             <p className='mt5-account-card--paragraph'>
@@ -255,7 +255,7 @@ const MT5AccountCard = ({
                     )}
                     {existing_data && is_logged_in && (
                         <div className='mt5-account-card__manage'>
-                            <Button onClick={onClickFund} type='button' secondary>
+                            <Button onClick={() => onClickFund(existing_data)} type='button' secondary>
                                 {type.category === 'real' && <Localize i18n_default_text='Fund transfer' />}
                                 {type.category === 'demo' && <Localize i18n_default_text='Fund top up' />}
                             </Button>

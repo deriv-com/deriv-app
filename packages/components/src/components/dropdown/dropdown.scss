@@ -268,28 +268,6 @@
         width: 100%;
 
         // keep <select /> element on top of .dc_dropdown__label
-        .dc-native-select {
-            position: absolute;
-            top: 0;
-            opacity: 0;
-
-            @supports not (-webkit-touch-callout: none) {
-                /* non-iOS devices hack
-    * because .focus() doesn't open <select /> in Android OS,
-    * here we make the <select /> element to fit the dropdown container
-    * so user clicks on the <select /> element itself
-    * [TODO]: find alternative solution to trigger open <select /> with JS
-    */
-                width: 100%;
-                height: 100%;
-
-                &__select {
-                    width: 100%;
-                    height: 100%;
-                    left: -40px;
-                }
-            }
-        }
     }
     &--has-placeholder {
         .dc-dropdown__display {

@@ -164,19 +164,19 @@ const AccountSwitcher = props => {
         if (landing_company) {
             Object.keys(landing_company).forEach(company => {
                 let has_account = existing_mt5_accounts.find(
-                    account =>
-                        account.sub_account_type === company &&
-                        account.market_type === market_type &&
-                        trading_servers.find(server => server.id === account.server)
+                    account => account.sub_account_type === company && account.market_type === market_type
                 );
                 if (has_account) {
                     const is_market_type_available = trading_servers.filter(s =>
                         s.supported_accounts.includes(market_type)
                     ).length;
-                    if (is_market_type_available) {
+                    const real_accounts = existing_mt5_accounts.filter(
+                        acc => acc.account_type === 'real' && acc.market_type === market_type
+                    );
+                    if (is_market_type_available && real_accounts.length) {
                         has_account =
                             has_account &&
-                            existing_mt5_accounts.filter(acc => acc.market_type === market_type).length ===
+                            real_accounts.filter(acc => acc.market_type === market_type).length ===
                                 is_market_type_available;
                     }
                 }

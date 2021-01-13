@@ -2,11 +2,10 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, DataList, DataTable, Dropdown } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
 import { extractInfoFromShortcode, urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
-import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
 import { getContractPath } from 'App/Components/Routes/helpers';
 import { getSupportedContracts } from 'Constants';
 import { connect } from 'Stores/connect';
@@ -16,50 +15,6 @@ import AccountStatistics from '../Components/account-statistics.jsx';
 import FilterComponent from '../Components/filter-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
-
-const TransactionFilter = ({ is_alignment_left, handleFilterChange }) => {
-    const [default_filter, setDefaultFilter] = React.useState('all');
-
-    const filter_list = [
-        {
-            text: localize('All transactions'),
-            value: 'all',
-        },
-        {
-            text: localize('Buy'),
-            value: 'buy',
-        },
-        {
-            text: localize('Sell'),
-            value: 'sell',
-        },
-        {
-            text: localize('Deposit'),
-            value: 'deposit',
-        },
-        {
-            text: localize('Withdrawal'),
-            value: 'withdrawal',
-        },
-    ];
-
-    return (
-        <Dropdown
-            list={filter_list}
-            value={default_filter}
-            name='transaction-filter-dropdown'
-            className='dropdown-statement-filter'
-            classNameDisplay='dc-dropdown__display--suffix-icon'
-            has_symbol={false}
-            is_alignment_left={is_alignment_left}
-            suffix_icon={'IcFilter'}
-            onChange={e => {
-                setDefaultFilter(e.target.value);
-                handleFilterChange(e.target.value);
-            }}
-        />
-    );
-};
 
 const getRowAction = row_obj => {
     let action;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { localize, Localize } from '@deriv/translations';
-import { Button, Text, DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
+import { Button, Text, DesktopWrapper, MobileWrapper, Carousel, MobileCarousel } from '@deriv/components';
 import {
     eu_real_financial_specs,
     real_financial_stp_specs,
@@ -209,14 +209,21 @@ const MT5RealAccountDisplay = ({
     return (
         <React.Fragment>
             <div className='mt5-real-accounts-display'>
-                <Carousel
-                    list={items}
-                    width={310}
-                    nav_position='middle'
-                    show_bullet={false}
-                    item_per_window={3}
-                    className='mt5-real-accounts-display__carousel'
-                />
+                <DesktopWrapper>
+                    <Carousel
+                        list={items}
+                        width={310}
+                        nav_position='middle'
+                        show_bullet={false}
+                        item_per_window={3}
+                        className='mt5-real-accounts-display__carousel'
+                    />
+                </DesktopWrapper>
+                <MobileWrapper>
+                    {items.map(item => {
+                        return item;
+                    })}
+                </MobileWrapper>
             </div>
             {should_show_trade_servers && (
                 <CSSTransition

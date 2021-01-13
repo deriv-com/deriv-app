@@ -3,6 +3,16 @@
     display: flex;
     flex-direction: column;
 
+    @include mobile {
+        margin-top: 1.6rem;
+
+        .page-return {
+            border-bottom: 2px solid var(--general-section-1);
+            margin: unset;
+            padding: 0 1.6rem 1.6rem;
+        }
+    }
+
     .dc-input__wrapper {
         width: 67.2rem; // TODO: Kill these fixed widths.
 
@@ -22,10 +32,6 @@
             justify-content: flex-end;
             margin: unset;
         }
-    }
-
-    @include mobile {
-        margin-top: 1.6rem;
     }
 
     &__form {
@@ -59,7 +65,7 @@
             width: calc(100% - 4.8rem);
 
             @include mobile {
-                height: calc(100vh - 24rem);
+                height: calc(100vh - 25.2rem);
                 margin: 0 1.6rem;
                 position: unset;
                 width: 90vw;
@@ -353,6 +359,10 @@
     &__create {
         margin: 1.6rem;
         width: 90vw;
+
+        &-container {
+            border-top: 2px solid var(--general-section-1);
+        }
     }
     &__data-list {
         flex: 1;

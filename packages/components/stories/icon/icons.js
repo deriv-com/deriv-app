@@ -176,6 +176,7 @@ export const icons = {
         'IcInstallationApple',
         'IcInstallationGoogle',
         'IcInstallationLinux',
+        'IcInstallationMacos',
         'IcInstallationWebDemo',
         'IcInstallationWebReal',
         'IcInstallationWindows',
@@ -452,4 +453,5 @@ export const icons = {
         'IcUnderlyingWLDGBP',
         'IcUnderlyingWLDUSD',
     ],
+    wallet: ['IcWalletDeriv', 'IcWalletNeteller', 'IcWalletSticpay', 'IcWalletTransactions', 'IcWalletWebmoney'],
 };

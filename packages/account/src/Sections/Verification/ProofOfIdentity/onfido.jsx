@@ -24,7 +24,15 @@ const OnfidoContainer = ({ height }) => {
     );
 };
 
-const Onfido = ({ documents_supported, handleComplete, height, onfido_service_token, status, ...props }) => {
+const Onfido = ({
+    documents_supported,
+    country_code,
+    handleComplete,
+    height,
+    onfido_service_token,
+    status,
+    ...props
+}) => {
     const [onfido_init, setOnfido] = React.useState(null);
     const [onfido_init_error, setOnfidoInitError] = React.useState(false);
 
@@ -64,10 +72,18 @@ const Onfido = ({ documents_supported, handleComplete, height, onfido_service_to
                         options: {
                             documentTypes: {
                                 passport: documents_supported.some(doc => /Passport/g.test(doc)),
-                                driving_licence: documents_supported.some(doc => /Driving Licence/g.test(doc)),
+                                driving_licence: documents_supported.some(doc => /Driving Licence/g.test(doc))
+                                    ? {
+                                          country: country_code,
+                                      }
+                                    : false,
                                 national_identity_card: documents_supported.some(doc =>
                                     /National Identity Card/g.test(doc)
-                                ),
+                                )
+                                    ? {
+                                          country: country_code,
+                                      }
+                                    : false,
                             },
                         },
                     },

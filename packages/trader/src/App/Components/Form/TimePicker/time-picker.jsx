@@ -11,7 +11,7 @@ const class_prefix = 'time-picker';
 
 const TimePicker = ({
     current_focus,
-    end_time,
+    end_times,
     is_nativepicker,
     name,
     onChange,
@@ -19,7 +19,7 @@ const TimePicker = ({
     placeholder,
     selected_time,
     setCurrentFocus,
-    start_time,
+    start_times,
     validation_errors,
 }) => {
     const [is_open, setIsOpen] = React.useState(false);
@@ -63,8 +63,8 @@ const TimePicker = ({
                     value={selected_time}
                     onChange={handleChange}
                     name={name}
-                    min={start_time}
-                    max={end_time}
+                    min={start_times[0]}
+                    max={end_times[end_times.length - 1]}
                 />
             ) : (
                 <React.Fragment>
@@ -94,8 +94,8 @@ const TimePicker = ({
                         unmountOnExit
                     >
                         <Dialog
-                            end_time={end_time}
-                            start_time={start_time}
+                            end_times={end_times}
+                            start_times={start_times}
                             className={'from-left'}
                             onChange={handleChange}
                             preClass={class_prefix}

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { localize } from '@deriv/translations';
-import { Icon, ThemedScrollbars } from '@deriv/components';
+import { Icon, ThemedScrollbars, Input } from '@deriv/components';
 import { help_content_config } from '@deriv/bot-skeleton';
 import FlyoutBlockGroup from './flyout-block-group.jsx';
 import HelpBase from './help-contents/flyout-help-base.jsx';
@@ -33,6 +33,7 @@ const FlyoutContent = props => {
         is_empty,
         is_search_flyout,
         selected_category,
+        first_get_variable_block_index,
     } = props;
 
     React.useEffect(() => {
@@ -88,6 +89,11 @@ const FlyoutContent = props => {
                                         key={`${node.getAttribute('type')}${Blockly.utils.genUid()}`}
                                         id={`flyout__item-workspace--${index}`}
                                         block_node={node}
+                                        should_hide_display_name={
+                                            block_type === 'variables_get'
+                                                ? index !== first_get_variable_block_index
+                                                : false
+                                        }
                                         onInfoClick={
                                             help_content_config(__webpack_public_path__)[block_type] &&
                                             (is_search_flyout
@@ -100,9 +106,24 @@ const FlyoutContent = props => {
                             }
                             case Blockly.Xml.NODE_LABEL: {
                                 return (
-                                    <div key={`${node.getAttribute('text')}${index}`} className='flyout__item-label'>
+                                    <div
+                                        key={`${node.getAttribute('text')}${index}`}
+                                        className='flyout__item-label-bold'
+                                    >
                                         {node.getAttribute('text')}
                                     </div>
+                                );
+                            }
+                            case Blockly.Xml.NODE_INPUT: {
+                                return (
+                                    <Input
+                                        key={`${node.getAttribute('name')}${index}`}
+                                        className={`${node.getAttribute('className')}`}
+                                        type={`${node.getAttribute('type')}`}
+                                        name={`${node.getAttribute('name')}`}
+                                        placeholder={`${node.getAttribute('placeholder')}`}
+                                        autoComplete='off'
+                                    />
                                 );
                             }
                             case Blockly.Xml.NODE_BUTTON: {
@@ -117,7 +138,7 @@ const FlyoutContent = props => {
                                             'dc-btn',
                                             'dc-btn-effect',
                                             'dc-btn--primary',
-                                            'flyout__button-new'
+                                            `${node.getAttribute('className')}`
                                         )}
                                         onClick={button => {
                                             const flyout_button = button;
@@ -206,6 +227,7 @@ Flyout.propTypes = {
     search_term: PropTypes.string,
     setHelpContent: PropTypes.func,
     selected_category: PropTypes.string,
+    first_get_variable_block_index: PropTypes.number,
 };
 
 export default connect(({ flyout, flyout_help, gtm }) => ({
@@ -223,4 +245,5 @@ export default connect(({ flyout, flyout_help, gtm }) => ({
     search_term: flyout.search_term,
     setHelpContent: flyout_help.setHelpContent,
     selected_category: flyout.selected_category,
+    first_get_variable_block_index: flyout.first_get_variable_block_index,
 }))(Flyout);

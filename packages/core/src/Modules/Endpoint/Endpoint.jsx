@@ -32,7 +32,7 @@ const Endpoint = () => {
                 app_id: getAppId(),
                 server: getSocketURL(),
                 is_deriv_crypto_enabled: platform_store.is_deriv_crypto,
-                is_debug_service_worker_enabled: getDebugServiceWorker(),
+                is_debug_service_worker_enabled: !!getDebugServiceWorker(),
             }}
             validate={values => {
                 const errors = {};

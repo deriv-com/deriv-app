@@ -1,5 +1,14 @@
 import { compressImg, convertToBase64, isImageType, getFormatFromMIME } from './image/image_utility';
 
+export const truncateFileName = (file, limit) => {
+    const string_limit_regex = new RegExp(`(.{${limit || 30}})..+`);
+    return file?.name?.replace(string_limit_regex, `$1….${getFileExtension(file)}`);
+};
+
+export const getFileExtension = file => {
+    return file?.type?.match(/[^/]+$/)[0];
+};
+
 export const compressImageFiles = files => {
     const promises = [];
     files.forEach(f => {

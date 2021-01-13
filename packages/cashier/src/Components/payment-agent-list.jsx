@@ -178,6 +178,7 @@ PaymentAgentList.propTypes = {
 };
 
 export default connect(({ modules }) => ({
+    error: modules.cashier.config.payment_agent.verification.error,
     is_email_sent: modules.cashier.config.payment_agent.verification.is_email_sent,
     is_resend_clicked: modules.cashier.config.payment_agent.verification.is_resend_clicked,
     is_loading: modules.cashier.is_loading,

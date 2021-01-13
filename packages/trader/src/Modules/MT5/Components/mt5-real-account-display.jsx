@@ -58,15 +58,8 @@ const MT5RealAccountDisplay = ({
     }, [current_list, trading_servers]);
 
     const should_show_trade_servers = (is_logged_in ? !is_eu : !is_eu_country) && show_add_more_servers;
-    const [is_new_trade_server_visible, setNewTradeServerVisibility] = React.useState(false);
-    const [hovered_cards, setHoveredCards] = React.useState([]);
-    React.useEffect(() => {
-        if (Object.keys(current_list).some(key => key.startsWith('real.synthetic')) && should_show_trade_servers) {
-            setNewTradeServerVisibility(true);
-        } else {
-            setNewTradeServerVisibility(false);
-        }
-    }, [current_list]);
+    const [active_hover, setActiveHover] = React.useState(0);
+
     const has_required_credentials =
         account_settings.citizen && account_settings.tax_identification_number && account_settings.tax_residence;
 
@@ -119,21 +112,12 @@ const MT5RealAccountDisplay = ({
             category: 'real',
             type: 'financial_stp',
         });
-    const hideTradeServerOnHover = (state, name) => {
-        if (!state) {
-            setHoveredCards([...hovered_cards.filter(card => name !== card)]);
-        } else {
-            setHoveredCards([...new Set([...hovered_cards, name])]);
-        }
+
+    const handleHoverCard = name => {
+        const real_synthetic_accounts_list = Object.keys(current_list).filter(key => key.startsWith('real.synthetic'));
+        setActiveHover(real_synthetic_accounts_list.findIndex(t => current_list[t].group === name));
     };
 
-    React.useEffect(() => {
-        if (hovered_cards.length === 0) {
-            setNewTradeServerVisibility(true);
-        } else {
-            setNewTradeServerVisibility(false);
-        }
-    }, [hovered_cards]);
     const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
     const synthetic_account_items =
@@ -151,6 +135,7 @@ const MT5RealAccountDisplay = ({
                               key={index}
                               has_mt5_account={has_mt5_account}
                               title={localize('Synthetic')}
+                              is_hovered={index === active_hover}
                               is_disabled={!has_real_account}
                               type={{
                                   category: 'real',
@@ -168,7 +153,7 @@ const MT5RealAccountDisplay = ({
                               )}
                               specs={real_synthetic_specs}
                               trading_servers={trading_servers}
-                              onHover={hideTradeServerOnHover}
+                              onHover={handleHoverCard}
                           />
                       );
                   })
@@ -194,7 +179,7 @@ const MT5RealAccountDisplay = ({
                       )}
                       specs={real_synthetic_specs}
                       trading_servers={trading_servers}
-                      onHover={hideTradeServerOnHover}
+                      onHover={handleHoverCard}
                   />,
               ]);
 
@@ -260,48 +245,23 @@ const MT5RealAccountDisplay = ({
     const items = [...(synthetic_account_items || []), financial_account, financial_stp_account].filter(Boolean);
 
     return (
-        <React.Fragment>
-            <div className='mt5-real-accounts-display'>
-                <DesktopWrapper>
-                    <Carousel
-                        list={items}
-                        width={310}
-                        nav_position='middle'
-                        show_bullet={false}
-                        item_per_window={3}
-                        className='mt5-real-accounts-display__carousel'
-                    />
-                </DesktopWrapper>
-                <MobileWrapper>
-                    {items.map(item => {
-                        return item;
-                    })}
-                </MobileWrapper>
-            </div>
-            {should_show_trade_servers && (
-                <CSSTransition
-                    in={is_new_trade_server_visible}
-                    timeout={50}
-                    classNames='mt5-real-accounts-display__add-trading-server'
-                    unmountOnExit={true}
-                >
-                    <div>
-                        <div onClick={onSelectRealSynthetic} className='mt5-real-accounts-display__add-trading-server'>
-                            <span size='s' className='mt5-real-accounts-display__add-trading-server-icon'>
-                                +
-                            </span>
-                            <Text
-                                size='xs'
-                                color='prominent'
-                                className='mt5-real-accounts-display__add-trading-server-text'
-                            >
-                                <Localize i18n_default_text='Add more trade servers' />
-                            </Text>
-                        </div>
-                    </div>
-                </CSSTransition>
-            )}
-        </React.Fragment>
+        <div className='mt5-real-accounts-display'>
+            <DesktopWrapper>
+                <Carousel
+                    list={items}
+                    width={310}
+                    nav_position='middle'
+                    show_bullet={false}
+                    item_per_window={3}
+                    className='mt5-real-accounts-display__carousel'
+                />
+            </DesktopWrapper>
+            <MobileWrapper>
+                {items.map(item => {
+                    return item;
+                })}
+            </MobileWrapper>
+        </div>
     );
 };
 

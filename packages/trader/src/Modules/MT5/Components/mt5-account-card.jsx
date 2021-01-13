@@ -98,6 +98,7 @@ const MT5AccountCard = ({
     button_label,
     commission_message,
     descriptor,
+    is_hovered,
     existing_data,
     has_mt5_account,
     has_real_account,
@@ -118,7 +119,6 @@ const MT5AccountCard = ({
     toggleShouldShowRealAccountsList,
     trading_servers,
 }) => {
-    const [is_hovered, setHoverState] = React.useState(false);
     const icon = type.type ? <Icon icon={account_icons[type.type]} size={64} /> : null;
     const has_popular_banner = type.type === 'synthetic' && type.category === 'real' && !existing_data;
     const has_demo_banner = type.category === 'demo';
@@ -130,21 +130,14 @@ const MT5AccountCard = ({
     React.useEffect(() => {
         if (existing_data) {
             const show = () => {
-                onHover?.(true, existing_data.group);
-                setHoverState(true);
-            };
-            const hide = () => {
-                onHover?.(false, existing_data.group);
-                setHoverState(false);
+                onHover?.(existing_data.group);
             };
 
             ref.current.addEventListener('mouseenter', show);
             button_ref?.current?.addEventListener('mouseenter', show);
-            wrapper_ref?.current?.addEventListener('mouseleave', hide);
 
             return () => {
                 ref.current.removeEventListener('mouseenter', show);
-                wrapper_ref?.current?.removeEventListener('mouseleave', hide);
                 button_ref?.current?.removeEventListener('mouseenter', () => show);
             };
         }

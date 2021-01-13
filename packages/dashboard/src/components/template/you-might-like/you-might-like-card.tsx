@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
-import Frame from 'Components/elements/frame';
 import { localize } from '@deriv/translations';
+import Frame from 'Components/elements/frame';
 import { useStores } from 'Stores';
 
 const YouMightLikeCard: React.FC<TYouMightLikeCardProps> = ({ bg_image_url, title, subtitle }) => {

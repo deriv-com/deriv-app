@@ -5,24 +5,23 @@ import Indice from './indice';
 const Indices: React.FC<TIndicesProps> = ({ indice_data }) => {
     return (
         <div className='dw-indices'>
-            <div>
-                {indice_data.map((item, idx) => (
-                    <div key={idx} className='dw-indices__container'>
-                        <Text size='sm' weight='bold'>
-                            {item.title}
-                        </Text>
-                        <Text>{item.sub_title}</Text>
-                        <div className='dw-indices__pair-wrapper'>
-                            {item.data.map((pair, id) => (
-                                <div key={id}>
-                                    <Indice icon={pair.icon} description={pair.description} />
-                                </div>
-                            ))}
-                        </div>
-                        {item.line && <div className='dw-indices__line' />}
+            {indice_data.map((item, idx) => (
+                <div key={idx} className='dw-indices__container'>
+                    <Text size='sm' weight='bold'>
+                        {item.title}
+                    </Text>
+                    <Text>{item.sub_title}</Text>
+                    <div className='dw-indices__pair-wrapper'>
+                        {item.data.map((pair, id) => (
+                            <div key={id}>
+                                <Indice icon={pair.icon} description={pair.description} />
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
+                    {item.line && <div className='dw-indices__line' />}
+                </div>
+            ))}
+
             <div className='dw-indices__line' />
         </div>
     );

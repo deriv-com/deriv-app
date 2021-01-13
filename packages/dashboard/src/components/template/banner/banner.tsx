@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Text } from '@deriv/components';
+import { observer } from 'mobx-react-lite';
 import Frame from 'Components/elements/frame';
 import { useStores } from 'Stores';
-import { observer } from 'mobx-react-lite';
 
 const Banner: React.FC<TBannerProps> = ({ bg_image_url, type, title }) => {
     const { config_store } = useStores();

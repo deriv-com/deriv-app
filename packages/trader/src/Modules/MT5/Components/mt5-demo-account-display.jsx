@@ -84,7 +84,7 @@ const MT5DemoAccountDisplay = ({
                         type: 'financial',
                     }}
                     existing_data={
-                        current_list[Object.keys(current_list).find(key => key.startsWith('demo.financial'))]
+                        current_list[Object.keys(current_list).find(key => key.startsWith('demo.financial@'))]
                     }
                     commission_message={localize('No commission')}
                     onSelectAccount={openMt5Account}
@@ -126,7 +126,7 @@ const MT5DemoAccountDisplay = ({
                     }}
                     is_logged_in={is_logged_in}
                     existing_data={
-                        current_list[Object.keys(current_list).find(key => key.startsWith('demo.financial_stp'))]
+                        current_list[Object.keys(current_list).find(key => key.startsWith('demo.financial_stp@'))]
                     }
                     commission_message={localize('No commission')}
                     onSelectAccount={() =>

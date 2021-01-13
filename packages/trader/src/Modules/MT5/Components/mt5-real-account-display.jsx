@@ -192,7 +192,7 @@ const MT5RealAccountDisplay = ({
                 type: 'financial_stp',
             }}
             is_logged_in={is_logged_in}
-            existing_data={current_list[Object.keys(current_list).find(key => key.startsWith('real.financial_stp'))]}
+            existing_data={current_list[Object.keys(current_list).find(key => key.startsWith('real.financial_stp@'))]}
             commission_message={localize('No commission')}
             onSelectAccount={onSelectRealFinancialStp}
             button_label={button_label}
@@ -222,7 +222,7 @@ const MT5RealAccountDisplay = ({
                 category: 'real',
                 type: 'financial',
             }}
-            existing_data={current_list[Object.keys(current_list).find(key => key.startsWith('real.financial'))]}
+            existing_data={current_list[Object.keys(current_list).find(key => key.startsWith('real.financial@'))]}
             commission_message={localize('No commission')}
             onSelectAccount={onSelectRealFinancial}
             onPasswordManager={openPasswordManager}

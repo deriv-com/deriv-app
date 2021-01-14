@@ -329,7 +329,7 @@ const InvestorPasswordManager = ({
     );
 };
 
-const MT5PasswordManagerTabContent = ({ toggleModal, selected_login, email, setPasswordType, password_type }) => {
+const MT5PasswordManagerTabContent = ({ toggleModal, selected_login, email, setPasswordType }) => {
     const [active_tab_index, setActiveTabIndex] = React.useState(0);
     const [error_message_main, setErrorMessageMain] = React.useState('');
     const [is_submit_success_main, setSubmitSuccessMain] = React.useState(false);

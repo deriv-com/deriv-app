@@ -161,6 +161,7 @@ const MT5ServerForm = ({ ...props }) => {
                     },
                     actions.setSubmitting
                 );
+                props.setPassword('');
             }}
         >
             {({ handleSubmit, setFieldValue, errors, values, isSubmitting }) => (
@@ -312,6 +313,7 @@ const MT5PasswordModal = ({
                             mt5_login_list={mt5_login_list}
                             account_title={account_title}
                             password={password}
+                            setPassword={setPassword}
                             submitMt5Form={(v, setSubmitting) => submitMt5Password(v, setSubmitting)}
                             onBack={() => setPassword('')}
                         />
@@ -343,6 +345,7 @@ const MT5PasswordModal = ({
                             mt5_login_list={mt5_login_list}
                             account_title={account_title}
                             password={password}
+                            setPassword={setPassword}
                             submitMt5Form={(v, setSubmitting) => submitMt5Password(v, setSubmitting)}
                             onBack={() => setPassword('')}
                         />

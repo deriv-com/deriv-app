@@ -31,7 +31,7 @@ export const compressImageFiles = files => {
     return Promise.all(promises);
 };
 
-export const readFiles = (files, getFileReadErrorMessage) => {
+export const readFiles = (files, getFileReadErrorMessage, { document_type, ...settings }) => {
     const promises = [];
     files.forEach(f => {
         const fr = new FileReader();
@@ -40,9 +40,10 @@ export const readFiles = (files, getFileReadErrorMessage) => {
                 const file_obj = {
                     filename: f.name,
                     buffer: fr.result,
-                    documentType: 'utility_bill',
+                    documentType: document_type || 'utility_bill',
                     documentFormat: getFormatFromMIME(f),
                     file_size: f.size,
+                    ...settings,
                 };
                 resolve(file_obj);
             };
@@ -68,5 +69,26 @@ export const readFiles = (files, getFileReadErrorMessage) => {
 export const max_document_size = 8388608;
 
 export const supported_filetypes = 'image/png, image/jpeg, image/jpg, image/gif, application/pdf';
+
+export const DOCUMENT_TYPE = {
+    passport: 'passport',
+    national_identity_card: 'national_identity_card',
+    driving_licence: 'driving_licence',
+    utility_bill: 'utility_bill',
+    bankstatement: 'bankstatement',
+    power_of_attorney: 'power_of_attorney',
+    amlglobalcheck: 'amlglobalcheck',
+    docverification: 'docverification',
+    proofid: 'proofid',
+    driverslicense: 'driverslicense',
+    proofaddress: 'proofaddress',
+    other: 'other',
+};
+
+export const PAGE_TYPE = {
+    front: 'front',
+    back: 'back',
+    photo: 'photo',
+};
 
 export const getSupportedFiles = filename => /^.*\.(png|PNG|jpg|JPG|jpeg|JPEG|gif|GIF|pdf|PDF)$/.test(filename);

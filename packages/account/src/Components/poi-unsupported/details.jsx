@@ -9,14 +9,13 @@ const Details = ({ step, active_step, root_class, onConfirm }) => {
 
     const getSocketFunc = () => {};
 
-    const onFileDrop = e => {
-        if (!e.files) {
+    const onFileDrop = data => {
+        if (!data.files.length || data.files.length > 1 || data.error_message) {
             return;
         }
-        const is_single = e.files.length === 1;
-        const uploaded_file = is_single ? e.files[0] : e.files[0].file;
-        setFile(uploaded_file);
-        setImagePreview(URL.createObjectURL(uploaded_file));
+        const file_droped = data.files[0];
+        setFile(file_droped);
+        setImagePreview(URL.createObjectURL(file_droped));
     };
 
     const handleConfirm = () => {

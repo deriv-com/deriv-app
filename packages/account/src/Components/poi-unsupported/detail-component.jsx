@@ -2,11 +2,14 @@ import React from 'react';
 import { Loading, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Submitted from 'Components/poa-submitted';
+import uploadFile from 'Components/file-uploader-container/upload-file';
+import { WS } from 'Services/ws-methods';
 import Details from './details.jsx';
 
 const ACTIONS = {
     ADD_FILE: 'ADD_FILE',
     REMOVE_FILE: 'REMOVE_FILE',
+    REMOVE_ALL: 'REMOVE_ALL',
 };
 
 const STATUS = {
@@ -22,6 +25,8 @@ const reducerFiles = (state, { type, payload }) => {
             return [...state, payload];
         case ACTIONS.REMOVE_FILE:
             return [...state.slice(0, target_index), ...state.slice(target_index + 1)];
+        case ACTIONS.REMOVE_ALL:
+            return [];
         default:
             return state;
     }
@@ -59,12 +64,21 @@ const DetailComponent = ({ steps, onClickBack, root_class }) => {
         }
     };
 
-    const onComplete = () => {
-        // console.log(files);
+    const onUploadError = () => dispatchFileList({ type: ACTIONS.REMOVE_ALL });
+
+    const onComplete = files => {
         setStatus(STATUS.is_uploading);
-        setTimeout(() => {
-            setStatus(STATUS.is_completed);
-        }, 3000);
+
+        const { file, document_type, page_type } = files[0];
+        uploadFile(file, WS.getSocket, document_type, page_type)
+            .then(rs => {
+                console.log(rs);
+                setStatus(STATUS.is_completed);
+            })
+            .catch(err => {
+                onUploadError();
+                console.log(err);
+            });
     };
 
     const removeImagePreview = index => dispatchFileList({ type: ACTIONS.REMOVE_FILE, payload: index });
@@ -86,7 +100,7 @@ const DetailComponent = ({ steps, onClickBack, root_class }) => {
                     <div className={`${root_class}__preview-name-container`}>
                         {file_list.map((item, index) => {
                             return (
-                                <div key={item.file.name} className={`${root_class}__preview-name`}>
+                                <div key={`${item.file.name}-${index}`} className={`${root_class}__preview-name`}>
                                     <Text size='xxxs' color='less-prominent' weight='bold'>
                                         {item.file.name}
                                     </Text>

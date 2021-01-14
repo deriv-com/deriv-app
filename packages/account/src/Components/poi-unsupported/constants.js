@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 
 export const step_selfie = {
-    document_type: 'selfie',
+    document_type: 'national_identity_card',
     page_type: 'photo',
     icon: 'IcSelfie',
     title: localize('Upload your selfie'),
@@ -81,7 +81,7 @@ export const getDocumentIndex = ({ residence }) => [
                   icon: 'IcPoiNimcSlip',
                   steps: [
                       {
-                          document_type: 'nimc',
+                          document_type: 'national_identity_card',
                           page_type: 'front',
                           icon: 'IcPoiNimcSlipHorizontal',
                           title: localize('Upload your NIMC slip'),
@@ -91,7 +91,7 @@ export const getDocumentIndex = ({ residence }) => [
                           ),
                       },
                       {
-                          document_type: 'dob',
+                          document_type: 'other',
                           page_type: 'front',
                           icon: 'IcDop',
                           title: localize('Upload your age declaration document'),

@@ -303,6 +303,7 @@ export const icons = {
     ],
     dashboard: [
         'IcDashboardAddress',
+        'IcDashboardCheck',
         'IcDashboardCurrency',
         'IcDashboardPersonalDetails',
         'IcDashboardTermsOfUse',

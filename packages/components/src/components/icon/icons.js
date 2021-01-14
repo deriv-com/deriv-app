@@ -297,6 +297,7 @@ import './currency/ic-currency-usdk.svg';
 import './currency/ic-currency-ust.svg';
 import './currency/ic-currency-virtual.svg';
 import './dashboard/ic-dashboard-address.svg';
+import './dashboard/ic-dashboard-check.svg';
 import './dashboard/ic-dashboard-currency.svg';
 import './dashboard/ic-dashboard-personal-details.svg';
 import './dashboard/ic-dashboard-terms-of-use.svg';

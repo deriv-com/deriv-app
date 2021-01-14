@@ -301,6 +301,13 @@ export const icons = {
         'IcCurrencyUst',
         'IcCurrencyVirtual',
     ],
+    dashboard: [
+        'IcDashboardAddress',
+        'IcDashboardCurrency',
+        'IcDashboardPersonalDetails',
+        'IcDashboardTermsOfUse',
+        'IcDashboardWallet',
+    ],
     flag: [
         'IcFlagDe',
         'IcFlagEn',

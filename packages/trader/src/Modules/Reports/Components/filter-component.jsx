@@ -38,7 +38,7 @@ const TransactionFilter = ({ handleFilterChange }) => {
             name='transaction-filter-dropdown'
             className='dropdown-statement-filter'
             classNameDisplay='dc-dropdown__display--suffix-icon'
-            has_symbol={false}
+            has_symbol
             suffix_icon={'IcFilter'}
             onChange={e => {
                 setDefaultFilter(e.target.value);
@@ -68,6 +68,7 @@ FilterComponent.propTypes = {
     filtered_date_range: PropTypes.object,
     handleDateChange: PropTypes.func,
     handleFilterChange: PropTypes.func,
+    suffix_icon: PropTypes.string,
 };
 
 export default connect(({ modules }) => ({

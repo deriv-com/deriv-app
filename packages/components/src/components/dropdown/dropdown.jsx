@@ -463,6 +463,7 @@ Dropdown.propTypes = {
     no_border: PropTypes.bool,
     onChange: PropTypes.func,
     placeholder: PropTypes.string,
+    suffix_icon: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 

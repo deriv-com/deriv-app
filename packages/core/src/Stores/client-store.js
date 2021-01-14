@@ -324,7 +324,7 @@ export default class ClientStore extends BaseStore {
     @computed
     get can_have_more_real_synthetic_mt5() {
         const number_of_current_added_synthetics = this.mt5_login_list.reduce((acc, cur) => {
-            let is_included =
+            const is_included =
                 cur.account_type === 'real' &&
                 cur.market_type === 'gaming' &&
                 this.trading_servers.some(server => server.id === cur.server);

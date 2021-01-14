@@ -337,7 +337,7 @@ const MT5PasswordModal = ({
                     onClose={closeModal}
                     wrapper_classname='mt5-password-modal'
                 >
-                    {password ? (
+                    {should_show_server_form ? (
                         <MT5ServerForm
                             trading_servers={trading_servers}
                             mt5_login_list={mt5_login_list}

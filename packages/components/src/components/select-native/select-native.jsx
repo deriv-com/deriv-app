@@ -147,6 +147,7 @@ SelectNative.propTypes = {
     list_items: list_items_shape,
     placeholder: PropTypes.string,
     should_show_empty_option: PropTypes.bool,
+    suffix_icon: PropTypes.string,
     use_text: PropTypes.bool,
     value: PropTypes.string,
 };

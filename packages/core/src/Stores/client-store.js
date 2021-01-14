@@ -66,6 +66,7 @@ export default class ClientStore extends BaseStore {
     @observable upgradeable_landing_companies = [];
     @observable mt5_login_list = [];
     @observable mt5_login_list_error = null;
+    @observable mt5_signup_disabled_types = { real: false, demo: false };
     @observable statement = [];
     @observable obj_total_balance = {
         amount_real: undefined,
@@ -606,6 +607,12 @@ export default class ClientStore extends BaseStore {
             can_upgrade_to,
             can_open_multi,
         };
+    }
+
+    @action.bound
+    setMT5SignUpDisabledTypes(disabled_types_obj) {
+        const current_list = this.mt5_signup_disabled_types;
+        this.mt5_signup_disabled_types = { current_list, ...disabled_types_obj };
     }
 
     @action.bound

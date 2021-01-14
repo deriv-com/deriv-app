@@ -11,17 +11,7 @@ const createBanxaProvider = store => ({
     getPaymentIcons: () => [
         { dark: 'IcCashierVisaDark', light: 'IcCashierVisaLight' },
         { dark: 'IcCashierMastercardDark', light: 'IcCashierMastercardLight' },
-        { dark: 'IcCashierBpayDark', light: 'IcCashierBpayLight' },
-        { dark: 'IcCashierSepaDark', light: 'IcCashierSepaLight' },
-        { dark: 'IcCashierBlueshyftDark', light: 'IcCashierBlueshyftLight' },
-        { dark: 'IcCashierFlexepinDark', light: 'IcCashierFlexepinLight' },
-        { dark: 'IcCashierPayIdDark', light: 'IcCashierPayIdLight' },
-        { dark: 'IcCashierPoliDark', light: 'IcCashierPoliLight' },
         { dark: 'IcCashierApplePay', light: 'IcCashierApplePay' },
-        { dark: 'IcCashierInteracEtransfer', light: 'IcCashierInteracEtransfer' },
-        { dark: 'IcCashierIdeal', light: 'IcCashierIdeal' },
-        { dark: 'IcCashierPostBillPayDark', light: 'IcCashierPostBillPayLight' },
-        { dark: 'IcCashierSofort', light: 'IcCashierSofort' },
     ],
     getScriptDependencies: () => [], // None.
     getDefaultFromCurrency: () => '',

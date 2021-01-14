@@ -150,6 +150,7 @@ const createWyreProvider = store => ({
     getPaymentIcons: () => [
         { dark: 'IcCashierVisaDark', light: 'IcCashierVisaLight' },
         { dark: 'IcCashierMastercardDark', light: 'IcCashierMastercardLight' },
+        { dark: 'IcCashierApplePay', light: 'IcCashierApplePay' },
     ],
     getScriptDependencies: () => [],
     getDefaultFromCurrency: () => 'usd',

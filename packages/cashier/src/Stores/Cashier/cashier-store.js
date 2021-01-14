@@ -484,7 +484,11 @@ export default class CashierStore extends BaseStore {
             }),
         };
 
-        if (is_verification_error && this.config[this.active_container].verification) {
+        if (
+            is_verification_error &&
+            this.config[this.active_container].verification &&
+            this.active_container === 'payment_agent'
+        ) {
             this.config[this.active_container].verification.error = error_object;
         } else {
             this.config[this.active_container].error = error_object;
@@ -632,18 +636,14 @@ export default class CashierStore extends BaseStore {
         const response_verify_email = await this.WS.verifyEmail(this.root_store.client.email, withdrawal_type);
         if (response_verify_email.error) {
             this.clearVerification();
-            if (this.active_container === 'payment_agent') {
-                this.setErrorMessage(
-                    response_verify_email.error,
-                    () => {
-                        this.setErrorMessage('', null, null, true);
-                    },
-                    null,
-                    true
-                );
-            } else {
-                this.setErrorMessage(response_verify_email.error);
-            }
+            this.setErrorMessage(
+                response_verify_email.error,
+                () => {
+                    this.setErrorMessage('', null, null, true);
+                },
+                null,
+                true
+            );
         } else {
             this.setVerificationEmailSent(true);
             this.setTimeoutVerification();

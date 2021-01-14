@@ -348,6 +348,7 @@ const MT5PasswordModal = ({
                         />
                     ) : (
                         <MT5PasswordForm
+                            is_submitting={is_submitting}
                             account_title={account_title}
                             closeModal={closeModal}
                             form_error={form_error}

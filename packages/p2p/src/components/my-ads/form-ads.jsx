@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Dropdown, Loading, Modal, Input, Button, Text, ThemedScrollbars } from '@deriv/components';
+import { formatMoney } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -119,7 +120,11 @@ const FormAds = () => {
                                                         !is_sell_advert || available_balance == null
                                                             ? undefined
                                                             : localize('Your DP2P balance is {{ dp2p_balance }}', {
-                                                                  dp2p_balance: `${available_balance} ${currency}`,
+                                                                  dp2p_balance: `${formatMoney(
+                                                                      currency,
+                                                                      available_balance,
+                                                                      true
+                                                                  )} ${currency}`,
                                                               })
                                                     }
                                                     is_relative_hint

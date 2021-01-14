@@ -172,13 +172,26 @@ const AccountTransferForm = ({
                 />
             );
             const value = account.value;
+            const account_server = mt5_login_list.find(server => server.login === account.value);
+            let server_region = '';
+            if (
+                account_server &&
+                trading_servers.length > 1 &&
+                trading_servers.some(trading_server => trading_server.id === account_server?.server)
+            ) {
+                const trading_server = trading_servers.find(t => t.id === account_server?.server);
+                server_region = `[${trading_server.geolocation.region}${
+                    trading_server.geolocation.sequence !== 1 ? trading_server.geolocation.sequence : ''
+                }]`;
+            }
+
             (account.is_mt ? mt_accounts_from : accounts_from).push({
                 text,
                 value,
                 is_mt: account.is_mt,
-                nativepicker_text: `${account.is_mt ? account.mt_icon : getCurrencyName(account.currency)} (${
-                    account.balance
-                } ${account.is_mt ? account.currency : account.text})`,
+                nativepicker_text: `${
+                    account.is_mt ? account.mt_icon : getCurrencyName(account.currency)
+                } ${server_region} (${account.balance} ${account.is_mt ? account.currency : account.text})`,
             });
             const is_selected_from = account.value === selected_from.value;
             // account from and to cannot be the same
@@ -187,15 +200,17 @@ const AccountTransferForm = ({
                 const is_selected_from_crypto = selected_from.is_crypto && account.is_crypto;
                 // cannot transfer to MT account from MT
                 // cannot transfer to crypto account from crypto
+
                 const is_disabled = is_selected_from_mt || is_selected_from_crypto;
+
                 (account.is_mt ? mt_accounts_to : accounts_to).push({
                     text,
                     value,
                     is_mt: account.is_mt,
                     disabled: is_disabled,
-                    nativepicker_text: `${account.is_mt ? account.mt_icon : getCurrencyName(account.currency)} (${
-                        account.balance
-                    } ${account.is_mt ? account.currency : account.text})`,
+                    nativepicker_text: `${
+                        account.is_mt ? account.mt_icon : getCurrencyName(account.currency)
+                    } ${server_region} (${account.balance} ${account.is_mt ? account.currency : account.text})`,
                 });
             }
         });

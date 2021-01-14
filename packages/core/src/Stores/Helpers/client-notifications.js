@@ -28,6 +28,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             img_alt: 'DP2P',
             redirect_link: '/p2p/v1',
             type: 'news',
+            variant: 'account',
         },
         currency: {
             action: {
@@ -41,6 +42,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             header: localize('Set account currency'),
             message: localize('Please set the currency of your account to enable trading.'),
             type: 'danger',
+            variant: 'account',
         },
         self_exclusion: excluded_until => {
             let message, header, action;
@@ -90,6 +92,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 message,
                 action,
                 type: 'danger',
+                variant: 'account',
             };
         },
         authenticate: {
@@ -101,6 +104,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             header: localize('Account authentication'),
             message: localize('Authenticate your account now to take full advantage of all payment methods available.'),
             type: 'info',
+            variant: 'account',
         },
         cashier_locked: {
             key: 'cashier_locked',
@@ -109,6 +113,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 'Deposits and withdrawals have been disabled on your account. Please check your email for more details.'
             ),
             type: 'warning',
+            variant: 'account',
         },
         withdrawal_locked_review: {
             key: 'withdrawal_locked_review',
@@ -117,6 +122,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 'Withdrawals have been disabled on your account. Please wait until your uploaded documents are verified.'
             ),
             type: 'warning',
+            variant: 'account',
         },
         withdrawal_locked: {
             key: 'withdrawal_locked',
@@ -125,6 +131,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 'Withdrawals have been disabled on your account. Please check your email for more details.'
             ),
             type: 'warning',
+            variant: 'account',
         },
         mt5_withdrawal_locked: {
             key: 'mt5_withdrawal_locked',
@@ -133,6 +140,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 'MT5 withdrawals have been disabled on your account. Please check your email for more details.'
             ),
             type: 'warning',
+            variant: 'account',
         },
         document_needs_action: {
             key: 'document_needs_action',
@@ -144,6 +152,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 />
             ),
             type: 'warning',
+            variant: 'account',
         },
         unwelcome: {
             ...(isMobile() && {
@@ -165,6 +174,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 />
             ),
             type: 'danger',
+            variant: 'account',
         },
         max_turnover_limit_not_set: {
             key: 'max_turnover_limit_not_set',
@@ -176,6 +186,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 />
             ),
             type: 'danger',
+            variant: 'account',
         },
         risk: {
             action: {
@@ -188,6 +199,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 'Please complete the Financial Assessment form to lift your withdrawal and trading limits.'
             ),
             type: 'warning',
+            variant: 'account',
         },
         tax: {
             action: {
@@ -198,6 +210,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             header: localize('Complete your personal details'),
             message: localize('Please complete your Personal Details before you proceed.'),
             type: 'danger',
+            variant: 'account',
         },
         tnc: {
             action: {
@@ -216,6 +229,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 />
             ),
             type: 'warning',
+            variant: 'account',
         },
         required_fields: {
             action: {
@@ -226,24 +240,28 @@ export const clientNotifications = (ui = {}, client = {}) => {
             header: localize('Complete your personal details'),
             message: localize('Please complete your Personal Details before you proceed.'),
             type: 'danger',
+            variant: 'account',
         },
         you_are_offline: {
             key: 'you_are_offline',
             header: localize('You are offline'),
             message: <Localize i18n_default_text='Check your connection.' />,
             type: 'danger',
+            variant: 'account',
         },
         password_changed: {
             key: 'password_changed',
             header: localize('Password updated.'),
             message: <Localize i18n_default_text='Please log in with your updated password.' />,
             type: 'info',
+            variant: 'account',
         },
         reset_virtual_balance: {
             key: 'reset_virtual_balance',
             header: localize('Reset your balance'),
             message: client.message,
             type: 'info',
+            variant: 'account',
             is_persistent: true,
             should_hide_close_btn: true,
             should_show_again: true,
@@ -265,6 +283,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             header: localize('Please verify your proof of identity'),
             message: localize('To continue trading with us, please confirm who you are.'),
             type: 'danger',
+            variant: 'account',
         },
         needs_poa: {
             action: {
@@ -275,6 +294,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             header: localize('Please verify your proof of address'),
             message: localize('To continue trading with us, please confirm where you live.'),
             type: 'danger',
+            variant: 'account',
         },
         needs_poi_virtual: {
             action: {
@@ -291,6 +311,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your identity.'
             ),
             type: 'danger',
+            variant: 'account',
         },
         needs_poa_virtual: {
             action: {
@@ -303,6 +324,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 'We couldn’t verify your personal details with our records, to enable deposit, withdrawals and trading, you need to upload proof of your address.'
             ),
             type: 'danger',
+            variant: 'account',
         },
         poa_expired: {
             action: {
@@ -313,6 +335,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             header: localize('Document expired'),
             message: localize('Your documents for proof of address is expired. Please submit again.'),
             type: 'danger',
+            variant: 'account',
         },
         poa_rejected: {
             key: 'poa_rejected',
@@ -321,6 +344,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 <Localize i18n_default_text='We have disabled trading, deposits and withdrawals for this account.' />
             ),
             type: 'danger',
+            variant: 'account',
         },
         poi_expired: {
             action: {
@@ -331,6 +355,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             header: localize('Proof of identity expired'),
             message: localize('Your proof of identity document has expired. Please submit a new one.'),
             type: 'danger',
+            variant: 'account',
         },
         new_version_available: {
             action: {
@@ -341,6 +366,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             header: localize('A new version of Deriv is available'),
             message: localize('This page will automatically refresh in 5 minutes to load the latest version.'),
             type: 'warning',
+            variant: 'system',
             should_hide_close_btn: true,
             timeout: 300000,
             timeoutMessage: remaining => localize('Auto update in {{ remaining }} seconds', { remaining }),
@@ -354,6 +380,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             header: localize('Install the DTrader web app'),
             message: localize('Launch DTrader in seconds the next time you want to trade.'),
             type: 'announce',
+            variant: 'system',
             should_hide_close_btn: false,
         },
     };

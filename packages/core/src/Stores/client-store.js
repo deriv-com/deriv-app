@@ -1082,6 +1082,7 @@ export default class ClientStore extends BaseStore {
                 header: localize('Site is being updated'),
                 message: localize(this.website_status.message),
                 type: 'warning',
+                variant: 'system',
                 is_persistent: true,
             });
         } else {
@@ -1209,6 +1210,7 @@ export default class ClientStore extends BaseStore {
         this.root_store.ui.addNotificationMessage({
             message: localize('Could not switch to default account.'),
             type: 'danger',
+            variant: 'system',
         });
         // request a logout
         this.logout();
@@ -1230,6 +1232,7 @@ export default class ClientStore extends BaseStore {
             this.root_store.ui.addNotificationMessage({
                 message: localize('Switching to default account.'),
                 type: 'info',
+                variant: 'system',
             });
 
             // switch to default account.

@@ -41,12 +41,12 @@ const CountdownComponent = ({ count_from = 60, onTimeout }) => {
     return <span className='countdown'>{count}</span>;
 };
 
-const MT5PasswordReset = ({ sendVerifyEmail, account_type, account_group, password_type }) => {
+const MT5PasswordReset = ({ sendVerifyEmail, account_type, account_group, server, password_type }) => {
     const [is_resend_verification_requested, setResendVerification] = React.useState(false);
     const [is_resend_verification_sent, setResendVerificationSent] = React.useState(false);
 
     React.useEffect(() => {
-        localStorage.setItem('mt5_reset_password_intent', [account_group, account_type].join('.'));
+        localStorage.setItem('mt5_reset_password_intent', [server, account_group, account_type].join('.'));
         localStorage.setItem('mt5_reset_password_type', password_type);
         sendVerifyEmail();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -474,6 +474,7 @@ const MT5PasswordManagerModal = ({
     toggleModal,
     selected_account_type,
     selected_account_group,
+    selected_server,
     sendVerifyEmail,
 }) => {
     const [password_type, setPasswordType] = React.useState('main');
@@ -495,6 +496,7 @@ const MT5PasswordManagerModal = ({
         {
             component: (
                 <MT5PasswordReset
+                    server={selected_server}
                     sendVerifyEmail={sendVerifyEmail}
                     account_type={selected_account_type}
                     account_group={selected_account_group}
@@ -546,6 +548,7 @@ MT5PasswordManagerModal.propTypes = {
     email: PropTypes.string,
     is_visible: PropTypes.bool,
     selected_account: PropTypes.string,
+    selected_server: PropTypes.string,
     selected_login: PropTypes.string,
     toggleModal: PropTypes.func,
 };

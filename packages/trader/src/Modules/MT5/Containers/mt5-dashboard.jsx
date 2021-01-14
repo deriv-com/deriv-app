@@ -44,6 +44,7 @@ class MT5Dashboard extends React.Component {
             selected_account: '',
             selected_account_type: '',
             selected_account_group: '',
+            selected_server: '',
         },
     };
 
@@ -104,7 +105,7 @@ class MT5Dashboard extends React.Component {
         }
     };
 
-    togglePasswordManagerModal = (login, title, group, type) => {
+    togglePasswordManagerModal = (login, title, group, type, server) => {
         this.setState(prev_state => ({
             active_index: prev_state.active_index,
             password_manager: {
@@ -113,6 +114,7 @@ class MT5Dashboard extends React.Component {
                 selected_account: typeof title === 'string' ? title : '',
                 selected_account_group: group,
                 selected_account_type: type,
+                selected_server: server,
             },
         }));
     };
@@ -178,6 +180,7 @@ class MT5Dashboard extends React.Component {
                                     selected_account={this.state.password_manager.selected_account}
                                     selected_account_group={this.state.password_manager.selected_account_group}
                                     selected_account_type={this.state.password_manager.selected_account_type}
+                                    selected_server={this.state.password_manager.selected_server}
                                     toggleModal={this.togglePasswordManagerModal}
                                 />
                                 <LoadTab

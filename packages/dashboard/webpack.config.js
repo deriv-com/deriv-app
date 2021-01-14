@@ -43,6 +43,9 @@ module.exports = {
                         loader: '@deriv/shared/src/loaders/react-import-loader.js',
                     },
                     {
+                        loader: '@deriv/shared/src/loaders/deriv-trader-loader.js',
+                    },
+                    {
                         loader: 'babel-loader',
                         options: {
                             rootMode: 'upward',

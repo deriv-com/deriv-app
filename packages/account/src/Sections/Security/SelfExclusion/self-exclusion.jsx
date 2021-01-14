@@ -744,8 +744,9 @@ class SelfExclusion extends React.Component {
                                                                 className='self-exclusion__input'
                                                                 label={localize('Date')}
                                                                 value={
-                                                                    values.timeout_until &&
-                                                                    epochToMoment(values.timeout_until)
+                                                                    toMoment().format(
+                                                                        'YYYY-MM-DD'
+                                                                    )
                                                                 }
                                                                 onChange={({ target }) =>
                                                                     setFieldValue(
@@ -770,7 +771,7 @@ class SelfExclusion extends React.Component {
                                                     <Field name='exclude_until'>
                                                         {({ field }) => (
                                                             <DatePicker
-                                                                min_date={toMoment().add(6,'weeks').format(
+                                                                min_date={toMoment().add(6,'months').format(
                                                                     'YYYY-MM-DD'
                                                                 )}
                                                                 max_date={toMoment().add(5,'years').format(
@@ -780,7 +781,9 @@ class SelfExclusion extends React.Component {
                                                                 alignment={is_tablet ? 'bottom' : 'left'}
                                                                 className='self-exclusion__input'
                                                                 label={localize('Date')}
-                                                                value={values.exclude_until}
+                                                                value={toMoment().add(6,'months').format(
+                                                                    'YYYY-MM-DD'
+                                                                )}
                                                                 onChange={({ target }) =>
                                                                     setFieldValue(
                                                                         'exclude_until',

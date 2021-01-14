@@ -214,7 +214,10 @@ const MainPasswordManager = ({
                         <Button
                             className='mt5-password-manager--button'
                             type='button'
-                            onClick={() => setPasswordType('main')}
+                            onClick={() => {
+                                setPasswordType('main');
+                                multi_step_ref.current?.nextStep();
+                            }}
                             text={localize('Reset main password')}
                             tertiary
                             large
@@ -310,7 +313,10 @@ const InvestorPasswordManager = ({
                             <Button
                                 className='mt5-password-manager--button'
                                 type='button'
-                                onClick={() => setPasswordType('investor')}
+                                onClick={() => {
+                                    setPasswordType('investor');
+                                    multi_step_ref.current?.nextStep();
+                                }}
                                 text={localize('Create or reset investor password')}
                                 tertiary
                                 large
@@ -330,11 +336,6 @@ const MT5PasswordManagerTabContent = ({ toggleModal, selected_login, email, setP
     const [error_message_investor, setErrorMessageInvestor] = React.useState('');
     const [is_submit_success_investor, setSubmitSuccessInvestor] = React.useState(false);
 
-    React.useEffect(() => {
-        if (is_submit_success_investor || is_submit_success_main) {
-            multi_step_ref.current?.nextStep();
-        }
-    }, [password_type, is_submit_success_main, is_submit_success_investor]);
     // view height - margin top and bottom of modal - modal title - modal content margin top and bottom - table title
     const password_container_height = 'calc(100vh - 84px - 5.6rem - 8.8rem - 4rem)';
     const validatePassword = values => {

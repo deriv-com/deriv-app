@@ -123,7 +123,11 @@ const MT5AccountCard = ({
     const has_popular_banner = type.type === 'synthetic' && type.category === 'real' && !existing_data;
     const has_demo_banner = type.category === 'demo';
     const has_server_banner =
-        trading_servers?.length > 1 && existing_data && type.category === 'real' && type.type === 'synthetic';
+        existing_data &&
+        type.category === 'real' &&
+        type.type === 'synthetic' &&
+        trading_servers.some(server => server.id === existing_data.server);
+
     const ref = React.useRef();
     const wrapper_ref = React.useRef();
     const button_ref = React.useRef();
@@ -311,7 +315,7 @@ const MT5AccountCard = ({
                         />
                     )}
                 </div>
-                {has_server_banner && should_show_trade_servers && (
+                {should_show_trade_servers && (
                     <MobileWrapper>
                         <AddTradeServerButton ref={button_ref} onSelectAccount={onSelectAccount} />
                     </MobileWrapper>
@@ -319,7 +323,7 @@ const MT5AccountCard = ({
             </div>
             <DesktopWrapper>
                 <CSSTransition
-                    in={has_server_banner && is_hovered && should_show_trade_servers}
+                    in={is_hovered && should_show_trade_servers}
                     timeout={400}
                     classNames='mt5-account-card__add-server'
                     unmountOnExit

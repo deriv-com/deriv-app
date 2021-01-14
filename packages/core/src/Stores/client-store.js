@@ -322,6 +322,22 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get can_have_more_real_synthetic_mt5() {
+        const number_of_current_added_synthetics = this.mt5_login_list.reduce((acc, cur) => {
+            let is_included =
+                cur.account_type === 'real' &&
+                cur.market_type === 'gaming' &&
+                this.trading_servers.some(server => server.id === cur.server);
+            return is_included ? acc + 1 : acc;
+        }, 0);
+        const number_of_available_synthetic = this.trading_servers.reduce(
+            (acc, cur) => (cur.supported_accounts.includes('gaming') && !cur.disabled ? acc + 1 : acc),
+            0
+        );
+        return number_of_current_added_synthetics < number_of_available_synthetic;
+    }
+
+    @computed
     get active_accounts() {
         return this.accounts instanceof Object
             ? Object.values(this.accounts).filter(account => !account.is_disabled)

@@ -19,6 +19,8 @@ const AccountList = ({
     onClickAccount,
     onClickResetVirtualBalance,
     selected_loginid,
+    server,
+    is_dark_mode_on,
     sub_account_type,
 }) => {
     if (is_disabled && !currency) return null;
@@ -47,7 +49,10 @@ const AccountList = ({
                             <AccountDisplay
                                 market_type={market_type}
                                 sub_account_type={sub_account_type}
+                                server={server}
+                                add-MT5-server-selection-production
                                 has_error={has_error}
+                                is_dark_mode_on={is_dark_mode_on}
                             />
                         )}
                         <div
@@ -106,7 +111,7 @@ const CurrencyDisplay = ({ currency, is_virtual }) => {
     return getCurrencyName(currency);
 };
 
-const AccountDisplay = ({ market_type, sub_account_type, has_error }) => {
+const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_dark_mode_on }) => {
     // TODO: Remove once account with error has market_type and sub_account_type in details response
     if (has_error)
         return (
@@ -114,7 +119,17 @@ const AccountDisplay = ({ market_type, sub_account_type, has_error }) => {
                 <Localize i18n_default_text='Unavailable' />
             </div>
         );
-    return <div>{getMT5AccountDisplay(market_type, sub_account_type)}</div>;
+    return (
+        <div>
+            {getMT5AccountDisplay(market_type, sub_account_type)}
+            {server?.geolocation && (
+                <Text color={is_dark_mode_on ? 'general' : 'colored-background'} size='xxs' className='badge-server'>
+                    {server.geolocation.region}&nbsp;
+                    {server.geolocation.sequence !== 1 ? server.geolocation.sequence : ''}
+                </Text>
+            )}
+        </div>
+    );
 };
 
 export default AccountList;

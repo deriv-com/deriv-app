@@ -82,8 +82,11 @@ const Withdrawal = ({
     if (is_withdrawal_locked) {
         return <WithdrawalLocked />;
     }
-    if (error.message || verify_error.message) {
-        return <Error error={error || verify_error} container='withdraw' />;
+    if (error.message) {
+        return <Error error={error} container='withdraw' />;
+    }
+    if (verify_error.message) {
+        return <Error error={verify_error} container='withdraw' />;
     }
     return <SendEmail />;
 };
@@ -106,7 +109,7 @@ export default connect(({ client, modules }) => ({
     is_virtual: client.is_virtual,
     verification_code: client.verification_code.payment_withdraw,
     container: modules.cashier.config.withdraw.container,
-    error: modules.cashier.config.withdraw.verification.error,
+    error: modules.cashier.config.withdraw.error,
     verify_error: modules.cashier.config.withdraw.verification.error,
     iframe_url: modules.cashier.config.withdraw.iframe_url,
     is_cashier_locked: modules.cashier.is_cashier_locked,

@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AppCardFooterItem from './app-card-footer-item.jsx';
 
-const AppCardFooter = ({ broker, getCardLabels, getFontColor, login_id, server, variant }) => (
+const AppCardFooter = ({ broker, card_labels, getFontColor, login_id, server, variant }) => (
     <div
         className={classNames('dc-app-card-footer__wrapper', {
             'dc-app-card-footer__wrapper--default': variant === 'default',
@@ -11,15 +11,15 @@ const AppCardFooter = ({ broker, getCardLabels, getFontColor, login_id, server, 
             'dc-app-card-footer__wrapper--micro': variant === 'micro',
         })}
     >
-        <AppCardFooterItem info={login_id} getFontColor={getFontColor} label={getCardLabels().LOGIN_ID} />
-        <AppCardFooterItem info={broker} getFontColor={getFontColor} label={getCardLabels().BROKER} />
-        <AppCardFooterItem info={server} getFontColor={getFontColor} label={getCardLabels().SERVER} />
+        <AppCardFooterItem info={login_id} getFontColor={getFontColor} label={card_labels.LOGIN_ID} />
+        <AppCardFooterItem info={broker} getFontColor={getFontColor} label={card_labels.BROKER} />
+        <AppCardFooterItem info={server} getFontColor={getFontColor} label={card_labels.SERVER} />
     </div>
 );
 
 AppCardFooter.propTypes = {
     broker: PropTypes.string,
-    getCardLabels: PropTypes.func,
+    card_labels: PropTypes.object,
     getFontColor: PropTypes.func,
     login_id: PropTypes.string,
     server: PropTypes.string,

@@ -11,7 +11,7 @@ const AppCardBody = ({
     app_icon,
     app_name,
     currency,
-    getCardLabels,
+    card_labels,
     getFontColor,
     is_swap_free,
     is_virtual,
@@ -53,7 +53,7 @@ const AppCardBody = ({
             {is_real_swap_free && (
                 <div className={classNames('dc-app-card__badge', 'dc-app-card-body__badge--swap-free')}>
                     <Text color='colored-background' size='xxxxs' weight='bold'>
-                        {getCardLabels().SWAP_FREE}
+                        {card_labels.SWAP_FREE}
                     </Text>
                 </div>
             )}
@@ -101,7 +101,7 @@ const AppCardBody = ({
                         size={isMobile() ? 'xxxxs' : 'xxxs'}
                         line_height={variant === 'default' ? 'm' : 's'}
                     >
-                        {getCardLabels().LINKED}: {linked_wallet}
+                        {card_labels.LINKED}: {linked_wallet}
                     </Text>
                 </div>
                 {isMobile() && variant === 'default' && (
@@ -119,7 +119,7 @@ AppCardBody.propTypes = {
     app_icon: PropTypes.string,
     app_name: PropTypes.string,
     currency: PropTypes.string,
-    getCardLabels: PropTypes.func,
+    card_labels: PropTypes.object,
     getFontColor: PropTypes.func,
     is_swap_free: PropTypes.bool,
     is_virtual: PropTypes.bool,

@@ -5,7 +5,7 @@ import Icon from '../../icon';
 import { useHover } from '../../../hooks/use-hover';
 
 const AppCardActions = ({
-    getCardLabels,
+    card_labels,
     is_virtual,
     onDepositClick,
     onPlayClick,
@@ -25,7 +25,7 @@ const AppCardActions = ({
                 icon='IcAdd'
                 is_hovered={is_deposit_hovered}
                 is_virtual={is_virtual}
-                label={getCardLabels().ADD}
+                label={card_labels.ADD}
                 onClickHandler={onDepositClick}
             />
             {!is_virtual && (
@@ -34,7 +34,7 @@ const AppCardActions = ({
                     icon='IcMinus'
                     is_hovered={is_withdraw_hovered}
                     is_virtual={is_virtual}
-                    label={getCardLabels().WITHDRAW}
+                    label={card_labels.WITHDRAW}
                     onClickHandler={onWithdrawClick}
                 />
             )}
@@ -44,7 +44,7 @@ const AppCardActions = ({
                     icon='IcTransactions'
                     is_hovered={is_transactions_hovered}
                     is_virtual={is_virtual}
-                    label={getCardLabels().TRANSACTIONS}
+                    label={card_labels.TRANSACTIONS}
                     onClickHandler={onTransactionsClick}
                 />
             )}
@@ -53,7 +53,7 @@ const AppCardActions = ({
                 icon='IcGear'
                 is_hovered={is_settings_hovered}
                 is_virtual={is_virtual}
-                label={getCardLabels().SETTINGS}
+                label={card_labels.SETTINGS}
                 onClickHandler={onSettingsClick}
             />
             <div className='dc-app-card-actions__icon--play' onClick={onPlayClick}>
@@ -64,7 +64,7 @@ const AppCardActions = ({
 };
 
 AppCardActions.propTypes = {
-    getCardLabels: PropTypes.func,
+    card_labels: PropTypes.object,
     is_virtual: PropTypes.bool,
     onDepositClick: PropTypes.func,
     onPlayClick: PropTypes.func,

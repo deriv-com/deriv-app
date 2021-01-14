@@ -36,6 +36,8 @@ const AppCard = ({
         if (is_virtual) return 'colored-background';
         return 'general';
     };
+    const card_labels = getCardLabels();
+
     return (
         <div
             className={classNames('dc-app-card__wrapper', {
@@ -50,18 +52,14 @@ const AppCard = ({
         >
             {!is_virtual && <RealAppCardBackground is_swap_free={is_swap_free} variant={variant} />}
             {is_virtual && variant === 'default' && (
-                <AppCardHeader
-                    getCardLabels={getCardLabels}
-                    is_swap_free={is_swap_free}
-                    onAddRealClick={onAddRealClick}
-                />
+                <AppCardHeader card_labels={card_labels} is_swap_free={is_swap_free} onAddRealClick={onAddRealClick} />
             )}
             <AppCardBody
                 amount={amount}
                 app_icon={app_icon}
                 app_name={app_name}
                 currency={currency}
-                getCardLabels={getCardLabels}
+                card_labels={card_labels}
                 getFontColor={getFontColor}
                 is_swap_free={is_swap_free}
                 is_virtual={is_virtual}
@@ -74,7 +72,7 @@ const AppCard = ({
             {show_footer && variant !== 'micro' && !is_hovered && (
                 <AppCardFooter
                     broker={broker}
-                    getCardLabels={getCardLabels}
+                    card_labels={card_labels}
                     getFontColor={getFontColor}
                     login_id={login_id}
                     server={server}
@@ -83,7 +81,7 @@ const AppCard = ({
             )}
             {show_hover_actions && variant !== 'micro' && !isMobile() && is_hovered && (
                 <AppCardActions
-                    getCardLabels={getCardLabels}
+                    card_labels={card_labels}
                     is_virtual={is_virtual}
                     onDepositClick={onDepositClick}
                     onPlayClick={onPlayClick}

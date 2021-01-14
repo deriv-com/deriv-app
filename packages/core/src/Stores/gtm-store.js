@@ -1,6 +1,6 @@
 import * as Cookies from 'js-cookie';
 import { action, computed } from 'mobx';
-import { getAppId, toMoment, epochToMoment, getMT5AccountType } from '@deriv/shared';
+import { getAppId, toMoment, epochToMoment } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
 import BaseStore from './base-store';
@@ -141,7 +141,7 @@ export default class GTMStore extends BaseStore {
 
         const affiliate_token = Cookies.getJSON('affiliate_tracking');
         if (affiliate_token) {
-            this.pushDataLayer({ affiliate_token: affiliate_token.t });
+            this.pushDataLayer({ affiliate_token });
         }
 
         // Get current time (moment, set by server), else fallback to client time
@@ -164,21 +164,8 @@ export default class GTMStore extends BaseStore {
 
         if (login_event) {
             data.event = login_event;
-            BinarySocket.wait('mt5_login_list').then(response => {
-                (response.mt5_login_list || []).forEach(obj => {
-                    const acc_type = (getMT5AccountType(obj.group) || '')
-                        .replace('real_vanuatu', 'financial')
-                        .replace('vanuatu_', '')
-                        .replace(/svg/, 'gaming'); // i.e. financial_cent, demo_cent, demo_gaming, real_gaming
-                    if (acc_type) {
-                        data[`mt5_${acc_type}_id`] = obj.login;
-                    }
-                });
-                this.pushDataLayer(data);
-            });
-        } else {
-            this.pushDataLayer(data);
         }
+        this.pushDataLayer(data);
     }
 
     @action.bound

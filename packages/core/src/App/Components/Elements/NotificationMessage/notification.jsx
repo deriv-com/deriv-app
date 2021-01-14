@@ -35,7 +35,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                     img_src={data.img_src}
                     img_alt={data.img_alt}
                     redirect_link={data.redirect_link}
-                    onClick={onClick}
+                    onClick={destroy}
                 />
             );
         default:

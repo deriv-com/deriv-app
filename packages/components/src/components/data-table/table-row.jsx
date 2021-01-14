@@ -74,7 +74,10 @@ TableRow.propTypes = {
     id: PropTypes.number,
     is_footer: PropTypes.bool,
     is_header: PropTypes.bool,
-    replace: PropTypes.object,
+    replace: PropTypes.shape({
+        component: PropTypes.func,
+        message: PropTypes.string,
+    }),
     row_obj: PropTypes.object,
     to: PropTypes.string,
     content_loader: PropTypes.elementType,

@@ -41,6 +41,11 @@ You will need to perform the following on your development machine:
 4. If you have a custom domain that you use for GH Pages, add a file named `CNAME` in `packages/core/scripts/` to be used for your GH Pages deployments
 5. Run `npm run build` and then you're good to go
 
+> **Note:** Internal behavior of bootstrap has changed to hoist "common" packages to root node_modules instead of individual
+>packages. This behavior benefits us from having issues with multiple instances of the same library across dependencies, but 
+>it throws error if the package versions are out of date. This was a trade-off we decided to So when you are adding a dependency which already exists in other packages, their version should be matched. 
+>In case of wanting a new version for a dependency, please update all packages.
+
 [comment]: <> (3. If you wish to install and work with only a single, or multiple but specific packages, then follow `3i` for each package. However, if you wish to install and work with all packages, follow `3ii`.)
 [comment]: <> (i. Run `npm run bootstrap {package name}`. Replace `{package name}` with the name of the package you want to work with. eg.: `trader`, `bot`)
 [comment]: <> (ii. Install all packages with a hoisting strategy \(lift all common packages to a root `node_modules` and not package specific\), run `npm run hoist`)
@@ -53,8 +58,9 @@ All packages must contain the following scripts to perform the stated actions:
 | ✅            | `start`             | Runs complete test and build suite and starts the dev server.                                 |
 | ✅            | `serve`             | Runs build suite and starts the dev server. When serving `core`, takes optional `open` value as argument to open specific page. (e.g: `npm run serve core --open=bot`)      |
 | ✅            | `build`             | Runs build suite and outputs the result into `dist`. Takes optional `base` value as argument. |
-| ✅            | `test`              | Runs the test suite with eslint, and stylelint.                                               |
+| ✅            | `test`              | Runs the test suite with eslint, stylelint and jest.                                          |
 | ✅            | `test:mocha`        | Runs only the test suite.                                                                     |
+| ✅            | `test:jest`         | Runs only the jest test suite.                                                                |
 
 [comment]: <> (The following scripts are not to be used except for CI/CD environments)
 [comment]: <> (| ❌            | `deploy`            | Runs `build` script, then pushes the output to GH Pages.                                      |)
@@ -69,6 +75,14 @@ Each package is named with the `@deriv/` prefix, however for the scripts above, 
 You can find the names of packages by first navigating to the `packages` folder. Each subfolder is a package, and contains a `package.json` file. The value of the `name` key in `package.json` is the package name.
 
 ### Usage
+#### Configuring Hosts file
+
+In order to run our solution for the first time, you need to configure your `hosts` file:
+1. Open terminal.
+2. Open `hosts` file in your preferred text editor, f.e `sudo vim /etc/hosts`.
+3. Add a new entry pointing to `127.0.0.1     localhost.binary.sx`.
+4. Save the file and proceed to the next step.
+
 #### Starting a Development Server
 
 If you wish to work on Core, simply run `npm run serve core`.

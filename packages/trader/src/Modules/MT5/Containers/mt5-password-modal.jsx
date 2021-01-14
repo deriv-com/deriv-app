@@ -161,7 +161,6 @@ const MT5ServerForm = ({ ...props }) => {
                     },
                     actions.setSubmitting
                 );
-                props.setPassword('');
             }}
         >
             {({ handleSubmit, setFieldValue, errors, values, isSubmitting }) => (
@@ -298,6 +297,12 @@ const MT5PasswordModal = ({
         }
     }, [password, should_show_server_form, is_submitting]);
 
+    React.useEffect(() => {
+        if (has_mt5_error || is_mt5_success_dialog_enabled) {
+            setPassword('');
+        }
+    }, [has_mt5_error, is_mt5_success_dialog_enabled]);
+
     return (
         <React.Fragment>
             <DesktopWrapper>
@@ -313,7 +318,6 @@ const MT5PasswordModal = ({
                             mt5_login_list={mt5_login_list}
                             account_title={account_title}
                             password={password}
-                            setPassword={setPassword}
                             submitMt5Form={(v, setSubmitting) => submitMt5Password(v, setSubmitting)}
                             onBack={() => setPassword('')}
                         />
@@ -345,7 +349,6 @@ const MT5PasswordModal = ({
                             mt5_login_list={mt5_login_list}
                             account_title={account_title}
                             password={password}
-                            setPassword={setPassword}
                             submitMt5Form={(v, setSubmitting) => submitMt5Password(v, setSubmitting)}
                             onBack={() => setPassword('')}
                         />

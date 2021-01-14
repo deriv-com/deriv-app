@@ -16,7 +16,6 @@ import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 
 const getRowAction = row_obj => {
-    console.log(row_obj);
     let action;
 
     if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {

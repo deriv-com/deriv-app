@@ -632,14 +632,18 @@ export default class CashierStore extends BaseStore {
         const response_verify_email = await this.WS.verifyEmail(this.root_store.client.email, withdrawal_type);
         if (response_verify_email.error) {
             this.clearVerification();
-            this.setErrorMessage(
-                response_verify_email.error,
-                () => {
-                    this.setErrorMessage('', null, null, true);
-                },
-                null,
-                true
-            );
+            if (this.active_container === 'payment_agent') {
+                this.setErrorMessage(
+                    response_verify_email.error,
+                    () => {
+                        this.setErrorMessage('', null, null, true);
+                    },
+                    null,
+                    true
+                );
+            } else {
+                this.setErrorMessage(response_verify_email.error);
+            }
         } else {
             this.setVerificationEmailSent(true);
             this.setTimeoutVerification();

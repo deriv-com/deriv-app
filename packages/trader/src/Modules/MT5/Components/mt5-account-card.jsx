@@ -167,7 +167,11 @@ const MT5AccountCard = ({
                 {existing_data?.login && is_logged_in && <LoginBadge display_login={existing_data.display_login} />}
 
                 {((!existing_data && commission_message) || !is_logged_in) && (
-                    <p className='mt5-account-card__commission mt5-account-card--paragraph'>{commission_message}</p>
+                    <div className='mt5-account-card__commission'>
+                        <Text as='p' color='general' size='xs' styles={{ margin: '1.6rem auto' }}>
+                            {commission_message}
+                        </Text>
+                    </div>
                 )}
                 {existing_data && is_logged_in && (
                     <div className='mt5-account-card__manage'>

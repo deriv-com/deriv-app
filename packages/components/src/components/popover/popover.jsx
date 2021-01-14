@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import TinyPopover, { ArrowContainer } from 'react-tiny-popover';
 import Icon from '../icon';
-import { useHover } from '../../hooks/use-hover';
+import { useHover, useHoverCallback } from '../../hooks/use-hover';
 
 const Popover = ({
     alignment,
@@ -19,6 +19,7 @@ const Popover = ({
     icon,
     id,
     is_open,
+    is_bubble_hover_enabled,
     margin,
     message,
     onBubbleClose,
@@ -31,6 +32,7 @@ const Popover = ({
     const ref = React.useRef();
     const [popover_ref, setPopoverRef] = React.useState(undefined);
     const [hover_ref, is_hovered] = useHover();
+    const [bubble_hover_ref, is_bubble_hovered] = useHoverCallback();
 
     React.useEffect(() => {
         if (ref.current) {
@@ -57,7 +59,7 @@ const Popover = ({
             )}
             {(popover_ref || !relative_render) && (
                 <TinyPopover
-                    isOpen={is_open ?? (is_hovered && message)}
+                    isOpen={is_open ?? ((is_hovered && message) || (is_bubble_hover_enabled && is_bubble_hovered))}
                     position={alignment}
                     transitionDuration={0.25}
                     padding={margin + 8}
@@ -138,6 +140,7 @@ const Popover = ({
                                     className={classNames(classNameBubble, 'dc-popover__bubble', {
                                         'dc-popover__bubble--error': has_error,
                                     })}
+                                    ref={bubble_hover_ref}
                                 >
                                     {!disable_message_icon && icon === 'info' && (
                                         <i className='dc-popover__bubble__icon'>

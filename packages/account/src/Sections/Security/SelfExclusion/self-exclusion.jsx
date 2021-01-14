@@ -771,17 +771,17 @@ class SelfExclusion extends React.Component {
                                                     <Field name='exclude_until'>
                                                         {({ field }) => (
                                                             <DatePicker
-                                                                min_date={toMoment().add(6,'months').format(
+                                                                min_date={toMoment().add(6, 'months').format(
                                                                     'YYYY-MM-DD'
                                                                 )}
-                                                                max_date={toMoment().add(5,'years').format(
+                                                                max_date={toMoment().add(5, 'years').format(
                                                                     'YYYY-MM-DD'
                                                                 )}
                                                                 {...field}
                                                                 alignment={is_tablet ? 'bottom' : 'left'}
                                                                 className='self-exclusion__input'
                                                                 label={localize('Date')}
-                                                                value={toMoment().add(6,'months').format(
+                                                                value={toMoment().add(6, 'months').format(
                                                                     'YYYY-MM-DD'
                                                                 )}
                                                                 onChange={({ target }) =>

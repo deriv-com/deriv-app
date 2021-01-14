@@ -17,7 +17,6 @@ import {
 import {
     getPropertyValue,
     toMoment,
-    epochToMoment,
     isDesktop,
     isMobile,
     formatMoney,

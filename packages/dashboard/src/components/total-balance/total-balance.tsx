@@ -15,7 +15,7 @@ const TotalBalance: React.FC<TTotalBalanceProps> = ({ amount, currency }) => {
         <React.Fragment>
             <div className='total-balance'>
                 <Text color='prominent' size='s' weight='bold'>
-                    <Localize i18n_default_text='Total Balance' />
+                    <Localize i18n_default_text='Total balance' />
                 </Text>
                 <div className='total-balance__row'>
                     <Text size='l' weight='bold'>

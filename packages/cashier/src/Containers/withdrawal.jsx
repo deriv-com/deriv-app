@@ -12,6 +12,7 @@ import WithdrawalLocked from '../Components/Error/withdrawal-locked.jsx';
 import CashierLocked from '../Components/Error/cashier-locked.jsx';
 import SideNote from '../Components/side-note.jsx';
 import USDTSideNote from '../Components/usdt-side-note.jsx';
+import EUSDTSideNote from '../Components/eusdt-side-note.jsx';
 
 const WithdrawalSideNote = () => {
     const notes = [
@@ -58,8 +59,10 @@ const Withdrawal = ({
 
     React.useEffect(() => {
         if ((iframe_url || verification_code) && isDesktop()) {
-            if (/^(UST|eUSDT)$/i.test(currency) && typeof setSideNotes === 'function') {
+            if (/^(UST)$/i.test(currency) && typeof setSideNotes === 'function') {
                 setSideNotes([<WithdrawalSideNote key={0} />, <USDTSideNote key={1} />]);
+            } else if (/^(eUSDT)$/i.test(currency) && typeof setSideNotes === 'function') {
+                setSideNotes([<WithdrawalSideNote key={0} />, <EUSDTSideNote key={1} />]);
             } else {
                 setSideNotes([<WithdrawalSideNote key={0} />]);
             }

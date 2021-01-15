@@ -77,6 +77,7 @@ export const icons = {
         'IcAccountMissingDetails',
         'IcAccountTransfer',
         'IcAccountTrashCan',
+        'IcAddBold',
         'IcAddRounded',
         'IcAdd',
         'IcAdjustment',

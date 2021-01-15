@@ -16,6 +16,7 @@ const DashboardHeader = () => {
                         Deriv
                     </Text>
                 </div>
+
                 <div className='dashboard-header__menu-items-middle'>
                     <Text color='colored-background' size='s' onClick={() => history.push(routes.explore)}>
                         Explore

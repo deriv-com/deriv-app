@@ -91,6 +91,8 @@ export default class ClientStore extends BaseStore {
 
     @observable financial_assessment = null;
 
+    @observable trading_servers = [];
+
     is_mt5_account_list_updated = false;
 
     constructor(root_store) {
@@ -317,6 +319,22 @@ export default class ClientStore extends BaseStore {
     @computed
     get has_mt5_login() {
         return this.mt5_login_list.length > 0;
+    }
+
+    @computed
+    get can_have_more_real_synthetic_mt5() {
+        const number_of_current_added_synthetics = this.mt5_login_list.reduce((acc, cur) => {
+            const is_included =
+                cur.account_type === 'real' &&
+                cur.market_type === 'gaming' &&
+                this.trading_servers.some(server => server.id === cur.server);
+            return is_included ? acc + 1 : acc;
+        }, 0);
+        const number_of_available_synthetic = this.trading_servers.reduce(
+            (acc, cur) => (cur.supported_accounts.includes('gaming') && !cur.disabled ? acc + 1 : acc),
+            0
+        );
+        return number_of_current_added_synthetics < number_of_available_synthetic;
     }
 
     @computed
@@ -1036,6 +1054,7 @@ export default class ClientStore extends BaseStore {
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
             WS.storage.mt5LoginList().then(this.responseMt5LoginList);
+            WS.tradingServers().then(this.responseTradingServers);
             this.responseStatement(
                 await BinarySocket.send({
                     statement: 1,
@@ -1751,6 +1770,15 @@ export default class ClientStore extends BaseStore {
             const response = await WS.mt5LoginList();
             this.responseMt5LoginList(response);
         }
+    }
+
+    @action.bound
+    responseTradingServers(response) {
+        if (response.error) {
+            this.trading_servers = [];
+            return;
+        }
+        this.trading_servers = response.trading_servers;
     }
 
     @action.bound

@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import Divider from 'Components/elements/divider';
 import { TStringTranslation } from 'Types';
 
-const Facts: React.FC<TFactsProps> = ({ leverage, margin_call, stop_out, assets, min_stake, duration }) => {
+const Facts: React.FC<TFacts> = ({ leverage, margin_call, stop_out, assets, min_stake, duration }) => {
     return (
         <section className='dw-facts'>
             <Divider horizontal />
@@ -51,7 +51,7 @@ const Facts: React.FC<TFactsProps> = ({ leverage, margin_call, stop_out, assets,
     );
 };
 
-type TFactsProps = {
+type TFacts = {
     leverage: TStringTranslation;
     margin_call: TStringTranslation;
     stop_out: TStringTranslation;

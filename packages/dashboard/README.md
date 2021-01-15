@@ -150,14 +150,14 @@ In general try to append any new types to these files before creating a new `*.t
 
 With the latest typescript version, functionalities and capabilities of both types and interface become more similar. Hence for dashboard project, here are the cases when to use types or interfaces
 
-Do use interface to typecheck react proptypes object, you can also use interface when defining new object for classes because you can extend or implement an interface.
+Do use types to typecheck react proptypes object
 ```tsx
 
-const About: React.FC<IAboutProps> = ({ title, description }) => {
+const About: React.FC<TAbout> = ({ title, description }) => {
     ...
 };
 
-interface IAboutProps {
+type TAbout = {
   title: string;
   description: number;
 };
@@ -179,6 +179,27 @@ const isEu: TWebsiteStatus = (website_status) => {
     ...
     return is_eu;
 };
+```
+
+--TODO add cases when to use interfaces--
+```ts
+    // noop
+```
+
+## Type and Interface prefix
+The name shape of type/interface prefixed with `T` for type and `I` for Interface that is used for react props. The idea is to differentiate the component name and the type name, as for the other used for type, it might not necessarily need to be prefixed.
+
+```ts
+type MarketType = {
+    icon: string;
+    title: string;
+}
+
+type TInstruments = {
+    title: string;
+    active_symbols: MarketType[]
+}
+
 ```
 
 ---

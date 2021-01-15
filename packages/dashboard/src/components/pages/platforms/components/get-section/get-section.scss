@@ -33,7 +33,11 @@
     }
     &__item {
         align-items: center;
+        margin-right: 1.6rem;
 
+        &:last-child {
+            margin-right: 0;
+        }
         &-wrapper {
             flex-direction: column;
             padding: 0 2.4rem;
@@ -51,9 +55,7 @@
             margin-right: 0.8rem;
         }
         &-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
-            grid-gap: 1.6rem;
+            display: flex;
         }
     }
 }

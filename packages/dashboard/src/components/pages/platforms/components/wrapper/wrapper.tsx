@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { TReactChildren } from 'Types'
 
-const Wrapper: React.FC<TWrapperProps> = ({ children }) => {
+const Wrapper: React.FC<TWrapper> = ({ children }) => {
     return <div className='dw-wrapper'>{children}</div>;
 };
 
-type TWrapperProps = {
+type TWrapper = {
     children: TReactChildren;
 }
 

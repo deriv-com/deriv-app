@@ -5,7 +5,7 @@ import Button from 'Components/elements/button';
 import Divider from 'Components/elements/divider';
 import { TStringTranslation } from 'Types';
 
-const GetSection: React.FC<TGetSectionProps> = ({
+const GetSection: React.FC<TGetSection> = ({
     icon,
     title,
     subtitle,
@@ -90,7 +90,7 @@ type TradeMarketType = {
     title: TStringTranslation;
 };
 
-type TGetSectionProps = {
+type TGetSection = {
     icon: string;
     title: TStringTranslation;
     subtitle: TStringTranslation;

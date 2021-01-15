@@ -29,4 +29,5 @@ export interface TUIProps {
 
 export type TStringTranslation = string | React.ReactElement
 
-export type TReactChildren = React.ComponentType | React.ElementType | React.ReactElement;
+// ref: https://www.carlrippon.com/react-children-with-typescript/
+export type TReactChildren = React.ReactNode;

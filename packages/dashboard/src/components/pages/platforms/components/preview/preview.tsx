@@ -4,7 +4,7 @@ import { Text, Icon } from '@deriv/components';
 import { useStores } from 'Stores';
 import { TStringTranslation } from 'Types';
 
-const GetSection: React.FC<TGetSectionProps> = ({ availability_text, images }) => {
+const GetSection: React.FC<TGetSection> = ({ availability_text, images }) => {
     const { config_store } = useStores();
 
     return (
@@ -23,7 +23,7 @@ const GetSection: React.FC<TGetSectionProps> = ({ availability_text, images }) =
     );
 };
 
-type TGetSectionProps = {
+type TGetSection = {
     availability_text: TStringTranslation;
     images: string[];
 }

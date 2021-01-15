@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 
-const Divider: React.FC<TDividerProps> = ({ className, horizontal, vertical, ...props }) => {
+const Divider: React.FC<TDivider> = ({ className, horizontal, vertical, ...props }) => {
     return (
         <hr
             className={classNames(
@@ -17,7 +17,7 @@ const Divider: React.FC<TDividerProps> = ({ className, horizontal, vertical, ...
     );
 };
 
-type TDividerProps = {
+type TDivider = {
     className?: string;
     horizontal?: boolean;
     vertical?: boolean;

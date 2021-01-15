@@ -204,7 +204,7 @@ class DeactivateAccountReason extends React.Component {
         const getModalTitle = () => {
             if (this.state.which_modal_should_render === 'error_modal') return localize('An error occurred');
             if (this.state.which_modal_should_render === 'inaccessible_modal')
-                return localize('Account is currently inaccessible');
+                return localize('Inaccessible MT5 account(s)');
             return this.state.which_modal_should_render !== 'warning_modal' ? localize('Action required') : undefined;
         };
         return this.state.is_loading ? (

@@ -1,7 +1,7 @@
 import { Field } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Autocomplete, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
+import { Autocomplete, DesktopWrapper, MobileWrapper, SelectNative, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 const SetResidenceForm = ({
@@ -15,7 +15,7 @@ const SetResidenceForm = ({
     residence_list,
 }) => (
     <div className={`${class_prefix}__residence-selection`}>
-        {!!header_text && <p className={`${class_prefix}__heading`}>{header_text}</p>}
+        {!!header_text && <Text as='p' weight='bold' className={`${class_prefix}__heading`}>{header_text}</Text>}
         <p className={`${class_prefix}__${header_text ? 'text' : 'heading'}`}>{localize('Where do you live?')}</p>
         <Field name='residence'>
             {({ field }) => (

@@ -18,6 +18,8 @@ const getPlatformMt5DownloadLink = (platform = undefined) => {
             return 'https://download.mql5.com/cdn/web/deriv.limited/mt5/deriv5setup.exe';
         case 'linux':
             return 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux';
+        case 'macos':
+            return 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg';
         case 'ios':
             return 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server';
         case 'android':

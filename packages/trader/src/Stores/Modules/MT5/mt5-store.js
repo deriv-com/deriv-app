@@ -47,7 +47,11 @@ export default class MT5Store extends BaseStore {
 
         this.root_store.client.mt5_login_list.forEach(account => {
             // e.g. real.financial_stp
-            list[`${account.account_type}.${getMT5AccountKey(account.market_type, account.sub_account_type)}`] = {
+            list[
+                `${account.account_type}.${getMT5AccountKey(account.market_type, account.sub_account_type)}@${
+                    account.server
+                }`
+            ] = {
                 ...account,
             };
         });
@@ -139,16 +143,17 @@ export default class MT5Store extends BaseStore {
     }
 
     @action.bound
-    openAccount(mt5_password) {
+    openAccount(values) {
         const name = this.getName();
         const leverage = this.mt5_companies[this.account_type.category][this.account_type.type].leverage;
         const type_request = getAccountTypeFields(this.account_type);
 
         return WS.mt5NewAccount({
-            mainPassword: mt5_password,
+            mainPassword: values.password,
             email: this.root_store.client.email_address,
             leverage,
             name,
+            ...(values.server ? { server: values.server } : {}),
             ...type_request,
         });
     }
@@ -252,8 +257,8 @@ export default class MT5Store extends BaseStore {
     }
 
     @action.bound
-    async submitMt5Password(mt5_password, setSubmitting) {
-        const response = await this.openAccount(mt5_password);
+    async submitMt5Password(values, setSubmitting) {
+        const response = await this.openAccount(values);
         if (!response.error) {
             WS.authorized.storage.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
             WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier

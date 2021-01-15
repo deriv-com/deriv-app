@@ -324,6 +324,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get has_account_error_in_mt5_list() {
+        if (!this.is_logged_in) return false;
         return this.mt5_login_list?.some(account => !!account.has_error);
     }
 

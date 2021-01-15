@@ -1576,7 +1576,8 @@ $MIN_HEIGHT_FLOATING: calc(
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                padding: 1.6rem 2.4rem;
+                min-height: fit-content;
+                padding: 1.4rem 2.4rem;
                 @include typeface(--title-center-bold-prominent, none);
                 border-bottom: 1px solid var(--border-normal);
             }

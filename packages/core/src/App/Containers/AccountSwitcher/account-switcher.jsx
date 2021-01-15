@@ -143,23 +143,48 @@ const AccountSwitcher = props => {
     // mt_financial_company: { financial: {}, financial_stp: {}, swap_free: {} }
     // mt_gaming_company: { financial: {}, swap_free: {} }
     const getRemainingAccounts = existing_mt5_accounts => {
-        const gaming_config = getMtConfig('gaming', props.landing_companies?.mt_gaming_company, existing_mt5_accounts);
+        const gaming_config = getMtConfig(
+            'gaming',
+            props.landing_companies?.mt_gaming_company,
+            existing_mt5_accounts,
+            props.trading_servers
+        );
         const financial_config = getMtConfig(
             'financial',
             props.landing_companies?.mt_financial_company,
-            existing_mt5_accounts
+            existing_mt5_accounts,
+            props.trading_servers
         );
 
         return [...gaming_config, ...financial_config];
     };
 
-    const getMtConfig = (market_type, landing_company, existing_mt5_accounts) => {
+    const getMtConfig = (market_type, landing_company, existing_mt5_accounts, trading_servers) => {
         const mt5_config = [];
         if (landing_company) {
             Object.keys(landing_company).forEach(company => {
-                const has_account = existing_mt5_accounts.find(
+                let has_account = existing_mt5_accounts.find(
                     account => account.sub_account_type === company && account.market_type === market_type
                 );
+                if (has_account) {
+                    const number_market_type_available = trading_servers.filter(
+                        s => s.supported_accounts.includes(market_type) && !s.disabled
+                    ).length;
+                    const real_accounts = existing_mt5_accounts.filter(
+                        acc => acc.account_type === 'real' && acc.market_type === market_type
+                    );
+                    if (!!number_market_type_available && real_accounts.length) {
+                        has_account =
+                            has_account &&
+                            real_accounts.filter(acc => {
+                                return (
+                                    acc.market_type === market_type &&
+                                    trading_servers.some(server => server.id === acc.server)
+                                );
+                            }).length === number_market_type_available;
+                    }
+                }
+
                 if (!has_account) {
                     const type = getMT5AccountKey(market_type, company);
                     if (type) {
@@ -244,6 +269,9 @@ const AccountSwitcher = props => {
         return getSortedMT5List().filter(account => !isDemo(account));
     };
 
+    const findServerForAccount = acc =>
+        props.trading_servers.length > 1 ? props.trading_servers.find(server => server.id === acc.server) : null;
+
     const getRemainingRealMT5 = () => {
         return getRemainingAccounts(getRealMT5());
     };
@@ -312,6 +340,7 @@ const AccountSwitcher = props => {
                         .filter(account => account.is_virtual)
                         .map(account => (
                             <AccountList
+                                is_dark_mode_on={props.is_dark_mode_on}
                                 key={account.loginid}
                                 balance={props.accounts[account.loginid].balance}
                                 currency={props.accounts[account.loginid].currency}
@@ -349,6 +378,7 @@ const AccountSwitcher = props => {
                                     <div className='acc-switcher__accounts'>
                                         {getDemoMT5().map(account => (
                                             <AccountList
+                                                is_dark_mode_on={props.is_dark_mode_on}
                                                 key={account.login}
                                                 market_type={account.market_type}
                                                 sub_account_type={account.sub_account_type}
@@ -405,6 +435,7 @@ const AccountSwitcher = props => {
                             .map(account => {
                                 return (
                                     <AccountList
+                                        is_dark_mode_on={props.is_dark_mode_on}
                                         key={account.loginid}
                                         balance={props.accounts[account.loginid].balance}
                                         currency={props.accounts[account.loginid].currency}
@@ -478,6 +509,7 @@ const AccountSwitcher = props => {
                                     <div className='acc-switcher__accounts'>
                                         {getRealMT5().map(account => (
                                             <AccountList
+                                                is_dark_mode_on={props.is_dark_mode_on}
                                                 key={account.login}
                                                 market_type={account.market_type}
                                                 sub_account_type={account.sub_account_type}
@@ -490,6 +522,7 @@ const AccountSwitcher = props => {
                                                 has_balance={'balance' in account}
                                                 loginid={account.display_login}
                                                 onClickAccount={redirectToMt5Real}
+                                                server={findServerForAccount(account)}
                                             />
                                         ))}
                                     </div>
@@ -650,6 +683,7 @@ const account_switcher = withRouter(
         account_list: client.account_list,
         can_upgrade_to: client.can_upgrade_to,
         client_residence: client.residence,
+        is_dark_mode_on: ui.is_dark_mode_on,
         is_eu: client.is_eu,
         is_fully_authenticated: client.is_fully_authenticated,
         is_loading_mt5: client.is_populating_mt5_account_list,
@@ -677,6 +711,7 @@ const account_switcher = withRouter(
         standpoint: client.standpoint,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         openRealAccountSignup: ui.openRealAccountSignup,
+        trading_servers: client.trading_servers,
         toggleAccountsDialog: ui.toggleAccountsDialog,
         toggleAccountTypesModal: ui.toggleAccountTypesModal,
         togglePositionsDrawer: ui.togglePositionsDrawer,

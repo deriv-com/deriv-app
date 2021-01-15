@@ -177,17 +177,25 @@ class DeactivateAccountReason extends React.Component {
         if (account_closure_response.account_closure === 1) {
             this.setState({ is_account_deactivated: true });
         } else {
+            const { code, message, details } = account_closure_response.error;
+            const getModalToRender = () => {
+                if (code === 'AccountHasBalanceOrOpenPositions') {
+                    return 'AccountHasBalanceOrOpenPositions';
+                }
+                if (code === 'MT5AccountInaccessible') {
+                    return 'inaccessible_modal';
+                }
+                return 'error_modal';
+            };
+
             this.setState({
-                which_modal_should_render:
-                    account_closure_response.error.code === 'AccountHasBalanceOrOpenPositions'
-                        ? 'AccountHasBalanceOrOpenPositions'
-                        : 'error_modal',
-                details: account_closure_response.error.details,
-                api_error_message: account_closure_response.error.message,
+                which_modal_should_render: getModalToRender(),
+                details,
+                api_error_message: message,
                 is_modal_open: true,
+                is_loading: false,
             });
         }
-        this.setState({ is_loading: false });
     };
 
     render() {
@@ -195,6 +203,8 @@ class DeactivateAccountReason extends React.Component {
 
         const getModalTitle = () => {
             if (this.state.which_modal_should_render === 'error_modal') return localize('An error occurred');
+            if (this.state.which_modal_should_render === 'inaccessible_modal')
+                return localize('Account is currently inaccessible');
             return this.state.which_modal_should_render !== 'warning_modal' ? localize('Action required') : undefined;
         };
         return this.state.is_loading ? (
@@ -411,7 +421,7 @@ class DeactivateAccountReason extends React.Component {
                             onBackClick={this.props.onBackClick}
                         />
                     )}
-                    {this.state.which_modal_should_render === 'MT5AccountInaccessible' && (
+                    {this.state.which_modal_should_render === 'inaccessible_modal' && (
                         <GeneralErrorContent message={this.state.api_error_message} onClick={this.closeModal} />
                     )}
                 </Modal>

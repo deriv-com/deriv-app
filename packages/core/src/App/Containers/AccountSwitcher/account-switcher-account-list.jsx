@@ -18,6 +18,8 @@ const AccountList = ({
     onClickAccount,
     onClickResetVirtualBalance,
     selected_loginid,
+    server,
+    is_dark_mode_on,
     sub_account_type,
 }) => {
     if (is_disabled && !currency) return null;
@@ -43,7 +45,12 @@ const AccountList = ({
                         {display_type === 'currency' ? (
                             <CurrencyDisplay is_virtual={is_virtual} currency={currency} />
                         ) : (
-                            <AccountDisplay market_type={market_type} sub_account_type={sub_account_type} />
+                            <AccountDisplay
+                                market_type={market_type}
+                                sub_account_type={sub_account_type}
+                                server={server}
+                                is_dark_mode_on={is_dark_mode_on}
+                            />
                         )}
                         <div className='acc-switcher__loginid-text'>{loginid}</div>
                     </span>
@@ -95,8 +102,18 @@ const CurrencyDisplay = ({ currency, is_virtual }) => {
     return getCurrencyName(currency);
 };
 
-const AccountDisplay = ({ market_type, sub_account_type }) => (
-    <div>{getMT5AccountDisplay(market_type, sub_account_type)}</div>
-);
+const AccountDisplay = ({ market_type, sub_account_type, server, is_dark_mode_on }) => {
+    return (
+        <div>
+            {getMT5AccountDisplay(market_type, sub_account_type)}
+            {server?.geolocation && (
+                <Text color={is_dark_mode_on ? 'general' : 'colored-background'} size='xxs' className='badge-server'>
+                    {server.geolocation.region}&nbsp;
+                    {server.geolocation.sequence !== 1 ? server.geolocation.sequence : ''}
+                </Text>
+            )}
+        </div>
+    );
+};
 
 export default AccountList;

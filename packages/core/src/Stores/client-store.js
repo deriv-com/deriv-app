@@ -66,7 +66,7 @@ export default class ClientStore extends BaseStore {
     @observable upgradeable_landing_companies = [];
     @observable mt5_login_list = [];
     @observable mt5_login_list_error = null;
-    @observable mt5_signup_disabled_types = { real: false, demo: false };
+    @observable mt5_disabled_signup_types = { real: false, demo: false };
     @observable statement = [];
     @observable obj_total_balance = {
         amount_real: undefined,
@@ -628,9 +628,9 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    setMT5SignUpDisabledTypes(disabled_types_obj) {
-        const current_list = this.mt5_signup_disabled_types;
-        this.mt5_signup_disabled_types = { current_list, ...disabled_types_obj };
+    setMT5DisabledSignupTypes(disabled_types_obj) {
+        const current_list = this.mt5_disabled_signup_types;
+        this.mt5_disabled_signup_types = { current_list, ...disabled_types_obj };
     }
 
     @action.bound
@@ -1814,9 +1814,13 @@ export default class ClientStore extends BaseStore {
                     ''
                 );
                 if (account.error) {
-                    const is_real_account = /^MTR/.test(account.error.details.login);
+                    const { account_type } = account.error.details;
+                    this.setMT5DisabledSignupTypes({
+                        real: account_type === 'real',
+                        demo: account_type === 'demo',
+                    });
                     return {
-                        account_type: is_real_account ? 'real' : 'demo',
+                        account_type,
                         display_login,
                         has_error: true,
                     };

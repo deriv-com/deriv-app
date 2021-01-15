@@ -147,6 +147,7 @@ class MT5Dashboard extends React.Component {
             has_maltainvest_account,
             has_mt5_account,
             has_mt5_account_error,
+            mt5_disabled_signup_type,
             has_real_account,
             NotificationMessages,
             openAccountNeededModal,
@@ -217,7 +218,7 @@ class MT5Dashboard extends React.Component {
                                             standpoint={standpoint}
                                             is_loading={is_loading}
                                             has_mt5_account={has_mt5_account}
-                                            has_mt5_account_error={has_mt5_account_error}
+                                            has_mt5_account_error={mt5_disabled_signup_type.demo}
                                             current_list={current_list}
                                             onSelectAccount={createMT5Account}
                                             landing_companies={landing_companies}
@@ -241,7 +242,7 @@ class MT5Dashboard extends React.Component {
                                                 current_list={current_list}
                                                 account_status={account_status}
                                                 has_mt5_account={has_mt5_account}
-                                                has_mt5_account_error={has_mt5_account_error}
+                                                has_mt5_account_error={mt5_disabled_signup_type.real}
                                                 onSelectAccount={createMT5Account}
                                                 account_settings={account_settings}
                                                 landing_companies={landing_companies}
@@ -436,6 +437,7 @@ export default withRouter(
         is_eu_country: client.is_eu_country,
         is_virtual: client.is_virtual,
         is_mt5_allowed: client.is_mt5_allowed,
+        mt5_disabled_signup_type: client.mt5_disabled_signup_types,
         has_maltainvest_account: client.has_maltainvest_account,
         has_mt5_account_error: client.has_account_error_in_mt5_list,
         has_malta_account: client.has_malta_account,

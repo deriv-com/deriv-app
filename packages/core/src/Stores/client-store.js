@@ -1815,7 +1815,7 @@ export default class ClientStore extends BaseStore {
                     ''
                 );
                 if (account.error) {
-                    const { account_type } = account.error.details;
+                    const { account_type, server } = account.error.details;
                     this.setMT5DisabledSignupTypes({
                         real: account_type === 'real',
                         demo: account_type === 'demo',
@@ -1824,6 +1824,7 @@ export default class ClientStore extends BaseStore {
                         account_type,
                         display_login,
                         has_error: true,
+                        server,
                     };
                 }
                 return {

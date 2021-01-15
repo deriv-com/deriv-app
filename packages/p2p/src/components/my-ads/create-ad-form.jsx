@@ -1,37 +1,33 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
 import { Formik, Field, Form } from 'formik';
-import { Dropdown, Loading, Icon, Input, Button, ThemedScrollbars } from '@deriv/components';
+import { Button, Dropdown, Input, Modal, Text, ThemedScrollbars } from '@deriv/components';
+import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { localize } from 'Components/i18next';
-import PageReturn from 'Components/page-return/page-return.jsx';
+import { Localize, localize } from 'Components/i18next';
+import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
-import AdSummary from './my-ads-summary.jsx';
-import { buy_sell } from '../../constants/buy-sell';
+import CreateAdSummary from './create-ad-summary.jsx';
 
-const FormAds = observer(() => {
+const CreateAdForm = () => {
     const { general_store, my_ads_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
+    const [is_api_error_modal_visible, setIsApiErrorModalVisible] = React.useState(false);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    React.useEffect(() => my_ads_store.getAdvertiserInfo(), []);
-
-    const PageReturnComponent = () => {
-        return <PageReturn onClick={() => my_ads_store.setShowAdForm(false)} page_title={localize('Create new ad')} />;
-    };
-
-    if (my_ads_store.is_form_loading) {
-        return (
-            <React.Fragment>
-                <PageReturnComponent />
-                <Loading is_fullscreen={false} />
-            </React.Fragment>
+    React.useEffect(() => {
+        const disposeApiErrorReaction = reaction(
+            () => my_ads_store.api_error_message,
+            () => setIsApiErrorModalVisible(!!my_ads_store.api_error_message)
         );
-    }
+
+        return () => {
+            disposeApiErrorReaction();
+            my_ads_store.setApiErrorMessage('');
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <React.Fragment>
-            <PageReturnComponent />
             <Formik
                 initialValues={{
                     contact_info: my_ads_store.contact_info,
@@ -44,7 +40,7 @@ const FormAds = observer(() => {
                     type: 'buy',
                 }}
                 onSubmit={my_ads_store.handleSubmit}
-                validate={my_ads_store.validateFormAds}
+                validate={my_ads_store.validateCreateAdForm}
                 initialErrors={{
                     // Pass one error to ensure Post ad button is disabled initially.
                     offer_amount: true,
@@ -57,7 +53,7 @@ const FormAds = observer(() => {
                             <Form noValidate>
                                 <ThemedScrollbars className='p2p-my-ads__form-scrollbar'>
                                     <div className='p2p-my-ads__form-summary'>
-                                        <AdSummary
+                                        <CreateAdSummary
                                             offer_amount={errors.offer_amount ? '' : values.offer_amount}
                                             price_rate={errors.price_rate ? '' : values.price_rate}
                                             type={values.type}
@@ -226,19 +222,14 @@ const FormAds = observer(() => {
                                         )}
                                     </Field>
                                     <div className='p2p-my-ads__form-container p2p-my-ads__form-footer'>
-                                        {my_ads_store.api_error_message && (
-                                            <div className='p2p-my-ads__form-error'>
-                                                <Icon icon='IcAlertDanger' />
-                                                <div>{my_ads_store.api_error_message}</div>
-                                            </div>
-                                        )}
                                         <Button
                                             className='p2p-my-ads__form-button'
                                             secondary
                                             large
                                             onClick={() => my_ads_store.setShowAdForm(false)}
+                                            type='button'
                                         >
-                                            {localize('Cancel')}
+                                            <Localize i18n_default_text='Cancel' />
                                         </Button>
                                         <Button
                                             className='p2p-my-ads__form-button'
@@ -246,7 +237,7 @@ const FormAds = observer(() => {
                                             large
                                             is_disabled={isSubmitting || !isValid}
                                         >
-                                            {localize('Post ad')}
+                                            <Localize i18n_default_text='Post ad' />
                                         </Button>
                                     </div>
                                 </ThemedScrollbars>
@@ -255,22 +246,30 @@ const FormAds = observer(() => {
                     );
                 }}
             </Formik>
+            <Modal
+                className='p2p-my-ads__modal-error'
+                is_open={is_api_error_modal_visible}
+                small
+                has_close_icon={false}
+                title={localize('Something’s not right')}
+            >
+                <Modal.Body>
+                    <Text as='p' size='xs' color='prominent'>
+                        {my_ads_store.api_error_message}
+                    </Text>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        has_effect
+                        text={localize('Ok')}
+                        onClick={() => setIsApiErrorModalVisible(false)}
+                        primary
+                        large
+                    />
+                </Modal.Footer>
+            </Modal>
         </React.Fragment>
     );
-});
-
-FormAds.propTypes = {
-    api_error_message: PropTypes.string,
-    client: PropTypes.object,
-    contact_info: PropTypes.string,
-    default_advert_description: PropTypes.string,
-    getAdvertiserInfo: PropTypes.func,
-    handleSubmit: PropTypes.func,
-    is_form_loading: PropTypes.bool,
-    payment_info: PropTypes.string,
-    restrictLength: PropTypes.func,
-    setShowAdForm: PropTypes.func,
-    validateFormAds: PropTypes.func,
 };
 
-export default FormAds;
+export default observer(CreateAdForm);

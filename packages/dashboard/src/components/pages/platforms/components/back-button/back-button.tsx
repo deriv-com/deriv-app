@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-const Back: React.FC<IBackProps> = ({ onClick }) => {
+const Back: React.FC<TBackProps> = ({ onClick }) => {
     return (
         <div className='dw-back' onClick={onClick}>
             <Icon className='dw-back__icon' icon='IcArrowLeftBold' width='16' height='16' />
@@ -11,7 +11,7 @@ const Back: React.FC<IBackProps> = ({ onClick }) => {
     );
 };
 
-interface IBackProps {
+type TBackProps = {
     onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 

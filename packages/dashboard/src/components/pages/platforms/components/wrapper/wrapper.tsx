@@ -1,11 +1,12 @@
 import * as React from 'react';
+import { TReactChildren } from 'Types'
 
-const Wrapper: React.FC<IWrapperProps> = ({ children }) => {
+const Wrapper: React.FC<TWrapperProps> = ({ children }) => {
     return <div className='dw-wrapper'>{children}</div>;
 };
 
-interface IWrapperProps {
-    children: React.ReactNode;
+type TWrapperProps = {
+    children: TReactChildren;
 }
 
 export default Wrapper;

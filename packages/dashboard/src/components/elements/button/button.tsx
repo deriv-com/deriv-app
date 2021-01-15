@@ -1,8 +1,9 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { Button as CButton } from '@deriv/components';
+import { TReactChildren } from 'Types'
 
-const Button: React.FC<IButtonProps> = ({ className, children, onClick, ...props }) => {
+const Button: React.FC<TButtonProps> = ({ className, children, onClick, ...props }) => {
     return (
         <CButton className={classNames('dw-btn', className)} onClick={onClick} {...props}>
             {children}
@@ -10,12 +11,12 @@ const Button: React.FC<IButtonProps> = ({ className, children, onClick, ...props
     );
 };
 
-interface IButtonProps {
+type TButtonProps = {
     className?: string;
     large?: boolean;
     primary?: boolean;
     tertiary?: boolean;
-    children: React.ComponentType | React.ElementType | React.ReactElement;
+    children: TReactChildren;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 

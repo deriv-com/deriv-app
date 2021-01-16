@@ -1,6 +1,5 @@
 import { Formik, Field } from 'formik';
 import React from 'react';
-import { FormSubHeader } from '@deriv/account';
 import {
     Modal,
     Autocomplete,
@@ -20,8 +19,8 @@ import {
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile, toMoment } from '@deriv/shared';
-import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
-import 'Sass/details-form.scss';
+import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
+import FormSubHeader from '../form-sub-header';
 
 const DateOfBirthField = props => (
     <Field name={props.name}>

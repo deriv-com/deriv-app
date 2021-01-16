@@ -1,6 +1,5 @@
 import { localize } from '@deriv/translations';
-import FinancialDetails from 'App/Containers/RealAccountSignup/financial-details.jsx';
-import { generateValidationFunction, getDefaultFields } from './form-validations';
+import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
 
 const financial_details_config = ({ financial_assessment }) => {
     return {
@@ -92,7 +91,7 @@ const financial_details_config = ({ financial_assessment }) => {
     };
 };
 
-export const financialDetailsConfig = ({ real_account_signup_target, financial_assessment }) => {
+const financialDetailsConfig = (FinancialDetails, { real_account_signup_target, financial_assessment }) => {
     const config = financial_details_config({ financial_assessment });
 
     return {
@@ -412,3 +411,5 @@ const source_of_wealth_enum = () => [
         text: localize('Sale of Property'),
     },
 ];
+
+export default financialDetailsConfig;

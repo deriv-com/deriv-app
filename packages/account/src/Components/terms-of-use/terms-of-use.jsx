@@ -10,9 +10,9 @@ import {
 } from '@deriv/components';
 import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import CheckboxField from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
+import CheckboxField from './checkbox-field.jsx';
 import { SharedMessage, BrokerSpecificMessage, Hr } from './terms-of-use-messages.jsx';
-import 'Sass/terms-of-use.scss';
+import './terms-of-use.scss';
 
 const TermsOfUse = ({
     getCurrentStep,

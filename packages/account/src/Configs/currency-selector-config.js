@@ -1,16 +1,8 @@
 import { localize } from '@deriv/translations';
-import CurrencySelector from './currency-selector.jsx';
-import { generateValidationFunction, getDefaultFields } from './form-validations';
+import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
+import currency_selector_config from './currency-selector-schema';
 
-export const currency_selector_config = {
-    currency: {
-        supported_in: ['maltainvest', 'malta', 'svg', 'iom'],
-        default_value: '',
-        rules: [['req', localize('Select an item')]],
-    },
-};
-
-export const currencySelectorConfig = ({ real_account_signup_target }) => {
+const currencySelectorConfig = (CurrencySelector, { real_account_signup_target }) => {
     return {
         header: {
             active_title: localize('Please choose your currency'),
@@ -24,3 +16,5 @@ export const currencySelectorConfig = ({ real_account_signup_target }) => {
         passthrough: ['legal_allowed_currencies'],
     };
 };
+
+export default currencySelectorConfig;

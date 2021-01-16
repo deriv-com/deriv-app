@@ -1,7 +1,5 @@
-import { toMoment, getErrorMessages } from '@deriv/shared';
+import { toMoment, getErrorMessages, generateValidationFunction, getDefaultFields } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import PersonalDetails from 'App/Containers/RealAccountSignup/personal-details.jsx';
-import { generateValidationFunction, getDefaultFields } from './form-validations';
 
 const personal_details_config = ({ residence_list, account_settings }) => {
     if (!residence_list || !account_settings) {
@@ -123,12 +121,10 @@ const personal_details_config = ({ residence_list, account_settings }) => {
     ];
 };
 
-export const personalDetailsConfig = ({
-    upgrade_info,
-    real_account_signup_target,
-    residence_list,
-    account_settings,
-}) => {
+const personalDetailsConfig = (
+    PersonalDetails,
+    { upgrade_info, real_account_signup_target, residence_list, account_settings }
+) => {
     const [config, disabled_items] = personal_details_config({ residence_list, account_settings });
     return {
         header: {
@@ -188,3 +184,5 @@ const transformConfig = (config, { real_account_signup_target }) => {
     }
     return config;
 };
+
+export default personalDetailsConfig;

@@ -1,7 +1,5 @@
-import { isDesktop } from '@deriv/shared';
+import { isDesktop, getDefaultFields } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { getDefaultFields } from './form-validations';
-import TermsOfUse from './terms-of-use.jsx';
 
 const terms_of_use_config = {
     agreed_tos: {
@@ -14,7 +12,7 @@ const terms_of_use_config = {
     },
 };
 
-export const termsOfUseConfig = ({ real_account_signup_target }) => {
+const termsOfUseConfig = (TermsOfUse, { real_account_signup_target }) => {
     return {
         header: {
             active_title: isDesktop() ? localize('Terms of use') : null,
@@ -27,3 +25,5 @@ export const termsOfUseConfig = ({ real_account_signup_target }) => {
         },
     };
 };
+
+export default termsOfUseConfig;

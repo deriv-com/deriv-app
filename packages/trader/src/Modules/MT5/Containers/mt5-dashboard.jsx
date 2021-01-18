@@ -44,6 +44,7 @@ class MT5Dashboard extends React.Component {
             selected_account: '',
             selected_account_type: '',
             selected_account_group: '',
+            selected_server: '',
         },
     };
 
@@ -104,7 +105,7 @@ class MT5Dashboard extends React.Component {
         }
     };
 
-    togglePasswordManagerModal = (login, title, group, type) => {
+    togglePasswordManagerModal = (login, title, group, type, server) => {
         this.setState(prev_state => ({
             active_index: prev_state.active_index,
             password_manager: {
@@ -113,6 +114,7 @@ class MT5Dashboard extends React.Component {
                 selected_account: typeof title === 'string' ? title : '',
                 selected_account_group: group,
                 selected_account_type: type,
+                selected_server: server,
             },
         }));
     };
@@ -151,6 +153,8 @@ class MT5Dashboard extends React.Component {
             standpoint,
             toggleAccountsDialog,
             toggleShouldShowRealAccountsList,
+            trading_servers,
+            can_have_more_real_synthetic_mt5,
         } = this.props;
         const should_show_missing_real_account = !is_eu && is_logged_in && !has_real_account;
         if ((!country && is_logged_in) || is_logging_in) return <Loading />; // Wait for country name to be loaded before rendering
@@ -192,6 +196,7 @@ class MT5Dashboard extends React.Component {
                                     selected_account={this.state.password_manager.selected_account}
                                     selected_account_group={this.state.password_manager.selected_account_group}
                                     selected_account_type={this.state.password_manager.selected_account_type}
+                                    selected_server={this.state.password_manager.selected_server}
                                     toggleModal={this.togglePasswordManagerModal}
                                 />
                                 <LoadTab
@@ -234,6 +239,8 @@ class MT5Dashboard extends React.Component {
                                                 standpoint={standpoint}
                                                 toggleAccountsDialog={toggleAccountsDialog}
                                                 toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
+                                                trading_servers={trading_servers}
+                                                can_have_more_real_synthetic_mt5={can_have_more_real_synthetic_mt5}
                                             />
                                         </React.Fragment>
                                     </div>
@@ -461,5 +468,7 @@ export default withRouter(
         onUnmount: modules.mt5.onUnmount,
         toggleAccountsDialog: ui.toggleAccountsDialog,
         toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
+        trading_servers: client.trading_servers,
+        can_have_more_real_synthetic_mt5: client.can_have_more_real_synthetic_mt5,
     }))(MT5Dashboard)
 );

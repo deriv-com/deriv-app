@@ -47,7 +47,9 @@ const MT5DemoAccountDisplay = ({
                     }}
                     is_disabled={has_mt5_account_error}
                     is_logged_in={is_logged_in}
-                    existing_data={current_list['demo.synthetic']}
+                    existing_data={
+                        current_list[Object.keys(current_list).find(key => key.startsWith('demo.synthetic'))]
+                    }
                     commission_message={localize('No commission')}
                     onSelectAccount={() =>
                         onSelectAccount({
@@ -57,10 +59,13 @@ const MT5DemoAccountDisplay = ({
                     }
                     onPasswordManager={openPasswordManager}
                     onClickFund={() =>
-                        openAccountTransfer(current_list['demo.synthetic'], {
-                            category: 'demo',
-                            type: 'synthetic',
-                        })
+                        openAccountTransfer(
+                            current_list[Object.keys(current_list).find(key => key.startsWith('demo.synthetic'))],
+                            {
+                                category: 'demo',
+                                type: 'synthetic',
+                            }
+                        )
                     }
                     descriptor={localize(
                         'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
@@ -84,15 +89,20 @@ const MT5DemoAccountDisplay = ({
                         category: 'demo',
                         type: 'financial',
                     }}
-                    existing_data={current_list['demo.financial']}
+                    existing_data={
+                        current_list[Object.keys(current_list).find(key => key.startsWith('demo.financial@'))]
+                    }
                     commission_message={localize('No commission')}
                     onSelectAccount={openMt5Account}
                     onPasswordManager={openPasswordManager}
                     onClickFund={() =>
-                        openAccountTransfer(current_list['demo.financial'], {
-                            category: 'demo',
-                            type: 'financial',
-                        })
+                        openAccountTransfer(
+                            current_list[Object.keys(current_list).find(key => key.startsWith('demo.financial@'))],
+                            {
+                                category: 'demo',
+                                type: 'financial',
+                            }
+                        )
                     }
                     descriptor={
                         is_eu || is_eu_country
@@ -125,7 +135,9 @@ const MT5DemoAccountDisplay = ({
                     }}
                     is_logged_in={is_logged_in}
                     is_disabled={has_mt5_account_error}
-                    existing_data={current_list['demo.financial_stp']}
+                    existing_data={
+                        current_list[Object.keys(current_list).find(key => key.startsWith('demo.financial_stp@'))]
+                    }
                     commission_message={localize('No commission')}
                     onSelectAccount={() =>
                         onSelectAccount({
@@ -135,10 +147,13 @@ const MT5DemoAccountDisplay = ({
                     }
                     onPasswordManager={openPasswordManager}
                     onClickFund={() =>
-                        openAccountTransfer(current_list['demo.financial_stp'], {
-                            category: 'demo',
-                            type: 'financial_stp',
-                        })
+                        openAccountTransfer(
+                            current_list[Object.keys(current_list).find(key => key.startsWith('demo.financial_stp@'))],
+                            {
+                                category: 'demo',
+                                type: 'financial_stp',
+                            }
+                        )
                     }
                     descriptor={localize(
                         'Trade major, minor, exotic currency pairs, and cryptocurrencies with Straight-Through Processing (STP) of your orders direct to the market.'

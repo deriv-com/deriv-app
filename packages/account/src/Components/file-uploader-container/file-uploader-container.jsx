@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import FileUploader from './file-uploader.jsx';
 
@@ -27,7 +27,7 @@ const FileProperties = () => {
                     <div className='account-poa__upload-property-wrapper'>
                         <Icon icon={item.icon} className='account-poa__upload-icon-dashboard' size={40} />
                         <Text size='xxxs' weight='bold' align='center'>
-                            {item.text}
+                            {localize(item.text)}
                         </Text>
                     </div>
                 </div>

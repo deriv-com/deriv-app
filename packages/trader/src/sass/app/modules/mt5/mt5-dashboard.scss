@@ -511,6 +511,15 @@
             height: 6rem;
         }
 
+        &--disabled {
+            cursor: not-allowed;
+            color: var(--text-disabled);
+
+            .mt5-account-card__add-server--icon {
+                background-color: var(--border-disabled);
+                color: var(--text-disabled);
+            }
+        }
         &-exit,
         &-enter-done {
             transition: all 0.3s ease-in-out;

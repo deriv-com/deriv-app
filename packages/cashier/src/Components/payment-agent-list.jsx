@@ -19,6 +19,7 @@ import Error from './Error/error.jsx';
 import EmailSent from './Email/email-sent.jsx';
 
 const PaymentAgentList = ({
+    error,
     is_email_sent,
     is_loading,
     is_resend_clicked,
@@ -53,8 +54,8 @@ const PaymentAgentList = ({
 
     return (
         <div className='cashier__wrapper--align-left'>
-            {this.props.error?.code ? (
-                <Error error={this.props.error} />
+            {error?.code ? (
+                <Error error={error} />
             ) : (
                 <React.Fragment>
                     <Text as='p' size='xs' line_height='s' className='cashier__paragraph'>
@@ -177,6 +178,7 @@ PaymentAgentList.propTypes = {
 };
 
 export default connect(({ modules }) => ({
+    error: modules.cashier.config.payment_agent.verification.error,
     is_email_sent: modules.cashier.config.payment_agent.verification.is_email_sent,
     is_resend_clicked: modules.cashier.config.payment_agent.verification.is_resend_clicked,
     is_loading: modules.cashier.is_loading,

@@ -52,7 +52,7 @@ const Input = React.forwardRef(
             <InputWrapper has_footer={has_footer}>
                 <div
                     className={classNames('dc-input', className, {
-                        'dc-input__disabled': disabled,
+                        'dc-input--disabled': disabled,
                         'dc-input--error': error,
                     })}
                 >

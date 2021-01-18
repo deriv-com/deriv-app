@@ -64,6 +64,7 @@ export default class ClientStore extends BaseStore {
     @observable landing_companies = {};
 
     @observable upgradeable_landing_companies = [];
+    @observable mt5_disabled_signup_types = { real: false, demo: false };
     @observable mt5_login_list = [];
     @observable mt5_login_list_error = null;
     @observable statement = [];
@@ -323,6 +324,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get has_account_error_in_mt5_list() {
+        if (!this.is_logged_in) return false;
         return this.mt5_login_list?.some(account => !!account.has_error);
     }
 
@@ -624,6 +626,12 @@ export default class ClientStore extends BaseStore {
             can_upgrade_to,
             can_open_multi,
         };
+    }
+
+    @action.bound
+    setMT5DisabledSignupTypes(disabled_types_obj) {
+        const current_list = this.mt5_disabled_signup_types;
+        this.mt5_disabled_signup_types = { current_list, ...disabled_types_obj };
     }
 
     @action.bound
@@ -1807,11 +1815,16 @@ export default class ClientStore extends BaseStore {
                     ''
                 );
                 if (account.error) {
-                    const is_real_account = /^MTR/.test(account.error.details.login);
+                    const { account_type, server } = account.error.details;
+                    this.setMT5DisabledSignupTypes({
+                        real: account_type === 'real',
+                        demo: account_type === 'demo',
+                    });
                     return {
-                        account_type: is_real_account ? 'real' : 'demo',
+                        account_type,
                         display_login,
                         has_error: true,
+                        server,
                     };
                 }
                 return {

@@ -133,8 +133,8 @@ const MT5DemoAccountDisplay = ({
                         category: 'demo',
                         type: 'financial_stp',
                     }}
-                    is_logged_in={is_logged_in}
                     is_disabled={has_mt5_account_error}
+                    is_logged_in={is_logged_in}
                     existing_data={
                         current_list[Object.keys(current_list).find(key => key.startsWith('demo.financial_stp@'))]
                     }

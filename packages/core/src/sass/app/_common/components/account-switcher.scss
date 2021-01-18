@@ -438,4 +438,8 @@
     border-radius: 0.2rem;
     margin-left: 0.5rem;
     height: 2.2rem;
+
+    &--disabled {
+        background-color: var(--border-disabled);
+    }
 }

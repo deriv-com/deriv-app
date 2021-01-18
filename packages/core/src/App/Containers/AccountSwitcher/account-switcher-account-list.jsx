@@ -114,8 +114,16 @@ const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_d
     // TODO: Remove once account with error has market_type and sub_account_type in details response
     if (has_error)
         return (
-            <div style={{ color: 'var(--text-disabled)' }}>
-                <Localize i18n_default_text='Unavailable' />
+            <div>
+                <Text color='disabled' size='xs'>
+                    <Localize i18n_default_text='Unavailable' />
+                </Text>
+                {server?.geolocation && (
+                    <Text color='less-prominent' size='xxs' className='badge-server badge-server--disabled'>
+                        {server.geolocation.region}&nbsp;
+                        {server.geolocation.sequence !== 1 ? server.geolocation.sequence : ''}
+                    </Text>
+                )}
             </div>
         );
     return (

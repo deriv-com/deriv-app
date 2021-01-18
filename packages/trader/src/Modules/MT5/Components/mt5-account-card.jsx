@@ -12,9 +12,15 @@ const account_icons = {
     financial_stp: 'IcMt5FinancialStpPlatform',
 };
 
-const AddTradeServerButton = React.forwardRef(({ onSelectAccount }, ref) => {
+const AddTradeServerButton = React.forwardRef(({ onSelectAccount, is_disabled }, ref) => {
     return (
-        <div onClick={onSelectAccount} className={classNames('mt5-account-card__add-server')} ref={ref}>
+        <div
+            onClick={is_disabled ? null : onSelectAccount}
+            className={classNames('mt5-account-card__add-server', {
+                'mt5-account-card__add-server--disabled': is_disabled,
+            })}
+            ref={ref}
+        >
             <span className='mt5-account-card__add-server--icon'>+</span>
             <Localize i18n_default_text='Add more trade servers' />
         </div>
@@ -101,6 +107,7 @@ const MT5AccountCard = ({
     is_hovered,
     existing_data,
     has_mt5_account,
+    has_mt5_account_error,
     has_real_account,
     is_accounts_switcher_on,
     is_button_primary,
@@ -287,7 +294,6 @@ const MT5AccountCard = ({
                             </Button>
                         </div>
                     )}
-
                     {!existing_data && has_mt5_account && (
                         <Button className='mt5-account-card__account-selection' onClick={onSelectAccount} type='button'>
                             <Localize i18n_default_text='Select' />
@@ -321,11 +327,15 @@ const MT5AccountCard = ({
                         />
                     )}
                 </div>
-                {should_show_trade_servers && (
-                    <MobileWrapper>
-                        <AddTradeServerButton ref={button_ref} onSelectAccount={onSelectAccount} />
-                    </MobileWrapper>
-                )}
+                <MobileWrapper>
+                    {should_show_trade_servers && (
+                        <AddTradeServerButton
+                            ref={button_ref}
+                            onSelectAccount={onSelectAccount}
+                            is_disabled={has_mt5_account_error}
+                        />
+                    )}
+                </MobileWrapper>
             </div>
             <DesktopWrapper>
                 <CSSTransition
@@ -334,7 +344,11 @@ const MT5AccountCard = ({
                     classNames='mt5-account-card__add-server'
                     unmountOnExit
                 >
-                    <AddTradeServerButton ref={button_ref} onSelectAccount={onSelectAccount} />
+                    <AddTradeServerButton
+                        ref={button_ref}
+                        onSelectAccount={onSelectAccount}
+                        is_disabled={has_mt5_account_error}
+                    />
                 </CSSTransition>
             </DesktopWrapper>
         </div>

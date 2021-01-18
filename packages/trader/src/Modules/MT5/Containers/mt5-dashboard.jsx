@@ -147,6 +147,7 @@ class MT5Dashboard extends React.Component {
             has_maltainvest_account,
             has_mt5_account,
             has_mt5_account_error,
+            mt5_disabled_signup_types,
             has_real_account,
             NotificationMessages,
             openAccountNeededModal,
@@ -221,7 +222,7 @@ class MT5Dashboard extends React.Component {
                                                 is_logged_in={is_logged_in}
                                                 has_maltainvest_account={has_maltainvest_account}
                                                 has_malta_account={has_malta_account}
-                                                has_mt5_account_error={has_mt5_account_error}
+                                                has_mt5_account_error={mt5_disabled_signup_types.demo}
                                                 openAccountNeededModal={openAccountNeededModal}
                                                 current_list={current_list}
                                                 account_status={account_status}
@@ -249,7 +250,7 @@ class MT5Dashboard extends React.Component {
                                             is_eu={is_eu}
                                             is_logged_in={is_logged_in}
                                             has_maltainvest_account={has_maltainvest_account}
-                                            has_mt5_account_error={has_mt5_account_error}
+                                            has_mt5_account_error={mt5_disabled_signup_types.real}
                                             openAccountNeededModal={openAccountNeededModal}
                                             standpoint={standpoint}
                                             is_loading={is_loading}
@@ -441,6 +442,7 @@ export default withRouter(
         is_eu_country: client.is_eu_country,
         is_virtual: client.is_virtual,
         is_mt5_allowed: client.is_mt5_allowed,
+        mt5_disabled_signup_types: client.mt5_disabled_signup_types,
         has_maltainvest_account: client.has_maltainvest_account,
         has_malta_account: client.has_malta_account,
         can_upgrade_to: client.can_upgrade_to,

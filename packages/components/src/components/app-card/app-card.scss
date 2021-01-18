@@ -8,7 +8,7 @@
         &--virtual {
             width: 28rem;
             height: 21.4rem;
-            background: var(--app-card-virtual);
+            background: var(--app-card-virtual); // TODO: Update after #2476 is merged
             border-radius: 0.8rem;
             padding: 0.8rem 1.6rem;
 
@@ -19,7 +19,7 @@
             }
 
             &-swap-free {
-                background: var(--app-card-virtual-swap-free);
+                background: var(--app-card-virtual-swap-free); // TODO: Update after #2476 is merged
             }
         }
         &--real {

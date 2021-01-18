@@ -311,7 +311,22 @@ const AccountSwitcher = props => {
     };
 
     const getTotalRealAssets = () => {
-        return props.obj_total_balance.amount_real + props.obj_total_balance.amount_mt5;
+        // props.obj_total_balance.amount_mt5 is returning 0 regarding performance issues so we have to calculate
+        // the total MT5 accounts balance from props.mt5_login_list.
+        // You can remove this part if WS sends obj_total_balance.amount_mt5 correctly.
+        const mt5_total = props.mt5_login_list
+            .filter(account => !isDemo(account))
+            .reduce(
+                (total, account) => {
+                    total.balance += account.balance;
+                    return total;
+                },
+                { balance: 0 }
+            );
+        return (
+            props.obj_total_balance.amount_real +
+            (props.obj_total_balance.amount_mt5 > 0 ? props.obj_total_balance.amount_mt5 : mt5_total.balance)
+        );
     };
 
     if (!props.is_logged_in) return false;

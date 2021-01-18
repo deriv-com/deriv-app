@@ -3,12 +3,12 @@ import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { ButtonToggle } from '@deriv/components';
 
-interface TAccountsButtonToggleProps {
+type TAccountsButtonToggleProps = {
     onChangeAccount: (item: string) => void;
     highlight_color?: string;
     className?: string;
     [k: string]: unknown;
-}
+};
 
 const AccountsButtonToggle: React.FC<TAccountsButtonToggleProps> = ({
     onChangeAccount,

@@ -19,10 +19,6 @@ export const isMT5 = () =>
     /^\/mt5/.test(window.location.pathname) ||
     (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'mt5');
 
-export const isDashboard = () =>
-    /^\/dashboard/.test(window.location.pathname) ||
-    (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'dashboard');
-
 export const getPathname = () => {
     if (isBot()) return platform_name.DBot;
     if (isMT5()) return platform_name.DMT5;

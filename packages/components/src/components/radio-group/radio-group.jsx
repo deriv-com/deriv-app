@@ -45,9 +45,17 @@ const RadioGroup = ({ className, items, name, onToggle, required, selected, shou
                         <span
                             className={classNames('dc-radio-group__circle', {
                                 'dc-radio-group__circle--selected': selected_option === item.value,
+                                'dc-radio-group__circle--disabled': item.disabled,
                             })}
                         />
-                        <Text size='xs'>{item.label}</Text>
+                        <Text
+                            size='xs'
+                            className={classNames('dc-radio-group__label', {
+                                'dc-radio-group__label--disabled': item.disabled,
+                            })}
+                        >
+                            {item.label}
+                        </Text>
                     </label>
                 </ItemWrapper>
             ))}

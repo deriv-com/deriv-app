@@ -21,6 +21,7 @@ const Button = ({
     is_loading,
     is_submit_success,
     is_button_toggle,
+    is_plus,
     large,
     medium,
     onClick,
@@ -31,6 +32,7 @@ const Button = ({
     type,
     primary,
     secondary,
+    alternate,
     small,
     tertiary,
     renderText,
@@ -43,12 +45,14 @@ const Button = ({
             'dc-btn--primary': primary,
             'dc-btn--secondary': secondary,
             'dc-btn--tertiary': tertiary,
+            'dc-btn--alternate': alternate,
             'dc-btn--green': green,
             'dc-btn__rounded': rounded,
             'dc-btn__large': large,
             'dc-btn__medium': medium,
             'dc-btn__small': small,
             'dc-btn__toggle': is_button_toggle,
+            'dc-btn--plus': is_plus,
         },
         className
     );
@@ -72,14 +76,12 @@ const Button = ({
                 ))}
             {is_loading && <ButtonLoading />}
             {is_submit_success && <Icon icon='IcCheckmark' color='active' size={24} />}
-
-            {!text &&
-                children &&
-                ((typeof renderText === 'function' && renderText(children)) || (
-                    <Text size='xs' weight='bold' align='center' className={classNames('dc-btn__text', classNameSpan)}>
-                        {children}
-                    </Text>
-                ))}
+            {is_plus && <Icon icon='IcAddBold' color='black' size={18} />}
+            {!text && children && (
+                <Text size='xs' weight='bold' align='center' className={classNames('dc-btn__text', classNameSpan)}>
+                    {children}
+                </Text>
+            )}
         </button>
     );
     const wrapper = <div className={wrapperClassName}>{button}</div>;
@@ -97,6 +99,7 @@ Button.propTypes = {
     id: PropTypes.string,
     is_disabled: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
     is_loading: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+    is_plus: PropTypes.bool,
     is_submit_success: PropTypes.bool,
     large: PropTypes.bool,
     medium: PropTypes.bool,

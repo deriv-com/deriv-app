@@ -424,7 +424,7 @@ const AccountSwitcher = props => {
                                         <Button
                                             onClick={() => openMt5DemoAccount(account.type)}
                                             className='acc-switcher__new-account-btn'
-                                            is_disabled={props.has_mt5_account_error}
+                                            is_disabled={props.mt5_disabled_signup_types.demo}
                                             secondary
                                             small
                                         >
@@ -566,7 +566,7 @@ const AccountSwitcher = props => {
                                             secondary
                                             small
                                             is_disabled={
-                                                props.has_mt5_account_error ||
+                                                props.mt5_disabled_signup_types.real ||
                                                 (!props.is_eu && !props.has_any_real_account) ||
                                                 (account.type === 'financial_stp' &&
                                                     (props.is_pending_authentication || !!props.mt5_login_list_error))
@@ -684,6 +684,7 @@ AccountSwitcher.propTypes = {
     is_visible: PropTypes.bool,
     logoutClient: PropTypes.func,
     mt5_login_list: PropTypes.array,
+    mt5_disabled_signup_types: PropTypes.object,
     obj_total_balance: PropTypes.object,
     openRealAccountSignup: PropTypes.func,
     switchAccount: PropTypes.func,
@@ -716,9 +717,9 @@ const account_switcher = withRouter(
         is_virtual: client.is_virtual,
         has_fiat: client.has_fiat,
         has_any_real_account: client.has_any_real_account,
-        has_mt5_account_error: client.has_account_error_in_mt5_list,
         mt5_login_list: client.mt5_login_list,
         mt5_login_list_error: client.mt5_login_list_error,
+        mt5_disabled_signup_types: client.mt5_disabled_signup_types,
         obj_total_balance: client.obj_total_balance,
         switchAccount: client.switchAccount,
         resetVirtualBalance: client.resetVirtualBalance,

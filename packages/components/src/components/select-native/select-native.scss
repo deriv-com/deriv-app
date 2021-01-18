@@ -59,6 +59,9 @@
             color: var(--text-general);
             max-width: 100%;
         }
+        &--disabled {
+            color: var(--text-disabled);
+        }
     }
     &__picker {
         opacity: 0;

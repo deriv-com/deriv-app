@@ -33,8 +33,11 @@ const VerticalTab = ({
     action_bar,
     action_bar_classname,
     current_path,
+    extra_offset,
+    has_mixed_dimensions,
     header_classname,
     header_title,
+    is_collapsible,
     is_floating,
     is_full_width,
     is_routed,
@@ -82,10 +85,13 @@ const VerticalTab = ({
                 >
                     <VerticalTabHeaders
                         className={header_classname}
+                        extra_offset={extra_offset}
                         items={list}
                         item_groups={list_groups}
                         onChange={changeSelected}
                         selected={list[curr_tab_index]}
+                        has_mixed_dimensions={has_mixed_dimensions}
+                        is_collapsible={is_collapsible}
                         is_floating={is_floating}
                         is_routed={is_routed}
                         header_title={header_title}

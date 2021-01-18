@@ -1,6 +1,7 @@
 :host,
 :root {
     // Text sizes
+    --text-size-xxxxs: 0.8rem;
     --text-size-xxxs: 1rem;
     --text-size-xxs: 1.2rem;
     --text-size-xs: 1.4rem;
@@ -51,6 +52,10 @@
     --wallet-visa: #{$gradient-visa};
     --wallet-webmoney: #{$gradient-webmoney};
 
+    // App Cards gradient background
+    --app-card-virtual: #{$gradient-virtual};
+    --app-card-virtual-swap-free: #{$gradient-virtual-swap-free};
+
     .theme--light {
         // General
         --general-main-1: #{$color-white};
@@ -68,6 +73,8 @@
         --text-profit-success: #{$color-green-1};
         --text-loss-danger: #{$color-red-1};
         --text-colored-background: #{$color-white};
+        --icon-light-background: #{$color-black-9};
+        --icon-dark-background: #{$color-white};
         // Purchase
         --purchase-main-1: #{$color-green-1};
         --purchase-section-1: #{$color-green-2};
@@ -97,6 +104,7 @@
         // Border
         --border-normal: #{$color-grey-5};
         --border-hover: #{$color-grey-1};
+        --border-hover-1: #{$color-black-9};
         --border-active: var(--brand-secondary);
         --border-disabled: #{$color-grey-3};
         // Fill
@@ -120,6 +128,11 @@
         --gradient-success: #{$gradient-color-green-1};
         --gradient-danger: #{$gradient-color-red-1};
         --gradient-right-edge: #{$gradient-color-white};
+        // Badge
+        --badge-white: #{$color-white};
+        --badge-blue: #{$color-apple-blue};
+        --badge-violet: #{$color-blue-2};
+        --badge-green: #{$color-green-3};
     }
     .theme--dark {
         // General
@@ -138,6 +151,8 @@
         --text-profit-success: #{$color-green-3};
         --text-loss-danger: #{$color-red-2};
         --text-colored-background: #{$color-white};
+        --icon-light-background: #{$color-black-9};
+        --icon-dark-background: #{$color-white};
         // Purchase
         --purchase-main-1: #{$color-green-3};
         --purchase-section-1: #{$color-green-4};
@@ -166,6 +181,7 @@
         // Border
         --border-normal: #{$color-black-8};
         --border-hover: #{$color-grey-7};
+        --border-hover-1: #{$color-black-9};
         --border-active: var(--brand-secondary);
         --border-disabled: #{$color-black-4};
         // Fill
@@ -189,5 +205,10 @@
         --gradient-success: #{$gradient-color-green-2};
         --gradient-danger: #{$gradient-color-red-2};
         --gradient-right-edge: #{$gradient-color-black};
+        // Badge
+        --badge-white: #{$color-white};
+        --badge-blue: #{$color-apple-blue};
+        --badge-violet: #{$color-blue-2};
+        --badge-green: #{$color-green-3};
     }
 }

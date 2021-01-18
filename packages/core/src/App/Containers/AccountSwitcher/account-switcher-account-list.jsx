@@ -50,7 +50,6 @@ const AccountList = ({
                                 market_type={market_type}
                                 sub_account_type={sub_account_type}
                                 server={server}
-                                add-MT5-server-selection-production
                                 has_error={has_error}
                                 is_dark_mode_on={is_dark_mode_on}
                             />

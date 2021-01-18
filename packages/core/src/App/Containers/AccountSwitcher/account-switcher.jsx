@@ -586,7 +586,7 @@ const AccountSwitcher = props => {
             >
                 {/* TODO: De-couple and refactor demo and real accounts groups
                         into a single reusable AccountListItem component */}
-                <div label={localize('Real')}>
+                <div label={localize('Real')} id='real_account_tab'>
                     <DesktopWrapper>
                         <ThemedScrollbars height='354px'>{real_accounts}</ThemedScrollbars>
                     </DesktopWrapper>
@@ -596,7 +596,7 @@ const AccountSwitcher = props => {
                         </Div100vhContainer>
                     </MobileWrapper>
                 </div>
-                <div label={localize('Demo')}>
+                <div label={localize('Demo')} id='demo_account_tab'>
                     <DesktopWrapper>
                         <ThemedScrollbars height='354px'>{demo_accounts}</ThemedScrollbars>
                     </DesktopWrapper>

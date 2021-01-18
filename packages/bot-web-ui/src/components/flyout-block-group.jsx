@@ -1,7 +1,7 @@
 import { Button, Text } from '@deriv/components';
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 import FlyoutBlock from './flyout-block.jsx';
 
@@ -18,9 +18,8 @@ const FlyoutBlockGroup = ({ onInfoClick, block_node, is_active, should_hide_disp
                 id={`db-flyout__add--${block_type}`}
                 className='flyout__button-add flyout__button-add--hide'
                 has_effect
+                is_plus
                 onClick={() => Blockly.derivWorkspace.addBlockNode(block_node)}
-                primary
-                text={localize('Add')}
                 type='button'
             />
         </div>

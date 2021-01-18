@@ -4,7 +4,7 @@ import Button from '../button';
 import Icon from '../icon';
 import Text from '../text';
 
-const Header = ({ balance, header, button_text, header_icon, onButtonClick, text_color, title }) => {
+const Header = ({ balance, button_text, header_icon, onButtonClick, text_color, title }) => {
     return (
         <div className='dc-popup__header'>
             <Text size='s' as='p' styles={{ color: text_color }}>

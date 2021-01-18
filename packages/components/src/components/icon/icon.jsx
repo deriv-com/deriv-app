@@ -31,6 +31,7 @@ const Icon = React.forwardRef(
                     'dc-icon--red': color === 'red' || icon === 'IcLoss',
                     'dc-icon--secondary': color === 'secondary',
                     'dc-icon--brand': color === 'brand',
+                    'dc-icon--black': color === 'black',
                 })}
                 height={height || size}
                 id={id}

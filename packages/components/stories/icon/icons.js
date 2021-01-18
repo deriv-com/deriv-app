@@ -462,7 +462,6 @@ export const icons = {
         'IcWalletPlatforms',
         'IcWalletSticpay',
         'IcWalletTradeTypes',
-        'IcWalletTransactions',
         'IcWalletWallets',
         'IcWalletWebmoney',
     ],

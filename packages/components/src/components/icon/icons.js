@@ -442,6 +442,5 @@ import './wallet/ic-wallet-neteller.svg';
 import './wallet/ic-wallet-platforms.svg';
 import './wallet/ic-wallet-sticpay.svg';
 import './wallet/ic-wallet-trade-types.svg';
-import './wallet/ic-wallet-transactions.svg';
 import './wallet/ic-wallet-wallets.svg';
 import './wallet/ic-wallet-webmoney.svg';

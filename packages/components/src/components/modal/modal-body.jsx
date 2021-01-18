@@ -2,18 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-const Body = ({ children, className }) => (
-    <div
-        className={classNames('dc-modal-body', {
-            [`dc-modal-body--${className}`]: className,
-        })}
-    >
-        {children}
-    </div>
-);
+const Body = ({ children, className }) => <div className={classNames('dc-modal-body', className)}>{children}</div>;
 
 Body.propTypes = {
-    children: PropTypes.node,
+    children: PropTypes.oneOfType(PropTypes.arrayOf(PropTypes.node), PropTypes.node),
     className: PropTypes.string,
 };
 

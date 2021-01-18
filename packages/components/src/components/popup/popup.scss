@@ -1,12 +1,24 @@
 .dc-popup {
     &__header {
-        display: flex;
-        align-items: center;
+        padding: 0;
+
+        &--content {
+            display: flex;
+            align-items: center;
+        }
 
         &__icon {
             position: absolute;
             left: 86%;
         }
+
+        &__button {
+            margin: 0 1.6em !important;
+            width: 13rem !important;
+        }
+    }
+    &__body {
+        padding: 0 !important;
     }
 }
 
@@ -14,11 +26,6 @@
     &-header {
         &--popup {
             height: 124px;
-        }
-    }
-    &-body {
-        &--popup {
-            padding: 0 !important;
         }
     }
 }

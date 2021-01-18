@@ -12,10 +12,11 @@ const Popup = ({
     className,
     close_icon_color,
     header_backgound_color,
+    header_button_text,
     header_contents_color,
     header_icon,
+    onHeaderButtonClick,
     renderFooter,
-    renderHeader,
     should_show_popup,
     tab_icon_color,
     tabs_detail,
@@ -23,14 +24,14 @@ const Popup = ({
     togglePopupModal,
 }) => {
     const header = () => {
-        const render_header = typeof renderHeader === 'function' ? renderHeader() : null;
         return (
             <Header
-                header={render_header}
+                button_text={header_button_text}
                 title={title}
                 balance={balance}
                 text_color={header_contents_color}
                 header_icon={header_icon}
+                onButtonClick={onHeaderButtonClick}
             />
         );
     };
@@ -41,20 +42,16 @@ const Popup = ({
         <Modal
             className='popup'
             close_icon_color={close_icon_color}
-            has_header_border={false}
+            do_not_show_header_border
             header_backgound_color={header_backgound_color}
             height='636px'
-            is_item_align_centered={false}
+            do_not_center_header_items
             is_open={should_show_popup}
             renderTitle={() => header()}
             toggleModal={togglePopupModal}
             width='776px'
         >
-            <Modal.Body
-                className={classNames('popup', {
-                    [`popup--${className}`]: className,
-                })}
-            >
+            <Modal.Body className='dc-popup__body'>
                 <Body
                     active_tab_icon_color={active_tab_icon_color}
                     background_color={header_backgound_color}
@@ -82,9 +79,13 @@ Popup.propTypes = {
     className: PropTypes.string,
     close_icon_color: PropTypes.string,
     header_backgound_color: PropTypes.string,
+    header_button_text: PropTypes.string,
     header_contents_color: PropTypes.string,
     header_icon: PropTypes.string,
+    onHeaderButtonClick: PropTypes.func,
+    renderFooter: PropTypes.func,
     should_show_popup: PropTypes.bool,
+    tab_icon_color: PropTypes.string,
     tabs_detail: PropTypes.arrayOf(
         PropTypes.shape({
             render_body: PropTypes.func,
@@ -93,9 +94,6 @@ Popup.propTypes = {
             title: PropTypes.string,
         })
     ).isRequired,
-    renderHeader: PropTypes.func,
-    renderFooter: PropTypes.func,
-    tab_icon_color: PropTypes.string,
     title: PropTypes.string,
     togglePopupModal: PropTypes.func,
 };

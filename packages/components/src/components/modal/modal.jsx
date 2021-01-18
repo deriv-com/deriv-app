@@ -10,6 +10,8 @@ import { useOnClickOutside } from '../../hooks';
 
 const ModalElement = ({
     close_icon_color,
+    do_not_center_header_items,
+    do_not_show_header_border,
     elements_to_ignore,
     has_close_icon,
     onMount,
@@ -20,12 +22,10 @@ const ModalElement = ({
     title,
     className,
     is_confirmation_modal,
-    is_item_align_centered,
     is_vertical_centered,
     is_vertical_bottom,
     is_vertical_top,
     is_title_centered,
-    has_header_border,
     header,
     portalId,
     children,
@@ -101,10 +101,10 @@ const ModalElement = ({
             {(header || title || rendered_title) && (
                 <div
                     className={classNames('dc-modal-header', {
-                        'dc-modal-header__border-bottom': has_header_border,
+                        'dc-modal-header__border-bottom': !do_not_show_header_border,
                         [`dc-modal-header--${className}`]: className,
                         [`dc-modal-header--is-title-centered`]: is_title_centered,
-                        [`dc-modal-header--is-item-align-centered`]: is_item_align_centered,
+                        [`dc-modal-header--is-item-align-centered`]: !do_not_center_header_items,
                     })}
                     style={{
                         background: header_backgound_color,
@@ -152,20 +152,18 @@ const ModalElement = ({
 
 ModalElement.defaultProps = {
     has_close_icon: true,
-    has_header_border: true,
-    is_item_align_centered: true,
 };
 
 ModalElement.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     close_icon_color: PropTypes.string,
+    do_not_center_header_items: PropTypes.bool,
+    do_not_show_header_border: PropTypes.bool,
     has_close_icon: PropTypes.bool,
     header_backgound_color: PropTypes.string,
-    has_header_border: PropTypes.bool,
     header: PropTypes.node,
     id: PropTypes.string,
-    is_item_align_centered: PropTypes.bool,
     is_open: PropTypes.bool,
     is_title_centered: PropTypes.bool,
     onMount: PropTypes.func,
@@ -181,12 +179,12 @@ const Modal = ({
     children,
     className,
     close_icon_color,
+    do_not_center_header_items,
+    do_not_show_header_border,
     header,
     id,
-    is_item_align_centered,
     is_open,
     has_close_icon,
-    has_header_border,
     header_backgound_color,
     height,
     onEntered,
@@ -223,10 +221,11 @@ const Modal = ({
         <ModalElement
             className={className}
             close_icon_color={close_icon_color}
+            do_not_center_header_items={do_not_center_header_items}
+            do_not_show_header_border={do_not_show_header_border}
             header={header}
             header_backgound_color={header_backgound_color}
             id={id}
-            is_item_align_centered={is_item_align_centered}
             is_open={is_open}
             is_confirmation_modal={is_confirmation_modal}
             is_vertical_bottom={is_vertical_bottom}
@@ -236,7 +235,6 @@ const Modal = ({
             title={title}
             toggleModal={toggleModal}
             has_close_icon={has_close_icon}
-            has_header_border={has_header_border}
             height={height}
             onMount={onMount}
             onUnmount={onUnmount}
@@ -256,23 +254,21 @@ Modal.Footer = Footer;
 
 Modal.defaultProps = {
     has_close_icon: true,
-    has_header_border: true,
-    is_item_align_centered: true,
 };
 
 Modal.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     close_icon_color: PropTypes.string,
+    do_not_center_header_items: PropTypes.bool,
+    do_not_show_header_border: PropTypes.bool,
     has_close_icon: PropTypes.bool,
-    has_header_border: PropTypes.bool,
     header: PropTypes.node,
     header_backgound_color: PropTypes.string,
     height: PropTypes.string,
     id: PropTypes.string,
     is_open: PropTypes.bool,
     is_confirmation_modal: PropTypes.bool,
-    is_item_align_centered: PropTypes.bool,
     is_vertical_bottom: PropTypes.bool,
     is_vertical_centered: PropTypes.bool,
     is_vertical_top: PropTypes.bool,

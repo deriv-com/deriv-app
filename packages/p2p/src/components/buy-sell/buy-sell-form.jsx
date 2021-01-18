@@ -8,6 +8,7 @@ import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import { requestWS } from 'Utils/websocket';
 
 const BuySellFormReceiveAmount = ({ is_sell_advert, receive_amount, local_currency }) => (
     <React.Fragment>
@@ -33,19 +34,16 @@ BuySellFormReceiveAmount.propTypes = {
 const BuySellForm = observer(props => {
     const isMounted = useIsMounted();
     const { buy_sell_store } = useStores();
-    const { setPageFooterParent } = props;
-
     buy_sell_store.setFormProps(props);
 
-    const {
-        advertiser_details,
-        description,
-        local_currency,
-        max_order_amount_limit_display,
-        min_order_amount_limit,
-        min_order_amount_limit_display,
-        price,
-    } = buy_sell_store?.advert;
+    const [limits, setLimits] = React.useState({
+        max_order_amount_limit_display: buy_sell_store?.advert?.max_order_amount_limit_display,
+        min_order_amount_limit: buy_sell_store?.advert?.min_order_amount_limit,
+        min_order_amount_limit_display: buy_sell_store?.advert?.min_order_amount_limit_display,
+    });
+
+    const { setPageFooterParent } = props;
+    const { advertiser_details, description, local_currency, price } = buy_sell_store?.advert || {};
 
     React.useEffect(
         () => {
@@ -70,7 +68,31 @@ const BuySellForm = observer(props => {
                 buy_sell_store.getAdvertiserInfo();
             }
 
-            return disposeReceiveAmountReaction;
+            const limits_interval = setInterval(() => {
+                const { advert } = props;
+
+                requestWS({ p2p_advert_info: 1, id: advert.id }).then(response => {
+                    if (!isMounted()) return;
+                    if (response.p2p_advert_info) {
+                        const {
+                            max_order_amount_limit_display,
+                            min_order_amount_limit,
+                            min_order_amount_limit_display,
+                        } = response.p2p_advert_info;
+
+                        setLimits({
+                            max_order_amount_limit_display,
+                            min_order_amount_limit,
+                            min_order_amount_limit_display,
+                        });
+                    }
+                });
+            }, 10000);
+
+            return () => {
+                disposeReceiveAmountReaction();
+                clearInterval(limits_interval);
+            };
         },
         [] // eslint-disable-line react-hooks/exhaustive-deps
     );
@@ -81,7 +103,7 @@ const BuySellForm = observer(props => {
             validate={buy_sell_store.validatePopup}
             validateOnMount
             initialValues={{
-                amount: min_order_amount_limit,
+                amount: limits.min_order_amount_limit,
                 contact_info: buy_sell_store.contact_info,
                 payment_info: buy_sell_store.payment_info,
             }}
@@ -160,8 +182,8 @@ const BuySellForm = observer(props => {
                                                     <Localize
                                                         i18n_default_text='Limits: {{min}}–{{max}} {{currency}}'
                                                         values={{
-                                                            min: min_order_amount_limit_display,
-                                                            max: max_order_amount_limit_display,
+                                                            min: limits.min_order_amount_limit_display,
+                                                            max: limits.max_order_amount_limit_display,
                                                             currency: buy_sell_store.account_currency,
                                                         }}
                                                     />

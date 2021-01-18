@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { Formik, Field, Form } from 'formik';
-import { Button, Dropdown, Input, Modal, Text, ThemedScrollbars } from '@deriv/components';
+import { Dropdown, Modal, Input, Button, Text, ThemedScrollbars } from '@deriv/components';
+import { formatMoney } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
+import { useUpdatingAvailableBalance } from 'Components/hooks';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import CreateAdSummary from './create-ad-summary.jsx';
@@ -11,6 +13,7 @@ import CreateAdSummary from './create-ad-summary.jsx';
 const CreateAdForm = () => {
     const { general_store, my_ads_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
+    const available_balance = useUpdatingAvailableBalance();
     const [is_api_error_modal_visible, setIsApiErrorModalVisible] = React.useState(false);
 
     React.useEffect(() => {
@@ -92,6 +95,20 @@ const CreateAdForm = () => {
                                                     onChange={e => {
                                                         my_ads_store.restrictLength(e, handleChange);
                                                     }}
+                                                    hint={
+                                                        // Using two "==" is intentional as we're checking for nullish
+                                                        // rather than falsy values.
+                                                        !is_sell_advert || available_balance == null
+                                                            ? undefined
+                                                            : localize('Your DP2P balance is {{ dp2p_balance }}', {
+                                                                  dp2p_balance: `${formatMoney(
+                                                                      currency,
+                                                                      available_balance,
+                                                                      true
+                                                                  )} ${currency}`,
+                                                              })
+                                                    }
+                                                    is_relative_hint
                                                     required
                                                 />
                                             )}

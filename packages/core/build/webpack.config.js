@@ -21,7 +21,7 @@ module.exports = function (env, argv) {
                 colors: true,
             },
         },
-        devtool: IS_RELEASE ? 'source-map' : 'cheap-module-eval-source-map',
+        devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: './index.js',
         mode: IS_RELEASE ? 'production' : 'development',
         module: {
@@ -32,28 +32,26 @@ module.exports = function (env, argv) {
             extensions: ['.js', '.jsx'],
         },
         optimization: {
-            namedChunks: true,
             minimize: IS_RELEASE,
             minimizer: MINIMIZERS,
             splitChunks: {
                 chunks: 'all',
                 minSize: 30000,
-                maxSize: 0,
+                maxSize: 240000,
                 minChunks: 1,
                 maxAsyncRequests: 5,
                 maxInitialRequests: 3,
                 automaticNameDelimiter: '~',
-                automaticNameMaxLength: 30,
-                name: true,
                 cacheGroups: {
-                    vendors: {
-                        test: /[\\/]node_modules[\\/]/,
-                        priority: -10,
-                    },
                     default: {
                         minChunks: 2,
                         priority: -20,
                         reuseExistingChunk: true,
+                    },
+                    defaultVendors: {
+                        idHint: 'vendors',
+                        test: /[\\/]node_modules[\\/]/,
+                        priority: -10,
                     },
                 },
             },
@@ -61,6 +59,7 @@ module.exports = function (env, argv) {
         output: {
             filename: 'js/core.[name].[contenthash].js',
             publicPath: base,
+            path: path.resolve(__dirname, '../dist'),
         },
         plugins: plugins({
             base,

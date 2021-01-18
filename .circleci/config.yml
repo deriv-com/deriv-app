@@ -20,7 +20,7 @@ commands:
             # Fetch tags if git cache is present
             if [ -e /home/circleci/project/.git ]
             then
-              git fetch origin --tags
+              git fetch origin --tags --depth=1
             fi
       - checkout
       - run:

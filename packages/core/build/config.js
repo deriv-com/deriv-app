@@ -175,7 +175,7 @@ const htmlPreloadConfig = () => ({
     fileWhitelist: [/\.css$/],
 });
 
-const cssConfig = () => ({ filename: 'css/core.main.css', chunkFilename: 'css/core.[name].[contenthash].css' });
+const cssConfig = () => ({ filename: 'css/core[name].main.css', chunkFilename: 'css/core.[name].[contenthash].css' });
 
 const stylelintConfig = () => ({
     configFile: path.resolve(__dirname, '../.stylelintrc.js'),

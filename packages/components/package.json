@@ -7,10 +7,11 @@
   "scripts": {
     "start": "rimraf lib && npm run test && npm run serve",
     "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --mode=production --progress --watch",
-    "build": "rimraf lib && npm run build:icons && webpack --mode=production --optimize-minimize --progress",
+    "build": "rimraf lib && npm run build:icons && webpack --mode=production --progress",
     "build:icons": "node -e 'require(\"./utils/build-icons\").buildIcons()'",
-    "build:travis": "rimraf lib && webpack --mode=production --optimize-minimize",
+    "build:travis": "rimraf lib && webpack --mode=production",
     "test": "node \"./src/components/icon/__tests__/icons.js\"",
+    "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",
     "deploy": "echo \"No deploy specified\"",
     "deploy:clean": "echo \"No deploy:clean specified\"",
     "deploy:folder": "echo \"No deploy:folder specified\"",
@@ -50,11 +51,11 @@
     "sass-loader": "^7.1.0",
     "sass-resources-loader": "^2.0.3",
     "style-loader": "^1.2.1",
-    "svg-sprite-loader": "^4.1.6",
+    "svg-sprite-loader": "^5.2.1",
     "svgo-loader": "^2.2.0",
-    "webpack": "^4.43.0",
-    "webpack-bundle-analyzer": "^3.6.0",
-    "webpack-cli": "^3.3.12"
+    "webpack": "^5.14.0",
+    "webpack-bundle-analyzer": "^4.3.0",
+    "webpack-cli": "^4.3.1"
   },
   "dependencies": {
     "@contentpass/zxcvbn": "^4.4.3",

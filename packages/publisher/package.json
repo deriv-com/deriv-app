@@ -2,7 +2,7 @@
   "name": "@deriv/publisher",
   "version": "0.0.1-beta4",
   "description": "Publish Deriv's packages",
-  "bin": { 
+  "bin": {
     "deriv-publisher": "index.js"
   },
   "private": false,
@@ -15,6 +15,7 @@
     "build": "echo \"No build specified\"",
     "build:travis": "echo \"No build:travis specified\"",
     "test": "echo \"No test specified\"",
+    "test:eslint": "echo \"No test:eslint specific\"",
     "deploy": "echo \"No deploy specified\"",
     "deploy:clean": "echo \"No deploy:clean specified\"",
     "deploy:folder": "echo \"No deploy:folder specified\"",

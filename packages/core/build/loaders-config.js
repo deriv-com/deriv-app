@@ -63,9 +63,6 @@ const svg_loaders = [
 const css_loaders = [
     {
         loader: MiniCssExtractPlugin.loader,
-        options: {
-            sourceMap: true,
-        },
     },
     {
         loader: 'css-loader',

@@ -6,7 +6,7 @@ module.exports = function (env, argv) {
 
     return {
         context: path.resolve(__dirname, '../src'),
-        devtool: IS_RELEASE ? 'source-map' : 'cheap-module-eval-source-map',
+        devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: {
             account: path.resolve(__dirname, '../src', 'index.js'),
             'demo-message': 'Components/demo-message',
@@ -46,8 +46,8 @@ module.exports = function (env, argv) {
             extensions: ['.js', '.jsx'],
         },
         optimization: {
-            namedChunks: true,
-            namedModules: true,
+            chunkIds: 'named',
+            moduleIds: 'named',
             minimize: IS_RELEASE,
             minimizer: MINIMIZERS,
         },

@@ -36,6 +36,13 @@ module.exports = {
     module: {
         rules: [
             {
+                // https://github.com/webpack/webpack/issues/11467
+                test: /\.m?js/,
+                resolve: {
+                    fullySpecified: false,
+                },
+            },
+            {
                 test: /\.(js|jsx|ts|tsx)$/,
                 exclude: /node_modules/,
                 use: [
@@ -51,7 +58,7 @@ module.exports = {
                 ],
             },
             {
-                test: /\.js$/,
+                test: input => is_release && /\.js$/.test(input),
                 loader: 'source-map-loader',
             },
             {
@@ -62,9 +69,6 @@ module.exports = {
                         ? [
                               {
                                   loader: MiniCssExtractPlugin.loader,
-                                  options: {
-                                      sourceMap: !is_release,
-                                  },
                               },
                               '@deriv/publisher/utils/css-unit-loader.js',
                           ]
@@ -108,15 +112,14 @@ module.exports = {
         minimizer: is_release
             ? [
                   new TerserPlugin({
-                      test: /\.js/,
+                      test: /\.js$/,
                       parallel: true,
-                      sourceMap: true,
                   }),
                   new OptimizeCssAssetsPlugin(),
               ]
             : [],
     },
-    devtool: is_release ? 'source-map' : 'cheap-module-eval-source-map',
+    devtool: is_release ? undefined : 'eval-cheap-module-source-map',
     externals: [
         {
             ...publisher_utils.getLocalDerivPackageExternals(__dirname, is_publishing, {

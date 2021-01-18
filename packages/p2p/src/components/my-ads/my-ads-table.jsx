@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, InfiniteDataList, Loading, Table } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -19,13 +18,12 @@ const getHeaders = offered_currency => [
     { text: '' }, // empty header for delete icon
 ];
 
-const MyAdsTable = observer(() => {
+const MyAdsTable = () => {
     const { general_store, my_ads_store } = useStores();
 
     React.useEffect(() => {
-        my_ads_store.setIsTableLoading(true);
         my_ads_store.setAdverts([]);
-        my_ads_store.loadMoreAds({ startIndex: 0 });
+        my_ads_store.loadMoreAds({ startIndex: 0 }, true);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -91,24 +89,6 @@ const MyAdsTable = observer(() => {
             </Button>
         </Empty>
     );
-});
-
-MyAdsTable.propTypes = {
-    adverts: PropTypes.array,
-    api_table_error_message: PropTypes.string,
-    client: PropTypes.object,
-    has_more_items_to_load: PropTypes.bool,
-    height_values: PropTypes.array,
-    is_listed: PropTypes.bool,
-    item_height: PropTypes.number,
-    item_offset: PropTypes.number,
-    loadMoreAds: PropTypes.func,
-    onClickCancel: PropTypes.func,
-    onClickConfirm: PropTypes.func,
-    onClickCreate: PropTypes.func,
-    onClickDelete: PropTypes.func,
-    setShouldShowPopup: PropTypes.func,
-    should_show_popup: PropTypes.bool,
 };
 
-export default MyAdsTable;
+export default observer(MyAdsTable);

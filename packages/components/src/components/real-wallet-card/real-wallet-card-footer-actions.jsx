@@ -83,7 +83,7 @@ const RealWalletCardFooterActions = ({
             <div className='dc-real-wallet-card__action' onClick={onClickTransactions} ref={hover_ref_transactions}>
                 <Icon
                     className={classNames({ 'dc-real-wallet-card__action--icon': is_transactions_hovered })}
-                    icon='IcWalletTransactions'
+                    icon='IcTransactions'
                     size={16}
                 />
                 {is_transactions_hovered && (

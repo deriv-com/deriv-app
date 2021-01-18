@@ -46,7 +46,7 @@ const RealWalletCard = ({
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             style={{
-                background: `var(--wallet-${wallet_type.toLowerCase()})`,
+                background: `var(--wallet-${wallet_type.toLowerCase()})`, // TODO: Update after #2476 is merged
                 height: `${height}px`,
                 width: `${width}px`,
             }}

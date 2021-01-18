@@ -37,7 +37,6 @@ const Popup = ({
     };
 
     const render_footer = typeof renderFooter === 'function' ? renderFooter() : null;
-
     return (
         <Modal
             className='popup'

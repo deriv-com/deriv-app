@@ -1,0 +1,30 @@
+.dw-wallet-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 2.4rem;
+    padding-right: 1.6rem;
+
+    &__wallet-item {
+        background: var(--general-section-1);
+        height: 12.8rem;
+        border-radius: 0.8rem;
+        padding: 2rem;
+        position: relative;
+        cursor: pointer;
+
+        &--selected {
+            border: 1px solid $color-apple-blue;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    &__selected-icon {
+        position: absolute;
+        right: 0.8rem;
+        top: 0.8rem;
+    }
+}

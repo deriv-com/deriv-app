@@ -11,7 +11,7 @@ import {
     ThemedScrollbars,
     Text,
 } from '@deriv/components';
-import { isDesktop, isMobile, routes, getStaticUrl, PlatformContext } from '@deriv/shared';
+import { isDesktop, isMobile, routes, getStaticUrl, PlatformContext, isDashboard } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AccountCard from './account-card.jsx';
@@ -255,7 +255,7 @@ const AccountTypesModal = ({
             title={localize('Account types')}
             width='904px'
             className='account-types'
-            is_open={is_account_types_modal_visible}
+            is_open={!isDashboard() && is_account_types_modal_visible}
             toggleModal={closeModal}
             has_close_icon={is_dismissible}
         >

@@ -1,0 +1,96 @@
+.dw-account-wizard {
+    width: 100%;
+    padding: 0 2.4rem;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+
+    &__header {
+        border-radius: 0.8rem;
+
+        display: flex;
+        flex-direction: column;
+
+        &-steps {
+            padding: 0.8rem 2.4rem 1.6rem;
+            background: var(--general-section-1);
+            display: flex;
+        }
+        &-step {
+            padding: 1.6rem 0;
+            display: flex;
+            align-items: center;
+            flex: 1;
+            position: relative;
+
+            &-line {
+                position: absolute;
+                height: 2px;
+                left: 0px;
+                right: -0.4px;
+                bottom: 0px;
+                background: var(--text-disabled);
+            }
+            svg {
+                margin-right: 0.8rem;
+            }
+        }
+
+        &-active-title {
+            padding: 4rem 0 1.6rem;
+            border-bottom: 2px solid var(--text-disabled);
+        }
+    }
+
+    .wizard__main-step {
+        padding-top: 4rem;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        form {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+    }
+    .dc-form-submit-button--has-cancel {
+        justify-content: space-between;
+    }
+
+    .details-form {
+        > .dc-themed-scrollbars {
+            display: flex;
+            justify-content: center;
+        }
+
+        .dc-input {
+            min-width: 328px;
+
+            &__label {
+                left: 1.6rem;
+                top: 1.6rem;
+            }
+            &__field {
+                padding: 1.6rem;
+                height: unset;
+
+                /* Not empty fields */
+                &:focus,
+                &:disabled,
+                &:not(:focus):not([value='']) {
+                    & ~ label {
+                        transform: translate(-0.5rem, -2.4rem) scale(0.75);
+                    }
+                }
+            }
+        }
+        .dc-autocomplete,
+        .dc-radio-group {
+            margin-bottom: 3.2rem;
+        }
+        .dc-field--error {
+            top: 5.5rem;
+        }
+    }
+}

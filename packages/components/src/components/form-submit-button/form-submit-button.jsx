@@ -12,6 +12,7 @@ const FormSubmitButton = ({
     is_disabled,
     is_absolute,
     is_loading,
+    is_tertiary_cancel,
     label,
     onCancel,
     ...props
@@ -22,10 +23,20 @@ const FormSubmitButton = ({
                 'dc-form-submit-button--absolute': is_absolute,
                 'dc-form-submit-button--center': !!is_center,
                 'dc-form-submit-button--relative': !is_absolute,
+                'dc-form-submit-button--has-cancel': has_cancel,
             })}
         >
             {!!form_error && <p className='dc-form-submit-button--error'>{form_error}</p>}
-            {has_cancel && <Button has_effect onClick={onCancel} text={cancel_label} type='button' secondary large />}
+            {has_cancel && (
+                <Button
+                    has_effect
+                    onClick={onCancel}
+                    text={cancel_label}
+                    type='button'
+                    large
+                    {...(is_tertiary_cancel ? { tertiary: true } : { secondary: true })}
+                />
+            )}
             <Button
                 has_effect
                 is_disabled={is_disabled}
@@ -47,6 +58,7 @@ FormSubmitButton.defaultProps = {
     is_disabled: false,
     is_center: false,
     is_absolute: false,
+    is_tertiary_cancel: false,
 };
 
 FormSubmitButton.propTypes = {
@@ -55,6 +67,7 @@ FormSubmitButton.propTypes = {
     is_absolute: PropTypes.bool,
     is_center: PropTypes.bool,
     is_disabled: PropTypes.bool,
+    is_tertiary_cancel: PropTypes.bool,
     label: PropTypes.string,
 };
 

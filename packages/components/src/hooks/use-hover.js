@@ -1,22 +1,32 @@
 import React from 'react';
 
-export const useHover = refSetter => {
+export const useHover = (refSetter, should_prevent_bubbling) => {
     const [value, setValue] = React.useState(false);
     const default_ref = React.useRef(null);
     const ref = refSetter || default_ref;
 
-    const handleMouseOver = () => setValue(true);
-    const handleMouseOut = () => setValue(false);
+    const handleHoverBegin = () => setValue(true);
+    const handleHoverFinish = () => setValue(false);
 
     React.useEffect(() => {
         const node = ref.current;
         if (node) {
-            node.addEventListener('mouseover', handleMouseOver);
-            node.addEventListener('mouseout', handleMouseOut);
+            if (should_prevent_bubbling) {
+                node.addEventListener('mouseenter', handleHoverBegin);
+                node.addEventListener('mouseleave', handleHoverFinish);
+            } else {
+                node.addEventListener('mouseover', handleHoverBegin);
+                node.addEventListener('mouseout', handleHoverFinish);
+            }
 
             return () => {
-                node.removeEventListener('mouseover', handleMouseOver);
-                node.removeEventListener('mouseout', handleMouseOut);
+                if (should_prevent_bubbling) {
+                    node.removeEventListener('mouseenter', handleHoverBegin);
+                    node.removeEventListener('mouseleave', handleHoverFinish);
+                } else {
+                    node.removeEventListener('mouseover', handleHoverBegin);
+                    node.removeEventListener('mouseout', handleHoverFinish);
+                }
             };
         }
         return undefined;

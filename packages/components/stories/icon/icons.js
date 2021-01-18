@@ -1,7 +1,18 @@
 // auto-generated file. DO NOT MODIFY.
 
 export const icons = {
-    brand: ['IcBrandDbot', 'IcBrandDeriv', 'IcBrandDmt5', 'IcBrandDtrader', 'IcBrandSmarttrader'],
+    brand: [
+        'IcBrandBinarybot',
+        'IcBrandDbot',
+        'IcBrandDerivApps',
+        'IcBrandDeriv',
+        'IcBrandDmt5FinancialStp',
+        'IcBrandDmt5Financial',
+        'IcBrandDmt5Synthetics',
+        'IcBrandDmt5',
+        'IcBrandDtrader',
+        'IcBrandSmarttrader',
+    ],
     cashier: [
         'IcCashierAliPayDark',
         'IcCashierAliPayLight',
@@ -249,6 +260,7 @@ export const icons = {
         'IcSuccess',
         'IcTheme',
         'IcTrade',
+        'IcTransactions',
         'IcUndo',
         'IcUnknownOutline',
         'IcUnknown',
@@ -442,5 +454,5 @@ export const icons = {
         'IcUnderlyingWLDGBP',
         'IcUnderlyingWLDUSD',
     ],
-    wallet: ['IcWalletDeriv', 'IcWalletNeteller', 'IcWalletSticpay', 'IcWalletTransactions', 'IcWalletWebmoney'],
+    wallet: ['IcWalletDeriv', 'IcWalletNeteller', 'IcWalletSticpay', 'IcWalletWebmoney'],
 };

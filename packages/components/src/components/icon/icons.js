@@ -1,7 +1,12 @@
 // auto-generated file. DO NOT MODIFY.
 
+import './brand/ic-brand-binarybot.svg';
 import './brand/ic-brand-dbot.svg';
+import './brand/ic-brand-deriv-apps.svg';
 import './brand/ic-brand-deriv.svg';
+import './brand/ic-brand-dmt5-financial-stp.svg';
+import './brand/ic-brand-dmt5-financial.svg';
+import './brand/ic-brand-dmt5-synthetics.svg';
 import './brand/ic-brand-dmt5.svg';
 import './brand/ic-brand-dtrader.svg';
 import './brand/ic-brand-smarttrader.svg';
@@ -249,6 +254,7 @@ import './common/ic-stop.svg';
 import './common/ic-success.svg';
 import './common/ic-theme.svg';
 import './common/ic-trade.svg';
+import './common/ic-transactions.svg';
 import './common/ic-undo.svg';
 import './common/ic-unknown-outline.svg';
 import './common/ic-unknown.svg';
@@ -432,5 +438,4 @@ import './underlying/ic-underlying-WLDUSD.svg';
 import './wallet/ic-wallet-deriv.svg';
 import './wallet/ic-wallet-neteller.svg';
 import './wallet/ic-wallet-sticpay.svg';
-import './wallet/ic-wallet-transactions.svg';
 import './wallet/ic-wallet-webmoney.svg';

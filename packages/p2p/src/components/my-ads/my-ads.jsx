@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { TableError } from 'Components/table/table-error.jsx';
-import FormAds from './form-ads.jsx';
+import CreateAd from './create-ad.jsx';
 import MyAdsTable from './my-ads-table.jsx';
 import Verification from '../verification/verification.jsx';
 import './my-ads.scss';
@@ -16,7 +16,7 @@ const MyAdsState = ({ message }) => (
     </div>
 );
 
-const MyAds = observer(() => {
+const MyAds = () => {
     const { general_store, my_ads_store } = useStores();
 
     React.useEffect(() => {
@@ -38,11 +38,11 @@ const MyAds = observer(() => {
     }
 
     if (general_store.is_advertiser) {
-        return <div className='p2p-my-ads'>{my_ads_store.show_ad_form ? <FormAds /> : <MyAdsTable />}</div>;
+        return <div className='p2p-my-ads'>{my_ads_store.show_ad_form ? <CreateAd /> : <MyAdsTable />}</div>;
     }
 
     return <Verification />;
-});
+};
 
 MyAds.propTypes = {
     error_message: PropTypes.string,
@@ -54,4 +54,4 @@ MyAds.propTypes = {
     show_ad_form: PropTypes.bool,
 };
 
-export default MyAds;
+export default observer(MyAds);

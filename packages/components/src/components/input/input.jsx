@@ -52,7 +52,7 @@ const Input = React.forwardRef(
             <InputWrapper has_footer={has_footer}>
                 <div
                     className={classNames('dc-input', className, {
-                        'dc-input__disabled': disabled,
+                        'dc-input--disabled': disabled,
                         'dc-input--error': error,
                     })}
                 >
@@ -143,7 +143,7 @@ Input.propTypes = {
     disabled: PropTypes.bool,
     error: PropTypes.string,
     has_character_counter: PropTypes.bool,
-    hint: PropTypes.oneOf([PropTypes.any, PropTypes.node]),
+    hint: PropTypes.oneOfType([PropTypes.any, PropTypes.node]),
     is_relative_hint: PropTypes.bool,
     initial_character_count: PropTypes.number,
     label: PropTypes.string,

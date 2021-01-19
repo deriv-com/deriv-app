@@ -1,9 +1,9 @@
 import { observable, action, reaction, computed, runInAction } from 'mobx';
 import { localize } from '@deriv/translations';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
-import { contract_stages } from '../constants/contract-stage';
-import { journalError, switch_account_notification } from '../utils/bot-notifications';
-import { run_panel } from '../constants/run-panel';
+import { contract_stages } from 'Constants/contract-stage';
+import { run_panel } from 'Constants/run-panel';
+import { journalError, switch_account_notification } from 'Utils/bot-notifications';
 
 export default class RunPanelStore {
     constructor(root_store) {

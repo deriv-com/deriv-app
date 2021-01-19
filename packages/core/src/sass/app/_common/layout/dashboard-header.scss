@@ -30,7 +30,7 @@
     &--logged-in {
         background-color: var(--general-main-1);
         color: var(--brand-dark-grey);
-        box-shadow: inset 0px -1px 0px #{$color-grey-2};
+        box-shadow: inset 0px -1px 0px var(--general-section-1);
     }
 
     &__right {
@@ -43,7 +43,7 @@
             }
             &-separator {
                 height: 48px;
-                border-right: 1px solid #{$color-grey-2};
+                border-right: 1px solid var(--general-section-1);
                 margin-left: 2rem;
             }
         }

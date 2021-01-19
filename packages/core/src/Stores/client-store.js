@@ -64,6 +64,7 @@ export default class ClientStore extends BaseStore {
     @observable landing_companies = {};
 
     @observable upgradeable_landing_companies = [];
+    @observable mt5_disabled_signup_types = { real: false, demo: false };
     @observable mt5_login_list = [];
     @observable mt5_login_list_error = null;
     @observable statement = [];
@@ -319,6 +320,12 @@ export default class ClientStore extends BaseStore {
     @computed
     get has_mt5_login() {
         return this.mt5_login_list.length > 0;
+    }
+
+    @computed
+    get has_account_error_in_mt5_list() {
+        if (!this.is_logged_in) return false;
+        return this.mt5_login_list?.some(account => !!account.has_error);
     }
 
     @computed
@@ -619,6 +626,12 @@ export default class ClientStore extends BaseStore {
             can_upgrade_to,
             can_open_multi,
         };
+    }
+
+    @action.bound
+    setMT5DisabledSignupTypes(disabled_types_obj) {
+        const current_list = this.mt5_disabled_signup_types;
+        this.mt5_disabled_signup_types = { current_list, ...disabled_types_obj };
     }
 
     @action.bound
@@ -1796,10 +1809,29 @@ export default class ClientStore extends BaseStore {
         }, 60000);
 
         if (!response.error) {
-            this.mt5_login_list = response.mt5_login_list.map(account => ({
-                ...account,
-                display_login: account.login.replace(/^(MT[DR]?)/i, ''),
-            }));
+            this.mt5_login_list = response.mt5_login_list.map(account => {
+                const display_login = (account.error ? account.error.details.login : account.login).replace(
+                    /^(MT[DR]?)/i,
+                    ''
+                );
+                if (account.error) {
+                    const { account_type, server } = account.error.details;
+                    this.setMT5DisabledSignupTypes({
+                        real: account_type === 'real',
+                        demo: account_type === 'demo',
+                    });
+                    return {
+                        account_type,
+                        display_login,
+                        has_error: true,
+                        server,
+                    };
+                }
+                return {
+                    ...account,
+                    display_login,
+                };
+            });
         } else {
             this.mt5_login_list_error = response.error;
         }

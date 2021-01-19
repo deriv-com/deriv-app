@@ -322,7 +322,9 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
 
     if (is_horizontal) {
         scroll_x += is_chronological ? scroll_amount : -scroll_amount;
+        scroll_y += -20;
     } else {
+        scroll_x += -20;
         scroll_y += is_chronological ? scroll_amount : -scroll_amount;
     }
 

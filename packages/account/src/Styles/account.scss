@@ -1802,11 +1802,19 @@ $MIN_HEIGHT_FLOATING: calc(
             justify-content: space-between;
             align-items: center;
             max-width: 264px;
+
+            &-message {
+                max-width: 360px;
+            }
         }
         &__details {
             color: var(--text-prominent);
             font-size: var(--text-size-xs);
             line-height: 1.43;
+
+            &-message {
+                margin-bottom: 2.4rem;
+            }
         }
         &__button {
             height: 40px;

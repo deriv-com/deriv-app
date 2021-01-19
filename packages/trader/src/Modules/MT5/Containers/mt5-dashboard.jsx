@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import { DesktopWrapper, Icon, MobileWrapper, Tabs, PageError, Loading } from '@deriv/components';
+import { DesktopWrapper, Icon, MobileWrapper, Tabs, PageError, Loading, Text } from '@deriv/components';
 // TODO: [mt5-redesign] replace tabs with radiogroup once card component is ready
 // import { DesktopWrapper, Icon, MobileWrapper, RadioGroup } from '@deriv/components';
 import { isEmptyObject, routes } from '@deriv/shared';
@@ -146,6 +146,8 @@ class MT5Dashboard extends React.Component {
             has_malta_account,
             has_maltainvest_account,
             has_mt5_account,
+            has_mt5_account_error,
+            mt5_disabled_signup_types,
             has_real_account,
             NotificationMessages,
             openAccountNeededModal,
@@ -173,6 +175,21 @@ class MT5Dashboard extends React.Component {
                                     )}
                                 </h1>
                             </div>
+                            {has_mt5_account_error && (
+                                <div className='mt5-dashboard__accounts-error'>
+                                    <Text
+                                        as='p'
+                                        className='mt5-dashboard__accounts-error-message'
+                                        lineHeight='l'
+                                        size='xxs'
+                                        color='prominent'
+                                        weight='normal'
+                                        align='center'
+                                    >
+                                        <Localize i18n_default_text='Due to an issue on our server, some of your MT5 accounts are unavailable at the moment. Please bear with us and thank you for your patience.' />
+                                    </Text>
+                                </div>
+                            )}
                             <div className='mt5-dashboard__accounts-display'>
                                 <MT5PasswordManagerModal
                                     is_visible={this.state.password_manager.is_visible}
@@ -201,6 +218,7 @@ class MT5Dashboard extends React.Component {
                                             standpoint={standpoint}
                                             is_loading={is_loading}
                                             has_mt5_account={has_mt5_account}
+                                            has_mt5_account_error={mt5_disabled_signup_types.demo}
                                             current_list={current_list}
                                             onSelectAccount={createMT5Account}
                                             landing_companies={landing_companies}
@@ -224,6 +242,7 @@ class MT5Dashboard extends React.Component {
                                                 current_list={current_list}
                                                 account_status={account_status}
                                                 has_mt5_account={has_mt5_account}
+                                                has_mt5_account_error={mt5_disabled_signup_types.real}
                                                 onSelectAccount={createMT5Account}
                                                 account_settings={account_settings}
                                                 landing_companies={landing_companies}
@@ -418,7 +437,9 @@ export default withRouter(
         is_eu_country: client.is_eu_country,
         is_virtual: client.is_virtual,
         is_mt5_allowed: client.is_mt5_allowed,
+        mt5_disabled_signup_types: client.mt5_disabled_signup_types,
         has_maltainvest_account: client.has_maltainvest_account,
+        has_mt5_account_error: client.has_account_error_in_mt5_list,
         has_malta_account: client.has_malta_account,
         can_upgrade_to: client.can_upgrade_to,
         account_settings: client.account_settings,

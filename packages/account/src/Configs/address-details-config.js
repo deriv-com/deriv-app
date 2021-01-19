@@ -73,15 +73,16 @@ const address_details_config = ({ account_settings, is_svg }) => {
 };
 
 const addressDetailsConfig = (
+    { upgrade_info, real_account_signup_target, residence, account_settings },
     AddressDetails,
-    { upgrade_info, real_account_signup_target, residence, account_settings }
+    is_dashboard = false
 ) => {
     const is_svg = upgrade_info?.can_upgrade_to === 'svg';
     const config = address_details_config({ account_settings, is_svg });
     return {
         header: {
-            active_title: localize('Complete your address details'),
-            title: localize('Address'),
+            active_title: is_dashboard ? localize('Where do you live?') : localize('Complete your address details'),
+            title: is_dashboard ? localize('ADDRESS') : localize('Address'),
         },
         body: AddressDetails,
         form_value: getDefaultFields(real_account_signup_target, config),
@@ -91,8 +92,10 @@ const addressDetailsConfig = (
                 transformConfig(transformForResidence(config, residence), real_account_signup_target)
             ),
             is_svg,
+            is_dashboard,
         },
         passthrough: ['residence_list', 'is_fully_authenticated'],
+        icon: 'IcDashboardAddress',
     };
 };
 

@@ -28,5 +28,6 @@ export const walletSelectorConfig = ({
             validate: generateValidationFunction(real_account_signup_target, wallet_selector_config),
         },
         passthrough: ['legal_allowed_currencies'],
+        icon: 'IcDashboardWallet',
     };
 };

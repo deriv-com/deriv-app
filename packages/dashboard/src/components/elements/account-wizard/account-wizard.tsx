@@ -1,22 +1,56 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Wizard, Text, Icon, Loading } from '@deriv/components';
+import { observer } from 'mobx-react-lite';
+import { Wizard, Text, Icon, Loading, FormCancelButton } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { GetSettings } from '@deriv/api-types';
+import { localize } from '@deriv/translations';
 import { useStores } from 'Stores';
 import { getItems } from './items';
 import { TWizardItemConfig } from './types';
 
-const StepperHeader = ({ items, getCurrentStep }: { items: TWizardItemConfig[]; getCurrentStep?: () => number }) => {
+const StepperHeader = ({
+    items,
+    getCurrentStep,
+    goToStep,
+}: {
+    items: TWizardItemConfig[];
+    getCurrentStep?: () => number;
+    goToStep?: (step: number) => void;
+}) => {
     const current_step = (getCurrentStep?.() || 1) - 1;
+
+    const isDisabled = (i: number) => i > current_step;
+
+    const navigateTo = (i: number) => {
+        if (!isDisabled(i)) {
+            goToStep?.(i + 1);
+        }
+    };
 
     return (
         <div className='dw-account-wizard__header'>
             <div className='dw-account-wizard__header-steps'>
                 {items.map((item, i) => (
-                    <div key={i} className='dw-account-wizard__header-step'>
-                        <Icon size={24} icon='IcDashboardWallet' />
-                        <Text size='xxs' weight='bold' className='dw-account-wizard__header-step-title'>
+                    <div
+                        key={i}
+                        className={classNames('dw-account-wizard__header-step', {
+                            'dw-account-wizard__header-step--disabled': isDisabled(i),
+                        })}
+                        onClick={() => navigateTo(i)}
+                    >
+                        <Icon
+                            size={24}
+                            icon={i < current_step ? 'IcDashboardCheck' : item.icon}
+                            custom_color={i < current_step ? 'var(--brand-red-coral)' : ''}
+                            color={isDisabled(i) ? 'disabled' : ''}
+                        />
+                        <Text
+                            size='xxs'
+                            weight={current_step === i ? 'bold' : ''}
+                            className='dw-account-wizard__header-step-title'
+                            color={isDisabled(i) ? 'disabled' : ''}
+                        >
                             {i + 1}. {item.header.title}
                         </Text>
                         <div className='dw-account-wizard__header-step-line' />
@@ -43,7 +77,7 @@ type TAccountWizard = {
     [x: string]: any;
 };
 
-const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
+const AccountWizard: React.FC<TAccountWizard> = observer((props: TAccountWizard) => {
     const [form_error, setFormError] = React.useState('');
     const [previous_data, setPreviousData] = React.useState([]);
     const [state_items, setStateItems] = React.useState<TWizardItemConfig[]>([]);
@@ -66,7 +100,7 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
 
         Promise.all([fetchStatesList(), fetchResidenceList(), fetchFinancialAssessment()]).then(() => {
             if (isMounted()) {
-                setStateItems((previous_state: any) => {
+                setStateItems((previous_state: TWizardItemConfig[]) => {
                     if (!previous_state.length) {
                         return getItems(props);
                     }
@@ -122,7 +156,7 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
         clearError();
         // Check if account wizard is not finished
         if ((!has_currency && has_real_account) || index + 1 >= state_items.length) {
-            createRealAccount(setSubmitting);
+            // Todo: Api integration
         } else {
             goToNextStep();
         }
@@ -176,14 +210,17 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
         );
     });
     return (
-        <Wizard nav={<StepperHeader items={state_items} />} className={classNames('dw-account-wizard')}>
-            {wizard_steps}
-        </Wizard>
+        <React.Fragment>
+            <Wizard nav={<StepperHeader items={state_items} />} className={classNames('dw-account-wizard')}>
+                {wizard_steps}
+            </Wizard>
+            <FormCancelButton label={localize('Cancel')} is_absolute />
+        </React.Fragment>
     );
-};
+});
 
-const AccountWizardWrapper: React.FC = () => {
-    const { client_store, ui_store, mt5_store } = useStores();
+const AccountWizardWrapper: React.FC = observer(() => {
+    const { client_store, ui_store } = useStores();
     const {
         account_settings,
         is_fully_authenticated,
@@ -205,26 +242,24 @@ const AccountWizardWrapper: React.FC = () => {
 
     return (
         <AccountWizard
-            {...{
-                account_settings,
-                is_fully_authenticated,
-                realAccountSignup,
-                has_real_account: has_active_real_account,
-                upgrade_info,
-                real_account_signup_target,
-                has_currency,
-                setAccountCurrency,
-                residence,
-                residence_list,
-                states_list,
-                fetchResidenceList,
-                fetchStatesList,
-                fetchFinancialAssessment,
-                needs_financial_assessment,
-                financial_assessment,
-            }}
+            account_settings={account_settings}
+            is_fully_authenticated={is_fully_authenticated}
+            realAccountSignup={realAccountSignup}
+            has_real_account={has_active_real_account}
+            upgrade_info={upgrade_info}
+            real_account_signup_target={real_account_signup_target}
+            has_currency={has_currency}
+            setAccountCurrency={setAccountCurrency}
+            residence={residence}
+            residence_list={residence_list}
+            states_list={states_list}
+            fetchResidenceList={fetchResidenceList}
+            fetchStatesList={fetchStatesList}
+            fetchFinancialAssessment={fetchFinancialAssessment}
+            needs_financial_assessment={needs_financial_assessment}
+            financial_assessment={financial_assessment}
         />
     );
-};
+});
 
 export default AccountWizardWrapper;

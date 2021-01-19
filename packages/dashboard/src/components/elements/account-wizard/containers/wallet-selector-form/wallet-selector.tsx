@@ -36,7 +36,7 @@ const WalletSelector: React.FC = (props: any) => {
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({ handleSubmit, isSubmitting, errors, values, setFieldValue, handleChange }) => (
+            {({ handleSubmit, isSubmitting, values, setFieldValue }) => (
                 <form onSubmit={handleSubmit} autoComplete='off'>
                     <Div100vhContainer height_offset='110px' is_disabled={isDesktop()}>
                         <ThemedScrollbars>
@@ -53,7 +53,11 @@ const WalletSelector: React.FC = (props: any) => {
                                     >
                                         {values.wallet === wallet && (
                                             <div className='dw-wallet-selector__selected-icon'>
-                                                <Icon size={24} icon='IcDashboardCheck' />
+                                                <Icon
+                                                    size={24}
+                                                    icon='IcDashboardCheck'
+                                                    custom_color='var(--badge-blue)'
+                                                />
                                             </div>
                                         )}
                                         <Icon icon={wallet} />
@@ -64,11 +68,8 @@ const WalletSelector: React.FC = (props: any) => {
                     </Div100vhContainer>
                     <Modal.Footer has_separator is_bypassed={isMobile()}>
                         <FormSubmitButton
-                            cancel_label={localize('Cancel')}
-                            has_cancel
                             is_disabled={isSubmitting || !values.wallet}
                             is_absolute={isMobile()}
-                            is_tertiary_cancel
                             label={localize('Next')}
                         />
                     </Modal.Footer>

@@ -28,6 +28,9 @@ class ClientStore extends BaseStore {
     @observable
     public financial_assessment: GetFinancialAssessment = {};
 
+    @observable
+    public upgradeable_landing_companies: string[] = [];
+
     public email_address?: string;
 
     public has_active_real_account?: () => boolean;
@@ -60,6 +63,7 @@ class ClientStore extends BaseStore {
         this.email_address = client_props.email_address;
         this.has_active_real_account = client_props.has_active_real_account;
         this.upgradeable_currencies = client_props.upgradeable_currencies;
+        this.upgradeable_landing_companies = client_props.upgradeable_landing_companies;
         this.fetchResidenceList = client_props.fetchResidenceList;
         this.fetchStatesList = client_props.fetchStatesList;
         this.fetchFinancialAssessment = client_props.fetchFinancialAssessment;

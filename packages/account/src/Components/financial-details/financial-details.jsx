@@ -4,7 +4,6 @@ import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal, ThemedSc
 
 import { localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared';
-import { connect } from 'Stores/connect';
 import {
     AccountTurnover,
     BinaryOptionsTradingExperience,

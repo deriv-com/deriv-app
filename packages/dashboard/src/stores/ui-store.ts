@@ -9,10 +9,15 @@ class UIStore extends BaseStore {
     public is_dark_mode_on = false;
 
     @observable
+    public is_get_wallet_modal_open = false;
+
+    @observable
+    public is_real_acc_signup_on = false;
+
+    @observable
     public real_account_signup: unknown = {};
 
     public resetRealAccountSignupParams?: () => void;
-    public openRealAccountSignup?: () => void;
 
     @observable
     public real_account_signup_target = '';
@@ -23,8 +28,22 @@ class UIStore extends BaseStore {
         this.is_dark_mode_on = ui_props.is_dark_mode_on;
         this.real_account_signup = ui_props.real_account_signup;
         this.resetRealAccountSignupParams = ui_props.resetRealAccountSignupParams;
-        this.real_account_signup_target = ui_props.real_account_signup_target;
-        this.openRealAccountSignup = ui_props.openRealAccountSignup;
+    }
+
+    @action.bound
+    public enableGetPasswordModal(): void {
+        this.is_get_wallet_modal_open = true;
+    }
+
+    @action.bound
+    public disableGetPasswordModal(): void {
+        this.is_get_wallet_modal_open = false;
+    }
+
+    @action.bound
+    public openRealAccountSignup(target = this.root_store.client_store.upgradeable_landing_companies?.[0]): void {
+        this.is_real_acc_signup_on = true;
+        this.real_account_signup_target = target;
     }
 }
 

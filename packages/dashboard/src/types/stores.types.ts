@@ -22,6 +22,7 @@ export type TClientStore = {
     has_currency: () => boolean;
     setAccountCurrency: () => void;
     residence: string;
+    upgradeable_landing_companies: string[];
 };
 
 export type TConfigStore = {
@@ -49,8 +50,9 @@ export type TMT5Store = {
     setError: (x: boolean) => void;
     setMt5SuccessDialog: (x: boolean) => void;
     submitMt5Password: () => void;
-    disableMt5PasswordModal: () => void;
     beginRealSignupForMt5: () => void;
+    enableMt5PasswordModal: () => void;
+    disableMt5PasswordModal: () => void;
 };
 
 export type TRootStore = {
@@ -70,4 +72,8 @@ export type TUIStore = {
     resetRealAccountSignupParams: () => void;
     real_account_signup: unknown;
     real_account_signup_target: string;
+    is_get_wallet_modal_open: boolean;
+    is_real_acc_signup_on: boolean;
+    enableGetPasswordModal: () => void;
+    disableGetPasswordModal: () => void;
 };

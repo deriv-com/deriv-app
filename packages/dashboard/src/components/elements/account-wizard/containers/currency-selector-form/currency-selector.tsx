@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { localize } from '@deriv/translations';
 import { CurrencySelector } from '@deriv/account';
 import { useStores } from 'Stores';
 
@@ -17,6 +18,10 @@ const CurrencySelectorForm: React.FC = observer(props => {
             legal_allowed_currencies={upgradeable_currencies}
             real_account_signup={real_account_signup}
             resetRealAccountSignupParams={resetRealAccountSignupParams}
+            submit_button_props={{
+                cancel_label: localize('Previous'),
+                has_cancel: true,
+            }}
         />
     );
 });

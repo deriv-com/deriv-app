@@ -1,6 +1,7 @@
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 
 import {
     DesktopWrapper,
@@ -121,21 +122,20 @@ const MT5PasswordForm = ({ ...props }) => (
 );
 
 const MT5PasswordModal = () => {
-    const { client_store, mt5_store } = useStores();
+    const { client_store, mt5_store, ui_store } = useStores();
     const {
         account_title,
         account_type,
         disableMt5PasswordModal,
-        error_message,
         has_mt5_error,
         is_mt5_success_dialog_enabled,
         is_mt5_password_modal_enabled,
         setError,
         setMt5SuccessDialog,
-        submitMt5Password,
     } = mt5_store;
 
     const { email_address } = client_store;
+    const { enableGetPasswordModal } = ui_store;
 
     const validatePassword = (values: { password: string }) => {
         const errors: {
@@ -172,17 +172,14 @@ const MT5PasswordModal = () => {
         disableMt5PasswordModal();
     };
 
-    // const closeOpenSuccess = () => {
-    //     disableMt5PasswordModal();
-    //     closeDialogs();
-    //     if (account_type.category === 'real') {
-    //         history.push(routes.cashier_acc_transfer);
-    //     }
-    // };
+    const submit = () => {
+        disableMt5PasswordModal();
+        setTimeout(() => {
+            enableGetPasswordModal();
+        }, 900);
+    };
 
-    const IconType = () => getIconFromType(account_type.type);
     const should_show_password = is_mt5_password_modal_enabled && !has_mt5_error && !is_mt5_success_dialog_enabled;
-    const should_show_success = !has_mt5_error && is_mt5_success_dialog_enabled;
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
 
     return (
@@ -198,7 +195,7 @@ const MT5PasswordModal = () => {
                     <MT5PasswordForm
                         account_title={account_title}
                         closeModal={closeModal}
-                        submitMt5Password={submitMt5Password}
+                        submitMt5Password={submit}
                         is_real_financial_stp={is_real_financial_stp}
                         validatePassword={validatePassword}
                     />
@@ -216,7 +213,7 @@ const MT5PasswordModal = () => {
                         account_title={account_title}
                         closeModal={closeModal}
                         is_real_financial_stp={is_real_financial_stp}
-                        submitMt5Password={submitMt5Password}
+                        submitMt5Password={submit}
                         validatePassword={validatePassword}
                     />
                 </MobileDialog>
@@ -225,18 +222,4 @@ const MT5PasswordModal = () => {
     );
 };
 
-MT5PasswordModal.propTypes = {
-    account_title: PropTypes.string,
-    account_type: PropTypes.object,
-    disableMt5PasswordModal: PropTypes.func,
-    email: PropTypes.string,
-    error_message: PropTypes.string,
-    has_mt5_error: PropTypes.bool,
-    is_mt5_password_modal_enabled: PropTypes.bool,
-    is_mt5_success_dialog_enabled: PropTypes.bool,
-    setMt5Error: PropTypes.func,
-    setMt5SuccessDialog: PropTypes.func,
-    submitMt5Password: PropTypes.func,
-};
-
-export default MT5PasswordModal;
+export default observer(MT5PasswordModal);

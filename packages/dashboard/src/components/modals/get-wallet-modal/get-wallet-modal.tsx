@@ -1,21 +1,11 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Modal, Text, Icon, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { useStores } from 'Stores';
 
 const GetPasswordModal: React.FC = () => {
-    // const closeModal = () => {
-    //     closeDialogs();
-    // };
-
-    // const closeOpenSuccess = () => {
-    //     disableMt5PasswordModal();
-    //     closeDialogs();
-    //     if (account_type.category === 'real') {
-    //         history.push(routes.cashier_acc_transfer);
-    //     }
-    // };
-    const { config_store } = useStores();
+    const { ui_store, config_store, mt5_store } = useStores();
 
     const [wallets] = React.useState([
         'IcWalletSkrill',
@@ -35,12 +25,24 @@ const GetPasswordModal: React.FC = () => {
         'IcWalletCrypto',
     ]);
 
+    const { is_get_wallet_modal_open, disableGetPasswordModal } = ui_store;
+    const { beginRealSignupForMt5 } = mt5_store;
+
+    const closeModal = () => {
+        disableGetPasswordModal();
+    };
+
+    const onClickGetWallet = () => {
+        disableGetPasswordModal();
+        beginRealSignupForMt5();
+    };
+
     return (
         <Modal
             className='dw-get-wallet-modal'
-            is_open={false}
+            is_open={is_get_wallet_modal_open}
             width={'544px'}
-            // toggleModal={closeModal}
+            toggleModal={closeModal}
             has_close_icon
         >
             <Modal.Body>
@@ -83,10 +85,10 @@ const GetPasswordModal: React.FC = () => {
                 </div>
             </Modal.Body>
             <Modal.Footer has_separator>
-                <Button has_effect text={localize('Get a Wallet')} primary />
+                <Button has_effect text={localize('Get a Wallet')} primary onClick={onClickGetWallet} />
             </Modal.Footer>
         </Modal>
     );
 };
 
-export default GetPasswordModal;
+export default observer(GetPasswordModal);

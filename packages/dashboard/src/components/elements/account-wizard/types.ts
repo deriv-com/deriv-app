@@ -11,4 +11,5 @@ export type TWizardItemConfig = {
         validate?: () => boolean;
     };
     passthrough: string[];
+    icon?: string;
 };

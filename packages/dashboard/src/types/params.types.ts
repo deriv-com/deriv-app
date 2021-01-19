@@ -17,4 +17,4 @@ export type TRouteGroup = {
     label?: string;
     path?: string;
     subitems?: number[];
-}
+};

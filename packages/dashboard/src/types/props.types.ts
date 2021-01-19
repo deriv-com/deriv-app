@@ -24,6 +24,7 @@ export type TClientProps = {
     setAccountCurrency: () => void;
     has_real_account: () => boolean;
     residence: ResidenceListItem;
+    upgradeable_landing_companies: string[];
 };
 
 export type TConfigProps = {

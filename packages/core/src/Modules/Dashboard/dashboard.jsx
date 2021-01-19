@@ -49,6 +49,7 @@ export default connect(({ client, ui }) => ({
         currency: client.currency,
         has_active_real_account: client.has_active_real_account,
         upgradeable_currencies: client.upgradeable_currencies,
+        upgradeable_landing_companies: client.upgradeable_landing_companies,
         fetchResidenceList: client.fetchResidenceList,
         fetchStatesList: client.fetchStatesList,
         fetchFinancialAssessment: client.fetchFinancialAssessment,

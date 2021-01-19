@@ -13,7 +13,7 @@
 
         &-steps {
             padding: 0.8rem 2.4rem 1.6rem;
-            background: var(--general-section-1);
+            background: var(--general-section-3);
             display: flex;
         }
         &-step {
@@ -22,6 +22,10 @@
             align-items: center;
             flex: 1;
             position: relative;
+
+            &:not(&--disabled) {
+                cursor: pointer;
+            }
 
             &-line {
                 position: absolute;
@@ -59,9 +63,16 @@
     }
 
     .details-form {
+        flex: 1;
+        align-content: unset;
+
         > .dc-themed-scrollbars {
             display: flex;
             justify-content: center;
+
+            .details-form__elements {
+                flex-grow: unset;
+            }
         }
 
         .dc-input {

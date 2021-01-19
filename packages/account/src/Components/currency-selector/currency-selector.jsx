@@ -23,6 +23,7 @@ const CurrencySelector = ({
     resetRealAccountSignupParams,
     set_currency,
     validate,
+    submit_button_props = {},
     ...props
 }) => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
@@ -132,6 +133,7 @@ const CurrencySelector = ({
                                     is_center={!has_currency}
                                     is_absolute={set_currency}
                                     label={set_currency ? localize('Set currency') : localize('Next')}
+                                    {...submit_button_props}
                                 />
                             </Modal.Footer>
                         </form>

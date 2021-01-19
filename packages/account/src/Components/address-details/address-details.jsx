@@ -48,6 +48,7 @@ const AddressDetails = ({
     onSubmit,
     is_svg,
     is_gb_residence,
+    is_dashboard,
     ...props
 }) => {
     const [has_fetched_states_list, setHasFetchedStatesList] = React.useState(false);
@@ -161,7 +162,7 @@ const AddressDetails = ({
                                                                     );
                                                                     setAddressStateToDisplay('');
                                                                 }}
-                                                                list_portal_id='modal_root'
+                                                                list_portal_id={is_dashboard ? '' : 'modal_root'}
                                                             />
                                                         </DesktopWrapper>
                                                         <MobileWrapper>

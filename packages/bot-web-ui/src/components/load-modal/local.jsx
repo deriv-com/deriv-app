@@ -2,9 +2,9 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Button, Icon } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 import LocalFooter from './local-footer.jsx';
 import WorkspaceControl from './workspace-control.jsx';
-import { connect } from '../../stores/connect';
 
 const LocalComponent = ({ handleFileChange, is_mobile, loaded_local_file, setLoadedLocalFile }) => {
     const file_input_ref = React.useRef(null);

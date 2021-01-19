@@ -370,6 +370,15 @@
     }
 }
 
+.mt5-dashboard__accounts-error {
+    background-color: rgba(255, 173, 58, 0.16);
+    margin: 1.2rem 0;
+
+    &-message {
+        padding: 0.8rem 2.4rem;
+    }
+}
+
 // TODO: [mt5-redesign] replace tabs with radiogroup once card component is ready
 //.mt5-dashboard__accounts-display {
 //    div.radio-group__save-type {
@@ -506,10 +515,20 @@
         width: 100%;
         height: 4rem;
         color: var(--text-prominent);
+
         @include mobile {
             height: 6rem;
         }
 
+        &--disabled {
+            cursor: not-allowed;
+            color: var(--text-disabled);
+
+            .mt5-account-card__add-server--icon {
+                background-color: var(--border-disabled);
+                color: var(--text-disabled);
+            }
+        }
         &-exit,
         &-enter-done {
             transition: all 0.3s ease-in-out;

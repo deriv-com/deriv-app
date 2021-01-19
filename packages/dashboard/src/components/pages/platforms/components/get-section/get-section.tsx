@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Text, Icon } from '@deriv/components';
+import { Text, Icon, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import Button from 'Components/elements/button';
 import Divider from 'Components/elements/divider';
 import { TStringTranslation } from 'Types';
 

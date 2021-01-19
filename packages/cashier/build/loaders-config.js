@@ -5,6 +5,7 @@ const js_loaders = [
     {
         loader: 'babel-loader',
         options: {
+            cacheDirectory: true,
             presets: ['@babel/preset-env', '@babel/preset-react'],
             plugins: [
                 ['@babel/plugin-proposal-decorators', { legacy: true }],

@@ -54,6 +54,7 @@ module.exports = function () {
                         {
                             loader: 'babel-loader',
                             options: {
+                                cacheDirectory: true,
                                 rootMode: 'upward',
                             },
                         },

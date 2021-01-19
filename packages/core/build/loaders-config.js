@@ -8,6 +8,7 @@ const js_loaders = [
     {
         loader: 'babel-loader',
         options: {
+            cacheDirectory: true,
             rootMode: 'upward',
         },
     },
@@ -41,6 +42,7 @@ const svg_loaders = [
     {
         loader: 'babel-loader',
         options: {
+            cacheDirectory: true,
             rootMode: 'upward',
         },
     },

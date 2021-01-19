@@ -4,12 +4,15 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
+import debounce from 'lodash.debounce';
 import { DesktopWrapper } from '@deriv/components';
 import {
     checkAndSetEndpointFromUrl,
     setUrlLanguage,
     isMobile,
+    isTouchDevice,
     initFormErrorMessages,
+    mobileOSDetect,
     setSharedMT5Text,
 } from '@deriv/shared';
 import { initializeTranslations, getLanguage, useOnLoadTranslation } from '@deriv/translations';
@@ -54,50 +57,30 @@ const App = ({ root_store }) => {
         setSharedMT5Text(MT5_TEXT);
     }, []);
 
-    React.useEffect(() => {
-        if (isMobile()) {
+    const handleResize = React.useCallback(() => {
+        if (isTouchDevice() && isMobile()) {
+            const is_android_device = mobileOSDetect() === 'Android';
+            const view_width = is_android_device ? screen.availWidth : window.innerWidth;
+            const view_height = is_android_device ? screen.availHeight : window.innerHeight;
             const el_landscape_blocker = document.getElementById('landscape_blocker');
-
-            const onFocus = () => {
-                /* Prevent from showing Landscape blocker UI when keyboard is visible */
-                el_landscape_blocker.classList.add('landscape-blocker--keyboard-visible');
-                root_store.ui.setIsNativepickerVisible(true);
-            };
-
-            const onFocusOut = e => {
-                if (e.target.classList.contains('dc-dropdown__display')) {
-                    // if the next target is a dropdown, keep native picker open
-                    return;
-                }
-                root_store.ui.setIsNativepickerVisible(false);
-            };
-
-            const onTouchStart = () => {
-                if (document.activeElement.tagName !== 'INPUT') {
-                    el_landscape_blocker.classList.remove('landscape-blocker--keyboard-visible');
-                }
-            };
-            /**
-             * Adding `focus` and `focusout` event listeners to document here to detect for on-screen keyboard on mobile browsers
-             * and storing this value in UI-store to be used across the app stores.
-             *  - when document gets `focus` event - keyboard is visible
-             *  - when document gets `focusout` or `touchstart` event - keyboard is hidden
-             *  - note: the `touchstart` event comes after `focusout` and and we want to
-             *          remove `landscape-blocker--keyboard-visible` class as late as possible
-             * [TODO]: find an alternative solution to detect for on-screen keyboard
-             */
-            document.addEventListener('focus', onFocus, true);
-            document.addEventListener('focusout', onFocusOut, false);
-            document.addEventListener('touchstart', onTouchStart, true);
-
-            return () => {
-                document.removeEventListener('focus', onFocus);
-                document.removeEventListener('focusout', onFocusOut);
-                document.removeEventListener('touchstart', onTouchStart);
-            };
+            if (view_width <= view_height) {
+                root_store.ui.onOrientationChange({ is_landscape_orientation: false });
+                el_landscape_blocker.classList.remove('landscape-blocker--visible');
+            } else {
+                root_store.ui.onOrientationChange({ is_landscape_orientation: true });
+                el_landscape_blocker.classList.add('landscape-blocker--visible');
+            }
         }
-        return () => {};
     }, [root_store.ui]);
+
+    React.useEffect(() => {
+        const debouncedHandleResize = debounce(handleResize, 400);
+        window.addEventListener('resize', debouncedHandleResize);
+
+        return () => {
+            window.removeEventListener('resize', debouncedHandleResize);
+        };
+    }, [handleResize]);
 
     const platform_passthrough = {
         root_store,

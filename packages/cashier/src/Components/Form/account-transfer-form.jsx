@@ -20,7 +20,17 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import FormError from '../Error/form-error.jsx';
 
-const AccountOption = ({ account, idx }) => {
+const AccountOption = ({ trading_servers, mt5_login_list, account, idx, is_dark_mode_on }) => {
+    let server;
+
+    if (account.is_mt) {
+        const mt5_login = mt5_login_list.find(mt5_account => mt5_account.login === account.value);
+        server =
+            trading_servers.length > 1
+                ? trading_servers.find(trading_server => trading_server.id === mt5_login.server)
+                : undefined;
+    }
+
     return (
         <React.Fragment key={idx}>
             {(account.currency || account.mt_icon) && (
@@ -44,6 +54,13 @@ const AccountOption = ({ account, idx }) => {
                     {account.value}
                 </Text>
             </div>
+
+            {server && (
+                <Text color={is_dark_mode_on ? 'general' : 'colored-background'} size='xxs' className='badge-server'>
+                    {server.geolocation.region}&nbsp;
+                    {server.geolocation.sequence !== 1 ? server.geolocation.sequence : ''}
+                </Text>
+            )}
 
             <span className='account-transfer__balance'>
                 <Money
@@ -105,11 +122,14 @@ const AccountTransferForm = ({
     setAccountTransferAmount,
     setSideNotes,
     transfer_fee,
+    is_dark_mode_on,
     minimum_fee,
+    mt5_login_list,
     onChangeTransferFrom,
     onChangeTransferTo,
     setErrorMessage,
     setIsTransferConfirm,
+    trading_servers,
     error,
 }) => {
     const [from_accounts, setFromAccounts] = React.useState({});
@@ -142,14 +162,36 @@ const AccountTransferForm = ({
         mt_accounts_to = [];
 
         accounts_list.forEach((account, idx) => {
-            const text = <AccountOption idx={idx} account={account} />;
+            const text = (
+                <AccountOption
+                    trading_servers={trading_servers}
+                    mt5_login_list={mt5_login_list}
+                    idx={idx}
+                    account={account}
+                    is_dark_mode_on={is_dark_mode_on}
+                />
+            );
             const value = account.value;
+            const account_server = mt5_login_list.find(server => server.login === account.value);
+            let server_region = '';
+            if (
+                account_server &&
+                trading_servers.length > 1 &&
+                trading_servers.some(trading_server => trading_server.id === account_server?.server)
+            ) {
+                const trading_server = trading_servers.find(t => t.id === account_server?.server);
+                server_region = `[${trading_server.geolocation.region}${
+                    trading_server.geolocation.sequence !== 1 ? trading_server.geolocation.sequence : ''
+                }]`;
+            }
+
             (account.is_mt ? mt_accounts_from : accounts_from).push({
                 text,
                 value,
-                nativepicker_text: `${account.is_mt ? account.mt_icon : getCurrencyName(account.currency)} (${
-                    account.balance
-                } ${account.is_mt ? account.currency : account.text})`,
+                is_mt: account.is_mt,
+                nativepicker_text: `${
+                    account.is_mt ? account.mt_icon : getCurrencyName(account.currency)
+                } ${server_region} (${account.balance} ${account.is_mt ? account.currency : account.text})`,
             });
             const is_selected_from = account.value === selected_from.value;
             // account from and to cannot be the same
@@ -158,14 +200,17 @@ const AccountTransferForm = ({
                 const is_selected_from_crypto = selected_from.is_crypto && account.is_crypto;
                 // cannot transfer to MT account from MT
                 // cannot transfer to crypto account from crypto
+
                 const is_disabled = is_selected_from_mt || is_selected_from_crypto;
+
                 (account.is_mt ? mt_accounts_to : accounts_to).push({
                     text,
                     value,
+                    is_mt: account.is_mt,
                     disabled: is_disabled,
-                    nativepicker_text: `${account.is_mt ? account.mt_icon : getCurrencyName(account.currency)} (${
-                        account.balance
-                    } ${account.is_mt ? account.currency : account.text})`,
+                    nativepicker_text: `${
+                        account.is_mt ? account.mt_icon : getCurrencyName(account.currency)
+                    } ${server_region} (${account.balance} ${account.is_mt ? account.currency : account.text})`,
                 });
             }
         });
@@ -419,12 +464,14 @@ AccountTransferForm.propTypes = {
     transfer_limit: PropTypes.object,
 };
 
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules, ui }) => ({
     account_limits: client.account_limits,
     account_transfer_amount: modules.cashier.config.account_transfer.account_transfer_amount,
     onMount: client.getLimits,
     accounts_list: modules.cashier.config.account_transfer.accounts_list,
+    is_dark_mode_on: ui.is_dark_mode_on,
     minimum_fee: modules.cashier.config.account_transfer.minimum_fee,
+    mt5_login_list: client.mt5_login_list,
     onChangeTransferFrom: modules.cashier.onChangeTransferFrom,
     onChangeTransferTo: modules.cashier.onChangeTransferTo,
     selected_from: modules.cashier.config.account_transfer.selected_from,
@@ -432,6 +479,7 @@ export default connect(({ client, modules }) => ({
     setErrorMessage: modules.cashier.setErrorMessage,
     setIsTransferConfirm: modules.cashier.setIsTransferConfirm,
     setAccountTransferAmount: modules.cashier.setAccountTransferAmount,
+    trading_servers: client.trading_servers,
     transfer_fee: modules.cashier.config.account_transfer.transfer_fee,
     transfer_limit: modules.cashier.config.account_transfer.transfer_limit,
 }))(AccountTransferForm);

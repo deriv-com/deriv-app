@@ -19,7 +19,7 @@
     height: calc(100% - 40px);
     max-height: calc(100% - 40px);
     z-index: 11;
-    border-radius: 10px;
+    border-radius: $BORDER_RADIUS;
     font-size: 2em;
     margin-left: $default-margin;
     margin-top: 20px;

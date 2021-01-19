@@ -13,7 +13,7 @@ const TableRow = ({
     id,
     is_footer,
     is_header,
-    label,
+    is_top_up,
     replace,
     row_obj = {},
     show_preloader = false,
@@ -26,7 +26,7 @@ const TableRow = ({
         if (!is_header) {
             const cell_value = row_obj[col_index] || '';
             cell_content = renderCellContent
-                ? renderCellContent({ cell_value, col_index, label, row_obj, is_footer })
+                ? renderCellContent({ cell_value, col_index, row_obj, is_footer, is_top_up })
                 : cell_value;
         }
         return (

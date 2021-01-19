@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import { List } from 'react-virtualized/dist/es/List';
-import { localize } from '@deriv/translations';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
@@ -51,8 +50,8 @@ class DataTable extends React.PureComponent {
                 content_loader={content_loader}
                 getActionColumns={getActionColumns}
                 id={contract_id}
+                is_top_up={is_virtual && item.action === 'Deposit'}
                 key={id}
-                label={is_virtual && item.action === 'Deposit' ? localize('Top up') : null}
                 replace={typeof action === 'object' ? action : undefined}
                 row_obj={item}
                 show_preloader={typeof preloaderCheck === 'function' ? preloaderCheck(item) : null}

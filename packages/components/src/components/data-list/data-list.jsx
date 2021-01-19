@@ -6,7 +6,6 @@ import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellM
 import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
 import { List } from 'react-virtualized/dist/es/List';
 import { isMobile, isDesktop } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import DataListCell from './data-list-cell.jsx';
 import DataListRow from './data-list-row.jsx';
 import ThemedScrollbars from '../themed-scrollbars';
@@ -68,7 +67,7 @@ const DataList = React.memo(props => {
                 destination_link={destination_link}
                 is_new_row={!items_transition_map[row_key]}
                 is_scrolling={is_scrolling}
-                label={is_virtual && row.action === 'Deposit' ? localize('Top up') : null}
+                is_top_up={is_virtual && row.action === 'Deposit'}
                 measure={measure}
                 row_gap={row_gap}
                 row_key={row_key}

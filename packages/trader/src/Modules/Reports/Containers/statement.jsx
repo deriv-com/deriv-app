@@ -137,11 +137,11 @@ const Statement = ({
         return map;
     }, {});
 
-    const mobileRowRenderer = ({ row, label }) => (
+    const mobileRowRenderer = ({ row, is_top_up }) => (
         <React.Fragment>
             <div className='data-list__row'>
-                <DataList.Cell row={row} column={columns_map.icon} label={label} />
-                <DataList.Cell row={row} column={columns_map.action_type} label={label} />
+                <DataList.Cell row={row} column={columns_map.icon} is_top_up={is_top_up} />
+                <DataList.Cell row={row} column={columns_map.action_type} is_top_up={is_top_up} />
             </div>
             <div className='data-list__row'>
                 <DataList.Cell row={row} column={columns_map.refid} />

@@ -9,7 +9,7 @@ const DataListRow = props => {
         destination_link,
         is_new_row,
         is_scrolling,
-        label,
+        is_top_up,
         measure,
         row_gap,
         row_key,
@@ -31,7 +31,7 @@ const DataListRow = props => {
                     }}
                 >
                     <div className='data-list__item'>
-                        {rowRenderer({ row, measure, label, isScrolling: is_scrolling, is_new_row })}
+                        {rowRenderer({ row, measure, is_new_row, isScrolling: is_scrolling, is_top_up })}
                     </div>
                 </NavLink>
             ) : (
@@ -47,12 +47,12 @@ const DataListRow = props => {
                                     )}
                                 </div>
                             ) : (
-                                rowRenderer({ row, measure, label, is_scrolling, is_new_row })
+                                rowRenderer({ row, measure, is_new_row, is_scrolling, is_top_up })
                             )}
                         </div>
                     ) : (
                         <div className='data-list__item'>
-                            {rowRenderer({ row, measure, label, is_scrolling, is_new_row })}
+                            {rowRenderer({ row, measure, is_new_row, is_scrolling, is_top_up })}
                         </div>
                     )}
                 </div>

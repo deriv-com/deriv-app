@@ -5,7 +5,7 @@ import classNames from 'classnames';
 const Body = ({ children, className }) => <div className={classNames('dc-modal-body', className)}>{children}</div>;
 
 Body.propTypes = {
-    children: PropTypes.oneOfType(PropTypes.arrayOf(PropTypes.node), PropTypes.node),
+    children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
     className: PropTypes.string,
 };
 

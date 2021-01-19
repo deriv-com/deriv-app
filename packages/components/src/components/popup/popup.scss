@@ -16,9 +16,31 @@
             margin: 0 1.6em !important;
             width: 13rem !important;
         }
+
+        &--banner {
+            background-color: var(--status-warning);
+            border-radius: 100px;
+            padding: 0.4rem 0.8rem;
+            height: 22px;
+            display: flex;
+            align-items: center;
+        }
     }
     &__body {
         padding: 0 !important;
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: flex-end;
+        padding: 1.6rem;
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+
+        &--separator {
+            border-top: 2px solid var(--general-section-1);
+        }
     }
 }
 

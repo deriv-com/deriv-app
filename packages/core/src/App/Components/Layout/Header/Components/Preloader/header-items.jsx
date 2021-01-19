@@ -1,6 +1,7 @@
 import ContentLoader from 'react-content-loader';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 
 const HeaderItemsLoader = ({ speed }) => (
     <ContentLoader
@@ -9,8 +10,14 @@ const HeaderItemsLoader = ({ speed }) => (
         secondaryColor={'var(--general-hover)'}
         style={{ width: '150px', height: '48px' }}
     >
-        <circle cx='250' cy='65' r='42' />
-        <circle cx='355' cy='65' r='42' />
+        <DesktopWrapper>
+            <circle cx='250' cy='65' r='42' />
+            <circle cx='355' cy='65' r='42' />
+        </DesktopWrapper>
+        <MobileWrapper>
+            <circle cx='250' cy='65' r='20' />
+            <rect x='365' y='50' rx='0' ry='0' width='32' height='32' />
+        </MobileWrapper>
     </ContentLoader>
 );
 

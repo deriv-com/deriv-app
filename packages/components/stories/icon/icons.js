@@ -175,6 +175,7 @@ export const icons = {
         'IcFullScreen',
         'IcGear',
         'IcGoogleDrive',
+        'IcHamburgerWhite',
         'IcHamburger',
         'IcHelpCentre',
         'IcHighsLows',

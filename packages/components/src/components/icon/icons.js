@@ -169,6 +169,7 @@ import './common/ic-full-screen-restore.svg';
 import './common/ic-full-screen.svg';
 import './common/ic-gear.svg';
 import './common/ic-google-drive.svg';
+import './common/ic-hamburger-white.svg';
 import './common/ic-hamburger.svg';
 import './common/ic-help-centre.svg';
 import './common/ic-highs-lows.svg';

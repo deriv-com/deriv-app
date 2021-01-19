@@ -102,9 +102,15 @@ export default class MT5Store extends BaseStore {
 
     @action.bound
     clearMt5Error() {
-        this.error_message = '';
-        this.has_mt5_error = false;
+        this.resetFormErrors();
         this.is_mt5_password_modal_enabled = false;
+    }
+
+    @action.bound
+    resetFormErrors() {
+        this.error_message = '';
+        this.error_type = '';
+        this.has_mt5_error = false;
     }
 
     @action.bound

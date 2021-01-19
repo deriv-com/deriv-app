@@ -2,6 +2,7 @@ import * as Cookies from 'js-cookie';
 import React from 'react';
 import { Loading, usePrevious, useStateCallback } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import Limited from 'Components/poi-limited';
 import Unverified from 'Components/poi-unverified';
 import NotRequired from 'Components/poi-not-required';
 import ErrorMessage from 'Components/error-component';
@@ -30,6 +31,7 @@ const ProofOfIdentityContainer = ({
     const [country_code_key, setCountryCode] = React.useState(null);
     const [onfido_service_token, setOnfidoServiceToken] = React.useState(null);
     const [verification_status, setVerificationStatus] = useStateCallback({});
+    const [submissions_left_key, setSubmissionsLeft] = React.useState(null);
     const previous_account_status = usePrevious(account_status);
 
     const getOnfidoServiceToken = React.useCallback(
@@ -73,6 +75,7 @@ const ProofOfIdentityContainer = ({
                 is_unwelcome,
                 onfido_supported_docs,
                 country_code,
+                submissions_left,
             } = populateVerificationStatus(account_status_obj);
 
             const { identity, needs_verification } = account_status_obj.authentication;
@@ -86,6 +89,7 @@ const ProofOfIdentityContainer = ({
                 }
                 setDocumentsSupported(onfido_supported_docs);
                 setCountryCode(country_code);
+                setSubmissionsLeft(submissions_left);
                 refreshNotifications();
                 if (onStateChange) onStateChange({ status });
             });
@@ -146,6 +150,7 @@ const ProofOfIdentityContainer = ({
     if (is_loading || status.length === 0) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (is_unwelcome && !allow_document_upload) return <Unverified />;
     if (status === 'not_required') return <NotRequired />;
+    if (!submissions_left_key) return <Limited />;
 
     return (
         <Onfido

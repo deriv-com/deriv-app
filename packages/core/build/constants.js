@@ -68,6 +68,7 @@ const rules = (is_test_env = false, is_mocha_only = false) => [
     {
         // https://github.com/webpack/webpack/issues/11467
         test: /\.m?js/,
+        include: /node_modules/,
         resolve: {
             fullySpecified: false,
         },

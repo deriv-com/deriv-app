@@ -39,6 +39,7 @@ module.exports = function () {
                 {
                     // https://github.com/webpack/webpack/issues/11467
                     test: /\.m?js/,
+                    include: /node_modules/,
                     resolve: {
                         fullySpecified: false,
                     },

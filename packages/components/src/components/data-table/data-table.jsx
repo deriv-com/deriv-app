@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import { List } from 'react-virtualized/dist/es/List';
+import { localize } from '@deriv/translations';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
@@ -27,14 +28,15 @@ class DataTable extends React.PureComponent {
     rowRenderer = ({ style, index, key }) => {
         const {
             className,
-            getRowAction,
             columns,
-            preloaderCheck,
-            id,
-            getActionColumns,
             content_loader,
             data_source,
+            getActionColumns,
+            getRowAction,
+            id,
+            is_virtual,
             keyMapper,
+            preloaderCheck,
         } = this.props;
         const item = data_source[index];
         const action = getRowAction && getRowAction(item);
@@ -45,15 +47,16 @@ class DataTable extends React.PureComponent {
         const content = (
             <TableRow
                 className={className}
-                row_obj={item}
                 columns={columns}
+                content_loader={content_loader}
+                getActionColumns={getActionColumns}
                 id={contract_id}
                 key={id}
-                to={typeof action === 'string' ? action : undefined}
-                show_preloader={typeof preloaderCheck === 'function' ? preloaderCheck(item) : null}
+                label={is_virtual && item.action === 'Deposit' ? localize('Top up') : null}
                 replace={typeof action === 'object' ? action : undefined}
-                getActionColumns={getActionColumns}
-                content_loader={content_loader}
+                row_obj={item}
+                show_preloader={typeof preloaderCheck === 'function' ? preloaderCheck(item) : null}
+                to={typeof action === 'string' ? action : undefined}
             />
         );
 

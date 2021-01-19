@@ -4,8 +4,18 @@ import { NavLink } from 'react-router-dom';
 
 const DataListRow = props => {
     const [show_desc, setShowDesc] = React.useState(false);
-    const { destination_link, acion_desc, row_key, row_gap } = props;
-    const { rowRenderer, row, measure, is_scrolling, is_new_row } = props;
+    const {
+        acion_desc,
+        destination_link,
+        is_new_row,
+        is_scrolling,
+        label,
+        measure,
+        row_gap,
+        row_key,
+        row,
+        rowRenderer,
+    } = props;
 
     return (
         <div className='data-list__row--wrapper' style={{ paddingBottom: `${row_gap || 0}px` }}>
@@ -21,7 +31,7 @@ const DataListRow = props => {
                     }}
                 >
                     <div className='data-list__item'>
-                        {rowRenderer({ row, measure, isScrolling: is_scrolling, is_new_row })}
+                        {rowRenderer({ row, measure, label, isScrolling: is_scrolling, is_new_row })}
                     </div>
                 </NavLink>
             ) : (
@@ -37,11 +47,13 @@ const DataListRow = props => {
                                     )}
                                 </div>
                             ) : (
-                                rowRenderer({ row, measure, is_scrolling, is_new_row })
+                                rowRenderer({ row, measure, label, is_scrolling, is_new_row })
                             )}
                         </div>
                     ) : (
-                        <div className='data-list__item'>{rowRenderer({ row, measure, is_scrolling, is_new_row })}</div>
+                        <div className='data-list__item'>
+                            {rowRenderer({ row, measure, label, is_scrolling, is_new_row })}
+                        </div>
                     )}
                 </div>
             )}

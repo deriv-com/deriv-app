@@ -35,9 +35,15 @@ export const getStatementTableColumnsTemplate = currency => [
         key: 'icon',
         title: isMobile() ? '' : localize('Type'),
         col_index: 'icon',
-        renderCellContent: ({ cell_value, row_obj }) => (
-            <MarketSymbolIconRow action={cell_value} key={row_obj.transaction_id} payload={row_obj} />
-        ),
+        renderCellContent: ({ cell_value, label, row_obj }) => {
+            let icon;
+            if (label === 'Top up') {
+                icon = 'icCashierTopUp';
+            }
+            return (
+                <MarketSymbolIconRow action={cell_value} icon={icon} key={row_obj.transaction_id} payload={row_obj} />
+            );
+        },
     },
     {
         title: localize('Ref. ID'),
@@ -59,8 +65,8 @@ export const getStatementTableColumnsTemplate = currency => [
         key: 'mode',
         title: localize('Transaction'),
         col_index: 'action_type',
-        renderCellContent: ({ cell_value, row_obj }) => (
-            <Label mode={getModeFromValue(cell_value)}>{row_obj.action}</Label>
+        renderCellContent: ({ cell_value, label, row_obj }) => (
+            <Label mode={getModeFromValue(cell_value)}>{label || row_obj.action}</Label>
         ),
     },
     {

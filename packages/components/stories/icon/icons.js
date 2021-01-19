@@ -57,6 +57,7 @@ export const icons = {
         'IcCashierSepaDark',
         'IcCashierSepaLight',
         'IcCashierSofort',
+        'IcCashierTopUp',
         'IcCashierUpiDark',
         'IcCashierUpiLight',
         'IcCashierVerificationBadge',

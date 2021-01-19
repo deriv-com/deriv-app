@@ -6,6 +6,7 @@ import { CellMeasurer, CellMeasurerCache } from 'react-virtualized/dist/es/CellM
 import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
 import { List } from 'react-virtualized/dist/es/List';
 import { isMobile, isDesktop } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import DataListCell from './data-list-cell.jsx';
 import DataListRow from './data-list-row.jsx';
 import ThemedScrollbars from '../themed-scrollbars';
@@ -54,7 +55,7 @@ const DataList = React.memo(props => {
     };
 
     const rowRenderer = ({ style, index, key, parent }) => {
-        const { getRowAction, row_gap } = props;
+        const { getRowAction, is_virtual, row_gap } = props;
         const row = data_source[index];
         const action = getRowAction && getRowAction(row);
         const destination_link = typeof action === 'string' ? action : undefined;
@@ -63,15 +64,16 @@ const DataList = React.memo(props => {
 
         const getContent = ({ measure } = {}) => (
             <DataListRow
-                destination_link={destination_link}
                 acion_desc={acion_desc}
-                row_key={row_key}
-                row_gap={row_gap}
-                rowRenderer={props.rowRenderer}
-                row={row}
-                is_scrolling={is_scrolling}
+                destination_link={destination_link}
                 is_new_row={!items_transition_map[row_key]}
+                is_scrolling={is_scrolling}
+                label={is_virtual && row.action === 'Deposit' ? localize('Top up') : null}
                 measure={measure}
+                row_gap={row_gap}
+                row_key={row_key}
+                row={row}
+                rowRenderer={props.rowRenderer}
             />
         );
 

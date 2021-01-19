@@ -8,15 +8,16 @@ import TableRowInfo from './table-row-info.jsx';
 const TableRow = ({
     className,
     columns,
+    content_loader,
     getActionColumns,
     id,
     is_footer,
     is_header,
-    show_preloader = false,
+    label,
     replace,
     row_obj = {},
+    show_preloader = false,
     to,
-    content_loader,
 }) => {
     const action_columns = getActionColumns && getActionColumns({ row_obj, is_header, is_footer });
 
@@ -25,7 +26,7 @@ const TableRow = ({
         if (!is_header) {
             const cell_value = row_obj[col_index] || '';
             cell_content = renderCellContent
-                ? renderCellContent({ cell_value, col_index, row_obj, is_footer })
+                ? renderCellContent({ cell_value, col_index, label, row_obj, is_footer })
                 : cell_value;
         }
         return (

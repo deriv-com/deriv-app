@@ -122,6 +122,7 @@ const Account = ({
                         title={selected_route.getTitle()}
                         onClickClose={onClickClose}
                         alignment='center'
+                        is_collapsible={false}
                         is_grid
                         is_floating
                         classNameHeader='account__inset_header'

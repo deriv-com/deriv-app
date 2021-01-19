@@ -265,7 +265,7 @@ $MIN_HEIGHT_FLOATING: calc(
             width: fit-content;
             max-width: calc(100vw - 33rem);
             & > div {
-                height: calc(100vh - 15rem);
+                height: calc(100vh - 14.5rem);
             }
             & .proof-of-identity {
                 width: calc(100vw - 33rem);

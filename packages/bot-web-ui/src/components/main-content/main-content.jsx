@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Toolbox from 'Components/toolbox';
 import Flyout from 'Components/flyout';
 import Chart from 'Components/chart';
-import Toolbox from 'Components/toolbox';
 import { tabs_title } from 'Constants/bot-contents';
 import { connect } from 'Stores/connect';
-import './workspace.scss';
-import '.toolbox.scss';
 
 const MainContent = ({ active_tab, is_loading, onMount, onUnmount }) => {
     React.useEffect(() => {

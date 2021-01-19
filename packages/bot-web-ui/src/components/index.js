@@ -18,5 +18,6 @@ export { default as SaveModal } from './save-modal';
 export { default as SelfExclusion } from './self-exclusion';
 export { default as Summary } from './summary';
 export { default as Toolbar } from './toolbar';
+export { default as Toolbox } from './toolbox';
 export { default as TradeAnimation } from './trade-animation';
 export { default as Transactions } from './transactions';

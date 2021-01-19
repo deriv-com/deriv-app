@@ -90,12 +90,14 @@ const initRoutesConfig = ({ is_deriv_crypto, is_dashboard }) => [
                     {
                         path: routes.self_exclusion,
                         component: SelfExclusion,
-                        getTitle: () => (is_dashboard ? localize('Self-exclusion') : localize('Self exclusion')),
+                        getTitle: () =>
+                            is_dashboard && !isMobile() ? localize('Self-exclusion') : localize('Self exclusion'),
                     },
                     {
                         path: routes.account_limits,
                         component: AccountLimits,
-                        getTitle: () => (is_dashboard ? localize('Withdrawal limits') : localize('Account limits')),
+                        getTitle: () =>
+                            is_dashboard && !isMobile() ? localize('Withdrawal limits') : localize('Account limits'),
                     },
                     {
                         path: routes.login_history,
@@ -135,8 +137,7 @@ const route_default = { component: Page404, getTitle: () => localize('Error 404'
 
 const getRoutesConfig = ({ is_deriv_crypto, is_dashboard }) => {
     if (!routesConfig) {
-        const is_dashboard_item = is_dashboard && !isMobile();
-        routesConfig = initRoutesConfig({ is_deriv_crypto, is_dashboard_item });
+        routesConfig = initRoutesConfig({ is_deriv_crypto, is_dashboard });
         routesConfig.push(route_default);
     }
     return routesConfig;

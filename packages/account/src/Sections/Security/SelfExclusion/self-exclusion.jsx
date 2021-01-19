@@ -24,6 +24,7 @@ import {
     getDecimalPlaces,
     getCurrencyDisplayCode,
     validNumber,
+    PlatformContext,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -42,6 +43,7 @@ const SectionHeader = ({ title, is_dashboard }) => {
 };
 
 class SelfExclusion extends React.Component {
+    static contextType = PlatformContext;
     exclusion_data = {
         max_deposit: '',
         max_turnover: '',
@@ -364,10 +366,11 @@ class SelfExclusion extends React.Component {
             show_article,
             submit_error_message,
         } = this.state;
+        const { is_dashboard } = this.context;
         const { is_virtual, is_switching, currency, is_eu, is_tablet } = this.props;
         const { six_weeks } = this.exclusion_fields_settings;
         if (is_virtual)
-            return <DemoMessage has_demo_icon={this.props.is_dashboard} full_width={this.props.is_dashboard} />;
+            return <DemoMessage has_demo_icon={is_dashboard && !isMobile()} full_width={is_dashboard && !isMobile()} />;
 
         if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account__initial-loader' />;
 
@@ -462,7 +465,7 @@ class SelfExclusion extends React.Component {
                                             <div className='self-exclusion__confirm'>
                                                 <SectionHeader
                                                     title={localize('You have set the following limits:')}
-                                                    is_dashboard={this.props.is_dashboard}
+                                                    is_dashboard={is_dashboard && !isMobile()}
                                                 />
                                                 {changed_attributes.map((key, idx) => {
                                                     const need_date_format = ['exclude_until', 'timeout_until'];
@@ -1015,7 +1018,7 @@ class SelfExclusion extends React.Component {
                         </Formik>
                     </ThemedScrollbars>
                     <DesktopWrapper>
-                        <Article toggleArticle={this.toggleArticle} is_dashboard={this.props.is_dashboard} />
+                        <Article toggleArticle={this.toggleArticle} is_dashboard={is_dashboard && !isMobile()} />
                     </DesktopWrapper>
                 </Div100vhContainer>
             </section>

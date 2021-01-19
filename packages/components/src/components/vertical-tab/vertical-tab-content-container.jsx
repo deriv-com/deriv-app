@@ -17,12 +17,11 @@ const SideNotes = ({ side_notes }) => {
     );
 };
 
-const Content = ({ is_routed, items, selected }) => {
+const Content = ({ is_routed, items, selected, is_dashboard }) => {
     const selected_item = items.find(item => item.label === selected.label);
     const previous_selected_item = usePrevious(selected_item);
     const TabContent = selected_item.value;
     const [side_notes, setSideNotes] = React.useState(null);
-    const { is_dashboard } = React.useContext(PlatformContext);
 
     const notes_array = [];
 
@@ -50,7 +49,7 @@ const Content = ({ is_routed, items, selected }) => {
                                 path={path}
                                 render={() => (
                                     <Component
-                                        is_dashboard={is_dashboard && !isMobile()}
+                                        is_dashboard={is_dashboard}
                                         component_icon={icon}
                                         setSideNotes={addToNotesQueue}
                                     />
@@ -75,52 +74,64 @@ const VerticalTabContentContainer = ({
     action_bar,
     action_bar_classname,
     id,
-    is_dashboard,
     is_floating,
     is_routed,
     items,
     selected,
     tab_container_classname,
-}) => (
-    <div
-        className={classNames('dc-vertical-tab__content', {
-            'dc-vertical-tab__content--floating': is_floating,
-            'dc-vertical-tab__content--dashboard': is_dashboard,
-        })}
-    >
-        {!is_floating && action_bar && (
-            <div
-                className={classNames('dc-vertical-tab__action-bar', {
-                    [action_bar_classname]: !!action_bar_classname,
-                })}
-            >
-                {action_bar.map(({ component, icon, onClick }, idx) => {
-                    const Component = component;
-                    return component ? (
-                        <Component key={idx} />
-                    ) : (
-                        <div
-                            id={`dt_${id}_close_icon`}
-                            className='dc-vertical-tab__action-bar-wrapper'
-                            key={idx}
-                            onClick={onClick}
-                        >
-                            <Icon className='dc-vertical-tab__action-bar--icon' icon={icon} />
-                        </div>
-                    );
-                })}
-            </div>
-        )}
-        <div className={classNames('dc-vertical-tab__content-container', tab_container_classname)}>
-            {selected.has_side_note ? (
-                <div className='dc-vertical-tab__content-inner'>
-                    <Content is_routed={is_routed} items={items} selected={selected} />
+}) => {
+    const { is_dashboard } = React.useContext(PlatformContext);
+    return (
+        <div
+            className={classNames('dc-vertical-tab__content', {
+                'dc-vertical-tab__content--floating': is_floating,
+                'dc-vertical-tab__content--dashboard': is_dashboard && !isMobile(),
+            })}
+        >
+            {!is_floating && action_bar && (
+                <div
+                    className={classNames('dc-vertical-tab__action-bar', {
+                        [action_bar_classname]: !!action_bar_classname,
+                    })}
+                >
+                    {action_bar.map(({ component, icon, onClick }, idx) => {
+                        const Component = component;
+                        return component ? (
+                            <Component key={idx} />
+                        ) : (
+                            <div
+                                id={`dt_${id}_close_icon`}
+                                className='dc-vertical-tab__action-bar-wrapper'
+                                key={idx}
+                                onClick={onClick}
+                            >
+                                <Icon className='dc-vertical-tab__action-bar--icon' icon={icon} />
+                            </div>
+                        );
+                    })}
                 </div>
-            ) : (
-                <Content is_routed={is_routed} items={items} selected={selected} />
             )}
+            <div className={classNames('dc-vertical-tab__content-container', tab_container_classname)}>
+                {selected.has_side_note ? (
+                    <div className='dc-vertical-tab__content-inner'>
+                        <Content
+                            is_routed={is_routed}
+                            items={items}
+                            selected={selected}
+                            is_dashboard={is_dashboard && !isMobile()}
+                        />
+                    </div>
+                ) : (
+                    <Content
+                        is_routed={is_routed}
+                        items={items}
+                        selected={selected}
+                        is_dashboard={is_dashboard && !isMobile()}
+                    />
+                )}
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 export default VerticalTabContentContainer;

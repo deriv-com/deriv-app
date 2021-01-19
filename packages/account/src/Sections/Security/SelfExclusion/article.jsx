@@ -1,10 +1,12 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Icon, StaticUrl, Text } from '@deriv/components';
+import { isMobile, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const SEArticle = ({ toggleArticle, is_eu, is_dashboard }) => {
+const SEArticle = ({ toggleArticle, is_eu }) => {
+    const { is_dashboard } = React.useContext(PlatformContext);
     const non_eu_text = (
         <Localize
             i18n_default_text='These self-exclusion limits help you control the amount of money and time you spend trading on DTrader, DBot, and SmartTrader. The limits you set here will help you exercise <0>responsible trading</0>.'
@@ -20,7 +22,7 @@ const SEArticle = ({ toggleArticle, is_eu, is_dashboard }) => {
     );
 
     const article_text = is_eu ? eu_text : non_eu_text;
-    if (is_dashboard) {
+    if (is_dashboard && !isMobile()) {
         return (
             <article className='account__article'>
                 <h4 className='account__article-title'>{localize('About trading limits and self-exclusion')}</h4>
@@ -63,7 +65,6 @@ const SEArticle = ({ toggleArticle, is_eu, is_dashboard }) => {
 };
 
 SEArticle.propTypes = {
-    is_dashboard: PropTypes.bool,
     is_eu: PropTypes.bool,
     toggleArticle: PropTypes.func,
 };

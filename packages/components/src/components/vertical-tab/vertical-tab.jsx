@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { isMobile, PlatformContext } from '@deriv/shared';
 import VerticalTabContentContainer from './vertical-tab-content-container.jsx';
 import VerticalTabHeader from './vertical-tab-header.jsx';
 import VerticalTabHeaderGroup from './vertical-tab-header-group.jsx';
@@ -34,7 +35,6 @@ const VerticalTab = ({
     action_bar,
     action_bar_classname,
     current_path,
-    is_dashboard,
     extra_content,
     extra_offset,
     has_mixed_dimensions,
@@ -55,6 +55,7 @@ const VerticalTab = ({
     vertical_tab_index,
 }) => {
     const [curr_tab_index, setCurrTabIndex] = React.useState(vertical_tab_index || 0);
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     const changeSelected = e => {
         setSelectedIndex({
@@ -82,7 +83,7 @@ const VerticalTab = ({
                 'dc-vertical-tab--full-screen': is_full_width,
                 'dc-vertical-tab--grouped': Array.isArray(list_groups),
                 'dc-vertical-tab--grid': is_grid,
-                'dc-vertical-tab--dashboard': is_dashboard,
+                'dc-vertical-tab--dashboard': is_dashboard && !isMobile(),
             })}
         >
             {!!title && (
@@ -102,7 +103,7 @@ const VerticalTab = ({
                 <div
                     className={classNames('dc-vertical-tab__tab-meta-wrapper', {
                         'dc-vertical-tab__tab-meta-wrapper--floating': is_floating,
-                        'dc-vertical-tab__tab-meta-wrapper--dashboard': is_dashboard,
+                        'dc-vertical-tab__tab-meta-wrapper--dashboard': is_dashboard && !isMobile(),
                     })}
                 >
                     <VerticalTabHeaders
@@ -128,7 +129,6 @@ const VerticalTab = ({
             <VerticalTabContentContainer
                 action_bar={action_bar}
                 action_bar_classname={action_bar_classname}
-                is_dashboard={is_dashboard}
                 is_floating={is_floating}
                 items={list}
                 selected={list[curr_tab_index]}

@@ -22,6 +22,7 @@ import {
     validLetterSymbol,
     validLength,
     getLocation,
+    PlatformContext,
 } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
@@ -56,7 +57,6 @@ const UploaderSideNote = () => (
 const ProofOfAddressForm = ({
     account_settings,
     addNotificationByKey,
-    is_dashboard,
     is_eu,
     fetchResidenceList,
     fetchStatesList,
@@ -70,6 +70,7 @@ const ProofOfAddressForm = ({
     const [form_values, setFormValues] = useStateCallback({});
     const [api_initial_load_error, setAPIInitialLoadError] = React.useState(null);
     const [form_state, setFormState] = useStateCallback({ should_show_form: true });
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     React.useEffect(() => {
         fetchResidenceList().then(() => {
@@ -282,19 +283,19 @@ const ProofOfAddressForm = ({
                 setFieldValue,
             }) => (
                 <>
-                    <LeaveConfirm onDirty={isMobile() ? showForm : null} is_dashboard={is_dashboard} />
+                    <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                     {form_state.should_show_form && (
                         <form noValidate className='account-form' onSubmit={handleSubmit}>
                             <FormBody scroll_offset={isMobile() ? mobile_scroll_offset : '80px'}>
                                 <FormSubHeader title={localize('Details')} />
                                 <FormBodySection
-                                    has_side_note={is_dashboard}
+                                    has_side_note={is_dashboard && !isMobile()}
                                     side_note={localize(
                                         'Please ensure that this address is the same as in your proof of address'
                                     )}
                                 >
                                     <div className='account-poa__details-section'>
-                                        {is_dashboard && (
+                                        {is_dashboard && !isMobile() && (
                                             <div className='account-poa__details-description'>
                                                 <Text size={isMobile() ? 'xxs' : 'xs'}>
                                                     {localize(
@@ -422,18 +423,21 @@ const ProofOfAddressForm = ({
                                 </FormBodySection>
 
                                 <FormSubHeader title={localize('Please upload one of the following:')} />
-                                <FormBodySection has_side_note={is_dashboard} side_note={<UploaderSideNote />}>
+                                <FormBodySection
+                                    has_side_note={is_dashboard && !isMobile()}
+                                    side_note={<UploaderSideNote />}
+                                >
                                     <FileUploaderContainer
                                         onRef={ref => (file_uploader_ref = ref)}
                                         onFileDrop={df =>
                                             setDocumentFile({ files: df.files, error_message: df.error_message })
                                         }
                                         getSocket={WS.getSocket}
-                                        is_dashboard={is_dashboard}
+                                        is_dashboard={is_dashboard && !isMobile()}
                                     />
                                 </FormBodySection>
                             </FormBody>
-                            <FormFooter is_dashboard={is_dashboard}>
+                            <FormFooter is_dashboard={is_dashboard && !isMobile()}>
                                 {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                 <Button
                                     className='account-form__footer-btn'
@@ -469,7 +473,6 @@ const ProofOfAddressForm = ({
 ProofOfAddressForm.propTypes = {
     account_settings: PropTypes.object,
     addNotificationByKey: PropTypes.func,
-    is_dashboard: PropTypes.bool,
     is_eu: PropTypes.bool,
     fetchResidenceList: PropTypes.func,
     fetchStatesList: PropTypes.func,

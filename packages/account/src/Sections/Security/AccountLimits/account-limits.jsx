@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Popover, DesktopWrapper, Loading, MobileWrapper, ThemedScrollbars, Text } from '@deriv/components';
-import { formatMoney, isMobile } from '@deriv/shared';
+import { formatMoney, isMobile, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import FormBody from 'Components/form-body';
@@ -65,17 +65,9 @@ const ExtraInfo = ({ message, ...props }) => {
     );
 };
 
-const AccountLimits = ({
-    account_limits,
-    currency,
-    getLimits,
-    is_fully_authenticated,
-    is_switching,
-    is_virtual,
-    is_dashboard,
-}) => {
+const AccountLimits = ({ account_limits, currency, getLimits, is_fully_authenticated, is_switching, is_virtual }) => {
     const [is_loading, setLoading] = React.useState(true);
-
+    const { is_dashboard } = React.useContext(PlatformContext);
     React.useEffect(() => {
         if (is_virtual) setLoading(false);
         else getLimits().then(setLoading(false));
@@ -86,7 +78,8 @@ const AccountLimits = ({
     }, [account_limits, is_virtual, is_loading]);
 
     if (is_switching) return <Loading />;
-    if (is_virtual) return <DemoMessage has_demo_icon={is_dashboard} full_width={is_dashboard} />;
+    if (is_virtual)
+        return <DemoMessage has_demo_icon={is_dashboard && !isMobile()} full_width={is_dashboard && !isMobile()} />;
 
     const {
         api_initial_load_error,
@@ -112,7 +105,7 @@ const AccountLimits = ({
         <section className='account-limit-container'>
             <div
                 className={classNames('account-limit-container__wrapper', {
-                    'account-limit-container__wrapper-dashboard': is_dashboard,
+                    'account-limit-container__wrapper-dashboard': is_dashboard && !isMobile(),
                 })}
             >
                 <ThemedScrollbars is_bypassed={isMobile()} className='account-limit-container__scrollbars'>
@@ -259,7 +252,6 @@ AccountLimits.propTypes = {
     account_limits: PropTypes.object,
     currency: PropTypes.string,
     getLimits: PropTypes.func,
-    is_dashboard: PropTypes.bool,
     is_fully_authenticated: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_switching: PropTypes.bool,

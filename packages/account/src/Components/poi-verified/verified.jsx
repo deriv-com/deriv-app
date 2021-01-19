@@ -1,19 +1,21 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Icon } from '@deriv/components';
+import { isMobile, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ContinueTradingButton from 'Components/poa-continue-trading-button';
 import PoaButton from 'Components/poa-button';
 import IconMessageContent from 'Components/icon-message-content';
 
-const Verified = ({ has_poa, is_dashboard, is_description_enabled, redirect_button }) => {
+const Verified = ({ has_poa, is_description_enabled, redirect_button }) => {
+    const { is_dashboard } = React.useContext(PlatformContext);
     const message = localize('Your proof of identity is verified');
     if (has_poa) {
         return (
             <IconMessageContent
                 message={message}
                 icon={
-                    is_dashboard ? (
+                    is_dashboard && !isMobile() ? (
                         <Icon icon='IcPoaVerifiedDashboard' height={128} width={237} />
                     ) : (
                         <Icon icon='IcPoaVerified' size={128} />
@@ -29,7 +31,7 @@ const Verified = ({ has_poa, is_dashboard, is_description_enabled, redirect_butt
         <IconMessageContent
             message={message}
             icon={
-                is_dashboard ? (
+                is_dashboard && !isMobile() ? (
                     <Icon icon='IcPoaVerifiedDashboard' height={128} width={237} />
                 ) : (
                     <Icon icon='IcPoaVerified' size={128} />
@@ -46,7 +48,6 @@ const Verified = ({ has_poa, is_dashboard, is_description_enabled, redirect_butt
 
 Verified.propTypes = {
     has_poa: PropTypes.bool,
-    is_dashboard: PropTypes.bool,
     is_description_enabled: PropTypes.bool,
     redirect_button: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
 };

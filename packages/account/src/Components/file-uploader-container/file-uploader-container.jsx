@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Text } from '@deriv/components';
+import { PlatformContext, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import FileUploader from './file-uploader.jsx';
@@ -36,7 +37,8 @@ const FileProperties = () => {
     );
 };
 
-const FileUploaderContainer = ({ is_dashboard, is_description_disabled, getSocket, onFileDrop, onRef }) => {
+const FileUploaderContainer = ({ is_description_disabled, getSocket, onFileDrop, onRef }) => {
+    const { is_dashboard } = React.useContext(PlatformContext);
     const ref = React.useRef();
 
     const getSocketFunc = getSocket ?? WS.getSocket;
@@ -47,18 +49,13 @@ const FileUploaderContainer = ({ is_dashboard, is_description_disabled, getSocke
         }
         return () => onRef(undefined);
     }, [onRef, ref]);
-    if (is_dashboard) {
+    if (is_dashboard && !isMobile()) {
         return (
             <div className='account-poa__upload-section account-poa__upload-section-dashboard'>
                 <div className='account-poa__upload-file account-poa__upload-file-dashboard'>
                     <FileProperties />
                     <div className='account-poa__upload-file-zone'>
-                        <FileUploader
-                            getSocket={getSocketFunc}
-                            ref={ref}
-                            onFileDrop={onFileDrop}
-                            is_dashboard={is_dashboard}
-                        />
+                        <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} />
                     </div>
                 </div>
             </div>
@@ -118,7 +115,6 @@ FileUploaderContainer.defaultProps = {
 };
 
 FileUploaderContainer.propTypes = {
-    is_dashboard: PropTypes.bool,
     is_description_disabled: PropTypes.bool,
     getSocket: PropTypes.func,
     onFileDrop: PropTypes.func,

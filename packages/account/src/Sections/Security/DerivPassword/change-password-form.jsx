@@ -3,7 +3,7 @@ import React from 'react';
 import { Formik } from 'formik';
 import { FormSubmitErrorMessage, Button, Loading, PasswordInput, PasswordMeter } from '@deriv/components';
 import { withRouter } from 'react-router-dom';
-import { routes, isMobile, validPassword, validLength, getErrorMessages } from '@deriv/shared';
+import { routes, isMobile, validPassword, validLength, getErrorMessages, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
@@ -13,6 +13,7 @@ import FormBodySection from 'Components/form-body-section';
 import FormFooter from 'Components/form-footer';
 
 class ChangePasswordForm extends React.Component {
+    static contextType = PlatformContext;
     state = {
         is_loading: false,
         new_pw_input: '',
@@ -79,7 +80,7 @@ class ChangePasswordForm extends React.Component {
 
     render() {
         const { is_loading, new_pw_input, is_btn_loading, is_submit_success } = this.state;
-
+        const { is_dashboard } = this.context;
         return (
             <React.Fragment>
                 <Formik
@@ -113,7 +114,7 @@ class ChangePasswordForm extends React.Component {
                                 <FormBody scroll_offset={isMobile() ? '200px' : '55px'}>
                                     <FormSubHeader title={localize('Change your Deriv password')} />
                                     <FormBodySection
-                                        has_side_note={this.props.is_dashboard}
+                                        has_side_note={is_dashboard && !isMobile()}
                                         side_note={localize(
                                             'We recommend using a unique password — one that you don’t use for any other sites.'
                                         )}
@@ -154,7 +155,7 @@ class ChangePasswordForm extends React.Component {
                                     </FormBodySection>
                                 </FormBody>
                             )}
-                            <FormFooter is_dashboard={this.props.is_dashboard}>
+                            <FormFooter is_dashboard={is_dashboard && !isMobile()}>
                                 {status?.msg && (
                                     <FormSubmitErrorMessage
                                         className={classNames({ 'account-form__error-message': isMobile() })}
@@ -164,7 +165,7 @@ class ChangePasswordForm extends React.Component {
                                 <Button
                                     className={classNames('account-form__footer-btn', {
                                         'account-form__footer-btn--has-bottom-margin': isMobile(),
-                                        'account-form__footer-btn-dashboard': this.props.is_dashboard,
+                                        'account-form__footer-btn-dashboard': is_dashboard && !isMobile(),
                                     })}
                                     type='button'
                                     onClick={this.props.onClickSendEmail}

@@ -1,42 +1,45 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
 import { Localize, localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
+import { isMobile, PlatformContext } from '@deriv/shared';
 import IconMessageContent from 'Components/icon-message-content';
 
-const UnsupportedIconRow = ({ is_dashboard }) => (
-    <div className='poi-icon-row'>
-        <div className='poi-icon-row__icon-container'>
-            <Icon icon={is_dashboard ? 'IcIdentityCardDashboard' : 'IcIdentityCard'} size={90} />
-            <Text color='less-prominent' as='p'>
-                {localize('Identity card')}
-            </Text>
-            <Text line_height='xs' color='less-prominent' as='p'>
-                {localize('Front and back')}
-            </Text>
+const UnsupportedIconRow = () => {
+    const { is_dashboard } = React.useContext(PlatformContext);
+    return (
+        <div className='poi-icon-row'>
+            <div className='poi-icon-row__icon-container'>
+                <Icon icon={is_dashboard && !isMobile() ? 'IcIdentityCardDashboard' : 'IcIdentityCard'} size={90} />
+                <Text color='less-prominent' as='p'>
+                    {localize('Identity card')}
+                </Text>
+                <Text line_height='xs' color='less-prominent' as='p'>
+                    {localize('Front and back')}
+                </Text>
+            </div>
+            <div className='poi-icon-row__icon-container'>
+                <Icon icon={is_dashboard && !isMobile() ? 'IcDrivingLicenseDashboard' : 'IcDrivingLicense'} size={90} />
+                <Text color='less-prominent' as='p'>
+                    {localize('Driving license')}
+                </Text>
+                <Text line_height='xs' color='less-prominent' as='p'>
+                    {localize('Front and back')}
+                </Text>
+            </div>
+            <div className='poi-icon-row__icon-container'>
+                <Icon icon={is_dashboard && !isMobile() ? 'IcPassportDashboard' : 'IcPassport'} size={90} />
+                <Text color='less-prominent' as='p'>
+                    {localize('Passport')}
+                </Text>
+                <Text line_height='xs' color='less-prominent' as='p'>
+                    {localize('Face photo page')}
+                </Text>
+            </div>
         </div>
-        <div className='poi-icon-row__icon-container'>
-            <Icon icon={is_dashboard ? 'IcDrivingLicenseDashboard' : 'IcDrivingLicense'} size={90} />
-            <Text color='less-prominent' as='p'>
-                {localize('Driving license')}
-            </Text>
-            <Text line_height='xs' color='less-prominent' as='p'>
-                {localize('Front and back')}
-            </Text>
-        </div>
-        <div className='poi-icon-row__icon-container'>
-            <Icon icon={is_dashboard ? 'IcPassportDashboard' : 'IcPassport'} size={90} />
-            <Text color='less-prominent' as='p'>
-                {localize('Passport')}
-            </Text>
-            <Text line_height='xs' color='less-prominent' as='p'>
-                {localize('Face photo page')}
-            </Text>
-        </div>
-    </div>
-);
+    );
+};
 
-const Unsupported = ({ is_dashboard }) => (
+const Unsupported = () => (
     <IconMessageContent
         message={localize('Verify your identity')}
         text={
@@ -47,12 +50,8 @@ const Unsupported = ({ is_dashboard }) => (
                 ]}
             />
         }
-        icon_row={<UnsupportedIconRow is_dashboard={is_dashboard} />}
+        icon_row={<UnsupportedIconRow />}
     />
 );
-
-Unsupported.propTypes = {
-    is_dashboard: PropTypes.bool,
-};
 
 export default Unsupported;

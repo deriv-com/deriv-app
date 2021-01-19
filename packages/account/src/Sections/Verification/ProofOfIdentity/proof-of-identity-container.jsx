@@ -14,7 +14,6 @@ const ProofOfIdentityContainer = ({
     account_status,
     addNotificationByKey,
     getAccountStatus,
-    is_dashboard,
     serviceToken,
     notificationEvent,
     removeNotificationByKey,
@@ -140,15 +139,11 @@ const ProofOfIdentityContainer = ({
     const { has_poa, is_unwelcome, allow_document_upload } = verification_status;
     if (api_error)
         return (
-            <ErrorMessage
-                error_message={localize('Sorry, there was a connection error. Please try again later.')}
-                is_dashboard={is_dashboard}
-            />
+            <ErrorMessage error_message={localize('Sorry, there was a connection error. Please try again later.')} />
         );
-    if (is_loading || status.length === 0)
-        return <Loading is_fullscreen={false} className='account__initial-loader' is_dashboard={is_dashboard} />;
-    if (is_unwelcome && !allow_document_upload) return <Unverified is_dashboard={is_dashboard} />;
-    if (status === 'not_required') return <NotRequired is_dashboard={is_dashboard} />;
+    if (is_loading || status.length === 0) return <Loading is_fullscreen={false} className='account__initial-loader' />;
+    if (is_unwelcome && !allow_document_upload) return <Unverified />;
+    if (status === 'not_required') return <NotRequired />;
 
     return (
         <Onfido
@@ -160,7 +155,6 @@ const ProofOfIdentityContainer = ({
             height={height ?? null}
             handleComplete={handleComplete}
             redirect_button={redirect_button}
-            is_dashboard={is_dashboard}
         />
     );
 };
@@ -169,7 +163,6 @@ ProofOfIdentityContainer.propTypes = {
     account_status: PropTypes.object,
     addNotificationByKey: PropTypes.func,
     getAccountStatus: PropTypes.func,
-    is_dashboard: PropTypes.bool,
     serviceToken: PropTypes.func,
     notificationEvent: PropTypes.func,
     removeNotificationByKey: PropTypes.func,

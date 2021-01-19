@@ -12,7 +12,7 @@ import {
     Loading,
     Text,
 } from '@deriv/components';
-import { getPropertyValue, isMobile } from '@deriv/shared';
+import { getPropertyValue, isMobile, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
@@ -20,13 +20,14 @@ import LoadErrorMessage from 'Components/load-error-message';
 import DigitForm from './digit-form.jsx';
 import Article from './article.jsx';
 
-const TwoFactorAuthentication = ({ email_address, is_switching, is_dashboard }) => {
+const TwoFactorAuthentication = ({ email_address, is_switching }) => {
     const [is_loading, setLoading] = React.useState(true);
     const [is_two_factor_enabled, setTwoFactorEnabled] = React.useState(false);
     const [is_qr_loading, setQrLoading] = React.useState(false);
     const [error_message, setErrorMessage] = React.useState('');
     const [secret_key, setSecretKey] = React.useState('');
     const [qr_secret_key, setQrSecretKey] = React.useState('');
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     React.useEffect(() => {
         getDigitStatus();
@@ -180,7 +181,7 @@ const TwoFactorAuthentication = ({ email_address, is_switching, is_dashboard }) 
         <section className='two-factor'>
             <div
                 className={classNames('two-factor__wrapper', {
-                    'two-factor__wrapper-dashboard': is_dashboard,
+                    'two-factor__wrapper-dashboard': is_dashboard && !isMobile(),
                 })}
             >
                 {is_two_factor_enabled ? TwoFactorEnabled : TwoFactorDisabled}
@@ -191,7 +192,6 @@ const TwoFactorAuthentication = ({ email_address, is_switching, is_dashboard }) 
 
 TwoFactorAuthentication.propTypes = {
     email_address: PropTypes.string,
-    is_dashboard: PropTypes.bool,
     is_switching: PropTypes.bool,
 };
 

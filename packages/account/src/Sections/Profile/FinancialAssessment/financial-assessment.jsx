@@ -14,7 +14,7 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
-import { routes, isMobile, isDesktop } from '@deriv/shared';
+import { routes, isMobile, isDesktop, PlatformContext } from '@deriv/shared';
 
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -143,6 +143,7 @@ const SubmittedPage = withRouter(({ history }) => {
 });
 
 class FinancialAssessment extends React.Component {
+    static contextType = PlatformContext;
     is_mounted = false;
     state = {
         is_loading: true,
@@ -295,7 +296,7 @@ class FinancialAssessment extends React.Component {
             is_confirmation_visible,
             has_trading_experience,
         } = this.state;
-
+        const { is_dashboard } = this.context;
         if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (this.props.is_virtual) return <DemoMessage />;
@@ -352,10 +353,7 @@ class FinancialAssessment extends React.Component {
                                     onSubmit={handleSubmit}
                                 />
                             )}
-                            <LeaveConfirm
-                                onDirty={isMobile() ? this.showForm : null}
-                                is_dashboard={this.props.is_dashboard}
-                            />
+                            <LeaveConfirm onDirty={isMobile() ? this.showForm : null} />
                             {show_form && (
                                 <form
                                     className='account-form account-form__financial-assessment'
@@ -367,7 +365,7 @@ class FinancialAssessment extends React.Component {
                                             subtitle={isDesktop() && `(${localize('All fields are required')})`}
                                         />
                                         <FormBodySection
-                                            has_side_note={this.props.is_dashboard}
+                                            has_side_note={is_dashboard && !isMobile()}
                                             side_note={localize(
                                                 'We’re legally obliged to ask for your financial information.'
                                             )}
@@ -613,7 +611,7 @@ class FinancialAssessment extends React.Component {
                                                     subtitle={isDesktop() && `(${localize('All fields are required')})`}
                                                 />
                                                 <FormBodySection
-                                                    has_side_note={this.props.is_dashboard}
+                                                    has_side_note={is_dashboard && !isMobile()}
                                                     side_note={localize('Tell us about your trading experience.')}
                                                 >
                                                     <fieldset className='account-form__fieldset'>
@@ -877,7 +875,7 @@ class FinancialAssessment extends React.Component {
                                             </>
                                         )}
                                     </FormBody>
-                                    <FormFooter is_dashboard={this.props.is_dashboard}>
+                                    <FormFooter>
                                         {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                         {isMobile() && (
                                             <Text

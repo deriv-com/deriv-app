@@ -1,12 +1,14 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Icon, Text } from '@deriv/components';
+import { isMobile, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ContinueTradingButton from 'Components/poa-continue-trading-button';
 import PoaButton from 'Components/poa-button';
 import IconMessageContent from 'Components/icon-message-content';
 
-const UploadComplete = ({ has_poa, is_description_enabled, redirect_button, is_dashboard }) => {
+const UploadComplete = ({ has_poa, is_description_enabled, redirect_button }) => {
+    const { is_dashboard } = React.useContext(PlatformContext);
     const message = localize('Your proof of identity was submitted successfully');
     if (has_poa) {
         return (
@@ -14,7 +16,7 @@ const UploadComplete = ({ has_poa, is_description_enabled, redirect_button, is_d
                 message={message}
                 text={localize('Your document is being reviewed, please check back in 1-3 days.')}
                 icon={
-                    is_dashboard ? (
+                    is_dashboard && !isMobile() ? (
                         <Icon icon='IcPoiVerifiedDashboard' width={273} height={128} />
                     ) : (
                         <Icon icon='IcPoiVerifiedDashboard' size={128} />
@@ -29,7 +31,7 @@ const UploadComplete = ({ has_poa, is_description_enabled, redirect_button, is_d
         <IconMessageContent
             message={message}
             icon={
-                is_dashboard ? (
+                is_dashboard && !isMobile() ? (
                     <Icon icon='IcPoiVerifiedDashboard' width={273} height={128} />
                 ) : (
                     <Icon icon='IcPoiVerifiedDashboard' size={128} />
@@ -56,7 +58,6 @@ const UploadComplete = ({ has_poa, is_description_enabled, redirect_button, is_d
 };
 
 UploadComplete.protoTypes = {
-    is_dashboard: PropTypes.bool,
     is_description_enabled: PropTypes.bool,
     has_poa: PropTypes.bool,
     redirect_button: PropTypes.object,

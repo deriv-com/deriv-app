@@ -124,7 +124,6 @@ const Account = ({
                         alignment='center'
                         is_grid
                         is_floating
-                        is_dashboard
                         classNameHeader='account__inset_header'
                         current_path={location.pathname}
                         is_routed

@@ -27,6 +27,7 @@ export default class MainContentStore {
     onMount() {
         window.addEventListener('resize', this.setContainerSize);
     }
+
     @action.bound
     getCachedActiveTab() {
         if (getSetting('active_tab')) {

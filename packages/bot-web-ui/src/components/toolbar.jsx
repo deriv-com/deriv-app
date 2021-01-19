@@ -1,6 +1,5 @@
-import { Button, Icon, Input, ThemedScrollbars, Popover, Dialog } from '@deriv/components';
+import { Button, Icon, ThemedScrollbars, Popover, Dialog } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import LoadModal from './load-modal.jsx';
@@ -10,45 +9,6 @@ import { tabs_title } from '../constants/bot-contents';
 import { popover_zindex } from '../constants/z-indexes';
 import { connect } from '../stores/connect';
 import '../assets/sass/toolbar.scss';
-
-const SearchBox = ({ is_search_loading, onSearch, onSearchBlur, onSearchClear, onSearchKeyUp }) => (
-    <div className='toolbar__form'>
-        <Formik initialValues={{ search: '' }} onSubmit={onSearch}>
-            {({ submitForm, values: { search }, setFieldValue }) => (
-                <Form>
-                    <Field name='search'>
-                        {({ field }) => (
-                            <Input
-                                {...field}
-                                className='toolbar__form-field'
-                                type='text'
-                                name='search'
-                                placeholder={localize('Search block...')}
-                                onKeyUp={() => onSearchKeyUp(submitForm)}
-                                onFocus={submitForm}
-                                onBlur={onSearchBlur}
-                                trailing_icon={
-                                    (search &&
-                                        (is_search_loading ? (
-                                            <div className='loader' />
-                                        ) : (
-                                            <Icon
-                                                icon='IcCloseCircle'
-                                                className='toolbar__btn--icon'
-                                                onClick={() => onSearchClear(setFieldValue)}
-                                                color='secondary'
-                                            />
-                                        ))) ||
-                                    (!search && <Icon icon='IcSearch' color='disabled' />)
-                                }
-                            />
-                        )}
-                    </Field>
-                </Form>
-            )}
-        </Formik>
-    </div>
-);
 
 const IconButton = ({ popover_message, icon, icon_id, icon_color, iconOnClick }) => (
     <Popover alignment='bottom' message={popover_message} zIndex={popover_zindex.TOOLBAR} should_disable_pointer_events>
@@ -136,11 +96,6 @@ const WorkspaceGroup = ({
 );
 
 const Toolbar = ({ onMount, onUnmount, ...other_props }) => {
-    React.useEffect(() => {
-        onMount();
-        return () => onUnmount();
-    }, [onMount, onUnmount]);
-
     const {
         is_mobile,
         is_running,
@@ -148,7 +103,6 @@ const Toolbar = ({ onMount, onUnmount, ...other_props }) => {
         is_dialog_open,
         onOkButtonClick,
         closeResetDialog,
-        onToolboxToggle,
         toggleStrategyModal,
         toggleLoadModal,
         toggleSaveModal,
@@ -189,12 +143,11 @@ const Toolbar = ({ onMount, onUnmount, ...other_props }) => {
                             <ToolbarButton
                                 popover_message={localize('Click here to start building your DBot.')}
                                 button_id='db-toolbar__get-started-button'
-                                button_classname='toolbar__btn--icon toolbar__btn--start'
-                                buttonOnClick={onToolboxToggle}
+                                button_classname='toolbar__btn toolbar__btn--icon toolbar__btn--start'
+                                buttonOnClick={toggleStrategyModal}
                                 icon={<Icon icon='IcPuzzle' color='active' />}
-                                button_text={localize('Get started')}
+                                button_text={localize('Quick strategy')}
                             />
-                            {active_tab === tabs_title.WORKSPACE && <SearchBox {...other_props} />}
                             {active_tab === tabs_title.WORKSPACE && <WorkspaceGroup {...other_props} />}
                         </div>
                         <div className='toolbar__section'>
@@ -250,13 +203,8 @@ Toolbar.propTypes = {
     onOkButtonClick: PropTypes.func,
     onResetClick: PropTypes.func,
     onRunButtonClick: PropTypes.func,
-    onSearch: PropTypes.func,
-    onSearchBlur: PropTypes.func,
-    onSearchClear: PropTypes.func,
-    onSearchKeyUp: PropTypes.func,
     onSortClick: PropTypes.func,
     onStopButtonClick: PropTypes.func,
-    onToolboxToggle: PropTypes.func,
     onUndoClick: PropTypes.func,
     onUnmount: PropTypes.func,
     onZoomInOutClick: PropTypes.func,
@@ -264,13 +212,13 @@ Toolbar.propTypes = {
 };
 
 export default connect(({ main_content, run_panel, save_modal, load_modal, toolbar, ui, quick_strategy }) => ({
-    is_mobile: ui.is_mobile,
     active_tab: main_content.active_tab,
     file_name: toolbar.file_name,
     has_redo_stack: toolbar.has_redo_stack,
     has_undo_stack: toolbar.has_undo_stack,
     is_dialog_open: toolbar.is_dialog_open,
     is_drawer_open: run_panel.is_drawer_open,
+    is_mobile: ui.is_mobile,
     is_running: run_panel.is_running,
     is_search_loading: toolbar.is_search_loading,
     is_stop_button_disabled: run_panel.is_stop_button_disabled,
@@ -281,13 +229,8 @@ export default connect(({ main_content, run_panel, save_modal, load_modal, toolb
     onOkButtonClick: toolbar.onResetOkButtonClick,
     onResetClick: toolbar.onResetClick,
     onRunButtonClick: run_panel.onRunButtonClick,
-    onSearch: toolbar.onSearch,
-    onSearchBlur: toolbar.onSearchBlur,
-    onSearchClear: toolbar.onSearchClear,
-    onSearchKeyUp: toolbar.onSearchKeyUp,
     onSortClick: toolbar.onSortClick,
     onStopButtonClick: run_panel.onStopButtonClick,
-    onToolboxToggle: toolbar.onToolboxToggle,
     onUndoClick: toolbar.onUndoClick,
     onUnmount: toolbar.onUnmount,
     onZoomInOutClick: toolbar.onZoomInOutClick,

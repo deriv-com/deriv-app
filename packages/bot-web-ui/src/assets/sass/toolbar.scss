@@ -7,6 +7,8 @@
     padding: 5px 6px;
 
     &__btn {
+        background-color: var(--button-primary-default) !important;
+
         &--icon {
             display: flex;
             justify-content: center;
@@ -54,22 +56,6 @@
             }
         }
     }
-    &__form {
-        width: 18%;
-        min-width: 160px;
-        height: 40px;
-
-        &-field {
-            margin-bottom: unset !important;
-
-            input {
-                width: 80%;
-            }
-            input::-ms-clear {
-                display: none;
-            }
-        }
-    }
     &__animation {
         margin-right: 0.5rem;
     }
@@ -78,15 +64,6 @@
             margin-top: 2.4rem;
         }
     }
-}
-
-.loader {
-    border: 1px solid var(--general-active);
-    border-top: 1px solid var(--brand-secondary);
-    border-radius: 50%;
-    width: 15px;
-    height: 15px;
-    animation: spin 1s linear infinite;
 }
 
 @keyframes spin {

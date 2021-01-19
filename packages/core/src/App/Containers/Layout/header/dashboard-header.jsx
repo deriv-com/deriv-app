@@ -55,7 +55,7 @@ const LoggedOutHeader = () => {
                 <div onClick={() => history.push(routes.dashboard)}>
                     {isDesktop() ? (
                         <React.Fragment>
-                            <DerivLogo style={{ marginRight: '0.684rem' }} />
+                            <DerivLogo className='dashboard-header__left--desktop-logo' />
                             <DerivText />
                         </React.Fragment>
                     ) : (

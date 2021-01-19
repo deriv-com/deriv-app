@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { observable, action, computed } from 'mobx';
 import { config } from '@deriv/bot-skeleton';
-import GTM from '../utils/gtm';
+import GTM from 'Utils/gtm';
 
 export default class FlyoutStore {
     block_listeners = [];

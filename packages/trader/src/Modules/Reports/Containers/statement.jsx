@@ -115,11 +115,11 @@ const Statement = ({
                 className={is_mx_mlt ? undefined : 'reports__meta--statement'}
                 filter_component={
                     <FilterComponent
-                        filtered_date_range={filtered_date_range}
                         date_from={date_from}
                         date_to={date_to}
                         handleDateChange={handleDateChange}
                         handleFilterChange={handleFilterChange}
+                        filtered_date_range={filtered_date_range}
                     />
                 }
                 is_statement

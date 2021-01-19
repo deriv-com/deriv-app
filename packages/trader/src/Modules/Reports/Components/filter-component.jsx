@@ -48,7 +48,7 @@ const TransactionFilter = ({ handleFilterChange }) => {
     );
 };
 
-const FilterComponent = ({ filtered_date_range, handleDateChange, date_from, date_to, handleFilterChange }) => {
+const FilterComponent = ({ date_from, date_to, handleFilterChange, handleDateChange, filtered_date_range }) => {
     return (
         <React.Fragment>
             <CompositeCalendar

@@ -148,7 +148,11 @@ const Popover = ({
                                             <Icon icon='IcInfoBlue' />
                                         </i>
                                     )}
-                                    {(has_error && <Text color='colored-background'> {message}</Text>) || (
+                                    {(has_error && (
+                                        <Text size='xxs' color='colored-background'>
+                                            {message}
+                                        </Text>
+                                    )) || (
                                         <Text line_height='m' size='xxs' className='dc-popover__bubble__text'>
                                             {message}
                                         </Text>

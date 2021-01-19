@@ -1,99 +1,73 @@
-$category-colours: (
-    search: #afffda,
-    trade_parameters: #f3f3f3,
-    purchase_conditions: #f3f3f3,
-    sell_conditions: #f3f3f3,
-    trade_results: #f3f3f3,
-    contract_details: #f3f3f3,
-    analysis: #f3f3f3,
-    tick_analysis: #f3f3f3,
-    indicators: #f3f3f3,
-    stats: #f3f3f3,
-    utility: #f3f3f3,
-    math: #f3f3f3,
-    text: #f3f3f3,
-    logic: #f3f3f3,
-    lists: #f3f3f3,
-    custom_functions: #f3f3f3,
-    variables: #f3f3f3,
-    loops: #f3f3f3,
-    time: #f3f3f3,
-    misc: #f3f3f3,
-    notifications: #f3f3f3,
-);
-
-.toolbox {
+.db-toolbox {
     $toolbox: &;
-    $white: #fff;
-    $lightgrey: #ebebeb;
-    $grey: #f4f4f6;
-    $gray20: #333;
     $category-text-spacing: 10px;
 
-    background-color: $white;
-    border: 1px solid $lightgrey;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    position: absolute;
-    user-select: none;
-    z-index: 1;
-    width: 250px;
-    visibility: visible;
+    height: var(--bot-content-height) !important;
+    top: 10.4rem !important;
+    width: 25.6rem !important;
 
-    &--hidden {
-        visibility: hidden;
+    &__search {
+        padding: 0.8rem;
+        height: 5rem;
+
+        &-field {
+            margin-bottom: 0 !important;
+
+            input::-ms-clear {
+                display: none;
+            }
+            .dc-input {
+                justify-content: center;
+
+                &__field {
+                    width: unset;
+                    height: 3.2rem;
+                    flex-grow: 1;
+                    padding: 0.8rem;
+                }
+                &__leading-icon {
+                    position: unset;
+                    pointer-events: unset;
+                    margin-left: 0.8rem;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+    &__content {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        user-select: none;
+        z-index: 1;
+        visibility: visible;
     }
     &__header {
         padding: 8px;
-        margin-bottom: 10px;
         position: relative;
         font-weight: bold;
         font-size: 1.6em;
-        background-color: $grey;
+        background-color: var(--general-section-1);
         text-align: center;
     }
     &__item {
         display: flex;
         flex-direction: row;
+
+        &:hover {
+            background-color: var(--general-hover);
+        }
     }
     &__category-arrow {
-        display: flex;
-        margin: auto;
         width: 16px;
         height: 16px;
         padding: 6px;
         background-image: url('/js/bot/media/ic-chevron-down-bold.svg');
+        margin-right: $category-text-spacing;
+        transition: transform 0.3s ease;
 
-        &--left {
-            margin-left: $category-text-spacing;
-            transform: rotate(90deg);
-        }
-        &--right {
-            margin-right: $category-text-spacing;
-            transform: rotate(270deg);
-        }
-    }
-    &__category-colour {
-        width: 5px;
-        flex-shrink: 0;
-    }
-    @each $category, $colour in $category-colours {
-        &__category {
-            &--#{$category} {
-                #{$toolbox}__category-colour {
-                    background-color: $colour;
-                }
-            }
-        }
-        &__category-return {
-            #{$toolbox}__category {
-                &--#{$category} {
-                    background-color: $lightgrey;
-                    color: $gray20;
-                    max-height: 38px;
-                }
-            }
+        &--active {
+            transform: rotate(180deg);
         }
     }
 
@@ -105,17 +79,11 @@ $category-colours: (
         overflow-y: auto;
         overflow-x: hidden;
     }
-    &__category-return {
-        cursor: pointer;
-        text-align: center;
-
-        #{$toolbox}__label {
-            margin-left: -($category-text-spacing * 2);
-        }
-    }
     &__category-text {
+        display: flex;
         align-self: center;
-        margin: $category-text-spacing;
+        justify-content: space-between;
+        margin: 10px;
         width: 100%;
     }
     &__description {
@@ -139,21 +107,14 @@ $category-colours: (
     }
     &__row {
         cursor: pointer;
-        border-top: 1px solid $lightgrey;
+        border-top: 1px solid var(--general-section-1);
 
-        &:hover {
-            background-color: var(--general-hover);
-        }
         #{$toolbox}__category--selected {
             background-color: var(--general-active);
         }
         &:last-of-type {
-            border-bottom: 1px solid $lightgrey;
+            border-bottom: 1px solid var(--general-section-1);
         }
-    }
-    &__separator {
-        padding: 10px 0;
-        border-top: 1px solid $lightgrey;
     }
     &__button.dc-btn {
         margin: 16px auto;
@@ -165,4 +126,23 @@ $category-colours: (
         font-weight: bold;
         line-height: 1.4;
     }
+    &__sub-category {
+        &-row {
+            padding: 1rem;
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--general-hover);
+            }
+        }
+    }
+}
+
+.loader {
+    border: 1px solid var(--general-active);
+    border-top: 1px solid var(--brand-secondary);
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: spin 1s linear infinite;
 }

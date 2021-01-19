@@ -15,7 +15,11 @@ const SetResidenceForm = ({
     residence_list,
 }) => (
     <div className={`${class_prefix}__residence-selection`}>
-        {!!header_text && <Text as='p' weight='bold' className={`${class_prefix}__heading`}>{header_text}</Text>}
+        {!!header_text && (
+            <Text as='p' weight='bold' className={`${class_prefix}__heading`}>
+                {header_text}
+            </Text>
+        )}
         <p className={`${class_prefix}__${header_text ? 'text' : 'heading'}`}>{localize('Where do you live?')}</p>
         <Field name='residence'>
             {({ field }) => (

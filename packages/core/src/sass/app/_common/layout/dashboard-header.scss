@@ -9,30 +9,60 @@
     top: 0;
     transition: opacity 0.3s;
     backface-visibility: hidden;
-    background-color: var(--brand-dark-grey);
-    color: var(--text-colored-background);
+    padding: 0 4rem;
+    justify-content: space-between;
 
-    &__menu-items {
-        margin: 0 1.6rem;
-        width: 100%;
+    > * {
+        align-items: center;
         display: flex;
-        justify-content: space-between;
+    }
+
+    &__left {
+        > * {
+            cursor: pointer;
+        }
+    }
+
+    &--logged-in {
+        background-color: var(--general-main-1);
+        color: var(--brand-dark-grey);
+    }
+
+    &__right--logged-in {
+        > * {
+            cursor: pointer;
+        }
+        &-icon {
+            margin-right: 0.8rem;
+        }
+    }
+
+    &--logged-out {
+        background-color: var(--brand-dark-grey);
+        color: var(--text-colored-background);
+    }
+
+    &__middle--logged-out {
+        > :not(:first-child) {
+            margin-left: 4.8rem;
+        }
 
         > * {
-            align-items: center;
-            display: flex;
+            cursor: pointer;
         }
+    }
 
-        &-middle {
-            position: fixed;
-            height: 48px;
-            left: 50%;
-            top: 0;
-            transform: translate(-50%, 0);
-
-            > :not(:first-child) {
-                margin-left: 2.4rem;
-            }
-        }
+    &__preloader {
+        display: flex;
+        padding: 0 4rem;
+        align-items: center;
+        justify-content: flex-end;
+        position: fixed;
+        z-index: 100;
+        box-sizing: border-box;
+        height: $HEADER_HEIGHT;
+        width: 100%;
+        top: 0;
+        background-color: var(--general-main-1);
     }
 }

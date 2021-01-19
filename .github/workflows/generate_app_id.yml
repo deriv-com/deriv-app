@@ -35,7 +35,7 @@ jobs:
                       A production App ID was automatically generated for this PR. ([log](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}))
 
                       - **PR**: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})
-                      - **URLs**: 
+                      - **URLs**:
                           - **w/ App ID + Server**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}
                           - **Original**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
                       - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
@@ -45,9 +45,18 @@ jobs:
 
                         ```
                         - **PR**: [${{ steps.generate_app_id.outputs.pr_url }}](${{ steps.generate_app_id.outputs.pr_url }})
-                        - **URLs**: 
+                        - **URLs**:
                             - **w/ App ID + Server**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}
                             - **Original**: ${{ steps.vercel_preview_url.outputs.vercel_preview_url }}
                         - **App ID**: `${{ steps.generate_app_id.outputs.app_id }}`
                         ```
                       </details>
+
+            - name: Store generated URL in artifact
+              run: echo "HOME_URL=${{ steps.vercel_preview_url.outputs.vercel_preview_url }}?qa_server=frontend.binaryws.com&app_id=${{ steps.generate_app_id.outputs.app_id }}" >> ${{ github.workspace }}/url.txt
+            - name: Upload artifact
+              uses: actions/upload-artifact@master
+              with:
+                  name: generated_url
+                  path: ${{ github.workspace }}/url.txt
+                  retention-days: 1

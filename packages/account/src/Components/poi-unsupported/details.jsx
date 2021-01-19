@@ -19,12 +19,12 @@ const Details = ({ step, active_step, root_class, onConfirm }) => {
     };
 
     const handleConfirm = () => {
-        const { document_type, page_type } = step;
+        const { documentType, pageType } = step;
         const file_data = {
             file,
             step: active_step,
-            document_type,
-            page_type,
+            documentType,
+            pageType,
         };
 
         onConfirm(file_data, () => {
@@ -41,7 +41,7 @@ const Details = ({ step, active_step, root_class, onConfirm }) => {
         return <FilePending {...step} getSocketFunc={getSocketFunc} onFileDrop={onFileDrop} root_class={root_class} />;
     }
 
-    const is_selfie = step.document_type === 'selfie';
+    const is_selfie = step.documentType === 'selfie';
 
     return (
         <PreviewConfirm
@@ -52,7 +52,7 @@ const Details = ({ step, active_step, root_class, onConfirm }) => {
             cancel_btn_text={localize('Upload a different file')}
             confirm_btn_text={localize('Confirm')}
             title={is_selfie ? localize('Confirm your documents') : localize('Confirm your document')}
-            description={step.confirm_description}
+            description={step.confirmDescription}
             is_selfie={is_selfie}
         />
     );

@@ -66,11 +66,51 @@ const DetailComponent = ({ steps, onClickBack, root_class }) => {
 
     const onUploadError = () => dispatchFileList({ type: ACTIONS.REMOVE_ALL });
 
+    const uploadFiles = files =>
+        new Promise((resolve, reject) => {
+            const files_length = files.length;
+            let file_to_upload_index = 0;
+            const results = [];
+            const uploadNext = () => {
+                const item = files[file_to_upload_index];
+                const { file, documentType, pageType } = item;
+                uploadFile(file, WS.getSocket, {
+                    documentType,
+                    pageType,
+                    expirationDate: '2022-10-30',
+                    documentId: '1234',
+                })
+                    .then(res => {
+                        file_to_upload_index += 1;
+                        if (file_to_upload_index < files_length) {
+                            results.push(res);
+                            uploadNext();
+                        } else {
+                            resolve(results);
+                        }
+                    })
+                    .catch(error => {
+                        reject(error);
+                    });
+            };
+            uploadNext();
+        });
+
     const onComplete = files => {
         setStatus(STATUS.is_uploading);
 
-        const { file, document_type, page_type } = files[0];
-        uploadFile(file, WS.getSocket, document_type, page_type)
+        // const { file, documentType, pageType } = files[0];
+        // uploadFile(file, WS.getSocket, documentType, pageType)
+        //     .then(rs => {
+        //         console.log(rs);
+        //         setStatus(STATUS.is_completed);
+        //     })
+        //     .catch(err => {
+        //         onUploadError();
+        //         console.log(err);
+        //     });
+
+        uploadFiles(files)
             .then(rs => {
                 console.log(rs);
                 setStatus(STATUS.is_completed);

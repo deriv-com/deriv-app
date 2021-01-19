@@ -7,15 +7,17 @@ const fileReadErrorMessage = filename => {
     return localize('Unable to read file {{name}}', { name: filename });
 };
 
-const uploadFile = (file, getSocket, settings) => {
-    if (!file) return 0;
+const uploadFile = (file, getSocket, settings) =>
+    new Promise((resolve, reject) => {
+        if (!file) {
+            reject();
+        }
 
-    // File uploader instance connected to binary_socket
-    const uploader = new DocumentUploader({ connection: getSocket() });
+        // File uploader instance connected to binary_socket
+        const uploader = new DocumentUploader({ connection: getSocket() });
 
-    let is_file_error = false;
+        let is_file_error = false;
 
-    return new Promise((resolve, reject) => {
         compressImageFiles([file]).then(files_to_process => {
             readFiles(files_to_process, fileReadErrorMessage, settings).then(processed_files => {
                 processed_files.forEach(item => {
@@ -30,20 +32,26 @@ const uploadFile = (file, getSocket, settings) => {
                 }
 
                 // send files
-                const uploader_promise = uploader.upload(processed_files[0]).then(api_response => api_response);
-                resolve(uploader_promise);
+                uploader
+                    .upload(processed_files[0])
+                    .then(api_response => {
+                        resolve(api_response);
+                    })
+                    .catch(error => {
+                        reject(error);
+                    });
             });
         });
     });
-};
 
 uploadFile.propTypes = {
     file: PropTypes.element.isRequired,
     getSocket: PropTypes.func.isRequired,
     settings: PropTypes.shape({
-        document_type: PropTypes.oneOf(Object.values(DOCUMENT_TYPE)).isRequired,
-        page_type: PropTypes.oneOf(Object.values(PAGE_TYPE)),
-        expiration_date: PropTypes.string,
+        documentType: PropTypes.oneOf(Object.values(DOCUMENT_TYPE)).isRequired,
+        pageType: PropTypes.oneOf(Object.values(PAGE_TYPE)),
+        expirationDate: PropTypes.string,
+        documentId: PropTypes.string,
     }),
 };
 

@@ -1,8 +1,8 @@
 import { localize } from '@deriv/translations';
 
 export const step_selfie = {
-    document_type: 'national_identity_card',
-    page_type: 'photo',
+    documentType: 'national_identity_card',
+    pageType: 'photo',
     icon: 'IcSelfie',
     title: localize('Upload your selfie'),
     description: localize(
@@ -17,8 +17,8 @@ export const getDocumentIndex = ({ residence }) => [
         icon: 'IcPoiPassport',
         steps: [
             {
-                document_type: 'passport',
-                page_type: 'front',
+                documentType: 'passport',
+                pageType: 'front',
                 icon: 'IcPassport',
                 title: localize('Upload the page of your passport that contains your photo'),
             },
@@ -31,18 +31,18 @@ export const getDocumentIndex = ({ residence }) => [
         icon: 'IcPoiDrivingLicence',
         steps: [
             {
-                document_type: 'driving_licence',
-                page_type: 'front',
+                documentType: 'driving_licence',
+                pageType: 'front',
                 icon: 'IcDrivingLicenceFront',
                 title: localize('Upload the front of your driving licence'),
                 description: localize('You’ll be asked to upload the back of your driving licence next.'),
-                confirm_description: localize(
+                confirmDescription: localize(
                     'After confirming, you’ll be asked to upload the back of your driving licence next.'
                 ),
             },
             {
-                document_type: 'driving_licence',
-                page_type: 'back',
+                documentType: 'driving_licence',
+                pageType: 'back',
                 icon: 'IcIdCardBack',
                 title: localize('Upload the back of your driving licence'),
             },
@@ -55,18 +55,18 @@ export const getDocumentIndex = ({ residence }) => [
         icon: 'IcPoiIdentityCard',
         steps: [
             {
-                document_type: 'national_identity_card',
-                page_type: 'front',
+                documentType: 'national_identity_card',
+                pageType: 'front',
                 icon: 'IcIdCardFront',
                 title: localize('Upload the front of your identity card'),
                 description: localize('You’ll be asked to upload the back of your identity card next.'),
-                confirm_description: localize(
+                confirmDescription: localize(
                     'After confirming, you’ll be asked to upload the back of your identity card next.'
                 ),
             },
             {
-                document_type: 'national_identity_card',
-                page_type: 'back',
+                documentType: 'national_identity_card',
+                pageType: 'back',
                 icon: 'IcIdCardBack',
                 title: localize('Upload the back of your identity card'),
             },
@@ -81,18 +81,18 @@ export const getDocumentIndex = ({ residence }) => [
                   icon: 'IcPoiNimcSlip',
                   steps: [
                       {
-                          document_type: 'national_identity_card',
-                          page_type: 'front',
+                          documentType: 'national_identity_card',
+                          pageType: 'front',
                           icon: 'IcPoiNimcSlipHorizontal',
                           title: localize('Upload your NIMC slip'),
                           description: localize('You’ll be asked to upload your age declaration document next.'),
-                          confirm_description: localize(
+                          confirmDescription: localize(
                               'After confirming, you’ll be asked to upload your age declaration document next.'
                           ),
                       },
                       {
-                          document_type: 'other',
-                          page_type: 'front',
+                          documentType: 'other',
+                          pageType: 'front',
                           icon: 'IcDop',
                           title: localize('Upload your age declaration document'),
                       },

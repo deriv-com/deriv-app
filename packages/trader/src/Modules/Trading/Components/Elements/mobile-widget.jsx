@@ -53,9 +53,15 @@ class MobileWidget extends React.Component {
             h: [localize('hour'), localize('hours')],
             d: [localize('day'), localize('days')],
         };
-        const formatted_duration_unit = +duration === 1 ? lookup[duration_unit][0] : lookup[duration_unit][1];
 
-        return `${duration} ${formatted_duration_unit}`;
+        try {
+            if (!duration_unit) return '';
+            const formatted_duration_unit = +duration === 1 ? lookup[duration_unit][0] : lookup[duration_unit][1];
+
+            return `${duration} ${formatted_duration_unit}`;
+        } catch (e) {
+            return '';
+        }
     }
 
     isVisible = component => {
@@ -83,7 +89,7 @@ class MobileWidget extends React.Component {
                 {is_multiplier ? (
                     <MultiplierAmountWidget />
                 ) : (
-                    <div className='mobile-widget' onClick={this.toggleWidget}>
+                    <div id='duration_amount_selector' className='mobile-widget' onClick={this.toggleWidget}>
                         <div className='mobile-widget__duration'>{this.getHumanReadableDuration()}</div>
                         <div className='mobile-widget__amount'>
                             <Money amount={amount} currency={currency} show_currency />

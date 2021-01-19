@@ -406,10 +406,63 @@
     display: flex;
     justify-content: center;
     margin-top: 2.4em;
-    justify-content: center;
+    height: 100%;
 
     @include mobile {
         flex-direction: column;
+    }
+}
+
+.mt5-real-accounts-display {
+    transition: margin-bottom 0.3s ease-in-out;
+    margin-bottom: var(--mt5-real-acc-margin-bottom);
+    &__carousel {
+        margin-bottom: -4rem;
+    }
+    &__add-trading-server {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        height: 4rem;
+        position: relative;
+        margin-top: -4rem;
+        margin-left: 2rem;
+
+        &-text {
+            margin-left: 1rem;
+        }
+        &-icon {
+            color: var(--status-colored-background);
+            background-color: var(--brand-red-coral);
+            border-radius: 50%;
+            width: 2.4rem;
+            height: 2.4rem;
+            font-size: 1.8rem;
+            display: block;
+            text-align: center;
+            padding: 0.2rem;
+        }
+        &-exit,
+        &-enter-done {
+            transition: all 0.3s ease-in-out;
+            opacity: 1;
+        }
+        &-enter,
+        &-exit-done {
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+        }
+        &-wrapper {
+            @include mobile {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: 2rem;
+            }
+        }
     }
 }
 
@@ -420,14 +473,77 @@
     flex-flow: column nowrap;
     min-height: 35.8rem;
     width: 30.4em;
+    position: relative;
+    @include desktop {
+        height: 100%;
+    }
+    @include mobile {
+        height: 44rem;
+    }
+
+    &__wrapper {
+        --mt5-card-wrapper-grid: 1fr;
+        display: grid;
+        grid-template-rows: var(--mt5-card-wrapper-grid);
+        height: 100%;
+        &:not(:last-child) {
+            margin-right: 2.4rem;
+        }
+    }
 
     &__logged-out {
         min-height: 29rem;
     }
 
-    &:not(:last-child) {
-        margin-right: 2.4rem;
+    &__add-server {
+        font-size: 1.4rem;
+        cursor: pointer;
+        display: grid;
+        grid-auto-flow: column;
+        grid-gap: 0.4rem;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 4rem;
+        color: var(--text-prominent);
+        @include mobile {
+            height: 6rem;
+        }
+
+        &-exit,
+        &-enter-done {
+            transition: all 0.3s ease-in-out;
+            opacity: 1;
+            height: 4rem;
+        }
+        &-enter,
+        &-exit-done {
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+            height: 0;
+        }
+        &--icon {
+            color: var(--status-colored-background);
+            background-color: var(--brand-red-coral);
+            border-radius: 100%;
+            width: 2.4rem;
+            height: 2.4rem;
+            font-size: 1.8rem;
+            display: block;
+            text-align: center;
+            padding: 0.2rem;
+        }
     }
+
+    &__server {
+        font-size: 1.4rem;
+        text-align: left;
+        width: 27.2rem;
+        &--value {
+            font-weight: bold;
+        }
+    }
+
     &:hover {
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
     }
@@ -465,6 +581,10 @@
 
         &--demo {
             border-bottom-color: var(--brand-secondary);
+        }
+        &--server {
+            // TODO: Add a CSS variable
+            border-bottom-color: $color-blue-2;
         }
         @include mobile {
             left: calc(100vw - 11.6rem);
@@ -577,7 +697,7 @@
         display: flex;
         padding: 0.8rem;
         justify-content: center;
-        margin: 2.4rem 0 1.6rem;
+        margin: 1rem 0 1.6rem;
         width: 272px;
 
         strong {
@@ -602,7 +722,6 @@
         }
     }
     &__action-wrapper {
-        height: 4rem;
         margin: 0 auto 1.3rem;
         padding-top: 1rem;
         width: 75%;

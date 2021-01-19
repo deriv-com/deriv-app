@@ -13,6 +13,7 @@ import {
     PasswordMeter,
     Text,
     Button,
+    RadioGroup,
 } from '@deriv/components';
 import { isMobile, routes, validLength, validPassword, getErrorMessages, getStaticUrl } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -106,12 +107,11 @@ const MT5PasswordForm = props => (
             handleBlur,
             errors,
             values,
-            isSubmitting,
             touched,
         }) => (
             <form onSubmit={handleSubmit}>
                 <div className='mt5-password-modal__content'>
-                    <h2>
+                    <h2 className='mt5-password-modal__title'>
                         <Localize i18n_default_text='Confirm your password' />
                     </h2>
                     <div className='dc-modal__container_mt5-password-modal__body'>
@@ -160,19 +160,113 @@ const MT5PasswordForm = props => (
                     </div>
                 </div>
                 <FormSubmitButton
-                    is_disabled={isSubmitting || !values.password || Object.keys(errors).length > 0}
+                    is_disabled={!values.password || Object.keys(errors).length > 0}
                     has_cancel
                     cancel_label={localize('Reset Password')}
                     onCancel={props.handleCancel}
                     is_absolute={isMobile()}
-                    is_loading={isSubmitting}
-                    label={localize('Next')}
+                    is_loading={props.is_submitting}
+                    label={props.should_show_server_form ? localize('Next') : localize('Add account')}
                     form_error={props.form_error}
                 />
             </form>
         )}
     </Formik>
 );
+
+const MT5ServerForm = ({ ...props }) => {
+    const available_servers = React.useMemo(() => {
+        return props.trading_servers
+            .filter(server => !server.disabled)
+            .map(server => {
+                // Transform properties to support radiogroup
+                const is_disabled = props.mt5_login_list.some(login_item => login_item.server === server.id);
+                return {
+                    ...server,
+                    ...{
+                        label: `${server.geolocation.region} ${
+                            server.geolocation.sequence === 1 ? '' : server.geolocation.sequence
+                        } ${is_disabled ? '(Account created)' : ''}`,
+                        value: server.id,
+                        disabled: is_disabled,
+                    },
+                };
+            })
+            .sort((a, b) => (a.recommended ? a : b));
+    }, [props.trading_servers]);
+
+    return (
+        <Formik
+            initialValues={{
+                password: props.password,
+                server:
+                    props.trading_servers.find(
+                        server =>
+                            !server.disabled &&
+                            !props.mt5_login_list.some(login_item => login_item.server === server.id)
+                    )?.id ?? '',
+            }}
+            validate={props.validateServer}
+            onSubmit={(values, actions) => {
+                props.submitMt5Form(
+                    {
+                        password: values.password,
+                        server: values.server,
+                    },
+                    actions.setSubmitting
+                );
+            }}
+        >
+            {({ handleSubmit, setFieldValue, errors, values, isSubmitting }) => (
+                <form onSubmit={handleSubmit}>
+                    <div className='mt5-password-modal__content'>
+                        <h2>
+                            <Localize
+                                i18n_default_text='Choose a server for your DMT5 {{ account_type }} account'
+                                values={{
+                                    account_type: props.account_title,
+                                }}
+                            />
+                        </h2>
+                        <div className='dc-modal__container_mt5-password-modal__body'>
+                            <div className='input-element'>
+                                <RadioGroup
+                                    className='mt5-password-modal__radio'
+                                    name='server'
+                                    required
+                                    selected={
+                                        props.trading_servers.find(
+                                            server =>
+                                                !server.disabled &&
+                                                !props.mt5_login_list.some(
+                                                    login_item => login_item.server === server.id
+                                                )
+                                        )?.id
+                                    }
+                                    onToggle={e => {
+                                        e.persist();
+                                        setFieldValue('server', e.target.value);
+                                    }}
+                                    items={available_servers}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <FormSubmitButton
+                        is_disabled={isSubmitting || !values.server || Object.keys(errors).length > 0}
+                        has_cancel
+                        cancel_label={localize('Back')}
+                        onCancel={props.onBack}
+                        is_absolute={isMobile()}
+                        is_loading={isSubmitting}
+                        label={localize('Next')}
+                        form_error={props.form_error}
+                    />
+                </form>
+            )}
+        </Formik>
+    );
+};
 
 const MT5PasswordModal = ({
     account_status,
@@ -190,12 +284,16 @@ const MT5PasswordModal = ({
     setMt5SuccessDialog,
     setMt5Error,
     submitMt5Password,
+    trading_servers,
+    mt5_login_list,
 }) => {
     const handleCancel = () => {
         location.href = getStaticUrl('/reset-password');
         closeModal();
     };
 
+    const [password, setPassword] = React.useState('');
+    const [is_submitting, setIsSubmitting] = React.useState(false); // TODO handle this better
     const validatePassword = values => {
         const errors = {};
 
@@ -222,6 +320,7 @@ const MT5PasswordModal = ({
     const closeDialogs = () => {
         setMt5SuccessDialog(false);
         setMt5Error(false);
+        setPassword('');
     };
 
     const closeModal = () => {
@@ -246,6 +345,26 @@ const MT5PasswordModal = ({
         (!has_mt5_error || is_password_reset || is_password_error);
     const should_show_success = !has_mt5_error && is_mt5_success_dialog_enabled;
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
+    const is_real_synthetic = [account_type.category, account_type.type].join('_') === 'real_synthetic';
+    const should_show_server_form = (is_logged_in ? !is_eu : !is_eu_country) && is_real_synthetic && !!password;
+
+    // TODO handle submitting password without server in a better way
+    React.useEffect(() => {
+        if (!should_show_server_form && password && !is_submitting) {
+            setIsSubmitting(true);
+        } else if (is_submitting && password && is_logged_in) {
+            submitMt5Password({ password }, state => {
+                setPassword('');
+                setIsSubmitting(state);
+            });
+        }
+    }, [password, should_show_server_form, is_submitting]);
+
+    React.useEffect(() => {
+        if (has_mt5_error || is_mt5_success_dialog_enabled) {
+            setPassword('');
+        }
+    }, [has_mt5_error, is_mt5_success_dialog_enabled]);
 
     if (account_status.status.includes('password_reset_required')) {
         return (
@@ -287,6 +406,27 @@ const MT5PasswordModal = ({
                     has_close_icon
                     is_title_blank
                 >
+                    {should_show_server_form ? (
+                        <MT5ServerForm
+                            trading_servers={trading_servers}
+                            mt5_login_list={mt5_login_list}
+                            account_title={account_title}
+                            password={password}
+                            submitMt5Form={(v, setSubmitting) => submitMt5Password(v, setSubmitting)}
+                            onBack={() => setPassword('')}
+                        />
+                    ) : (
+                        <MT5PasswordForm
+                            is_submitting={is_submitting}
+                            account_title={account_title}
+                            closeModal={closeModal}
+                            form_error={form_error}
+                            submitMt5Password={setPassword}
+                            is_real_financial_stp={is_real_financial_stp}
+                            validatePassword={validatePassword}
+                            should_show_server_form={should_show_server_form}
+                        />
+                    )}
                     {!is_password_reset && (
                         <MT5PasswordForm
                             account_title={account_title}
@@ -323,6 +463,27 @@ const MT5PasswordModal = ({
                         />
                     )}
                     {is_password_reset && <MT5PasswordResetHint closeModal={closeModal} />}
+                    {should_show_server_form ? (
+                        <MT5ServerForm
+                            trading_servers={trading_servers}
+                            mt5_login_list={mt5_login_list}
+                            account_title={account_title}
+                            password={password}
+                            submitMt5Form={(v, setSubmitting) => submitMt5Password(v, setSubmitting)}
+                            onBack={() => setPassword('')}
+                        />
+                    ) : (
+                        <MT5PasswordForm
+                            is_submitting={is_submitting}
+                            account_title={account_title}
+                            closeModal={closeModal}
+                            form_error={form_error}
+                            is_real_financial_stp={is_real_financial_stp}
+                            submitMt5Password={setPassword}
+                            validatePassword={validatePassword}
+                            should_show_server_form={should_show_server_form}
+                        />
+                    )}
                 </MobileDialog>
             </MobileWrapper>
             <SuccessDialog
@@ -349,6 +510,9 @@ MT5PasswordModal.propTypes = {
     email: PropTypes.string,
     error_message: PropTypes.string,
     has_mt5_error: PropTypes.bool,
+    is_eu: PropTypes.bool,
+    is_eu_country: PropTypes.bool,
+    is_logged_in: PropTypes.bool,
     is_mt5_password_modal_enabled: PropTypes.bool,
     is_mt5_success_dialog_enabled: PropTypes.bool,
     setMt5Error: PropTypes.func,
@@ -365,9 +529,14 @@ export default connect(({ client, modules }) => ({
     error_message: modules.mt5.error_message,
     error_type: modules.mt5.error_type,
     has_mt5_error: modules.mt5.has_mt5_error,
+    is_eu: client.is_eu,
+    is_eu_country: client.is_eu_country,
+    is_logged_in: client.is_logged_in,
     is_mt5_success_dialog_enabled: modules.mt5.is_mt5_success_dialog_enabled,
     is_mt5_password_modal_enabled: modules.mt5.is_mt5_password_modal_enabled,
     setMt5Error: modules.mt5.setError,
     setMt5SuccessDialog: modules.mt5.setMt5SuccessDialog,
     submitMt5Password: modules.mt5.submitMt5Password,
+    trading_servers: client.trading_servers,
+    mt5_login_list: client.mt5_login_list,
 }))(withRouter(MT5PasswordModal));

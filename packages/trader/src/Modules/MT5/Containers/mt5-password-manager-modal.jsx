@@ -482,6 +482,7 @@ MT5PasswordManagerModal.propTypes = {
     email: PropTypes.string,
     is_visible: PropTypes.bool,
     selected_account: PropTypes.string,
+    selected_server: PropTypes.string,
     selected_login: PropTypes.string,
     toggleModal: PropTypes.func,
 };

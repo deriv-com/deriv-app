@@ -113,6 +113,23 @@
             cursor: not-allowed !important;
         }
     }
+    &--alternate {
+        background: var(--button-tertiary-default);
+        border: 2px solid var(--button-primary-default);
+
+        &:hover:not([disabled]) {
+            background: var(--button-primary-default);
+
+            .dc-btn__text {
+                color: var(--text-colored-background);
+            }
+        }
+
+        .dc-btn__text,
+        .dc-btn__icon {
+            color: var(--brand-red-coral);
+        }
+    }
     /* TODO: confirm this button with designer are we still using this? */
     &--green {
         background: var(--status-success);

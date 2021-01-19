@@ -49,10 +49,10 @@ const MT5PasswordResetHint = ({ closeModal }) => {
     return (
         <div className='mt5-password-hint'>
             <Text as='p' size='s' weight='bold' align='center' className='mt5-password-hint__header'>
-                <Localize i18n_default_text='Too many failed attempts' />
+                <Localize i18n_default_text='Too many failed attempt' />
             </Text>
             <Text as='p' size='xxs' align='center' className='mt5-password-hint__description'>
-                <Localize i18n_default_text='Unavailable because of too many failed attempts. Please try again in an hour or reset your account password to continue.' />
+                <Localize i18n_default_text='Unavailable because of too many failed attempts. Please try again in a minute or reset your account password to continue.' />
             </Text>
             <div className='mt5-password-hint__buttons'>
                 <Button large onClick={closeModal} secondary>
@@ -377,7 +377,7 @@ const MT5PasswordModal = ({
         }
     }, [has_mt5_error, is_mt5_success_dialog_enabled]);
 
-    if (account_status.status.includes('password_reset_required')) {
+    if (account_status?.status?.includes?.('password_reset_required')) {
         return (
             <React.Fragment>
                 <DesktopWrapper>

@@ -6,8 +6,9 @@
 }
 .dc-modal__container_mt5-password-modal,
 .dc-mobile-dialog__mt5-password-modal {
-    max-width: 424px;
+    max-width: 384px;
     min-height: 300px;
+    min-width: initial !important;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

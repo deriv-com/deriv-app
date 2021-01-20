@@ -187,7 +187,11 @@ export default class CashierStore extends BaseStore {
 
     @computed
     get is_payment_agent_visible() {
-        return !!(this.config.payment_agent.filtered_list.length || this.config.payment_agent.agents.length);
+        let result = !!(this.config.payment_agent.filtered_list.length || this.config.payment_agent.agents.length);
+        // console.log('result');
+        // console.log(this.config.payment_agent.filtered_list.length);
+        // console.log(result);
+        return result;
     }
 
     @computed

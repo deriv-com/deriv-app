@@ -9,6 +9,8 @@ let client_store, common_store, gtm_store;
 
 // TODO: update commented statements to the corresponding functions from app
 const BinarySocketGeneral = (() => {
+    let session_timeout;
+
     const onDisconnect = () => {
         common_store.setIsSocketOpened(false);
     };
@@ -56,7 +58,7 @@ const BinarySocketGeneral = (() => {
                 // Header.upgradeMessageVisibility();
                 break;
             case 'get_self_exclusion':
-                // SessionDurationLimit.exclusionResponseHandler(response);
+                setSessionDurationLimit(response);
                 break;
             case 'get_settings':
                 if (response.get_settings) {
@@ -83,6 +85,18 @@ const BinarySocketGeneral = (() => {
         if (residence) {
             client_store.setResidence(residence);
             WS.landingCompany(residence);
+        }
+    };
+
+    const setSessionDurationLimit = user_limits => {
+        const duration = user_limits?.get_self_exclusion?.session_duration_limit;
+
+        if (duration) {
+            session_timeout = setTimeout(() => {
+                client_store.logout();
+            }, duration * 60 * 1000);
+        } else {
+            clearTimeout(session_timeout);
         }
     };
 

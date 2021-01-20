@@ -32,6 +32,7 @@ const Button = ({
     primary,
     secondary,
     alternate,
+    dashboard_primary,
     small,
     tertiary,
     ...props
@@ -41,6 +42,7 @@ const Button = ({
         {
             'dc-btn__effect': has_effect,
             'dc-btn--primary': primary,
+            'dc-btn--primary-dashboard': dashboard_primary,
             'dc-btn--secondary': secondary,
             'dc-btn--tertiary': tertiary,
             'dc-btn--alternate': alternate,

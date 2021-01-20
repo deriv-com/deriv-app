@@ -32,7 +32,7 @@ const FormSubmitButton = ({
                 type='submit'
                 text={label}
                 is_loading={is_loading}
-                primary
+                dashboard_primary
                 large
                 {...props}
             />

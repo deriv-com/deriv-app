@@ -8,12 +8,12 @@ const ErrorComponent = ({ header, message, button_link, onClickButton, button_te
     <div className='cashier__wrapper cashier__wrapper-error'>
         <Icon icon='IcCashierError' className='cashier-error__icon' />
         {header && (
-            <Text as='h2' color='loss-danger' weight='bold' className='cashier-error__header'>
+            <Text as='h2' color='loss-danger' weight='bold' align='center' className='cashier-error__header'>
                 {header}
             </Text>
         )}
         {message && (
-            <Text as='p' size='xs' line_height='s' className='cashier__paragraph'>
+            <Text as='p' size='xs' line_height='s' align='center' className='cashier__paragraph'>
                 {message}
             </Text>
         )}

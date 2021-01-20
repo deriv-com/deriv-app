@@ -6,9 +6,18 @@
     }
     &__title {
         padding-bottom: 2.4rem;
+
+        @include mobile {
+            font-size: 18px;
+        }
     }
     &__content {
         display: flex;
+
+        @include mobile {
+            flex-direction: column-reverse;
+            align-items: center;
+        }
     }
     &__wallet {
         width: 7rem;
@@ -21,6 +30,10 @@
             grid-template-columns: 1fr 1fr 1fr;
             grid-gap: 0.8rem;
             padding-right: 1.6rem;
+
+            @include mobile {
+                margin-top: 1.6rem;
+            }
         }
 
         svg {
@@ -40,11 +53,15 @@
         flex-direction: column;
         justify-content: space-between;
 
-        &-background {
+        &::after {
+            content: '';
+            background-image: url('/js/dashboard/assets/images/app-card-bg.svg');
             position: absolute;
             top: 0;
             z-index: -1;
             left: 0;
+            width: 100%;
+            height: 3.2rem;
         }
 
         &-footer {

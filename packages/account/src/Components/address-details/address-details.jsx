@@ -97,19 +97,30 @@ const AddressDetails = ({
                     {({ setRef, height }) => (
                         <form ref={setRef} onSubmit={handleSubmit}>
                             <Div100vhContainer className='details-form' height_offset='110px' is_disabled={isDesktop()}>
-                                <Text
-                                    as='p'
-                                    align='left'
-                                    size='xxs'
-                                    line_height='l'
-                                    className='details-form__description'
-                                >
-                                    <strong>
-                                        <Localize i18n_default_text='Only use an address for which you have proof of residence - ' />
-                                    </strong>
-                                    <Localize i18n_default_text='a recent utility bill (e.g. electricity, water, gas, landline, or internet), bank statement, or government-issued letter with your name and this address.' />
-                                </Text>
+                                {!is_dashboard && (
+                                    <Text
+                                        as='p'
+                                        align='left'
+                                        size='xxs'
+                                        line_height='l'
+                                        className='details-form__description'
+                                    >
+                                        <strong>
+                                            <Localize i18n_default_text='Only use an address for which you have proof of residence - ' />
+                                        </strong>
+                                        <Localize i18n_default_text='a recent utility bill (e.g. electricity, water, gas, landline, or internet), bank statement, or government-issued letter with your name and this address.' />
+                                    </Text>
+                                )}
                                 <ThemedScrollbars height={height} className='details-form__scrollbar'>
+                                    {is_dashboard && (
+                                        <div className='details-form__sub-header'>
+                                            <Text size='xs'>
+                                                {localize(
+                                                    'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.'
+                                                )}
+                                            </Text>
+                                        </div>
+                                    )}
                                     <div className='details-form__elements'>
                                         <InputField
                                             name='address_line_1'

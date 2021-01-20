@@ -1,46 +1,12 @@
 import { Formik } from 'formik';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 
-import {
-    DesktopWrapper,
-    FormSubmitButton,
-    Icon,
-    MobileWrapper,
-    MobileDialog,
-    Modal,
-    PasswordInput,
-    PasswordMeter,
-    Text,
-} from '@deriv/components';
+import { FormSubmitButton, Modal, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { isMobile, validLength, validPassword, getErrorMessages } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { TAccountType } from 'Types';
 import { useStores } from 'Stores';
 import './mt5-password-modal.scss';
-
-const getSubmitText = (account_title: string, category: string) => {
-    if (category === 'real') {
-        return localize(
-            'You have created a DMT5 {{account_title}} account. To start trading, transfer funds from your Deriv account into this account.',
-            { account_title }
-        );
-    }
-
-    return localize('You have created a DMT5 {{account_title}} account.', { account_title });
-};
-
-const getIconFromType = (type: TAccountType) => {
-    switch (type) {
-        case 'synthetic':
-            return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
-        case 'financial':
-            return <Icon icon='IcMt5FinancialPlatform' size={128} />;
-        default:
-            return <Icon icon='IcMt5FinancialStpPlatform' size={128} />;
-    }
-};
 
 const MT5PasswordForm = ({ ...props }) => (
     <Formik
@@ -183,42 +149,21 @@ const MT5PasswordModal = () => {
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
 
     return (
-        <React.Fragment>
-            <DesktopWrapper>
-                <Modal
-                    className='mt5-password-modal'
-                    is_open={should_show_password}
-                    toggleModal={closeModal}
-                    title={localize('Confirm your account password')}
-                    has_close_icon
-                >
-                    <MT5PasswordForm
-                        account_title={account_title}
-                        closeModal={closeModal}
-                        submitMt5Password={submit}
-                        is_real_financial_stp={is_real_financial_stp}
-                        validatePassword={validatePassword}
-                    />
-                </Modal>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <MobileDialog
-                    has_full_height
-                    portal_element_id='modal_root'
-                    visible={should_show_password}
-                    onClose={closeModal}
-                    wrapper_classname='mt5-password-modal'
-                >
-                    <MT5PasswordForm
-                        account_title={account_title}
-                        closeModal={closeModal}
-                        is_real_financial_stp={is_real_financial_stp}
-                        submitMt5Password={submit}
-                        validatePassword={validatePassword}
-                    />
-                </MobileDialog>
-            </MobileWrapper>
-        </React.Fragment>
+        <Modal
+            className='mt5-password-modal'
+            is_open={should_show_password}
+            toggleModal={closeModal}
+            title={localize('Confirm your account password')}
+            has_close_icon
+        >
+            <MT5PasswordForm
+                account_title={account_title}
+                closeModal={closeModal}
+                submitMt5Password={submit}
+                is_real_financial_stp={is_real_financial_stp}
+                validatePassword={validatePassword}
+            />
+        </Modal>
     );
 };
 

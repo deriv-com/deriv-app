@@ -1,28 +1,37 @@
 import { GetFinancialAssessment, GetSettings, ResidenceList, StatesList } from '@deriv/api-types';
-import { TClientProps, TConfigProps, TRoutesProps, TUIProps } from 'Types';
+import {
+    TAccountCategory,
+    TAccountType,
+    TClientProps,
+    TConfigProps,
+    TCurrenciesList,
+    TRoutesProps,
+    TUIProps,
+    TUpgradeInfo,
+} from 'Types';
 
 export type TClientStore = {
     init: (client_props: TClientProps) => void;
-    readonly email_address: string;
-    readonly has_active_real_account: () => boolean;
-    readonly upgradeable_currencies: () => string[];
-    currencies_list: unknown;
+    email_address: string;
+    currencies_list: TCurrenciesList;
     currency: string;
-    fetchResidenceList: () => void;
-    fetchStatesList: () => void;
-    fetchFinancialAssessment: () => void;
-    needs_financial_assessment: () => boolean;
     financial_assessment: GetFinancialAssessment;
     residence_list: ResidenceList;
     states_list: StatesList;
-    account_settings: GetSettings;
-    is_fully_authenticated: () => boolean;
-    realAccountSignup: () => Promise<void>;
-    upgrade_info: any;
-    has_currency: () => boolean;
-    setAccountCurrency: () => void;
+    account_settings?: GetSettings;
+    upgrade_info: TUpgradeInfo;
     residence: string;
     upgradeable_landing_companies: string[];
+    has_active_real_account?: () => boolean;
+    upgradeable_currencies?: () => string[];
+    fetchResidenceList?: () => void;
+    fetchStatesList?: () => void;
+    fetchFinancialAssessment?: () => void;
+    needs_financial_assessment?: () => boolean;
+    is_fully_authenticated?: () => boolean;
+    realAccountSignup?: () => Promise<void>;
+    has_currency?: () => boolean;
+    setAccountCurrency?: () => void;
 };
 
 export type TConfigStore = {
@@ -33,9 +42,6 @@ export type TConfigStore = {
     routes: TRoutesProps;
     setConfig: (config: TConfigProps) => void;
 };
-
-export type TAccountCategory = 'real' | 'demo';
-export type TAccountType = 'synthetic' | 'financial' | 'financial_stp';
 
 export type TMT5Store = {
     account_title: string;
@@ -69,11 +75,11 @@ export type TUIStore = {
     };
     is_dark_mode_on: boolean;
     init: (ui_props: TUIProps) => void;
-    resetRealAccountSignupParams: () => void;
     real_account_signup: unknown;
     real_account_signup_target: string;
     is_get_wallet_modal_open: boolean;
     is_real_acc_signup_on: boolean;
+    resetRealAccountSignupParams?: () => void;
     enableGetPasswordModal: () => void;
     disableGetPasswordModal: () => void;
 };

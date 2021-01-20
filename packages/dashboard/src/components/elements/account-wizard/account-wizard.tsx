@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Wizard, Text, Icon, Loading, FormCancelButton } from '@deriv/components';
-import { useIsMounted } from '@deriv/shared';
+import { Wizard, Text, Icon, Loading, FormCancelButton, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { useIsMounted, isMobile } from '@deriv/shared';
 import { GetSettings } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
 import { useStores } from 'Stores';
@@ -28,14 +28,17 @@ const StepperHeader = ({
         }
     };
 
+    const filtered_items = isMobile() ? items.filter((_item, i) => i === current_step) : items;
+
     return (
         <div className='dw-account-wizard__header'>
             <div className='dw-account-wizard__header-steps'>
-                {items.map((item, i) => (
+                {filtered_items.map((item, i) => (
                     <div
                         key={i}
                         className={classNames('dw-account-wizard__header-step', {
                             'dw-account-wizard__header-step--disabled': isDisabled(i),
+                            'dw-account-wizard__header-step--active': i === current_step,
                         })}
                         onClick={() => navigateTo(i)}
                     >
@@ -45,15 +48,30 @@ const StepperHeader = ({
                             custom_color={i < current_step ? 'var(--brand-red-coral)' : ''}
                             color={isDisabled(i) ? 'disabled' : ''}
                         />
-                        <Text
-                            size='xxs'
-                            weight={current_step === i ? 'bold' : ''}
-                            className='dw-account-wizard__header-step-title'
-                            color={isDisabled(i) ? 'disabled' : ''}
-                        >
-                            {i + 1}. {item.header.title}
-                        </Text>
-                        <div className='dw-account-wizard__header-step-line' />
+                        <DesktopWrapper>
+                            <Text
+                                size='xxs'
+                                weight={i === current_step ? 'bold' : ''}
+                                className='dw-account-wizard__header-step-title'
+                                color={isDisabled(i) ? 'disabled' : ''}
+                            >
+                                {i + 1}. {item.header.title}
+                            </Text>
+                            <div className='dw-account-wizard__header-step-line' />
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <div className='dw-account-wizard__header-step-title-wrapper'>
+                                <Text size='xxs' className='dw-account-wizard__header-step-title'>
+                                    {localize('Step {{current_step}} of {{total_step}}', {
+                                        current_step,
+                                        total_step: items.length,
+                                    })}
+                                </Text>
+                                <Text size='s' weight='bold' className='dw-account-wizard__header-step-title'>
+                                    {item.header.title}
+                                </Text>
+                            </div>
+                        </MobileWrapper>
                     </div>
                 ))}
             </div>
@@ -67,13 +85,13 @@ const StepperHeader = ({
 };
 
 type TAccountWizard = {
-    fetchResidenceList: () => void;
-    fetchStatesList: () => void;
-    fetchFinancialAssessment: () => void;
-    needs_financial_assessment: () => boolean;
-    has_currency: () => boolean;
-    has_real_account: () => boolean;
-    account_settings: GetSettings;
+    fetchResidenceList?: () => void;
+    fetchStatesList?: () => void;
+    fetchFinancialAssessment?: () => void;
+    needs_financial_assessment?: () => boolean;
+    has_currency?: () => boolean;
+    has_real_account?: () => boolean;
+    account_settings?: GetSettings;
     [x: string]: any;
 };
 
@@ -89,7 +107,6 @@ const AccountWizard: React.FC<TAccountWizard> = observer((props: TAccountWizard)
         fetchResidenceList,
         fetchFinancialAssessment,
         account_settings,
-        createRealAccount,
         has_currency,
         has_real_account,
         is_loading,
@@ -98,7 +115,7 @@ const AccountWizard: React.FC<TAccountWizard> = observer((props: TAccountWizard)
     React.useEffect(() => {
         if (!account_settings) return;
 
-        Promise.all([fetchStatesList(), fetchResidenceList(), fetchFinancialAssessment()]).then(() => {
+        Promise.all([fetchStatesList?.(), fetchResidenceList?.(), fetchFinancialAssessment?.()]).then(() => {
             if (isMounted()) {
                 setStateItems((previous_state: TWizardItemConfig[]) => {
                     if (!previous_state.length) {
@@ -151,7 +168,7 @@ const AccountWizard: React.FC<TAccountWizard> = observer((props: TAccountWizard)
         goToPreviousStep();
     };
 
-    const updateValue = (index: number, value: any, setSubmitting: () => void, goToNextStep: () => void) => {
+    const updateValue = (index: number, value: any, _setSubmitting: () => void, goToNextStep: () => void) => {
         saveFormData(index, value);
         clearError();
         // Check if account wizard is not finished
@@ -214,7 +231,9 @@ const AccountWizard: React.FC<TAccountWizard> = observer((props: TAccountWizard)
             <Wizard nav={<StepperHeader items={state_items} />} className={classNames('dw-account-wizard')}>
                 {wizard_steps}
             </Wizard>
-            <FormCancelButton label={localize('Cancel')} is_absolute />
+            <DesktopWrapper>
+                <FormCancelButton label={localize('Cancel')} is_absolute />
+            </DesktopWrapper>
         </React.Fragment>
     );
 });

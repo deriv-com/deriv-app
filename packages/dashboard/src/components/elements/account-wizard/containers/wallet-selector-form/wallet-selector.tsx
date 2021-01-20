@@ -51,15 +51,6 @@ const WalletSelector: React.FC = (props: any) => {
                                             setFieldValue('wallet', wallet);
                                         }}
                                     >
-                                        {values.wallet === wallet && (
-                                            <div className='dw-wallet-selector__selected-icon'>
-                                                <Icon
-                                                    size={24}
-                                                    icon='IcDashboardCheck'
-                                                    custom_color='var(--badge-blue)'
-                                                />
-                                            </div>
-                                        )}
                                         <Icon icon={wallet} />
                                     </div>
                                 ))}

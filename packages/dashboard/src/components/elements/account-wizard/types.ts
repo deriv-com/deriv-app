@@ -9,6 +9,7 @@ export type TWizardItemConfig = {
     };
     props: {
         validate?: () => boolean;
+        [x: string]: unknown;
     };
     passthrough: string[];
     icon?: string;

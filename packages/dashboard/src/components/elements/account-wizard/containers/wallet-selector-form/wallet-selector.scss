@@ -4,6 +4,11 @@
     grid-gap: 2.4rem;
     padding-right: 1.6rem;
 
+    @include mobile {
+        grid-template-columns: 1fr 1fr;
+        padding-right: 0;
+    }
+
     &__wallet-item {
         background: var(--general-section-3);
         height: 12.8rem;
@@ -12,8 +17,24 @@
         position: relative;
         cursor: pointer;
 
+        @include mobile {
+            height: 8rem;
+            padding: 0 2rem;
+            grid-gap: 0.8rem;
+        }
+
         &--selected {
-            border: 1px solid $color-apple-blue;
+            border: 1px solid var(--badge-blue);
+
+            &::after {
+                content: '';
+                background-image: url('/js/dashboard/assets/images/check.svg');
+                width: 2.4rem;
+                height: 2.4rem;
+                right: 0.8rem;
+                top: 0.8rem;
+                position: absolute;
+            }
         }
 
         svg {

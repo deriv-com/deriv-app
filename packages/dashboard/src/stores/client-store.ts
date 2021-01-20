@@ -1,6 +1,6 @@
 import { GetFinancialAssessment, GetSettings, ResidenceList, StatesList } from '@deriv/api-types';
 import { action, observable } from 'mobx';
-import { ResidenceListItem, TClientProps } from 'Types';
+import { TClientProps, TCurrenciesList, TUpgradeInfo } from 'Types';
 import BaseStore from './base-store';
 
 class ClientStore extends BaseStore {
@@ -11,7 +11,7 @@ class ClientStore extends BaseStore {
     public is_logged_in = false;
 
     @observable
-    public currencies_list: unknown = {};
+    public currencies_list: TCurrenciesList = {};
 
     @observable
     public currency = '';
@@ -23,7 +23,7 @@ class ClientStore extends BaseStore {
     public states_list: StatesList = [];
 
     @observable
-    public residence: ResidenceListItem = {};
+    public residence = '';
 
     @observable
     public financial_assessment: GetFinancialAssessment = {};
@@ -31,10 +31,12 @@ class ClientStore extends BaseStore {
     @observable
     public upgradeable_landing_companies: string[] = [];
 
-    public email_address?: string;
+    @observable
+    public account_settings?: GetSettings;
+
+    public email_address = '';
 
     public has_active_real_account?: () => boolean;
-
     public upgradeable_currencies?: () => string[];
 
     public fetchResidenceList?: () => void;
@@ -42,15 +44,11 @@ class ClientStore extends BaseStore {
     public fetchFinancialAssessment?: () => void;
     public needs_financial_assessment?: () => boolean;
 
-    @observable
-    public account_settings?: GetSettings;
-
     public is_fully_authenticated?: () => boolean;
     public realAccountSignup?: () => Promise<void>;
     public has_real_account?: () => boolean;
-    public upgrade_info: any;
+    public upgrade_info: TUpgradeInfo;
 
-    @observable
     public has_currency?: () => boolean;
     public setAccountCurrency?: () => void;
 

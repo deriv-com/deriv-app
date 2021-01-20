@@ -9,6 +9,11 @@
         overflow-y: auto;
     }
 
+    &__sub-header {
+        margin: 0 4rem 4rem;
+        text-align: center;
+    }
+
     &__elements {
         flex-grow: 1;
         margin: 1.2rem auto;

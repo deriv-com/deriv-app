@@ -17,10 +17,10 @@ class UIStore extends BaseStore {
     @observable
     public real_account_signup: unknown = {};
 
-    public resetRealAccountSignupParams?: () => void;
-
     @observable
     public real_account_signup_target = '';
+
+    public resetRealAccountSignupParams?: () => void;
 
     @action
     public init(ui_props: TUIProps): void {

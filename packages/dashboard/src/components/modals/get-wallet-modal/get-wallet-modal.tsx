@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import { useStores } from 'Stores';
 
 const GetPasswordModal: React.FC = () => {
-    const { ui_store, config_store, mt5_store } = useStores();
+    const { ui_store, mt5_store } = useStores();
 
     const [wallets] = React.useState([
         'IcWalletSkrill',
@@ -60,10 +60,6 @@ const GetPasswordModal: React.FC = () => {
                         </div>
                         <div className='dw-get-wallet-modal__selected-app-wrapper'>
                             <div className='dw-get-wallet-modal__selected-app'>
-                                <img
-                                    className='dw-get-wallet-modal__selected-app-background'
-                                    src={`${config_store.asset_path}/images/app-card-bg.svg`}
-                                />
                                 <div className='dw-get-wallet-modal__selected-app-title-wrapper'>
                                     <div className='dw-get-wallet-modal__selected-app-title'>
                                         <Text size='xs' weight='bold'>

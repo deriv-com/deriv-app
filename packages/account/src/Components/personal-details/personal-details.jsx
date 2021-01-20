@@ -16,6 +16,7 @@ import {
     RadioGroup,
     SelectNative,
     ThemedScrollbars,
+    Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile, toMoment } from '@deriv/shared';
@@ -131,6 +132,15 @@ const PersonalDetails = ({
                         <form ref={setRef} onSubmit={handleSubmit} autoComplete='off' onClick={handleClickOutside}>
                             <Div100vhContainer className='details-form' height_offset='110px' is_disabled={isDesktop()}>
                                 <ThemedScrollbars height={height} onScroll={closeTooltipOnScroll}>
+                                    {is_dashboard && (
+                                        <div className='details-form__sub-header'>
+                                            <Text size='xs'>
+                                                {localize(
+                                                    'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.'
+                                                )}
+                                            </Text>
+                                        </div>
+                                    )}
                                     <div
                                         className='details-form__elements'
                                         style={{ paddingBottom: isDesktop() ? 'unset' : null }}

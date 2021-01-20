@@ -19,17 +19,26 @@ const CurrencySelector = ({
     has_real_account,
     legal_allowed_currencies,
     onSubmit,
+    onSave,
+    onCancel,
+    goToPreviousStep,
     real_account_signup,
     resetRealAccountSignupParams,
     set_currency,
     validate,
-    submit_button_props = {},
+    has_cancel = false,
     ...props
 }) => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
     const crypto = legal_allowed_currencies.filter(currency => currency.type === 'crypto');
     const fiat = legal_allowed_currencies.filter(currency => currency.type === 'fiat');
     const [is_bypass_step, setIsBypassStep] = React.useState(false);
+
+    const handleCancel = values => {
+        const current_step = getCurrentStep() - 1;
+        onSave(current_step, values);
+        onCancel(current_step, goToPreviousStep);
+    };
 
     const handleValidate = values => {
         const { errors } = splitValidationResultTypes(validate(values));
@@ -133,7 +142,13 @@ const CurrencySelector = ({
                                     is_center={!has_currency}
                                     is_absolute={set_currency}
                                     label={set_currency ? localize('Set currency') : localize('Next')}
-                                    {...submit_button_props}
+                                    {...(has_cancel
+                                        ? {
+                                              cancel_label: localize('Previous'),
+                                              has_cancel: true,
+                                              onCancel: () => handleCancel(values),
+                                          }
+                                        : {})}
                                 />
                             </Modal.Footer>
                         </form>

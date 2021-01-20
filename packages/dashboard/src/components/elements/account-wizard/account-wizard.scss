@@ -17,23 +17,34 @@
             display: flex;
         }
         &-step {
-            padding: 1.6rem 0;
             display: flex;
             align-items: center;
             flex: 1;
             position: relative;
 
+            @include desktop {
+                padding: 1.6rem 0;
+            }
+
             &:not(&--disabled) {
                 cursor: pointer;
             }
-
+            &--active {
+                .dw-account-wizard__header-step-line {
+                    background: var(--text-prominent);
+                }
+            }
             &-line {
                 position: absolute;
                 height: 2px;
                 left: 0px;
                 right: -0.4px;
                 bottom: 0px;
-                background: var(--text-disabled);
+                background: var(--border-normal);
+            }
+            &-title-wrapper {
+                display: flex;
+                flex-direction: column;
             }
             svg {
                 margin-right: 0.8rem;
@@ -67,9 +78,6 @@
         align-content: unset;
 
         > .dc-themed-scrollbars {
-            display: flex;
-            justify-content: center;
-
             .details-form__elements {
                 flex-grow: unset;
             }
@@ -102,6 +110,25 @@
         }
         .dc-field--error {
             top: 5.5rem;
+        }
+    }
+    .currency-list__item {
+        position: relative;
+
+        &-code {
+            font-weight: normal;
+        }
+
+        &--selected {
+            border-color: var(--badge-blue);
+            &::after {
+                content: '';
+                background-image: url('/js/dashboard/assets/images/check.svg');
+                width: 2.4rem;
+                height: 2.4rem;
+                right: 1.6rem;
+                position: absolute;
+            }
         }
     }
 }

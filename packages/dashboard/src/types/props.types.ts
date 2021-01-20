@@ -1,30 +1,31 @@
 import { GetFinancialAssessment, GetSettings, ResidenceList, StatesList } from '@deriv/api-types';
-import { ResidenceListItem } from './api.types';
+import { TCurrenciesList } from 'Types';
+import { TUpgradeInfo } from './params.types';
 
 export type TClientProps = {
     is_logged_in: boolean;
     loginid: string;
-    readonly email_address: string;
-    readonly has_active_real_account: () => boolean;
-    readonly upgradeable_currencies: () => string[];
+    email_address: string;
     currency: string;
-    currencies_list: unknown;
-    fetchResidenceList: () => void;
-    fetchStatesList: () => void;
-    fetchFinancialAssessment: () => void;
-    needs_financial_assessment: () => boolean;
+    currencies_list: TCurrenciesList;
     financial_assessment: GetFinancialAssessment;
     residence_list: ResidenceList;
     states_list: StatesList;
-    account_settings: GetSettings;
-    is_fully_authenticated: () => boolean;
-    realAccountSignup: () => void;
-    upgrade_info: any;
-    has_currency: () => boolean;
-    setAccountCurrency: () => void;
-    has_real_account: () => boolean;
-    residence: ResidenceListItem;
+    account_settings?: GetSettings;
+    upgrade_info: TUpgradeInfo;
+    residence: string;
     upgradeable_landing_companies: string[];
+    has_active_real_account?: () => boolean;
+    upgradeable_currencies?: () => string[];
+    fetchResidenceList?: () => void;
+    fetchStatesList?: () => void;
+    fetchFinancialAssessment?: () => void;
+    needs_financial_assessment?: () => boolean;
+    is_fully_authenticated?: () => boolean;
+    realAccountSignup?: () => Promise<void>;
+    has_currency?: () => boolean;
+    setAccountCurrency?: () => void;
+    has_real_account?: () => boolean;
 };
 
 export type TConfigProps = {
@@ -49,7 +50,7 @@ export interface TUIProps {
         Page404: React.ComponentType | React.ElementType | null;
     };
     real_account_signup: unknown;
-    resetRealAccountSignupParams: () => void;
-    openRealAccountSignup: () => void;
     real_account_signup_target: string;
+    resetRealAccountSignupParams?: () => void;
+    openRealAccountSignup?: () => void;
 }

@@ -194,11 +194,6 @@ export default class ExtendedOrderDetails {
         );
     }
 
-    get should_show_order_timer() {
-        if (this.is_finalised_order) return false;
-        return !this.has_timer_expired && (this.is_pending_order || this.is_ongoing_order);
-    }
-
     get status_string() {
         // Finalised orders, should take precedence over is_expired_order/has_timer_expired.
         if (this.is_completed_order || this.is_dispute_completed_order) {

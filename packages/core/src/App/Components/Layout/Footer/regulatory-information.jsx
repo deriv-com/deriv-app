@@ -19,7 +19,7 @@ const MLTRegulatoryInformation = () => (
                         is_document
                     />,
                     <a
-                        href='https://secure.gamblingcommission.gov.uk/PublicRegister/Search/Detail/39495'
+                        href='https://beta.gamblingcommission.gov.uk/public-register/business/detail/39495'
                         key={1}
                         className='footer-regulatory-information__link'
                     />,
@@ -43,7 +43,7 @@ const MXRegulatoryInformation = () => (
                 i18n_default_text='Synthetic indices in the UK and the Isle of Man are offered by Deriv (MX) Ltd, Millennium House, Level 1, Victoria Road, Douglas IM2 4RW, Isle of Man, licensed and regulated in Great Britain by the Gambling Commission under <0>account no. 39172</0> and by the Gambling Supervision Commission in the Isle of Man (<1>view licence</1>).'
                 components={[
                     <a
-                        href='https://secure.gamblingcommission.gov.uk/PublicRegister/Search/Detail/39172'
+                        href='https://beta.gamblingcommission.gov.uk/public-register/business/detail/39172'
                         target='_blank'
                         rel='nofollow noreferrer'
                         key={0}

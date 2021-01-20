@@ -89,6 +89,7 @@ export const icons = {
         'IcAccountTransfer',
         'IcAccountTrashCan',
         'IcAddBold',
+        'IcAddOutline',
         'IcAddRounded',
         'IcAdd',
         'IcAdjustment',
@@ -122,6 +123,7 @@ export const icons = {
         'IcCatOptions',
         'IcChart',
         'IcChat',
+        'IcCheckmarkBlue',
         'IcCheckmarkBold',
         'IcCheckmarkCircle',
         'IcCheckmarkOutline',
@@ -465,6 +467,7 @@ export const icons = {
     wallet: [
         'IcWalletCreditDebit',
         'IcWalletCrypto',
+        'IcWalletCredit',
         'IcWalletDeriv',
         'IcWalletDp2p',
         'IcWalletExplore',

@@ -6,10 +6,61 @@
     left: 0px;
     top: calc(#{$MOBILE_HEADER_HEIGHT} + #{$MOBILE_WRAPPER_HEADER_HEIGHT});
     background: var(--general-main-1);
+    max-height: 100%;
+
+    &--flex {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    &__header {
+        align-items: center;
+        border-bottom: 2px solid var(--general-section-2);
+        display: flex;
+        flex-direction: row;
+        padding: 1.6rem;
+
+        &-return {
+            display: flex;
+            align-items: center;
+            margin-right: 1.6rem;
+        }
+        &-text {
+            display: flex;
+            flex-direction: row;
+        }
+        &-trailing-icon {
+            align-items: center;
+            display: flex;
+            margin-left: auto;
+        }
+    }
+
+    &__body {
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    &__footer {
+        &-parent {
+            border-top: 1px solid var(--general-section-2);
+            padding: 0.8rem 1.6rem;
+            background-color: var(--general-main-1);
+        }
+
+        border-top: 2px solid var(--general-section-1);
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        margin-top: auto;
+        padding: 1.6rem;
+    }
 
     form {
         height: 100%;
     }
+
     & .dc {
         &-page-overlay {
             &__content {

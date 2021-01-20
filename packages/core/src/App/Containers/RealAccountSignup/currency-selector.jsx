@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -12,7 +13,6 @@ import {
     ThemedScrollbars,
 } from '@deriv/components';
 import { getCurrencyDisplayCode, isMobile, isDesktop, reorderCurrencies, PlatformContext } from '@deriv/shared';
-
 import { connect } from 'Stores/connect';
 import { Localize, localize } from '@deriv/translations';
 import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
@@ -88,7 +88,7 @@ export const RadioButton = ({ field: { name, value, onChange, onBlur }, id, labe
 };
 
 // Radio group
-export const RadioButtonGroup = ({ label, className, children, is_title_enabled, is_fiat }) => {
+export const RadioButtonGroup = ({ label, className, children, is_title_enabled, is_fiat, item_count }) => {
     return (
         <div className={className}>
             {is_title_enabled && (
@@ -102,6 +102,7 @@ export const RadioButtonGroup = ({ label, className, children, is_title_enabled,
             )}
             <div
                 className={classNames('currency-list__items', {
+                    'currency-list__items__center': item_count < 4,
                     'currency-list__items__is-fiat': is_fiat,
                     'currency-list__items__is-crypto': !is_fiat,
                 })}
@@ -123,150 +124,150 @@ RadioButtonGroup.defaultProps = {
 
 export const Hr = () => <div className='currency-hr' />;
 
-class CurrencySelector extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            fiat_currencies: [],
-            crypto_currencies: [],
-        };
-    }
+const CurrencySelector = ({
+    getCurrentStep,
+    goToNextStep,
+    has_currency,
+    has_real_account,
+    legal_allowed_currencies,
+    onSubmit,
+    real_account_signup,
+    resetRealAccountSignupParams,
+    set_currency,
+    validate,
+    ...props
+}) => {
+    const { is_deriv_crypto } = React.useContext(PlatformContext);
+    const crypto = legal_allowed_currencies.filter(currency => currency.type === 'crypto');
+    const fiat = legal_allowed_currencies.filter(currency => currency.type === 'fiat');
+    const [is_bypass_step, setIsBypassStep] = React.useState(false);
 
-    static contextType = PlatformContext;
-    static getDerivedStateFromProps(next_props, next_state) {
-        if (next_props.legal_allowed_currencies.length === 0) {
-            return next_state;
-        }
-        const crypto = next_props.legal_allowed_currencies.filter(currency => currency.type === 'crypto');
-        const fiat = next_props.legal_allowed_currencies.filter(currency => currency.type === 'fiat');
-
-        return {
-            fiat_currencies: reorderCurrencies(fiat),
-            crypto_currencies: reorderCurrencies(crypto, 'crypto'),
-        };
-    }
-
-    handleValidate = values => {
-        const { errors } = splitValidationResultTypes(this.props.validate(values));
+    const handleValidate = values => {
+        const { errors } = splitValidationResultTypes(validate(values));
         return errors;
     };
 
-    render() {
-        const { has_currency, has_real_account } = this.props;
-        const { is_deriv_crypto } = this.context;
+    // In case of form error bypass to update personal data
+    React.useEffect(() => {
+        if (real_account_signup?.error_code) {
+            setIsBypassStep(true);
+        }
+    }, []);
 
-        return (
-            <Formik
-                initialValues={this.props.value}
-                onSubmit={(values, actions) => {
-                    this.props.onSubmit(this.props.index, values, actions.setSubmitting);
-                }}
-                validate={this.handleValidate}
-            >
-                {({
-                    handleSubmit,
-                    // setFieldValue,
-                    // setFieldTouched,
-                    values,
-                    errors,
-                    touched,
-                    isSubmitting,
-                }) => (
-                    <AutoHeightWrapper default_height={200}>
-                        {({ setRef, height }) => (
-                            <form ref={setRef} onSubmit={handleSubmit} className='currency-selector'>
-                                <Div100vhContainer
-                                    className={classNames('currency-selector__container', {
-                                        'currency-selector__container--no-top-margin':
-                                            !has_currency && has_real_account && isMobile(),
-                                    })}
-                                    height_offset={!has_currency && has_real_account ? '109px' : '179px'}
-                                    is_disabled={isDesktop()}
-                                >
-                                    <ThemedScrollbars is_bypassed={isMobile()} height={height}>
-                                        {this.state.fiat_currencies.length > 0 && (
-                                            <React.Fragment>
-                                                <RadioButtonGroup
-                                                    id='currency'
-                                                    className='currency-selector__radio-group'
-                                                    label={localize('Fiat currencies')}
-                                                    is_fiat
-                                                    value={values.currency}
-                                                    error={errors.currency}
-                                                    touched={touched.currency}
-                                                >
-                                                    {this.state.fiat_currencies.map(currency => (
-                                                        <Field
-                                                            key={currency.value}
-                                                            component={RadioButton}
-                                                            name='currency'
-                                                            id={currency.value}
-                                                            label={currency.name}
-                                                        />
-                                                    ))}
-                                                </RadioButtonGroup>
-                                                <Hr />
-                                            </React.Fragment>
-                                        )}
-                                        {this.state.crypto_currencies.length > 0 && (
-                                            <React.Fragment>
-                                                <RadioButtonGroup
-                                                    id='currency'
-                                                    className='currency-selector__radio-group'
-                                                    label={is_deriv_crypto ? '' : localize('Cryptocurrencies')}
-                                                    value={values.currency}
-                                                    error={errors.currency}
-                                                    touched={touched.currency}
-                                                >
-                                                    {this.state.crypto_currencies.map(currency => (
-                                                        <Field
-                                                            key={currency.value}
-                                                            component={RadioButton}
-                                                            name='currency'
-                                                            id={currency.value}
-                                                            label={currency.name}
-                                                        />
-                                                    ))}
-                                                </RadioButtonGroup>
-                                            </React.Fragment>
-                                        )}
-                                    </ThemedScrollbars>
-                                </Div100vhContainer>
-                                <Modal.Footer is_bypassed={isMobile()}>
-                                    <FormSubmitButton
-                                        className={
-                                            this.props.set_currency
-                                                ? 'currency-selector--set-currency'
-                                                : 'currency-selector--deriv-account'
-                                        }
-                                        is_disabled={isSubmitting || !values.currency}
-                                        is_center={!has_currency}
-                                        is_absolute={this.props.set_currency}
-                                        label={this.props.set_currency ? localize('Set currency') : localize('Next')}
-                                    />
-                                </Modal.Footer>
-                            </form>
-                        )}
-                    </AutoHeightWrapper>
-                )}
-            </Formik>
-        );
-    }
-}
+    React.useEffect(() => {
+        if (is_bypass_step) {
+            goToNextStep();
+            resetRealAccountSignupParams();
+            setIsBypassStep(false);
+        }
+    }, [is_bypass_step]);
+
+    return (
+        <Formik
+            initialValues={props.value}
+            onSubmit={(values, actions) => {
+                onSubmit(getCurrentStep ? getCurrentStep() - 1 : null, values, actions.setSubmitting, goToNextStep);
+            }}
+            validate={handleValidate}
+        >
+            {({ handleSubmit, values, errors, touched, isSubmitting }) => (
+                <AutoHeightWrapper default_height={450}>
+                    {({ setRef, height }) => (
+                        <form ref={setRef} onSubmit={handleSubmit} className='currency-selector'>
+                            <Div100vhContainer
+                                className={classNames('currency-selector__container', {
+                                    'currency-selector__container--no-top-margin':
+                                        !has_currency && has_real_account && isMobile(),
+                                })}
+                                height_offset={!has_currency && has_real_account ? '109px' : '179px'}
+                                is_disabled={isDesktop()}
+                            >
+                                <ThemedScrollbars is_bypassed={isMobile()} height={height}>
+                                    {reorderCurrencies(fiat).length > 0 && (
+                                        <React.Fragment>
+                                            <RadioButtonGroup
+                                                id='currency'
+                                                className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                                                label={localize('Fiat currencies')}
+                                                is_fiat
+                                                value={values.currency}
+                                                error={errors.currency}
+                                                touched={touched.currency}
+                                                item_count={reorderCurrencies(fiat).length}
+                                            >
+                                                {reorderCurrencies(fiat).map(currency => (
+                                                    <Field
+                                                        key={currency.value}
+                                                        component={RadioButton}
+                                                        name='currency'
+                                                        id={currency.value}
+                                                        label={currency.name}
+                                                    />
+                                                ))}
+                                            </RadioButtonGroup>
+                                            <Hr />
+                                        </React.Fragment>
+                                    )}
+                                    {reorderCurrencies(crypto, 'crypto').length > 0 && (
+                                        <React.Fragment>
+                                            <RadioButtonGroup
+                                                id='currency'
+                                                className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                                                label={is_deriv_crypto ? '' : localize('Cryptocurrencies')}
+                                                value={values.currency}
+                                                error={errors.currency}
+                                                touched={touched.currency}
+                                                item_count={reorderCurrencies(crypto, 'crypto').length}
+                                            >
+                                                {reorderCurrencies(crypto, 'crypto').map(currency => (
+                                                    <Field
+                                                        key={currency.value}
+                                                        component={RadioButton}
+                                                        name='currency'
+                                                        id={currency.value}
+                                                        label={currency.name}
+                                                    />
+                                                ))}
+                                            </RadioButtonGroup>
+                                        </React.Fragment>
+                                    )}
+                                </ThemedScrollbars>
+                            </Div100vhContainer>
+                            <Modal.Footer is_bypassed={isMobile()}>
+                                <FormSubmitButton
+                                    className={
+                                        set_currency
+                                            ? 'currency-selector--set-currency'
+                                            : 'currency-selector--deriv-account'
+                                    }
+                                    is_disabled={isSubmitting || !values.currency}
+                                    is_center={!has_currency}
+                                    is_absolute={set_currency}
+                                    label={set_currency ? localize('Set currency') : localize('Next')}
+                                />
+                            </Modal.Footer>
+                        </form>
+                    )}
+                </AutoHeightWrapper>
+            )}
+        </Formik>
+    );
+};
 
 CurrencySelector.propTypes = {
     controls: PropTypes.object,
     has_currency: PropTypes.bool,
     has_real_account: PropTypes.bool,
-    index: PropTypes.number,
     onSubmit: PropTypes.func,
     value: PropTypes.any,
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
     currencies: client.currencies_list,
     has_currency: !!client.currency,
     has_real_account: client.has_active_real_account,
     legal_allowed_currencies: client.upgradeable_currencies,
+    real_account_signup: ui.real_account_signup,
+    resetRealAccountSignupParams: ui.resetRealAccountSignupParams,
     selectable_currencies: client.selectable_currencies,
 }))(CurrencySelector);

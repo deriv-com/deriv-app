@@ -7,7 +7,6 @@ import Theme from '../shared/theme';
 
 const stories = storiesOf('Timeline', module);
 
-const Item = <div></div>;
 stories.addDecorator(withKnobs).addDecorator(withInfo);
 
 stories.add('basic usage', () => (
@@ -15,13 +14,13 @@ stories.add('basic usage', () => (
         <div style={{ display: 'flex' }}>
             <div>left component</div>
             <Timeline>
-                <Timeline.Item title='Title'>
+                <Timeline.Item item_title='Title'>
                     <div>test</div>
                 </Timeline.Item>
-                <Timeline.Item title='Title2'>
+                <Timeline.Item item_title='Title2'>
                     <div>test2</div>
                 </Timeline.Item>
-                <Timeline.Item title='Title3'>
+                <Timeline.Item item_title='Title3'>
                     <div>test3</div>
                 </Timeline.Item>
             </Timeline>

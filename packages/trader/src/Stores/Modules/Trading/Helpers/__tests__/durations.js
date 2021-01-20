@@ -33,7 +33,7 @@ describe('buildDurationConfig', () => {
         units_display: {
             spot: [
                 {
-                    text: 'days',
+                    text: 'Days',
                     value: 'd',
                 },
             ],

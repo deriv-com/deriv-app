@@ -1,10 +1,21 @@
+/* eslint-disable react/display-name */
 import React from 'react';
 import { toMoment } from '@deriv/shared';
-import { Button } from '@deriv/components';
+import { Button, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 const GetConnectedAppsColumnsTemplate = handleToggleModal => [
-    { title: localize('Name'), col_index: 'name' },
+    {
+        title: localize('Name'),
+        col_index: 'name',
+        renderCellContent: ({ cell_value }) => {
+            return (
+                <Text size='xs' className='name__content'>
+                    {cell_value}
+                </Text>
+            );
+        },
+    },
     {
         title: localize('Permission'),
         col_index: 'scopes',
@@ -33,7 +44,9 @@ const PrepareConnectedAppsAction = (app_id, handleToggleModal) => {
 };
 
 const PrepareConnectedAppsLastLogin = last_used => (
-    <p className='last_used_content'>{toMoment(last_used).format('YYYY-MM-DD HH:mm:ss')}</p>
+    <Text as='p' size='xs' className='last_used_content'>
+        {toMoment(last_used).format('YYYY-MM-DD HH:mm:ss')}
+    </Text>
 );
 
 const generatePermissions = () => ({

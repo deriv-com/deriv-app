@@ -38,10 +38,13 @@
         & .dc-field--error {
             top: 4.4rem;
         }
+        .initial-loader__barspinner {
+            @include mobile {
+                margin: 0;
+            }
+        }
     }
     &__heading {
-        font-weight: bold;
-        text-align: center;
         margin-bottom: 0.8rem;
     }
     &__text {
@@ -49,8 +52,6 @@
         margin-bottom: 3.3rem;
     }
     &__subtext {
-        font-size: 1.2rem;
-        text-align: center;
         margin: 1rem 0 2.4rem;
     }
     &__btn {
@@ -85,7 +86,6 @@
     @include mobile {
         & .dc-select-native {
             &__placeholder {
-                top: 1.2rem;
                 background-color: var(--general-main-2);
             }
         }

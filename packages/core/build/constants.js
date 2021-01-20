@@ -36,16 +36,16 @@ const {
 const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 const HOISTED_PACKAGES = {
-    react: path.resolve(__dirname, '../node_modules/react'),
-    'react-dom': path.resolve(__dirname, '../node_modules/react-dom'),
-    'react-router': path.resolve(__dirname, '../node_modules/react-router'),
-    'react-router-dom': path.resolve(__dirname, '../node_modules/react-router-dom'),
-    mobx: path.resolve(__dirname, '../node_modules/mobx'),
-    'mobx-react': path.resolve(__dirname, '../node_modules/mobx-react'),
+    react: path.resolve(__dirname, '../../../node_modules/react'),
+    'react-dom': path.resolve(__dirname, '../../../node_modules/react-dom'),
+    'react-router': path.resolve(__dirname, '../../../node_modules/react-router'),
+    'react-router-dom': path.resolve(__dirname, '../../../node_modules/react-router-dom'),
+    mobx: path.resolve(__dirname, '../../../node_modules/mobx'),
+    'mobx-react': path.resolve(__dirname, '../../../node_modules/mobx-react'),
     '@deriv/shared': path.resolve(__dirname, '../node_modules/@deriv/shared'),
     '@deriv/components': path.resolve(__dirname, '../node_modules/@deriv/components'),
     '@deriv/translations': path.resolve(__dirname, '../node_modules/@deriv/translations'),
-    '@deriv/deriv-charts': path.resolve(__dirname, '../node_modules/@deriv/deriv-charts'),
+    '@deriv/deriv-charts': path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts'),
 };
 
 const ALIASES = {
@@ -116,15 +116,18 @@ const MINIMIZERS = !IS_RELEASE
       ];
 
 const plugins = ({ base, is_test_env, env }) => {
-    let is_crypto_app;
+    let is_crypto_app, is_qawolf;
     try {
         is_crypto_app = JSON.parse(env.IS_CRYPTO_APP);
+        is_qawolf = !!JSON.parse(env.IS_QAWOLF);
     } catch (e) {
         is_crypto_app = false;
+        is_qawolf = false;
     }
     return [
         new DefinePlugin({
             'process.env.IS_CRYPTO_APP': is_crypto_app,
+            'process.env.IS_QAWOLF': is_qawolf,
         }),
         new CleanWebpackPlugin(),
         new CopyPlugin(copyConfig(base)),

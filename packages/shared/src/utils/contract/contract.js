@@ -123,3 +123,5 @@ export const getContractUpdateConfig = ({ contract_update, limit_order }) => {
         has_contract_update_take_profit: !!take_profit,
     };
 };
+
+export const shouldShowCancellation = symbol => !/^(CRASH|BOOM|stpRNG)/.test(symbol);

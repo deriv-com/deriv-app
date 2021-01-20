@@ -1,32 +1,28 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Icon, Money } from '@deriv/components';
+import { Icon, Money, Button, Text } from '@deriv/components';
 import { formatMoney, getCurrencyName, getMT5AccountDisplay, getCurrencyDisplayCode } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
 const AccountList = ({
-    account_type,
     balance,
     currency,
     currency_icon,
     display_type,
     has_balance,
-    is_eu,
+    has_error,
+    has_reset_balance,
     is_disabled,
     is_virtual,
     loginid,
+    market_type,
     onClickAccount,
+    onClickResetVirtualBalance,
     selected_loginid,
+    server,
+    is_dark_mode_on,
+    sub_account_type,
 }) => {
-    const market_type = React.useMemo(() => {
-        if (loginid.startsWith('MX') || loginid.startsWith('MLT')) {
-            return localize('Synthetic');
-        } else if (loginid.startsWith('MF')) {
-            return localize('Financial');
-        }
-        return '';
-    }, [loginid]);
-
     if (is_disabled && !currency) return null;
     const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
 
@@ -48,28 +44,55 @@ const AccountList = ({
                     />
                     <span>
                         {display_type === 'currency' ? (
-                            <CurrencyDisplay
-                                is_virtual={is_virtual}
-                                currency={currency}
-                                is_eu={is_eu}
-                                market_type={market_type}
-                            />
+                            <CurrencyDisplay is_virtual={is_virtual} currency={currency} />
                         ) : (
-                            <AccountDisplay account_type={account_type} />
+                            <AccountDisplay
+                                market_type={market_type}
+                                sub_account_type={sub_account_type}
+                                server={server}
+                                has_error={has_error}
+                                is_dark_mode_on={is_dark_mode_on}
+                            />
                         )}
-                        <div className='acc-switcher__loginid-text'>{loginid}</div>
+                        <div
+                            className={classNames('acc-switcher__loginid-text', {
+                                'acc-switcher__loginid-text--disabled': has_error,
+                            })}
+                        >
+                            {loginid}
+                        </div>
                     </span>
-                    {has_balance && (
-                        <span className='acc-switcher__balance'>
-                            {currency && (
-                                <Money
-                                    currency={getCurrencyDisplayCode(currency)}
-                                    amount={formatMoney(currency, balance, true)}
-                                    should_format={false}
-                                    show_currency
-                                />
-                            )}
-                        </span>
+                    {has_reset_balance ? (
+                        <Button
+                            is_disabled={is_disabled}
+                            onClick={e => {
+                                e.stopPropagation();
+                                onClickResetVirtualBalance();
+                            }}
+                            className='acc-switcher__reset-account-btn'
+                            secondary
+                            small
+                        >
+                            {localize('Reset balance')}
+                        </Button>
+                    ) : (
+                        has_balance && (
+                            <Text
+                                size='xs'
+                                color='prominent'
+                                styles={{ fontWeight: 'inherit' }}
+                                className='acc-switcher__balance'
+                            >
+                                {currency && (
+                                    <Money
+                                        currency={getCurrencyDisplayCode(currency)}
+                                        amount={formatMoney(currency, balance, true)}
+                                        should_format={false}
+                                        show_currency
+                                    />
+                                )}
+                            </Text>
+                        )
                     )}
                 </span>
             </div>
@@ -87,6 +110,33 @@ const CurrencyDisplay = ({ currency, is_virtual }) => {
     return getCurrencyName(currency);
 };
 
-const AccountDisplay = ({ account_type }) => <div>{getMT5AccountDisplay(account_type)}</div>;
+const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_dark_mode_on }) => {
+    // TODO: Remove once account with error has market_type and sub_account_type in details response
+    if (has_error)
+        return (
+            <div>
+                <Text color='disabled' size='xs'>
+                    <Localize i18n_default_text='Unavailable' />
+                </Text>
+                {server?.geolocation && (
+                    <Text color='less-prominent' size='xxs' className='badge-server badge-server--disabled'>
+                        {server.geolocation.region}&nbsp;
+                        {server.geolocation.sequence !== 1 ? server.geolocation.sequence : ''}
+                    </Text>
+                )}
+            </div>
+        );
+    return (
+        <div>
+            {getMT5AccountDisplay(market_type, sub_account_type)}
+            {server?.geolocation && (
+                <Text color={is_dark_mode_on ? 'general' : 'colored-background'} size='xxs' className='badge-server'>
+                    {server.geolocation.region}&nbsp;
+                    {server.geolocation.sequence !== 1 ? server.geolocation.sequence : ''}
+                </Text>
+            )}
+        </div>
+    );
+};
 
 export default AccountList;

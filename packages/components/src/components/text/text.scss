@@ -3,11 +3,12 @@
     color: var(--text-color);
     line-height: var(--text-lh);
     font-weight: var(--text-weight);
+    text-align: var(--text-align);
 
-    &--left {
-        text-align: left;
-    }
     &--right {
         text-align: right;
+    }
+    &--center {
+        text-align: center;
     }
 }

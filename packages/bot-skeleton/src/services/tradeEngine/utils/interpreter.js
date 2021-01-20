@@ -116,7 +116,11 @@ export default class Interpreter {
                 if (this.stopped) {
                     return;
                 }
-
+                // DBot handles 'InvalidToken' internally
+                if (e.name === 'InvalidToken') {
+                    globalObserver.emit('client.invalid_token');
+                    return;
+                }
                 if (shouldStopOnError(this.bot, e.name)) {
                     globalObserver.emit('ui.log.error', e.message);
                     globalObserver.emit('bot.click_stop');

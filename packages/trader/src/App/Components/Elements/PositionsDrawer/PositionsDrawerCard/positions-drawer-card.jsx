@@ -11,9 +11,11 @@ import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multi
 const PositionsDrawerCard = ({
     addToast,
     className,
+    display_name,
     contract_info,
     contract_update,
     currency,
+    current_focus,
     getContractById,
     is_mobile,
     is_sell_requested,
@@ -23,14 +25,15 @@ const PositionsDrawerCard = ({
     onClickCancel,
     onClickSell,
     onClickRemove,
+    onFooterEntered,
     onMouseEnter,
     onMouseLeave,
     removeToast,
     result,
     setCurrentFocus,
     server_time,
+    should_show_transition,
     should_show_cancellation_warning,
-    show_transition,
     status,
     toggleCancellationWarning,
     toggleUnsupportedContractModal,
@@ -46,6 +49,7 @@ const PositionsDrawerCard = ({
     const card_header = (
         <ContractCard.Header
             contract_info={contract_info}
+            display_name={display_name}
             getCardLabels={getCardLabels}
             getContractTypeDisplay={getContractTypeDisplay}
             has_progress_slider={!is_multiplier}
@@ -59,35 +63,37 @@ const PositionsDrawerCard = ({
 
     const card_body = (
         <ContractCard.Body
+            addToast={addToast}
+            connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
             contract_update={contract_update}
             currency={currency}
+            current_focus={current_focus}
             getCardLabels={getCardLabels}
+            getContractById={getContractById}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
-            status={status}
+            removeToast={removeToast}
             server_time={server_time}
+            setCurrentFocus={setCurrentFocus}
+            should_show_cancellation_warning={should_show_cancellation_warning}
+            status={status}
+            toggleCancellationWarning={toggleCancellationWarning}
         />
     );
 
     const card_footer = (
         <ContractCard.Footer
-            addToast={addToast}
-            connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
             getCardLabels={getCardLabels}
-            getContractById={getContractById}
             is_multiplier={is_multiplier}
             is_positions={true}
             is_sell_requested={is_sell_requested}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
-            removeToast={removeToast}
-            setCurrentFocus={setCurrentFocus}
+            onFooterEntered={onFooterEntered}
             server_time={server_time}
-            should_show_cancellation_warning={should_show_cancellation_warning}
-            status={status}
-            toggleCancellationWarning={toggleCancellationWarning}
+            should_show_transition={should_show_transition}
         />
     );
 
@@ -97,10 +103,6 @@ const PositionsDrawerCard = ({
             {card_body}
         </React.Fragment>
     );
-
-    // When scrolling fast in react-window, sometimes card is stuck with enter transition class and it is not removed after timeout making the card to be invisible.
-    // So added a class based on isScrolling from react-window to show the transition.
-    const transition_class = show_transition && 'dc-contract-card__wrapper--transition';
 
     return (
         <ContractCard
@@ -118,15 +120,15 @@ const PositionsDrawerCard = ({
         >
             <div
                 id={`dc_contract_card_${contract_info.contract_id}`}
-                className={classNames('dc-contract-card__wrapper', transition_class, className)}
+                className={className}
                 onMouseEnter={() => {
-                    if (typeof onMouseEnter === 'function') onMouseEnter(true, contract_info);
+                    if (typeof onMouseEnter === 'function') onMouseEnter();
                 }}
                 onMouseLeave={() => {
-                    if (typeof onMouseLeave === 'function') onMouseLeave(false, contract_info);
+                    if (typeof onMouseLeave === 'function') onMouseLeave();
                 }}
                 onClick={() => {
-                    if (typeof onMouseLeave === 'function') onMouseLeave(false, contract_info);
+                    if (typeof onMouseLeave === 'function') onMouseLeave();
                 }}
             >
                 {is_unsupported ? (
@@ -175,6 +177,7 @@ PositionsDrawerCard.propTypes = {
     className: PropTypes.string,
     contract_info: PropTypes.object,
     currency: PropTypes.string,
+    current_focus: PropTypes.string,
     current_tick: PropTypes.number,
     duration: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     duration_unit: PropTypes.string,
@@ -188,6 +191,7 @@ PositionsDrawerCard.propTypes = {
     is_valid_to_sell: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
     onClickRemove: PropTypes.func,
     onClickSell: PropTypes.func,
+    onClickCancel: PropTypes.func,
     profit_loss: PropTypes.number,
     result: PropTypes.string,
     sell_time: PropTypes.number,
@@ -197,12 +201,19 @@ PositionsDrawerCard.propTypes = {
     type: PropTypes.string,
 };
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ modules, ui, client, common }) => ({
+    currency: client.currency,
+    server_time: common.server_time,
     addToast: ui.addToast,
+    current_focus: ui.current_focus,
+    onClickCancel: modules.portfolio.onClickCancel,
+    onClickSell: modules.portfolio.onClickSell,
+    onClickRemove: modules.portfolio.removePositionById,
     getContractById: modules.contract_trade.getContractById,
     is_mobile: ui.is_mobile,
     removeToast: ui.removeToast,
     setCurrentFocus: ui.setCurrentFocus,
     should_show_cancellation_warning: ui.should_show_cancellation_warning,
     toggleCancellationWarning: ui.toggleCancellationWarning,
+    toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,
 }))(PositionsDrawerCard);

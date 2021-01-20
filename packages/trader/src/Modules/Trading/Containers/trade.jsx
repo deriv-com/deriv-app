@@ -227,13 +227,39 @@ class ChartTradeClass extends React.Component {
         if (prevProps.should_refresh) this.props.resetRefresh();
     }
 
+    getMarketsOrder(active_symbols) {
+        const synthetic_index = 'synthetic_index';
+
+        const has_synthetic_index = !!active_symbols.find(s => s.market === synthetic_index);
+        return active_symbols
+            .slice()
+            .sort((a, b) => (a.display_name < b.display_name ? -1 : 1))
+            .map(s => s.market)
+            .reduce(
+                (arr, market) => {
+                    if (arr.indexOf(market) === -1) arr.push(market);
+                    return arr;
+                },
+                has_synthetic_index ? [synthetic_index] : []
+            );
+    }
+
     render() {
-        const { show_digits_stats, main_barrier, should_refresh, extra_barriers = [] } = this.props;
+        const {
+            show_digits_stats,
+            main_barrier,
+            should_refresh,
+            extra_barriers = [],
+            symbol,
+            active_symbols,
+        } = this.props;
 
         const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;
 
         // max ticks to display for mobile view for tick chart
         const max_ticks = this.props.granularity === 0 ? 8 : 24;
+
+        if (!symbol || active_symbols.length === 0) return null;
 
         return (
             <SmartChart
@@ -268,8 +294,7 @@ class ChartTradeClass extends React.Component {
                 refreshActiveSymbols={should_refresh}
                 hasAlternativeSource={this.props.has_alternative_source}
                 refToAddTick={this.props.refToAddTick}
-                //TODO: Remove hard coded order here and add a callback in smartcharts api to get order of the markets.
-                activeSymbols={['synthetic_index', 'forex', 'indices', 'stocks', 'commodities']}
+                getMarketsOrder={this.getMarketsOrder}
                 yAxisMargin={{
                     top: isMobile() ? 76 : 106,
                 }}

@@ -14,17 +14,21 @@ import {
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
+import { getSymbolDisplayName } from 'Stores/Modules/Trading/Helpers/active-symbols';
 import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { getContractTypeDisplay, getCardLabels } from 'Constants/contract';
+import { getMarketInformation } from 'Modules/Reports/Helpers/market-underlying';
 import ResultMobile from './result-mobile.jsx';
 
 const PositionsModalCard = ({
+    active_symbols,
     addToast,
     className,
     contract_info,
     contract_update,
     currency,
+    current_focus,
     current_tick,
     getContractById,
     id,
@@ -58,6 +62,7 @@ const PositionsModalCard = ({
     const fallback_result = profit_loss >= 0 ? 'won' : 'lost';
 
     const should_show_sell = hasContractEntered(contract_info) && isOpen(contract_info);
+    const display_name = getSymbolDisplayName(active_symbols, getMarketInformation(contract_info.shortcode).underlying);
 
     const contract_options_el = (
         <React.Fragment>
@@ -192,6 +197,7 @@ const PositionsModalCard = ({
     const card_multiplier_header = (
         <ContractCard.Header
             contract_info={contract_info}
+            display_name={display_name}
             getCardLabels={getCardLabels}
             getContractTypeDisplay={getContractTypeDisplay}
             has_progress_slider={!is_multiplier}
@@ -204,34 +210,35 @@ const PositionsModalCard = ({
 
     const card_multiplier_body = (
         <ContractCard.Body
+            addToast={addToast}
+            connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
             contract_update={contract_update}
             currency={currency}
+            current_focus={current_focus}
             getCardLabels={getCardLabels}
+            getContractById={getContractById}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
-            status={status}
+            removeToast={removeToast}
             server_time={server_time}
+            setCurrentFocus={setCurrentFocus}
+            should_show_cancellation_warning={should_show_cancellation_warning}
+            status={status}
+            toggleCancellationWarning={toggleCancellationWarning}
         />
     );
 
     const card_multiplier_footer = (
         <ContractCard.Footer
-            addToast={addToast}
-            connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
             getCardLabels={getCardLabels}
-            getContractById={getContractById}
             is_multiplier={is_multiplier}
             is_sell_requested={is_sell_requested}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
-            removeToast={removeToast}
-            setCurrentFocus={setCurrentFocus}
             server_time={server_time}
-            should_show_cancellation_warning={should_show_cancellation_warning}
             status={status}
-            toggleCancellationWarning={toggleCancellationWarning}
         />
     );
 
@@ -283,6 +290,7 @@ PositionsModalCard.propTypes = {
     className: PropTypes.string,
     contract_info: PropTypes.object,
     currency: PropTypes.string,
+    current_focus: PropTypes.string,
     current_tick: PropTypes.number,
     duration: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     duration_unit: PropTypes.string,
@@ -309,7 +317,9 @@ PositionsModalCard.propTypes = {
 };
 
 export default connect(({ common, ui, modules }) => ({
+    active_symbols: modules.trade.active_symbols,
     addToast: ui.addToast,
+    current_focus: ui.current_focus,
     getContractById: modules.contract_trade.getContractById,
     is_mobile: ui.is_mobile,
     removeToast: ui.removeToast,

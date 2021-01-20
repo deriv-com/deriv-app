@@ -1,8 +1,10 @@
 .add-or-manage {
     flex-direction: row; /* fix for Safari */
     flex-wrap: wrap;
+    height: 100%;
 
-    form {
+    .dc-tabs__content {
+        display: flex;
         flex-direction: column;
     }
     .dc-tabs__list--header-fit-content {
@@ -41,13 +43,11 @@
             width: 70%;
             margin: 2.8rem auto 0;
             padding: 10px;
-            @include typeface(--paragraph-center-normal-prominent);
-            font-size: 1.2rem;
             background-color: var(--general-section-1);
             border-radius: $BORDER_RADIUS;
         }
     }
-    .with-margin--is-header {
+    &__with-margin--is-header {
         font-size: 1.6rem;
         font-weight: bold;
         font-stretch: normal;
@@ -58,15 +58,14 @@
         text-align: center;
     }
     @include desktop {
-        .currency-selector__radio-group.with-margin {
+        .currency-selector__radio-group--with-margin {
             margin-bottom: 6rem;
-        }
-        .add-crypto-currency {
-            padding: 0 20px 20px 0;
+            margin-left: auto;
+            margin-right: auto;
+            width: 768px;
         }
         .dc-form-submit-button--absolute {
-            position: fixed;
-            padding: 1.4rem;
+            padding: 1.6rem;
             width: 100%;
             right: 0;
         }
@@ -85,7 +84,7 @@
                 margin: 0 1.6rem;
             }
         }
-        .currency-selector__radio-group.with-margin {
+        .currency-selector__radio-group--with-margin {
             margin-bottom: 7rem;
         }
         & .change-currency {
@@ -132,7 +131,6 @@
     flex-direction: column;
     position: relative;
     flex-grow: 1;
-    width: min-content;
     padding: 2rem 2rem 1rem;
 
     &__icon-area {
@@ -238,7 +236,7 @@
         }
         &--no-grow {
             flex-grow: 0;
-            margin-bottom: 2rem;
+            margin-bottom: 3.2rem;
         }
     }
     &__btn-area {
@@ -253,13 +251,12 @@
             border-width: 2px;
 
             @include mobile {
-                width: 100%;
                 margin: 0 0.8rem;
+                width: 15.6rem;
             }
         }
         @include mobile {
             margin: 0 0 1rem;
-            height: 88px;
             align-items: center;
         }
     }

@@ -76,6 +76,15 @@ $header-height: 3.6em;
         & .dc-themed-scrollbars {
             height: 100%;
         }
+        & .dc-contract-card {
+            &__stop-loss {
+                & .dc-contract-card-item {
+                    &__header {
+                        padding-top: 0.8rem;
+                    }
+                }
+            }
+        }
     }
     &__footer {
         position: relative;
@@ -121,14 +130,6 @@ $header-height: 3.6em;
             @extend %inline-icon;
             height: 1.6em;
             width: 1.6em;
-        }
-    }
-    // TODO: Remove below once react-virtualized is used for positions drawer for auto height calculation
-    .dc-contract-card__result {
-        max-height: 157px;
-
-        &--lg {
-            max-height: 254px;
         }
     }
 }

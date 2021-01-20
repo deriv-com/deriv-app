@@ -1,21 +1,39 @@
-import { Table } from '@deriv/components';
+import { Table, Text } from '@deriv/components';
+import { isMobile, formatMoney } from '@deriv/shared';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { localize, Localize } from 'Components/i18next';
-import Dp2pContext from 'Components/context/dp2p-context';
+import { localize } from 'Components/i18next';
 import { secondsToTimer } from 'Utils/date-time';
+import { createExtendedOrderDetails } from 'Utils/orders';
 import ServerTime from 'Utils/server-time';
-import { createExtendedOrderDetails } from '../../../utils/orders';
-import { useStores } from '../../../../stores';
+import { useStores } from 'Stores';
 
-const OrderRowComponent = observer(({ data: order, onOpenDetails, style, is_active }) => {
-    const { general_store } = useStores();
+const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) => {
+    return (
+        <React.Fragment>
+            <Text size='sm' color='prominent' line_height='xxs' weight='bold' as='p'>
+                {order_type} {formatMoney(currency, send_amount, true)} {currency}
+            </Text>
+            <Text color='less-prominent' as='p' line_height='xxs' size='xxs' align='left'>
+                {order_purchase_datetime}
+            </Text>
+        </React.Fragment>
+    );
+};
+
+const OrderRow = ({ style, row: order }) => {
+    const getTimeLeft = time => {
+        const distance = ServerTime.getDistanceToServerTime(time);
+        return {
+            distance,
+            label: distance < 0 ? localize('expired') : secondsToTimer(distance),
+        };
+    };
+    const { general_store, order_store } = useStores();
     const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
-    const [remaining_time, setRemainingTime] = React.useState();
-    const { getLocalStorageSettingsForLoginId } = React.useContext(Dp2pContext);
-
+    const [is_timer_visible, setIsTimerVisible] = React.useState();
     const {
         account_currency,
         amount_display,
@@ -35,51 +53,107 @@ const OrderRowComponent = observer(({ data: order, onOpenDetails, style, is_acti
         status_string,
     } = order_state;
 
-    let interval;
+    const [remaining_time, setRemainingTime] = React.useState(getTimeLeft(order_expiry_milliseconds).label);
+
+    const interval = React.useRef(null);
 
     const isOrderSeen = order_id => {
-        const { notifications } = getLocalStorageSettingsForLoginId();
+        const { notifications } = general_store.getLocalStorageSettingsForLoginId();
         return notifications.some(notification => notification.order_id === order_id && notification.is_seen === true);
     };
 
-    const countDownTimer = () => {
-        const distance = ServerTime.getDistanceToServerTime(order_expiry_milliseconds);
-        const timer = secondsToTimer(distance);
-
-        if (distance < 1) {
-            const { client, props } = general_store;
-            setRemainingTime(localize('expired'));
-            setOrderState(createExtendedOrderDetails(order.order_details, client.loginid, props.server_time));
-            clearInterval(interval);
-        } else {
-            setRemainingTime(timer);
-        }
-    };
-
     React.useEffect(() => {
-        countDownTimer();
-        interval = setInterval(countDownTimer, 1000);
-        return () => clearInterval(interval);
-    }, []);
+        const countDownTimer = () => {
+            const { distance, label } = getTimeLeft(order_expiry_milliseconds);
+
+            if (distance < 0) {
+                const { client, props } = general_store;
+                setRemainingTime(label);
+                setOrderState(createExtendedOrderDetails(order.order_details, client.loginid, props.server_time));
+                clearInterval(interval.current);
+                setIsTimerVisible(false);
+            } else {
+                setRemainingTime(label);
+                setIsTimerVisible(general_store.is_active_tab);
+            }
+        };
+
+        interval.current = setInterval(countDownTimer, 1000);
+        return () => clearInterval(interval.current);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const offer_amount = `${amount_display} ${account_currency}`;
     const transaction_amount = `${price_display} ${local_currency}`;
+    const is_buy_order_type_for_user = (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad);
+    const order_type = is_buy_order_type_for_user ? localize('Buy') : localize('Sell');
 
+    if (isMobile()) {
+        return (
+            <div onClick={() => order_store.setQueryDetails(order)}>
+                <Table.Row
+                    style={style}
+                    className={classNames('orders__mobile', {
+                        'orders__mobile--attention': !isOrderSeen(id),
+                    })}
+                >
+                    <Table.Cell
+                        className={classNames('orders__mobile-header', {
+                            'orders__table-grid--active': general_store.is_active_tab,
+                        })}
+                    >
+                        <div
+                            className={classNames('orders__mobile-status', {
+                                'orders__table-status--danger': should_highlight_danger,
+                                'orders__table-status--alert': should_highlight_alert,
+                                'orders__table-status--success': should_highlight_success,
+                                'orders__table-status--disabled': should_highlight_disabled,
+                            })}
+                        >
+                            {status_string}
+                        </div>
+                    </Table.Cell>
+                    <Table.Cell className='orders__mobile-header-right'>
+                        {is_timer_visible && (
+                            <Text
+                                size='xxs'
+                                color='prominent'
+                                align='center'
+                                line_height='l'
+                                className='orders__mobile-time'
+                            >
+                                {remaining_time}
+                            </Text>
+                        )}
+                        {/* <div className='orders__mobile-chat'>
+                            <Icon
+                                icon='IcChat'
+                                height={15}
+                                width={16}
+                                onClick={() => sendbird_store.setShouldShowChatModal(true)}
+                            />
+                        </div> */}
+                    </Table.Cell>
+                    <Table.Cell className='orders__mobile-title'>
+                        <Title
+                            send_amount={amount_display}
+                            currency={account_currency}
+                            order_purchase_datetime={order_purchase_datetime}
+                            order_type={order_type}
+                        />
+                    </Table.Cell>
+                </Table.Row>
+            </div>
+        );
+    }
     return (
-        <div onClick={() => onOpenDetails(order)} style={style}>
+        <div onClick={() => order_store.setQueryDetails(order)}>
             <Table.Row
                 className={classNames('orders__table-row orders__table-grid', {
-                    'orders__table-grid--active': is_active,
+                    'orders__table-grid--active': general_store.is_active_tab,
                     'orders__table-row--attention': !isOrderSeen(id),
                 })}
             >
-                <Table.Cell>
-                    {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad) ? (
-                        <Localize i18n_default_text='Buy' />
-                    ) : (
-                        <Localize i18n_default_text='Sell' />
-                    )}
-                </Table.Cell>
+                <Table.Cell>{order_type}</Table.Cell>
                 <Table.Cell>{id}</Table.Cell>
                 <Table.Cell>{other_user_details.name}</Table.Cell>
                 <Table.Cell>
@@ -94,35 +168,22 @@ const OrderRowComponent = observer(({ data: order, onOpenDetails, style, is_acti
                         {status_string}
                     </div>
                 </Table.Cell>
+                <Table.Cell>{is_buy_order_type_for_user ? transaction_amount : offer_amount}</Table.Cell>
+                <Table.Cell>{is_buy_order_type_for_user ? offer_amount : transaction_amount}</Table.Cell>
                 <Table.Cell>
-                    {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad) ? transaction_amount : offer_amount}
-                </Table.Cell>
-                <Table.Cell>
-                    {(is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad) ? offer_amount : transaction_amount}
-                </Table.Cell>
-                <Table.Cell>
-                    {is_active ? <div className='orders__table-time'>{remaining_time}</div> : order_purchase_datetime}
+                    {general_store.is_active_tab ? (
+                        <div className='orders__table-time'>{remaining_time}</div>
+                    ) : (
+                        order_purchase_datetime
+                    )}
                 </Table.Cell>
             </Table.Row>
         </div>
     );
-});
-
-OrderRowComponent.propTypes = {
-    data: PropTypes.shape({
-        account_currency: PropTypes.string,
-        amount_display: PropTypes.string,
-        display_status: PropTypes.string,
-        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        is_buy_order: PropTypes.bool,
-        local_currency: PropTypes.string,
-        order_purchase_datetime: PropTypes.string,
-        price_display: PropTypes.string,
-    }),
-    onOpenDetails: PropTypes.func,
-    style: PropTypes.object,
 };
 
-OrderRowComponent.displayName = 'OrderRowComponent';
+OrderRow.propTypes = {
+    order: PropTypes.object,
+};
 
-export default OrderRowComponent;
+export default observer(OrderRow);

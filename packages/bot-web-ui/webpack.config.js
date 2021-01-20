@@ -16,11 +16,11 @@ const output = {
     libraryTarget: 'umd',
 };
 
-module.exports = function(env, argv) {
+module.exports = function (env, argv) {
     const base = env && env.base && !env.base ? `/${env.base}/` : '/';
 
     return {
-        entry: [path.join(__dirname, 'src', 'app.js')],
+        entry: [path.join(__dirname, 'src', 'app', 'app.js')],
         output: {
             ...output,
             publicPath: base,
@@ -76,23 +76,38 @@ module.exports = function(env, argv) {
                 {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
-                    loader: [
-                      '@deriv/shared/src/loaders/react-import-loader.js',
-                      'babel-loader',
-                    ],
+                    loader: ['@deriv/shared/src/loaders/react-import-loader.js'],
                 },
-                { // @deriv/bot-skeleton also requires `.xml` import statements to be parsed by raw-loader
+                {
+                    test: /\.(js|jsx)$/,
+                    exclude: /node_modules/,
+                    loader: 'babel-loader',
+                    options: {
+                        rootMode: 'upward',
+                    },
+                },
+                {
+                    // @deriv/bot-skeleton also requires `.xml` import statements to be parsed by raw-loader
                     test: /\.xml$/,
                     exclude: /node_modules/,
                     use: 'raw-loader',
                 },
             ],
         },
+        resolve: {
+            alias: {
+                Components: path.resolve(__dirname, 'src', 'components'),
+                Constants: path.resolve(__dirname, './src/constants'),
+                Stores: path.resolve(__dirname, './src/stores'),
+                Utils: path.resolve(__dirname, './src/utils'),
+            },
+            extensions: ['.js', '.jsx'],
+        },
         plugins: [
             new CleanWebpackPlugin(),
             new MiniCssExtractPlugin({ filename: 'bot-web-ui.main.css' }),
             new StyleLintPlugin({ fix: true }),
-            new CopyWebpackPlugin([{ from: 'node_modules/@deriv/bot-skeleton/dist/media', to: 'media' }]),
+            new CopyWebpackPlugin({ patterns: [{ from: 'node_modules/@deriv/bot-skeleton/dist/media', to: 'media' }] }),
             new SpriteLoaderPlugin(),
         ],
         externals: [

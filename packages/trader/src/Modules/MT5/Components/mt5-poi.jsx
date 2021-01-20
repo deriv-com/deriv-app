@@ -7,81 +7,74 @@ import { WS } from 'Services/ws-methods';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-class MT5POI extends React.PureComponent {
-    // TODO: Refactor into functional component with hooks
-    state = {
-        poi_state: 'none',
-    };
-
-    onStateChange = ({ status }) =>
-        this.setState({
-            poi_state: status,
-        });
-
-    validateForm = () => {
+const MT5POI = ({ authentication_status, form_error, index, onCancel, onSubmit, value, ...props }) => {
+    const { identity_status } = authentication_status;
+    const [poi_state, setPOIState] = React.useState('none');
+    const validateForm = React.useCallback(() => {
         const errors = {};
-        if (!['pending', 'verified'].includes(this.state.poi_state)) {
+        if (!['pending', 'verified'].includes(poi_state) && !['pending', 'verified'].includes(identity_status)) {
             errors.poi_state = true;
         }
-
         return errors;
-    };
+    }, [poi_state, identity_status]);
 
-    render() {
-        return (
-            <Formik
-                initialValues={{
-                    poi_state: this.props.value.poi_state,
-                }}
-                validate={this.validateForm}
-                onSubmit={(values, actions) =>
-                    this.props.onSubmit(this.props.index, { poi_state: this.state.poi_state }, actions.setSubmitting)
-                }
-            >
-                {({ handleSubmit }) => (
-                    <AutoHeightWrapper default_height={200}>
-                        {({ setRef, height }) => (
-                            <form ref={setRef} className='mt5-proof-of-identity' onSubmit={handleSubmit}>
-                                <div className='details-form'>
-                                    <input type='hidden' name='poi_state' value={this.state.poi_state} readOnly />
-                                    <Div100vhContainer
-                                        className='mt5-proof-of-identity__fields'
-                                        height_offset='180px'
-                                        is_disabled={isDesktop()}
-                                    >
-                                        <ProofOfIdentityContainer
-                                            {...this.props}
-                                            serviceToken={WS.serviceToken}
-                                            notificationEvent={WS.notificationEvent}
-                                            getAccountStatus={WS.authorized.getAccountStatus}
-                                            height={height}
-                                            onStateChange={this.onStateChange}
-                                            is_trading_button_enabled={false}
-                                            is_description_enabled={false}
-                                        />
-                                    </Div100vhContainer>
-                                    <Modal.Footer is_bypassed={isMobile()}>
-                                        <FormSubmitButton
-                                            has_cancel
-                                            cancel_label={localize('Previous')}
-                                            is_disabled={!['pending', 'verified'].includes(this.state.poi_state)}
-                                            is_absolute={isMobile()}
-                                            label={localize('Next')}
-                                            onCancel={this.props.onCancel}
-                                            form_error={this.props.form_error}
-                                        />
-                                    </Modal.Footer>
-                                </div>
-                            </form>
-                        )}
-                    </AutoHeightWrapper>
-                )}
-            </Formik>
-        );
-    }
-}
+    return (
+        <Formik
+            initialValues={{
+                poi_state: value.poi_state,
+            }}
+            validate={validateForm}
+            onSubmit={(values, actions) => onSubmit(index, { poi_state }, actions.setSubmitting)}
+        >
+            {({ handleSubmit }) => (
+                <AutoHeightWrapper default_height={200}>
+                    {({ setRef, height }) => (
+                        <form ref={setRef} className='mt5-proof-of-identity' onSubmit={handleSubmit}>
+                            <div className='details-form'>
+                                <input type='hidden' name='poi_state' value={poi_state} readOnly />
+                                <Div100vhContainer
+                                    className='mt5-proof-of-identity__fields'
+                                    height_offset='180px'
+                                    is_disabled={isDesktop()}
+                                >
+                                    <ProofOfIdentityContainer
+                                        {...props}
+                                        serviceToken={WS.serviceToken}
+                                        notificationEvent={WS.notificationEvent}
+                                        getAccountStatus={WS.authorized.getAccountStatus}
+                                        height={height}
+                                        onStateChange={({ status }) => {
+                                            const poi_status = ['pending', 'verified'].includes(identity_status)
+                                                ? identity_status
+                                                : status;
+                                            setPOIState(poi_status);
+                                        }}
+                                        is_trading_button_enabled={false}
+                                        is_description_enabled={false}
+                                    />
+                                </Div100vhContainer>
+                                <Modal.Footer is_bypassed={isMobile()}>
+                                    <FormSubmitButton
+                                        has_cancel
+                                        cancel_label={localize('Previous')}
+                                        is_disabled={!['pending', 'verified'].includes(poi_state)}
+                                        is_absolute={isMobile()}
+                                        label={localize('Next')}
+                                        onCancel={onCancel}
+                                        form_error={form_error}
+                                    />
+                                </Modal.Footer>
+                            </div>
+                        </form>
+                    )}
+                </AutoHeightWrapper>
+            )}
+        </Formik>
+    );
+};
 
 MT5POI.propTypes = {
+    authentication_status: PropTypes.object,
     form_error: PropTypes.string,
     index: PropTypes.number,
     onCancel: PropTypes.func,

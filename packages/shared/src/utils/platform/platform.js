@@ -34,18 +34,19 @@ export const getPathname = () => {
     }
 };
 
-export const getPlatformHeader = routing_history => {
-    if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return platform_name.DBot;
-    if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return platform_name.DMT5;
-    if (isNavigationFromPlatform(routing_history, routes.smarttrader)) return platform_name.SmartTrader;
-    return platform_name.DTrader;
-};
+export const getPlatformInformation = routing_history => {
+    if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) {
+        return { header: platform_name.DBot, icon: 'IcBrandDbot' };
+    }
 
-export const getPlatformIcon = routing_history => {
-    if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return 'IcBrandDbot';
-    if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return 'IcBrandDmt5';
-    if (isNavigationFromPlatform(routing_history, routes.smarttrader)) return 'IcBrandSmarttrader';
-    return 'IcBrandDtrader';
+    if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) {
+        return { header: platform_name.DMT5, icon: 'IcBrandDmt5' };
+    }
+
+    if (isNavigationFromPlatform(routing_history, routes.smarttrader)) {
+        return { header: platform_name.SmartTrader, icon: 'IcBrandSmarttrader' };
+    }
+    return { header: platform_name.DTrader, icon: 'IcBrandDtrader' };
 };
 
 export const getActivePlatform = routing_history => {

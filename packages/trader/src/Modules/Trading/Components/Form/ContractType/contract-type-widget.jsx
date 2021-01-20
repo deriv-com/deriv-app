@@ -132,9 +132,18 @@ class ContractTypeWidget extends React.PureComponent {
             contract_category.icon = contract_type_category_icon[contract_category.label];
 
             if (search_query) {
-                contract_category.contract_categories = contract_category.contract_categories.filter(category =>
-                    category.contract_types.find(type => type.text.toLowerCase().includes(search_query))
-                );
+                contract_category.contract_categories = contract_category.contract_categories
+                    .filter(category =>
+                        category.contract_types.find(type =>
+                            type.text.toLowerCase().includes(search_query.toLowerCase())
+                        )
+                    )
+                    .map(category => ({
+                        ...category,
+                        contract_types: category.contract_types.filter(type =>
+                            type.text.toLowerCase().includes(search_query.toLowerCase())
+                        ),
+                    }));
             }
 
             return contract_category;
@@ -145,6 +154,13 @@ class ContractTypeWidget extends React.PureComponent {
         const { selected_category } = this.state;
         const selected_list_category = this.list_with_category.find(item => item.label === selected_category);
         return (selected_list_category || this.list_with_category[0]).contract_categories;
+    }
+
+    get selected_contract_index() {
+        const contract_types_arr = this.list_with_category?.flatMap(category => category.contract_types);
+        return contract_types_arr
+            .filter(type => type.value !== 'rise_fall_equal')
+            .findIndex(type => type.value === this.state.item?.value);
     }
 
     render() {
@@ -189,6 +205,7 @@ class ContractTypeWidget extends React.PureComponent {
                     ) : (
                         <ContractType.Info
                             handleNavigationClick={this.handleNavigationClick}
+                            initial_index={this.selected_contract_index}
                             handleSelect={this.handleSelect}
                             item={item || { value }}
                             list={this.list_with_category}

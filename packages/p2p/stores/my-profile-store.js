@@ -2,17 +2,16 @@ import { observable, action } from 'mobx';
 import { requestWS } from 'Utils/websocket';
 import { localize } from 'Components/i18next';
 import { textValidator } from 'Utils/validations';
+import BaseStore from 'Stores/base_store';
 
-export default class MyProfileStore {
-    constructor(root_store) {
-        this.root_store = root_store;
-    }
-
+export default class MyProfileStore extends BaseStore {
     @observable advertiser_info = {};
+    @observable balance_available = null;
     @observable contact_info = '';
     @observable default_advert_description = '';
     @observable error_message = '';
     @observable form_error = '';
+    @observable full_name = '';
     @observable is_button_loading = false;
     @observable is_loading = true;
     @observable is_submit_success = false;
@@ -27,7 +26,9 @@ export default class MyProfileStore {
         }).then(response => {
             if (!response.error) {
                 const { p2p_advertiser_info } = response;
+
                 this.setAdvertiserInfo(p2p_advertiser_info);
+                this.setBalanceAvailable(p2p_advertiser_info.balance_available);
                 this.setContactInfo(p2p_advertiser_info.contact_info);
                 this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
                 this.setPaymentInfo(p2p_advertiser_info.payment_info);
@@ -38,10 +39,20 @@ export default class MyProfileStore {
         });
     }
 
+    getSettings() {
+        requestWS({ get_settings: 1 }).then(response => {
+            const { get_settings } = response;
+
+            if (!response.error) {
+                this.setFullName(`${get_settings.first_name} ${get_settings.last_name}`);
+            } else {
+                this.setFormError(response.error.message);
+            }
+        });
+    }
+
     @action.bound
     handleSubmit(values) {
-        this.setIsButtonLoading(true);
-
         requestWS({
             p2p_advertiser_update: 1,
             contact_info: values.contact_info,
@@ -50,6 +61,8 @@ export default class MyProfileStore {
         }).then(response => {
             if (!response.error) {
                 const { p2p_advertiser_update } = response;
+
+                this.setBalanceAvailable(p2p_advertiser_update.balance_available);
                 this.setContactInfo(p2p_advertiser_update.contact_info);
                 this.setDefaultAdvertDescription(p2p_advertiser_update.default_advert_description);
                 this.setPaymentInfo(p2p_advertiser_update.payment_info);
@@ -57,7 +70,6 @@ export default class MyProfileStore {
             } else {
                 this.setFormError(response.error);
             }
-            this.setIsButtonLoading(false);
 
             setTimeout(() => {
                 this.setIsSubmitSuccess(false);
@@ -65,9 +77,25 @@ export default class MyProfileStore {
         });
     }
 
+    handleToggle = () => {
+        requestWS({
+            p2p_advertiser_update: 1,
+            show_name: this.root_store?.general_store?.should_show_real_name ? 0 : 1,
+        }).then(response => {
+            if (response.error) {
+                this.setFormError(response.error.message);
+            }
+        });
+    };
+
     @action.bound
     setAdvertiserInfo(advertiser_info) {
         this.advertiser_info = advertiser_info;
+    }
+
+    @action.bound
+    setBalanceAvailable(balance_available) {
+        this.balance_available = balance_available;
     }
 
     @action.bound
@@ -91,8 +119,8 @@ export default class MyProfileStore {
     }
 
     @action.bound
-    setIsButtonLoading(is_button_loading) {
-        this.is_button_loading = is_button_loading;
+    setFullName(full_name) {
+        this.full_name = full_name;
     }
 
     @action.bound
@@ -111,7 +139,7 @@ export default class MyProfileStore {
     }
 
     @action.bound
-    validateForm(values) {
+    validateForm = values => {
         const validations = {
             contact_info: [v => textValidator(v)],
             default_advert_description: [v => textValidator(v)],
@@ -153,5 +181,5 @@ export default class MyProfileStore {
         });
 
         return errors;
-    }
+    };
 }

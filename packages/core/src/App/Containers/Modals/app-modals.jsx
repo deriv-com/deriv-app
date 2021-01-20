@@ -1,6 +1,5 @@
 import React from 'react';
-import { isBot, isMT5, urlFor } from '@deriv/shared';
-import DenialOfServiceModal from 'App/Components/Elements/Modals/DenialOfServiceModal';
+import { useLocation } from 'react-router-dom';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import { connect } from 'Stores/connect';
 
@@ -9,6 +8,9 @@ const AccountSignupModal = React.lazy(() =>
 );
 const ResetPasswordModal = React.lazy(() =>
     import(/* webpackChunkName: "reset-password-modal" */ '../ResetPasswordModal')
+);
+const RedirectToLoginModal = React.lazy(() =>
+    import(/* webpackChunkName: "reset-password-modal" */ '../RedirectToLoginModal')
 );
 const SetResidenceModal = React.lazy(() =>
     import(/* webpackChunkName: "set-residence-modal"  */ '../SetResidenceModal')
@@ -25,15 +27,17 @@ const AppModals = ({
     is_account_needed_modal_on,
     is_account_types_modal_visible,
     is_welcome_modal_visible,
-    is_denial_of_service_modal_visible,
     is_reality_check_visible,
     is_set_residence_modal_visible,
-    url_action_param,
-    switchAccount,
-    virtual_account_loginid,
 }) => {
+    const url_params = new URLSearchParams(useLocation().search);
+    const url_action_param = url_params.get('action');
+
     let ComponentToLoad = null;
     switch (url_action_param) {
+        case 'redirect_to_login':
+            ComponentToLoad = <RedirectToLoginModal />;
+            break;
         case 'reset_password':
             ComponentToLoad = <ResetPasswordModal />;
             break;
@@ -41,26 +45,7 @@ const AppModals = ({
             ComponentToLoad = <AccountSignupModal />;
             break;
         default:
-            // TODO: [deriv-eu] Remove this pop up after EU merge into production
-            if (is_denial_of_service_modal_visible) {
-                const denialOfServiceOnCancel = () => {
-                    const trade_link = isMT5() ? 'user/metatrader' : 'trading';
-                    const link_to = isBot() ? 'bot' : trade_link;
-                    window.open(urlFor(link_to, { legacy: true }));
-                };
-
-                const denialOfServiceOnConfirm = async () => {
-                    await switchAccount(virtual_account_loginid);
-                };
-
-                ComponentToLoad = (
-                    <DenialOfServiceModal
-                        onConfirm={denialOfServiceOnConfirm}
-                        onCancel={denialOfServiceOnCancel}
-                        is_visible={is_denial_of_service_modal_visible}
-                    />
-                );
-            } else if (is_set_residence_modal_visible) {
+            if (is_set_residence_modal_visible) {
                 ComponentToLoad = <SetResidenceModal />;
             }
             break;
@@ -91,8 +76,5 @@ export default connect(({ client, ui }) => ({
     is_account_needed_modal_on: ui.is_account_needed_modal_on,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
-    is_denial_of_service_modal_visible: !client.is_client_allowed_to_visit,
     is_reality_check_visible: client.is_reality_check_visible,
-    switchAccount: client.switchAccount,
-    virtual_account_loginid: client.virtual_account_loginid,
 }))(AppModals);

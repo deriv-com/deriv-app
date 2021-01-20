@@ -15,12 +15,12 @@
     height: 152px;
     text-align: center;
     transition: top 0.3s ease-in-out;
-    z-index: 10;
+    z-index: 1000;
 
     @include mobile {
         font-size: 12px;
         font-weight: bold;
-        height: 168px;
+        height: fit-content;
         padding: 2.4rem 0;
     }
 
@@ -47,7 +47,7 @@
     &__btn-accept,
     &__btn-accept:hover {
         display: inline-block;
-        margin: 20px auto;
+        margin: 20px auto 0;
         height: 40px;
         border-width: 2px;
         border-radius: $BORDER_RADIUS;

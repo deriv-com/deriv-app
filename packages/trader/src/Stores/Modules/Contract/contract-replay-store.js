@@ -7,12 +7,13 @@ import { contractCancelled, contractSold } from '../Portfolio/Helpers/portfolio-
 import BaseStore from '../../base-store';
 
 export default class ContractReplayStore extends BaseStore {
-    @observable is_chart_ready = false;
+    @observable chart_state = '';
     @observable contract_store = { contract_info: {} };
     // --- Observable properties ---
     @observable is_sell_requested = false;
     @observable has_error = false;
     @observable error_message = '';
+    @observable error_code = '';
     @observable is_chart_loading = true;
     // ---- chart props
     @observable margin;
@@ -50,11 +51,7 @@ export default class ContractReplayStore extends BaseStore {
             this.should_forget_first = false;
         }
 
-        // If the contract replay is opened from trade page, it should already have an ongoing subscription
-        // Subscription is created only when the contract replay page is opened directly
-        if (!this.root_store.modules.contract_trade.contracts_map[contract_id]) {
-            this.subscriber = WS.subscribeProposalOpenContract(contract_id, cb);
-        }
+        this.subscriber = WS.subscribeProposalOpenContract(contract_id, cb);
     };
 
     subscribeProposalOpenContract = () => {
@@ -88,9 +85,7 @@ export default class ContractReplayStore extends BaseStore {
         this.contract_info = {};
         this.indicative_status = null;
         this.prev_indicative = 0;
-        // @shayan: for forcing chart to call scale 1:1 each time,
-        // we should let SmartChart notify when its ready
-        this.is_chart_ready = false;
+        this.chart_state = '';
         this.root_store.ui.toggleHistoryTab(false);
         WS.removeOnReconnect();
     }
@@ -100,8 +95,11 @@ export default class ContractReplayStore extends BaseStore {
         if (!this.switch_account_listener) return;
 
         if ('error' in response) {
+            const { code, message } = response.error;
             this.has_error = true;
             this.is_chart_loading = false;
+            this.error_message = message;
+            this.error_code = code;
             return;
         }
         if (isEmptyObject(response.proposal_open_contract)) {
@@ -151,8 +149,6 @@ export default class ContractReplayStore extends BaseStore {
         if (this.contract_info.is_sold) {
             this.contract_store.cacheProposalOpenContractResponse(response);
         }
-
-        this.is_chart_loading = false;
     }
 
     @action.bound
@@ -163,15 +159,15 @@ export default class ContractReplayStore extends BaseStore {
     }
 
     @action.bound
-    setIsChartReady(v) {
-        // SmartChart has a bug with scroll_to_epoch
-        // @morteza: It ignores the scroll_to_epoch if feed is not ready
-        setTimeout(
-            action(() => {
-                this.is_chart_ready = v;
-            }),
-            200
-        );
+    chartStateChange(state) {
+        this.chart_state = state;
+
+        switch (state) {
+            case 'SCROLL_TO_LEFT':
+                this.is_chart_loading = false;
+                break;
+            default:
+        }
     }
 
     @action.bound

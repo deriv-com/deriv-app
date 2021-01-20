@@ -486,10 +486,15 @@
     height: 100%;
 
     &__wrapper {
-        --mt5-card-wrapper-grid: 1fr;
         display: grid;
-        grid-template-rows: var(--mt5-card-wrapper-grid);
+        grid-template-rows: 1fr 4rem;
         height: 100%;
+
+        @include mobile {
+            grid-template-rows: 1fr;
+            margin-bottom: 2.4rem;
+            height: fit-content;
+        }
         &:not(:last-child) {
             margin-right: 2.4rem;
         }
@@ -512,7 +517,8 @@
         color: var(--text-prominent);
 
         @include mobile {
-            height: 3rem;
+            height: 4rem;
+            align-content: start;
         }
 
         &--disabled {
@@ -751,6 +757,7 @@
     }
     @include mobile {
         width: calc(100vw - 3.2rem);
+        height: fit-content;
 
         &:not(:last-child) {
             margin-bottom: 2.4rem;

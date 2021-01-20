@@ -91,13 +91,10 @@ const getIconFromType = type => {
 const MT5PasswordForm = props => {
     return (
         <Formik
-            initialValues={{
-                password: '',
-            }}
+            initialValues={props.values}
+            enableReinitialize
             validate={props.validatePassword}
-            onSubmit={(values, actions) => {
-                props.submitMt5Password(values.password, actions.setSubmitting);
-            }}
+            onSubmit={(values, actions) => props.submitMt5Password(values, actions.setSubmitting)}
         >
             {({
                 handleSubmit,
@@ -108,6 +105,7 @@ const MT5PasswordForm = props => {
                 errors,
                 values,
                 touched,
+                isSubmitting,
             }) => (
                 <form onSubmit={handleSubmit}>
                     <div className='mt5-password-modal__content'>
@@ -174,7 +172,7 @@ const MT5PasswordForm = props => {
                         cancel_label={localize('Reset Password')}
                         onCancel={props.handleCancel}
                         is_absolute={isMobile()}
-                        is_loading={props.is_submitting}
+                        is_loading={props.is_submitting || isSubmitting}
                         label={props.should_show_server_form ? localize('Next') : localize('Add account')}
                     />
                 </form>
@@ -207,7 +205,6 @@ const MT5ServerForm = ({ ...props }) => {
     return (
         <Formik
             initialValues={{
-                password: props.password,
                 server:
                     props.trading_servers.find(
                         server =>
@@ -219,7 +216,6 @@ const MT5ServerForm = ({ ...props }) => {
             onSubmit={(values, actions) => {
                 props.submitMt5Form(
                     {
-                        password: values.password,
                         server: values.server,
                     },
                     actions.setSubmitting
@@ -304,6 +300,7 @@ const MT5PasswordModal = ({
     };
 
     const [password, setPassword] = React.useState('');
+    const [server, setServer] = React.useState('');
     const [is_submitting, setIsSubmitting] = React.useState(false); // TODO handle this better
     const validatePassword = values => {
         const errors = {};
@@ -335,6 +332,8 @@ const MT5PasswordModal = ({
     };
 
     const closeModal = () => {
+        setPassword('');
+        setServer('');
         closeDialogs();
         disableMt5PasswordModal();
     };
@@ -357,7 +356,7 @@ const MT5PasswordModal = ({
     const should_show_success = !has_mt5_error && is_mt5_success_dialog_enabled;
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
     const is_real_synthetic = [account_type.category, account_type.type].join('_') === 'real_synthetic';
-    const should_show_server_form = (is_logged_in ? !is_eu : !is_eu_country) && is_real_synthetic && !!password;
+    const should_show_server_form = (is_logged_in ? !is_eu : !is_eu_country) && is_real_synthetic && !server;
 
     // TODO handle submitting password without server in a better way
     React.useEffect(() => {
@@ -372,10 +371,31 @@ const MT5PasswordModal = ({
     }, [password, should_show_server_form, is_submitting]);
 
     React.useEffect(() => {
+        if (password && server) {
+            submitMt5Password(
+                {
+                    password,
+                    server,
+                },
+                state => {
+                    setIsSubmitting(state);
+                    setPassword('');
+                }
+            );
+        }
+    }, [password, server]);
+
+    React.useEffect(() => {
         if (has_mt5_error || is_mt5_success_dialog_enabled) {
             setPassword('');
         }
-    }, [has_mt5_error, is_mt5_success_dialog_enabled]);
+    }, [has_mt5_error, is_mt5_success_dialog_enabled, error_message]);
+
+    React.useEffect(() => {
+        if (error_type === 'PasswordError') {
+            setPassword('');
+        }
+    }, [error_type]);
 
     if (account_status?.status?.includes?.('password_reset_required')) {
         return (
@@ -422,9 +442,8 @@ const MT5PasswordModal = ({
                             trading_servers={trading_servers}
                             mt5_login_list={mt5_login_list}
                             account_title={account_title}
-                            password={password}
-                            submitMt5Form={(v, setSubmitting) => submitMt5Password(v, setSubmitting)}
-                            onBack={() => setPassword('')}
+                            submitMt5Form={v => setServer(v.server)}
+                            onBack={closeModal}
                         />
                     )}
                     {!should_show_server_form && !is_password_reset && (
@@ -435,8 +454,14 @@ const MT5PasswordModal = ({
                             closeModal={closeModal}
                             handleCancel={handleCancel}
                             error_type={error_type}
+                            values={{
+                                password,
+                                server,
+                            }}
                             error_message={error_message}
-                            submitMt5Password={setPassword}
+                            submitMt5Password={v => {
+                                setPassword(v.password);
+                            }}
                             is_real_financial_stp={is_real_financial_stp}
                             should_show_server_form={should_show_server_form}
                             validatePassword={validatePassword}
@@ -487,7 +512,6 @@ const MT5PasswordModal = ({
                 onSubmit={closeOpenSuccess}
                 classNameMessage='mt5-password-modal__message'
                 message={getSubmitText(account_title, account_type.category)}
-                // message={error_message}
                 icon={<IconType />}
                 icon_size='xlarge'
                 text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('OK')}

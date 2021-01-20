@@ -21,7 +21,7 @@ import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import 'Sass/app/modules/mt5/mt5.scss';
 import { connect } from 'Stores/connect';
 
-const PasswordResetBody = () => (
+const PasswordResetBody = ({ closeModal }) => (
     <div className='dc-modal__container_mt5-reset-password-modal__body'>
         <Icon icon='IcMt5OnePassword' size='128' />
         <Text as='p' align='center' weight='bold' size='xs' className='dc-modal-header__title'>
@@ -31,6 +31,7 @@ const PasswordResetBody = () => (
             <Localize i18n_default_text='We’ve upgraded our system to support a single, more secure password across all of Deriv/Binary.com. Once you’ve set a new password, you can use it to log into all your Deriv/Binary.com, and DMT5/MT5 accounts.' />
         </Text>
         <a
+            onClick={closeModal}
             href={getStaticUrl('reset-password')}
             target='_blank'
             rel='noreferrer'
@@ -409,7 +410,7 @@ const MT5PasswordModal = ({
                         has_close_icon
                         is_title_blank
                     >
-                        <PasswordResetBody />
+                        <PasswordResetBody closeModal={closeModal} />
                     </Modal>
                 </DesktopWrapper>
                 <MobileWrapper>
@@ -420,7 +421,7 @@ const MT5PasswordModal = ({
                         onClose={closeModal}
                         wrapper_classname='mt5-password-modal'
                     >
-                        <PasswordResetBody />
+                        <PasswordResetBody closeModal={closeModal} />
                     </MobileDialog>
                 </MobileWrapper>
             </React.Fragment>

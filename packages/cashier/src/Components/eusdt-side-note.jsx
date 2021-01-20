@@ -33,12 +33,6 @@ const EUSDTSideNote = () => {
                         <Localize i18n_default_text='Tether is a blockchain-enabled platform designed to facilitate the use of fiat currencies in a digital manner.' />
                     </p>
                     <li className='title'>
-                        <Localize i18n_default_text='Tether on Omni Layer (USDT)' />
-                    </li>
-                    <p className='description'>
-                        <Localize i18n_default_text='Tether was originally created to use the bitcoin network as its transport protocol ‒ specifically, the Omni Layer ‒ to allow transactions of tokenised traditional currency.' />
-                    </p>
-                    <li className='title'>
                         <Localize i18n_default_text='Tether on Ethereum (eUSDT)' />
                     </li>
                     <p className='description'>

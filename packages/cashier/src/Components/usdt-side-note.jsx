@@ -38,12 +38,6 @@ const USDTSideNote = () => {
                     <p className='description'>
                         <Localize i18n_default_text='Tether was originally created to use the bitcoin network as its transport protocol ‒ specifically, the Omni Layer ‒ to allow transactions of tokenised traditional currency.' />
                     </p>
-                    <li className='title'>
-                        <Localize i18n_default_text='Tether on Ethereum (eUSDT)' />
-                    </li>
-                    <p className='description'>
-                        <Localize i18n_default_text='Tether on the Ethereum blockchain, as an ERC20 token, is a newer transport layer, which now makes Tether available in Ethereum smart contracts. As a standard ERC20 token, it can also be sent to any Ethereum address.' />
-                    </p>
                 </Modal.Body>
             </Modal>
         </div>

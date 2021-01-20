@@ -11,6 +11,7 @@ import DepositsLocked from '../Components/Error/deposit-locked.jsx';
 import FundsProtection from '../Components/Error/funds-protection.jsx';
 import MaxTurnover from '../Components/Form/max-turnover-form.jsx';
 import SideNote from '../Components/side-note.jsx';
+import EUSDTSideNote from '../Components/eusdt-side-note.jsx';
 import USDTSideNote from '../Components/usdt-side-note.jsx';
 
 const DepositeSideNote = () => {
@@ -61,8 +62,10 @@ const Deposit = ({
     React.useEffect(() => {
         if (iframe_height && isDesktop()) {
             if (isCryptocurrency(currency) && typeof setSideNotes === 'function') {
-                if (/^(UST|eUSDT)$/i.test(currency)) {
+                if (/^(UST)$/i.test(currency) && typeof setSideNotes === 'function') {
                     setSideNotes([<DepositeSideNote key={0} />, <USDTSideNote key={1} />]);
+                } else if (/^(eUSDT)$/i.test(currency) && typeof setSideNotes === 'function') {
+                    setSideNotes([<DepositeSideNote key={0} />, <EUSDTSideNote key={1} />]);
                 } else {
                     setSideNotes([<DepositeSideNote key={0} />]);
                 }

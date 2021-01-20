@@ -64,7 +64,7 @@ const Endpoint = () => {
         >
             {({ errors, isSubmitting, touched, values, handleChange, setFieldTouched }) => (
                 <Form style={{ width: '30vw', minWidth: '300px', margin: '20vh auto' }}>
-                    <span
+                    <div
                         style={{
                             marginBottom: '1.6rem',
                         }}
@@ -72,7 +72,7 @@ const Endpoint = () => {
                         <Text as='h1' weight='bold' color='prominent'>
                             Change API endpoint
                         </Text>
-                    </span>
+                    </div>
 
                     <InputField name='server' label='Server' hint='e.g. frontend.binaryws.com' />
                     <InputField

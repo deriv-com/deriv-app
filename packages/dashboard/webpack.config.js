@@ -80,8 +80,8 @@ module.exports = function () {
                         {
                             loader: 'postcss-loader',
                             options: {
-                                config: {
-                                    path: path.resolve(__dirname),
+                                postcssOptions: {
+                                    config: path.resolve(__dirname),
                                 },
                             },
                         },

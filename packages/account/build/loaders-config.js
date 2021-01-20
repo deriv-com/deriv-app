@@ -73,8 +73,8 @@ const css_loaders = [
         loader: 'postcss-loader',
         options: {
             sourceMap: true,
-            config: {
-                path: path.resolve(__dirname),
+            postcssOptions: {
+                config: path.resolve(__dirname),
             },
         },
     },

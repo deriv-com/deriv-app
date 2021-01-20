@@ -36,7 +36,7 @@
     "react-test-renderer": "^16.13.1",
     "stylelint": "^13.8.0",
     "stylelint-config-prettier": "^8.0.2",
-    "stylelint-formatter-pretty": "^2.1.0",
+    "stylelint-formatter-pretty": "^2.1.1",
     "stylelint-no-unsupported-browser-features": "^4.0.0",
     "stylelint-selector-bem-pattern": "^2.1.0",
     "qawolf": "1.4.0",

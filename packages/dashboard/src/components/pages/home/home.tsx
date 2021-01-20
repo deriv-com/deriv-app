@@ -1,7 +1,8 @@
 /* eslint-disable react/display-name */
 import * as React from 'react';
-import { DesktopWrapper, Text, VerticalTab } from '@deriv/components';
+import { DesktopWrapper, Text, VerticalTab, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { getSelectedRoute } from '@deriv/shared';
 import { TRoute, TRouteGroup } from 'Types';
 
 import TempButtons from 'Components/temp-buttons';
@@ -14,7 +15,7 @@ const Home: React.FC = () => {
             icon: 'IcUserOutline',
             label: localize('My Deriv'),
             is_routed: true,
-            value: () => <Text>My Deriv</Text>,
+            value: () => <TempGetDMT5Wallet />,
         },
         {
             label: '',
@@ -141,20 +142,27 @@ const Home: React.FC = () => {
         }
     });
 
+    const selected_route = getSelectedRoute({ routes: list, pathname: location.pathname });
+
     return (
-        <DesktopWrapper>
-            <VerticalTab
-                alignment='left'
-                classNameHeader='modal__tab-header'
-                extra_offset={12}
-                has_mixed_dimensions
-                id='modal'
-                is_collapsible={false}
-                is_floating
-                list={subroutes}
-                list_groups={list_groups}
-            />
-        </DesktopWrapper>
+        <React.Fragment>
+            <DesktopWrapper>
+                <VerticalTab
+                    alignment='left'
+                    classNameHeader='modal__tab-header'
+                    extra_offset={12}
+                    has_mixed_dimensions
+                    id='modal'
+                    is_collapsible={false}
+                    is_floating
+                    list={subroutes}
+                    list_groups={list_groups}
+                />
+            </DesktopWrapper>
+            <MobileWrapper>
+                {selected_route && <selected_route.value component_icon={selected_route.icon} />}
+            </MobileWrapper>
+        </React.Fragment>
     );
 };
 

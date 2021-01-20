@@ -53,7 +53,7 @@
         flex-direction: column;
         justify-content: space-between;
 
-        &::after {
+        &:after {
             content: '';
             background-image: url('/js/dashboard/assets/images/app-card-bg.svg');
             position: absolute;

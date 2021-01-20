@@ -3,7 +3,7 @@
     padding: 0 2.4rem;
     display: flex;
     flex-direction: column;
-    background-color: white;
+    background-color: var(--fill-normal);
 
     &__header {
         border-radius: 0.8rem;
@@ -121,7 +121,7 @@
 
         &--selected {
             border-color: var(--badge-blue);
-            &::after {
+            &:after {
                 content: '';
                 background-image: url('/js/dashboard/assets/images/check.svg');
                 width: 2.4rem;

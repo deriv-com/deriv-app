@@ -10,7 +10,7 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
             '--text-color': `var(--text-${color || 'general'})`,
             '--text-lh': `var(--text-lh-${line_height || 'm'})`,
             '--text-weight': `var(--text-weight-${weight || 'normal'})`,
-            '--text-align': `var(--text-align-${align || 'start'})`,
+            '--text-align': `var(--text-align-${align || 'left'})`,
         };
         if (!isEmptyObject(styles)) {
             return { ...class_styles, ...styles };

@@ -20,16 +20,16 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
         decimals: getDecimalPlaces(currency),
         ...(transfer_limit.min && {
             min: transfer_limit.min,
-            max: transfer_limit.max,
+            max: balance >= transfer_limit.min && balance < transfer_limit.max ? balance : transfer_limit.max,
         }),
     });
 
     if (!values.amount) {
         errors.amount = localize('This field is required.');
-    } else if (!is_ok) {
-        errors.amount = message;
     } else if (+balance < +values.amount) {
         errors.amount = localize('Insufficient balance.');
+    } else if (!is_ok) {
+        errors.amount = message;
     }
 
     if (values.description && !/^[0-9A-Za-z .,'-]{0,250}$/.test(values.description.replace(/\n/g, ' '))) {

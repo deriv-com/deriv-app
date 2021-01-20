@@ -89,7 +89,7 @@ const Tabs = ({
             >
                 {React.Children.map(children, (child, index) => {
                     if (!child) return null;
-                    const { count, header_content, label } = child.props;
+                    const { count, header_content, label, id } = child.props;
                     return (
                         <Tab
                             count={count}
@@ -97,6 +97,7 @@ const Tabs = ({
                             key={label}
                             is_label_hidden={children.length === 1 && single_tab_has_no_label}
                             label={label}
+                            id={id}
                             top={top}
                             bottom={bottom}
                             header_fit_content={header_fit_content}

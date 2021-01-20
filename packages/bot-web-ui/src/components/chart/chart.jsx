@@ -1,9 +1,7 @@
 import React from 'react';
 import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
+import { connect } from 'Stores/connect';
 import ToolbarWidgets from './toolbar-widgets.jsx';
-import { connect } from '../../stores/connect';
-
-import '../../assets/sass/chart.scss';
 
 // import ChartLoader           from 'App/Components/Elements/chart-loader.jsx';
 // import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';

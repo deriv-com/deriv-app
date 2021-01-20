@@ -1065,18 +1065,18 @@ export default class CashierStore extends BaseStore {
             }
         }
 
-        const mt5_login_list = (await this.WS.storage.mt5LoginList())?.mt5_login_list || [];
+        const mt5_login_list = (await this.WS.storage.mt5LoginList())?.mt5_login_list;
         // TODO: remove this temporary mapping when API adds market_type and sub_account_type to transfer_between_accounts
         const accounts = transfer_between_accounts.accounts.map(account => {
             if (account.account_type === 'mt5' && Array.isArray(mt5_login_list) && mt5_login_list.length) {
                 // account_type in transfer_between_accounts (mt5|binary)
                 // gets overridden by account_type in mt5_login_list (demo|real)
                 // since in cashier all these are real accounts, the mt5 account type is what we want to keep
-                const foundAccount = mt5_login_list.find(acc => acc.login === account.loginid);
+                const found_account = mt5_login_list.find(acc => acc.login === account.loginid);
 
-                if (foundAccount === undefined) return account;
+                if (found_account === undefined) return account;
 
-                return { ...account, ...foundAccount, account_type: 'mt5' };
+                return { ...account, ...found_account, account_type: 'mt5' };
             }
             return account;
         });

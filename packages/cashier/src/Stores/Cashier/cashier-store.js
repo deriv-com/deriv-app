@@ -484,7 +484,7 @@ export default class CashierStore extends BaseStore {
             }),
         };
 
-        if (is_verification_error) {
+        if (is_verification_error && this.config[this.active_container].verification) {
             this.config[this.active_container].verification.error = error_object;
         } else {
             this.config[this.active_container].error = error_object;

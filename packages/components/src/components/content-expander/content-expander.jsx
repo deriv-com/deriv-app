@@ -18,6 +18,7 @@ const ContentExpander = ({
     title_className,
     wrapper_className,
     onToggle,
+    measure,
 }) => {
     const [is_visible, toggleVisibility] = React.useState(is_expanded);
 
@@ -27,6 +28,12 @@ const ContentExpander = ({
             onToggle(!is_visible);
         }
     }, [is_visible, onToggle, toggleVisibility]);
+
+    React.useEffect(() => {
+        if (typeof measure === 'function') {
+            measure();
+        }
+    }, [is_visible]);
 
     return (
         <div className={classNames('dc-content-expander__wrapper', wrapper_className)}>
@@ -95,6 +102,7 @@ ContentExpander.propTypes = {
     has_fade_in: PropTypes.bool,
     is_title_spaced: PropTypes.bool,
     is_visible: PropTypes.bool,
+    measure: PropTypes.func,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
     title_style: PropTypes.object,
     title_className: PropTypes.string,

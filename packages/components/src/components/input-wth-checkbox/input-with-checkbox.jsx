@@ -102,7 +102,7 @@ const InputWithCheckbox = ({
             error_message_alignment={error_message_alignment}
             is_error_tooltip_hidden={isMobile()}
             is_disabled={is_disabled ? 'disabled' : undefined}
-            fractional_digits={getDecimalPlaces(currency)}
+            fractional_digits={0}
             id={`dc_${name}_input`}
             inline_prefix={is_single_currency ? currency : null}
             is_autocomplete_disabled

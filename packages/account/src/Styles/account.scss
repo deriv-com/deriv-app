@@ -1650,6 +1650,7 @@ $MIN_HEIGHT_FLOATING: calc(
 /** @define deactivate-account; weak */
 .deactivate-account {
     max-width: 67.2rem;
+    padding-bottom: 1.6rem;
 
     &__information {
         @include typeface(--paragraph-left-normal-prominent, none);
@@ -1715,14 +1716,37 @@ $MIN_HEIGHT_FLOATING: calc(
                 min-height: 96px;
             }
         }
+
+        &__hint {
+            margin-top: 0.8rem;
+        }
+
+        &__footer {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            .dc-form-submit-button {
+                margin: 1.6rem 0;
+            }
+        }
     }
     @include mobile {
         width: calc(100% - 3rem);
         margin: 0 auto;
 
-        .dc-form-submit-button {
-            background-color: var(--general-main-1);
+        .deactivate-account-reasons {
+            &__footer {
+                display: flex;
+                flex-direction: column;
+
+                .dc-form-submit-button {
+                    margin: 0.8rem 0;
+                    background-color: var(--general-main-1);
+                }
+            }
         }
+
         &:first-child {
             & > div {
                 display: flex;
@@ -1759,8 +1783,12 @@ $MIN_HEIGHT_FLOATING: calc(
         }
 
         .dc-form-submit-button {
-            justify-content: center;
-            padding: 2rem 0 0;
+            align-self: center;
+            padding: 1.6rem 0 0;
+
+            > button {
+                width: 10.3rem;
+            }
 
             @include mobile {
                 background: unset;
@@ -1777,8 +1805,13 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         &__content-wrapper {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            margin-top: 4px;
+            margin-top: 0.8rem;
+
+            > :first-child {
+                margin-bottom: 0.4rem;
+            }
         }
     }
 

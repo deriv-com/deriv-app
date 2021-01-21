@@ -66,10 +66,10 @@ const DataList = React.memo(
 
         const rowRenderer = ({ style, index, key, parent }) => {
             const { getRowAction, is_virtual, row_gap } = other_props;
-            const action = getRowAction && getRowAction(row);
-            const action_desc = typeof action === 'object' ? action : undefined;
-            const destination_link = typeof action === 'string' ? action : undefined;
             const row = data_source[index];
+            const action = getRowAction && getRowAction(row);
+            const destination_link = typeof action === 'string' ? action : undefined;
+            const action_desc = typeof action === 'object' ? action : undefined;
             const row_key = keyMapper?.(row) || key;
 
             const getContent = ({ measure } = {}) => (

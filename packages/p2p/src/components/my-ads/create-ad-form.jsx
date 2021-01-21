@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Formik, Field, Form } from 'formik';
-import { Div100vhContainer, Dropdown, Loading, Modal, Input, Button, Text, ThemedScrollbars } from '@deriv/components';
+import { Div100vhContainer, Dropdown, Modal, Input, Button, Text, ThemedScrollbars } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
@@ -36,20 +36,6 @@ const CreateAdForm = () => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    const PageReturnComponent = () => {
-        return <PageReturn onClick={() => my_ads_store.setShowAdForm(false)} page_title={localize('Create new ad')} />;
-    };
-
-    const toggleApiErrorModal = value => setIsApiErrorModalVisible(value);
-
-    if (my_ads_store.is_form_loading) {
-        return (
-            <React.Fragment>
-                <Loading is_fullscreen={false} />
-            </React.Fragment>
-        );
-    }
 
     return (
         <React.Fragment>
@@ -112,9 +98,13 @@ const CreateAdForm = () => {
                                                         label={localize('Total amount')}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={
-                                                            <span className='p2p-my-ads__form-field--trailing'>
+                                                            <Text
+                                                                color={isDesktop() ? 'less-prominent' : 'prominent'}
+                                                                line_height='m'
+                                                                size={isDesktop() ? 'xxs' : 's'}
+                                                            >
                                                                 {currency}
-                                                            </span>
+                                                            </Text>
                                                         }
                                                         onChange={e => {
                                                             my_ads_store.restrictLength(e, handleChange);
@@ -151,9 +141,13 @@ const CreateAdForm = () => {
                                                         })}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={
-                                                            <span className='p2p-my-ads__form-field--trailing'>
+                                                            <Text
+                                                                color={isDesktop() ? 'less-prominent' : 'prominent'}
+                                                                line_height='m'
+                                                                size={isDesktop() ? 'xxs' : 's'}
+                                                            >
                                                                 {local_currency_config.currency}
-                                                            </span>
+                                                            </Text>
                                                         }
                                                         onChange={e => {
                                                             my_ads_store.restrictLength(e, handleChange);
@@ -172,9 +166,13 @@ const CreateAdForm = () => {
                                                         label={localize('Min order')}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={
-                                                            <span className='p2p-my-ads__form-field--trailing'>
+                                                            <Text
+                                                                color={isDesktop() ? 'less-prominent' : 'prominent'}
+                                                                line_height='m'
+                                                                size={isDesktop() ? 'xxs' : 's'}
+                                                            >
                                                                 {currency}
-                                                            </span>
+                                                            </Text>
                                                         }
                                                         onChange={e => {
                                                             my_ads_store.restrictLength(e, handleChange);
@@ -193,9 +191,13 @@ const CreateAdForm = () => {
                                                         label={localize('Max order')}
                                                         className='p2p-my-ads__form-field'
                                                         trailing_icon={
-                                                            <span className='p2p-my-ads__form-field--trailing'>
+                                                            <Text
+                                                                color={isDesktop() ? 'less-prominent' : 'prominent'}
+                                                                line_height='m'
+                                                                size={isDesktop() ? 'xxs' : 's'}
+                                                            >
                                                                 {currency}
-                                                            </span>
+                                                            </Text>
                                                         }
                                                         onChange={e => {
                                                             my_ads_store.restrictLength(e, handleChange);

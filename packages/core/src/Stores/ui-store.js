@@ -412,6 +412,7 @@ export default class UIStore extends BaseStore {
     closeRealAccountSignup() {
         this.is_real_acc_signup_on = false;
         setTimeout(() => {
+            this.real_account_signup_target = '';
             this.resetRealAccountSignupParams();
             this.setRealAccountSignupEnd(true);
         }, 300);
@@ -648,7 +649,6 @@ export default class UIStore extends BaseStore {
             success_message: '',
             error_message: '',
         };
-        this.real_account_signup_target = '';
     }
 
     @action.bound

@@ -132,6 +132,7 @@ class MT5Dashboard extends React.Component {
             country,
             createMT5Account,
             current_list,
+            isAccountOfTypeDisabled,
             is_accounts_switcher_on,
             is_eu,
             is_eu_country,
@@ -236,6 +237,7 @@ class MT5Dashboard extends React.Component {
                                                 openAccountTransfer={this.openAccountTransfer}
                                                 openPasswordManager={this.togglePasswordManagerModal}
                                                 openPasswordModal={this.openRealPasswordModal}
+                                                isAccountOfTypeDisabled={isAccountOfTypeDisabled}
                                                 has_real_account={has_real_account}
                                                 standpoint={standpoint}
                                                 toggleAccountsDialog={toggleAccountsDialog}
@@ -436,6 +438,7 @@ export default withRouter(
         createMT5Account: modules.mt5.createMT5Account,
         current_list: modules.mt5.current_list,
         landing_companies: client.landing_companies,
+        isAccountOfTypeDisabled: client.isAccountOfTypeDisabled,
         is_logged_in: client.is_logged_in,
         is_logging_in: client.is_logging_in,
         is_eu: client.is_eu,

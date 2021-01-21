@@ -31,7 +31,7 @@ const Tabs = ({
             const hash_index = children.findIndex(child => child.props && child.props['data-hash'] === hash);
             if (hash_index !== -1) {
                 initial_index = hash_index;
-                history.push({ hash });
+                pushHash(hash);
             }
         }
         onClickTabItem(initial_index || 0);
@@ -42,13 +42,17 @@ const Tabs = ({
         if (should_update_hash) {
             const hash = children[index].props['data-hash'];
             if (hash && hash !== location.hash.slice(1)) {
-                history.push({ hash });
+                pushHash(hash);
             }
         }
         if (typeof onTabItemClick === 'function') {
             onTabItemClick(index);
         }
         setActiveTabIndex(index);
+    };
+
+    const pushHash = hash => {
+        history.replace(`${history.location.pathname}#${hash}`);
     };
 
     const setActiveLineStyle = () => {

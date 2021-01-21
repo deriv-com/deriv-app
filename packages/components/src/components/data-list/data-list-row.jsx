@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 const DataListRow = props => {
     const [show_desc, setShowDesc] = React.useState(false);
     const {
-        acion_desc,
+        action_desc,
         destination_link,
         is_new_row,
         is_scrolling,
@@ -36,14 +36,14 @@ const DataListRow = props => {
                 </NavLink>
             ) : (
                 <div className='data-list__item--wrapper'>
-                    {acion_desc ? (
+                    {action_desc ? (
                         <div className={'data-list__item'} onClick={() => setShowDesc(!show_desc)}>
                             {show_desc ? (
                                 <div className={'data-list__desc--wrapper'}>
-                                    {acion_desc.component ? (
-                                        <div>{acion_desc.component}</div>
+                                    {action_desc.component ? (
+                                        <div>{action_desc.component}</div>
                                     ) : (
-                                        <p className='statement__row--detail-text'>{acion_desc.message}</p>
+                                        <p className='statement__row--detail-text'>{action_desc.message}</p>
                                     )}
                                 </div>
                             ) : (
@@ -62,7 +62,7 @@ const DataListRow = props => {
 };
 
 DataListRow.propTypes = {
-    acion_desc: PropTypes.object,
+    action_desc: PropTypes.object,
     destination_link: PropTypes.string,
     is_scrolling: PropTypes.bool,
     is_new_row: PropTypes.bool,

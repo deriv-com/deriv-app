@@ -65,7 +65,7 @@ const DataList = React.memo(
         };
 
         const rowRenderer = ({ style, index, key, parent }) => {
-            const { getRowAction, is_virtual, row_gap } = other_props;
+            const { getRowAction, passthrough, row_gap } = other_props;
             const row = data_source[index];
             const action = getRowAction && getRowAction(row);
             const destination_link = typeof action === 'string' ? action : undefined;
@@ -78,8 +78,8 @@ const DataList = React.memo(
                     destination_link={destination_link}
                     is_new_row={!items_transition_map[row_key]}
                     is_scrolling={is_scrolling}
-                    is_top_up={is_virtual && row.action === 'Deposit'}
                     measure={measure}
+                    passthrough={passthrough}
                     row_gap={row_gap}
                     row_key={row_key}
                     row={row}
@@ -185,8 +185,10 @@ DataList.propTypes = {
     keyMapper: PropTypes.func,
     onRowsRendered: PropTypes.func,
     onScroll: PropTypes.func,
+    passthrough: PropTypes.shape({
+        isTopUp: PropTypes.func,
+    }),
     row_gap: PropTypes.number,
-    rowRenderer: PropTypes.func,
     setListRef: PropTypes.func,
 };
 

@@ -33,8 +33,8 @@ class DataTable extends React.PureComponent {
             getActionColumns,
             getRowAction,
             id,
-            is_virtual,
             keyMapper,
+            passthrough,
             preloaderCheck,
         } = this.props;
         const item = data_source[index];
@@ -50,8 +50,8 @@ class DataTable extends React.PureComponent {
                 content_loader={content_loader}
                 getActionColumns={getActionColumns}
                 id={contract_id}
-                is_top_up={is_virtual && item.action === 'Deposit'}
                 key={id}
+                passthrough={passthrough}
                 replace={typeof action === 'object' ? action : undefined}
                 row_obj={item}
                 show_preloader={typeof preloaderCheck === 'function' ? preloaderCheck(item) : null}
@@ -71,11 +71,11 @@ class DataTable extends React.PureComponent {
             children,
             className,
             columns,
+            content_loader,
             data_source,
             footer,
             getActionColumns,
             getRowSize,
-            content_loader,
         } = this.props;
 
         const TableData = (
@@ -91,17 +91,17 @@ class DataTable extends React.PureComponent {
                         >
                             <ThemedScrollbars autoHide onScroll={this.handleScroll}>
                                 <List
-                                    ref={ref => (this.list_ref = ref)}
+                                    autoHeight
                                     className={className}
-                                    width={width}
                                     height={height}
                                     overscanRowCount={1}
+                                    ref={ref => (this.list_ref = ref)}
                                     rowCount={data_source.length}
                                     rowHeight={getRowSize}
                                     rowRenderer={this.rowRenderer}
                                     scrollingResetTimeInterval={0}
                                     scrollTop={this.state.scrollTop}
-                                    autoHeight
+                                    width={width}
                                 />
                             </ThemedScrollbars>
                             {children}
@@ -128,9 +128,9 @@ class DataTable extends React.PureComponent {
                     <TableRow
                         className={className}
                         columns={columns}
-                        is_header
-                        getActionColumns={getActionColumns}
                         content_loader={content_loader}
+                        getActionColumns={getActionColumns}
+                        is_header
                     />
                 </div>
                 <div
@@ -146,11 +146,11 @@ class DataTable extends React.PureComponent {
                     <div className='table__foot'>
                         <TableRow
                             className={className}
-                            row_obj={footer}
                             columns={columns}
-                            is_footer
-                            getActionColumns={getActionColumns}
                             content_loader={content_loader}
+                            getActionColumns={getActionColumns}
+                            is_footer
+                            row_obj={footer}
                         />
                     </div>
                 )}
@@ -168,6 +168,9 @@ DataTable.propTypes = {
     getRowAction: PropTypes.func,
     getRowSize: PropTypes.func,
     onScroll: PropTypes.func,
+    passthrough: PropTypes.shape({
+        isTopUp: PropTypes.func,
+    }),
 };
 
 export default DataTable;

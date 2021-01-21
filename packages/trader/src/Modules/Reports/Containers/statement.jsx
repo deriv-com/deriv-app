@@ -137,11 +137,11 @@ const Statement = ({
         return map;
     }, {});
 
-    const mobileRowRenderer = ({ row, is_top_up }) => (
+    const mobileRowRenderer = ({ row, passthrough }) => (
         <React.Fragment>
             <div className='data-list__row'>
-                <DataList.Cell row={row} column={columns_map.icon} is_top_up={is_top_up} />
-                <DataList.Cell row={row} column={columns_map.action_type} is_top_up={is_top_up} />
+                <DataList.Cell row={row} column={columns_map.icon} passthrough={passthrough} />
+                <DataList.Cell row={row} column={columns_map.action_type} passthrough={passthrough} />
             </div>
             <div className='data-list__row'>
                 <DataList.Cell row={row} column={columns_map.refid} />
@@ -188,8 +188,10 @@ const Statement = ({
                                     data_source={data}
                                     getRowAction={row => getRowAction(row)}
                                     getRowSize={() => 63}
-                                    is_virtual={is_virtual}
                                     onScroll={handleScroll}
+                                    passthrough={{
+                                        isTopUp: item => is_virtual && item.action === 'Deposit',
+                                    }}
                                 >
                                     <PlaceholderComponent is_loading={is_loading} />
                                 </DataTable>
@@ -199,10 +201,12 @@ const Statement = ({
                                     className='statement'
                                     data_source={data}
                                     getRowAction={getRowAction}
-                                    is_virtual={is_virtual}
                                     onScroll={handleScroll}
                                     rowRenderer={mobileRowRenderer}
                                     row_gap={8}
+                                    passthrough={{
+                                        isTopUp: item => is_virtual && item.action === 'Deposit',
+                                    }}
                                 >
                                     <PlaceholderComponent is_loading={is_loading} />
                                 </DataList>

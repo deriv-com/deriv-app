@@ -13,7 +13,7 @@ const TableRow = ({
     id,
     is_footer,
     is_header,
-    is_top_up,
+    passthrough,
     replace,
     row_obj = {},
     show_preloader = false,
@@ -26,7 +26,7 @@ const TableRow = ({
         if (!is_header) {
             const cell_value = row_obj[col_index] || '';
             cell_content = renderCellContent
-                ? renderCellContent({ cell_value, col_index, row_obj, is_footer, is_top_up })
+                ? renderCellContent({ cell_value, col_index, row_obj, is_footer, passthrough })
                 : cell_value;
         }
         return (
@@ -75,6 +75,9 @@ TableRow.propTypes = {
     id: PropTypes.number,
     is_footer: PropTypes.bool,
     is_header: PropTypes.bool,
+    passthrough: PropTypes.shape({
+        isTopUp: PropTypes.func,
+    }),
     replace: PropTypes.shape({
         component: PropTypes.func,
         message: PropTypes.string,

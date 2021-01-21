@@ -1763,13 +1763,10 @@ $MIN_HEIGHT_FLOATING: calc(
     @include mobile {
         max-height: 70vh;
     }
-    .deactivate-account-error-scroll {
-        overflow-y: auto;
-    }
     .dc-modal-header {
         border: none;
-        min-width: 430px;
-        margin-bottom: 8px;
+        max-width: 43rem;
+        margin-bottom: 0.8rem;
     }
     .account-closure-warning-modal {
         display: flex;

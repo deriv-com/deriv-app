@@ -30,10 +30,10 @@ const Content = ({ currency_icon, loginid, title, value }) => (
         <div className='deactivate-account-error__account-details'>
             <Icon icon={currency_icon} size={24} />
             <div className='deactivate-account-error__account'>
-                <Text line_height='x' color='prominent' size='xs'>
+                <Text line_height='s' color='prominent' size='xs'>
                     {title}
                 </Text>
-                <Text color='prominent' size='xxxs' line_height='x'>
+                <Text color='prominent' size='xxxs' line_height='xs'>
                     {loginid}
                 </Text>
             </div>
@@ -83,7 +83,7 @@ const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_acco
     }
 
     return (
-        <ThemedScrollbars className='deactivate-account-error-scroll'>
+        <ThemedScrollbars autohide={false} className='deactivate-account-error-scroll'>
             {!!deriv_open_positions.length && (
                 <Wrapper title={localize('You have open positions in these Deriv accounts:')}>
                     {deriv_open_positions.map(account => (

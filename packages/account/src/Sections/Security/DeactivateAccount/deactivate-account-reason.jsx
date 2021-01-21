@@ -109,7 +109,7 @@ class DeactivateAccountReason extends React.Component {
         const error = {};
         const selected_reason_count = selectedReasons(values).length;
         if (!selected_reason_count) {
-            error.empty_reason = localize('please select at least one reason');
+            error.empty_reason = localize('Please select at least one reason');
         }
         if ((values.otherTradingPlatforms + values.doToImprove).length > 0 || selected_reason_count) {
             const max_characters = character_limit_no;

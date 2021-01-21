@@ -116,7 +116,7 @@ const copyConfig = base => {
                 },
             },
             {
-                from: path.resolve(__dirname, '../src/templates/app/apple-app-site-association'),
+                from: path.resolve(__dirname, '../src/templates/app/apple-app-site-association.json'),
                 to: 'apple-app-site-association',
                 toType: 'file',
                 transform(content, path) {
@@ -124,7 +124,7 @@ const copyConfig = base => {
                 },
             },
             {
-                from: path.resolve(__dirname, '../src/templates/app/apple-app-site-association'),
+                from: path.resolve(__dirname, '../src/templates/app/apple-app-site-association.json'),
                 to: '.well-known/apple-app-site-association',
                 toType: 'file',
                 transform(content, path) {

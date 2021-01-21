@@ -23,8 +23,7 @@ const initial_form = {
 };
 
 const preparingReason = values => {
-    let selected_reasons = '';
-    selected_reasons = selectedReasons(values)
+    let selected_reasons = selectedReasons(values)
         .map(val => val[0])
         .toString();
     const is_other_trading_platform__has_value = !!values.otherTradingPlatforms.length;

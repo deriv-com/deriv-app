@@ -131,7 +131,11 @@ export default class MyAdsStore extends BaseStore {
     };
 
     @action.bound
-    loadMoreAds({ startIndex }) {
+    loadMoreAds({ startIndex }, is_initial_load = false) {
+        if (is_initial_load) {
+            this.setIsTableLoading(true);
+        }
+
         const { list_item_limit } = this.root_store.general_store;
 
         return new Promise(resolve => {
@@ -247,7 +251,7 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    validateFormAds(values) {
+    validateCreateAdForm(values) {
         // TODO: uncomment this when we have available_price
         // const available_price = ;
         const validations = {

@@ -327,15 +327,17 @@ const MT5AccountCard = ({
                         />
                     )}
                 </div>
-                <MobileWrapper>
+                <React.Fragment>
                     {should_show_trade_servers && (
-                        <AddTradeServerButton
-                            ref={button_ref}
-                            onSelectAccount={onSelectAccount}
-                            is_disabled={has_mt5_account_error}
-                        />
+                        <MobileWrapper>
+                            <AddTradeServerButton
+                                ref={button_ref}
+                                onSelectAccount={onSelectAccount}
+                                is_disabled={has_mt5_account_error}
+                            />
+                        </MobileWrapper>
                     )}
-                </MobileWrapper>
+                </React.Fragment>
             </div>
             <DesktopWrapper>
                 <CSSTransition

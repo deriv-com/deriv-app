@@ -2,20 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const DataListRow = props => {
+const DataListRow = ({ action_desc, destination_link, row_gap, row_key, rowRenderer, ...other_props }) => {
     const [show_desc, setShowDesc] = React.useState(false);
-    const {
-        action_desc,
-        destination_link,
-        is_new_row,
-        is_scrolling,
-        is_top_up,
-        measure,
-        row_gap,
-        row_key,
-        row,
-        rowRenderer,
-    } = props;
 
     return (
         <div className='data-list__row--wrapper' style={{ paddingBottom: `${row_gap || 0}px` }}>
@@ -30,9 +18,7 @@ const DataListRow = props => {
                         },
                     }}
                 >
-                    <div className='data-list__item'>
-                        {rowRenderer({ row, measure, is_new_row, isScrolling: is_scrolling, is_top_up })}
-                    </div>
+                    <div className='data-list__item'>{rowRenderer({ ...other_props })}</div>
                 </NavLink>
             ) : (
                 <div className='data-list__item--wrapper'>
@@ -47,13 +33,11 @@ const DataListRow = props => {
                                     )}
                                 </div>
                             ) : (
-                                rowRenderer({ row, measure, is_new_row, is_scrolling, is_top_up })
+                                rowRenderer({ ...other_props })
                             )}
                         </div>
                     ) : (
-                        <div className='data-list__item'>
-                            {rowRenderer({ row, measure, is_new_row, is_scrolling, is_top_up })}
-                        </div>
+                        <div className='data-list__item'>{rowRenderer({ ...other_props })}</div>
                     )}
                 </div>
             )}
@@ -64,10 +48,6 @@ const DataListRow = props => {
 DataListRow.propTypes = {
     action_desc: PropTypes.object,
     destination_link: PropTypes.string,
-    is_scrolling: PropTypes.bool,
-    is_new_row: PropTypes.bool,
-    measure: PropTypes.func,
-    row: PropTypes.object,
     row_gap: PropTypes.number,
     row_key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     rowRenderer: PropTypes.func,

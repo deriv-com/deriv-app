@@ -5,8 +5,6 @@
     width: 100%;
 
     &__input {
-        border: 1px solid var(--border-normal);
-
         .dc-input__field {
             width: 100%;
             border-radius: $BORDER_RADIUS;
@@ -15,7 +13,7 @@
             -webkit-appearance: none;
             -moz-appearance: none;
 
-            &:hover {
+            &:hover:not(:disabled) {
                 cursor: pointer;
                 border-color: var(--border-hover);
             }
@@ -40,7 +38,10 @@
     }
     .dc-icon {
         top: 25%;
-        cursor: pointer;
+
+        &:not(.dc-icon--disabled) {
+            cursor: pointer;
+        }
     }
     &__picker {
         position: absolute;
@@ -101,6 +102,10 @@
             min-width: calc(100% - 1rem);
             position: absolute;
             height: 38px;
+
+            .dc-input--disabled & {
+                border-color: var(--general-disabled);
+            }
         }
         &__display {
             display: flex;
@@ -113,13 +118,17 @@
 
             &-text {
                 font-size: 1.4rem;
-                color: var(--text-prominent);
                 background-color: inherit;
                 padding-top: 0.2rem;
+                color: var(--text-prominent);
 
                 &--has-error {
                     padding-top: unset;
                     color: var(--brand-red-coral);
+                }
+
+                &--disabled {
+                    color: var(--text-disabled);
                 }
             }
         }
@@ -145,6 +154,9 @@
             }
             &--is-focused {
                 color: var(--brand-secondary);
+            }
+            .dc-input--disabled & {
+                color: var(--text-disabled);
             }
         }
         &__error {

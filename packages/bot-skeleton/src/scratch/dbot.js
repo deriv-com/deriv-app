@@ -2,7 +2,6 @@ import { localize } from '@deriv/translations';
 import './blockly';
 import { hasAllRequiredBlocks, updateDisabledBlocks } from './utils';
 import main_xml from './xml/main.xml';
-import toolbox_xml from './xml/toolbox.xml';
 import DBotStore from './dbot-store';
 import { save_types } from '../constants';
 import { config } from '../constants/config';
@@ -44,12 +43,12 @@ class DBot {
                 this.workspace = Blockly.inject(el_scratch_div, {
                     grid: { spacing: 40, length: 11, colour: '#f3f3f3' },
                     media: `${__webpack_public_path__}media/`,
-                    toolbox: toolbox_xml,
                     trashcan: !is_mobile,
                     zoom: { wheel: true, startScale: workspaceScale },
+                    scrollbars: true,
                 });
 
-                this.workspace.cached_xml = { main: main_xml, toolbox: toolbox_xml };
+                this.workspace.cached_xml = { main: main_xml };
                 this.workspace.save_workspace_interval = setInterval(() => {
                     // Periodically save the workspace.
                     saveWorkspaceToRecent(Blockly.Xml.workspaceToDom(this.workspace), save_types.UNSAVED);

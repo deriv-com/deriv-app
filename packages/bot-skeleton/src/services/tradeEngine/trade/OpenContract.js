@@ -10,7 +10,7 @@ export default Engine =>
                 if (data.msg_type === 'proposal_open_contract') {
                     const contract = data.proposal_open_contract;
 
-                    if (!contract && !this.expectedContractId(contract.contract_id)) {
+                    if (!contract && !this.expectedContractId(contract?.contract_id)) {
                         return;
                     }
 

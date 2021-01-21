@@ -185,9 +185,7 @@ DataList.propTypes = {
     keyMapper: PropTypes.func,
     onRowsRendered: PropTypes.func,
     onScroll: PropTypes.func,
-    passthrough: PropTypes.shape({
-        isTopUp: PropTypes.func,
-    }),
+    passthrough: PropTypes.object,
     row_gap: PropTypes.number,
     setListRef: PropTypes.func,
 };

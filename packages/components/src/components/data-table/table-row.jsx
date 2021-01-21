@@ -75,9 +75,7 @@ TableRow.propTypes = {
     id: PropTypes.number,
     is_footer: PropTypes.bool,
     is_header: PropTypes.bool,
-    passthrough: PropTypes.shape({
-        isTopUp: PropTypes.func,
-    }),
+    passthrough: PropTypes.object,
     replace: PropTypes.shape({
         component: PropTypes.func,
         message: PropTypes.string,

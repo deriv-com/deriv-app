@@ -168,9 +168,7 @@ DataTable.propTypes = {
     getRowAction: PropTypes.func,
     getRowSize: PropTypes.func,
     onScroll: PropTypes.func,
-    passthrough: PropTypes.shape({
-        isTopUp: PropTypes.func,
-    }),
+    passthrough: PropTypes.object,
 };
 
 export default DataTable;

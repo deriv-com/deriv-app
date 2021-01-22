@@ -1,0 +1,134 @@
+.dw-account-wizard {
+    width: 100%;
+    padding: 0 2.4rem;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--fill-normal);
+
+    &__header {
+        border-radius: 0.8rem;
+
+        display: flex;
+        flex-direction: column;
+
+        &-steps {
+            padding: 0.8rem 2.4rem 1.6rem;
+            background: var(--general-section-3);
+            display: flex;
+        }
+        &-step {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            position: relative;
+
+            @include desktop {
+                padding: 1.6rem 0;
+            }
+
+            &:not(&--disabled) {
+                cursor: pointer;
+            }
+            &--active {
+                .dw-account-wizard__header-step-line {
+                    background: var(--text-prominent);
+                }
+            }
+            &-line {
+                position: absolute;
+                height: 2px;
+                left: 0px;
+                right: -0.4px;
+                bottom: 0px;
+                background: var(--border-normal);
+            }
+            &-title-wrapper {
+                display: flex;
+                flex-direction: column;
+            }
+            svg {
+                margin-right: 0.8rem;
+            }
+        }
+
+        &-active-title {
+            padding: 4rem 0 1.6rem;
+            border-bottom: 2px solid var(--text-disabled);
+        }
+    }
+
+    .wizard__main-step {
+        padding-top: 4rem;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        form {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+    }
+    .dc-form-submit-button--has-cancel {
+        justify-content: space-between;
+    }
+
+    .details-form {
+        flex: 1;
+        align-content: unset;
+
+        > .dc-themed-scrollbars {
+            .details-form__elements {
+                flex-grow: unset;
+            }
+        }
+
+        .dc-input {
+            min-width: 328px;
+
+            &__label {
+                left: 1.6rem;
+                top: 1.6rem;
+            }
+            &__field {
+                padding: 1.6rem;
+                height: unset;
+
+                /* Not empty fields */
+                &:focus,
+                &:disabled,
+                &:not(:focus):not([value='']) {
+                    & ~ label {
+                        transform: translate(-0.5rem, -2.4rem) scale(0.75);
+                    }
+                }
+            }
+        }
+        .dc-autocomplete,
+        .dc-radio-group {
+            margin-bottom: 3.2rem;
+        }
+        .dc-field--error {
+            top: 5.5rem;
+        }
+    }
+    .currency-list__item {
+        position: relative;
+
+        &-code {
+            font-weight: normal;
+        }
+
+        &--selected {
+            border-color: var(--badge-blue);
+            &:after {
+                content: '';
+                background-image: url('/js/dashboard/assets/images/check.svg');
+                width: 2.4rem;
+                height: 2.4rem;
+                right: 1.6rem;
+                position: absolute;
+            }
+        }
+    }
+}

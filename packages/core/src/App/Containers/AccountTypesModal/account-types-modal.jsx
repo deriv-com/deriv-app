@@ -255,7 +255,7 @@ const AccountTypesModal = ({
             title={localize('Account types')}
             width='904px'
             className='account-types'
-            is_open={is_account_types_modal_visible}
+            is_open={!is_account_types_modal_visible}
             toggleModal={closeModal}
             has_close_icon={is_dismissible}
         >

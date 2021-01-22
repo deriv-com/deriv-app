@@ -1,6 +1,5 @@
 import { Formik, Field } from 'formik';
 import React from 'react';
-import { FormSubHeader } from '@deriv/account';
 import {
     Modal,
     Autocomplete,
@@ -17,11 +16,12 @@ import {
     RadioGroup,
     SelectNative,
     ThemedScrollbars,
+    Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile, toMoment } from '@deriv/shared';
-import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
-import 'Sass/details-form.scss';
+import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
+import FormSubHeader from '../form-sub-header';
 
 const DateOfBirthField = props => (
     <Field name={props.name}>
@@ -37,7 +37,7 @@ const DateOfBirthField = props => (
                     )
                 }
                 value={value}
-                portal_id='modal_root'
+                portal_id={props.portal_id}
                 {...props}
             />
         )}
@@ -76,6 +76,7 @@ const PersonalDetails = ({
     residence_list,
     is_fully_authenticated,
     account_opening_reason_list,
+    is_dashboard,
     ...props
 }) => {
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
@@ -111,6 +112,11 @@ const PersonalDetails = ({
         }
     };
 
+    const getLastNameLabel = () => {
+        if (is_dashboard) return localize('Family name*');
+        return is_svg ? localize('Last name*') : localize('Last name');
+    };
+
     return (
         <Formik
             initialValues={{ ...props.value }}
@@ -126,11 +132,20 @@ const PersonalDetails = ({
                         <form ref={setRef} onSubmit={handleSubmit} autoComplete='off' onClick={handleClickOutside}>
                             <Div100vhContainer className='details-form' height_offset='110px' is_disabled={isDesktop()}>
                                 <ThemedScrollbars height={height} onScroll={closeTooltipOnScroll}>
+                                    {is_dashboard && (
+                                        <div className='details-form__sub-header'>
+                                            <Text size='xs'>
+                                                {localize(
+                                                    'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.'
+                                                )}
+                                            </Text>
+                                        </div>
+                                    )}
                                     <div
                                         className='details-form__elements'
                                         style={{ paddingBottom: isDesktop() ? 'unset' : null }}
                                     >
-                                        <FormSubHeader title={localize('Title and name')} />
+                                        {!is_dashboard && <FormSubHeader title={localize('Title and name')} />}
                                         {'salutation' in props.value && ( // TODO: [deriv-eu] Remove salutation once api is optional
                                             <RadioGroup
                                                 className='dc-radio__input'
@@ -162,12 +177,12 @@ const PersonalDetails = ({
                                             <FormInputField
                                                 name='last_name'
                                                 required={is_svg}
-                                                label={is_svg ? localize('Last name*') : localize('Last name')}
+                                                label={getLastNameLabel()}
                                                 disabled={disabled_items.includes('last_name')}
                                                 placeholder={localize('Doe')}
                                             />
                                         )}
-                                        <FormSubHeader title={localize('Other details')} />
+                                        {!is_dashboard && <FormSubHeader title={localize('Other details')} />}
                                         {'date_of_birth' in props.value && (
                                             <DateOfBirthField
                                                 name='date_of_birth'
@@ -175,6 +190,7 @@ const PersonalDetails = ({
                                                 label={is_svg ? localize('Date of birth*') : localize('Date of birth')}
                                                 disabled={disabled_items.includes('date_of_birth')}
                                                 placeholder={localize('01-07-1999')}
+                                                portal_id={is_dashboard ? '' : 'modal_root'}
                                             />
                                         )}
                                         {'place_of_birth' in props.value && (

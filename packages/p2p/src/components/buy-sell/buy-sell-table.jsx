@@ -33,11 +33,9 @@ const BuySellTable = ({ onScroll }) => {
             reaction(
                 () => buy_sell_store.is_buy,
                 () => {
-                    if (!buy_sell_store.is_loading) {
-                        buy_sell_store.setItems([]);
-                        buy_sell_store.setIsLoading(true);
-                        buy_sell_store.loadMoreItems({ startIndex: 0 });
-                    }
+                    buy_sell_store.setItems([]);
+                    buy_sell_store.setIsLoading(true);
+                    buy_sell_store.loadMoreItems({ startIndex: 0 });
                 },
                 { fireImmediately: true }
             ),

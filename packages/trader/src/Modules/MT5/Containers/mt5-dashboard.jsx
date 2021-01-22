@@ -157,8 +157,10 @@ class MT5Dashboard extends React.Component {
             toggleShouldShowRealAccountsList,
             trading_servers,
             can_have_more_real_synthetic_mt5,
+            upgradeable_landing_companies,
         } = this.props;
-        const should_show_missing_real_account = !is_eu && is_logged_in && !has_real_account;
+        const should_show_missing_real_account =
+            !is_eu && is_logged_in && !has_real_account && upgradeable_landing_companies?.length > 0;
         if ((!country && is_logged_in) || is_logging_in) return <Loading />; // Wait for country name to be loaded before rendering
 
         return (
@@ -475,5 +477,6 @@ export default withRouter(
         toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
         trading_servers: client.trading_servers,
         can_have_more_real_synthetic_mt5: client.can_have_more_real_synthetic_mt5,
+        upgradeable_landing_companies: client.upgradeable_landing_companies,
     }))(MT5Dashboard)
 );

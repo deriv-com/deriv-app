@@ -19,7 +19,7 @@ module.exports = {
     camelcase: 0,
     // semi                                : ['error', 'always'],
     'array-callback-return': 0,
-    'arrow-body-style': 0,
+    'arrow-body-style': 'as-needed',
     'brace-style': ['error', '1tbs', { allowSingleLine: true }],
     curly: 0,
     // 'comma-dangle'                      : ['error', 'always-multiline'],

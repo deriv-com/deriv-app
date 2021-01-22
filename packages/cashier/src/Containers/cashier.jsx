@@ -38,7 +38,10 @@ const Cashier = ({
     tab_index,
     toggleCashier,
 }) => {
+    const [ready, setReady] = React.useState(false);
+
     React.useEffect(() => {
+        getMenuOptions();
         toggleCashier();
         // we still need to populate the tabs shown on cashier
         (async () => {
@@ -52,15 +55,35 @@ const Cashier = ({
         };
     }, []);
 
+    React.useEffect(() => {
+        getMenuOptions();
+    }, [
+        is_payment_agent_visible,
+        is_payment_agent_transfer_visible,
+        is_p2p_enabled,
+        is_onramp_tab_visible,
+        is_account_transfer_visible,
+    ]);
+
     const onClickClose = () => routeBackInApp(history);
     const getMenuOptions = () => {
         const options = [];
+        const computedRoutes = [
+            routes.cashier_pa,
+            routes.cashier_pa_transfer,
+            routes.cashier_p2p,
+            routes.cashier_onramp,
+            routes.cashier_acc_transfer,
+        ];
 
+        const found = routes_config.some(r => computedRoutes.includes(r));
+        console.log('FOUND:');
+        console.log(found);
         // TODO: remove show_dp2p hash check once released
         routes_config.forEach(route => {
-            // console.log('is_payment_agent_visible');
-            // console.log(route.path);
-            // console.log(is_payment_agent_visible);
+            console.log('is_payment_agent_visible');
+            console.log(route.path);
+            console.log(is_payment_agent_visible);
             if (
                 (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
                 (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
@@ -77,20 +100,19 @@ const Cashier = ({
                     path: route.path,
                     has_side_note: route.path !== routes.cashier_p2p, // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
                 });
-            } else if (
-                route.path == routes.cashier_pa ||
-                route.path == routes.cashier_pa_transfer ||
-                route.path == routes.cashier_p2p ||
-                route.path == routes.cashier_onramp ||
-                route.path == routes.cashier_acc_transfer
-            ) {
-                console.log('ELSE');
-                return null;
             }
         });
 
         console.log('option');
         console.log(options);
+        console.log(routes_config.length);
+        console.log(options.length);
+
+        // if(routes_config.length === options.length) {
+        //     console.log('setReadyTrue');
+        //     setReady(true);
+        //     return options;
+        // }
 
         return options;
     };

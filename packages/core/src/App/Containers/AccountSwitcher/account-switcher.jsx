@@ -336,8 +336,8 @@ const AccountSwitcher = props => {
 
     const isRealMT5AddDisabled = sub_account_type => {
         if (props.is_eu) {
-            const account_type = getAccountTypeFields({ category: 'real', type: sub_account_type });
-            return props.isAccountOfTypeDisabled(account_type);
+            const account = getAccountTypeFields({ category: 'real', type: sub_account_type });
+            return props.isAccountOfTypeDisabled(account?.account_type);
         }
 
         return !props.has_active_real_account;

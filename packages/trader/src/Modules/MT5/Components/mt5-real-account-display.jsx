@@ -113,8 +113,8 @@ const MT5RealAccountDisplay = ({
         if (has_mt5_account_error) return true;
 
         if (is_eu) {
-            const account_type = getAccountTypeFields({ category: 'real', type: sub_account_type });
-            return isAccountOfTypeDisabled(account_type);
+            const account = getAccountTypeFields({ category: 'real', type: sub_account_type });
+            return isAccountOfTypeDisabled(account?.account_type);
         }
 
         switch (sub_account_type) {

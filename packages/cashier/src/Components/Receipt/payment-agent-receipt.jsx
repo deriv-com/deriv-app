@@ -4,7 +4,6 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Icon, Text } from '@deriv/components';
 import { routes, getCurrencyDisplayCode, formatMoney } from '@deriv/shared';
-
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import PaymentAgentDetails from '../payment-agent-details.jsx';
@@ -53,10 +52,16 @@ class PaymentAgentReceipt extends React.Component {
                         </span>
                     </div>
                 </div>
-                <h2 className='cashier__header'>
+                <h2 className='cashier__header cashier__header-large'>
                     <Localize i18n_default_text='IMPORTANT NOTICE TO RECEIVE YOUR FUNDS' />
                 </h2>
-                <Text as='p' size='xs' line_height='s' className='payment-agent__explanation cashier__paragraph'>
+                <Text
+                    as='p'
+                    color='prominent'
+                    size='xxs'
+                    line_height='m'
+                    className='payment-agent__explanation cashier__paragraph'
+                >
                     <Localize
                         i18n_default_text={
                             "You're not done yet. To receive the transferred funds, you must contact the payment agent for further instruction. A summary of this transaction has been emailed to you for your records."
@@ -65,7 +70,7 @@ class PaymentAgentReceipt extends React.Component {
                 </Text>
                 {receipt.payment_agent_name && (
                     <div className='payment-agent__transferred-contact-wrapper'>
-                        <Text as='p' size='xs' line_height='s' className='cashier__paragraph payment-agent__paragraph'>
+                        <Text as='p' size='xxs' line_height='m' className='cashier__paragraph payment-agent__paragraph'>
                             <Localize
                                 i18n_default_text='{{payment_agent}} agent contact details:'
                                 values={{ payment_agent: receipt.payment_agent_name }}

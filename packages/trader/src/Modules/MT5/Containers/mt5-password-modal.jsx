@@ -117,27 +117,29 @@ const MT5PasswordForm = props => {
                             <div className='input-element'>
                                 <PasswordMeter
                                     input={values.password}
-                                    has_error={!!(touched.password && errors.password)}
+                                    has_error={!!((touched.password && errors.password) || props.error_message)}
                                     custom_feedback_messages={getErrorMessages().password_warnings}
                                 >
-                                    {() => (
-                                        <PasswordInput
-                                            autoComplete='new-password'
-                                            label={localize('Password')}
-                                            error={
-                                                (touched.password || props.error_message) &&
-                                                (errors.password || props.error_message)
-                                            }
-                                            name='password'
-                                            value={values.password}
-                                            onBlur={handleBlur}
-                                            onChange={e => {
-                                                setFieldTouched('password', true);
-                                                props.resetFormErrors();
-                                                handleChange(e);
-                                            }}
-                                        />
-                                    )}
+                                    {({ has_warning }) => {
+                                        return (
+                                            <PasswordInput
+                                                autoComplete='new-password'
+                                                label={localize('Password')}
+                                                error={
+                                                    (touched.password || props.error_message || has_warning) &&
+                                                    (errors.password || props.error_message)
+                                                }
+                                                name='password'
+                                                value={values.password}
+                                                onBlur={handleBlur}
+                                                onChange={e => {
+                                                    setFieldTouched('password', true);
+                                                    props.resetFormErrors();
+                                                    handleChange(e);
+                                                }}
+                                            />
+                                        );
+                                    }}
                                 </PasswordMeter>
                             </div>
                             <Text
@@ -147,11 +149,10 @@ const MT5PasswordForm = props => {
                                 className='dc-modal__container_mt5-password-modal__hint'
                             >
                                 <Localize
-                                    i18n_default_text='Please confirm your Deriv/Binary.com password to create a DMT5/an MT5 account. <0 /> If you’ve forgotten your password, click <1>Reset password</1>.'
+                                    i18n_default_text='Please confirm your Deriv password to create a DMT5 account. If you’ve forgotten your password, click <0>Reset password</0>.'
                                     components={[
-                                        <br key={0} />,
                                         <a
-                                            key={1}
+                                            key={0}
                                             href={getStaticUrl('/reset-password')}
                                             className='dc-modal__container_mt5-password-modal__password-hint'
                                             target='_blank'
@@ -364,27 +365,18 @@ const MT5PasswordModal = ({
         if (!should_show_server_form && password && !is_submitting) {
             setIsSubmitting(true);
         } else if (is_submitting && password && is_logged_in) {
-            submitMt5Password({ password }, state => {
-                setPassword('');
-                setIsSubmitting(state);
-            });
-        }
-    }, [password, should_show_server_form, is_submitting]);
-
-    React.useEffect(() => {
-        if (password && server) {
             submitMt5Password(
                 {
                     password,
-                    server,
+                    ...({ server } || {}),
                 },
                 state => {
-                    setIsSubmitting(state);
                     setPassword('');
+                    setIsSubmitting(state);
                 }
             );
         }
-    }, [password, server]);
+    }, [password, should_show_server_form, is_submitting, server]);
 
     React.useEffect(() => {
         if (has_mt5_error || is_mt5_success_dialog_enabled) {
@@ -485,7 +477,7 @@ const MT5PasswordModal = ({
                             mt5_login_list={mt5_login_list}
                             account_title={account_title}
                             password={password}
-                            submitMt5Form={(v, setSubmitting) => submitMt5Password(v, setSubmitting)}
+                            submitMt5Form={v => setServer(v.server)}
                             onBack={() => setPassword('')}
                         />
                     )}

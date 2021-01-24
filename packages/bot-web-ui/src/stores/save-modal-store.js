@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 import { localize } from '@deriv/translations';
 import { saveWorkspaceToRecent, save_types, save, updateWorkspaceName } from '@deriv/bot-skeleton';
-import { button_status } from '../constants/button-status';
+import { button_status } from 'Constants/button-status';
 
 export default class SaveModalStore {
     @observable is_save_modal_open = false;

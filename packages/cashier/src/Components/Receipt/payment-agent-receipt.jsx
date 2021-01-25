@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Icon, Text } from '@deriv/components';
-import { routes, getCurrencyDisplayCode, formatMoney } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import PaymentAgentDetails from '../payment-agent-details.jsx';
@@ -36,19 +36,20 @@ class PaymentAgentReceipt extends React.Component {
                         </span>
                     </div>
                     <div className='cashier__transferred-details-wrapper'>
-                        <Icon icon={`IcCurrency-${currency_lowercase}`} />
                         <span className='cashier__transferred-details'>
-                            <span className='cashier__text--bold'>{getCurrencyDisplayCode(currency)}</span>
-                            &nbsp;(
-                            {loginid})
+                            <span className='cashier__text--bold cashier__text--end'>
+                                {getCurrencyDisplayCode(currency)}
+                            </span>
+                            <span className='cashier__text--sub'>{loginid}</span>
                         </span>
+                        <Icon size={32} icon={`IcCurrency-${currency_lowercase}`} />
                         <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
-                        <Icon icon='IcPA' />
+                        <Icon size={32} icon='IcPA' />
                         <span className='cashier__transferred-details'>
                             {receipt.payment_agent_name && (
-                                <span className='cashier__text--bold'>{receipt.payment_agent_name}&nbsp;</span>
+                                <span className='cashier__text--bold'>{receipt.payment_agent_name}</span>
                             )}
-                            ({receipt.payment_agent_id})
+                            <span className='cashier__text--sub'>{receipt.payment_agent_id}</span>
                         </span>
                     </div>
                 </div>
@@ -58,7 +59,7 @@ class PaymentAgentReceipt extends React.Component {
                 <Text
                     as='p'
                     color='prominent'
-                    size='xxs'
+                    size={isMobile() ? 'xxs' : 'xs'}
                     line_height='m'
                     className='payment-agent__explanation cashier__paragraph'
                 >
@@ -70,7 +71,12 @@ class PaymentAgentReceipt extends React.Component {
                 </Text>
                 {receipt.payment_agent_name && (
                     <div className='payment-agent__transferred-contact-wrapper'>
-                        <Text as='p' size='xxs' line_height='m' className='cashier__paragraph payment-agent__paragraph'>
+                        <Text
+                            as='p'
+                            size={isMobile() ? 'xxs' : 'xs'}
+                            line_height='m'
+                            className='cashier__paragraph payment-agent__paragraph'
+                        >
                             <Localize
                                 i18n_default_text='{{payment_agent}} agent contact details:'
                                 values={{ payment_agent: receipt.payment_agent_name }}

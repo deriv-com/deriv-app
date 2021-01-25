@@ -115,7 +115,7 @@
     &__form {
         &-submit {
             display: flex;
-            justify-content: flex-end;
+            justify-content: center;
             width: 100%;
         }
         &-submit-button {
@@ -222,8 +222,8 @@
             }
         }
         &-details {
-            margin-left: 8px;
-            margin-right: 8px;
+            margin-left: 0.8rem;
+            margin-right: 0.8rem;
             vertical-align: super;
             font-size: 1.4rem;
             text-align: left;
@@ -264,17 +264,23 @@
         margin-left: auto;
         margin-right: auto;
 
+        &--bold {
+            font-weight: bold;
+        }
+        &--end {
+            align-self: flex-end;
+        }
+        &--faint {
+            color: var(--text-less-prominent);
+        }
         &--full-width {
             max-width: unset;
             min-width: 44.5rem;
         }
-        &--bold {
-            font-weight: bold;
-        }
         &--right {
             text-align: right;
         }
-        &--faint {
+        &--sub {
             color: var(--text-less-prominent);
         }
         @include mobile {

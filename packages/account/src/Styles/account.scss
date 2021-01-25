@@ -378,7 +378,7 @@ $MIN_HEIGHT_FLOATING: calc(
         border-radius: $BORDER_RADIUS;
         background-color: rgba(255, 173, 58, 0.16);
         display: flex;
-        max-width: 67.6rem;
+        max-width: 69rem;
 
         @include desktop {
             margin-top: -2.4rem;

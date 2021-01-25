@@ -280,9 +280,6 @@
         &--right {
             text-align: right;
         }
-        &--sub {
-            color: var(--text-less-prominent);
-        }
         @include mobile {
             max-width: 100%;
             min-width: unset;
@@ -922,9 +919,6 @@
             .cashier {
                 &__header {
                     font-size: 1.4rem;
-                    &-large {
-                        font-size: 1.6rem;
-                    }
                 }
                 &__done-button {
                     width: 100%;

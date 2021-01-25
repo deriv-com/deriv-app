@@ -26,9 +26,9 @@ class PaymentAgentReceipt extends React.Component {
         return (
             <div className='cashier__wrapper--align-left payment-agent__receipt '>
                 <div className='cashier__success'>
-                    <h2 className='cashier__header'>
+                    <Text as='h1' color='prominent' line_height='m' size={isMobile() ? 'xs' : 's'} weight='bold'>
                         <Localize i18n_default_text='Your funds have been transferred' />
-                    </h2>
+                    </Text>
                     <div className='cashier__transferred-amount cashier__text--bold'>
                         {formatMoney(currency, receipt.amount_transferred, true)}
                         <span className={classNames('symbols', `symbols--${currency_lowercase}`)}>
@@ -37,25 +37,31 @@ class PaymentAgentReceipt extends React.Component {
                     </div>
                     <div className='cashier__transferred-details-wrapper'>
                         <span className='cashier__transferred-details'>
-                            <span className='cashier__text--bold cashier__text--end'>
+                            <Text as='span' size='xs' weight='bold' className='cashier__text--end'>
                                 {getCurrencyDisplayCode(currency)}
-                            </span>
-                            <span className='cashier__text--sub'>{loginid}</span>
+                            </Text>
+                            <Text as='span' size='xs' color='less-prominent'>
+                                {loginid}
+                            </Text>
                         </span>
                         <Icon size={32} icon={`IcCurrency-${currency_lowercase}`} />
                         <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
                         <Icon size={32} icon='IcPA' />
                         <span className='cashier__transferred-details'>
                             {receipt.payment_agent_name && (
-                                <span className='cashier__text--bold'>{receipt.payment_agent_name}</span>
+                                <Text as='span' size='xs' weight='bold'>
+                                    {receipt.payment_agent_name}
+                                </Text>
                             )}
-                            <span className='cashier__text--sub'>{receipt.payment_agent_id}</span>
+                            <Text as='span' color='less-prominent' size='xs'>
+                                {receipt.payment_agent_id}
+                            </Text>
                         </span>
                     </div>
                 </div>
-                <h2 className='cashier__header cashier__header-large'>
+                <Text as='h1' color='prominent' line_height='m' size='s' weight='bold'>
                     <Localize i18n_default_text='IMPORTANT NOTICE TO RECEIVE YOUR FUNDS' />
-                </h2>
+                </Text>
                 <Text
                     as='p'
                     color='prominent'

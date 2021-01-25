@@ -1,4 +1,4 @@
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, reaction } from 'mobx';
 import { formatMoney, getDecimalPlaces, getRoundedNumber, isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
@@ -17,7 +17,6 @@ export default class BuySellStore {
     @observable has_more_items_to_load = false;
     @observable is_loading = true;
     @observable is_submit_disabled = true;
-    @observable item_offset = 0;
     @observable items = [];
     @observable payment_info = '';
     @observable receive_amount = 0;
@@ -143,6 +142,8 @@ export default class BuySellStore {
 
     @action.bound
     loadMoreItems({ startIndex }) {
+        this.setIsLoading(true);
+
         const { general_store } = this.root_store;
         const counterparty_type = this.table_type === buy_sell.BUY ? buy_sell.BUY : buy_sell.SELL;
 
@@ -160,7 +161,21 @@ export default class BuySellStore {
                         const { list } = response.p2p_advert_list;
 
                         this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
-                        this.setItems([...this.items, ...list]);
+
+                        const old_items = [...this.items];
+                        const new_items = [];
+
+                        list.forEach(new_item => {
+                            const old_item_idx = old_items.findIndex(old_item => old_item.id === new_item.id);
+
+                            if (old_item_idx > -1) {
+                                old_items[old_item_idx] = new_item;
+                            } else {
+                                new_items.push(new_item);
+                            }
+                        });
+
+                        this.setItems([...old_items, ...new_items]);
                     }
                 } else {
                     this.setApiErrorMessage(response.error.message);
@@ -188,6 +203,21 @@ export default class BuySellStore {
 
         order_store.props.setOrderId(order_info.id);
         general_store.redirectTo('orders', { nav: { location: 'buy_sell' } });
+    }
+
+    registerIsListedReaction() {
+        const { general_store } = this.root_store;
+        const disposeIsListedReaction = reaction(
+            () => general_store.is_listed,
+            () => {
+                this.setItems([]);
+                this.loadMoreItems({ startIndex: 0 });
+            }
+        );
+
+        return () => {
+            disposeIsListedReaction();
+        };
     }
 
     @action.bound
@@ -223,11 +253,6 @@ export default class BuySellStore {
     @action.bound
     setIsSubmitDisabled(is_submit_disabled) {
         this.is_submit_disabled = is_submit_disabled;
-    }
-
-    @action.bound
-    setItemOffset(item_offset) {
-        this.item_offset = item_offset;
     }
 
     @action.bound

@@ -2,7 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from '../../stores/connect';
+import { connect } from 'Stores/connect';
 
 const LocalFooter = ({ is_mobile, is_open_button_loading, loadFileFromLocal, setLoadedLocalFile }) => {
     const Wrapper = is_mobile ? Button.Group : React.Fragment;

@@ -48,11 +48,13 @@ const getIntroductionText = (landing_company_shortcode, mt5_login_list) => {
     }
 };
 
-const getYourDecisionText = landing_company_shortcode => {
+const getYourDecisionText = (is_uk, landing_company_shortcode) => {
+    const texts = [];
+
     switch (landing_company_shortcode) {
         case 'iom':
         case 'malta': {
-            const texts = [
+            texts.push(
                 <Localize
                     key={0}
                     i18n_default_text='If you are not satisfied with the outcome, you can escalate your complaint to the <0>Independent Betting Adjudication Service (IBAS)</0> by filling the IBAS adjudication form. Please note that IBAS only deals with disputes that result from transactions.'
@@ -80,9 +82,8 @@ const getYourDecisionText = landing_company_shortcode => {
                             href='https://ec.europa.eu/odr/'
                         />,
                     ]}
-                />,
-            ];
-
+                />
+            );
             if (landing_company_shortcode === 'iom') {
                 texts.push(
                     <Localize
@@ -128,11 +129,10 @@ const getYourDecisionText = landing_company_shortcode => {
                     />
                 );
             }
-
-            return texts;
+            break;
         }
         default: {
-            const texts = [
+            texts.push(
                 <Localize
                     key={0}
                     i18n_default_text='If you are not satisfied with the outcome, you can escalate your complaint to the <0>Financial Commission</0>.'
@@ -145,8 +145,8 @@ const getYourDecisionText = landing_company_shortcode => {
                             href='https://financialcommission.org/resolving-a-dispute/how-to-file-a-complaintdispute/'
                         />,
                     ]}
-                />,
-            ];
+                />
+            );
             if (landing_company_shortcode === 'maltainvest') {
                 texts.push(
                     <Localize
@@ -165,13 +165,66 @@ const getYourDecisionText = landing_company_shortcode => {
                         ]}
                     />
                 );
+
+                if (is_uk) {
+                    texts.push(
+                        <Localize
+                            key={texts.length}
+                            i18n_default_text='<0/><1/>If you reside in the UK and you are unhappy with our response you may escalate your complaint to the <2>Financial Ombudsman Service</2>.'
+                            components={[
+                                <br key={0} />,
+                                <br key={1} />,
+                                <a
+                                    key={2}
+                                    className='link link--orange'
+                                    rel='noopener noreferrer'
+                                    target='_blank'
+                                    href='https://www.financial-ombudsman.org.uk/'
+                                />,
+                            ]}
+                        />
+                    );
+                }
             }
-            return texts;
+            break;
         }
     }
+
+    return texts;
 };
 
-const Content = ({ landing_company_shortcode, mt5_login_list }) => {
+const getSubmissionOfAComplaintText = landing_company_shortcode => (
+    <React.Fragment>
+        <Localize
+            i18n_default_text='To file a complaint about our service, send an email to <0>complaints@deriv.com</0> and state your complaint in detail. Please submit any relevant screenshots of your trading or system for our better understanding.'
+            components={[
+                <a
+                    key={0}
+                    className='link link--orange'
+                    rel='noopener noreferrer'
+                    target='_blank'
+                    href='mailto:complaints@deriv.com'
+                />,
+            ]}
+        />
+        {landing_company_shortcode !== 'maltainvest' && (
+            <Localize
+                i18n_default_text=' You may also call <0>+447723580049</0> to place your complaint.'
+                components={[
+                    <a
+                        key={0}
+                        className='link link--orange'
+                        rel='noopener noreferrer'
+                        target='_blank'
+                        href='tel:+447723580049'
+                    />,
+                ]}
+            />
+        )}
+    </React.Fragment>
+);
+
+const Content = ({ is_uk, landing_company_shortcode, mt5_login_list }) => {
     const policy_content = [
         {
             title: localize('1. Introduction'),
@@ -197,27 +250,7 @@ const Content = ({ landing_company_shortcode, mt5_login_list }) => {
                 subcontent: [
                     {
                         title: localize('3.1. Submission of a complaint'),
-                        text: (
-                            <Localize
-                                i18n_default_text='To file a complaint about our service, send an email to <0>complaints@deriv.com</0> and state your complaint in detail. Please submit any relevant screenshots of your trading or system for our better understanding. You may also call <1>+447723580049</1> to place your complaint.'
-                                components={[
-                                    <a
-                                        key={0}
-                                        className='link link--orange'
-                                        rel='noopener noreferrer'
-                                        target='_blank'
-                                        href='mailto:complaints@deriv.com'
-                                    />,
-                                    <a
-                                        key={1}
-                                        className='link link--orange'
-                                        rel='noopener noreferrer'
-                                        target='_blank'
-                                        href='tel:+447723580049'
-                                    />,
-                                ]}
-                            />
-                        ),
+                        text: getSubmissionOfAComplaintText(landing_company_shortcode),
                     },
                     {
                         title: localize('3.2. Handling your complaint'),
@@ -227,13 +260,18 @@ const Content = ({ landing_company_shortcode, mt5_login_list }) => {
                     },
                     {
                         title: localize('3.3. Resolving your complaint'),
-                        text: localize(
-                            'We shall try to resolve your complaint within 15 business days. We will inform you of the outcome together with an explanation of our position and propose any remedial measures we intend to take.'
-                        ),
+                        text:
+                            landing_company_shortcode === 'malta'
+                                ? localize(
+                                      'We shall try to resolve your complaint within 10 business days. We will inform you of the outcome together with an explanation of our position and propose any remedial measures we intend to take.'
+                                  )
+                                : localize(
+                                      'We shall try to resolve your complaint within 15 business days. We will inform you of the outcome together with an explanation of our position and propose any remedial measures we intend to take.'
+                                  ),
                     },
                     {
                         title: localize('3.4. Your decision'),
-                        text: getYourDecisionText(landing_company_shortcode),
+                        text: getYourDecisionText(is_uk, landing_company_shortcode),
                     },
                 ],
             },
@@ -385,5 +423,6 @@ const Content = ({ landing_company_shortcode, mt5_login_list }) => {
 };
 
 export default connect(({ client }) => ({
+    is_uk: client.is_uk,
     mt5_login_list: client.mt5_login_list,
 }))(Content);

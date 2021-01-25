@@ -375,7 +375,7 @@
 
 .add-crypto-currency,
 .change-currency {
-    padding-bottom: 1.6rem;
+    height: 100%;
 
     &__title,
     &__sub-title {
@@ -394,13 +394,6 @@
     &__button {
         margin-top: 1.6rem;
         width: 100%;
-    }
-    @include tablet {
-        form {
-            display: grid;
-            grid-template-rows: repeat(2, 7rem) 1fr 7rem;
-            height: auto;
-        }
     }
 }
 

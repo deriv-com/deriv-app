@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard, useHover } from '@deriv/components';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import { connect } from 'Stores/connect';
@@ -9,6 +9,7 @@ import { getSymbolDisplayName } from 'Stores/Modules/Trading/Helpers/active-symb
 import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { getMarketInformation } from 'Modules/Reports/Helpers/market-underlying';
 import { SwipeableContractDrawer } from './swipeable-components.jsx';
+import MarketClosedContractOverlay from './market-closed-contract-overlay.jsx';
 
 const ContractDrawerCard = ({
     active_symbols,
@@ -18,6 +19,7 @@ const ContractDrawerCard = ({
     currency,
     current_focus,
     getContractById,
+    is_market_closed,
     is_mobile,
     is_multiplier,
     is_sell_requested,
@@ -35,6 +37,8 @@ const ContractDrawerCard = ({
     toggleCancellationWarning,
     toggleContractAuditDrawer,
 }) => {
+    const [hover_ref, should_hide_closed_overlay] = useHover();
+
     const { profit } = contract_info;
     const is_sold = !!getEndTime(contract_info);
     const display_name = getSymbolDisplayName(active_symbols, getMarketInformation(contract_info.shortcode).underlying);
@@ -109,7 +113,11 @@ const ContractDrawerCard = ({
                     'dc-contract-card--green': is_mobile && !is_multiplier && profit > 0 && !result,
                     'dc-contract-card--red': is_mobile && !is_multiplier && profit < 0 && !result,
                 })}
+                ref={hover_ref}
             >
+                {!should_hide_closed_overlay && is_market_closed && !getEndTime(contract_info) && (
+                    <MarketClosedContractOverlay />
+                )}
                 {contract_el}
                 {card_footer}
             </div>
@@ -150,6 +158,7 @@ export default connect(({ modules, ui }) => ({
     addToast: ui.addToast,
     current_focus: ui.current_focus,
     getContractById: modules.contract_trade.getContractById,
+    is_market_closed: modules.trade.is_market_closed,
     removeToast: ui.removeToast,
     should_show_cancellation_warning: ui.should_show_cancellation_warning,
     setCurrentFocus: ui.setCurrentFocus,

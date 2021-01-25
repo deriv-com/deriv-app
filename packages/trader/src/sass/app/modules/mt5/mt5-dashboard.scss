@@ -1309,6 +1309,9 @@
         align-items: center;
         justify-content: center;
     }
+    &__header {
+        margin: 1rem 0;
+    }
 }
 .mt5-personal-details-form-error {
     @include typeface(--paragraph-left-normal-red);

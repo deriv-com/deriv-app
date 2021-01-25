@@ -210,7 +210,7 @@ const MT5PasswordManagerTabContent = ({ status, children }) => {
 };
 
 const MainPasswordManager = ({ status }) => {
-    const is_existing_user = status.includes('password_reset_required');
+    const is_existing_user = status?.includes('password_reset_required');
     return (
         <div className='mt5-password-manager__main-wrapper'>
             <Icon icon='IcMt5OnePassword' size='128' />

@@ -24,7 +24,13 @@ import { connect } from 'Stores/connect';
 const PasswordResetBody = ({ closeModal }) => (
     <div className='dc-modal__container_mt5-reset-password-modal__body'>
         <Icon icon='IcMt5OnePassword' size='128' />
-        <Text as='p' align='center' weight='bold' size='xs' className='dc-modal-header__title'>
+        <Text
+            as='p'
+            align='center'
+            weight='bold'
+            size='s'
+            className='dc-modal__container_mt5-reset-password-modal__header'
+        >
             <Localize i18n_default_text='All you’ll need from now is one password' />
         </Text>
         <Text as='p' align='center' size='xxs'>

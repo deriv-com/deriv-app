@@ -21,6 +21,7 @@ import {
     getMT5Account,
     getMT5AccountDisplay,
     getMT5AccountKey,
+    getAccountTypeFields,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
@@ -269,8 +270,12 @@ const AccountSwitcher = props => {
         return getSortedMT5List().filter(account => !isDemo(account));
     };
 
-    const findServerForAccount = acc =>
-        props.trading_servers.length > 1 ? props.trading_servers.find(server => server.id === acc.server) : null;
+    const findServerForAccount = acc => {
+        const server_name = acc.error ? acc.error.details.server : acc.server;
+        return props.trading_servers.length > 1
+            ? props.trading_servers.find(server => server.id === server_name)
+            : null;
+    };
 
     const getRemainingRealMT5 = () => {
         return getRemainingAccounts(getRealMT5());
@@ -327,6 +332,15 @@ const AccountSwitcher = props => {
             props.obj_total_balance.amount_real +
             (props.obj_total_balance.amount_mt5 > 0 ? props.obj_total_balance.amount_mt5 : mt5_total.balance)
         );
+    };
+
+    const isRealMT5AddDisabled = sub_account_type => {
+        if (props.is_eu) {
+            const account = getAccountTypeFields({ category: 'real', type: sub_account_type });
+            return props.isAccountOfTypeDisabled(account?.account_type);
+        }
+
+        return !props.has_active_real_account;
     };
 
     if (!props.is_logged_in) return false;
@@ -404,6 +418,7 @@ const AccountSwitcher = props => {
                                                     account.sub_account_type
                                                 )}`}
                                                 has_balance={'balance' in account}
+                                                has_error={account.has_error}
                                                 loginid={account.display_login}
                                                 onClickAccount={redirectToMt5Demo}
                                             />
@@ -419,6 +434,7 @@ const AccountSwitcher = props => {
                                         <Button
                                             onClick={() => openMt5DemoAccount(account.type)}
                                             className='acc-switcher__new-account-btn'
+                                            is_disabled={props.mt5_disabled_signup_types.demo}
                                             secondary
                                             small
                                         >
@@ -535,6 +551,7 @@ const AccountSwitcher = props => {
                                                     account.sub_account_type
                                                 )}`}
                                                 has_balance={'balance' in account}
+                                                has_error={account.has_error}
                                                 loginid={account.display_login}
                                                 onClickAccount={redirectToMt5Real}
                                                 server={findServerForAccount(account)}
@@ -559,7 +576,8 @@ const AccountSwitcher = props => {
                                             secondary
                                             small
                                             is_disabled={
-                                                !props.has_active_real_account ||
+                                                props.mt5_disabled_signup_types.real ||
+                                                isRealMT5AddDisabled(account.type) ||
                                                 (account.type === 'financial_stp' &&
                                                     (props.is_pending_authentication || !!props.mt5_login_list_error))
                                             }
@@ -676,6 +694,7 @@ AccountSwitcher.propTypes = {
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
     logoutClient: PropTypes.func,
+    mt5_disabled_signup_types: PropTypes.object,
     mt5_login_list: PropTypes.array,
     obj_total_balance: PropTypes.object,
     openRealAccountSignup: PropTypes.func,
@@ -709,11 +728,13 @@ const account_switcher = withRouter(
         is_virtual: client.is_virtual,
         has_fiat: client.has_fiat,
         has_any_real_account: client.has_any_real_account,
+        mt5_disabled_signup_types: client.mt5_disabled_signup_types,
         mt5_login_list: client.mt5_login_list,
         mt5_login_list_error: client.mt5_login_list_error,
         obj_total_balance: client.obj_total_balance,
         switchAccount: client.switchAccount,
         resetVirtualBalance: client.resetVirtualBalance,
+        isAccountOfTypeDisabled: client.isAccountOfTypeDisabled,
         has_malta_account: client.has_malta_account,
         has_maltainvest_account: client.has_maltainvest_account,
         has_active_real_account: client.has_active_real_account,

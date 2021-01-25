@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { PropTypes } from 'mobx-react';
-import { connect } from '../../stores/connect';
+import { connect } from 'Stores/connect';
 
 const RecentFooter = ({ is_open_button_loading, loadFileFromRecent }) => {
     return (

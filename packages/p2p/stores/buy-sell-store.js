@@ -161,7 +161,21 @@ export default class BuySellStore {
                         const { list } = response.p2p_advert_list;
 
                         this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
-                        this.setItems([...this.items, ...list]);
+
+                        const old_items = [...this.items];
+                        const new_items = [];
+
+                        list.forEach(new_item => {
+                            const old_item_idx = old_items.findIndex(old_item => old_item.id === new_item.id);
+
+                            if (old_item_idx > -1) {
+                                old_items[old_item_idx] = new_item;
+                            } else {
+                                new_items.push(new_item);
+                            }
+                        });
+
+                        this.setItems([...old_items, ...new_items]);
                     }
                 } else {
                     this.setApiErrorMessage(response.error.message);

@@ -32,10 +32,10 @@ const GetSection: React.FC<TGetSection> = ({
                         <Text size='xs'>{subtitle}</Text>
                     </div>
                     <div className='dw-get__wrapper dw-get__header--right'>
-                        <Button large tertiary onClick={onClickDemo}>
+                        <Button large tertiary blue onClick={onClickDemo}>
                             {localize('Try demo')}
                         </Button>
-                        <Button large className='dw-get__header-center' primary onClick={onClickGet}>
+                        <Button large blue className='dw-get__header-center' primary onClick={onClickGet}>
                             {localize('Get')}
                         </Button>
                         <Icon
@@ -98,6 +98,6 @@ type TGetSection = {
     onClickDemo: React.MouseEventHandler<HTMLButtonElement>;
     onClickGet: React.MouseEventHandler<HTMLButtonElement>;
     link: string;
-}
+};
 
 export default GetSection;

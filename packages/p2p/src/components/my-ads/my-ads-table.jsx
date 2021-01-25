@@ -66,7 +66,7 @@ const RowComponent = observer(({ data: advert, style }) => {
                         icon='IcDelete'
                         color={general_store.is_barred && 'disabled'}
                         size={16}
-                        onClick={() => !general_store.is_barred && my_ads_store.onClickDelete(advert.id)}
+                        onClick={() => (general_store.is_barred ? undefined : my_ads_store.onClickDelete(advert.id))}
                     />
                 </Table.Cell>
             </Table.Row>

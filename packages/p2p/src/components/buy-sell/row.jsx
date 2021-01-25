@@ -52,7 +52,9 @@ export const RowComponent = observer(({ data: advert, style }) => {
                 <Table.Cell>
                     <div
                         className={classNames('buy-sell__cell', { 'buy-sell__cell-hover': !general_store.is_barred })}
-                        onClick={() => !general_store.is_barred && buy_sell_store.showAdvertiserPage(advert)}
+                        onClick={() =>
+                            general_store.is_barred ? undefined : buy_sell_store.showAdvertiserPage(advert)
+                        }
                     >
                         <div
                             className='buy-sell__icon'

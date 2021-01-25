@@ -218,7 +218,7 @@ const MainPasswordManager = ({ status }) => {
                 <Localize i18n_default_text='All you need from now is one password' />
             </Text>
             <Text as='p' align='center' size='xxs'>
-                {is_existing_user && (
+                {!is_existing_user && (
                     <Localize
                         i18n_default_text='Your DMT5 password is now the same as your Deriv account login password. To reset, please go to <0>Settings</0> page to change your password.'
                         components={[
@@ -230,11 +230,11 @@ const MainPasswordManager = ({ status }) => {
                         ]}
                     />
                 )}
-                {!is_existing_user && (
+                {is_existing_user && (
                     <Localize i18n_default_text='We’ve upgraded our system to support a single, more secure password across all of Deriv/Binary.com. Once you’ve set a new password, you can use it to log into all your Deriv/Binary.com, and DMT5/MT5 accounts.' />
                 )}
             </Text>
-            {is_existing_user && (
+            {!is_existing_user && (
                 <NavLink
                     to={routes.deriv_password}
                     className='dc-btn dc-btn--primary dc-btn__large dc-modal__container_mt5-reset-password-modal__button'
@@ -242,7 +242,7 @@ const MainPasswordManager = ({ status }) => {
                     <Localize i18n_default_text='Go to Settings' />
                 </NavLink>
             )}
-            {!is_existing_user && (
+            {is_existing_user && (
                 <a
                     href={getStaticUrl('reset-password')}
                     target='_blank'

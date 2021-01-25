@@ -33,7 +33,7 @@ export default class UIStore extends BaseStore {
     @observable settings_extension = undefined;
     @observable notification_messages_ui = undefined;
 
-    @observable is_dark_mode_on = window.matchMedia('(prefers-color-scheme: dark)').matches && isMobile();
+    @observable is_dark_mode_on = window?.matchMedia?.('(prefers-color-scheme: dark)').matches && isMobile();
     @observable is_settings_modal_on = false;
     @observable is_accounts_switcher_on = false;
     @observable account_switcher_disabled_message = '';
@@ -411,6 +411,7 @@ export default class UIStore extends BaseStore {
     @action.bound
     closeRealAccountSignup() {
         this.is_real_acc_signup_on = false;
+        this.real_account_signup_target = '';
         setTimeout(() => {
             this.resetRealAccountSignupParams();
             this.setRealAccountSignupEnd(true);
@@ -648,7 +649,6 @@ export default class UIStore extends BaseStore {
             success_message: '',
             error_message: '',
         };
-        this.real_account_signup_target = '';
     }
 
     @action.bound

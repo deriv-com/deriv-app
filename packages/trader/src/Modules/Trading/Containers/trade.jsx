@@ -31,10 +31,23 @@ class Trade extends React.Component {
         digits: [],
         tick: {},
         try_synthetic_indices: false,
+        try_open_markets: false,
+        category: null,
+        subcategory: null,
     };
 
-    componentDidMount() {
+    async componentDidMount() {
         this.props.onMount();
+        if (this.props.is_eu) {
+            const markets_to_search = ['forex', 'indices', 'commodities']; // none-synthetic
+            const { category, subcategory } = (await this.props.getFirstOpenMarket(markets_to_search)) ?? {};
+            if (category) {
+                this.setState({
+                    category,
+                    subcategory,
+                });
+            }
+        }
     }
 
     componentWillUnmount() {
@@ -46,7 +59,7 @@ class Trade extends React.Component {
             this.setState({ digits: [] });
         }
         if (prevProps.symbol !== this.props.symbol) {
-            this.setState({ try_synthetic_indices: false });
+            this.setState({ try_synthetic_indices: false, try_open_markets: false });
         }
     }
 
@@ -72,23 +85,33 @@ class Trade extends React.Component {
         });
     };
 
-    onTrySyntheticIndicesClick = () => {
-        this.setState(
-            {
-                try_synthetic_indices: true,
-            },
-            () => {
+    onTryOtherMarkets = async () => {
+        if (this.props.is_eu) {
+            this.setState({ try_open_markets: true }, () => {
+                this.setState({
+                    try_open_markets: false,
+                });
+            });
+        } else {
+            this.setState({ try_synthetic_indices: true }, () => {
                 this.setState({
                     try_synthetic_indices: false,
                 });
-            }
-        );
+            });
+        }
     };
 
     render() {
         const { NotificationMessages } = this.props;
         const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
         const is_trade_enabled = this.props.form_components.length > 0 && this.props.is_trade_enabled;
+        let open_market = null;
+        if (this.state.try_synthetic_indices) {
+            open_market = { category: 'synthetic_index' };
+        } else if (this.state.try_open_markets && this.state.category) {
+            open_market = { category: this.state.category, subcategory: this.state.subcategory };
+        }
+
         return (
             <div id='trade_container' className='trade-container'>
                 <DesktopWrapper>
@@ -115,7 +138,11 @@ class Trade extends React.Component {
                         <DesktopWrapper>
                             <div className='chart-container__wrapper'>
                                 <ChartLoader is_visible={this.props.is_chart_loading} />
-                                <ChartTrade try_synthetic_indices={this.state.try_synthetic_indices} />
+                                <ChartTrade
+                                    try_synthetic_indices={this.state.try_synthetic_indices}
+                                    try_open_markets={this.state.try_open_markets}
+                                    open_market={open_market}
+                                />
                             </div>
                         </DesktopWrapper>
                         <MobileWrapper>
@@ -140,6 +167,8 @@ class Trade extends React.Component {
                                         this.props.show_digits_stats ? this.state.is_digits_widget_active : undefined
                                     }
                                     try_synthetic_indices={this.state.try_synthetic_indices}
+                                    try_open_markets={this.state.try_open_markets}
+                                    open_market={open_market}
                                 />
                             </SwipeableWrapper>
                         </MobileWrapper>
@@ -149,7 +178,14 @@ class Trade extends React.Component {
                     <Test />
                 </Div100vhContainer>
                 <div className={form_wrapper_class}>
-                    {this.props.is_market_closed && <MarketIsClosedOverlay onClick={this.onTrySyntheticIndicesClick} />}
+                    {this.props.is_market_closed && (
+                        <MarketIsClosedOverlay
+                            is_eu={this.props.is_eu}
+                            {...(this.props.is_eu && this.state.category && { is_market_available: true })}
+                            onClick={this.onTryOtherMarkets}
+                            is_market_close_overlay_loading={this.props.is_market_close_overlay_loading}
+                        />
+                    )}
                     <FormLayout
                         is_market_closed={this.props.is_market_closed}
                         is_trade_enabled={is_trade_enabled && this.props.network_status.class === 'online'}
@@ -160,12 +196,15 @@ class Trade extends React.Component {
     }
 }
 
-export default connect(({ common, modules, ui }) => ({
+export default connect(({ client, common, modules, ui }) => ({
+    getFirstOpenMarket: modules.trade.getFirstOpenMarket,
+    is_eu: client.is_eu,
     network_status: common.network_status,
     contract_type: modules.trade.contract_type,
     form_components: modules.trade.form_components,
     is_chart_loading: modules.trade.is_chart_loading,
     is_market_closed: modules.trade.is_market_closed,
+    is_market_close_overlay_loading: modules.trade.is_market_close_overlay_loading,
     show_digits_stats: modules.trade.show_digits_stats,
     is_trade_enabled: modules.trade.is_trade_enabled,
     setMobileDigitView: modules.trade.setMobileDigitView,
@@ -206,16 +245,14 @@ const ChartMarkers = connect(({ modules, ui, client }) => ({
 }))(Markers);
 
 class ChartTradeClass extends React.Component {
-    state = {
-        active_category: null,
-    };
     bottomWidgets = ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />;
     topWidgets = ({ ...props }) => {
-        const { is_digits_widget_active, try_synthetic_indices } = this.props;
+        const { is_digits_widget_active, try_synthetic_indices, try_open_markets, open_market } = this.props;
+
         return (
             <ChartTopWidgets
-                active_category={try_synthetic_indices ? 'synthetic_index' : null}
-                open={!!try_synthetic_indices}
+                open_market={open_market}
+                open={try_synthetic_indices || try_open_markets}
                 charts_ref={this.charts_ref}
                 is_digits_widget_active={is_digits_widget_active}
                 {...props}

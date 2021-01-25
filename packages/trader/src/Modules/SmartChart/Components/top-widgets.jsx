@@ -35,13 +35,13 @@ const TopWidgets = ({
     onSymbolChange,
     y_axis_width,
     theme,
-    active_category,
+    open_market,
     open,
     is_digits_widget_active,
 }) => {
     const ChartTitleLocal = (
         <ChartTitle
-            active_category={active_category}
+            open_market={open_market}
             open={open}
             enabled={is_title_enabled}
             onChange={onSymbolChange}

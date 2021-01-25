@@ -31,9 +31,6 @@ const Input = ({
     setCurrentFocus,
     type,
 }) => {
-    console.log('fractional_digits');
-    console.log(fractional_digits);
-    console.log(max_length);
     const ref = React.createRef();
     React.useEffect(() => {
         if (current_focus === name) {

@@ -18,7 +18,12 @@ import ServerTime from '_common/base/server_time';
 import { processPurchase } from './Actions/purchase';
 import * as Symbol from './Actions/symbol';
 import getValidationRules, { getMultiplierValidationRules } from './Constants/validation-rules';
-import { isMarketClosed, pickDefaultSymbol, showUnavailableLocationError } from './Helpers/active-symbols';
+import {
+    pickDefaultSymbol,
+    showUnavailableLocationError,
+    isMarketClosed,
+    findFirstOpenMarket,
+} from './Helpers/active-symbols';
 import ContractType from './Helpers/contract-type';
 import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
 import { processTradeParams } from './Helpers/process';
@@ -43,6 +48,7 @@ export default class TradeStore extends BaseStore {
     // Underlying
     @observable symbol;
     @observable is_market_closed = false;
+    @observable is_market_close_overlay_loading = true;
     @observable previous_symbol = '';
     @observable active_symbols = [];
     @observable should_refresh_active_symbols = false;
@@ -844,6 +850,11 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    setMarketCloseOverlayLoading(loading_status) {
+        this.is_market_close_overlay_loading = loading_status;
+    }
+
+    @action.bound
     onProposalResponse(response) {
         const contract_type = response.echo_req.contract_type;
         const prev_proposal_info = getPropertyValue(this.proposal_info, contract_type) || {};
@@ -1150,5 +1161,21 @@ export default class TradeStore extends BaseStore {
     @computed
     get is_multiplier() {
         return this.contract_type === 'multiplier';
+    }
+
+    async getFirstOpenMarket(markets_to_search) {
+        if (this.active_symbols?.length) {
+            return findFirstOpenMarket(this.active_symbols, markets_to_search);
+        }
+        const { active_symbols, error } = this.should_refresh_active_symbols
+            ? // if SmartCharts has requested active_symbols, we wait for the response
+              await WS.wait('active_symbols')
+            : // else requests new active_symbols
+              await WS.authorized.activeSymbols();
+        if (error) {
+            this.root_store.common.showError({ message: localize('Trading is unavailable at this time.') });
+            return undefined;
+        }
+        return findFirstOpenMarket(active_symbols, markets_to_search);
     }
 }

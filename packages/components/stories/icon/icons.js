@@ -466,8 +466,8 @@ export const icons = {
     ],
     wallet: [
         'IcWalletCreditDebit',
-        'IcWalletCrypto',
         'IcWalletCredit',
+        'IcWalletCrypto',
         'IcWalletDeriv',
         'IcWalletDp2p',
         'IcWalletExplore',

@@ -20,7 +20,6 @@ const Tabs = ({
     single_tab_has_no_label,
     top,
 }) => {
-    const [active_tab_index, setActiveTabIndex] = React.useState();
     const [active_line_style, updateActiveLineStyle] = React.useState({});
     const active_tab_ref = React.useRef();
     const tabs_wrapper_ref = React.useRef();
@@ -40,8 +39,9 @@ const Tabs = ({
         }
     }, []);
 
+    let initial_index_to_show;
     useConstructor(() => {
-        let index_to_show = active_index || 0;
+        initial_index_to_show = active_index || 0;
         if (should_update_hash) {
             // if hash is in url, find which tab index correlates to it
             const hash = location.hash.slice(1);
@@ -49,18 +49,19 @@ const Tabs = ({
             const has_hash = hash_index > -1;
 
             if (has_hash) {
-                index_to_show = hash_index;
+                initial_index_to_show = hash_index;
             } else {
                 // if no hash is in url but component has passed data-hash prop, set hash of the tab shown
-                const child_props = children[index_to_show].props;
+                const child_props = children[initial_index_to_show].props;
                 const current_id = child_props && child_props['data-hash'];
                 if (current_id) {
                     history.push({ hash: current_id });
                 }
             }
         }
-        setActiveTabIndex(index_to_show);
     });
+
+    const [active_tab_index, setActiveTabIndex] = React.useState(initial_index_to_show);
 
     React.useEffect(() => {
         if (active_tab_index >= 0 && active_index !== active_tab_index) {

@@ -5,7 +5,7 @@ import ServerTime from 'Utils/server-time';
 import { localize } from 'Components/i18next';
 import BaseStore from 'Stores/base_store';
 
-export default class OrderDetailsStore extends BaseStore {
+export default class OrderDetailsStore {
     constructor(root_store) {
         this.root_store = root_store;
     }

@@ -4,7 +4,7 @@ import BaseStore from 'Stores/base_store';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS, subscribeWS } from 'Utils/websocket';
 
-export default class OrderStore extends BaseStore {
+export default class OrderStore {
     constructor(root_store) {
         this.root_store = root_store;
 

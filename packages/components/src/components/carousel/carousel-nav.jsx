@@ -14,6 +14,7 @@ const Nav = ({
     list,
     show_bullet,
     show_nav,
+    item_per_window,
 }) => (
     <nav className={classNames('dc-carousel__nav', className)}>
         {show_nav && (
@@ -30,7 +31,7 @@ const Nav = ({
                         backgroundColor: active_bullet_color,
                     }}
                 />
-                {list.map((_, idx) => (
+                {list.slice(item_per_window - 1).map((_, idx) => (
                     <li
                         key={idx}
                         className='dc-carousel__nav-item'
@@ -55,6 +56,7 @@ Nav.propTypes = {
     handleNavigationClick: PropTypes.func,
     list: PropTypes.array,
     show_bullet: PropTypes.bool,
+    item_per_window: PropTypes.number,
 };
 
 export default React.memo(Nav);

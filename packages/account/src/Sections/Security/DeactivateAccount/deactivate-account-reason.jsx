@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Formik, Field } from 'formik';
-import { Checkbox, Input, FormSubmitButton, Modal, Icon, Loading, Text } from '@deriv/components';
+import { Checkbox, Input, FormSubmitButton, Modal, Icon, Loading, Text, Button } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 import AccountHasBalanceOrOpenPositions from './account-has-balance.jsx';
@@ -78,8 +78,22 @@ const WarningModal = props => {
     );
 };
 
+const GeneralErrorContent = ({ message, onClick }) => (
+    <React.Fragment>
+        <div className='deactivate-account-error__container deactivate-account-error__container-message'>
+            <div className='deactivate-account-error__details deactivate-account-error__details-message'>{message}</div>
+        </div>
+        <div>
+            <Button className='deactivate-account-error__button' primary onClick={onClick}>
+                {localize('OK')}
+            </Button>
+        </div>
+    </React.Fragment>
+);
+
 class DeactivateAccountReason extends React.Component {
     state = {
+        api_error_message: '',
         is_loading: false,
         is_account_deactivated: false,
         is_modal_open: false,
@@ -159,19 +173,40 @@ class DeactivateAccountReason extends React.Component {
             account_closure: 1,
             reason: this.state.reason,
         });
-        this.setState({ is_loading: false });
+
         if (account_closure_response.account_closure === 1) {
             this.setState({ is_account_deactivated: true });
         } else {
+            const { code, message, details } = account_closure_response.error;
+            const getModalToRender = () => {
+                if (code === 'AccountHasBalanceOrOpenPositions') {
+                    return 'AccountHasBalanceOrOpenPositions';
+                }
+                if (code === 'MT5AccountInaccessible') {
+                    return 'inaccessible_modal';
+                }
+                return 'error_modal';
+            };
+
             this.setState({
-                which_modal_should_render: account_closure_response.error.code,
-                details: account_closure_response.error.details,
+                which_modal_should_render: getModalToRender(),
+                details,
+                api_error_message: message,
                 is_modal_open: true,
+                is_loading: false,
             });
         }
     };
+
     render() {
         if (this.state.is_account_deactivated) return <Redirect to={routes.account_deactivated} />;
+
+        const getModalTitle = () => {
+            if (this.state.which_modal_should_render === 'error_modal') return localize('An error occurred');
+            if (this.state.which_modal_should_render === 'inaccessible_modal')
+                return localize('Inaccessible MT5 account(s)');
+            return this.state.which_modal_should_render !== 'warning_modal' ? localize('Action required') : undefined;
+        };
         return this.state.is_loading ? (
             <Loading is_fullscreen={false} />
         ) : (
@@ -373,11 +408,7 @@ class DeactivateAccountReason extends React.Component {
                     className='deactivate-account-reasons'
                     is_open={this.state.is_modal_open}
                     toggleModal={() => this.setState({ is_modal_open: !this.state.is_modal_open })}
-                    title={
-                        this.state.which_modal_should_render !== 'warning_modal'
-                            ? localize('Action required')
-                            : undefined
-                    }
+                    title={getModalTitle()}
                 >
                     {this.state.which_modal_should_render === 'warning_modal' && (
                         <WarningModal closeModal={this.closeModal} startDeactivating={this.startDeactivating} />
@@ -389,6 +420,9 @@ class DeactivateAccountReason extends React.Component {
                             client_accounts={this.props.client_accounts}
                             onBackClick={this.props.onBackClick}
                         />
+                    )}
+                    {this.state.which_modal_should_render === 'inaccessible_modal' && (
+                        <GeneralErrorContent message={this.state.api_error_message} onClick={this.closeModal} />
                     )}
                 </Modal>
             </div>

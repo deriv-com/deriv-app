@@ -116,15 +116,18 @@ const MINIMIZERS = !IS_RELEASE
       ];
 
 const plugins = ({ base, is_test_env, env }) => {
-    let is_crypto_app;
+    let is_crypto_app, is_qawolf;
     try {
         is_crypto_app = JSON.parse(env.IS_CRYPTO_APP);
+        is_qawolf = !!JSON.parse(env.IS_QAWOLF);
     } catch (e) {
         is_crypto_app = false;
+        is_qawolf = false;
     }
     return [
         new DefinePlugin({
             'process.env.IS_CRYPTO_APP': is_crypto_app,
+            'process.env.IS_QAWOLF': is_qawolf,
         }),
         new CleanWebpackPlugin(),
         new CopyPlugin(copyConfig(base)),

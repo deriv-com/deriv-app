@@ -1,6 +1,6 @@
 import { observable, action, computed } from 'mobx';
 import { getIndicativePrice } from '@deriv/shared';
-import { contract_stages } from '../constants/contract-stage';
+import { contract_stages } from 'Constants/contract-stage';
 
 export default class SummaryCardStore {
     @observable contract = null;

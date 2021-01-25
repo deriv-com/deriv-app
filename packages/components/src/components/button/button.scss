@@ -73,15 +73,15 @@
         .dc-btn__icon {
             color: var(--text-colored-background);
         }
-
-        &-dashboard {
+    }
+    &--blue {
+        background: var(--brand-apple-blue);
+        & .dc-btn__text,
+        .dc-btn__icon {
+            color: var(--text-colored-background);
+        }
+        &:hover {
             background: var(--brand-apple-blue);
-            & .dc-btn__text {
-                color: var(--text-colored-background);
-            }
-            & .dc-btn--primary:hover {
-                background: var(--brand-apple-blue);
-            }
         }
     }
     &--secondary {

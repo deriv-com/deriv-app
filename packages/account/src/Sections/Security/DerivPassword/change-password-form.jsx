@@ -155,7 +155,7 @@ class ChangePasswordForm extends React.Component {
                                     </FormBodySection>
                                 </FormBody>
                             )}
-                            <FormFooter is_dashboard={is_dashboard && !isMobile()}>
+                            <FormFooter>
                                 {status?.msg && (
                                     <FormSubmitErrorMessage
                                         className={classNames({ 'account-form__error-message': isMobile() })}

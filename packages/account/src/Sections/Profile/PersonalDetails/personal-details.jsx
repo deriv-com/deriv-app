@@ -47,8 +47,9 @@ const validate = (errors, values) => (fn, arr, err_msg) => {
     });
 };
 
-const InputGroup = ({ children, className, is_dashboard }) => {
-    if (is_dashboard) {
+const InputGroup = ({ children, className }) => {
+    const { is_dashboard } = React.useContext(PlatformContext);
+    if (is_dashboard && !isMobile()) {
         return React.Children.map(children, child => <fieldset className='account-form__fieldset'>{child}</fieldset>);
     }
     return (
@@ -406,10 +407,7 @@ export class PersonalDetailsForm extends React.Component {
                                                 )}
                                             >
                                                 <DesktopWrapper>
-                                                    <InputGroup
-                                                        className='account-form__fieldset--2-cols'
-                                                        is_dashboard={is_dashboard && !isMobile()}
-                                                    >
+                                                    <InputGroup className='account-form__fieldset--2-cols'>
                                                         <Input
                                                             data-lpignore='true'
                                                             type='text'
@@ -920,7 +918,7 @@ export class PersonalDetailsForm extends React.Component {
                                         </fieldset>
                                     </FormBodySection>
                                 </FormBody>
-                                <FormFooter is_dashboard={is_dashboard && !isMobile()}>
+                                <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                     {!(isSubmitting || is_submit_success || (status && status.msg)) &&
                                         !is_dashboard &&

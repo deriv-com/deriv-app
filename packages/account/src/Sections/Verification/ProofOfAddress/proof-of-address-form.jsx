@@ -433,11 +433,10 @@ const ProofOfAddressForm = ({
                                             setDocumentFile({ files: df.files, error_message: df.error_message })
                                         }
                                         getSocket={WS.getSocket}
-                                        is_dashboard={is_dashboard && !isMobile()}
                                     />
                                 </FormBodySection>
                             </FormBody>
-                            <FormFooter is_dashboard={is_dashboard && !isMobile()}>
+                            <FormFooter>
                                 {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                 <Button
                                     className='account-form__footer-btn'

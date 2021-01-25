@@ -17,7 +17,14 @@ const SideNotes = ({ side_notes }) => {
     );
 };
 
-const Content = ({ is_routed, items, selected, is_dashboard }) => {
+const ContentWrapper = ({ children, has_side_note }) => {
+    if (has_side_note) {
+        return <div className='dc-vertical-tab__content-inner'>{children}</div>;
+    }
+    return children;
+};
+
+const Content = ({ is_routed, items, selected }) => {
     const selected_item = items.find(item => item.label === selected.label);
     const previous_selected_item = usePrevious(selected_item);
     const TabContent = selected_item.value;
@@ -47,13 +54,7 @@ const Content = ({ is_routed, items, selected, is_dashboard }) => {
                             <Route
                                 key={idx}
                                 path={path}
-                                render={() => (
-                                    <Component
-                                        is_dashboard={is_dashboard}
-                                        component_icon={icon}
-                                        setSideNotes={addToNotesQueue}
-                                    />
-                                )}
+                                render={() => <Component component_icon={icon} setSideNotes={addToNotesQueue} />}
                             />
                         );
                     })}
@@ -112,23 +113,9 @@ const VerticalTabContentContainer = ({
                 </div>
             )}
             <div className={classNames('dc-vertical-tab__content-container', tab_container_classname)}>
-                {selected.has_side_note ? (
-                    <div className='dc-vertical-tab__content-inner'>
-                        <Content
-                            is_routed={is_routed}
-                            items={items}
-                            selected={selected}
-                            is_dashboard={is_dashboard && !isMobile()}
-                        />
-                    </div>
-                ) : (
-                    <Content
-                        is_routed={is_routed}
-                        items={items}
-                        selected={selected}
-                        is_dashboard={is_dashboard && !isMobile()}
-                    />
-                )}
+                <ContentWrapper has_side_note={selected.has_side_note}>
+                    <Content is_routed={is_routed} items={items} selected={selected} />
+                </ContentWrapper>
             </div>
         </div>
     );

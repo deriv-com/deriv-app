@@ -35,8 +35,9 @@ import FormSubHeader from 'Components/form-sub-header';
 import Article from './article.jsx';
 import ArticleContent from './article-content.jsx';
 
-const SectionHeader = ({ title, is_dashboard }) => {
-    if (is_dashboard) {
+const SectionHeader = ({ title }) => {
+    const { is_dashboard } = React.useContext(PlatformContext);
+    if (is_dashboard && !isMobile()) {
         return <FormSubHeader title={title} />;
     }
     return <h2 className='self-exclusion__header'>{title}</h2>;
@@ -463,10 +464,7 @@ class SelfExclusion extends React.Component {
                                                 </Text>
                                             </div>
                                             <div className='self-exclusion__confirm'>
-                                                <SectionHeader
-                                                    title={localize('You have set the following limits:')}
-                                                    is_dashboard={is_dashboard && !isMobile()}
-                                                />
+                                                <SectionHeader title={localize('You have set the following limits:')} />
                                                 {changed_attributes.map((key, idx) => {
                                                     const need_date_format = ['exclude_until', 'timeout_until'];
                                                     const need_money_format = [
@@ -1018,7 +1016,7 @@ class SelfExclusion extends React.Component {
                         </Formik>
                     </ThemedScrollbars>
                     <DesktopWrapper>
-                        <Article toggleArticle={this.toggleArticle} is_dashboard={is_dashboard && !isMobile()} />
+                        <Article toggleArticle={this.toggleArticle} />
                     </DesktopWrapper>
                 </Div100vhContainer>
             </section>

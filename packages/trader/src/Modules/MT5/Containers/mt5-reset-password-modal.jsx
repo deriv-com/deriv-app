@@ -15,14 +15,14 @@ const ResetPasswordIntent = ({ current_list, children, ...props }) => {
     const has_intent =
         reset_password_intent && /(real|demo)\.(financial_stp|financial|synthetic)/.test(reset_password_intent);
 
-    let group, type, login, title;
+    let group, type, login, title, server;
     if (has_intent && current_list) {
-        [group, type] = reset_password_intent.split('.');
-        login = current_list[`${group}.${type}`].login;
+        [server, group, type] = reset_password_intent.split('.');
+        login = current_list[`${group}.${type}@${server}`].login;
         title = getMtCompanies()[group][type].title;
     } else if (current_list) {
-        [group, type] = Object.keys(current_list).pop().split('.');
-        login = current_list[`${group}.${type}`].login;
+        [server, group, type] = Object.keys(current_list).pop().split('.');
+        login = current_list[`${group}.${type}@${server}`].login;
         title = getMtCompanies()[group][type].title;
     } else {
         // Set a default intent
@@ -54,6 +54,7 @@ class MT5ResetPasswordModal extends React.Component {
     clearAddressBar = () => {
         localStorage.removeItem('mt5_reset_password_intent');
         localStorage.removeItem('mt5_reset_password_type');
+        localStorage.removeItem('mt5_reset_password_code');
         this.props.history.push(`${routes.mt5}`);
     };
 
@@ -82,13 +83,12 @@ class MT5ResetPasswordModal extends React.Component {
 
     resetPassword = (values, password_type, login, actions) => {
         const { setSubmitting } = actions;
-        const url_params = new URLSearchParams(window.location.search);
         setSubmitting(true);
         const request = {
             login,
             password_type,
             new_password: values.new_password,
-            verification_code: url_params.get('code'),
+            verification_code: localStorage.getItem('mt5_reset_password_code'),
         };
 
         WS.mt5PasswordReset(request).then(response => {

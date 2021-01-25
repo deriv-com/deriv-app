@@ -84,7 +84,7 @@ const DropdownList = React.forwardRef((props, list_ref) => {
         return classNames('dc-list', {
             'dc-list--left': is_alignment_left,
             'dc-list--large': is_large,
-            'dc-list--suffix-icon': suffix_icon,
+            'dc-list--has-suffix-icon': suffix_icon,
         });
     };
 
@@ -229,7 +229,7 @@ const Dropdown = ({
             'dc-dropdown--show': is_list_visible,
             'dc-dropdown--disabled': isSingleOption() || disabled,
             'dc-dropdown--error': error,
-            'dc-dropdown--suffix-icon': suffix_icon,
+            'dc-dropdown--has-suffix-icon': suffix_icon,
         });
     };
 
@@ -384,7 +384,7 @@ const Dropdown = ({
                             {suffix_icon && <Icon className='suffix-icon' icon={suffix_icon} size={16} fill />}
                             <DisplayText
                                 className={classNames('dc-dropdown__display-text', {
-                                    'dc-dropdown__display--suffix-icon-text': suffix_icon,
+                                    'dc-dropdown__display--has-suffix-icon-text': suffix_icon,
                                 })}
                                 has_symbol={has_symbol}
                                 name={name}

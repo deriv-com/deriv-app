@@ -53,7 +53,7 @@
                 pointer-events: none;
             }
         }
-        &--suffix-icon {
+        &--has-suffix-icon {
             width: 21rem;
             padding-left: 3rem;
             justify-content: start;
@@ -287,7 +287,7 @@
             right: 16px;
         }
     }
-    &--suffix-icon {
+    &--has-suffix-icon {
         margin-left: 1rem;
         margin-top: 0;
         max-width: fit-content;
@@ -297,8 +297,4 @@
 .suffix-icon {
     position: absolute;
     left: 20px;
-}
-
-.dc-list--suffix-icon {
-    width: 21rem;
 }

@@ -37,7 +37,7 @@ const TransactionFilter = ({ handleFilterChange }) => {
             value={default_filter}
             name='transaction-filter-dropdown'
             className='dropdown-statement-filter'
-            classNameDisplay='dc-dropdown__display--suffix-icon'
+            classNameDisplay='dc-dropdown__display--has-suffix-icon'
             has_symbol={false}
             suffix_icon={'IcFilter'}
             onChange={e => {

@@ -10,8 +10,9 @@
     }
 
     &__sub-header {
-        margin: 0 4rem 4rem;
-        text-align: center;
+        @include desktop {
+            margin: 0 4rem 4rem;
+        }
     }
 
     &__elements {

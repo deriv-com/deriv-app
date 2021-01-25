@@ -134,7 +134,7 @@ const PersonalDetails = ({
                                 <ThemedScrollbars height={height} onScroll={closeTooltipOnScroll}>
                                     {is_dashboard && (
                                         <div className='details-form__sub-header'>
-                                            <Text size='xs'>
+                                            <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
                                                 {localize(
                                                     'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.'
                                                 )}

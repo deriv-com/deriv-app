@@ -5,6 +5,10 @@
     flex-direction: column;
     background-color: var(--fill-normal);
 
+    @include mobile {
+        padding: 0 1.6rem;
+    }
+
     &__header {
         border-radius: 0.8rem;
 
@@ -54,6 +58,10 @@
         &-active-title {
             padding: 4rem 0 1.6rem;
             border-bottom: 2px solid var(--text-disabled);
+
+            @include mobile {
+                padding: 1.6rem 0 0.8rem;
+            }
         }
     }
 
@@ -63,6 +71,9 @@
         flex-direction: column;
         flex: 1;
 
+        @include mobile {
+            padding-top: 2rem;
+        }
         form {
             display: flex;
             flex-direction: column;
@@ -80,54 +91,47 @@
         > .dc-themed-scrollbars {
             .details-form__elements {
                 flex-grow: unset;
+                padding: 1rem 0 0;
             }
         }
 
         .dc-input {
-            min-width: 328px;
+            @include desktop {
+                min-width: 328px;
 
-            &__label {
-                left: 1.6rem;
-                top: 1.6rem;
-            }
-            &__field {
-                padding: 1.6rem;
-                height: unset;
+                &__label {
+                    left: 1.6rem;
+                    top: 1.6rem;
+                }
+                &__field {
+                    padding: 1.6rem;
+                    height: unset;
 
-                /* Not empty fields */
-                &:focus,
-                &:disabled,
-                &:not(:focus):not([value='']) {
-                    & ~ label {
-                        transform: translate(-0.5rem, -2.4rem) scale(0.75);
+                    /* Not empty fields */
+                    &:focus,
+                    &:disabled,
+                    &:not(:focus):not([value='']) {
+                        & ~ label {
+                            transform: translate(-0.5rem, -2.4rem) scale(0.75);
+                        }
                     }
                 }
             }
-        }
-        .dc-autocomplete,
-        .dc-radio-group {
-            margin-bottom: 3.2rem;
-        }
-        .dc-field--error {
-            top: 5.5rem;
-        }
-    }
-    .currency-list__item {
-        position: relative;
 
-        &-code {
-            font-weight: normal;
+            @include mobile {
+                .label {
+                    background-color: white;
+                }
+            }
         }
 
-        &--selected {
-            border-color: var(--badge-blue);
-            &:after {
-                content: '';
-                background-image: url('/js/dashboard/assets/images/check.svg');
-                width: 2.4rem;
-                height: 2.4rem;
-                right: 1.6rem;
-                position: absolute;
+        @include desktop {
+            .dc-autocomplete,
+            .dc-radio-group {
+                margin-bottom: 3.2rem;
+            }
+            .dc-field--error {
+                top: 5.5rem;
             }
         }
     }

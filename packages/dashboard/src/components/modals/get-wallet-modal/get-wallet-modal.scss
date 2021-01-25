@@ -20,14 +20,14 @@
         }
     }
     &__wallet {
-        width: 7rem;
         background: var(--general-section-1);
         height: 2.6rem;
         border-radius: 0.8rem;
 
         &-list {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr));
+            width: 100%;
             grid-gap: 0.8rem;
             padding-right: 1.6rem;
 

@@ -48,7 +48,7 @@ const GetPasswordModal: React.FC = () => {
             <Modal.Body>
                 <div className='dw-get-wallet-modal__body'>
                     <Text className='dw-get-wallet-modal__title' size='m' weight='bold' align='center'>
-                        Get a Wallet to fund your app
+                        {localize('Get a Wallet to fund your app')}
                     </Text>
                     <div className='dw-get-wallet-modal__content'>
                         <div className='dw-get-wallet-modal__wallet-list'>

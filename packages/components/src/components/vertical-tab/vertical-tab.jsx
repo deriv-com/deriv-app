@@ -112,7 +112,7 @@ const VerticalTab = ({
                         items={list}
                         item_groups={list_groups}
                         onChange={changeSelected}
-                        selected={list[curr_tab_index]}
+                        selected={list[curr_tab_index] || list[0]}
                         has_mixed_dimensions={has_mixed_dimensions}
                         is_collapsible={is_collapsible}
                         is_floating={is_floating}
@@ -131,7 +131,7 @@ const VerticalTab = ({
                 action_bar_classname={action_bar_classname}
                 is_floating={is_floating}
                 items={list}
-                selected={list[curr_tab_index]}
+                selected={list[curr_tab_index] || list[0]}
                 is_routed={is_routed}
             />
         </div>

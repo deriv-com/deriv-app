@@ -45,7 +45,7 @@ module.exports = {
                         loader: 'babel-loader',
                         options: {
                             rootMode: 'upward',
-                        }
+                        },
                     },
                 ],
             },
@@ -61,7 +61,7 @@ module.exports = {
                                       sourceMap: !is_release,
                                   },
                               },
-                              path.resolve(__dirname, 'scripts', 'dp2p-css-unit-loader.js'),
+                              '@deriv/publisher/utils/css-unit-loader.js',
                           ]
                         : []),
                     'css-loader',

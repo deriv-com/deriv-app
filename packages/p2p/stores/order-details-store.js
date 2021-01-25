@@ -6,7 +6,10 @@ import { localize } from 'Components/i18next';
 import BaseStore from 'Stores/base_store';
 
 export default class OrderDetailsStore extends BaseStore {
-    @observable chat_channel_url = '';
+    constructor(root_store) {
+        this.root_store = root_store;
+    }
+
     @observable interval = null;
     @observable popup_options = {};
     @observable remaining_time;
@@ -28,22 +31,6 @@ export default class OrderDetailsStore extends BaseStore {
     }
 
     @action.bound
-    createChatForNewOrder(id) {
-        if (!this.chat_channel_url) {
-            // If order_information doesn't have chat_channel_url this is a new order
-            // and we need to instruct BE to create a chat on Sendbird's side.
-            requestWS({ p2p_chat_create: 1, order_id: id }).then(response => {
-                if (response.error) {
-                    // TODO: Handle error.
-                    return;
-                }
-
-                this.setChatChannelUrl(response.p2p_chat_create);
-            });
-        }
-    }
-
-    @action.bound
     handleShowPopup(options) {
         this.setPopupOptions(options);
         this.setShouldShowPopup(true);
@@ -52,11 +39,6 @@ export default class OrderDetailsStore extends BaseStore {
     @action.bound
     onCancelClick() {
         this.setShouldShowPopup(false);
-    }
-
-    @action.bound
-    setChatChannelUrl(chat_channel_url) {
-        this.chat_channel_url = chat_channel_url;
     }
 
     @action.bound

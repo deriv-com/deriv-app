@@ -10,6 +10,7 @@ const AccountList = ({
     currency_icon,
     display_type,
     has_balance,
+    has_error,
     has_reset_balance,
     is_disabled,
     is_virtual,
@@ -18,6 +19,8 @@ const AccountList = ({
     onClickAccount,
     onClickResetVirtualBalance,
     selected_loginid,
+    server,
+    is_dark_mode_on,
     sub_account_type,
 }) => {
     if (is_disabled && !currency) return null;
@@ -43,9 +46,21 @@ const AccountList = ({
                         {display_type === 'currency' ? (
                             <CurrencyDisplay is_virtual={is_virtual} currency={currency} />
                         ) : (
-                            <AccountDisplay market_type={market_type} sub_account_type={sub_account_type} />
+                            <AccountDisplay
+                                market_type={market_type}
+                                sub_account_type={sub_account_type}
+                                server={server}
+                                has_error={has_error}
+                                is_dark_mode_on={is_dark_mode_on}
+                            />
                         )}
-                        <div className='acc-switcher__loginid-text'>{loginid}</div>
+                        <div
+                            className={classNames('acc-switcher__loginid-text', {
+                                'acc-switcher__loginid-text--disabled': has_error,
+                            })}
+                        >
+                            {loginid}
+                        </div>
                     </span>
                     {has_reset_balance ? (
                         <Button
@@ -62,7 +77,12 @@ const AccountList = ({
                         </Button>
                     ) : (
                         has_balance && (
-                            <Text size='xs' color='prominent' className='acc-switcher__balance'>
+                            <Text
+                                size='xs'
+                                color='prominent'
+                                styles={{ fontWeight: 'inherit' }}
+                                className='acc-switcher__balance'
+                            >
                                 {currency && (
                                     <Money
                                         currency={getCurrencyDisplayCode(currency)}
@@ -90,8 +110,33 @@ const CurrencyDisplay = ({ currency, is_virtual }) => {
     return getCurrencyName(currency);
 };
 
-const AccountDisplay = ({ market_type, sub_account_type }) => (
-    <div>{getMT5AccountDisplay(market_type, sub_account_type)}</div>
-);
+const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_dark_mode_on }) => {
+    // TODO: Remove once account with error has market_type and sub_account_type in details response
+    if (has_error)
+        return (
+            <div>
+                <Text color='disabled' size='xs'>
+                    <Localize i18n_default_text='Unavailable' />
+                </Text>
+                {server?.geolocation && (
+                    <Text color='less-prominent' size='xxs' className='badge-server badge-server--disabled'>
+                        {server.geolocation.region}&nbsp;
+                        {server.geolocation.sequence !== 1 ? server.geolocation.sequence : ''}
+                    </Text>
+                )}
+            </div>
+        );
+    return (
+        <div>
+            {getMT5AccountDisplay(market_type, sub_account_type)}
+            {server?.geolocation && (
+                <Text color={is_dark_mode_on ? 'general' : 'colored-background'} size='xxs' className='badge-server'>
+                    {server.geolocation.region}&nbsp;
+                    {server.geolocation.sequence !== 1 ? server.geolocation.sequence : ''}
+                </Text>
+            )}
+        </div>
+    );
+};
 
 export default AccountList;

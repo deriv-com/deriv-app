@@ -1,12 +1,11 @@
 import { observable, action } from 'mobx';
 import { getDecimalPlaces } from '@deriv/shared';
-import { requestWS } from 'Utils/websocket';
-import { countDecimalPlaces } from 'Utils/string';
 import { localize } from 'Components/i18next';
-import { decimalValidator, lengthValidator, textValidator } from 'Utils/validations';
-import { buy_sell } from '../src/constants/buy-sell';
-import { height_constants } from 'Utils/height_constants';
+import { buy_sell } from 'Constants/buy-sell';
 import BaseStore from 'Stores/base_store';
+import { countDecimalPlaces } from 'Utils/string';
+import { decimalValidator, lengthValidator, textValidator } from 'Utils/validations';
+import { requestWS } from 'Utils/websocket';
 
 export default class MyAdsStore extends BaseStore {
     @observable adverts = [];
@@ -17,27 +16,14 @@ export default class MyAdsStore extends BaseStore {
     @observable default_advert_description = '';
     @observable error_message = '';
     @observable has_more_items_to_load = false;
-    @observable is_form_loading = false;
-    @observable is_table_loading = false;
+    @observable is_form_loading = true;
+    @observable is_table_loading = true;
     @observable is_loading = false;
     @observable item_offset = 0;
     @observable payment_info = '';
     @observable selected_ad_id = '';
     @observable should_show_popup = false;
     @observable show_ad_form = false;
-
-    height_values = [
-        height_constants.screen,
-        height_constants.core_header,
-        height_constants.page_overlay_header,
-        height_constants.page_overlay_content_padding,
-        height_constants.tabs,
-        '50px', // p2p-my-ads__header
-        '4rem', // p2p-my-ads__header: 1.6rem + 2.4rem
-        height_constants.table_header,
-        height_constants.core_footer,
-    ];
-    item_height = 56;
 
     @action.bound
     getAccountStatus() {
@@ -94,15 +80,19 @@ export default class MyAdsStore extends BaseStore {
             payment_method: 'bank_transfer', // TODO: Allow for other types of payment_method.
             rate: values.price_rate,
         };
+
         if (values.contact_info && is_sell_ad) {
             create_advert.contact_info = values.contact_info;
         }
+
         if (values.payment_info && is_sell_ad) {
             create_advert.payment_info = values.payment_info;
         }
+
         if (values.default_advert_description) {
             create_advert.description = values.default_advert_description;
         }
+
         requestWS(create_advert).then(response => {
             // If we get an error we should let the user submit the form again else we just go back to the list of ads
             if (response.error) {
@@ -146,26 +136,35 @@ export default class MyAdsStore extends BaseStore {
     };
 
     @action.bound
-    loadMoreAds = start_idx => {
-        requestWS({
-            p2p_advertiser_adverts: 1,
-            offset: start_idx,
-            limit: this.root_store.general_store.list_item_limit,
-        }).then(response => {
-            if (!response.error) {
-                const { list } = response.p2p_advertiser_adverts;
-                this.setHasMoreItemsToLoad(list.length >= this.root_store.general_store.list_item_limit);
-                this.setAdverts(this.adverts.concat(list));
-                this.setItemOffset((this.item_offset += list.length));
-            } else {
-                this.setApiTableErrorMessage(response.error.message);
-            }
-            this.setIsTableLoading(false);
+    loadMoreAds({ startIndex }, is_initial_load = false) {
+        if (is_initial_load) {
+            this.setIsTableLoading(true);
+        }
+
+        const { list_item_limit } = this.root_store.general_store;
+
+        return new Promise(resolve => {
+            requestWS({
+                p2p_advertiser_adverts: 1,
+                offset: startIndex,
+                limit: list_item_limit,
+            }).then(response => {
+                if (!response.error) {
+                    const { list } = response.p2p_advertiser_adverts;
+                    this.setHasMoreItemsToLoad(list.length >= list_item_limit);
+                    this.setAdverts(this.adverts.concat(list));
+                } else {
+                    this.setApiErrorMessage(response.error.message);
+                }
+
+                this.setIsTableLoading(false);
+                resolve();
+            });
         });
-    };
+    }
 
     @action.bound
-    restrictLength(e, handleChange) {
+    restrictLength = (e, handleChange) => {
         // typing more than 15 characters will break the layout
         // max doesn't disable typing, so we will use this to restrict length
         const max_characters = 15;
@@ -174,7 +173,7 @@ export default class MyAdsStore extends BaseStore {
             return;
         }
         handleChange(e);
-    }
+    };
 
     @action.bound
     setAdverts(adverts) {
@@ -257,7 +256,7 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    validateFormAds(values) {
+    validateCreateAdForm(values) {
         // TODO: uncomment this when we have available_price
         // const available_price = ;
         const validations = {

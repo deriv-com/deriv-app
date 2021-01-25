@@ -16,8 +16,8 @@ export default class MyAdsStore extends BaseStore {
     @observable default_advert_description = '';
     @observable error_message = '';
     @observable has_more_items_to_load = false;
-    @observable is_form_loading = false;
-    @observable is_table_loading = false;
+    @observable is_form_loading = true;
+    @observable is_table_loading = true;
     @observable is_loading = false;
     @observable item_offset = 0;
     @observable payment_info = '';
@@ -151,7 +151,11 @@ export default class MyAdsStore extends BaseStore {
     };
 
     @action.bound
-    loadMoreAds({ startIndex }) {
+    loadMoreAds({ startIndex }, is_initial_load = false) {
+        if (is_initial_load) {
+            this.setIsTableLoading(true);
+        }
+
         const { list_item_limit } = this.root_store.general_store;
 
         return new Promise(resolve => {
@@ -267,7 +271,7 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    validateFormAds(values) {
+    validateCreateAdForm(values) {
         // TODO: uncomment this when we have available_price
         // const available_price = ;
         const validations = {

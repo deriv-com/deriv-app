@@ -9,7 +9,7 @@ let client_store, common_store, gtm_store;
 
 // TODO: update commented statements to the corresponding functions from app
 const BinarySocketGeneral = (() => {
-    let session_timeout;
+    let session_timeout, session_duration_limit;
 
     const onDisconnect = () => {
         common_store.setIsSocketOpened(false);
@@ -91,11 +91,12 @@ const BinarySocketGeneral = (() => {
     const setSessionDurationLimit = user_limits => {
         const duration = user_limits?.get_self_exclusion?.session_duration_limit;
 
-        if (duration) {
+        if (duration && duration !== session_duration_limit) {
+            session_duration_limit = duration;
             session_timeout = setTimeout(() => {
                 client_store.logout();
             }, duration * 60 * 1000);
-        } else {
+        } else if (!duration) {
             clearTimeout(session_timeout);
         }
     };

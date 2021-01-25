@@ -59,6 +59,7 @@ const Tabs = ({
                 }
             }
         }
+        setActiveLineStyle();
     });
 
     const [active_tab_index, setActiveTabIndex] = React.useState(initial_index_to_show);

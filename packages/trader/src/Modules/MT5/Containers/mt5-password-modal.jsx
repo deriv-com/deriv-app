@@ -55,10 +55,7 @@ const MT5PasswordResetHint = ({ closeModal }) => {
 
     return (
         <div className='mt5-password-hint'>
-            <Text as='p' size='s' weight='bold' align='center' className='mt5-password-hint__header'>
-                <Localize i18n_default_text='Too many failed attempt' />
-            </Text>
-            <Text as='p' size='xxs' align='center' className='mt5-password-hint__description'>
+            <Text as='p' size='xs' align='left' className='mt5-password-hint__description'>
                 <Localize i18n_default_text='Unavailable because of too many failed attempts. Please try again in a minute or reset your account password to continue.' />
             </Text>
             <div className='mt5-password-hint__buttons'>
@@ -426,6 +423,8 @@ const MT5PasswordModal = ({
         );
     }
 
+    const is_password_reset_modal_on = !should_show_server_form && is_password_reset;
+
     return (
         <React.Fragment>
             <DesktopWrapper>
@@ -434,7 +433,13 @@ const MT5PasswordModal = ({
                     is_open={should_show_password}
                     toggleModal={closeModal}
                     has_close_icon
-                    is_title_blank
+                    is_title_blank={!is_password_reset_modal_on}
+                    renderTitle={() => {
+                        if (is_password_reset_modal_on) {
+                            return localize('Too many failed attempt');
+                        }
+                        return null;
+                    }}
                 >
                     {should_show_server_form && (
                         <MT5ServerForm
@@ -466,7 +471,7 @@ const MT5PasswordModal = ({
                             validatePassword={validatePassword}
                         />
                     )}
-                    {!should_show_server_form && is_password_reset && <MT5PasswordResetHint closeModal={closeModal} />}
+                    {is_password_reset_modal_on && <MT5PasswordResetHint closeModal={closeModal} />}
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>

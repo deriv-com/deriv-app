@@ -3,6 +3,10 @@
     flex-direction: column;
     justify-content: flex-start;
     max-width: 38rem;
+
+    & .dc-modal-header {
+        border-bottom: initial;
+    }
 }
 .dc-modal__container_mt5-password-modal,
 .dc-mobile-dialog__mt5-password-modal {
@@ -356,17 +360,23 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    max-width: 100%;
 
     &__header {
         margin: 0 0 2rem;
     }
     &__description {
-        padding: 0 3rem;
+        padding: 0 2.4rem;
     }
     &__buttons {
-        display: grid;
-        grid-template-columns: repeat(2, min-content);
-        grid-gap: 1rem;
-        margin: 2rem;
+        display: flex;
+        padding: 2rem;
+        width: 100%;
+        align-items: center;
+        justify-content: flex-end;
+
+        & button:first-child {
+            margin-right: 1rem;
+        }
     }
 }

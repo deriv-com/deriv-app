@@ -500,11 +500,16 @@ const MT5PasswordModal = ({
                             closeModal={closeModal}
                             handleCancel={handleCancel}
                             error_type={error_type}
+                            values={{
+                                password,
+                                server,
+                            }}
                             error_message={error_message}
-                            submitMt5Password={setPassword}
+                            submitMt5Password={v => {
+                                setPassword(v.password);
+                            }}
                             is_real_financial_stp={is_real_financial_stp}
                             should_show_server_form={should_show_server_form}
-                            validatePassword={validatePassword}
                         />
                     )}
                 </MobileDialog>

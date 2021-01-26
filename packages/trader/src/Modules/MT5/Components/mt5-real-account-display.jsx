@@ -48,7 +48,8 @@ const MT5RealAccountDisplay = ({
     trading_servers,
     can_have_more_real_synthetic_mt5,
 }) => {
-    const should_show_trade_servers = (is_logged_in ? !is_eu : !is_eu_country) && can_have_more_real_synthetic_mt5;
+    const should_show_trade_servers =
+        (is_logged_in ? !is_eu && has_real_account : !is_eu_country) && can_have_more_real_synthetic_mt5;
     const [active_hover, setActiveHover] = React.useState(0);
 
     const has_required_credentials =

@@ -83,87 +83,89 @@ const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_acco
     }
 
     return (
-        <ThemedScrollbars autohide={false} className='deactivate-account-error-scroll'>
-            {!!deriv_open_positions.length && (
-                <Wrapper title={localize('You have open positions in these Deriv accounts:')}>
-                    {deriv_open_positions.map(account => (
-                        <Content
-                            key={account.loginid}
-                            currency_icon={`IcCurrency-${account.icon}`}
-                            loginid={account.loginid}
-                            title={account.title}
-                            value={
-                                <Localize
-                                    i18n_default_text='{{number_of_positions}} position(s)'
-                                    values={{ number_of_positions: account.positions }}
-                                />
-                            }
-                        />
-                    ))}
-                </Wrapper>
-            )}
-            {!!deriv_balance.length && (
-                <Wrapper title={localize('You have funds in these Deriv accounts:')}>
-                    {deriv_balance.map(account => (
-                        <Content
-                            key={account.loginid}
-                            currency_icon={`IcCurrency-${account.icon}`}
-                            loginid={account.loginid}
-                            title={account.title}
-                            value={
-                                <Money
-                                    currency={account.currency}
-                                    amount={formatMoney(account.currency, account.balance, true)}
-                                    should_format={false}
-                                />
-                            }
-                        />
-                    ))}
-                </Wrapper>
-            )}
-            {!!mt5_open_positions.length && (
-                <Wrapper title={localize('You have open positions in these DMT5 accounts:')}>
-                    {mt5_open_positions.map(account => (
-                        <Content
-                            key={account.login}
-                            currency_icon={`IcMt5-${getMT5Account(account.market_type, account.sub_account_type)}`}
-                            loginid={account.display_login}
-                            title={getMT5AccountDisplay(account.market_type, account.sub_account_type)}
-                            value={
-                                <Localize
-                                    i18n_default_text='{{number_of_positions}} position(s)'
-                                    values={{ number_of_positions: account.positions }}
-                                />
-                            }
-                        />
-                    ))}
-                </Wrapper>
-            )}
-            {!!mt5_balance.length && (
-                <Wrapper title={localize('You have funds in these DMT5 accounts:')}>
-                    {mt5_balance.map(account => (
-                        <Content
-                            key={account.login}
-                            currency_icon={`IcMt5-${getMT5Account(account.market_type, account.sub_account_type)}`}
-                            loginid={account.display_login}
-                            title={getMT5AccountDisplay(account.market_type, account.sub_account_type)}
-                            value={
-                                <Money
-                                    currency={account.currency}
-                                    amount={formatMoney(account.currency, account.balance, true)}
-                                    should_format={false}
-                                />
-                            }
-                        />
-                    ))}
-                </Wrapper>
-            )}
+        <React.Fragment>
+            <ThemedScrollbars autohide={false}>
+                {!!deriv_open_positions.length && (
+                    <Wrapper title={localize('You have open positions in these Deriv accounts:')}>
+                        {deriv_open_positions.map(account => (
+                            <Content
+                                key={account.loginid}
+                                currency_icon={`IcCurrency-${account.icon}`}
+                                loginid={account.loginid}
+                                title={account.title}
+                                value={
+                                    <Localize
+                                        i18n_default_text='{{number_of_positions}} position(s)'
+                                        values={{ number_of_positions: account.positions }}
+                                    />
+                                }
+                            />
+                        ))}
+                    </Wrapper>
+                )}
+                {!!deriv_balance.length && (
+                    <Wrapper title={localize('You have funds in these Deriv accounts:')}>
+                        {deriv_balance.map(account => (
+                            <Content
+                                key={account.loginid}
+                                currency_icon={`IcCurrency-${account.icon}`}
+                                loginid={account.loginid}
+                                title={account.title}
+                                value={
+                                    <Money
+                                        currency={account.currency}
+                                        amount={formatMoney(account.currency, account.balance, true)}
+                                        should_format={false}
+                                    />
+                                }
+                            />
+                        ))}
+                    </Wrapper>
+                )}
+                {!!mt5_open_positions.length && (
+                    <Wrapper title={localize('You have open positions in these DMT5 accounts:')}>
+                        {mt5_open_positions.map(account => (
+                            <Content
+                                key={account.login}
+                                currency_icon={`IcMt5-${getMT5Account(account.market_type, account.sub_account_type)}`}
+                                loginid={account.display_login}
+                                title={getMT5AccountDisplay(account.market_type, account.sub_account_type)}
+                                value={
+                                    <Localize
+                                        i18n_default_text='{{number_of_positions}} position(s)'
+                                        values={{ number_of_positions: account.positions }}
+                                    />
+                                }
+                            />
+                        ))}
+                    </Wrapper>
+                )}
+                {!!mt5_balance.length && (
+                    <Wrapper title={localize('You have funds in these DMT5 accounts:')}>
+                        {mt5_balance.map(account => (
+                            <Content
+                                key={account.login}
+                                currency_icon={`IcMt5-${getMT5Account(account.market_type, account.sub_account_type)}`}
+                                loginid={account.display_login}
+                                title={getMT5AccountDisplay(account.market_type, account.sub_account_type)}
+                                value={
+                                    <Money
+                                        currency={account.currency}
+                                        amount={formatMoney(account.currency, account.balance, true)}
+                                        should_format={false}
+                                    />
+                                }
+                            />
+                        ))}
+                    </Wrapper>
+                )}
+            </ThemedScrollbars>
             <div>
                 <Button className='deactivate-account-error__button' primary onClick={onBackClick}>
                     {localize('OK')}
                 </Button>
             </div>
-        </ThemedScrollbars>
+        </React.Fragment>
     );
 };
 

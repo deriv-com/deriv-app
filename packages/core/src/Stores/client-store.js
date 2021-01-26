@@ -341,7 +341,9 @@ export default class ClientStore extends BaseStore {
             (acc, cur) => (cur.supported_accounts.includes('gaming') && !cur.disabled ? acc + 1 : acc),
             0
         );
-        return number_of_current_added_synthetics < number_of_available_synthetic;
+        return (
+            number_of_current_added_synthetics > 0 && number_of_current_added_synthetics < number_of_available_synthetic
+        );
     }
 
     @computed

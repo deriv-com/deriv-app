@@ -486,9 +486,6 @@
     @include desktop {
         height: 100%;
     }
-    @include mobile {
-        height: 44rem;
-    }
 
     &__wrapper {
         --mt5-card-wrapper-grid: 1fr;

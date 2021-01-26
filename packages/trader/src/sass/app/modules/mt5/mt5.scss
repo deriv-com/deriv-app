@@ -79,12 +79,10 @@
     }
     & .dc-password-meter__container {
         flex-grow: 0;
-        width: 30rem;
         margin: auto;
 
         @include mobile {
             width: calc(100vw - 4.8rem);
-            max-width: 30rem;
         }
     }
     & .mt5-password-field {
@@ -92,7 +90,7 @@
         width: 80%;
     }
     &__hint {
-        margin: 0 2.4rem 2.4rem;
+        margin: 0 0 2.4rem;
     }
     .input-element {
         width: 100%;

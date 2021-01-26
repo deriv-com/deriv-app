@@ -112,6 +112,11 @@ const MT5PasswordForm = props => {
                 isSubmitting,
             }) => (
                 <form onSubmit={handleSubmit}>
+                    {isMobile() && (
+                        <h2>
+                            <Localize i18n_default_text='Confirm your password' />
+                        </h2>
+                    )}
                     <div className='mt5-password-modal__content'>
                         <div className='dc-modal__container_mt5-password-modal__body'>
                             <div className='input-element'>
@@ -145,7 +150,7 @@ const MT5PasswordForm = props => {
                             <Text
                                 as='p'
                                 align='left'
-                                size='xxs'
+                                size='xs'
                                 className='dc-modal__container_mt5-password-modal__hint'
                             >
                                 <Localize

@@ -990,7 +990,6 @@
             &__description {
                 @include typeface(--small-left-normal-black);
                 line-height: 1.5;
-                max-width: 300px;
                 color: var(--text-less-prominent);
             }
         }

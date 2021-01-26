@@ -55,6 +55,7 @@ const getRowAction = row_obj => {
 
 const Statement = ({
     account_statistics,
+    action_type,
     component_icon,
     currency,
     data,
@@ -115,6 +116,7 @@ const Statement = ({
                 className={is_mx_mlt ? undefined : 'reports__meta--statement'}
                 filter_component={
                     <FilterComponent
+                        action_type={action_type}
                         date_from={date_from}
                         date_to={date_to}
                         handleDateChange={handleDateChange}
@@ -180,6 +182,7 @@ const Statement = ({
 };
 
 Statement.propTypes = {
+    action_type: PropTypes.string,
     account_statistics: PropTypes.object,
     component_icon: PropTypes.string,
     currency: PropTypes.string,
@@ -201,6 +204,7 @@ Statement.propTypes = {
 };
 
 export default connect(({ modules, client }) => ({
+    action_type: modules.statement.action_type,
     account_statistics: modules.statement.account_statistics,
     currency: client.currency,
     data: modules.statement.data,

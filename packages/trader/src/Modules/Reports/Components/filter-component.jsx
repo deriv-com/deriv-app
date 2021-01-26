@@ -5,8 +5,8 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
 
-const TransactionFilter = ({ handleFilterChange }) => {
-    const [default_filter, setDefaultFilter] = React.useState('all');
+const TransactionFilter = ({ action_type, handleFilterChange }) => {
+    const [default_filter, setDefaultFilter] = React.useState(action_type);
 
     const filter_list = [
         {
@@ -48,7 +48,14 @@ const TransactionFilter = ({ handleFilterChange }) => {
     );
 };
 
-const FilterComponent = ({ date_from, date_to, handleFilterChange, handleDateChange, filtered_date_range }) => {
+const FilterComponent = ({
+    action_type,
+    date_from,
+    date_to,
+    handleFilterChange,
+    handleDateChange,
+    filtered_date_range,
+}) => {
     return (
         <React.Fragment>
             <CompositeCalendar
@@ -57,12 +64,13 @@ const FilterComponent = ({ date_from, date_to, handleFilterChange, handleDateCha
                 from={date_from}
                 to={date_to}
             />
-            <TransactionFilter handleFilterChange={handleFilterChange} />
+            <TransactionFilter action_type={action_type} handleFilterChange={handleFilterChange} />
         </React.Fragment>
     );
 };
 
 FilterComponent.propTypes = {
+    action_type: PropTypes.string,
     date_from: PropTypes.number,
     date_to: PropTypes.number,
     filtered_date_range: PropTypes.object,
@@ -72,6 +80,7 @@ FilterComponent.propTypes = {
 };
 
 export default connect(({ modules }) => ({
+    action_type: modules.statement.action_type,
     data: modules.statement.data,
     date_from: modules.statement.date_from,
     date_to: modules.statement.date_to,

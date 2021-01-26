@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import React from 'react';
-import { PlatformContext, isMobile } from '@deriv/shared';
 import { Route, Switch } from 'react-router-dom';
 import { usePrevious } from '../../hooks';
 import Icon from '../icon/icon.jsx';
@@ -74,6 +73,7 @@ const Content = ({ is_routed, items, selected }) => {
 const VerticalTabContentContainer = ({
     action_bar,
     action_bar_classname,
+    className,
     id,
     is_floating,
     is_routed,
@@ -81,12 +81,11 @@ const VerticalTabContentContainer = ({
     selected,
     tab_container_classname,
 }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
     return (
         <div
             className={classNames('dc-vertical-tab__content', {
                 'dc-vertical-tab__content--floating': is_floating,
-                'dc-vertical-tab__content--dashboard': is_dashboard && !isMobile(),
+                [`dc-vertical-tab__content--${className}`]: className,
             })}
         >
             {!is_floating && action_bar && (

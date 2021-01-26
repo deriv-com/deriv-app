@@ -125,6 +125,7 @@ const Account = ({
                         is_collapsible={false}
                         is_grid
                         is_floating
+                        className='dashboard'
                         classNameHeader='account__inset_header'
                         current_path={location.pathname}
                         is_routed

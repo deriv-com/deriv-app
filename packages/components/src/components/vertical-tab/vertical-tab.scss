@@ -102,10 +102,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 position: sticky;
                 top: calc(2.4rem + 41px); // 41px for the header of PageOverlay
             }
-            &--dashboard {
-                padding-top: 3.5rem;
-                top: unset;
-            }
         }
         &-bottom-note {
             position: sticky;
@@ -250,26 +246,6 @@ $MIN_HEIGHT_FLOATING: calc(
             max-width: 952px;
             min-width: 672px;
             margin-left: 2.4rem;
-        }
-        &--dashboard {
-            & .dc-btn--primary,
-            & .dc-checkbox__box--active {
-                background: var(--brand-apple-blue);
-            }
-            & .dc-btn--primary:hover {
-                background: var(--brand-apple-blue);
-            }
-
-            margin: 2rem 0 0 7rem;
-
-            width: fit-content;
-            max-width: calc(100vw - 33rem);
-            & > div {
-                height: calc(100vh - 14.5rem);
-            }
-            & .proof-of-identity {
-                width: calc(100vw - 33rem);
-            }
         }
     }
 }

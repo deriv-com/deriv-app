@@ -23,9 +23,7 @@ const BinarySocketGeneral = (() => {
                 return;
             }
             WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus);
-            ServerTime.init(() => {
-                common_store.setServerTime(ServerTime.get());
-            });
+            ServerTime.init(() => common_store.setServerTime(ServerTime.get()));
             common_store.setIsSocketOpened(true);
         }
     };

@@ -361,12 +361,18 @@
     justify-content: flex-start;
     align-items: center;
     max-width: 100%;
+    @include mobile {
+        height: 100%;
+    }
 
     &__header {
         margin: 0 0 2rem;
     }
     &__description {
         padding: 0 2.4rem;
+        @include mobile {
+            height: 100%;
+        }
     }
     &__buttons {
         display: flex;

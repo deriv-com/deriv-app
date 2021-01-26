@@ -512,6 +512,14 @@ const MT5PasswordModal = ({
                             should_show_server_form={should_show_server_form}
                         />
                     )}
+                    {is_password_reset_modal_on && (
+                        <React.Fragment>
+                            <h2 className='mt5-password-modal__title'>
+                                <Localize i18n_default_text='Too many failed attempt' />
+                            </h2>
+                            <MT5PasswordResetHint closeModal={closeModal} />
+                        </React.Fragment>
+                    )}
                 </MobileDialog>
             </MobileWrapper>
             <SuccessDialog

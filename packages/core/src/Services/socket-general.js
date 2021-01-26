@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { flow } from 'mobx';
 import { State, getActivePlatform, getPropertyValue, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -9,8 +10,10 @@ let client_store, common_store, gtm_store;
 
 // TODO: update commented statements to the corresponding functions from app
 const BinarySocketGeneral = (() => {
-    let session_start_time = sessionStorage.getItem('session_start_time');
+    let session_start_time; // = sessionStorage.getItem('session_start_time') || ServerTime.get();
     let session_timeout, session_duration_limit;
+
+    // session_start_time = session_start_time ? session_start_time : ServerTime.get();
 
     const onDisconnect = () => {
         common_store.setIsSocketOpened(false);
@@ -23,7 +26,9 @@ const BinarySocketGeneral = (() => {
                 return;
             }
             WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus);
-            ServerTime.init(() => common_store.setServerTime(ServerTime.get()));
+            ServerTime.init(() => {
+                common_store.setServerTime(ServerTime.get());
+            });
             common_store.setIsSocketOpened(true);
         }
     };
@@ -92,15 +97,34 @@ const BinarySocketGeneral = (() => {
     const setSessionDurationLimit = user_limits => {
         const duration = user_limits?.get_self_exclusion?.session_duration_limit;
 
+        session_start_time = new Date(sessionStorage.getItem('session_start_time') || ServerTime.get());
+
+        console.log('BinarySocketGeneral');
+        // console.log(sessionStorage.getItem('session_start_time'));
+        // console.log(ServerTime.get());
+        console.log(session_start_time);
+
+        sessionStorage.setItem('session_start_time', session_start_time);
+
         if (duration && duration !== session_duration_limit) {
-            console.log('SET TIMEOUT');
-            console.log(session_start_time);
+            // console.log('SET TIMEOUT');
+            // console.log(moment(session_start_time));
+            const current_session_duration = ServerTime.get() - moment(session_start_time);
+            const remaining_session_duration =
+                session_duration_limit && duration > session_duration_limit
+                    ? session_duration_limit * 60 * 1000 - current_session_duration
+                    : duration * 60 * 1000 - current_session_duration;
+            // console.log('');
+            // console.warn('current_session_duration');
+            // console.log(current_session_duration);
+            // console.warn('remaining_session_duration');
+            // console.log(remaining_session_duration);
+            // console.log('');
             session_duration_limit = duration;
             session_timeout = setTimeout(() => {
                 client_store.logout();
-            }, duration * 60 * 1000);
-            session_start_time = ServerTime.get();
-            sessionStorage.setItem('session_start_time', session_start_time);
+                sessionStorage.removeItem('session_start_time');
+            }, remaining_session_duration);
         } else if (!duration) {
             clearTimeout(session_timeout);
         }

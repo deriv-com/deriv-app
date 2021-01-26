@@ -914,6 +914,11 @@ export default class ClientStore extends BaseStore {
         );
     };
 
+    isAccountOfTypeDisabled = type => {
+        const filtered_list = this.account_list.filter(acc => getClientAccountType(acc.loginid) === type);
+        return filtered_list.length > 0 && filtered_list.every(acc => acc.is_disabled);
+    };
+
     getRiskAssessment = () => {
         if (!this.account_status) return false;
 

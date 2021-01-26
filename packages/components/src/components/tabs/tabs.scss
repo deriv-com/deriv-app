@@ -2,6 +2,9 @@
     position: relative;
     display: grid;
 
+    @include mobile {
+        display: block;
+    }
     &--top {
         grid-template-rows: auto 1fr;
     }

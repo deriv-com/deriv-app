@@ -231,7 +231,7 @@ const MainPasswordManager = ({ status }) => {
                     />
                 )}
                 {is_existing_user && (
-                    <Localize i18n_default_text='We’ve upgraded our system to support a single, more secure password across all of Deriv/Binary.com. Once you’ve set a new password, you can use it to log into all your Deriv/Binary.com, and DMT5/MT5 accounts.' />
+                    <Localize i18n_default_text='We’ve upgraded our system to support a single, more secure password across Deriv. Once you’ve set a new password, you can use it to log into all your Deriv and DMT5 accounts.' />
                 )}
             </Text>
             {!is_existing_user && (

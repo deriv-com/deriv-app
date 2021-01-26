@@ -99,6 +99,7 @@ const BinarySocketGeneral = (() => {
             const current_session_duration = ServerTime.get() - moment(session_start_time);
             const remaining_session_time = duration * 60 * 1000 - current_session_duration;
             session_duration_limit = duration;
+            clearTimeout(session_timeout);
             session_timeout = setTimeout(() => {
                 client_store.logout();
                 sessionStorage.removeItem('session_start_time');

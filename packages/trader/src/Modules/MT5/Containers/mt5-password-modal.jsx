@@ -113,9 +113,6 @@ const MT5PasswordForm = props => {
             }) => (
                 <form onSubmit={handleSubmit}>
                     <div className='mt5-password-modal__content'>
-                        <h2 className='mt5-password-modal__title'>
-                            <Localize i18n_default_text='Confirm your password' />
-                        </h2>
                         <div className='dc-modal__container_mt5-password-modal__body'>
                             <div className='input-element'>
                                 <PasswordMeter
@@ -147,7 +144,7 @@ const MT5PasswordForm = props => {
                             </div>
                             <Text
                                 as='p'
-                                align='center'
+                                align='left'
                                 size='xxs'
                                 className='dc-modal__container_mt5-password-modal__hint'
                             >
@@ -362,6 +359,8 @@ const MT5PasswordModal = ({
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
     const is_real_synthetic = [account_type.category, account_type.type].join('_') === 'real_synthetic';
     const should_show_server_form = (is_logged_in ? !is_eu : !is_eu_country) && is_real_synthetic && !server;
+    const is_password_reset_modal_on = !should_show_server_form && is_password_reset;
+    const should_show_password_form = !should_show_server_form && !is_password_reset;
 
     // TODO handle submitting password without server in a better way
     React.useEffect(() => {
@@ -423,8 +422,6 @@ const MT5PasswordModal = ({
         );
     }
 
-    const is_password_reset_modal_on = !should_show_server_form && is_password_reset;
-
     return (
         <React.Fragment>
             <DesktopWrapper>
@@ -432,12 +429,13 @@ const MT5PasswordModal = ({
                     className={is_password_reset ? 'mt5-password-reset-modal' : 'mt5-password-modal'}
                     is_open={should_show_password}
                     toggleModal={closeModal}
-                    has_close_icon
-                    is_title_blank={!is_password_reset_modal_on}
                     renderTitle={() => {
                         if (is_password_reset_modal_on) {
                             return localize('Too many failed attempt');
+                        } else if (should_show_password_form) {
+                            return localize('Confirm your password');
                         }
+
                         return null;
                     }}
                 >
@@ -450,7 +448,7 @@ const MT5PasswordModal = ({
                             onBack={closeModal}
                         />
                     )}
-                    {!should_show_server_form && !is_password_reset && (
+                    {should_show_password_form && (
                         <MT5PasswordForm
                             resetFormErrors={resetFormErrors}
                             is_submitting={is_submitting}

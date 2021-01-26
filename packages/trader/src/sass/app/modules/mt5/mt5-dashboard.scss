@@ -1303,7 +1303,12 @@
         @include typeface(--paragraph-center-bold-active);
     }
     &__body {
-        padding: 0 2.4rem 3.4rem;
+        @include desktop {
+            padding: 0 2.4rem 3.4rem;
+        }
+        @include mobile {
+            padding: 2.4rem;
+        }
         flex-direction: column;
         display: flex;
         align-items: center;

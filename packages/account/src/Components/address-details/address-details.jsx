@@ -96,7 +96,11 @@ const AddressDetails = ({
                 <AutoHeightWrapper default_height={350} height_offset={isDesktop() ? 80 : null}>
                     {({ setRef, height }) => (
                         <form ref={setRef} onSubmit={handleSubmit}>
-                            <Div100vhContainer className='details-form' height_offset='110px' is_disabled={isDesktop()}>
+                            <Div100vhContainer
+                                className='details-form'
+                                height_offset={is_dashboard ? '242px' : '110px'}
+                                is_disabled={isDesktop()}
+                            >
                                 {!is_dashboard && (
                                     <Text
                                         as='p'

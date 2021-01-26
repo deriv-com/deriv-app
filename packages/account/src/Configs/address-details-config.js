@@ -92,7 +92,6 @@ const addressDetailsConfig = (
                 transformConfig(transformForResidence(config, residence), real_account_signup_target)
             ),
             is_svg,
-            is_dashboard,
         },
         passthrough: ['residence_list', 'is_fully_authenticated'],
         icon: 'IcDashboardAddress',

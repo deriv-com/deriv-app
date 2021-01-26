@@ -223,6 +223,7 @@ const AccountWizard: React.FC<TAccountWizard> = observer((props: TAccountWizard)
                 form_error={form_error}
                 {...passthrough}
                 key={step_index}
+                is_dashboard
             />
         );
     });

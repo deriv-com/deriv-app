@@ -80,8 +80,14 @@
             flex: 1;
         }
     }
-    .dc-form-submit-button--has-cancel {
-        justify-content: space-between;
+    .dc-form-submit-button {
+        &--has-cancel {
+            justify-content: space-between;
+        }
+        &--absolute {
+            padding: 0.8rem 1.6rem;
+            bottom: 0rem;
+        }
     }
 
     .details-form {
@@ -95,32 +101,39 @@
             }
         }
 
-        .dc-input {
-            @include desktop {
-                min-width: 328px;
+        &__elements {
+            .dc-input {
+                @include desktop {
+                    min-width: 328px;
 
-                &__label {
-                    left: 1.6rem;
-                    top: 1.6rem;
-                }
-                &__field {
-                    padding: 1.6rem;
-                    height: unset;
+                    &__label {
+                        left: 1.6rem;
+                        top: 1.6rem;
+                    }
+                    &__field {
+                        padding: 1.6rem;
+                        height: unset;
 
-                    /* Not empty fields */
-                    &:focus,
-                    &:disabled,
-                    &:not(:focus):not([value='']) {
-                        & ~ label {
-                            transform: translate(-0.5rem, -2.4rem) scale(0.75);
+                        /* Not empty fields */
+                        &:focus,
+                        &:disabled,
+                        &:not(:focus):not([value='']) {
+                            & ~ label {
+                                transform: translate(-0.5rem, -2.4rem) scale(0.75);
+                            }
                         }
                     }
                 }
-            }
 
-            @include mobile {
-                .label {
-                    background-color: white;
+                @include mobile {
+                    label {
+                        background-color: var(--fill-normal);
+                    }
+                }
+            }
+            .dc-select-native__placeholder {
+                @include mobile {
+                    background-color: var(--fill-normal);
                 }
             }
         }
@@ -133,6 +146,11 @@
             .dc-field--error {
                 top: 5.5rem;
             }
+        }
+    }
+    .terms-of-use {
+        @include mobile {
+            padding: 0;
         }
     }
 }

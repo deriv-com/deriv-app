@@ -22,6 +22,7 @@ const TermsOfUse = ({
     onSubmit,
     value,
     real_account_signup_target,
+    is_dashboard,
     ...props
 }) => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
@@ -45,7 +46,7 @@ const TermsOfUse = ({
                             <ThemedScrollbars is_bypassed={isMobile()} height={height - 72}>
                                 <Div100vhContainer
                                     className='terms-of-use'
-                                    height_offset='110px'
+                                    height_offset={is_dashboard ? '242px' : '110px'}
                                     is_disabled={isDesktop()}
                                 >
                                     <BrokerSpecificMessage target={real_account_signup_target} />

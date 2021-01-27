@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Text } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 
@@ -39,6 +39,7 @@ const calculateTimeLeft = remaining_time_to_open => {
               days: Math.floor(difference / (1000 * 60 * 60 * 24)),
               hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
               minutes: Math.floor((difference / 1000 / 60) % 60),
+              seconds: Math.floor((difference / 1000) % 60),
           }
         : {};
 };
@@ -46,7 +47,6 @@ const calculateTimeLeft = remaining_time_to_open => {
 const MarketCountdownTimer = ({
     is_main_page,
     is_market_close_overlay_loading,
-    setActiveSymbols,
     setMarketCloseOverlayLoading,
     symbol,
 }) => {
@@ -91,10 +91,9 @@ const MarketCountdownTimer = ({
     React.useEffect(() => {
         let timer;
         if (when_market_opens?.remaining_time_to_open) {
-            timer = setTimeout(async () => {
+            timer = setTimeout(() => {
                 setTimeLeft(calculateTimeLeft(when_market_opens.remaining_time_to_open));
-                if (when_market_opens.remaining_time_to_open <= 1 && typeof setActiveSymbols === 'function')
-                    await setActiveSymbols();
+                if (when_market_opens.remaining_time_to_open <= 1) setMarketCloseOverlayLoading(true);
             }, 1000);
         }
         return () => {
@@ -106,24 +105,12 @@ const MarketCountdownTimer = ({
 
     let timer_components = '';
 
-    Object.keys(time_left).forEach(interval => {
-        if (interval === 'days') {
-            if (time_left.days) {
-                const days_text = time_left.days > 1 ? 'days' : 'day';
-                timer_components += `${time_left.days} ${localize('{{days_text}}', { days_text })}`;
-            }
-        } else if (time_left[interval] !== 0) {
-            const value = time_left[interval];
-            timer_components +=
-                interval === 'hours'
-                    ? `${time_left.days ? ', ' : ''}${value} ${localize('{{hrs}}', {
-                          hrs: time_left.hours > 1 ? 'hrs' : 'hr',
-                      })}`
-                    : ` ${localize('and')} ${value} ${localize('{{mins}}', {
-                          mins: time_left.minutes > 1 ? 'mins' : 'min',
-                      })}`;
-        }
-    });
+    if (Object.keys(time_left).length) {
+        const hours = (time_left.days * 24 + time_left.hours).toString().padStart(2, '0');
+        const minutes = time_left.minutes.toString().padStart(2, '0');
+        const seconds = time_left.seconds.toString().padStart(2, '0');
+        timer_components = `${hours}:${minutes}:${seconds}`;
+    }
 
     if (!(when_market_opens && timer_components)) return null;
 
@@ -207,14 +194,12 @@ const MarketCountdownTimer = ({
 MarketCountdownTimer.propTypes = {
     is_main_page: PropTypes.bool,
     is_market_close_overlay_loading: PropTypes.bool,
-    setActiveSymbols: PropTypes.func,
     setMarketCloseOverlayLoading: PropTypes.func,
     symbol: PropTypes.string.isRequired,
 };
 
 export default connect(({ modules }) => ({
     is_market_close_overlay_loading: modules.trade.is_market_close_overlay_loading,
-    setActiveSymbols: modules.trade.setActiveSymbols,
     setMarketCloseOverlayLoading: modules.trade.setMarketCloseOverlayLoading,
     symbol: modules.trade.symbol,
 }))(MarketCountdownTimer);

@@ -195,7 +195,7 @@ const MT5ServerForm = ({ ...props }) => {
                 };
             })
             .sort((a, b) => (a.recommended ? a : b));
-    }, [props.trading_servers]);
+    }, [props.mt5_login_list, props.trading_servers]);
 
     return (
         <Formik

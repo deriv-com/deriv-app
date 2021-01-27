@@ -84,6 +84,8 @@ export default class MyProfileStore extends BaseStore {
         }).then(response => {
             if (response.error) {
                 this.setFormError(response.error.message);
+            } else {
+                this.root_store.general_store.setShouldShowRealName(true);
             }
         });
     };

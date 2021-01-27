@@ -20,11 +20,11 @@ const Header = ({
     return (
         <React.Fragment>
             <DesktopWrapper>
-                <div className='dc-popup__header'>
+                <div className='dc-popup-header'>
                     <Text size='s' as='p' styles={{ color: text_color }}>
                         {title}
                     </Text>
-                    <div className='dc-popup__header--content'>
+                    <div className='dc-popup-header__content'>
                         <Text size='m' weight='bold' styles={{ color: text_color }}>
                             {balance}
                         </Text>
@@ -32,16 +32,16 @@ const Header = ({
                             <Button
                                 rounded
                                 primary
-                                className='dc-popup__header__button'
+                                className='dc-popup-header__button'
                                 icon={<Icon icon='IcPlay' size={10} color='active' />}
                                 text={button_text}
                                 onClick={onButtonClick}
                             />
                         )}
-                        {header_icon && <Icon icon={header_icon} size={120} className='dc-popup__header__icon' />}
+                        {header_icon && <Icon icon={header_icon} size={120} className='dc-popup-header__icon' />}
                     </div>
                     {banner_text && (
-                        <div className='dc-popup__header--banner'>
+                        <div className='dc-popup-header__banner'>
                             <Text size='xxxs' weight='bold' color='--text-prominent'>
                                 {banner_text}
                             </Text>
@@ -50,22 +50,22 @@ const Header = ({
                 </div>
             </DesktopWrapper>
             <MobileWrapper>
-                <div className='dc-popup__header'>
-                    <div className='dc-popup__header--title'>
+                <div className='dc-popup-header'>
+                    <div className='dc-popup-header--title'>
                         <Text size='xs' styles={{ color: text_color, display: 'flex', alignItems: 'center' }}>
                             {title}
                             {banner_text && (
-                                <div className='dc-popup__header--banner'>
+                                <div className='dc-popup-header__banner'>
                                     <Text size='xxxxs'>{banner_text}</Text>
                                 </div>
                             )}
-                            {header_icon && <Icon icon={header_icon} size={90} className='dc-popup__header__icon' />}
+                            {header_icon && <Icon icon={header_icon} size={90} className='dc-popup-header__icon' />}
                         </Text>
-                        <div onClick={togglePopupModal} className='dc-popup__header--close-icon'>
+                        <div onClick={togglePopupModal} className='dc-popup-header--close-icon'>
                             <Icon icon='IcCross' color={close_icon_color} />
                         </div>
                     </div>
-                    <div className='dc-popup__header--content'>
+                    <div className='dc-popup-header__content'>
                         <Text size='xsm' weight='bold' styles={{ color: text_color }}>
                             {balance}
                         </Text>
@@ -73,7 +73,7 @@ const Header = ({
                             <Button
                                 primary
                                 is_circle
-                                className='dc-popup__header__button'
+                                className='dc-popup-header__button'
                                 icon={<Icon icon='IcPlay' size={10} color='active' />}
                                 onClick={onButtonClick}
                             />

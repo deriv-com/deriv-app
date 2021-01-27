@@ -1,5 +1,5 @@
 .dc-popup {
-    &__header {
+    &-header {
         padding: 0;
 
         &--close-icon {
@@ -19,7 +19,7 @@
             }
         }
 
-        &--content {
+        &__content {
             display: flex;
             align-items: center;
         }
@@ -43,7 +43,7 @@
             }
         }
 
-        &--banner {
+        &__banner {
             background-color: var(--status-warning);
             border-radius: 100px;
             padding: 0.4rem 0.8rem;
@@ -58,11 +58,11 @@
             }
         }
     }
-    &__body {
+    &-body {
         padding: 0 !important;
     }
 
-    &__footer {
+    &-footer {
         display: flex;
         justify-content: flex-end;
         padding: 1.6rem;

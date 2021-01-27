@@ -72,7 +72,7 @@ const Popup = ({
                     toggleModal={togglePopupModal}
                     width='776px'
                 >
-                    <Modal.Body className='dc-popup__body'>
+                    <Modal.Body className='dc-popup-body'>
                         <Body
                             active_tab_icon_color={active_tab_icon_color}
                             background_color={header_backgound_color}

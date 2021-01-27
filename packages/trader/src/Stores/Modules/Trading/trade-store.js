@@ -386,6 +386,7 @@ export default class TradeStore extends BaseStore {
         if (name === 'symbol' && value) {
             // set trade params skeleton and chart loader to true until processNewValuesAsync resolves
             this.setChartStatus(true);
+            this.setMarketCloseOverlayLoading(true);
             this.is_trade_enabled = false;
             // this.root_store.modules.contract_trade.contracts = [];
             // TODO: Clear the contracts in contract-trade-store

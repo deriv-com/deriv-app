@@ -66,6 +66,7 @@ export default class ClientStore extends BaseStore {
     @observable upgradeable_landing_companies = [];
     @observable mt5_login_list = [];
     @observable mt5_login_list_error = null;
+    @observable mt5_disabled_signup_types = { real: false, demo: false };
     @observable statement = [];
     @observable obj_total_balance = {
         amount_real: undefined,
@@ -90,6 +91,8 @@ export default class ClientStore extends BaseStore {
     @observable has_cookie_account = false;
 
     @observable financial_assessment = null;
+
+    @observable trading_servers = [];
 
     is_mt5_account_list_updated = false;
 
@@ -317,6 +320,28 @@ export default class ClientStore extends BaseStore {
     @computed
     get has_mt5_login() {
         return this.mt5_login_list.length > 0;
+    }
+
+    @computed
+    get has_account_error_in_mt5_list() {
+        if (!this.is_logged_in) return false;
+        return this.mt5_login_list?.some(account => !!account.has_error);
+    }
+
+    @computed
+    get can_have_more_real_synthetic_mt5() {
+        const number_of_current_added_synthetics = this.mt5_login_list.reduce((acc, cur) => {
+            const is_included =
+                cur.account_type === 'real' &&
+                cur.market_type === 'gaming' &&
+                this.trading_servers.some(server => server.id === cur.server);
+            return is_included ? acc + 1 : acc;
+        }, 0);
+        const number_of_available_synthetic = this.trading_servers.reduce(
+            (acc, cur) => (cur.supported_accounts.includes('gaming') && !cur.disabled ? acc + 1 : acc),
+            0
+        );
+        return number_of_current_added_synthetics < number_of_available_synthetic;
     }
 
     @computed
@@ -601,6 +626,12 @@ export default class ClientStore extends BaseStore {
             can_upgrade_to,
             can_open_multi,
         };
+    }
+
+    @action.bound
+    setMT5DisabledSignupTypes(disabled_types_obj) {
+        const current_list = this.mt5_disabled_signup_types;
+        this.mt5_disabled_signup_types = { current_list, ...disabled_types_obj };
     }
 
     @action.bound
@@ -1036,6 +1067,7 @@ export default class ClientStore extends BaseStore {
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
             WS.storage.mt5LoginList().then(this.responseMt5LoginList);
+            WS.tradingServers().then(this.responseTradingServers);
             this.responseStatement(
                 await BinarySocket.send({
                     statement: 1,
@@ -1585,7 +1617,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setDeviceData() {
         // Set client URL params on init
-        const affiliate_token = Cookies.getJSON('affiliate_tracking')
+        const affiliate_token = Cookies.getJSON('affiliate_tracking');
         const date_first_contact_cookie = setDeviceDataCookie(
             'date_first_contact',
             this.root_store.common.server_time.format('YYYY-MM-DD')
@@ -1616,7 +1648,7 @@ export default class ClientStore extends BaseStore {
         });
 
         const device_data = createDeviceDataObject(cookies);
-        this.device_data = { ...this.device_data, ...device_data, affiliate_token};
+        this.device_data = { ...this.device_data, ...device_data, affiliate_token };
     }
 
     @action.bound
@@ -1754,6 +1786,15 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    responseTradingServers(response) {
+        if (response.error) {
+            this.trading_servers = [];
+            return;
+        }
+        this.trading_servers = response.trading_servers;
+    }
+
+    @action.bound
     responseMt5LoginList(response) {
         this.is_populating_mt5_account_list = false;
         this.is_mt5_account_list_updated = true;
@@ -1768,10 +1809,29 @@ export default class ClientStore extends BaseStore {
         }, 60000);
 
         if (!response.error) {
-            this.mt5_login_list = response.mt5_login_list.map(account => ({
-                ...account,
-                display_login: account.login.replace(/^(MT[DR]?)/i, ''),
-            }));
+            this.mt5_login_list = response.mt5_login_list.map(account => {
+                const display_login = (account.error ? account.error.details.login : account.login).replace(
+                    /^(MT[DR]?)/i,
+                    ''
+                );
+                if (account.error) {
+                    const { account_type, server } = account.error.details;
+                    this.setMT5DisabledSignupTypes({
+                        real: account_type === 'real',
+                        demo: account_type === 'demo',
+                    });
+                    return {
+                        account_type,
+                        display_login,
+                        has_error: true,
+                        server,
+                    };
+                }
+                return {
+                    ...account,
+                    display_login,
+                };
+            });
         } else {
             this.mt5_login_list_error = response.error;
         }

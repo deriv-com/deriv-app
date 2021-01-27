@@ -96,9 +96,8 @@ const BinarySocketGeneral = (() => {
         sessionStorage.setItem('session_start_time', session_start_time);
 
         if (duration && duration !== session_duration_limit) {
-            const current_session_duration = ServerTime.get() - moment(session_start_time);
+            const current_session_duration = session_duration_limit ? ServerTime.get() - moment(session_start_time) : 0;
             const remaining_session_time = duration * 60 * 1000 - current_session_duration;
-            session_duration_limit = duration;
             clearTimeout(session_timeout);
             session_timeout = setTimeout(() => {
                 client_store.logout();
@@ -107,6 +106,8 @@ const BinarySocketGeneral = (() => {
         } else if (!duration) {
             clearTimeout(session_timeout);
         }
+
+        session_duration_limit = duration;
     };
 
     const setBalanceActiveAccount = flow(function* (obj_balance) {

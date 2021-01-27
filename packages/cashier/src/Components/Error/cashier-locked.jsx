@@ -9,7 +9,9 @@ const CashierLocked = () => {
             <Text as='h2' weight='bold' align='center' className='cashier-locked__title'>
                 {localize('Cashier is locked')}
             </Text>
-            <p className='cashier-locked__desc'>{localize('Please check your email for details')}</p>
+            <Text as='p' size='xs' align='center' className='cashier-locked__desc'>
+                {localize('Please check your email for details')}
+            </Text>
         </div>
     );
 };

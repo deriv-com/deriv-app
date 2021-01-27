@@ -2,7 +2,7 @@
     &-header {
         padding: 0;
 
-        &--close-icon {
+        &__close-icon {
             position: absolute;
             right: 2%;
 
@@ -11,7 +11,7 @@
             }
         }
 
-        &--title {
+        &__title {
             @include mobile {
                 display: flex;
                 flex-direction: row;
@@ -70,7 +70,7 @@
         width: 100%;
         bottom: 0;
 
-        &--separator {
+        &__separator {
             border-top: 2px solid var(--general-section-1);
         }
     }

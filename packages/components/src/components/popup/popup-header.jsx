@@ -51,7 +51,7 @@ const Header = ({
             </DesktopWrapper>
             <MobileWrapper>
                 <div className='dc-popup-header'>
-                    <div className='dc-popup-header--title'>
+                    <div className='dc-popup-header__title'>
                         <Text size='xs' styles={{ color: text_color, display: 'flex', alignItems: 'center' }}>
                             {title}
                             {banner_text && (
@@ -61,7 +61,7 @@ const Header = ({
                             )}
                             {header_icon && <Icon icon={header_icon} size={90} className='dc-popup-header__icon' />}
                         </Text>
-                        <div onClick={togglePopupModal} className='dc-popup-header--close-icon'>
+                        <div onClick={togglePopupModal} className='dc-popup-header__close-icon'>
                             <Icon icon='IcCross' color={close_icon_color} />
                         </div>
                     </div>

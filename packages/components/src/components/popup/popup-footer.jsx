@@ -6,7 +6,7 @@ const Footer = ({ children, className, has_separator }) => {
     return (
         <div
             className={classNames('dc-popup-footer', {
-                'dc-popup-footer--separator': has_separator,
+                'dc-popup-footer__separator': has_separator,
                 className,
             })}
         >

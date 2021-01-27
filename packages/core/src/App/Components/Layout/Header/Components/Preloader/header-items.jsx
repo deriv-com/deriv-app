@@ -15,8 +15,8 @@ const HeaderItemsLoader = ({ speed }) => (
             <circle cx='355' cy='65' r='42' />
         </DesktopWrapper>
         <MobileWrapper>
-            <circle cx='250' cy='65' r='20' />
-            <rect x='365' y='50' rx='0' ry='0' width='32' height='32' />
+            <circle cx='240' cy='65' r='25' />
+            <rect x='355' y='50' rx='0' ry='0' width='38' height='38' />
         </MobileWrapper>
     </ContentLoader>
 );

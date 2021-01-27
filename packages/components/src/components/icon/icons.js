@@ -205,6 +205,7 @@ import './common/ic-multiplier.svg';
 import './common/ic-new-file.svg';
 import './common/ic-no-ad.svg';
 import './common/ic-no-order.svg';
+import './common/ic-notification-clear.svg';
 import './common/ic-notification.svg';
 import './common/ic-open-positions.svg';
 import './common/ic-pa.svg';

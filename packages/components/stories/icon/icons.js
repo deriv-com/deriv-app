@@ -211,6 +211,7 @@ export const icons = {
         'IcNewFile',
         'IcNoAd',
         'IcNoOrder',
+        'IcNotificationClear',
         'IcNotification',
         'IcOpenPositions',
         'IcPa',

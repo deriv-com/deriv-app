@@ -6,3 +6,4 @@ export * from './use-onlongpress';
 export * from './use-previous';
 export * from './use-deep-effect';
 export * from './use-state-callback';
+export * from './use-constructor';

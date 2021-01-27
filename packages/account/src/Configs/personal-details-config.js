@@ -151,7 +151,6 @@ const personalDetailsConfig = (
                 real_account_signup_target,
                 transformConfig(config, { real_account_signup_target })
             ),
-            is_dashboard,
             is_svg: upgrade_info?.can_upgrade_to === 'svg',
             account_opening_reason_list: [
                 {

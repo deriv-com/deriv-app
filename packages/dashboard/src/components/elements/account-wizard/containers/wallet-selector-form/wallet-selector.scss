@@ -1,17 +1,18 @@
 .dw-wallet-selector {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(21.6rem, 1fr));
     grid-gap: 2.4rem;
-    padding-right: 1.6rem;
 
+    @include desktop {
+        padding-right: 1.6rem;
+    }
     @include mobile {
-        grid-template-columns: 1fr 1fr;
-        padding-right: 0;
+        grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+        grid-gap: 0.8rem;
     }
 
     &__wallet-item {
         background: var(--general-section-3);
-        height: 12.8rem;
         border-radius: 0.8rem;
         padding: 2rem;
         position: relative;

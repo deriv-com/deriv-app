@@ -27,6 +27,7 @@ const CurrencySelector = ({
     set_currency,
     validate,
     has_cancel = false,
+    is_dashboard,
     ...props
 }) => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
@@ -60,6 +61,15 @@ const CurrencySelector = ({
         }
     }, [is_bypass_step]);
 
+    const getHeightOffset = () => {
+        if (is_dashboard) {
+            return '242px';
+        } else if (!has_currency && has_real_account) {
+            return '109px';
+        }
+        return '179px';
+    };
+
     return (
         <Formik
             initialValues={props.value}
@@ -77,7 +87,7 @@ const CurrencySelector = ({
                                     'currency-selector__container--no-top-margin':
                                         !has_currency && has_real_account && isMobile(),
                                 })}
-                                height_offset={!has_currency && has_real_account ? '109px' : '179px'}
+                                height_offset={getHeightOffset()}
                                 is_disabled={isDesktop()}
                             >
                                 <ThemedScrollbars is_bypassed={isMobile()} height={height}>
@@ -140,7 +150,7 @@ const CurrencySelector = ({
                                     }
                                     is_disabled={isSubmitting || !values.currency}
                                     is_center={!has_currency}
-                                    is_absolute={set_currency}
+                                    is_absolute={set_currency || is_dashboard}
                                     label={set_currency ? localize('Set currency') : localize('Next')}
                                     {...(has_cancel
                                         ? {
@@ -165,6 +175,7 @@ CurrencySelector.propTypes = {
     has_real_account: PropTypes.bool,
     onSubmit: PropTypes.func,
     value: PropTypes.any,
+    is_dashboard: PropTypes.bool,
 };
 
 export default CurrencySelector;

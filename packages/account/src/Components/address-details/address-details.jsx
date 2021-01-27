@@ -98,7 +98,11 @@ const AddressDetails = ({
                 <AutoHeightWrapper default_height={350} height_offset={isDesktop() ? 80 : null}>
                     {({ setRef, height }) => (
                         <form ref={setRef} onSubmit={handleSubmit}>
-                            <Div100vhContainer className='details-form' height_offset='110px' is_disabled={isDesktop()}>
+                            <Div100vhContainer
+                                className='details-form'
+                                height_offset={is_dashboard ? '242px' : '110px'}
+                                is_disabled={isDesktop()}
+                            >
                                 {!is_dashboard && (
                                     <Text
                                         as='p'
@@ -116,7 +120,7 @@ const AddressDetails = ({
                                 <ThemedScrollbars height={height} className='details-form__scrollbar'>
                                     {is_dashboard && (
                                         <div className='details-form__sub-header'>
-                                            <Text size='xs'>
+                                            <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
                                                 {localize(
                                                     'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.'
                                                 )}

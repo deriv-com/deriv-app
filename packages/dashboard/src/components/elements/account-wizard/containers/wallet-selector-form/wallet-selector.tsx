@@ -38,7 +38,7 @@ const WalletSelector: React.FC = (props: any) => {
         >
             {({ handleSubmit, isSubmitting, values, setFieldValue }) => (
                 <form onSubmit={handleSubmit} autoComplete='off'>
-                    <Div100vhContainer height_offset='110px' is_disabled={isDesktop()}>
+                    <Div100vhContainer height_offset='242px' is_disabled={isDesktop()}>
                         <ThemedScrollbars>
                             <div className='dw-wallet-selector'>
                                 {wallets.map((wallet, i) => (

@@ -63,7 +63,7 @@ const StepperHeader = ({
                             <div className='dw-account-wizard__header-step-title-wrapper'>
                                 <Text size='xxs' className='dw-account-wizard__header-step-title'>
                                     {localize('Step {{current_step}} of {{total_step}}', {
-                                        current_step,
+                                        current_step: current_step + 1,
                                         total_step: items.length,
                                     })}
                                 </Text>
@@ -76,7 +76,7 @@ const StepperHeader = ({
                 ))}
             </div>
             <div className='dw-account-wizard__header-active-title'>
-                <Text size='m' weight='bold' styles={{ lineHeight: '3.6rem' }}>
+                <Text size={isMobile() ? 'xsm' : 'm'} weight='bold'>
                     {items[current_step]?.header.active_title}
                 </Text>
             </div>
@@ -223,6 +223,7 @@ const AccountWizard: React.FC<TAccountWizard> = observer((props: TAccountWizard)
                 form_error={form_error}
                 {...passthrough}
                 key={step_index}
+                is_dashboard
             />
         );
     });

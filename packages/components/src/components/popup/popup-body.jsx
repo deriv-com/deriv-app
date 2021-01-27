@@ -18,6 +18,7 @@ const Body = ({ active_tab_icon_color, background_color, className, tab_icon_col
             has_active_line={false}
             has_bottom_line={false}
             icon_color={tab_icon_color}
+            icon_size={30}
             top
         >
             {tabs_detail.map(detail => {

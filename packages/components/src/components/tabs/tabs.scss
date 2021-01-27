@@ -64,7 +64,12 @@
             vertical-align: middle;
         }
         &__icon {
-            padding: 7px;
+            padding-right: 0.7rem;
+
+            @include mobile {
+                padding-right: 0;
+                padding-top: 0.5rem;
+            }
         }
         &--header-fit-content {
             padding: 0px 29px;

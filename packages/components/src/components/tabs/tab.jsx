@@ -14,6 +14,7 @@ const Tab = ({
     header_fit_content,
     icon,
     icon_color,
+    icon_size,
     id,
     is_active,
     is_label_hidden,
@@ -38,7 +39,7 @@ const Tab = ({
     const title_color = is_active ? active_icon_color : icon_color;
     return (
         <li id={id} className={classes} style={{ color: title_color }} onClick={onClick} ref={active_tab_ref}>
-            {icon && <Icon icon={icon} size={30} custom_color={title_color} className='dc-tabs__item__icon' />}
+            {icon && <Icon icon={icon} size={icon_size} custom_color={title_color} className='dc-tabs__item__icon' />}
             {header_content || label}
             {!!count && <Counter className='dc-tabs__item__counter' count={count} />}
         </li>
@@ -55,6 +56,7 @@ Tab.propTypes = {
     header_fit_content: PropTypes.bool,
     icon: PropTypes.string,
     icon_color: PropTypes.string,
+    icon_size: PropTypes.number,
     id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     is_active: PropTypes.bool,
     is_label_hidden: PropTypes.bool,

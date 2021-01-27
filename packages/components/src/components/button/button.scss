@@ -38,6 +38,10 @@
     &__icon {
         padding-right: 0.8rem;
         pointer-events: none;
+
+        &--circle {
+            padding-right: 0 !important;
+        }
     }
     &:not([disabled]):hover {
         text-decoration: none;
@@ -53,6 +57,11 @@
         background: inherit;
         background-repeat: no-repeat;
         background-position: center;
+    }
+    &--circle {
+        height: 3.2rem;
+        width: 3.2rem !important;
+        border-radius: 50%;
     }
     &--primary {
         background: var(--button-primary-default);

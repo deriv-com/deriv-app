@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Body from './popup-body.jsx';
 import Header from './popup-header.jsx';
+import DesktopWrapper from '../desktop-wrapper';
+import MobileFullPageModal from '../mobile-full-page-modal';
+import MobileWrapper from '../mobile-wrapper';
 import Modal from '../modal';
 
 const Popup = ({
@@ -23,39 +26,63 @@ const Popup = ({
     const header = () => {
         return (
             <Header
-                button_text={header_button_text}
-                title={title}
                 balance={balance}
-                text_color={header_contents_color}
+                banner_text={header_banner_text}
+                button_text={header_button_text}
+                close_icon_color={close_icon_color}
                 header_icon={header_icon}
                 onButtonClick={onHeaderButtonClick}
-                banner_text={header_banner_text}
+                title={title}
+                text_color={header_contents_color}
+                togglePopupModal={togglePopupModal}
             />
         );
     };
 
     return (
-        <Modal
-            className='popup'
-            close_icon_color={close_icon_color}
-            do_not_show_header_border
-            header_backgound_color={header_backgound_color}
-            height='636px'
-            do_not_center_header_items
-            is_open={should_show_popup}
-            renderTitle={() => header()}
-            toggleModal={togglePopupModal}
-            width='776px'
-        >
-            <Modal.Body className='dc-popup__body'>
-                <Body
-                    active_tab_icon_color={active_tab_icon_color}
-                    background_color={header_backgound_color}
-                    tab_icon_color={tab_icon_color}
-                    tabs_detail={tabs_detail}
-                />
-            </Modal.Body>
-        </Modal>
+        <>
+            <MobileWrapper>
+                <MobileFullPageModal
+                    is_modal_open={should_show_popup}
+                    renderPageHeaderText={() => header()}
+                    onClickClose={togglePopupModal}
+                    height_offset='80px'
+                    page_overlay
+                    header_backgound_color={header_backgound_color}
+                    do_not_show_header_border
+                >
+                    <Body
+                        active_tab_icon_color={active_tab_icon_color}
+                        background_color={header_backgound_color}
+                        tab_icon_color={tab_icon_color}
+                        tabs_detail={tabs_detail}
+                    />
+                </MobileFullPageModal>
+            </MobileWrapper>
+            <DesktopWrapper>
+                <Modal
+                    className='popup'
+                    close_icon_color={close_icon_color}
+                    do_not_show_header_border
+                    header_backgound_color={header_backgound_color}
+                    height='636px'
+                    do_not_center_header_items
+                    is_open={should_show_popup}
+                    renderTitle={() => header()}
+                    toggleModal={togglePopupModal}
+                    width='776px'
+                >
+                    <Modal.Body className='dc-popup__body'>
+                        <Body
+                            active_tab_icon_color={active_tab_icon_color}
+                            background_color={header_backgound_color}
+                            tab_icon_color={tab_icon_color}
+                            tabs_detail={tabs_detail}
+                        />
+                    </Modal.Body>
+                </Modal>
+            </DesktopWrapper>
+        </>
     );
 };
 

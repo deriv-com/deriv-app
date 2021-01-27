@@ -138,7 +138,7 @@ const ModalElement = ({
                         </div>
                     )}
                     {has_close_icon && (
-                        <div onClick={toggleModal} className={'dc-modal-header__close'}>
+                        <div onClick={toggleModal} className='dc-modal-header__close'>
                             <Icon icon='IcCross' color={close_icon_color} />
                         </div>
                     )}

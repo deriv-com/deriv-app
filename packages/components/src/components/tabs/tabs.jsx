@@ -19,6 +19,7 @@ const Tabs = ({
     header_fit_content,
     history,
     icon_color,
+    icon_size,
     is_100vw,
     onTabItemClick,
     should_update_hash,
@@ -106,54 +107,58 @@ const Tabs = ({
             })}
             style={{ '--tab-width': `${tab_width}`, background: background_color }}
         >
-            <ul
-                className={classNames('dc-tabs__list', {
-                    'dc-tabs__list--top': top,
-                    'dc-tabs__list--border-bottom': has_bottom_line,
-                    'dc-tabs__list--bottom': bottom,
-                    'dc-tabs__list--center': center,
-                    'dc-tabs__list--header-fit-content': header_fit_content,
-                })}
-                ref={tabs_wrapper_ref}
-            >
-                {React.Children.map(children, (child, index) => {
-                    if (!child) return null;
-                    const { count, header_content, icon, label, id } = child.props;
-                    return (
-                        <Tab
-                            active_icon_color={active_icon_color}
-                            className={className}
-                            count={count}
-                            icon={icon}
-                            icon_color={icon_color}
-                            is_active={index === active_tab_index}
-                            key={label}
-                            is_label_hidden={children.length === 1 && single_tab_has_no_label}
-                            label={label}
-                            id={id}
-                            top={top}
-                            bottom={bottom}
-                            header_fit_content={header_fit_content}
-                            active_tab_ref={index === active_tab_index ? active_tab_ref : null}
-                            header_content={header_content}
-                            onClick={() => onClickTabItem(index)}
-                            setActiveLineStyle={setActiveLineStyle}
+            <div className={classNames({ [`dc-tabs__list--header--${className}`]: className })}>
+                <ul
+                    className={classNames('dc-tabs__list', {
+                        'dc-tabs__list--top': top,
+                        'dc-tabs__list--border-bottom': has_bottom_line,
+                        'dc-tabs__list--bottom': bottom,
+                        'dc-tabs__list--center': center,
+                        'dc-tabs__list--header-fit-content': header_fit_content,
+                        [`dc-tabs__list--${className}`]: className,
+                    })}
+                    ref={tabs_wrapper_ref}
+                >
+                    {React.Children.map(children, (child, index) => {
+                        if (!child) return null;
+                        const { count, header_content, icon, label, id } = child.props;
+                        return (
+                            <Tab
+                                active_icon_color={active_icon_color}
+                                className={className}
+                                count={count}
+                                icon={icon}
+                                icon_color={icon_color}
+                                icon_size={icon_size}
+                                is_active={index === active_tab_index}
+                                key={label}
+                                is_label_hidden={children.length === 1 && single_tab_has_no_label}
+                                label={label}
+                                id={id}
+                                top={top}
+                                bottom={bottom}
+                                header_fit_content={header_fit_content}
+                                active_tab_ref={index === active_tab_index ? active_tab_ref : null}
+                                header_content={header_content}
+                                onClick={() => onClickTabItem(index)}
+                                setActiveLineStyle={setActiveLineStyle}
+                            />
+                        );
+                    })}
+                    {has_active_line && (
+                        <span
+                            className={classNames('dc-tabs__active-line', {
+                                'dc-tabs__active-line--top': top,
+                                'dc-tabs__active-line--bottom': bottom,
+                                'dc-tabs__active-line--fit-content': fit_content,
+                                'dc-tabs__active-line--header-fit-content': header_fit_content,
+                                'dc-tabs__active-line--is-hidden': children.length === 1 && single_tab_has_no_label,
+                            })}
+                            style={active_line_style}
                         />
-                    );
-                })}
-                {has_active_line && (
-                    <span
-                        className={classNames('dc-tabs__active-line', {
-                            'dc-tabs__active-line--top': top,
-                            'dc-tabs__active-line--bottom': bottom,
-                            'dc-tabs__active-line--fit-content': fit_content,
-                            'dc-tabs__active-line--header-fit-content': header_fit_content,
-                            'dc-tabs__active-line--is-hidden': children.length === 1 && single_tab_has_no_label,
-                        })}
-                        style={active_line_style}
-                    />
-                )}
-            </ul>
+                    )}
+                </ul>
+            </div>
             <div
                 className={classNames('dc-tabs__content', {
                     [`dc-tabs__content--${className}`]: className,
@@ -188,6 +193,7 @@ Tabs.propTypes = {
     header_fit_content: PropTypes.bool,
     history: PropTypes.object,
     icon_color: PropTypes.string,
+    icon_size: PropTypes.number,
     is_100vw: PropTypes.bool,
     onTabItemClick: PropTypes.func,
     should_update_hash: PropTypes.bool,

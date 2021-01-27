@@ -74,6 +74,12 @@ const Tabs = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active_tab_index, setActiveLineStyle]);
 
+    React.useEffect(() => {
+        if (active_index >= 0 && active_index !== active_tab_index) {
+            setActiveTabIndex(active_index);
+        }
+    }, [active_index]);
+
     const onClickTabItem = index => {
         if (should_update_hash) {
             const hash = children[index].props['data-hash'];

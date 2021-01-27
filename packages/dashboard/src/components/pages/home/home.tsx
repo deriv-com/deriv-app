@@ -7,6 +7,7 @@ import { TRoute, TRouteGroup } from 'Types';
 
 import TempButtons from 'Components/temp-buttons';
 import TempGetDMT5Wallet from 'Components/pages/temp-get-dmt5-wallet';
+import TempGetDerivWallet from 'Components/pages/temp-get-deriv-wallet';
 
 const Home: React.FC = () => {
     const list = [
@@ -15,7 +16,12 @@ const Home: React.FC = () => {
             icon: 'IcUserOutline',
             label: localize('My Deriv'),
             is_routed: true,
-            value: () => <TempGetDMT5Wallet />,
+            value: () => (
+                <>
+                    <TempGetDerivWallet />
+                    <TempGetDMT5Wallet />
+                </>
+            ),
         },
         {
             label: '',

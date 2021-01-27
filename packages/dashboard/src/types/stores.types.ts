@@ -15,6 +15,7 @@ export type TClientStore = {
     email_address: string;
     currencies_list: TCurrenciesList;
     currency: string;
+    is_logged_in: boolean;
     financial_assessment: GetFinancialAssessment;
     residence_list: ResidenceList;
     states_list: StatesList;

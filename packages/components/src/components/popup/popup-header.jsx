@@ -18,7 +18,7 @@ const Header = ({
     togglePopupModal,
 }) => {
     return (
-        <>
+        <React.Fragment>
             <DesktopWrapper>
                 <div className='dc-popup__header'>
                     <Text size='s' as='p' styles={{ color: text_color }}>
@@ -81,7 +81,7 @@ const Header = ({
                     </div>
                 </div>
             </MobileWrapper>
-        </>
+        </React.Fragment>
     );
 };
 

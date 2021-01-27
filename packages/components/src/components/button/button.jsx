@@ -66,7 +66,7 @@ const Button = ({
             type={is_submit_success ? 'button' : type || 'submit'}
             {...props}
         >
-            {icon && <div className={is_circle ? 'dc-btn__icon--circle' : 'dc-btn__icon'}>{icon}</div>}
+            {icon && <div className={classNames('dc-btn__icon', { 'dc-btn__icon--circle': is_circle })}>{icon}</div>}
             {text && !(is_loading || is_submit_success) && (
                 <span className={classNames('dc-btn__text', classNameSpan)}>
                     {text[0].toUpperCase() + text.substr(1)}

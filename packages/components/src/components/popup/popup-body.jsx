@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import Footer from './popup-footer.jsx';
 import Tabs from '../tabs';
 
@@ -26,14 +25,9 @@ const Body = ({ active_tab_icon_color, background_color, className, tab_icon_col
                     <div key={detail.id} label={detail.title} icon={detail.icon}>
                         {renderBody(detail.renderBody)}
                         {detail.renderFooter && (
-                            <div
-                                className={classNames('dc-popup__footer', {
-                                    'dc-popup__footer--separator': detail.has_footer_separator,
-                                    className,
-                                })}
-                            >
-                                <Footer>{renderFooter(detail.renderFooter)}</Footer>
-                            </div>
+                            <Footer className={className} has_separator={detail.has_footer_separator}>
+                                {renderFooter(detail.renderFooter)}
+                            </Footer>
                         )}
                     </div>
                 );

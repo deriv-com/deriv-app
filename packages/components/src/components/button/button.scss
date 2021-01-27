@@ -40,7 +40,7 @@
         pointer-events: none;
 
         &--circle {
-            padding-right: 0 !important;
+            padding-right: 0;
         }
     }
     &:not([disabled]):hover {

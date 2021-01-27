@@ -18,7 +18,7 @@ const MobileFullPageModalBodyWrapper = ({ className, children, should_wrap_body 
 const MobileFullPageModal = ({
     body_className,
     className,
-    do_not_show_header_border,
+    should_header_stick_body,
     header,
     header_backgound_color,
     height_offset = '0px',
@@ -54,7 +54,7 @@ const MobileFullPageModal = ({
                 {(page_header_text || renderPageHeaderText) && (
                     <div
                         className={classNames('dc-mobile-full-page-modal__header', {
-                            'dc-mobile-full-page-modal__header--border-bottom': !do_not_show_header_border,
+                            'dc-mobile-full-page-modal__header--border-bottom': !should_header_stick_body,
                             page_header_className,
                         })}
                         style={{
@@ -109,7 +109,7 @@ const MobileFullPageModal = ({
 
 MobileFullPageModal.propTypes = {
     className: PropTypes.string,
-    do_not_show_header_border: PropTypes.bool,
+    should_header_stick_body: PropTypes.bool,
     header: PropTypes.string,
     header_backgound_color: PropTypes.string,
     height_offset: PropTypes.string,

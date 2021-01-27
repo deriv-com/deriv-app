@@ -49,7 +49,7 @@ const Popup = ({
                     height_offset='80px'
                     page_overlay
                     header_backgound_color={header_backgound_color}
-                    do_not_show_header_border
+                    should_header_stick_body
                 >
                     <Body
                         active_tab_icon_color={active_tab_icon_color}
@@ -63,10 +63,10 @@ const Popup = ({
                 <Modal
                     className='popup'
                     close_icon_color={close_icon_color}
-                    do_not_show_header_border
+                    should_header_stick_body
                     header_backgound_color={header_backgound_color}
                     height='636px'
-                    do_not_center_header_items
+                    is_align_header_content_left
                     is_open={should_show_popup}
                     renderTitle={() => header()}
                     toggleModal={togglePopupModal}

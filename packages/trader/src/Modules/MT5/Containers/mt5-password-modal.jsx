@@ -501,6 +501,7 @@ const MT5PasswordModal = ({
                             }}
                             is_real_financial_stp={is_real_financial_stp}
                             should_show_server_form={should_show_server_form}
+                            validatePassword={validatePassword}
                         />
                     )}
                     {is_password_reset_modal_on && (

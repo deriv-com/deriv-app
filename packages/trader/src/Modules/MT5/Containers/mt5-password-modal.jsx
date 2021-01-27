@@ -10,7 +10,6 @@ import {
     MobileDialog,
     Modal,
     PasswordInput,
-    PasswordMeter,
     Text,
     Button,
     RadioGroup,
@@ -120,32 +119,22 @@ const MT5PasswordForm = props => {
                     <div className='mt5-password-modal__content'>
                         <div className='dc-modal__container_mt5-password-modal__body'>
                             <div className='input-element'>
-                                <PasswordMeter
-                                    input={values.password}
-                                    has_error={!!((touched.password && errors.password) || props.error_message)}
-                                    custom_feedback_messages={getErrorMessages().password_warnings}
-                                >
-                                    {({ has_warning }) => {
-                                        return (
-                                            <PasswordInput
-                                                autoComplete='new-password'
-                                                label={localize('Password')}
-                                                error={
-                                                    (touched.password || props.error_message || has_warning) &&
-                                                    (errors.password || props.error_message)
-                                                }
-                                                name='password'
-                                                value={values.password}
-                                                onBlur={handleBlur}
-                                                onChange={e => {
-                                                    setFieldTouched('password', true);
-                                                    props.resetFormErrors();
-                                                    handleChange(e);
-                                                }}
-                                            />
-                                        );
+                                <PasswordInput
+                                    autoComplete='new-password'
+                                    label={localize('Password')}
+                                    error={
+                                        (touched.password || props.error_message) &&
+                                        (errors.password || props.error_message)
+                                    }
+                                    name='password'
+                                    value={values.password}
+                                    onBlur={handleBlur}
+                                    onChange={e => {
+                                        setFieldTouched('password', true);
+                                        props.resetFormErrors();
+                                        handleChange(e);
                                     }}
-                                </PasswordMeter>
+                                />
                             </div>
                             <Text
                                 as='p'

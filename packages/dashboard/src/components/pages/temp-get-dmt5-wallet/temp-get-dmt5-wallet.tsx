@@ -6,7 +6,7 @@ import AccountWizard from 'Components/elements/account-wizard';
 import MT5PasswordModal from 'Components/modals/mt5-password-modal';
 import GetWalletModal from 'Components/modals/get-wallet-modal';
 
-// Temp component. Should be removed after integrating with MT5 signup
+// TODO: Temp component. This should be removed after integrating with MT5 signup
 const TempGetDMT5Wallet: React.FC = observer(() => {
     const { mt5_store, ui_store } = useStores();
     const { is_real_acc_signup_on } = ui_store;

@@ -67,7 +67,6 @@
     }
 
     .wizard__main-step {
-        padding-top: 4rem;
         display: flex;
         flex-direction: column;
         flex: 1;
@@ -79,6 +78,9 @@
             display: flex;
             flex-direction: column;
             flex: 1;
+        }
+        .dc-themed-scrollbars {
+            padding-top: 4rem;
         }
     }
     .dc-form-submit-button {

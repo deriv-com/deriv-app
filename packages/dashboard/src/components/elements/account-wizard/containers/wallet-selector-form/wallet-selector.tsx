@@ -1,7 +1,14 @@
 import { Formik } from 'formik';
 import React from 'react';
 import classNames from 'classnames';
-import { Modal, Div100vhContainer, FormSubmitButton, Icon, ThemedScrollbars } from '@deriv/components';
+import {
+    Modal,
+    Div100vhContainer,
+    FormSubmitButton,
+    Icon,
+    ThemedScrollbars,
+    AutoHeightWrapper,
+} from '@deriv/components';
 import { isMobile, isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
@@ -37,34 +44,39 @@ const WalletSelector: React.FC = (props: any) => {
             }}
         >
             {({ handleSubmit, isSubmitting, values, setFieldValue }) => (
-                <form onSubmit={handleSubmit} autoComplete='off'>
-                    <Div100vhContainer height_offset='242px' is_disabled={isDesktop()}>
-                        <ThemedScrollbars>
-                            <div className='dw-wallet-selector'>
-                                {wallets.map((wallet, i) => (
-                                    <div
-                                        key={`${wallet}${i}`}
-                                        className={classNames('dw-wallet-selector__wallet-item', {
-                                            'dw-wallet-selector__wallet-item--selected': values.wallet === wallet,
-                                        })}
-                                        onClick={() => {
-                                            setFieldValue('wallet', wallet);
-                                        }}
-                                    >
-                                        <Icon icon={wallet} />
+                <AutoHeightWrapper default_height={450} height_offset={isDesktop() ? 81 : null}>
+                    {({ setRef, height }: { setRef: (instance: HTMLFormElement | null) => void; height: number }) => (
+                        <form ref={setRef} onSubmit={handleSubmit} autoComplete='off'>
+                            <Div100vhContainer height_offset='242px' is_disabled={isDesktop()}>
+                                <ThemedScrollbars is_bypassed={isMobile()} height={height}>
+                                    <div className='dw-wallet-selector'>
+                                        {wallets.map((wallet, i) => (
+                                            <div
+                                                key={`${wallet}${i}`}
+                                                className={classNames('dw-wallet-selector__wallet-item', {
+                                                    'dw-wallet-selector__wallet-item--selected':
+                                                        values.wallet === wallet,
+                                                })}
+                                                onClick={() => {
+                                                    setFieldValue('wallet', wallet);
+                                                }}
+                                            >
+                                                <Icon icon={wallet} />
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
-                        </ThemedScrollbars>
-                    </Div100vhContainer>
-                    <Modal.Footer has_separator is_bypassed={isMobile()}>
-                        <FormSubmitButton
-                            is_disabled={isSubmitting || !values.wallet}
-                            is_absolute
-                            label={localize('Next')}
-                        />
-                    </Modal.Footer>
-                </form>
+                                </ThemedScrollbars>
+                            </Div100vhContainer>
+                            <Modal.Footer has_separator is_bypassed={isMobile()}>
+                                <FormSubmitButton
+                                    is_disabled={isSubmitting || !values.wallet}
+                                    is_absolute
+                                    label={localize('Next')}
+                                />
+                            </Modal.Footer>
+                        </form>
+                    )}
+                </AutoHeightWrapper>
             )}
         </Formik>
     );

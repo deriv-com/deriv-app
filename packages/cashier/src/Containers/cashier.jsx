@@ -77,8 +77,8 @@ const Cashier = ({
         ];
 
         const found = routes_config.some(r => computedRoutes.includes(r));
-        console.log('FOUND:');
-        console.log(found);
+        // console.log('FOUND:');
+        // console.log(found);
         // TODO: remove show_dp2p hash check once released
         routes_config.forEach(route => {
             console.log('is_payment_agent_visible');

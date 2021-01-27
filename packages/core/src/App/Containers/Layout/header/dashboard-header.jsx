@@ -21,7 +21,6 @@ const LoggedInHeader = ({ is_dark_mode }) => {
         <header className='dashboard-header dashboard-header--logged-in'>
             <div className='dashboard-header__left'>
                 <div onClick={() => history.push(routes.dashboard)}>
-                    {console.log(is_dark_mode)}
                     {isDesktop() ? (
                         !is_dark_mode ? (
                             <DerivLogoLight />

@@ -245,6 +245,7 @@ $MIN_HEIGHT_FLOATING: calc(
             border-top: 1px solid var(--general-section-1);
             border-width: 1px;
             background-color: var(--general-main-1);
+            transition: all 0.3s ease-out;
 
             &-note {
                 color: var(--text-prominent);
@@ -278,7 +279,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 padding-top: 0.8rem;
             }
             @include mobile {
-                padding: 16px 0px;
+                padding: 16px 0;
                 flex-direction: column;
                 height: auto;
                 align-items: initial;

@@ -26,10 +26,46 @@ const AlertBox = ({ is_dark_mode_on }) => (
 );
 
 class ChangePasswordForm extends React.Component {
+    ref = React.createRef();
+
     state = {
         is_loading: false,
         new_pw_input: '',
+        is_focused: false,
     };
+
+    toggleFocusedState = is_focused => {
+        this.setState({
+            is_focused,
+        });
+    };
+
+    componentDidMount() {
+        if (isMobile()) {
+            document.addEventListener(
+                'focus',
+                e => {
+                    e.target.scrollIntoView();
+                    this.toggleFocusedState(true);
+                },
+                true
+            );
+            document.addEventListener(
+                'blur',
+                () => {
+                    this.toggleFocusedState(false);
+                },
+                true
+            );
+        }
+    }
+
+    componentWillUnmount() {
+        if (isMobile()) {
+            document.removeEventListener('focus', this.toggleFocusedState);
+            document.removeEventListener('blur', this.toggleFocusedState);
+        }
+    }
 
     updateNewPassword = string => {
         this.setState({ new_pw_input: string });
@@ -95,7 +131,7 @@ class ChangePasswordForm extends React.Component {
 
         return (
             <React.Fragment>
-                <AlertBox />
+                {!this.state.is_focused && <AlertBox />}
                 <Formik
                     initialValues={{
                         old_password: '',
@@ -115,7 +151,7 @@ class ChangePasswordForm extends React.Component {
                         handleSubmit,
                         isSubmitting,
                     }) => (
-                        <form className='account-form account__password-wrapper' onSubmit={handleSubmit}>
+                        <form ref={this.ref} className='account-form account__password-wrapper' onSubmit={handleSubmit}>
                             {is_loading ? (
                                 <FormBody>
                                     <Loading is_fullscreen={false} className='account__initial-loader' />;
@@ -124,11 +160,13 @@ class ChangePasswordForm extends React.Component {
                                 <FormBody scroll_offset={isMobile() ? '200px' : '55px'}>
                                     <FormSubHeader title={localize('Change your Deriv password')} />
                                     <div className='account-form__container'>
-                                        <div className='account-form__help-text'>
-                                            <Text as='p' size='xs'>
-                                                <Localize i18n_default_text='We recommend using a unique password — one that you don’t use for any other sites.' />
-                                            </Text>
-                                        </div>
+                                        {!this.state.is_focused && (
+                                            <div className='account-form__help-text'>
+                                                <Text as='p' size='xs'>
+                                                    <Localize i18n_default_text='We recommend using a unique password — one that you don’t use for any other sites.' />
+                                                </Text>
+                                            </div>
+                                        )}
                                         <div>
                                             <fieldset className='account-form__fieldset'>
                                                 <PasswordInput

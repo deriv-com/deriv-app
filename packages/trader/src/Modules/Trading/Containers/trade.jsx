@@ -86,7 +86,7 @@ class Trade extends React.Component {
     };
 
     onTryOtherMarkets = async () => {
-        if (this.props.is_eu) {
+        if (this.props.is_eu || this.props.is_synthetics_unavailable) {
             this.setState({ try_open_markets: true }, () => {
                 this.setState({
                     try_open_markets: false,
@@ -181,6 +181,7 @@ class Trade extends React.Component {
                     {this.props.is_market_closed && (
                         <MarketIsClosedOverlay
                             is_eu={this.props.is_eu}
+                            is_synthetics_unavailable={this.props.is_synthetics_unavailable}
                             {...(this.props.is_eu && this.state.category && { is_market_available: true })}
                             onClick={this.onTryOtherMarkets}
                             is_market_close_overlay_loading={this.props.is_market_close_overlay_loading}
@@ -199,6 +200,7 @@ class Trade extends React.Component {
 export default connect(({ client, common, modules, ui }) => ({
     getFirstOpenMarket: modules.trade.getFirstOpenMarket,
     is_eu: client.is_eu,
+    is_synthetics_unavailable: client.is_synthetics_unavailable,
     network_status: common.network_status,
     contract_type: modules.trade.contract_type,
     form_components: modules.trade.form_components,

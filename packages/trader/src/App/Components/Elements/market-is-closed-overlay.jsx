@@ -5,13 +5,19 @@ import { Button, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import MarketCountdownTimer from './market-countdown-timer.jsx';
 
-const MarketIsClosedOverlay = ({ is_eu, is_market_available, is_market_close_overlay_loading, onClick }) => {
+const MarketIsClosedOverlay = ({
+    is_eu,
+    is_market_available,
+    is_market_close_overlay_loading,
+    is_synthetics_unavailable,
+    onClick,
+}) => {
     let message = (
         <Localize i18n_default_text='In the meantime, try our synthetic indices. They simulate real-market volatility and are open 24/7.' />
     );
     let btn_lbl = localize('Try Synthetic Indices');
 
-    if (is_eu) {
+    if (is_eu || is_synthetics_unavailable) {
         message = null;
         btn_lbl = localize('See open markets');
     }
@@ -42,6 +48,7 @@ MarketIsClosedOverlay.propTypes = {
     is_eu: PropTypes.bool,
     is_market_available: PropTypes.bool,
     is_market_close_overlay_loading: PropTypes.bool,
+    is_synthetics_unavailable: PropTypes.bool,
     onClick: PropTypes.func,
 };
 

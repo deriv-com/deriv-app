@@ -8,21 +8,21 @@ const GetPasswordModal: React.FC = () => {
     const { ui_store, mt5_store } = useStores();
 
     const [wallets] = React.useState([
-        'IcWalletSkrill',
-        'IcWalletCreditDebit',
-        'IcWalletCrypto',
-        'IcWalletPaymentAgent',
-        'IcWalletNeteller',
-        'IcWalletZingpay',
-        'IcWalletJeton',
-        'IcWalletSticpay',
-        'IcWalletPaytrust',
-        'IcWalletDp2p',
-        'IcWalletWebmoney',
-        'IcWalletFasapay',
-        'IcWalletSkrill',
-        'IcWalletCreditDebit',
-        'IcWalletCrypto',
+        'IcWalletSkrillLight',
+        'IcWalletCreditDebitLight',
+        'IcWalletCryptoLight',
+        'IcWalletPaymentAgentLight',
+        'IcWalletNetellerLight',
+        'IcWalletZingpayLight',
+        'IcWalletJetonLight',
+        'IcWalletSticpayLight',
+        'IcWalletPaytrustLight',
+        'IcWalletDp2pLight',
+        'IcWalletWebmoneyLight',
+        'IcWalletFasapayLight',
+        'IcWalletSkrillLight',
+        'IcWalletCreditDebitLight',
+        'IcWalletCryptoLight',
     ]);
 
     const { is_get_wallet_modal_open, disableGetPasswordModal } = ui_store;

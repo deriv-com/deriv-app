@@ -15,18 +15,18 @@ import { localize } from '@deriv/translations';
 const WalletSelector: React.FC = (props: any) => {
     const { onSubmit, getCurrentStep, goToNextStep, validate } = props;
     const [wallets] = React.useState([
-        'IcWalletSkrill',
-        'IcWalletCreditDebit',
-        'IcWalletCrypto',
-        'IcWalletDp2p',
-        'IcWalletPaymentAgent',
-        'IcWalletNeteller',
-        'IcWalletZingpay',
-        'IcWalletWebmoney',
-        'IcWalletJeton',
-        'IcWalletSticpay',
-        'IcWalletPaytrust',
-        'IcWalletFasapay',
+        'IcWalletSkrillLight',
+        'IcWalletCreditDebitLight',
+        'IcWalletCryptoLight',
+        'IcWalletDp2pLight',
+        'IcWalletPaymentAgentLight',
+        'IcWalletNetellerLight',
+        'IcWalletZingpayLight',
+        'IcWalletWebmoneyLight',
+        'IcWalletJetonLight',
+        'IcWalletSticpayLight',
+        'IcWalletPaytrustLight',
+        'IcWalletFasapayLight',
     ]);
 
     const handleValidate = (values: any) => {

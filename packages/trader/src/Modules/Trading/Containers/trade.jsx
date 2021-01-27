@@ -178,7 +178,7 @@ class Trade extends React.Component {
                     <Test />
                 </Div100vhContainer>
                 <div className={form_wrapper_class}>
-                    {this.props.is_market_closed && (
+                    {this.props.is_market_closed && !this.props.is_market_unavailable_visible && (
                         <MarketIsClosedOverlay
                             is_eu={this.props.is_eu}
                             is_synthetics_unavailable={this.props.is_synthetics_unavailable}
@@ -215,6 +215,7 @@ export default connect(({ client, common, modules, ui }) => ({
     onUnmount: modules.trade.onUnmount,
     purchase_info: modules.trade.purchase_info,
     NotificationMessages: ui.notification_messages_ui,
+    is_market_unavailable_visible: ui.has_only_forward_starting_contracts,
 }))(Trade);
 
 // CHART (ChartTrade)--------------------------------------------------------

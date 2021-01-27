@@ -60,7 +60,7 @@ const WalletSelector: React.FC = (props: any) => {
                     <Modal.Footer has_separator is_bypassed={isMobile()}>
                         <FormSubmitButton
                             is_disabled={isSubmitting || !values.wallet}
-                            is_absolute={isMobile()}
+                            is_absolute
                             label={localize('Next')}
                         />
                     </Modal.Footer>

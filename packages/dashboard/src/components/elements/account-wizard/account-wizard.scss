@@ -49,6 +49,7 @@
             &-title-wrapper {
                 display: flex;
                 flex-direction: column;
+                flex: 1;
             }
             svg {
                 margin-right: 0.8rem;
@@ -151,6 +152,20 @@
     .terms-of-use {
         @include mobile {
             padding: 0;
+        }
+    }
+}
+
+.cancel-progress-modal {
+    @include mobile {
+        .dc-dialog__dialog {
+            max-width: 32rem;
+        }
+        .dc-dialog__footer {
+            .dc-btn {
+                flex: 1;
+                margin-bottom: 0;
+            }
         }
     }
 }

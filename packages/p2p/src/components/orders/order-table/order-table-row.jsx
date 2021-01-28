@@ -1,4 +1,4 @@
-import { Table, Text } from '@deriv/components';
+import { Table, Text, Icon } from '@deriv/components';
 import { isMobile, formatMoney } from '@deriv/shared';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -31,7 +31,7 @@ const OrderRow = ({ style, row: order }) => {
             label: distance < 0 ? localize('expired') : secondsToTimer(distance),
         };
     };
-    const { general_store, order_store } = useStores();
+    const { general_store, order_store, sendbird_store } = useStores();
     const [order_state, setOrderState] = React.useState(order); // Use separate state to force refresh when (FE-)expired.
     const [is_timer_visible, setIsTimerVisible] = React.useState();
     const {
@@ -124,14 +124,17 @@ const OrderRow = ({ style, row: order }) => {
                                 {remaining_time}
                             </Text>
                         )}
-                        {/* <div className='orders__mobile-chat'>
+                        <div className='orders__mobile-chat'>
                             <Icon
                                 icon='IcChat'
                                 height={15}
                                 width={16}
-                                onClick={() => sendbird_store.setShouldShowChatModal(true)}
+                                onClick={() => {
+                                    sendbird_store.setShouldShowChatModal(true);
+                                    sendbird_store.setOrdersChat(true);
+                                }}
                             />
-                        </div> */}
+                        </div>
                     </Table.Cell>
                     <Table.Cell className='orders__mobile-title'>
                         <Title

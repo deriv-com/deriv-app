@@ -494,9 +494,11 @@
         --mt5-card-wrapper-grid: 1fr;
         display: grid;
         grid-template-rows: var(--mt5-card-wrapper-grid);
-        height: 100%;
         &:not(:last-child) {
             margin-right: 2.4rem;
+        }
+        @include desktop {
+            height: 100%;
         }
     }
 

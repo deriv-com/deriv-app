@@ -20,6 +20,7 @@ const ContractDrawerCard = ({
     current_focus,
     getContractById,
     is_market_closed,
+    is_market_close_overlay_loading,
     is_mobile,
     is_multiplier,
     is_sell_requested,
@@ -30,6 +31,7 @@ const ContractDrawerCard = ({
     onSwipedDown,
     removeToast,
     result,
+    setMarketCloseOverlayLoading,
     setCurrentFocus,
     server_time,
     should_show_cancellation_warning,
@@ -42,6 +44,13 @@ const ContractDrawerCard = ({
     const { profit } = contract_info;
     const is_sold = !!getEndTime(contract_info);
     const display_name = getSymbolDisplayName(active_symbols, getMarketInformation(contract_info.shortcode).underlying);
+
+    React.useEffect(() => {
+        setMarketCloseOverlayLoading(true);
+        return () => {
+            setMarketCloseOverlayLoading(true);
+        };
+    }, []);
 
     const card_header = (
         <ContractCard.Header
@@ -112,11 +121,20 @@ const ContractDrawerCard = ({
                 className={classNames('dc-contract-card', {
                     'dc-contract-card--green': is_mobile && !is_multiplier && profit > 0 && !result,
                     'dc-contract-card--red': is_mobile && !is_multiplier && profit < 0 && !result,
+                    'contract-card__market-closed--disabled': is_market_closed && should_hide_closed_overlay,
                 })}
                 ref={hover_ref}
             >
-                {!should_hide_closed_overlay && is_market_closed && !getEndTime(contract_info) && (
-                    <MarketClosedContractOverlay />
+                {is_market_closed && !getEndTime(contract_info) && (
+                    <div
+                        className={classNames({
+                            'contract-card__market-closed--hidden': should_hide_closed_overlay,
+                        })}
+                    >
+                        <MarketClosedContractOverlay
+                            is_market_close_overlay_loading={is_market_close_overlay_loading}
+                        />
+                    </div>
                 )}
                 {contract_el}
                 {card_footer}
@@ -146,6 +164,7 @@ ContractDrawerCard.propTypes = {
     contract_info: PropTypes.object,
     currency: PropTypes.string,
     current_focus: PropTypes.string,
+    is_market_closed: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,
@@ -158,9 +177,10 @@ export default connect(({ modules, ui }) => ({
     addToast: ui.addToast,
     current_focus: ui.current_focus,
     getContractById: modules.contract_trade.getContractById,
-    is_market_closed: modules.trade.is_market_closed,
+    is_market_close_overlay_loading: modules.trade.is_market_close_overlay_loading,
     removeToast: ui.removeToast,
     should_show_cancellation_warning: ui.should_show_cancellation_warning,
+    setMarketCloseOverlayLoading: modules.trade.setMarketCloseOverlayLoading,
     setCurrentFocus: ui.setCurrentFocus,
     toggleCancellationWarning: ui.toggleCancellationWarning,
 }))(ContractDrawerCard);

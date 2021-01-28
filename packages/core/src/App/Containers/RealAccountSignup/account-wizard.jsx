@@ -63,7 +63,6 @@ const AccountWizard = props => {
     const [form_error, setFormError] = React.useState('');
     const [previous_data, setPreviousData] = React.useState([]);
     const [state_items, setStateItems] = React.useState([]);
-    const [has_previous_data, setHasPreviousData] = React.useState(false);
 
     React.useEffect(() => {
         props.fetchStatesList();
@@ -98,7 +97,6 @@ const AccountWizard = props => {
                 }
             });
             setStateItems(items);
-            setHasPreviousData(true);
             setPreviousData([]);
         }
     }, [previous_data]);
@@ -226,7 +224,7 @@ const AccountWizard = props => {
             passthrough.forEach(item => {
                 Object.assign(properties, { [item]: props[item] });
             });
-            properties.bypass_to_personal = has_previous_data;
+            properties.bypass_to_personal = previous_data.length > 0;
         }
         return properties;
     };

@@ -152,7 +152,6 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
     const [form_error, setFormError] = React.useState('');
     const [previous_data, setPreviousData] = React.useState([]);
     const [state_items, setStateItems] = React.useState<TWizardItemConfig[]>([]);
-    const [has_previous_data, setHasPreviousData] = React.useState(false);
     const [items_enabled, setItemsEnabled] = React.useState<boolean[]>([]);
     const isMounted = useIsMounted();
     const selected_step_ref = React.useRef(null);
@@ -193,7 +192,6 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
                 }
             });
             setStateItems(items);
-            setHasPreviousData(true);
             setPreviousData([]);
         }
     }, [previous_data]);
@@ -256,7 +254,7 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
             passthrough.forEach((item: string) => {
                 Object.assign(properties, { [item]: props[item] });
             });
-            properties.bypass_to_personal = has_previous_data;
+            properties.bypass_to_personal = previous_data.length > 0;
         }
         return properties;
     };

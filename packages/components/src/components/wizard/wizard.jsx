@@ -3,7 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import Step from './wizard-step.jsx';
 
-const Wizard = ({ children, className, initial_step, onStepChange, nav }) => {
+const Wizard = ({ children, className, initial_step, onStepChange, nav, selected_step_ref }) => {
     const [active_step, setActiveStep] = React.useState(0);
 
     React.useEffect(() => {
@@ -59,11 +59,21 @@ const Wizard = ({ children, className, initial_step, onStepChange, nav }) => {
         goToLastStep,
     };
 
+    const step_properties = {
+        selected_step_ref,
+    };
+
     const childrenWithProps = React.Children.map(getSteps(), (child, i) => {
         if (!child) return null;
 
         if (i === active_step)
-            return <Wizard.Step>{isReactComponent(child) ? React.cloneElement(child, properties) : child}</Wizard.Step>;
+            return (
+                <Wizard.Step>
+                    {isReactComponent(child)
+                        ? React.cloneElement(child, Object.assign(properties, step_properties))
+                        : child}
+                </Wizard.Step>
+            );
 
         return null;
     });

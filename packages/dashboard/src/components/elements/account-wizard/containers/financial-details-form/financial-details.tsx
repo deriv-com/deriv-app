@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { FinancialDetails } from '@deriv/account';
 import { useStores } from 'Stores';
 
@@ -16,4 +17,4 @@ const FinancialDetailsForm: React.FC = props => {
     );
 };
 
-export default FinancialDetailsForm;
+export default observer(FinancialDetailsForm);

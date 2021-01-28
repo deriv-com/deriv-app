@@ -126,11 +126,11 @@ const AccountWizard = props => {
         const stored_items = localStorage.getItem('real_account_signup_wizard');
         try {
             const items = JSON.parse(stored_items);
-            localStorage.removeItem('real_account_signup_wizard');
             return items || [];
         } catch (e) {
-            localStorage.removeItem('real_account_signup_wizard');
             return [];
+        } finally {
+            localStorage.removeItem('real_account_signup_wizard');
         }
     };
 

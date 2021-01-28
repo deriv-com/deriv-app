@@ -1,30 +1,80 @@
 import classNames from 'classnames';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Wizard, Text, Icon, Loading, FormCancelButton, DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { useIsMounted, isMobile } from '@deriv/shared';
+import {
+    Wizard,
+    Text,
+    Icon,
+    Loading,
+    FormCancelButton,
+    DesktopWrapper,
+    MobileWrapper,
+    Dialog,
+} from '@deriv/components';
+import { useIsMounted, isMobile, isDesktop } from '@deriv/shared';
 import { GetSettings } from '@deriv/api-types';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { useStores } from 'Stores';
+import NewWalletModal from 'Components/modals/new-wallet-modal';
 import { getItems } from './items';
 import { TWizardItemConfig } from './types';
+
+type TCancelProgressModalProps = {
+    is_visible: boolean;
+    onConfirm: () => void;
+    onClose: () => void;
+};
+
+const CancelProgressModal = ({ is_visible, onConfirm, onClose }: TCancelProgressModalProps) => (
+    <Dialog
+        className='cancel-progress-modal'
+        title={localize('Cancel add wallet?')}
+        confirm_button_text={localize('Yes')}
+        cancel_button_text={localize('No')}
+        onConfirm={onConfirm}
+        onCancel={onClose}
+        is_closed_on_cancel
+        is_visible={is_visible}
+    >
+        <Localize i18n_default_text='Are you sure you want to cancel adding a wallet?' />
+    </Dialog>
+);
+
+type TStepperHeaderProps = {
+    items: TWizardItemConfig[];
+    getCurrentStep?: () => number;
+    goToStep?: (step: number) => void;
+    onCancel: () => void;
+    items_enabled: boolean[];
+    selected_step_ref: React.RefObject<{ submitForm: () => void; isSubmitDisabled: () => boolean }>;
+};
 
 const StepperHeader = ({
     items,
     getCurrentStep,
     goToStep,
-}: {
-    items: TWizardItemConfig[];
-    getCurrentStep?: () => number;
-    goToStep?: (step: number) => void;
-}) => {
+    onCancel,
+    items_enabled,
+    selected_step_ref,
+}: TStepperHeaderProps) => {
     const current_step = (getCurrentStep?.() || 1) - 1;
 
-    const isDisabled = (i: number) => i > current_step;
+    const isDisabled = (i: number) => {
+        if (i > current_step && items_enabled[i - 1]) {
+            return false;
+        }
+        if (i <= current_step) return false;
+
+        return true;
+    };
 
     const navigateTo = (i: number) => {
-        if (!isDisabled(i)) {
-            goToStep?.(i + 1);
+        if (!isDisabled(i) && isDesktop()) {
+            if (i <= current_step) {
+                goToStep?.(i + 1);
+            } else {
+                selected_step_ref.current?.submitForm();
+            }
         }
     };
 
@@ -71,6 +121,7 @@ const StepperHeader = ({
                                     {item.header.title}
                                 </Text>
                             </div>
+                            <Icon icon='IcCross' onClick={onCancel} />
                         </MobileWrapper>
                     </div>
                 ))}
@@ -92,16 +143,19 @@ type TAccountWizard = {
     has_currency?: () => boolean;
     has_real_account?: () => boolean;
     account_settings?: GetSettings;
+    onCancel: () => void;
     [x: string]: any;
 };
 
-const AccountWizard: React.FC<TAccountWizard> = observer((props: TAccountWizard) => {
+const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
     const [form_error, setFormError] = React.useState('');
     const [previous_data, setPreviousData] = React.useState([]);
     const [state_items, setStateItems] = React.useState<TWizardItemConfig[]>([]);
     const [has_previous_data, setHasPreviousData] = React.useState(false);
-    const [mounted, setMounted] = React.useState(false);
+    const [items_enabled, setItemsEnabled] = React.useState<boolean[]>([]);
     const isMounted = useIsMounted();
+    const selected_step_ref = React.useRef(null);
+
     const {
         fetchStatesList,
         fetchResidenceList,
@@ -110,6 +164,7 @@ const AccountWizard: React.FC<TAccountWizard> = observer((props: TAccountWizard)
         has_currency,
         has_real_account,
         is_loading,
+        onCancel,
     } = props;
 
     React.useEffect(() => {
@@ -124,7 +179,6 @@ const AccountWizard: React.FC<TAccountWizard> = observer((props: TAccountWizard)
                     return previous_state;
                 });
                 setPreviousData(fetchFromStorage());
-                setMounted(true);
             }
         });
     }, [account_settings]);
@@ -147,11 +201,11 @@ const AccountWizard: React.FC<TAccountWizard> = observer((props: TAccountWizard)
         const stored_items = localStorage.getItem('real_account_signup_wizard');
         try {
             const items = stored_items ? JSON.parse(stored_items) : {};
-            localStorage.removeItem('real_account_signup_wizard');
             return items || [];
         } catch (e) {
-            localStorage.removeItem('real_account_signup_wizard');
             return [];
+        } finally {
+            localStorage.removeItem('real_account_signup_wizard');
         }
     };
 
@@ -206,8 +260,14 @@ const AccountWizard: React.FC<TAccountWizard> = observer((props: TAccountWizard)
         return properties;
     };
 
+    const onSubmitEnabledChange = (step_index: number, is_enabled: boolean) => {
+        const items_enabled_clone = [...items_enabled];
+        items_enabled_clone[step_index] = is_enabled;
+        setItemsEnabled(items_enabled_clone);
+    };
+
     if (is_loading) return <Loading is_fullscreen />;
-    if (!mounted) return null;
+    if (!isMounted()) return null;
 
     const wizard_steps = state_items.map((step: TWizardItemConfig, step_index: number) => {
         const passthrough = getPropsForChild(step_index);
@@ -219,6 +279,7 @@ const AccountWizard: React.FC<TAccountWizard> = observer((props: TAccountWizard)
                 onSubmit={updateValue}
                 onCancel={prevStep}
                 onSave={saveFormData}
+                onSubmitEnabledChange={(is_enabled: boolean) => onSubmitEnabledChange(step_index, is_enabled)}
                 has_currency={has_currency}
                 form_error={form_error}
                 {...passthrough}
@@ -229,17 +290,28 @@ const AccountWizard: React.FC<TAccountWizard> = observer((props: TAccountWizard)
     });
     return (
         <React.Fragment>
-            <Wizard nav={<StepperHeader items={state_items} />} className={classNames('dw-account-wizard')}>
+            <Wizard
+                nav={
+                    <StepperHeader
+                        items={state_items}
+                        onCancel={onCancel}
+                        items_enabled={items_enabled}
+                        selected_step_ref={selected_step_ref}
+                    />
+                }
+                className={classNames('dw-account-wizard')}
+                selected_step_ref={selected_step_ref}
+            >
                 {wizard_steps}
             </Wizard>
             <DesktopWrapper>
-                <FormCancelButton label={localize('Cancel')} is_absolute />
+                <FormCancelButton label={localize('Cancel')} is_absolute onClick={onCancel} />
             </DesktopWrapper>
         </React.Fragment>
     );
-});
+};
 
-const AccountWizardWrapper: React.FC = observer(() => {
+const AccountWizardWrapper: React.FC = () => {
     const { client_store, ui_store } = useStores();
     const {
         account_settings,
@@ -259,27 +331,42 @@ const AccountWizardWrapper: React.FC = observer(() => {
         financial_assessment,
     } = client_store;
     const { real_account_signup_target } = ui_store;
+    const [is_cancel_visible, setIsCancelVisisible] = React.useState(false);
+    const [is_new_wallet_modal_visible, setIsNewWalletModalVisible] = React.useState(false);
 
     return (
-        <AccountWizard
-            account_settings={account_settings}
-            is_fully_authenticated={is_fully_authenticated}
-            realAccountSignup={realAccountSignup}
-            has_real_account={has_active_real_account}
-            upgrade_info={upgrade_info}
-            real_account_signup_target={real_account_signup_target}
-            has_currency={has_currency}
-            setAccountCurrency={setAccountCurrency}
-            residence={residence}
-            residence_list={residence_list}
-            states_list={states_list}
-            fetchResidenceList={fetchResidenceList}
-            fetchStatesList={fetchStatesList}
-            fetchFinancialAssessment={fetchFinancialAssessment}
-            needs_financial_assessment={needs_financial_assessment}
-            financial_assessment={financial_assessment}
-        />
+        <React.Fragment>
+            <AccountWizard
+                account_settings={account_settings}
+                is_fully_authenticated={is_fully_authenticated}
+                realAccountSignup={realAccountSignup}
+                has_real_account={has_active_real_account}
+                upgrade_info={upgrade_info}
+                real_account_signup_target={real_account_signup_target}
+                has_currency={has_currency}
+                setAccountCurrency={setAccountCurrency}
+                residence={residence}
+                residence_list={residence_list}
+                states_list={states_list}
+                fetchResidenceList={fetchResidenceList}
+                fetchStatesList={fetchStatesList}
+                fetchFinancialAssessment={fetchFinancialAssessment}
+                needs_financial_assessment={needs_financial_assessment}
+                financial_assessment={financial_assessment}
+                onCancel={() => setIsCancelVisisible(true)}
+            />
+            <CancelProgressModal
+                is_visible={is_cancel_visible}
+                onClose={() => setIsCancelVisisible(false)}
+                onConfirm={() => setIsCancelVisisible(true)}
+            />
+            <NewWalletModal
+                is_open={is_new_wallet_modal_visible}
+                onClose={() => setIsNewWalletModalVisible(false)}
+                onConfirm={() => setIsNewWalletModalVisible(true)}
+            />
+        </React.Fragment>
     );
-});
+};
 
-export default AccountWizardWrapper;
+export default observer(AccountWizardWrapper);

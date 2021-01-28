@@ -28,12 +28,28 @@ const CurrencySelector = ({
     validate,
     has_cancel = false,
     is_dashboard,
+    selected_step_ref,
+    onSubmitEnabledChange,
     ...props
 }) => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
     const crypto = legal_allowed_currencies.filter(currency => currency.type === 'crypto');
     const fiat = legal_allowed_currencies.filter(currency => currency.type === 'fiat');
     const [is_bypass_step, setIsBypassStep] = React.useState(false);
+    const is_submit_disabled_ref = React.useRef(true);
+
+    const isSubmitDisabled = values => {
+        return selected_step_ref.current?.isSubmitting || !values.currency;
+    };
+
+    const checkSubmitStatus = values => {
+        const is_submit_disabled = isSubmitDisabled(values);
+
+        if (is_submit_disabled_ref.current !== is_submit_disabled) {
+            is_submit_disabled_ref.current = is_submit_disabled;
+            onSubmitEnabledChange(!is_submit_disabled);
+        }
+    };
 
     const handleCancel = values => {
         const current_step = getCurrentStep() - 1;
@@ -42,6 +58,7 @@ const CurrencySelector = ({
     };
 
     const handleValidate = values => {
+        checkSubmitStatus(values);
         const { errors } = splitValidationResultTypes(validate(values));
         return errors;
     };
@@ -72,13 +89,14 @@ const CurrencySelector = ({
 
     return (
         <Formik
+            innerRef={selected_step_ref}
             initialValues={props.value}
             onSubmit={(values, actions) => {
                 onSubmit(getCurrentStep ? getCurrentStep() - 1 : null, values, actions.setSubmitting, goToNextStep);
             }}
             validate={handleValidate}
         >
-            {({ handleSubmit, values, errors, touched, isSubmitting }) => (
+            {({ handleSubmit, values, errors, touched }) => (
                 <AutoHeightWrapper default_height={450}>
                     {({ setRef, height }) => (
                         <form ref={setRef} onSubmit={handleSubmit} className='currency-selector'>
@@ -148,7 +166,7 @@ const CurrencySelector = ({
                                             ? 'currency-selector--set-currency'
                                             : 'currency-selector--deriv-account'
                                     }
-                                    is_disabled={isSubmitting || !values.currency}
+                                    is_disabled={isSubmitDisabled(values)}
                                     is_center={!has_currency}
                                     is_absolute={set_currency || is_dashboard}
                                     label={set_currency ? localize('Set currency') : localize('Next')}

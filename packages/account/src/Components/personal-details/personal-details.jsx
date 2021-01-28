@@ -77,11 +77,27 @@ const PersonalDetails = ({
     is_fully_authenticated,
     account_opening_reason_list,
     is_dashboard,
+    onSubmitEnabledChange,
+    selected_step_ref,
     ...props
 }) => {
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
     const [warning_items, setWarningItems] = React.useState({});
+    const is_submit_disabled_ref = React.useRef(true);
+
+    const isSubmitDisabled = errors => {
+        return selected_step_ref.current?.isSubmitting || Object.keys(errors).length > 0;
+    };
+
+    const checkSubmitStatus = errors => {
+        const is_submit_disabled = isSubmitDisabled(errors);
+
+        if (is_submit_disabled_ref.current !== is_submit_disabled) {
+            is_submit_disabled_ref.current = is_submit_disabled;
+            onSubmitEnabledChange(!is_submit_disabled);
+        }
+    };
 
     const handleCancel = values => {
         const current_step = getCurrentStep() - 1;
@@ -92,6 +108,7 @@ const PersonalDetails = ({
     const handleValidate = values => {
         const { errors, warnings } = splitValidationResultTypes(validate(values));
         setWarningItems(warnings);
+        checkSubmitStatus(errors);
         return errors;
     };
 
@@ -119,6 +136,7 @@ const PersonalDetails = ({
 
     return (
         <Formik
+            innerRef={selected_step_ref}
             initialValues={{ ...props.value }}
             validate={handleValidate}
             validateOnMount
@@ -126,7 +144,7 @@ const PersonalDetails = ({
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({ handleSubmit, isSubmitting, errors, setFieldValue, touched, values, handleChange, handleBlur }) => (
+            {({ handleSubmit, errors, setFieldValue, touched, values, handleChange, handleBlur }) => (
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef, height }) => (
                         <form ref={setRef} onSubmit={handleSubmit} autoComplete='off' onClick={handleClickOutside}>
@@ -507,7 +525,7 @@ const PersonalDetails = ({
                                 <FormSubmitButton
                                     cancel_label={localize('Previous')}
                                     has_cancel
-                                    is_disabled={isSubmitting || Object.keys(errors).length > 0}
+                                    is_disabled={isSubmitDisabled(errors)}
                                     is_absolute={isMobile()}
                                     label={localize('Next')}
                                     onCancel={() => handleCancel(values)}

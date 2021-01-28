@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { Localize } from '@deriv/translations';
 
-// Radio group
 const RadioButtonGroup = ({ label, className, children, is_title_enabled, is_fiat, item_count }) => {
     return (
         <div className={className}>

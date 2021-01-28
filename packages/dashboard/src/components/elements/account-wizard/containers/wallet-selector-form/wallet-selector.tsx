@@ -13,7 +13,7 @@ import { isMobile, isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 const WalletSelector: React.FC = (props: any) => {
-    const { onSubmit, getCurrentStep, goToNextStep, validate } = props;
+    const { onSubmit, getCurrentStep, goToNextStep, validate, onSubmitEnabledChange, selected_step_ref } = props;
     const [wallets] = React.useState([
         'IcWalletSkrillLight',
         'IcWalletCreditDebitLight',
@@ -28,14 +28,30 @@ const WalletSelector: React.FC = (props: any) => {
         'IcWalletPaytrustLight',
         'IcWalletFasapayLight',
     ]);
+    const is_submit_disabled_ref = React.useRef<boolean>(true);
+
+    const isSubmitDisabled = (values: any) => {
+        return selected_step_ref.current?.isSubmitting || !values.wallet;
+    };
+
+    const checkSubmitStatus = (values: any) => {
+        const is_submit_disabled = isSubmitDisabled(values);
+
+        if (is_submit_disabled_ref.current !== is_submit_disabled) {
+            is_submit_disabled_ref.current = is_submit_disabled;
+            onSubmitEnabledChange(!is_submit_disabled);
+        }
+    };
 
     const handleValidate = (values: any) => {
+        checkSubmitStatus(values);
         const { errors } = validate(values);
         return errors;
     };
 
     return (
         <Formik
+            innerRef={selected_step_ref}
             initialValues={{ ...props.value }}
             validate={handleValidate}
             validateOnMount
@@ -43,7 +59,7 @@ const WalletSelector: React.FC = (props: any) => {
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({ handleSubmit, isSubmitting, values, setFieldValue }) => (
+            {({ handleSubmit, values, setFieldValue }) => (
                 <AutoHeightWrapper default_height={450} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef, height }: { setRef: (instance: HTMLFormElement | null) => void; height: number }) => (
                         <form ref={setRef} onSubmit={handleSubmit} autoComplete='off'>
@@ -69,7 +85,7 @@ const WalletSelector: React.FC = (props: any) => {
                             </Div100vhContainer>
                             <Modal.Footer has_separator is_bypassed={isMobile()}>
                                 <FormSubmitButton
-                                    is_disabled={isSubmitting || !values.wallet}
+                                    is_disabled={isSubmitDisabled(values)}
                                     is_absolute
                                     label={localize('Next')}
                                 />

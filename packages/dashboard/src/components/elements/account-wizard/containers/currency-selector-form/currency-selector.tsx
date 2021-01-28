@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { CurrencySelector } from '@deriv/account';
 import { useStores } from 'Stores';
 
-const CurrencySelectorForm: React.FC = observer(props => {
+const CurrencySelectorForm: React.FC = props => {
     const { client_store, ui_store } = useStores();
     const { currencies_list, currency, has_active_real_account, upgradeable_currencies } = client_store;
     const { real_account_signup, resetRealAccountSignupParams } = ui_store;
@@ -20,6 +20,6 @@ const CurrencySelectorForm: React.FC = observer(props => {
             has_cancel
         />
     );
-});
+};
 
-export default CurrencySelectorForm;
+export default observer(CurrencySelectorForm);

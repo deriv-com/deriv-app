@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Button } from '@deriv/components';
+import { localize } from '@deriv/translations';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import AccountWizard from 'Components/elements/account-wizard';
@@ -22,7 +23,7 @@ const TempGetDMT5Wallet: React.FC = observer(() => {
                 )}
             </React.Fragment>
             <MT5PasswordModal />
-            <GetWalletModal />
+            <GetWalletModal app_title={localize('DMT5 Synthetic')} app_icon={'IcBrandDmt5Synthetics'} />
         </div>
     );
 });

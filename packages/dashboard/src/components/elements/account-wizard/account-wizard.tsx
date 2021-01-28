@@ -45,16 +45,36 @@ type TStepperHeaderProps = {
     getCurrentStep?: () => number;
     goToStep?: (step: number) => void;
     onCancel: () => void;
+    items_enabled: boolean[];
+    selected_step_ref: React.RefObject<{ submitForm: () => void; isSubmitDisabled: () => boolean }>;
 };
 
-const StepperHeader = ({ items, getCurrentStep, goToStep, onCancel }: TStepperHeaderProps) => {
+const StepperHeader = ({
+    items,
+    getCurrentStep,
+    goToStep,
+    onCancel,
+    items_enabled,
+    selected_step_ref,
+}: TStepperHeaderProps) => {
     const current_step = (getCurrentStep?.() || 1) - 1;
 
-    const isDisabled = (i: number) => i > current_step;
+    const isDisabled = (i: number) => {
+        if (i > current_step && items_enabled[i - 1]) {
+            return false;
+        }
+        if (i <= current_step) return false;
+
+        return true;
+    };
 
     const navigateTo = (i: number) => {
         if (!isDisabled(i) && isDesktop()) {
-            goToStep?.(i + 1);
+            if (i <= current_step) {
+                goToStep?.(i + 1);
+            } else {
+                selected_step_ref.current?.submitForm();
+            }
         }
     };
 
@@ -132,7 +152,10 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
     const [previous_data, setPreviousData] = React.useState([]);
     const [state_items, setStateItems] = React.useState<TWizardItemConfig[]>([]);
     const [has_previous_data, setHasPreviousData] = React.useState(false);
+    const [items_enabled, setItemsEnabled] = React.useState<boolean[]>([]);
     const isMounted = useIsMounted();
+    const selected_step_ref = React.useRef(null);
+
     const {
         fetchStatesList,
         fetchResidenceList,
@@ -237,6 +260,12 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
         return properties;
     };
 
+    const onSubmitEnabledChange = (step_index: number, is_enabled: boolean) => {
+        const items_enabled_clone = [...items_enabled];
+        items_enabled_clone[step_index] = is_enabled;
+        setItemsEnabled(items_enabled_clone);
+    };
+
     if (is_loading) return <Loading is_fullscreen />;
     if (!isMounted()) return null;
 
@@ -250,6 +279,7 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
                 onSubmit={updateValue}
                 onCancel={prevStep}
                 onSave={saveFormData}
+                onSubmitEnabledChange={(is_enabled: boolean) => onSubmitEnabledChange(step_index, is_enabled)}
                 has_currency={has_currency}
                 form_error={form_error}
                 {...passthrough}
@@ -261,8 +291,16 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
     return (
         <React.Fragment>
             <Wizard
-                nav={<StepperHeader items={state_items} onCancel={onCancel} />}
+                nav={
+                    <StepperHeader
+                        items={state_items}
+                        onCancel={onCancel}
+                        items_enabled={items_enabled}
+                        selected_step_ref={selected_step_ref}
+                    />
+                }
                 className={classNames('dw-account-wizard')}
+                selected_step_ref={selected_step_ref}
             >
                 {wizard_steps}
             </Wizard>

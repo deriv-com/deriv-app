@@ -64,6 +64,15 @@
             height: 3.2rem;
         }
 
+        &-title {
+            display: flex;
+            align-items: center;
+
+            .dc-icon {
+                margin-right: 0.8rem;
+            }
+        }
+
         &-footer {
             display: flex;
             flex-direction: column;

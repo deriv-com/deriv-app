@@ -49,6 +49,8 @@ const AddressDetails = ({
     is_svg,
     is_gb_residence,
     is_dashboard,
+    onSubmitEnabledChange,
+    selected_step_ref,
     ...props
 }) => {
     const [has_fetched_states_list, setHasFetchedStatesList] = React.useState(false);
@@ -67,6 +69,21 @@ const AddressDetails = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const is_submit_disabled_ref = React.useRef(true);
+
+    const isSubmitDisabled = errors => {
+        return selected_step_ref.current?.isSubmitting || Object.keys(errors).length > 0;
+    };
+
+    const checkSubmitStatus = errors => {
+        const is_submit_disabled = isSubmitDisabled(errors);
+
+        if (is_submit_disabled_ref.current !== is_submit_disabled) {
+            is_submit_disabled_ref.current = is_submit_disabled;
+            onSubmitEnabledChange(!is_submit_disabled);
+        }
+    };
+
     const handleCancel = values => {
         const current_step = getCurrentStep() - 1;
         onSave(current_step, values);
@@ -75,11 +92,13 @@ const AddressDetails = ({
 
     const handleValidate = values => {
         const { errors } = splitValidationResultTypes(validate(values));
+        checkSubmitStatus(errors);
         return errors;
     };
 
     return (
         <Formik
+            innerRef={selected_step_ref}
             initialValues={props.value}
             validate={handleValidate}
             validateOnMount
@@ -92,7 +111,7 @@ const AddressDetails = ({
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({ handleSubmit, isSubmitting, errors, values, setFieldValue }) => (
+            {({ handleSubmit, errors, values, setFieldValue }) => (
                 <AutoHeightWrapper default_height={350} height_offset={isDesktop() ? 80 : null}>
                     {({ setRef, height }) => (
                         <form ref={setRef} onSubmit={handleSubmit}>
@@ -219,7 +238,7 @@ const AddressDetails = ({
                             </Div100vhContainer>
                             <Modal.Footer has_separator is_bypassed={isMobile()}>
                                 <FormSubmitButton
-                                    is_disabled={isSubmitting || Object.keys(errors).length > 0}
+                                    is_disabled={isSubmitDisabled(errors)}
                                     label={localize('Next')}
                                     is_absolute={isMobile()}
                                     has_cancel

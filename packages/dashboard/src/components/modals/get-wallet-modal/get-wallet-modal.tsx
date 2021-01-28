@@ -4,7 +4,12 @@ import { Modal, Text, Icon, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { useStores } from 'Stores';
 
-const GetPasswordModal: React.FC = () => {
+type TGetPasswordModal = {
+    app_title: string;
+    app_icon: string;
+};
+
+const GetPasswordModal: React.FC<TGetPasswordModal> = ({ app_title, app_icon }: TGetPasswordModal) => {
     const { ui_store, mt5_store } = useStores();
 
     const [wallets] = React.useState([
@@ -62,8 +67,9 @@ const GetPasswordModal: React.FC = () => {
                             <div className='dw-get-wallet-modal__selected-app'>
                                 <div className='dw-get-wallet-modal__selected-app-title-wrapper'>
                                     <div className='dw-get-wallet-modal__selected-app-title'>
+                                        <Icon icon={app_icon} size={24} />
                                         <Text size='xs' weight='bold'>
-                                            {localize('DMT5 Synthetic')}
+                                            {app_title}
                                         </Text>
                                     </div>
                                 </div>

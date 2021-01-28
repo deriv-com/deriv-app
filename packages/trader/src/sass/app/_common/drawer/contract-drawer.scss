@@ -86,6 +86,16 @@ $header-height: 4em;
         padding: 0;
         background-image: var(--contract-gradient-danger);
         z-index: 1000;
+
+        &--loading {
+            display: none;
+        }
+        &--disabled {
+            cursor: not-allowed;
+        }
+        &--hidden {
+            opacity: 0;
+        }
     }
     &__footer {
         margin-bottom: 0.5rem;

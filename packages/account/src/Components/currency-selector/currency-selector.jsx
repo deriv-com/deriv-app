@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -68,6 +67,7 @@ const CurrencySelector = ({
         if (real_account_signup?.error_code) {
             setIsBypassStep(true);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
@@ -76,6 +76,7 @@ const CurrencySelector = ({
             resetRealAccountSignupParams();
             setIsBypassStep(false);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_bypass_step]);
 
     const getHeightOffset = () => {

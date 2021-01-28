@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { CurrencySelectorConfig } from '@deriv/account';
+import { currencySelectorConfig } from '@deriv/account';
 import { website_name, generateValidationFunction } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
@@ -83,7 +83,7 @@ const SetCurrency = ({
                 value={form_value}
                 form_error={form_error}
                 set_currency
-                validate={generateValidationFunction(landing_company_shortcode, CurrencySelectorConfig)}
+                validate={generateValidationFunction(landing_company_shortcode, currencySelectorConfig)}
                 {...props}
             />
         </div>

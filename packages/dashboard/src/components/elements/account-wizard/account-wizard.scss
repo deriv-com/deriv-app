@@ -28,6 +28,7 @@
 
             @include desktop {
                 padding: 1.6rem 0;
+                justify-content: center;
             }
 
             &:not(&--disabled) {

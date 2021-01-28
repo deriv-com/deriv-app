@@ -387,6 +387,8 @@ export default class TradeStore extends BaseStore {
             // set trade params skeleton and chart loader to true until processNewValuesAsync resolves
             this.setChartStatus(true);
             this.setMarketCloseOverlayLoading(true);
+            // reset market close status
+            this.setMarketStatus(false);
             this.is_trade_enabled = false;
             // this.root_store.modules.contract_trade.contracts = [];
             // TODO: Clear the contracts in contract-trade-store
@@ -1033,7 +1035,6 @@ export default class TradeStore extends BaseStore {
         if (this.is_trade_component_mounted && this.should_skip_prepost_lifecycle) {
             return;
         }
-
         this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
         this.onLogout(this.logoutListener);

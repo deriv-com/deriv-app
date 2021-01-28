@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { FormikProps, FormikValues } from 'formik';
 import {
     Wizard,
     Text,
@@ -46,7 +47,7 @@ type TStepperHeaderProps = {
     goToStep?: (step: number) => void;
     onCancel: () => void;
     items_enabled: boolean[];
-    selected_step_ref: React.RefObject<{ submitForm: () => void; isSubmitDisabled: () => boolean }>;
+    selected_step_ref?: React.RefObject<FormikProps<FormikValues>>;
 };
 
 const StepperHeader = ({
@@ -73,7 +74,7 @@ const StepperHeader = ({
             if (i <= current_step) {
                 goToStep?.(i + 1);
             } else {
-                selected_step_ref.current?.submitForm();
+                selected_step_ref?.current?.submitForm();
             }
         }
     };
@@ -291,14 +292,7 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
     return (
         <React.Fragment>
             <Wizard
-                nav={
-                    <StepperHeader
-                        items={state_items}
-                        onCancel={onCancel}
-                        items_enabled={items_enabled}
-                        selected_step_ref={selected_step_ref}
-                    />
-                }
+                nav={<StepperHeader items={state_items} onCancel={onCancel} items_enabled={items_enabled} />}
                 className={classNames('dw-account-wizard')}
                 selected_step_ref={selected_step_ref}
             >

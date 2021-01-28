@@ -1,7 +1,7 @@
 import { localize } from '@deriv/translations';
 import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
+import { TWizardItemConfig } from 'Components/elements/account-wizard/types';
 import WalletSelector from './wallet-selector';
-import { TWizardItemConfig } from '../../types';
 import './wallet-selector.scss';
 
 export const wallet_selector_config = {

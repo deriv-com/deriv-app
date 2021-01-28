@@ -48,6 +48,7 @@ const MarketCountdownTimer = ({
     is_main_page,
     is_market_close_overlay_loading,
     setMarketCloseOverlayLoading,
+    setMarketStatus,
     symbol,
 }) => {
     const isMounted = useIsMounted();
@@ -93,7 +94,10 @@ const MarketCountdownTimer = ({
         if (when_market_opens?.remaining_time_to_open) {
             timer = setTimeout(() => {
                 setTimeLeft(calculateTimeLeft(when_market_opens.remaining_time_to_open));
-                if (when_market_opens.remaining_time_to_open <= 1) setMarketCloseOverlayLoading(true);
+                if (new Date(when_market_opens.remaining_time_to_open) - +new Date() < 1000) {
+                    setMarketStatus(false);
+                    setMarketCloseOverlayLoading(true);
+                }
             }, 1000);
         }
         return () => {
@@ -149,7 +153,7 @@ const MarketCountdownTimer = ({
         );
     }
 
-    if (is_main_page && is_market_close_overlay_loading) setMarketCloseOverlayLoading(false);
+    if (is_market_close_overlay_loading) setMarketCloseOverlayLoading(false);
 
     return (
         <React.Fragment>
@@ -201,5 +205,6 @@ MarketCountdownTimer.propTypes = {
 export default connect(({ modules }) => ({
     is_market_close_overlay_loading: modules.trade.is_market_close_overlay_loading,
     setMarketCloseOverlayLoading: modules.trade.setMarketCloseOverlayLoading,
+    setMarketStatus: modules.trade.setMarketStatus,
     symbol: modules.trade.symbol,
 }))(MarketCountdownTimer);

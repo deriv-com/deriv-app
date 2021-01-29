@@ -17,10 +17,10 @@ const Home: React.FC = () => {
             label: localize('My Deriv'),
             is_routed: true,
             value: () => (
-                <>
+                <React.Fragment>
+                    {/* <TempGetDMT5Wallet /> */}
                     <TempGetDerivWallet />
-                    <TempGetDMT5Wallet />
-                </>
+                </React.Fragment>
             ),
         },
         {

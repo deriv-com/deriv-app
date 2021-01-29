@@ -81,6 +81,7 @@ export type TUIStore = {
     is_get_wallet_modal_open: boolean;
     is_real_acc_signup_on: boolean;
     resetRealAccountSignupParams?: () => void;
+    openRealAccountSignup: () => void;
     enableGetPasswordModal: () => void;
     disableGetPasswordModal: () => void;
 };

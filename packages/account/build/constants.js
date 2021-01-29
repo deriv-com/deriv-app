@@ -90,17 +90,15 @@ const MINIMIZERS = !IS_RELEASE
     ? []
     : [
           new TerserPlugin({
-              test: /\.js/,
-              exclude: /(smartcharts)/,
+              test: /\.js$/,
               parallel: true,
-              sourceMap: true,
           }),
           new OptimizeCssAssetsPlugin(),
       ];
 
 const plugins = () => [
     new CleanWebpackPlugin(),
-    new IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
     new MiniCssExtractPlugin(cssConfig()),
 ];
 

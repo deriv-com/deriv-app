@@ -1232,7 +1232,7 @@ export default class ClientStore extends BaseStore {
             this.root_store.ui.addNotificationMessage({
                 message: localize('Switching to default account.'),
                 type: 'info',
-                variant: 'system',
+                variant: 'account',
             });
 
             // switch to default account.

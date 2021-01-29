@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { isDesktop } from '@deriv/shared';
+import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import Withdraw from '../Components/withdraw.jsx';
 import SendEmail from '../Components/Email/send-email.jsx';
@@ -58,12 +58,15 @@ const Withdrawal = ({
 
     React.useEffect(() => {
         if ((iframe_url || verification_code) && isDesktop()) {
-            if (/^(UST|eUSDT)$/i.test(currency) && typeof setSideNotes === 'function') {
-                setSideNotes([<WithdrawalSideNote key={0} />, <USDTSideNote key={1} />]);
-            } else {
-                setSideNotes([<WithdrawalSideNote key={0} />]);
-            }
+            if (isCryptocurrency(currency) && typeof setSideNotes === 'function') {
+                const side_notes = [
+                    <WithdrawalSideNote key={0} />,
+                    ...(/^(UST|eUSDT)$/i.test(currency) ? [<USDTSideNote key={1} />] : []),
+                ];
+                setSideNotes(side_notes);
+            } else setSideNotes(null);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, iframe_url, verification_code]);
 
     if (verification_code || iframe_url) {

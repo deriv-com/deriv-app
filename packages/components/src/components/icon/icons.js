@@ -64,6 +64,7 @@ import './cashier/ic-cashier-send-email.svg';
 import './cashier/ic-cashier-sepa-dark.svg';
 import './cashier/ic-cashier-sepa-light.svg';
 import './cashier/ic-cashier-sofort.svg';
+import './cashier/ic-cashier-top-up.svg';
 import './cashier/ic-cashier-upi-dark.svg';
 import './cashier/ic-cashier-upi-light.svg';
 import './cashier/ic-cashier-verification-badge.svg';

@@ -68,6 +68,7 @@ const Statement = ({
     is_loading,
     is_mx_mlt,
     is_switching,
+    is_virtual,
     onMount,
     onUnmount,
 }) => {
@@ -136,11 +137,11 @@ const Statement = ({
         return map;
     }, {});
 
-    const mobileRowRenderer = ({ row }) => (
+    const mobileRowRenderer = ({ row, passthrough }) => (
         <React.Fragment>
             <div className='data-list__row'>
-                <DataList.Cell row={row} column={columns_map.icon} />
-                <DataList.Cell row={row} column={columns_map.action_type} />
+                <DataList.Cell row={row} column={columns_map.icon} passthrough={passthrough} />
+                <DataList.Cell row={row} column={columns_map.action_type} passthrough={passthrough} />
             </div>
             <div className='data-list__row'>
                 <DataList.Cell row={row} column={columns_map.refid} />
@@ -182,12 +183,15 @@ const Statement = ({
                             <DesktopWrapper>
                                 <DataTable
                                     className='statement'
-                                    data_source={data}
                                     columns={columns}
-                                    onScroll={handleScroll}
+                                    content_loader={ReportsTableRowLoader}
+                                    data_source={data}
                                     getRowAction={row => getRowAction(row)}
                                     getRowSize={() => 63}
-                                    content_loader={ReportsTableRowLoader}
+                                    onScroll={handleScroll}
+                                    passthrough={{
+                                        isTopUp: item => is_virtual && item.action === 'Deposit',
+                                    }}
                                 >
                                     <PlaceholderComponent is_loading={is_loading} />
                                 </DataTable>
@@ -196,10 +200,13 @@ const Statement = ({
                                 <DataList
                                     className='statement'
                                     data_source={data}
-                                    rowRenderer={mobileRowRenderer}
                                     getRowAction={getRowAction}
                                     onScroll={handleScroll}
+                                    rowRenderer={mobileRowRenderer}
                                     row_gap={8}
+                                    passthrough={{
+                                        isTopUp: item => is_virtual && item.action === 'Deposit',
+                                    }}
                                 >
                                     <PlaceholderComponent is_loading={is_loading} />
                                 </DataList>
@@ -228,6 +235,7 @@ Statement.propTypes = {
     is_loading: PropTypes.bool,
     is_mx_mlt: PropTypes.bool,
     is_switching: PropTypes.bool,
+    is_virtual: PropTypes.bool,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
 };
@@ -247,6 +255,7 @@ export default connect(({ modules, client }) => ({
     is_loading: modules.statement.is_loading,
     is_mx_mlt: client.standpoint.iom || client.standpoint.malta,
     is_switching: client.is_switching,
+    is_virtual: client.is_virtual,
     onMount: modules.statement.onMount,
     onUnmount: modules.statement.onUnmount,
 }))(withRouter(Statement));

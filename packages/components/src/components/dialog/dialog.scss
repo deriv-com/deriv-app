@@ -84,10 +84,7 @@
     }
     &__content {
         align-self: flex-start;
-        @include typeface(--paragraph-left-normal-black, unset);
         margin-bottom: 2.4rem;
-        line-height: 1.43;
-        color: var(--text-general);
         max-width: calc(440px - 4.8rem);
         width: 100%;
 

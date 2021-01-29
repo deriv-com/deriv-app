@@ -1,5 +1,5 @@
 import React from 'react';
-import { Div100vhContainer, Modal, Money, Popover } from '@deriv/components';
+import { Div100vhContainer, Modal, Money, Popover, usePreventIOSZoom } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
@@ -10,19 +10,7 @@ import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multipl
 
 const MultiplierAmountModal = ({ is_open, enableApp, disableApp, toggleModal }) => {
     // Fix to prevent iOS from zooming in erratically on quick taps
-    const preventIOSZoom = React.useCallback(event => {
-        if (event.touches.length > 1) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-    }, []);
-
-    React.useEffect(() => {
-        document.addEventListener('touchstart', event => preventIOSZoom(event), { passive: false });
-        return () => {
-            document.removeEventListener('touchstart', event => preventIOSZoom(event));
-        };
-    }, [preventIOSZoom]);
+    usePreventIOSZoom();
 
     return (
         <React.Fragment>
@@ -58,12 +46,12 @@ export default connect(({ client, modules, ui }) => ({
     disableApp: ui.disableApp,
 }))(MultiplierAmountModal);
 
-const TradeParamsMobile = ({ amount, currency, toggleModal, trade_store }) => {
+const TradeParamsMobile = ({ amount, currency, toggleModal, trade_store, trade_stop_out }) => {
     const [stake_value, setStakeValue] = React.useState(amount);
     const [commission, setCommission] = React.useState(null);
     const [stop_out, setStopOut] = React.useState(null);
     const stake_ref = React.useRef(amount);
-    const is_mounted = useIsMounted();
+    const isMounted = useIsMounted();
 
     React.useEffect(() => {
         if (stake_value === amount) return undefined;
@@ -71,7 +59,7 @@ const TradeParamsMobile = ({ amount, currency, toggleModal, trade_store }) => {
         const onProposalResponse = response => {
             const { proposal, echo_req, subscription } = response;
             if (
-                is_mounted &&
+                isMounted() &&
                 proposal &&
                 echo_req.contract_type === 'MULTUP' &&
                 Number(echo_req.amount) === Number(stake_ref.current)
@@ -107,7 +95,9 @@ const TradeParamsMobile = ({ amount, currency, toggleModal, trade_store }) => {
                     message={
                         <Localize
                             i18n_default_text='To ensure your loss does not exceed your stake, your contract will be closed automatically when your loss equals to <0/>.'
-                            components={[<Money key={0} amount={stake_value} currency={currency} show_currency />]}
+                            components={[
+                                <Money key={0} amount={stop_out || trade_stop_out} currency={currency} show_currency />,
+                            ]}
                         />
                     }
                 />
@@ -135,6 +125,7 @@ const TradeParamsMobileWrapper = connect(({ ui, modules }) => ({
     currency: modules.trade.currency,
     multiplier: modules.trade.multiplier,
     multiplier_range_list: modules.trade.multiplier_range_list,
+    trade_stop_out: modules.trade.stop_out,
     onChange: modules.trade.onChange,
     addToast: ui.addToast,
     trade_store: modules.trade,

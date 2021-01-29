@@ -30,6 +30,46 @@ export const getMT5AccountKey = (market_type, sub_account_type) => {
     return undefined;
 };
 
+/**
+ * Generate the enum for API request.
+ *
+ * @param {string} category [real, demo]
+ * @param {string} type [synthetic, financial, financial_stp]
+ * @return {string}
+ */
+export const getAccountTypeFields = ({ category, type }) => {
+    const map_mode = {
+        real: {
+            synthetic: {
+                account_type: 'gaming',
+            },
+            financial: {
+                account_type: 'financial',
+                mt5_account_type: 'financial',
+            },
+            financial_stp: {
+                account_type: 'financial',
+                mt5_account_type: 'financial_stp',
+            },
+        },
+        demo: {
+            synthetic: {
+                account_type: 'demo',
+            },
+            financial: {
+                account_type: 'demo',
+                mt5_account_type: 'financial',
+            },
+            financial_stp: {
+                account_type: 'demo',
+                mt5_account_type: 'financial_stp',
+            },
+        },
+    };
+
+    return map_mode[category][type];
+};
+
 export const getMT5AccountDisplay = (market_type, sub_account_type) => {
     const mt5_account_key = getMT5AccountKey(market_type, sub_account_type);
     if (!mt5_account_key) return undefined;

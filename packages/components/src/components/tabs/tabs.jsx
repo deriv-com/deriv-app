@@ -3,6 +3,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Tab from './tab.jsx';
+import { useConstructor } from '../../hooks';
 
 const Tabs = ({
     active_index,
@@ -19,39 +20,11 @@ const Tabs = ({
     single_tab_has_no_label,
     top,
 }) => {
-    const [active_tab_index, setActiveTabIndex] = React.useState();
     const [active_line_style, updateActiveLineStyle] = React.useState({});
     const active_tab_ref = React.useRef();
     const tabs_wrapper_ref = React.useRef();
 
-    React.useEffect(() => {
-        let initial_index = active_index;
-        if (should_update_hash) {
-            const hash = location.hash.slice(1);
-            const hash_index = children.findIndex(child => child.props && child.props['data-hash'] === hash);
-            if (hash_index !== -1) {
-                initial_index = hash_index;
-                history.push({ hash });
-            }
-        }
-        onClickTabItem(initial_index || 0);
-        setActiveLineStyle();
-    }, [active_tab_index, location.hash]);
-
-    const onClickTabItem = index => {
-        if (should_update_hash) {
-            const hash = children[index].props['data-hash'];
-            if (hash && hash !== location.hash.slice(1)) {
-                history.push({ hash });
-            }
-        }
-        if (typeof onTabItemClick === 'function') {
-            onTabItemClick(index);
-        }
-        setActiveTabIndex(index);
-    };
-
-    const setActiveLineStyle = () => {
+    const setActiveLineStyle = React.useCallback(() => {
         const tabs_wrapper_bounds = tabs_wrapper_ref?.current?.getBoundingClientRect();
         const active_tab_bounds = active_tab_ref?.current?.getBoundingClientRect();
         if (tabs_wrapper_bounds && active_tab_bounds) {
@@ -64,6 +37,56 @@ const Tabs = ({
                 setActiveLineStyle();
             }, 500);
         }
+    }, []);
+
+    let initial_index_to_show;
+    useConstructor(() => {
+        initial_index_to_show = active_index || 0;
+        if (should_update_hash) {
+            // if hash is in url, find which tab index correlates to it
+            const hash = location.hash.slice(1);
+            const hash_index = children.findIndex(child => child.props && child.props['data-hash'] === hash);
+            const has_hash = hash_index > -1;
+
+            if (has_hash) {
+                initial_index_to_show = hash_index;
+            } else {
+                // if no hash is in url but component has passed data-hash prop, set hash of the tab shown
+                const child_props = children[initial_index_to_show].props;
+                const current_id = child_props && child_props['data-hash'];
+                if (current_id) {
+                    history.push({ hash: current_id });
+                }
+            }
+        }
+        setActiveLineStyle();
+    });
+
+    const [active_tab_index, setActiveTabIndex] = React.useState(initial_index_to_show);
+
+    React.useEffect(() => {
+        if (active_tab_index >= 0 && active_index !== active_tab_index) {
+            if (typeof onTabItemClick === 'function') {
+                onTabItemClick(active_tab_index);
+            }
+        }
+        setActiveLineStyle();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [active_tab_index, setActiveLineStyle]);
+
+    React.useEffect(() => {
+        if (active_index >= 0 && active_index !== active_tab_index) {
+            setActiveTabIndex(active_index);
+        }
+    }, [active_index]);
+
+    const onClickTabItem = index => {
+        if (should_update_hash) {
+            const hash = children[index].props['data-hash'];
+            history.push({ hash });
+        }
+        setActiveTabIndex(index);
+        setActiveLineStyle();
     };
 
     const valid_children = children.filter(child => child);

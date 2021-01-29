@@ -37,7 +37,11 @@ const MyProfileForm = () => {
                                     <Input
                                         {...field}
                                         type='textarea'
-                                        label={localize('Payment details')}
+                                        label={
+                                            <Text color='less-prominent' size='xs'>
+                                                <Localize i18n_default_text='Payment details' />{' '}
+                                            </Text>
+                                        }
                                         error={errors.payment_info}
                                         hint={localize('e.g. your bank/e-wallet account details')}
                                         is_relative_hint
@@ -53,7 +57,11 @@ const MyProfileForm = () => {
                                     <Input
                                         {...field}
                                         type='textarea'
-                                        label={localize('Contact details')}
+                                        label={
+                                            <Text color='less-prominent' size='xs'>
+                                                <Localize i18n_default_text='Contact details' />
+                                            </Text>
+                                        }
                                         error={errors.contact_info}
                                         className='my-profile-form__textarea'
                                         has_character_counter
@@ -67,7 +75,11 @@ const MyProfileForm = () => {
                                     <Input
                                         {...field}
                                         type='textarea'
-                                        label={localize('Instructions')}
+                                        label={
+                                            <Text color='less-prominent' size='xs'>
+                                                <Localize i18n_default_text='Instructions' />{' '}
+                                            </Text>
+                                        }
                                         error={errors.default_advert_description}
                                         hint={localize('This information will be visible to everyone.')}
                                         is_relative_hint

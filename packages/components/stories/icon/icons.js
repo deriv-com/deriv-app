@@ -30,6 +30,7 @@ export const icons = {
         'IcCashierChangellyLight',
         'IcCashierDepositLock',
         'IcCashierDeposit',
+        'IcCashierDp2pBlocked',
         'IcCashierDp2p',
         'IcCashierError',
         'IcCashierFlexepinDark',

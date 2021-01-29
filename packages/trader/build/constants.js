@@ -10,7 +10,7 @@ const path = require('path');
 const StylelintPlugin = require('stylelint-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
+const AssetsManifestPlugin = require('webpack-manifest-plugin');
 
 const {
     copyConfig,
@@ -104,9 +104,10 @@ const MINIMIZERS = !IS_RELEASE
     ? []
     : [
           new TerserPlugin({
-              test: /\.js$/,
+              test: /\.js/,
               exclude: /(smartcharts)/,
               parallel: true,
+              sourceMap: true,
           }),
           new OptimizeCssAssetsPlugin(),
       ];
@@ -116,12 +117,12 @@ const plugins = (base, is_test_env, is_mocha_only) => [
     new CopyPlugin(copyConfig(base)),
     // new HtmlWebPackPlugin(htmlOutputConfig()),
     // new HtmlWebpackTagsPlugin(htmlInjectConfig()),
-    new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
+    new IgnorePlugin(/^\.\/locale$/, /moment$/),
     new MiniCssExtractPlugin(cssConfig()),
     new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
     ...(IS_RELEASE
         ? []
-        : [new WebpackManifestPlugin({ fileName: 'asset-manifest.json', filter: file => file.name !== 'CNAME' })]),
+        : [new AssetsManifestPlugin({ fileName: 'asset-manifest.json', filter: file => file.name !== 'CNAME' })]),
     ...(is_test_env && !is_mocha_only
         ? [new StylelintPlugin(stylelintConfig())]
         : [

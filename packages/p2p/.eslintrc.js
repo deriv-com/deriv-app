@@ -1,10 +1,10 @@
-const webpackConfig = require('./webpack.config.js');
+const path = require('path');
 
 module.exports = {
     extends: '../../.eslintrc.js',
     settings: {
         'import/resolver': {
-            webpack: { config: webpackConfig() },
+            webpack: { config: path.resolve(__dirname, 'webpack.config.js') },
         },
     },
 };

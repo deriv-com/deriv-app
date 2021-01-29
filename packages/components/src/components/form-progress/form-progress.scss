@@ -25,32 +25,17 @@
         width: 160px;
         z-index: 2;
 
-        & .title {
-            font-size: var(--text-size-xxs);
-            color: var(--text-prominent);
-        }
         & .identifier {
             border-radius: 50%;
             display: block;
             width: 24px;
-            @include typeface(--paragraph-center-bold-black);
             background-color: var(--text-less-prominent);
             border: 1px solid var(--text-less-prominent);
-            color: var(--text-colored-background);
-        }
-        &--active {
-            .identifier {
-                @include typeface(--paragraph-center-bold-black);
+
+            &--active {
                 background-color: var(--brand-red-coral) !important;
                 border: 1px solid var(--brand-red-coral) !important;
-                color: var(--text-colored-background);
                 transition: all 0.3s ease;
-            }
-        }
-        &--current {
-            .title {
-                color: var(--brand-red-coral);
-                font-weight: bold;
             }
         }
     }

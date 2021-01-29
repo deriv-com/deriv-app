@@ -26,6 +26,7 @@ import './cashier/ic-cashier-changelly-dark.svg';
 import './cashier/ic-cashier-changelly-light.svg';
 import './cashier/ic-cashier-deposit-lock.svg';
 import './cashier/ic-cashier-deposit.svg';
+import './cashier/ic-cashier-dp2p-blocked.svg';
 import './cashier/ic-cashier-dp2p.svg';
 import './cashier/ic-cashier-error.svg';
 import './cashier/ic-cashier-flexepin-dark.svg';

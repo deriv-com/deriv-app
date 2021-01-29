@@ -263,7 +263,6 @@ export const clientNotifications = (ui = {}, client = {}) => {
             type: 'info',
             variant: 'account',
             is_persistent: true,
-            should_hide_close_btn: true,
             should_show_again: true,
             platform: [platform_name.DTrader],
             is_disposable: true,

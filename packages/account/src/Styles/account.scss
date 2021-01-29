@@ -1569,7 +1569,6 @@ $MIN_HEIGHT_FLOATING: calc(
             max-width: 440px;
             max-height: 480px;
             height: auto;
-            display: flex;
             flex-direction: column;
 
             &-header {

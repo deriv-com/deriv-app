@@ -1,5 +1,6 @@
 import React from 'react';
-import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
+import PropTypes from 'prop-types';
+import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper, usePrevious } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
@@ -26,139 +27,114 @@ const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
     return null;
 };
 
-class Trade extends React.Component {
-    state = {
-        digits: [],
-        tick: {},
-        try_synthetic_indices: false,
-    };
+const Trade = ({
+    contract_type,
+    form_components,
+    is_chart_loading,
+    is_dark_theme,
+    is_market_closed,
+    is_trade_enabled,
+    network_status,
+    NotificationMessages,
+    onMount,
+    onUnmount,
+    setMobileDigitView,
+    show_digits_stats,
+    symbol,
+}) => {
+    const [digits, setDigits] = React.useState([]);
+    const [tick, setTick] = React.useState({});
+    const [try_synthetic_indices, setTrySyntheticIndices] = React.useState(false);
+    const [is_digits_widget_active, setIsDigitsWidgetActive] = React.useState(false);
 
-    componentDidMount() {
-        this.props.onMount();
-    }
+    React.useEffect(() => {
+        onMount();
+        return () => onUnmount();
+    }, [onMount, onUnmount]);
 
-    componentWillUnmount() {
-        this.props.onUnmount();
-    }
-
-    componentDidUpdate(prevProps) {
-        if (isMobile() && prevProps.symbol !== this.props.symbol) {
-            this.setState({ digits: [] });
+    React.useEffect(() => {
+        if (isMobile()) {
+            setDigits([]);
         }
-        if (prevProps.symbol !== this.props.symbol) {
-            this.setState({ try_synthetic_indices: false });
-        }
-    }
+        setTrySyntheticIndices(false);
+    }, [symbol, setDigits, setTrySyntheticIndices]);
 
-    bottomWidgets = ({ digits, tick }) => {
-        return (
-            <BottomWidgetsMobile
-                digits={digits}
-                tick={tick}
-                setTick={t => this.setState({ tick: t })}
-                setDigits={d => this.setState({ digits: d })}
-            />
-        );
+    const bottomWidgets = React.useCallback(({ digits: d, tick: t }) => {
+        return <BottomWidgetsMobile digits={d} tick={t} setTick={setTick} setDigits={setDigits} />;
+    }, []);
+
+    const onChangeSwipeableIndex = index => {
+        setMobileDigitView(index === 0);
+        setIsDigitsWidgetActive(index === 0);
     };
 
-    onChangeSwipeableIndex = index => {
-        if (index === 0) {
-            this.props.setMobileDigitView(true);
-        } else {
-            this.props.setMobileDigitView(false);
-        }
-        this.setState({
-            is_digits_widget_active: index === 0,
-        });
+    const onTrySyntheticIndicesClick = () => {
+        setTrySyntheticIndices(true);
+        setTimeout(() => setTrySyntheticIndices(false));
     };
 
-    onTrySyntheticIndicesClick = () => {
-        this.setState(
-            {
-                try_synthetic_indices: true,
-            },
-            () => {
-                this.setState({
-                    try_synthetic_indices: false,
-                });
-            }
-        );
-    };
+    const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
 
-    render() {
-        const { NotificationMessages } = this.props;
-        const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
-        const is_trade_enabled = this.props.form_components.length > 0 && this.props.is_trade_enabled;
-        return (
-            <div id='trade_container' className='trade-container'>
-                <DesktopWrapper>
-                    <PositionsDrawer />
-                </DesktopWrapper>
-                {/* Div100vhContainer is workaround for browsers on devices
+    return (
+        <div id='trade_container' className='trade-container'>
+            <DesktopWrapper>
+                <PositionsDrawer />
+            </DesktopWrapper>
+            {/* Div100vhContainer is workaround for browsers on devices
                     with toolbars covering screen height,
                     using css vh is not returning correct screen height */}
-                <Div100vhContainer
-                    id='chart_container'
-                    className='chart-container'
-                    is_disabled={isDesktop()}
-                    height_offset='259px'
+            <Div100vhContainer
+                id='chart_container'
+                className='chart-container'
+                is_disabled={isDesktop()}
+                height_offset='259px'
+            >
+                <NotificationMessages />
+                <React.Suspense
+                    fallback={<ChartLoader is_dark={is_dark_theme} is_visible={!symbol || is_chart_loading} />}
                 >
-                    <NotificationMessages />
-                    <React.Suspense
-                        fallback={
-                            <ChartLoader
-                                is_dark={this.props.is_dark_theme}
-                                is_visible={!this.props.symbol || this.props.is_chart_loading}
+                    <DesktopWrapper>
+                        <div className='chart-container__wrapper'>
+                            <ChartLoader is_visible={is_chart_loading} />
+                            <ChartTrade try_synthetic_indices={try_synthetic_indices} />
+                        </div>
+                    </DesktopWrapper>
+                    <MobileWrapper>
+                        <ChartLoader is_visible={is_chart_loading || (isDigitTradeType(contract_type) && !digits[0])} />
+                        <SwipeableWrapper
+                            onChange={onChangeSwipeableIndex}
+                            is_disabled={
+                                !show_digits_stats ||
+                                !is_trade_enabled ||
+                                form_components.length === 0 ||
+                                is_chart_loading
+                            }
+                        >
+                            {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
+                            <ChartTrade
+                                bottomWidgets={show_digits_stats ? bottomWidgets : undefined}
+                                is_digits_widget_active={show_digits_stats ? is_digits_widget_active : undefined}
+                                try_synthetic_indices={try_synthetic_indices}
                             />
-                        }
-                    >
-                        <DesktopWrapper>
-                            <div className='chart-container__wrapper'>
-                                <ChartLoader is_visible={this.props.is_chart_loading} />
-                                <ChartTrade try_synthetic_indices={this.state.try_synthetic_indices} />
-                            </div>
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            <ChartLoader
-                                is_visible={
-                                    this.props.is_chart_loading ||
-                                    (isDigitTradeType(this.props.contract_type) && !this.state.digits[0])
-                                }
-                            />
-                            <SwipeableWrapper
-                                onChange={this.onChangeSwipeableIndex}
-                                is_disabled={
-                                    !this.props.show_digits_stats || !is_trade_enabled || this.props.is_chart_loading
-                                }
-                            >
-                                {this.props.show_digits_stats && (
-                                    <DigitsWidget digits={this.state.digits} tick={this.state.tick} />
-                                )}
-                                <ChartTrade
-                                    bottomWidgets={this.props.show_digits_stats ? this.bottomWidgets : undefined}
-                                    is_digits_widget_active={
-                                        this.props.show_digits_stats ? this.state.is_digits_widget_active : undefined
-                                    }
-                                    try_synthetic_indices={this.state.try_synthetic_indices}
-                                />
-                            </SwipeableWrapper>
-                        </MobileWrapper>
-                    </React.Suspense>
+                        </SwipeableWrapper>
+                    </MobileWrapper>
+                </React.Suspense>
 
-                    {/* Remove Test component for debugging below for production release */}
-                    <Test />
-                </Div100vhContainer>
-                <div className={form_wrapper_class}>
-                    {this.props.is_market_closed && <MarketIsClosedOverlay onClick={this.onTrySyntheticIndicesClick} />}
-                    <FormLayout
-                        is_market_closed={this.props.is_market_closed}
-                        is_trade_enabled={is_trade_enabled && this.props.network_status.class === 'online'}
-                    />
-                </div>
+                {/* Remove Test component for debugging below for production release */}
+                <Test />
+            </Div100vhContainer>
+            <div className={form_wrapper_class}>
+                {is_market_closed && <MarketIsClosedOverlay onClick={onTrySyntheticIndicesClick} />}
+                <FormLayout
+                    is_market_closed={is_market_closed}
+                    is_trade_enabled={
+                        is_trade_enabled && form_components.length > 0 && network_status.class === 'online'
+                    }
+                />
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
 export default connect(({ common, modules, ui }) => ({
     network_status: common.network_status,
@@ -205,29 +181,60 @@ const ChartMarkers = connect(({ modules, ui, client }) => ({
     currency: client.currency,
 }))(Markers);
 
-class ChartTradeClass extends React.Component {
-    state = {
-        active_category: null,
-    };
-    bottomWidgets = ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />;
-    topWidgets = ({ ...props }) => {
-        const { is_digits_widget_active, try_synthetic_indices } = this.props;
+const Chart = props => {
+    const {
+        active_symbols,
+        chart_layout,
+        chart_type,
+        exportLayout,
+        extra_barriers = [],
+        end_epoch,
+        granularity,
+        has_alternative_source,
+        is_trade_enabled,
+        is_socket_opened,
+        main_barrier,
+        refToAddTick,
+        resetRefresh,
+        setChartStatus,
+        settings,
+        show_digits_stats,
+        should_refresh,
+        symbol,
+        wsForget,
+        wsForgetStream,
+        wsSendRequest,
+        wsSubscribe,
+    } = props;
+
+    const charts_ref = React.useRef();
+    const props_ref = React.useRef();
+    props_ref.current = props;
+
+    const prev_should_refresh = usePrevious(should_refresh);
+    if (prev_should_refresh) resetRefresh();
+
+    const bottomWidgets = React.useCallback(
+        ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />,
+        []
+    );
+
+    const topWidgets = React.useCallback(({ ...params }) => {
+        // changing reference of topWidgets function by adding dependencies to useCallback results in Smartcharts performance drop.
+        // so, using props_ref to get current props value
+        const { is_digits_widget_active, try_synthetic_indices } = props_ref.current;
         return (
             <ChartTopWidgets
                 active_category={try_synthetic_indices ? 'synthetic_index' : null}
                 open={!!try_synthetic_indices}
-                charts_ref={this.charts_ref}
+                charts_ref={charts_ref}
                 is_digits_widget_active={is_digits_widget_active}
-                {...props}
+                {...params}
             />
         );
-    };
+    }, []);
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.should_refresh) this.props.resetRefresh();
-    }
-
-    getMarketsOrder(active_symbols) {
+    const getMarketsOrder = active_symbols => {
         const synthetic_index = 'synthetic_index';
 
         const has_synthetic_index = !!active_symbols.find(s => s.market === synthetic_index);
@@ -242,68 +249,80 @@ class ChartTradeClass extends React.Component {
                 },
                 has_synthetic_index ? [synthetic_index] : []
             );
-    }
+    };
 
-    render() {
-        const {
-            show_digits_stats,
-            main_barrier,
-            should_refresh,
-            extra_barriers = [],
-            symbol,
-            active_symbols,
-        } = this.props;
+    const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;
 
-        const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;
+    // max ticks to display for mobile view for tick chart
+    const max_ticks = granularity === 0 ? 8 : 24;
 
-        // max ticks to display for mobile view for tick chart
-        const max_ticks = this.props.granularity === 0 ? 8 : 24;
+    if (!symbol || active_symbols.length === 0) return null;
 
-        if (!symbol || active_symbols.length === 0) return null;
+    return (
+        <SmartChart
+            ref={charts_ref}
+            barriers={barriers}
+            bottomWidgets={show_digits_stats && isDesktop() ? bottomWidgets : props.bottomWidgets}
+            crosshair={isMobile() ? 0 : undefined}
+            crosshairTooltipLeftAllow={560}
+            showLastDigitStats={isDesktop() ? show_digits_stats : false}
+            chartControlsWidgets={null}
+            chartStatusListener={v => setChartStatus(!v)}
+            chartType={chart_type}
+            enabledNavigationWidget={isDesktop()}
+            enabledChartFooter={false}
+            id='trade'
+            isMobile={isMobile()}
+            maxTick={isMobile() ? max_ticks : undefined}
+            granularity={granularity}
+            requestAPI={wsSendRequest}
+            requestForget={wsForget}
+            requestForgetStream={wsForgetStream}
+            requestSubscribe={wsSubscribe}
+            settings={settings}
+            symbol={symbol}
+            topWidgets={is_trade_enabled ? topWidgets : null}
+            isConnectionOpened={is_socket_opened}
+            clearChart={false}
+            toolbarWidget={ChartToolbarWidgets}
+            importedLayout={chart_layout}
+            onExportLayout={exportLayout}
+            shouldFetchTradingTimes={!end_epoch}
+            refreshActiveSymbols={should_refresh}
+            hasAlternativeSource={has_alternative_source}
+            refToAddTick={refToAddTick}
+            getMarketsOrder={getMarketsOrder}
+            yAxisMargin={{
+                top: isMobile() ? 76 : 106,
+            }}
+        >
+            <ChartMarkers />
+        </SmartChart>
+    );
+};
 
-        return (
-            <SmartChart
-                ref={ref => (this.charts_ref = ref)}
-                barriers={barriers}
-                bottomWidgets={show_digits_stats && isDesktop() ? this.bottomWidgets : this.props.bottomWidgets}
-                crosshair={isMobile() ? 0 : undefined}
-                crosshairTooltipLeftAllow={560}
-                showLastDigitStats={isDesktop() ? show_digits_stats : false}
-                chartControlsWidgets={null}
-                chartStatusListener={v => this.props.setChartStatus(!v)}
-                chartType={this.props.chart_type}
-                enabledNavigationWidget={isDesktop()}
-                enabledChartFooter={false}
-                id='trade'
-                isMobile={isMobile()}
-                maxTick={isMobile() ? max_ticks : undefined}
-                granularity={this.props.granularity}
-                requestAPI={this.props.wsSendRequest}
-                requestForget={this.props.wsForget}
-                requestForgetStream={this.props.wsForgetStream}
-                requestSubscribe={this.props.wsSubscribe}
-                settings={this.props.settings}
-                symbol={this.props.symbol}
-                topWidgets={this.props.is_trade_enabled ? this.topWidgets : null}
-                isConnectionOpened={this.props.is_socket_opened}
-                clearChart={false}
-                toolbarWidget={ChartToolbarWidgets}
-                importedLayout={this.props.chart_layout}
-                onExportLayout={this.props.exportLayout}
-                shouldFetchTradingTimes={!this.props.end_epoch}
-                refreshActiveSymbols={should_refresh}
-                hasAlternativeSource={this.props.has_alternative_source}
-                refToAddTick={this.props.refToAddTick}
-                getMarketsOrder={this.getMarketsOrder}
-                yAxisMargin={{
-                    top: isMobile() ? 76 : 106,
-                }}
-            >
-                <ChartMarkers />
-            </SmartChart>
-        );
-    }
-}
+Chart.propTypes = {
+    bottomWidgets: PropTypes.func,
+    chart_type: PropTypes.string,
+    chart_layout: PropTypes.any,
+    exportLayout: PropTypes.func,
+    end_epoch: PropTypes.number,
+    granularity: PropTypes.number,
+    is_digits_widget_active: PropTypes.bool,
+    is_trade_enabled: PropTypes.bool,
+    is_socket_opened: PropTypes.bool,
+    has_alternative_source: PropTypes.bool,
+    main_barrier: PropTypes.any,
+    refToAddTick: PropTypes.func,
+    setChartStatus: PropTypes.func,
+    settings: PropTypes.object,
+    symbol: PropTypes.string,
+    try_synthetic_indices: PropTypes.bool,
+    wsForget: PropTypes.func,
+    wsForgetStream: PropTypes.func,
+    wsSendRequest: PropTypes.func,
+    wsSubscribe: PropTypes.func,
+};
 
 const ChartTrade = connect(({ modules, ui, common }) => ({
     is_socket_opened: common.is_socket_opened,
@@ -339,4 +358,4 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
     resetRefresh: modules.trade.resetRefresh,
     has_alternative_source: modules.trade.has_alternative_source,
     refToAddTick: modules.trade.refToAddTick,
-}))(ChartTradeClass);
+}))(Chart);

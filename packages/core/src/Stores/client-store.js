@@ -1369,6 +1369,10 @@ export default class ClientStore extends BaseStore {
     // --> so we keep a separate balance subscription for the active account
     @action.bound
     setBalanceOtherAccounts(obj_balance) {
+        // Balance subscription response received when mt5 transfer is in progress should be ignored.
+        // After mt5 transfer is done, `balanceAll` is requested along with `mt5LoginList` in order to update the correct balance.
+        if (this.root_store.modules?.cashier?.isMT5TransferInProgress()) return;
+
         // Only the first response of balance:all will include all accounts
         // subsequent requests will be single account balance updates
         if (this.accounts[obj_balance?.loginid] && !obj_balance.accounts && obj_balance.loginid !== this.loginid) {

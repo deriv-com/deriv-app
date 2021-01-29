@@ -40,6 +40,7 @@ export type TRoutesProps = {
     about_us: string;
     explore: string;
     resources: string;
+    platform_dmt5_synthetic: string;
 };
 
 export interface TUIProps {
@@ -54,3 +55,19 @@ export interface TUIProps {
     resetRealAccountSignupParams?: () => void;
     openRealAccountSignup?: () => void;
 }
+
+type ReactTypes = React.ComponentType | React.ElementType;
+
+type TLocalizeProps = {
+    components?: ReactTypes[];
+    i18n?: unknown;
+    i18n_default_text: string;
+    values?: {
+        [k: string]: string;
+    };
+};
+
+export type TStringTranslation = string | React.ReactElement<TLocalizeProps>;
+
+// ref: https://www.carlrippon.com/react-children-with-typescript/
+export type TReactChildren = React.ReactNode;

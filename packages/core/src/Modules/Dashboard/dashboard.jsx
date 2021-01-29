@@ -68,6 +68,7 @@ export default connect(({ client, ui }) => ({
             about_us: routes.about_us,
             explore: routes.explore,
             resources: routes.resources,
+            platform_dmt5_synthetic: routes.platform_dmt5_synthetic,
         },
     },
     ui: {

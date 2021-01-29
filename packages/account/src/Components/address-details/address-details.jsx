@@ -72,7 +72,7 @@ const AddressDetails = ({
     const is_submit_disabled_ref = React.useRef(true);
 
     const isSubmitDisabled = errors => {
-        return selected_step_ref.current?.isSubmitting || Object.keys(errors).length > 0;
+        return selected_step_ref?.current?.isSubmitting || Object.keys(errors).length > 0;
     };
 
     const checkSubmitStatus = errors => {
@@ -80,7 +80,7 @@ const AddressDetails = ({
 
         if (is_submit_disabled_ref.current !== is_submit_disabled) {
             is_submit_disabled_ref.current = is_submit_disabled;
-            onSubmitEnabledChange(!is_submit_disabled);
+            onSubmitEnabledChange?.(!is_submit_disabled);
         }
     };
 

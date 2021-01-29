@@ -38,7 +38,7 @@ const CurrencySelector = ({
     const is_submit_disabled_ref = React.useRef(true);
 
     const isSubmitDisabled = values => {
-        return selected_step_ref.current?.isSubmitting || !values.currency;
+        return selected_step_ref?.current?.isSubmitting || !values.currency;
     };
 
     const checkSubmitStatus = values => {
@@ -46,7 +46,7 @@ const CurrencySelector = ({
 
         if (is_submit_disabled_ref.current !== is_submit_disabled) {
             is_submit_disabled_ref.current = is_submit_disabled;
-            onSubmitEnabledChange(!is_submit_disabled);
+            onSubmitEnabledChange?.(!is_submit_disabled);
         }
     };
 

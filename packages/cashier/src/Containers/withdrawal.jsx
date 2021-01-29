@@ -40,6 +40,7 @@ const Withdrawal = ({
     container,
     currency,
     error,
+    verify_error,
     iframe_url,
     is_cashier_locked,
     is_virtual,
@@ -87,6 +88,9 @@ const Withdrawal = ({
     if (error.message) {
         return <Error error={error} container='withdraw' />;
     }
+    if (verify_error.message) {
+        return <Error error={verify_error} container='withdraw' />;
+    }
     return <SendEmail />;
 };
 
@@ -109,6 +113,7 @@ export default connect(({ client, modules }) => ({
     verification_code: client.verification_code.payment_withdraw,
     container: modules.cashier.config.withdraw.container,
     error: modules.cashier.config.withdraw.error,
+    verify_error: modules.cashier.config.withdraw.verification.error,
     iframe_url: modules.cashier.config.withdraw.iframe_url,
     is_cashier_locked: modules.cashier.is_cashier_locked,
     is_withdrawal_locked: modules.cashier.is_withdrawal_locked,

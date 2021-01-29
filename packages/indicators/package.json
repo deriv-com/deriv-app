@@ -17,7 +17,6 @@
         "build:travis": "echo \"No build:travis specified\"",
         "precommit": "lint-staged",
         "test": "jest --all",
-        "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",
         "test:stylelint": "echo \"No test:stylelint specified\"",
         "deploy": "echo \"No deploy specified\"",
         "deploy:clean": "echo \"No deploy:clean specified\"",
@@ -29,15 +28,15 @@
         "url": "https://github.com/binary-com/deriv-app/issues"
     },
     "devDependencies": {
-        "@babel/preset-env": "^7.12.11",
+        "@babel/preset-env": "^7.11.5",
         "babel-eslint": "^10.1.0",
         "babel-jest": "^26.5.2",
         "jest": "^26.4.2",
-        "eslint-plugin-prettier": "^3.3.1",
-        "eslint-config-prettier": "^7.2.0",
-        "eslint-config-airbnb-base": "^14.2.1",
+        "eslint-plugin-prettier": "^3.1.4",
+        "eslint-config-prettier": "^6.11.0",
+        "eslint-config-airbnb-base": "^14.0.0",
         "eslint-config-binary": "^1.0.2",
-        "eslint-plugin-import": "^2.22.1"
+        "eslint-plugin-import": "^2.22.0"
     },
     "dependencies": {
         "@deriv/shared": "^1.0.0",

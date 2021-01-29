@@ -31,7 +31,7 @@ const WalletSelector: React.FC = (props: any) => {
     const is_submit_disabled_ref = React.useRef<boolean>(true);
 
     const isSubmitDisabled = (values: any) => {
-        return selected_step_ref.current?.isSubmitting || !values.wallet;
+        return selected_step_ref?.current?.isSubmitting || !values.wallet;
     };
 
     const checkSubmitStatus = (values: any) => {
@@ -39,7 +39,7 @@ const WalletSelector: React.FC = (props: any) => {
 
         if (is_submit_disabled_ref.current !== is_submit_disabled) {
             is_submit_disabled_ref.current = is_submit_disabled;
-            onSubmitEnabledChange(!is_submit_disabled);
+            onSubmitEnabledChange?.(!is_submit_disabled);
         }
     };
 

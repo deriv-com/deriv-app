@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -39,7 +38,7 @@ const CurrencySelector = ({
     const is_submit_disabled_ref = React.useRef(true);
 
     const isSubmitDisabled = values => {
-        return selected_step_ref.current?.isSubmitting || !values.currency;
+        return selected_step_ref?.current?.isSubmitting || !values.currency;
     };
 
     const checkSubmitStatus = values => {
@@ -47,7 +46,7 @@ const CurrencySelector = ({
 
         if (is_submit_disabled_ref.current !== is_submit_disabled) {
             is_submit_disabled_ref.current = is_submit_disabled;
-            onSubmitEnabledChange(!is_submit_disabled);
+            onSubmitEnabledChange?.(!is_submit_disabled);
         }
     };
 
@@ -68,6 +67,7 @@ const CurrencySelector = ({
         if (real_account_signup?.error_code) {
             setIsBypassStep(true);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
@@ -76,6 +76,7 @@ const CurrencySelector = ({
             resetRealAccountSignupParams();
             setIsBypassStep(false);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_bypass_step]);
 
     const getHeightOffset = () => {

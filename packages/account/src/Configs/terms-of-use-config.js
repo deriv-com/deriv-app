@@ -4,11 +4,11 @@ import { localize } from '@deriv/translations';
 const terms_of_use_config = {
     agreed_tos: {
         supported_in: ['svg', 'iom'],
-        default_value: '',
+        default_value: false,
     },
     agreed_tnc: {
         supported_in: ['svg', 'iom'],
-        default_value: '',
+        default_value: false,
     },
 };
 

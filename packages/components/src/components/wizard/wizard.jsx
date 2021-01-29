@@ -57,9 +57,6 @@ const Wizard = ({ children, className, initial_step, onStepChange, nav, selected
         goToStep,
         goToFirstStep,
         goToLastStep,
-    };
-
-    const step_properties = {
         selected_step_ref,
     };
 
@@ -67,13 +64,7 @@ const Wizard = ({ children, className, initial_step, onStepChange, nav, selected
         if (!child) return null;
 
         if (i === active_step)
-            return (
-                <Wizard.Step>
-                    {isReactComponent(child)
-                        ? React.cloneElement(child, Object.assign(properties, step_properties))
-                        : child}
-                </Wizard.Step>
-            );
+            return <Wizard.Step>{isReactComponent(child) ? React.cloneElement(child, properties) : child}</Wizard.Step>;
 
         return null;
     });

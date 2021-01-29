@@ -10,6 +10,7 @@ export default class ConfigStore extends BaseStore {
         explore: '/explore',
         about_us: '/about-us',
         resources: '/resources',
+        platform_dmt5_synthetic: '/platforms/dmt5_synthetic',
     };
 
     public setConfig(config: TConfigProps): void {

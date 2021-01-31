@@ -32,6 +32,7 @@ const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSi
                         as='p'
                         size='xs'
                         line_height='s'
+                        align='center'
                         className='cashier__paragraph cashier__text cashier__text--full-width'
                     >
                         <Localize

@@ -1,8 +1,8 @@
 import { action, computed, observable, runInAction } from 'mobx';
-import { getMT5AccountKey } from '@deriv/shared';
+import { getMT5AccountKey, getAccountTypeFields } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import BaseStore from 'Stores/base-store';
-import { getAccountTypeFields, getMtCompanies } from './Helpers/mt5-config';
+import { getMtCompanies } from './Helpers/mt5-config';
 
 export default class MT5Store extends BaseStore {
     @observable is_compare_accounts_visible = false;

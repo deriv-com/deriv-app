@@ -45,6 +45,8 @@ const Button = ({
             'dc-btn--blue': blue,
             'dc-btn--secondary': secondary,
             'dc-btn--tertiary': tertiary,
+            'dc-btn--primary__blue': blue && primary,
+            'dc-btn--tertiary__blue': blue && tertiary,
             'dc-btn--alternate': alternate,
             'dc-btn--green': green,
             'dc-btn__rounded': rounded,

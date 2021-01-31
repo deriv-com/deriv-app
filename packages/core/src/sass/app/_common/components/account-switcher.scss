@@ -392,6 +392,10 @@
         font-size: 1rem;
         color: var(--text-less-prominent);
         line-height: 1.4;
+
+        &--disabled {
+            color: var(--text-disabled);
+        }
     }
     &__loader {
         margin: 1rem auto !important;
@@ -424,4 +428,18 @@
     color: var(--text-less-prominent);
     line-height: 1.5;
     text-align: right;
+}
+
+/** @define badge-server; weak */
+.badge-server {
+    display: inline-block;
+    background-color: $color-blue-2;
+    padding: 0.2rem;
+    border-radius: 0.2rem;
+    margin-left: 0.5rem;
+    height: 2.2rem;
+
+    &--disabled {
+        background-color: var(--border-disabled);
+    }
 }

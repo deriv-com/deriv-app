@@ -73,7 +73,7 @@ const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSi
 Virtual.propTypes = {
     is_dark_mode_on: PropTypes.bool,
     has_real_account: PropTypes.bool,
-    history: PropTypes.array,
+    history: PropTypes.object,
     openRealAccountSignup: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
 };

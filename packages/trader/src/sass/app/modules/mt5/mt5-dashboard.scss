@@ -493,7 +493,6 @@
     &__wrapper {
         display: grid;
         grid-template-rows: 1fr 4rem;
-        height: 100%;
 
         @include mobile {
             grid-template-rows: 1fr;
@@ -504,7 +503,7 @@
             margin-right: 2.4rem;
         }
         @include desktop {
-            height: 100%;
+            height: auto;
         }
     }
 

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 
-const DataListCell = ({ className, column, is_footer, row }) => {
+const DataListCell = ({ className, column, is_footer, passthrough, row }) => {
     if (!column) return null;
     const { col_index, title } = column;
     const cell_value = row[col_index];
@@ -14,7 +14,7 @@ const DataListCell = ({ className, column, is_footer, row }) => {
             )}
             <div className='data-list__row-content'>
                 {column.renderCellContent
-                    ? column.renderCellContent({ cell_value, row_obj: row, is_footer })
+                    ? column.renderCellContent({ cell_value, is_footer, passthrough, row_obj: row })
                     : cell_value}
             </div>
         </div>

@@ -24,6 +24,7 @@ const Routes = ({
     has_error,
     history,
     is_logged_in,
+    is_logging_in,
     location,
     passthrough,
     setAppRouterHistory,
@@ -68,16 +69,18 @@ const Routes = ({
         window.history.replaceState({}, document.title, urlForLanguage(lang));
     }
 
-    return <BinaryRoutes is_logged_in={is_logged_in} passthrough={passthrough} />;
+    return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;
 };
 
 Routes.propTypes = {
+    addRouteHistoryItem: PropTypes.func,
     error: MobxPropTypes.objectOrObservableObject,
     has_error: PropTypes.bool,
     history: PropTypes.object,
     is_logged_in: PropTypes.bool,
+    is_logging_in: PropTypes.bool,
+    is_virtual: PropTypes.bool,
     setAppRouterHistory: PropTypes.func,
-    addRouteHistoryItem: PropTypes.func,
     setInitialRouteHistoryItem: PropTypes.func,
 };
 
@@ -85,6 +88,8 @@ Routes.propTypes = {
 // to prevent updates on <BinaryRoutes /> from being blocked
 export default withRouter(
     connect(({ client, common }) => ({
+        is_logged_in: client.is_logged_in,
+        is_logging_in: client.is_logging_in,
         error: common.error,
         has_error: common.has_error,
         is_logged_in: client.is_logged_in,

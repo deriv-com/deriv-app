@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import DBotStore from '../dbot-store';
 
 /**
  * Construct the blocks required by the flyout for the variable category.
@@ -88,6 +89,17 @@ Blockly.DataCategory.addCreateVariable = function (xmlList, workspace) {
     const callback_key = 'CREATE_VARIABLE';
     const input_placeholder = localize('New variable name');
 
+    // Set attributes for the button
+    el_button_xml.setAttribute('text', button_text);
+    el_button_xml.setAttribute('className', 'flyout__button-new');
+    el_button_xml.setAttribute('callbackKey', callback_key);
+
+    // Set attributes for the input field
+    el_input_xml.setAttribute('className', 'flyout__input');
+    el_input_xml.setAttribute('name', 'variable');
+    el_input_xml.setAttribute('type', 'text');
+    el_input_xml.setAttribute('placeholder', input_placeholder);
+
     const callback = function (button) {
         const el_input_container = document.querySelector('.flyout__input');
         const el_input = el_input_container.firstChild;
@@ -96,19 +108,9 @@ Blockly.DataCategory.addCreateVariable = function (xmlList, workspace) {
         buttonWorkspace.createVariable(el_input.value, '');
         el_input.value = '';
 
-        const toolbox = Blockly.derivWorkspace.toolbox_;
-        const category = Blockly.derivWorkspace.toolbox_.getSelectedItem();
-        toolbox.setSelectedItem(category, false);
+        const { flyout } = DBotStore.instance;
+        flyout.refreshCategory();
     };
-
-    el_button_xml.setAttribute('text', button_text);
-    el_button_xml.setAttribute('className', 'flyout__button-new');
-    el_button_xml.setAttribute('callbackKey', callback_key);
-
-    el_input_xml.setAttribute('className', 'flyout__input');
-    el_input_xml.setAttribute('name', 'variable');
-    el_input_xml.setAttribute('type', 'text');
-    el_input_xml.setAttribute('placeholder', input_placeholder);
 
     workspace.registerButtonCallback(callback_key, callback);
 

@@ -92,7 +92,6 @@ export default withRouter(
         is_logging_in: client.is_logging_in,
         error: common.error,
         has_error: common.has_error,
-        is_logged_in: client.is_logged_in,
         setAppRouterHistory: common.setAppRouterHistory,
         addRouteHistoryItem: common.addRouteHistoryItem,
         setInitialRouteHistoryItem: common.setInitialRouteHistoryItem,

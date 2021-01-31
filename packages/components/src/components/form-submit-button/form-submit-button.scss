@@ -34,9 +34,7 @@
         }
     }
     &--error {
-        @include typeface(--paragraph-left-normal-black);
         text-transform: none;
-        color: var(--brand-red-coral) !important;
     }
     @include mobile {
         &--absolute {

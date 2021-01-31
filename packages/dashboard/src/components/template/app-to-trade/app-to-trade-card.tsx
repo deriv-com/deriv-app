@@ -27,7 +27,7 @@ const AppToTradeCard: React.FC<TAppToTradeCardProps> = ({ icon, title, subtitle,
                     <Link to='/' className='dw-app-to-trade__card-link'>
                         {localize('Try demo')}
                     </Link>
-                    <Button type='button' text={localize('Get')} primary />
+                    <Button type='button' text={localize('Get')} primary blue />
                 </div>
             </div>
         </div>

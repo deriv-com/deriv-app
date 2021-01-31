@@ -395,6 +395,18 @@
         margin-top: 1.6rem;
         width: 100%;
     }
+
+    @include mobile {
+        .dc-form-submit-button {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding: 1.5rem;
+        }
+        & .dc-btn {
+            width: 100%;
+        }
+    }
 }
 
 /* TODO: [refactor-components] Refactor form subheader to components */

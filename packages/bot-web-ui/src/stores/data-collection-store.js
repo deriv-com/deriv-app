@@ -2,7 +2,6 @@ import { reaction } from 'mobx';
 import crc32 from 'crc-32/crc32';
 import { isProduction, cloneObject } from '@deriv/shared';
 import { DBot } from '@deriv/bot-skeleton';
-import { transaction_elements } from '../constants/transactions';
 
 export default class DataCollectionStore {
     constructor(root_store) {
@@ -14,8 +13,8 @@ export default class DataCollectionStore {
                 () => (this.root_store.run_panel.is_running ? this.trackRun() : undefined)
             );
             reaction(
-                () => this.root_store.transactions.elements,
-                elements => this.trackTransaction(elements)
+                () => this.root_store.transactions.transactions,
+                transactions => this.trackTransaction(transactions)
             );
         }
     }
@@ -45,9 +44,8 @@ export default class DataCollectionStore {
         this.setRunStart(this.root_store.common.server_time.unix());
     }
 
-    async trackTransaction(elements) {
+    async trackTransaction(contracts) {
         const pako = await import(/* webpackChunkName: "dbot-collection" */ 'pako');
-        const contracts = elements.filter(element => element.type === transaction_elements.CONTRACT);
         const contract = contracts[0]; // Most recent contract.
 
         if (!contract) {

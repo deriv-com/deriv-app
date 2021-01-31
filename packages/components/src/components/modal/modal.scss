@@ -162,6 +162,10 @@
     }
     /** @define dc-modal-body */
     &-body {
+        &:first-child {
+            padding-top: 2.4rem;
+        }
+
         padding: 2.4rem;
         font-size: 1.4rem;
         line-height: 1.43;

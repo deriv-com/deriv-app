@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import { Icon } from '@deriv/components';
 import './empty.scss';
 
-const P2pEmpty = ({ children, has_tabs, icon, title }) => {
+const P2pEmpty = ({ className, children, has_tabs, icon, title }) => {
     return (
-        <div className={classNames('p2p-empty', { 'p2p-empty--no-tabs': !has_tabs })}>
+        <div className={classNames(className, 'p2p-empty', { 'p2p-empty--no-tabs': !has_tabs })}>
             <Icon icon={icon} className='p2p-empty-icon' size={128} />
             <div className='p2p-empty-title'>{title}</div>
             {children}

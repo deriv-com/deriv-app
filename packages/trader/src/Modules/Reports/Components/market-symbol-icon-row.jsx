@@ -4,7 +4,7 @@ import { extractInfoFromShortcode, isHighLow } from '@deriv/shared';
 import { Icon, Popover, IconTradeTypes } from '@deriv/components';
 import { getMarketName, getTradeTypeName } from '../Helpers/market-underlying';
 
-const MarketSymbolIconRow = ({ payload, show_description, should_show_multiplier = true }) => {
+const MarketSymbolIconRow = ({ icon, payload, show_description, should_show_multiplier = true }) => {
     const should_show_category_icon = typeof payload.shortcode === 'string';
     const info_from_shortcode = extractInfoFromShortcode(payload.shortcode);
 
@@ -58,7 +58,7 @@ const MarketSymbolIconRow = ({ payload, show_description, should_show_multiplier
     } else if (['deposit', 'hold', 'release', 'withdrawal'].includes(payload.action_type)) {
         return (
             <div className='market-symbol-icon'>
-                {payload.action_type === 'deposit' && <Icon icon='IcCashierDeposit' size={32} />}
+                {payload.action_type === 'deposit' && <Icon icon={icon || 'IcCashierDeposit'} size={32} />}
                 {payload.action_type === 'withdrawal' && <Icon icon='IcCashierWithdrawal' size={32} />}
                 {(payload.action_type === 'hold' || payload.action_type === 'release') && (
                     <Icon icon='IcCashierDp2p' size={32} />

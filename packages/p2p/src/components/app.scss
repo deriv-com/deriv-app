@@ -9,6 +9,18 @@
     display: flex;
     flex-direction: column;
 
+    &__blocked {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        margin-top: 6.4rem;
+        max-width: 67.2rem;
+
+        &--text {
+            margin: 2.4rem 0 0.8rem;
+        }
+    }
+
     &__content {
         padding: 0 1.6rem;
     }
@@ -98,6 +110,7 @@
     justify-content: center;
     font-size: 1.4rem;
     color: var(--text-general);
+    margin: 2.4rem;
 }
 
 .sendbird-fileviewer__header-delete {

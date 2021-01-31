@@ -13,12 +13,13 @@ export default class GeneralStore extends BaseStore {
     @observable advertiser_id = null;
     @observable inactive_notification_count = 0;
     @observable is_advertiser = false;
+    @observable is_blocked = false;
     @observable is_listed = false;
+    @observable is_loading = false;
     @observable is_restricted = false;
     @observable nickname = null;
     @observable nickname_error = '';
     @observable notification_count = 0;
-    @observable order_offset = 0;
     @observable order_table_type = order_list.ACTIVE;
     @observable orders = [];
     @observable parameters = null;
@@ -86,6 +87,7 @@ export default class GeneralStore extends BaseStore {
         const { order_store } = this.root_store;
         const { client, props } = this;
         const { is_cached, notifications } = this.getLocalStorageSettingsForLoginId();
+
         new_orders.forEach(new_order => {
             const order_info = createExtendedOrderDetails(new_order, client.loginid, props.server_time);
             const notification = notifications.find(n => n.order_id === new_order.id);
@@ -156,6 +158,7 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     onMount() {
+        this.setIsLoading(true);
         const { sendbird_store } = this.root_store;
 
         this.ws_subscriptions = {
@@ -256,8 +259,18 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setIsBlocked(is_blocked) {
+        this.is_blocked = is_blocked;
+    }
+
+    @action.bound
     setIsListed(is_listed) {
         this.is_listed = is_listed;
+    }
+
+    @action.bound
+    setIsLoading(is_loading) {
+        this.is_loading = is_loading;
     }
 
     @action.bound
@@ -278,11 +291,6 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     setNotificationCount(notification_count) {
         this.notification_count = notification_count;
-    }
-
-    @action.bound
-    setOrderOffset(order_offset) {
-        this.order_offset = order_offset;
     }
 
     @action.bound
@@ -307,6 +315,7 @@ export default class GeneralStore extends BaseStore {
             const { list } = p2p_order_list;
             // it's an array of orders from p2p_order_list
             this.handleNotifications(order_store.orders, list);
+            list.forEach(order => order_store.syncOrder(order));
         } else if (p2p_order_info) {
             // it's a single order from p2p_order_info
             const idx_order_to_update = order_store.orders.findIndex(order => order.id === p2p_order_info.id);
@@ -372,6 +381,8 @@ export default class GeneralStore extends BaseStore {
                 this.setIsRestricted(true);
             } else if (response.error.code === 'AdvertiserNotFound') {
                 this.setIsAdvertiser(false);
+            } else if (response.error.code === 'PermissionDenied') {
+                this.setIsBlocked(true);
             }
         }
 
@@ -386,6 +397,8 @@ export default class GeneralStore extends BaseStore {
                 }
             });
         }
+
+        this.setIsLoading(false);
     }
 
     @action.bound

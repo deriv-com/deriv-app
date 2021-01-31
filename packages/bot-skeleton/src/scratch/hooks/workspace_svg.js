@@ -87,11 +87,10 @@ Blockly.WorkspaceSvg.prototype.centerOnBlock = function (id, hideChaff = true) {
  * @public
  */
 Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
-    const toolbox = this.getToolbox();
-    const flyout = toolbox.flyout_;
-    const block = Blockly.Xml.domToBlock(block_node, flyout.workspace_);
+    const { flyout } = DBotStore.instance;
+    const block = Blockly.Xml.domToBlock(block_node, flyout.getFlyout().workspace_);
     const top_blocks = this.getTopBlocks(true);
-    const new_block = flyout.createBlock(false, block);
+    const new_block = flyout.getFlyout().createBlock(false, block);
 
     if (top_blocks.length) {
         const last_block = top_blocks[top_blocks.length - 1];
@@ -99,10 +98,6 @@ Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
         const extra_spacing = last_block.startHat_ ? Blockly.BlockSvg.START_HAT_HEIGHT : 0;
         const y = last_block_xy.y + last_block.getHeightWidth().height + extra_spacing + 30;
         new_block.moveBy(last_block_xy.x, y);
-    }
-
-    if (/^procedures_/.test(block_node.getAttribute('type'))) {
-        toolbox.refreshCategory();
     }
 
     // Call svgResize to avoid glitching workspace.

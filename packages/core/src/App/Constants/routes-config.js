@@ -80,6 +80,11 @@ const getModules = ({ is_deriv_crypto }) => {
                     component: Dashboard,
                     getTitle: () => localize('Resources'),
                 },
+                {
+                    path: routes.platform_dmt5_synthetic,
+                    component: Dashboard,
+                    getTitle: () => localize('DMT5 Synthetic'),
+                },
             ],
         },
         {
@@ -90,7 +95,7 @@ const getModules = ({ is_deriv_crypto }) => {
         {
             path: routes.account,
             component: Account,
-            getTitle: () => localize('Accounts Settings'),
+            getTitle: () => localize('Account Settings'),
             icon_component: 'IcUserOutline',
             is_authenticated: true,
             // TODO: Revisit this workaround for subroutes [app-routing]

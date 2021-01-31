@@ -15,6 +15,7 @@ export default class ContractReplayStore extends BaseStore {
     @observable error_message = '';
     @observable error_code = '';
     @observable is_chart_loading = true;
+    @observable is_forward_starting = false;
     // ---- chart props
     @observable margin;
 
@@ -127,6 +128,11 @@ export default class ContractReplayStore extends BaseStore {
             this.indicative_status = null;
         }
         this.prev_indicative = new_indicative;
+
+        const is_forward_starting =
+            !!this.contract_info.is_forward_starting ||
+            this.contract_info.purchase_time !== this.contract_info.date_start;
+        this.is_forward_starting = is_forward_starting;
 
         // update the contract_store here passing contract_info
         this.contract_store.populateConfig(this.contract_info);

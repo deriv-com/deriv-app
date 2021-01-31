@@ -18,7 +18,7 @@ const ChatWrapper = observer(({ children, is_modal_open }) => {
             page_header_className='order-chat__header'
             pageHeaderReturnFn={() => {
                 sendbird_store.setShouldShowChatModal(false);
-                sendbird_store.setOrdersChat(false);
+                sendbird_store.setShouldShowChatOnOrders(false);
                 order_store.hideDetails(true);
             }}
             renderPageHeaderText={() => <ChatHeader.Body />}

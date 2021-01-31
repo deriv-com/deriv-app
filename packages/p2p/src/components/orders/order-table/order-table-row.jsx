@@ -131,7 +131,7 @@ const OrderRow = ({ style, row: order }) => {
                                 width={16}
                                 onClick={() => {
                                     sendbird_store.setShouldShowChatModal(true);
-                                    sendbird_store.setOrdersChat(true);
+                                    sendbird_store.setShouldShowChatOnOrders(true);
                                 }}
                             />
                         </div>

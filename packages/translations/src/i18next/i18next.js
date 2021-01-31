@@ -52,9 +52,10 @@ const getInitialLanguage = () => {
     const local_storage_language = localStorage.getItem(LANGUAGE_KEY);
 
     if (query_lang) {
-        if (isLanguageAvailable(query_lang)) {
-            localStorage.setItem(LANGUAGE_KEY, query_lang);
-            return query_lang;
+        const query_lang_uppercase = query_lang.toUpperCase();
+        if (isLanguageAvailable(query_lang_uppercase)) {
+            localStorage.setItem(LANGUAGE_KEY, query_lang_uppercase);
+            return query_lang_uppercase;
         }
     }
 

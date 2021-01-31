@@ -9,6 +9,7 @@ const ButtonGroup = ({ children, className }) => (
 );
 
 const Button = ({
+    blue,
     children,
     className = '',
     classNameSpan,
@@ -44,6 +45,8 @@ const Button = ({
             'dc-btn--primary': primary,
             'dc-btn--secondary': secondary,
             'dc-btn--tertiary': tertiary,
+            'dc-btn--primary__blue': blue && primary,
+            'dc-btn--tertiary__blue': blue && tertiary,
             'dc-btn--alternate': alternate,
             'dc-btn--green': green,
             'dc-btn__rounded': rounded,
@@ -84,6 +87,7 @@ const Button = ({
 };
 
 Button.propTypes = {
+    blue: PropTypes.bool,
     children: PropTypes.node,
     className: PropTypes.string,
     classNameSpan: PropTypes.string,

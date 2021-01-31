@@ -78,7 +78,7 @@
 
         &--heading {
             @include typeface(--title-left-bold-black, none);
-            color: var(--text-prominent);
+            color: var(--text-general);
             line-height: 1.5;
         }
     }
@@ -115,44 +115,48 @@
     }
     &__download-center {
         border-top: 2px solid var(--general-section-1);
-        padding-top: 4rem;
-        padding-bottom: 6.8rem;
+        padding-top: 2rem;
+        padding-bottom: 5.8rem;
 
         &-options {
             display: flex;
             justify-content: center;
 
-            &--desktop,
+            &--desktop {
+                display: block;
+                align-items: baseline;
+                flex-flow: column nowrap;
+
+                &-links {
+                    display: flex;
+                }
+                &-row {
+                    display: flex;
+                    align-items: baseline;
+                    justify-content: center;
+
+                    > svg:first-child {
+                        margin-bottom: 0.4rem;
+                        margin-right: 0.8rem;
+                    }
+                    a > svg {
+                        margin-top: 0.8rem;
+                        margin-right: 0.8rem;
+                    }
+                }
+                &-download {
+                    display: grid;
+                    align-content: end;
+
+                    a {
+                        margin-top: 0.4rem;
+                    }
+                }
+            }
             &--mobile {
                 align-items: center;
                 display: flex;
                 flex-flow: column nowrap;
-            }
-            &--desktop {
-                &-devices {
-                    display: flex;
-                    align-items: baseline;
-                    > svg:first-child {
-                        margin-left: 4.3rem;
-                        margin-right: 0.4rem;
-                    }
-                    > svg:not(:last-child) {
-                        margin-bottom: 1.1rem;
-                    }
-                    a svg {
-                        margin-left: 5.2rem;
-                    }
-                }
-                &-links {
-                    display: flex;
-                }
-                &-link {
-                    &:not(:last-child) {
-                        margin-right: 0.8rem;
-                    }
-                }
-            }
-            &--mobile {
                 margin-left: 4.7rem;
 
                 &-devices {
@@ -172,7 +176,7 @@
         }
         &--heading {
             @include typeface(--title-left-bold-black, none);
-            color: var(--text-prominent);
+            color: var(--text-general);
             line-height: 1.5;
             margin-left: 2.1rem;
             margin-bottom: 4.2rem;
@@ -194,6 +198,10 @@
         &-icon {
             margin-right: 0.8rem;
             margin-top: 0.2rem;
+
+            @include mobile {
+                margin-top: -0.2rem;
+            }
         }
         &-text {
             text-align: left;
@@ -362,6 +370,15 @@
     }
 }
 
+.mt5-dashboard__accounts-error {
+    background-color: rgba(255, 173, 58, 0.16);
+    margin: 1.2rem 0;
+
+    &-message {
+        padding: 0.8rem 2.4rem;
+    }
+}
+
 // TODO: [mt5-redesign] replace tabs with radiogroup once card component is ready
 //.mt5-dashboard__accounts-display {
 //    div.radio-group__save-type {
@@ -398,10 +415,63 @@
     display: flex;
     justify-content: center;
     margin-top: 2.4em;
-    justify-content: center;
+    height: 100%;
 
     @include mobile {
         flex-direction: column;
+    }
+}
+
+.mt5-real-accounts-display {
+    transition: margin-bottom 0.3s ease-in-out;
+    margin-bottom: var(--mt5-real-acc-margin-bottom);
+    &__carousel {
+        margin-bottom: -4rem;
+    }
+    &__add-trading-server {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        height: 4rem;
+        position: relative;
+        margin-top: -4rem;
+        margin-left: 2rem;
+
+        &-text {
+            margin-left: 1rem;
+        }
+        &-icon {
+            color: var(--status-colored-background);
+            background-color: var(--brand-red-coral);
+            border-radius: 50%;
+            width: 2.4rem;
+            height: 2.4rem;
+            font-size: 1.8rem;
+            display: block;
+            text-align: center;
+            padding: 0.2rem;
+        }
+        &-exit,
+        &-enter-done {
+            transition: all 0.3s ease-in-out;
+            opacity: 1;
+        }
+        &-enter,
+        &-exit-done {
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+        }
+        &-wrapper {
+            @include mobile {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: 2rem;
+            }
+        }
     }
 }
 
@@ -412,20 +482,94 @@
     flex-flow: column nowrap;
     min-height: 35.8rem;
     width: 30.4em;
+    position: relative;
+    height: 100%;
+
+    &__wrapper {
+        display: grid;
+        grid-template-rows: 1fr 4rem;
+        height: 100%;
+
+        @include mobile {
+            grid-template-rows: 1fr;
+            margin-bottom: 2.4rem;
+            height: fit-content;
+        }
+        &:not(:last-child) {
+            margin-right: 2.4rem;
+        }
+    }
 
     &__logged-out {
         min-height: 29rem;
     }
 
-    &:not(:last-child) {
-        margin-right: 2.4rem;
+    &__add-server {
+        font-size: 1.4rem;
+        cursor: pointer;
+        display: grid;
+        grid-auto-flow: column;
+        grid-gap: 0.4rem;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 4rem;
+        color: var(--text-prominent);
+
+        @include mobile {
+            height: 4rem;
+            align-content: start;
+        }
+
+        &--disabled {
+            cursor: not-allowed;
+            color: var(--text-disabled);
+
+            .mt5-account-card__add-server--icon {
+                background-color: var(--border-disabled);
+                color: var(--text-disabled);
+            }
+        }
+        &-exit,
+        &-enter-done {
+            transition: all 0.3s ease-in-out;
+            opacity: 1;
+            height: 4rem;
+        }
+        &-enter,
+        &-exit-done {
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+            height: 0;
+        }
+        &--icon {
+            color: var(--status-colored-background);
+            background-color: var(--brand-red-coral);
+            border-radius: 100%;
+            width: 2.4rem;
+            height: 2.4rem;
+            font-size: 1.8rem;
+            display: block;
+            text-align: center;
+            padding: 0.2rem;
+        }
     }
+
+    &__server {
+        font-size: 1.4rem;
+        text-align: left;
+        width: 27.2rem;
+        &--value {
+            font-weight: bold;
+        }
+    }
+
     &:hover {
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
     }
     &--heading {
         @include typeface(--title-left-bold-black, none);
-        color: var(--text-prominent);
+        color: var(--text-general);
         line-height: 1.5;
     }
     &--paragraph {
@@ -457,6 +601,10 @@
 
         &--demo {
             border-bottom-color: var(--brand-secondary);
+        }
+        &--server {
+            // TODO: Add a CSS variable
+            border-bottom-color: $color-blue-2;
         }
         @include mobile {
             left: calc(100vw - 11.6rem);
@@ -525,20 +673,9 @@
             &-data {
                 .mt5-account-card--paragraph {
                     @include typeface(--paragraph-left-bold-black, none);
-                    color: var(--text-prominent);
                     line-height: 1.45;
                 }
             }
-        }
-    }
-
-    &__commission {
-        text-align: center;
-        margin-top: 1.6rem;
-        margin-bottom: 1.6rem;
-
-        &.mt5-account-card--paragraph {
-            line-height: 1.4;
         }
     }
     &__account-selection {
@@ -580,7 +717,7 @@
         display: flex;
         padding: 0.8rem;
         justify-content: center;
-        margin: 2.4rem 0 1.6rem;
+        margin: 1rem 0 1.6rem;
         width: 272px;
 
         strong {
@@ -605,7 +742,6 @@
         }
     }
     &__action-wrapper {
-        height: 4rem;
         margin: 0 auto 1.3rem;
         padding-top: 1rem;
         width: 75%;
@@ -621,6 +757,7 @@
     }
     @include mobile {
         width: calc(100vw - 3.2rem);
+        height: fit-content;
 
         &:not(:last-child) {
             margin-bottom: 2.4rem;
@@ -633,6 +770,11 @@
     margin: 5.6rem auto 3.2rem;
     width: 100%;
     height: 100%;
+
+    @media only screen and (max-height: 645px) {
+        margin-top: 1.5rem;
+        overflow: auto;
+    }
 
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
@@ -676,9 +818,6 @@
     }
     &__new-password {
         margin-bottom: 8.6rem;
-        .dc-input__hint {
-            text-align: left;
-        }
     }
     &__actions {
         align-items: center;

@@ -29,11 +29,26 @@ module.exports.getLocalDerivPackageAliases = (working_directory, is_publishing) 
  * a non-published build, e.g. building @deriv/p2p for @deriv/core.
  * @param {String} working_directory
  * @param {Boolean} is_publishing
+ * @param {Object} externals
  */
-module.exports.getLocalDerivPackageExternals = (working_directory, is_publishing) =>
-    is_publishing
-        ? {}
-        : getLocalDerivDependencies(working_directory).reduce((collection, dependency) => {
-              collection[dependency] = dependency;
-              return collection;
-          }, {});
+module.exports.getLocalDerivPackageExternals = (working_directory, is_publishing, externals = {}) => {
+    const initial_externals = Object.keys(externals).reduce((collection, lib_name) => {
+        if (externals[lib_name]) {
+            collection[lib_name] = lib_name;
+        }
+
+        return collection;
+    }, {});
+
+    if (is_publishing) {
+        return initial_externals;
+    }
+
+    return {
+        ...getLocalDerivDependencies(working_directory).reduce((collection, dependency) => {
+            collection[dependency] = dependency;
+            return collection;
+        }, {}),
+        ...initial_externals,
+    };
+};

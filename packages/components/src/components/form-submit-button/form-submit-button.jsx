@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Button from '../button/button.jsx';
+import Text from '../text';
 
 const FormSubmitButton = ({
     cancel_label,
@@ -24,7 +25,16 @@ const FormSubmitButton = ({
                 'dc-form-submit-button--relative': !is_absolute,
             })}
         >
-            {!!form_error && <p className='dc-form-submit-button--error'>{form_error}</p>}
+            {!!form_error && (
+                <Text
+                    as='p'
+                    size='xs'
+                    styles={{ color: 'var(--brand-red-coral)' }}
+                    className='dc-form-submit-button--error'
+                >
+                    {form_error}
+                </Text>
+            )}
             {has_cancel && <Button has_effect onClick={onCancel} text={cancel_label} type='button' secondary large />}
             <Button
                 has_effect

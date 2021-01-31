@@ -46,6 +46,7 @@ const MobileWidget = ({
     const toggleWidget = () => setIsOpen(!is_open);
 
     const getHumanReadableDuration = () => {
+        if (!duration_unit) return '';
         const lookup = {
             t: [localize('tick'), localize('ticks')],
             s: [localize('second'), localize('seconds')],
@@ -53,9 +54,15 @@ const MobileWidget = ({
             h: [localize('hour'), localize('hours')],
             d: [localize('day'), localize('days')],
         };
-        const formatted_duration_unit = +duration === 1 ? lookup[duration_unit][0] : lookup[duration_unit][1];
 
-        return `${duration} ${formatted_duration_unit}`;
+        try {
+            if (!duration_unit) return '';
+            const formatted_duration_unit = +duration === 1 ? lookup[duration_unit][0] : lookup[duration_unit][1];
+
+            return `${duration} ${formatted_duration_unit}`;
+        } catch (e) {
+            return '';
+        }
     };
 
     const isVisible = component => {
@@ -80,7 +87,7 @@ const MobileWidget = ({
             {is_multiplier ? (
                 <MultiplierAmountWidget />
             ) : (
-                <div className='mobile-widget' onClick={toggleWidget}>
+                <div id='duration_amount_selector' className='mobile-widget' onClick={toggleWidget}>
                     <div className='mobile-widget__duration'>{getHumanReadableDuration()}</div>
                     <div className='mobile-widget__amount'>
                         <Money amount={amount} currency={currency} show_currency />

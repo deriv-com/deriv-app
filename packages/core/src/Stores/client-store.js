@@ -1036,7 +1036,7 @@ export default class ClientStore extends BaseStore {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
 
                 // Client comes back from oauth and logs in
-                await this.root_store.segment.identifyEvent();
+                await this.root_store.rudderstack.identifyEvent();
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',
@@ -1465,7 +1465,7 @@ export default class ClientStore extends BaseStore {
         if (response.logout === 1) {
             this.cleanUp();
 
-            this.root_store.segment.reset();
+            this.root_store.rudderstack.reset();
             this.setLogout(true);
         }
 

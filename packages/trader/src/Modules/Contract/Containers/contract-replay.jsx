@@ -10,142 +10,149 @@ import {
     SwipeableWrapper,
     FadeWrapper,
 } from '@deriv/components';
-import { isDesktop, isMobile, isMultiplierContract, isEmptyObject, getPlatformRedirect } from '@deriv/shared';
+import { isDesktop, isMobile, isMultiplierContract, isEmptyObject, getPlatformRedirect, urlFor } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
+import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
 import { SmartChart } from 'Modules/SmartChart';
 import { connect } from 'Stores/connect';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
 import ChartMarker from '../../SmartChart/Components/Markers/marker.jsx';
 
-class ContractReplay extends React.Component {
-    state = {
-        is_visible: false,
-    };
+const ContractReplay = ({
+    contract_id,
+    contract_info,
+    contract_update,
+    contract_update_history,
+    is_chart_loading,
+    is_dark_theme,
+    is_digit_contract,
+    is_forward_starting,
+    is_sell_requested,
+    is_valid_to_cancel,
+    onClickCancel,
+    NotificationMessages,
+    onClickSell,
+    indicative_status,
+    toggleHistoryTab,
+    location,
+    history,
+    routeBackInApp,
+    onMount,
+    onUnmount,
+}) => {
+    const [is_visible, setIsVisible] = React.useState(false);
 
-    componentDidMount() {
+    React.useEffect(() => {
         const url_contract_id = +/[^/]*$/.exec(location.pathname)[0];
-        this.props.onMount(this.props.contract_id || url_contract_id);
-        this.setState({ is_visible: true });
-    }
+        onMount(contract_id || url_contract_id);
+        setIsVisible(true);
 
-    componentWillUnmount() {
-        this.setState({ is_visible: false });
-        this.props.onUnmount();
-    }
+        return () => {
+            setIsVisible(false);
+            onUnmount();
+        };
+    }, [contract_id, location, onMount, onUnmount]);
 
-    onClickClose = () => {
-        this.setState({ is_visible: false });
-        const is_from_table_row = !isEmptyObject(this.props.location.state)
-            ? this.props.location.state.from_table_row
-            : false;
-        return is_from_table_row ? this.props.history.goBack() : this.props.routeBackInApp(this.props.history);
+    const onClickClose = () => {
+        setIsVisible(false);
+        const is_from_table_row = !isEmptyObject(location.state) ? location.state.from_table_row : false;
+        return is_from_table_row ? history.goBack() : routeBackInApp(history);
     };
 
-    render() {
-        const {
-            contract_info,
-            contract_update,
-            contract_update_history,
-            is_chart_loading,
-            is_dark_theme,
-            is_digit_contract,
-            is_market_closed,
-            is_sell_requested,
-            is_valid_to_cancel,
-            onClickCancel,
-            NotificationMessages,
-            onClickSell,
-            indicative_status,
-            toggleHistoryTab,
-        } = this.props;
+    if (!contract_info.underlying) return null;
 
-        if (!contract_info.underlying) return null;
+    const is_multiplier = isMultiplierContract(contract_info.contract_type);
 
-        const is_multiplier = isMultiplierContract(contract_info.contract_type);
+    const contract_drawer_el = (
+        <ContractDrawer
+            contract_info={contract_info}
+            contract_update={contract_update}
+            contract_update_history={contract_update_history}
+            is_chart_loading={is_chart_loading}
+            is_dark_theme={is_dark_theme}
+            is_multiplier={is_multiplier}
+            is_sell_requested={is_sell_requested}
+            is_valid_to_cancel={is_valid_to_cancel}
+            onClickCancel={onClickCancel}
+            onClickSell={onClickSell}
+            status={indicative_status}
+            toggleHistoryTab={toggleHistoryTab}
+        />
+    );
 
-        const contract_drawer_el = (
-            <ContractDrawer
-                contract_info={contract_info}
-                contract_update={contract_update}
-                contract_update_history={contract_update_history}
-                is_chart_loading={is_chart_loading}
-                is_dark_theme={is_dark_theme}
-                is_market_closed={is_market_closed}
-                is_multiplier={is_multiplier}
-                is_sell_requested={is_sell_requested}
-                is_valid_to_cancel={is_valid_to_cancel}
-                onClickCancel={onClickCancel}
-                onClickSell={onClickSell}
-                status={indicative_status}
-                toggleHistoryTab={toggleHistoryTab}
+    const unsupportedContractOnConfirm = () => {
+        this.props.history.push('/reports');
+    };
+
+    const unsupportedContractOnClose = () => {
+        window.open(urlFor('user/statementws', { legacy: true }), '_blank');
+    };
+
+    return (
+        <FadeWrapper is_visible={is_visible} className='contract-details-wrapper' keyname='contract-details-wrapper'>
+            <MobileWrapper>
+                <NotificationMessages />
+            </MobileWrapper>
+            <UnsupportedContractModal
+                onConfirm={unsupportedContractOnConfirm}
+                onClose={unsupportedContractOnClose}
+                is_visible={is_forward_starting}
             />
-        );
-
-        return (
-            <FadeWrapper
-                is_visible={this.state.is_visible}
-                className='contract-details-wrapper'
-                keyname='contract-details-wrapper'
+            <PageOverlay
+                id='dt_contract_replay_container'
+                header={localize('Contract details')}
+                onClickClose={onClickClose}
             >
-                <MobileWrapper>
-                    <NotificationMessages />
-                </MobileWrapper>
-                <PageOverlay
-                    id='dt_contract_replay_container'
-                    header={localize('Contract details')}
-                    onClickClose={this.onClickClose}
+                <Div100vhContainer
+                    className='trade-container__replay'
+                    is_disabled={isDesktop()}
+                    height_offset='80px' // * 80px = header + contract details header heights in mobile
                 >
-                    <Div100vhContainer
-                        className='trade-container__replay'
-                        is_disabled={isDesktop()}
-                        height_offset='80px' // * 80px = header + contract details header heights in mobile
-                    >
-                        <DesktopWrapper>{contract_drawer_el}</DesktopWrapper>
-                        <MobileWrapper>
-                            <div
-                                className={classNames('contract-drawer__mobile-wrapper', {
-                                    'contract-drawer__mobile-wrapper--is-multiplier': isMobile() && is_multiplier,
-                                })}
-                            >
-                                {contract_drawer_el}
-                            </div>
-                        </MobileWrapper>
-                        <React.Suspense fallback={<div />}>
-                            <div
-                                className={classNames('replay-chart__container', {
-                                    'replay-chart__container--is-multiplier': isMobile() && is_multiplier,
-                                })}
-                            >
-                                <DesktopWrapper>
-                                    <NotificationMessages />
-                                </DesktopWrapper>
-                                <ChartLoader is_dark={is_dark_theme} is_visible={is_chart_loading} />
-                                <DesktopWrapper>
+                    <DesktopWrapper>{contract_drawer_el}</DesktopWrapper>
+                    <MobileWrapper>
+                        <div
+                            className={classNames('contract-drawer__mobile-wrapper', {
+                                'contract-drawer__mobile-wrapper--is-multiplier': isMobile() && is_multiplier,
+                            })}
+                        >
+                            {contract_drawer_el}
+                        </div>
+                    </MobileWrapper>
+                    <React.Suspense fallback={<div />}>
+                        <div
+                            className={classNames('replay-chart__container', {
+                                'replay-chart__container--is-multiplier': isMobile() && is_multiplier,
+                            })}
+                        >
+                            <DesktopWrapper>
+                                <NotificationMessages />
+                            </DesktopWrapper>
+                            <ChartLoader is_dark={is_dark_theme} is_visible={is_chart_loading} />
+                            <DesktopWrapper>
+                                <ReplayChart />
+                            </DesktopWrapper>
+                            <MobileWrapper>
+                                {is_digit_contract ? (
+                                    <React.Fragment>
+                                        <InfoBoxWidget />
+                                        <SwipeableWrapper className='replay-chart__container-swipeable-wrapper'>
+                                            <DigitsWidget />
+                                            <ReplayChart />
+                                        </SwipeableWrapper>
+                                    </React.Fragment>
+                                ) : (
                                     <ReplayChart />
-                                </DesktopWrapper>
-                                <MobileWrapper>
-                                    {is_digit_contract ? (
-                                        <React.Fragment>
-                                            <InfoBoxWidget />
-                                            <SwipeableWrapper className='replay-chart__container-swipeable-wrapper'>
-                                                <DigitsWidget />
-                                                <ReplayChart />
-                                            </SwipeableWrapper>
-                                        </React.Fragment>
-                                    ) : (
-                                        <ReplayChart />
-                                    )}
-                                </MobileWrapper>
-                            </div>
-                        </React.Suspense>
-                    </Div100vhContainer>
-                </PageOverlay>
-            </FadeWrapper>
-        );
-    }
-}
+                                )}
+                            </MobileWrapper>
+                        </div>
+                    </React.Suspense>
+                </Div100vhContainer>
+            </PageOverlay>
+        </FadeWrapper>
+    );
+};
 
 ContractReplay.propTypes = {
     contract_id: PropTypes.number,
@@ -181,6 +188,7 @@ export default withRouter(
             onUnmount: contract_replay.onUnmount,
             indicative_status: contract_replay.indicative_status,
             is_chart_loading: contract_replay.is_chart_loading,
+            is_forward_starting: contract_replay.is_forward_starting,
             is_dark_theme: ui.is_dark_mode_on,
             NotificationMessages: ui.notification_messages_ui,
             toggleHistoryTab: ui.toggleHistoryTab,
@@ -190,15 +198,15 @@ export default withRouter(
 
 // CHART -----------------------------------------
 
-class Chart extends React.Component {
-    get is_bottom_widget_visible() {
-        return isDesktop() && this.props.is_digit_contract;
-    }
+const Chart = props => {
+    const isBottomWidgetVisible = () => {
+        return isDesktop() && props.is_digit_contract;
+    };
 
-    get chart_yAxis_margin() {
+    const getChartYAxisMargin = () => {
         const margin = {
             top: isMobile() ? 96 : 148,
-            bottom: this.is_bottom_widget_visible ? 128 : 112,
+            bottom: isBottomWidgetVisible() ? 128 : 112,
         };
 
         if (isMobile()) {
@@ -206,50 +214,48 @@ class Chart extends React.Component {
         }
 
         return margin;
-    }
+    };
 
-    render() {
-        return (
-            <SmartChart
-                barriers={this.props.barriers_array}
-                bottomWidgets={this.is_bottom_widget_visible ? ChartBottomWidgets : null}
-                chartControlsWidgets={null}
-                chartType={this.props.chart_type}
-                endEpoch={this.props.end_epoch}
-                margin={this.props.margin || null}
-                isMobile={isMobile()}
-                enabledNavigationWidget={isDesktop()}
-                enabledChartFooter={false}
-                granularity={this.props.granularity}
-                requestAPI={this.props.wsSendRequest}
-                requestForget={this.props.wsForget}
-                requestForgetStream={this.props.wsForgetStream}
-                crosshair={isMobile() ? 0 : undefined}
-                maxTick={isMobile() ? 8 : undefined}
-                requestSubscribe={this.props.wsSubscribe}
-                settings={this.props.settings}
-                startEpoch={this.props.start_epoch}
-                scrollToEpoch={this.props.scroll_to_epoch}
-                stateChangeListener={this.props.chartStateChange}
-                symbol={this.props.symbol}
-                topWidgets={ChartTopWidgets}
-                isConnectionOpened={this.props.is_socket_opened}
-                isStaticChart={false}
-                shouldFetchTradingTimes={!this.props.end_epoch}
-                yAxisMargin={this.chart_yAxis_margin}
-            >
-                {this.props.markers_array.map(marker => (
-                    <ChartMarker
-                        key={marker.react_key}
-                        marker_config={marker.marker_config}
-                        marker_content_props={marker.content_config}
-                        is_bottom_widget_visible={this.is_bottom_widget_visible}
-                    />
-                ))}
-            </SmartChart>
-        );
-    }
-}
+    return (
+        <SmartChart
+            barriers={props.barriers_array}
+            bottomWidgets={isBottomWidgetVisible() ? ChartBottomWidgets : null}
+            chartControlsWidgets={null}
+            chartType={props.chart_type}
+            endEpoch={props.end_epoch}
+            margin={props.margin || null}
+            isMobile={isMobile()}
+            enabledNavigationWidget={isDesktop()}
+            enabledChartFooter={false}
+            granularity={props.granularity}
+            requestAPI={props.wsSendRequest}
+            requestForget={props.wsForget}
+            requestForgetStream={props.wsForgetStream}
+            crosshair={isMobile() ? 0 : undefined}
+            maxTick={isMobile() ? 8 : undefined}
+            requestSubscribe={props.wsSubscribe}
+            settings={props.settings}
+            startEpoch={props.start_epoch}
+            scrollToEpoch={props.scroll_to_epoch}
+            stateChangeListener={props.chartStateChange}
+            symbol={props.symbol}
+            topWidgets={ChartTopWidgets}
+            isConnectionOpened={props.is_socket_opened}
+            isStaticChart={false}
+            shouldFetchTradingTimes={!props.end_epoch}
+            yAxisMargin={getChartYAxisMargin()}
+        >
+            {props.markers_array.map(marker => (
+                <ChartMarker
+                    key={marker.react_key}
+                    marker_config={marker.marker_config}
+                    marker_content_props={marker.content_config}
+                    is_bottom_widget_visible={isBottomWidgetVisible()}
+                />
+            ))}
+        </SmartChart>
+    );
+};
 
 Chart.propTypes = {
     barriers_array: PropTypes.array,

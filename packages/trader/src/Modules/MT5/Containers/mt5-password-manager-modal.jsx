@@ -131,9 +131,7 @@ const MT5PasswordSuccessMessage = ({ toggleModal, is_investor }) => (
     </div>
 );
 
-const multi_step_ref = React.createRef();
-
-const MT5PasswordManagerTabContentWrapper = ({ steps }) => (
+const MT5PasswordManagerTabContentWrapper = ({ multi_step_ref, steps }) => (
     <MultiStep ref={multi_step_ref} steps={steps} className='mt5-password-manager' lbl_previous={localize('Back')} />
 );
 
@@ -144,6 +142,7 @@ const MainPasswordManager = ({
     validatePassword,
     error_message_main,
     setPasswordType,
+    multi_step_ref,
 }) => {
     if (is_submit_success_main) {
         return <MT5PasswordSuccessMessage toggleModal={toggleModal} />;
@@ -216,7 +215,7 @@ const MainPasswordManager = ({
                             type='button'
                             onClick={() => {
                                 setPasswordType('main');
-                                multi_step_ref.current?.nextStep();
+                                multi_step_ref.current?.goNextStep();
                             }}
                             text={localize('Reset main password')}
                             tertiary
@@ -230,12 +229,13 @@ const MainPasswordManager = ({
 };
 
 const InvestorPasswordManager = ({
-    is_submit_success_investor,
-    toggleModal,
     error_message_investor,
-    validatePassword,
+    is_submit_success_investor,
+    multi_step_ref,
     onSubmit,
     setPasswordType,
+    toggleModal,
+    validatePassword,
 }) => {
     if (is_submit_success_investor) {
         return <MT5PasswordSuccessMessage toggleModal={toggleModal} is_investor />;
@@ -315,7 +315,7 @@ const InvestorPasswordManager = ({
                                 type='button'
                                 onClick={() => {
                                     setPasswordType('investor');
-                                    multi_step_ref.current?.nextStep();
+                                    multi_step_ref.current?.goNextStep();
                                 }}
                                 text={localize('Create or reset investor password')}
                                 tertiary
@@ -329,7 +329,7 @@ const InvestorPasswordManager = ({
     );
 };
 
-const MT5PasswordManagerTabContent = ({ toggleModal, selected_login, email, setPasswordType }) => {
+const MT5PasswordManagerTabContent = ({ toggleModal, selected_login, email, setPasswordType, multi_step_ref }) => {
     const [active_tab_index, setActiveTabIndex] = React.useState(0);
     const [error_message_main, setErrorMessageMain] = React.useState('');
     const [is_submit_success_main, setSubmitSuccessMain] = React.useState(false);
@@ -417,6 +417,7 @@ const MT5PasswordManagerTabContent = ({ toggleModal, selected_login, email, setP
                                 validatePassword={validatePassword}
                                 error_message_main={error_message_main}
                                 setPasswordType={setPasswordType}
+                                multi_step_ref={multi_step_ref}
                             />
                         </ThemedScrollbars>
                     </DesktopWrapper>
@@ -429,6 +430,7 @@ const MT5PasswordManagerTabContent = ({ toggleModal, selected_login, email, setP
                                 validatePassword={validatePassword}
                                 error_message_main={error_message_main}
                                 setPasswordType={setPasswordType}
+                                multi_step_ref={multi_step_ref}
                             />
                         </Div100vhContainer>
                     </MobileWrapper>
@@ -443,6 +445,7 @@ const MT5PasswordManagerTabContent = ({ toggleModal, selected_login, email, setP
                                 validatePassword={validatePassword}
                                 onSubmit={onSubmit}
                                 setPasswordType={setPasswordType}
+                                multi_step_ref={multi_step_ref}
                             />
                         </ThemedScrollbars>
                     </DesktopWrapper>
@@ -455,6 +458,7 @@ const MT5PasswordManagerTabContent = ({ toggleModal, selected_login, email, setP
                                 validatePassword={validatePassword}
                                 onSubmit={onSubmit}
                                 setPasswordType={setPasswordType}
+                                multi_step_ref={multi_step_ref}
                             />
                         </Div100vhContainer>
                     </MobileWrapper>
@@ -477,6 +481,8 @@ const MT5PasswordManagerModal = ({
     selected_server,
     sendVerifyEmail,
 }) => {
+    const multi_step_ref = React.useRef();
+
     const [password_type, setPasswordType] = React.useState('main');
 
     if (!selected_login) return null;
@@ -490,6 +496,7 @@ const MT5PasswordManagerModal = ({
                     toggleModal={toggleModal}
                     password_type={password_type}
                     setPasswordType={setPasswordType}
+                    multi_step_ref={multi_step_ref}
                 />
             ),
         },
@@ -527,7 +534,7 @@ const MT5PasswordManagerModal = ({
                     height='688px'
                     width='904px'
                 >
-                    <MT5PasswordManagerTabContentWrapper steps={steps} />
+                    <MT5PasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
@@ -537,7 +544,7 @@ const MT5PasswordManagerModal = ({
                     header={localize('Manage password')}
                     onClickClose={toggleModal}
                 >
-                    <MT5PasswordManagerTabContentWrapper steps={steps} />
+                    <MT5PasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
                 </PageOverlay>
             </MobileWrapper>
         </React.Suspense>

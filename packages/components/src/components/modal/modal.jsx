@@ -19,7 +19,6 @@ const ModalElement = ({
     id,
     title,
     className,
-    is_align_header_content_left,
     is_confirmation_modal,
     is_vertical_centered,
     is_vertical_bottom,
@@ -104,7 +103,6 @@ const ModalElement = ({
                         'dc-modal-header__border-bottom': !should_header_stick_body,
                         [`dc-modal-header--${className}`]: className,
                         [`dc-modal-header--is-title-centered`]: is_title_centered,
-                        [`dc-modal-header--is-item-align-centered`]: !is_align_header_content_left,
                     })}
                     style={{
                         background: header_backgound_color,
@@ -161,7 +159,6 @@ ModalElement.propTypes = {
     has_close_icon: PropTypes.bool,
     header_backgound_color: PropTypes.string,
     header: PropTypes.node,
-    is_align_header_content_left: PropTypes.bool,
     id: PropTypes.string,
     is_open: PropTypes.bool,
     is_title_centered: PropTypes.bool,
@@ -191,7 +188,6 @@ const Modal = ({
     onUnmount,
     portalId,
     small,
-    is_align_header_content_left,
     is_confirmation_modal,
     is_vertical_bottom,
     is_vertical_centered,
@@ -221,7 +217,6 @@ const Modal = ({
         <ModalElement
             className={className}
             close_icon_color={close_icon_color}
-            is_align_header_content_left={is_align_header_content_left}
             should_header_stick_body={should_header_stick_body}
             header={header}
             header_backgound_color={header_backgound_color}
@@ -260,7 +255,6 @@ Modal.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     close_icon_color: PropTypes.string,
-    is_align_header_content_left: PropTypes.bool,
     should_header_stick_body: PropTypes.bool,
     has_close_icon: PropTypes.bool,
     header: PropTypes.node,

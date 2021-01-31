@@ -66,7 +66,6 @@ const Popup = ({
                     should_header_stick_body
                     header_backgound_color={header_backgound_color}
                     height='636px'
-                    is_align_header_content_left
                     is_open={should_show_popup}
                     renderTitle={() => header()}
                     toggleModal={togglePopupModal}

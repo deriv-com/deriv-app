@@ -93,10 +93,7 @@
         justify-content: space-between;
         width: 100%;
         line-height: 24px;
-
-        &--is-item-align-centered {
-            align-items: center;
-        }
+        align-items: center;
 
         &__border-bottom {
             border-bottom: 2px solid var(--general-section-2);

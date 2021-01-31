@@ -1,0 +1,10 @@
+.dw-back {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3.2rem;
+    cursor: pointer;
+
+    &__icon {
+        margin-right: 1.2rem;
+    }
+}

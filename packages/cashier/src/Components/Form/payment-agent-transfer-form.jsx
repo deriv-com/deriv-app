@@ -108,7 +108,7 @@ const PaymentAgentTransferForm = ({
                                     error={touched.loginid && errors.loginid}
                                     required
                                     autoComplete='off'
-                                    maxLength='20'
+                                    maxLength={20}
                                 />
                             )}
                         </Field>

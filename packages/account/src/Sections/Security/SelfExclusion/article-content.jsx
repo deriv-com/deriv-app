@@ -18,7 +18,7 @@ const ArticleContent = ({ is_eu, is_uk, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getStaticUrl('/responsible-trading', { is_deriv_crypto })}
+                    href={getStaticUrl('/responsible', { is_deriv_crypto })}
                 />,
             ]}
         />,
@@ -92,7 +92,7 @@ const ArticleContent = ({ is_eu, is_uk, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getStaticUrl('/responsible-trading', { is_deriv_crypto })}
+                    href={getStaticUrl('/responsible', { is_deriv_crypto })}
                 />,
             ]}
         />,

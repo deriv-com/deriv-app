@@ -397,7 +397,7 @@ const AccountTransferForm = ({
                                             autoComplete='off'
                                             maxLength='30'
                                             hint={
-                                                transfer_limit.max && (
+                                                transfer_limit.max ? (
                                                     <Localize
                                                         i18n_default_text='Transfer limits: <0 /> - <1 />'
                                                         components={[
@@ -415,6 +415,8 @@ const AccountTransferForm = ({
                                                             />,
                                                         ]}
                                                     />
+                                                ) : (
+                                                    ''
                                                 )
                                             }
                                         />

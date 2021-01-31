@@ -147,6 +147,14 @@ stories.add('Upper nav', () => (
     </Theme>
 ));
 
+stories.add('2 items per window', () => (
+    <Theme is_dark={boolean('Theme', false)}>
+        <FlexWrapper>
+            <Carousel item_per_window={2} list={demo_slides} active_index={0} />
+        </FlexWrapper>
+    </Theme>
+));
+
 stories.add('Auto play', () => (
     <Theme is_dark={boolean('Theme', false)}>
         <FlexWrapper>

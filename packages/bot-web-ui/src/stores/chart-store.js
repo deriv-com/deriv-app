@@ -19,7 +19,6 @@ export default class ChartStore {
 
     @observable symbol;
     @observable is_chart_loading;
-    @observable main_barrier = null;
     @observable chart_type;
     @observable granularity;
 

@@ -49,4 +49,10 @@ export const routes = {
     smarttrader: getUrlSmartTrader(),
     endpoint: '/endpoint',
     complaints_policy: '/complaints-policy',
+
+    dashboard: '/dashboard',
+    about_us: '/dashboard/about-us',
+    explore: '/dashboard/explore',
+    resources: '/dashboard/resources',
+    platform_dmt5_synthetic: '/dashboard/platforms/dmt5_synthetic',
 };

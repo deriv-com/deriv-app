@@ -234,12 +234,12 @@ export default class OrderStore {
             } else if (get_order_status.is_inactive_order) {
                 this.orders.splice(order_idx, 1);
             } else if (get_order_status.is_disputed_order || get_order_status.is_active_order) {
-                this.orders[order_idx] = p2p_order_info;
+                Object.assign(this.orders[order_idx], p2p_order_info);
             }
-        } else {
+        } else if (this.orders[order_idx]) {
             // When looking at a specific order, it's NOT safe to move orders between tabs
             // in this case, only update the order details.
-            this.orders[order_idx] = p2p_order_info;
+            Object.assign(this.orders[order_idx], p2p_order_info);
         }
     }
 

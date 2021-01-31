@@ -57,8 +57,6 @@ const WarningModal = props => {
                 <Text as='p' className='account-closure-warning-modal__content'>
                     {localize('You’ll be logged out automatically.')}
                 </Text>
-            </div>
-            <div className='account-closure-warning-modal__content-wrapper'>
                 <Text as='p' size='xs' color='prominent'>
                     <Localize
                         i18n_default_text='You will <0>NOT</0> be able to log in again.'
@@ -91,6 +89,8 @@ const GeneralErrorContent = ({ message, onClick }) => (
     </React.Fragment>
 );
 
+const character_limit_no = 255;
+
 class DeactivateAccountReason extends React.Component {
     state = {
         api_error_message: '',
@@ -102,16 +102,16 @@ class DeactivateAccountReason extends React.Component {
         which_modal_should_render: undefined,
         is_checkbox_disabled: false,
         total_checkbox_checked: 0,
-        remaining_characters: undefined,
+        remaining_characters: character_limit_no,
     };
     validateFields = values => {
         const error = {};
         const selected_reason_count = selectedReasons(values).length;
         if (!selected_reason_count) {
-            error.empty_reason = localize('please select at least one reason');
+            error.empty_reason = localize('Please select at least one reason');
         }
-        if ((values.otherTradingPlatforms + values.doToImprove).length > 0) {
-            const max_characters = 250;
+        if ((values.otherTradingPlatforms + values.doToImprove).length > 0 || selected_reason_count) {
+            const max_characters = character_limit_no;
             const final_value = preparingReason(values);
             const selected_reasons = selectedReasons(values)
                 .map(val => val[0])
@@ -130,12 +130,14 @@ class DeactivateAccountReason extends React.Component {
             if (remaining_characters >= 0) {
                 this.setState({ remaining_characters });
             } else {
-                this.setState({ remaining_characters: undefined });
+                this.setState({ remaining_characters: character_limit_no });
             }
             const regex_rule = `^[0-9A-Za-z .,'-]{0,${max_characters}}$`;
             if (!new RegExp(regex_rule).test(final_value)) {
                 error.characters_limits = `please insert up to ${max_input_characters_can_use} characters combine both fields.`;
             }
+        } else {
+            this.setState({ remaining_characters: character_limit_no });
         }
         return error;
     };
@@ -366,41 +368,51 @@ class DeactivateAccountReason extends React.Component {
                                     />
                                 )}
                             </Field>
-                            {this.state.remaining_characters >= 0 && (
-                                <Text weight='bold' size='xs' as='p'>
-                                    {localize('Remaining characters: {{remaining_characters}}', {
-                                        remaining_characters: this.state.remaining_characters,
-                                    })}
-                                </Text>
-                            )}
-                            {Object.keys(errors).length > 0 &&
-                                Object.entries(errors).map(([key, value]) => (
+                            <div className='deactivate-account-reasons__footer'>
+                                <div>
                                     <Text
+                                        size='xxs'
                                         as='p'
-                                        weight='bold'
-                                        size='xs'
-                                        color='loss-danger'
-                                        className='deactivate-account-reasons__error'
-                                        key={key}
+                                        color='less-prominent'
+                                        className='deactivate-account-reasons__hint'
                                     >
-                                        {value}
+                                        {localize('Remaining characters: {{remaining_characters}}', {
+                                            remaining_characters: this.state.remaining_characters,
+                                        })}
                                     </Text>
-                                ))}
-                            {errors.characters_limits && (
-                                <Text as='p' weight='bold' size='xs' color='loss-danger'>
-                                    {localize("Must be numbers, letters, and special characters . , ' -")}
-                                </Text>
-                            )}
-                            <FormSubmitButton
-                                is_disabled={
-                                    // eslint-disable-next-line no-unused-vars
-                                    Object.keys(errors).length > 0
-                                }
-                                label={localize('Continue')}
-                                has_cancel
-                                cancel_label={localize('Back')}
-                                onCancel={() => this.props.onBackClick()}
-                            />
+                                    <Text size='xxs' as='p' color='less-prominent'>
+                                        {localize("Must be numbers, letters, and special characters . , ' -")}
+                                    </Text>
+                                    {Object.keys(errors).length > 0 &&
+                                        Object.entries(errors).map(([key, value]) => (
+                                            <Text
+                                                as='p'
+                                                weight='bold'
+                                                size='xs'
+                                                color='loss-danger'
+                                                className='deactivate-account-reasons__error'
+                                                key={key}
+                                            >
+                                                {value}
+                                            </Text>
+                                        ))}
+                                    {errors.characters_limits && (
+                                        <Text as='p' weight='bold' size='xs' color='loss-danger'>
+                                            {localize("Must be numbers, letters, and special characters . , ' -")}
+                                        </Text>
+                                    )}
+                                </div>
+                                <FormSubmitButton
+                                    is_disabled={
+                                        // eslint-disable-next-line no-unused-vars
+                                        Object.keys(errors).length > 0
+                                    }
+                                    label={localize('Continue')}
+                                    has_cancel
+                                    cancel_label={localize('Back')}
+                                    onCancel={() => this.props.onBackClick()}
+                                />
+                            </div>
                         </form>
                     )}
                 </Formik>

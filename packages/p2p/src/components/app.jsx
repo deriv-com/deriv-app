@@ -3,11 +3,11 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import { isMobile } from '@deriv/shared';
-import { Tabs, Modal, Text } from '@deriv/components';
+import { Icon, Loading, Modal, Tabs, Text } from '@deriv/components';
 import ServerTime from 'Utils/server-time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
-import { localize, setLanguage } from './i18next';
+import { localize, Localize, setLanguage } from './i18next';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
 import Orders from './orders/orders.jsx';
@@ -65,6 +65,20 @@ const App = observer(props => {
         );
     }
 
+    if (general_store.is_blocked) {
+        return (
+            <div className='p2p-cashier__blocked'>
+                <Icon icon='IcCashierDp2pBlocked' size={128} />
+                <Text className='p2p-cashier__blocked--text' color='prominent' line_height='m' size='s' weight='bold'>
+                    <Localize i18n_default_text='Your DP2P cashier is blocked' />
+                </Text>
+                <Text align='center' color='prominent' line_height='m' size='xs'>
+                    <Localize i18n_default_text='Please use live chat to contact our Customer Support team for help.' />
+                </Text>
+            </div>
+        );
+    }
+
     const wrapper_props = { className };
 
     if (general_store.show_popup) {
@@ -113,35 +127,41 @@ const App = observer(props => {
     }
 
     return (
-        <P2pWrapper {...wrapper_props}>
-            <Tabs
-                onTabItemClick={general_store.handleTabClick}
-                active_index={general_store.active_index}
-                className='p2p-cashier__tabs'
-                top
-                header_fit_content={!isMobile()}
-                is_100vw={isMobile()}
-            >
-                <div label={localize('Buy / Sell')}>
-                    <BuySell />
-                </div>
-                <div count={general_store.notification_count} label={localize('Orders')}>
-                    <Orders
-                        navigate={general_store.redirectTo}
-                        params={general_store.parameters}
-                        chat_info={general_store.chat_info}
-                    />
-                </div>
-                <div label={localize('My ads')}>
-                    <MyAds />
-                </div>
-                {general_store.is_advertiser && (
-                    <div label={localize('My profile')}>
-                        <MyProfile />
-                    </div>
-                )}
-            </Tabs>
-        </P2pWrapper>
+        <React.Fragment>
+            {general_store.is_loading ? (
+                <Loading is_fullscreen={false} />
+            ) : (
+                <P2pWrapper {...wrapper_props}>
+                    <Tabs
+                        onTabItemClick={general_store.handleTabClick}
+                        active_index={general_store.active_index}
+                        className='p2p-cashier__tabs'
+                        top
+                        header_fit_content={!isMobile()}
+                        is_100vw={isMobile()}
+                    >
+                        <div label={localize('Buy / Sell')}>
+                            <BuySell />
+                        </div>
+                        <div count={general_store.notification_count} label={localize('Orders')}>
+                            <Orders
+                                navigate={general_store.redirectTo}
+                                params={general_store.parameters}
+                                chat_info={general_store.chat_info}
+                            />
+                        </div>
+                        <div label={localize('My ads')}>
+                            <MyAds />
+                        </div>
+                        {general_store.is_advertiser && (
+                            <div label={localize('My profile')}>
+                                <MyProfile />
+                            </div>
+                        )}
+                    </Tabs>
+                </P2pWrapper>
+            )}
+        </React.Fragment>
     );
 });
 

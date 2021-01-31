@@ -20,7 +20,6 @@ const ContractDrawerCard = ({
     current_focus,
     getContractById,
     is_market_closed,
-    is_market_close_overlay_loading,
     is_mobile,
     is_multiplier,
     is_sell_requested,
@@ -31,7 +30,6 @@ const ContractDrawerCard = ({
     onSwipedDown,
     removeToast,
     result,
-    setMarketCloseOverlayLoading,
     setCurrentFocus,
     server_time,
     should_show_cancellation_warning,
@@ -44,13 +42,6 @@ const ContractDrawerCard = ({
     const { profit } = contract_info;
     const is_sold = !!getEndTime(contract_info);
     const display_name = getSymbolDisplayName(active_symbols, getMarketInformation(contract_info.shortcode).underlying);
-
-    React.useEffect(() => {
-        setMarketCloseOverlayLoading(true);
-        return () => {
-            setMarketCloseOverlayLoading(true);
-        };
-    }, []);
 
     const card_header = (
         <ContractCard.Header
@@ -131,9 +122,7 @@ const ContractDrawerCard = ({
                             'contract-card__market-closed--hidden': should_hide_closed_overlay,
                         })}
                     >
-                        <MarketClosedContractOverlay
-                            is_market_close_overlay_loading={is_market_close_overlay_loading}
-                        />
+                        <MarketClosedContractOverlay />
                     </div>
                 )}
                 {contract_el}
@@ -177,10 +166,8 @@ export default connect(({ modules, ui }) => ({
     addToast: ui.addToast,
     current_focus: ui.current_focus,
     getContractById: modules.contract_trade.getContractById,
-    is_market_close_overlay_loading: modules.trade.is_market_close_overlay_loading,
     removeToast: ui.removeToast,
     should_show_cancellation_warning: ui.should_show_cancellation_warning,
-    setMarketCloseOverlayLoading: modules.trade.setMarketCloseOverlayLoading,
     setCurrentFocus: ui.setCurrentFocus,
     toggleCancellationWarning: ui.toggleCancellationWarning,
 }))(ContractDrawerCard);

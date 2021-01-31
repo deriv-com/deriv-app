@@ -30,10 +30,10 @@ const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
 const Trade = ({
     contract_type,
     form_components,
+    getFirstOpenMarket,
     is_chart_loading,
     is_dark_theme,
     is_eu,
-    is_market_close_overlay_loading,
     is_market_closed,
     is_market_unavailable_visible,
     is_synthetics_unavailable,
@@ -61,7 +61,7 @@ const Trade = ({
                 const markets_to_search = ['forex', 'indices', 'commodities']; // none-synthetic
                 const { category: market_cat, subcategory: market_subcat } =
                     (await getFirstOpenMarket(markets_to_search)) ?? {};
-                if (category) {
+                if (market_cat) {
                     setCategory(market_cat);
                     setSubcategory(market_subcat);
                 }
@@ -169,7 +169,6 @@ const Trade = ({
                         is_synthetics_unavailable={is_synthetics_unavailable}
                         {...(is_eu && category && { is_market_available: true })}
                         onClick={onTryOtherMarkets}
-                        is_market_close_overlay_loading={is_market_close_overlay_loading}
                     />
                 )}
                 <FormLayout
@@ -192,7 +191,6 @@ export default connect(({ client, common, modules, ui }) => ({
     form_components: modules.trade.form_components,
     is_chart_loading: modules.trade.is_chart_loading,
     is_market_closed: modules.trade.is_market_closed,
-    is_market_close_overlay_loading: modules.trade.is_market_close_overlay_loading,
     show_digits_stats: modules.trade.show_digits_stats,
     is_trade_enabled: modules.trade.is_trade_enabled,
     setMobileDigitView: modules.trade.setMobileDigitView,

@@ -44,18 +44,14 @@ const calculateTimeLeft = remaining_time_to_open => {
         : {};
 };
 
-const MarketCountdownTimer = ({
-    is_main_page,
-    is_market_close_overlay_loading,
-    setMarketCloseOverlayLoading,
-    setMarketStatus,
-    symbol,
-}) => {
+const MarketCountdownTimer = ({ is_main_page, setIsTimerLoading, setMarketStatus, symbol }) => {
     const isMounted = useIsMounted();
     const [when_market_opens, setWhenMarketOpens] = React.useState({});
     const [time_left, setTimeLeft] = React.useState(calculateTimeLeft(when_market_opens?.remaining_time_to_open));
+    const [is_loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
+        setLoading(true);
         // eslint-disable-next-line consistent-return
         const whenMarketOpens = async (days_offset, target_symbol) => {
             // days_offset is 0 for today, 1 for tomorrow, etc.
@@ -96,7 +92,7 @@ const MarketCountdownTimer = ({
                 setTimeLeft(calculateTimeLeft(when_market_opens.remaining_time_to_open));
                 if (new Date(when_market_opens.remaining_time_to_open) - +new Date() < 1000) {
                     setMarketStatus(false);
-                    setMarketCloseOverlayLoading(true);
+                    setLoading(true);
                 }
             }, 1000);
         }
@@ -106,6 +102,10 @@ const MarketCountdownTimer = ({
             }
         };
     }, [time_left, when_market_opens]);
+
+    React.useEffect(() => {
+        if (!is_loading) setIsTimerLoading(false);
+    }, [is_loading]);
 
     let timer_components = '';
 
@@ -153,7 +153,7 @@ const MarketCountdownTimer = ({
         );
     }
 
-    if (is_market_close_overlay_loading) setMarketCloseOverlayLoading(false);
+    if (is_loading) setLoading(false);
 
     return (
         <React.Fragment>
@@ -197,14 +197,11 @@ const MarketCountdownTimer = ({
 
 MarketCountdownTimer.propTypes = {
     is_main_page: PropTypes.bool,
-    is_market_close_overlay_loading: PropTypes.bool,
-    setMarketCloseOverlayLoading: PropTypes.func,
+    setIsTimerLoading: PropTypes.func,
     symbol: PropTypes.string.isRequired,
 };
 
 export default connect(({ modules }) => ({
-    is_market_close_overlay_loading: modules.trade.is_market_close_overlay_loading,
-    setMarketCloseOverlayLoading: modules.trade.setMarketCloseOverlayLoading,
     setMarketStatus: modules.trade.setMarketStatus,
     symbol: modules.trade.symbol,
 }))(MarketCountdownTimer);

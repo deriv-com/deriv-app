@@ -48,7 +48,6 @@ export default class TradeStore extends BaseStore {
     // Underlying
     @observable symbol;
     @observable is_market_closed = false;
-    @observable is_market_close_overlay_loading = true;
     @observable previous_symbol = '';
     @observable active_symbols = [];
     @observable should_refresh_active_symbols = false;
@@ -386,7 +385,6 @@ export default class TradeStore extends BaseStore {
         if (name === 'symbol' && value) {
             // set trade params skeleton and chart loader to true until processNewValuesAsync resolves
             this.setChartStatus(true);
-            this.setMarketCloseOverlayLoading(true);
             // reset market close status
             this.setMarketStatus(false);
             this.is_trade_enabled = false;
@@ -850,11 +848,6 @@ export default class TradeStore extends BaseStore {
     @action.bound
     setMarketStatus(status) {
         this.is_market_closed = status;
-    }
-
-    @action.bound
-    setMarketCloseOverlayLoading(loading_status) {
-        this.is_market_close_overlay_loading = loading_status;
     }
 
     @action.bound

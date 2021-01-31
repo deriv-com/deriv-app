@@ -5,13 +5,9 @@ import { Button, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import MarketCountdownTimer from './market-countdown-timer.jsx';
 
-const MarketIsClosedOverlay = ({
-    is_eu,
-    is_market_available,
-    is_market_close_overlay_loading,
-    is_synthetics_unavailable,
-    onClick,
-}) => {
+const MarketIsClosedOverlay = ({ is_eu, is_market_available, is_synthetics_unavailable, onClick }) => {
+    const [is_timer_loading, setIsTimerLoading] = React.useState(true);
+
     let message = (
         <Localize i18n_default_text='In the meantime, try our synthetic indices. They simulate real-market volatility and are open 24/7.' />
     );
@@ -25,13 +21,13 @@ const MarketIsClosedOverlay = ({
     return (
         <div
             className={classNames('market-is-closed-overlay', {
-                'market-is-closed-overlay--loading': is_market_close_overlay_loading,
+                'market-is-closed-overlay--loading': is_timer_loading,
             })}
         >
             <Text as='p' className='market-is-closed-overlay__main-heading' color='prominent' weight='bold'>
                 <Localize i18n_default_text='This market is closed' />
             </Text>
-            <MarketCountdownTimer is_main_page />
+            <MarketCountdownTimer is_main_page setIsTimerLoading={setIsTimerLoading} />
             {message && (
                 <Text align='center' as='p' className='market-is-closed-overlay__main-message' size='xs'>
                     {message}
@@ -47,7 +43,6 @@ const MarketIsClosedOverlay = ({
 MarketIsClosedOverlay.propTypes = {
     is_eu: PropTypes.bool,
     is_market_available: PropTypes.bool,
-    is_market_close_overlay_loading: PropTypes.bool,
     is_synthetics_unavailable: PropTypes.bool,
     onClick: PropTypes.func,
 };

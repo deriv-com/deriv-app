@@ -1,18 +1,12 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { isMobile } from '@deriv/shared';
 import Icon from '../icon';
-import Button from '../button';
 
 // TODO: use-from-shared - Use this icon from icons' shared package
-const IconDrawer = () => (
-    <svg
-        className='dc-drawer__toggle-icon'
-        xmlns='http://www.w3.org/2000/svg'
-        width='16'
-        height='16'
-        viewBox='0 0 16 16'
-    >
+const IconDrawer = ({ className }) => (
+    <svg className={className} xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'>
         <path
             fill='var(--text-less-prominent)'
             fillRule='nonzero'
@@ -48,54 +42,51 @@ class Drawer extends React.PureComponent {
 
     render() {
         const {
+            anchor = 'left',
             children,
             className,
             contentClassName,
-            clear_stat_button_text,
             footer,
             header,
-            is_clear_stat_disabled,
-            is_mobile,
-            onClearStatClick,
-            zIndex,
+            width = 250,
+            zIndex = 4,
         } = this.props;
+        const is_mobile = isMobile();
 
         return (
             <div
                 className={classNames('dc-drawer', className, {
-                    'dc-drawer--mobile': is_mobile,
-                    [`${className}--open dc-drawer--open`]: this.state.is_open && !is_mobile,
-                    'dc-drawer--open-mobile': this.state.is_open && is_mobile,
+                    [`dc-drawer--${anchor}`]: !is_mobile,
+                    'dc-drawer--open': this.state.is_open,
                 })}
-                style={{ zIndex }}
+                style={{
+                    zIndex,
+                    transform:
+                        this.state.is_open &&
+                        !is_mobile &&
+                        (anchor === 'left'
+                            ? `translateX(calc(${width}px - 16px))`
+                            : `translateX(calc(-${width}px + 16px))`),
+                }}
             >
                 <div
                     className={classNames('dc-drawer__toggle', {
                         'dc-drawer__toggle--open': this.state.is_open,
-                        'dc-drawer__toggle--mobile': is_mobile,
                     })}
                     onClick={this.toggleDrawer}
                 >
                     {is_mobile ? (
-                        <Icon icon='IcChevronUp' className='dc-drawer__toggle-icon--mobile' />
+                        <Icon icon='IcChevronUp' className='dc-drawer__toggle-icon' />
                     ) : (
-                        <IconDrawer />
-                    )}
-                    {is_mobile && this.state.is_open && (
-                        <Button
-                            id='db-run-panel__clear-button'
-                            className='dc-drawer__clear-button'
-                            is_disabled={is_clear_stat_disabled}
-                            text={clear_stat_button_text}
-                            onClick={onClearStatClick}
-                            secondary
+                        <IconDrawer
+                            className={classNames('dc-drawer__toggle-icon', {
+                                [`dc-drawer__toggle-icon--${anchor}`]: !is_mobile,
+                            })}
                         />
                     )}
                 </div>
                 <div
-                    className={classNames('dc-drawer__container', {
-                        'dc-drawer__container--mobile': is_mobile,
-                    })}
+                    className={classNames('dc-drawer__container', { [`dc-drawer__container--${anchor}`]: !is_mobile })}
                 >
                     {header && <div className='dc-drawer__header'>{header}</div>}
                     <div className={classNames('dc-drawer__content', contentClassName)}>{children}</div>

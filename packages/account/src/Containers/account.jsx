@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { VerticalTab, DesktopWrapper, MobileWrapper, FadeWrapper, PageOverlay } from '@deriv/components';
+import { VerticalTab, DesktopWrapper, MobileWrapper, FadeWrapper, PageOverlay, Loading } from '@deriv/components';
 import { routes as shared_routes, isEmptyObject, isMobile, getSelectedRoute } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -11,16 +11,18 @@ import 'Styles/account.scss';
 
 const Account = ({
     account_status,
+    currency,
     history,
-    routeBackInApp,
+    is_logged_in,
+    is_logging_in,
     is_virtual,
     is_visible,
-    currency,
     location,
+    needs_financial_assessment,
+    routeBackInApp,
     routes,
     should_allow_authentication,
     toggleAccount,
-    needs_financial_assessment,
 }) => {
     const [is_loading, setIsLoading] = React.useState(true);
     const subroutes = flatten(routes.map(i => i.subroutes));
@@ -84,6 +86,9 @@ const Account = ({
         });
     }
 
+    if (!is_logged_in && is_logging_in) {
+        return <Loading is_fullscreen className='account__initial-loader' />;
+    }
     const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });
     return (
         <FadeWrapper is_visible={is_visible} className='account-page-wrapper' keyname='account-page-wrapper'>
@@ -115,24 +120,28 @@ const Account = ({
 
 Account.propTypes = {
     account_status: PropTypes.object,
-    should_allow_authentication: PropTypes.bool,
     currency: PropTypes.string,
     history: PropTypes.object,
-    needs_financial_assessment: PropTypes.bool,
+    is_logged_in: PropTypes.bool,
+    is_logging_in: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
     location: PropTypes.object,
+    needs_financial_assessment: PropTypes.bool,
     routes: PropTypes.arrayOf(PropTypes.object),
+    should_allow_authentication: PropTypes.bool,
     toggleAccount: PropTypes.func,
 };
 
 export default connect(({ client, common, ui }) => ({
-    routeBackInApp: common.routeBackInApp,
     account_status: client.account_status,
     currency: client.currency,
+    is_logged_in: client.is_logged_in,
+    is_logging_in: client.is_logging_in,
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,
-    should_allow_authentication: client.should_allow_authentication,
     needs_financial_assessment: client.needs_financial_assessment,
+    routeBackInApp: common.routeBackInApp,
+    should_allow_authentication: client.should_allow_authentication,
     toggleAccount: ui.toggleAccountSettings,
 }))(withRouter(Account));

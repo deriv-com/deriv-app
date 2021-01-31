@@ -58,8 +58,8 @@ const ModalElement = ({
         );
     };
 
-    const closeModal = () => {
-        if (is_open) toggleModal();
+    const closeModal = e => {
+        if (is_open) toggleModal(e);
     };
 
     useOnClickOutside(wrapper_ref, closeModal, validateClickOutside);

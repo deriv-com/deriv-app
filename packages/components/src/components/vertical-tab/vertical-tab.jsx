@@ -46,8 +46,14 @@ const VerticalTab = ({
     list_groups,
     setVerticalTabIndex,
     tab_headers_note,
+    userChangeSelected,
     vertical_tab_index,
 }) => {
+    // console.log('');
+    // console.error('Routes');
+    // console.log(list);
+    // console.log(list_groups);
+    // console.log('');
     console.log('');
     console.error('Routes');
     console.log(list);
@@ -93,7 +99,7 @@ const VerticalTab = ({
                         extra_offset={extra_offset}
                         items={list}
                         item_groups={list_groups}
-                        onChange={changeSelected}
+                        onChange={userChangeSelected || changeSelected}
                         selected={list[curr_tab_index] || list[0]}
                         has_mixed_dimensions={has_mixed_dimensions}
                         is_collapsible={is_collapsible}

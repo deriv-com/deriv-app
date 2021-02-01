@@ -41,6 +41,11 @@ const VerticalTabHeaders = ({
     onChange,
     selected,
 }) => {
+    // console.log('');
+    // console.error('VerticalTabHeaders');
+    // console.log(items);
+    // console.log(item_groups);
+    // console.log('');
     console.log('');
     console.error('VerticalTabHeaders');
     console.log(items);

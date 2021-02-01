@@ -13,6 +13,10 @@ const Home: React.FC = () => {
     const history = useHistory();
     const { config_store } = useStores();
 
+    const userChangeSelected = item => {
+        history.push(item.path)
+        return;
+    }
     const list = [
         {
             default: true,
@@ -20,6 +24,7 @@ const Home: React.FC = () => {
             label: localize('My Deriv'),
             is_routed: true,
             // path: 'myDeriv',
+            path: config_store.routes.home,
             value: () => <Text>My Deriv</Text>,
         },
         {
@@ -31,8 +36,8 @@ const Home: React.FC = () => {
             default: false,
             icon: 'IcWalletExplore',
             label: localize('Discover'),
-            // path: history.push(config_store.routes.explore),
-            path: '/dashboard/explore/',
+            // path: history.pushconfig_store.routes.explore(),
+            path: config_store.routes.explore,
             is_routed: true,
             value: () => <TempButtons />,
         },
@@ -69,6 +74,7 @@ const Home: React.FC = () => {
                 {
                     label: localize('DMT5'),
                     value: () => <Text>DMT5</Text>,
+                    path: config_store.routes.platform_dmt5_synthetic,
                 },
                 {
                     label: localize('DTrader'),
@@ -81,6 +87,7 @@ const Home: React.FC = () => {
                 {
                     label: localize('SmartTrader'),
                     value: () => <Text>SmartTrader</Text>,
+                    path: config_store.routes.platform_smarttrader,
                 },
                 {
                     label: localize('Binary Bot'),
@@ -152,6 +159,8 @@ const Home: React.FC = () => {
     });
 
     const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });
+    // console.log('selected_route');
+    // console.log(selected_route);
     console.log('selected_route');
     console.log(selected_route);
     return (
@@ -165,6 +174,7 @@ const Home: React.FC = () => {
                     id='modal'
                     is_collapsible={false}
                     is_floating
+                    userChangeSelected={userChangeSelected}
                     list={subroutes}
                     list_groups={list_groups}
                 />

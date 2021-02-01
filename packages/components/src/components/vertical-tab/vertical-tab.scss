@@ -101,8 +101,6 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
     &__header-title {
-        @include typeface(--title-center-bold-black, none);
-        color: var(--text-prominent);
         padding: 1.6rem;
         display: flex;
         align-items: center;
@@ -151,7 +149,7 @@ $MIN_HEIGHT_FLOATING: calc(
         z-index: 1;
         user-select: none;
 
-        &:hover:not(.dc-vertical-tab__header--active) {
+        &:hover:not(.dc-vertical-tab__header--active):not(.dc-vertical-tab__header-group--active) {
             background-color: var(--state-hover);
         }
         &__link {

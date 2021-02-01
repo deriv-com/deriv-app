@@ -223,8 +223,12 @@ const RealAccountSignup = ({
     }, [error]);
 
     const closeModal = e => {
-        // Do not close modal on external link click event
-        if (e?.target.getAttribute('rel') === 'noopener noreferrer' || e?.target.closest('.redirect-notice')) {
+        // Do not close modal on external link and popover click event
+        if (
+            e?.target.getAttribute('rel') === 'noopener noreferrer' ||
+            e?.target.closest('.redirect-notice') ||
+            e?.target.closest('.dc-popover__bubble')
+        ) {
             return;
         }
         if (getActiveModalIndex() !== modal_pages_indices.status_dialog) {

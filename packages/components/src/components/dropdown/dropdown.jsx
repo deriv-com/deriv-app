@@ -11,6 +11,7 @@ import DisplayText from './display-text.jsx';
 import { useBlockScroll, useOnClickOutside } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 import Icon from '../icon';
+import Text from '../text';
 
 const DropdownList = React.forwardRef((props, list_ref) => {
     const {
@@ -390,7 +391,11 @@ const Dropdown = ({
                             })}
                         />
                     )}
-                    {error && <p className='dc-field--error'>{error}</p>}
+                    {error && (
+                        <Text as='p' size='xxs' color='loss-danger' className='dc-field--error'>
+                            {error}
+                        </Text>
+                    )}
                     {is_nativepicker ? (
                         <NativeSelect
                             ref={native_select_ref}
@@ -421,7 +426,11 @@ const Dropdown = ({
                         />
                     )}
                 </div>
-                {!error && hint && <p className='dc-dropdown__hint'>{hint}</p>}
+                {!error && hint && (
+                    <Text as='p' color='less-prominent' size='xxs' className='dc-dropdown__hint'>
+                        {hint}
+                    </Text>
+                )}
             </div>
         </React.Fragment>
     );

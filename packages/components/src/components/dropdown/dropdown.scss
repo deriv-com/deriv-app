@@ -23,7 +23,6 @@
         justify-content: center;
         background: var(--fill-normal);
         border: 1px solid var(--border-normal);
-
         &:hover {
             outline: 0;
             border-color: var(--border-hover);
@@ -52,6 +51,15 @@
                 width: 100%;
                 height: 100%;
                 pointer-events: none;
+            }
+        }
+        &--has-suffix-icon {
+            width: 21rem;
+            padding-left: 3rem;
+            justify-content: start;
+
+            &-text {
+                padding-right: 0 !important;
             }
         }
         &--is-left-text {
@@ -258,27 +266,6 @@
         width: 100%;
 
         // keep <select /> element on top of .dc_dropdown__label
-        .dc-native-select {
-            position: absolute;
-            top: 0;
-            opacity: 0;
-
-            @supports not (-webkit-touch-callout: none) {
-                /* non-iOS devices hack
-    * because .focus() doesn't open <select /> in Android OS,
-    * here we make the <select /> element to fit the dropdown container
-    * so user clicks on the <select /> element itself
-    * [TODO]: find alternative solution to trigger open <select /> with JS
-    */
-                width: 100%;
-                height: 100%;
-
-                &__select {
-                    width: 100%;
-                    height: 100%;
-                }
-            }
-        }
     }
     &--has-placeholder {
         .dc-dropdown__display {
@@ -298,4 +285,14 @@
             right: 16px;
         }
     }
+    &--has-suffix-icon {
+        margin-left: 1rem;
+        margin-top: 0;
+        max-width: fit-content;
+    }
+}
+
+.suffix-icon {
+    position: absolute;
+    left: 20px;
 }

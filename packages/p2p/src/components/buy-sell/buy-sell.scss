@@ -63,10 +63,12 @@
     &__name {
         margin-left: 0.8rem;
 
-        &:hover {
-            color: var(--brand-red-coral);
-            text-decoration: underline;
-            text-decoration-color: var(--brand-red-coral);
+        &--allow-hover {
+            &:hover {
+                color: var(--brand-red-coral);
+                text-decoration: underline;
+                text-decoration-color: var(--brand-red-coral);
+            }
         }
     }
 

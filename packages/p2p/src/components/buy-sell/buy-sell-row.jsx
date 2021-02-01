@@ -89,7 +89,13 @@ const BuySellRow = ({ row: advert }) => {
                     onClick={() => (general_store.is_barred ? undefined : buy_sell_store.showAdvertiserPage(advert))}
                 >
                     <UserAvatar nickname={advertiser_name} size={24} text_size='xxs' />
-                    <div className={classNames({ 'buy-sell__name': !general_store.is_barred })}>{advertiser_name}</div>
+                    <div
+                        className={classNames('buy-sell__name', {
+                            'buy-sell__name--allow-hover': !general_store.is_barred,
+                        })}
+                    >
+                        {advertiser_name}
+                    </div>
                 </div>
             </Table.Cell>
             <Table.Cell>

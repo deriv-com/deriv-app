@@ -23,34 +23,6 @@ const Tabs = ({
     const [active_line_style, updateActiveLineStyle] = React.useState({});
     const active_tab_ref = React.useRef();
     const tabs_wrapper_ref = React.useRef();
-
-    React.useEffect(() => {
-        let initial_index = active_index;
-        if (should_update_hash) {
-            const hash = location.hash.slice(1);
-            const hash_index = children.findIndex(child => child.props && child.props['data-hash'] === hash);
-            if (hash_index !== -1) {
-                initial_index = hash_index;
-                pushHash(hash);
-            }
-        }
-        onClickTabItem(initial_index || 0);
-        setActiveLineStyle();
-    }, [active_tab_index, location.hash]);
-
-    const onClickTabItem = index => {
-        if (should_update_hash) {
-            const hash = children[index].props['data-hash'];
-            if (hash && hash !== location.hash.slice(1)) {
-                pushHash(hash);
-            }
-        }
-        if (typeof onTabItemClick === 'function') {
-            onTabItemClick(index);
-        }
-        setActiveTabIndex(index);
-    };
-
     const pushHash = hash => {
         history.replace(`${history.location.pathname}#${hash}`);
     };
@@ -86,7 +58,7 @@ const Tabs = ({
                 const child_props = children[initial_index_to_show].props;
                 const current_id = child_props && child_props['data-hash'];
                 if (current_id) {
-                    history.push({ hash: current_id });
+                    pushHash(current_id);
                 }
             }
         }
@@ -114,7 +86,7 @@ const Tabs = ({
     const onClickTabItem = index => {
         if (should_update_hash) {
             const hash = children[index].props['data-hash'];
-            history.push({ hash });
+            pushHash(hash);
         }
         setActiveTabIndex(index);
         setActiveLineStyle();

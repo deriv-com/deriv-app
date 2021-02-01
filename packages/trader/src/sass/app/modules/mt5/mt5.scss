@@ -7,10 +7,10 @@
     justify-content: flex-start;
 
     h2 {
-        @include typeface(--paragraph-center-bold-black);
+        @include typeface(--title-center-bold-black);
         color: var(--text-prominent);
         text-transform: none;
-        margin: 2.8rem 2.2rem 3.3rem;
+        margin: 0.4rem 2.2rem 2.4rem;
         max-width: 30rem;
     }
     form {
@@ -94,10 +94,23 @@
     }
 }
 
-.mt5-password-modal__message {
-    max-width: 32rem;
-    margin: auto;
-    line-height: 1.43;
+.mt5-password-modal {
+    &__message {
+        max-width: 32rem;
+        margin: auto;
+        line-height: 1.43;
+    }
+    &__radio {
+        &.dc-radio-group {
+            display: grid;
+            grid-gap: 2rem;
+            margin-top: 0;
+        }
+        &.dc-radio-group__item {
+            display: flex;
+            flex-direction: row;
+        }
+    }
 }
 
 .dc-modal__container_top-up-virtual {

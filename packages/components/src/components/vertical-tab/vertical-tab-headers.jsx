@@ -5,10 +5,13 @@ import VerticalTabHeader from './vertical-tab-header.jsx';
 import VerticalTabHeaderGroup from './vertical-tab-header-group.jsx';
 import VerticalTabHeaderTitle from './vertical-tab-header-title.jsx';
 
-const offsetTop = (is_floating, ref, selected) => {
+const offsetTop = (extra_offset, is_floating, ref, selected) => {
     let calculated_offset = 0;
+    let item_offset = 0;
 
-    const headers = ref.current.querySelectorAll('.dc-vertical-tab__header__link');
+    const headers = ref.current.querySelectorAll(
+        '.dc-vertical-tab__header__link, .dc-vertical-tab__header-group__link'
+    );
     let selected_el = null;
 
     if (selected.path) {
@@ -18,8 +21,8 @@ const offsetTop = (is_floating, ref, selected) => {
     }
 
     if (selected_el) {
-        const extra_offset = is_floating ? 18 : 10;
-        calculated_offset = selected_el.offsetTop - extra_offset;
+        item_offset = is_floating ? extra_offset || 18 : 10;
+        calculated_offset = selected_el.offsetTop - item_offset;
     }
 
     return calculated_offset;
@@ -27,7 +30,10 @@ const offsetTop = (is_floating, ref, selected) => {
 
 const VerticalTabHeaders = ({
     className,
+    extra_offset,
+    has_mixed_dimensions,
     header_title,
+    is_collapsible,
     is_floating,
     is_routed,
     item_groups,
@@ -40,7 +46,7 @@ const VerticalTabHeaders = ({
     const [should_skip_animation, setShouldSkipAnimation] = React.useState(false);
 
     React.useEffect(() => {
-        setTop(offsetTop(is_floating, ref, selected));
+        setTop(offsetTop(extra_offset, is_floating, ref, selected));
     }, [selected]);
 
     return (
@@ -54,16 +60,22 @@ const VerticalTabHeaders = ({
             {Array.isArray(item_groups)
                 ? item_groups.map((group, idx) => (
                       <VerticalTabHeaderGroup
+                          onChange={onChange}
                           onToggle={setShouldSkipAnimation}
-                          selected={group.subitems.includes(
-                              // See if the index of the currently selected item is in the subitems of this group
-                              items.findIndex(i => i === selected)
-                          )}
+                          selected={
+                              (!has_mixed_dimensions &&
+                                  group.subitems?.includes(
+                                      // See if the index of the currently selected item is in the subitems of this group
+                                      items.findIndex(i => i === selected)
+                                  )) ||
+                              (!group.subitems && group === selected)
+                          }
                           items={items}
+                          is_collapsible={is_collapsible}
                           group={group}
                           key={idx}
                       >
-                          {group.subitems.map((item_idx, header_idx) => (
+                          {group.subitems?.map((item_idx, header_idx) => (
                               <VerticalTabHeader
                                   item={items[item_idx]}
                                   onChange={onChange}

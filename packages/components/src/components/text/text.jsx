@@ -11,27 +11,17 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
             '--text-color': `var(--text-${color || 'general'})`,
             '--text-lh': `var(--text-lh-${line_height || 'm'})`,
             '--text-weight': `var(--text-weight-${weight || 'normal'})`,
-            '--text-align': `var(--text-align-${align || 'start'})`,
+            '--text-align': `var(--text-align-${align || 'left'})`,
         };
         if (!isEmptyObject(styles)) {
             const combined_style = { ...class_styles, ...styles };
             setStyle(combined_style);
         }
         setStyle(class_styles);
-    }, [size, color, line_height, weight]);
+    }, [size, color, line_height, weight, align]);
 
     const class_names = classNames('dc-text', className);
-    return (
-        (as === 'p' && (
-            <p {...props} className={class_names} style={style}>
-                {children}
-            </p>
-        )) || (
-            <span {...props} className={class_names} style={style}>
-                {children}
-            </span>
-        )
-    );
+    return React.createElement(as || 'span', { className: class_names, style, ...props }, children);
 };
 
 Text.propTypes = {

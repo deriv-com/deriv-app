@@ -20,10 +20,6 @@
             color: var(--text-less-prominent);
             font-size: 1.4rem;
             margin-bottom: -1.6rem;
-
-            &--bold {
-                font-weight: bold;
-            }
         }
         &-scrollbar {
             position: absolute;
@@ -39,6 +35,7 @@
             margin-top: 4.3rem;
             height: 4rem;
             margin-left: 0;
+            margin-bottom: 0;
 
             &:not(:last-child) {
                 margin-right: 2.4rem;
@@ -50,27 +47,9 @@
                 height: 9.6rem;
                 margin-bottom: 0;
             }
-            &--trailing {
-                font-size: var(--text-size-xxs);
-                color: var(--text-less-prominent);
-            }
         }
         &-button {
             margin-left: 0.8rem;
-        }
-        &-error {
-            display: flex;
-            align-items: center;
-            margin-right: auto;
-            font-size: var(--text-size-xxs);
-            font-weight: bold;
-            flex: 1;
-            color: var(--text-prominent);
-            padding-left: 2.4rem;
-
-            p {
-                padding-left: 1.6rem;
-            }
         }
         &-footer {
             display: flex;
@@ -302,5 +281,15 @@
     }
     &--off {
         color: var(--text-less-prominent);
+    }
+}
+
+.dc-modal-header__title--p2p-my-ads__modal-error {
+    padding: 2.4rem 2.4rem 0 !important;
+}
+
+.dc-modal__container_p2p-my-ads__modal-error {
+    .dc-modal-footer {
+        padding-top: 0 !important;
     }
 }

@@ -590,9 +590,6 @@ $MIN_HEIGHT_FLOATING: calc(
                     margin-bottom: 0;
                 }
             }
-            &--title {
-                @include typeface(--small-left-bold-black, none);
-            }
         }
         &__scrollbars {
             height: 100%;

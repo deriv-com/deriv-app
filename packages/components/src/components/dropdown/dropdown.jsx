@@ -13,7 +13,6 @@ import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 import DesktopWrapper from '../desktop-wrapper';
 import MobileWrapper from '../mobile-wrapper';
 import Icon from '../icon';
-import Text from '../text';
 
 const DropdownList = React.forwardRef((props, list_ref) => {
     const {

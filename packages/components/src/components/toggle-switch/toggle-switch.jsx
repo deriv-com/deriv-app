@@ -1,21 +1,23 @@
-import React from 'react';
+import * as React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-const ToggleSwitch = ({ className, classNameButton, classNameLabel, handleToggle, id, is_enabled }) => (
-    <>
-        <input
-            className={classNames('dc-toggle-switch', className)}
-            id={id}
-            type='checkbox'
-            checked={is_enabled}
-            onChange={handleToggle}
-        />
-        <label className={classNames('dc-toggle-switch__label', classNameLabel)} htmlFor={id}>
-            <span className={classNames('dc-toggle-switch__button', classNameButton)} />
-        </label>
-    </>
-);
+const ToggleSwitch = ({ className, classNameButton, classNameLabel, handleToggle, id, is_enabled }) => {
+    return (
+        <React.Fragment>
+            <input
+                className={classNames('dc-toggle-switch', className)}
+                id={id}
+                type='checkbox'
+                checked={is_enabled}
+                onChange={handleToggle}
+            />
+            <label className={classNames('dc-toggle-switch__label', classNameLabel)} htmlFor={id}>
+                <span className={classNames('dc-toggle-switch__button', classNameButton)} />
+            </label>
+        </React.Fragment>
+    );
+};
 
 ToggleSwitch.propTypes = {
     className: PropTypes.string,

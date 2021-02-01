@@ -41,6 +41,11 @@ const VerticalTabHeaders = ({
     onChange,
     selected,
 }) => {
+    console.log('');
+    console.error('VerticalTabHeaders');
+    console.log(items);
+    console.log(item_groups);
+    console.log('');
     const ref = React.useRef(null);
     const [top, setTop] = React.useState(0);
     const [should_skip_animation, setShouldSkipAnimation] = React.useState(false);

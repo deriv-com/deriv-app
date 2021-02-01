@@ -48,6 +48,11 @@ const VerticalTab = ({
     tab_headers_note,
     vertical_tab_index,
 }) => {
+    console.log('');
+    console.error('Routes');
+    console.log(list);
+    console.log(list_groups);
+    console.log('');
     const [curr_tab_index, setCurrTabIndex] = React.useState(vertical_tab_index || 0);
 
     const changeSelected = e => {

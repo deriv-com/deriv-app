@@ -205,11 +205,10 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
 MarketCountdownTimer.propTypes = {
     is_main_page: PropTypes.bool,
     setIsTimerLoading: PropTypes.func,
+    setMarketStatus: PropTypes.func,
     symbol: PropTypes.string.isRequired,
 };
 
 export default connect(({ modules }) => ({
     active_symbols: modules.trade.active_symbols,
-    setMarketStatus: modules.trade.setMarketStatus,
-    symbol: modules.trade.symbol,
 }))(MarketCountdownTimer);

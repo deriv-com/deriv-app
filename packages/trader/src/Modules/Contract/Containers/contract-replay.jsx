@@ -16,11 +16,13 @@ import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
 import { SmartChart } from 'Modules/SmartChart';
+import { isMarketClosed } from 'Stores/Modules/Trading/Helpers/active-symbols';
 import { connect } from 'Stores/connect';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
 import ChartMarker from '../../SmartChart/Components/Markers/marker.jsx';
 
 const ContractReplay = ({
+    active_symbols,
     contract_id,
     contract_info,
     contract_update,
@@ -43,6 +45,11 @@ const ContractReplay = ({
     onUnmount,
 }) => {
     const [is_visible, setIsVisible] = React.useState(false);
+    const [is_market_closed, setMarketClosed] = React.useState(false);
+
+    React.useEffect(() => {
+        setMarketClosed(isMarketClosed(active_symbols, contract_info?.underlying));
+    }, [active_symbols]);
 
     React.useEffect(() => {
         const url_contract_id = +/[^/]*$/.exec(location.pathname)[0];
@@ -72,11 +79,13 @@ const ContractReplay = ({
             contract_update_history={contract_update_history}
             is_chart_loading={is_chart_loading}
             is_dark_theme={is_dark_theme}
+            is_market_closed={is_market_closed}
             is_multiplier={is_multiplier}
             is_sell_requested={is_sell_requested}
             is_valid_to_cancel={is_valid_to_cancel}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
+            setMarketStatus={setMarketClosed}
             status={indicative_status}
             toggleHistoryTab={toggleHistoryTab}
         />
@@ -162,7 +171,6 @@ ContractReplay.propTypes = {
     is_chart_loading: PropTypes.bool,
     is_dark_theme: PropTypes.bool,
     is_digit_contract: PropTypes.bool,
-    is_market_closed: PropTypes.bool,
     location: PropTypes.object,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
@@ -175,11 +183,11 @@ export default withRouter(
         const contract_store = contract_replay.contract_store;
         return {
             routeBackInApp: common.routeBackInApp,
+            active_symbols: modules.trade.active_symbols,
             contract_info: contract_store.contract_info,
             contract_update: contract_store.contract_update,
             contract_update_history: contract_store.contract_update_history,
             is_digit_contract: contract_store.is_digit_contract,
-            is_market_closed: contract_replay.is_market_closed,
             is_sell_requested: contract_replay.is_sell_requested,
             is_valid_to_cancel: contract_replay.is_valid_to_cancel,
             onClickCancel: contract_replay.onClickCancel,

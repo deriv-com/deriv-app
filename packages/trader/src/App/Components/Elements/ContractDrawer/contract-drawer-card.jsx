@@ -31,6 +31,7 @@ const ContractDrawerCard = ({
     removeToast,
     result,
     setCurrentFocus,
+    setMarketStatus,
     server_time,
     should_show_cancellation_warning,
     status,
@@ -39,7 +40,7 @@ const ContractDrawerCard = ({
 }) => {
     const [hover_ref, should_hide_closed_overlay] = useHover();
 
-    const { profit } = contract_info;
+    const { profit, underlying: symbol } = contract_info;
     const is_sold = !!getEndTime(contract_info);
     const display_name = getSymbolDisplayName(active_symbols, getMarketInformation(contract_info.shortcode).underlying);
 
@@ -122,7 +123,7 @@ const ContractDrawerCard = ({
                             'contract-card__market-closed--hidden': should_hide_closed_overlay,
                         })}
                     >
-                        <MarketClosedContractOverlay />
+                        <MarketClosedContractOverlay setMarketStatus={setMarketStatus} symbol={symbol} />
                     </div>
                 )}
                 {contract_el}
@@ -158,6 +159,7 @@ ContractDrawerCard.propTypes = {
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,
     onClickSell: PropTypes.func,
+    setMarketStatus: PropTypes.func,
     status: PropTypes.string,
 };
 

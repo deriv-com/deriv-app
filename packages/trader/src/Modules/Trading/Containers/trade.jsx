@@ -42,6 +42,7 @@ const Trade = ({
     NotificationMessages,
     onMount,
     onUnmount,
+    setMarketStatus,
     setMobileDigitView,
     show_digits_stats,
     symbol,
@@ -169,6 +170,8 @@ const Trade = ({
                         is_synthetics_unavailable={is_synthetics_unavailable}
                         {...(is_eu && category && { is_market_available: true })}
                         onClick={onTryOtherMarkets}
+                        setMarketStatus={setMarketStatus}
+                        symbol={symbol}
                     />
                 )}
                 <FormLayout
@@ -193,6 +196,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_market_closed: modules.trade.is_market_closed,
     show_digits_stats: modules.trade.show_digits_stats,
     is_trade_enabled: modules.trade.is_trade_enabled,
+    setMarketStatus: modules.trade.setMarketStatus,
     setMobileDigitView: modules.trade.setMobileDigitView,
     symbol: modules.trade.symbol,
     onMount: modules.trade.onMount,

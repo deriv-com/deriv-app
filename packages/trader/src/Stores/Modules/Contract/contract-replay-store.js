@@ -1,10 +1,9 @@
-import { action, observable, runInAction } from 'mobx';
+import { action, observable } from 'mobx';
 import { routes, isEmptyObject } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import ContractStore from './contract-store';
 import { contractCancelled, contractSold } from '../Portfolio/Helpers/portfolio-notifications';
-import { isMarketClosed } from '../Trading/Helpers/active-symbols';
 import BaseStore from '../../base-store';
 
 export default class ContractReplayStore extends BaseStore {
@@ -16,7 +15,6 @@ export default class ContractReplayStore extends BaseStore {
     @observable error_message = '';
     @observable error_code = '';
     @observable is_chart_loading = true;
-    @observable is_market_closed = false;
     @observable is_forward_starting = false;
     // ---- chart props
     @observable margin;
@@ -69,11 +67,7 @@ export default class ContractReplayStore extends BaseStore {
             this.contract_id = contract_id;
             this.contract_store = new ContractStore(this.root_store, { contract_id });
             this.subscribeProposalOpenContract();
-            WS.storage.activeSymbols('brief').then(({ active_symbols }) => {
-                runInAction(() => {
-                    this.is_market_closed = isMarketClosed(active_symbols, this.root_store.modules.trade.symbol);
-                });
-            });
+            WS.storage.activeSymbols('brief');
             WS.setOnReconnect(() => {
                 if (!this.root_store.client.is_switching) {
                     this.subscribeProposalOpenContract();
@@ -93,7 +87,6 @@ export default class ContractReplayStore extends BaseStore {
         this.indicative_status = null;
         this.prev_indicative = 0;
         this.chart_state = '';
-        this.is_market_closed = false;
         this.root_store.ui.toggleHistoryTab(false);
         WS.removeOnReconnect();
     }

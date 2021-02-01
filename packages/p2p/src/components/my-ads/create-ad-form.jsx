@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { Formik, Field, Form } from 'formik';
-import { Button, Dropdown, Input, Modal, Text, ThemedScrollbars } from '@deriv/components';
+import { Dropdown, Modal, Input, Button, Text, ThemedScrollbars } from '@deriv/components';
+import { formatMoney } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
+import { useUpdatingAvailableBalance } from 'Components/hooks';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import CreateAdSummary from './create-ad-summary.jsx';
@@ -11,6 +13,7 @@ import CreateAdSummary from './create-ad-summary.jsx';
 const CreateAdForm = () => {
     const { general_store, my_ads_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
+    const available_balance = useUpdatingAvailableBalance();
     const [is_api_error_modal_visible, setIsApiErrorModalVisible] = React.useState(false);
 
     React.useEffect(() => {
@@ -85,13 +88,27 @@ const CreateAdForm = () => {
                                                     label={localize('Total amount')}
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
-                                                        <span className='p2p-my-ads__form-field--trailing'>
+                                                        <Text size='xxs' color='less-prominent'>
                                                             {currency}
-                                                        </span>
+                                                        </Text>
                                                     }
                                                     onChange={e => {
                                                         my_ads_store.restrictLength(e, handleChange);
                                                     }}
+                                                    hint={
+                                                        // Using two "==" is intentional as we're checking for nullish
+                                                        // rather than falsy values.
+                                                        !is_sell_advert || available_balance == null
+                                                            ? undefined
+                                                            : localize('Your DP2P balance is {{ dp2p_balance }}', {
+                                                                  dp2p_balance: `${formatMoney(
+                                                                      currency,
+                                                                      available_balance,
+                                                                      true
+                                                                  )} ${currency}`,
+                                                              })
+                                                    }
+                                                    is_relative_hint
                                                     required
                                                 />
                                             )}
@@ -110,9 +127,9 @@ const CreateAdForm = () => {
                                                     })}
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
-                                                        <span className='p2p-my-ads__form-field--trailing'>
+                                                        <Text size='xxs' color='less-prominent'>
                                                             {local_currency_config.currency}
-                                                        </span>
+                                                        </Text>
                                                     }
                                                     onChange={e => {
                                                         my_ads_store.restrictLength(e, handleChange);
@@ -131,9 +148,9 @@ const CreateAdForm = () => {
                                                     label={localize('Min order')}
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
-                                                        <span className='p2p-my-ads__form-field--trailing'>
+                                                        <Text size='xxs' color='less-prominent'>
                                                             {currency}
-                                                        </span>
+                                                        </Text>
                                                     }
                                                     onChange={e => {
                                                         my_ads_store.restrictLength(e, handleChange);
@@ -152,9 +169,9 @@ const CreateAdForm = () => {
                                                     label={localize('Max order')}
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
-                                                        <span className='p2p-my-ads__form-field--trailing'>
+                                                        <Text size='xxs' color='less-prominent'>
                                                             {currency}
-                                                        </span>
+                                                        </Text>
                                                     }
                                                     onChange={e => {
                                                         my_ads_store.restrictLength(e, handleChange);
@@ -171,7 +188,11 @@ const CreateAdForm = () => {
                                                     {...field}
                                                     data-lpignore='true'
                                                     type='textarea'
-                                                    label={localize('Your payment details')}
+                                                    label={
+                                                        <Text color='less-prominent' size='xs'>
+                                                            <Localize i18n_default_text='Your payment details' />
+                                                        </Text>
+                                                    }
                                                     error={touched.payment_info && errors.payment_info}
                                                     hint={localize('e.g. your bank/e-wallet account details')}
                                                     className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
@@ -190,7 +211,11 @@ const CreateAdForm = () => {
                                                     {...field}
                                                     data-lpignore='true'
                                                     type='textarea'
-                                                    label={localize('Your contact details')}
+                                                    label={
+                                                        <Text color='less-prominent' size='xs'>
+                                                            <Localize i18n_default_text='Your contact details' />{' '}
+                                                        </Text>
+                                                    }
                                                     error={touched.contact_info && errors.contact_info}
                                                     className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
                                                     initial_character_count={my_ads_store.contact_info.length}
@@ -211,7 +236,11 @@ const CreateAdForm = () => {
                                                     touched.default_advert_description &&
                                                     errors.default_advert_description
                                                 }
-                                                label={localize('Instructions (optional)')}
+                                                label={
+                                                    <Text color='less-prominent' size='xs'>
+                                                        <Localize i18n_default_text='Instructions (optional)' />
+                                                    </Text>
+                                                }
                                                 hint={localize('This information will be visible to everyone')}
                                                 className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
                                                 initial_character_count={my_ads_store.default_advert_description.length}

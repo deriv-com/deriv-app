@@ -13,7 +13,9 @@ export default class GeneralStore extends BaseStore {
     @observable advertiser_id = null;
     @observable inactive_notification_count = 0;
     @observable is_advertiser = false;
+    @observable is_blocked = false;
     @observable is_listed = false;
+    @observable is_loading = false;
     @observable is_restricted = false;
     @observable nickname = null;
     @observable nickname_error = '';
@@ -156,6 +158,7 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     onMount() {
+        this.setIsLoading(true);
         const { sendbird_store } = this.root_store;
 
         this.ws_subscriptions = {
@@ -256,8 +259,18 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setIsBlocked(is_blocked) {
+        this.is_blocked = is_blocked;
+    }
+
+    @action.bound
     setIsListed(is_listed) {
         this.is_listed = is_listed;
+    }
+
+    @action.bound
+    setIsLoading(is_loading) {
+        this.is_loading = is_loading;
     }
 
     @action.bound
@@ -368,6 +381,8 @@ export default class GeneralStore extends BaseStore {
                 this.setIsRestricted(true);
             } else if (response.error.code === 'AdvertiserNotFound') {
                 this.setIsAdvertiser(false);
+            } else if (response.error.code === 'PermissionDenied') {
+                this.setIsBlocked(true);
             }
         }
 
@@ -382,6 +397,8 @@ export default class GeneralStore extends BaseStore {
                 }
             });
         }
+
+        this.setIsLoading(false);
     }
 
     @action.bound

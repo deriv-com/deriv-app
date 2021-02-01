@@ -2,10 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const DataListRow = props => {
+const DataListRow = ({ action_desc, destination_link, row_gap, row_key, rowRenderer, ...other_props }) => {
     const [show_desc, setShowDesc] = React.useState(false);
-    const { destination_link, acion_desc, row_key, row_gap } = props;
-    const { rowRenderer, row, measure, is_scrolling, is_new_row } = props;
 
     return (
         <div className='data-list__row--wrapper' style={{ paddingBottom: `${row_gap || 0}px` }}>
@@ -20,28 +18,26 @@ const DataListRow = props => {
                         },
                     }}
                 >
-                    <div className='data-list__item'>
-                        {rowRenderer({ row, measure, isScrolling: is_scrolling, is_new_row })}
-                    </div>
+                    <div className='data-list__item'>{rowRenderer({ ...other_props })}</div>
                 </NavLink>
             ) : (
                 <div className='data-list__item--wrapper'>
-                    {acion_desc ? (
+                    {action_desc ? (
                         <div className={'data-list__item'} onClick={() => setShowDesc(!show_desc)}>
                             {show_desc ? (
                                 <div className={'data-list__desc--wrapper'}>
-                                    {acion_desc.component ? (
-                                        <div>{acion_desc.component}</div>
+                                    {action_desc.component ? (
+                                        <div>{action_desc.component}</div>
                                     ) : (
-                                        <p className='statement__row--detail-text'>{acion_desc.message}</p>
+                                        <p className='statement__row--detail-text'>{action_desc.message}</p>
                                     )}
                                 </div>
                             ) : (
-                                rowRenderer({ row, measure, is_scrolling, is_new_row })
+                                rowRenderer({ ...other_props })
                             )}
                         </div>
                     ) : (
-                        <div className='data-list__item'>{rowRenderer({ row, measure, is_scrolling, is_new_row })}</div>
+                        <div className='data-list__item'>{rowRenderer({ ...other_props })}</div>
                     )}
                 </div>
             )}
@@ -50,12 +46,8 @@ const DataListRow = props => {
 };
 
 DataListRow.propTypes = {
-    acion_desc: PropTypes.object,
+    action_desc: PropTypes.object,
     destination_link: PropTypes.string,
-    is_scrolling: PropTypes.bool,
-    is_new_row: PropTypes.bool,
-    measure: PropTypes.func,
-    row: PropTypes.object,
     row_gap: PropTypes.number,
     row_key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     rowRenderer: PropTypes.func,

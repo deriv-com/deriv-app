@@ -16,7 +16,7 @@ const MyAdsState = ({ message }) => (
     </div>
 );
 
-const MyAds = observer(() => {
+const MyAds = () => {
     const { general_store, my_ads_store } = useStores();
 
     React.useEffect(() => {
@@ -42,7 +42,7 @@ const MyAds = observer(() => {
     }
 
     return <Verification />;
-});
+};
 
 MyAds.propTypes = {
     error_message: PropTypes.string,
@@ -54,4 +54,4 @@ MyAds.propTypes = {
     show_ad_form: PropTypes.bool,
 };
 
-export default MyAds;
+export default observer(MyAds);

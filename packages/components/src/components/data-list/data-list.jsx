@@ -29,29 +29,33 @@ const DataList = React.memo(
 
         const cache = React.useRef();
         const list_ref = React.useRef();
-        const items_transition_map = {};
+        const items_transition_map_ref = React.useRef({});
+        const data_source_ref = React.useRef();
+        data_source_ref.current = data_source;
+
         const is_dynamic_height = !getRowSize;
 
         const trackItemsForTransition = React.useCallback(() => {
             data_source.forEach((item, index) => {
                 const row_key = keyMapper?.(item) || `${index}-0`;
-                items_transition_map[row_key] = true;
+                items_transition_map_ref.current[row_key] = true;
             });
-        }, [data_source, items_transition_map, keyMapper]);
+        }, [data_source, keyMapper]);
 
         React.useEffect(() => {
             if (is_dynamic_height) {
                 cache.current = new CellMeasurerCache({
                     fixedWidth: true,
                     keyMapper: row_index => {
-                        if (row_index < data_source.length) return keyMapper?.(data_source[row_index]) || row_index;
+                        if (row_index < data_source_ref.current.length)
+                            return keyMapper?.(data_source_ref.current[row_index]) || row_index;
                         return row_index;
                     },
                 });
             }
             trackItemsForTransition();
             setLoading(false);
-        }, []);
+        }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
         React.useEffect(() => {
             if (is_dynamic_height) {
@@ -76,7 +80,7 @@ const DataList = React.memo(
                 <DataListRow
                     action_desc={action_desc}
                     destination_link={destination_link}
-                    is_new_row={!items_transition_map[row_key]}
+                    is_new_row={!items_transition_map_ref.current[row_key]}
                     is_scrolling={is_scrolling}
                     measure={measure}
                     passthrough={passthrough}

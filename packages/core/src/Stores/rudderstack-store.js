@@ -4,9 +4,9 @@ import { getLanguage } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
 import BaseStore from './base-store';
 
-export default class SegmentStore extends BaseStore {
+export default class RudderStackStore extends BaseStore {
     // only available on production (bot and deriv)
-    is_applicable = /^(16929|19111)$/.test(getAppId());
+    is_applicable = /^(16929|19111|24091)$/.test(getAppId());
     has_identified = false;
     current_page = '';
 
@@ -14,12 +14,6 @@ export default class SegmentStore extends BaseStore {
         super({ root_store });
     }
 
-    /**
-     * Pushes identify event to segment
-     * identify event will store userid in localstorage to be used by
-     * other segment call
-     * @param {object} data
-     */
     @action.bound
     identifyEvent = async data =>
         new Promise(resolve => {
@@ -27,7 +21,7 @@ export default class SegmentStore extends BaseStore {
                 BinarySocket.wait('authorize').then(() => {
                     const user_id = this.root_store.client.user_id;
                     if (user_id) {
-                        window.analytics.identify(user_id, {
+                        window.rudderanalytics.identify(user_id, {
                             language: getLanguage().toLowerCase(),
                             ...data,
                         });
@@ -44,7 +38,7 @@ export default class SegmentStore extends BaseStore {
         });
 
     /**
-     * Pushes page view track event to segment
+     * Pushes page view track event to rudderstack
      */
     @action.bound
     pageView() {
@@ -56,30 +50,29 @@ export default class SegmentStore extends BaseStore {
             this.has_identified &&
             current_page !== this.current_page
         ) {
-            window.analytics.page();
+            window.rudderanalytics.page();
             this.current_page = current_page;
         }
     }
 
     /**
-     * Pushes reset event to segment
-     * segment will remove userId from localstorage when logout
+     * Pushes reset event to rudderstack
      */
     @action.bound
     reset() {
         if (this.is_applicable) {
-            window.analytics.reset();
+            window.rudderanalytics.reset();
             this.has_identified = false;
         }
     }
 
     /**
-     * Pushes track event to segment
+     * Pushes track event to rudderstack
      */
     @action.bound
     track(event_name, options) {
         if (this.is_applicable && this.has_identified) {
-            window.analytics.track(event_name, options);
+            window.rudderanalytics.track(event_name, options);
         }
     }
 }

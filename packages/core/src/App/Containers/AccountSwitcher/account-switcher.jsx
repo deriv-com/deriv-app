@@ -21,6 +21,7 @@ import {
     getMT5Account,
     getMT5AccountDisplay,
     getMT5AccountKey,
+    getAccountTypeFields,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
@@ -333,6 +334,15 @@ const AccountSwitcher = props => {
         );
     };
 
+    const isRealMT5AddDisabled = sub_account_type => {
+        if (props.is_eu) {
+            const account = getAccountTypeFields({ category: 'real', type: sub_account_type });
+            return props.isAccountOfTypeDisabled(account?.account_type);
+        }
+
+        return !props.has_active_real_account;
+    };
+
     if (!props.is_logged_in) return false;
 
     const total_assets_message_demo = props.is_mt5_allowed
@@ -567,7 +577,7 @@ const AccountSwitcher = props => {
                                             small
                                             is_disabled={
                                                 props.mt5_disabled_signup_types.real ||
-                                                !props.has_active_real_account ||
+                                                isRealMT5AddDisabled(account.type) ||
                                                 (account.type === 'financial_stp' &&
                                                     (props.is_pending_authentication || !!props.mt5_login_list_error))
                                             }
@@ -724,6 +734,7 @@ const account_switcher = withRouter(
         obj_total_balance: client.obj_total_balance,
         switchAccount: client.switchAccount,
         resetVirtualBalance: client.resetVirtualBalance,
+        isAccountOfTypeDisabled: client.isAccountOfTypeDisabled,
         has_malta_account: client.has_malta_account,
         has_maltainvest_account: client.has_maltainvest_account,
         has_active_real_account: client.has_active_real_account,

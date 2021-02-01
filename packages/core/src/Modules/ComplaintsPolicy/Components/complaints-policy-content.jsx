@@ -207,7 +207,7 @@ const getSubmissionOfAComplaintText = landing_company_shortcode => (
                 />,
             ]}
         />
-        {landing_company_shortcode !== 'maltainvest' && (
+        {landing_company_shortcode === 'malta' && (
             <Localize
                 i18n_default_text=' You may also call <0>+447723580049</0> to place your complaint.'
                 components={[

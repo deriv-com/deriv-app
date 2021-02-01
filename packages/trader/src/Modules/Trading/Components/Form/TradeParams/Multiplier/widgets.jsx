@@ -1,5 +1,5 @@
 import React from 'react';
-import { Money } from '@deriv/components';
+import { Money, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import MultiplierAmountModal from 'Modules/Trading/Containers/Multiplier/multiplier-amount-modal.jsx';
 import MultiplierOptionsModal from 'Modules/Trading/Containers/Multiplier/multiplier-options-modal.jsx';
@@ -18,9 +18,9 @@ const AmountWidget = ({ amount, currency }) => {
             <div className='mobile-widget' onClick={toggleModal}>
                 <div className='mobile-widget__multiplier-amount'>
                     <div className='mobile-widget__item'>
-                        <span className='mobile-widget__item-value'>
+                        <Text weight='bold' size='xxs'>
                             <Money amount={amount} currency={currency} show_currency />
-                        </span>
+                        </Text>
                     </div>
                 </div>
                 <MultipliersInfo className='mobile-widget__multiplier-trade-info' />

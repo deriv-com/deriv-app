@@ -22,7 +22,7 @@
         height: 100%;
     }
     &__card {
-        display: grid;
+        display: flex;
         flex-direction: column;
         padding-bottom: 0.8rem;
     }

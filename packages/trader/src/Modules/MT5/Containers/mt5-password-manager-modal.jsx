@@ -15,6 +15,7 @@ import {
     PageOverlay,
     ThemedScrollbars,
     UILoader,
+    Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isMobile, validLength, validPassword, getErrorMessages } from '@deriv/shared';
@@ -67,9 +68,9 @@ const MT5PasswordReset = ({ sendVerifyEmail, account_type, account_group, server
             <h2 className='mt5-verification-email-sent__title'>
                 <Localize i18n_default_text="We've sent you an email" />
             </h2>
-            <p className='mt5-verification-email-sent__description'>
+            <Text as='p' size='xs' align='center'>
                 <Localize i18n_default_text='Please click on the link in the email to reset your password.' />
-            </p>
+            </Text>
             {!is_resend_verification_requested && (
                 <Button className='mt5-verification-email-sent__resend-button' primary onClick={onClickVerification}>
                     <Localize i18n_default_text="Didn't receive the email?" />
@@ -77,12 +78,18 @@ const MT5PasswordReset = ({ sendVerifyEmail, account_type, account_group, server
             )}
             {is_resend_verification_requested && (
                 <>
-                    <p className='mt5-verification-email-sent__title mt5-verification-email-sent__title--sub'>
+                    <Text
+                        as='p'
+                        size='xs'
+                        align='center'
+                        weight='bold'
+                        className='mt5-verification-email-sent__title--sub'
+                    >
                         <Localize i18n_default_text={"Didn't receive the email?"} />
-                    </p>
-                    <p className='mt5-verification-email-sent__description'>
+                    </Text>
+                    <Text as='p' size='xs' align='center'>
                         <Localize i18n_default_text="Check your spam or junk folder. If it's not there, try resending the email." />
-                    </p>
+                    </Text>
                     <Button
                         className='mt5-verification-email-sent__resend-button'
                         large
@@ -118,13 +125,13 @@ const MT5PasswordSuccessMessage = ({ toggleModal, is_investor }) => (
         <h1 className='mt5-password-manager__success-header'>
             <Localize i18n_default_text='Password changed' />
         </h1>
-        <p className='mt5-password-manager__success-paragraph'>
+        <Text as='p' size='xxs' align='center'>
             {is_investor ? (
                 <Localize i18n_default_text='Your investor password has been changed.' />
             ) : (
                 <Localize i18n_default_text='Your password has been changed.' />
             )}
-        </p>
+        </Text>
         <Button onClick={toggleModal} className='mt5-password-manager__success-btn' primary large>
             <p className='dc-btn__text'>{localize('OK')}</p>
         </Button>

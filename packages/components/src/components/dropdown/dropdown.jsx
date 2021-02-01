@@ -6,12 +6,10 @@ import { CSSTransition } from 'react-transition-group';
 import { mobileOSDetect, getPosition } from '@deriv/shared';
 import { listPropType, findNextFocusableNode, findPreviousFocusableNode } from './dropdown';
 import Items from './items.jsx';
-import NativeSelect from './native-select.jsx';
 import DisplayText from './display-text.jsx';
 import { useBlockScroll, useOnClickOutside } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 import Icon from '../icon';
-import Text from '../text';
 
 const DropdownList = React.forwardRef((props, list_ref) => {
     const {
@@ -29,6 +27,7 @@ const DropdownList = React.forwardRef((props, list_ref) => {
         nodes,
         onKeyPressed,
         portal_id,
+        suffix_icon,
         value,
         parent_ref,
     } = props;
@@ -82,6 +81,7 @@ const DropdownList = React.forwardRef((props, list_ref) => {
         return classNames('dc-list', {
             'dc-list--left': is_alignment_left,
             'dc-list--large': is_large,
+            'dc-list--has-suffix-icon': suffix_icon,
         });
     };
 
@@ -175,21 +175,22 @@ const Dropdown = ({
     handleBlur,
     has_symbol,
     hint,
-    label,
-    list,
-    name,
-    no_border,
+    initial_offset = 0,
     is_alignment_top,
     is_alignment_left,
     is_align_text_left,
     is_large,
     is_nativepicker,
     is_nativepicker_visible,
+    label,
+    list,
+    list_portal_id,
+    name,
+    no_border,
     placeholder,
+    suffix_icon,
     onChange,
     value,
-    initial_offset = 0,
-    list_portal_id,
 }) => {
     const dropdown_ref = React.useRef();
     const native_select_ref = React.useRef();
@@ -225,6 +226,7 @@ const Dropdown = ({
             'dc-dropdown--show': is_list_visible,
             'dc-dropdown--disabled': isSingleOption() || disabled,
             'dc-dropdown--error': error,
+            'dc-dropdown--has-suffix-icon': suffix_icon,
         });
     };
 
@@ -353,7 +355,11 @@ const Dropdown = ({
                 value={value || 0}
             />
             <div ref={wrapper_ref} className={containerClassName()}>
-                <div className='dc-dropdown__container'>
+                <div
+                    className={classNames('dc-dropdown__container', {
+                        'dc-dropdown__container--suffix-icon': suffix_icon,
+                    })}
+                >
                     {label && (
                         <span
                             className={classNames('dc-dropdown__label', {
@@ -371,17 +377,20 @@ const Dropdown = ({
                         id='dropdown-display'
                         ref={dropdown_ref}
                     >
+                        {suffix_icon && <Icon className='suffix-icon' icon={suffix_icon} size={16} fill />}
                         <DisplayText
+                            className={classNames('dc-dropdown__display-text', {
+                                'dc-dropdown__display--has-suffix-icon-text': suffix_icon,
+                            })}
                             has_symbol={has_symbol}
                             name={name}
                             is_title={is_list_visible}
                             placeholder={placeholder}
                             value={value || 0}
                             list={list}
-                            is_align_text_left={is_align_text_left}
                         />
                     </div>
-                    {!isSingleOption() && (
+                    {!(isSingleOption() || suffix_icon) && (
                         <Icon
                             icon={is_alignment_left ? 'IcChevronLeft' : 'IcChevronDown'}
                             className={classNames('dc-dropdown__select-arrow', {
@@ -391,46 +400,29 @@ const Dropdown = ({
                             })}
                         />
                     )}
-                    {error && (
-                        <Text as='p' size='xxs' color='loss-danger' className='dc-field--error'>
-                            {error}
-                        </Text>
-                    )}
-                    {is_nativepicker ? (
-                        <NativeSelect
-                            ref={native_select_ref}
-                            name={name}
-                            value={value}
-                            list={list}
-                            onChange={onChange}
-                        />
-                    ) : (
-                        <DropdownList
-                            ref={list_ref}
-                            classNameItems={classNameItems}
-                            classNameLabel={classNameLabel}
-                            portal_id={list_portal_id}
-                            has_symbol={has_symbol}
-                            handleSelect={handleSelect}
-                            is_alignment_left={is_alignment_left}
-                            is_alignment_top={is_alignment_top}
-                            is_align_text_left={is_align_text_left}
-                            is_large={is_large}
-                            is_list_visible={is_list_visible}
-                            initial_offset={initial_offset}
-                            list={list}
-                            nodes={nodes}
-                            onKeyPressed={onKeyPressed}
-                            value={value}
-                            parent_ref={dropdown_ref}
-                        />
-                    )}
+                    {error && <p className='dc-field--error'>{error}</p>}
+                    <DropdownList
+                        ref={list_ref}
+                        classNameItems={classNameItems}
+                        classNameLabel={classNameLabel}
+                        portal_id={list_portal_id}
+                        has_symbol={has_symbol}
+                        handleSelect={handleSelect}
+                        is_alignment_left={is_alignment_left}
+                        is_alignment_top={is_alignment_top}
+                        is_align_text_left={is_align_text_left}
+                        is_large={is_large}
+                        is_list_visible={is_list_visible}
+                        initial_offset={initial_offset}
+                        list={list}
+                        nodes={nodes}
+                        onKeyPressed={onKeyPressed}
+                        value={value}
+                        parent_ref={dropdown_ref}
+                        suffix_icon={suffix_icon}
+                    />
                 </div>
-                {!error && hint && (
-                    <Text as='p' color='less-prominent' size='xxs' className='dc-dropdown__hint'>
-                        {hint}
-                    </Text>
-                )}
+                {!error && hint && <p className='dc-dropdown__hint'>{hint}</p>}
             </div>
         </React.Fragment>
     );
@@ -456,6 +448,7 @@ Dropdown.propTypes = {
     no_border: PropTypes.bool,
     onChange: PropTypes.func,
     placeholder: PropTypes.string,
+    suffix_icon: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 

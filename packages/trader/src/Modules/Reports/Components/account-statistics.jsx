@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MobileWrapper, Money } from '@deriv/components';
+import { MobileWrapper, Money, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -10,7 +10,7 @@ const AccountStatistics = ({ account_statistics, currency }) => {
             <div className='statement__account-statistics-item'>
                 <div className='statement__account-statistics--is-rectangle'>
                     <Text color='less-prominent' className='statement__account-statistics-title'>
-                        {localize('Total deposits')} {`(${currency})`}
+                        {localize('Total deposits')} <MobileWrapper> ({currency}) </MobileWrapper>
                     </Text>
                     <Text
                         color='prominent'
@@ -25,7 +25,7 @@ const AccountStatistics = ({ account_statistics, currency }) => {
             <div className='statement__account-statistics-item statement__account-statistics-total-withdrawal'>
                 <div className='statement__account-statistics--is-rectangle'>
                     <Text color='less-prominent' className='statement__account-statistics-title'>
-                        {localize('Total withdrawals')} {`(${currency})`}
+                        {localize('Total withdrawals')} <MobileWrapper> ({currency}) </MobileWrapper>
                     </Text>
                     <Text
                         color='prominent'
@@ -40,7 +40,7 @@ const AccountStatistics = ({ account_statistics, currency }) => {
             <div className='statement__account-statistics-item'>
                 <div className='statement__account-statistics--is-rectangle'>
                     <Text color='less-prominent' className='statement__account-statistics-title'>
-                        {localize('Net deposits')} {`(${currency})`}
+                        {localize('Net deposits')} <MobileWrapper> ({currency}) </MobileWrapper>
                     </Text>
                     <Text
                         color='prominent'

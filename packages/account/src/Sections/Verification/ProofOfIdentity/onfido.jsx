@@ -107,13 +107,13 @@ const Onfido = ({
         }
     }, [initOnfido, previous_onfido_service_token, onfido_service_token, status]);
 
+    if (status === onfido_status_codes.unsupported) return <Unsupported {...props} />;
+
     if (onfido_init_error || onfido_service_token?.error) return <OnfidoFailed {...props} />;
 
     if (status === onfido_status_codes.onfido) return <OnfidoContainer height={height} />;
 
     switch (status) {
-        case onfido_status_codes.unsupported:
-            return <Unsupported {...props} />;
         case onfido_status_codes.pending:
             return <UploadComplete {...props} />;
         case onfido_status_codes.rejected:

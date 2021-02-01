@@ -146,6 +146,64 @@ In general try to append any new types to these files before creating a new `*.t
 
 ---
 
+# Types vs Interfaces
+
+With the latest typescript version, functionalities and capabilities of both types and interface become more similar. Hence for dashboard project, here are the cases when to use types or interfaces
+
+Do use types to typecheck react proptypes object
+```tsx
+
+const About: React.FC<TAbout> = ({ title, description }) => {
+    ...
+};
+
+type TAbout = {
+  title: string;
+  description: number;
+};
+```
+
+Do use types to typecheck a function. aside from the similar ability it possess with interface, you can use types to typecheck the argument and the return type of a function.
+
+```ts
+type TStatusShape = {
+  countries: string[], // an array of strings
+  status: string
+};
+
+type TWebsiteStatus = (
+  website_status: TStatusShape
+) => Person;
+
+const isEu: TWebsiteStatus = (website_status) => {
+    ...
+    return is_eu;
+};
+```
+
+--TODO add cases when to use interfaces--
+```ts
+    // noop
+```
+
+## Type and Interface prefix
+The name shape of type/interface prefixed with `T` for type and `I` for Interface that is used for react props. The idea is to differentiate the component name and the type name, as for the other used for type, it might not necessarily need to be prefixed.
+
+```ts
+type MarketType = {
+    icon: string;
+    title: string;
+}
+
+type TInstruments = {
+    title: string;
+    active_symbols: MarketType[]
+}
+
+```
+
+---
+
 # Gotchas
 
 In @deriv/dashboard we no longer use a `connect` function to inject props into our components, instead we use hooks for everything (`useStores`). In addition, if you're rendering observables you will have to wrap your component in an `observer` call imported from `mobx-react-lite` to ensure the stores and UI are synchronised (i.e. it will re-render when an observable changes).

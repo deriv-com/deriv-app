@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 import { CSSTransition } from 'react-transition-group';
-import { Checkbox, Icon, useOnClickOutside, DesktopWrapper, DataList } from '@deriv/components';
+import { Checkbox, Icon, useOnClickOutside, DesktopWrapper, DataList, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { formatMoney, getCurrencyDisplayCode, useNewRowTransition } from '@deriv/shared';
 import { message_types } from '@deriv/bot-skeleton';
@@ -35,7 +35,7 @@ const FormatMessage = ({ logType, className, extra }) => {
                     <Localize
                         i18n_default_text='<0>Bought</0>: {{longcode}} (ID: {{transaction_id}})'
                         values={{ longcode, transaction_id }}
-                        components={[<span key={0} className='journal__text--info' />]}
+                        components={[<Text key={0} styles={{ color: 'var(--status-info)' }} />]}
                         options={{ interpolation: { escapeValue: false } }}
                     />
                 );
@@ -46,7 +46,7 @@ const FormatMessage = ({ logType, className, extra }) => {
                     <Localize
                         i18n_default_text='<0>Sold for</0>: {{sold_for}}'
                         values={{ sold_for }}
-                        components={[<span key={0} className='journal__text--warn' />]}
+                        components={[<Text key={0} styles={{ color: 'var(--status-warning)' }} />]}
                     />
                 );
             }
@@ -58,7 +58,7 @@ const FormatMessage = ({ logType, className, extra }) => {
                         values={{
                             profit: `${formatMoney(currency, profit, true)} ${getCurrencyDisplayCode(currency)}`,
                         }}
-                        components={[<span key={0} className='journal__text--success' />]}
+                        components={[<Text key={0} styles={{ color: 'var(--status-success)' }} />]}
                     />
                 );
             }
@@ -70,7 +70,7 @@ const FormatMessage = ({ logType, className, extra }) => {
                         values={{
                             profit: `${formatMoney(currency, profit, true)} ${getCurrencyDisplayCode(currency)}`,
                         }}
-                        components={[<span key={0} className='journal__text--error' />]}
+                        components={[<Text key={0} styles={{ color: 'var(--status-danger)' }} />]}
                     />
                 );
             }
@@ -139,9 +139,9 @@ const Tools = ({ checked_filters, filters, filterMessage, is_filter_dialog_visib
                     <Download tab='journal' />
                 </DesktopWrapper>
                 <div ref={toggle_ref} className='journal-tools__container-filter' onClick={toggleFilterDialog}>
-                    <span className='journal-tools__container-filter--label'>
+                    <Text size='xs' className='journal-tools__container-filter--label'>
                         <Localize i18n_default_text='Filters' />
-                    </span>
+                    </Text>
                     <Icon icon='IcFilter' size={16} />
                 </div>
             </div>
@@ -253,7 +253,9 @@ const Journal = ({
                                     {localize('There are no messages to display')}
                                 </h4>
                                 <div className='journal-empty__message'>
-                                    <span>{localize('Here are the possible reasons:')}</span>
+                                    <Text size='xxs' color='less-prominent'>
+                                        {localize('Here are the possible reasons:')}
+                                    </Text>
                                     <ul className='journal-empty__list'>
                                         <li>{localize('The bot is not running')}</li>
                                         <li>{localize('The stats are cleared')}</li>

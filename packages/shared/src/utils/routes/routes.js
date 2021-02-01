@@ -55,5 +55,4 @@ export const routes = {
     explore: '/dashboard/explore',
     resources: '/dashboard/resources',
     platform_dmt5_synthetic: '/dashboard/platforms/dmt5_synthetic',
-    platform_smarttrader: '/dashboard/platforms/smarttrader',
 };

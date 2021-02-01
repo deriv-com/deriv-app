@@ -2,16 +2,17 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money, Text } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, DataList, DataTable, Text } from '@deriv/components';
 import { extractInfoFromShortcode, isForwardStarting, urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
-import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
 import { getContractPath } from 'App/Components/Routes/helpers';
 import { getSupportedContracts } from 'Constants';
 import { connect } from 'Stores/connect';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
+import AccountStatistics from '../Components/account-statistics.jsx';
+import FilterComponent from '../Components/filter-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 
@@ -56,6 +57,7 @@ const getRowAction = row_obj => {
 
 const Statement = ({
     account_statistics,
+    action_type,
     component_icon,
     currency,
     data,
@@ -64,6 +66,7 @@ const Statement = ({
     error,
     filtered_date_range,
     handleDateChange,
+    handleFilterChange,
     handleScroll,
     has_selected_date,
     is_empty,
@@ -82,74 +85,7 @@ const Statement = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const getAccountStatistics = () => (
-        <React.Fragment>
-            <div className='statement__account-statistics'>
-                <div className='statement__account-statistics-item'>
-                    <div className='statement__account-statistics--is-rectangle'>
-                        <Text color='less-prominent' size='xs' className='statement__account-statistics-title'>
-                            {localize('Total deposits')} {`(${currency})`}
-                        </Text>
-                        <Text
-                            color='prominent'
-                            weight='bold'
-                            align='center'
-                            size='s'
-                            className='statement__account-statistics-amount'
-                        >
-                            <Money amount={account_statistics.total_deposits} currency={currency} />
-                        </Text>
-                    </div>
-                </div>
-                <div className='statement__account-statistics-item statement__account-statistics-total-withdrawal'>
-                    <div className='statement__account-statistics--is-rectangle'>
-                        <Text color='less-prominent' size='xs' className='statement__account-statistics-title'>
-                            {localize('Total withdrawals')} {`(${currency})`}
-                        </Text>
-                        <Text
-                            color='prominent'
-                            weight='bold'
-                            align='center'
-                            size='s'
-                            className='statement__account-statistics-amount'
-                        >
-                            <Money amount={account_statistics.total_withdrawals} currency={currency} />
-                        </Text>
-                    </div>
-                </div>
-                <div className='statement__account-statistics-item'>
-                    <div className='statement__account-statistics--is-rectangle'>
-                        <Text color='less-prominent' size='xs' className='statement__account-statistics-title'>
-                            {localize('Net deposits')} {`(${currency})`}
-                        </Text>
-                        <Text
-                            color='prominent'
-                            weight='bold'
-                            align='center'
-                            size='s'
-                            className='statement__account-statistics-amount'
-                        >
-                            <Money
-                                amount={account_statistics.total_deposits - account_statistics.total_withdrawals}
-                                currency={currency}
-                            />
-                        </Text>
-                    </div>
-                </div>
-            </div>
-        </React.Fragment>
-    );
-
     if (error) return <p>{error}</p>;
-
-    const filter_component = (
-        <CompositeCalendar
-            input_date_range={filtered_date_range}
-            onChange={handleDateChange}
-            from={date_from}
-            to={date_to}
-        />
-    );
 
     const columns = getStatementTableColumnsTemplate(currency);
     const columns_map = columns.reduce((map, item) => {
@@ -181,8 +117,21 @@ const Statement = ({
         <React.Fragment>
             <ReportsMeta
                 className={is_mx_mlt ? undefined : 'reports__meta--statement'}
-                filter_component={filter_component}
-                optional_component={!is_switching && is_mx_mlt && getAccountStatistics()}
+                filter_component={
+                    <FilterComponent
+                        action_type={action_type}
+                        date_from={date_from}
+                        date_to={date_to}
+                        handleDateChange={handleDateChange}
+                        handleFilterChange={handleFilterChange}
+                        filtered_date_range={filtered_date_range}
+                    />
+                }
+                is_statement
+                optional_component={
+                    !is_switching &&
+                    is_mx_mlt && <AccountStatistics account_statistics={account_statistics} currency={currency} />
+                }
             />
             {is_switching ? (
                 <PlaceholderComponent is_loading />
@@ -196,7 +145,9 @@ const Statement = ({
                             empty_message_component={EmptyTradeHistoryMessage}
                             component_icon={component_icon}
                             localized_message={localize('You have no transactions yet.')}
-                            localized_period_message={localize('You have no transactions for this period.')}
+                            localized_period_message={localize(
+                                "You've made no transactions of this type during this period."
+                            )}
                         />
                     ) : (
                         <div className='reports__content'>
@@ -240,6 +191,7 @@ const Statement = ({
 };
 
 Statement.propTypes = {
+    action_type: PropTypes.string,
     account_statistics: PropTypes.object,
     component_icon: PropTypes.string,
     currency: PropTypes.string,
@@ -249,6 +201,7 @@ Statement.propTypes = {
     error: PropTypes.string,
     filtered_date_range: PropTypes.object,
     handleDateChange: PropTypes.func,
+    handleFilterChange: PropTypes.func,
     handleScroll: PropTypes.func,
     has_selected_date: PropTypes.bool,
     is_empty: PropTypes.bool,
@@ -261,6 +214,7 @@ Statement.propTypes = {
 };
 
 export default connect(({ modules, client }) => ({
+    action_type: modules.statement.action_type,
     account_statistics: modules.statement.account_statistics,
     currency: client.currency,
     data: modules.statement.data,
@@ -269,6 +223,7 @@ export default connect(({ modules, client }) => ({
     error: modules.statement.error,
     filtered_date_range: modules.statement.filtered_date_range,
     handleDateChange: modules.statement.handleDateChange,
+    handleFilterChange: modules.statement.handleFilterChange,
     handleScroll: modules.statement.handleScroll,
     has_selected_date: modules.statement.has_selected_date,
     is_empty: modules.statement.is_empty,

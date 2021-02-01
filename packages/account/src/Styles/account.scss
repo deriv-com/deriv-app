@@ -760,7 +760,6 @@ $MIN_HEIGHT_FLOATING: calc(
 
             &-header {
                 margin-top: 3.6rem;
-                @include typeface(--title-center-bold-prominent);
                 margin-bottom: 1.4rem;
             }
             &-item {
@@ -802,7 +801,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__header {
-            @include typeface(--paragraph-left-bold-prominent);
             margin-bottom: 1.6rem;
             margin-top: 2.4rem;
 
@@ -1539,7 +1537,6 @@ $MIN_HEIGHT_FLOATING: calc(
             align-items: center;
 
             &-header {
-                @include typeface(--title-center-bold-prominent, none);
                 margin: 1.6rem 0 2.4rem;
             }
             &-image {

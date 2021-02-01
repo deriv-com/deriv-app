@@ -2,11 +2,20 @@
     width: 100%;
     position: relative;
 
+    &--hide-selected-value {
+        margin-left: 10px;
+        width: 40px;
+    }
+
     &__wrapper {
         height: 38px;
 
         .dc-input {
             margin-bottom: 0px;
+        }
+
+        &--hide-selected-value {
+            width: 40px;
         }
     }
     &__arrow {
@@ -89,5 +98,9 @@
     }
     &__hint {
         margin-left: 1.2rem;
+    }
+    &__suffix-icon {
+        position: absolute;
+        left: 11px;
     }
 }

@@ -1,5 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { Text } from '@deriv/components';
+import TempButtons from 'Components/temp-buttons';
 
 const AboutUs: React.FC = () => {
     return (
@@ -7,6 +8,7 @@ const AboutUs: React.FC = () => {
             <Text as='p' size='l' color='less-prominent' align='center'>
                 About us
             </Text>
+            <TempButtons />
         </div>
     );
 };

@@ -182,7 +182,6 @@
             margin-bottom: 4.2rem;
         }
         &--hint {
-            @include typeface(--xsmall-left-normal-black, none);
             margin-top: 1.6rem;
         }
         @include mobile {
@@ -218,12 +217,6 @@
 }
 
 .mt5-attribute-describer {
-    @include typeface(--paragraph-left-bold-black, none);
-    font-size: 14px;
-    font-weight: bold;
-    line-height: 1.43;
-    color: var(--text-general);
-
     .counter {
         color: var(--brand-red-coral);
         font-size: 1rem;
@@ -777,13 +770,9 @@
     }
 
     &--paragraph {
-        @include typeface(--paragraph-left-normal-black, none);
-        color: var(--text-general);
         margin-bottom: 3.2rem;
     }
     &--error-message {
-        @include typeface(--paragraph-left-normal-black, none);
-        color: var(--text-loss-danger);
         margin-bottom: 1em;
     }
     &__main-form,
@@ -842,9 +831,6 @@
             @include typeface(--paragraph-center-bold-black);
             margin: 1.6rem 0 0.8rem;
         }
-        &-paragraph {
-            @include typeface(--small-center-normal-black);
-        }
         &-btn {
             margin-top: 3.2rem;
             width: 6.4rem;
@@ -900,7 +886,6 @@
 
         & .details-form__description {
             width: 100%;
-            text-align: center;
         }
     }
     @include mobile {
@@ -976,8 +961,6 @@
         color: var(--text-prominent);
     }
     &__description {
-        @include typeface(--paragraph-center-normal-black);
-        color: var(--text-prominent);
         margin: 0.6rem 0 0;
     }
     &__btn-area {

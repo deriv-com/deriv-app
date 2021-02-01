@@ -20,10 +20,6 @@
             color: var(--text-less-prominent);
             font-size: 1.4rem;
             margin-bottom: -1.6rem;
-
-            &--bold {
-                font-weight: bold;
-            }
         }
         &-scrollbar {
             position: absolute;
@@ -50,10 +46,6 @@
             &--textarea {
                 height: 9.6rem;
                 margin-bottom: 0;
-            }
-            &--trailing {
-                font-size: var(--text-size-xxs);
-                color: var(--text-less-prominent);
             }
         }
         &-button {

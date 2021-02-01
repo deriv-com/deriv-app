@@ -123,11 +123,6 @@ $card-width: 456px;
         &-block {
             margin-bottom: 1.6rem;
 
-            &-label {
-                font-size: 1.2rem;
-                line-height: 1.5;
-                color: var(--text-less-prominent);
-            }
             &-value {
                 display: flex;
                 flex-direction: column;

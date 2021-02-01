@@ -1,7 +1,6 @@
 import { action } from 'mobx';
 import { localize } from '@deriv/translations';
-import { log_types } from '@deriv/bot-skeleton/src/constants/messages';
-import { transaction_elements } from '../constants/transactions';
+import { log_types } from '@deriv/bot-skeleton';
 
 export default class DownloadStore {
     constructor(root_store) {
@@ -29,6 +28,9 @@ export default class DownloadStore {
             case log_types.LOST: {
                 return localize('Loss amount: {{profit}}', { profit });
             }
+            case log_types.WELCOME_BACK: {
+                return localize('Welcome back! Your messages have been restored.');
+            }
             default:
                 return null;
         }
@@ -52,25 +54,21 @@ export default class DownloadStore {
                 localize('Profit/Loss'),
             ],
         ];
-        const transaction_messages = this.root_store.transactions.elements;
-        transaction_messages.map(item => {
-            if (item.type === transaction_elements.CONTRACT) {
-                const array_message = [
-                    item.data.display_name,
-                    item.data.transaction_ids.buy,
-                    item.data.transaction_ids.sell,
-                    item.data.barrier,
-                    item.data.date_start,
-                    item.data.entry_tick,
-                    item.data.entry_tick_time,
-                    item.data.exit_tick,
-                    item.data.exit_tick_time,
-                    item.data.buy_price,
-                    item.data.profit,
-                ];
-                transaction_csv_titles.push(array_message);
-            }
-        });
+        this.root_store.transactions.transactions.forEach(item =>
+            transaction_csv_titles.push([
+                item.data.display_name,
+                item.data.transaction_ids.buy,
+                item.data.transaction_ids.sell,
+                item.data.barrier,
+                item.data.date_start,
+                item.data.entry_tick,
+                item.data.entry_tick_time,
+                item.data.exit_tick,
+                item.data.exit_tick_time,
+                item.data.buy_price,
+                item.data.profit,
+            ])
+        );
 
         // Push Transaction array to CSV
         const transaction_csv_content = `data:text/csv;charset=utf-8, ${transaction_csv_titles

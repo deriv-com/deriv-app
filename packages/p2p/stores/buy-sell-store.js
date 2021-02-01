@@ -1,4 +1,4 @@
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, reaction } from 'mobx';
 import { formatMoney, getDecimalPlaces, getRoundedNumber, isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
@@ -17,7 +17,6 @@ export default class BuySellStore {
     @observable has_more_items_to_load = false;
     @observable is_loading = true;
     @observable is_submit_disabled = true;
-    @observable item_offset = 0;
     @observable items = [];
     @observable payment_info = '';
     @observable receive_amount = 0;
@@ -47,7 +46,12 @@ export default class BuySellStore {
 
     @computed
     get has_payment_info() {
-        return this.contact_info.length && this.payment_info.length       
+        return this.contact_info.length && this.payment_info.length;
+    }
+
+    @computed
+    get is_buy() {
+        return this.table_type === buy_sell.BUY;
     }
 
     @computed
@@ -67,6 +71,18 @@ export default class BuySellStore {
         }
 
         return localize('Sell {{ account_currency }}', { account_currency: this.account_currency });
+    }
+
+    @computed
+    get rendered_items() {
+        if (isMobile() && this.items.length > 0) {
+            // This allows for the sliding animation on the Buy/Sell toggle as it pushes
+            // an empty item with an item that holds the same height of the toggle container.
+            // Also see: buy-sell-row.jsx
+            return [{ id: 'WATCH_THIS_SPACE' }, ...this.items];
+        }
+
+        return this.items;
     }
 
     @action.bound
@@ -131,13 +147,15 @@ export default class BuySellStore {
 
     @action.bound
     loadMoreItems({ startIndex }) {
+        this.setIsLoading(true);
+
         const { general_store } = this.root_store;
-        const counterparty_type = this.table_type === buy_sell.BUY ? buy_sell.BUY : buy_sell.SELL;
+        const counterparty_type = this.is_buy ? buy_sell.BUY : buy_sell.SELL;
 
         return new Promise(resolve => {
             requestWS({
                 p2p_advert_list: 1,
-                counterparty_type: this.table_type === buy_sell.BUY ? buy_sell.BUY : buy_sell.SELL,
+                counterparty_type: counterparty_type,
                 offset: startIndex,
                 limit: general_store.list_item_limit,
             }).then(response => {
@@ -146,16 +164,23 @@ export default class BuySellStore {
                     // due to quickly switching between Buy/Sell tabs.
                     if (response.echo_req.counterparty_type === counterparty_type) {
                         const { list } = response.p2p_advert_list;
+
                         this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
 
-                        if (isMobile() && list.length && this.items.length === 0) {
-                            // This allows for the sliding animation on the Buy/Sell toggle as it pushes
-                            // an empty item with an item that holds the same height of the toggle container.
-                            // Also see: buy-sell-row.jsx
-                            this.setItems([{ id: 'WATCH_THIS_SPACE' }].concat(this.items).concat(list));
-                        } else {
-                            this.setItems(this.items.concat(list));
-                        }
+                        const old_items = [...this.items];
+                        const new_items = [];
+
+                        list.forEach(new_item => {
+                            const old_item_idx = old_items.findIndex(old_item => old_item.id === new_item.id);
+
+                            if (old_item_idx > -1) {
+                                old_items[old_item_idx] = new_item;
+                            } else {
+                                new_items.push(new_item);
+                            }
+                        });
+
+                        this.setItems([...old_items, ...new_items]);
                     }
                 } else {
                     this.setApiErrorMessage(response.error.message);
@@ -183,6 +208,21 @@ export default class BuySellStore {
 
         order_store.props.setOrderId(order_info.id);
         general_store.redirectTo('orders', { nav: { location: 'buy_sell' } });
+    }
+
+    registerIsListedReaction() {
+        const { general_store } = this.root_store;
+        const disposeIsListedReaction = reaction(
+            () => general_store.is_listed,
+            () => {
+                this.setItems([]);
+                this.loadMoreItems({ startIndex: 0 });
+            }
+        );
+
+        return () => {
+            disposeIsListedReaction();
+        };
     }
 
     @action.bound
@@ -218,11 +258,6 @@ export default class BuySellStore {
     @action.bound
     setIsSubmitDisabled(is_submit_disabled) {
         this.is_submit_disabled = is_submit_disabled;
-    }
-
-    @action.bound
-    setItemOffset(item_offset) {
-        this.item_offset = item_offset;
     }
 
     @action.bound

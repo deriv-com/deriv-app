@@ -1,0 +1,115 @@
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    z-index: 99;
+    box-sizing: border-box;
+    height: $HEADER_HEIGHT;
+    width: 100%;
+    top: 0;
+    transition: opacity 0.3s;
+    backface-visibility: hidden;
+    padding: 0 4rem;
+    justify-content: space-between;
+
+    @include mobile {
+        padding: 0 1.6rem;
+    }
+
+    > * {
+        align-items: center;
+        display: flex;
+    }
+
+    &__left {
+        > * {
+            cursor: pointer;
+        }
+
+        &--desktop-logo {
+            margin-right: 0.684rem;
+        }
+    }
+
+    &--logged-in {
+        background-color: var(--general-main-1);
+        color: var(--brand-dark-grey);
+        box-shadow: inset 0px -1px 0px var(--general-section-1);
+    }
+
+    &__right {
+        &--logged-in {
+            > * {
+                cursor: pointer;
+            }
+            &-icon {
+                margin-right: 0.8rem;
+            }
+            &-separator {
+                height: 48px;
+                border-right: 1px solid var(--general-section-1);
+                margin-left: 2rem;
+            }
+        }
+
+        &--create-button {
+            @include mobile {
+                display: none;
+            }
+        }
+
+        &--logged-out {
+            &-separator {
+                height: 48px;
+                border-right: 1px solid #{$color-black-3};
+                margin-left: 1.8rem;
+            }
+        }
+
+        &-hamburger {
+            margin-left: 1.8rem;
+            cursor: pointer;
+        }
+    }
+
+    &--logged-out {
+        background-color: var(--brand-dark-grey);
+        color: var(--text-colored-background);
+    }
+
+    &__middle--logged-out {
+        > :not(:first-child) {
+            margin-left: 4.8rem;
+
+            @media (max-width: 830px) {
+                margin-left: 1.2rem;
+            }
+        }
+
+        > * {
+            cursor: pointer;
+        }
+
+        @include mobile {
+            display: none;
+        }
+    }
+
+    &__preloader {
+        display: flex;
+        padding: 0 4rem;
+        align-items: center;
+        justify-content: flex-end;
+        position: fixed;
+        z-index: 100;
+        box-sizing: border-box;
+        height: $HEADER_HEIGHT;
+        width: 100%;
+        top: 0;
+        background-color: var(--general-main-1);
+
+        @include mobile {
+            padding: 0 1.6rem;
+        }
+    }
+}

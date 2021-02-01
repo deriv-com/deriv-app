@@ -7,12 +7,18 @@
 
     &--error {
         padding-left: 1rem;
-        @include typeface(--small-left-normal-red);
     }
     &--warn {
         padding-left: 1.2rem;
         padding-top: 0.4rem;
         @include typeface(--small-left-normal-black);
         color: $color-grey-1;
+    }
+}
+
+.dc-input__footer {
+    .dc-field {
+        position: relative;
+        top: unset;
     }
 }

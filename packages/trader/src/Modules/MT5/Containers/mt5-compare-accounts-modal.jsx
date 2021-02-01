@@ -29,14 +29,21 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
 
     return tooltip ? (
         <React.Fragment>
-            <p className='mt5-attribute-describer' onClick={toggleModal}>
+            <Text
+                as='p'
+                weight='bold'
+                size='xs'
+                line_height='s'
+                className='mt5-attribute-describer'
+                onClick={toggleModal}
+            >
                 {name}
                 <MobileWrapper>
                     <Text weight='bold' line_height='x' size='xxxs' className='counter'>
                         {counter}
                     </Text>
                 </MobileWrapper>
-            </p>
+            </Text>
             <DesktopWrapper>
                 <Popover alignment='right' icon='counter' counter={counter} message={tooltip} zIndex={9998} />
             </DesktopWrapper>
@@ -45,7 +52,9 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
             </MobileWrapper>
         </React.Fragment>
     ) : (
-        <p className='mt5-attribute-describer'>{name}</p>
+        <Text as='p' weight='bold' size='xs' line_height='s' className='mt5-attribute-describer'>
+            {name}
+        </Text>
     );
 };
 

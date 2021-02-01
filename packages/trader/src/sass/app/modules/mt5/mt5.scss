@@ -7,10 +7,10 @@
     justify-content: flex-start;
 
     h2 {
-        @include typeface(--paragraph-center-bold-black);
+        @include typeface(--title-center-bold-black);
         color: var(--text-prominent);
         text-transform: none;
-        margin: 2.8rem 2.2rem 3.3rem;
+        margin: 0.4rem 2.2rem 2.4rem;
         max-width: 30rem;
     }
     form {
@@ -94,10 +94,23 @@
     }
 }
 
-.mt5-password-modal__message {
-    max-width: 32rem;
-    margin: auto;
-    line-height: 1.43;
+.mt5-password-modal {
+    &__message {
+        max-width: 32rem;
+        margin: auto;
+        line-height: 1.43;
+    }
+    &__radio {
+        &.dc-radio-group {
+            display: grid;
+            grid-gap: 2rem;
+            margin-top: 0;
+        }
+        &.dc-radio-group__item {
+            display: flex;
+            flex-direction: row;
+        }
+    }
 }
 
 .dc-modal__container_top-up-virtual {
@@ -115,9 +128,7 @@
         align-items: center;
     }
     &__description {
-        @include typeface(--small-center-normal-black);
         text-transform: none;
-        color: var(--text-general);
     }
     &--h4 {
         @include typeface(--small-center-bold-black);
@@ -128,10 +139,6 @@
         @include typeface(--title-center-bold-black);
         line-height: 1.5;
         color: var(--text-profit-success);
-    }
-    &--balance-descriptor {
-        @include typeface(--small-center-normal-black, none);
-        color: var(--text-general);
     }
 }
 
@@ -168,12 +175,9 @@
         margin: 0.8rem 0;
 
         &--sub {
-            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
             margin-top: 3rem;
         }
-    }
-    &__description {
-        @include typeface(--paragraph-center-normal-black);
     }
     &__resend-button {
         display: block;
@@ -250,8 +254,7 @@
         margin-bottom: 2.4rem;
 
         &--is-centered {
-            @include typeface(--paragraph-center-normal-black);
-            color: var(--text-prominent);
+            margin-bottom: 2.4rem;
             max-width: 70%;
         }
     }

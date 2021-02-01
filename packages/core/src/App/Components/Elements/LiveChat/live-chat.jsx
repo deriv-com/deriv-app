@@ -128,9 +128,9 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
     };
 
     return (
-        <>
+        <React.Fragment>
             {is_livechat_interactive && (
-                <>
+                <React.Fragment>
                     {is_mobile_drawer ? (
                         <div
                             className='livechat gtm-deriv-livechat'
@@ -159,9 +159,9 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                             />
                         </Popover>
                     )}
-                </>
+                </React.Fragment>
             )}
-        </>
+        </React.Fragment>
     );
 };
 

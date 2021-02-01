@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getMT5WebTerminalLink, getPlatformMt5DownloadLink } from '../Helpers/constants';
 
@@ -46,9 +46,9 @@ const MT5DashboardContainer = () => (
                         </a>
                     </div>
                 </div>
-                <p className='mt5-dashboard__download-center--hint'>
+                <Text as='p' size='xxxs' className='mt5-dashboard__download-center--hint'>
                     <Localize i18n_default_text='The MT5 desktop app is not supported by Windows XP, Windows 2003, and Windows Vista.' />
-                </p>
+                </Text>
             </div>
             <div className='mt5-dashboard__download-center-options--mobile'>
                 <div className='mt5-dashboard__download-center-options--mobile-devices'>

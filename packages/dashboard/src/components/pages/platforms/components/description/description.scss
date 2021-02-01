@@ -1,0 +1,26 @@
+.dw-description {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 4rem;
+
+    &__text {
+        margin-bottom: 2.4rem;
+    }
+    &__item {
+        display: flex;
+        align-items: center;
+
+        &-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(224px, 1fr));
+            grid-gap: 2.4rem;
+            align-items: flex-start;
+        }
+        &-icon {
+            margin-right: 1.6rem;
+        }
+    }
+    &__divider {
+        margin-bottom: 4rem;
+    }
+}

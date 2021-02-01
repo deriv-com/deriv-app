@@ -47,6 +47,11 @@ export default class BuySellStore extends BaseStore {
     }
 
     @computed
+    get is_buy() {
+        return this.table_type === buy_sell.BUY;
+    }
+
+    @computed
     get is_buy_advert() {
         return this.advert?.counterparty_type === buy_sell.BUY;
     }
@@ -142,12 +147,12 @@ export default class BuySellStore extends BaseStore {
         this.setIsLoading(true);
 
         const { general_store } = this.root_store;
-        const counterparty_type = this.table_type === buy_sell.BUY ? buy_sell.BUY : buy_sell.SELL;
+        const counterparty_type = this.is_buy ? buy_sell.BUY : buy_sell.SELL;
 
         return new Promise(resolve => {
             requestWS({
                 p2p_advert_list: 1,
-                counterparty_type: this.table_type === buy_sell.BUY ? buy_sell.BUY : buy_sell.SELL,
+                counterparty_type: counterparty_type,
                 offset: startIndex,
                 limit: general_store.list_item_limit,
             }).then(response => {

@@ -88,9 +88,9 @@ const CreateAdForm = () => {
                                                     label={localize('Total amount')}
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
-                                                        <span className='p2p-my-ads__form-field--trailing'>
+                                                        <Text size='xxs' color='less-prominent'>
                                                             {currency}
-                                                        </span>
+                                                        </Text>
                                                     }
                                                     onChange={e => {
                                                         my_ads_store.restrictLength(e, handleChange);
@@ -127,9 +127,9 @@ const CreateAdForm = () => {
                                                     })}
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
-                                                        <span className='p2p-my-ads__form-field--trailing'>
+                                                        <Text size='xxs' color='less-prominent'>
                                                             {local_currency_config.currency}
-                                                        </span>
+                                                        </Text>
                                                     }
                                                     onChange={e => {
                                                         my_ads_store.restrictLength(e, handleChange);
@@ -148,9 +148,9 @@ const CreateAdForm = () => {
                                                     label={localize('Min order')}
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
-                                                        <span className='p2p-my-ads__form-field--trailing'>
+                                                        <Text size='xxs' color='less-prominent'>
                                                             {currency}
-                                                        </span>
+                                                        </Text>
                                                     }
                                                     onChange={e => {
                                                         my_ads_store.restrictLength(e, handleChange);
@@ -169,9 +169,9 @@ const CreateAdForm = () => {
                                                     label={localize('Max order')}
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
-                                                        <span className='p2p-my-ads__form-field--trailing'>
+                                                        <Text size='xxs' color='less-prominent'>
                                                             {currency}
-                                                        </span>
+                                                        </Text>
                                                     }
                                                     onChange={e => {
                                                         my_ads_store.restrictLength(e, handleChange);

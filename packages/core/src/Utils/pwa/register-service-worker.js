@@ -4,6 +4,7 @@ const EVERY_HOUR = 3600000; // 1000 * 60 * 60
 const AUTO_REFRESH_THRESHOLD = 10000; // 10 Seconds
 
 let interval_id;
+let should_refresh_on_register = false;
 
 function refreshOnUpdate() {
     return swRegistrationObject => {
@@ -21,6 +22,12 @@ function refreshOnUpdate() {
 }
 
 export default function register() {
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+        if (registrations.length !== 0) {
+            should_refresh_on_register = true;
+        }
+    });
+
     // Register the service worker
     if (/* process.env.NODE_ENV === 'production' && */ 'serviceWorker' in navigator) {
         window.addEventListener('load', () => {
@@ -49,7 +56,7 @@ export default function register() {
                                     // At this point, everything has been precached.
                                     // It's the perfect time to display a
                                     // "Content is cached for offline use." message.
-                                    console.log('Content is cached for offline use.'); // eslint-disable-line no-console
+                                    console.log('Content is cached for offline use.', performance.now()); // eslint-disable-line no-console
                                 }
                             }
                         };
@@ -63,8 +70,11 @@ export default function register() {
             // This fires when the service worker controlling this page
             // changes, eg a new worker has skipped waiting and become
             // the new active worker.
-            if (AUTO_REFRESH_THRESHOLD > performance.now()) {
+            if (AUTO_REFRESH_THRESHOLD > performance.now() && should_refresh_on_register) {
                 window.location.reload();
+            } else {
+                // eslint-disable-next-line no-console
+                console.log('First registration, no need to refresh.');
             }
         });
     }

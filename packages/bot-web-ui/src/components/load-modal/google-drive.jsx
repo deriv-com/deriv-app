@@ -3,7 +3,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Button, Icon, StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { connect } from '../../stores/connect';
+import { connect } from 'Stores/connect';
 
 const GoogleDrive = ({ is_authorised, is_open_button_loading, onDriveConnect, onDriveOpen, is_mobile }) => {
     return (

@@ -3,10 +3,10 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 import RecentFooter from './recent-footer.jsx';
 import RecentWorkspace from './recent-workspace.jsx';
 import WorkspaceControl from './workspace-control.jsx';
-import { connect } from '../../stores/connect';
 
 const RecentComponent = ({ is_explanation_expand, recent_strategies, toggleExplanationExpand }) => {
     if (recent_strategies.length) {

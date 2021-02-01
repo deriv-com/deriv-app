@@ -56,11 +56,8 @@
         &--has-suffix-icon {
             width: 21rem;
             padding-left: 3rem;
+            padding-right: 0;
             justify-content: start;
-
-            &-text {
-                padding-right: 0 !important;
-            }
         }
         &--is-left-text {
             justify-content: flex-start;
@@ -163,6 +160,8 @@
         }
     }
     &--error {
+        margin-bottom: -1.8rem;
+
         & .dc-dropdown__display {
             border-color: var(--brand-red-coral) !important;
         }

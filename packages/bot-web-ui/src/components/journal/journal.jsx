@@ -168,12 +168,15 @@ const Tools = ({ checked_filters, filters, filterMessage, is_filter_dialog_visib
     );
 };
 
-const getJournalItemContent = (message, type, className, extra) => {
+const getJournalItemContent = (message, type, className, extra, measure) => {
     switch (type) {
         case message_types.SUCCESS: {
             return <FormatMessage logType={message} extra={extra} className={className} />;
         }
         case message_types.NOTIFY: {
+            if (typeof message === 'function') {
+                return <div className={classnames('journal__text', className)}>{message(measure)}</div>;
+            }
             return <div className={classnames('journal__text', className)}>{message}</div>;
         }
         case message_types.ERROR: {
@@ -198,7 +201,7 @@ const JournalLoader = ({ is_mobile }) => (
     </ContentLoader>
 );
 
-const JournalItem = ({ row, is_new_row }) => {
+const JournalItem = ({ row, is_new_row, measure }) => {
     const { in_prop } = useNewRowTransition(is_new_row);
 
     const { date, time, message, message_type, className, extra } = row;
@@ -208,7 +211,7 @@ const JournalItem = ({ row, is_new_row }) => {
         <CSSTransition in={in_prop} timeout={500} classNames='list__animation'>
             <div className='journal__item'>
                 <div className='journal__item-content'>
-                    {getJournalItemContent(message, message_type, className, extra)}
+                    {getJournalItemContent(message, message_type, className, extra, measure)}
                 </div>
                 <div className='journal__text-datetime'>{date_el}</div>
             </div>

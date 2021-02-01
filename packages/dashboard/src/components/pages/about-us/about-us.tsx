@@ -24,7 +24,7 @@ const AboutUs: React.FC = () => {
             </Text>
             <div className='dw-about-us__wrapper'>
                 {Array.from(new Array(total_previews).keys()).map(key => (
-                    <Frame src={`${config_store.asset_path}/images/p${key + 1}.jpeg`} key={key} alt={`p${key + 1}`} />
+                    <Frame src={`${config_store.asset_path}/images/placeholder.png`} key={key} alt={`p${key + 1}`} />
                 ))}
             </div>
         </div>

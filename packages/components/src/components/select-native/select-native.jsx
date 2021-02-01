@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Field from '../field';
 import Icon from '../icon/icon.jsx';
+import Text from '../text';
 
 const getDisplayText = (list_items, value) => {
     const dropdown_items = Array.isArray(list_items) ? list_items : [].concat(...Object.values(list_items));
@@ -120,7 +121,17 @@ const SelectNative = ({
                 {error && <Field message={error} type='error' />}
             </div>
         </div>
-        {!error && hint && <p className='dc-select-native__hint'>{hint}</p>}
+        {!error && hint && (
+            <Text
+                as='p'
+                color='less-prominent'
+                size='xxs'
+                styles={{ lineHeight: '1.8' }}
+                className='dc-select-native__hint'
+            >
+                {hint}
+            </Text>
+        )}
     </div>
 );
 

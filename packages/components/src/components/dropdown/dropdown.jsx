@@ -7,11 +7,8 @@ import { mobileOSDetect, getPosition } from '@deriv/shared';
 import { listPropType, findNextFocusableNode, findPreviousFocusableNode } from './dropdown';
 import Items from './items.jsx';
 import DisplayText from './display-text.jsx';
-import SelectNative from '../select-native';
 import { useBlockScroll, useOnClickOutside } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
-import DesktopWrapper from '../desktop-wrapper';
-import MobileWrapper from '../mobile-wrapper';
 import Icon from '../icon';
 
 const DropdownList = React.forwardRef((props, list_ref) => {
@@ -349,96 +346,84 @@ const Dropdown = ({
 
     return (
         <React.Fragment>
-            <DesktopWrapper>
-                <input
-                    className='dc-dropdown__inner'
-                    autoComplete='off'
-                    name={name}
-                    readOnly='readonly'
-                    type='hidden'
-                    value={value || 0}
-                />
-                <div ref={wrapper_ref} className={containerClassName()}>
-                    <div
-                        className={classNames('dc-dropdown__container', {
-                            'dc-dropdown__container--suffix-icon': suffix_icon,
-                        })}
-                    >
-                        {label && (
-                            <span
-                                className={classNames('dc-dropdown__label', {
-                                    'dc-dropdown__label--clicked': is_list_visible,
-                                })}
-                            >
-                                {label}
-                            </span>
-                        )}
-                        <div
-                            className={dropdownDisplayClassName()}
-                            tabIndex={isSingleOption() ? '-1' : '0'}
-                            onClick={handleVisibility}
-                            onKeyDown={onKeyPressed}
-                            id='dropdown-display'
-                            ref={dropdown_ref}
+            <input
+                className='dc-dropdown__inner'
+                autoComplete='off'
+                name={name}
+                readOnly='readonly'
+                type='hidden'
+                value={value || 0}
+            />
+            <div ref={wrapper_ref} className={containerClassName()}>
+                <div
+                    className={classNames('dc-dropdown__container', {
+                        'dc-dropdown__container--suffix-icon': suffix_icon,
+                    })}
+                >
+                    {label && (
+                        <span
+                            className={classNames('dc-dropdown__label', {
+                                'dc-dropdown__label--clicked': is_list_visible,
+                            })}
                         >
-                            {suffix_icon && <Icon className='suffix-icon' icon={suffix_icon} size={16} fill />}
-                            <DisplayText
-                                className={classNames('dc-dropdown__display-text', {
-                                    'dc-dropdown__display--has-suffix-icon-text': suffix_icon,
-                                })}
-                                has_symbol={has_symbol}
-                                name={name}
-                                is_title={is_list_visible}
-                                placeholder={placeholder}
-                                value={value || 0}
-                                list={list}
-                            />
-                        </div>
-                        {!(isSingleOption() || suffix_icon) && (
-                            <Icon
-                                icon={is_alignment_left ? 'IcChevronLeft' : 'IcChevronDown'}
-                                className={classNames('dc-dropdown__select-arrow', {
-                                    'dc-dropdown__select-arrow--left': is_alignment_left,
-                                    'dc-dropdown__select-arrow--up': is_list_visible,
-                                    'dc-dropdown__select-arrow--error': error || hint,
-                                })}
-                            />
-                        )}
-                        {error && <p className='dc-field--error'>{error}</p>}
-                        <DropdownList
-                            ref={list_ref}
-                            classNameItems={classNameItems}
-                            classNameLabel={classNameLabel}
-                            portal_id={list_portal_id}
+                            {label}
+                        </span>
+                    )}
+                    <div
+                        className={dropdownDisplayClassName()}
+                        tabIndex={isSingleOption() ? '-1' : '0'}
+                        onClick={handleVisibility}
+                        onKeyDown={onKeyPressed}
+                        id='dropdown-display'
+                        ref={dropdown_ref}
+                    >
+                        {suffix_icon && <Icon className='suffix-icon' icon={suffix_icon} size={16} fill />}
+                        <DisplayText
+                            className={classNames('dc-dropdown__display-text', {
+                                'dc-dropdown__display--has-suffix-icon-text': suffix_icon,
+                            })}
                             has_symbol={has_symbol}
-                            handleSelect={handleSelect}
-                            is_alignment_left={is_alignment_left}
-                            is_alignment_top={is_alignment_top}
-                            is_align_text_left={is_align_text_left}
-                            is_large={is_large}
-                            is_list_visible={is_list_visible}
-                            initial_offset={initial_offset}
+                            name={name}
+                            is_title={is_list_visible}
+                            placeholder={placeholder}
+                            value={value || 0}
                             list={list}
-                            nodes={nodes}
-                            onKeyPressed={onKeyPressed}
-                            value={value}
-                            parent_ref={dropdown_ref}
-                            suffix_icon={suffix_icon}
                         />
                     </div>
-                    {!error && hint && <p className='dc-dropdown__hint'>{hint}</p>}
+                    {!(isSingleOption() || suffix_icon) && (
+                        <Icon
+                            icon={is_alignment_left ? 'IcChevronLeft' : 'IcChevronDown'}
+                            className={classNames('dc-dropdown__select-arrow', {
+                                'dc-dropdown__select-arrow--left': is_alignment_left,
+                                'dc-dropdown__select-arrow--up': is_list_visible,
+                                'dc-dropdown__select-arrow--error': error || hint,
+                            })}
+                        />
+                    )}
+                    {error && <p className='dc-field--error'>{error}</p>}
+                    <DropdownList
+                        ref={list_ref}
+                        classNameItems={classNameItems}
+                        classNameLabel={classNameLabel}
+                        portal_id={list_portal_id}
+                        has_symbol={has_symbol}
+                        handleSelect={handleSelect}
+                        is_alignment_left={is_alignment_left}
+                        is_alignment_top={is_alignment_top}
+                        is_align_text_left={is_align_text_left}
+                        is_large={is_large}
+                        is_list_visible={is_list_visible}
+                        initial_offset={initial_offset}
+                        list={list}
+                        nodes={nodes}
+                        onKeyPressed={onKeyPressed}
+                        value={value}
+                        parent_ref={dropdown_ref}
+                        suffix_icon={suffix_icon}
+                    />
                 </div>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <SelectNative
-                    hide_selected_value={true}
-                    suffix_icon={suffix_icon}
-                    should_show_empty_option={false}
-                    value={value}
-                    list_items={list}
-                    onChange={onChange}
-                />
-            </MobileWrapper>
+                {!error && hint && <p className='dc-dropdown__hint'>{hint}</p>}
+            </div>
         </React.Fragment>
     );
 };

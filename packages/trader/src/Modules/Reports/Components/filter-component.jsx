@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown } from '@deriv/components';
+import { Dropdown, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
@@ -32,19 +32,36 @@ const TransactionFilter = ({ action_type, handleFilterChange }) => {
     ];
 
     return (
-        <Dropdown
-            list={filter_list}
-            value={default_filter}
-            name='transaction-filter-dropdown'
-            className='dropdown-statement-filter'
-            classNameDisplay='dc-dropdown__display--has-suffix-icon'
-            has_symbol={false}
-            suffix_icon={'IcFilter'}
-            onChange={e => {
-                setDefaultFilter(e.target.value);
-                handleFilterChange(e.target.value);
-            }}
-        />
+        <React.Fragment>
+            <DesktopWrapper>
+                <Dropdown
+                    list={filter_list}
+                    value={default_filter}
+                    name='transaction-filter-dropdown'
+                    className='dropdown-statement-filter'
+                    classNameDisplay='dc-dropdown__display--has-suffix-icon'
+                    has_symbol={false}
+                    suffix_icon={'IcFilter'}
+                    onChange={e => {
+                        setDefaultFilter(e.target.value);
+                        handleFilterChange(e.target.value);
+                    }}
+                />
+            </DesktopWrapper>
+            <MobileWrapper>
+                <SelectNative
+                    list_items={filter_list}
+                    value={default_filter}
+                    hide_selected_value={true}
+                    suffix_icon={'IcFilter'}
+                    should_show_empty_option={false}
+                    onChange={e => {
+                        setDefaultFilter(e.target.value);
+                        handleFilterChange(e.target.value);
+                    }}
+                />
+            </MobileWrapper>
+        </React.Fragment>
     );
 };
 

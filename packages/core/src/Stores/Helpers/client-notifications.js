@@ -247,7 +247,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             header: localize('You are offline'),
             message: <Localize i18n_default_text='Check your connection.' />,
             type: 'danger',
-            variant: 'account',
+            variant: 'system',
         },
         password_changed: {
             key: 'password_changed',

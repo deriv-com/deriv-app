@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { Icon, DesktopWrapper, DataList, ThemedScrollbars } from '@deriv/components';
+import { Icon, DesktopWrapper, DataList, ThemedScrollbars, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { useNewRowTransition } from '@deriv/shared';
 import { PropTypes } from 'prop-types';
@@ -119,12 +119,13 @@ const Transactions = ({ contract_stage, elements, is_drawer_open, is_mobile, onM
                                                     color='secondary'
                                                 />
                                             </div>
-
                                             <h4 className='transactions-empty__header'>
                                                 {localize('There are no transactions to display')}
                                             </h4>
                                             <div className='transactions-empty__message'>
-                                                <span>{localize('Here are the possible reasons:')}</span>
+                                                <Text size='xxs' color='less-prominent'>
+                                                    {localize('Here are the possible reasons:')}
+                                                </Text>
                                                 <ul className='transactions-empty__list'>
                                                     <li>{localize('The bot is not running')}</li>
                                                     <li>{localize('The stats are cleared')}</li>

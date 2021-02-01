@@ -4,10 +4,11 @@
     &__content {
         background-color: inherit;
         height: auto;
+    }
 
+    &__tab-meta-wrapper {
         &--floating {
-            margin-left: 0;
-            border-left: 1px solid $color-grey-2;
+            border-right: 1px solid $color-grey-2;
         }
     }
 

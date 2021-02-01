@@ -98,8 +98,8 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
             timer = setTimeout(() => {
                 setTimeLeft(calculateTimeLeft(when_market_opens.remaining_time_to_open));
                 if (new Date(when_market_opens.remaining_time_to_open) - +new Date() < 1000) {
-                    setMarketStatus(false);
                     setLoading(true);
+                    setMarketStatus(false);
                 }
             }, 1000);
         }

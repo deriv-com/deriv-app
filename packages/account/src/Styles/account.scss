@@ -1020,13 +1020,9 @@ $MIN_HEIGHT_FLOATING: calc(
                         display: block;
 
                         &--title {
-                            font-size: var(--text-size-xxs);
-                            font-weight: var(--text-weight-bold);
                             font-stretch: normal;
                             font-style: normal;
-                            line-height: var(--text-lh-m);
                             letter-spacing: normal;
-                            color: var(--text-prominent);
                         }
                         &--action {
                             text-transform: capitalize;

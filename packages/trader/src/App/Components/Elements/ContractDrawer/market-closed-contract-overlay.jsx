@@ -9,16 +9,22 @@ import MarketCountdownTimer from '../market-countdown-timer.jsx';
 const MarketClosedContractOverlay = ({ setMarketStatus, symbol }) => {
     const [is_timer_loading, setIsTimerLoading] = React.useState(true);
 
-    <div
-        className={classNames('contract-card__market-closed', {
-            'contract-card__market-closed--loading': is_timer_loading,
-        })}
-    >
-        <Text align='center' as='p' styles={{ color: 'var(--brand-orange)', marginBottom: '1rem' }} weight='bold'>
-            <Localize i18n_default_text='Market is closed' />
-        </Text>
-        <MarketCountdownTimer setIsTimerLoading={setIsTimerLoading} setMarketStatus={setMarketStatus} symbol={symbol} />
-    </div>;
+    return (
+        <div
+            className={classNames('contract-card__market-closed', {
+                'contract-card__market-closed--loading': is_timer_loading,
+            })}
+        >
+            <Text align='center' as='p' styles={{ color: 'var(--brand-orange)', marginBottom: '1rem' }} weight='bold'>
+                <Localize i18n_default_text='Market is closed' />
+            </Text>
+            <MarketCountdownTimer
+                setIsTimerLoading={setIsTimerLoading}
+                setMarketStatus={setMarketStatus}
+                symbol={symbol}
+            />
+        </div>
+    );
 };
 
 MarketClosedContractOverlay.propTypes = {

@@ -145,6 +145,7 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
                 className='market-is-closed-overlay__open-date'
                 line_height='m'
                 color='prominent'
+                size={is_main_page ? 's' : 'xs'}
                 weight='bold'
             >
                 <Localize
@@ -170,7 +171,7 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
                     'market-is-closed-overlay__open-at--main-page': is_main_page,
                 })}
                 line_height='x'
-                size='xs'
+                size={is_main_page ? 'xs' : 'xxs'}
             >
                 <Localize i18n_default_text='It will reopen at' />
             </Text>
@@ -182,7 +183,7 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
                     'market-is-closed-overlay__come-back--main-page': is_main_page,
                 })}
                 line_height='x'
-                size='xs'
+                size={is_main_page ? 'xs' : 'xxs'}
             >
                 <Localize i18n_default_text='Please come back in' />
             </Text>
@@ -193,6 +194,7 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
                 })}
                 line_height='m'
                 color='prominent'
+                size={is_main_page ? 's' : 'xs'}
                 weight='bold'
             >
                 {timer_components}

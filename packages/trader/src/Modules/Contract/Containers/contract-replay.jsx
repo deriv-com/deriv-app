@@ -49,7 +49,7 @@ const ContractReplay = ({
 
     React.useEffect(() => {
         setMarketClosed(isMarketClosed(active_symbols, contract_info?.underlying));
-    }, [active_symbols]);
+    }, [active_symbols, contract_info?.underlying]);
 
     React.useEffect(() => {
         const url_contract_id = +/[^/]*$/.exec(location.pathname)[0];

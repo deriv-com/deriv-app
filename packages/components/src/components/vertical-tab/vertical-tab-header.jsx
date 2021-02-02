@@ -32,10 +32,8 @@ const VerticalTabHeader = ({ children, className, is_floating, is_routed, item, 
     // console.error('Navlink where?');
     // console.log(item.label);
     // console.log(item.path);
-    console.log('');
-    console.error('Navlink where?');
-    console.log(item.label);
-    console.log(item.path);
+    // console.log(is_routed);
+    // console.log('');
     return is_routed ? (
         <NavLink
             id={id}

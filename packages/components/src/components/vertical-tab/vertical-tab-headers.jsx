@@ -6,6 +6,13 @@ import VerticalTabHeaderGroup from './vertical-tab-header-group.jsx';
 import VerticalTabHeaderTitle from './vertical-tab-header-title.jsx';
 
 const offsetTop = (extra_offset, is_floating, ref, selected) => {
+    console.log('');
+    console.warn('offsetTop');
+    console.log(extra_offset);
+    console.log(is_floating);
+    console.log(ref);
+    console.log(selected);
+    console.log('');
     let calculated_offset = 0;
     let item_offset = 0;
 
@@ -14,11 +21,7 @@ const offsetTop = (extra_offset, is_floating, ref, selected) => {
     );
     let selected_el = null;
 
-    if (selected.path) {
-        selected_el = [...headers].find(header => header.id === selected.path);
-    } else {
-        selected_el = [...headers].find(header => header.innerText === selected.label);
-    }
+    selected_el = [...headers].find(header => header.innerText === selected.label);
 
     if (selected_el) {
         item_offset = is_floating ? extra_offset || 18 : 10;

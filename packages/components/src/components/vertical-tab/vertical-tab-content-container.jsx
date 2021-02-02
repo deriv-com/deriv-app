@@ -17,6 +17,10 @@ const SideNotes = ({ side_notes }) => {
 };
 
 const Content = ({ is_routed, items, selected }) => {
+    console.log('');
+    console.warn('CONTENT');
+    console.log(is_routed);
+    console.log(items);
     const selected_item = items.find(item => item.label === selected.label);
     const previous_selected_item = usePrevious(selected_item);
     const TabContent = selected_item.value;
@@ -42,6 +46,10 @@ const Content = ({ is_routed, items, selected }) => {
                 <Switch>
                     {items.map(({ value, component, path, icon }, idx) => {
                         const Component = value || component;
+                        // console.log(Component);
+                        // console.log('');
+                        // console.error('RENDER COMPONENT');
+                        // console.log('');
                         return (
                             <Route
                                 key={idx}

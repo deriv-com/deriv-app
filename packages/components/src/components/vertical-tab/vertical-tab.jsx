@@ -11,6 +11,7 @@ import VerticalTabWrapper from './vertical-tab-wrapper.jsx';
 
 const setSelectedIndex = ({ current_path, list, is_routed, selected_index, setCurrTabIndex, setVerticalTabIndex }) => {
     let index;
+
     if (typeof selected_index === 'undefined') {
         index = is_routed
             ? Math.max(
@@ -46,7 +47,6 @@ const VerticalTab = ({
     list_groups,
     setVerticalTabIndex,
     tab_headers_note,
-    userChangeSelected,
     vertical_tab_index,
 }) => {
     // console.log('');
@@ -62,6 +62,9 @@ const VerticalTab = ({
     const [curr_tab_index, setCurrTabIndex] = React.useState(vertical_tab_index || 0);
 
     const changeSelected = e => {
+        console.log('');
+        console.error('CHANGE SELECTED');
+        console.log(e);
         setSelectedIndex({
             list,
             selected_index: e,
@@ -99,7 +102,7 @@ const VerticalTab = ({
                         extra_offset={extra_offset}
                         items={list}
                         item_groups={list_groups}
-                        onChange={userChangeSelected || changeSelected}
+                        onChange={changeSelected}
                         selected={list[curr_tab_index] || list[0]}
                         has_mixed_dimensions={has_mixed_dimensions}
                         is_collapsible={is_collapsible}

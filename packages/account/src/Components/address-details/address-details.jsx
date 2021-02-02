@@ -60,7 +60,9 @@ const AddressDetails = ({
         const { cancel, promise } = makeCancellablePromise(props.fetchStatesList());
         promise.then(() => {
             setHasFetchedStatesList(true);
-            setAddressStateToDisplay(getLocation(states_list, props.value.address_state, 'text'));
+            if (props.value.address_state) {
+                setAddressStateToDisplay(getLocation(states_list, props.value.address_state, 'text'));
+            }
         });
         return () => {
             setHasFetchedStatesList(false);

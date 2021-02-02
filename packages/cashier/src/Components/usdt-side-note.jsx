@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
-const USDTSideNote = props => {
+const USDTSideNote = ({ type }) => {
     const [is_modal_open, setModalOpen] = React.useState(false);
 
     const handleLearnMore = () => {
@@ -14,7 +14,7 @@ const USDTSideNote = props => {
             <h2 className='cashier__usdt-side-note--header'>
                 <Localize i18n_default_text='About Tether' />
             </h2>
-            {props.type === 'eusdt' && (
+            {type === 'eusdt' && (
                 <Text as='p' size='xxs'>
                     <Localize
                         i18n_default_text='Deriv currently supports withdrawals of Tether eUSDT to Ethereum wallet. To ensure a successful transaction, enter a wallet address compatible with the tokens you wish to withdraw. <0>Learn more</0>'
@@ -22,7 +22,7 @@ const USDTSideNote = props => {
                     />
                 </Text>
             )}
-            {props.type === 'usdt' && (
+            {type === 'usdt' && (
                 <Text as='p' size='xxs'>
                     <Localize
                         i18n_default_text='Deriv currently supports withdrawals of Tether USDT to Omni wallet. To ensure a successful transaction, enter a wallet address compatible with the tokens you wish to withdraw. <0>Learn more</0>'
@@ -42,7 +42,7 @@ const USDTSideNote = props => {
                     <Text as='p' size='xs'>
                         <Localize i18n_default_text='Tether is a blockchain-enabled platform designed to facilitate the use of fiat currencies in a digital manner.' />
                     </Text>
-                    {props.type === 'eusdt' && (
+                    {type === 'eusdt' && (
                         <div>
                             <li className='title'>
                                 <Localize i18n_default_text='Tether on Ethereum (eUSDT)' />
@@ -52,7 +52,7 @@ const USDTSideNote = props => {
                             </Text>
                         </div>
                     )}
-                    {props.type === 'usdt' && (
+                    {type === 'usdt' && (
                         <div>
                             <li className='title'>
                                 <Localize i18n_default_text='Tether on Omni Layer (USDT)' />

@@ -49,7 +49,7 @@ const PasswordResetBody = ({ closeModal }) => (
 
 const MT5PasswordResetHint = ({ closeModal }) => {
     const onResetPasswordClick = () => {
-        location.href = getStaticUrl('/reset-password');
+        window.open(getStaticUrl('/reset-password'));
     };
 
     return (

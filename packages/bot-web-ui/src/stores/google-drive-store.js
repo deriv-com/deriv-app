@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 import { localize, getLanguage } from '@deriv/translations';
 import { importExternal, config } from '@deriv/bot-skeleton';
-import { button_status } from '../constants/button-status';
+import { button_status } from 'Constants/button-status';
 
 export default class GoogleDriveStore {
     constructor(root_store) {

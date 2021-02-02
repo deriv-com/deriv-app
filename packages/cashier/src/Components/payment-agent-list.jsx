@@ -49,7 +49,7 @@ const PaymentAgentList = ({
 
     const list_with_default = [
         { text: <Localize i18n_default_text='All payment agents' />, value: 0 },
-        supported_banks,
+        ...supported_banks,
     ];
 
     return (

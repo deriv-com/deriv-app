@@ -91,6 +91,7 @@ const RadioDropDown = ({ field, values, ...props }) => (
                             value={values.payment_agents}
                             onChange={e => {
                                 params.form.setFieldValue('payment_agents', e.target.value);
+                                params.form.setFieldValue('payment_method', props.id);
                             }}
                         />
                     </DesktopWrapper>
@@ -101,7 +102,11 @@ const RadioDropDown = ({ field, values, ...props }) => (
                             list_items={props.payment_agent_list}
                             value={values.payment_agents}
                             label={localize('Choose agent')}
-                            onChange={e => params.form.setFieldValue('payment_agents', e.target.value)}
+                            should_show_empty_option={false}
+                            onChange={e => {
+                                params.form.setFieldValue('payment_agents', e.target.value);
+                                params.form.setFieldValue('payment_method', props.id);
+                            }}
                             use_text={false}
                         />
                     </MobileWrapper>
@@ -163,7 +168,7 @@ const PaymentAgentWithdrawForm = ({
         };
     }, [onMount, resetPaymentAgent]);
 
-    const validateWithdrawalPassthrough = values => {
+    const validateWithdrawalPassthrough = values =>
         validateWithdrawal(values, {
             balance,
             currency,
@@ -172,7 +177,6 @@ const PaymentAgentWithdrawForm = ({
                     ? {}
                     : payment_agent_list.find(pa => pa.value === values.payment_agents),
         });
-    };
 
     const onWithdrawalPassthrough = async (values, actions) => {
         const payment_agent_withdraw = await requestTryPaymentAgentWithdraw({

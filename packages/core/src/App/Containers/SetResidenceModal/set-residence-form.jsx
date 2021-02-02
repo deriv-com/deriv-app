@@ -28,7 +28,9 @@ const SetResidenceForm = ({
                     {header_text}
                 </Text>
             )}
-            <p className={`${class_prefix}__${header_text ? 'text' : 'heading'}`}>{localize('Where do you live?')}</p>
+            <Text as='p' className={`${class_prefix}__${header_text ? 'text' : 'heading'}`}>
+                {localize('Where do you live?')}
+            </Text>
             <Field name='residence'>
                 {({ field }) => (
                     <React.Fragment>

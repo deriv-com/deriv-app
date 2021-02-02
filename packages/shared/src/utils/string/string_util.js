@@ -25,6 +25,12 @@ export const compareBigUnsignedInt = (a, b) => {
     return order;
 };
 
+export const matchStringByChar = (s, p) => {
+    if (p?.length < 1) return true;
+    const z = p.split('').reduce((a, b) => `${a}[^${b}]*${b}`);
+    return RegExp(z, 'i').test(s);
+};
+
 export const numberToString = n => (typeof n === 'number' ? String(n) : n);
 
 export const getKebabCase = str => {

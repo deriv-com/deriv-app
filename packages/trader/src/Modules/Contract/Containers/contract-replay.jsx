@@ -46,6 +46,8 @@ const ContractReplay = ({
 
     React.useEffect(() => {
         const url_contract_id = +/[^/]*$/.exec(location.pathname)[0];
+        /* eslint-disable no-console */
+        console.time('detail-render');
         onMount(contract_id || url_contract_id);
         setIsVisible(true);
 
@@ -236,6 +238,10 @@ const Chart = props => {
             startEpoch={props.start_epoch}
             scrollToEpoch={props.scroll_to_epoch}
             stateChangeListener={props.chartStateChange}
+            chartStatusListener={() => {
+                /* eslint-disable no-console */
+                console.timeEnd('detail-render');
+            }}
             symbol={props.symbol}
             topWidgets={ChartTopWidgets}
             isConnectionOpened={props.is_socket_opened}

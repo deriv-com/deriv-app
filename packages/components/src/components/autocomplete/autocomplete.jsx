@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { matchStringByChar, getPosition } from '@deriv/shared';
+import { getPosition } from '@deriv/shared';
 import Icon from '../icon';
 import Input from '../input';
 import DropdownList from '../dropdown-list';
@@ -15,14 +15,8 @@ const KEY_CODE = {
     KEYUP: 38,
 };
 
-const getFilteredItems = (val, list, should_filter_by_char) => {
+const getFilteredItems = (val, list) => {
     const is_string_array = list.length && typeof list[0] === 'string';
-
-    if (should_filter_by_char) {
-        return list.filter(item =>
-            is_string_array ? matchStringByChar(item, val) : matchStringByChar(item.text, val)
-        );
-    }
 
     return list.filter(item =>
         is_string_array ? item.toLowerCase().includes(val) : item.text.toLowerCase().includes(val)
@@ -40,7 +34,6 @@ const Autocomplete = React.memo(props => {
         onScrollStop,
         list_portal_id,
         is_alignment_top,
-        should_filter_by_char,
         ...other_props
     } = props;
 
@@ -225,7 +218,7 @@ const Autocomplete = React.memo(props => {
 
     const filterList = e => {
         const val = e.target.value.toLowerCase();
-        const new_filtered_items = getFilteredItems(val, props.list_items, should_filter_by_char);
+        const new_filtered_items = getFilteredItems(val, props.list_items);
 
         if (!new_filtered_items.length) {
             setInputValue('');
@@ -317,5 +310,4 @@ Autocomplete.propTypes = {
     onItemSelection: PropTypes.func,
     list_portal_id: PropTypes.string,
     is_alignment_top: PropTypes.bool,
-    should_filter_by_char: PropTypes.bool,
 };

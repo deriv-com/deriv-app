@@ -9,10 +9,9 @@ import GetWalletModal from 'Components/modals/get-wallet-modal';
 
 // TODO: Temp component. This should be removed after integrating with MT5 signup
 const TempGetDMT5Wallet: React.FC = observer(() => {
-    const { client_store, mt5_store, ui_store } = useStores();
+    const { mt5_store, ui_store } = useStores();
     const { is_real_acc_signup_on } = ui_store;
 
-    if (!client_store.is_logged_in) return null;
     return (
         <div className='dw-temp-get-dmt5-wallet'>
             <React.Fragment>

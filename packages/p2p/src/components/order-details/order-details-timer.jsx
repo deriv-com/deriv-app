@@ -6,17 +6,17 @@ import { secondsToTimer } from 'Utils/date-time';
 import ServerTime from 'Utils/server-time';
 import { useStores } from 'Stores';
 
-const OrderDetailsTimer = () => {
+const OrderDetailsTimer = observer(() => {
     const getTimeLeft = time => {
         const distance = ServerTime.getDistanceToServerTime(time);
         return {
             distance,
-            label: secondsToTimer(Math.max(0, distance)),
+            label: distance < 0 ? localize('expired') : secondsToTimer(distance),
         };
     };
 
     const { order_store } = useStores();
-    const { order_expiry_milliseconds } = order_store.order_information;
+    const { order_expiry_milliseconds, should_show_order_timer } = order_store.order_information;
     const [remaining_time, setRemainingTime] = React.useState(getTimeLeft(order_expiry_milliseconds).label);
     const interval = React.useRef(null);
 
@@ -37,16 +37,21 @@ const OrderDetailsTimer = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return (
-        <div className='order-details-card__header-timer'>
-            <div>{localize('Time left')}</div>
-            <div className='order-details-card__header-timer-counter'>{remaining_time}</div>
-        </div>
-    );
-};
+    if (should_show_order_timer) {
+        return (
+            <div className='order-details-card__header-timer'>
+                <div>{localize('Time left')}</div>
+                <div className='order-details-card__header-timer-counter'>{remaining_time}</div>
+            </div>
+        );
+    }
+
+    clearInterval(interval.current);
+    return null;
+});
 
 OrderDetailsTimer.propTypes = {
     order_information: PropTypes.object,
 };
 
-export default observer(OrderDetailsTimer);
+export default OrderDetailsTimer;

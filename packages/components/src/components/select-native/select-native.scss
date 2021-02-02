@@ -5,17 +5,16 @@
     &--hide-selected-value {
         margin-left: 10px;
         width: 40px;
-    }
 
+        .dc-select-native__wrapper {
+            width: 40px;
+        }
+    }
     &__wrapper {
         height: 38px;
 
         .dc-input {
             margin-bottom: 0px;
-        }
-
-        &--hide-selected-value {
-            width: 40px;
         }
     }
     &__arrow {

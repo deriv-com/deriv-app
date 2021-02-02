@@ -91,7 +91,7 @@ const financial_details_config = ({ financial_assessment }) => {
     };
 };
 
-const financialDetailsConfig = (FinancialDetails, { real_account_signup_target, financial_assessment }) => {
+const financialDetailsConfig = ({ real_account_signup_target, financial_assessment }, FinancialDetails) => {
     const config = financial_details_config({ financial_assessment });
 
     return {

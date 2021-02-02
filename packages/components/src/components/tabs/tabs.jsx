@@ -29,6 +29,9 @@ const Tabs = ({
     const [active_line_style, updateActiveLineStyle] = React.useState({});
     const active_tab_ref = React.useRef();
     const tabs_wrapper_ref = React.useRef();
+    const pushHash = hash => {
+        history.replace(`${history.location.pathname}#${hash}`);
+    };
 
     const setActiveLineStyle = React.useCallback(() => {
         const tabs_wrapper_bounds = tabs_wrapper_ref?.current?.getBoundingClientRect();
@@ -61,7 +64,7 @@ const Tabs = ({
                 const child_props = children[initial_index_to_show].props;
                 const current_id = child_props && child_props['data-hash'];
                 if (current_id) {
-                    history.push({ hash: current_id });
+                    pushHash(current_id);
                 }
             }
         }
@@ -89,7 +92,7 @@ const Tabs = ({
     const onClickTabItem = index => {
         if (should_update_hash) {
             const hash = children[index].props['data-hash'];
-            history.push({ hash });
+            pushHash(hash);
         }
         setActiveTabIndex(index);
         setActiveLineStyle();

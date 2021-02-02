@@ -9,6 +9,15 @@
         overflow-y: auto;
     }
 
+    &__sub-header {
+        @include desktop {
+            margin: 0 4rem 4rem;
+        }
+        @include mobile {
+            margin-bottom: 0.8rem;
+        }
+    }
+
     &__elements {
         flex-grow: 1;
         margin: 1.2rem auto;

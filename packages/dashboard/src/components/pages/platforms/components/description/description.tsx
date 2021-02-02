@@ -1,15 +1,13 @@
 import * as React from 'react';
 import { Text, Icon } from '@deriv/components';
 import Divider from 'Components/elements/divider';
-import { TStringTranslation } from 'Types'
+import { TStringTranslation } from 'Types';
 
 const Description: React.FC<TDescription> = ({ description, advantages = [] }) => {
     return (
         <React.Fragment>
             <section className='dw-description'>
-                <Text className='dw-description__text'>
-                    {description}
-                </Text>
+                <Text className='dw-description__text'>{description}</Text>
                 <div className='dw-description__item-wrapper'>
                     {advantages.map((advantage, idx) => (
                         <div key={idx} className='dw-description__item'>
@@ -27,11 +25,11 @@ const Description: React.FC<TDescription> = ({ description, advantages = [] }) =
 type DescriptionItem = {
     icon: string;
     title: TStringTranslation;
-}
+};
 
 type TDescription = {
     description: TStringTranslation;
     advantages: DescriptionItem[];
-}
+};
 
 export default Description;

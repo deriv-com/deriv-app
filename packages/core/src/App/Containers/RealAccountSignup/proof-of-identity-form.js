@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
+import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
 import ProofOfIdentityForm from './proof-of-identity.jsx';
-import { generateValidationFunction, getDefaultFields } from './form-validations';
 
 const proof_of_identity_config = {
     poi_state: {

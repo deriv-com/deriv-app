@@ -108,18 +108,13 @@
     &__payout {
         &-label {
             text-transform: none;
-            font-size: 0.8rem;
-            font-weight: normal;
             white-space: nowrap;
             max-width: 90px;
-            color: var(--text-general);
         }
         &-value {
-            font-size: 1.2em;
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            font-weight: bold;
             padding: 4px 0 8px;
         }
         &-price {
@@ -145,8 +140,6 @@
     }
     &__symbol {
         margin-left: 0.5rem;
-        font-size: 1em;
-        line-height: 1.5;
         /* iPhone SE screen height fixes due to UI space restrictions */
         @media only screen and (max-height: 480px) {
             font-size: 0.9rem;

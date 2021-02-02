@@ -2,6 +2,14 @@
     width: 100%;
     position: relative;
 
+    &--hide-selected-value {
+        margin-left: 10px;
+        width: 40px;
+
+        .dc-select-native__wrapper {
+            width: 40px;
+        }
+    }
     &__wrapper {
         height: 38px;
 
@@ -89,5 +97,9 @@
     }
     &__hint {
         margin-left: 1.2rem;
+    }
+    &__suffix-icon {
+        position: absolute;
+        left: 11px;
     }
 }

@@ -23,6 +23,7 @@ import {
     validLength,
     getLocation,
     PlatformContext,
+    isDesktop,
 } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
@@ -289,13 +290,13 @@ const ProofOfAddressForm = ({
                             <FormBody scroll_offset={isMobile() ? mobile_scroll_offset : '80px'}>
                                 <FormSubHeader title={localize('Details')} />
                                 <FormBodySection
-                                    has_side_note={is_dashboard && !isMobile()}
+                                    has_side_note={is_dashboard}
                                     side_note={localize(
                                         'Please ensure that this address is the same as in your proof of address'
                                     )}
                                 >
                                     <div className='account-poa__details-section'>
-                                        {is_dashboard && !isMobile() && (
+                                        {!is_dashboard && (
                                             <div className='account-poa__details-description'>
                                                 <Text size={isMobile() ? 'xxs' : 'xs'}>
                                                     {localize(
@@ -424,7 +425,7 @@ const ProofOfAddressForm = ({
 
                                 <FormSubHeader title={localize('Please upload one of the following:')} />
                                 <FormBodySection
-                                    has_side_note={is_dashboard && !isMobile()}
+                                    has_side_note={is_dashboard && isDesktop()}
                                     side_note={<UploaderSideNote />}
                                 >
                                     <FileUploaderContainer
@@ -458,7 +459,7 @@ const ProofOfAddressForm = ({
                                     is_loading={form_state.is_btn_loading}
                                     is_submit_success={form_state.is_submit_success}
                                     text={localize('Save and submit')}
-                                    primary
+                                    {...(is_dashboard ? { blue: true } : { primary: true })}
                                 />
                             </FormFooter>
                         </form>

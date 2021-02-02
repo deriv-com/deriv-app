@@ -28,6 +28,7 @@ import {
     removeObjProperties,
     filterObjProperties,
     PlatformContext,
+    isDesktop,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
@@ -49,7 +50,7 @@ const validate = (errors, values) => (fn, arr, err_msg) => {
 
 const InputGroup = ({ children, className }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
-    if (is_dashboard && !isMobile()) {
+    if (is_dashboard) {
         return React.Children.map(children, child => <fieldset className='account-form__fieldset'>{child}</fieldset>);
     }
     return (
@@ -297,11 +298,11 @@ export class PersonalDetailsForm extends React.Component {
 
     initializeFormValues() {
         WS.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
+            const { is_dashboard } = this.context;
             const { getChangeableFields, is_virtual, account_settings, is_mf } = this.props;
 
             // Convert to boolean
             account_settings.email_consent = !!account_settings.email_consent;
-
             const hidden_settings = [
                 'account_opening_reason',
                 'allow_copiers',
@@ -313,7 +314,7 @@ export class PersonalDetailsForm extends React.Component {
                 'is_authenticated_payment_agent',
                 'user_hash',
                 'country',
-                'salutation',
+                !is_dashboard && 'salutation',
                 'request_professional_status',
                 'immutable_fields',
             ];
@@ -326,6 +327,12 @@ export class PersonalDetailsForm extends React.Component {
         });
     }
 
+    salutation_list = [
+        { text: localize('Mr'), value: 'Mr' },
+        { text: localize('Mrs'), value: 'Mrs' },
+        { text: localize('Ms'), value: 'Ms' },
+        { text: localize('Miss'), value: 'Miss' },
+    ];
     render() {
         const {
             form_initial_values: { ...form_initial_values },
@@ -397,15 +404,57 @@ export class PersonalDetailsForm extends React.Component {
                                 onSubmit={handleSubmit}
                             >
                                 <FormBody scroll_offset={isMobile() ? '199px' : '80px'}>
-                                    <FormSubHeader title={localize('Details')} />
+                                    <FormSubHeader
+                                        title={localize('Details')}
+                                        subtitle={is_dashboard && `(${localize('All fields are required')})`}
+                                    />
                                     {!is_virtual && (
                                         <React.Fragment>
                                             <FormBodySection
-                                                has_side_note={is_dashboard && !isMobile()}
+                                                has_side_note={is_dashboard}
                                                 side_note={localize(
                                                     'We use the information you give us only for verification purposes. All information is kept confidential.'
                                                 )}
                                             >
+                                                {is_dashboard && (
+                                                    <fieldset className='account-form__fieldset'>
+                                                        <DesktopWrapper>
+                                                            <Field name='salutation'>
+                                                                {({ field }) => (
+                                                                    <Autocomplete
+                                                                        {...field}
+                                                                        data-lpignore='true'
+                                                                        autoComplete='new-password' // prevent chrome autocomplete
+                                                                        type='text'
+                                                                        label={localize('Title')}
+                                                                        error={touched.salutation && errors.salutation}
+                                                                        list_items={this.salutation_list}
+                                                                        onItemSelection={({ value, text }) =>
+                                                                            setFieldValue(
+                                                                                'salutation',
+                                                                                value ? text : '',
+                                                                                true
+                                                                            )
+                                                                        }
+                                                                    />
+                                                                )}
+                                                            </Field>
+                                                        </DesktopWrapper>
+                                                        <MobileWrapper>
+                                                            <SelectNative
+                                                                placeholder={localize('Please select')}
+                                                                label={localize('Title')}
+                                                                value={values.salutation}
+                                                                list_items={this.salutation_list}
+                                                                use_text={true}
+                                                                error={touched.salutation && errors.salutation}
+                                                                onChange={e =>
+                                                                    setFieldValue('salutation', e.target.value, true)
+                                                                }
+                                                            />
+                                                        </MobileWrapper>
+                                                    </fieldset>
+                                                )}
                                                 <DesktopWrapper>
                                                     <InputGroup className='account-form__fieldset--2-cols'>
                                                         <Input
@@ -588,7 +637,7 @@ export class PersonalDetailsForm extends React.Component {
                                             </FormBodySection>
                                         </React.Fragment>
                                     )}
-                                    <FormBodySection has_side_note={is_dashboard && !isMobile()}>
+                                    <FormBodySection has_side_note={is_dashboard}>
                                         <fieldset className='account-form__fieldset'>
                                             <Input
                                                 data-lpignore='true'
@@ -618,7 +667,7 @@ export class PersonalDetailsForm extends React.Component {
                                     </FormBodySection>
                                     {!is_virtual && (
                                         <React.Fragment>
-                                            <FormBodySection has_side_note={is_dashboard && !isMobile()}>
+                                            <FormBodySection has_side_note={is_dashboard}>
                                                 <fieldset className='account-form__fieldset'>
                                                     <Input
                                                         data-lpignore='true'
@@ -667,7 +716,7 @@ export class PersonalDetailsForm extends React.Component {
                                             <React.Fragment>
                                                 <FormSubHeader title={localize('Tax information')} />
                                                 <FormBodySection
-                                                    has_side_note={is_dashboard && !isMobile()}
+                                                    has_side_note={is_dashboard}
                                                     side_note={localize(
                                                         'We’re legally obliged to ask for your tax information.'
                                                     )}
@@ -760,7 +809,7 @@ export class PersonalDetailsForm extends React.Component {
                                             </React.Fragment>
                                         )}
                                         <FormSubHeader title={localize('Address')} />
-                                        <FormBodySection has_side_note={is_dashboard && !isMobile()}>
+                                        <FormBodySection has_side_note={is_dashboard}>
                                             <div className='account-address__details-section'>
                                                 <fieldset className='account-form__fieldset'>
                                                     <Input
@@ -895,10 +944,9 @@ export class PersonalDetailsForm extends React.Component {
                                             </div>
                                         </FormBodySection>
                                     </React.Fragment>
-                                    )
                                     <FormSubHeader title={localize('Email preference')} />
                                     <FormBodySection
-                                        has_side_note={is_dashboard && !isMobile()}
+                                        has_side_note={is_dashboard}
                                         side_note={localize('Check this box to receive updates via email.')}
                                     >
                                         <fieldset className='account-form__fieldset'>
@@ -914,21 +962,25 @@ export class PersonalDetailsForm extends React.Component {
                                                 )}
                                                 defaultChecked={!!values.email_consent}
                                                 disabled={!this.isChangeableField('email_consent') && !is_virtual}
+                                                className={is_dashboard && 'dc-checkbox-blue'}
                                             />
                                         </fieldset>
                                     </FormBodySection>
                                 </FormBody>
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                    {!(isSubmitting || is_submit_success || (status && status.msg)) &&
-                                        !is_dashboard &&
-                                        !isMobile() && (
-                                            <div className='account-form__footer-note'>
-                                                {localize(
-                                                    'Please make sure your information is correct or it may affect your trading experience.'
-                                                )}
-                                            </div>
-                                        )}
+                                    {!(
+                                        isSubmitting ||
+                                        is_submit_success ||
+                                        (status && status.msg) ||
+                                        (is_dashboard && isDesktop())
+                                    ) && (
+                                        <div className='account-form__footer-note'>
+                                            {localize(
+                                                'Please make sure your information is correct or it may affect your trading experience.'
+                                            )}
+                                        </div>
+                                    )}
                                     <Button
                                         className={classNames('account-form__footer-btn', {
                                             'dc-btn--green': is_submit_success,
@@ -965,9 +1017,9 @@ export class PersonalDetailsForm extends React.Component {
                                         has_effect
                                         is_loading={is_btn_loading}
                                         is_submit_success={is_submit_success}
-                                        text={is_dashboard && !isMobile() ? localize('Save') : localize('Submit')}
-                                        primary
+                                        text={is_dashboard ? localize('Save') : localize('Submit')}
                                         large
+                                        {...(is_dashboard ? { blue: true } : { primary: true })}
                                     />
                                 </FormFooter>
                             </form>

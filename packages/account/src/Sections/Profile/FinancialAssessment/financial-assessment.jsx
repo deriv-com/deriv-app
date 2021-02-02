@@ -358,13 +358,18 @@ class FinancialAssessment extends React.Component {
                                     className='account-form account-form__financial-assessment'
                                     onSubmit={handleSubmit}
                                 >
-                                    <FormBody scroll_offset={isMobile() ? '200px' : '80px'}>
+                                    <FormBody scroll_offset={isMobile() ? (is_dashboard ? '160px' : '200px') : '80px'}>
                                         <FormSubHeader
                                             title={localize('Financial information')}
-                                            subtitle={isDesktop() && `(${localize('All fields are required')})`}
+                                            subtitle={
+                                                isDesktop() ||
+                                                (is_dashboard &&
+                                                    isMobile() &&
+                                                    `(${localize('All fields are required')})`)
+                                            }
                                         />
                                         <FormBodySection
-                                            has_side_note={is_dashboard && !isMobile()}
+                                            has_side_note={is_dashboard}
                                             side_note={localize(
                                                 'We’re legally obliged to ask for your financial information.'
                                             )}
@@ -610,7 +615,7 @@ class FinancialAssessment extends React.Component {
                                                     subtitle={isDesktop() && `(${localize('All fields are required')})`}
                                                 />
                                                 <FormBodySection
-                                                    has_side_note={is_dashboard && !isMobile()}
+                                                    has_side_note={is_dashboard}
                                                     side_note={localize('Tell us about your trading experience.')}
                                                 >
                                                     <fieldset className='account-form__fieldset'>
@@ -876,7 +881,7 @@ class FinancialAssessment extends React.Component {
                                     </FormBody>
                                     <FormFooter>
                                         {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                        {isMobile() && (
+                                        {isMobile() && !is_dashboard && (
                                             <Text
                                                 align='center'
                                                 size='xxs'
@@ -896,8 +901,8 @@ class FinancialAssessment extends React.Component {
                                             is_loading={is_btn_loading}
                                             is_submit_success={is_submit_success}
                                             text={localize('Submit')}
-                                            primary
                                             large
+                                            {...(is_dashboard ? { blue: true } : { primary: true })}
                                         />
                                     </FormFooter>
                                 </form>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { routes, isMobile } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
     AccountLimits,
@@ -90,14 +90,12 @@ const initRoutesConfig = ({ is_deriv_crypto, is_dashboard }) => [
                     {
                         path: routes.self_exclusion,
                         component: SelfExclusion,
-                        getTitle: () =>
-                            is_dashboard && !isMobile() ? localize('Self-exclusion') : localize('Self exclusion'),
+                        getTitle: () => (is_dashboard ? localize('Self-exclusion') : localize('Self exclusion')),
                     },
                     {
                         path: routes.account_limits,
                         component: AccountLimits,
-                        getTitle: () =>
-                            is_dashboard && !isMobile() ? localize('Withdrawal limits') : localize('Account limits'),
+                        getTitle: () => (is_dashboard ? localize('Withdrawal limits') : localize('Account limits')),
                     },
                     {
                         path: routes.login_history,

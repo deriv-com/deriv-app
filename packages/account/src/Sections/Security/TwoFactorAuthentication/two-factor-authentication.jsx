@@ -105,7 +105,11 @@ const TwoFactorAuthentication = ({ email_address, is_switching }) => {
                 </MobileWrapper>
                 <h2 className='two-factor__title'>{localize('How to set up 2FA for your Deriv account')}</h2>
                 <div>
-                    <Timeline className='two-factor__timeline'>
+                    <Timeline
+                        className={classNames('two-factor__timeline', {
+                            'two-factor__timeline--dashboard': is_dashboard,
+                        })}
+                    >
                         <Timeline.Item
                             item_title={
                                 <Localize
@@ -181,7 +185,7 @@ const TwoFactorAuthentication = ({ email_address, is_switching }) => {
         <section className='two-factor'>
             <div
                 className={classNames('two-factor__wrapper', {
-                    'two-factor__wrapper-dashboard': is_dashboard && !isMobile(),
+                    'two-factor__wrapper-dashboard': is_dashboard,
                 })}
             >
                 {is_two_factor_enabled ? TwoFactorEnabled : TwoFactorDisabled}

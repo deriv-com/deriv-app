@@ -1,7 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Icon } from '@deriv/components';
-import { isMobile, PlatformContext } from '@deriv/shared';
+import { PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ContinueTradingButton from 'Components/poa-continue-trading-button';
 import PoaButton from 'Components/poa-button';
@@ -15,7 +15,7 @@ const Verified = ({ has_poa, is_description_enabled, redirect_button }) => {
             <IconMessageContent
                 message={message}
                 icon={
-                    is_dashboard && !isMobile() ? (
+                    is_dashboard ? (
                         <Icon icon='IcPoaVerifiedDashboard' height={128} width={237} />
                     ) : (
                         <Icon icon='IcPoaVerified' size={128} />
@@ -31,7 +31,7 @@ const Verified = ({ has_poa, is_description_enabled, redirect_button }) => {
         <IconMessageContent
             message={message}
             icon={
-                is_dashboard && !isMobile() ? (
+                is_dashboard ? (
                     <Icon icon='IcPoaVerifiedDashboard' height={128} width={237} />
                 ) : (
                     <Icon icon='IcPoaVerified' size={128} />

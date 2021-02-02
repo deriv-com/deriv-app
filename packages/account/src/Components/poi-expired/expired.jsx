@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
-import { PlatformContext, isMobile } from '@deriv/shared';
+import { PlatformContext } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
 
@@ -24,7 +24,7 @@ const Expired = () => {
                 />
             }
             icon={
-                is_dashboard && !isMobile() ? (
+                is_dashboard ? (
                     <Icon icon='IcPoiUploadDashboard' height={128} width={237} />
                 ) : (
                     <Icon icon='IcPoiUpload' size={128} />

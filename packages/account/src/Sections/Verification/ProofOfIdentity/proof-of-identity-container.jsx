@@ -21,6 +21,7 @@ const ProofOfIdentityContainer = ({
     removeNotificationMessage,
     onStateChange,
     is_mx_mlt,
+    is_description_enabled,
     height,
     redirect_button,
 }) => {
@@ -142,7 +143,7 @@ const ProofOfIdentityContainer = ({
             <ErrorMessage error_message={localize('Sorry, there was a connection error. Please try again later.')} />
         );
     if (is_loading || status.length === 0) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    if (is_unwelcome && !allow_document_upload) return <Unverified />;
+    if (is_unwelcome && !allow_document_upload) return <Unverified is_description_enabled={is_description_enabled} />;
     if (status === 'not_required') return <NotRequired />;
 
     return (
@@ -155,6 +156,7 @@ const ProofOfIdentityContainer = ({
             height={height ?? null}
             handleComplete={handleComplete}
             redirect_button={redirect_button}
+            is_description_enabled={is_description_enabled}
         />
     );
 };
@@ -163,6 +165,7 @@ ProofOfIdentityContainer.propTypes = {
     account_status: PropTypes.object,
     addNotificationByKey: PropTypes.func,
     getAccountStatus: PropTypes.func,
+    is_description_enabled: PropTypes.bool,
     serviceToken: PropTypes.func,
     notificationEvent: PropTypes.func,
     removeNotificationByKey: PropTypes.func,

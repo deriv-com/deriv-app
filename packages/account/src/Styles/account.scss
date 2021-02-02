@@ -90,10 +90,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
             &__content {
-                & .dc-btn--primary,
-                & .dc-checkbox__box--active {
-                    background: var(--brand-apple-blue);
-                }
                 & .dc-btn--primary:hover {
                     background: var(--brand-apple-blue);
                 }
@@ -274,13 +270,23 @@ $MIN_HEIGHT_FLOATING: calc(
         &__section {
             display: grid;
             grid-template-areas: 'section-side-note section-content';
+            @include mobile {
+                grid-template-areas: 'section-side-note' 'section-content';
+            }
             &-side-note {
                 grid-area: section-side-note;
                 width: 26rem;
+                margin-bottom: 1.6rem;
+                @include mobile {
+                    width: 100%;
+                }
             }
             &-content {
                 grid-area: section-content;
                 width: 40rem;
+                @include mobile {
+                    width: 100%;
+                }
             }
         }
         &__fieldset {
@@ -346,6 +352,10 @@ $MIN_HEIGHT_FLOATING: calc(
             &--dashboard {
                 width: 68.5rem;
                 margin-left: 6rem;
+                @include mobile {
+                    width: 100vw;
+                    margin-left: unset;
+                }
             }
 
             &-note {
@@ -602,9 +612,32 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
 
+            &__total-withdraw {
+                & .dc-btn__small {
+                    width: 5rem;
+                    margin: 0 0.6rem;
+                    @include mobile {
+                        margin: 1.1rem 0;
+                    }
+                }
+            }
+
+            &__verify {
+                margin-left: 0.6rem;
+                @include mobile {
+                    margin-left: unset;
+                }
+            }
+
             @include desktop {
                 max-width: 54.6rem;
             }
+        }
+    }
+    .dashboard__message-content {
+        margin-top: 8rem;
+        @include mobile {
+            margin-top: 4rem;
         }
     }
     .account__text_container {
@@ -738,6 +771,14 @@ $MIN_HEIGHT_FLOATING: calc(
         & .dc-popover__target {
             display: flex;
         }
+        &__timeline--dashboard {
+            & .dc-timeline__flex {
+                border-left-color: var(--brand-apple-blue);
+            }
+            & .dc-timeline__oval {
+                background-color: var(--brand-apple-blue);
+            }
+        }
         &__wrapper {
             display: flex;
             width: 100%;
@@ -747,6 +788,9 @@ $MIN_HEIGHT_FLOATING: calc(
                 width: calc(100vw - 33rem);
                 & .dc-timeline__title {
                     max-width: unset;
+                }
+                @include mobile {
+                    width: 100%;
                 }
             }
 
@@ -1034,6 +1078,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
 
             @include mobile {
+                width: 100%;
                 flex-direction: column;
 
                 .account__scrollbars_container--grid-layout {
@@ -1157,6 +1202,9 @@ $MIN_HEIGHT_FLOATING: calc(
                     background-color: var(--general-main-2);
                     margin-bottom: 1rem;
                     padding: 1rem;
+                    &--dashboard {
+                        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05), 0px 16px 20px rgba(0, 0, 0, 0.05);
+                    }
                 }
                 &__row {
                     grid-template-columns: 3fr 1fr;
@@ -1281,6 +1329,15 @@ $MIN_HEIGHT_FLOATING: calc(
             padding-left: 0;
         }
     }
+    & .dc-checkbox-blue {
+        & .dc-checkbox__box {
+            margin-left: 0;
+            &--active {
+                background: var(--brand-apple-blue);
+                padding-left: 0;
+            }
+        }
+    }
 }
 
 /** @define account-poa; weak */
@@ -1313,8 +1370,8 @@ $MIN_HEIGHT_FLOATING: calc(
             height: 240px;
             position: relative;
             max-width: 400px;
-            &-dashboard {
-                height: unset;
+            &--dashboard {
+                height: 10.5rem;
             }
 
             &-zone {
@@ -1572,10 +1629,33 @@ $MIN_HEIGHT_FLOATING: calc(
                             line-height: 1.5;
                         }
                     }
+                    &--dashboard {
+                        max-width: 14.2rem;
+
+                        & .data-list__row-title {
+                            text-align: right;
+                            line-height: 1.5;
+                        }
+                        & .data-list__row-content {
+                            float: right;
+                        }
+                    }
                     .data-list__row-title {
                         line-height: 1.5;
                     }
                 }
+            }
+        }
+        &__wrapper--dashboard {
+            & .ReactVirtualized__Grid__innerScrollContainer {
+                box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05), 0px 16px 20px rgba(0, 0, 0, 0.05);
+                border-radius: 0.4rem;
+            }
+            & .data-list__col {
+                display: grid;
+            }
+            & .data-list__item {
+                background: unset;
             }
         }
         .name {
@@ -1644,7 +1724,6 @@ $MIN_HEIGHT_FLOATING: calc(
         display: grid;
         grid-gap: 2.4rem;
         grid-template-columns: 1fr 1fr 1fr;
-        margin-top: 4rem;
     }
 }
 
@@ -1893,6 +1972,9 @@ $MIN_HEIGHT_FLOATING: calc(
         @include mobile {
             float: none;
             margin: 2.4rem auto 3.2rem;
+            &--dashboard {
+                width: 100%;
+            }
         }
     }
     .deactivate-account-reasons {
@@ -1901,6 +1983,26 @@ $MIN_HEIGHT_FLOATING: calc(
         line-height: 1.43;
         font-weight: bold;
 
+        &--dashboard {
+            & .dc-form-submit-button {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                flex: 1;
+                & .dc-btn__large {
+                    width: 100%;
+                }
+            }
+            & .deactivate-account-reasons__title {
+                margin: 1.6rem 0 0.8rem;
+            }
+            & form {
+                width: 100%;
+            }
+            & .dc-checkbox__box--active {
+                background: var(--brand-apple-blue);
+            }
+        }
         &__title {
             margin-bottom: 18px;
         }

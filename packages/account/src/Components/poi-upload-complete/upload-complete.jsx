@@ -1,7 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Icon, Text } from '@deriv/components';
-import { isMobile, PlatformContext } from '@deriv/shared';
+import { PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ContinueTradingButton from 'Components/poa-continue-trading-button';
 import PoaButton from 'Components/poa-button';
@@ -16,7 +16,7 @@ const UploadComplete = ({ has_poa, is_description_enabled, redirect_button }) =>
                 message={message}
                 text={localize('Your document is being reviewed, please check back in 1-3 days.')}
                 icon={
-                    is_dashboard && !isMobile() ? (
+                    is_dashboard ? (
                         <Icon icon='IcPoiVerifiedDashboard' width={273} height={128} />
                     ) : (
                         <Icon icon='IcPoiVerifiedDashboard' size={128} />
@@ -31,7 +31,7 @@ const UploadComplete = ({ has_poa, is_description_enabled, redirect_button }) =>
         <IconMessageContent
             message={message}
             icon={
-                is_dashboard && !isMobile() ? (
+                is_dashboard ? (
                     <Icon icon='IcPoiVerifiedDashboard' width={273} height={128} />
                 ) : (
                     <Icon icon='IcPoiVerifiedDashboard' size={128} />

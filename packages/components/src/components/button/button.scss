@@ -83,6 +83,9 @@
         &:hover {
             background: var(--brand-apple-blue);
         }
+        &:disabled {
+            opacity: 0.32;
+        }
     }
     &--dashboard-primary {
         background: var(--dashboard-primary);

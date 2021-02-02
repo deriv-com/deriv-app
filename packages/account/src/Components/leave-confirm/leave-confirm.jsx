@@ -16,7 +16,7 @@ const LeaveConfirmMessage = ({ back, leave }) => {
             text={localize('You have unsaved changes. Are you sure you want to discard changes and leave this page?')}
             icon={
                 <Icon
-                    icon={is_dashboard && !isMobile() ? 'IcUnsavedChangesDashboard' : 'IcUnsavedChanges'}
+                    icon={is_dashboard ? 'IcUnsavedChangesDashboard' : 'IcUnsavedChanges'}
                     size={isMobile() ? 93 : 128}
                 />
             }

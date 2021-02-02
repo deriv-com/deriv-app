@@ -1,6 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { isMobile, PlatformContext } from '@deriv/shared';
+import { PlatformContext } from '@deriv/shared';
 import classNames from 'classnames';
 
 const FormFooter = ({ children }) => {
@@ -8,7 +8,7 @@ const FormFooter = ({ children }) => {
     return (
         <div
             className={classNames('account-form__footer', {
-                'account-form__footer--dashboard': is_dashboard && !isMobile(),
+                'account-form__footer--dashboard': is_dashboard,
             })}
         >
             {children}

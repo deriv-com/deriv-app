@@ -3,11 +3,12 @@ import classNames from 'classnames';
 import { Formik, Form, Field } from 'formik';
 import { Input, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getPropertyValue } from '@deriv/shared';
+import { getPropertyValue, PlatformContext } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 
 const DigitForm = ({ is_enabled, setEnabled }) => {
     const [is_success, setSuccess] = React.useState(false);
+    const { is_dashboard } = React.useContext(PlatformContext);
     const button_text = is_enabled ? localize('Disable 2FA') : localize('Enable');
 
     const initial_form = {
@@ -85,8 +86,8 @@ const DigitForm = ({ is_enabled, setEnabled }) => {
                             is_loading={isSubmitting}
                             is_submit_success={is_success}
                             text={button_text}
-                            primary
                             large
+                            {...(is_dashboard ? { blue: true } : { primary: true })}
                         />
                     </div>
                 </Form>

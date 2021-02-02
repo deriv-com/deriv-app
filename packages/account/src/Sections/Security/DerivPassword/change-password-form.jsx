@@ -114,7 +114,7 @@ class ChangePasswordForm extends React.Component {
                                 <FormBody scroll_offset={isMobile() ? '200px' : '55px'}>
                                     <FormSubHeader title={localize('Change your Deriv password')} />
                                     <FormBodySection
-                                        has_side_note={is_dashboard && !isMobile()}
+                                        has_side_note={is_dashboard}
                                         side_note={localize(
                                             'We recommend using a unique password — one that you don’t use for any other sites.'
                                         )}
@@ -162,36 +162,42 @@ class ChangePasswordForm extends React.Component {
                                         message={status.msg}
                                     />
                                 )}
-                                <Button
-                                    className={classNames('account-form__footer-btn', {
-                                        'account-form__footer-btn--has-bottom-margin': isMobile(),
-                                        'account-form__footer-btn-dashboard': is_dashboard && !isMobile(),
+                                <div
+                                    className={classNames('account-form__footer-btn-wrapper', {
+                                        'account-form__footer-btn-wrapper--dashboard': is_dashboard,
                                     })}
-                                    type='button'
-                                    onClick={this.props.onClickSendEmail}
-                                    text={localize('Forgot your password?')}
-                                    tertiary
-                                    large
-                                />
-                                <Button
-                                    className='account-form__footer-btn'
-                                    type='submit'
-                                    is_disabled={
-                                        isSubmitting ||
-                                        !!(
-                                            errors.new_password ||
-                                            !values.new_password ||
-                                            errors.old_password ||
-                                            !values.old_password
-                                        )
-                                    }
-                                    is_loading={is_btn_loading}
-                                    is_submit_success={is_submit_success}
-                                    has_effect
-                                    text={localize('Change password')}
-                                    primary
-                                    large
-                                />
+                                >
+                                    <Button
+                                        className={classNames('account-form__footer-btn', {
+                                            'account-form__footer-btn--has-bottom-margin': isMobile(),
+                                            'account-form__footer-btn-dashboard': is_dashboard,
+                                        })}
+                                        type='button'
+                                        onClick={this.props.onClickSendEmail}
+                                        text={localize('Forgot your password?')}
+                                        tertiary
+                                        large
+                                    />
+                                    <Button
+                                        className='account-form__footer-btn'
+                                        type='submit'
+                                        is_disabled={
+                                            isSubmitting ||
+                                            !!(
+                                                errors.new_password ||
+                                                !values.new_password ||
+                                                errors.old_password ||
+                                                !values.old_password
+                                            )
+                                        }
+                                        is_loading={is_btn_loading}
+                                        is_submit_success={is_submit_success}
+                                        has_effect
+                                        text={localize('Change password')}
+                                        large
+                                        {...(is_dashboard ? { blue: true } : { primary: true })}
+                                    />
+                                </div>
                             </FormFooter>
                         </form>
                     )}

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Popover, DesktopWrapper, Loading, MobileWrapper, ThemedScrollbars, Text } from '@deriv/components';
+import { Popover, DesktopWrapper, Loading, MobileWrapper, ThemedScrollbars, Text, ButtonLink } from '@deriv/components';
 import { formatMoney, isMobile, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
@@ -31,9 +31,9 @@ const TableHeader = ({ children, is_flex }) => (
 
 const Row = ({ children }) => <tr>{children}</tr>;
 
-const Td = ({ children, is_flex }) => (
+const Td = ({ children, is_flex, className }) => (
     <td
-        className={classNames('account__text', {
+        className={classNames('account__text', className, {
             'account-management-flex-wrapper': is_flex,
         })}
     >
@@ -78,8 +78,7 @@ const AccountLimits = ({ account_limits, currency, getLimits, is_fully_authentic
     }, [account_limits, is_virtual, is_loading]);
 
     if (is_switching) return <Loading />;
-    if (is_virtual)
-        return <DemoMessage has_demo_icon={is_dashboard && !isMobile()} full_width={is_dashboard && !isMobile()} />;
+    if (is_virtual) return <DemoMessage has_demo_icon={is_dashboard} full_width={is_dashboard} />;
 
     const {
         api_initial_load_error,
@@ -105,7 +104,7 @@ const AccountLimits = ({ account_limits, currency, getLimits, is_fully_authentic
         <section className='account-limit-container'>
             <div
                 className={classNames('account-limit-container__wrapper', {
-                    'account-limit-container__wrapper-dashboard': is_dashboard && !isMobile(),
+                    'account-limit-container__wrapper-dashboard': is_dashboard,
                 })}
             >
                 <ThemedScrollbars is_bypassed={isMobile()} className='account-limit-container__scrollbars'>
@@ -114,92 +113,97 @@ const AccountLimits = ({ account_limits, currency, getLimits, is_fully_authentic
                     </MobileWrapper>
                     <FormBody scroll_offset={isMobile() ? '0' : null}>
                         <div className='account-limit-container__content'>
-                            <table className='account-management-table'>
-                                <thead>
-                                    <Row>
-                                        <TableHeader>{localize('Trading limits - Item')}</TableHeader>
-                                        <TableHeader>{localize('Limit')}</TableHeader>
-                                    </Row>
-                                </thead>
-                                <tbody>
-                                    <Row>
-                                        <Td>
-                                            <div className='account-management-flex-wrapper'>
-                                                {localize('Maximum number of open positions*')}
-                                                <ExtraInfo
-                                                    message={localize(
-                                                        'Represents the maximum number of outstanding contracts in your portfolio. Each line in your portfolio counts for one open position. Once the maximum is reached, you will not be able to open new positions without closing an existing position first.'
-                                                    )}
-                                                />
-                                            </div>
-                                        </Td>
-                                        <Td>{open_positions}</Td>
-                                    </Row>
-                                    <Row>
-                                        <Td>
-                                            <div className='account-management-flex-wrapper'>
-                                                {localize('Maximum account cash balance*')}
-                                                <ExtraInfo
-                                                    message={localize(
-                                                        'Represents the maximum amount of cash that you may hold in your account.  If the maximum is reached, you will be asked to withdraw funds.'
-                                                    )}
-                                                />
-                                            </div>
-                                        </Td>
-                                        <Td>{formatMoney(currency, account_balance, true)}</Td>
-                                    </Row>
-                                    <Row>
-                                        <Td>
-                                            <div className='account-management-flex-wrapper'>
-                                                {localize('Maximum aggregate payouts on open positions')}
-                                                <ExtraInfo
-                                                    message={localize(
-                                                        'Represents the maximum aggregate payouts on outstanding contracts in your portfolio. If the maximum is attained, you may not purchase additional contracts without first closing out existing positions.'
-                                                    )}
-                                                />
-                                            </div>
-                                        </Td>
-                                        <Td>{formatMoney(currency, payout, true)}</Td>
-                                    </Row>
-                                </tbody>
-                            </table>
-                            <TextContainer>
-                                <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
-                                    {localize(
-                                        '*Any limits in your Self-exclusion settings will override these default limits.'
-                                    )}
-                                </Text>
-                            </TextContainer>
-                            <table className='account-management-table'>
-                                <thead>
-                                    <Row>
-                                        <TableHeader>
-                                            <div className='account-management-flex-wrapper'>
-                                                <Text
-                                                    size={isMobile() ? 'xxs' : 'x'}
-                                                    weight='bold'
-                                                    className='account-limit-container-title'
-                                                >
-                                                    {localize('Trading limits - Maximum daily turnover')}
-                                                </Text>
-                                                <ExtraInfo
-                                                    message={localize(
-                                                        'Represents the maximum volume of contracts that you may purchase in any given trading day.'
-                                                    )}
-                                                    margin={0}
-                                                />
-                                            </div>
-                                        </TableHeader>
-                                        <TableHeader>{localize('Limit')}</TableHeader>
-                                    </Row>
-                                </thead>
-                                <tbody>
-                                    {commodities && makeTurnoverLimitRow(currency, commodities)}
-                                    {forex_ordered && makeTurnoverLimitRow(currency, forex_ordered, localize('Forex'))}
-                                    {indices && makeTurnoverLimitRow(currency, indices)}
-                                    {synthetic_index && makeTurnoverLimitRow(currency, synthetic_index)}
-                                </tbody>
-                            </table>
+                            {!is_dashboard && (
+                                <React.Fragment>
+                                    <table className='account-management-table'>
+                                        <thead>
+                                            <Row>
+                                                <TableHeader>{localize('Trading limits - Item')}</TableHeader>
+                                                <TableHeader>{localize('Limit')}</TableHeader>
+                                            </Row>
+                                        </thead>
+                                        <tbody>
+                                            <Row>
+                                                <Td>
+                                                    <div className='account-management-flex-wrapper'>
+                                                        {localize('Maximum number of open positions*')}
+                                                        <ExtraInfo
+                                                            message={localize(
+                                                                'Represents the maximum number of outstanding contracts in your portfolio. Each line in your portfolio counts for one open position. Once the maximum is reached, you will not be able to open new positions without closing an existing position first.'
+                                                            )}
+                                                        />
+                                                    </div>
+                                                </Td>
+                                                <Td>{open_positions}</Td>
+                                            </Row>
+                                            <Row>
+                                                <Td>
+                                                    <div className='account-management-flex-wrapper'>
+                                                        {localize('Maximum account cash balance*')}
+                                                        <ExtraInfo
+                                                            message={localize(
+                                                                'Represents the maximum amount of cash that you may hold in your account.  If the maximum is reached, you will be asked to withdraw funds.'
+                                                            )}
+                                                        />
+                                                    </div>
+                                                </Td>
+                                                <Td>{formatMoney(currency, account_balance, true)}</Td>
+                                            </Row>
+                                            <Row>
+                                                <Td>
+                                                    <div className='account-management-flex-wrapper'>
+                                                        {localize('Maximum aggregate payouts on open positions')}
+                                                        <ExtraInfo
+                                                            message={localize(
+                                                                'Represents the maximum aggregate payouts on outstanding contracts in your portfolio. If the maximum is attained, you may not purchase additional contracts without first closing out existing positions.'
+                                                            )}
+                                                        />
+                                                    </div>
+                                                </Td>
+                                                <Td>{formatMoney(currency, payout, true)}</Td>
+                                            </Row>
+                                        </tbody>
+                                    </table>
+                                    <TextContainer>
+                                        <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
+                                            {localize(
+                                                '*Any limits in your Self-exclusion settings will override these default limits.'
+                                            )}
+                                        </Text>
+                                    </TextContainer>
+                                    <table className='account-management-table'>
+                                        <thead>
+                                            <Row>
+                                                <TableHeader>
+                                                    <div className='account-management-flex-wrapper'>
+                                                        <Text
+                                                            size={isMobile() ? 'xxs' : 'x'}
+                                                            weight='bold'
+                                                            className='account-limit-container-title'
+                                                        >
+                                                            {localize('Trading limits - Maximum daily turnover')}
+                                                        </Text>
+                                                        <ExtraInfo
+                                                            message={localize(
+                                                                'Represents the maximum volume of contracts that you may purchase in any given trading day.'
+                                                            )}
+                                                            margin={0}
+                                                        />
+                                                    </div>
+                                                </TableHeader>
+                                                <TableHeader>{localize('Limit')}</TableHeader>
+                                            </Row>
+                                        </thead>
+                                        <tbody>
+                                            {commodities && makeTurnoverLimitRow(currency, commodities)}
+                                            {forex_ordered &&
+                                                makeTurnoverLimitRow(currency, forex_ordered, localize('Forex'))}
+                                            {indices && makeTurnoverLimitRow(currency, indices)}
+                                            {synthetic_index && makeTurnoverLimitRow(currency, synthetic_index)}
+                                        </tbody>
+                                    </table>
+                                </React.Fragment>
+                            )}
                             <table className='account-management-table'>
                                 <thead>
                                     <Row>
@@ -210,7 +214,30 @@ const AccountLimits = ({ account_limits, currency, getLimits, is_fully_authentic
                                 {!is_fully_authenticated && (
                                     <tbody>
                                         <Row>
-                                            <Td>{localize('Total withdrawal allowed')}</Td>
+                                            <Td is_flex className='account-management-table__total-withdraw'>
+                                                {localize('Total withdrawal allowed')}
+                                                {is_dashboard && (
+                                                    <React.Fragment>
+                                                        <Text
+                                                            size={isMobile() ? 'xxxs' : 'xxs'}
+                                                            className='account-management-table__verify'
+                                                            color='less-prominent'
+                                                            line_height='xs'
+                                                        >
+                                                            {localize('To increase limit please verify your identity')}
+                                                        </Text>
+                                                        <ButtonLink to='/account/proof-of-identity' size='small'>
+                                                            <Text
+                                                                weight='bold'
+                                                                color='colored-background'
+                                                                size={isMobile() ? 'xxxs' : 'xxs'}
+                                                            >
+                                                                {localize('Verify')}
+                                                            </Text>
+                                                        </ButtonLink>
+                                                    </React.Fragment>
+                                                )}
+                                            </Td>
                                             <Td>{formatMoney(currency, num_of_days_limit, true)}</Td>
                                         </Row>
                                         <Row>
@@ -218,8 +245,23 @@ const AccountLimits = ({ account_limits, currency, getLimits, is_fully_authentic
                                             <Td>{formatMoney(currency, withdrawal_since_inception_monetary, true)}</Td>
                                         </Row>
                                         <Row>
-                                            <Td>{localize('Maximum withdrawal remaining')}</Td>
-                                            <Td>{formatMoney(currency, remainder, true)}</Td>
+                                            <Td>
+                                                <Text
+                                                    weight={is_dashboard ? 'bold' : 'normal'}
+                                                    size={isMobile() ? 'xxxs' : 'xxs'}
+                                                >
+                                                    {localize('Maximum withdrawal remaining')}
+                                                </Text>
+                                            </Td>
+                                            <Td>
+                                                <Text
+                                                    weight={is_dashboard ? 'bold' : 'normal'}
+                                                    size={isMobile() ? 'xxxs' : 'xxs'}
+                                                    line_height='xs'
+                                                >
+                                                    {formatMoney(currency, remainder, true)}
+                                                </Text>
+                                            </Td>
                                         </Row>
                                     </tbody>
                                 )}

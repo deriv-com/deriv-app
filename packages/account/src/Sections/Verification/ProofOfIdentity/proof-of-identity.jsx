@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { AutoHeightWrapper, Button } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getPlatformRedirect, PlatformContext, isMobile } from '@deriv/shared';
+import { getPlatformRedirect, PlatformContext } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 import DemoMessage from 'Components/demo-message';
@@ -37,6 +37,7 @@ class ProofOfIdentity extends React.Component {
                             removeNotificationMessage={this.props.removeNotificationMessage}
                             refreshNotifications={this.props.refreshNotifications}
                             height={height}
+                            is_description_enabled={this.context.is_dashboard}
                             redirect_button={
                                 should_show_redirect_btn && (
                                     <Button
@@ -51,7 +52,6 @@ class ProofOfIdentity extends React.Component {
                                     </Button>
                                 )
                             }
-                            is_description_enabled={this.context.is_dashboard && !isMobile()}
                         />
                     </div>
                 )}

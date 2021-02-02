@@ -37,7 +37,7 @@ import ArticleContent from './article-content.jsx';
 
 const SectionHeader = ({ title }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
-    if (is_dashboard && !isMobile()) {
+    if (is_dashboard) {
         return <FormSubHeader title={title} />;
     }
     return <h2 className='self-exclusion__header'>{title}</h2>;
@@ -370,8 +370,7 @@ class SelfExclusion extends React.Component {
         const { is_dashboard } = this.context;
         const { is_virtual, is_switching, currency, is_eu, is_tablet } = this.props;
         const { six_weeks } = this.exclusion_fields_settings;
-        if (is_virtual)
-            return <DemoMessage has_demo_icon={is_dashboard && !isMobile()} full_width={is_dashboard && !isMobile()} />;
+        if (is_virtual) return <DemoMessage has_demo_icon={is_dashboard} full_width={is_dashboard} />;
 
         if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account__initial-loader' />;
 

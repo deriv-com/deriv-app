@@ -46,6 +46,7 @@ export { default as FileDropzone } from './components/file-dropzone';
 export { default as FormProgress } from './components/form-progress';
 export { default as FormSubmitButton } from './components/form-submit-button';
 export { default as FormSubmitErrorMessage } from './components/form-submit-error-message';
+export { default as FormCancelButton } from './components/form-cancel-button';
 export { default as HintBox } from './components/hint-box';
 export { default as Icon } from './components/icon';
 export { default as IconTradeTypes } from './components/icon-trade-types';

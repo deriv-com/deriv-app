@@ -119,7 +119,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &-title {
-            @include typeface(--paragraph-left-bold-prominent, none);
             margin-bottom: 0.8rem;
             max-width: 18.8rem;
         }

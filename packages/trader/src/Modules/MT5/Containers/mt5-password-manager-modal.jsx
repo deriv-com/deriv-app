@@ -1,6 +1,7 @@
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import {
     Icon,
     Modal,
@@ -18,7 +19,7 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isMobile, validLength, validPassword, getErrorMessages } from '@deriv/shared';
+import { getStaticUrl, isMobile, validLength, validPassword, getErrorMessages, routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import MT5Store from 'Stores/Modules/MT5/mt5-store';
 
@@ -142,17 +143,7 @@ const MT5PasswordManagerTabContentWrapper = ({ multi_step_ref, steps }) => (
     <MultiStep ref={multi_step_ref} steps={steps} className='mt5-password-manager' lbl_previous={localize('Back')} />
 );
 
-const MainPasswordManager = ({
-    is_submit_success_main,
-    toggleModal,
-    onSubmit,
-    validatePassword,
-    error_message_main,
-    setPasswordType,
-    multi_step_ref,
-    status,
-}) => {
-    const is_existing_user = status?.includes('password_reset_required');
+const MainPasswordManager = ({ status }) => {
     const is_existing_user = status?.includes('password_reset_required');
     return (
         <div className='mt5-password-manager__main-wrapper'>
@@ -309,8 +300,6 @@ const MT5PasswordManagerTabContent = ({
     multi_step_ref,
 }) => {
     const [active_tab_index, setActiveTabIndex] = React.useState(0);
-    const [error_message_main, setErrorMessageMain] = React.useState('');
-    const [is_submit_success_main, setSubmitSuccessMain] = React.useState(false);
     const [error_message_investor, setErrorMessageInvestor] = React.useState('');
     const [is_submit_success_investor, setSubmitSuccessInvestor] = React.useState(false);
 
@@ -342,21 +331,12 @@ const MT5PasswordManagerTabContent = ({
         return errors;
     };
     const showError = (section, error_message) => {
-        if (section === 'main') {
-            setErrorMessageMain(error_message);
-        } else {
-            setErrorMessageInvestor(error_message);
-        }
+        setErrorMessageInvestor(error_message);
     };
 
-    const hideError = section => {
-        if (section === 'main') {
-            setErrorMessageMain('');
-            setSubmitSuccessMain(true);
-        } else {
-            setErrorMessageInvestor('');
-            setSubmitSuccessInvestor(true);
-        }
+    const hideError = () => {
+        setErrorMessageInvestor('');
+        setSubmitSuccessInvestor(true);
     };
 
     const onSubmit = React.useCallback(
@@ -377,8 +357,6 @@ const MT5PasswordManagerTabContent = ({
 
     const updateAccountTabIndex = index => {
         setActiveTabIndex(index);
-        setErrorMessageMain('');
-        setSubmitSuccessMain(false);
         setErrorMessageInvestor('');
         setSubmitSuccessInvestor(false);
     };
@@ -388,30 +366,12 @@ const MT5PasswordManagerTabContent = ({
                 <div label={localize('Main password')}>
                     <DesktopWrapper>
                         <ThemedScrollbars height={password_container_height} is_bypassed={isMobile()} autohide={false}>
-                            <MainPasswordManager
-                                is_submit_success_main={is_submit_success_main}
-                                toggleModal={toggleModal}
-                                onSubmit={onSubmit}
-                                status={status}
-                                validatePassword={validatePassword}
-                                error_message_main={error_message_main}
-                                setPasswordType={setPasswordType}
-                                multi_step_ref={multi_step_ref}
-                            />
+                            <MainPasswordManager status={status} />
                         </ThemedScrollbars>
                     </DesktopWrapper>
                     <MobileWrapper>
                         <Div100vhContainer className='mt5-password-manager__scroll-wrapper' height_offset='120px'>
-                            <MainPasswordManager
-                                status={status}
-                                is_submit_success_main={is_submit_success_main}
-                                toggleModal={toggleModal}
-                                onSubmit={onSubmit}
-                                validatePassword={validatePassword}
-                                error_message_main={error_message_main}
-                                setPasswordType={setPasswordType}
-                                multi_step_ref={multi_step_ref}
-                            />
+                            <MainPasswordManager status={status} />
                         </Div100vhContainer>
                     </MobileWrapper>
                 </div>
@@ -473,7 +433,7 @@ const MT5PasswordManagerModal = ({
             component: (
                 <MT5PasswordManagerTabContent
                     email={email}
-                    status={account_status}
+                    status={account_status.status}
                     selected_login={selected_login}
                     toggleModal={toggleModal}
                     password_type={password_type}

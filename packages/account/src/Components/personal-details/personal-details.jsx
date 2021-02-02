@@ -185,8 +185,12 @@ const PersonalDetails = ({
                                         {'first_name' in props.value && (
                                             <FormInputField
                                                 name='first_name'
-                                                required={is_svg}
-                                                label={is_svg ? localize('First name*') : localize('First name')}
+                                                required={is_svg || is_dashboard}
+                                                label={
+                                                    is_svg || is_dashboard
+                                                        ? localize('First name*')
+                                                        : localize('First name')
+                                                }
                                                 disabled={disabled_items.includes('first_name')}
                                                 placeholder={localize('John')}
                                             />
@@ -194,7 +198,7 @@ const PersonalDetails = ({
                                         {'last_name' in props.value && (
                                             <FormInputField
                                                 name='last_name'
-                                                required={is_svg}
+                                                required={is_svg || is_dashboard}
                                                 label={getLastNameLabel()}
                                                 disabled={disabled_items.includes('last_name')}
                                                 placeholder={localize('Doe')}
@@ -204,8 +208,12 @@ const PersonalDetails = ({
                                         {'date_of_birth' in props.value && (
                                             <DateOfBirthField
                                                 name='date_of_birth'
-                                                required={is_svg}
-                                                label={is_svg ? localize('Date of birth*') : localize('Date of birth')}
+                                                required={is_svg || is_dashboard}
+                                                label={
+                                                    is_svg || is_dashboard
+                                                        ? localize('Date of birth*')
+                                                        : localize('Date of birth')
+                                                }
                                                 disabled={disabled_items.includes('date_of_birth')}
                                                 placeholder={localize('01-07-1999')}
                                                 portal_id={is_dashboard ? '' : 'modal_root'}
@@ -314,9 +322,15 @@ const PersonalDetails = ({
                                         {'phone' in props.value && (
                                             <FormInputField
                                                 name='phone'
-                                                label={is_svg ? localize('Phone number*') : localize('Phone number')}
+                                                label={
+                                                    is_svg || is_dashboard
+                                                        ? localize('Phone number*')
+                                                        : localize('Phone number')
+                                                }
                                                 placeholder={
-                                                    is_svg ? localize('Phone number*') : localize('Phone number')
+                                                    is_svg || is_dashboard
+                                                        ? localize('Phone number*')
+                                                        : localize('Phone number')
                                                 }
                                                 maxLength={50}
                                             />

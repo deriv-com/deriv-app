@@ -147,9 +147,9 @@ const AddressDetails = ({
                                     <div className='details-form__elements'>
                                         <InputField
                                             name='address_line_1'
-                                            required={is_svg}
+                                            required={is_svg || is_dashboard}
                                             label={
-                                                is_svg
+                                                is_svg || is_dashboard
                                                     ? localize('First line of address*')
                                                     : localize('First line of address')
                                             }
@@ -158,14 +158,21 @@ const AddressDetails = ({
                                         />
                                         <InputField
                                             name='address_line_2'
-                                            label={localize('Second line of address')}
+                                            required={is_dashboard}
+                                            label={
+                                                is_dashboard
+                                                    ? localize('Second line of address*')
+                                                    : localize('Second line of address')
+                                            }
                                             maxLength={255}
                                             placeholder={localize('Second line of address')}
                                         />
                                         <InputField
                                             name='address_city'
-                                            required={is_svg}
-                                            label={is_svg ? localize('Town/City*') : localize('Town/City')}
+                                            required={is_svg || is_dashboard}
+                                            label={
+                                                is_svg || is_dashboard ? localize('Town/City*') : localize('Town/City')
+                                            }
                                             placeholder={localize('Town/City')}
                                         />
                                         {!has_fetched_states_list && (
@@ -229,8 +236,12 @@ const AddressDetails = ({
                                         )}
                                         <InputField
                                             name='address_postcode'
-                                            required={is_gb_residence}
-                                            label={localize('Postal/ZIP Code')}
+                                            required={is_gb_residence || is_dashboard}
+                                            label={
+                                                is_dashboard
+                                                    ? localize('Postal/ZIP Code*')
+                                                    : localize('Postal/ZIP Code')
+                                            }
                                             placeholder={localize('Postal/ZIP Code')}
                                         />
                                     </div>

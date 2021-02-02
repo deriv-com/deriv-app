@@ -164,7 +164,7 @@ const MT5PasswordForm = props => {
                     <FormSubmitButton
                         is_disabled={!values.password || Object.keys(errors).length > 0}
                         has_cancel
-                        cancel_label={localize('Reset Password')}
+                        cancel_label={localize('Reset password')}
                         onCancel={props.handleCancel}
                         is_absolute={isMobile()}
                         is_loading={props.is_submitting || isSubmitting}
@@ -290,7 +290,7 @@ const MT5PasswordModal = ({
     mt5_login_list,
 }) => {
     const handleCancel = () => {
-        location.href = getStaticUrl('/reset-password');
+        window.open(getStaticUrl('/reset-password'));
         closeModal();
     };
 
@@ -408,7 +408,7 @@ const MT5PasswordModal = ({
                         onClose={closeModal}
                         wrapper_classname='mt5-password-modal'
                     >
-                        <PasswordResetBody closeModal={closeModal} />
+                        <PasswordResetBody onBack={closeModal} closeModal={closeModal} />
                     </MobileDialog>
                 </MobileWrapper>
             </React.Fragment>
@@ -480,7 +480,7 @@ const MT5PasswordModal = ({
                             account_title={account_title}
                             password={password}
                             submitMt5Form={v => setServer(v.server)}
-                            onBack={() => setPassword('')}
+                            onBack={closeModal}
                         />
                     )}
                     {!should_show_server_form && !is_password_reset && (

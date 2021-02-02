@@ -11,12 +11,12 @@
 .dc-mobile-dialog__mt5-password-modal {
     @include desktop {
         max-width: 384px;
+        min-height: 300px;
+        min-width: initial !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
     }
-    min-height: 300px;
-    min-width: initial !important;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
     & .dc-modal-header {
         border-bottom: initial;
     }

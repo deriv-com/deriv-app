@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Field from '../field';
+import Field from '../field/field.jsx';
 import Icon from '../icon/icon.jsx';
-import Text from '../text';
+import Text from '../text/text.jsx';
 
 const getDisplayText = (list_items, value) => {
     const dropdown_items = Array.isArray(list_items) ? list_items : [].concat(...Object.values(list_items));
@@ -38,11 +38,7 @@ const SelectNative = ({
             'dc-select-native--hide-selected-value': hide_selected_value,
         })}
     >
-        <div
-            className={classNames(className, 'dc-select-native__wrapper', {
-                'dc-select-native__wrapper--hide-selected-value': hide_selected_value,
-            })}
-        >
+        <div className='dc-select-native__wrapper'>
             <div
                 className={classNames('dc-input', {
                     'dc-input--disabled': disabled,
@@ -69,14 +65,7 @@ const SelectNative = ({
                 ) : (
                     <Icon className='dc-select-native__suffix-icon' icon={suffix_icon} size={16} fill />
                 )}
-                <select
-                    className={classNames(className, 'dc-select-native__picker', {
-                        'dc-select-native__picker--hide-selected-value': hide_selected_value,
-                    })}
-                    value={value}
-                    disabled={disabled}
-                    {...props}
-                >
+                <select className='dc-select-native__picker' value={value} disabled={disabled} {...props}>
                     {Array.isArray(list_items) ? (
                         <React.Fragment>
                             {/*

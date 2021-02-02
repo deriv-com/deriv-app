@@ -30,67 +30,68 @@ const validateResidence = (values, residence_list) => {
     return errors;
 };
 
-const SetResidence = ({ enableApp, onSetResidence, residence_list, toggleModalVisibility }) => {
-    const onSetResidenceComplete = error => {
+class SetResidence extends React.Component {
+    onSetResidenceComplete = error => {
         // TODO: Proper error handling (currently we have no place to put the message)
         if (error) {
             throw Error(error);
         }
         // Handle lower level modal controls due to overriding modal rendering
-        toggleModalVisibility(false);
-        enableApp();
+        this.props.isModalVisible(false);
+        this.props.enableApp();
     };
 
-    const onSetResidencePassthrough = values => {
-        const index_of_selection = residence_list.findIndex(item => isResidenceText(item, values));
-        const modded_values = { ...values, residence: residence_list[index_of_selection].value };
-        onSetResidence(modded_values, onSetResidenceComplete);
-    };
-    return (
-        <div className='set-residence'>
-            <Formik
-                initialValues={{ residence: '' }}
-                validate={values => validateResidence(values, residence_list)}
-                onSubmit={onSetResidencePassthrough}
-            >
-                {({ isSubmitting, errors, values, setFieldValue, touched }) => (
-                    <Form>
-                        <React.Fragment>
-                            <ResidenceForm
-                                errors={errors}
-                                touched={touched}
-                                setFieldValue={setFieldValue}
-                                residence_list={residence_list}
-                            >
-                                <Text as='p' size='xxs' weight='bold' className='set-residence__subtext'>
-                                    {localize(
-                                        'We need this to make sure our service complies with laws and regulations in your country.'
-                                    )}
-                                </Text>
-                                <Button
-                                    className={classNames('set-residence__btn', {
-                                        'set-residence__btn--disabled':
-                                            !values.residence || errors.residence || isSubmitting,
-                                    })}
-                                    type='submit'
-                                    is_disabled={!values.residence || !!errors.residence || isSubmitting}
-                                    text={localize('Set residence')}
-                                    primary
-                                />
-                            </ResidenceForm>
-                        </React.Fragment>
-                    </Form>
-                )}
-            </Formik>
-        </div>
-    );
-};
+    render() {
+        const { onSetResidence, residence_list } = this.props;
+        const onSetResidencePassthrough = values => {
+            const index_of_selection = residence_list.findIndex(item => isResidenceText(item, values));
+            const modded_values = { ...values, residence: residence_list[index_of_selection].value };
+            onSetResidence(modded_values, this.onSetResidenceComplete);
+        };
+        return (
+            <div className='set-residence'>
+                <Formik
+                    initialValues={{ residence: '' }}
+                    validate={values => validateResidence(values, residence_list)}
+                    onSubmit={onSetResidencePassthrough}
+                >
+                    {({ isSubmitting, errors, values, setFieldValue, touched }) => (
+                        <Form>
+                            <React.Fragment>
+                                <ResidenceForm
+                                    errors={errors}
+                                    touched={touched}
+                                    setFieldValue={setFieldValue}
+                                    residence_list={residence_list}
+                                >
+                                    <Text as='p' size='xxs' weight='bold' className='set-residence__subtext'>
+                                        {localize(
+                                            'We need this to make sure our service complies with laws and regulations in your country.'
+                                        )}
+                                    </Text>
+                                    <Button
+                                        className={classNames('set-residence__btn', {
+                                            'set-residence__btn--disabled':
+                                                !values.residence || errors.residence || isSubmitting,
+                                        })}
+                                        type='submit'
+                                        is_disabled={!values.residence || !!errors.residence || isSubmitting}
+                                        text={localize('Set residence')}
+                                        primary
+                                    />
+                                </ResidenceForm>
+                            </React.Fragment>
+                        </Form>
+                    )}
+                </Formik>
+            </div>
+        );
+    }
+}
 
 SetResidence.propTypes = {
-    enableApp: PropTypes.func,
     onSetResidence: PropTypes.func,
     residence_list: PropTypes.array,
-    toggleModalVisibility: PropTypes.func,
 };
 
 const SetResidenceModal = ({
@@ -114,7 +115,7 @@ const SetResidenceModal = ({
             <SetResidence
                 onSetResidence={onSetResidence}
                 residence_list={residence_list}
-                toggleModalVisibility={toggleSetResidenceModal}
+                isModalVisible={toggleSetResidenceModal}
                 enableApp={enableApp}
             />
         </Dialog>

@@ -52,14 +52,9 @@ const Deposit = ({
 }) => {
     React.useEffect(() => {
         setActiveTab(container);
+        onMount();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    React.useEffect(() => {
-        if (!is_virtual) {
-            onMount();
-        }
-    }, [is_virtual, onMount]);
 
     React.useEffect(() => {
         if (iframe_height && isDesktop()) {

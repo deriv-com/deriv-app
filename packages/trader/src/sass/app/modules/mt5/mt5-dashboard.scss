@@ -405,6 +405,7 @@
 
     @include mobile {
         flex-direction: column;
+        height: unset;
     }
 }
 

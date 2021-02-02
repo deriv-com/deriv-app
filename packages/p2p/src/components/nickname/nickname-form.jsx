@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
-import { Input, Button, Icon } from '@deriv/components';
+import { Input, Button, Icon, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
@@ -32,9 +32,9 @@ const NicknameForm = observer(({ handleClose }) => {
                         <div className='nickname__form-content nickname__form-content__centre'>
                             <Icon icon='IcCashierP2pUser' width='128' height='128' />
                             <h5 className='nickname__form-content--title'>{localize('Choose a nickname')}</h5>
-                            <p className='nickname__form-content--text'>
+                            <Text as='p' size='xs' line_height='unset' className='nickname__form-content--text'>
                                 {localize('You will appear to other users as')}
-                            </p>
+                            </Text>
                             <div className='nickname__form-field_wrapper'>
                                 <Field name='nickname'>
                                     {({ field }) => (

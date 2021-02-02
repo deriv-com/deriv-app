@@ -67,6 +67,7 @@
         --general-main-2: #{$color-white};
         --general-section-1: #{$color-grey-2};
         --general-section-2: #{$color-grey-2};
+        --general-section-3: #{$color-grey-11};
         --general-disabled: #{$color-grey-3};
         --general-hover: #{$color-grey-4};
         --general-active: #{$color-grey-5};
@@ -80,6 +81,7 @@
         --text-colored-background: #{$color-white};
         --icon-light-background: #{$color-black-9};
         --icon-dark-background: #{$color-white};
+        --icon-grey-background: #{$color-grey-2};
         // Purchase
         --purchase-main-1: #{$color-green-1};
         --purchase-section-1: #{$color-green-2};
@@ -125,6 +127,26 @@
         --status-warning: #{$color-yellow};
         --status-info: #{$color-blue};
         --status-colored-background: #{$color-white};
+        // Dashboard
+        --dashboard-primary: #{$color-blue-3};
+        --dashboard-hover: #{$color-blue-4};
+        --dashboard-alpha: #{$alpha-color-blue-2};
+        --dashboard-swap-free: #{$gradient-color-black-3};
+        --dashboard-app: #{$gradient-color-black-4};
+        // Payment methods
+        --payment-skrill: #{$gradient-color-purple};
+        --payment-visa: #{$gradient-color-blue};
+        --payment-mastercard: #{$gradient-color-orange};
+        --payment-credit-and-debit: #{$gradient-color-black-2};
+        --payment-bitcoin: #{$gradient-color-orange-2};
+        --payment-usd-coin: #{$gradient-color-blue-2};
+        --payment-neteller: #{$gradient-color-green-3};
+        --payment-webmoney: #{$gradient-color-blue-3};
+        --payment-jeton: #{$gradient-color-orange-3};
+        --payment-sticpay: #{$gradient-color-orange-4};
+        --payment-airtm: #{$gradient-color-blue-4};
+        --payment-dp2p: #{$gradient-color-red-3};
+        --payment-deriv: #{$gradient-color-red-4};
         // Transparentize
         --transparent-success: #{$alpha-color-green-1};
         --transparent-info: #{$alpha-color-blue-1};
@@ -145,6 +167,7 @@
         --general-main-2: #{$color-black-3};
         --general-section-1: #{$color-black-3};
         --general-section-2: #{$color-black};
+        --general-section-3: #{$color-black-5};
         --general-disabled: #{$color-black-4};
         --general-hover: #{$color-black-5};
         --general-active: #{$color-black-8};
@@ -158,6 +181,7 @@
         --text-colored-background: #{$color-white};
         --icon-light-background: #{$color-black-9};
         --icon-dark-background: #{$color-white};
+        --icon-grey-background: #{$color-black-1};
         // Purchase
         --purchase-main-1: #{$color-green-3};
         --purchase-section-1: #{$color-green-4};
@@ -202,6 +226,10 @@
         --status-success: #{$color-green-3};
         --status-info: #{$color-blue};
         --status-colored-background: #{$color-white};
+        // Dashboard
+        --dashboard-primary: #{$color-blue-2};
+        --dashboard-hover: #{$color-blue-3};
+        --dashboard-alpha: #{$alpha-color-blue-2};
         // Transparentize
         --transparent-success: #{$alpha-color-green-2};
         --transparent-info: #{$alpha-color-blue-1};

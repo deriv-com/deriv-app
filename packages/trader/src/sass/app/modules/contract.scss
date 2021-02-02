@@ -36,8 +36,6 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
                 }
             }
             &-text {
-                @include typeface(--paragraph-left-normal-black, unset);
-                color: var(--text-general);
                 max-width: 360px;
 
                 @include mobile {

@@ -29,7 +29,9 @@ const HelpBase = ({
                 <button className='dc-btn flyout__button-back' onClick={onBackClick}>
                     <Icon icon='IcArrowLeft' />
                 </button>
-                <span className='flyout__help-title'>{title}</span>
+                <Text weight='bold' className='flyout__help-title'>
+                    {title}
+                </Text>
                 <div className='flyout__item-buttons'>
                     <Button
                         className='flyout__button-add'

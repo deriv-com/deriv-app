@@ -21,6 +21,7 @@
         align-self: center;
         box-sizing: border-box;
         border: 2px solid var(--text-less-prominent);
+        outline: none !important;
 
         &--active {
             border: none;

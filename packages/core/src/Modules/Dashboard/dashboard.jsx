@@ -44,6 +44,20 @@ export default connect(({ client, ui }) => ({
     client: {
         is_logged_in: client.is_logged_in,
         loginid: client.loginid,
+        email_address: client.email_address,
+        currencies_list: client.currencies_list,
+        currency: client.currency,
+        has_active_real_account: client.has_active_real_account,
+        upgradeable_currencies: client.upgradeable_currencies,
+        upgradeable_landing_companies: client.upgradeable_landing_companies,
+        fetchResidenceList: client.fetchResidenceList,
+        fetchStatesList: client.fetchStatesList,
+        fetchFinancialAssessment: client.fetchFinancialAssessment,
+        needs_financial_assessment: client.needs_financial_assessment,
+        residence_list: client.residence_list,
+        states_list: client.states_list,
+        financial_assessment: client.financial_assessment,
+        account_settings: client.account_settings,
     },
     config: {
         asset_path: `${websiteUrl()}js/dashboard/assets`,
@@ -54,6 +68,7 @@ export default connect(({ client, ui }) => ({
             about_us: routes.about_us,
             explore: routes.explore,
             resources: routes.resources,
+            platform_dmt5_synthetic: routes.platform_dmt5_synthetic,
         },
     },
     ui: {
@@ -64,5 +79,9 @@ export default connect(({ client, ui }) => ({
             LoginPrompt,
             Page404,
         },
+        real_account_signup: ui.real_account_signup,
+        real_account_signup_target: ui.real_account_signup_target,
+        resetRealAccountSignupParams: ui.resetRealAccountSignupParams,
+        openRealAccountSignup: ui.openRealAccountSignup,
     },
 }))(Dashboard);

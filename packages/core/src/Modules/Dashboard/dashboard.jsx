@@ -3,10 +3,10 @@ import PropTypes, { any } from 'prop-types';
 import DashboardComponent from '@deriv/dashboard';
 import { routes, websiteUrl } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
-import { WS } from 'Services';
-import { connect } from 'Stores/connect';
 import ServerTime from '_common/base/server_time';
 import LoginPrompt from 'App/Components/Elements/login-prompt.jsx';
+import { WS } from 'Services';
+import { connect } from 'Stores/connect';
 import Page404 from 'Modules/Page404';
 
 const Dashboard = ({ client, config, ui }) => (

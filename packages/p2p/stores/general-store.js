@@ -210,6 +210,12 @@ export default class GeneralStore extends BaseStore {
                 }
             }
         );
+        
+        requestWS({ get_account_status: 1 }).then(response => {
+            if (!response.error && response.get_account_status.risk_classification === 'high') {
+                this.setIsBlocked(true);
+            }
+        });
     }
 
     @action.bound

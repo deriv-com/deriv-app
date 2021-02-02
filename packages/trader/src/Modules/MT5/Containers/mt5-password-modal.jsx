@@ -149,7 +149,8 @@ const MT5PasswordForm = props => {
                                             key={0}
                                             href={getStaticUrl('/reset-password')}
                                             className='dc-modal__container_mt5-password-modal__password-hint'
-                                            rel='noreferrer'
+                                            rel='noreferrer nofollow'
+                                            target='_blank'
                                         />,
                                     ]}
                                 />

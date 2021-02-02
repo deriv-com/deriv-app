@@ -1,5 +1,5 @@
 import fromEntries from 'object.fromentries';
-import { getPreBuildDVRs } from '@deriv/shared';
+import { getPreBuildDVRs } from './declarative-validation-rules';
 
 /**
  * Prepare default field and names for form.

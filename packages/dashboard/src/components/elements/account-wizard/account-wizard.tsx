@@ -71,10 +71,11 @@ const StepperHeader = ({
 
     const navigateTo = (i: number) => {
         if (!isDisabled(i) && isDesktop()) {
-            if (i <= current_step) {
-                goToStep?.(i + 1);
-            } else {
+            // next step
+            if (i === current_step + 1) {
                 selected_step_ref?.current?.submitForm();
+            } else {
+                goToStep?.(i + 1);
             }
         }
     };
@@ -260,7 +261,7 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
     };
 
     const onSubmitEnabledChange = (step_index: number, is_enabled: boolean) => {
-        const items_enabled_clone = [...items_enabled];
+        const items_enabled_clone = items_enabled.slice(0, is_enabled ? items_enabled.length : step_index);
         items_enabled_clone[step_index] = is_enabled;
         setItemsEnabled(items_enabled_clone);
     };

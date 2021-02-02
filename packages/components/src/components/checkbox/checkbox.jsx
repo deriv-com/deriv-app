@@ -52,6 +52,7 @@ const Checkbox = ({
                 disabled={disabled}
                 onChange={onInputChange}
                 defaultChecked={checked}
+                value={value}
                 {...otherProps}
             />
             <span

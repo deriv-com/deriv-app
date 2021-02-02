@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Icon, Text } from '@deriv/components';
-import { routes, getCurrencyDisplayCode, formatMoney } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import PaymentAgentDetails from '../payment-agent-details.jsx';
@@ -22,33 +22,46 @@ const PaymentAgentReceipt = ({ currency, history, loginid, receipt, resetPayment
     return (
         <div className='cashier__wrapper--align-left payment-agent__receipt '>
             <div className='cashier__success'>
-                <h2 className='cashier__header'>
+                <Text as='h1' color='prominent' line_height='m' size={isMobile() ? 'xs' : 's'} weight='bold'>
                     <Localize i18n_default_text='Your funds have been transferred' />
-                </h2>
+                </Text>
                 <div className='cashier__transferred-amount cashier__text--bold'>
                     {formatMoney(currency, receipt.amount_transferred, true)} {currency_display_code}
                 </div>
                 <div className='cashier__transferred-details-wrapper'>
-                    <Icon icon={`IcCurrency-${currency.toLowerCase()}`} />
                     <span className='cashier__transferred-details'>
-                        <span className='cashier__text--bold'>{currency_display_code}</span>
-                        &nbsp;(
-                        {loginid})
+                        <Text as='span' size='xs' weight='bold' className='cashier__text--end'>
+                            {currency_display_code}
+                        </Text>
+                        <Text as='span' size='xs' color='less-prominent'>
+                            {loginid}
+                        </Text>
                     </span>
+                    <Icon size={32} icon={`IcCurrency-${currency.toLowerCase()}`} />
                     <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
-                    <Icon icon='IcPA' />
+                    <Icon size={32} icon='IcPA' />
                     <span className='cashier__transferred-details'>
                         {receipt.payment_agent_name && (
-                            <span className='cashier__text--bold'>{receipt.payment_agent_name}&nbsp;</span>
+                            <Text as='span' size='xs' weight='bold'>
+                                {receipt.payment_agent_name}
+                            </Text>
                         )}
-                        ({receipt.payment_agent_id})
+                        <Text as='span' color='less-prominent' size='xs'>
+                            {receipt.payment_agent_id}
+                        </Text>
                     </span>
                 </div>
             </div>
-            <h2 className='cashier__header'>
+            <Text as='h1' color='prominent' line_height='m' size='s' weight='bold'>
                 <Localize i18n_default_text='IMPORTANT NOTICE TO RECEIVE YOUR FUNDS' />
-            </h2>
-            <Text as='p' size='xs' line_height='s' className='payment-agent__explanation cashier__paragraph'>
+            </Text>
+            <Text
+                as='p'
+                color='prominent'
+                size={isMobile() ? 'xxs' : 'xs'}
+                line_height='m'
+                className='payment-agent__explanation cashier__paragraph'
+            >
                 <Localize
                     i18n_default_text={
                         "You're not done yet. To receive the transferred funds, you must contact the payment agent for further instruction. A summary of this transaction has been emailed to you for your records."
@@ -57,7 +70,12 @@ const PaymentAgentReceipt = ({ currency, history, loginid, receipt, resetPayment
             </Text>
             {receipt.payment_agent_name && (
                 <div className='payment-agent__transferred-contact-wrapper'>
-                    <Text as='p' size='xs' line_height='s' className='cashier__paragraph payment-agent__paragraph'>
+                    <Text
+                        as='p'
+                        size={isMobile() ? 'xxs' : 'xs'}
+                        line_height='m'
+                        className='cashier__paragraph payment-agent__paragraph'
+                    >
                         <Localize
                             i18n_default_text='{{payment_agent}} agent contact details:'
                             values={{ payment_agent: receipt.payment_agent_name }}

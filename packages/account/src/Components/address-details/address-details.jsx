@@ -15,7 +15,7 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, isMobile, getLocation, makeCancellablePromise } from '@deriv/shared';
+import { isDesktop, isMobile, getLocation, makeCancellablePromise, PlatformContext } from '@deriv/shared';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
 const InputField = props => {
@@ -48,11 +48,11 @@ const AddressDetails = ({
     onSubmit,
     is_svg,
     is_gb_residence,
-    is_dashboard,
     onSubmitEnabledChange,
     selected_step_ref,
     ...props
 }) => {
+    const { is_dashboard } = React.useContext(PlatformContext);
     const [has_fetched_states_list, setHasFetchedStatesList] = React.useState(false);
     const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
 

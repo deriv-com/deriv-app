@@ -196,7 +196,7 @@ export default class ExtendedOrderDetails {
 
     get should_show_order_timer() {
         if (this.is_finalised_order) return false;
-        return !this.has_timer_expired && (this.is_pending_order || this.is_ongoing_order);
+        return this.is_pending_order || this.is_ongoing_order;
     }
 
     get status_string() {

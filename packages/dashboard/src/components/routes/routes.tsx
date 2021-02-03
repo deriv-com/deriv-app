@@ -26,7 +26,6 @@ const Routes: React.FC = () => {
                     {getRoutesConfig({
                         consumer_routes: config_store.routes,
                         is_deriv_crypto: config_store.is_deriv_crypto,
-                        is_dashboard: window.localStorage.getItem('is_dashboard') === 'true',
                         Page404: ui_store.components.Page404,
                     }).map((route: TRoute, idx: number) => (
                         <RouteWithSubroutes

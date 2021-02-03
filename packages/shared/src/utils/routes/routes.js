@@ -1,6 +1,7 @@
 import { getUrlSmartTrader } from '../url/helpers';
 
 const is_dashboard = window.localStorage.getItem('is_dashboard') === 'true';
+const dashboard_prefix = is_dashboard ? '' : '/dashboard';
 
 export const routes = {
     error404: '/404',
@@ -52,9 +53,9 @@ export const routes = {
     endpoint: '/endpoint',
     complaints_policy: '/complaints-policy',
 
-    dashboard: '/dashboard',
-    about_us: '/dashboard/about-us',
-    explore: '/dashboard/explore',
-    resources: '/dashboard/resources',
-    platform_dmt5_synthetic: '/dashboard/platforms/dmt5_synthetic',
+    dashboard: is_dashboard ? '/' : '/dashboard',
+    about_us: `${dashboard_prefix}/about-us`,
+    explore: `${dashboard_prefix}/explore`,
+    resources: `${dashboard_prefix}/resources`,
+    platform_dmt5_synthetic: `${dashboard_prefix}/platforms/dmt5_synthetic`,
 };

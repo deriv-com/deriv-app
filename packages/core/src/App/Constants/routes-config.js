@@ -52,7 +52,7 @@ const Dashboard = React.lazy(() => {
     return import(/* webpackChunkName: "dashboard" */ 'Modules/Dashboard');
 });
 
-const getModules = ({ is_deriv_crypto, is_dashboard }) => {
+const getModules = ({ is_deriv_crypto }) => {
     const modules = [
         {
             path: routes.bot,
@@ -305,7 +305,7 @@ const lazyLoadComplaintsPolicy = makeLazyLoader(() =>
 
 // Order matters
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
-const initRoutesConfig = ({ is_deriv_crypto, is_dashboard }) => [
+const initRoutesConfig = ({ is_deriv_crypto }) => [
     { path: routes.index, component: RouterRedirect, getTitle: () => '', to: routes.root },
     { path: routes.endpoint, component: Endpoint, getTitle: () => 'Endpoint' }, // doesn't need localization as it's for internal use
     { path: routes.redirect, component: Redirect, getTitle: () => localize('Redirect') },
@@ -316,7 +316,7 @@ const initRoutesConfig = ({ is_deriv_crypto, is_dashboard }) => [
         icon_component: 'IcComplaintsPolicy',
         is_authenticated: true,
     },
-    ...getModules({ is_deriv_crypto, is_dashboard }),
+    ...getModules({ is_deriv_crypto }),
 ];
 
 let routesConfig;

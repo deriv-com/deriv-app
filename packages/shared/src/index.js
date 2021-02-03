@@ -11,6 +11,7 @@ export * from './utils/login';
 export * from './utils/mt5';
 export * from './utils/object';
 export * from './utils/os';
+export * from './utils/promise';
 export * from './utils/platform';
 export * from './utils/route';
 export * from './utils/routes';

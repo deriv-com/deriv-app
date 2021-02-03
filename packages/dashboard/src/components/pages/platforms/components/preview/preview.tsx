@@ -26,6 +26,6 @@ const GetSection: React.FC<TGetSection> = ({ availability_text, images }) => {
 type TGetSection = {
     availability_text: TStringTranslation;
     images: string[];
-}
+};
 
 export default observer(GetSection);

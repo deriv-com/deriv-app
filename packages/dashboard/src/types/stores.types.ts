@@ -79,7 +79,10 @@ export type TUIStore = {
     real_account_signup_target: string;
     is_get_wallet_modal_open: boolean;
     is_real_acc_signup_on: boolean;
+    is_trade_modal_open: boolean;
     resetRealAccountSignupParams?: () => void;
     enableGetPasswordModal: () => void;
     disableGetPasswordModal: () => void;
+    openTradeModal: () => void;
+    closeTradeModal: () => void;
 };

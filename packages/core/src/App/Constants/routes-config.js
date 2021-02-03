@@ -253,8 +253,8 @@ const getModules = ({ is_deriv_crypto, is_dashboard }) => {
         },
         {
             path: routes.root,
-            component: is_dashboard ? Dashboard : Trader,
-            getTitle: () => (is_dashboard ? localize('Dashboard') : localize('Trader')),
+            component: Trader,
+            getTitle: () => localize('Trader'),
             routes: [
                 { path: routes.mt5, component: Trader, getTitle: () => localize('MT5'), is_authenticated: false },
                 {

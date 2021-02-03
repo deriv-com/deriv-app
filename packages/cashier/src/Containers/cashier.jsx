@@ -31,15 +31,15 @@ const Cashier = ({
     location,
     onMount,
     p2p_notification_count,
-    routes: routes_config,
     routeBackInApp,
+    routes: routes_config,
     setAccountSwitchListener,
+    setDepositList,
+    setPaymentAgentList,
     setTabIndex,
     tab_index,
     toggleCashier,
 }) => {
-    const [ready, setReady] = React.useState(false);
-
     React.useEffect(() => {
         getMenuOptions();
         toggleCashier();
@@ -56,6 +56,11 @@ const Cashier = ({
     }, []);
 
     React.useEffect(() => {
+        setPaymentAgentList();
+        setDepositList();
+    }, [is_virtual]);
+
+    React.useEffect(() => {
         getMenuOptions();
     }, [
         is_payment_agent_visible,
@@ -68,22 +73,8 @@ const Cashier = ({
     const onClickClose = () => routeBackInApp(history);
     const getMenuOptions = () => {
         const options = [];
-        const computedRoutes = [
-            routes.cashier_pa,
-            routes.cashier_pa_transfer,
-            routes.cashier_p2p,
-            routes.cashier_onramp,
-            routes.cashier_acc_transfer,
-        ];
-
-        const found = routes_config.some(r => computedRoutes.includes(r));
-        // console.log('FOUND:');
-        // console.log(found);
         // TODO: remove show_dp2p hash check once released
         routes_config.forEach(route => {
-            console.log('is_payment_agent_visible');
-            console.log(route.path);
-            console.log(is_payment_agent_visible);
             if (
                 (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
                 (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
@@ -102,17 +93,6 @@ const Cashier = ({
                 });
             }
         });
-
-        console.log('option');
-        console.log(options);
-        console.log(routes_config.length);
-        console.log(options.length);
-
-        // if(routes_config.length === options.length) {
-        //     console.log('setReadyTrue');
-        //     setReady(true);
-        //     return options;
-        // }
 
         return options;
     };
@@ -197,9 +177,11 @@ Cashier.propTypes = {
     location: PropTypes.object,
     onMount: PropTypes.func,
     p2p_notification_count: PropTypes.number,
-    routes: PropTypes.arrayOf(PropTypes.object),
     routeBackInApp: PropTypes.func,
+    routes: PropTypes.arrayOf(PropTypes.object),
     setAccountSwitchListener: PropTypes.func,
+    setDepositList: PropTypes.func,
+    setPaymentAgentList: PropTypes.func,
     setTabIndex: PropTypes.func,
     tab_index: PropTypes.number,
     toggleCashier: PropTypes.func,
@@ -219,6 +201,8 @@ export default connect(({ client, common, modules, ui }) => ({
     p2p_notification_count: modules.cashier.p2p_notification_count,
     routeBackInApp: common.routeBackInApp,
     setAccountSwitchListener: modules.cashier.setAccountSwitchListener,
+    setDepositList: modules.cashier.onMountDeposit,
+    setPaymentAgentList: modules.cashier.setPaymentAgentList,
     setTabIndex: modules.cashier.setCashierTabIndex,
     tab_index: modules.cashier.cashier_route_tab_index,
     toggleCashier: ui.toggleCashier,

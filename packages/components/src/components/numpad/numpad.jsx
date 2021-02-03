@@ -165,16 +165,18 @@ const Numpad = ({
                         onSelect(-1);
                     }}
                     is_disabled={is_backspace_disabled}
-                    renderText={() =>
-                        is_backspace_disabled && (
-                            <Text styles={{ fontSize: '1.8rem' }} weight='bold' align='center' color='disabled'>
-                                ⌫
-                            </Text>
-                        )
-                    }
-                >
-                    ⌫
-                </Button>
+                    text='⌫'
+                    renderText={text => (
+                        <Text
+                            styles={{ fontSize: '1.8rem' }}
+                            weight='bold'
+                            align='center'
+                            color={is_backspace_disabled ? 'disabled' : 'general'}
+                        >
+                            {text}
+                        </Text>
+                    )}
+                />
             </div>
 
             <div className='dc-numpad__ok'>
@@ -193,16 +195,18 @@ const Numpad = ({
                         onSubmit(formatNumber(default_value));
                     }}
                     is_disabled={is_button_disabled}
-                    renderText={() =>
-                        is_button_disabled && (
-                            <Text styles={{ fontSize: '1.8rem' }} weight='bold' align='center' color='disabled'>
-                                {submit_label}
-                            </Text>
-                        )
-                    }
-                >
-                    {submit_label}
-                </Button>
+                    text={submit_label}
+                    renderText={text => (
+                        <Text
+                            styles={{ fontSize: '1.8rem' }}
+                            weight='bold'
+                            align='center'
+                            color={is_button_disabled ? 'disabled' : 'general'}
+                        >
+                            {text}
+                        </Text>
+                    )}
+                />
             </div>
         </div>
     );

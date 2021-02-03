@@ -11,7 +11,7 @@ const OrderDetailsTimer = observer(() => {
         const distance = ServerTime.getDistanceToServerTime(time);
         return {
             distance,
-            label: distance < 0 ? localize('expired') : secondsToTimer(distance),
+            label: secondsToTimer(Math.max(0, distance)),
         };
     };
 

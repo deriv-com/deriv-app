@@ -244,7 +244,7 @@ const MT5PasswordModal = ({
     const [is_submitting, setIsSubmitting] = React.useState(false); // TODO handle this better
 
     const is_bvi = React.useMemo(() => {
-        return landing_companies?.mt_financial_company?.financial_stp.shortcode === 'bvi';
+        return landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
     }, [landing_companies]);
 
     const validatePassword = values => {

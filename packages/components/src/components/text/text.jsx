@@ -16,8 +16,9 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
         if (!isEmptyObject(styles)) {
             const combined_style = { ...class_styles, ...styles };
             setStyle(combined_style);
+        } else {
+            setStyle(class_styles);
         }
-        setStyle(class_styles);
     }, [size, color, line_height, weight, align]);
 
     const class_names = classNames('dc-text', className);

@@ -26,7 +26,7 @@
     }
     &__info {
         background: var(--fill-disabled);
-        margin-top: 2.4rem;
+        margin-top: 5rem;
         font-size: 1.4rem;
         color: var(--text-general);
         display: grid;
@@ -399,12 +399,18 @@
 .mt5-real-accounts-display,
 .mt5-demo-accounts-display {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     margin-top: 2.4em;
     height: 100%;
 
     @include mobile {
         flex-direction: column;
+    }
+}
+
+.mt5-demo-accounts-display .mt5-account-card__wrapper {
+    @include desktop {
+        height: auto;
     }
 }
 
@@ -466,7 +472,7 @@
     border-radius: 4px;
     display: flex;
     flex-flow: column nowrap;
-    min-height: 35.8rem;
+    min-height: 37rem;
     width: 30.4em;
     position: relative;
     @include desktop {
@@ -475,7 +481,6 @@
 
     &__wrapper {
         display: grid;
-        grid-template-rows: 1fr 4rem;
 
         @include mobile {
             grid-template-rows: 1fr;
@@ -486,7 +491,10 @@
             margin-right: 2.4rem;
         }
         @include desktop {
-            height: auto;
+            height: 100%;
+            &-shrinked {
+                height: calc(100% - 4rem);
+            }
         }
     }
 

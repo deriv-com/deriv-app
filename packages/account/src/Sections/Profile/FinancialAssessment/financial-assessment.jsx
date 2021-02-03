@@ -338,7 +338,6 @@ class FinancialAssessment extends React.Component {
                         handleSubmit,
                         isSubmitting,
                         dirty,
-                        // validateField,
                     }) => (
                         <>
                             {isMobile() && is_confirmation_visible && (

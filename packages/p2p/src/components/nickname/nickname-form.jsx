@@ -34,9 +34,9 @@ const NicknameForm = observer(({ handleClose }) => {
                             <Text as='h5' size='s' weight='bold' className='nickname__form-content--title'>
                                 {localize('Choose a nickname')}
                             </Text>
-                            <p className='nickname__form-content--text'>
+                            <Text as='p' size='xs' line_height='unset' className='nickname__form-content--text'>
                                 {localize('You will appear to other users as')}
-                            </p>
+                            </Text>
                             <div className='nickname__form-field_wrapper'>
                                 <Field name='nickname'>
                                     {({ field }) => (

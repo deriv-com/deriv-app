@@ -3,7 +3,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import { isMobile } from '@deriv/shared';
-import { Icon, Loading, Modal, Tabs, Text } from '@deriv/components';
+import { HintBox, Icon, Loading, Modal, Tabs, Text } from '@deriv/components';
 import ServerTime from 'Utils/server-time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
@@ -18,6 +18,29 @@ import MyProfile from './my-profile';
 import './app.scss';
 
 const allowed_currency = 'USD';
+
+const TemporaryBarredMessage = observer(() => {
+    const { general_store } = useStores();
+
+    return (
+        <div className='p2p-cashier__barred-user'>
+            <HintBox
+                icon='IcAlertWarning'
+                message={
+                    <Text size='xxxs' color='prominent' line_height='xs'>
+                        <Localize
+                            i18n_default_text="You've been temporarily barred from using our services due to multiple cancellation attempts. Try again after {{date_time}} GMT."
+                            values={{ date_time: general_store.blocked_until_date_time }}
+                        />
+                    </Text>
+                }
+                is_warn
+            />
+        </div>
+    );
+});
+
+TemporaryBarredMessage.displayName = 'TemporaryBarredMessage';
 
 const P2pWrapper = ({ className, children }) => (
     <main className={classNames('p2p-cashier', className)}>{children}</main>
@@ -141,6 +164,7 @@ const App = observer(props => {
                         is_100vw={isMobile()}
                     >
                         <div label={localize('Buy / Sell')}>
+                            {general_store.is_barred && <TemporaryBarredMessage />}
                             <BuySell />
                         </div>
                         <div count={general_store.notification_count} label={localize('Orders')}>
@@ -151,6 +175,7 @@ const App = observer(props => {
                             />
                         </div>
                         <div label={localize('My ads')}>
+                            {general_store.is_barred && <TemporaryBarredMessage />}
                             <MyAds />
                         </div>
                         {general_store.is_advertiser && (

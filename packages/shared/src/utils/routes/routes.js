@@ -1,5 +1,7 @@
 import { getUrlSmartTrader } from '../url/helpers';
 
+const is_dashboard = window.localStorage.getItem('is_dashboard') === 'true';
+
 export const routes = {
     error404: '/404',
     account: '/account',
@@ -35,7 +37,7 @@ export const routes = {
     settings: '/settings',
     statement: '/reports/statement',
     token: '/settings/token',
-    trade: '/trade',
+    trade: is_dashboard ? '/trade' : '/',
     bot: '/bot',
     cashier: '/cashier',
     cashier_deposit: '/cashier/deposit',

@@ -40,7 +40,7 @@ const initRoutesConfig = ({ consumer_routes }: TRoutesConfig): TRoute[] => [
         is_authenticated: false,
         path: consumer_routes.home,
     },
-
+    
     // It is possible to add a Deriv Crypto only path.
     // ...(is_deriv_crypto
     //     ? [
@@ -56,12 +56,22 @@ const initRoutesConfig = ({ consumer_routes }: TRoutesConfig): TRoute[] => [
 
 let routes_config: Array<TRoute>;
 
-const getRoutesConfig = ({ consumer_routes, is_deriv_crypto, Page404 }: TRoutesConfig): TRoute[] => {
+const getRoutesConfig = ({ consumer_routes, is_deriv_crypto, is_dashboard, Page404 }: TRoutesConfig): TRoute[] => {
     // For default page route if page/path is not found, must be kept at the end of routes_config array.
     if (!routes_config) {
         const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
         routes_config = initRoutesConfig({ consumer_routes, is_deriv_crypto });
+
+        if(is_dashboard) {
+            routes_config.push({
+                component: Home,
+                getTitle: () => localize('Dashboard'),
+                is_authenticated: false,
+                path: '/',
+            });
+        }
+
         routes_config.push(route_default);
     }
 
@@ -72,6 +82,7 @@ type TRoutesConfig = {
     Page404?: React.ElementType;
     consumer_routes: TRoutesProps;
     is_deriv_crypto: boolean;
+    is_dashboard?: boolean;
 };
 
 export default getRoutesConfig;

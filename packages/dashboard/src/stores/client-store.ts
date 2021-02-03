@@ -1,6 +1,6 @@
 import { GetFinancialAssessment, GetSettings, ResidenceList, StatesList } from '@deriv/api-types';
-import { action, observable } from 'mobx';
-import { TClientProps, TCurrenciesList, TUpgradeInfo } from 'Types';
+import { action, observable, computed } from 'mobx';
+import { TClientProps, TCurrenciesList, TUpgradeInfo, TAccountList } from 'Types';
 import BaseStore from './base-store';
 
 class ClientStore extends BaseStore {
@@ -12,6 +12,9 @@ class ClientStore extends BaseStore {
 
     @observable
     public currencies_list: TCurrenciesList = {};
+
+    @observable
+    public accounts_list: TAccountList = [];
 
     @observable
     public currency = '';
@@ -51,6 +54,12 @@ class ClientStore extends BaseStore {
 
     public has_currency?: () => boolean;
     public setAccountCurrency?: () => void;
+
+    @computed
+    public get has_atleast_one_wallet(): boolean {
+        // TODO: return boolean based on existence of wallet accounts in `accounts_list`
+        return !!this.accounts_list?.some(account => account.is_wallet);
+    }
 
     @action
     public init(client_props: TClientProps): void {

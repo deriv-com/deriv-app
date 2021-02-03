@@ -2,6 +2,8 @@ import classNames from 'classnames';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { FormikProps, FormikValues } from 'formik';
+import fromEntries from 'object.fromentries';
+import { personalDetailsConfig, addressDetailsConfig } from '@deriv/account';
 import {
     Wizard,
     Text,
@@ -12,13 +14,12 @@ import {
     MobileWrapper,
     Dialog,
 } from '@deriv/components';
-import { useIsMounted, isMobile, isDesktop } from '@deriv/shared';
-import { GetSettings } from '@deriv/api-types';
+import { useIsMounted, isMobile, getLocation, toMoment, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStores } from 'Stores';
 import NewWalletModal from 'Components/modals/new-wallet-modal';
 import { getItems } from './items';
-import { TWizardItemConfig } from './types';
+import { TWizardItemConfig, TAccountWizard } from './types';
 
 type TCancelProgressModalProps = {
     is_visible: boolean;
@@ -137,18 +138,6 @@ const StepperHeader = ({
     );
 };
 
-type TAccountWizard = {
-    fetchResidenceList?: () => void;
-    fetchStatesList?: () => void;
-    fetchFinancialAssessment?: () => void;
-    needs_financial_assessment?: () => boolean;
-    has_currency?: () => boolean;
-    has_real_account?: () => boolean;
-    account_settings?: GetSettings;
-    onCancel: () => void;
-    [x: string]: any;
-};
-
 const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
     const [form_error, setFormError] = React.useState('');
     const [previous_data, setPreviousData] = React.useState([]);
@@ -156,6 +145,8 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
     const [items_enabled, setItemsEnabled] = React.useState<boolean[]>([]);
     const isMounted = useIsMounted();
     const selected_step_ref = React.useRef(null);
+    const props_ref = React.useRef<TAccountWizard>(props);
+    props_ref.current = props;
 
     const {
         fetchStatesList,
@@ -175,7 +166,7 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
             if (isMounted()) {
                 setStateItems((previous_state: TWizardItemConfig[]) => {
                     if (!previous_state.length) {
-                        return getItems(props);
+                        return getItems(props_ref.current);
                     }
                     return previous_state;
                 });
@@ -209,6 +200,43 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
         }
     };
 
+    const getFormValues = () => {
+        const wizard_steps = state_items;
+
+        if (props.has_atleast_one_wallet) {
+            // To get default personal and address details from `account_settings`
+            wizard_steps.push(personalDetailsConfig(props), addressDetailsConfig(props));
+        }
+
+        return wizard_steps
+            .map(item => item.form_value)
+            .reduce((obj, item: any) => {
+                const values = fromEntries(new Map(Object.entries(item)));
+                if (values.date_of_birth) {
+                    values.date_of_birth = toMoment(values.date_of_birth).format('YYYY-MM-DD');
+                }
+                if (values.place_of_birth) {
+                    values.place_of_birth = values.place_of_birth
+                        ? getLocation(props.residence_list, values.place_of_birth, 'value')
+                        : '';
+                }
+                if (values.citizen) {
+                    values.citizen = values.citizen ? getLocation(props.residence_list, values.citizen, 'value') : '';
+                }
+
+                if (values.tax_residence) {
+                    values.tax_residence = values.tax_residence
+                        ? getLocation(props.residence_list, values.tax_residence, 'value')
+                        : values.tax_residence;
+                }
+
+                return {
+                    ...obj,
+                    ...values,
+                };
+            });
+    };
+
     const clearError = () => {
         setFormError('');
     };
@@ -226,8 +254,8 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
         saveFormData(index, value);
         clearError();
         // Check if account wizard is not finished
-        if ((!has_currency && has_real_account) || index + 1 >= state_items.length) {
-            // Todo: Api integration
+        if (index + 1 >= state_items.length) {
+            submitForm();
         } else {
             goToNextStep();
         }
@@ -237,6 +265,12 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
         const cloned_items: TWizardItemConfig[] = Object.assign([], state_items);
         cloned_items[index].form_value = value;
         setStateItems(cloned_items);
+    };
+
+    const submitForm = () => {
+        const clone = { ...getFormValues() };
+        delete clone?.tax_identification_confirm; // This is a manual field and it does not require to be sent over
+        // Todo: wallet creation api integration
     };
 
     const getCurrent = (key: keyof TWizardItemConfig, step_index: number) => {
@@ -284,7 +318,6 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
                 form_error={form_error}
                 {...passthrough}
                 key={step_index}
-                is_dashboard
             />
         );
     });
@@ -322,6 +355,7 @@ const AccountWizardWrapper: React.FC = () => {
         fetchFinancialAssessment,
         needs_financial_assessment,
         financial_assessment,
+        has_atleast_one_wallet,
     } = client_store;
     const { real_account_signup_target } = ui_store;
     const [is_cancel_visible, setIsCancelVisisible] = React.useState(false);
@@ -346,6 +380,7 @@ const AccountWizardWrapper: React.FC = () => {
                 fetchFinancialAssessment={fetchFinancialAssessment}
                 needs_financial_assessment={needs_financial_assessment}
                 financial_assessment={financial_assessment}
+                has_atleast_one_wallet={has_atleast_one_wallet}
                 onCancel={() => setIsCancelVisisible(true)}
             />
             <CancelProgressModal

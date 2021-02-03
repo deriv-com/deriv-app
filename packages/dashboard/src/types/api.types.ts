@@ -1,4 +1,4 @@
-import { ResidenceList } from '@deriv/api-types';
+import { ResidenceList, Authorize } from '@deriv/api-types';
 
 export type TErrorResponse =
     | {
@@ -8,3 +8,5 @@ export type TErrorResponse =
     | undefined;
 
 export type ResidenceListItem = ResidenceList[0];
+
+export type TAccountList = Authorize['account_list'];

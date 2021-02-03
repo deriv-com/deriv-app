@@ -1,3 +1,5 @@
+import { GetSettings } from '@deriv/api-types';
+
 export type TWizardItemConfig = {
     header: {
         active_title: string;
@@ -13,4 +15,18 @@ export type TWizardItemConfig = {
     };
     passthrough: string[];
     icon?: string;
+};
+
+export type TAccountWizard = {
+    fetchResidenceList?: () => void;
+    fetchStatesList?: () => void;
+    fetchFinancialAssessment?: () => void;
+    needs_financial_assessment?: () => boolean;
+    has_currency?: () => boolean;
+    has_real_account?: () => boolean;
+    account_settings?: GetSettings;
+    onCancel: () => void;
+    real_account_signup_target: string;
+    has_atleast_one_wallet: boolean;
+    [x: string]: any;
 };

@@ -10,9 +10,9 @@ import {
 } from '@deriv/components';
 import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import CheckboxField from 'App/Containers/RealAccountSignup/checkbox-field.jsx';
+import CheckboxField from './checkbox-field.jsx';
 import { SharedMessage, BrokerSpecificMessage, Hr } from './terms-of-use-messages.jsx';
-import 'Sass/terms-of-use.scss';
+import './terms-of-use.scss';
 
 const TermsOfUse = ({
     getCurrentStep,
@@ -22,6 +22,7 @@ const TermsOfUse = ({
     onSubmit,
     value,
     real_account_signup_target,
+    is_dashboard,
     ...props
 }) => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
@@ -45,7 +46,7 @@ const TermsOfUse = ({
                             <ThemedScrollbars is_bypassed={isMobile()} height={height - 72}>
                                 <Div100vhContainer
                                     className='terms-of-use'
-                                    height_offset='110px'
+                                    height_offset={is_dashboard ? '242px' : '110px'}
                                     is_disabled={isDesktop()}
                                 >
                                     <BrokerSpecificMessage target={real_account_signup_target} />

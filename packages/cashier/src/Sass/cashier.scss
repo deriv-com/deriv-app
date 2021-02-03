@@ -115,7 +115,7 @@
     &__form {
         &-submit {
             display: flex;
-            justify-content: flex-end;
+            justify-content: center;
             width: 100%;
         }
         &-submit-button {
@@ -222,8 +222,8 @@
             }
         }
         &-details {
-            margin-left: 8px;
-            margin-right: 8px;
+            margin-left: 0.8rem;
+            margin-right: 0.8rem;
             vertical-align: super;
             font-size: 1.4rem;
             text-align: left;
@@ -264,18 +264,21 @@
         margin-left: auto;
         margin-right: auto;
 
+        &--bold {
+            font-weight: bold;
+        }
+        &--end {
+            align-self: flex-end;
+        }
+        &--faint {
+            color: var(--text-less-prominent);
+        }
         &--full-width {
             max-width: unset;
             min-width: 44.5rem;
         }
-        &--bold {
-            font-weight: bold;
-        }
         &--right {
             text-align: right;
-        }
-        &--faint {
-            color: var(--text-less-prominent);
         }
         @include mobile {
             max-width: 100%;
@@ -792,7 +795,7 @@
         }
         &-icon {
             vertical-align: middle;
-            margin-right: 12px;
+            margin-right: 0.8rem;
             /* postcss-bem-linter: ignore */
             --fill-color1: var(--text-general);
         }
@@ -912,11 +915,10 @@
         &__receipt {
             margin: 0 1.6rem;
             width: calc(100% - 3.2rem);
-            padding-top: 2.4rem;
 
             .cashier {
                 &__header {
-                    font-size: 1.6rem;
+                    font-size: 1.4rem;
                 }
                 &__done-button {
                     width: 100%;
@@ -925,12 +927,13 @@
                     margin: 0;
                 }
                 &__form-submit {
-                    margin: 2.4rem 0 1.6rem;
+                    margin: 2.4rem 0 3.2rem;
                     display: grid;
                     grid-template-columns: 1fr 1fr;
                     grid-gap: 0.8rem;
                 }
                 &__transferred-amount {
+                    margin-top: 1.6rem;
                     margin-bottom: 0;
                 }
                 &__transferred-details-wrapper {
@@ -938,7 +941,7 @@
                 }
                 &__success {
                     width: 100%;
-                    margin: 0 auto 3.2rem;
+                    margin: 0 auto;
                     background-color: var(--general-main-1);
                 }
             }
@@ -947,6 +950,7 @@
                     padding-left: 0;
                 }
                 &__transferred-contact {
+                    margin: 0.8rem;
                     &-wrapper {
                         margin: 0.8rem;
                     }
@@ -1158,9 +1162,6 @@
         &-statement {
             margin-right: 0.8rem;
         }
-    }
-    &__native-select {
-        margin-bottom: 2.4rem;
     }
     &__form-submit {
         display: flex;

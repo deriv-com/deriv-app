@@ -32,6 +32,7 @@ const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSi
                         as='p'
                         size='xs'
                         line_height='s'
+                        align='center'
                         className='cashier__paragraph cashier__text cashier__text--full-width'
                     >
                         <Localize
@@ -49,7 +50,7 @@ const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSi
                 </React.Fragment>
             ) : (
                 <React.Fragment>
-                    <Text as='p' size='xs' line_height='s' className='cashier__paragraph cashier__text'>
+                    <Text as='p' size='xs' line_height='s' align='center' className='cashier__paragraph cashier__text'>
                         <Localize
                             i18n_default_text={
                                 "You need a real money account to use this feature. It's easy to create a real money account and start trading."
@@ -73,7 +74,7 @@ const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSi
 Virtual.propTypes = {
     is_dark_mode_on: PropTypes.bool,
     has_real_account: PropTypes.bool,
-    history: PropTypes.array,
+    history: PropTypes.object,
     openRealAccountSignup: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
 };

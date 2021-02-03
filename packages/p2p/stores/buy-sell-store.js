@@ -5,12 +5,9 @@ import { buy_sell } from 'Constants/buy-sell';
 import { requestWS } from 'Utils/websocket';
 import { textValidator, lengthValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
+import BaseStore from 'Stores/base_store';
 
-export default class BuySellStore {
-    constructor(root_store) {
-        this.root_store = root_store;
-    }
-
+export default class BuySellStore extends BaseStore {
     @observable api_error_message = '';
     @observable contact_info = '';
     @observable error_message = '';
@@ -47,6 +44,11 @@ export default class BuySellStore {
     @computed
     get has_payment_info() {
         return this.contact_info.length && this.payment_info.length;
+    }
+
+    @computed
+    get is_buy() {
+        return this.table_type === buy_sell.BUY;
     }
 
     @computed
@@ -145,12 +147,12 @@ export default class BuySellStore {
         this.setIsLoading(true);
 
         const { general_store } = this.root_store;
-        const counterparty_type = this.table_type === buy_sell.BUY ? buy_sell.BUY : buy_sell.SELL;
+        const counterparty_type = this.is_buy ? buy_sell.BUY : buy_sell.SELL;
 
         return new Promise(resolve => {
             requestWS({
                 p2p_advert_list: 1,
-                counterparty_type: this.table_type === buy_sell.BUY ? buy_sell.BUY : buy_sell.SELL,
+                counterparty_type: counterparty_type,
                 offset: startIndex,
                 limit: general_store.list_item_limit,
             }).then(response => {

@@ -66,6 +66,9 @@ const OrderDetails = observer(({ onPageReturn }) => {
         (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
             ? localize('Buy {{offered_currency}} order', { offered_currency: account_currency })
             : localize('Sell {{offered_currency}} order', { offered_currency: account_currency });
+    if (sendbird_store.should_show_chat_on_orders) {
+        return <Chat />;
+    }
 
     return (
         <OrderDetailsWrapper page_title={page_title} onPageReturn={onPageReturn}>

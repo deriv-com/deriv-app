@@ -21,6 +21,7 @@ const ALIASES = {
     Components: path.resolve(__dirname, '../src/Components'),
     Containers: path.resolve(__dirname, '../src/Containers'),
     Constants: path.resolve(__dirname, '../src/Constants'),
+    Configs: path.resolve(__dirname, '../src/Configs'),
     Duplicated: path.resolve(__dirname, '../src/Duplicated'),
     Helpers: path.resolve(__dirname, '../src/Helpers'),
     Layout: path.resolve(__dirname, '../src/Layout'),

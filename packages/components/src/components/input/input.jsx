@@ -98,7 +98,7 @@ const Input = React.forwardRef(
                             {warn && <Field className={classNameWarn} message={warn} type='warn' />}
                             {!error && hint && !is_relative_hint && (
                                 <div className='dc-input__hint'>
-                                    <Text color='less-prominent' line-height='m' size='xxs'>
+                                    <Text as='p' color='less-prominent' size='xxs'>
                                         {hint}
                                     </Text>
                                 </div>

@@ -174,8 +174,6 @@
         }
         &-title {
             align-self: center;
-            font-size: 16px;
-            font-weight: bold;
         }
         &-footer {
             display: flex;
@@ -195,12 +193,7 @@
             justify-content: space-between;
 
             &-text {
-                font-size: 16px;
-                font-weight: bold;
                 align-self: center;
-            }
-            &-results {
-                color: $COLOR_GREEN_5;
             }
         }
         &-empty {

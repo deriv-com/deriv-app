@@ -13,12 +13,12 @@ const OrderTable = ({ showDetails }) => {
 
     const orders_list_filters = [
         {
-            text: localize('Active order'),
+            text: localize('Active orders'),
             value: order_list.ACTIVE,
             count: general_store.active_notification_count,
         },
         {
-            text: localize('Past order'),
+            text: localize('Past orders'),
             value: order_list.INACTIVE,
             count: general_store.inactive_notification_count,
         },

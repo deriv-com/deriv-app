@@ -83,9 +83,9 @@ const InputField = ({
 
             const is_scientific_notation = /e/.test(`${+e.target.value}`);
 
-            if (max_length && fractional_digits) {
+            if (max_length && (fractional_digits || fractional_digits === 0)) {
                 has_valid_length = new RegExp(
-                    `${signed_regex}(\\d{0,${max_length}})(\\.\\d{0,${fractional_digits}})?$`
+                    `${signed_regex}(\\d{0,${max_length}})(\\${fractional_digits && '.'}\\d{0,${fractional_digits}})?$`
                 ).test(e.target.value);
             }
 

@@ -1,8 +1,9 @@
 import React from 'react';
-import { action, computed, observable } from 'mobx';
-import { isEmptyObject, isMobile, mobileOSDetect, routes } from '@deriv/shared';
+import { action, computed, observable, reaction } from 'mobx';
+import { isEmptyObject, isMobile, mobileOSDetect, routes, toMoment } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
 import BaseStore from 'Stores/base_store';
+import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
 import { order_list } from '../src/constants/order-list';
@@ -13,7 +14,9 @@ export default class GeneralStore extends BaseStore {
     @observable advertiser_id = null;
     @observable inactive_notification_count = 0;
     @observable is_advertiser = false;
+    @observable is_blocked = false;
     @observable is_listed = false;
+    @observable is_loading = false;
     @observable is_restricted = false;
     @observable nickname = null;
     @observable nickname_error = '';
@@ -24,6 +27,7 @@ export default class GeneralStore extends BaseStore {
     @observable poi_status = null;
     @observable should_show_real_name = false;
     @observable show_popup = false;
+    @observable user_blocked_until = null;
 
     custom_string = this.props?.custom_string;
     list_item_limit = isMobile() ? 10 : 25;
@@ -43,8 +47,23 @@ export default class GeneralStore extends BaseStore {
     }
 
     @computed
+    get blocked_until_date_time() {
+        return getFormattedDateString(new Date(convertToMillis(this.user_blocked_until)), false, true);
+    }
+
+    @computed
     get is_active_tab() {
         return this.order_table_type === order_list.ACTIVE;
+    }
+
+    @computed
+    get is_barred() {
+        return !!this.user_blocked_until;
+    }
+
+    @computed
+    get is_my_profile_tab_visible() {
+        return this.is_advertiser && !this.root_store.my_profile_store.should_hide_my_profile_tab;
     }
 
     @action.bound
@@ -156,6 +175,7 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     onMount() {
+        this.setIsLoading(true);
         const { sendbird_store } = this.root_store;
 
         this.ws_subscriptions = {
@@ -176,29 +196,38 @@ export default class GeneralStore extends BaseStore {
                 [this.setP2pOrderList]
             ),
         };
+
+        this.disposeUserBarredReaction = reaction(
+            () => this.user_blocked_until,
+            blocked_until => {
+                if (typeof blocked_until === 'number') {
+                    const server_time = this.props.server_time.get();
+                    const blocked_until_moment = toMoment(blocked_until);
+
+                    this.user_blocked_timeout = setTimeout(() => {
+                        this.setUserBlockedUntil(null);
+                    }, blocked_until_moment.diff(server_time));
+                }
+            }
+        );
     }
 
     @action.bound
     onUnmount() {
         clearTimeout(this.service_token_timeout);
+        clearTimeout(this.user_blocked_timeout);
+
         Object.keys(this.ws_subscriptions).forEach(key => this.ws_subscriptions[key].unsubscribe());
+
+        if (typeof this.disposeUserBarredReaction === 'function') {
+            this.disposeUserBarredReaction();
+        }
     }
 
     @action.bound
     onNicknamePopupClose() {
         this.setShowPopup(false);
     }
-
-    openApplicationStore = () => {
-        if (mobileOSDetect() === 'Android') {
-            window.location.href =
-                'https://play.app.goo.gl/?link=https://play.google.com/store/apps/details?id=com.deriv.dp2p';
-        }
-        // uncomment when iOS app is ready
-        // if (mobileOSDetect() === 'iOS') {
-        //     window.location.href = 'http://itunes.apple.com/lb/app/truecaller-caller-id-number/id448142450?mt=8';
-        // }
-    };
 
     poiStatusText = status => {
         switch (status) {
@@ -256,8 +285,18 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setIsBlocked(is_blocked) {
+        this.is_blocked = is_blocked;
+    }
+
+    @action.bound
     setIsListed(is_listed) {
         this.is_listed = is_listed;
+    }
+
+    @action.bound
+    setIsLoading(is_loading) {
+        this.is_loading = is_loading;
     }
 
     @action.bound
@@ -341,6 +380,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
+    setUserBlockedUntil(user_blocked_until) {
+        this.user_blocked_until = user_blocked_until;
+    }
+
+    @action.bound
     setWebsocketInit = (websocket, local_currency_decimal_places) => {
         WebsocketInit(websocket, local_currency_decimal_places);
     };
@@ -360,6 +404,7 @@ export default class GeneralStore extends BaseStore {
             this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
             this.setIsListed(!!p2p_advertiser_info.is_listed);
             this.setNickname(p2p_advertiser_info.name);
+            this.setUserBlockedUntil(p2p_advertiser_info.blocked_until);
             this.setShouldShowRealName(!!p2p_advertiser_info.show_name);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
@@ -368,6 +413,8 @@ export default class GeneralStore extends BaseStore {
                 this.setIsRestricted(true);
             } else if (response.error.code === 'AdvertiserNotFound') {
                 this.setIsAdvertiser(false);
+            } else if (response.error.code === 'PermissionDenied') {
+                this.setIsBlocked(true);
             }
         }
 
@@ -382,6 +429,8 @@ export default class GeneralStore extends BaseStore {
                 }
             });
         }
+
+        this.setIsLoading(false);
     }
 
     @action.bound

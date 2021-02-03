@@ -28,8 +28,10 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@deriv/account": "^1.0.0",
         "@deriv/components": "^1.0.0",
         "@deriv/shared": "^1.0.0",
+        "@deriv/trader": "^3.8.0",
         "@deriv/translations": "^1.0.0",
         "classnames": "^2.2.6",
         "mobx": "^5.15.7",

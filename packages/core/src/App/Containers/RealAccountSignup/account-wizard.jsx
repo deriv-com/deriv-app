@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, FormProgress, Wizard } from '@deriv/components';
-import { toMoment, getLocation } from '@deriv/shared';
+import { toMoment, getLocation, makeCancellablePromise } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { makeCancellablePromise } from '_common/base/cancellable_promise';
 import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
+import 'Sass/details-form.scss';
 
 const StepperHeader = ({ has_target, has_real_account, has_currency, items, getCurrentStep, getTotalSteps }) => {
     const step = getCurrentStep() - 1;
@@ -63,7 +63,6 @@ const AccountWizard = props => {
     const [form_error, setFormError] = React.useState('');
     const [previous_data, setPreviousData] = React.useState([]);
     const [state_items, setStateItems] = React.useState([]);
-    const [has_previous_data, setHasPreviousData] = React.useState(false);
 
     React.useEffect(() => {
         props.fetchStatesList();
@@ -98,7 +97,6 @@ const AccountWizard = props => {
                 }
             });
             setStateItems(items);
-            setHasPreviousData(true);
             setPreviousData([]);
         }
     }, [previous_data]);
@@ -126,11 +124,11 @@ const AccountWizard = props => {
         const stored_items = localStorage.getItem('real_account_signup_wizard');
         try {
             const items = JSON.parse(stored_items);
-            localStorage.removeItem('real_account_signup_wizard');
             return items || [];
         } catch (e) {
-            localStorage.removeItem('real_account_signup_wizard');
             return [];
+        } finally {
+            localStorage.removeItem('real_account_signup_wizard');
         }
     };
 
@@ -226,7 +224,7 @@ const AccountWizard = props => {
             passthrough.forEach(item => {
                 Object.assign(properties, { [item]: props[item] });
             });
-            properties.bypass_to_personal = has_previous_data;
+            properties.bypass_to_personal = previous_data.length > 0;
         }
         return properties;
     };

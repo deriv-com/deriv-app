@@ -21,6 +21,6 @@ type TDivider = {
     className?: string;
     horizontal?: boolean;
     vertical?: boolean;
-}
+};
 
 export default Divider;

@@ -292,7 +292,8 @@ const AccountSwitcher = props => {
             !canOpenMulti() ||
             (props.is_eu &&
                 (props.landing_company_shortcode === 'malta' ||
-                    (props.landing_company_shortcode === 'iom' && props.upgradeable_landing_companies.length !== 0)))
+                    (props.landing_company_shortcode === 'iom' && props.upgradeable_landing_companies.length !== 0))) ||
+            props.is_virtual
         ) {
             return props.upgradeable_landing_companies;
         }

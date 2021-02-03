@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { isEmptyObject } from '@deriv/shared';
 
 const Text = ({ children, size, color, align, weight, line_height, as, className, styles, ...props }) => {
-    const setStyle = () => {
+    const [style, setStyle] = React.useState({});
+    React.useEffect(() => {
         const class_styles = {
             '--text-size': `var(--text-size-${size || 's'})`,
             '--text-color': `var(--text-${color || 'general'})`,
@@ -13,13 +14,14 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
             '--text-align': `var(--text-align-${align || 'left'})`,
         };
         if (!isEmptyObject(styles)) {
-            return { ...class_styles, ...styles };
+            const combined_style = { ...class_styles, ...styles };
+            setStyle(combined_style);
         }
-        return class_styles;
-    };
+        setStyle(class_styles);
+    }, [size, color, line_height, weight, align]);
 
     const class_names = classNames('dc-text', className);
-    return React.createElement(as || 'span', { className: class_names, style: setStyle(), ...props }, children);
+    return React.createElement(as || 'span', { className: class_names, style, ...props }, children);
 };
 
 Text.propTypes = {

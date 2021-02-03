@@ -1,6 +1,5 @@
 import { Formik, Field } from 'formik';
 import React from 'react';
-import { FormSubHeader } from '@deriv/account';
 import {
     Modal,
     Autocomplete,
@@ -17,11 +16,12 @@ import {
     RadioGroup,
     SelectNative,
     ThemedScrollbars,
+    Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile, toMoment } from '@deriv/shared';
-import { splitValidationResultTypes } from 'App/Containers/RealAccountSignup/helpers/utils';
-import 'Sass/details-form.scss';
+import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
+import FormSubHeader from '../form-sub-header';
 
 const DateOfBirthField = props => (
     <Field name={props.name}>
@@ -37,7 +37,7 @@ const DateOfBirthField = props => (
                     )
                 }
                 value={value}
-                portal_id='modal_root'
+                portal_id={props.portal_id}
                 {...props}
             />
         )}
@@ -76,11 +76,28 @@ const PersonalDetails = ({
     residence_list,
     is_fully_authenticated,
     account_opening_reason_list,
+    is_dashboard,
+    onSubmitEnabledChange,
+    selected_step_ref,
     ...props
 }) => {
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
     const [warning_items, setWarningItems] = React.useState({});
+    const is_submit_disabled_ref = React.useRef(true);
+
+    const isSubmitDisabled = errors => {
+        return selected_step_ref?.current?.isSubmitting || Object.keys(errors).length > 0;
+    };
+
+    const checkSubmitStatus = errors => {
+        const is_submit_disabled = isSubmitDisabled(errors);
+
+        if (is_submit_disabled_ref.current !== is_submit_disabled) {
+            is_submit_disabled_ref.current = is_submit_disabled;
+            onSubmitEnabledChange?.(!is_submit_disabled);
+        }
+    };
 
     const handleCancel = values => {
         const current_step = getCurrentStep() - 1;
@@ -91,6 +108,7 @@ const PersonalDetails = ({
     const handleValidate = values => {
         const { errors, warnings } = splitValidationResultTypes(validate(values));
         setWarningItems(warnings);
+        checkSubmitStatus(errors);
         return errors;
     };
 
@@ -111,8 +129,14 @@ const PersonalDetails = ({
         }
     };
 
+    const getLastNameLabel = () => {
+        if (is_dashboard) return localize('Family name*');
+        return is_svg ? localize('Last name*') : localize('Last name');
+    };
+
     return (
         <Formik
+            innerRef={selected_step_ref}
             initialValues={{ ...props.value }}
             validate={handleValidate}
             validateOnMount
@@ -120,17 +144,26 @@ const PersonalDetails = ({
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({ handleSubmit, isSubmitting, errors, setFieldValue, touched, values, handleChange, handleBlur }) => (
+            {({ handleSubmit, errors, setFieldValue, touched, values, handleChange, handleBlur }) => (
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef, height }) => (
                         <form ref={setRef} onSubmit={handleSubmit} autoComplete='off' onClick={handleClickOutside}>
                             <Div100vhContainer className='details-form' height_offset='110px' is_disabled={isDesktop()}>
                                 <ThemedScrollbars height={height} onScroll={closeTooltipOnScroll}>
+                                    {is_dashboard && (
+                                        <div className='details-form__sub-header'>
+                                            <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
+                                                {localize(
+                                                    'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.'
+                                                )}
+                                            </Text>
+                                        </div>
+                                    )}
                                     <div
                                         className='details-form__elements'
                                         style={{ paddingBottom: isDesktop() ? 'unset' : null }}
                                     >
-                                        <FormSubHeader title={localize('Title and name')} />
+                                        {!is_dashboard && <FormSubHeader title={localize('Title and name')} />}
                                         {'salutation' in props.value && ( // TODO: [deriv-eu] Remove salutation once api is optional
                                             <RadioGroup
                                                 className='dc-radio__input'
@@ -152,8 +185,12 @@ const PersonalDetails = ({
                                         {'first_name' in props.value && (
                                             <FormInputField
                                                 name='first_name'
-                                                required={is_svg}
-                                                label={is_svg ? localize('First name*') : localize('First name')}
+                                                required={is_svg || is_dashboard}
+                                                label={
+                                                    is_svg || is_dashboard
+                                                        ? localize('First name*')
+                                                        : localize('First name')
+                                                }
                                                 disabled={disabled_items.includes('first_name')}
                                                 placeholder={localize('John')}
                                             />
@@ -161,20 +198,25 @@ const PersonalDetails = ({
                                         {'last_name' in props.value && (
                                             <FormInputField
                                                 name='last_name'
-                                                required={is_svg}
-                                                label={is_svg ? localize('Last name*') : localize('Last name')}
+                                                required={is_svg || is_dashboard}
+                                                label={getLastNameLabel()}
                                                 disabled={disabled_items.includes('last_name')}
                                                 placeholder={localize('Doe')}
                                             />
                                         )}
-                                        <FormSubHeader title={localize('Other details')} />
+                                        {!is_dashboard && <FormSubHeader title={localize('Other details')} />}
                                         {'date_of_birth' in props.value && (
                                             <DateOfBirthField
                                                 name='date_of_birth'
-                                                required={is_svg}
-                                                label={is_svg ? localize('Date of birth*') : localize('Date of birth')}
+                                                required={is_svg || is_dashboard}
+                                                label={
+                                                    is_svg || is_dashboard
+                                                        ? localize('Date of birth*')
+                                                        : localize('Date of birth')
+                                                }
                                                 disabled={disabled_items.includes('date_of_birth')}
                                                 placeholder={localize('01-07-1999')}
+                                                portal_id={is_dashboard ? '' : 'modal_root'}
                                             />
                                         )}
                                         {'place_of_birth' in props.value && (
@@ -280,9 +322,15 @@ const PersonalDetails = ({
                                         {'phone' in props.value && (
                                             <FormInputField
                                                 name='phone'
-                                                label={is_svg ? localize('Phone number*') : localize('Phone number')}
+                                                label={
+                                                    is_svg || is_dashboard
+                                                        ? localize('Phone number*')
+                                                        : localize('Phone number')
+                                                }
                                                 placeholder={
-                                                    is_svg ? localize('Phone number*') : localize('Phone number')
+                                                    is_svg || is_dashboard
+                                                        ? localize('Phone number*')
+                                                        : localize('Phone number')
                                                 }
                                                 maxLength={50}
                                             />
@@ -491,7 +539,7 @@ const PersonalDetails = ({
                                 <FormSubmitButton
                                     cancel_label={localize('Previous')}
                                     has_cancel
-                                    is_disabled={isSubmitting || Object.keys(errors).length > 0}
+                                    is_disabled={isSubmitDisabled(errors)}
                                     is_absolute={isMobile()}
                                     label={localize('Next')}
                                     onCancel={() => handleCancel(values)}

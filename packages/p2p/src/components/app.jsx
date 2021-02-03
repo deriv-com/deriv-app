@@ -3,7 +3,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import { isMobile } from '@deriv/shared';
-import { HintBox, Icon, Loading, Modal, Tabs, Text } from '@deriv/components';
+import { Icon, Loading, Modal, Tabs, Text } from '@deriv/components';
 import ServerTime from 'Utils/server-time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';

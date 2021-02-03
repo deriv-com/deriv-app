@@ -40,7 +40,7 @@ const initRoutesConfig = ({ consumer_routes }: TRoutesConfig): TRoute[] => [
         is_authenticated: false,
         path: consumer_routes.home,
     },
-    
+
     // It is possible to add a Deriv Crypto only path.
     // ...(is_deriv_crypto
     //     ? [

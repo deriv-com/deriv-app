@@ -87,6 +87,9 @@ $header-height: 4em;
         background-image: var(--contract-gradient-danger);
         z-index: 1000;
 
+        &__title {
+            margin-bottom: 1rem;
+        }
         &--loading {
             display: none;
         }

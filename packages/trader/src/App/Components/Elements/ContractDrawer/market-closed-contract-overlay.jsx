@@ -15,7 +15,13 @@ const MarketClosedContractOverlay = ({ setMarketStatus, symbol }) => {
                 'contract-card__market-closed--loading': is_timer_loading,
             })}
         >
-            <Text align='center' as='p' styles={{ color: 'var(--brand-orange)', marginBottom: '1rem' }} weight='bold'>
+            <Text
+                align='center'
+                as='p'
+                className='contract-card__market-closed__title'
+                styles={{ color: 'var(--brand-orange)' }}
+                weight='bold'
+            >
                 <Localize i18n_default_text='Market is closed' />
             </Text>
             <MarketCountdownTimer

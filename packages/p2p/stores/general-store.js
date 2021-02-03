@@ -229,17 +229,6 @@ export default class GeneralStore extends BaseStore {
         this.setShowPopup(false);
     }
 
-    openApplicationStore = () => {
-        if (mobileOSDetect() === 'Android') {
-            window.location.href =
-                'https://play.app.goo.gl/?link=https://play.google.com/store/apps/details?id=com.deriv.dp2p';
-        }
-        // uncomment when iOS app is ready
-        // if (mobileOSDetect() === 'iOS') {
-        //     window.location.href = 'http://itunes.apple.com/lb/app/truecaller-caller-id-number/id448142450?mt=8';
-        // }
-    };
-
     poiStatusText = status => {
         switch (status) {
             case 'pending':

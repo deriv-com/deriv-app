@@ -235,7 +235,6 @@ export default class CashierStore extends BaseStore {
                 // wait for get_settings so is_virtual gets populated in client-store
                 await this.WS.wait('get_settings');
 
-                // if (this.root_store.client.is_logged_in && !this.root_store.client.is_virtual) {
                 if (this.root_store.client.is_logged_in) {
                     await this.checkP2pStatus();
                     await this.filterPaymentAgentList();

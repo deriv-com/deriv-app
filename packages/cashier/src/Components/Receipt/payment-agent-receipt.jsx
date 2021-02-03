@@ -22,7 +22,14 @@ const PaymentAgentReceipt = ({ currency, history, loginid, receipt, resetPayment
     return (
         <div className='cashier__wrapper--align-left payment-agent__receipt '>
             <div className='cashier__success'>
-                <Text as='h1' color='prominent' line_height='m' size={isMobile() ? 'xs' : 's'} weight='bold'>
+                <Text
+                    as='h1'
+                    color='prominent'
+                    line_height='m'
+                    align='center'
+                    size={isMobile() ? 'xs' : 's'}
+                    weight='bold'
+                >
                     <Localize i18n_default_text='Your funds have been transferred' />
                 </Text>
                 <div className='cashier__transferred-amount cashier__text--bold'>

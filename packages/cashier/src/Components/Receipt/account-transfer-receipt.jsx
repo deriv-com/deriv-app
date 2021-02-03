@@ -56,7 +56,7 @@ const AccountTransferReceipt = ({
 
     return (
         <div className='cashier__wrapper account-transfer__receipt'>
-            <Text as='h2' color='prominent' weight='bold' className='cashier__header'>
+            <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header'>
                 <Localize i18n_default_text='Your funds have been transferred' />
             </Text>
             <div className='cashier__transferred-amount cashier__text--bold'>

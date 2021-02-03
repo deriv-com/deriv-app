@@ -31,7 +31,13 @@ const Row = ({ item_key, label, value }) => (
 const Confirm = ({ data, error, header, onClickBack, onClickConfirm }) => (
     <div className='cashier__wrapper cashier__wrapper--confirm'>
         <Icon icon='IcConfirmDetails' width='128' height='128' />
-        <Text as='h2' color='prominent' weight='bold' className='cashier__header cashier__confirm-header'>
+        <Text
+            as='h2'
+            color='prominent'
+            align='center'
+            weight='bold'
+            className='cashier__header cashier__confirm-header'
+        >
             {header}
         </Text>
         <div className='cashier__confirm-column-wrapper'>

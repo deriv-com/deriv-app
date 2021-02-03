@@ -154,7 +154,6 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
         fetchFinancialAssessment,
         account_settings,
         has_currency,
-        has_real_account,
         is_loading,
         onCancel,
     } = props;

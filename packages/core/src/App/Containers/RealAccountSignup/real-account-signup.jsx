@@ -96,7 +96,7 @@ const RealAccountSignup = ({
                     onError={showErrorModal}
                 />
             ),
-            title: () => (is_eu ? localize('Manage account') : localize('Add or manage account')),
+            title: is_requlated => (is_requlated ? localize('Manage account') : localize('Add or manage account')),
         },
         {
             body: local_props => (
@@ -316,6 +316,7 @@ const RealAccountSignup = ({
                                     currency={currency}
                                     is_isle_of_man_residence={is_isle_of_man_residence}
                                     is_belgium_residence={is_belgium_residence}
+                                    is_eu={is_eu}
                                 />
                             );
                         }

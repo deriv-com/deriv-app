@@ -514,8 +514,7 @@ const AccountSwitcher = props => {
                     ))}
                     {!canUpgrade() &&
                         canOpenMulti() &&
-                        (!is_regulated_able_to_change_currency ||
-                            (is_regulated_able_to_change_currency && props.can_change_fiat_currency)) && (
+                        (!props.is_eu || (props.is_eu && props.can_change_fiat_currency)) && (
                             <Button
                                 className='acc-switcher__btn'
                                 secondary

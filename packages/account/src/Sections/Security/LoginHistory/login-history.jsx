@@ -21,7 +21,7 @@ const getFormattedData = login_history => {
         const time = environment_split[1].replace('GMT', '');
         const date_time = convertDateFormat(`${date} ${time}`, 'D-MMMM-YY hh:mm:ss', 'YYYY-MM-DD hh:mm:ss');
         data[i].date = `${date_time} GMT`;
-        data[i].action = login_history[i].action;
+        data[i].action = login_history[i].action === 'login' ? localize('Login') : localize('Logout');
         const user_agent = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
         const ua = Bowser.getParser(user_agent)?.getBrowser();
         data[i].browser = ua ? `${ua.name} v${ua.version}` : localize('Unknown');

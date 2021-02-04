@@ -20,7 +20,7 @@ const Checkbox = React.forwardRef(
         ref
     ) => {
         const [checked, setChecked] = React.useState(defaultChecked || value);
-        const input_ref = React.useRef(ref || null);
+        const input_ref = React.useRef(ref?.current || null);
 
         React.useEffect(() => {
             setChecked(defaultChecked || value);

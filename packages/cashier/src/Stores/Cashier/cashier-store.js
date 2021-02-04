@@ -232,7 +232,7 @@ export default class CashierStore extends BaseStore {
                 this.root_store.client.currency,
             ],
             async () => {
-                // wait for get_settings so is_virtual gets populated in client-store
+                // wait for client settings to be populated in client-store
                 await this.WS.wait('get_settings');
 
                 if (this.root_store.client.is_logged_in) {

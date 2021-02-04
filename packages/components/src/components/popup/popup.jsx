@@ -51,12 +51,14 @@ const Popup = ({
                     header_backgound_color={header_backgound_color}
                     should_header_stick_body
                 >
-                    <Body
-                        active_tab_icon_color={active_tab_icon_color}
-                        background_color={header_backgound_color}
-                        tab_icon_color={tab_icon_color}
-                        tabs_detail={tabs_detail}
-                    />
+                    <Modal.Body className='dc-popup-body'>
+                        <Body
+                            active_tab_icon_color={active_tab_icon_color}
+                            background_color={header_backgound_color}
+                            tab_icon_color={tab_icon_color}
+                            tabs_detail={tabs_detail}
+                        />
+                    </Modal.Body>
                 </MobileFullPageModal>
             </MobileWrapper>
             <DesktopWrapper>

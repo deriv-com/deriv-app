@@ -7,7 +7,10 @@ module.exports = function (env, argv) {
     return {
         context: path.resolve(__dirname, '../src'),
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
-        entry: path.resolve(__dirname, '../src', 'index.js'),
+        entry: {
+            trader: path.resolve(__dirname, '../src', 'index.js'),
+            MT5Store: 'Stores/Modules/MT5/mt5-store.js',
+        },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {
             rules: rules(),
@@ -45,7 +48,7 @@ module.exports = function (env, argv) {
             // }
         },
         output: {
-            filename: 'js/trader.main.js',
+            filename: 'js/[name].js',
             publicPath: base,
             path: path.resolve(__dirname, '../dist'),
             chunkFilename: 'js/trader.[name].[contenthash].js',

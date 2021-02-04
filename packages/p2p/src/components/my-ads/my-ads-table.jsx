@@ -39,14 +39,14 @@ const MyAdsTable = () => {
         return (
             <React.Fragment>
                 <div className='p2p-my-ads__header'>
-                    <Button large primary onClick={my_ads_store.onClickCreate}>
+                    <Button large primary is_disabled={general_store.is_barred} onClick={my_ads_store.onClickCreate}>
                         {localize('Create new ad')}
                     </Button>
                     <ToggleAds />
                 </div>
                 <Table
                     className={classNames('p2p-my-ads__table', {
-                        'p2p-my-ads__table--disabled': !general_store.is_listed,
+                        'p2p-my-ads__table--disabled': !general_store.is_listed || general_store.is_barred,
                     })}
                 >
                     <Table.Header>
@@ -84,7 +84,13 @@ const MyAdsTable = () => {
 
     return (
         <Empty icon='IcCashierNoAds' title={localize('You have no adverts')}>
-            <Button primary large className='p2p-empty__button' onClick={() => my_ads_store.onClickCreate()}>
+            <Button
+                className='p2p-empty__button'
+                is_disabled={general_store.is_barred}
+                onClick={() => my_ads_store.onClickCreate()}
+                large
+                primary
+            >
                 {localize('Create new ad')}
             </Button>
         </Empty>

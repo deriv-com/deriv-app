@@ -40,6 +40,7 @@
     "canvas-toBlob": "^1.0.0",
     "extend": "^3.0.2",
     "js-cookie": "^2.2.1",
+    "object.fromentries": "^2.0.0",
     "react": "^16.13.1"
   }
 }

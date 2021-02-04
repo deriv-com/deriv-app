@@ -52,12 +52,18 @@ module.exports = function () {
                             loader: '@deriv/shared/src/loaders/react-import-loader.js',
                         },
                         {
+                            loader: '@deriv/shared/src/loaders/deriv-trader-loader.js',
+                        },
+                        {
+                            loader: '@deriv/shared/src/loaders/deriv-account-loader.js',
+                        },
+                        {
                             loader: 'babel-loader',
                             options: {
                                 cacheDirectory: true,
                                 rootMode: 'upward',
                             },
-                        },
+                        }
                     ],
                 },
                 {
@@ -76,13 +82,25 @@ module.exports = function () {
                                 '@deriv/publisher/utils/css-unit-loader.js',
                             ]
                             : []),
-                        'css-loader',
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                url: false,
+                            },
+                        },
                         {
                             loader: 'postcss-loader',
                             options: {
                                 postcssOptions: {
                                     config: path.resolve(__dirname),
                                 },
+                            },
+                        },
+                        {
+                            loader: 'resolve-url-loader',
+                            options: {
+                                sourceMap: true,
+                                keepQuery: true,
                             },
                         },
                         'sass-loader',

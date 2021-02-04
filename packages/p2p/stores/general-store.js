@@ -69,7 +69,9 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     createAdvertiser(name) {
         requestWS({ p2p_advertiser_create: 1, name }).then(response => {
+            const { sendbird_store, buy_sell_store } = this.root_store;
             const { p2p_advertiser_create } = response;
+
             if (response) {
                 if (response.error) {
                     this.setNicknameError(response.error.message);
@@ -78,8 +80,9 @@ export default class GeneralStore extends BaseStore {
                     this.setIsAdvertiser(!!p2p_advertiser_create.is_approved);
                     this.setNickname(p2p_advertiser_create.name);
                     this.setNicknameError(undefined);
-                    this.root_store.sendbird_store.handleP2pAdvertiserInfo(response);
+                    sendbird_store.handleP2pAdvertiserInfo(response);
                     this.toggleNicknamePopup();
+                    buy_sell_store.hideVerification();
                 }
             }
         });

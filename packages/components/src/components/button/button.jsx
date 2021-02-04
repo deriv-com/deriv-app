@@ -8,7 +8,7 @@ import Text from '../text';
 const ButtonGroup = ({ children, className }) => (
     <div className={classNames('dc-btn__group', className)}>{children}</div>
 );
-
+let button_text = '';
 const Button = ({
     blue,
     children,
@@ -70,11 +70,11 @@ const Button = ({
             {...props}
         >
             {icon && <div className='dc-btn__icon'>{icon}</div>}
-            {text &&
+            {text && <>{(button_text = text[0] ? text[0].toUpperCase() + text.substr(1) : text)}</> &&
                 !(is_loading || is_submit_success) &&
-                ((typeof renderText === 'function' && renderText(text[0].toUpperCase() + text.substr(1))) || (
+                ((typeof renderText === 'function' && renderText(button_text)) || (
                     <Text size='xs' weight='bold' align='center' className={classNames('dc-btn__text', classNameSpan)}>
-                        {text[0].toUpperCase() + text.substr(1)}
+                        {button_text}
                     </Text>
                 ))}
             {is_loading && <ButtonLoading />}

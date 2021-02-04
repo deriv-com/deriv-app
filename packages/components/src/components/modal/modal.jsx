@@ -9,6 +9,7 @@ import Icon from '../icon/icon.jsx';
 import { useOnClickOutside } from '../../hooks';
 
 const ModalElement = ({
+    close_icon_color,
     elements_to_ignore,
     has_close_icon,
     onMount,
@@ -24,9 +25,11 @@ const ModalElement = ({
     is_vertical_top,
     is_title_centered,
     header,
+    header_backgound_color,
     portalId,
     children,
     height,
+    should_header_stick_body,
     width,
     renderTitle,
     small,
@@ -97,9 +100,13 @@ const ModalElement = ({
             {(header || title || rendered_title) && (
                 <div
                     className={classNames('dc-modal-header', {
+                        'dc-modal-header__border-bottom': !should_header_stick_body,
                         [`dc-modal-header--${className}`]: className,
                         [`dc-modal-header--is-title-centered`]: is_title_centered,
                     })}
+                    style={{
+                        background: header_backgound_color,
+                    }}
                 >
                     {rendered_title && (
                         <h3
@@ -130,7 +137,7 @@ const ModalElement = ({
                     )}
                     {has_close_icon && (
                         <div onClick={toggleModal} className='dc-modal-header__close'>
-                            <Icon icon='IcCross' />
+                            <Icon icon='IcCross' color={close_icon_color} />
                         </div>
                     )}
                 </div>
@@ -148,7 +155,9 @@ ModalElement.defaultProps = {
 ModalElement.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
+    close_icon_color: PropTypes.string,
     has_close_icon: PropTypes.bool,
+    header_backgound_color: PropTypes.string,
     header: PropTypes.node,
     id: PropTypes.string,
     is_open: PropTypes.bool,
@@ -156,6 +165,7 @@ ModalElement.propTypes = {
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     small: PropTypes.bool,
+    should_header_stick_body: PropTypes.bool,
     renderTitle: PropTypes.func,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.node]),
     toggleModal: PropTypes.func,
@@ -165,10 +175,12 @@ ModalElement.propTypes = {
 const Modal = ({
     children,
     className,
+    close_icon_color,
     header,
     id,
     is_open,
     has_close_icon,
+    header_backgound_color,
     height,
     onEntered,
     onExited,
@@ -182,6 +194,7 @@ const Modal = ({
     is_vertical_top,
     is_title_centered,
     renderTitle,
+    should_header_stick_body,
     title,
     toggleModal,
     width,
@@ -203,7 +216,10 @@ const Modal = ({
     >
         <ModalElement
             className={className}
+            close_icon_color={close_icon_color}
+            should_header_stick_body={should_header_stick_body}
             header={header}
+            header_backgound_color={header_backgound_color}
             id={id}
             is_open={is_open}
             is_confirmation_modal={is_confirmation_modal}
@@ -238,8 +254,11 @@ Modal.defaultProps = {
 Modal.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
+    close_icon_color: PropTypes.string,
+    should_header_stick_body: PropTypes.bool,
     has_close_icon: PropTypes.bool,
     header: PropTypes.node,
+    header_backgound_color: PropTypes.string,
     height: PropTypes.string,
     id: PropTypes.string,
     is_open: PropTypes.bool,

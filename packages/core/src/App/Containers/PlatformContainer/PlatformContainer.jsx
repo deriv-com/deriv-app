@@ -8,7 +8,9 @@ const PlatformContainer = ({ ...props }) => {
     const is_crypto_app = window.localStorage.getItem('is_deriv_crypto_app')
         ? window.localStorage.getItem('is_deriv_crypto_app') === 'true'
         : process.env.IS_CRYPTO_APP;
-    const is_dashboard = window.localStorage.getItem('is_dashboard') === 'true';
+    const is_dashboard = window.localStorage.getItem(DERIV_DASHBOARD_KEY)
+        ? window.localStorage.getItem(DERIV_DASHBOARD_KEY) === 'true'
+        : process.env.IS_DASHBOARD;
     const [deriv_crypto, setDerivCrypto] = React.useState(is_crypto_app);
     const [deriv_dashboard, setDerivDashboard] = React.useState(is_dashboard);
 

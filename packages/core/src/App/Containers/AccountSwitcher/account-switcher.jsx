@@ -179,7 +179,7 @@ const AccountSwitcher = props => {
                                     acc.server === s.id
                             )
                     ).length;
-                    if (number_market_type_available) {
+                    if (number_market_type_available && has_account.account_type === 'real') {
                         has_account = false;
                     }
                 }

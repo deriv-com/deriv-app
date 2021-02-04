@@ -56,7 +56,7 @@ class ClientStore extends BaseStore {
     public setAccountCurrency?: () => void;
 
     @computed
-    public get has_atleast_one_wallet(): boolean {
+    public get has_wallet_account(): boolean {
         // TODO: return boolean based on existence of wallet accounts in `accounts_list`
         return !!this.accounts_list?.some(account => account.is_wallet);
     }

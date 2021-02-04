@@ -27,6 +27,6 @@ export type TAccountWizard = {
     account_settings?: GetSettings;
     onCancel: () => void;
     real_account_signup_target: string;
-    has_atleast_one_wallet: boolean;
+    has_wallet_account: boolean;
     [x: string]: any;
 };

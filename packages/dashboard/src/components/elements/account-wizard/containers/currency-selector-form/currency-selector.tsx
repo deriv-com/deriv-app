@@ -10,7 +10,7 @@ const CurrencySelectorForm: React.FC = props => {
         currency,
         has_active_real_account,
         upgradeable_currencies,
-        has_atleast_one_wallet,
+        has_wallet_account,
     } = client_store;
     const { real_account_signup, resetRealAccountSignupParams } = ui_store;
 
@@ -23,7 +23,7 @@ const CurrencySelectorForm: React.FC = props => {
             legal_allowed_currencies={upgradeable_currencies}
             real_account_signup={real_account_signup}
             resetRealAccountSignupParams={resetRealAccountSignupParams}
-            has_atleast_one_wallet={has_atleast_one_wallet}
+            has_wallet_account={has_wallet_account}
             has_cancel
         />
     );

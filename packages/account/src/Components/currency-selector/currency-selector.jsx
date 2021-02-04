@@ -28,7 +28,7 @@ const CurrencySelector = ({
     has_cancel = false,
     selected_step_ref,
     onSubmitEnabledChange,
-    has_atleast_one_wallet,
+    has_wallet_account,
     ...props
 }) => {
     const { is_deriv_crypto, is_dashboard } = React.useContext(PlatformContext);
@@ -91,7 +91,7 @@ const CurrencySelector = ({
     const getSubmitLabel = () => {
         if (set_currency) {
             return localize('Set currency');
-        } else if (has_atleast_one_wallet) {
+        } else if (has_wallet_account) {
             return localize('Finish');
         }
         return localize('Next');

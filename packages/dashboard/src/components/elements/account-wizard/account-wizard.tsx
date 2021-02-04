@@ -202,7 +202,7 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
     const getFormValues = () => {
         const wizard_steps = state_items;
 
-        if (props.has_atleast_one_wallet) {
+        if (props.has_wallet_account) {
             // To get default personal and address details from `account_settings`
             wizard_steps.push(personalDetailsConfig(props), addressDetailsConfig(props));
         }
@@ -354,7 +354,7 @@ const AccountWizardWrapper: React.FC = () => {
         fetchFinancialAssessment,
         needs_financial_assessment,
         financial_assessment,
-        has_atleast_one_wallet,
+        has_wallet_account,
     } = client_store;
     const { real_account_signup_target } = ui_store;
     const [is_cancel_visible, setIsCancelVisisible] = React.useState(false);
@@ -379,7 +379,7 @@ const AccountWizardWrapper: React.FC = () => {
                 fetchFinancialAssessment={fetchFinancialAssessment}
                 needs_financial_assessment={needs_financial_assessment}
                 financial_assessment={financial_assessment}
-                has_atleast_one_wallet={has_atleast_one_wallet}
+                has_wallet_account={has_wallet_account}
                 onCancel={() => setIsCancelVisisible(true)}
             />
             <CancelProgressModal

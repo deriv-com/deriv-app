@@ -27,7 +27,7 @@ export const getItems = (props: TAccountWizard): TWizardItemConfig[] => {
             : []),
     ];
 
-    if (!props.has_atleast_one_wallet) {
+    if (!props.has_wallet_account) {
         steps.push(
             ...(shouldShowPersonalAndAddressDetailsAndCurrency(props)
                 ? [personalDetailsConfig(props, PersonalDetails, true)]

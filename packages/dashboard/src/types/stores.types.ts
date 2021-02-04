@@ -33,7 +33,7 @@ export type TClientStore = {
     realAccountSignup?: () => Promise<void>;
     has_currency?: () => boolean;
     setAccountCurrency?: () => void;
-    has_atleast_one_wallet: boolean;
+    has_wallet_account: boolean;
 };
 
 export type TConfigStore = {

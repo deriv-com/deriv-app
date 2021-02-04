@@ -16,7 +16,7 @@ const NumberButton = ({ onSelect, className, number }) => (
         classNameSpan='dc-numpad__number--is-left-aligned'
         has_effect
         onClick={() => onSelect(number)}
-        text={number}
+        text={String(number)}
         renderText={text => (
             <Text styles={{ fontSize: '1.8rem' }} weight='bold' align='center'>
                 {text}

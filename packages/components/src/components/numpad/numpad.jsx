@@ -151,9 +151,18 @@ const Numpad = ({
             />
             <NumberGrid onSelect={onSelect} />
             {is_currency && (
-                <Button type='secondary' className='dc-numpad__number' has_effect onClick={() => onSelect('.')}>
-                    .
-                </Button>
+                <Button
+                    type='secondary'
+                    className='dc-numpad__number'
+                    has_effect
+                    onClick={() => onSelect('.')}
+                    text='.'
+                    renderText={text => (
+                        <Text styles={{ fontSize: '1.8rem' }} weight='bold' align='center'>
+                            {text}
+                        </Text>
+                    )}
+                />
             )}
             <div className='dc-numpad__bkspace'>
                 <Button

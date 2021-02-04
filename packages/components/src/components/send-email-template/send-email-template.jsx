@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { PlatformContext } from '@deriv/shared';
 import Button from '../button/button.jsx';
 import Icon from '../icon/icon.jsx';
 import Text from '../text';
@@ -18,6 +19,7 @@ const SendEmailTemplate = ({
     const [is_email_not_received_clicked, setIsEmailNotReceivedClicked] = React.useState(false);
     const [is_resend_btn_disabled, setIsResendBtnDisabled] = React.useState(false);
     const [resend_email_btn_text, setResendEmailBtnText] = React.useState(txt_resend);
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     const timeout_limit = resend_timeout || 60;
     let resend_interval = null;
@@ -57,10 +59,19 @@ const SendEmailTemplate = ({
     return (
         <div className='send-email-template'>
             <div className='send-email-template__sent'>
-                <Icon icon='IcEmailSent' className='send-email-template__icon' size={128} />
+                <Icon
+                    icon={is_dashboard ? 'IcEmailSentDashboard' : 'IcEmailSent'}
+                    className='send-email-template__icon'
+                    size={128}
+                />
                 <h1 className='send-email-template__title'>{title}</h1>
-                <p className='send-email-template__subtitle'>{subtitle}</p>
-                <Text as='p' size='xs' styles={{ lineHeight: '20px' }} className='send-email-template__subtitle'>
+                <Text
+                    as='p'
+                    size='xs'
+                    styles={{ lineHeight: '20px' }}
+                    className='send-email-template__subtitle'
+                    align='center'
+                >
                     {subtitle}
                 </Text>
                 <Button

@@ -4,7 +4,7 @@ import { Icon, StaticUrl } from '@deriv/components';
 import { PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
-import PoaButton from 'Components/poa-button';
+import ContinueTradingButton from 'Components/poa-continue-trading-button';
 
 const OnfidoFailed = ({ suspected }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
@@ -20,7 +20,7 @@ const OnfidoFailed = ({ suspected }) => {
             icon={<Icon icon='IcPoiSuspected' width={237} height={128} />}
             className='account-management-dashboard'
         >
-            <PoaButton />
+            <ContinueTradingButton />
         </IconMessageContent>;
     return (
         <IconMessageContent
@@ -37,7 +37,7 @@ const OnfidoFailed = ({ suspected }) => {
             }
             className='account-management-dashboard'
         >
-            {is_dashboard && <PoaButton />}
+            {is_dashboard && <ContinueTradingButton />}
         </IconMessageContent>
     );
 };

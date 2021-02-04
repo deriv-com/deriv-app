@@ -50,7 +50,7 @@ import {
 const ConfirmationContent = ({ className }) => {
     return (
         <React.Fragment>
-            <Text as='p' className={className}>
+            <Text as='p' size='xs' className={className}>
                 <Localize
                     i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you (that is, whether you possess the experience and knowledge to understand the risks involved).<0/><1/>'
                     components={[<br key={0} />, <br key={1} />]}
@@ -900,9 +900,9 @@ class FinancialAssessment extends React.Component {
                                             has_effect
                                             is_loading={is_btn_loading}
                                             is_submit_success={is_submit_success}
-                                            text={localize('Submit')}
+                                            text={is_dashboard ? localize('Save') : localize('Submit')}
                                             large
-                                            {...(is_dashboard ? { blue: true } : { primary: true })}
+                                            primary
                                         />
                                     </FormFooter>
                                 </form>

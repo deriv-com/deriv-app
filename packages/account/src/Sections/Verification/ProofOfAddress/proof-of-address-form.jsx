@@ -288,7 +288,10 @@ const ProofOfAddressForm = ({
                     {form_state.should_show_form && (
                         <form noValidate className='account-form' onSubmit={handleSubmit}>
                             <FormBody scroll_offset={isMobile() ? mobile_scroll_offset : '80px'}>
-                                <FormSubHeader title={localize('Details')} />
+                                <FormSubHeader
+                                    title={is_dashboard ? localize('1. Address') : localize('Details')}
+                                    subtitle={is_dashboard && '(All fields are required)'}
+                                />
                                 <FormBodySection
                                     has_side_note={is_dashboard}
                                     side_note={localize(
@@ -423,7 +426,13 @@ const ProofOfAddressForm = ({
                                     </div>
                                 </FormBodySection>
 
-                                <FormSubHeader title={localize('Please upload one of the following:')} />
+                                <FormSubHeader
+                                    title={
+                                        is_dashboard
+                                            ? localize('2. Please upload one of the following:')
+                                            : localize('Please upload one of the following:')
+                                    }
+                                />
                                 <FormBodySection
                                     has_side_note={is_dashboard && isDesktop()}
                                     side_note={<UploaderSideNote />}
@@ -459,7 +468,7 @@ const ProofOfAddressForm = ({
                                     is_loading={form_state.is_btn_loading}
                                     is_submit_success={form_state.is_submit_success}
                                     text={localize('Save and submit')}
-                                    {...(is_dashboard ? { blue: true } : { primary: true })}
+                                    primary
                                 />
                             </FormFooter>
                         </form>

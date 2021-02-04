@@ -195,7 +195,7 @@ class ChangePasswordForm extends React.Component {
                                         has_effect
                                         text={localize('Change password')}
                                         large
-                                        {...(is_dashboard ? { blue: true } : { primary: true })}
+                                        primary
                                     />
                                 </div>
                             </FormFooter>

@@ -28,7 +28,6 @@ import {
     removeObjProperties,
     filterObjProperties,
     PlatformContext,
-    isDesktop,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
@@ -473,7 +472,11 @@ export class PersonalDetailsForm extends React.Component {
                                                             data-lpignore='true'
                                                             type='text'
                                                             name='last_name'
-                                                            label={localize('Last name*')}
+                                                            label={
+                                                                is_dashboard
+                                                                    ? localize('Family name')
+                                                                    : localize('Last name*')
+                                                            }
                                                             value={values.last_name}
                                                             onChange={handleChange}
                                                             onBlur={handleBlur}
@@ -969,18 +972,18 @@ export class PersonalDetailsForm extends React.Component {
                                 </FormBody>
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                    {!(
-                                        isSubmitting ||
-                                        is_submit_success ||
-                                        (status && status.msg) ||
-                                        (is_dashboard && isDesktop())
-                                    ) && (
-                                        <div className='account-form__footer-note'>
-                                            {localize(
-                                                'Please make sure your information is correct or it may affect your trading experience.'
-                                            )}
-                                        </div>
-                                    )}
+                                    {!(isSubmitting || is_submit_success || (status && status.msg)) &&
+                                        (!is_dashboard || isMobile()) && (
+                                            <div
+                                                className={classNames('account-form__footer-note', {
+                                                    'account-form__footer-note--dashboard': is_dashboard,
+                                                })}
+                                            >
+                                                {localize(
+                                                    'Please make sure your information is correct or it may affect your trading experience.'
+                                                )}
+                                            </div>
+                                        )}
                                     <Button
                                         className={classNames('account-form__footer-btn', {
                                             'dc-btn--green': is_submit_success,
@@ -1019,7 +1022,7 @@ export class PersonalDetailsForm extends React.Component {
                                         is_submit_success={is_submit_success}
                                         text={is_dashboard ? localize('Save') : localize('Submit')}
                                         large
-                                        {...(is_dashboard ? { blue: true } : { primary: true })}
+                                        primary
                                     />
                                 </FormFooter>
                             </form>

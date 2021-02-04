@@ -1,6 +1,5 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import classNames from 'classnames';
 import { Icon, StaticUrl, Text } from '@deriv/components';
 import { PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -18,13 +17,7 @@ const SEArticle = ({ toggleArticle, is_eu }) => {
     const eu_text = (
         <Localize
             i18n_default_text='These trading limits and self-exclusion help you control the amount of money and time you spend on Deriv.com and exercise <0>responsible trading</0>.'
-            components={[
-                <StaticUrl
-                    key={0}
-                    className={classNames('link', 'link--orange', { 'link--blue': is_dashboard })}
-                    href='/responsible'
-                />,
-            ]}
+            components={[<StaticUrl key={0} className='link link--orange' href='/responsible' />]}
         />
     );
 
@@ -36,13 +29,7 @@ const SEArticle = ({ toggleArticle, is_eu }) => {
                 <Text as='p' size='xxs' className='account__article-description'>
                     <Localize
                         i18n_default_text='These self-exclusion limits help you control the amount of money and time you spend trading on DTrader, DBot, and SmartTrader. The limits you set here will help you exercise <0>responsible trading.</0>'
-                        components={[
-                            <StaticUrl
-                                key={0}
-                                className={classNames('link', 'link--orange', { 'link--blue': is_dashboard })}
-                                href='/responsible-trading'
-                            />,
-                        ]}
+                        components={[<StaticUrl key={0} className='link link--orange' href='/responsible-trading' />]}
                     />
                 </Text>
                 <Text as='p' size='xxs' className='account__article-description'>
@@ -54,13 +41,7 @@ const SEArticle = ({ toggleArticle, is_eu }) => {
                 <Text as='p' size='xxs' className='account__article-description'>
                     <Localize
                         i18n_default_text='You can also exclude yourself entirely for a specified duration. Once the self-exclusion period has ended, you can either extend it further or resume trading immediately. If you wish to reduce or remove the self-exclusion period, contact our <0>Customer Support.</0>'
-                        components={[
-                            <StaticUrl
-                                key={0}
-                                className={classNames('link', 'link--orange', { 'link--blue': is_dashboard })}
-                                href='/responsible-trading'
-                            />,
-                        ]}
+                        components={[<StaticUrl key={0} className='link link--orange' href='/responsible-trading' />]}
                     />
                 </Text>
             </article>

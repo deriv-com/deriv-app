@@ -126,7 +126,11 @@ class ConnectedApps extends React.Component {
                 >
                     <Modal.Body>
                         <div className='connected-app-modal'>
-                            <Icon icon='IcAccountTrashCan' size={128} className='connected-app-modal__icon' />
+                            <Icon
+                                icon={is_dashboard ? 'IcAccountTrashCanDashboard' : 'IcAccountTrashCan'}
+                                size={128}
+                                className='connected-app-modal__icon'
+                            />
                             <Text as='p' color='prominent' weight='bold'>
                                 {localize('Confirm revoke access?')}
                             </Text>

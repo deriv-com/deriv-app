@@ -40,7 +40,11 @@ const SectionHeader = ({ title }) => {
     if (is_dashboard) {
         return <FormSubHeader title={title} />;
     }
-    return <h2 className='self-exclusion__header'>{title}</h2>;
+    return (
+        <Text as='h2' className='self-exclusion__header'>
+            {title}
+        </Text>
+    );
 };
 
 class SelfExclusion extends React.Component {
@@ -451,17 +455,22 @@ class SelfExclusion extends React.Component {
                                                     </div>
                                                 </div>
                                             </Modal>
-                                            <div
-                                                onClick={() => {
-                                                    this.setState({ is_confirm_page: false, submit_error_message: '' });
-                                                }}
-                                                className='self-exclusion__back'
-                                            >
-                                                <Icon icon='IcArrowLeftBold' />
-                                                <Text as='p' size='xs' weight='bold'>
-                                                    {localize('Back')}
-                                                </Text>
-                                            </div>
+                                            {!is_dashboard && (
+                                                <div
+                                                    onClick={() => {
+                                                        this.setState({
+                                                            is_confirm_page: false,
+                                                            submit_error_message: '',
+                                                        });
+                                                    }}
+                                                    className='self-exclusion__back'
+                                                >
+                                                    <Icon icon='IcArrowLeftBold' />
+                                                    <Text as='p' size='xs' weight='bold'>
+                                                        {localize('Back')}
+                                                    </Text>
+                                                </div>
+                                            )}
                                             <div className='self-exclusion__confirm'>
                                                 <SectionHeader title={localize('You have set the following limits:')} />
                                                 {changed_attributes.map((key, idx) => {
@@ -561,14 +570,25 @@ class SelfExclusion extends React.Component {
                                                         text={localize('Confirm my limits')}
                                                     />
                                                 ) : (
-                                                    <Button
-                                                        is_loading={isSubmitting}
-                                                        is_disabled={isSubmitting}
-                                                        primary
-                                                        large
-                                                        type='submit'
-                                                        text={localize('Agree and accept')}
-                                                    />
+                                                    <div className='self-exclusion__footer-button'>
+                                                        {is_dashboard && (
+                                                            <Button
+                                                                secondary
+                                                                large
+                                                                type='submit'
+                                                                text={localize('Back')}
+                                                                onClick={this.backToReview}
+                                                            />
+                                                        )}
+                                                        <Button
+                                                            is_loading={isSubmitting}
+                                                            is_disabled={isSubmitting}
+                                                            primary
+                                                            large
+                                                            type='submit'
+                                                            text={localize('Agree and accept')}
+                                                        />
+                                                    </div>
                                                 )}
                                             </div>
                                         </React.Fragment>
@@ -1005,7 +1025,7 @@ class SelfExclusion extends React.Component {
                                                     onClick={() => this.goToConfirm(values)}
                                                     type='button'
                                                 >
-                                                    {localize('Save')}
+                                                    {is_dashboard ? localize('Next') : localize('Save')}
                                                 </Button>
                                             </div>
                                         </React.Fragment>

@@ -73,7 +73,7 @@ const DeactivateAccountSteps = ({ redirectToReasons }) => {
                 })}
                 large
                 onClick={() => redirectToReasons()}
-                {...(is_dashboard ? { blue: true } : { primary: true })}
+                primary
             >
                 <Localize i18n_default_text='Continue to account deactivation' />
             </Button>

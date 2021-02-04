@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { PlatformContext } from '@deriv/shared';
 import Button from '../button/button.jsx';
 import Text from '../text';
 
@@ -18,8 +17,6 @@ const FormSubmitButton = ({
     onCancel,
     ...props
 }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
-
     return (
         <div
             className={classNames('dc-form-submit-button', className, {
@@ -46,7 +43,7 @@ const FormSubmitButton = ({
                 text={label}
                 is_loading={is_loading}
                 large
-                {...(is_dashboard ? { blue: true } : { primary: true })}
+                primary
                 {...props}
             />
         </div>

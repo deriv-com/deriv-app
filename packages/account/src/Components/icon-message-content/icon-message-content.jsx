@@ -27,13 +27,18 @@ const IconMessageContent = ({ children, className, full_width, icon, icon_row, m
                 </div>
             )}
             {icon_row && <div>{icon_row}</div>}
-            <div
+            <Text
+                as='div'
+                color='general'
+                weight='bold'
+                size='s'
+                align='center'
                 className={classNames('account-management__message', {
                     [`${className}__message`]: className,
                 })}
             >
                 {message}
-            </div>
+            </Text>
             {text && (
                 <div className='account-management__text-container'>
                     <Text

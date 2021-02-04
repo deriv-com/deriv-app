@@ -74,19 +74,6 @@
             color: var(--text-colored-background);
         }
     }
-    &--blue {
-        background: var(--brand-apple-blue);
-        & .dc-btn__text,
-        .dc-btn__icon {
-            color: var(--text-colored-background);
-        }
-        &:hover {
-            background: var(--brand-apple-blue);
-        }
-        &:disabled {
-            opacity: 0.32;
-        }
-    }
     &--dashboard-primary {
         background: var(--dashboard-primary);
 

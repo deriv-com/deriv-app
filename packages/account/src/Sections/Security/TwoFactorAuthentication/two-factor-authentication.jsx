@@ -105,11 +105,7 @@ const TwoFactorAuthentication = ({ email_address, is_switching }) => {
                 </MobileWrapper>
                 <h2 className='two-factor__title'>{localize('How to set up 2FA for your Deriv account')}</h2>
                 <div>
-                    <Timeline
-                        className={classNames('two-factor__timeline', {
-                            'two-factor__timeline--dashboard': is_dashboard,
-                        })}
-                    >
+                    <Timeline className='two-factor__timeline'>
                         <Timeline.Item
                             item_title={
                                 <Localize

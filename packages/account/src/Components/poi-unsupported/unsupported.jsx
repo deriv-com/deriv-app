@@ -10,7 +10,7 @@ const UnsupportedIconRow = () => {
         <div className='poi-icon-row'>
             <div className='poi-icon-row__icon-container'>
                 <Icon icon={is_dashboard ? 'IcIdentityCardDashboard' : 'IcIdentityCard'} size={90} />
-                <Text color='less-prominent' as='p'>
+                <Text color='prominent' as='p'>
                     {localize('Identity card')}
                 </Text>
                 <Text line_height='xs' color='less-prominent' as='p'>
@@ -19,7 +19,7 @@ const UnsupportedIconRow = () => {
             </div>
             <div className='poi-icon-row__icon-container'>
                 <Icon icon={is_dashboard ? 'IcDrivingLicenseDashboard' : 'IcDrivingLicense'} size={90} />
-                <Text color='less-prominent' as='p'>
+                <Text color='prominent' as='p'>
                     {localize('Driving license')}
                 </Text>
                 <Text line_height='xs' color='less-prominent' as='p'>
@@ -28,7 +28,7 @@ const UnsupportedIconRow = () => {
             </div>
             <div className='poi-icon-row__icon-container'>
                 <Icon icon={is_dashboard ? 'IcPassportDashboard' : 'IcPassport'} size={90} />
-                <Text color='less-prominent' as='p'>
+                <Text color='prominent' as='p'>
                     {localize('Passport')}
                 </Text>
                 <Text line_height='xs' color='less-prominent' as='p'>

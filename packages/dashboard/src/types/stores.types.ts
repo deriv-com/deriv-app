@@ -83,6 +83,5 @@ export type TUIStore = {
     resetRealAccountSignupParams?: () => void;
     enableGetPasswordModal: () => void;
     disableGetPasswordModal: () => void;
-    openTradeModal: () => void;
-    closeTradeModal: () => void;
+    toggleTradeModal: () => void;
 };

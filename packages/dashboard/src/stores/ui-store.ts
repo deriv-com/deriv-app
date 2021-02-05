@@ -44,13 +44,8 @@ class UIStore extends BaseStore {
     }
 
     @action.bound
-    public openTradeModal(): void {
-        this.is_trade_modal_open = true;
-    }
-
-    @action.bound
-    public closeTradeModal(): void {
-        this.is_trade_modal_open = false;
+    public toggleTradeModal(state_change = !this.is_trade_modal_open): void {
+        this.is_trade_modal_open = !!state_change;
     }
 
     @action.bound

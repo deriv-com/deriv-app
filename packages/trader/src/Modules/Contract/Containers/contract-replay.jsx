@@ -46,7 +46,6 @@ const ContractReplay = ({
 
     React.useEffect(() => {
         const url_contract_id = +/[^/]*$/.exec(location.pathname)[0];
-        /* eslint-disable no-console */
         onMount(contract_id || url_contract_id);
         setIsVisible(true);
 

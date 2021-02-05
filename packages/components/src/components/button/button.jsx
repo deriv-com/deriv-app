@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ButtonLoading from './button_loading.jsx';
 import Icon from '../icon';
+import Text from '../text';
 
 const ButtonGroup = ({ children, className }) => (
     <div className={classNames('dc-btn__group', className)}>{children}</div>
 );
-
 const Button = ({
     blue,
     children,
@@ -36,6 +36,7 @@ const Button = ({
     alternate,
     small,
     tertiary,
+    renderText,
     ...props
 }) => {
     const classes = classNames(
@@ -70,15 +71,21 @@ const Button = ({
             {...props}
         >
             {icon && <div className={classNames('dc-btn__icon', { 'dc-btn__icon--circle': is_circle })}>{icon}</div>}
-            {text && !(is_loading || is_submit_success) && (
-                <span className={classNames('dc-btn__text', classNameSpan)}>
-                    {text[0].toUpperCase() + text.substr(1)}
-                </span>
-            )}
+            {text &&
+                !(is_loading || is_submit_success) &&
+                ((typeof renderText === 'function' && renderText(text[0].toUpperCase() + text.substr(1))) || (
+                    <Text size='xs' weight='bold' align='center' className={classNames('dc-btn__text', classNameSpan)}>
+                        {text[0].toUpperCase() + text.substr(1)}
+                    </Text>
+                ))}
             {is_loading && <ButtonLoading />}
             {is_submit_success && <Icon icon='IcCheckmark' color='active' size={24} />}
             {is_plus && <Icon icon='IcAddBold' color='black' size={18} />}
-            {!text && children && <span className={classNames('dc-btn__text', classNameSpan)}>{children}</span>}
+            {!text && children && (
+                <Text size='xs' weight='bold' align='center' className={classNames('dc-btn__text', classNameSpan)}>
+                    {children}
+                </Text>
+            )}
         </button>
     );
     const wrapper = <div className={wrapperClassName}>{button}</div>;

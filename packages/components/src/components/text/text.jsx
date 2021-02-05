@@ -20,7 +20,6 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
             setStyle(class_styles);
         }
     }, [size, color, line_height, weight, align]);
-
     const class_names = classNames('dc-text', className);
     return React.createElement(as || 'span', { className: class_names, style, ...props }, children);
 };

@@ -49,8 +49,6 @@ const Trade = ({
 
     React.useEffect(() => {
         onMount();
-        /* eslint-disable no-console */
-        console.time('trader-render');
         return () => onUnmount();
     }, [onMount, onUnmount]);
 
@@ -269,11 +267,7 @@ const Chart = props => {
             crosshairTooltipLeftAllow={560}
             showLastDigitStats={isDesktop() ? show_digits_stats : false}
             chartControlsWidgets={null}
-            chartStatusListener={v => {
-                /* eslint-disable no-console */
-                console.timeEnd('trader-render');
-                setChartStatus(!v);
-            }}
+            chartStatusListener={v => setChartStatus(!v)}
             chartType={chart_type}
             enabledNavigationWidget={isDesktop()}
             enabledChartFooter={false}

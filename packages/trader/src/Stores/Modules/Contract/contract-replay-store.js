@@ -184,7 +184,7 @@ export default class ContractReplayStore extends BaseStore {
             case 'READY':
                 setTimeout(
                     action(() => (this.is_chart_scaling = true)),
-                    100
+                    10
                 );
                 break;
             case 'SCROLL_TO_LEFT':
@@ -194,7 +194,7 @@ export default class ContractReplayStore extends BaseStore {
                     action(() => {
                         this.is_chart_loading = false;
                     }),
-                    900
+                    20
                 );
                 break;
             default:

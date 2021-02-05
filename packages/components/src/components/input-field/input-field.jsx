@@ -5,6 +5,7 @@ import { isCryptocurrency, getCurrencyDisplayCode } from '@deriv/shared';
 import IncrementButtons from './increment-buttons.jsx';
 import Input from './input.jsx';
 import Tooltip from '../tooltip';
+import Text from '../text';
 
 const InputField = ({
     ariaLabel,
@@ -83,9 +84,9 @@ const InputField = ({
 
             const is_scientific_notation = /e/.test(`${+e.target.value}`);
 
-            if (max_length && fractional_digits) {
+            if (max_length && (fractional_digits || fractional_digits === 0)) {
                 has_valid_length = new RegExp(
-                    `${signed_regex}(\\d{0,${max_length}})(\\.\\d{0,${fractional_digits}})?$`
+                    `${signed_regex}(\\d{0,${max_length}})(\\${fractional_digits && '.'}\\d{0,${fractional_digits}})?$`
                 ).test(e.target.value);
             }
 
@@ -271,7 +272,11 @@ const InputField = ({
                     {label}
                 </label>
             )}
-            {!!helper && <span className='dc-input-field__helper'>{helper}</span>}
+            {!!helper && (
+                <Text size='xxs' color='less-prominent' weight='lighter'>
+                    {helper}
+                </Text>
+            )}
             {is_increment_input ? (
                 <div
                     className={classNames('dc-input-wrapper', {

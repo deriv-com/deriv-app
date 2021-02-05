@@ -972,6 +972,21 @@ export default class CashierStore extends BaseStore {
                 return;
             }
 
+            if (this.config.account_transfer.accounts_list?.length > 0) {
+                const mt5_transfer_to_login_id = localStorage.getItem('mt5_transfer_to_login_id');
+                localStorage.removeItem('mt5_transfer_to_login_id');
+                const obj_values = this.config.account_transfer.accounts_list.find(
+                    account => account.value === mt5_transfer_to_login_id
+                );
+                if (obj_values) {
+                    if (hasTransferNotAllowedLoginid(obj_values.value)) {
+                        // check if selected to is not allowed account
+                        obj_values.error = getSelectedError(obj_values.value);
+                    }
+                    this.setSelectedTo(obj_values);
+                }
+            }
+
             if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
                 return;
             }
@@ -1107,6 +1122,10 @@ export default class CashierStore extends BaseStore {
         });
         const arr_accounts = [];
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
+
+        const mt5_transfer_to_login_id = localStorage.getItem('mt5_transfer_to_login_id');
+        localStorage.removeItem('mt5_transfer_to_login_id');
+
         accounts.forEach(account => {
             const obj_values = {
                 text:
@@ -1132,7 +1151,10 @@ export default class CashierStore extends BaseStore {
                 }
 
                 this.setSelectedFrom(obj_values);
-            } else if (isEmptyObject(this.config.account_transfer.selected_to)) {
+            } else if (
+                isEmptyObject(this.config.account_transfer.selected_to) &&
+                (!mt5_transfer_to_login_id || mt5_transfer_to_login_id === account.loginid)
+            ) {
                 if (hasTransferNotAllowedLoginid(obj_values.value)) {
                     // check if selected to is not allowed account
                     obj_values.error = getSelectedError(obj_values.value);

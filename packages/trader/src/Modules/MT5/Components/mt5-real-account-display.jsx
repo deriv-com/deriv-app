@@ -1,7 +1,7 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
-import { getAccountTypeFields } from '@deriv/shared';
+import { getAccountTypeFields, getMT5AccountListKey } from '@deriv/shared';
 import {
     eu_real_financial_specs,
     real_financial_stp_specs,
@@ -89,18 +89,18 @@ const MT5RealAccountDisplay = ({
         }
     };
 
-    const onClickFundRealSynthetic = () =>
-        openAccountTransfer(current_list['real.synthetic'], {
+    const onClickFundRealSynthetic = account =>
+        openAccountTransfer(current_list[getMT5AccountListKey(account)], {
             category: 'real',
             type: 'synthetic',
         });
-    const onClickFundRealFinancial = () =>
-        openAccountTransfer(current_list['real.financial'], {
+    const onClickFundRealFinancial = account =>
+        openAccountTransfer(current_list[getMT5AccountListKey(account)], {
             category: 'real',
             type: 'financial',
         });
-    const onClickFundRealFinancialStp = () =>
-        openAccountTransfer(current_list['real.financial_stp'], {
+    const onClickFundRealFinancialStp = account =>
+        openAccountTransfer(current_list[getMT5AccountListKey(account)], {
             category: 'real',
             type: 'financial_stp',
         });

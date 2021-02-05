@@ -67,24 +67,26 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
                             href='https://www.ibas-uk.com/'
                         />,
                     ]}
-                />,
-                <Localize
-                    key={1}
-                    i18n_default_text="<0/><1/>Alternatively, you can send your complaint to the <2>European Commission's Online Dispute Resolution (ODR)</2> platform."
-                    components={[
-                        <br key={0} />,
-                        <br key={1} />,
-                        <a
-                            key={2}
-                            className='link link--orange'
-                            rel='noopener noreferrer'
-                            target='_blank'
-                            href='https://ec.europa.eu/odr/'
-                        />,
-                    ]}
                 />
             );
             if (landing_company_shortcode === 'iom') {
+                texts.push(
+                    <Localize
+                        key={texts.length}
+                        i18n_default_text="<0/><1/>Alternatively, you can send your complaint to the <2>European Commission's Online Dispute Resolution (ODR)</2> platform."
+                        components={[
+                            <br key={0} />,
+                            <br key={1} />,
+                            <a
+                                key={2}
+                                className='link link--orange'
+                                rel='noopener noreferrer'
+                                target='_blank'
+                                href='https://ec.europa.eu/odr/'
+                            />,
+                        ]}
+                    />
+                );
                 texts.push(
                     <Localize
                         key={texts.length}
@@ -93,6 +95,24 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
                     />
                 );
             } else {
+                texts.push(
+                    <Localize
+                        key={texts.length}
+                        i18n_default_text="<0/><1/>Alternatively, you can send your complaint to the <2>European Commission's Online Dispute Resolution (ODR)</2> platform. This is not applicable to UK clients."
+                        components={[
+                            <br key={0} />,
+                            <br key={1} />,
+                            <a
+                                key={2}
+                                className='link link--orange'
+                                rel='noopener noreferrer'
+                                target='_blank'
+                                href='https://ec.europa.eu/odr/'
+                            />,
+                        ]}
+                    />
+                );
+
                 texts.push(
                     <Localize
                         key={texts.length}

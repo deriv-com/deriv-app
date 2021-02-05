@@ -152,7 +152,7 @@ export default class BuySellStore extends BaseStore {
         return new Promise(resolve => {
             requestWS({
                 p2p_advert_list: 1,
-                counterparty_type: counterparty_type,
+                counterparty_type,
                 offset: startIndex,
                 limit: general_store.list_item_limit,
             }).then(response => {

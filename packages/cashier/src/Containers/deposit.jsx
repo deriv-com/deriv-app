@@ -52,9 +52,7 @@ const Deposit = ({
 }) => {
     React.useEffect(() => {
         setActiveTab(container);
-        if (!is_virtual) {
-            onMount();
-        }
+        onMount();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -63,7 +61,8 @@ const Deposit = ({
             if (isCryptocurrency(currency) && typeof setSideNotes === 'function') {
                 const side_notes = [
                     <DepositeSideNote key={0} />,
-                    ...(/^(UST|eUSDT)$/i.test(currency) ? [<USDTSideNote key={1} />] : []),
+                    ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
+                    ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
                 ];
                 setSideNotes(side_notes);
             } else setSideNotes(null);

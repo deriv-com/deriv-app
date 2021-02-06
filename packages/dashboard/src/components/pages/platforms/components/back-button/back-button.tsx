@@ -13,6 +13,6 @@ const Back: React.FC<TBack> = ({ onClick }) => {
 
 type TBack = {
     onClick?: React.MouseEventHandler<HTMLDivElement>;
-}
+};
 
 export default Back;

@@ -54,6 +54,7 @@ const Dialog = ({
         'dc-dialog__content--centered': is_content_centered,
     });
 
+    const is_text = typeof children === 'string' || typeof children?.props?.i18n_default_text === 'string';
     const dialog = (
         <CSSTransition
             appear
@@ -85,8 +86,8 @@ const Dialog = ({
                             </div>
                         )}
                     </div>
-                    {typeof children === 'string' ? (
-                        <Text as='p' size='xs' line_height='s' className={content_classes}>
+                    {is_text ? (
+                        <Text as='p' size='xs' styles={{ lineHeight: '1.43' }} className={content_classes}>
                             {children}
                         </Text>
                     ) : (

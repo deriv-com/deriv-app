@@ -105,21 +105,6 @@ export default class MyAdsStore extends BaseStore {
     };
 
     @action.bound
-    handleToggle() {
-        requestWS({
-            p2p_advertiser_update: 1,
-            is_listed: this.root_store.general_store.is_listed ? 0 : 1,
-        }).then(response => {
-            if (response.error) {
-                this.setApiError(response.error.message);
-            } else {
-                const { is_listed } = response.p2p_advertiser_update;
-                this.root_store.general_store.setIsListed(is_listed === 1);
-            }
-        });
-    }
-
-    @action.bound
     onClickCancel = () => {
         this.setSelectedAdId('');
         this.setShouldShowPopup(false);

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TReactChildren } from 'Types'
+import { TReactChildren } from 'Types';
 
 const Wrapper: React.FC<TWrapper> = ({ children }) => {
     return <div className='dw-wrapper'>{children}</div>;
@@ -7,6 +7,6 @@ const Wrapper: React.FC<TWrapper> = ({ children }) => {
 
 type TWrapper = {
     children: TReactChildren;
-}
+};
 
 export default Wrapper;

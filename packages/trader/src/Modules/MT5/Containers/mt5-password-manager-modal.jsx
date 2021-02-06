@@ -207,13 +207,17 @@ const InvestorPasswordManager = ({
 
     return (
         <div className='mt5-password-manager__investor-wrapper'>
-            <p className='mt5-password-manager--paragraph'>
+            <Text as='p' size='xs' className='mt5-password-manager--paragraph'>
                 <Localize i18n_default_text='Use this password to grant viewing access to another user. While they may view your trading account, they will not be able to trade or take any other actions.' />
-            </p>
-            <p className='mt5-password-manager--paragraph'>
+            </Text>
+            <Text as='p' size='xs' className='mt5-password-manager--paragraph'>
                 <Localize i18n_default_text='If this is the first time you try to create a password, or you have forgotten your password, please reset it.' />
-            </p>
-            {error_message_investor && <p className='mt5-password-manager--error-message'>{error_message_investor}</p>}
+            </Text>
+            {error_message_investor && (
+                <Text as='p' color='loss-danger' size='xs' className='mt5-password-manager--error-message'>
+                    {error_message_investor}
+                </Text>
+            )}
             <Formik initialValues={initial_values} validate={validatePassword} onSubmit={onSubmit}>
                 {({ isSubmitting, errors, setFieldTouched, values, touched }) => (
                     <Form className='mt5-password-manager__investor-form' noValidate>

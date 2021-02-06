@@ -155,9 +155,14 @@ const MT5PasswordForm = props => {
                                     ]}
                                 />
                             </Text>
-                            {props.is_real_financial_stp && (
+                            {props.is_real_financial_stp && !props.is_bvi && (
                                 <div className='dc-modal__container_mt5-password-modal__description'>
-                                    <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA). All other accounts, including your Deriv account, are not subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA).' />
+                                    <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).' />
+                                </div>
+                            )}
+                            {props.is_real_financial_stp && props.is_bvi && (
+                                <div className='dc-modal__container_mt5-password-modal__description'>
+                                    <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (BVI) Ltd. All trading in this account is subject to the regulations and guidelines of the British Virgin Islands Financial Services Commission (BVIFSC). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the British Virgin Islands Financial Services Commission (BVIFSC).' />
                                 </div>
                             )}
                         </div>
@@ -275,6 +280,7 @@ const MT5PasswordModal = ({
     resetFormErrors,
     disableMt5PasswordModal,
     email,
+    landing_companies,
     error_message,
     error_type,
     history,
@@ -298,6 +304,11 @@ const MT5PasswordModal = ({
     const [password, setPassword] = React.useState('');
     const [server, setServer] = React.useState('');
     const [is_submitting, setIsSubmitting] = React.useState(false); // TODO handle this better
+
+    const is_bvi = React.useMemo(() => {
+        return landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
+    }, [landing_companies]);
+
     const validatePassword = values => {
         const errors = {};
 
@@ -444,6 +455,7 @@ const MT5PasswordModal = ({
                     )}
                     {should_show_password_form && (
                         <MT5PasswordForm
+                            is_bvi={is_bvi}
                             resetFormErrors={resetFormErrors}
                             is_submitting={is_submitting}
                             account_title={account_title}
@@ -486,6 +498,7 @@ const MT5PasswordModal = ({
                     )}
                     {!should_show_server_form && !is_password_reset && (
                         <MT5PasswordForm
+                            is_bvi={is_bvi}
                             resetFormErrors={resetFormErrors}
                             is_submitting={is_submitting}
                             account_title={account_title}
@@ -558,6 +571,7 @@ export default connect(({ client, modules }) => ({
     error_message: modules.mt5.error_message,
     error_type: modules.mt5.error_type,
     has_mt5_error: modules.mt5.has_mt5_error,
+    landing_companies: client.landing_companies,
     is_eu: client.is_eu,
     is_eu_country: client.is_eu_country,
     is_logged_in: client.is_logged_in,

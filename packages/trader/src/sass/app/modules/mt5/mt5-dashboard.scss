@@ -979,7 +979,7 @@
         min-width: initial;
         &_mt5-password-modal {
             &__description {
-                @include typeface(--small-left-normal-black);
+                @include typeface(--xsmall-left-normal-black);
                 line-height: 1.5;
                 color: var(--text-less-prominent);
             }

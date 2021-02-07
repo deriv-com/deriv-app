@@ -18,7 +18,9 @@ const MobileFullPageModalBodyWrapper = ({ className, children, should_wrap_body 
 const MobileFullPageModal = ({
     body_className,
     className,
+    should_header_stick_body,
     header,
+    header_backgound_color,
     height_offset = '0px',
     is_flex,
     is_modal_open,
@@ -50,7 +52,15 @@ const MobileFullPageModal = ({
                 height_offset={height_offset}
             >
                 {(page_header_text || renderPageHeaderText) && (
-                    <div className={classNames('dc-mobile-full-page-modal__header', page_header_className)}>
+                    <div
+                        className={classNames('dc-mobile-full-page-modal__header', {
+                            'dc-mobile-full-page-modal__header--border-bottom': !should_header_stick_body,
+                            page_header_className,
+                        })}
+                        style={{
+                            background: header_backgound_color,
+                        }}
+                    >
                         {pageHeaderReturnFn && (
                             <div className='dc-mobile-full-page-modal__header-return'>
                                 <Icon icon='IcArrowLeftBold' onClick={pageHeaderReturnFn} size={16} />
@@ -99,7 +109,9 @@ const MobileFullPageModal = ({
 
 MobileFullPageModal.propTypes = {
     className: PropTypes.string,
+    should_header_stick_body: PropTypes.bool,
     header: PropTypes.string,
+    header_backgound_color: PropTypes.string,
     height_offset: PropTypes.string,
     is_flex: PropTypes.bool,
     is_modal_open: PropTypes.bool,

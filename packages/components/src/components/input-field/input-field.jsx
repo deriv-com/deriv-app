@@ -5,6 +5,7 @@ import { isCryptocurrency, getCurrencyDisplayCode } from '@deriv/shared';
 import IncrementButtons from './increment-buttons.jsx';
 import Input from './input.jsx';
 import Tooltip from '../tooltip';
+import Text from '../text';
 
 const InputField = ({
     ariaLabel,
@@ -271,7 +272,11 @@ const InputField = ({
                     {label}
                 </label>
             )}
-            {!!helper && <span className='dc-input-field__helper'>{helper}</span>}
+            {!!helper && (
+                <Text size='xxs' color='less-prominent' weight='lighter'>
+                    {helper}
+                </Text>
+            )}
             {is_increment_input ? (
                 <div
                     className={classNames('dc-input-wrapper', {

@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from '../icon';
+import Text from '../text';
 
 const Checkbox = React.forwardRef(
     (
@@ -20,7 +21,12 @@ const Checkbox = React.forwardRef(
         ref
     ) => {
         const [checked, setChecked] = React.useState(defaultChecked || value);
-        const input_ref = React.useRef(ref?.current || null);
+        const input_ref = React.useRef();
+
+        const setRef = el_input => {
+            input_ref.current = el_input;
+            if (ref) ref.current = el_input;
+        };
 
         React.useEffect(() => {
             setChecked(defaultChecked || value);
@@ -52,7 +58,7 @@ const Checkbox = React.forwardRef(
                     className='dc-checkbox__input'
                     type='checkbox'
                     id={id}
-                    ref={input_ref}
+                    ref={setRef}
                     disabled={disabled}
                     onChange={onInputChange}
                     defaultChecked={checked}
@@ -70,7 +76,9 @@ const Checkbox = React.forwardRef(
                 >
                     {!!checked && <Icon icon='IcCheckmark' color='active' />}
                 </span>
-                <span className={classNames('dc-checkbox__label', classNameLabel)}>{label}</span>
+                <Text size='xs' className={classNames('dc-checkbox__label', classNameLabel)}>
+                    {label}
+                </Text>
             </label>
         );
     }

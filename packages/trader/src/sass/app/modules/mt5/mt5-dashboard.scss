@@ -58,7 +58,6 @@
         @include mobile {
             display: flex;
             height: 100%;
-            margin-top: 0;
             padding: 1.6rem;
             flex-direction: column;
             align-items: flex-start;
@@ -404,6 +403,7 @@
     height: 100%;
 
     @include mobile {
+        overflow-x: hidden;
         flex-direction: column;
     }
 }
@@ -486,9 +486,6 @@
             grid-template-rows: 1fr;
             margin-bottom: 2.4rem;
             height: fit-content;
-        }
-        &:not(:last-child) {
-            margin-right: 2.4rem;
         }
         @include desktop {
             height: 100%;

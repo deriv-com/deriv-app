@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const Highlight = ({ left, width, has_rounded_button }) => {
+const Highlight = ({ has_rounded_button, highlight_color, left, width }) => {
     const border_radius_size = '4px';
     const highlight_style = {
-        width,
+        backgroundColor: `var(--button-toggle-${highlight_color || 'secondary'})`,
         left: 0,
         transform: `translate3d(${left}px, 0, 0)`,
+        width,
     };
 
     if (has_rounded_button) {

@@ -55,14 +55,14 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
         place_of_birth: {
             supported_in: ['maltainvest', 'iom', 'malta'],
             default_value: account_settings.place_of_birth
-                ? residence_list.find(item => item.value === account_settings.place_of_birth).text
+                ? residence_list.find(item => item.value === account_settings.place_of_birth)?.text
                 : '',
             rules: [['req', localize('Place of birth is required')]],
         },
         citizen: {
             supported_in: ['iom', 'malta', 'maltainvest'],
             default_value: account_settings.citizen
-                ? residence_list.find(item => item.value === account_settings.citizen).text
+                ? residence_list.find(item => item.value === account_settings.citizen)?.text
                 : '',
             rules: [['req', localize('Citizenship is required')]],
         },

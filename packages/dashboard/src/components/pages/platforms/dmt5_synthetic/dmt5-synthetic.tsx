@@ -61,7 +61,9 @@ const DMT5Synthetic: React.FC = () => {
                 duration={localize('1 tick - 365 days')}
             />
             <Description
-                description={localize('Trade synthetic indices with leverage on MT5. Our synthetic indices are based on a cryptographically secure random number generator audited for fairness by an independent third party. These indices are engineered to simulate real-world market movement and are unaffected by natural events and disruptions. Synthetic indices are available 24/7, have constant volatility, fixed generation intervals, and are free of market and liquidity risks.')}
+                description={localize(
+                    'Trade synthetic indices with leverage on MT5. Our synthetic indices are based on a cryptographically secure random number generator audited for fairness by an independent third party. These indices are engineered to simulate real-world market movement and are unaffected by natural events and disruptions. Synthetic indices are available 24/7, have constant volatility, fixed generation intervals, and are free of market and liquidity risks.'
+                )}
                 advantages={[
                     {
                         icon: 'IcMt5HighLeverage',
@@ -89,156 +91,167 @@ const DMT5Synthetic: React.FC = () => {
                     },
                 ]}
             />
-            <Instruments title={localize('Markets and instruments to trade on DMT5 Synthetics')} active_symbols={[
-                {
-                    icon: 'IcMt5SyntheticIndices',
-                    title: localize('Synthetic indices'),
-                    submarkets: [
-                        {
-                            title: localize('Volatility indices'),
-                            description: localize('These indices correspond to simulated markets with constant volatilities of 10%, 25%, 50%, 75%, and 100%. One tick is generated every two seconds for volatility indices 10, 25, 50, 75, and 100. One tick is generated every second for volatility indices 10 (1s), 25 (1s), 50 (1s), 75 (1s), and 100 (1s).'),
-                            symbols: [
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                            ],
-                        },
-                        {
-                            title: localize('Crash/Boom'),
-                            description: localize('With these indices, there is an average of one drop (crash) or one spike (boom) in prices that occur in a series of 1,000 or 500 ticks.'),
-                            symbols: [
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                            ],
-                        },
-                    ],
-                },
-                {
-                    icon: 'IcMt5SyntheticIndices',
-                    title: localize('Synthetic indices'),
-                    submarkets: [
-                        {
-                            title: localize('Volatility indices'),
-                            description: localize('These indices correspond to simulated markets with constant volatilities of 10%, 25%, 50%, 75%, and 100%. One tick is generated every two seconds for volatility indices 10, 25, 50, 75, and 100. One tick is generated every second for volatility indices 10 (1s), 25 (1s), 50 (1s), 75 (1s), and 100 (1s).'),
-                            symbols: [
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                            ],
-                        },
-                        {
-                            title: localize('Crash/Boom'),
-                            description: localize('With these indices, there is an average of one drop (crash) or one spike (boom) in prices that occur in a series of 1,000 or 500 ticks.'),
-                            symbols: [
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                                {
-                                    icon: 'IcUnderlyingR_100',
-                                    title: localize('Volatility 10 Index'),
-                                },
-                            ],
-                        },
-                    ],
-                },
-            ]} />
+            <Instruments
+                title={localize('Markets and instruments to trade on DMT5 Synthetics')}
+                active_symbols={[
+                    {
+                        icon: 'IcMt5SyntheticIndices',
+                        title: localize('Synthetic indices'),
+                        submarkets: [
+                            {
+                                title: localize('Volatility indices'),
+                                description: localize(
+                                    'These indices correspond to simulated markets with constant volatilities of 10%, 25%, 50%, 75%, and 100%. One tick is generated every two seconds for volatility indices 10, 25, 50, 75, and 100. One tick is generated every second for volatility indices 10 (1s), 25 (1s), 50 (1s), 75 (1s), and 100 (1s).'
+                                ),
+                                symbols: [
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                ],
+                            },
+                            {
+                                title: localize('Crash/Boom'),
+                                description: localize(
+                                    'With these indices, there is an average of one drop (crash) or one spike (boom) in prices that occur in a series of 1,000 or 500 ticks.'
+                                ),
+                                symbols: [
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        icon: 'IcMt5SyntheticIndices',
+                        title: localize('Synthetic indices'),
+                        submarkets: [
+                            {
+                                title: localize('Volatility indices'),
+                                description: localize(
+                                    'These indices correspond to simulated markets with constant volatilities of 10%, 25%, 50%, 75%, and 100%. One tick is generated every two seconds for volatility indices 10, 25, 50, 75, and 100. One tick is generated every second for volatility indices 10 (1s), 25 (1s), 50 (1s), 75 (1s), and 100 (1s).'
+                                ),
+                                symbols: [
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                ],
+                            },
+                            {
+                                title: localize('Crash/Boom'),
+                                description: localize(
+                                    'With these indices, there is an average of one drop (crash) or one spike (boom) in prices that occur in a series of 1,000 or 500 ticks.'
+                                ),
+                                symbols: [
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                    {
+                                        icon: 'IcUnderlyingR_100',
+                                        title: localize('Volatility 10 Index'),
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ]}
+            />
         </Wrapper>
     );
 };

@@ -7,9 +7,10 @@ import { mobileOSDetect, getPosition } from '@deriv/shared';
 import { listPropType, findNextFocusableNode, findPreviousFocusableNode } from './dropdown';
 import Items from './items.jsx';
 import DisplayText from './display-text.jsx';
+import Text from '../text/text.jsx';
 import { useBlockScroll, useOnClickOutside } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
-import Icon from '../icon';
+import Icon from '../icon/icon.jsx';
 
 const DropdownList = React.forwardRef((props, list_ref) => {
     const {
@@ -377,20 +378,21 @@ const Dropdown = ({
                         id='dropdown-display'
                         ref={dropdown_ref}
                     >
-                        {suffix_icon && <Icon className='suffix-icon' icon={suffix_icon} size={16} fill />}
+                        {!!suffix_icon && <Icon className='suffix-icon' icon={suffix_icon} size={16} fill />}
                         <DisplayText
-                            className={classNames('dc-dropdown__display-text', {
+                            className={classNames({
                                 'dc-dropdown__display--has-suffix-icon-text': suffix_icon,
                             })}
                             has_symbol={has_symbol}
                             name={name}
+                            is_align_text_left={is_align_text_left}
                             is_title={is_list_visible}
                             placeholder={placeholder}
                             value={value || 0}
                             list={list}
                         />
                     </div>
-                    {!(isSingleOption() || suffix_icon) && (
+                    {!(isSingleOption() || !!suffix_icon) && (
                         <Icon
                             icon={is_alignment_left ? 'IcChevronLeft' : 'IcChevronDown'}
                             className={classNames('dc-dropdown__select-arrow', {
@@ -400,7 +402,11 @@ const Dropdown = ({
                             })}
                         />
                     )}
-                    {error && <p className='dc-field--error'>{error}</p>}
+                    {error && (
+                        <Text as='p' size='xxs' color='loss-danger' className='dc-field--error'>
+                            {error}
+                        </Text>
+                    )}
                     <DropdownList
                         ref={list_ref}
                         classNameItems={classNameItems}
@@ -422,7 +428,11 @@ const Dropdown = ({
                         suffix_icon={suffix_icon}
                     />
                 </div>
-                {!error && hint && <p className='dc-dropdown__hint'>{hint}</p>}
+                {!error && hint && (
+                    <Text as='p' color='less-prominent' size='xxs' className='dc-dropdown__hint'>
+                        {hint}
+                    </Text>
+                )}
             </div>
         </React.Fragment>
     );

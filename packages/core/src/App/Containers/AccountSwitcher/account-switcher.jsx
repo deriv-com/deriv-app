@@ -169,20 +169,18 @@ const AccountSwitcher = props => {
                 );
                 if (has_account) {
                     const number_market_type_available = trading_servers.filter(
-                        s => s.supported_accounts.includes(market_type) && !s.disabled
-                    ).length;
-                    const real_accounts = existing_mt5_accounts.filter(
-                        acc => acc.account_type === 'real' && acc.market_type === market_type
-                    );
-                    if (!!number_market_type_available && real_accounts.length) {
-                        has_account =
-                            has_account &&
-                            real_accounts.filter(acc => {
-                                return (
+                        s =>
+                            s.supported_accounts.includes(market_type) &&
+                            !s.disabled &&
+                            !existing_mt5_accounts.some(
+                                acc =>
+                                    acc.account_type === 'real' &&
                                     acc.market_type === market_type &&
-                                    trading_servers.some(server => server.id === acc.server)
-                                );
-                            }).length === number_market_type_available;
+                                    acc.server === s.id
+                            )
+                    ).length;
+                    if (number_market_type_available && has_account.account_type === 'real') {
+                        has_account = false;
                     }
                 }
 

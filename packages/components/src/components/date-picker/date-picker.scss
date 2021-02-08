@@ -117,7 +117,6 @@
             width: 100%;
 
             &-text {
-                font-size: 1.4rem;
                 background-color: inherit;
                 padding-top: 0.2rem;
                 color: var(--text-prominent);
@@ -161,8 +160,6 @@
         }
         &__error {
             display: flex;
-            font-size: 1.2rem;
-            color: var(--brand-red-coral);
             position: absolute;
             top: 4.4rem;
             left: 1.2rem;

@@ -43,7 +43,7 @@ $side-padding: 1.2em;
             padding-bottom: 0;
 
             &-filter {
-                padding: 1.6rem;
+                padding: 0 0 1.6rem;
             }
             #dt_calendar_input {
                 text-align: left;
@@ -294,9 +294,6 @@ $side-padding: 1.2em;
             }
         }
         &-title {
-            text-align: left;
-            color: var(--text-less-prominent);
-            font-size: 1.6rem;
             margin: auto;
 
             @include mobile {
@@ -305,10 +302,6 @@ $side-padding: 1.2em;
             }
         }
         &-amount {
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.6rem;
-            color: var(--text-prominent);
             margin: auto;
 
             @include desktop {
@@ -957,10 +950,7 @@ $side-padding: 1.2em;
         @include colorIcon(var(--text-disabled));
     }
     &__text {
-        font-size: em(14px);
-        text-align: center;
         line-height: 20px;
-        color: var(--text-disabled);
     }
     .dc-btn {
         width: 100%;

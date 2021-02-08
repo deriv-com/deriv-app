@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { TReactChildren } from 'Types'
+import { TReactChildren } from 'Types';
 
 const RoutesWrapper: React.FC<TRoutesWrapperProps> = ({ has_router, children }) => {
     if (has_router) {

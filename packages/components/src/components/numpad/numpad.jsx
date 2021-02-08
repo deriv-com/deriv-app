@@ -3,6 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import NumberGrid from './number-grid.jsx';
 import StepInput from './step-input.jsx';
+import Text from '../text';
 import Button from '../button/button.jsx';
 import { useLongPress } from '../../hooks';
 
@@ -123,6 +124,9 @@ const Numpad = ({
     };
     const backspaceLongPress = useLongPress(clearValue, reset_press_interval);
 
+    const is_button_disabled =
+        is_submit_disabled || !default_value.toString().length || (min && formatNumber(default_value) < min);
+
     return (
         <div
             className={classNames('dc-numpad', className, {
@@ -147,9 +151,18 @@ const Numpad = ({
             />
             <NumberGrid onSelect={onSelect} />
             {is_currency && (
-                <Button type='secondary' className='dc-numpad__number' has_effect onClick={() => onSelect('.')}>
-                    .
-                </Button>
+                <Button
+                    type='secondary'
+                    className='dc-numpad__number'
+                    has_effect
+                    onClick={() => onSelect('.')}
+                    text='.'
+                    renderText={text => (
+                        <Text styles={{ fontSize: '1.8rem' }} weight='bold' align='center'>
+                            {text}
+                        </Text>
+                    )}
+                />
             )}
             <div className='dc-numpad__bkspace'>
                 <Button
@@ -161,10 +174,20 @@ const Numpad = ({
                         onSelect(-1);
                     }}
                     is_disabled={is_backspace_disabled}
-                >
-                    ⌫
-                </Button>
+                    text='⌫'
+                    renderText={text => (
+                        <Text
+                            styles={{ fontSize: '1.8rem' }}
+                            weight='bold'
+                            align='center'
+                            color={is_backspace_disabled ? 'disabled' : 'general'}
+                        >
+                            {text}
+                        </Text>
+                    )}
+                />
             </div>
+
             <div className='dc-numpad__ok'>
                 <Button
                     type='secondary'
@@ -180,14 +203,19 @@ const Numpad = ({
                         if (min && formatNumber(default_value) < min) return;
                         onSubmit(formatNumber(default_value));
                     }}
-                    is_disabled={
-                        is_submit_disabled ||
-                        !default_value.toString().length ||
-                        (min && formatNumber(default_value) < min)
-                    }
-                >
-                    {submit_label}
-                </Button>
+                    is_disabled={is_button_disabled}
+                    text={submit_label}
+                    renderText={text => (
+                        <Text
+                            styles={{ fontSize: '1.8rem' }}
+                            weight='bold'
+                            align='center'
+                            color={is_button_disabled ? 'disabled' : 'general'}
+                        >
+                            {text}
+                        </Text>
+                    )}
+                />
             </div>
         </div>
     );

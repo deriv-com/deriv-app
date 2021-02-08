@@ -83,16 +83,6 @@
             color: var(--text-colored-background);
         }
     }
-    &--dashboard-primary {
-        background: var(--dashboard-primary);
-
-        &:hover:not([disabled]) {
-            background: var(--dashboard-hover);
-        }
-        &:active:not([disabled]) {
-            background: var(--dashboard-primary);
-        }
-    }
     &--secondary {
         background: transparent;
         border: 1px solid var(--button-secondary-default);
@@ -130,15 +120,6 @@
         &[disabled] {
             opacity: 0.32;
             cursor: not-allowed !important;
-        }
-    }
-    &--dashboard-tertiary {
-        &:hover:not([disabled]) {
-            background: var(--dashboard-alpha);
-        }
-        .dc-btn__text,
-        .dc-btn__icon {
-            color: var(--dashboard-primary);
         }
     }
     &--alternate {

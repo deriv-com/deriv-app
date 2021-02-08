@@ -7,7 +7,7 @@ import Resources from 'Components/pages/resources';
 import DMT5Synthetic from 'Components/pages/platforms/dmt5_synthetic';
 import { TRoutesProps, TRoute } from 'Types';
 
-// 1. Order matters! Put more specific routes at the top.
+// 1. Order matters! Put more specific consumer_routes at the top.
 // 2. Don't use `Localize` component since native html tag like `option` cannot render them
 const initRoutesConfig = ({ consumer_routes }: TRoutesConfig): TRoute[] => [
     {
@@ -40,7 +40,111 @@ const initRoutesConfig = ({ consumer_routes }: TRoutesConfig): TRoute[] => [
         is_authenticated: false,
         path: consumer_routes.home,
     },
-
+    {
+        icon: 'IcWalletWallets',
+        label: localize('Wallets'),
+        subroutes: [
+            {
+                label: localize('Credit/Debit Cards'),
+                component: Explore,
+                path: consumer_routes.explore,
+            },
+            {
+                label: localize('E-wallet'),
+                component: Explore,
+                path: consumer_routes.explore,
+            },
+            {
+                label: localize('Cryptocurrency'),
+                component: Explore,
+                path: consumer_routes.explore,
+            },
+            {
+                label: localize('Bank Wire'),
+                component: Explore,
+                path: consumer_routes.explore,
+            },
+        ],
+    },
+    {
+        icon: 'IcWalletPlatforms',
+        label: localize('Platforms'),
+        subroutes: [
+            {
+                default: true,
+                label: localize('DMT5'),
+                component: DMT5Synthetic,
+                path: consumer_routes.platform_dmt5_synthetic,
+            },
+            {
+                label: localize('DTrader'),
+                component: Explore,
+                path: consumer_routes.explore,
+            },
+            {
+                label: localize('DBot'),
+                component: Explore,
+                path: consumer_routes.explore,
+            },
+            {
+                label: localize('SmartTrader'),
+                component: Explore,
+                path: consumer_routes.explore,
+            },
+            {
+                label: localize('Binary Bot'),
+                component: Explore,
+                path: consumer_routes.explore,
+            },
+        ],
+    },
+    {
+        icon: 'IcWalletTradeTypes',
+        label: localize('Trade Types'),
+        subroutes: [
+            {
+                label: localize('CFDs'),
+                component: Explore,
+                path: consumer_routes.explore,
+            },
+            {
+                label: localize('Multipliers'),
+                component: Explore,
+                path: consumer_routes.explore,
+            },
+            {
+                label: localize('Options'),
+                component: Explore,
+                path: consumer_routes.explore,
+            },
+        ],
+    },
+    {
+        icon: 'IcWalletMarkets',
+        label: localize('Markets'),
+        subroutes: [
+            {
+                label: localize('Forex'),
+                component: Explore,
+                path: consumer_routes.explore,
+            },
+            {
+                label: localize('Synthetic Indices'),
+                component: Explore,
+                path: consumer_routes.explore,
+            },
+            {
+                label: localize('Stock Indices'),
+                component: Explore,
+                path: consumer_routes.explore,
+            },
+            {
+                label: localize('Commodities'),
+                component: Explore,
+                path: consumer_routes.explore,
+            },
+        ],
+    },
     // It is possible to add a Deriv Crypto only path.
     // ...(is_deriv_crypto
     //     ? [
@@ -48,7 +152,7 @@ const initRoutesConfig = ({ consumer_routes }: TRoutesConfig): TRoute[] => [
     //               component: Home,
     //               getTitle: () => localize('Crypto-only path'),
     //               is_authenticated: false,
-    //               path: routes.resources,
+    //               path: consumer_routes.resources,
     //           },
     //       ]
     //     : []),

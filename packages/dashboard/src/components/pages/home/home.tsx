@@ -1,8 +1,8 @@
 /* eslint-disable react/display-name */
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
-import { DesktopWrapper, Div100vhContainer, MobileWrapper, FadeWrapper, Text, VerticalTab, PageOverlay } from '@deriv/components';
-import { isMobile, getSelectedRoute } from '@deriv/shared';
+import { DesktopWrapper, Div100vhContainer, MobileWrapper, FadeWrapper, Text, VerticalTab } from '@deriv/components';
+import { getSelectedRoute } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TRoute, TRouteGroup } from 'Types';
 import { useStores } from 'Stores';
@@ -20,9 +20,8 @@ const Home: React.FC = () => {
             icon: 'IcUserOutline',
             label: localize('My Deriv'),
             is_routed: true,
-            // path: 'myDeriv',
             path: config_store.routes.home,
-            value: () => <Text>My Deriv</Text>,
+            value: () => <Text>My Apps</Text>,
         },
         {
             label: '',
@@ -33,7 +32,6 @@ const Home: React.FC = () => {
             default: true,
             icon: 'IcWalletExplore',
             label: localize('Discover'),
-            // path: history.pushconfig_store.routes.explore(),
             path: config_store.routes.explore,
             is_routed: true,
             value: () => <TempButtons />,
@@ -48,7 +46,6 @@ const Home: React.FC = () => {
                     value: () => <Text>Credit/Debit Cards</Text>,
                     // path: config_store.routes.wallets_cards,
                     path: config_store.routes.explore,
-                    // component: DMT5Synthetic,
                 },
                 {
                     label: localize('E-wallet'),
@@ -185,10 +182,6 @@ const Home: React.FC = () => {
     });
 
     const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });
-    // console.log('selected_route');
-    // console.log(selected_route);
-    console.log('selected_route');
-    console.log(selected_route);
     return (
         <FadeWrapper is_visible={true} className='dw-page-wrapper' keyname='dw-page-wrapper'>
             <DesktopWrapper>
@@ -216,7 +209,6 @@ const Home: React.FC = () => {
                             menu_options={subroutes}
                         />
                     )}
-                    {/* <TempButtons /> */}
                 </Div100vhContainer>
             </MobileWrapper>
         </FadeWrapper>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 import { Button, Icon, Text } from '@deriv/components';
 import { PlatformContext, redirectToLogin, redirectToSignUp, routes, isDesktop, isMobile } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
@@ -10,6 +10,7 @@ import DerivText from 'Assets/SvgComponents/header/deriv-text.svg';
 import DerivLogoText from 'Assets/SvgComponents/header/deriv-logo-text.svg';
 import DerivLogoLight from 'Assets/SvgComponents/header/deriv-logo-light.svg';
 import DerivLogoDark from 'Assets/SvgComponents/header/deriv-logo-dark.svg';
+import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import DerivLogoLightMobile from 'Assets/SvgComponents/header/deriv-logo-light-mobile.svg';
 import DerivLogoDarkMobile from 'Assets/SvgComponents/header/deriv-logo-dark-mobile.svg';
 import HeaderItemsLoader from '../../../Components/Layout/Header/Components/Preloader/header-items.jsx';
@@ -44,7 +45,13 @@ const LoggedInHeader = ({ is_dark_mode }) => {
                     <React.Fragment>
                         <Icon icon={'IcNotificationClear'} height={20} width={17} />
                         <div className='dashboard-header__right--logged-in-separator' />
-                        <Icon icon={'IcHamburger'} className='dashboard-header__right-hamburger' size={16} />
+                        <ToggleMenuDrawer
+                            alignment={'right'}
+                            is_dashboard
+                            is_logged_in
+                            should_allow_authentication
+                            title={''}
+                        />
                     </React.Fragment>
                 )}
             </div>
@@ -99,12 +106,7 @@ const LoggedOutHeader = () => {
                 {isMobile() && (
                     <React.Fragment>
                         <div className='dashboard-header__right--logged-out-separator' />
-                        <Icon
-                            icon={'IcHamburgerWhite'}
-                            className='dashboard-header__right-hamburger'
-                            width={12}
-                            height={10}
-                        />
+                        <ToggleMenuDrawer alignment={'right'} is_dashboard should_allow_authentication title={''} />
                     </React.Fragment>
                 )}
             </div>
@@ -140,4 +142,4 @@ export default connect(({ client, ui }) => ({
     is_dark_mode: ui.is_dark_mode_on,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
-}))(DashboardHeader);
+}))(withRouter(DashboardHeader));

@@ -54,5 +54,30 @@ export const routes = {
     about_us: '/dashboard/about-us',
     explore: '/dashboard/explore',
     resources: '/dashboard/resources',
+
+    my_apps: '/dashboard/my-apps',
+
+    market_commodities: '/dashboard/markets/commodities',
+    market_forex: '/dashboard/markets/forex',
+    market_stock: '/dashboard/markets/stock',
+    market_synthetic: '/dashboard/markets/synthetic',
+    markets: '/dashboard/markets',
+
+    platform_binary_bot: '/dashboard/platforms/binary-bot',
+    platform_dbot: '/dashboard/platforms/dbot',
     platform_dmt5_synthetic: '/dashboard/platforms/dmt5_synthetic',
+    platform_dtrader: '/dashboard/platforms/dmt5_synthetic',
+    platform_smarttrader: '/dashboard/platforms/smarttrader',
+    platforms: '/dashboard/platforms',
+
+    trade_type_cdfs: '/dashboard/trade-types/cdfs',
+    trade_type_multipliers: '/dashboard/trade-types/multipliers',
+    trade_type_options: '/dashboard/trade-types/options',
+    trade_types: '/dashboard/trade-types',
+
+    wallet_bank_wire: '/dashboard/wallets/bank-wire',
+    wallet_cards: '/dashboard/wallets/cards',
+    wallet_crypto: '/dashboard/wallets/crypto',
+    wallet_ewallet: '/dashboard/wallets/ewallet',
+    wallets: '/dashboard/wallets',
 };

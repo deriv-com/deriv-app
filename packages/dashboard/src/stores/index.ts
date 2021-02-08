@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TRootStore } from 'Types';
+import { TMT5Store, TRootStore } from 'Types';
 import RootStore from './root-store';
 
 let stores_context: React.Context<TRootStore>;
@@ -12,6 +12,7 @@ export const useStores = (ws?: unknown): TRootStore => {
             ui_store: root_store.ui_store,
             client_store: root_store.client_store,
             config_store: root_store.config_store,
+            mt5_store: root_store.mt5_store as TMT5Store,
         });
     }
 

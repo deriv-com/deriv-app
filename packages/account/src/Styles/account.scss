@@ -187,8 +187,10 @@ $MIN_HEIGHT_FLOATING: calc(
         &__fieldset {
             position: relative;
             max-width: 400px;
-            margin-top: 9px;
             margin-bottom: 18px;
+            &:not(:first-child) {
+                margin-top: 3rem;
+            }
 
             &--2-cols {
                 display: grid;
@@ -243,6 +245,7 @@ $MIN_HEIGHT_FLOATING: calc(
             border-top: 1px solid var(--general-section-1);
             border-width: 1px;
             background-color: var(--general-main-1);
+            transition: all 0.3s ease-out;
 
             &-note {
                 color: var(--text-prominent);
@@ -276,7 +279,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 padding-top: 0.8rem;
             }
             @include mobile {
-                padding: 16px 0px;
+                padding: 16px 0;
                 flex-direction: column;
                 height: auto;
                 align-items: initial;
@@ -337,11 +340,22 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__occupation {
-            .dc-native-select__select,
             .dc-dropdown__display-text {
                 line-height: 1.6rem;
                 text-align: left;
             }
+        }
+        &__container {
+            display: grid;
+            grid-template-columns: 26rem 1fr;
+            grid-gap: 1.6rem;
+
+            @include mobile {
+                grid-template-columns: none;
+            }
+        }
+        &__help-text {
+            margin-top: 1.2rem;
         }
     }
     &__initial-loader {
@@ -358,6 +372,21 @@ $MIN_HEIGHT_FLOATING: calc(
     &__text {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-general);
+    }
+    &__alert-box {
+        padding: 0.8rem 0.8rem 1rem;
+        border-radius: $BORDER_RADIUS;
+        background-color: rgba(255, 173, 58, 0.16);
+        display: flex;
+        max-width: 69rem;
+
+        @include desktop {
+            margin-top: -2.4rem;
+        }
+
+        &-text {
+            padding-left: 0.8rem;
+        }
     }
     .account-management__message {
         margin-top: 1em;
@@ -1701,10 +1730,6 @@ $MIN_HEIGHT_FLOATING: calc(
         &__checkbox {
             margin-top: 10px;
             width: fit-content;
-
-            .dc-checkbox__label {
-                font-weight: normal;
-            }
         }
         &__input {
             margin: 16px 0 0;

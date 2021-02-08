@@ -144,8 +144,6 @@ export default class BuySellStore extends BaseStore {
 
     @action.bound
     loadMoreItems({ startIndex }) {
-        this.setIsLoading(true);
-
         const { general_store } = this.root_store;
         const counterparty_type = this.is_buy ? buy_sell.BUY : buy_sell.SELL;
 

@@ -82,7 +82,7 @@ const ContractReplay = ({
     );
 
     const unsupportedContractOnConfirm = () => {
-        history.push('/reports/statement');
+        history.goBack();
     };
 
     const unsupportedContractOnClose = () => {

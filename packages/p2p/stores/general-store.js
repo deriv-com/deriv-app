@@ -176,27 +176,7 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     onMount() {
         this.setIsLoading(true);
-        const { sendbird_store } = this.root_store;
-
-        this.ws_subscriptions = {
-            advertiser_subscription: subscribeWS(
-                {
-                    p2p_advertiser_info: 1,
-                    subscribe: 1,
-                },
-                [this.updateAdvertiserInfo, response => sendbird_store.handleP2pAdvertiserInfo(response)]
-            ),
-            order_list_subscription: subscribeWS(
-                {
-                    p2p_order_list: 1,
-                    subscribe: 1,
-                    offset: 0,
-                    limit: this.list_item_limit,
-                },
-                [this.setP2pOrderList]
-            ),
-        };
-
+        
         this.disposeUserBarredReaction = reaction(
             () => this.user_blocked_until,
             blocked_until => {
@@ -211,10 +191,33 @@ export default class GeneralStore extends BaseStore {
             }
         );
         
-        requestWS({ get_account_status: 1 }).then(response => {
-            if (!response.error && response.get_account_status.risk_classification === 'high') {
+        requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
+            if (!error && get_account_status.risk_classification === 'high') {
                 this.setIsBlocked(true);
+                return;
             }
+
+            const { sendbird_store } = this.root_store;
+
+            this.ws_subscriptions = {
+                advertiser_subscription: subscribeWS(
+                    {
+                        p2p_advertiser_info: 1,
+                        subscribe: 1,
+                    },
+                    [this.updateAdvertiserInfo, response => sendbird_store.handleP2pAdvertiserInfo(response)]
+                ),
+                order_list_subscription: subscribeWS(
+                    {
+                        p2p_order_list: 1,
+                        subscribe: 1,
+                        offset: 0,
+                        limit: this.list_item_limit,
+                    },
+                    [this.setP2pOrderList]
+                ),
+            };
+            
         });
     }
 

@@ -973,8 +973,8 @@ export default class CashierStore extends BaseStore {
             }
 
             if (this.config.account_transfer.accounts_list?.length > 0) {
-                const mt5_transfer_to_login_id = localStorage.getItem('mt5_transfer_to_login_id');
-                localStorage.removeItem('mt5_transfer_to_login_id');
+                const mt5_transfer_to_login_id = sessionStorage.getItem('mt5_transfer_to_login_id');
+                sessionStorage.removeItem('mt5_transfer_to_login_id');
                 const obj_values = this.config.account_transfer.accounts_list.find(
                     account => account.value === mt5_transfer_to_login_id
                 );
@@ -1123,8 +1123,8 @@ export default class CashierStore extends BaseStore {
         const arr_accounts = [];
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
 
-        const mt5_transfer_to_login_id = localStorage.getItem('mt5_transfer_to_login_id');
-        localStorage.removeItem('mt5_transfer_to_login_id');
+        const mt5_transfer_to_login_id = sessionStorage.getItem('mt5_transfer_to_login_id');
+        sessionStorage.removeItem('mt5_transfer_to_login_id');
 
         accounts.forEach(account => {
             const obj_values = {

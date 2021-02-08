@@ -350,7 +350,7 @@ const MT5PasswordModal = ({
         disableMt5PasswordModal();
         closeDialogs();
         if (account_type.category === 'real') {
-            localStorage.setItem('mt5_transfer_to_login_id', mt5_new_account.login);
+            sessionStorage.setItem('mt5_transfer_to_login_id', mt5_new_account.login);
             history.push(routes.cashier_acc_transfer);
         }
     };

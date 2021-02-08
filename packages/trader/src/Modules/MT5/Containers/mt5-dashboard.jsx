@@ -97,7 +97,7 @@ class MT5Dashboard extends React.Component {
 
     openAccountTransfer = (data, meta) => {
         if (meta.category === 'real') {
-            localStorage.setItem('mt5_transfer_to_login_id', data.login);
+            sessionStorage.setItem('mt5_transfer_to_login_id', data.login);
             this.props.disableMt5PasswordModal();
             this.props.history.push(routes.cashier_acc_transfer);
         } else {

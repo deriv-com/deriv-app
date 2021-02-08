@@ -271,7 +271,6 @@ const RealAccountSignup = ({
         return active_modal_index_no;
     };
 
-    // set title and body of the modal
     const { title: Title, body: ModalContent } = is_logged_in
         ? modal_content[getActiveModalIndex()]
         : {

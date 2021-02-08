@@ -4,7 +4,7 @@ import { getCurrencyDisplayCode } from '@deriv/shared';
 import Text from '../text';
 
 const CurrencyBadge = ({ currency }) => (
-    <Text className='dc-currency-badge' color='colored-background' line_height='xxs' size='xxxs' weight='bold'>
+    <Text className='dc-currency-badge' color='colored-background' line_height='unset' size='xxxs' weight='bold'>
         {getCurrencyDisplayCode(currency)}
     </Text>
 );

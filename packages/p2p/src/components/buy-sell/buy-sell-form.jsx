@@ -71,7 +71,7 @@ const BuySellForm = observer(props => {
             const limits_interval = setInterval(() => {
                 const { advert } = props;
 
-                requestWS({ p2p_advert_info: 1, id: advert.id }).then(response => {
+                requestWS({ p2p_advert_info: 1, id: advert.id, use_client_limits: 1 }).then(response => {
                     if (!isMounted()) return;
                     if (response.p2p_advert_info) {
                         const {

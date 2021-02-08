@@ -122,7 +122,7 @@ const MT5AccountCard = ({
     onClickFund,
     onPasswordManager,
     should_show_trade_servers,
-    trade_server_button_visible,
+    is_trade_server_button_visible,
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
     trading_servers,
@@ -181,7 +181,7 @@ const MT5AccountCard = ({
             ref={wrapper_ref}
             className={classNames('mt5-account-card__wrapper', {
                 'mt5-account-card__wrapper-shrinked':
-                    trade_server_button_visible && !should_show_trade_servers && type.category === 'real',
+                    is_trade_server_button_visible && !should_show_trade_servers && type.category === 'real',
             })}
         >
             <div

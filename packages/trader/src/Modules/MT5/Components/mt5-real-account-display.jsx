@@ -154,7 +154,7 @@ const MT5RealAccountDisplay = ({
                               }}
                               is_logged_in={is_logged_in}
                               should_show_trade_servers={should_show_trade_servers}
-                              trade_server_button_visible={should_show_trade_servers}
+                              is_trade_server_button_visible={should_show_trade_servers}
                               existing_data={acc}
                               commission_message={localize('No commission')}
                               onSelectAccount={onSelectRealSynthetic}
@@ -181,7 +181,7 @@ const MT5RealAccountDisplay = ({
                       }}
                       is_logged_in={is_logged_in}
                       should_show_trade_servers={should_show_trade_servers}
-                      trade_server_button_visible={should_show_trade_servers}
+                      is_trade_server_button_visible={should_show_trade_servers}
                       existing_data={undefined}
                       commission_message={localize('No commission')}
                       onSelectAccount={onSelectRealSynthetic}
@@ -223,7 +223,7 @@ const MT5RealAccountDisplay = ({
             toggleAccountsDialog={toggleAccountsDialog}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
             is_accounts_switcher_on={is_accounts_switcher_on}
-            trade_server_button_visible={should_show_trade_servers}
+            is_trade_server_button_visible={should_show_trade_servers}
         />
     );
 
@@ -253,7 +253,7 @@ const MT5RealAccountDisplay = ({
             }
             specs={should_show_eu ? eu_real_financial_specs : real_financial_specs}
             is_logged_in={is_logged_in}
-            trade_server_button_visible={should_show_trade_servers}
+            is_trade_server_button_visible={should_show_trade_servers}
         />
     );
 

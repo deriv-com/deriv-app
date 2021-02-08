@@ -16,10 +16,10 @@ const SendEmail = ({ is_email_sent, is_resend_clicked, resend_timeout, sendVerif
         ) : (
             <React.Fragment>
                 <Icon icon='IcCashierAuthenticate' className='withdraw__icon' size={128} />
-                <Text weight='bold' as='p' className='withdraw__header'>
+                <Text weight='bold' as='p' align='center' className='withdraw__header'>
                     <Localize i18n_default_text='We will send you an email to confirm your withdrawal request.' />
                 </Text>
-                <Text size='xs' as='p'>
+                <Text size='xs' as='p' align='center'>
                     <Localize i18n_default_text='This is to protect your account from unauthorised withdrawals.' />
                 </Text>
                 <Button

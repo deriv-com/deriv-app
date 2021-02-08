@@ -36,6 +36,9 @@
         &__list {
             list-style-type: circle;
             margin-left: 2rem;
+            font-size: var(--text-size-xxs);
+            line-height: var(--text-lh-m);
+            color: var(--text-less-prominent);
         }
     }
     &__header {

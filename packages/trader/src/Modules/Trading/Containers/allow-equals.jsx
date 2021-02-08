@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Checkbox } from '@deriv/components';
+import { Checkbox, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -15,9 +15,9 @@ const AllowEquals = ({ onChange, is_allow_equal, className }) => {
     return (
         <div className={classNames('allow-equals', 'mobile-widget', className)}>
             <Checkbox label={localize('Equals')} value={is_allow_equal} name='is_equal' onChange={handleOnChange} />
-            <p className='allow-equals__subtitle'>
+            <Text as='p' size='xxxs'>
                 <Localize i18n_default_text='Win payout if exit spot is also equal to entry spot.' />
-            </p>
+            </Text>
         </div>
     );
 };

@@ -85,7 +85,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                             text={data.action.text}
                                             secondary
                                             renderText={text => (
-                                                <Text size='xxs' weight='bold' align='center' color='disabled'>
+                                                <Text size='xxs' weight='bold' align='center'>
                                                     {text}
                                                 </Text>
                                             )}

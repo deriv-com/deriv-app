@@ -53,8 +53,6 @@
             padding-right: 0.8rem;
         }
         &-label {
-            color: var(--text-general);
-            font-weight: normal;
             padding-right: 0.4rem;
         }
         @include mobile {
@@ -219,9 +217,6 @@
 .mt5-attribute-describer {
     .counter {
         color: var(--brand-red-coral);
-        font-size: 1rem;
-        font-weight: bold;
-        line-height: 1.43;
         vertical-align: top;
     }
     @include mobile {
@@ -241,15 +236,12 @@
         grid-template-columns: var(--mt5-compare-accounts-template-columns);
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);
     }
-
     &__table-row-eu {
         grid-template-columns: 1.5fr 2fr 2fr;
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);
     }
-
     &__star {
         color: var(--brand-red-coral);
-        font-weight: bold;
     }
     &__bullet {
         flex: none;
@@ -264,9 +256,7 @@
             height: 0.4rem;
         }
         &--star {
-            font-size: 14px;
             margin-right: 1rem;
-            line-height: 1.43;
         }
         &-wrapper {
             display: flex;
@@ -775,7 +765,17 @@
     &--error-message {
         margin-bottom: 1em;
     }
-    &__main-form,
+    &__inline-link {
+        @include typeface(--small-left-bold-prominent);
+        text-decoration: none;
+    }
+    &__main-wrapper {
+        display: grid;
+        grid-template-rows: auto;
+        grid-gap: 1rem;
+        justify-items: center;
+        margin: 2rem 0 0;
+    }
     &__investor-wrapper {
         margin: 3.2rem 0.5rem 0;
 
@@ -979,10 +979,8 @@
         min-width: initial;
         &_mt5-password-modal {
             &__description {
-                @include typeface(--small-left-normal-black);
+                @include typeface(--xsmall-left-normal-black);
                 line-height: 1.5;
-                max-width: 300px;
-                margin: -2.7rem 0 0.4rem;
                 color: var(--text-less-prominent);
             }
         }
@@ -1286,6 +1284,27 @@
         @include mobile {
             min-width: calc(100vw - 3.2rem);
         }
+    }
+}
+.dc-modal__container_mt5-reset-password-modal {
+    &__button {
+        margin-top: 2.4rem;
+        @include typeface(--paragraph-center-bold-active);
+    }
+    &__body {
+        @include desktop {
+            padding: 0 2.4rem 3.4rem;
+        }
+        @include mobile {
+            padding: 2.4rem;
+        }
+        flex-direction: column;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    &__header {
+        margin: 1rem 0;
     }
 }
 .mt5-personal-details-form-error {

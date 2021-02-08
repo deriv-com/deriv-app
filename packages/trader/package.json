@@ -2,7 +2,7 @@
   "name": "@deriv/trader",
   "version": "3.8.0",
   "description": "Deriv content",
-  "main": "dist/js/trader.main.js",
+  "main": "dist/js/trader.js",
   "private": true,
   "scripts": {
     "start": "npm run test && npm run serve",

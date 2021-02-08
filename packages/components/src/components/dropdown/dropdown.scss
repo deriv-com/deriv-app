@@ -35,8 +35,6 @@
         &-text {
             padding-left: 1em;
             padding-right: 2.5em;
-            @include typeface(--paragraph-center-normal-black);
-            color: var(--text-prominent);
             display: flex;
             white-space: nowrap;
 
@@ -56,11 +54,8 @@
         &--has-suffix-icon {
             width: 21rem;
             padding-left: 3rem;
+            padding-right: 0;
             justify-content: start;
-
-            &-text {
-                padding-right: 0 !important;
-            }
         }
         &--is-left-text {
             justify-content: flex-start;
@@ -90,9 +85,7 @@
             transform-origin: top left;
 
             &-text {
-                font-size: 1.4rem;
                 padding: 0 4px;
-                color: var(--color-grey);
                 background: var(--fill-normal);
             }
             &--is-left-text {
@@ -163,6 +156,8 @@
         }
     }
     &--error {
+        margin-bottom: -1.8rem;
+
         & .dc-dropdown__display {
             border-color: var(--brand-red-coral) !important;
         }

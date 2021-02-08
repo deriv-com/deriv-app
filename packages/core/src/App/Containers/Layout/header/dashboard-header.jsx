@@ -6,14 +6,14 @@ import { PlatformContext, redirectToLogin, redirectToSignUp, routes, isDesktop, 
 import { getLanguage, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import DerivLogo from 'Assets/SvgComponents/header/deriv-logo.svg';
-import DerivText from 'Assets/SvgComponents/header/deriv-text.svg';
-import DerivLogoText from 'Assets/SvgComponents/header/deriv-logo-text.svg';
-import DerivLogoLight from 'Assets/SvgComponents/header/deriv-logo-light.svg';
 import DerivLogoDark from 'Assets/SvgComponents/header/deriv-logo-dark.svg';
-import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
-import DerivLogoLightMobile from 'Assets/SvgComponents/header/deriv-logo-light-mobile.svg';
 import DerivLogoDarkMobile from 'Assets/SvgComponents/header/deriv-logo-dark-mobile.svg';
+import DerivLogoLight from 'Assets/SvgComponents/header/deriv-logo-light.svg';
+import DerivLogoLightMobile from 'Assets/SvgComponents/header/deriv-logo-light-mobile.svg';
+import DerivLogoText from 'Assets/SvgComponents/header/deriv-logo-text.svg';
+import DerivText from 'Assets/SvgComponents/header/deriv-text.svg';
 import HeaderItemsLoader from '../../../Components/Layout/Header/Components/Preloader/header-items.jsx';
+import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 
 const LoggedInHeader = ({ is_dark_mode }) => {
     const history = useHistory();

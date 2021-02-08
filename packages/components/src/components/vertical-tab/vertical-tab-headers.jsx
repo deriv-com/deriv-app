@@ -6,13 +6,6 @@ import VerticalTabHeaderGroup from './vertical-tab-header-group.jsx';
 import VerticalTabHeaderTitle from './vertical-tab-header-title.jsx';
 
 const offsetTop = (extra_offset, is_floating, ref, selected) => {
-    console.log('');
-    console.warn('offsetTop');
-    console.log(extra_offset);
-    console.log(is_floating);
-    console.log(ref);
-    console.log(selected);
-    console.log('');
     let calculated_offset = 0;
     let item_offset = 0;
 
@@ -44,16 +37,6 @@ const VerticalTabHeaders = ({
     onChange,
     selected,
 }) => {
-    // console.log('');
-    // console.error('VerticalTabHeaders');
-    // console.log(items);
-    // console.log(item_groups);
-    // console.log('');
-    console.log('');
-    console.error('VerticalTabHeaders');
-    console.log(items);
-    console.log(item_groups);
-    console.log('');
     const ref = React.useRef(null);
     const [top, setTop] = React.useState(0);
     const [should_skip_animation, setShouldSkipAnimation] = React.useState(false);

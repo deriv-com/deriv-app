@@ -102,25 +102,21 @@ const getModules = ({ is_deriv_crypto }) => {
             routes: [
                 {
                     getTitle: () => localize('Credit/Debit Cards'),
-                    value: () => <Text>Credit/Debit Cards</Text>,
                     // path: routes.wallets_cards,
                     path: routes.explore,
                 },
                 {
                     getTitle: () => localize('E-wallet'),
-                    value: () => <Text>E-wallet</Text>,
                     // path: routes.wallets_ewallet,
                     path: routes.explore,
                 },
                 {
                     getTitle: () => localize('Cryptocurrency'),
-                    value: () => <Text>Cryptocurrency</Text>,
                     // path: routes.wallets_crypto,
                     path: routes.explore,
                 },
                 {
                     getTitle: () => localize('Bank Wire'),
-                    value: () => <Text>Bank Wire</Text>,
                     // path: routes.wallets_bank,
                     path: routes.explore,
                 },
@@ -134,30 +130,25 @@ const getModules = ({ is_deriv_crypto }) => {
                 {
                     default: true,
                     getTitle: () => localize('DMT5'),
-                    value: () => <DMT5Synthetic />,
                     path: routes.platform_dmt5_synthetic,
                 },
                 {
                     getTitle: () => localize('DTrader'),
-                    value: () => <Text>DTrader</Text>,
                     // path: routes.platform_dtrader,
                     path: routes.explore,
                 },
                 {
                     getTitle: () => localize('DBot'),
-                    value: () => <Text>DBot</Text>,
                     // path: routes.platform_dbot,
                     path: routes.explore,
                 },
                 {
                     getTitle: () => localize('SmartTrader'),
-                    value: () => <Text>SmartTrader</Text>,
                     // path: routes.platform_smarttrader,
                     path: routes.explore,
                 },
                 {
                     getTitle: () => localize('Binary Bot'),
-                    value: () => <Text>Binary Bot</Text>,
                     // path: routes.platform_binarybot,
                     path: routes.explore,
                 },
@@ -170,19 +161,16 @@ const getModules = ({ is_deriv_crypto }) => {
             routes: [
                 {
                     getTitle: () => localize('CFDs'),
-                    value: () => <Text>CFDs</Text>,
                     // path: routes.trade_types_cfds,
                     path: routes.explore,
                 },
                 {
                     getTitle: () => localize('Multipliers'),
-                    value: () => <Text>Multipliers</Text>,
                     // path: routes.trade_types_multipliers,
                     path: routes.explore,
                 },
                 {
                     getTitle: () => localize('Options'),
-                    value: () => <Text>Options</Text>,
                     // path: routes.trade_types_options,
                     path: routes.explore,
                 },
@@ -195,25 +183,21 @@ const getModules = ({ is_deriv_crypto }) => {
             routes: [
                 {
                     getTitle: () => localize('Forex'),
-                    value: () => <Text>Forex</Text>,
                     // path: routes.markets_forex,
                     path: routes.explore,
                 },
                 {
                     getTitle: () => localize('Synthetic Indices'),
-                    value: () => <Text>Synthetic Indices</Text>,
                     // path: routes.markets_synthetic,
                     path: routes.explore,
                 },
                 {
                     getTitle: () => localize('Stock Indices'),
-                    value: () => <Text>Stock Indices</Text>,
                     // path: routes.markets_stock,
                     path: routes.explore,
                 },
                 {
                     getTitle: () => localize('Commodities'),
-                    value: () => <Text>Commodities</Text>,
                     // path: routes.markets_commodities,
                     path: routes.explore,
                 },

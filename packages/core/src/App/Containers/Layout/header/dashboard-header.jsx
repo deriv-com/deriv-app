@@ -12,8 +12,8 @@ import DerivLogoLight from 'Assets/SvgComponents/header/deriv-logo-light.svg';
 import DerivLogoLightMobile from 'Assets/SvgComponents/header/deriv-logo-light-mobile.svg';
 import DerivLogoText from 'Assets/SvgComponents/header/deriv-logo-text.svg';
 import DerivText from 'Assets/SvgComponents/header/deriv-text.svg';
-import HeaderItemsLoader from '../../../Components/Layout/Header/Components/Preloader/header-items.jsx';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
+import HeaderItemsLoader from '../../../Components/Layout/Header/Components/Preloader/header-items.jsx';
 
 const LoggedInHeader = ({ is_dark_mode }) => {
     const history = useHistory();

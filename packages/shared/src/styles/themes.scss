@@ -93,11 +93,11 @@
         --button-primary-default: var(--brand-red-coral);
         --button-secondary-default: #{$color-grey-1};
         --button-tertiary-default: transparent;
-        --button-primary-light-default: #{$color-red-6};
+        --button-primary-light-default: #{$alpha-color-red-2};
         --button-primary-hover: #{$color-red-5};
         --button-secondary-hover: #{$alpha-color-black-3};
         --button-tertiary-hover: #{$alpha-color-red-1};
-        --button-primary-light-hover: #{$color-red-7};
+        --button-primary-light-hover: #{$alpha-color-red-3};
         --button-toggle-primary: #{$color-blue-3};
         --button-toggle-secondary: #{$color-grey-5};
         // Overlay
@@ -193,11 +193,11 @@
         --button-primary-default: var(--brand-red-coral);
         --button-secondary-default: #{$color-grey-7};
         --button-tertiary-default: transparent;
-        --button-primary-light-default: #{$color-red-6};
+        --button-primary-light-default: #{$alpha-color-red-2};
         --button-primary-hover: #{$color-red-5};
         --button-secondary-hover: #{$alpha-color-white-3};
         --button-tertiary-hover: #{$alpha-color-red-1};
-        --button-primary-light-hover: #{$color-red-7};
+        --button-primary-light-hover: #{$alpha-color-red-3};
         --button-toggle-primary: #{$color-blue-3};
         --button-toggle-secondary: #{$color-black-8};
         // Overlay

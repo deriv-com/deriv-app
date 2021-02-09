@@ -23,8 +23,6 @@ $color-red-2: #cc2e3d;
 $color-red-3: #a32430;
 $color-red-4: #d33636;
 $color-red-5: #eb3e48;
-$color-red-6: #ff444f28;
-$color-red-7: #ff444f3d;
 $color-grey: #c2c2c2;
 $color-grey-1: #999999;
 $color-grey-2: #f2f3f4;
@@ -64,6 +62,8 @@ $alpha-color-white-1: transparentize($color-white, 0.04);
 $alpha-color-white-2: transparentize($color-white, 0.84);
 $alpha-color-white-3: transparentize($color-white, 0.92);
 $alpha-color-red-1: transparentize($color-red, 0.92);
+$alpha-color-red-2: transparentize($color-red, 0.84);
+$alpha-color-red-3: transparentize($color-red, 0.76);
 $alpha-color-green-1: transparentize($color-green-1, 0.08);
 $alpha-color-green-2: transparentize($color-green-3, 0.08);
 

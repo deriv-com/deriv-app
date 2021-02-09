@@ -10,7 +10,7 @@ const MarketIsClosedOverlay = ({
     is_market_available,
     is_synthetics_unavailable,
     onClick,
-    setMarketStatus,
+    onMarketOpen,
     symbol,
 }) => {
     const [is_timer_loading, setIsTimerLoading] = React.useState(true);
@@ -37,7 +37,7 @@ const MarketIsClosedOverlay = ({
             <MarketCountdownTimer
                 is_main_page
                 setIsTimerLoading={setIsTimerLoading}
-                setMarketStatus={setMarketStatus}
+                onMarketOpen={onMarketOpen}
                 symbol={symbol}
             />
             {message && (
@@ -57,7 +57,7 @@ MarketIsClosedOverlay.propTypes = {
     is_market_available: PropTypes.bool,
     is_synthetics_unavailable: PropTypes.bool,
     onClick: PropTypes.func,
-    setMarketStatus: PropTypes.func,
+    onMarketOpen: PropTypes.func,
     symbol: PropTypes.string,
 };
 

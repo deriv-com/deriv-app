@@ -42,7 +42,7 @@ const Trade = ({
     NotificationMessages,
     onMount,
     onUnmount,
-    setMarketStatus,
+    prepareTradeStore,
     setMobileDigitView,
     show_digits_stats,
     symbol,
@@ -170,7 +170,7 @@ const Trade = ({
                         is_synthetics_unavailable={is_synthetics_unavailable}
                         {...(is_eu && category && { is_market_available: true })}
                         onClick={onTryOtherMarkets}
-                        setMarketStatus={setMarketStatus}
+                        onMarketOpen={prepareTradeStore}
                         symbol={symbol}
                     />
                 )}
@@ -196,7 +196,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_market_closed: modules.trade.is_market_closed,
     show_digits_stats: modules.trade.show_digits_stats,
     is_trade_enabled: modules.trade.is_trade_enabled,
-    setMarketStatus: modules.trade.setMarketStatus,
+    prepareTradeStore: modules.trade.prepareTradeStore,
     setMobileDigitView: modules.trade.setMobileDigitView,
     symbol: modules.trade.symbol,
     onMount: modules.trade.onMount,
@@ -240,6 +240,7 @@ const Chart = props => {
         active_symbols,
         chart_layout,
         chart_type,
+        chartStateChange,
         exportLayout,
         extra_barriers = [],
         end_epoch,
@@ -334,6 +335,7 @@ const Chart = props => {
             requestForgetStream={wsForgetStream}
             requestSubscribe={wsSubscribe}
             settings={settings}
+            stateChangeListener={chartStateChange}
             symbol={symbol}
             topWidgets={is_trade_enabled ? topWidgets : null}
             isConnectionOpened={is_socket_opened}
@@ -359,6 +361,7 @@ Chart.propTypes = {
     bottomWidgets: PropTypes.func,
     chart_type: PropTypes.string,
     chart_layout: PropTypes.any,
+    chartStateChange: PropTypes.func,
     exportLayout: PropTypes.func,
     end_epoch: PropTypes.number,
     granularity: PropTypes.number,
@@ -382,6 +385,7 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
     is_socket_opened: common.is_socket_opened,
     granularity: modules.contract_trade.granularity,
     chart_type: modules.contract_trade.chart_type,
+    chartStateChange: modules.trade.chartStateChange,
     settings: {
         assetInformation: false, // ui.is_chart_asset_info_visible,
         countdown: ui.is_chart_countdown_visible,

@@ -45,7 +45,7 @@ const calculateTimeLeft = remaining_time_to_open => {
         : {};
 };
 
-const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading, setMarketStatus, symbol }) => {
+const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading, onMarketOpen, symbol }) => {
     const isMounted = useIsMounted();
     const [when_market_opens, setWhenMarketOpens] = React.useState({});
     const [time_left, setTimeLeft] = React.useState(calculateTimeLeft(when_market_opens?.remaining_time_to_open));
@@ -99,7 +99,7 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
                 setTimeLeft(calculateTimeLeft(when_market_opens.remaining_time_to_open));
                 if (new Date(when_market_opens.remaining_time_to_open) - +new Date() < 1000) {
                     setLoading(true);
-                    setMarketStatus(false);
+                    if (is_main_page) onMarketOpen(false);
                 }
             }, 1000);
         }
@@ -207,7 +207,7 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
 MarketCountdownTimer.propTypes = {
     is_main_page: PropTypes.bool,
     setIsTimerLoading: PropTypes.func,
-    setMarketStatus: PropTypes.func,
+    onMarketOpen: PropTypes.func,
     symbol: PropTypes.string.isRequired,
 };
 

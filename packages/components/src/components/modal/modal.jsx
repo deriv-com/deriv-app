@@ -23,7 +23,6 @@ const ModalElement = ({
     is_vertical_centered,
     is_vertical_bottom,
     is_vertical_top,
-    is_title_blank,
     is_title_centered,
     header,
     header_backgound_color,
@@ -98,13 +97,12 @@ const ModalElement = ({
                 width: width || 'auto',
             }}
         >
-            {(header || title || rendered_title || is_title_blank) && (
+            {(header || title || rendered_title) && (
                 <div
                     className={classNames('dc-modal-header', {
                         'dc-modal-header__border-bottom': !should_header_stick_body,
                         [`dc-modal-header--${className}`]: className,
                         [`dc-modal-header--is-title-centered`]: is_title_centered,
-                        'dc-modal-header--no-border': is_title_blank,
                     })}
                     style={{
                         background: header_backgound_color,
@@ -194,7 +192,6 @@ const Modal = ({
     is_vertical_bottom,
     is_vertical_centered,
     is_vertical_top,
-    is_title_blank,
     is_title_centered,
     renderTitle,
     should_header_stick_body,
@@ -229,7 +226,6 @@ const Modal = ({
             is_vertical_bottom={is_vertical_bottom}
             is_vertical_centered={is_vertical_centered}
             is_vertical_top={is_vertical_top}
-            is_title_blank={is_title_blank}
             is_title_centered={is_title_centered}
             title={title}
             toggleModal={toggleModal}
@@ -270,7 +266,6 @@ Modal.propTypes = {
     is_vertical_bottom: PropTypes.bool,
     is_vertical_centered: PropTypes.bool,
     is_vertical_top: PropTypes.bool,
-    is_title_blank: PropTypes.bool,
     is_title_centered: PropTypes.bool,
     onEntered: PropTypes.func,
     onExited: PropTypes.func,

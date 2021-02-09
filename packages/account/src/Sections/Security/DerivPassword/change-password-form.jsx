@@ -1,21 +1,71 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Formik } from 'formik';
-import { FormSubmitErrorMessage, Button, Loading, PasswordInput, PasswordMeter } from '@deriv/components';
+import { FormSubmitErrorMessage, Button, Loading, PasswordInput, PasswordMeter, Text, Icon } from '@deriv/components';
 import { withRouter } from 'react-router-dom';
 import { routes, isMobile, validPassword, validLength, getErrorMessages } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import FormSubHeader from 'Components/form-sub-header';
 import FormBody from 'Components/form-body';
 import FormFooter from 'Components/form-footer';
 
+const AlertBox = ({ is_dark_mode_on }) => (
+    <div className='account__alert-box'>
+        <Icon icon='IcWarning' size={30} height={16} />
+        <Text
+            as='p'
+            size='xxs'
+            color={is_dark_mode_on ? 'colored_background' : 'prominent'}
+            className='account__alert-box-text'
+        >
+            <Localize i18n_default_text='We’ve upgraded our system to support a single, more secure password across Deriv. Once you’ve set a new password, you can use it to log into all your Deriv and DMT5 accounts.' />
+        </Text>
+    </div>
+);
+
 class ChangePasswordForm extends React.Component {
+    ref = React.createRef();
+
     state = {
         is_loading: false,
         new_pw_input: '',
+        is_focused: false,
     };
+
+    toggleFocusedState = is_focused => {
+        this.setState({
+            is_focused,
+        });
+    };
+
+    componentDidMount() {
+        if (isMobile()) {
+            document.addEventListener(
+                'focus',
+                e => {
+                    e.target.scrollIntoView();
+                    this.toggleFocusedState(true);
+                },
+                true
+            );
+            document.addEventListener(
+                'blur',
+                () => {
+                    this.toggleFocusedState(false);
+                },
+                true
+            );
+        }
+    }
+
+    componentWillUnmount() {
+        if (isMobile()) {
+            document.removeEventListener('focus', this.toggleFocusedState);
+            document.removeEventListener('blur', this.toggleFocusedState);
+        }
+    }
 
     updateNewPassword = string => {
         this.setState({ new_pw_input: string });
@@ -81,6 +131,7 @@ class ChangePasswordForm extends React.Component {
 
         return (
             <React.Fragment>
+                {!this.state.is_focused && <AlertBox />}
                 <Formik
                     initialValues={{
                         old_password: '',
@@ -100,7 +151,7 @@ class ChangePasswordForm extends React.Component {
                         handleSubmit,
                         isSubmitting,
                     }) => (
-                        <form className='account-form account__password-wrapper' onSubmit={handleSubmit}>
+                        <form ref={this.ref} className='account-form account__password-wrapper' onSubmit={handleSubmit}>
                             {is_loading ? (
                                 <FormBody>
                                     <Loading is_fullscreen={false} className='account__initial-loader' />;
@@ -108,39 +159,50 @@ class ChangePasswordForm extends React.Component {
                             ) : (
                                 <FormBody scroll_offset={isMobile() ? '200px' : '55px'}>
                                     <FormSubHeader title={localize('Change your Deriv password')} />
-                                    <fieldset className='account-form__fieldset'>
-                                        <PasswordInput
-                                            autoComplete='current-password'
-                                            label={localize('Current password')}
-                                            error={touched.old_password && errors.old_password}
-                                            name='old_password'
-                                            value={values.old_password}
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                        />
-                                    </fieldset>
-                                    <fieldset className='account-form__fieldset'>
-                                        <PasswordMeter
-                                            input={new_pw_input}
-                                            has_error={!!(touched.new_password && errors.new_password)}
-                                            custom_feedback_messages={getErrorMessages().password_warnings}
-                                        >
-                                            <PasswordInput
-                                                autoComplete='new-password'
-                                                label={localize('New password')}
-                                                error={touched.new_password && errors.new_password}
-                                                name='new_password'
-                                                value={values.new_password}
-                                                onBlur={handleBlur}
-                                                onChange={e => {
-                                                    const input = e.target;
-                                                    setFieldTouched('new_password', true);
-                                                    if (input) this.updateNewPassword(input.value);
-                                                    handleChange(e);
-                                                }}
-                                            />
-                                        </PasswordMeter>
-                                    </fieldset>
+                                    <div className='account-form__container'>
+                                        {!this.state.is_focused && (
+                                            <div className='account-form__help-text'>
+                                                <Text as='p' size='xs'>
+                                                    <Localize i18n_default_text='We recommend using a unique password — one that you don’t use for any other sites.' />
+                                                </Text>
+                                            </div>
+                                        )}
+                                        <div>
+                                            <fieldset className='account-form__fieldset'>
+                                                <PasswordInput
+                                                    autoComplete='current-password'
+                                                    label={localize('Current password')}
+                                                    error={touched.old_password && errors.old_password}
+                                                    name='old_password'
+                                                    value={values.old_password}
+                                                    onBlur={handleBlur}
+                                                    onChange={handleChange}
+                                                />
+                                            </fieldset>
+                                            <fieldset className='account-form__fieldset'>
+                                                <PasswordMeter
+                                                    input={new_pw_input}
+                                                    has_error={!!(touched.new_password && errors.new_password)}
+                                                    custom_feedback_messages={getErrorMessages().password_warnings}
+                                                >
+                                                    <PasswordInput
+                                                        autoComplete='new-password'
+                                                        label={localize('New password')}
+                                                        error={touched.new_password && errors.new_password}
+                                                        name='new_password'
+                                                        value={values.new_password}
+                                                        onBlur={handleBlur}
+                                                        onChange={e => {
+                                                            const input = e.target;
+                                                            setFieldTouched('new_password', true);
+                                                            if (input) this.updateNewPassword(input.value);
+                                                            handleChange(e);
+                                                        }}
+                                                    />
+                                                </PasswordMeter>
+                                            </fieldset>
+                                        </div>
+                                    </div>
                                 </FormBody>
                             )}
                             <FormFooter>
@@ -189,7 +251,8 @@ class ChangePasswordForm extends React.Component {
 }
 
 // ChangePasswordForm.propTypes = {};
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
     logout: client.logout,
     email: client.email,
+    is_dark_mode_on: ui.is_dark_mode_on,
 }))(withRouter(ChangePasswordForm));

@@ -283,7 +283,6 @@ export const icons = {
         'IcWalletAdd',
         'IcWalletMinus',
         'IcWebTerminal',
-        'IcWarning',
         'IcWebsite',
         'IcWindows',
         'IcWip',

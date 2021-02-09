@@ -73,23 +73,6 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
                 texts.push(
                     <Localize
                         key={texts.length}
-                        i18n_default_text="<0/><1/>Alternatively, you can send your complaint to the <2>European Commission's Online Dispute Resolution (ODR)</2> platform."
-                        components={[
-                            <br key={0} />,
-                            <br key={1} />,
-                            <a
-                                key={2}
-                                className='link link--orange'
-                                rel='noopener noreferrer'
-                                target='_blank'
-                                href='https://ec.europa.eu/odr/'
-                            />,
-                        ]}
-                    />
-                );
-                texts.push(
-                    <Localize
-                        key={texts.length}
                         i18n_default_text='<0/><1/>If your complaint relates to our data processing practices, you can submit a formal complaint to your local supervisory authority.'
                         components={[<br key={0} />, <br key={1} />]}
                     />

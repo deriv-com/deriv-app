@@ -96,7 +96,7 @@ const RealAccountSignup = ({
                     onError={showErrorModal}
                 />
             ),
-            title: () => localize('Add or manage account'),
+            title: is_requlated => (is_requlated ? localize('Manage account') : localize('Add or manage account')),
         },
         {
             body: local_props => (
@@ -144,7 +144,7 @@ const RealAccountSignup = ({
         if (has_real_account && currency) {
             if (is_eu && getActiveModalIndex() === modal_pages_indices.add_or_manage_account) {
                 // Manage account
-                return '379px'; // Since crypto is disabled for EU clients, lower the height of modal
+                return '420px'; // Since crypto is disabled for EU clients, lower the height of modal
             }
             if (getActiveModalIndex() === modal_pages_indices.finished_set_currency) {
                 return 'auto';
@@ -316,6 +316,7 @@ const RealAccountSignup = ({
                                     currency={currency}
                                     is_isle_of_man_residence={is_isle_of_man_residence}
                                     is_belgium_residence={is_belgium_residence}
+                                    is_eu={is_eu}
                                 />
                             );
                         }

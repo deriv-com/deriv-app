@@ -141,7 +141,7 @@ const CurrencySelector = ({
                                                     />
                                                 ))}
                                             </RadioButtonGroup>
-                                            <Hr />
+                                            {reorderCurrencies(crypto, 'crypto').length > 0 && <Hr />}
                                         </React.Fragment>
                                     )}
                                     {reorderCurrencies(crypto, 'crypto').length > 0 && (

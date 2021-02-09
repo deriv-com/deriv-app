@@ -765,17 +765,7 @@
     &--error-message {
         margin-bottom: 1em;
     }
-    &__inline-link {
-        @include typeface(--small-left-bold-prominent);
-        text-decoration: none;
-    }
-    &__main-wrapper {
-        display: grid;
-        grid-template-rows: auto;
-        grid-gap: 1rem;
-        justify-items: center;
-        margin: 2rem 0 0;
-    }
+    &__main-form,
     &__investor-wrapper {
         margin: 3.2rem 0.5rem 0;
 
@@ -981,6 +971,8 @@
             &__description {
                 @include typeface(--xsmall-left-normal-black);
                 line-height: 1.5;
+                max-width: 300px;
+                margin: -2.7rem 0 2.4rem;
                 color: var(--text-less-prominent);
             }
         }
@@ -1284,27 +1276,6 @@
         @include mobile {
             min-width: calc(100vw - 3.2rem);
         }
-    }
-}
-.dc-modal__container_mt5-reset-password-modal {
-    &__button {
-        margin-top: 2.4rem;
-        @include typeface(--paragraph-center-bold-active);
-    }
-    &__body {
-        @include desktop {
-            padding: 0 2.4rem 3.4rem;
-        }
-        @include mobile {
-            padding: 2.4rem;
-        }
-        flex-direction: column;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    &__header {
-        margin: 1rem 0;
     }
 }
 .mt5-personal-details-form-error {

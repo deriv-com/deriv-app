@@ -100,9 +100,6 @@
         }
 
         &__title {
-            @include typeface(--title-left-bold-black);
-            color: var(--text-prominent);
-            line-height: 24px;
             padding: 1.6rem 2.4rem;
             display: flex;
             align-items: center;

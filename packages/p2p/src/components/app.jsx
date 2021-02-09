@@ -3,11 +3,11 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import { isMobile } from '@deriv/shared';
-import { Tabs, Modal } from '@deriv/components';
+import { HintBox, Icon, Loading, Modal, Tabs, Text } from '@deriv/components';
 import ServerTime from 'Utils/server-time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
-import { localize, setLanguage } from './i18next';
+import { localize, Localize, setLanguage } from './i18next';
 import BuySell from './buy-sell/buy-sell.jsx';
 import MyAds from './my-ads/my-ads.jsx';
 import Orders from './orders/orders.jsx';
@@ -18,6 +18,29 @@ import MyProfile from './my-profile';
 import './app.scss';
 
 const allowed_currency = 'USD';
+
+const TemporaryBarredMessage = observer(() => {
+    const { general_store } = useStores();
+
+    return (
+        <div className='p2p-cashier__barred-user'>
+            <HintBox
+                icon='IcAlertWarning'
+                message={
+                    <Text size='xxxs' color='prominent' line_height='xs'>
+                        <Localize
+                            i18n_default_text="You've been temporarily barred from using our services due to multiple cancellation attempts. Try again after {{date_time}} GMT."
+                            values={{ date_time: general_store.blocked_until_date_time }}
+                        />
+                    </Text>
+                }
+                is_warn
+            />
+        </div>
+    );
+});
+
+TemporaryBarredMessage.displayName = 'TemporaryBarredMessage';
 
 const P2pWrapper = ({ className, children }) => (
     <main className={classNames('p2p-cashier', className)}>{children}</main>
@@ -62,6 +85,20 @@ const App = observer(props => {
             <h1 className='p2p-not-allowed'>
                 {localize('This feature is only available for real-money USD accounts right now.')}
             </h1>
+        );
+    }
+
+    if (general_store.is_blocked) {
+        return (
+            <div className='p2p-cashier__blocked'>
+                <Icon icon='IcCashierDp2pBlocked' size={128} />
+                <Text className='p2p-cashier__blocked--text' color='prominent' line_height='m' size='s' weight='bold'>
+                    <Localize i18n_default_text='Your DP2P cashier is blocked' />
+                </Text>
+                <Text align='center' color='prominent' line_height='m' size='xs'>
+                    <Localize i18n_default_text='Please use live chat to contact our Customer Support team for help.' />
+                </Text>
+            </div>
         );
     }
 
@@ -113,35 +150,43 @@ const App = observer(props => {
     }
 
     return (
-        <P2pWrapper {...wrapper_props}>
-            <Tabs
-                onTabItemClick={general_store.handleTabClick}
-                active_index={general_store.active_index}
-                className='p2p-cashier__tabs'
-                top
-                header_fit_content={!isMobile()}
-                is_100vw={isMobile()}
-            >
-                <div label={localize('Buy / Sell')}>
-                    <BuySell />
-                </div>
-                <div count={general_store.notification_count} label={localize('Orders')}>
-                    <Orders
-                        navigate={general_store.redirectTo}
-                        params={general_store.parameters}
-                        chat_info={general_store.chat_info}
-                    />
-                </div>
-                <div label={localize('My ads')}>
-                    <MyAds />
-                </div>
-                {general_store.is_advertiser && (
-                    <div label={localize('My profile')}>
-                        <MyProfile />
-                    </div>
-                )}
-            </Tabs>
-        </P2pWrapper>
+        <React.Fragment>
+            {general_store.is_loading ? (
+                <Loading is_fullscreen={false} />
+            ) : (
+                <P2pWrapper {...wrapper_props}>
+                    <Tabs
+                        onTabItemClick={general_store.handleTabClick}
+                        active_index={general_store.active_index}
+                        className='p2p-cashier__tabs'
+                        top
+                        header_fit_content={!isMobile()}
+                        is_100vw={isMobile()}
+                    >
+                        <div label={localize('Buy / Sell')}>
+                            {general_store.is_barred && <TemporaryBarredMessage />}
+                            <BuySell />
+                        </div>
+                        <div count={general_store.notification_count} label={localize('Orders')}>
+                            <Orders
+                                navigate={general_store.redirectTo}
+                                params={general_store.parameters}
+                                chat_info={general_store.chat_info}
+                            />
+                        </div>
+                        <div label={localize('My ads')}>
+                            {general_store.is_barred && <TemporaryBarredMessage />}
+                            <MyAds />
+                        </div>
+                        {general_store.is_advertiser && (
+                            <div label={localize('My profile')}>
+                                <MyProfile />
+                            </div>
+                        )}
+                    </Tabs>
+                </P2pWrapper>
+            )}
+        </React.Fragment>
     );
 });
 

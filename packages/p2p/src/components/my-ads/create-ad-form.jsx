@@ -88,9 +88,9 @@ const CreateAdForm = () => {
                                                     label={localize('Total amount')}
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
-                                                        <span className='p2p-my-ads__form-field--trailing'>
+                                                        <Text size='xxs' color='less-prominent'>
                                                             {currency}
-                                                        </span>
+                                                        </Text>
                                                     }
                                                     onChange={e => {
                                                         my_ads_store.restrictLength(e, handleChange);
@@ -127,9 +127,9 @@ const CreateAdForm = () => {
                                                     })}
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
-                                                        <span className='p2p-my-ads__form-field--trailing'>
+                                                        <Text size='xxs' color='less-prominent'>
                                                             {local_currency_config.currency}
-                                                        </span>
+                                                        </Text>
                                                     }
                                                     onChange={e => {
                                                         my_ads_store.restrictLength(e, handleChange);
@@ -148,9 +148,9 @@ const CreateAdForm = () => {
                                                     label={localize('Min order')}
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
-                                                        <span className='p2p-my-ads__form-field--trailing'>
+                                                        <Text size='xxs' color='less-prominent'>
                                                             {currency}
-                                                        </span>
+                                                        </Text>
                                                     }
                                                     onChange={e => {
                                                         my_ads_store.restrictLength(e, handleChange);
@@ -169,9 +169,9 @@ const CreateAdForm = () => {
                                                     label={localize('Max order')}
                                                     className='p2p-my-ads__form-field'
                                                     trailing_icon={
-                                                        <span className='p2p-my-ads__form-field--trailing'>
+                                                        <Text size='xxs' color='less-prominent'>
                                                             {currency}
-                                                        </span>
+                                                        </Text>
                                                     }
                                                     onChange={e => {
                                                         my_ads_store.restrictLength(e, handleChange);
@@ -188,7 +188,11 @@ const CreateAdForm = () => {
                                                     {...field}
                                                     data-lpignore='true'
                                                     type='textarea'
-                                                    label={localize('Your payment details')}
+                                                    label={
+                                                        <Text color='less-prominent' size='xs'>
+                                                            <Localize i18n_default_text='Your payment details' />
+                                                        </Text>
+                                                    }
                                                     error={touched.payment_info && errors.payment_info}
                                                     hint={localize('e.g. your bank/e-wallet account details')}
                                                     className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
@@ -207,7 +211,11 @@ const CreateAdForm = () => {
                                                     {...field}
                                                     data-lpignore='true'
                                                     type='textarea'
-                                                    label={localize('Your contact details')}
+                                                    label={
+                                                        <Text color='less-prominent' size='xs'>
+                                                            <Localize i18n_default_text='Your contact details' />{' '}
+                                                        </Text>
+                                                    }
                                                     error={touched.contact_info && errors.contact_info}
                                                     className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
                                                     initial_character_count={my_ads_store.contact_info.length}
@@ -228,7 +236,11 @@ const CreateAdForm = () => {
                                                     touched.default_advert_description &&
                                                     errors.default_advert_description
                                                 }
-                                                label={localize('Instructions (optional)')}
+                                                label={
+                                                    <Text color='less-prominent' size='xs'>
+                                                        <Localize i18n_default_text='Instructions (optional)' />
+                                                    </Text>
+                                                }
                                                 hint={localize('This information will be visible to everyone')}
                                                 className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
                                                 initial_character_count={my_ads_store.default_advert_description.length}

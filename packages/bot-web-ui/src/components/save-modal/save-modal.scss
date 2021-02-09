@@ -102,21 +102,12 @@ div.radio-group {
         text-align: center;
     }
     &__radio-text {
-        font-size: 12px;
-        line-height: 1.43;
         letter-spacing: normal;
-        color: var(--text-prominent);
-
-        &--disabled {
-            color: var(--text-disabled);
-        }
     }
     &__drive-status {
         cursor: pointer;
         position: absolute;
         margin-top: 5px;
-        font-weight: bold;
-        color: var(--brand-red-coral);
         width: 71px;
     }
     &__icon {

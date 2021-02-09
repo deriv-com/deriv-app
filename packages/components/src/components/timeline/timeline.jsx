@@ -1,10 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
+import Text from '../text';
 
 const Oval = ({ children }) => {
     return (
         <div className='dc-timeline__oval'>
-            <span className='dc-timeline__number'>{children}</span>
+            <Text color='colored-background' sizd='s' weight='bold' className='dc-timeline__number'>
+                {children}
+            </Text>
         </div>
     );
 };

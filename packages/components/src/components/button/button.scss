@@ -30,12 +30,12 @@
     }
     &__text,
     &__icon {
-        @include typeface(--paragraph-center-bold-black, unset);
-        color: var(--text-general);
         display: flex;
         pointer-events: none;
     }
     &__icon {
+        @include typeface(--paragraph-center-bold-black, unset);
+        color: var(--text-general);
         padding-right: 0.8rem;
         pointer-events: none;
 

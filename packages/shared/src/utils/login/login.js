@@ -14,8 +14,8 @@ export const redirectToLogin = (is_logged_in, language, has_params = true) => {
     }
 };
 
-export const redirectToSignUp = ({ is_deriv_crypto }) => {
-    window.open(getStaticUrl('/signup/', { is_deriv_crypto }));
+export const redirectToSignUp = () => {
+    window.open(getStaticUrl('/signup/'));
 };
 
 export const loginUrl = ({ language }) => {

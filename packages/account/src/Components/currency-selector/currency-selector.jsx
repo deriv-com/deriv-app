@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik } from 'formik';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
-import { isMobile, isDesktop, reorderCurrencies, PlatformContext } from '@deriv/shared';
+import { isMobile, isDesktop, reorderCurrencies } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import RadioButtonGroup from './radio-button-group.jsx';
 import RadioButton from './radio-button.jsx';
@@ -31,7 +31,6 @@ const CurrencySelector = ({
     onSubmitEnabledChange,
     ...props
 }) => {
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
     const crypto = legal_allowed_currencies.filter(currency => currency.type === 'crypto');
     const fiat = legal_allowed_currencies.filter(currency => currency.type === 'fiat');
     const [is_bypass_step, setIsBypassStep] = React.useState(false);
@@ -140,7 +139,7 @@ const CurrencySelector = ({
                                             <RadioButtonGroup
                                                 id='currency'
                                                 className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                                                label={is_deriv_crypto ? '' : localize('Cryptocurrencies')}
+                                                label={localize('Cryptocurrencies')}
                                                 value={values.currency}
                                                 error={errors.currency}
                                                 touched={touched.currency}

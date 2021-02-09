@@ -1,13 +1,11 @@
 // noop
 import React from 'react';
-import { getStaticUrl, PlatformContext } from '@deriv/shared';
+import { getStaticUrl } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 
 const ArticleContent = ({ is_eu, is_uk, toggleModal }) => {
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
-
     const eu_items = [
         <Localize
             key={0}
@@ -18,7 +16,7 @@ const ArticleContent = ({ is_eu, is_uk, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getStaticUrl('/responsible', { is_deriv_crypto })}
+                    href={getStaticUrl('/responsible')}
                 />,
             ]}
         />,
@@ -92,7 +90,7 @@ const ArticleContent = ({ is_eu, is_uk, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getStaticUrl('/responsible', { is_deriv_crypto })}
+                    href={getStaticUrl('/responsible')}
                 />,
             ]}
         />,
@@ -113,7 +111,7 @@ const ArticleContent = ({ is_eu, is_uk, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getStaticUrl('/contact-us', { is_deriv_crypto })}
+                    href={getStaticUrl('/contact-us')}
                 />,
             ]}
         />,

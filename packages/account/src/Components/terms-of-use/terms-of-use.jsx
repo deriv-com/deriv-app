@@ -8,7 +8,7 @@ import {
     AutoHeightWrapper,
     StaticUrl,
 } from '@deriv/components';
-import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import CheckboxField from './checkbox-field.jsx';
 import { SharedMessage, BrokerSpecificMessage, Hr } from './terms-of-use-messages.jsx';
@@ -25,8 +25,6 @@ const TermsOfUse = ({
     is_dashboard,
     ...props
 }) => {
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
-
     const handleCancel = () => {
         const current_step = getCurrentStep() - 1;
         onCancel(current_step, goToPreviousStep);
@@ -81,8 +79,8 @@ const TermsOfUse = ({
                             <Modal.Footer has_separator is_bypassed={isMobile()}>
                                 <FormSubmitButton
                                     is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
-                                    label={is_deriv_crypto ? localize('Next') : localize('Add account')}
-                                    has_cancel={!is_deriv_crypto}
+                                    label={localize('Add account')}
+                                    has_cancel
                                     is_absolute={isMobile()}
                                     onCancel={() => handleCancel()}
                                     cancel_label={localize('Previous')}

@@ -78,12 +78,12 @@ commands:
           name: "Build all packages"
           command: npm run build
 
-  build_crypto:
-    description: "Build crypto"
+  build_dashboard:
+    description: "Build dashboard"
     steps:
       - run:
-          name: "Build all packages for deriv crypto"
-          command: npm run build:crypto
+          name: "Build all packages for deriv dashboard"
+          command: npm run build:dashboard
 
   notify_slack:
     description: "Notify slack"
@@ -183,13 +183,13 @@ jobs:
       - npm_install_from_cache
       - build
 
-  build_crypto:
+  build_dashboard:
     docker:
       - image: circleci/node:12.18.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
-      - build_crypto
+      - build_dashboard
 
   release_staging:
     docker:
@@ -206,21 +206,21 @@ jobs:
     environment:
       NODE_ENV: staging
 
-  release_staging_crypto:
+  release_staging_dashboard:
     docker:
       - image: circleci/node:12.18.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
-      - build_crypto
+      - build_dashboard
       - deploy:
-          target_branch: staging-crypto
+          target_branch: staging-dashboard
       - docker_build_push:
-          docker_image_name: deriv-app-crypto
-          docker_image_latest_tag: latest-staging-crypto
+          docker_image_name: deriv-app-dashboard
+          docker_image_latest_tag: latest-staging-dashboard
       - k8s_deploy:
-          k8s_svc_name: staging-deriv-app-crypto
-          k8s_image_name: deriv-app-crypto
+          k8s_svc_name: staging-deriv-app-dashboard
+          k8s_image_name: deriv-app-dashboard
       - notify_slack
     environment:
       NODE_ENV: staging
@@ -242,21 +242,21 @@ jobs:
     environment:
       NODE_ENV: staging
 
-  release_production_crypto:
+  release_production_dashboard:
     docker:
       - image: circleci/node:12.18.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
-      - build_crypto
+      - build_dashboard
       - deploy:
-          target_branch: production-crypto
+          target_branch: production-dashboard
       - docker_build_push:
-          docker_image_name: deriv-app-crypto
+          docker_image_name: deriv-app-dashboard
           docker_image_latest_tag: latest
       - k8s_deploy:
-          k8s_svc_name: production-deriv-app-crypto
-          k8s_image_name: deriv-app-crypto
+          k8s_svc_name: production-deriv-app-dashboard
+          k8s_image_name: deriv-app-dashboard
       - notify_slack
     environment:
       NODE_ENV: staging
@@ -279,7 +279,7 @@ workflows:
           filters:
             branches:
               only: /^master$/
-      - release_staging_crypto:
+      - release_staging_dashboard:
           filters:
             branches:
               only: /^master$/
@@ -294,15 +294,15 @@ workflows:
             tags:
               only: /^production.*/
 
-  release_production_crypto:
+  release_production_dashboard:
     jobs:
-      - release_production_crypto:
+      - release_production_dashboard:
           context: binary-frontend-artifact-upload
           filters:
             branches:
               ignore: /.*/
             tags:
-              only: /^crypto-production.*/
+              only: /^dashboard-production.*/
 
   test:
     jobs:

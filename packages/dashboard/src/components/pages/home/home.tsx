@@ -3,6 +3,7 @@ import * as React from 'react';
 import { DesktopWrapper, Text, VerticalTab } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { TRoute, TRouteGroup } from 'Types';
+import MyApps from 'Components/my-apps';
 
 import TempButtons from 'Components/temp-buttons';
 import TempGetDMT5Wallet from 'Components/pages/temp-get-dmt5-wallet';
@@ -14,7 +15,7 @@ const Home: React.FC = () => {
             icon: 'IcUserOutline',
             label: localize('My Deriv'),
             is_routed: true,
-            value: () => <Text>My Deriv</Text>,
+            value: () => <MyApps />,
         },
         {
             label: '',

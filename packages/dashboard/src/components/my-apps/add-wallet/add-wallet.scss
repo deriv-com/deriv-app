@@ -1,4 +1,4 @@
-.get-more-wallet-card {
+.add-wallet {
     align-items: center;
     background: var(--general-section-1);
     border-radius: 1.6rem;
@@ -7,7 +7,7 @@
     justify-content: center;
     width: 28rem;
 
-    &--button {
+    &__button {
         background: #0796e0; // TODO: Update once dashboard colors are merged
         border-radius: 1.6rem;
         height: 3.2rem !important;
@@ -16,7 +16,7 @@
         width: 3.2rem;
     }
 
-    &--column {
+    &__column {
         align-items: center;
         display: flex;
         flex-direction: column;

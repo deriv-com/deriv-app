@@ -381,13 +381,6 @@
     &__button {
         margin-top: 1.6rem;
     }
-    @include tablet {
-        form {
-            display: grid;
-            grid-template-rows: repeat(2, 7rem) 1fr 7rem;
-            height: auto;
-        }
-    }
 }
 
 /* TODO: [refactor-components] Refactor form subheader to components */

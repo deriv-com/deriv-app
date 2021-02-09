@@ -79,6 +79,13 @@ const HelpBase = ({
                         text={localize('Previous')}
                         type='button'
                         is_disabled={should_previous_disable}
+                        renderText={text =>
+                            should_previous_disable && (
+                                <Text size='xs' weight='bold' align='center' color='disabled'>
+                                    {text}
+                                </Text>
+                            )
+                        }
                     />
                     <Button
                         className='flyout__button-next'
@@ -87,6 +94,13 @@ const HelpBase = ({
                         text={localize('Next')}
                         type='button'
                         is_disabled={should_next_disable}
+                        renderText={text =>
+                            should_next_disable && (
+                                <Text size='xs' weight='bold' align='center' color='disabled'>
+                                    {text}
+                                </Text>
+                            )
+                        }
                     />
                 </div>
             )}

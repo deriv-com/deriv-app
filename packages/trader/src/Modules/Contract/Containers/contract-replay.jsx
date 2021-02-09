@@ -242,6 +242,7 @@ const Chart = props => {
             isStaticChart={false}
             shouldFetchTradingTimes={!props.end_epoch}
             yAxisMargin={getChartYAxisMargin()}
+            anchorChartToLeft={isMobile()}
         >
             {props.markers_array.map(marker => (
                 <ChartMarker

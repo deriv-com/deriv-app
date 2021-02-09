@@ -87,7 +87,7 @@ const Dialog = ({
                         )}
                     </div>
                     {is_text ? (
-                        <Text as='p' size='xs' line_height='s' className={content_classes}>
+                        <Text as='p' size='xs' styles={{ lineHeight: '1.43' }} className={content_classes}>
                             {children}
                         </Text>
                     ) : (

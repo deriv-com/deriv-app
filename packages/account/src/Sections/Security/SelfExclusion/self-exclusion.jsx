@@ -18,6 +18,7 @@ import {
     getPropertyValue,
     toMoment,
     isDesktop,
+    epochToMoment,
     isMobile,
     formatMoney,
     getDecimalPlaces,
@@ -742,11 +743,7 @@ class SelfExclusion extends React.Component {
                                                                 {...field}
                                                                 className='self-exclusion__input'
                                                                 label={localize('Date')}
-                                                                value={
-                                                                    toMoment().format(
-                                                                        'YYYY-MM-DD'
-                                                                    )
-                                                                }
+                                                                value={values.timeout_until && epochToMoment(values.timeout_until)}
                                                                 onChange={({ target }) =>
                                                                     setFieldValue(
                                                                         'timeout_until',
@@ -780,9 +777,7 @@ class SelfExclusion extends React.Component {
                                                                 alignment={is_tablet ? 'bottom' : 'left'}
                                                                 className='self-exclusion__input'
                                                                 label={localize('Date')}
-                                                                value={toMoment().add(6, 'months').format(
-                                                                    'YYYY-MM-DD'
-                                                                )}
+                                                                value={values.exclude_until} 
                                                                 onChange={({ target }) =>
                                                                     setFieldValue(
                                                                         'exclude_until',

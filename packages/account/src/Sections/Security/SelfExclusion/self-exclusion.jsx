@@ -743,7 +743,8 @@ class SelfExclusion extends React.Component {
                                                                 {...field}
                                                                 className='self-exclusion__input'
                                                                 label={localize('Date')}
-                                                                value={values.timeout_until && epochToMoment(values.timeout_until)}
+                                                                value={values.timeout_until && 
+                                                                    epochToMoment(values.timeout_until)}
                                                                 onChange={({ target }) =>
                                                                     setFieldValue(
                                                                         'timeout_until',

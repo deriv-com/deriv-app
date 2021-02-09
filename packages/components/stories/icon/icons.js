@@ -366,7 +366,6 @@ export const icons = {
         'IcMt5LiquidRisk',
         'IcMt5MarginTrading',
         'IcMt5OpenMarkets',
-        'IcMt5OnePassword',
         'IcMt5PasswordUpdated',
         'IcMt5Responsive',
         'IcMt5Support',

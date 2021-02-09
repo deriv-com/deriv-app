@@ -529,13 +529,11 @@
         &-enter-done {
             transition: all 0.3s ease-in-out;
             opacity: 1;
-            height: 4rem;
         }
         &-enter,
         &-exit-done {
             transition: all 0.3s ease-in-out;
             opacity: 0;
-            height: 0;
         }
         &--icon {
             color: var(--status-colored-background);

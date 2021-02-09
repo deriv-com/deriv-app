@@ -181,7 +181,9 @@ const MT5AccountCard = ({
             ref={wrapper_ref}
             className={classNames('mt5-account-card__wrapper', {
                 'mt5-account-card__wrapper-shrinked':
-                    is_trade_server_button_visible && !should_show_trade_servers && type.category === 'real',
+                    is_trade_server_button_visible &&
+                    type.category === 'real' &&
+                    (!should_show_trade_servers || !is_hovered),
             })}
         >
             <div
@@ -343,7 +345,7 @@ const MT5AccountCard = ({
             <DesktopWrapper>
                 <CSSTransition
                     in={is_hovered && should_show_trade_servers}
-                    timeout={400}
+                    timeout={0}
                     classNames='mt5-account-card__add-server'
                     unmountOnExit
                 >

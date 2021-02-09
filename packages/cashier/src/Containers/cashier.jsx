@@ -34,8 +34,6 @@ const Cashier = ({
     routeBackInApp,
     routes: routes_config,
     setAccountSwitchListener,
-    setDepositList,
-    setPaymentAgentList,
     setTabIndex,
     tab_index,
     toggleCashier,
@@ -54,21 +52,6 @@ const Cashier = ({
             toggleCashier();
         };
     }, []);
-
-    React.useEffect(() => {
-        setPaymentAgentList();
-        setDepositList();
-    }, [is_virtual]);
-
-    React.useEffect(() => {
-        getMenuOptions();
-    }, [
-        is_payment_agent_visible,
-        is_payment_agent_transfer_visible,
-        is_p2p_enabled,
-        is_onramp_tab_visible,
-        is_account_transfer_visible,
-    ]);
 
     const onClickClose = () => routeBackInApp(history);
     const getMenuOptions = () => {
@@ -180,8 +163,6 @@ Cashier.propTypes = {
     routeBackInApp: PropTypes.func,
     routes: PropTypes.arrayOf(PropTypes.object),
     setAccountSwitchListener: PropTypes.func,
-    setDepositList: PropTypes.func,
-    setPaymentAgentList: PropTypes.func,
     setTabIndex: PropTypes.func,
     tab_index: PropTypes.number,
     toggleCashier: PropTypes.func,
@@ -201,8 +182,6 @@ export default connect(({ client, common, modules, ui }) => ({
     p2p_notification_count: modules.cashier.p2p_notification_count,
     routeBackInApp: common.routeBackInApp,
     setAccountSwitchListener: modules.cashier.setAccountSwitchListener,
-    setDepositList: modules.cashier.onMountDeposit,
-    setPaymentAgentList: modules.cashier.setPaymentAgentList,
     setTabIndex: modules.cashier.setCashierTabIndex,
     tab_index: modules.cashier.cashier_route_tab_index,
     toggleCashier: ui.toggleCashier,

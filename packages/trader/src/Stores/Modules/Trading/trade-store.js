@@ -329,7 +329,7 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    async prepareTradeStore() {
+    async prepareTradeStore(should_set_default_symbol = true) {
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
         await when(() => !this.root_store.client.is_populating_account_list);
 
@@ -353,8 +353,7 @@ export default class TradeStore extends BaseStore {
             const symbol_to_update = await pickDefaultSymbol(this.active_symbols);
             await this.processNewValuesAsync({ symbol: symbol_to_update });
         }
-
-        await this.setDefaultSymbol();
+        if (should_set_default_symbol) await this.setDefaultSymbol();
         await this.setContractTypes();
         await this.processNewValuesAsync(
             {
@@ -1142,6 +1141,20 @@ export default class TradeStore extends BaseStore {
     @action.bound
     resetRefresh() {
         this.should_refresh_active_symbols = false;
+    }
+
+    @action.bound
+    chartStateChange(state, option) {
+        const market_close_prop = 'isClosed';
+        switch (state) {
+            case 'MARKET_STATE_CHANGE':
+                if (option && market_close_prop in option) {
+                    if (this.is_trade_component_mounted && option[market_close_prop] !== this.is_market_closed)
+                        this.prepareTradeStore(false);
+                }
+                break;
+            default:
+        }
     }
 
     refToAddTick = ref => {

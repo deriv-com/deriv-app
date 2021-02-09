@@ -82,6 +82,26 @@
         .dc-btn__icon {
             color: var(--text-colored-background);
         }
+
+        &__light {
+            background: var(--button-primary-light-default);
+
+            &:hover:not([disabled]) {
+                background: var(--button-primary-light-hover);
+            }
+            &:active:not([disabled]) {
+                background: var(--button-primary-light-default);
+            }
+            &:disabled,
+            &[disabled] {
+                opacity: 0.32;
+                cursor: not-allowed !important;
+            }
+            .dc-btn__text,
+            .dc-btn__icon {
+                color: var(--brand-red-coral);
+            }
+        }
     }
     &--secondary {
         background: transparent;

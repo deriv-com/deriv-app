@@ -35,8 +35,7 @@ export default class MyProfileStore extends BaseStore {
                 this.setPaymentInfo(p2p_advertiser_info.payment_info);
             } else {
                 if (response.error.code === 'PermissionDenied') {
-                    this.root_store.general_store.redirectTo('buy_sell');
-                    this.setShouldHideMyProfileTab(true);
+                    this.root_store.general_store.setIsBlocked(true);
                 }
                 this.setErrorMessage(response.error);
             }

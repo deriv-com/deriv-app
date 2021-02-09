@@ -16,13 +16,11 @@ import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
 import { SmartChart } from 'Modules/SmartChart';
-import { isMarketClosed } from 'Stores/Modules/Trading/Helpers/active-symbols';
 import { connect } from 'Stores/connect';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
 import ChartMarker from '../../SmartChart/Components/Markers/marker.jsx';
 
 const ContractReplay = ({
-    active_symbols,
     contract_id,
     contract_info,
     contract_update,
@@ -31,6 +29,7 @@ const ContractReplay = ({
     is_dark_theme,
     is_digit_contract,
     is_forward_starting,
+    is_market_closed,
     is_sell_requested,
     is_valid_to_cancel,
     onClickCancel,
@@ -45,11 +44,6 @@ const ContractReplay = ({
     onUnmount,
 }) => {
     const [is_visible, setIsVisible] = React.useState(false);
-    const [is_market_closed, setMarketClosed] = React.useState(false);
-
-    React.useEffect(() => {
-        setMarketClosed(isMarketClosed(active_symbols, contract_info?.underlying));
-    }, [active_symbols, contract_info?.underlying]);
 
     React.useEffect(() => {
         const url_contract_id = +/[^/]*$/.exec(location.pathname)[0];
@@ -85,7 +79,6 @@ const ContractReplay = ({
             is_valid_to_cancel={is_valid_to_cancel}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
-            setMarketStatus={setMarketClosed}
             status={indicative_status}
             toggleHistoryTab={toggleHistoryTab}
         />
@@ -183,11 +176,11 @@ export default withRouter(
         const contract_store = contract_replay.contract_store;
         return {
             routeBackInApp: common.routeBackInApp,
-            active_symbols: modules.trade.active_symbols,
             contract_info: contract_store.contract_info,
             contract_update: contract_store.contract_update,
             contract_update_history: contract_store.contract_update_history,
             is_digit_contract: contract_store.is_digit_contract,
+            is_market_closed: contract_replay.is_market_closed,
             is_sell_requested: contract_replay.is_sell_requested,
             is_valid_to_cancel: contract_replay.is_valid_to_cancel,
             onClickCancel: contract_replay.onClickCancel,

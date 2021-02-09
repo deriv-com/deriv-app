@@ -25,7 +25,6 @@ const ContractDrawer = ({
     onClickCancel,
     onClickSell,
     server_time,
-    setMarketStatus,
     status,
     toggleHistoryTab,
 }) => {
@@ -69,7 +68,6 @@ const ContractDrawer = ({
                     onSwipedUp={() => setShouldShowContractAudit(true)}
                     onSwipedDown={() => setShouldShowContractAudit(false)}
                     server_time={server_time}
-                    setMarketStatus={setMarketStatus}
                     status={status}
                     toggleContractAuditDrawer={() => setShouldShowContractAudit(!should_show_contract_audit)}
                 />
@@ -173,7 +171,6 @@ ContractDrawer.propTypes = {
     onClickCancel: PropTypes.func,
     onClickContractUpdate: PropTypes.func,
     onClickSell: PropTypes.func,
-    setMarketStatus: PropTypes.func,
     status: PropTypes.string,
 };
 

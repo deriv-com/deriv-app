@@ -31,7 +31,6 @@ const ContractDrawerCard = ({
     removeToast,
     result,
     setCurrentFocus,
-    setMarketStatus,
     server_time,
     should_show_cancellation_warning,
     status,
@@ -123,7 +122,7 @@ const ContractDrawerCard = ({
                             'contract-card__market-closed--hidden': should_hide_closed_overlay,
                         })}
                     >
-                        <MarketClosedContractOverlay setMarketStatus={setMarketStatus} symbol={symbol} />
+                        <MarketClosedContractOverlay symbol={symbol} />
                     </div>
                 )}
                 {contract_el}
@@ -159,7 +158,6 @@ ContractDrawerCard.propTypes = {
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,
     onClickSell: PropTypes.func,
-    setMarketStatus: PropTypes.func,
     status: PropTypes.string,
 };
 

@@ -6,7 +6,7 @@ import { Localize } from '@deriv/translations';
 // eslint-disable-next-line import/no-useless-path-segments
 import MarketCountdownTimer from '../market-countdown-timer.jsx';
 
-const MarketClosedContractOverlay = ({ setMarketStatus, symbol }) => {
+const MarketClosedContractOverlay = ({ symbol }) => {
     const [is_timer_loading, setIsTimerLoading] = React.useState(true);
 
     return (
@@ -24,17 +24,12 @@ const MarketClosedContractOverlay = ({ setMarketStatus, symbol }) => {
             >
                 <Localize i18n_default_text='Market is closed' />
             </Text>
-            <MarketCountdownTimer
-                setIsTimerLoading={setIsTimerLoading}
-                setMarketStatus={setMarketStatus}
-                symbol={symbol}
-            />
+            <MarketCountdownTimer setIsTimerLoading={setIsTimerLoading} symbol={symbol} />
         </div>
     );
 };
 
 MarketClosedContractOverlay.propTypes = {
-    setMarketStatus: PropTypes.func,
     symbol: PropTypes.string,
 };
 

@@ -39,7 +39,6 @@ const Cashier = ({
     toggleCashier,
 }) => {
     React.useEffect(() => {
-        getMenuOptions();
         toggleCashier();
         // we still need to populate the tabs shown on cashier
         (async () => {

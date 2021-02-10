@@ -39,7 +39,7 @@
             transition: opacity 0.25s;
 
             /* To vertically align palceholder in Firefox */
-            @-moz-document url-prefix() {
+            @-moz-document url-prefix('') {
                 line-height: 1.25;
             }
         }

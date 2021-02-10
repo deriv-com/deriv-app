@@ -49,6 +49,9 @@ export type TRoutesProps = {
 
     platform_binary_bot: string;
     platform_dbot: string;
+    platform_dmt5: string;
+    platform_dmt5_financial: string;
+    platform_dmt5_financial_stp: string;
     platform_dmt5_synthetic: string;
     platform_dtrader: string;
     platform_smarttrader: string;

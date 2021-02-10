@@ -130,6 +130,21 @@ const getModules = ({ is_deriv_crypto }) => {
                 {
                     default: true,
                     getTitle: () => localize('DMT5'),
+                    path: routes.platform_dmt5,
+                },
+                {
+                    default: true,
+                    getTitle: () => localize('DMT5 Financial STP'),
+                    path: routes.platform_dmt5_financial_stp,
+                },
+                {
+                    default: true,
+                    getTitle: () => localize('DMT5 Financial'),
+                    path: routes.platform_dmt5_financial,
+                },
+                {
+                    default: true,
+                    getTitle: () => localize('DMT5 Synthetic'),
                     path: routes.platform_dmt5_synthetic,
                 },
                 {

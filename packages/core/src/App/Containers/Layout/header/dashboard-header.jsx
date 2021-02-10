@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { useHistory, withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Button, Icon, Text } from '@deriv/components';
 import { PlatformContext, redirectToLogin, redirectToSignUp, routes, isDesktop, isMobile } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
@@ -142,4 +142,4 @@ export default connect(({ client, ui }) => ({
     is_dark_mode: ui.is_dark_mode_on,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
-}))(withRouter(DashboardHeader));
+}))(DashboardHeader);

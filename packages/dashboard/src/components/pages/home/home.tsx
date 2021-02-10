@@ -73,8 +73,25 @@ const Home: React.FC = () => {
             label: localize('Platforms'),
             subroutes: [
                 {
-                    default: true,
                     label: localize('DMT5'),
+                    value: () => <Text>DMT5</Text>,
+                    // path: config_store.routes.platform_dmt5,
+                    path: config_store.routes.platform_dmt5_synthetic,
+                },
+                {
+                    label: localize('DMT5 Financial'),
+                    value: () => <Text>DMT5 Financial</Text>,
+                    // path: config_store.routes.platform_dmt5_financial,
+                    path: config_store.routes.platform_dmt5_synthetic,
+                },
+                {
+                    label: localize('DMT5 Financial Stp'),
+                    value: () => <Text>DMT5 Financial Stp</Text>,
+                    // path: config_store.routes.platform_dmt5_financial_stp,
+                    path: config_store.routes.platform_dmt5_synthetic,
+                },
+                {
+                    label: localize('DMT5 Synthetic'),
                     value: () => <DMT5Synthetic />,
                     path: config_store.routes.platform_dmt5_synthetic,
                 },

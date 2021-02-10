@@ -4,7 +4,6 @@ export type TRoute = {
     exact?: boolean;
     getTitle?: () => string;
     icon?: string;
-    icon_component?: string;
     is_authenticated?: boolean;
     is_routed?: boolean;
     label?: string;

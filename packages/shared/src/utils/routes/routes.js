@@ -65,8 +65,11 @@ export const routes = {
 
     platform_binary_bot: '/dashboard/platforms/binary-bot',
     platform_dbot: '/dashboard/platforms/dbot',
-    platform_dmt5_synthetic: '/dashboard/platforms/dmt5_synthetic',
-    platform_dtrader: '/dashboard/platforms/dmt5_synthetic',
+    platform_dmt5: '/dashboard/platforms/dmt5',
+    platform_dmt5_financial: '/dashboard/platforms/dmt5-financial',
+    platform_dmt5_financial_stp: '/dashboard/platforms/dmt5-financial-stp',
+    platform_dmt5_synthetic: '/dashboard/platforms/dmt5-synthetic',
+    platform_dtrader: '/dashboard/platforms/dtrader',
     platform_smarttrader: '/dashboard/platforms/smarttrader',
     platforms: '/dashboard/platforms',
 

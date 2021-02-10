@@ -77,6 +77,9 @@ export default connect(({ client, ui }) => ({
 
             platform_binary_bot: routes.platform_binary_bot,
             platform_dbot: routes.platform_dbot,
+            platform_dmt5: routes.platform_dmt5,
+            platform_dmt5_financial: routes.platform_dmt5_financial,
+            platform_dmt5_financial_stp: routes.platform_dmt5_financial_stp,
             platform_dmt5_synthetic: routes.platform_dmt5_synthetic,
             platform_dtrader: routes.platform_dtrader,
             platform_smarttrader: routes.platform_smarttrader,

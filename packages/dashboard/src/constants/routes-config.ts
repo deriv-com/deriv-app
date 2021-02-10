@@ -71,8 +71,22 @@ const initRoutesConfig = ({ consumer_routes }: TRoutesConfig): TRoute[] => [
         label: localize('Platforms'),
         subroutes: [
             {
-                default: true,
                 label: localize('DMT5'),
+                component: DMT5Synthetic,
+                path: consumer_routes.platform_dmt5_synthetic,
+            },
+            {
+                label: localize('DMT5 Financial'),
+                component: DMT5Synthetic,
+                path: consumer_routes.platform_dmt5_synthetic,
+            },
+            {
+                label: localize('DMT5 Financial STP'),
+                component: DMT5Synthetic,
+                path: consumer_routes.platform_dmt5_synthetic,
+            },
+            {
+                label: localize('DMT5 Synthetic'),
                 component: DMT5Synthetic,
                 path: consumer_routes.platform_dmt5_synthetic,
             },

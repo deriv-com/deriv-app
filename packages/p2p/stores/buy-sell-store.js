@@ -17,10 +17,14 @@ export default class BuySellStore extends BaseStore {
     @observable items = [];
     @observable payment_info = '';
     @observable receive_amount = 0;
+    @observable search_result = [];
+    @observable search_term = '';
     @observable selected_ad_state = {};
     @observable should_show_popup = false;
     @observable should_show_verification = false;
+    @observable should_use_client_limits = false;
     @observable show_advertiser_page = false;
+    @observable sort_by = 'rate';
     @observable submitForm = () => {};
     @observable table_type = buy_sell.BUY;
     @observable form_props = {};
@@ -73,10 +77,26 @@ export default class BuySellStore extends BaseStore {
     @computed
     get rendered_items() {
         if (isMobile() && this.items.length > 0) {
+            if (this.search_term) {
+                if (this.search_result.length) {
+                    return [{ id: 'WATCH_THIS_SPACE' }, ...this.search_result];
+                } else {
+                    return [{ id: 'WATCH_THIS_SPACE' }, { id: 'NO_MATCH_ROW' }];
+                }
+            }
+
             // This allows for the sliding animation on the Buy/Sell toggle as it pushes
             // an empty item with an item that holds the same height of the toggle container.
             // Also see: buy-sell-row.jsx
             return [{ id: 'WATCH_THIS_SPACE' }, ...this.items];
+        }
+
+        if (this.search_term) {
+            if (this.search_result.length) {
+                return this.search_result;
+            } else {
+                return [{ id: 'NO_MATCH_ROW' }];
+            }
         }
 
         return this.items;
@@ -152,9 +172,11 @@ export default class BuySellStore extends BaseStore {
         return new Promise(resolve => {
             requestWS({
                 p2p_advert_list: 1,
-                counterparty_type,
+                counterparty_type: counterparty_type,
                 offset: startIndex,
                 limit: general_store.list_item_limit,
+                sort_by: this.sort_by,
+                use_client_limits: this.should_use_client_limits ? 1 : 0,
             }).then(response => {
                 if (!response.error) {
                     // Ignore any responses that don't match our request. This can happen
@@ -281,6 +303,16 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
+    setSearchResult(search_result) {
+        this.search_result = search_result;
+    }
+
+    @action.bound
+    setSearchTerm(search_term) {
+        this.search_term = search_term;
+    }
+
+    @action.bound
     setSelectedAdState(selected_ad_state) {
         this.selected_ad_state = selected_ad_state;
     }
@@ -296,8 +328,18 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
+    setShouldUseClientLimits(should_use_client_limits) {
+        this.should_use_client_limits = should_use_client_limits;
+    }
+
+    @action.bound
     setShowAdvertiserPage(show_advertiser_page) {
         this.show_advertiser_page = show_advertiser_page;
+    }
+
+    @action.bound
+    setSortBy(sort_by) {
+        this.sort_by = sort_by;
     }
 
     @action.bound

@@ -91,7 +91,7 @@ const AddOrManageAccounts = props => {
 
     if (is_loading) return <LoadingModal />;
 
-    const fiat_section = (
+    const fiat_section = has_fiat && (
         <div
             className={classNames('change-currency', {
                 'account-wizard--disabled': !can_change_fiat_currency,

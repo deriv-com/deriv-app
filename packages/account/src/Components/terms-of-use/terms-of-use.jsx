@@ -22,14 +22,22 @@ const TermsOfUse = ({
     onSubmit,
     value,
     real_account_signup_target,
-    is_dashboard,
     ...props
 }) => {
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
+    const { is_deriv_crypto, is_dashboard } = React.useContext(PlatformContext);
 
     const handleCancel = () => {
         const current_step = getCurrentStep() - 1;
         onCancel(current_step, goToPreviousStep);
+    };
+
+    const getSubmitButtonLabel = () => {
+        if (is_deriv_crypto) {
+            return localize('Next');
+        } else if (is_dashboard) {
+            return localize('Finish');
+        }
+        return localize('Add account');
     };
 
     return (
@@ -81,7 +89,7 @@ const TermsOfUse = ({
                             <Modal.Footer has_separator is_bypassed={isMobile()}>
                                 <FormSubmitButton
                                     is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
-                                    label={is_deriv_crypto ? localize('Next') : localize('Add account')}
+                                    label={getSubmitButtonLabel()}
                                     has_cancel={!is_deriv_crypto}
                                     is_absolute={isMobile()}
                                     onCancel={() => handleCancel()}

@@ -26,12 +26,12 @@ const CurrencySelector = ({
     set_currency,
     validate,
     has_cancel = false,
-    is_dashboard,
     selected_step_ref,
     onSubmitEnabledChange,
+    has_wallet_account,
     ...props
 }) => {
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
+    const { is_deriv_crypto, is_dashboard } = React.useContext(PlatformContext);
     const crypto = legal_allowed_currencies.filter(currency => currency.type === 'crypto');
     const fiat = legal_allowed_currencies.filter(currency => currency.type === 'fiat');
     const [is_bypass_step, setIsBypassStep] = React.useState(false);
@@ -88,6 +88,15 @@ const CurrencySelector = ({
         return '179px';
     };
 
+    const getSubmitLabel = () => {
+        if (set_currency) {
+            return localize('Set currency');
+        } else if (has_wallet_account) {
+            return localize('Finish');
+        }
+        return localize('Next');
+    };
+
     return (
         <Formik
             innerRef={selected_step_ref}
@@ -132,7 +141,7 @@ const CurrencySelector = ({
                                                     />
                                                 ))}
                                             </RadioButtonGroup>
-                                            <Hr />
+                                            {reorderCurrencies(crypto, 'crypto').length > 0 && <Hr />}
                                         </React.Fragment>
                                     )}
                                     {reorderCurrencies(crypto, 'crypto').length > 0 && (
@@ -170,7 +179,7 @@ const CurrencySelector = ({
                                     is_disabled={isSubmitDisabled(values)}
                                     is_center={!has_currency}
                                     is_absolute={set_currency || is_dashboard}
-                                    label={set_currency ? localize('Set currency') : localize('Next')}
+                                    label={getSubmitLabel()}
                                     {...(has_cancel
                                         ? {
                                               cancel_label: localize('Previous'),

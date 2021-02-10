@@ -58,6 +58,7 @@ export default connect(({ client, ui }) => ({
         states_list: client.states_list,
         financial_assessment: client.financial_assessment,
         account_settings: client.account_settings,
+        accounts_list: client.accounts_list,
     },
     config: {
         asset_path: `${websiteUrl()}js/dashboard/assets`,

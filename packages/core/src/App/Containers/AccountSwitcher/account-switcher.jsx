@@ -279,9 +279,22 @@ const AccountSwitcher = props => {
         return getRemainingAccounts(getRealMT5());
     };
 
+    const canOpenMulti = () => {
+        if (props.available_crypto_currencies.length < 1 && !props.has_fiat) return true;
+        return !props.is_virtual;
+    };
+
+    const is_regulated_able_to_change_currency =
+        props.is_eu &&
+        (props.landing_company_shortcode === 'malta' ||
+            (props.landing_company_shortcode === 'iom' && props.upgradeable_landing_companies.length !== 0));
+
     // SVG clients can't upgrade.
     const getRemainingRealAccounts = () => {
-        return canOpenMulti() ? [] : props.upgradeable_landing_companies;
+        if (props.is_virtual || !canOpenMulti() || is_regulated_able_to_change_currency) {
+            return props.upgradeable_landing_companies;
+        }
+        return [];
     };
 
     const hasSetCurrency = () => {
@@ -290,12 +303,6 @@ const AccountSwitcher = props => {
 
     const canUpgrade = () => {
         return !!(props.is_virtual && props.can_upgrade_to);
-    };
-
-    const canOpenMulti = () => {
-        if (props.is_eu) return false;
-        if (props.available_crypto_currencies.length < 1 && !props.has_fiat) return true;
-        return !props.is_virtual;
     };
 
     const getTotalDemoAssets = () => {
@@ -503,19 +510,21 @@ const AccountSwitcher = props => {
                             </Button>
                         </div>
                     ))}
-                    {!canUpgrade() && canOpenMulti() && (
-                        <Button
-                            className='acc-switcher__btn'
-                            secondary
-                            onClick={
-                                hasSetCurrency() ? () => props.openRealAccountSignup('manage') : setAccountCurrency
-                            }
-                        >
-                            {props.has_fiat && props.available_crypto_currencies?.length === 0
-                                ? localize('Manage account')
-                                : localize('Add or manage account')}
-                        </Button>
-                    )}
+                    {!canUpgrade() &&
+                        canOpenMulti() &&
+                        (!props.is_eu || (props.is_eu && props.can_change_fiat_currency)) && (
+                            <Button
+                                className='acc-switcher__btn'
+                                secondary
+                                onClick={
+                                    hasSetCurrency() ? () => props.openRealAccountSignup('manage') : setAccountCurrency
+                                }
+                            >
+                                {props.has_fiat && props.available_crypto_currencies?.length === 0
+                                    ? localize('Manage account')
+                                    : localize('Add or manage account')}
+                            </Button>
+                        )}
                 </AccountWrapper>
             </React.Fragment>
             {props.is_mt5_allowed && (
@@ -691,6 +700,7 @@ AccountSwitcher.propTypes = {
     is_uk: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
+    landing_company_shortcode: PropTypes.string,
     logoutClient: PropTypes.func,
     mt5_disabled_signup_types: PropTypes.object,
     mt5_login_list: PropTypes.array,
@@ -726,6 +736,7 @@ const account_switcher = withRouter(
         is_virtual: client.is_virtual,
         has_fiat: client.has_fiat,
         has_any_real_account: client.has_any_real_account,
+        landing_company_shortcode: client.landing_company_shortcode,
         mt5_disabled_signup_types: client.mt5_disabled_signup_types,
         mt5_login_list: client.mt5_login_list,
         mt5_login_list_error: client.mt5_login_list_error,

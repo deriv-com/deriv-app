@@ -8,7 +8,9 @@ import { TRoute, TRouteGroup } from 'Types';
 import { useStores } from 'Stores';
 
 import TempButtons from 'Components/temp-buttons';
+import TempMyApps from 'Components/pages/temp-my-apps';
 import DMT5Synthetic from 'Components/pages/platforms/dmt5_synthetic';
+
 
 const Home: React.FC = () => {
     const history = useHistory();
@@ -21,7 +23,7 @@ const Home: React.FC = () => {
             label: localize('My Deriv'),
             is_routed: true,
             path: config_store.routes.home,
-            value: () => <Text>My Apps</Text>,
+            value: () => <TempMyApps />,
         },
         {
             label: '',

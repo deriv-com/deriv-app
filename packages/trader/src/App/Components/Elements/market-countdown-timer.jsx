@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Text } from '@deriv/components';
+import { Text, usePrevious } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
@@ -51,8 +51,10 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
     const [time_left, setTimeLeft] = React.useState(calculateTimeLeft(when_market_opens?.remaining_time_to_open));
     const [is_loading, setLoading] = React.useState(true);
 
+    const prev_symbol = usePrevious(symbol);
+
     React.useEffect(() => {
-        if (!is_main_page || (is_main_page && isMarketClosed(active_symbols, symbol))) {
+        if (!is_main_page || (is_main_page && isMarketClosed(active_symbols, symbol) && prev_symbol)) {
             setLoading(true);
             // eslint-disable-next-line consistent-return
             const whenMarketOpens = async (days_offset, target_symbol) => {

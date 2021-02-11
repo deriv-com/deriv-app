@@ -39,4 +39,16 @@
         height: 40px;
         margin-top: 1rem;
     }
+
+    @include mobile {
+        position: unset;
+        top: unset;
+        left: unset;
+        overflow-y: scroll;
+        padding-top: 11rem;
+
+        &__button {
+            min-height: 4rem;
+        }
+    }
 }

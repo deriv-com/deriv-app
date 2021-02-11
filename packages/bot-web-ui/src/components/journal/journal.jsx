@@ -260,9 +260,21 @@ const Journal = ({
                                         {localize('Here are the possible reasons:')}
                                     </Text>
                                     <ul className='journal-empty__list'>
-                                        <li>{localize('The bot is not running')}</li>
-                                        <li>{localize('The stats are cleared')}</li>
-                                        <li>{localize('All messages are filtered out')}</li>
+                                        <li>
+                                            <Text size='xxs' color='less-prominent'>
+                                                {localize('The bot is not running')}
+                                            </Text>
+                                        </li>
+                                        <li>
+                                            <Text size='xxs' color='less-prominent'>
+                                                {localize('The stats are cleared')}
+                                            </Text>
+                                        </li>
+                                        <li>
+                                            <Text size='xxs' color='less-prominent'>
+                                                {localize('All messages are filtered out')}
+                                            </Text>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

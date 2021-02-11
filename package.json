@@ -78,7 +78,6 @@
     }
   },
   "dependencies": {
-    "dotenv": "^8.2.0",
-    "web-push-notifications": "^3.18.1"
+    "dotenv": "^8.2.0"
   }
 }

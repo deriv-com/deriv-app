@@ -226,9 +226,10 @@ const IconRadio = ({ icon, text, google_drive_connected, onDriveConnect }) => {
                     })}
                 <Text
                     as='p'
+                    align='center'
+                    size='xxs'
                     color={is_drive_radio && !google_drive_connected ? 'disabled' : 'prominent'}
                     line_height='s'
-                    size='xxs'
                     className='save-type__radio-text'
                 >
                     {localize(text)}
@@ -237,6 +238,8 @@ const IconRadio = ({ icon, text, google_drive_connected, onDriveConnect }) => {
             {is_drive_radio && (
                 <Text
                     as='p'
+                    align='center'
+                    size='xs'
                     weight='bold'
                     styles={{ color: 'var(--brand-red-coral)' }}
                     className='save-type__drive-status'

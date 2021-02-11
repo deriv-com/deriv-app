@@ -167,32 +167,30 @@ ContractReplay.propTypes = {
     routes: PropTypes.arrayOf(PropTypes.object),
 };
 
-export default withRouter(
-    connect(({ common, modules, ui }) => {
-        const contract_replay = modules.contract_replay;
-        const contract_store = contract_replay.contract_store;
-        return {
-            routeBackInApp: common.routeBackInApp,
-            contract_info: contract_store.contract_info,
-            contract_update: contract_store.contract_update,
-            contract_update_history: contract_store.contract_update_history,
-            is_digit_contract: contract_store.is_digit_contract,
-            is_market_closed: contract_replay.is_market_closed,
-            is_sell_requested: contract_replay.is_sell_requested,
-            is_valid_to_cancel: contract_replay.is_valid_to_cancel,
-            onClickCancel: contract_replay.onClickCancel,
-            onClickSell: contract_replay.onClickSell,
-            onMount: contract_replay.onMount,
-            onUnmount: contract_replay.onUnmount,
-            indicative_status: contract_replay.indicative_status,
-            is_chart_loading: contract_replay.is_chart_loading,
-            is_forward_starting: contract_replay.is_forward_starting,
-            is_dark_theme: ui.is_dark_mode_on,
-            NotificationMessages: ui.notification_messages_ui,
-            toggleHistoryTab: ui.toggleHistoryTab,
-        };
-    })(ContractReplay)
-);
+export default connect(({ common, modules, ui }) => {
+    const contract_replay = modules.contract_replay;
+    const contract_store = contract_replay.contract_store;
+    return {
+        routeBackInApp: common.routeBackInApp,
+        contract_info: contract_store.contract_info,
+        contract_update: contract_store.contract_update,
+        contract_update_history: contract_store.contract_update_history,
+        is_digit_contract: contract_store.is_digit_contract,
+        is_market_closed: contract_replay.is_market_closed,
+        is_sell_requested: contract_replay.is_sell_requested,
+        is_valid_to_cancel: contract_replay.is_valid_to_cancel,
+        onClickCancel: contract_replay.onClickCancel,
+        onClickSell: contract_replay.onClickSell,
+        onMount: contract_replay.onMount,
+        onUnmount: contract_replay.onUnmount,
+        indicative_status: contract_replay.indicative_status,
+        is_chart_loading: contract_replay.is_chart_loading,
+        is_forward_starting: contract_replay.is_forward_starting,
+        is_dark_theme: ui.is_dark_mode_on,
+        NotificationMessages: ui.notification_messages_ui,
+        toggleHistoryTab: ui.toggleHistoryTab,
+    };
+})(ContractReplay);
 
 // CHART -----------------------------------------
 

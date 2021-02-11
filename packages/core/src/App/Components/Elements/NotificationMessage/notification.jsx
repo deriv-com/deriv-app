@@ -84,6 +84,11 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                             onClick={() => data.action.onClick({ is_deriv_crypto })}
                                             text={data.action.text}
                                             secondary
+                                            renderText={text => (
+                                                <Text size='xxs' weight='bold' align='center'>
+                                                    {text}
+                                                </Text>
+                                            )}
                                         />
                                     )}
                                 </React.Fragment>

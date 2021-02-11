@@ -217,6 +217,13 @@ export default class ClientStore extends BaseStore {
     get legal_allowed_currencies() {
         if (!this.landing_companies) return [];
         if (this.root_store.ui && this.root_store.ui.real_account_signup_target) {
+            if (this.root_store.ui.real_account_signup_target === 'manage') {
+                if (this.current_landing_company.shortcode === 'iom') {
+                    return this.landing_companies.gaming_company?.legal_allowed_currencies;
+                } else if (['malta', 'maltainvest'].includes(this.current_landing_company.shortcode)) {
+                    return this.landing_companies.financial_company?.legal_allowed_currencies;
+                }
+            }
             const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
             if (this.landing_companies[`${target}_company`] && this.current_landing_company && this.accounts) {
                 if (this.accounts[this.loginid] && !this.accounts[this.loginid].currency) {
@@ -577,6 +584,11 @@ export default class ClientStore extends BaseStore {
 
         return 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
     };
+
+    @computed
+    get clients_country() {
+        return this.website_status?.clients_country;
+    }
 
     @computed
     get is_eu_country() {
@@ -1369,6 +1381,10 @@ export default class ClientStore extends BaseStore {
     // --> so we keep a separate balance subscription for the active account
     @action.bound
     setBalanceOtherAccounts(obj_balance) {
+        // Balance subscription response received when mt5 transfer is in progress should be ignored.
+        // After mt5 transfer is done, `balanceAll` is requested along with `mt5LoginList` in order to update the correct balance.
+        if (this.root_store.modules?.cashier?.isMT5TransferInProgress()) return;
+
         // Only the first response of balance:all will include all accounts
         // subsequent requests will be single account balance updates
         if (this.accounts[obj_balance?.loginid] && !obj_balance.accounts && obj_balance.loginid !== this.loginid) {

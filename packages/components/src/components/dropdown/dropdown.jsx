@@ -109,20 +109,6 @@ const DropdownList = React.forwardRef((props, list_ref) => {
         return null;
     };
 
-    const DropdownItems = ({ items }) => (
-        <Items
-            onKeyPressed={onKeyPressed}
-            className={classNameItems}
-            handleSelect={handleSelect}
-            has_symbol={has_symbol}
-            items={items}
-            name={name}
-            is_align_text_left={is_align_text_left}
-            value={value}
-            nodes={nodes.current}
-        />
-    );
-
     const el_dropdown_list = (
         <CSSTransition
             in={is_list_visible}
@@ -141,12 +127,32 @@ const DropdownList = React.forwardRef((props, list_ref) => {
                 >
                     <ThemedScrollbars height={list_dimensions[1] || '200px'}>
                         {Array.isArray(list) ? (
-                            <DropdownItems items={list} />
+                            <Items
+                                onKeyPressed={onKeyPressed}
+                                className={classNameItems}
+                                handleSelect={handleSelect}
+                                has_symbol={has_symbol}
+                                items={list}
+                                name={name}
+                                is_align_text_left={is_align_text_left}
+                                value={value}
+                                nodes={nodes.current}
+                            />
                         ) : (
                             Object.keys(list).map((key, idx) => (
                                 <React.Fragment key={key}>
                                     <div className={classNames('dc-list__label', classNameLabel)}>{key}</div>
-                                    <DropdownItems items={list[key]} />
+                                    <Items
+                                        onKeyPressed={onKeyPressed}
+                                        className={classNameItems}
+                                        handleSelect={handleSelect}
+                                        has_symbol={has_symbol}
+                                        items={list[key]}
+                                        name={name}
+                                        is_align_text_left={is_align_text_left}
+                                        value={value}
+                                        nodes={nodes.current}
+                                    />
                                     {idx !== Object.keys(list).length - 1 && <span className='dc-list__separator' />}
                                 </React.Fragment>
                             ))

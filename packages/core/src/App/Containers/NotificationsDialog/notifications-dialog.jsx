@@ -62,7 +62,9 @@ const NotificationsList = ({ notifications, toggleDialog }) => (
                                     className={classNames('dc-btn--secondary', 'notifications-item__cta-button')}
                                     onClick={item.action.onClick}
                                 >
-                                    <Text size='xxs'>{item.action.text}</Text>
+                                    <Text weight='bold' size='xxs'>
+                                        {item.action.text}
+                                    </Text>
                                 </Button>
                             )}
                         </React.Fragment>

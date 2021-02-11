@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '../button/button.jsx';
+import Text from '../text';
 
 const NumberButton = ({ onSelect, className, number }) => (
     <Button
@@ -15,9 +16,13 @@ const NumberButton = ({ onSelect, className, number }) => (
         classNameSpan='dc-numpad__number--is-left-aligned'
         has_effect
         onClick={() => onSelect(number)}
-    >
-        {number}
-    </Button>
+        text={String(number)}
+        renderText={text => (
+            <Text styles={{ fontSize: '1.8rem' }} weight='bold' align='center'>
+                {text}
+            </Text>
+        )}
+    />
 );
 
 NumberButton.propTypes = {

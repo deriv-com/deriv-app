@@ -15,6 +15,7 @@ export type TClientStore = {
     email_address: string;
     currencies_list: TCurrenciesList;
     currency: string;
+    is_logged_in: boolean;
     financial_assessment: GetFinancialAssessment;
     residence_list: ResidenceList;
     states_list: StatesList;
@@ -32,6 +33,7 @@ export type TClientStore = {
     realAccountSignup?: () => Promise<void>;
     has_currency?: () => boolean;
     setAccountCurrency?: () => void;
+    has_wallet_account: boolean;
 };
 
 export type TConfigStore = {
@@ -80,6 +82,7 @@ export type TUIStore = {
     is_get_wallet_modal_open: boolean;
     is_real_acc_signup_on: boolean;
     resetRealAccountSignupParams?: () => void;
+    openRealAccountSignup: () => void;
     enableGetPasswordModal: () => void;
     disableGetPasswordModal: () => void;
 };

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import {
     DesktopWrapper,
     Div100vhContainer,
@@ -37,13 +37,12 @@ const ContractReplay = ({
     onClickSell,
     indicative_status,
     toggleHistoryTab,
-    location,
-    history,
     routeBackInApp,
     onMount,
     onUnmount,
 }) => {
     const [is_visible, setIsVisible] = React.useState(false);
+    const history = useHistory();
 
     React.useEffect(() => {
         const url_contract_id = +/[^/]*$/.exec(location.pathname)[0];
@@ -85,7 +84,7 @@ const ContractReplay = ({
     );
 
     const unsupportedContractOnConfirm = () => {
-        this.props.history.push('/reports');
+        history.goBack();
     };
 
     const unsupportedContractOnClose = () => {
@@ -159,12 +158,10 @@ const ContractReplay = ({
 ContractReplay.propTypes = {
     contract_id: PropTypes.number,
     contract_info: PropTypes.object,
-    history: PropTypes.object,
     indicative_status: PropTypes.string,
     is_chart_loading: PropTypes.bool,
     is_dark_theme: PropTypes.bool,
     is_digit_contract: PropTypes.bool,
-    location: PropTypes.object,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
     routes: PropTypes.arrayOf(PropTypes.object),
@@ -245,6 +242,7 @@ const Chart = props => {
             isStaticChart={false}
             shouldFetchTradingTimes={!props.end_epoch}
             yAxisMargin={getChartYAxisMargin()}
+            anchorChartToLeft={isMobile()}
         >
             {props.markers_array.map(marker => (
                 <ChartMarker

@@ -2,7 +2,7 @@
   "name": "@deriv/trader",
   "version": "3.8.0",
   "description": "Deriv content",
-  "main": "dist/js/trader.main.js",
+  "main": "dist/js/trader.js",
   "private": true,
   "scripts": {
     "start": "npm run test && npm run serve",
@@ -81,7 +81,7 @@
     "@deriv/account": "^1.0.0",
     "@deriv/components": "^1.0.0",
     "@deriv/deriv-api": "^1.0.7",
-    "@deriv/deriv-charts": "0.3.10",
+    "@deriv/deriv-charts": "0.3.15",
     "@deriv/shared": "^1.0.0",
     "@deriv/translations": "^1.0.0",
     "acorn": "^6.1.1",

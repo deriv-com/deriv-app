@@ -336,7 +336,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__occupation {
-            .dc-native-select__select,
             .dc-dropdown__display-text {
                 line-height: 1.6rem;
                 text-align: left;
@@ -1687,10 +1686,6 @@ $MIN_HEIGHT_FLOATING: calc(
         &__checkbox {
             margin-top: 10px;
             width: fit-content;
-
-            .dc-checkbox__label {
-                font-weight: normal;
-            }
         }
         &__input {
             margin: 16px 0 0;

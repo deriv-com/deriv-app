@@ -18,9 +18,12 @@
             justify-content: center;
         }
 
+        &--border-bottom {
+            border-bottom: 2px solid var(--general-section-1);
+        }
+
         &--top {
             order: 0;
-            border-bottom: 2px solid var(--general-section-1);
         }
         &--bottom {
             order: 1;
@@ -59,6 +62,14 @@
         &__counter {
             margin-top: -2rem;
             vertical-align: middle;
+        }
+        &__icon {
+            padding-right: 0.7rem;
+
+            @include mobile {
+                padding-right: 0;
+                padding-top: 0.5rem;
+            }
         }
         &--header-fit-content {
             padding: 0px 29px;

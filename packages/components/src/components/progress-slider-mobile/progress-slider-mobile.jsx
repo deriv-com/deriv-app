@@ -5,6 +5,7 @@ import { getTimePercentage } from '@deriv/shared';
 import ProgressTicksMobile from './progress-ticks-mobile.jsx';
 import CircularProgress from '../circular-progress';
 import RemainingTime from '../remaining-time';
+import Text from '../text';
 
 const ProgressSliderMobile = ({
     className,
@@ -27,9 +28,9 @@ const ProgressSliderMobile = ({
                 />
             ) : (
                 <React.Fragment>
-                    <span className='dc-progress-slider-mobile__remaining-time'>
+                    <Text size='xxs'>
                         <RemainingTime end_time={expiry_time} getCardLabels={getCardLabels} start_time={server_time} />
-                    </span>
+                    </Text>
                     {is_loading || percentage < 1 ? (
                         // TODO: Change this behavior in mobile
                         <div className='dc-progress-slider-mobile__infinite-loader'>

@@ -68,9 +68,9 @@ const SendEmailTemplate = ({
                 <Text
                     as='p'
                     size='xs'
+                    align='center'
                     styles={{ lineHeight: '20px' }}
                     className='send-email-template__subtitle'
-                    align='center'
                 >
                     {subtitle}
                 </Text>

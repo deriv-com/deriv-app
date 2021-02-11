@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Icon from '../icon';
+import Text from '../text';
 
 const Checkbox = ({
     className,
@@ -52,6 +53,7 @@ const Checkbox = ({
                 disabled={disabled}
                 onChange={onInputChange}
                 defaultChecked={checked}
+                value={value}
                 {...otherProps}
             />
             <span
@@ -65,7 +67,9 @@ const Checkbox = ({
             >
                 {!!checked && <Icon icon='IcCheckmark' color='active' />}
             </span>
-            <span className={classNames('dc-checkbox__label', classNameLabel)}>{label}</span>
+            <Text size='xs' className={classNames('dc-checkbox__label', classNameLabel)}>
+                {label}
+            </Text>
         </label>
     );
 };

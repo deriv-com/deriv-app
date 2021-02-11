@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import Button from './calendar-button.jsx';
+import Text from '../text';
 
 const FooterIcon = use_icon => use_icon || 'IcCalendarToday';
 
@@ -8,7 +9,11 @@ const Footer = ({ footer, has_today_btn, onClick, use_icon, has_clear_btn, clear
     <>
         {(has_today_btn || footer || has_clear_btn) && (
             <div className='dc-calendar__footer'>
-                {footer && <span className='dc-calendar__text'>{footer}</span>}
+                {footer && (
+                    <Text size='xxs' align='center'>
+                        {footer}
+                    </Text>
+                )}
                 {has_today_btn && (
                     <Button className='dc-calendar__btn--today' icon={FooterIcon(use_icon)} onClick={onClick} />
                 )}

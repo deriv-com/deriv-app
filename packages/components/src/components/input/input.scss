@@ -38,7 +38,7 @@
             opacity: 0;
             transition: opacity 0.25s;
 
-            /* To vertically align palceholder in Firefox */
+            /* To vertically align placeholder in Firefox */
             @-moz-document url-prefix('') {
                 line-height: 1.25;
             }

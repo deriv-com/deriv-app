@@ -304,7 +304,14 @@ const MT5PasswordModal = ({
     const should_show_success = !has_mt5_error && is_mt5_success_dialog_enabled;
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
     const is_real_synthetic = [account_type.category, account_type.type].join('_') === 'real_synthetic';
-    const should_show_server_form = (is_logged_in ? !is_eu : !is_eu_country) && is_real_synthetic && !!password;
+    const should_show_server_form = React.useMemo(() => {
+        return (
+            (is_logged_in ? !is_eu : !is_eu_country) &&
+            is_real_synthetic &&
+            mt5_login_list.some(item => item.account_type === 'real' && item.market_type === 'gaming') &&
+            !!password
+        );
+    }, [is_eu, is_eu_country, is_logged_in, is_real_synthetic, password, mt5_login_list]);
 
     // TODO handle submitting password without server in a better way
     React.useEffect(() => {

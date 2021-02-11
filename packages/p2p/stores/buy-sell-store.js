@@ -17,7 +17,7 @@ export default class BuySellStore extends BaseStore {
     @observable items = [];
     @observable payment_info = '';
     @observable receive_amount = 0;
-    @observable search_result = [];
+    @observable search_results = [];
     @observable search_term = '';
     @observable selected_ad_state = {};
     @observable should_show_popup = false;
@@ -78,8 +78,8 @@ export default class BuySellStore extends BaseStore {
     get rendered_items() {
         if (isMobile() && this.items.length > 0) {
             if (this.search_term) {
-                if (this.search_result.length) {
-                    return [{ id: 'WATCH_THIS_SPACE' }, ...this.search_result];
+                if (this.search_results.length) {
+                    return [{ id: 'WATCH_THIS_SPACE' }, ...this.search_results];
                 } else {
                     return [{ id: 'WATCH_THIS_SPACE' }, { id: 'NO_MATCH_ROW' }];
                 }
@@ -92,8 +92,8 @@ export default class BuySellStore extends BaseStore {
         }
 
         if (this.search_term) {
-            if (this.search_result.length) {
-                return this.search_result;
+            if (this.search_results.length) {
+                return this.search_results;
             } else {
                 return [{ id: 'NO_MATCH_ROW' }];
             }
@@ -303,8 +303,8 @@ export default class BuySellStore extends BaseStore {
     }
 
     @action.bound
-    setSearchResult(search_result) {
-        this.search_result = search_result;
+    setSearchResults(search_results) {
+        this.search_results = search_results;
     }
 
     @action.bound

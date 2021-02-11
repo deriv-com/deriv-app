@@ -1,5 +1,6 @@
 import React from 'react';
 import { Dropdown } from '@deriv/components';
+import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import 'Components/buy-sell/sort-dropdown.scss';
@@ -31,4 +32,4 @@ const SortDropdown = () => {
     );
 };
 
-export default SortDropdown;
+export default observer(SortDropdown);

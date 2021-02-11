@@ -116,14 +116,14 @@ const BuySellRow = ({ row: advert }) => {
                         >
                             {advertiser_name}
                         </div>
-                        {advert.advertiser_details.completion_rate ? (
+                        {!!advert.advertiser_details.completion_rate && (
                             <Text color='less-prominent' size='xxs'>
                                 <Localize
                                     i18n_default_text='Completion rate: {{completion_rate}}%'
                                     values={{ completion_rate: advert.advertiser_details.completion_rate }}
                                 />
                             </Text>
-                        ) : null}
+                        )}
                     </div>
                 </div>
             </Table.Cell>

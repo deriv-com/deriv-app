@@ -4,6 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 import { reaction } from 'mobx';
 import { ButtonToggle, Checkbox, Icon, PopoverMobile } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize } from 'Components/i18next';
 import ToggleContainer from 'Components/misc/toggle-container.jsx';
@@ -102,4 +103,4 @@ BuySellHeader.propTypes = {
     setTableType: PropTypes.func,
 };
 
-export default BuySellHeader;
+export default observer(BuySellHeader);

@@ -63,7 +63,7 @@ const PopoverMobile = ({
 };
 
 PopoverMobile.propTypes = {
-    button_text: PropTypes.object,
+    button_text: PropTypes.string,
     children: PropTypes.any.isRequired,
     className: PropTypes.string,
     desktop_alignment: PropTypes.string,

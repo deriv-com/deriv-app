@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'Stores/connect';
 import SummaryCard from './summary-card.jsx';
+import { Button, Dialog, Drawer, Modal, Money, Tabs, ThemedScrollbars, Text } from '@deriv/components';
 
 const Summary = ({ is_mobile, is_drawer_open }) => (
     <div
@@ -11,7 +12,9 @@ const Summary = ({ is_mobile, is_drawer_open }) => (
             'run-panel-tab__content--mobile': is_mobile && is_drawer_open,
         })}
     >
-        <SummaryCard />
+        <ThemedScrollbars>
+            <SummaryCard />
+        </ThemedScrollbars>
     </div>
 );
 

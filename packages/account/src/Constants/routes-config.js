@@ -102,11 +102,15 @@ const initRoutesConfig = ({ is_deriv_crypto, is_dashboard }) => [
                         component: LoginHistory,
                         getTitle: () => localize('Login history'),
                     },
-                    {
-                        path: routes.api_token,
-                        component: ApiToken,
-                        getTitle: () => localize('API token'),
-                    },
+                    ...(is_dashboard
+                        ? []
+                        : [
+                              {
+                                  path: routes.api_token,
+                                  component: ApiToken,
+                                  getTitle: () => localize('API token'),
+                              },
+                          ]),
                     {
                         path: routes.connected_apps,
                         component: ConnectedApps,

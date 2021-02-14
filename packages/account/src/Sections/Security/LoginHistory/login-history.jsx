@@ -101,6 +101,7 @@ const renderList = (fields, login_history, is_dashboard) => {
                                         className='login-history__list__row__cell--action'
                                         title={fields.action}
                                         text={item.action}
+                                        right
                                     />
                                 </Table.Cell>
                             )}
@@ -115,7 +116,7 @@ const renderList = (fields, login_history, is_dashboard) => {
                             </Table.Cell>
                             {is_dashboard && isMobile() ? (
                                 <Table.Cell className='login-history__list__row__cell'>
-                                    <ListCell title={fields.status} text={item.status} />
+                                    <ListCell title={fields.status} text={item.status} right />
                                 </Table.Cell>
                             ) : (
                                 <Table.Cell className='login-history__list__row__cell'>
@@ -149,10 +150,17 @@ const renderList = (fields, login_history, is_dashboard) => {
     );
 };
 
-const ListCell = ({ title, text, className }) => (
+const ListCell = ({ title, text, className, right }) => (
     <React.Fragment>
-        <h3 className='login-history__list__row__cell--title'>{title}</h3>
-        <Text className={className} line_height='xs' size='xs'>
+        <Text as='h3' align={right ? 'right' : 'left'} className='login-history__list__row__cell--title'>
+            {title}
+        </Text>
+        <Text
+            className={classNames(className, { 'login-history__list__row__cell--right': right })}
+            line_height='xs'
+            size='xs'
+            align={right ? 'right' : 'left'}
+        >
             {text}
         </Text>
     </React.Fragment>

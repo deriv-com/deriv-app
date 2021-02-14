@@ -377,7 +377,7 @@ class DeactivateAccountReason extends React.Component {
                                 )}
                             </Field>
                             <div className='deactivate-account-reasons__footer'>
-                                <div>
+                                <div className='deactivate-account-reasons__hint-wrapper'>
                                     <Text
                                         size='xxs'
                                         as='p'

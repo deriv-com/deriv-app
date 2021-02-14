@@ -1,7 +1,7 @@
 import React from 'react';
 import { Localize, localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
-import { PlatformContext, isMobile } from '@deriv/shared';
+import { PlatformContext } from '@deriv/shared';
 import IconMessageContent from 'Components/icon-message-content';
 
 const UnsupportedIconRow = () => {
@@ -48,11 +48,7 @@ const Unsupported = () => {
                 <Localize
                     i18n_default_text='To continue trading with us, you need to send us a copy of any one of these government-issued photo ID documents via <0>LiveChat</0>.'
                     components={[
-                        <span
-                            key={0}
-                            className={is_dashboard && isMobile() ? 'link link--blue' : 'link link--orange'}
-                            onClick={() => window.LC_API.open_chat_window()}
-                        />,
+                        <span key={0} className='link link--orange' onClick={() => window.LC_API.open_chat_window()} />,
                     ]}
                 />
             }

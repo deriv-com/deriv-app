@@ -359,6 +359,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     margin-left: unset;
                     & > div {
                         display: flex;
+                        justify-content: space-between;
                     }
                 }
             }
@@ -546,6 +547,9 @@ $MIN_HEIGHT_FLOATING: calc(
 
                 &-full-width {
                     width: calc(100vw - 33rem);
+                    @include mobile {
+                        width: 100%;
+                    }
                 }
 
                 @include mobile {
@@ -1210,6 +1214,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     padding: 1rem;
                     &--dashboard {
                         box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05), 0px 16px 20px rgba(0, 0, 0, 0.05);
+                        border-radius: 0.4rem;
                     }
                 }
                 &__row {
@@ -1230,6 +1235,9 @@ $MIN_HEIGHT_FLOATING: calc(
                         }
                         &--action {
                             text-transform: capitalize;
+                        }
+                        &--right {
+                            float: right;
                         }
                         &--browser,
                         &--ip-value {
@@ -1644,6 +1652,9 @@ $MIN_HEIGHT_FLOATING: calc(
                         & .data-list__row-content {
                             float: right;
                         }
+                        @include mobile {
+                            display: grid;
+                        }
                     }
                     .data-list__row-title {
                         line-height: 1.5;
@@ -2024,14 +2035,18 @@ $MIN_HEIGHT_FLOATING: calc(
 
         &__hint {
             margin-top: 0.8rem;
+            &-wrapper {
+                @include mobile {
+                    margin-bottom: 5.6rem;
+                }
+            }
         }
-
         &__footer {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
 
-            .dc-form-submit-button {
+            & .dc-form-submit-button {
                 margin: 1.6rem 0;
             }
         }
@@ -2048,6 +2063,15 @@ $MIN_HEIGHT_FLOATING: calc(
                 .dc-form-submit-button {
                     margin: 0.8rem 0;
                     background-color: var(--general-main-1);
+                    @include mobile {
+                        position: fixed;
+                        bottom: 0;
+                        left: 0;
+                        background: var(--general-main-1);
+                        width: 100vw;
+                        margin: unset;
+                        padding: 0.8rem 1.6rem;
+                    }
                 }
             }
         }

@@ -25,13 +25,7 @@ const DeactivateAccountSteps = ({ redirectToReasons }) => {
                 <Text size='xs' as='p' line_height='s'>
                     <Localize
                         i18n_default_text='If you have a Deriv real account, go to <0>Portfolio</0> to close any open positions.'
-                        components={[
-                            <Link
-                                to='/reports/positions'
-                                key={0}
-                                className={classNames('deactivate-account__link', { 'link--blue': is_dashboard })}
-                            />,
-                        ]}
+                        components={[<Link to='/reports/positions' key={0} className='deactivate-account__link' />]}
                     />
                 </Text>
                 <Text size='xs' as='p'>
@@ -45,25 +39,13 @@ const DeactivateAccountSteps = ({ redirectToReasons }) => {
                 <Text size='xs' as='p' line_height='s'>
                     <Localize
                         i18n_default_text='If you have a Deriv real account, go to <0>Cashier</0> to withdraw your funds.'
-                        components={[
-                            <Link
-                                to='/cashier/withdrawal'
-                                key={0}
-                                className={classNames('deactivate-account__link', { 'link--blue': is_dashboard })}
-                            />,
-                        ]}
+                        components={[<Link to='/cashier/withdrawal' key={0} className='deactivate-account__link' />]}
                     />
                 </Text>
                 <Text size='xs' as='p'>
                     <Localize
                         i18n_default_text='If you have a DMT5 real account, go to <0>DMT5 Dashboard</0> to withdraw your funds.'
-                        components={[
-                            <Link
-                                to='/mt5'
-                                key={0}
-                                className={classNames('deactivate-account__link', { 'link--blue': is_dashboard })}
-                            />,
-                        ]}
+                        components={[<Link to='/mt5' key={0} className='deactivate-account__link' />]}
                     />
                 </Text>
             </div>

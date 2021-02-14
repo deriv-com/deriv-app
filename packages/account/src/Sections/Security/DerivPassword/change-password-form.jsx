@@ -193,7 +193,7 @@ class ChangePasswordForm extends React.Component {
                                         is_loading={is_btn_loading}
                                         is_submit_success={is_submit_success}
                                         has_effect
-                                        text={localize('Change password')}
+                                        text={is_dashboard ? localize('Save') : localize('Change password')}
                                         large
                                         primary
                                     />

@@ -2,16 +2,17 @@
 import React from 'react';
 import { action, computed, observable, toJS, reaction, when } from 'mobx';
 import {
-    routes,
-    isCryptocurrency,
     formatMoney,
-    getCurrencies,
-    getDecimalPlaces,
-    getCurrencyDisplayCode,
     isEmptyObject,
-    getPropertyValue,
+    isCryptocurrency,
+    getCurrencies,
+    getCurrencyDisplayCode,
+    getDecimalPlaces,
+    getMinWithdrawal,
     getMT5AccountDisplay,
     getMT5Account,
+    getPropertyValue,
+    routes,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import OnRampStore from './on-ramp-store';
@@ -133,6 +134,7 @@ class ConfigVerification {
     @observable is_email_sent = false;
     @observable is_resend_clicked = false;
     @observable resend_timeout = 60;
+    @observable is_10k_withdrawal_limit_reached = undefined;
 }
 
 export default class CashierStore extends BaseStore {
@@ -430,6 +432,19 @@ export default class CashierStore extends BaseStore {
             is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
 
         return need_financial_assessment && this.config.account_transfer.error.is_ask_financial_risk_approval;
+    }
+
+    @action.bound
+    async check10kLimit() {
+        const remainder = (await this.root_store.client.getLimits())?.get_limits?.remainder;
+        const min_withdrawal = getMinWithdrawal(this.root_store.client.currency);
+        const is_limit_reached = !!(typeof remainder !== 'undefined' && +remainder < min_withdrawal);
+        this.set10kLimitation(is_limit_reached);
+    }
+
+    @action.bound
+    set10kLimitation(is_limit_reached) {
+        this.is_10k_withdrawal_limit_reached = is_limit_reached;
     }
 
     @action.bound

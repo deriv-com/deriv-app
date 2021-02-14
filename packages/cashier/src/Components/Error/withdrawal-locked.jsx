@@ -7,10 +7,10 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CashierLocked from './cashier-locked.jsx';
 
-const WithdrawalLocked = ({ account_status, is_withdrawal_lock, is_ask_financial_risk_approval }) => {
+const WithdrawalLocked = ({ account_status, is_10K_limit, is_withdrawal_lock, is_ask_financial_risk_approval }) => {
     const { identity, needs_verification } = account_status.authentication;
 
-    const is_poi_needed = needs_verification.includes('identity');
+    const is_poi_needed = needs_verification.includes('identity') || is_10K_limit;
     const has_poi_submitted = identity.status !== 'none';
     const poi_text = has_poi_submitted
         ? localize('Check proof of identity document verification status')
@@ -24,6 +24,15 @@ const WithdrawalLocked = ({ account_status, is_withdrawal_lock, is_ask_financial
                       content: poi_text,
                       status: 'action',
                       onClick: () => history.push(routes.proof_of_identity),
+                  },
+              ]
+            : []),
+        ...(is_10K_limit
+            ? [
+                  {
+                      content: localize('Upload a proof of address to verify your address'),
+                      status: 'action',
+                      onClick: () => history.push(routes.proof_of_address),
                   },
               ]
             : []),
@@ -42,14 +51,22 @@ const WithdrawalLocked = ({ account_status, is_withdrawal_lock, is_ask_financial
             {items.length || is_withdrawal_lock ? (
                 <div className='cashier-locked'>
                     <Icon icon='IcCashierWithdrawalLock' className='cashier-locked__icon' />
-                    <h2 className='cashier-locked__title'>{localize('Withdrawals are locked')}</h2>
+                    <h2 className='cashier-locked__title'>
+                        {is_10K_limit
+                            ? localize(
+                                  'You have reached the withdrawal limit. Please upload your proof of identity and address to lift your withdrawal limit and proceed with your withdrawal.'
+                              )
+                            : localize('Withdrawals are locked')}
+                    </h2>
                     {is_withdrawal_lock ? (
                         <p className='cashier-locked__desc'>{localize('Please check your email for more details.')}</p>
                     ) : (
                         <React.Fragment>
-                            <p className='cashier-locked__desc'>
-                                {localize('To enable this feature you must complete the following:')}
-                            </p>
+                            {!is_10K_limit && (
+                                <p className='cashier-locked__desc'>
+                                    {localize('To enable this feature you must complete the following:')}
+                                </p>
+                            )}
                             <Checklist className='cashier-locked__checklist' items={items} />
                         </React.Fragment>
                     )}
@@ -63,6 +80,7 @@ const WithdrawalLocked = ({ account_status, is_withdrawal_lock, is_ask_financial
 
 WithdrawalLocked.propTypes = {
     account_status: PropTypes.object,
+    is_10K_limit: PropTypes.bool,
     is_withdrawal_lock: PropTypes.bool,
     is_ask_financial_risk_approval: PropTypes.bool,
 };

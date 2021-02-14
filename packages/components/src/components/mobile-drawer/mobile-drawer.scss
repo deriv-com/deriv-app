@@ -84,10 +84,6 @@
             padding: 0 0 3.2rem 4.8rem;
             align-items: center;
 
-            &-text {
-                font-size: 1.4rem;
-                color: var(--text-general);
-            }
             &-icon {
                 width: 16px;
                 height: 16px;
@@ -130,13 +126,6 @@
                 display: flex;
                 padding: 2rem 0 3.2rem 3.2rem;
                 align-items: center;
-
-                &-text {
-                    line-height: 1.5;
-                    font-size: 1.6rem;
-                    font-weight: bold;
-                    color: var(--text-prominent);
-                }
             }
         }
     }

@@ -156,19 +156,22 @@ const MT5AccountCard = ({
         return () => {};
     }, [onHover]);
 
-    const getServerName = React.useCallback(
-        data => {
-            const server = trading_servers?.find(s => s.id === data.server);
-            if (server) {
-                return `${server.geolocation.region} ${
-                    server.geolocation.sequence === 1 ? '' : server.geolocation.sequence
-                }`;
-            }
+    {
+        /* TODO: [mt5-additional-platform] Remove this after BE is ready */
+    }
+    // const getServerName = React.useCallback(
+    //     data => {
+    //         const server = trading_servers?.find(s => s.id === data.server);
+    //         if (server) {
+    //             return `${server.geolocation.region} ${
+    //                 server.geolocation.sequence === 1 ? '' : server.geolocation.sequence
+    //             }`;
+    //         }
 
-            return '';
-        },
-        [existing_data, trading_servers]
-    );
+    //         return '';
+    //     },
+    //     [existing_data, trading_servers]
+    // );
 
     const handleClickSwitchAccount = () => {
         toggleShouldShowRealAccountsList(true);
@@ -193,7 +196,9 @@ const MT5AccountCard = ({
                 )}
                 {has_server_banner && (
                     <div className='mt5-account-card__banner mt5-account-card__banner--server'>
-                        {getServerName(existing_data)}
+                        {/* TODO: [mt5-additional-platform] Remove this after BE is ready */}
+                        {/* {getServerName(existing_data)} */}
+                        {existing_data?.server_info?.environment}
                     </div>
                 )}
                 <div
@@ -247,7 +252,9 @@ const MT5AccountCard = ({
                                             </td>
                                             <td className='mt5-account-card__specs-table-data'>
                                                 <p className='mt5-account-card--paragraph'>
-                                                    {getServerName(existing_data)}
+                                                    {/* TODO: [mt5-additional-platform] Remove this after BE is ready */}
+                                                    {/* {getServerName(existing_data)} */}
+                                                    {existing_data?.server_info?.environment}
                                                 </p>
                                             </td>
                                         </tr>
@@ -300,6 +307,7 @@ const MT5AccountCard = ({
                             href={getMT5WebTerminalLink({
                                 category: type.category,
                                 loginid: existing_data.display_login,
+                                server_name: existing_data.server_info.environment,
                             })}
                             target='_blank'
                             rel='noopener noreferrer'

@@ -1841,6 +1841,19 @@ export default class ClientStore extends BaseStore {
                 return {
                     ...account,
                     display_login,
+                    // TODO: [mt5-additional-platform] Remove this mocked data when BE is ready
+                    ...{
+                        // server: "p01_ts01",
+                        server_info: {
+                            id: 'p01_ts01',
+                            geolocation: {
+                                location: 'Singapore',
+                                region: 'Asia',
+                                sequence: 1,
+                            },
+                            environment: 'Deriv-ServerName',
+                        },
+                    },
                 };
             });
         } else {

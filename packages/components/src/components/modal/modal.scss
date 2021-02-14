@@ -153,9 +153,6 @@
                 z-index: 1;
             }
         }
-        &--no-border {
-            border-bottom: none;
-        }
 
         // fix for safari bug with header being truncated
         @media not all and (min-resolution: 0.001dpcm) {

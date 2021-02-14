@@ -130,6 +130,7 @@ const MT5AccountCard = ({
     const has_popular_banner = type.type === 'synthetic' && type.category === 'real' && !existing_data;
     const has_demo_banner = type.category === 'demo';
     const has_server_banner =
+        is_logged_in &&
         existing_data &&
         type.category === 'real' &&
         type.type === 'synthetic' &&

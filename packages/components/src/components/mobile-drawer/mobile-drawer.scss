@@ -27,9 +27,6 @@
             flex-direction: row-reverse;
         }
         &-title {
-            @include typeface(--title-left-bold-black);
-            color: var(--text-prominent);
-            line-height: 24px;
             padding: 1.2rem 1.6rem;
             height: 40px;
             width: 100%;

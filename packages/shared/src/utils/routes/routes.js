@@ -50,9 +50,10 @@ export const routes = {
     endpoint: '/endpoint',
     complaints_policy: '/complaints-policy',
 
-    dashboard: '/dashboard',
-    about_us: '/dashboard/about-us',
-    explore: '/dashboard/explore',
-    resources: '/dashboard/resources',
-    platform_dmt5_synthetic: '/dashboard/platforms/dmt5_synthetic',
+    dashboard_home: '/dashboard',
+    dashboard: '/',
+    about_us: '/about-us',
+    explore: '/explore',
+    resources: '/resources',
+    platform_dmt5_synthetic: '/platforms/dmt5_synthetic',
 };

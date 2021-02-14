@@ -53,7 +53,6 @@ const Dashboard = React.lazy(() => {
 });
 
 const getModules = ({ is_deriv_crypto, is_dashboard }) => {
-    console.log('== is_dashboard:', is_dashboard);
     const modules = [
         {
             path: routes.bot,

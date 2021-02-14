@@ -52,7 +52,7 @@ const Dashboard = React.lazy(() => {
     return import(/* webpackChunkName: "dashboard" */ 'Modules/Dashboard');
 });
 
-const getModules = ({ is_deriv_crypto }) => {
+const getModules = () => {
     const modules = [
         {
             path: routes.bot,
@@ -110,37 +110,29 @@ const getModules = ({ is_deriv_crypto }) => {
                             getTitle: () => localize('Personal details'),
                             default: true,
                         },
-                        ...(is_deriv_crypto
-                            ? []
-                            : [
-                                  {
-                                      path: routes.financial_assessment,
-                                      component: Account,
-                                      getTitle: () => localize('Financial assessment'),
-                                  },
-                              ]),
+                        {
+                            path: routes.financial_assessment,
+                            component: Account,
+                            getTitle: () => localize('Financial assessment'),
+                        },
                     ],
                 },
-                ...(is_deriv_crypto
-                    ? []
-                    : [
-                          {
-                              getTitle: () => localize('Verification'),
-                              icon: 'IcVerification',
-                              subroutes: [
-                                  {
-                                      path: routes.proof_of_identity,
-                                      component: Account,
-                                      getTitle: () => localize('Proof of identity'),
-                                  },
-                                  {
-                                      path: routes.proof_of_address,
-                                      component: Account,
-                                      getTitle: () => localize('Proof of address'),
-                                  },
-                              ],
-                          },
-                      ]),
+                {
+                    getTitle: () => localize('Verification'),
+                    icon: 'IcVerification',
+                    subroutes: [
+                        {
+                            path: routes.proof_of_identity,
+                            component: Account,
+                            getTitle: () => localize('Proof of identity'),
+                        },
+                        {
+                            path: routes.proof_of_address,
+                            component: Account,
+                            getTitle: () => localize('Proof of address'),
+                        },
+                    ],
+                },
                 {
                     getTitle: () => localize('Security and safety'),
                     icon: 'IcSecurity',
@@ -210,38 +202,30 @@ const getModules = ({ is_deriv_crypto }) => {
                     getTitle: () => localize('Withdrawal'),
                     icon_component: 'IcWalletMinus',
                 },
-                ...(is_deriv_crypto
-                    ? []
-                    : [
-                          {
-                              path: routes.cashier_pa,
-                              component: Cashier,
-                              getTitle: () => localize('Payment agents'),
-                              icon_component: 'IcPaymentAgent',
-                          },
-                      ]),
+                {
+                    path: routes.cashier_pa,
+                    component: Cashier,
+                    getTitle: () => localize('Payment agents'),
+                    icon_component: 'IcPaymentAgent',
+                },
                 {
                     path: routes.cashier_acc_transfer,
                     component: Cashier,
                     getTitle: () => localize('Transfer'),
                     icon_component: 'IcAccountTransfer',
                 },
-                ...(is_deriv_crypto
-                    ? []
-                    : [
-                          {
-                              path: routes.cashier_pa_transfer,
-                              component: Cashier,
-                              getTitle: () => localize('Transfer to client'),
-                              icon_component: 'IcAccountTransfer',
-                          },
-                          {
-                              path: routes.cashier_p2p,
-                              component: Cashier,
-                              getTitle: () => localize('DP2P'),
-                              icon_component: 'IcDp2p',
-                          },
-                      ]),
+                {
+                    path: routes.cashier_pa_transfer,
+                    component: Cashier,
+                    getTitle: () => localize('Transfer to client'),
+                    icon_component: 'IcAccountTransfer',
+                },
+                {
+                    path: routes.cashier_p2p,
+                    component: Cashier,
+                    getTitle: () => localize('DP2P'),
+                    icon_component: 'IcDp2p',
+                },
                 {
                     id: 'gtm-onramp-tab',
                     path: routes.cashier_onramp,
@@ -305,7 +289,7 @@ const lazyLoadComplaintsPolicy = makeLazyLoader(() =>
 
 // Order matters
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
-const initRoutesConfig = ({ is_deriv_crypto }) => [
+const initRoutesConfig = ({ is_dashboard }) => [
     { path: routes.index, component: RouterRedirect, getTitle: () => '', to: routes.root },
     { path: routes.endpoint, component: Endpoint, getTitle: () => 'Endpoint' }, // doesn't need localization as it's for internal use
     { path: routes.redirect, component: Redirect, getTitle: () => localize('Redirect') },
@@ -316,7 +300,7 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
         icon_component: 'IcComplaintsPolicy',
         is_authenticated: true,
     },
-    ...getModules({ is_deriv_crypto }),
+    ...getModules({ is_dashboard }),
 ];
 
 let routesConfig;
@@ -324,10 +308,10 @@ let routesConfig;
 // For default page route if page/path is not found, must be kept at the end of routes_config array
 const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
-// is_deriv_crypto = true as default to prevent route ui blinking
-const getRoutesConfig = ({ is_deriv_crypto = true }) => {
+// is_dashboard = true as default to prevent route ui blinking
+const getRoutesConfig = ({ is_dashboard = true }) => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig({ is_deriv_crypto });
+        routesConfig = initRoutesConfig({ is_dashboard });
         routesConfig.push(route_default);
     }
     return routesConfig;

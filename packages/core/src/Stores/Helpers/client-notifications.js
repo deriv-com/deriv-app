@@ -149,8 +149,8 @@ export const clientNotifications = (ui = {}, client = {}) => {
             ...(isMobile() && {
                 action: {
                     text: localize('Contact us'),
-                    onClick: ({ is_deriv_crypto }) => {
-                        window.open(getStaticUrl('contact-us', { is_deriv_crypto }));
+                    onClick: () => {
+                        window.open(getStaticUrl('contact-us'));
                     },
                 },
             }),

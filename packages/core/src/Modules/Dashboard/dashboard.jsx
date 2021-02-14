@@ -21,7 +21,6 @@ Dashboard.propTypes = {
     config: {
         asset_path: PropTypes.string.isRequired,
         has_router: PropTypes.bool.isRequired,
-        is_deriv_crypto: PropTypes.bool.isRequired,
         routes: PropTypes.shape({
             home: PropTypes.string.isRequired,
             about_us: PropTypes.string.isRequired,
@@ -63,7 +62,6 @@ export default connect(({ client, ui }) => ({
     config: {
         asset_path: `${websiteUrl()}js/dashboard/assets`,
         has_router: true,
-        is_deriv_crypto: false,
         routes: {
             home: routes.dashboard,
             about_us: routes.about_us,

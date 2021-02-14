@@ -7,7 +7,6 @@ import {
     routes as shared_routes,
     isEmptyObject,
     default_title,
-    PlatformContext,
 } from '@deriv/shared';
 
 const RouteWithSubRoutes = ({
@@ -23,8 +22,6 @@ const RouteWithSubRoutes = ({
     Component404,
     LoginPrompt,
 }) => {
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
-
     const validateRoute = pathname => {
         if (pathname === '') return true;
 
@@ -54,7 +51,7 @@ const RouteWithSubRoutes = ({
                 result = (
                     <LoginPrompt
                         onLogin={() => redirectToLogin(is_logged_in, language)}
-                        onSignup={() => redirectToSignUp({ is_deriv_crypto })}
+                        onSignup={() => redirectToSignUp()}
                         page_title={getTitle()}
                     />
                 );

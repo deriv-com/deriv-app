@@ -4,7 +4,7 @@ import { Button, Modal } from '@deriv/components';
 import { getLanguage, localize } from '@deriv/translations';
 import { redirectToLogin, redirectToSignUp } from '@deriv/shared';
 
-const AuthorizationRequiredModal = ({ is_visible, toggleModal, is_deriv_crypto, is_logged_in }) => (
+const AuthorizationRequiredModal = ({ is_visible, toggleModal, is_logged_in }) => (
     <Modal
         id='dt_authorization_required_modal'
         is_open={is_visible}
@@ -20,18 +20,12 @@ const AuthorizationRequiredModal = ({ is_visible, toggleModal, is_deriv_crypto, 
                 onClick={() => redirectToLogin(is_logged_in, getLanguage())}
                 secondary
             />
-            <Button
-                has_effect
-                text={localize('Create free account')}
-                onClick={() => redirectToSignUp({ is_deriv_crypto })}
-                primary
-            />
+            <Button has_effect text={localize('Create free account')} onClick={() => redirectToSignUp()} primary />
         </Modal.Footer>
     </Modal>
 );
 
 AuthorizationRequiredModal.propTypes = {
-    is_deriv_crypto: PropTypes.bool,
     is_visible: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     toggleModal: PropTypes.func,

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, LinearProgress, Text } from '@deriv/components';
-import { isEmptyObject, PlatformContext } from '@deriv/shared';
+import { isEmptyObject } from '@deriv/shared';
 import CloseButton from './close-button.jsx';
 import NotificationStatusIcons from './notification-status-icons.jsx';
 import NotificationBanner from './notification-banner.jsx';
@@ -10,7 +10,6 @@ import { default_delay, types } from './constants';
 import { BinaryLink } from '../../Routes';
 
 const Notification = ({ data, removeNotificationMessage }) => {
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
     const destroy = is_closed_by_user => {
         removeNotificationMessage(data);
 
@@ -81,7 +80,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                     ) : (
                                         <Button
                                             className='notification__cta-button'
-                                            onClick={() => data.action.onClick({ is_deriv_crypto })}
+                                            onClick={() => data.action.onClick()}
                                             text={data.action.text}
                                             secondary
                                             renderText={text => (

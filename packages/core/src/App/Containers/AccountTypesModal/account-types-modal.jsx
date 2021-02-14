@@ -11,7 +11,7 @@ import {
     ThemedScrollbars,
     Text,
 } from '@deriv/components';
-import { isDesktop, isMobile, routes, getStaticUrl, PlatformContext } from '@deriv/shared';
+import { isDesktop, isMobile, routes, getStaticUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AccountCard from './account-card.jsx';
@@ -62,7 +62,7 @@ Box.propTypes = {
     cards: PropTypes.array,
 };
 
-const FinancialBox = ({ derivOnClick, is_deriv_crypto, mt5OnClick, has_maltainvest_account, add_account_label }) => {
+const FinancialBox = ({ derivOnClick, mt5OnClick, has_maltainvest_account, add_account_label }) => {
     return (
         <Box
             title={localize('Financial')}
@@ -89,12 +89,12 @@ const FinancialBox = ({ derivOnClick, is_deriv_crypto, mt5OnClick, has_maltainve
                         {
                             icon: 'IcBrandDtrader',
                             name: 'DTrader',
-                            path: getStaticUrl('/dtrader', { is_deriv_crypto }),
+                            path: getStaticUrl('/dtrader'),
                         },
                         {
                             icon: 'IcBrandDbot',
                             name: 'DBot',
-                            path: getStaticUrl('/dbot', { is_deriv_crypto }),
+                            path: getStaticUrl('/dbot'),
                         },
                         {
                             icon: 'IcBrandSmarttrader',
@@ -128,7 +128,7 @@ const FinancialBox = ({ derivOnClick, is_deriv_crypto, mt5OnClick, has_maltainve
                         {
                             icon: 'IcBrandDMT5',
                             name: 'MetaTrader 5',
-                            path: getStaticUrl('/dmt5', { is_deriv_crypto }),
+                            path: getStaticUrl('/dmt5'),
                         },
                     ]}
                 >
@@ -147,7 +147,7 @@ const FinancialBox = ({ derivOnClick, is_deriv_crypto, mt5OnClick, has_maltainve
     );
 };
 
-const SyntheticBox = ({ derivOnClick, add_account_label, is_deriv_crypto }) => {
+const SyntheticBox = ({ derivOnClick, add_account_label }) => {
     return (
         <Box
             title={localize('Synthetic')}
@@ -189,12 +189,12 @@ const SyntheticBox = ({ derivOnClick, add_account_label, is_deriv_crypto }) => {
                         {
                             icon: 'IcBrandDtrader',
                             name: 'DTrader',
-                            path: getStaticUrl('dtrader', { is_deriv_crypto }),
+                            path: getStaticUrl('dtrader'),
                         },
                         {
                             icon: 'IcBrandDbot',
                             name: 'DBot',
-                            path: getStaticUrl('dbot', { is_deriv_crypto }),
+                            path: getStaticUrl('dbot'),
                         },
                         {
                             icon: 'IcBrandSmarttrader',
@@ -229,8 +229,6 @@ const AccountTypesModal = ({
     switchAccount,
     toggleAccountTypesModal,
 }) => {
-    const context_type = React.useContext(PlatformContext);
-
     const closeModal = () => {
         toggleAccountTypesModal(false);
     };
@@ -282,7 +280,6 @@ const AccountTypesModal = ({
                                         ? localize('Trade with this account')
                                         : localize('Add this real account')
                                 }
-                                is_deriv_crypto={context_type.is_deriv_crypto}
                             />
                             <FinancialBox
                                 derivOnClick={() => {
@@ -302,7 +299,6 @@ const AccountTypesModal = ({
                                     localize('Add this real account'),
                                     localize('Deriv Financial required'),
                                 ]}
-                                is_deriv_crypto={context_type.is_deriv_crypto}
                             />
                         </div>
                     </div>

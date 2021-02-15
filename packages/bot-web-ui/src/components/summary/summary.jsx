@@ -1,9 +1,9 @@
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { ThemedScrollbars } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import SummaryCard from './summary-card.jsx';
-import { ThemedScrollbars } from '@deriv/components';
 
 const Summary = ({ is_mobile, is_drawer_open }) => (
     <div

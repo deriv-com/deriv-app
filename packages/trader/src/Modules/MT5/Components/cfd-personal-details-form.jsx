@@ -124,7 +124,7 @@ const submitForm = (values, actions, idx, onSubmitFn, is_dirty, residence_list) 
     onSubmitFn(idx, payload, actions.setSubmitting, is_dirty);
 };
 
-const MT5PersonalDetailsForm = ({
+const CFDPersonalDetailsForm = ({
     onSave,
     is_fully_authenticated,
     is_loading,
@@ -361,7 +361,7 @@ const MT5PersonalDetailsForm = ({
     );
 };
 
-MT5PersonalDetailsForm.propTypes = {
+CFDPersonalDetailsForm.propTypes = {
     is_fully_authenticated: PropTypes.bool,
     is_loading: PropTypes.bool,
     onCancel: PropTypes.func,
@@ -372,4 +372,4 @@ MT5PersonalDetailsForm.propTypes = {
     landing_company: PropTypes.object.isRequired,
 };
 
-export default MT5PersonalDetailsForm;
+export default CFDPersonalDetailsForm;

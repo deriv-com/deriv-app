@@ -27,11 +27,11 @@ import {
 import { WS } from 'Services/ws-methods';
 import { localize } from '@deriv/translations';
 import { isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode } from '@deriv/shared';
-import { InputField } from './mt5-personal-details-form.jsx';
+import { InputField } from './cfd-personal-details-form.jsx';
 
 let file_uploader_ref;
 
-const MT5POA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...props }) => {
+const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...props }) => {
     const form = React.useRef();
 
     const [is_loading, setIsLoading] = React.useState(true);
@@ -440,7 +440,7 @@ const MT5POA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
     );
 };
 
-MT5POA.propTypes = {
+CFDPOA.propTypes = {
     onCancel: PropTypes.func,
     onSave: PropTypes.func,
     onSubmit: PropTypes.func,
@@ -448,4 +448,4 @@ MT5POA.propTypes = {
     value: PropTypes.object,
 };
 
-export default MT5POA;
+export default CFDPOA;

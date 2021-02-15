@@ -42,7 +42,7 @@ const CountdownComponent = ({ count_from = 60, onTimeout }) => {
     return <span className='countdown'>{count}</span>;
 };
 
-const MT5PasswordReset = ({ sendVerifyEmail, account_type, account_group, server, password_type }) => {
+const CFDPasswordReset = ({ sendVerifyEmail, account_type, account_group, server, password_type }) => {
     const [is_resend_verification_requested, setResendVerification] = React.useState(false);
     const [is_resend_verification_sent, setResendVerificationSent] = React.useState(false);
 
@@ -63,16 +63,16 @@ const MT5PasswordReset = ({ sendVerifyEmail, account_type, account_group, server
     };
 
     return (
-        <div className='mt5-verification-email-sent'>
+        <div className='cfd-verification-email-sent'>
             <Icon icon='IcEmailSent' size={128} />
-            <h2 className='mt5-verification-email-sent__title'>
+            <h2 className='cfd-verification-email-sent__title'>
                 <Localize i18n_default_text="We've sent you an email" />
             </h2>
             <Text as='p' size='xs' align='center'>
                 <Localize i18n_default_text='Please click on the link in the email to reset your password.' />
             </Text>
             {!is_resend_verification_requested && (
-                <Button className='mt5-verification-email-sent__resend-button' primary onClick={onClickVerification}>
+                <Button className='cfd-verification-email-sent__resend-button' primary onClick={onClickVerification}>
                     <Localize i18n_default_text="Didn't receive the email?" />
                 </Button>
             )}
@@ -83,7 +83,7 @@ const MT5PasswordReset = ({ sendVerifyEmail, account_type, account_group, server
                         size='xs'
                         align='center'
                         weight='bold'
-                        className='mt5-verification-email-sent__title--sub'
+                        className='cfd-verification-email-sent__title--sub'
                     >
                         <Localize i18n_default_text={"Didn't receive the email?"} />
                     </Text>
@@ -91,7 +91,7 @@ const MT5PasswordReset = ({ sendVerifyEmail, account_type, account_group, server
                         <Localize i18n_default_text="Check your spam or junk folder. If it's not there, try resending the email." />
                     </Text>
                     <Button
-                        className='mt5-verification-email-sent__resend-button'
+                        className='cfd-verification-email-sent__resend-button'
                         large
                         primary
                         disabled={is_resend_verification_sent}
@@ -513,7 +513,7 @@ const MT5PasswordManagerModal = ({
         },
         {
             component: (
-                <MT5PasswordReset
+                <CFDPasswordReset
                     server={selected_server}
                     sendVerifyEmail={sendVerifyEmail}
                     account_type={selected_account_type}

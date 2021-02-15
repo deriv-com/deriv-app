@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, MobileDialog, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import MT5FinancialStpRealAccountSignup from 'Modules/MT5/Containers/mt5-financial-stp-real-account-signup.jsx';
+import CFDFinancialStpRealAccountSignup from 'Modules/MT5/Containers/cfd-financial-stp-real-account-signup.jsx';
 
 const MT5AccountOpeningRealFinancialStpModal = ({
     disableApp,
@@ -24,7 +24,7 @@ const MT5AccountOpeningRealFinancialStpModal = ({
                 height='740px'
                 toggleModal={disableMt5FinancialStpModal}
             >
-                <MT5FinancialStpRealAccountSignup toggleModal={disableMt5FinancialStpModal} />
+                <CFDFinancialStpRealAccountSignup toggleModal={disableMt5FinancialStpModal} />
             </Modal>
         </DesktopWrapper>
         <MobileWrapper>
@@ -35,7 +35,7 @@ const MT5AccountOpeningRealFinancialStpModal = ({
                 visible={is_mt5_financial_stp_modal_open}
                 onClose={disableMt5FinancialStpModal}
             >
-                <MT5FinancialStpRealAccountSignup toggleModal={disableMt5FinancialStpModal} />
+                <CFDFinancialStpRealAccountSignup toggleModal={disableMt5FinancialStpModal} />
             </MobileDialog>
         </MobileWrapper>
     </React.Fragment>

@@ -2,7 +2,7 @@ import React from 'react';
 import { Clipboard } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-class Mt5AccountCopy extends React.PureComponent {
+class CFDAccountCopy extends React.PureComponent {
     render() {
         return (
             <Clipboard
@@ -16,4 +16,4 @@ class Mt5AccountCopy extends React.PureComponent {
     }
 }
 
-export { Mt5AccountCopy };
+export { CFDAccountCopy };

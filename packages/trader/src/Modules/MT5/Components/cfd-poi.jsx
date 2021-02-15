@@ -7,7 +7,7 @@ import { WS } from 'Services/ws-methods';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-const MT5POI = ({ authentication_status, form_error, index, onCancel, onSubmit, value, ...props }) => {
+const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, value, ...props }) => {
     const { identity_status } = authentication_status;
     const [poi_state, setPOIState] = React.useState('none');
     const validateForm = React.useCallback(() => {
@@ -73,7 +73,7 @@ const MT5POI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
     );
 };
 
-MT5POI.propTypes = {
+CFDPOI.propTypes = {
     authentication_status: PropTypes.object,
     form_error: PropTypes.string,
     index: PropTypes.number,
@@ -86,4 +86,4 @@ MT5POI.propTypes = {
     value: PropTypes.object,
 };
 
-export default MT5POI;
+export default CFDPOI;

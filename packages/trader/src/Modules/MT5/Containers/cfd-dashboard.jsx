@@ -6,22 +6,22 @@ import { DesktopWrapper, Icon, MobileWrapper, Tabs, PageError, Loading, Text } f
 import { isEmptyObject, isMobile, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import LoadingMT5RealAccountDisplay from './loading-mt5-real-account-display.jsx';
+import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display.jsx';
 import MissingRealAccount from './missing-real-account.jsx';
 import MT5AccountOpeningRealFinancialStpModal from './mt5-account-opening-real-financial-stp-modal.jsx';
 import CompareAccountsModal from './compare-accounts-modal.jsx';
-import MT5DashboardContainer from './mt5-dashboard-container.jsx';
-import MT5PasswordManagerModal from './mt5-password-manager-modal.jsx';
-import MT5PasswordModal from './mt5-password-modal.jsx';
-import MT5ServerErrorDialog from './mt5-server-error-dialog.jsx';
-import Mt5TopUpDemoModal from './mt5-top-up-demo-modal.jsx';
-import MT5ResetPasswordModal from './mt5-reset-password-modal.jsx';
-import Mt5FinancialStpPendingDialog from '../Components/mt5-financial-stp-pending-dialog.jsx';
-import { MT5InfoCopy } from '../Components/mt5-info-copy.jsx';
-import { MT5DemoAccountDisplay } from '../Components/mt5-demo-account-display.jsx';
-import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.jsx';
+import CFDDashboardContainer from './cfd-dashboard-container.jsx';
+import CFDPasswordManagerModal from './cfd-password-manager-modal.jsx';
+import CFDPasswordModal from './cfd-password-modal.jsx';
+import CFDServerErrorDialog from './cfd-server-error-dialog.jsx';
+import CFDTopUpDemoModal from './cfd-top-up-demo-modal.jsx';
+import CFDResetPasswordModal from './cfd-reset-password-modal.jsx';
+import CFDFinancialStpPendingDialog from '../Components/cfd-financial-stp-pending-dialog.jsx';
+import { CFDInfoCopy } from '../Components/cfd-info-copy.jsx';
+import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display.jsx';
+import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display.jsx';
 import { getBrokerName, getServerName, getPlatformMt5DownloadLink } from '../Helpers/constants';
-import 'Sass/app/modules/mt5/mt5-dashboard.scss';
+import 'Sass/app/modules/mt5/cfd-dashboard.scss';
 
 const LoadTab = ({ children, is_loading, loading_component, ...props }) => {
     const LoadingComponent = loading_component;
@@ -32,7 +32,7 @@ const LoadTab = ({ children, is_loading, loading_component, ...props }) => {
     return <Tabs {...props}>{children}</Tabs>;
 };
 
-class MT5Dashboard extends React.Component {
+class CFDDashboard extends React.Component {
     state = {
         active_index: 0,
         is_account_needed_modal_open: false,
@@ -181,19 +181,19 @@ class MT5Dashboard extends React.Component {
         return (
             <React.Fragment>
                 {is_mt5_allowed || platform === 'dxtrade' || !is_logged_in ? (
-                    <div className='mt5-dashboard__container'>
+                    <div className='cfd-dashboard__container'>
                         <NotificationMessages />
-                        <div className='mt5-dashboard'>
-                            <div className='mt5-dashboard__welcome-message'>
-                                <h1 className='mt5-dashboard__welcome-message--heading'>
+                        <div className='cfd-dashboard'>
+                            <div className='cfd-dashboard__welcome-message'>
+                                <h1 className='cfd-dashboard__welcome-message--heading'>
                                     <Localize i18n_default_text={WelcomeText()} />
                                 </h1>
                             </div>
                             {has_mt5_account_error && (
-                                <div className='mt5-dashboard__accounts-error'>
+                                <div className='cfd-dashboard__accounts-error'>
                                     <Text
                                         as='p'
-                                        className='mt5-dashboard__accounts-error-message'
+                                        className='cfd-dashboard__accounts-error-message'
                                         lineHeight='l'
                                         size='xxs'
                                         color='prominent'
@@ -204,8 +204,8 @@ class MT5Dashboard extends React.Component {
                                     </Text>
                                 </div>
                             )}
-                            <div className='mt5-dashboard__accounts-display'>
-                                <MT5PasswordManagerModal
+                            <div className='cfd-dashboard__accounts-display'>
+                                <CFDPasswordManagerModal
                                     is_visible={this.state.password_manager.is_visible}
                                     selected_login={this.state.password_manager.selected_login}
                                     selected_account={this.state.password_manager.selected_account}
@@ -220,7 +220,7 @@ class MT5Dashboard extends React.Component {
                                     center
                                     is_loading={is_loading}
                                     is_logged_in={is_logged_in}
-                                    loading_component={LoadingMT5RealAccountDisplay}
+                                    loading_component={LoadingCFDRealAccountDisplay}
                                     onTabItemClick={this.updateActiveIndex}
                                     should_update_hash
                                 >
@@ -229,7 +229,7 @@ class MT5Dashboard extends React.Component {
                                             {should_show_missing_real_account && (
                                                 <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
                                             )}
-                                            <MT5RealAccountDisplay
+                                            <CFDRealAccountDisplay
                                                 is_accounts_switcher_on={is_accounts_switcher_on}
                                                 is_eu={is_eu}
                                                 is_eu_country={is_eu_country}
@@ -262,7 +262,7 @@ class MT5Dashboard extends React.Component {
                                         </React.Fragment>
                                     </div>
                                     <div label={localize('Demo account')} data-hash='demo'>
-                                        <MT5DemoAccountDisplay
+                                        <CFDDemoAccountDisplay
                                             is_eu={is_eu}
                                             is_logged_in={is_logged_in}
                                             has_maltainvest_account={has_maltainvest_account}
@@ -302,7 +302,7 @@ class MT5Dashboard extends React.Component {
                                 {/*    /> */}
                                 {/* )} */}
                                 {/* {this.state.is_demo_tab ? ( */}
-                                {/*    <MT5DemoAccountDisplay */}
+                                {/*    <CFDDemoAccountDisplay */}
                                 {/*        is_eu={is_eu} */}
                                 {/* TODO: remove eslint disable once this is uncommented */}
                                 {/* eslint-disable-next-line max-len */}
@@ -349,18 +349,18 @@ class MT5Dashboard extends React.Component {
                                 {/*    </React.Fragment> */}
                                 {/* )} */}
                                 {platform === 'mt5' && (
-                                    <div className='mt5-dashboard__info'>
-                                        <div className='mt5-dashboard__info-description'>
+                                    <div className='cfd-dashboard__info'>
+                                        <div className='cfd-dashboard__info-description'>
                                             <Localize i18n_default_text='Use these in your apps' />
                                         </div>
-                                        <MT5InfoCopy
+                                        <CFDInfoCopy
                                             display_name={getBrokerName()}
                                             text_copy={getBrokerName()}
                                             label={localize('Broker')}
                                             info_msg={localize('Click here to copy broker name.')}
                                             success_msg={localize('Broker name copied!')}
                                         />
-                                        <MT5InfoCopy
+                                        <CFDInfoCopy
                                             display_name={getServerName(this.state.is_demo_tab)}
                                             text_copy={getServerName(this.state.is_demo_tab)}
                                             label={localize('Server')}
@@ -378,13 +378,13 @@ class MT5Dashboard extends React.Component {
                                     </React.Fragment>
                                 )}
                                 {platform === 'mt5' && (
-                                    <div className='mt5-dashboard__maintenance'>
+                                    <div className='cfd-dashboard__maintenance'>
                                         <Icon
                                             icon='IcAlertWarning'
                                             size={isMobile() ? 28 : 16}
-                                            className='mt5-dashboard__maintenance-icon'
+                                            className='cfd-dashboard__maintenance-icon'
                                         />
-                                        <div className='mt5-dashboard__maintenance-text'>
+                                        <div className='cfd-dashboard__maintenance-text'>
                                             <Localize
                                                 i18n_default_text='Server maintenance starting 03:00 GMT every Sunday. This process may take up to 2 hours to complete. <0 />Service may be disrupted during this time.'
                                                 components={[<br key={0} />]}
@@ -394,18 +394,18 @@ class MT5Dashboard extends React.Component {
                                 )}
                             </div>
                             <DesktopWrapper>
-                                <MT5DashboardContainer platform={platform} />
+                                <CFDDashboardContainer platform={platform} />
                             </DesktopWrapper>
                             <MobileWrapper>
-                                <div className='mt5-dashboard__download-center'>
-                                    <h1 className='mt5-dashboard__download-center--heading'>
+                                <div className='cfd-dashboard__download-center'>
+                                    <h1 className='cfd-dashboard__download-center--heading'>
                                         {platform === 'mt5' && <Localize i18n_default_text='Download the MT5 app' />}
                                         {platform === 'dxtrade' && (
                                             <Localize i18n_default_text='Download the DXTrade app' />
                                         )}
                                     </h1>
-                                    <div className='mt5-dashboard__download-center-options--mobile'>
-                                        <div className='mt5-dashboard__download-center-options--mobile-devices'>
+                                    <div className='cfd-dashboard__download-center-options--mobile'>
+                                        <div className='cfd-dashboard__download-center-options--mobile-devices'>
                                             {platform === 'mt5' && (
                                                 <React.Fragment>
                                                     <Icon icon='IcMt5DeviceTablet' width={133} height={106} />
@@ -419,7 +419,7 @@ class MT5Dashboard extends React.Component {
                                                 </React.Fragment>
                                             )}
                                         </div>
-                                        <div className='mt5-dashboard__download-center-options--mobile-links'>
+                                        <div className='cfd-dashboard__download-center-options--mobile-links'>
                                             <a
                                                 href={getPlatformMt5DownloadLink('android')}
                                                 target='_blank'
@@ -438,16 +438,16 @@ class MT5Dashboard extends React.Component {
                                     </div>
                                 </div>
                             </MobileWrapper>
-                            <Mt5TopUpDemoModal />
-                            <MT5PasswordModal />
-                            <MT5ServerErrorDialog />
+                            <CFDTopUpDemoModal />
+                            <CFDPasswordModal />
+                            <CFDServerErrorDialog />
                             {platform === 'mt5' && (
                                 <React.Fragment>
                                     <MT5AccountOpeningRealFinancialStpModal />
-                                    <Mt5FinancialStpPendingDialog />
+                                    <CFDFinancialStpPendingDialog />
                                 </React.Fragment>
                             )}
-                            <MT5ResetPasswordModal />
+                            <CFDResetPasswordModal />
                         </div>
                     </div>
                 ) : (
@@ -519,5 +519,5 @@ export default withRouter(
         trading_servers: client.trading_servers,
         can_have_more_real_synthetic_mt5: client.can_have_more_real_synthetic_mt5,
         upgradeable_landing_companies: client.upgradeable_landing_companies,
-    }))(MT5Dashboard)
+    }))(CFDDashboard)
 );

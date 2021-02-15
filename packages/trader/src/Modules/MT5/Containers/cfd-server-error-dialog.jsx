@@ -4,7 +4,7 @@ import { Dialog } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const MT5ServerErrorDialog = ({
+const CFDServerErrorDialog = ({
     clearMt5Error,
     disableApp,
     enableApp,
@@ -27,7 +27,7 @@ const MT5ServerErrorDialog = ({
     );
 };
 
-MT5ServerErrorDialog.propTypes = {
+CFDServerErrorDialog.propTypes = {
     clearMt5Error: PropTypes.func,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
@@ -43,4 +43,4 @@ export default connect(({ ui, modules }) => ({
     error_message: modules.mt5.error_message,
     has_mt5_error: modules.mt5.has_mt5_error,
     is_mt5_success_dialog_enabled: modules.mt5.is_mt5_success_dialog_enabled,
-}))(MT5ServerErrorDialog);
+}))(CFDServerErrorDialog);

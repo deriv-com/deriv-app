@@ -1,27 +1,33 @@
 import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { Localize } from '@deriv/translations';
-import { Mt5AccountCopy } from './mt5-account-copy.jsx';
+import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper, Input } from '@deriv/components';
+import { localize, Localize } from '@deriv/translations';
+import { CFDAccountCopy } from './cfd-account-copy.jsx';
 import { getMT5WebTerminalLink } from '../Helpers/constants';
 
 const account_icons = {
-    synthetic: 'IcMt5SyntheticPlatform',
-    financial: 'IcMt5FinancialPlatform',
-    financial_stp: 'IcMt5FinancialStpPlatform',
+    mt5: {
+        synthetic: 'IcMt5SyntheticPlatform',
+        financial: 'IcMt5FinancialPlatform',
+        financial_stp: 'IcMt5FinancialStpPlatform',
+    },
+    dxtrade: {
+        synthetic: 'IcDxtradeSyntheticPlatform',
+        financial: 'IcDxtradeFinancialPlatform',
+    },
 };
 
 const AddTradeServerButton = React.forwardRef(({ onSelectAccount, is_disabled }, ref) => {
     return (
         <div
             onClick={is_disabled ? null : onSelectAccount}
-            className={classNames('mt5-account-card__add-server', {
-                'mt5-account-card__add-server--disabled': is_disabled,
+            className={classNames('cfd-account-card__add-server', {
+                'cfd-account-card__add-server--disabled': is_disabled,
             })}
             ref={ref}
         >
-            <span className='mt5-account-card__add-server--icon'>+</span>
+            <span className='cfd-account-card__add-server--icon'>+</span>
             <Localize i18n_default_text='Add more trade servers' />
         </div>
     );
@@ -29,20 +35,26 @@ const AddTradeServerButton = React.forwardRef(({ onSelectAccount, is_disabled },
 
 AddTradeServerButton.displayName = 'AddTradeServerButton';
 
-const LoginBadge = ({ display_login }) => (
-    <div className='mt5-account-card__login'>
-        <Localize
-            i18n_default_text='<0>Account login no.</0><1>{{display_login}}</1>'
-            values={{
-                display_login,
-            }}
-            components={[<span key={0} />, <strong key={1} />]}
-        />
-        <Mt5AccountCopy text={display_login} />
-    </div>
-);
+const LoginBadge = ({ display_login, platform }) =>
+    platform === 'mt5' ? (
+        <div className='cfd-account-card__login'>
+            <Localize
+                i18n_default_text='<0>Account login no.</0><1>{{display_login}}</1>'
+                values={{
+                    display_login,
+                }}
+                components={[<span key={0} />, <strong key={1} />]}
+            />
+            <CFDAccountCopy text={display_login} />
+        </div>
+    ) : (
+        <div className='cfd-account-card__login-input'>
+            <Text size='xs'>{localize('Username')}</Text>
+            <Input value={display_login} disabled trailing_icon={<CFDAccountCopy text={display_login} />} />
+        </div>
+    );
 
-const MT5AccountCardAction = ({
+const CFDAccountCardAction = ({
     button_label,
     handleClickSwitchAccount,
     has_real_account,
@@ -61,13 +73,13 @@ const MT5AccountCardAction = ({
         typeof handleClickSwitchAccount === 'function'
     ) {
         return (
-            <div className='mt5-account-card__action-wrapper'>
+            <div className='cfd-account-card__action-wrapper'>
                 <Localize
                     i18n_default_text='<0>Switch to your real account</0><1> to create a DMT5 Financial STP account.</1>'
                     components={[
                         <a
-                            className={classNames('mt5-account-card__action-wrapper__link link link--orange', {
-                                'mt5-account-card__action-wrapper__link--disabled': is_accounts_switcher_on,
+                            className={classNames('cfd-account-card__action-wrapper__link link link--orange', {
+                                'cfd-account-card__action-wrapper__link--disabled': is_accounts_switcher_on,
                             })}
                             key={0}
                             onClick={handleClickSwitchAccount}
@@ -87,7 +99,7 @@ const MT5AccountCardAction = ({
     const cta_label = button_label || lbl_add_account;
     return (
         <Button
-            className='mt5-account-card__account-selection'
+            className='cfd-account-card__account-selection'
             onClick={onSelectAccount}
             type='button'
             is_disabled={is_disabled}
@@ -100,7 +112,7 @@ const MT5AccountCardAction = ({
     );
 };
 
-const MT5AccountCard = ({
+const CFDAccountCard = ({
     button_label,
     commission_message,
     descriptor,
@@ -126,7 +138,7 @@ const MT5AccountCard = ({
     toggleShouldShowRealAccountsList,
     trading_servers,
 }) => {
-    const icon = type.type ? <Icon icon={account_icons[type.type]} size={64} /> : null;
+    const icon = type.type ? <Icon icon={account_icons[type.platform][type.type]} size={64} /> : null;
     const has_popular_banner = type.type === 'synthetic' && type.category === 'real' && !existing_data;
     const has_demo_banner = type.category === 'demo';
     const has_server_banner =
@@ -176,40 +188,40 @@ const MT5AccountCard = ({
     };
 
     return (
-        <div ref={wrapper_ref} className={classNames('mt5-account-card__wrapper')}>
+        <div ref={wrapper_ref} className={classNames('cfd-account-card__wrapper')}>
             <div
-                className={classNames('mt5-account-card', { 'mt5-account-card__logged-out': !is_logged_in })}
+                className={classNames('cfd-account-card', { 'cfd-account-card__logged-out': !is_logged_in })}
                 ref={ref}
             >
                 {has_popular_banner && (
-                    <div className='mt5-account-card__banner'>
+                    <div className='cfd-account-card__banner'>
                         <Localize i18n_default_text='Most popular' />
                     </div>
                 )}
                 {has_demo_banner && (
-                    <div className='mt5-account-card__banner mt5-account-card__banner--demo'>
+                    <div className='cfd-account-card__banner cfd-account-card__banner--demo'>
                         <Localize i18n_default_text='DEMO' />
                     </div>
                 )}
                 {has_server_banner && (
-                    <div className='mt5-account-card__banner mt5-account-card__banner--server'>
+                    <div className='cfd-account-card__banner cfd-account-card__banner--server'>
                         {getServerName(existing_data)}
                     </div>
                 )}
                 <div
-                    className={classNames('mt5-account-card__type', {
-                        'mt5-account-card__type--has-banner': has_popular_banner || has_demo_banner,
+                    className={classNames('cfd-account-card__type', {
+                        'cfd-account-card__type--has-banner': has_popular_banner || has_demo_banner,
                     })}
                     id={`mt5_${type.category}_${type.type}`}
                 >
                     {icon}
-                    <div className='mt5-account-card__type--description'>
-                        <h1 className='mt5-account-card--heading'>{title}</h1>
+                    <div className='cfd-account-card__type--description'>
+                        <h1 className='cfd-account-card--heading'>{title}</h1>
                         {(!existing_data || !is_logged_in) && (
-                            <p className='mt5-account-card--paragraph'>{descriptor}</p>
+                            <p className='cfd-account-card--paragraph'>{descriptor}</p>
                         )}
                         {existing_data && existing_data.display_balance && is_logged_in && (
-                            <p className='mt5-account-card--balance'>
+                            <p className='cfd-account-card--balance'>
                                 <Money
                                     amount={existing_data.display_balance}
                                     currency={existing_data.currency}
@@ -221,17 +233,17 @@ const MT5AccountCard = ({
                     </div>
                 </div>
 
-                <div className='mt5-account-card__cta'>
-                    <div className='mt5-account-card__specs'>
-                        <table className='mt5-account-card__specs-table'>
+                <div className='cfd-account-card__cta'>
+                    <div className='cfd-account-card__specs'>
+                        <table className='cfd-account-card__specs-table'>
                             <tbody>
                                 {Object.keys(specs).map((spec_attribute, idx) => (
-                                    <tr key={idx} className='mt5-account-card__specs-table-row'>
-                                        <td className='mt5-account-card__specs-table-attribute'>
-                                            <p className='mt5-account-card--paragraph'>{spec_attribute}</p>
+                                    <tr key={idx} className='cfd-account-card__specs-table-row'>
+                                        <td className='cfd-account-card__specs-table-attribute'>
+                                            <p className='cfd-account-card--paragraph'>{spec_attribute}</p>
                                         </td>
-                                        <td className='mt5-account-card__specs-table-data'>
-                                            <p className='mt5-account-card--paragraph'>{specs[spec_attribute]}</p>
+                                        <td className='cfd-account-card__specs-table-data'>
+                                            <p className='cfd-account-card--paragraph'>{specs[spec_attribute]}</p>
                                         </td>
                                     </tr>
                                 ))}
@@ -239,14 +251,14 @@ const MT5AccountCard = ({
                                     existing_data &&
                                     type.type === 'synthetic' &&
                                     type.category === 'real' && (
-                                        <tr key={existing_data.server} className='mt5-account-card__specs-table-row'>
-                                            <td className='mt5-account-card__specs-table-attribute'>
-                                                <p className='mt5-account-card--paragraph'>
+                                        <tr key={existing_data.server} className='cfd-account-card__specs-table-row'>
+                                            <td className='cfd-account-card__specs-table-attribute'>
+                                                <p className='cfd-account-card--paragraph'>
                                                     <Localize i18n_default_text='Trade server: ' />
                                                 </p>
                                             </td>
-                                            <td className='mt5-account-card__specs-table-data'>
-                                                <p className='mt5-account-card--paragraph'>
+                                            <td className='cfd-account-card__specs-table-data'>
+                                                <p className='cfd-account-card--paragraph'>
                                                     {getServerName(existing_data)}
                                                 </p>
                                             </td>
@@ -256,46 +268,50 @@ const MT5AccountCard = ({
                         </table>
                     </div>
 
-                    {existing_data?.login && is_logged_in && <LoginBadge display_login={existing_data.display_login} />}
+                    {existing_data?.login && is_logged_in && (
+                        <LoginBadge display_login={existing_data.display_login} platform={type.platform} />
+                    )}
 
                     {((!existing_data && commission_message) || !is_logged_in) && (
-                        <div className='mt5-account-card__commission'>
+                        <div className='cfd-account-card__commission'>
                             <Text as='p' color='general' size='xs' styles={{ margin: '1.6rem auto' }}>
                                 {commission_message}
                             </Text>
                         </div>
                     )}
                     {existing_data && is_logged_in && (
-                        <div className='mt5-account-card__manage'>
+                        <div className='cfd-account-card__manage'>
                             <Button onClick={() => onClickFund(existing_data)} type='button' secondary>
                                 {type.category === 'real' && <Localize i18n_default_text='Fund transfer' />}
                                 {type.category === 'demo' && <Localize i18n_default_text='Fund top up' />}
                             </Button>
-                            <Button
-                                onClick={() => {
-                                    onPasswordManager(
-                                        existing_data.login,
-                                        title,
-                                        type.category,
-                                        type.type,
-                                        existing_data.server
-                                    );
-                                }}
-                                type='button'
-                                secondary
-                            >
-                                <Localize i18n_default_text='Password' />
-                            </Button>
+                            {type.platform === 'mt5' && (
+                                <Button
+                                    onClick={() => {
+                                        onPasswordManager(
+                                            existing_data.login,
+                                            title,
+                                            type.category,
+                                            type.type,
+                                            existing_data.server
+                                        );
+                                    }}
+                                    type='button'
+                                    secondary
+                                >
+                                    <Localize i18n_default_text='Password' />
+                                </Button>
+                            )}
                         </div>
                     )}
                     {!existing_data && has_mt5_account && (
-                        <Button className='mt5-account-card__account-selection' onClick={onSelectAccount} type='button'>
+                        <Button className='cfd-account-card__account-selection' onClick={onSelectAccount} type='button'>
                             <Localize i18n_default_text='Select' />
                         </Button>
                     )}
                     {existing_data && is_logged_in && (
                         <a
-                            className='dc-btn mt5-account-card__account-selection mt5-account-card__account-selection--primary'
+                            className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
                             type='button'
                             href={getMT5WebTerminalLink({
                                 category: type.category,
@@ -308,7 +324,7 @@ const MT5AccountCard = ({
                         </a>
                     )}
                     {!existing_data && !has_mt5_account && is_logged_in && (
-                        <MT5AccountCardAction
+                        <CFDAccountCardAction
                             button_label={button_label}
                             handleClickSwitchAccount={handleClickSwitchAccount}
                             has_real_account={has_real_account}
@@ -337,7 +353,7 @@ const MT5AccountCard = ({
                 <CSSTransition
                     in={is_hovered && should_show_trade_servers}
                     timeout={400}
-                    classNames='mt5-account-card__add-server'
+                    classNames='cfd-account-card__add-server'
                     unmountOnExit
                 >
                     <AddTradeServerButton
@@ -351,4 +367,4 @@ const MT5AccountCard = ({
     );
 };
 
-export { MT5AccountCard };
+export { CFDAccountCard };

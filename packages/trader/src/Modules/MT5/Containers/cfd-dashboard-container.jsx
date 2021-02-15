@@ -3,9 +3,9 @@ import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getMT5WebTerminalLink, getPlatformMt5DownloadLink } from '../Helpers/constants';
 
-const MT5DashboardContainer = ({ platform }) => (
-    <div className='mt5-dashboard__download-center'>
-        <h1 className='mt5-dashboard__download-center--heading'>
+const CFDDashboardContainer = ({ platform }) => (
+    <div className='cfd-dashboard__download-center'>
+        <h1 className='cfd-dashboard__download-center--heading'>
             {platform === 'mt5' && (
                 <Localize i18n_default_text='Run MT5 from your browser or download the MT5 app for your devices' />
             )}
@@ -15,16 +15,16 @@ const MT5DashboardContainer = ({ platform }) => (
         </h1>
 
         <div
-            className='mt5-dashboard__download-center-options'
+            className='cfd-dashboard__download-center-options'
             style={{ justifyContent: platform === 'dxtrade' ? 'space-evenly' : null }}
         >
             <div
-                className='mt5-dashboard__download-center-options--desktop'
+                className='cfd-dashboard__download-center-options--desktop'
                 style={{ marginTop: platform === 'dxtrade' ? 'auto' : null }}
             >
-                <div className='mt5-dashboard__download-center-options--desktop-links'>
+                <div className='cfd-dashboard__download-center-options--desktop-links'>
                     <div>
-                        <div className='mt5-dashboard__download-center-options--desktop-row'>
+                        <div className='cfd-dashboard__download-center-options--desktop-row'>
                             {platform === 'mt5' && (
                                 <React.Fragment>
                                     <Icon icon='IcMt5DeviceDesktop' width={118} height={85} />
@@ -38,23 +38,23 @@ const MT5DashboardContainer = ({ platform }) => (
                                 </React.Fragment>
                             )}
                         </div>
-                        <div className='mt5-dashboard__download-center-options--desktop-row'>
+                        <div className='cfd-dashboard__download-center-options--desktop-row'>
                             {platform === 'dxtrade' && (
                                 <a
-                                    className='mt5-dashboard__dxtrade-download'
+                                    className='cfd-dashboard__dxtrade-download'
                                     href='#'
                                     // target='_blank'
                                     rel='noopener noreferrer'
                                 >
                                     <Icon
-                                        className='mt5-dashboard__dxtrade-download--icon'
+                                        className='cfd-dashboard__dxtrade-download--icon'
                                         icon='IcBrandDxtrade'
                                         width={32}
                                         height={32}
                                     />
-                                    <div className='mt5-dashboard__dxtrade-download-text'>
+                                    <div className='cfd-dashboard__dxtrade-download-text'>
                                         <Text
-                                            className='mt5-dashboard__dxtrade-download--title'
+                                            className='cfd-dashboard__dxtrade-download--title'
                                             color='colored-background'
                                             size='xxs'
                                             weight='bold'
@@ -62,7 +62,7 @@ const MT5DashboardContainer = ({ platform }) => (
                                             <Localize i18n_default_text='Web terminal' />
                                         </Text>
                                         <Text
-                                            className='mt5-dashboard__dxtrade-download--subtitle'
+                                            className='cfd-dashboard__dxtrade-download--subtitle'
                                             color='colored-background'
                                             size='xxs'
                                         >
@@ -92,7 +92,7 @@ const MT5DashboardContainer = ({ platform }) => (
                         </div>
                     </div>
                     {platform === 'mt5' && (
-                        <div className='mt5-dashboard__download-center-options--desktop-download'>
+                        <div className='cfd-dashboard__download-center-options--desktop-download'>
                             <a href={getPlatformMt5DownloadLink('windows')} target='_blank' rel='noopener noreferrer'>
                                 <Icon icon='IcInstallationWindows' width={138} height={40} />
                             </a>
@@ -106,13 +106,13 @@ const MT5DashboardContainer = ({ platform }) => (
                     )}
                 </div>
                 {platform === 'mt5' && (
-                    <Text as='p' size='xxxs' className='mt5-dashboard__download-center--hint'>
+                    <Text as='p' size='xxxs' className='cfd-dashboard__download-center--hint'>
                         <Localize i18n_default_text='The MT5 desktop app is not supported by Windows XP, Windows 2003, and Windows Vista.' />
                     </Text>
                 )}
             </div>
-            <div className='mt5-dashboard__download-center-options--mobile'>
-                <div className='mt5-dashboard__download-center-options--mobile-devices'>
+            <div className='cfd-dashboard__download-center-options--mobile'>
+                <div className='cfd-dashboard__download-center-options--mobile-devices'>
                     {platform === 'mt5' && (
                         <React.Fragment>
                             <Icon icon='IcMt5DeviceTablet' width={133} height={106} />
@@ -126,9 +126,9 @@ const MT5DashboardContainer = ({ platform }) => (
                         </React.Fragment>
                     )}
                 </div>
-                <div className='mt5-dashboard__download-center-options--mobile-links'>
+                <div className='cfd-dashboard__download-center-options--mobile-links'>
                     <a
-                        className='mt5-dashboard__download-center-options--mobile-link'
+                        className='cfd-dashboard__download-center-options--mobile-link'
                         href={getPlatformMt5DownloadLink('android')}
                         target='_blank'
                         rel='noopener noreferrer'
@@ -136,7 +136,7 @@ const MT5DashboardContainer = ({ platform }) => (
                         <Icon icon='IcInstallationGoogle' width={135} height={40} />
                     </a>
                     <a
-                        className='mt5-dashboard__download-center-options--mobile-link'
+                        className='cfd-dashboard__download-center-options--mobile-link'
                         href={getPlatformMt5DownloadLink('ios')}
                         target='_blank'
                         rel='noopener noreferrer'
@@ -149,4 +149,4 @@ const MT5DashboardContainer = ({ platform }) => (
     </div>
 );
 
-export default MT5DashboardContainer;
+export default CFDDashboardContainer;

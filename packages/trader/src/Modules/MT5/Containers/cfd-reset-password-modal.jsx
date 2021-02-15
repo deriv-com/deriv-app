@@ -38,7 +38,7 @@ const ResetPasswordIntent = ({ current_list, children, ...props }) => {
     });
 };
 
-class MT5ResetPasswordModal extends React.Component {
+class CFDResetPasswordModal extends React.Component {
     state = {
         has_error: false,
         error_message: undefined,
@@ -112,7 +112,7 @@ class MT5ResetPasswordModal extends React.Component {
 
         return (
             <Modal
-                className='mt5-reset-password-modal'
+                className='cfd-reset-password-modal'
                 is_open={is_mt5_reset_password_modal_enabled}
                 toggleModal={() => setMt5PasswordResetModal(false)}
                 title={localize('Reset DMT5 password')}
@@ -136,9 +136,9 @@ class MT5ResetPasswordModal extends React.Component {
                                     touched,
                                 }) => (
                                     <form autoComplete='off' onSubmit={handleSubmit}>
-                                        <div className='mt5-reset-password'>
-                                            <div className='mt5-reset-password__container'>
-                                                <h2 className='mt5-reset-password__heading'>
+                                        <div className='cfd-reset-password'>
+                                            <div className='cfd-reset-password__container'>
+                                                <h2 className='cfd-reset-password__heading'>
                                                     <Localize
                                                         i18n_default_text='Reset DMT5 {{title}} password'
                                                         values={{
@@ -146,7 +146,7 @@ class MT5ResetPasswordModal extends React.Component {
                                                         }}
                                                     />
                                                 </h2>
-                                                <div className='mt5-reset-password__password-area'>
+                                                <div className='cfd-reset-password__password-area'>
                                                     <PasswordMeter
                                                         input={values.new_password}
                                                         has_error={!!(touched.new_password && errors.new_password)}
@@ -155,7 +155,7 @@ class MT5ResetPasswordModal extends React.Component {
                                                         {({ has_warning }) => (
                                                             <PasswordInput
                                                                 autoComplete='new-password'
-                                                                className='mt5-reset-password__password-field'
+                                                                className='cfd-reset-password__password-field'
                                                                 name='new_password'
                                                                 label={localize('New {{type}} password', { type })}
                                                                 onChange={handleChange}
@@ -197,9 +197,9 @@ class MT5ResetPasswordModal extends React.Component {
                     </ResetPasswordIntent>
                 )}
                 {this.state.has_error && (
-                    <div className='mt5-reset-password__error'>
+                    <div className='cfd-reset-password__error'>
                         <Icon icon='IcMt5Expired' size={128} />
-                        <Text as='p' size='xs' weight='bold' align='center' className='mt5-reset-password__heading'>
+                        <Text as='p' size='xs' weight='bold' align='center' className='cfd-reset-password__heading'>
                             {this.state.error_message}
                         </Text>
                         <Text
@@ -207,7 +207,7 @@ class MT5ResetPasswordModal extends React.Component {
                             color='prominent'
                             size='xs'
                             align='center'
-                            className='mt5-reset-password__description--is-centered'
+                            className='cfd-reset-password__description--is-centered'
                         >
                             <Localize i18n_default_text='Please request a new password and check your email for the new token.' />
                         </Text>
@@ -224,12 +224,12 @@ class MT5ResetPasswordModal extends React.Component {
                     </div>
                 )}
                 {this.state.is_finished && (
-                    <div className='mt5-reset-password__success'>
+                    <div className='cfd-reset-password__success'>
                         <Icon icon='IcMt5PasswordUpdated' size={128} />
-                        <div className='mt5-reset-password__heading'>
+                        <div className='cfd-reset-password__heading'>
                             <Localize i18n_default_text='Password saved' />
                         </div>
-                        <div className='mt5-reset-password__description'>
+                        <div className='cfd-reset-password__description'>
                             <Localize
                                 i18n_default_text='Your {{account_type}} password has been changed.'
                                 values={{
@@ -250,7 +250,7 @@ class MT5ResetPasswordModal extends React.Component {
     }
 }
 
-MT5ResetPasswordModal.propTypes = {
+CFDResetPasswordModal.propTypes = {
     email: PropTypes.string,
     is_mt5_reset_password_modal_enabled: PropTypes.any,
     setMt5PasswordResetModal: PropTypes.any,
@@ -263,5 +263,5 @@ export default withRouter(
         is_mt5_reset_password_modal_enabled: mt5.is_mt5_reset_password_modal_enabled,
         setMt5PasswordResetModal: mt5.setMt5PasswordResetModal,
         current_list: mt5.current_list,
-    }))(MT5ResetPasswordModal)
+    }))(CFDResetPasswordModal)
 );

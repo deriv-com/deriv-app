@@ -5,8 +5,8 @@
 * */
 
 /* stylelint-disable */
-/** @define mt5-dashboard; */
-.mt5-dashboard {
+/** @define cfd-dashboard; */
+.cfd-dashboard {
     padding: 4.8em 0;
     max-width: 960px;
     margin: 0 auto;
@@ -238,7 +238,7 @@
     }
 }
 
-.mt5-attribute-describer {
+.cfd-attribute-describer {
     .counter {
         color: var(--brand-red-coral);
         vertical-align: top;
@@ -248,16 +248,16 @@
     }
 }
 
-.mt5-compare-accounts {
+.cfd-compare-accounts {
     display: flex;
     flex-flow: column nowrap;
     flex-grow: 1;
     background: inherit;
-    height: 100%;
+    height: calc(100% - 5.8rem);
     position: relative;
 
     &__table-row {
-        grid-template-columns: var(--mt5-compare-accounts-template-columns);
+        grid-template-columns: var(--cfd-compare-accounts-template-columns);
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);
     }
     &__table-row-eu {
@@ -288,13 +288,36 @@
             line-height: 1.5;
         }
     }
+    &__details {
+        padding: 1.6rem 2.4rem 0.8rem 2.4rem;
+    }
+    &__hint {
+        color: var(--text-less-prominent);
+        font-size: 12px;
+        line-height: 1.5em;
+        width: 100%;
+
+        @include mobile {
+            padding: 1.6rem;
+            border-top: 2px solid var(--border-disabled);
+        }
+    }
+    &__explanation {
+        padding-bottom: 1.6rem;
+
+        &-wrapper {
+            padding-top: 2.4rem;
+        }
+        &-index {
+            color: var(--brand-red-coral);
+        }
+        &-description {
+            padding-left: 1.5rem;
+        }
+    }
 
     .dc-table {
         padding: 0 30px;
-        @include desktop {
-            position: absolute;
-            height: 100%;
-        }
 
         &__header {
             border-bottom: none;
@@ -360,24 +383,7 @@
     }
 }
 
-.mt5-compare-account--hint {
-    color: var(--text-less-prominent);
-    font-size: 12px;
-    line-height: 1.5em;
-    width: 100%;
-    padding: 1.6rem 2.4rem 0.8rem 2.4rem;
-
-    @include mobile {
-        padding: 1.6rem;
-        border-top: 2px solid var(--border-disabled);
-    }
-    @include desktop {
-        position: absolute;
-        bottom: 0;
-    }
-}
-
-.mt5-dashboard__accounts-error {
+.cfd-dashboard__accounts-error {
     background-color: rgba(255, 173, 58, 0.16);
     margin: 1.2rem 0;
 
@@ -387,7 +393,7 @@
 }
 
 // TODO: [mt5-redesign] replace tabs with radiogroup once card component is ready
-//.mt5-dashboard__accounts-display {
+//.cfd-dashboard__accounts-display {
 //    div.radio-group__save-type {
 //        .dc-radio-group__item {
 //            padding: 0.6rem 1.1rem 0.6rem 0.8rem;
@@ -417,8 +423,8 @@
 //    }
 //}
 
-.mt5-real-accounts-display,
-.mt5-demo-accounts-display {
+.cfd-real-accounts-display,
+.cfd-demo-accounts-display {
     display: flex;
     justify-content: center;
     margin-top: 2.4em;
@@ -429,7 +435,7 @@
     }
 }
 
-.mt5-real-accounts-display {
+.cfd-real-accounts-display {
     transition: margin-bottom 0.3s ease-in-out;
     margin-bottom: var(--mt5-real-acc-margin-bottom);
     &__carousel {
@@ -482,7 +488,7 @@
     }
 }
 
-.mt5-account-card {
+.cfd-account-card {
     border: solid 1px var(--border-normal);
     border-radius: 4px;
     display: flex;
@@ -532,7 +538,7 @@
             cursor: not-allowed;
             color: var(--text-disabled);
 
-            .mt5-account-card__add-server--icon {
+            .cfd-account-card__add-server--icon {
                 background-color: var(--border-disabled);
                 color: var(--text-disabled);
             }
@@ -626,10 +632,10 @@
             margin-left: 1.6em;
             max-width: 19.2em;
 
-            .mt5-account-card--heading {
+            .cfd-account-card--heading {
                 margin-bottom: 0.8rem;
             }
-            .mt5-account-card--paragraph {
+            .cfd-account-card--paragraph {
                 width: 18.8rem;
             }
         }
@@ -673,12 +679,12 @@
         &-table {
             width: 100%;
 
-            &-attribute .mt5-account-card--paragraph {
+            &-attribute .cfd-account-card--paragraph {
                 color: var(--text-general);
                 margin-right: 2.4rem;
             }
             &-data {
-                .mt5-account-card--paragraph {
+                .cfd-account-card--paragraph {
                     @include typeface(--paragraph-left-bold-black, none);
                     line-height: 1.45;
                 }
@@ -733,6 +739,26 @@
         span,
         strong {
             margin-right: 0.8rem;
+        }
+    }
+    &__login-input {
+        display: flex;
+        align-items: center;
+        width: 27.2rem;
+        justify-content: space-between;
+        padding: 1.6rem 0;
+
+        .dc-input {
+            margin-bottom: 0;
+            width: 15.6rem;
+
+            &__field {
+                height: 2.6rem;
+                border-right: 1px solid;
+            }
+        }
+        .dc-popover__wrapper {
+            padding: 0 0.5rem;
         }
     }
     &__manage {
@@ -962,36 +988,10 @@
     }
 }
 
-.mt5-pending-verification {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    height: 11rem;
-    margin: 12.7rem 0 12rem;
-
-    &__heading {
-        @include typeface(--title-left-bold-black);
-        color: var(--text-prominent);
-    }
-    &__description {
-        margin: 0.6rem 0 0;
-    }
-    &__btn-area {
-        margin: 3.2rem 0 0;
-
-        .dc-btn {
-            width: auto;
-            min-width: 9rem;
-            height: 4rem;
-        }
-    }
-}
-
 .dc-modal {
     &__container {
         min-width: initial;
-        &_mt5-password-modal {
+        &_cfd-password-modal {
             &__description {
                 @include typeface(--xsmall-left-normal-black);
                 line-height: 1.5;
@@ -1000,7 +1000,7 @@
                 color: var(--text-less-prominent);
             }
         }
-        &_mt5-dashboard__compare-accounts {
+        &_cfd-dashboard__compare-accounts {
             width: 904px;
         }
         &_mt5-password-manager__modal {
@@ -1199,7 +1199,7 @@
         grid-template-rows: 6rem minmax(20rem, 1fr);
     }
 }
-.dc-modal__container_mt5-password-modal {
+.dc-modal__container_cfd-password-modal {
     .dc-form-submit-button {
         background-color: unset;
         padding-bottom: 1.2rem;
@@ -1221,9 +1221,9 @@
         }
     }
 }
-.dc-modal__container_mt5-pending-dialog,
+.dc-modal__container_cfd-pending-dialog,
 .dc-modal__container_mt5-success-dialog {
-    .dc-modal-header__title--mt5-pending-dialog {
+    .dc-modal-header__title--cfd-pending-dialog {
         text-align: center;
         margin: auto;
         padding: 2.4rem;
@@ -1302,7 +1302,7 @@
         }
     }
 }
-.mt5-personal-details-form-error {
+.cfd-personal-details-form-error {
     @include typeface(--paragraph-left-normal-red);
     @include desktop {
         white-space: nowrap;

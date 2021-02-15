@@ -3,10 +3,10 @@ import { Modal, Button } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const Mt5FinancialStpPendingDialog = ({ enableApp, disableApp, toggleModal, is_mt5_pending_dialog_open }) => (
+const CFDFinancialStpPendingDialog = ({ enableApp, disableApp, toggleModal, is_mt5_pending_dialog_open }) => (
     <Modal
         title={localize('Thanks for submitting your documents!')}
-        className='mt5-pending-dialog'
+        className='cfd-pending-dialog'
         is_open={is_mt5_pending_dialog_open}
         disableApp={disableApp}
         enableApp={enableApp}
@@ -28,4 +28,4 @@ export default connect(({ ui, modules: { mt5 } }) => ({
     disableApp: ui.disableApp,
     toggleModal: mt5.closeMT5PendingDialog,
     is_mt5_pending_dialog_open: mt5.is_mt5_pending_dialog_open,
-}))(Mt5FinancialStpPendingDialog);
+}))(CFDFinancialStpPendingDialog);

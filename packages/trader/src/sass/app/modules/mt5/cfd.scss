@@ -1,5 +1,5 @@
-.dc-modal__container_mt5-password-modal,
-.dc-mobile-dialog__mt5-password-modal {
+.dc-modal__container_cfd-password-modal,
+.dc-mobile-dialog__cfd-password-modal {
     max-width: 424px;
     min-height: 300px;
     display: flex;
@@ -84,7 +84,7 @@
         width: 100%;
     }
     @include mobile {
-        .mt5-password-modal__content {
+        .cfd-password-modal__content {
             overflow-y: auto;
             overflow-x: hidden;
             height: 100%;
@@ -94,7 +94,7 @@
     }
 }
 
-.mt5-password-modal {
+.cfd-password-modal {
     &__message {
         max-width: 32rem;
         margin: auto;
@@ -142,7 +142,7 @@
     }
 }
 
-.mt5-success-topup {
+.cfd-success-topup {
     &__heading {
         @include typeface(--paragraph-center-bold-black);
         margin: 1.6rem;
@@ -156,7 +156,7 @@
     }
 }
 
-.mt5-dashboard {
+.cfd-dashboard {
     &__container {
         & .dc-popover__target {
             display: flex;
@@ -164,7 +164,7 @@
     }
 }
 
-.mt5-verification-email-sent {
+.cfd-verification-email-sent {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -191,7 +191,7 @@
     }
 }
 
-.mt5-reset-password {
+.cfd-reset-password {
     width: 100%;
     height: 100%;
     display: flex;

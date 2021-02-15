@@ -6,7 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getTopUpConfig } from '../Helpers/constants';
 
-const Mt5TopUpDemoModal = ({
+const CFDTopUpDemoModal = ({
     mt5_companies,
     current_account,
     closeSuccessTopUpModal,
@@ -96,7 +96,7 @@ const Mt5TopUpDemoModal = ({
                 title={localize('Fund top up')}
                 icon={<Icon icon='IcCashierWallet' size={128} />}
                 heading={
-                    <h3 className='mt5-success-topup__heading'>
+                    <h3 className='cfd-success-topup__heading'>
                         <Localize
                             i18n_default_text='<0></0> has been credited into your DMT5 {{title}} account.'
                             values={{ title: getAccountTitle() }}
@@ -107,7 +107,7 @@ const Mt5TopUpDemoModal = ({
                     </h3>
                 }
                 message={
-                    <div className='mt5-success-topup__description'>
+                    <div className='cfd-success-topup__description'>
                         <p>
                             <Localize i18n_default_text='New current balance' />
                         </p>
@@ -125,7 +125,7 @@ const Mt5TopUpDemoModal = ({
     );
 };
 
-Mt5TopUpDemoModal.propTypes = {
+CFDTopUpDemoModal.propTypes = {
     account_title: PropTypes.string,
     closeSuccessTopUpModal: PropTypes.func,
     closeTopUpVirtual: PropTypes.func,
@@ -146,4 +146,4 @@ export default connect(({ ui, modules }) => ({
     current_account: modules.mt5.current_account,
     mt5_companies: modules.mt5.mt5_companies,
     topUpVirtual: modules.mt5.topUpVirtual,
-}))(Mt5TopUpDemoModal);
+}))(CFDTopUpDemoModal);

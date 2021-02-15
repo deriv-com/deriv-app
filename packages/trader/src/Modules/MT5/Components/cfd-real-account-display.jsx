@@ -2,13 +2,8 @@ import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
 import { getAccountTypeFields, getMT5AccountListKey, getMT5AccountKey } from '@deriv/shared';
-import {
-    eu_real_financial_specs,
-    real_financial_stp_specs,
-    real_financial_specs,
-    real_synthetic_specs,
-} from 'Modules/MT5/Constants/mt5-specifications';
-import { MT5AccountCard } from './mt5-account-card.jsx';
+import specifications from 'Modules/MT5/Constants/cfd-specifications';
+import { CFDAccountCard } from './cfd-account-card.jsx';
 
 const getRealFinancialStpBtnLbl = (is_fully_authenticated, is_pending_authentication, has_required_credentials) => {
     if (is_fully_authenticated && has_required_credentials) {
@@ -20,7 +15,7 @@ const getRealFinancialStpBtnLbl = (is_fully_authenticated, is_pending_authentica
     return <Localize i18n_default_text='Add real account' />;
 };
 
-const MT5RealAccountDisplay = ({
+const CFDRealAccountDisplay = ({
     has_real_account,
     is_accounts_switcher_on,
     is_eu,
@@ -132,7 +127,7 @@ const MT5RealAccountDisplay = ({
                   }, [])
                   .map((acc, index) => {
                       return (
-                          <MT5AccountCard
+                          <CFDAccountCard
                               key={index}
                               has_mt5_account={has_mt5_account}
                               has_mt5_account_error={has_mt5_account_error}
@@ -142,6 +137,7 @@ const MT5RealAccountDisplay = ({
                               type={{
                                   category: 'real',
                                   type: 'synthetic',
+                                  platform,
                               }}
                               is_logged_in={is_logged_in}
                               should_show_trade_servers={should_show_trade_servers}
@@ -153,14 +149,14 @@ const MT5RealAccountDisplay = ({
                               descriptor={localize(
                                   'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
                               )}
-                              specs={real_synthetic_specs}
+                              specs={specifications[platform].real_synthetic_specs}
                               trading_servers={trading_servers}
                               onHover={handleHoverCard}
                           />
                       );
                   })
             : [
-                  <MT5AccountCard
+                  <CFDAccountCard
                       key='real.synthetic'
                       has_mt5_account={has_mt5_account}
                       title={localize('Synthetic')}
@@ -168,6 +164,7 @@ const MT5RealAccountDisplay = ({
                       type={{
                           category: 'real',
                           type: 'synthetic',
+                          platform,
                       }}
                       is_logged_in={is_logged_in}
                       should_show_trade_servers={should_show_trade_servers}
@@ -179,7 +176,7 @@ const MT5RealAccountDisplay = ({
                       descriptor={localize(
                           'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
                       )}
-                      specs={real_synthetic_specs}
+                      specs={specifications[platform].real_synthetic_specs}
                       trading_servers={trading_servers}
                       onHover={handleHoverCard}
                   />,
@@ -187,13 +184,14 @@ const MT5RealAccountDisplay = ({
 
     const financial_stp_account = (landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) &&
         platform === 'mt5' && (
-            <MT5AccountCard
+            <CFDAccountCard
                 key='real.financial_stp'
                 has_mt5_account={has_mt5_account}
                 title={localize('Financial STP')}
                 type={{
                     category: 'real',
                     type: 'financial_stp',
+                    platform,
                 }}
                 is_logged_in={is_logged_in}
                 existing_data={
@@ -208,7 +206,7 @@ const MT5RealAccountDisplay = ({
                 descriptor={localize(
                     'Trade major, minor, exotic currency pairs, and cryptocurrencies with Straight-Through Processing (STP) of your orders direct to the market.'
                 )}
-                specs={real_financial_stp_specs}
+                specs={specifications[platform].real_financial_stp_specs}
                 is_disabled={isMT5AccountCardDisabled('financial_stp')}
                 is_virtual={is_virtual}
                 has_real_account={has_real_account}
@@ -219,7 +217,7 @@ const MT5RealAccountDisplay = ({
         );
 
     const financial_account = (landing_companies?.mt_financial_company?.financial || !is_logged_in) && (
-        <MT5AccountCard
+        <CFDAccountCard
             key='real.financial'
             has_mt5_account={has_mt5_account}
             is_disabled={isMT5AccountCardDisabled('financial')}
@@ -227,6 +225,7 @@ const MT5RealAccountDisplay = ({
             type={{
                 category: 'real',
                 type: 'financial',
+                platform,
             }}
             existing_data={current_list[Object.keys(current_list).find(key => key.startsWith('real.financial@'))]}
             commission_message={localize('No commission')}
@@ -242,7 +241,11 @@ const MT5RealAccountDisplay = ({
                           'Trade commodities, cryptocurrencies, major (standard and micro-lots) and minor currency pairs with high leverage.'
                       )
             }
-            specs={should_show_eu ? eu_real_financial_specs : real_financial_specs}
+            specs={
+                should_show_eu
+                    ? specifications[platform].eu_real_financial_specs
+                    : specifications[platform].real_financial_specs
+            }
             is_logged_in={is_logged_in}
         />
     );
@@ -250,7 +253,7 @@ const MT5RealAccountDisplay = ({
     const items = [...(synthetic_account_items || []), financial_account, financial_stp_account].filter(Boolean);
 
     return (
-        <div className='mt5-real-accounts-display'>
+        <div className='cfd-real-accounts-display'>
             <DesktopWrapper>
                 <Carousel
                     list={items}
@@ -258,7 +261,7 @@ const MT5RealAccountDisplay = ({
                     nav_position='middle'
                     show_bullet={false}
                     item_per_window={3}
-                    className='mt5-real-accounts-display__carousel'
+                    className='cfd-real-accounts-display__carousel'
                 />
             </DesktopWrapper>
             <MobileWrapper>
@@ -270,4 +273,4 @@ const MT5RealAccountDisplay = ({
     );
 };
 
-export { MT5RealAccountDisplay };
+export { CFDRealAccountDisplay };

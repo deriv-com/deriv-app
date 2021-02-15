@@ -16,7 +16,7 @@ import {
 import { isMobile, routes, validLength, validPassword, getErrorMessages } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
-import 'Sass/app/modules/mt5/mt5.scss';
+import 'Sass/app/modules/mt5/cfd.scss';
 import { connect } from 'Stores/connect';
 
 const getSubmitText = (account_title, category) => {
@@ -41,7 +41,7 @@ const getIconFromType = type => {
     }
 };
 
-const MT5PasswordForm = props => (
+const CFDPasswordForm = props => (
     <Formik
         initialValues={{
             password: '',
@@ -60,8 +60,8 @@ const MT5PasswordForm = props => (
             touched,
         }) => (
             <form onSubmit={handleSubmit}>
-                <div className='mt5-password-modal__content'>
-                    <h2 className='mt5-password-modal__title'>
+                <div className='cfd-password-modal__content'>
+                    <h2 className='cfd-password-modal__title'>
                         <Localize
                             i18n_default_text='Choose a password for your DMT5 {{ account_type }} account'
                             values={{
@@ -69,7 +69,7 @@ const MT5PasswordForm = props => (
                             }}
                         />
                     </h2>
-                    <div className='dc-modal__container_mt5-password-modal__body'>
+                    <div className='dc-modal__container_cfd-password-modal__body'>
                         <div className='input-element'>
                             <PasswordMeter
                                 input={values.password}
@@ -99,12 +99,12 @@ const MT5PasswordForm = props => (
                             </PasswordMeter>
                         </div>
                         {props.is_real_financial_stp && !props.is_bvi && (
-                            <div className='dc-modal__container_mt5-password-modal__description'>
+                            <div className='dc-modal__container_cfd-password-modal__description'>
                                 <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).' />
                             </div>
                         )}
                         {props.is_real_financial_stp && props.is_bvi && (
-                            <div className='dc-modal__container_mt5-password-modal__description'>
+                            <div className='dc-modal__container_cfd-password-modal__description'>
                                 <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (BVI) Ltd. All trading in this account is subject to the regulations and guidelines of the British Virgin Islands Financial Services Commission (BVIFSC). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the British Virgin Islands Financial Services Commission (BVIFSC).' />
                             </div>
                         )}
@@ -125,7 +125,7 @@ const MT5PasswordForm = props => (
     </Formik>
 );
 
-const MT5ServerForm = ({ ...props }) => {
+const CFDServerForm = ({ ...props }) => {
     const available_servers = React.useMemo(() => {
         return props.trading_servers
             .filter(server => !server.disabled)
@@ -170,7 +170,7 @@ const MT5ServerForm = ({ ...props }) => {
         >
             {({ handleSubmit, setFieldValue, errors, values, isSubmitting }) => (
                 <form onSubmit={handleSubmit}>
-                    <div className='mt5-password-modal__content'>
+                    <div className='cfd-password-modal__content'>
                         <h2>
                             <Localize
                                 i18n_default_text='Choose a server for your DMT5 {{ account_type }} account'
@@ -179,10 +179,10 @@ const MT5ServerForm = ({ ...props }) => {
                                 }}
                             />
                         </h2>
-                        <div className='dc-modal__container_mt5-password-modal__body'>
+                        <div className='dc-modal__container_cfd-password-modal__body'>
                             <div className='input-element'>
                                 <RadioGroup
-                                    className='mt5-password-modal__radio'
+                                    className='cfd-password-modal__radio'
                                     name='server'
                                     required
                                     selected={
@@ -219,7 +219,7 @@ const MT5ServerForm = ({ ...props }) => {
     );
 };
 
-const MT5PasswordModal = ({
+const CFDPasswordModal = ({
     account_title,
     account_type,
     disableMt5PasswordModal,
@@ -320,13 +320,13 @@ const MT5PasswordModal = ({
         <React.Fragment>
             <DesktopWrapper>
                 <Modal
-                    className='mt5-password-modal'
+                    className='cfd-password-modal'
                     is_open={should_show_password}
                     toggleModal={closeModal}
                     has_close_icon
                 >
                     {should_show_server_form ? (
-                        <MT5ServerForm
+                        <CFDServerForm
                             trading_servers={trading_servers}
                             mt5_login_list={mt5_login_list}
                             account_title={account_title}
@@ -335,7 +335,7 @@ const MT5PasswordModal = ({
                             onBack={() => setPassword('')}
                         />
                     ) : (
-                        <MT5PasswordForm
+                        <CFDPasswordForm
                             is_bvi={is_bvi}
                             is_submitting={is_submitting}
                             account_title={account_title}
@@ -355,10 +355,10 @@ const MT5PasswordModal = ({
                     portal_element_id='modal_root'
                     visible={should_show_password}
                     onClose={closeModal}
-                    wrapper_classname='mt5-password-modal'
+                    wrapper_classname='cfd-password-modal'
                 >
                     {should_show_server_form ? (
-                        <MT5ServerForm
+                        <CFDServerForm
                             trading_servers={trading_servers}
                             mt5_login_list={mt5_login_list}
                             account_title={account_title}
@@ -367,7 +367,7 @@ const MT5PasswordModal = ({
                             onBack={() => setPassword('')}
                         />
                     ) : (
-                        <MT5PasswordForm
+                        <CFDPasswordForm
                             is_bvi={is_bvi}
                             is_submitting={is_submitting}
                             account_title={account_title}
@@ -386,7 +386,7 @@ const MT5PasswordModal = ({
                 toggleModal={closeModal}
                 onCancel={closeModal}
                 onSubmit={closeOpenSuccess}
-                classNameMessage='mt5-password-modal__message'
+                classNameMessage='cfd-password-modal__message'
                 message={getSubmitText(account_title, account_type.category)}
                 // message={error_message}
                 icon={<IconType />}
@@ -398,7 +398,7 @@ const MT5PasswordModal = ({
     );
 };
 
-MT5PasswordModal.propTypes = {
+CFDPasswordModal.propTypes = {
     account_title: PropTypes.string,
     account_type: PropTypes.object,
     disableMt5PasswordModal: PropTypes.func,
@@ -434,4 +434,4 @@ export default connect(({ client, modules }) => ({
     mt5_new_account: modules.mt5.new_account_response,
     trading_servers: client.trading_servers,
     mt5_login_list: client.mt5_login_list,
-}))(withRouter(MT5PasswordModal));
+}))(withRouter(CFDPasswordModal));

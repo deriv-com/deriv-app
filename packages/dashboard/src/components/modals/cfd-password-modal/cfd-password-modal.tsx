@@ -6,9 +6,9 @@ import { FormSubmitButton, Modal, PasswordInput, PasswordMeter, Text } from '@de
 import { isMobile, validLength, validPassword, getErrorMessages } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStores } from 'Stores';
-import './mt5-password-modal.scss';
+import './cfd-password-modal.scss';
 
-const MT5PasswordForm = ({ ...props }) => (
+const CFDPasswordForm = ({ ...props }) => (
     <Formik
         initialValues={{
             password: '',
@@ -30,8 +30,8 @@ const MT5PasswordForm = ({ ...props }) => (
             touched,
         }) => (
             <form onSubmit={handleSubmit}>
-                <div className='mt5-password-modal__content'>
-                    <div className='dc-modal__container_mt5-password-modal__body'>
+                <div className='cfd-password-modal__content'>
+                    <div className='dc-modal__container_cfd-password-modal__body'>
                         <div className='input-element'>
                             <PasswordMeter
                                 input={values.password}
@@ -64,13 +64,13 @@ const MT5PasswordForm = ({ ...props }) => (
                             <Localize i18n_default_text='To get an DMT5 app, we need to confirm your account password. We do this to protect your account against unauthorized action.' />
                         </Text>
                         {props.is_real_financial_stp && (
-                            <div className='dc-modal__container_mt5-password-modal__description'>
+                            <div className='dc-modal__container_cfd-password-modal__description'>
                                 <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA). All other accounts, including your Deriv account, are not subject to the regulations and guidelines of the Labuan Financial Services Authority (LFSA).' />
                             </div>
                         )}
                     </div>
                 </div>
-                <div className='dc-modal__container_mt5-password-modal__footer'>
+                <div className='dc-modal__container_cfd-password-modal__footer'>
                     <FormSubmitButton
                         is_disabled={isSubmitting || !values.password || Object.keys(errors).length > 0}
                         has_cancel
@@ -87,7 +87,7 @@ const MT5PasswordForm = ({ ...props }) => (
     </Formik>
 );
 
-const MT5PasswordModal = () => {
+const CFDPasswordModal = () => {
     const { client_store, mt5_store, ui_store } = useStores();
     const {
         account_title,
@@ -150,13 +150,13 @@ const MT5PasswordModal = () => {
 
     return (
         <Modal
-            className='mt5-password-modal'
+            className='cfd-password-modal'
             is_open={should_show_password}
             toggleModal={closeModal}
             title={localize('Confirm your account password')}
             has_close_icon
         >
-            <MT5PasswordForm
+            <CFDPasswordForm
                 account_title={account_title}
                 closeModal={closeModal}
                 submitMt5Password={submit}
@@ -167,4 +167,4 @@ const MT5PasswordModal = () => {
     );
 };
 
-export default observer(MT5PasswordModal);
+export default observer(CFDPasswordModal);

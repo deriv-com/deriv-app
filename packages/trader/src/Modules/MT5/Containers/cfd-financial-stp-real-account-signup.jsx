@@ -5,15 +5,15 @@ import { getPropertyValue, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
-import MT5POA from '../Components/mt5-poa.jsx';
-import MT5PersonalDetailsForm from '../Components/mt5-personal-details-form.jsx';
-import MT5POI from '../Components/mt5-poi.jsx';
+import CFDPOA from '../Components/cfd-poa.jsx';
+import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form.jsx';
+import CFDPOI from '../Components/cfd-poi.jsx';
 
 const index_lookup = {
-    MT5PersonalDetailsForm: 0,
-    MT5POI: 1,
-    MT5POA: 2,
-    MT5PendingVerification: 3,
+    CFDPersonalDetailsForm: 0,
+    CFDPOI: 1,
+    CFDPOA: 2,
+    CFDPendingVerification: 3,
 };
 
 class MT5FinancialStpRealAccountSignup extends React.Component {
@@ -31,7 +31,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                         active_title: localize('Complete your personal details'),
                         title: localize('Personal details'),
                     },
-                    body: MT5PersonalDetailsForm,
+                    body: CFDPersonalDetailsForm,
                     form_value: {
                         citizen: '',
                         tax_residence: '',
@@ -45,7 +45,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                         active_title: localize('Complete your proof of identity'),
                         title: localize('Proof of identity'),
                     },
-                    body: MT5POI,
+                    body: CFDPOI,
                     form_value: {
                         poi_state: 'unknown',
                     },
@@ -62,7 +62,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                         active_title: localize('Complete your proof of address'),
                         title: localize('Proof of address'),
                     },
-                    body: MT5POA,
+                    body: CFDPOA,
                     form_value: {
                         address_line_1: props.get_settings.address_line_1,
                         address_line_2: props.get_settings.address_line_2,
@@ -113,7 +113,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
     };
 
     updateValue = async (index, value, setSubmitting, is_dirty = true) => {
-        if (is_dirty && index_lookup.MT5PersonalDetailsForm === index) {
+        if (is_dirty && index_lookup.CFDPersonalDetailsForm === index) {
             // Set account settings
             const data = await WS.setSettings(value);
             if (data.error) {
@@ -143,21 +143,21 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
 
         const cloned = Object.assign([], this.state.items);
         if (response.get_settings.citizen) {
-            cloned[index_lookup.MT5PersonalDetailsForm].form_value.citizen = this.transform(
+            cloned[index_lookup.CFDPersonalDetailsForm].form_value.citizen = this.transform(
                 response.get_settings.citizen
             );
         }
         if (response.get_settings.tax_residence) {
-            cloned[index_lookup.MT5PersonalDetailsForm].form_value.tax_residence = this.transform(
+            cloned[index_lookup.CFDPersonalDetailsForm].form_value.tax_residence = this.transform(
                 response.get_settings.tax_residence
             );
         }
         if (response.get_settings.tax_identification_number) {
-            cloned[index_lookup.MT5PersonalDetailsForm].form_value.tax_identification_number =
+            cloned[index_lookup.CFDPersonalDetailsForm].form_value.tax_identification_number =
                 response.get_settings.tax_identification_number;
         }
         if (response.get_settings.account_opening_reason) {
-            cloned[index_lookup.MT5PersonalDetailsForm].form_value.account_opening_reason =
+            cloned[index_lookup.CFDPersonalDetailsForm].form_value.account_opening_reason =
                 response.get_settings.account_opening_reason;
         }
         this.setState(
@@ -180,7 +180,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
     };
 
     componentDidMount() {
-        if (this.state_index === index_lookup.MT5PersonalDetailsForm) {
+        if (this.state_index === index_lookup.CFDPersonalDetailsForm) {
             this.setState({
                 is_loading: true,
             });
@@ -199,10 +199,10 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
     saveFormData = (index, value) => {
         const cloned_items = Object.assign([], this.state.items);
         cloned_items[index].form_value = value;
-        if (this.state_index === index_lookup.MT5PersonalDetailsForm) {
-            cloned_items[index_lookup.MT5PersonalDetailsForm].form_value.citizen = this.transform(value.citizen);
+        if (this.state_index === index_lookup.CFDPersonalDetailsForm) {
+            cloned_items[index_lookup.CFDPersonalDetailsForm].form_value.citizen = this.transform(value.citizen);
 
-            cloned_items[index_lookup.MT5PersonalDetailsForm].form_value.tax_residence = this.transform(
+            cloned_items[index_lookup.CFDPersonalDetailsForm].form_value.tax_residence = this.transform(
                 value.tax_residence
             );
         }

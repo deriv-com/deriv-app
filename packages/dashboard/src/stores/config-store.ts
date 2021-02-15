@@ -7,6 +7,7 @@ export default class ConfigStore extends BaseStore {
     public asset_path = '';
     public routes: TRoutesProps = {
         home: '/',
+        my_apps: '/my-apps',
         explore: '/explore',
         about_us: '/about-us',
         resources: '/resources',

@@ -68,6 +68,7 @@ const VerticalTabHeaders = ({
                           }
                           items={items}
                           is_collapsible={is_collapsible}
+                          is_routed={is_routed}
                           group={group}
                           key={idx}
                       >

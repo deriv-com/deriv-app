@@ -37,6 +37,7 @@ export type TConfigProps = {
 
 export type TRoutesProps = {
     home: string;
+    my_apps: string;
     about_us: string;
     explore: string;
     resources: string;

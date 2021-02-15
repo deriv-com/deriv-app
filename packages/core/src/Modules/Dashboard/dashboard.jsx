@@ -66,6 +66,7 @@ export default connect(({ client, ui }) => ({
         is_deriv_crypto: false,
         routes: {
             home: routes.dashboard,
+            my_apps: routes.my_apps,
             about_us: routes.about_us,
             explore: routes.explore,
             resources: routes.resources,

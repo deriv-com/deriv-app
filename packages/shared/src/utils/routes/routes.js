@@ -51,11 +51,10 @@ export const routes = {
     complaints_policy: '/complaints-policy',
 
     dashboard: '/dashboard',
+    my_apps: '/dashboard/my-apps',
     about_us: '/dashboard/about-us',
     explore: '/dashboard/explore',
     resources: '/dashboard/resources',
-
-    my_apps: '/dashboard/my-apps',
 
     market_commodities: '/dashboard/markets/commodities',
     market_forex: '/dashboard/markets/forex',

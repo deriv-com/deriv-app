@@ -63,11 +63,19 @@ const getModules = ({ is_deriv_crypto }) => {
         {
             path: routes.dashboard,
             component: Dashboard,
+            is_modal: true,
             getTitle: () => localize('Dashboard'),
             routes: [
                 {
                     path: routes.home,
                     component: Dashboard,
+                    icon_component: 'IcUserOutline',
+                    getTitle: () => localize('Home'),
+                },
+                {
+                    path: routes.my_apps,
+                    component: Dashboard,
+                    is_modal: true,
                     icon_component: 'IcUserOutline',
                     getTitle: () => localize('My Apps'),
                 },
@@ -90,13 +98,9 @@ const getModules = ({ is_deriv_crypto }) => {
             ],
         },
         {
-            path: routes.my_apps,
-            component: Dashboard,
-            icon_component: 'IcUserOutline',
-            getTitle: () => localize('My Apps'),
-        },
-        {
             path: routes.wallets,
+            component: Dashboard,
+            is_modal: true,
             icon_component: 'IcWalletWallets',
             getTitle: () => localize('Wallets'),
             routes: [
@@ -124,6 +128,8 @@ const getModules = ({ is_deriv_crypto }) => {
         },
         {
             path: routes.platforms,
+            component: Dashboard,
+            is_modal: true,
             icon_component: 'IcWalletPlatforms',
             getTitle: () => localize('Platforms'),
             routes: [
@@ -171,6 +177,8 @@ const getModules = ({ is_deriv_crypto }) => {
         },
         {
             path: routes.trade_types,
+            component: Dashboard,
+            is_modal: true,
             icon_component: 'IcWalletTradeTypes',
             getTitle: () => localize('Trade Types'),
             routes: [
@@ -193,6 +201,8 @@ const getModules = ({ is_deriv_crypto }) => {
         },
         {
             path: routes.markets,
+            component: Dashboard,
+            is_modal: true,
             icon_component: 'IcWalletMarkets',
             getTitle: () => localize('Markets'),
             routes: [

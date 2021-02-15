@@ -126,7 +126,7 @@ const MT5DemoAccountDisplay = ({
                     }
                 />
             )}
-            {(landing_companies?.mt_financial_company?.financial_stp || (!is_logged_in && platform === 'mt5')) && (
+            {(landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && platform === 'mt5' && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}
                     title={localize('Financial STP')}

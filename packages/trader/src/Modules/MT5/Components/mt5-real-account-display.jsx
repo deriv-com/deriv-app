@@ -185,36 +185,38 @@ const MT5RealAccountDisplay = ({
                   />,
               ]);
 
-    const financial_stp_account = (landing_companies?.mt_financial_company?.financial_stp ||
-        (!is_logged_in && platform === 'mt5')) && (
-        <MT5AccountCard
-            key='real.financial_stp'
-            has_mt5_account={has_mt5_account}
-            title={localize('Financial STP')}
-            type={{
-                category: 'real',
-                type: 'financial_stp',
-            }}
-            is_logged_in={is_logged_in}
-            existing_data={current_list[Object.keys(current_list).find(key => key.startsWith('real.financial_stp@'))]}
-            commission_message={localize('No commission')}
-            onSelectAccount={onSelectRealFinancialStp}
-            button_label={button_label}
-            is_button_primary={is_pending_authentication}
-            onPasswordManager={openPasswordManager}
-            onClickFund={onClickFundReal}
-            descriptor={localize(
-                'Trade major, minor, exotic currency pairs, and cryptocurrencies with Straight-Through Processing (STP) of your orders direct to the market.'
-            )}
-            specs={real_financial_stp_specs}
-            is_disabled={isMT5AccountCardDisabled('financial_stp')}
-            is_virtual={is_virtual}
-            has_real_account={has_real_account}
-            toggleAccountsDialog={toggleAccountsDialog}
-            toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
-            is_accounts_switcher_on={is_accounts_switcher_on}
-        />
-    );
+    const financial_stp_account = (landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) &&
+        platform === 'mt5' && (
+            <MT5AccountCard
+                key='real.financial_stp'
+                has_mt5_account={has_mt5_account}
+                title={localize('Financial STP')}
+                type={{
+                    category: 'real',
+                    type: 'financial_stp',
+                }}
+                is_logged_in={is_logged_in}
+                existing_data={
+                    current_list[Object.keys(current_list).find(key => key.startsWith('real.financial_stp@'))]
+                }
+                commission_message={localize('No commission')}
+                onSelectAccount={onSelectRealFinancialStp}
+                button_label={button_label}
+                is_button_primary={is_pending_authentication}
+                onPasswordManager={openPasswordManager}
+                onClickFund={onClickFundReal}
+                descriptor={localize(
+                    'Trade major, minor, exotic currency pairs, and cryptocurrencies with Straight-Through Processing (STP) of your orders direct to the market.'
+                )}
+                specs={real_financial_stp_specs}
+                is_disabled={isMT5AccountCardDisabled('financial_stp')}
+                is_virtual={is_virtual}
+                has_real_account={has_real_account}
+                toggleAccountsDialog={toggleAccountsDialog}
+                toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
+                is_accounts_switcher_on={is_accounts_switcher_on}
+            />
+        );
 
     const financial_account = (landing_companies?.mt_financial_company?.financial || !is_logged_in) && (
         <MT5AccountCard

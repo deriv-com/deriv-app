@@ -13,7 +13,7 @@ import {
     Text,
 } from '@deriv/components';
 import { Formik, Form, Field } from 'formik';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { config, save_types } from '@deriv/bot-skeleton';
 import { connect } from 'Stores/connect';
 
@@ -94,13 +94,13 @@ const SaveModalForm = ({
                                             }),
                                         },
                                     ]}
-                                    selected={
-                                        is_authorised
-                                            ? is_local
-                                                ? save_types.LOCAL
-                                                : save_types.GOOGLE_DRIVE
-                                            : save_types.LOCAL
-                                    }
+                                    selected={(() => {
+                                        if (is_authorised) {
+                                            return is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE;
+                                        }
+
+                                        return save_types.LOCAL;
+                                    })()}
                                     onToggle={() => setFieldValue('is_local', !is_local)}
                                 />
                             </div>
@@ -111,7 +111,11 @@ const SaveModalForm = ({
                                             {...field}
                                             onChange={() => setFieldValue('save_as_collection', !save_as_collection)}
                                             defaultChecked={save_as_collection}
-                                            label={localize('Save as collection')}
+                                            label={
+                                                <Text color='general' size='xs' line_height='s' weight='bold'>
+                                                    <Localize i18n_default_text='Save as collection' />
+                                                </Text>
+                                            }
                                             classNameLabel='save-type__checkbox-text'
                                         />
                                     )}

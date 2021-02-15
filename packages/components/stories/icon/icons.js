@@ -11,6 +11,7 @@ export const icons = {
         'IcBrandDmt5Synthetics',
         'IcBrandDmt5',
         'IcBrandDtrader',
+        'IcBrandDxtrade',
         'IcBrandSmarttrader',
     ],
     cashier: [

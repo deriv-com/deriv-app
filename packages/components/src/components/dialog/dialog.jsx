@@ -97,11 +97,7 @@ const Dialog = ({
                     ) : (
                         <div className={content_classes}>{children}</div>
                     )}
-                    <div
-                        className={classNames('dc-dialog__footer', {
-                            'dc-dialog__footer--centered': is_content_centered,
-                        })}
-                    >
+                    <div className='dc-dialog__footer'>
                         {!!onCancel && (
                             <Button
                                 className='dc-dialog__button'

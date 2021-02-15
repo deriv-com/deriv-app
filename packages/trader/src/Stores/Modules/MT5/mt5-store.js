@@ -1,5 +1,5 @@
 import { action, computed, observable, runInAction } from 'mobx';
-import { getMT5AccountKey, getAccountTypeFields } from '@deriv/shared';
+import { getMT5AccountListKey, getAccountTypeFields } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import BaseStore from 'Stores/base-store';
 import { getMtCompanies } from './Helpers/mt5-config';
@@ -25,8 +25,6 @@ export default class MT5Store extends BaseStore {
 
     @observable current_account = undefined; // this is a tmp value, don't rely on it, unless you set it first.
 
-    @observable error_type = '';
-
     constructor({ root_store }) {
         super({ root_store });
     }
@@ -49,11 +47,7 @@ export default class MT5Store extends BaseStore {
 
         this.root_store.client.mt5_login_list.forEach(account => {
             // e.g. real.financial_stp
-            list[
-                `${account.account_type}.${getMT5AccountKey(account.market_type, account.sub_account_type)}@${
-                    account.server
-                }`
-            ] = {
+            list[getMT5AccountListKey(account)] = {
                 ...account,
             };
         });
@@ -102,20 +96,13 @@ export default class MT5Store extends BaseStore {
 
     @action.bound
     clearMt5Error() {
-        this.resetFormErrors();
+        this.error_message = '';
+        this.has_mt5_error = false;
         this.is_mt5_password_modal_enabled = false;
     }
 
     @action.bound
-    resetFormErrors() {
-        this.error_message = '';
-        this.error_type = '';
-        this.has_mt5_error = false;
-    }
-
-    @action.bound
     createMT5Account({ category, type, set_password }) {
-        this.clearMt5Error();
         this.setAccountType({
             category,
             type,
@@ -216,8 +203,6 @@ export default class MT5Store extends BaseStore {
     @action.bound
     setError(state, obj) {
         this.has_mt5_error = state;
-        this.error_type = obj?.code ?? '';
-
         this.error_message = obj ? obj.message : '';
     }
 

@@ -332,7 +332,14 @@ export const icons = {
         'IcDashboardTermsOfUse',
         'IcDashboardWallet',
     ],
-    dxtrade: ['IcDxtradeDeviceDesktop', 'IcDxtradeDeviceLaptop', 'IcDxtradeDevicePhone', 'IcDxtradeDeviceTablet'],
+    dxtrade: [
+        'IcDxtradeDeviceDesktop',
+        'IcDxtradeDeviceLaptop',
+        'IcDxtradeDevicePhone',
+        'IcDxtradeDeviceTablet',
+        'IcDxtradeFinancialPlatform',
+        'IcDxtradeSyntheticPlatform',
+    ],
     flag: [
         'IcFlagDe',
         'IcFlagEn',

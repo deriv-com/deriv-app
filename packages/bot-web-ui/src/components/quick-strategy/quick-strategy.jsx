@@ -411,7 +411,9 @@ const QuickStrategyForm = ({
 const MarketOption = ({ symbol }) => (
     <div key={symbol.value} className='quick-strategy__option'>
         <Icon icon={`IcUnderlying${symbol.value}`} size={32} />
-        <Text className='quick-strategy__symbol'>{symbol.text}</Text>
+        <Text className='quick-strategy__symbol' size='xs' color='prominent'>
+            {symbol.text}
+        </Text>
     </div>
 );
 
@@ -419,7 +421,9 @@ const TradeTypeOption = ({ trade_type }) => (
     <div key={trade_type.value} className='quick-strategy__option'>
         <IconTradeTypes type={trade_type.icon[0]} className='quick-strategy__icon' />
         <IconTradeTypes type={trade_type.icon[1]} className='quick-strategy__icon' />
-        <Text className='quick-strategy__symbol'>{trade_type.text}</Text>
+        <Text className='quick-strategy__symbol' size='xs' color='prominent'>
+            {trade_type.text}
+        </Text>
     </div>
 );
 const ContentRenderer = props => {

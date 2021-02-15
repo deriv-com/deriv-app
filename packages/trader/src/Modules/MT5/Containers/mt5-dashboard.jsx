@@ -9,7 +9,7 @@ import { connect } from 'Stores/connect';
 import LoadingMT5RealAccountDisplay from './loading-mt5-real-account-display.jsx';
 import MissingRealAccount from './missing-real-account.jsx';
 import MT5AccountOpeningRealFinancialStpModal from './mt5-account-opening-real-financial-stp-modal.jsx';
-import CompareAccountsModal from './mt5-compare-accounts-modal.jsx';
+import CompareAccountsModal from './compare-accounts-modal.jsx';
 import MT5DashboardContainer from './mt5-dashboard-container.jsx';
 import MT5PasswordManagerModal from './mt5-password-manager-modal.jsx';
 import MT5PasswordModal from './mt5-password-modal.jsx';
@@ -165,13 +165,13 @@ class MT5Dashboard extends React.Component {
         // TODO: Consolidate all strings related to a single file mapping
         const WelcomeText = () => {
             if (platform === 'dxtrade') {
-                if (is_logged_in) return localize('Welcome to your DXTrade');
+                if (is_logged_in) return localize('Welcome to your DXTrade account dashboard');
                 return localize('Welcome to DXTrade');
             } else if (platform === 'mt5') {
                 if (is_logged_in) return localize('Welcome to your MetaTrader 5 (DMT5 account dashboard)');
                 return localize('Welcome to MetaTrader 5 (DMT5 account dashboard)');
             }
-            return localize('Welcome to your CFD account dashboard');
+            return localize('Welcome to the CFD account dashboard');
         };
 
         const should_show_missing_real_account =
@@ -180,7 +180,7 @@ class MT5Dashboard extends React.Component {
 
         return (
             <React.Fragment>
-                {is_mt5_allowed || !is_logged_in ? (
+                {is_mt5_allowed || platform === 'dxtrade' || !is_logged_in ? (
                     <div className='mt5-dashboard__container'>
                         <NotificationMessages />
                         <div className='mt5-dashboard'>
@@ -250,6 +250,7 @@ class MT5Dashboard extends React.Component {
                                                 openAccountTransfer={this.openAccountTransfer}
                                                 openPasswordManager={this.togglePasswordManagerModal}
                                                 openPasswordModal={this.openRealPasswordModal}
+                                                platform={platform}
                                                 isAccountOfTypeDisabled={isAccountOfTypeDisabled}
                                                 has_real_account={has_real_account}
                                                 standpoint={standpoint}
@@ -275,6 +276,7 @@ class MT5Dashboard extends React.Component {
                                             landing_companies={landing_companies}
                                             openAccountTransfer={this.openAccountTransfer}
                                             openPasswordManager={this.togglePasswordManagerModal}
+                                            platform={platform}
                                         />
                                     </div>
                                 </LoadTab>
@@ -346,52 +348,76 @@ class MT5Dashboard extends React.Component {
                                 {/*        /> */}
                                 {/*    </React.Fragment> */}
                                 {/* )} */}
-                                <div className='mt5-dashboard__info'>
-                                    <div className='mt5-dashboard__info-description'>
-                                        <Localize i18n_default_text='Use these in your apps' />
-                                    </div>
-                                    <MT5InfoCopy
-                                        display_name={getBrokerName()}
-                                        text_copy={getBrokerName()}
-                                        label={localize('Broker')}
-                                        info_msg={localize('Click here to copy broker name.')}
-                                        success_msg={localize('Broker name copied!')}
-                                    />
-                                    <MT5InfoCopy
-                                        display_name={getServerName(this.state.is_demo_tab)}
-                                        text_copy={getServerName(this.state.is_demo_tab)}
-                                        label={localize('Server')}
-                                        info_msg={localize('Click here to copy server name.')}
-                                        success_msg={localize('Server name copied!')}
-                                    />
-                                </div>
-                                <CompareAccountsModal />
-                                <div className='mt5-dashboard__maintenance'>
-                                    <Icon
-                                        icon='IcAlertWarning'
-                                        size={isMobile() ? 28 : 16}
-                                        className='mt5-dashboard__maintenance-icon'
-                                    />
-                                    <div className='mt5-dashboard__maintenance-text'>
-                                        <Localize
-                                            i18n_default_text='Server maintenance starting 03:00 GMT every Sunday. This process may take up to 2 hours to complete. <0 />Service may be disrupted during this time.'
-                                            components={[<br key={0} />]}
+                                {platform === 'mt5' && (
+                                    <div className='mt5-dashboard__info'>
+                                        <div className='mt5-dashboard__info-description'>
+                                            <Localize i18n_default_text='Use these in your apps' />
+                                        </div>
+                                        <MT5InfoCopy
+                                            display_name={getBrokerName()}
+                                            text_copy={getBrokerName()}
+                                            label={localize('Broker')}
+                                            info_msg={localize('Click here to copy broker name.')}
+                                            success_msg={localize('Broker name copied!')}
+                                        />
+                                        <MT5InfoCopy
+                                            display_name={getServerName(this.state.is_demo_tab)}
+                                            text_copy={getServerName(this.state.is_demo_tab)}
+                                            label={localize('Server')}
+                                            info_msg={localize('Click here to copy server name.')}
+                                            success_msg={localize('Server name copied!')}
                                         />
                                     </div>
-                                </div>
+                                )}
+                                <CompareAccountsModal platform={platform} />
+                                {/* TODO: Remove this part once design for dxtrade maintenance mesage is ready */}
+                                {platform === 'dxtrade' && (
+                                    <React.Fragment>
+                                        <br />
+                                        <br />
+                                    </React.Fragment>
+                                )}
+                                {platform === 'mt5' && (
+                                    <div className='mt5-dashboard__maintenance'>
+                                        <Icon
+                                            icon='IcAlertWarning'
+                                            size={isMobile() ? 28 : 16}
+                                            className='mt5-dashboard__maintenance-icon'
+                                        />
+                                        <div className='mt5-dashboard__maintenance-text'>
+                                            <Localize
+                                                i18n_default_text='Server maintenance starting 03:00 GMT every Sunday. This process may take up to 2 hours to complete. <0 />Service may be disrupted during this time.'
+                                                components={[<br key={0} />]}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                             <DesktopWrapper>
-                                <MT5DashboardContainer />
+                                <MT5DashboardContainer platform={platform} />
                             </DesktopWrapper>
                             <MobileWrapper>
                                 <div className='mt5-dashboard__download-center'>
                                     <h1 className='mt5-dashboard__download-center--heading'>
-                                        <Localize i18n_default_text='Download the MT5 app' />
+                                        {platform === 'mt5' && <Localize i18n_default_text='Download the MT5 app' />}
+                                        {platform === 'dxtrade' && (
+                                            <Localize i18n_default_text='Download the DXTrade app' />
+                                        )}
                                     </h1>
                                     <div className='mt5-dashboard__download-center-options--mobile'>
                                         <div className='mt5-dashboard__download-center-options--mobile-devices'>
-                                            <Icon icon='IcMt5DeviceTablet' width={133} height={106} />
-                                            <Icon icon='IcMt5DevicePhone' width={48} height={74} />
+                                            {platform === 'mt5' && (
+                                                <React.Fragment>
+                                                    <Icon icon='IcMt5DeviceTablet' width={133} height={106} />
+                                                    <Icon icon='IcMt5DevicePhone' width={48} height={74} />
+                                                </React.Fragment>
+                                            )}
+                                            {platform === 'dxtrade' && (
+                                                <React.Fragment>
+                                                    <Icon icon='IcDxtradeDeviceTablet' width={133} height={106} />
+                                                    <Icon icon='IcDxtradeDevicePhone' width={48} height={74} />
+                                                </React.Fragment>
+                                            )}
                                         </div>
                                         <div className='mt5-dashboard__download-center-options--mobile-links'>
                                             <a
@@ -415,8 +441,12 @@ class MT5Dashboard extends React.Component {
                             <Mt5TopUpDemoModal />
                             <MT5PasswordModal />
                             <MT5ServerErrorDialog />
-                            <MT5AccountOpeningRealFinancialStpModal />
-                            <Mt5FinancialStpPendingDialog />
+                            {platform === 'mt5' && (
+                                <React.Fragment>
+                                    <MT5AccountOpeningRealFinancialStpModal />
+                                    <Mt5FinancialStpPendingDialog />
+                                </React.Fragment>
+                            )}
                             <MT5ResetPasswordModal />
                         </div>
                     </div>

@@ -58,14 +58,23 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
     );
 };
 
-const filterAvailableAccounts = (landing_companies, table, is_logged_in) => {
+const filterAvailableAccounts = (landing_companies, table, is_logged_in, platform) => {
     return table.map(({ attribute, synthetic, financial_stp, financial }) => {
         if (is_logged_in) {
             return {
                 attribute,
                 ...(landing_companies?.mt_gaming_company?.financial ? { synthetic } : {}),
                 ...(landing_companies?.mt_financial_company?.financial ? { financial } : {}),
-                ...(landing_companies?.mt_financial_company?.financial_stp ? { financial_stp } : {}),
+                ...(landing_companies?.mt_financial_company?.financial_stp && platform === 'mt5'
+                    ? { financial_stp }
+                    : {}),
+            };
+        }
+        if (platform === 'dxtrade') {
+            return {
+                attribute,
+                ...{ synthetic },
+                ...{ financial },
             };
         }
         return {
@@ -77,7 +86,7 @@ const filterAvailableAccounts = (landing_companies, table, is_logged_in) => {
     });
 };
 
-const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logged_in }) => {
+const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logged_in, platform }) => {
     const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
     return filterAvailableAccounts(
         landing_companies,
@@ -151,7 +160,8 @@ const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logge
                 financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
             },
         ],
-        is_logged_in
+        is_logged_in,
+        platform
     );
 };
 
@@ -175,12 +185,12 @@ const MT5CompareAccountHint = () => (
     </div>
 );
 
-const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in }) => {
+const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in, platform }) => {
     const [cols, setCols] = React.useState([]);
     const [template_columns, updateColumnsStyle] = React.useState('1.5fr 1fr 2fr 1fr');
 
     React.useEffect(() => {
-        setCols(compareAccountsData({ landing_companies, is_eu, is_eu_country, is_logged_in }));
+        setCols(compareAccountsData({ landing_companies, is_eu, is_eu_country, is_logged_in, platform }));
 
         if (is_logged_in) {
             updateColumnsStyle(
@@ -190,12 +200,13 @@ const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in })
             );
         }
     }, [
-        landing_companies.mt_financial_company,
-        landing_companies.mt_gaming_company,
+        landing_companies?.mt_financial_company,
+        landing_companies?.mt_gaming_company,
         is_eu,
         is_logged_in,
         is_eu_country,
         landing_companies,
+        platform,
     ]);
 
     return (
@@ -222,7 +233,7 @@ const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in })
                                         </Text>
                                     </Table.Head>
                                 )}
-                                {landing_companies?.mt_financial_company?.financial_stp && (
+                                {landing_companies?.mt_financial_company?.financial_stp && platform === 'mt5' && (
                                     <Table.Head>
                                         {localize('Financial STP')}
                                         <Text size='s' weight='bold' className='mt5-compare-accounts__star'>
@@ -240,12 +251,14 @@ const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in })
                                         *
                                     </Text>
                                 </Table.Head>
-                                <Table.Head>
-                                    {localize('Financial STP')}
-                                    <Text size='s' weight='bold' className='mt5-compare-accounts__star'>
-                                        *
-                                    </Text>
-                                </Table.Head>
+                                {platform === 'mt5' && (
+                                    <Table.Head>
+                                        {localize('Financial STP')}
+                                        <Text size='s' weight='bold' className='mt5-compare-accounts__star'>
+                                            *
+                                        </Text>
+                                    </Table.Head>
+                                )}
                             </React.Fragment>
                         )}
                     </Table.Row>
@@ -278,6 +291,7 @@ const CompareAccountsModal = ({
     is_logged_in,
     is_eu,
     is_eu_country,
+    platform,
     toggleCompareAccounts,
 }) => (
     <div className='mt5-compare-accounts-modal__wrapper'>
@@ -307,6 +321,7 @@ const CompareAccountsModal = ({
                         is_eu={is_eu}
                         is_eu_country={is_eu_country}
                         landing_companies={landing_companies}
+                        platform={platform}
                     />
                 </Modal>
             </DesktopWrapper>
@@ -324,6 +339,7 @@ const CompareAccountsModal = ({
                         is_eu={is_eu}
                         is_eu_country={is_eu_country}
                         landing_companies={landing_companies}
+                        platform={platform}
                     />
                 </MobileDialog>
             </MobileWrapper>

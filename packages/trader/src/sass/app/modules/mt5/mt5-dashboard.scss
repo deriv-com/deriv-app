@@ -11,6 +11,26 @@
     max-width: 960px;
     margin: 0 auto;
 
+    &__dxtrade-download {
+        background: #313c86;
+        border-radius: $BORDER_RADIUS;
+        text-decoration: none;
+        display: grid;
+        grid-template-columns: 32px 1fr;
+        grid-gap: 0.8rem;
+        margin-top: 2.4rem;
+
+        &-text {
+            display: flex;
+            flex-direction: column;
+            padding: 0.4rem 0.8rem 0.4rem 0.2rem;
+        }
+        &--icon {
+            margin-top: 0.6rem !important;
+            margin-left: 0.6rem;
+            margin-right: 0.6rem !important;
+        }
+    }
     &--hint {
         @include typeface(--xsmall-left-normal-black, none);
     }
@@ -178,6 +198,10 @@
             line-height: 1.5;
             margin-left: 2.1rem;
             margin-bottom: 4.2rem;
+            @include desktop {
+                margin-left: 0;
+                text-align: center;
+            }
         }
         &--hint {
             margin-top: 1.6rem;

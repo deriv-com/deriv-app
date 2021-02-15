@@ -41,6 +41,7 @@ const MT5RealAccountDisplay = ({
     openPasswordManager,
     account_settings,
     openAccountNeededModal,
+    platform,
     standpoint,
     is_logged_in,
     toggleAccountsDialog,
@@ -184,7 +185,8 @@ const MT5RealAccountDisplay = ({
                   />,
               ]);
 
-    const financial_stp_account = (landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && (
+    const financial_stp_account = (landing_companies?.mt_financial_company?.financial_stp ||
+        (!is_logged_in && platform === 'mt5')) && (
         <MT5AccountCard
             key='real.financial_stp'
             has_mt5_account={has_mt5_account}

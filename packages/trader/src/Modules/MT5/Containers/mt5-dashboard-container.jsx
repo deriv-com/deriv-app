@@ -3,57 +3,128 @@ import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getMT5WebTerminalLink, getPlatformMt5DownloadLink } from '../Helpers/constants';
 
-const MT5DashboardContainer = () => (
+const MT5DashboardContainer = ({ platform }) => (
     <div className='mt5-dashboard__download-center'>
         <h1 className='mt5-dashboard__download-center--heading'>
-            <Localize i18n_default_text='Run MT5 from your browser or download the MT5 app for your devices' />
+            {platform === 'mt5' && (
+                <Localize i18n_default_text='Run MT5 from your browser or download the MT5 app for your devices' />
+            )}
+            {platform === 'dxtrade' && (
+                <Localize i18n_default_text='Run DXTrade from your browser or download the DXTrade app for your devices' />
+            )}
         </h1>
 
-        <div className='mt5-dashboard__download-center-options'>
-            <div className='mt5-dashboard__download-center-options--desktop'>
+        <div
+            className='mt5-dashboard__download-center-options'
+            style={{ justifyContent: platform === 'dxtrade' ? 'space-evenly' : null }}
+        >
+            <div
+                className='mt5-dashboard__download-center-options--desktop'
+                style={{ marginTop: platform === 'dxtrade' ? 'auto' : null }}
+            >
                 <div className='mt5-dashboard__download-center-options--desktop-links'>
                     <div>
                         <div className='mt5-dashboard__download-center-options--desktop-row'>
-                            <Icon icon='IcMt5DeviceDesktop' width={118} height={85} />
-                            <Icon icon='IcMt5DeviceLaptop' width={75} height={51} />
+                            {platform === 'mt5' && (
+                                <React.Fragment>
+                                    <Icon icon='IcMt5DeviceDesktop' width={118} height={85} />
+                                    <Icon icon='IcMt5DeviceLaptop' width={75} height={51} />
+                                </React.Fragment>
+                            )}
+                            {platform === 'dxtrade' && (
+                                <React.Fragment>
+                                    <Icon icon='IcDxtradeDeviceDesktop' width={128} height={83} />
+                                    <Icon icon='IcDxtradeDeviceLaptop' width={81} height={54} />
+                                </React.Fragment>
+                            )}
                         </div>
                         <div className='mt5-dashboard__download-center-options--desktop-row'>
-                            <a
-                                href={getMT5WebTerminalLink({ category: 'demo' })}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                            >
-                                <Icon icon='IcInstallationWebDemo' width={138} height={40} />
-                            </a>
-                            <a
-                                href={getMT5WebTerminalLink({ category: 'real' })}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                            >
-                                <Icon icon='IcInstallationWebReal' width={138} height={40} />
-                            </a>
+                            {platform === 'dxtrade' && (
+                                <a
+                                    className='mt5-dashboard__dxtrade-download'
+                                    href='#'
+                                    // target='_blank'
+                                    rel='noopener noreferrer'
+                                >
+                                    <Icon
+                                        className='mt5-dashboard__dxtrade-download--icon'
+                                        icon='IcBrandDxtrade'
+                                        width={32}
+                                        height={32}
+                                    />
+                                    <div className='mt5-dashboard__dxtrade-download-text'>
+                                        <Text
+                                            className='mt5-dashboard__dxtrade-download--title'
+                                            color='colored-background'
+                                            size='xxs'
+                                            weight='bold'
+                                        >
+                                            <Localize i18n_default_text='Web terminal' />
+                                        </Text>
+                                        <Text
+                                            className='mt5-dashboard__dxtrade-download--subtitle'
+                                            color='colored-background'
+                                            size='xxs'
+                                        >
+                                            <Localize i18n_default_text='Demo/real account' />
+                                        </Text>
+                                    </div>
+                                </a>
+                            )}
+                            {platform === 'mt5' && (
+                                <React.Fragment>
+                                    <a
+                                        href={getMT5WebTerminalLink({ category: 'demo' })}
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                    >
+                                        <Icon icon='IcInstallationWebDemo' width={138} height={40} />
+                                    </a>
+                                    <a
+                                        href={getMT5WebTerminalLink({ category: 'real' })}
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                    >
+                                        <Icon icon='IcInstallationWebReal' width={138} height={40} />
+                                    </a>
+                                </React.Fragment>
+                            )}
                         </div>
                     </div>
-                    <div className='mt5-dashboard__download-center-options--desktop-download'>
-                        <a href={getPlatformMt5DownloadLink('windows')} target='_blank' rel='noopener noreferrer'>
-                            <Icon icon='IcInstallationWindows' width={138} height={40} />
-                        </a>
-                        <a href={getPlatformMt5DownloadLink('macos')} target='_blank' rel='noopener noreferrer'>
-                            <Icon icon='IcInstallationMacos' width={138} height={40} />
-                        </a>
-                        <a href={getPlatformMt5DownloadLink('linux')} target='_blank' rel='noopener noreferrer'>
-                            <Icon icon='IcInstallationLinux' width={138} height={40} />
-                        </a>
-                    </div>
+                    {platform === 'mt5' && (
+                        <div className='mt5-dashboard__download-center-options--desktop-download'>
+                            <a href={getPlatformMt5DownloadLink('windows')} target='_blank' rel='noopener noreferrer'>
+                                <Icon icon='IcInstallationWindows' width={138} height={40} />
+                            </a>
+                            <a href={getPlatformMt5DownloadLink('macos')} target='_blank' rel='noopener noreferrer'>
+                                <Icon icon='IcInstallationMacos' width={138} height={40} />
+                            </a>
+                            <a href={getPlatformMt5DownloadLink('linux')} target='_blank' rel='noopener noreferrer'>
+                                <Icon icon='IcInstallationLinux' width={138} height={40} />
+                            </a>
+                        </div>
+                    )}
                 </div>
-                <Text as='p' size='xxxs' className='mt5-dashboard__download-center--hint'>
-                    <Localize i18n_default_text='The MT5 desktop app is not supported by Windows XP, Windows 2003, and Windows Vista.' />
-                </Text>
+                {platform === 'mt5' && (
+                    <Text as='p' size='xxxs' className='mt5-dashboard__download-center--hint'>
+                        <Localize i18n_default_text='The MT5 desktop app is not supported by Windows XP, Windows 2003, and Windows Vista.' />
+                    </Text>
+                )}
             </div>
             <div className='mt5-dashboard__download-center-options--mobile'>
                 <div className='mt5-dashboard__download-center-options--mobile-devices'>
-                    <Icon icon='IcMt5DeviceTablet' width={133} height={106} />
-                    <Icon icon='IcMt5DevicePhone' width={48} height={74} />
+                    {platform === 'mt5' && (
+                        <React.Fragment>
+                            <Icon icon='IcMt5DeviceTablet' width={133} height={106} />
+                            <Icon icon='IcMt5DevicePhone' width={48} height={74} />
+                        </React.Fragment>
+                    )}
+                    {platform === 'dxtrade' && (
+                        <React.Fragment>
+                            <Icon icon='IcDxtradeDeviceTablet' width={133} height={106} />
+                            <Icon icon='IcDxtradeDevicePhone' width={48} height={74} />
+                        </React.Fragment>
+                    )}
                 </div>
                 <div className='mt5-dashboard__download-center-options--mobile-links'>
                     <a

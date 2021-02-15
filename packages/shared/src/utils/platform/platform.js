@@ -50,7 +50,7 @@ export const getPlatformInformation = routing_history => {
     }
 
     if (isDXTrade() || isNavigationFromPlatform(routing_history, routes.dxtrade)) {
-        return { header: platform_name.DXTrade, icon: 'IcBrandDmt5' };
+        return { header: platform_name.DXTrade, icon: 'IcBrandDxtrade' };
     }
 
     if (isNavigationFromPlatform(routing_history, routes.smarttrader)) {

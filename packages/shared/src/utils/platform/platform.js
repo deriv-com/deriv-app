@@ -11,6 +11,10 @@ export const platform_name = Object.freeze({
     SmartTrader: 'SmartTrader',
 });
 
+export const isDashboard = () =>
+    /^\/dashboard/.test(window.location.pathname) ||
+    (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'dashboard');
+
 export const isBot = () =>
     /^\/bot/.test(window.location.pathname) ||
     (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'bot');
@@ -107,4 +111,10 @@ export const isNavigationFromP2P = (routing_history, platform_route) => {
     const routing_history_index = routing_history.length > 1 ? 1 : 0;
     const history_item = routing_history[routing_history_index];
     return history_item?.pathname === platform_route;
+};
+
+export const getDashboardPlatformHeader = routing_history => {
+    if (!isDashboard()) return getPlatformInformation(routing_history).header;
+
+    return false;
 };

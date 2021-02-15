@@ -1,16 +1,11 @@
 /* eslint-disable react/display-name */
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
-import { DesktopWrapper, Div100vhContainer, MobileWrapper, FadeWrapper, Text, VerticalTab } from '@deriv/components';
+import { DesktopWrapper, Div100vhContainer, MobileWrapper, FadeWrapper, VerticalTab } from '@deriv/components';
 import { getSelectedRoute } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import { TRoute, TRouteGroup } from 'Types';
 import { useStores } from 'Stores';
 import getRoutesConfig from 'Constants/routes-config';
-
-import TempButtons from 'Components/temp-buttons';
-import TempMyApps from 'Components/pages/temp-my-apps';
-import DMT5Synthetic from 'Components/pages/platforms/dmt5_synthetic';
 
 const Home: React.FC = () => {
     const history = useHistory();
@@ -36,7 +31,7 @@ const Home: React.FC = () => {
     const list_groups: TRouteGroup[] = [];
     const subroutes: TRoute[] = [];
 
-    routes.forEach(list_item => {
+    routes?.forEach(list_item => {
         if (!list_item.subroutes) {
             subroutes.push(list_item);
             list_groups.push(list_item);

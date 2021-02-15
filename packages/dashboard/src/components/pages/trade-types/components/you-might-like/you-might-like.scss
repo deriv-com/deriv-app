@@ -1,0 +1,45 @@
+.dw-you-might-like {
+    padding-top: 4rem;
+
+    &__wrapper {
+        display: flex;
+    }
+    &__card {
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        max-width: 29.6rem;
+        margin-right: 2.4rem;
+        padding: 2.4rem;
+        height: 15rem;
+        border-radius: 10px;
+        cursor: pointer;
+
+        &-icon {
+            margin-bottom: 0.8rem;
+        }
+        &-title {
+            z-index: 2;
+        }
+        &-desc {
+            z-index: 2;
+        }
+        &-overlay {
+            position: absolute;
+            z-index: 1;
+            width: 29.6rem;
+            height: 15rem;
+            border-radius: 10px;
+            left: 0px;
+            top: 0px;
+            background: linear-gradient(180deg, rgba(14, 14, 14, 0) 0%, rgba(14, 14, 14, 0.6) 100%);
+        }
+    }
+    &__line {
+        width: 93.6rem;
+        height: 1px;
+        border: 1px solid var(--general-section-1);
+        margin-top: 4rem;
+        margin-bottom: 4rem;
+    }
+}

@@ -41,6 +41,7 @@ export type TRoutesProps = {
     explore: string;
     resources: string;
     platform_dmt5_synthetic: string;
+    trade_types_cfd: string;
 };
 
 export interface TUIProps {

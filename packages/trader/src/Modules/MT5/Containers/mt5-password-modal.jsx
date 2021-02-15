@@ -239,6 +239,7 @@ const MT5PasswordModal = ({
     submitMt5Password,
     trading_servers,
     mt5_login_list,
+    mt5_new_account,
 }) => {
     const [password, setPassword] = React.useState('');
     const [is_submitting, setIsSubmitting] = React.useState(false); // TODO handle this better
@@ -285,6 +286,7 @@ const MT5PasswordModal = ({
         disableMt5PasswordModal();
         closeDialogs();
         if (account_type.category === 'real') {
+            sessionStorage.setItem('mt5_transfer_to_login_id', mt5_new_account.login);
             history.push(routes.cashier_acc_transfer);
         }
     };
@@ -436,6 +438,7 @@ export default connect(({ client, modules }) => ({
     setMt5Error: modules.mt5.setError,
     setMt5SuccessDialog: modules.mt5.setMt5SuccessDialog,
     submitMt5Password: modules.mt5.submitMt5Password,
+    mt5_new_account: modules.mt5.new_account_response,
     trading_servers: client.trading_servers,
     mt5_login_list: client.mt5_login_list,
 }))(withRouter(MT5PasswordModal));

@@ -62,8 +62,7 @@ const Withdrawal = ({
 
     React.useEffect(() => {
         check10kLimit();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [check10kLimit]);
 
     React.useEffect(() => {
         if ((iframe_url || verification_code) && isDesktop()) {

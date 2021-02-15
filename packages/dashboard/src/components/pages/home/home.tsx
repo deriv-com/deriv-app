@@ -25,7 +25,7 @@ const Home: React.FC = () => {
         is_deriv_crypto: config_store.is_deriv_crypto,
         Page404: ui_store.components.Page404,
     })[0].routes?.filter(route => {
-        return sidebarItems.includes(route.path);
+        return sidebarItems.includes(route.path!);
     });
 
     const list_groups: TRouteGroup[] = [];

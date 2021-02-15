@@ -22,7 +22,7 @@ const DEFAULT_DURATION = Object.freeze({
 const reducer = (state, payload) => {
     return {
         ...state,
-        payload,
+        ...payload,
     };
 };
 

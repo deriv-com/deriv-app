@@ -51,7 +51,12 @@ const HelpBase = ({
                         const { text } = help_string;
                         switch (type) {
                             case help_content_types.TEXT:
-                                return <FlyoutText key={`${block_type}_${index}`} text={text[text_count++]} />;
+                                return (
+                                    <FlyoutText
+                                        key={`${block_type}_${index}`}
+                                        text={text[text_count < text.length && text_count++]}
+                                    />
+                                );
                             case help_content_types.VIDEO:
                                 return <FlyoutVideo key={`${block_type}_${index}`} url={url} />;
                             case help_content_types.IMAGE:

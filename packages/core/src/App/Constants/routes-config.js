@@ -256,6 +256,12 @@ const getModules = ({ is_deriv_crypto }) => {
             component: Trader,
             getTitle: () => localize('Trader'),
             routes: [
+                {
+                    path: routes.dxtrade,
+                    component: Trader,
+                    getTitle: () => localize('DXTrade'),
+                    is_authenticated: false,
+                },
                 { path: routes.mt5, component: Trader, getTitle: () => localize('MT5'), is_authenticated: false },
                 {
                     path: routes.reports,

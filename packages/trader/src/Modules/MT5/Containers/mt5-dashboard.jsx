@@ -151,6 +151,7 @@ class MT5Dashboard extends React.Component {
             mt5_disabled_signup_types,
             has_real_account,
             NotificationMessages,
+            platform,
             openAccountNeededModal,
             standpoint,
             toggleAccountsDialog,
@@ -159,6 +160,19 @@ class MT5Dashboard extends React.Component {
             can_have_more_real_synthetic_mt5,
             upgradeable_landing_companies,
         } = this.props;
+
+        // TODO: Consolidate all strings related to a single file mapping
+        const WelcomeText = () => {
+            if (platform === 'dxtrade') {
+                if (is_logged_in) return localize('Welcome to your DXTrade');
+                return localize('Welcome to DXTrade');
+            } else if (platform === 'mt5') {
+                if (is_logged_in) return localize('Welcome to your MetaTrader 5 (DMT5 account dashboard)');
+                return localize('Welcome to MetaTrader 5 (DMT5 account dashboard)');
+            }
+            return localize('Welcome to your CFD account dashboard');
+        };
+
         const should_show_missing_real_account =
             !is_eu && is_logged_in && !has_real_account && upgradeable_landing_companies?.length > 0;
         if ((!country && is_logged_in) || is_logging_in) return <Loading />; // Wait for country name to be loaded before rendering
@@ -171,11 +185,7 @@ class MT5Dashboard extends React.Component {
                         <div className='mt5-dashboard'>
                             <div className='mt5-dashboard__welcome-message'>
                                 <h1 className='mt5-dashboard__welcome-message--heading'>
-                                    {is_logged_in ? (
-                                        <Localize i18n_default_text='Welcome to your MetaTrader 5 (DMT5 account dashboard)' />
-                                    ) : (
-                                        <Localize i18n_default_text='Welcome to MetaTrader 5 (DMT5 account dashboard)' />
-                                    )}
+                                    <Localize i18n_default_text={WelcomeText()} />
                                 </h1>
                             </div>
                             {has_mt5_account_error && (

@@ -25,6 +25,13 @@ const platform_config = [
         link_to: routes.mt5,
     },
     {
+        icon: 'IcBrandDmt5',
+        title: () => localize('DXTrade'),
+        name: 'DXTrade',
+        description: () => localize('The platform of choice for professionals worldwide.'),
+        link_to: routes.dxtrade,
+    },
+    {
         icon: 'IcBrandSmarttrader',
         title: () => localize('SmartTrader'),
         name: 'SmartTrader',

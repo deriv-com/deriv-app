@@ -46,7 +46,20 @@ const initRoutesConfig = () => {
             getTitle: () => localize('Contract Details'),
             is_authenticated: true,
         },
-        { path: routes.mt5, component: MT5, getTitle: () => localize('MT5'), is_authenticated: false },
+        {
+            path: routes.dxtrade,
+            // eslint-disable-next-line react/display-name
+            component: props => <MT5 {...props} platform='dxtrade' />,
+            getTitle: () => localize('DXTrade'),
+            is_authenticated: false,
+        },
+        {
+            path: routes.mt5,
+            // eslint-disable-next-line react/display-name
+            component: props => <MT5 {...props} platform='mt5' />,
+            getTitle: () => localize('MT5'),
+            is_authenticated: false,
+        },
         {
             path: routes.reports,
             component: lazyLoadReportComponent('Reports'),

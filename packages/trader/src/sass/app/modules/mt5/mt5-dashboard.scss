@@ -577,9 +577,9 @@
         border-left: 2.3rem solid transparent;
         border-right: 2.3rem solid transparent;
         height: 0;
-        width: 10.6rem;
-        left: 22rem;
-        top: 1.7rem;
+        width: 13.7rem;
+        left: 19.4rem;
+        top: 2.8rem;
         color: var(--text-colored-background);
         font-weight: bold;
         line-height: 24px;
@@ -594,7 +594,7 @@
             border-bottom-color: $color-blue-2;
         }
         @include mobile {
-            left: calc(100vw - 11.6rem);
+            left: calc(100vw - 14.2rem);
         }
     }
     &__type {
@@ -610,11 +610,15 @@
                 margin-bottom: 0.8rem;
             }
             .mt5-account-card--paragraph {
-                width: 18.8rem;
+                width: 18.3rem;
             }
         }
         &--has-banner {
             margin-top: -23px;
+
+            .mt5-account-card--paragraph {
+                width: 15rem;
+            }
         }
     }
     &__display {

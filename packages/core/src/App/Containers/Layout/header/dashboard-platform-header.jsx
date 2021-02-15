@@ -10,7 +10,7 @@ import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.js
 import { connect } from 'Stores/connect';
 import { BinaryLink } from '../../../Components/Routes';
 
-const Devider = () => {
+const Divider = () => {
     return <div className='dashboard-platform-header__divider' />;
 };
 
@@ -23,7 +23,7 @@ const MyApps = () => {
             <Text size='s' line_height='xxl' weight='bold' className='dashboard-platform-header__my-apps--title'>
                 {localize('My apps')}
             </Text>
-            <Devider />
+            <Divider />
         </div>
     );
 };
@@ -85,7 +85,7 @@ const ShowSettings = ({ toggleSettings }) => {
 const AccountBalance = ({ balance, currency }) => {
     return (
         <div className='dashboard-platform-header__balance'>
-            <Devider />
+            <Divider />
             <Icon icon='IcWalletDerivApps' size={28} className='dashboard-platform-header__balance--icon' />
             <Text size='s' line_height='xxl' weight='bold' color='profit-success'>
                 {(typeof balance !== 'undefined' || !currency) && `${balance} ${getCurrencyDisplayCode(currency)}`}
@@ -170,13 +170,15 @@ const DashboardPlatformHeader = ({
                 </DesktopWrapper>
             </div>
             <div className='dashboard-platform-header__menu-right'>
-                {!isMobile() && <ShowReports />}
+                <DesktopWrapper>
+                    <ShowReports />
+                </DesktopWrapper>
                 <ShowNotifications
                     is_notifications_visible={is_notifications_visible}
                     notifications_count={notifications_count}
                     toggleNotifications={toggleNotifications}
                 />
-                {!isMobile() && (
+                <DesktopWrapper>
                     <ShowSettings
                         disableApp={disableApp}
                         enableApp={enableApp}
@@ -184,7 +186,7 @@ const DashboardPlatformHeader = ({
                         toggleSettingsModal={toggleSettingsModal}
                         settings_extension={settings_extension}
                     />
-                )}
+                </DesktopWrapper>
                 <AccountBalance balance={balance} currency={currency} />
                 <Button
                     small={isMobile()}

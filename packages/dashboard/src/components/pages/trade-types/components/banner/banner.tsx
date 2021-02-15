@@ -53,9 +53,7 @@ const Banner: React.FC<TBannerProps> = ({ banner_items, type }) => {
 
 type TBannerProps = {
     banner_items: Array<TBannerItemsProp>;
-    // bg_image_url: string;
     type: string;
-    // title: string;
 };
 
 type TBannerItemsProp = {

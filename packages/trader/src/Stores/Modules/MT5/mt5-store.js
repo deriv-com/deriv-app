@@ -1,5 +1,5 @@
 import { action, computed, observable, runInAction } from 'mobx';
-import { getMT5AccountKey, getAccountTypeFields } from '@deriv/shared';
+import { getMT5AccountListKey, getAccountTypeFields } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import BaseStore from 'Stores/base-store';
 import { getMtCompanies } from './Helpers/mt5-config';
@@ -47,11 +47,7 @@ export default class MT5Store extends BaseStore {
 
         this.root_store.client.mt5_login_list.forEach(account => {
             // e.g. real.financial_stp
-            list[
-                `${account.account_type}.${getMT5AccountKey(account.market_type, account.sub_account_type)}@${
-                    account.server
-                }`
-            ] = {
+            list[getMT5AccountListKey(account)] = {
                 ...account,
             };
         });

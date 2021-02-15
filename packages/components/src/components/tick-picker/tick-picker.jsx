@@ -69,8 +69,10 @@ const TickPicker = ({
                     <Icon icon='IcMinus' custom_color='var(--text-prominent)' />
                 </Button>
                 <div className='dc-tick-picker__holder' {...swipe_handlers}>
-                    <Text styles={{ size: '96px' }}>{normalizedTick(tick_value)}</Text>
-                    <Text size='s' weight='bold'>
+                    <Text styles={{ fontSize: '96px', lineHeight: 1, color: 'inherit' }}>
+                        {normalizedTick(tick_value)}
+                    </Text>
+                    <Text size='s' weight='bold' align='center' styles={{ color: 'inherit' }}>
                         {tick_value === 1 ? singular_label : plural_label}
                     </Text>
                 </div>

@@ -7,6 +7,7 @@ import {
     routes as shared_routes,
     isEmptyObject,
     default_title,
+    PlatformContext,
 } from '@deriv/shared';
 
 const RouteWithSubRoutes = ({
@@ -22,6 +23,8 @@ const RouteWithSubRoutes = ({
     Component404,
     LoginPrompt,
 }) => {
+    const { is_dashboard } = React.useContext(PlatformContext);
+
     const validateRoute = pathname => {
         if (pathname === '') return true;
 
@@ -51,7 +54,7 @@ const RouteWithSubRoutes = ({
                 result = (
                     <LoginPrompt
                         onLogin={() => redirectToLogin(is_logged_in, language)}
-                        onSignup={() => redirectToSignUp()}
+                        onSignup={() => redirectToSignUp({ is_dashboard })}
                         page_title={getTitle()}
                     />
                 );

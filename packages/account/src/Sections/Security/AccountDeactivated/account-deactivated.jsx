@@ -1,12 +1,13 @@
 import React from 'react';
 import { Modal, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getStaticUrl } from '@deriv/shared';
+import { getStaticUrl, PlatformContext } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 
 const AccountDeactivated = ({ logout }) => {
     const [is_modal_open, setModalState] = React.useState(true);
     const [timer, setTimer] = React.useState(10);
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     React.useEffect(() => {
         window.history.pushState(null, null, '/');
@@ -21,7 +22,7 @@ const AccountDeactivated = ({ logout }) => {
         if (timer > 0) {
             setTimer(timer - 1);
         } else {
-            window.location.href = getStaticUrl('/');
+            window.location.href = getStaticUrl('/', { is_dashboard });
         }
     };
     return (

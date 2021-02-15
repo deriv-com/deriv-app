@@ -1,11 +1,13 @@
 // noop
 import React from 'react';
-import { getStaticUrl } from '@deriv/shared';
+import { getStaticUrl, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 
 const ArticleContent = ({ is_eu, is_uk, toggleModal }) => {
+    const { is_dashboard } = React.useContext(PlatformContext);
+
     const eu_items = [
         <Localize
             key={0}
@@ -16,7 +18,7 @@ const ArticleContent = ({ is_eu, is_uk, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getStaticUrl('/responsible')}
+                    href={getStaticUrl('/responsible', { is_dashboard })}
                 />,
             ]}
         />,
@@ -90,7 +92,7 @@ const ArticleContent = ({ is_eu, is_uk, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getStaticUrl('/responsible')}
+                    href={getStaticUrl('/responsible', { is_dashboard })}
                 />,
             ]}
         />,
@@ -111,7 +113,7 @@ const ArticleContent = ({ is_eu, is_uk, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getStaticUrl('/contact-us')}
+                    href={getStaticUrl('/contact-us', { is_dashboard })}
                 />,
             ]}
         />,

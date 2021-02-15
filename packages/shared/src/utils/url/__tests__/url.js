@@ -13,7 +13,7 @@ import {
 import { expect } from '../../../test_utils/test_common';
 
 // Testable URLs
-const urls = [deriv_urls.DERIV_APP_PRODUCTION, deriv_urls.DERIV_APP_CRYPTO_PRODUCTION];
+const urls = [deriv_urls.DERIV_APP_PRODUCTION, deriv_urls.DERIV_APP_DASHBOARD_PRODUCTION];
 
 function mockLocation(url) {
     // Mocking global location

@@ -1,10 +1,12 @@
 import React from 'react';
 import { Button } from '@deriv/components';
 import { getLanguage, localize } from '@deriv/translations';
-import { redirectToLogin, redirectToSignUp } from '@deriv/shared';
+import { PlatformContext, redirectToLogin, redirectToSignUp } from '@deriv/shared';
 import 'Sass/modal-login-prompt.scss';
 
 const ModalLoginPrompt = () => {
+    const { is_dashboard } = React.useContext(PlatformContext);
+
     return (
         <div className='modal-login-prompt'>
             <h2>{localize('This is only available for existing clients.')}</h2>
@@ -12,7 +14,7 @@ const ModalLoginPrompt = () => {
 
             <div>
                 <Button secondary text={localize('Log In')} onClick={() => redirectToLogin(false, getLanguage())} />
-                <Button primary text={localize('Sign Up')} onClick={() => redirectToSignUp()} />
+                <Button primary text={localize('Sign Up')} onClick={() => redirectToSignUp({ is_dashboard })} />
             </div>
         </div>
     );

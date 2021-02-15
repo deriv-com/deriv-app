@@ -2,7 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { Button, Icon, Text } from '@deriv/components';
-import { redirectToLogin, redirectToSignUp, routes, isDesktop, isMobile } from '@deriv/shared';
+import { PlatformContext, redirectToLogin, redirectToSignUp, routes, isDesktop, isMobile } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import DerivLogo from 'Assets/SvgComponents/header/deriv-logo.svg';
@@ -54,6 +54,7 @@ const LoggedInHeader = ({ is_dark_mode }) => {
 
 const LoggedOutHeader = () => {
     const history = useHistory();
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     return (
         <header className='dashboard-header dashboard-header--logged-out'>
@@ -92,7 +93,7 @@ const LoggedOutHeader = () => {
                         className='dashboard-header__right--create-button'
                         primary
                         text={localize('Create free demo account')}
-                        onClick={() => redirectToSignUp()}
+                        onClick={() => redirectToSignUp({ is_dashboard })}
                     />
                 </Button.Group>
                 {isMobile() && (

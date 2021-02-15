@@ -584,7 +584,8 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 bottom: 2.8rem;
 
                 /* postcss-bem-linter: ignore */
-                .sc-chart-mode {
+                .sc-chart-mode,
+                .sc-studies {
                     background: var(--general-section-1);
                     padding: 0.4rem 0.2rem;
                     width: 4rem;

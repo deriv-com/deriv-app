@@ -261,6 +261,7 @@
 
     @include desktop {
         min-width: 440px;
+        height: 304px;
     }
     @include mobile {
         justify-content: flex-start;

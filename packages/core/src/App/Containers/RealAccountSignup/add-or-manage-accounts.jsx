@@ -22,6 +22,7 @@ const AddOrManageAccounts = props => {
         currency,
         current_currency_type,
         has_fiat,
+        is_eu,
         is_loading,
         onError,
         onSuccessSetAccountCurrency,
@@ -90,94 +91,102 @@ const AddOrManageAccounts = props => {
 
     if (is_loading) return <LoadingModal />;
 
+    const fiat_section = has_fiat && (
+        <div
+            className={classNames('change-currency', {
+                'account-wizard--disabled': !can_change_fiat_currency,
+            })}
+        >
+            {!can_change_fiat_currency && (
+                <div className='account-wizard--disabled-message'>
+                    <p>
+                        {current_currency_type === 'fiat' ? (
+                            <Localize
+                                i18n_default_text='Currency change is not available because either you have deposited money into your {{currency}} account or you have created a real MetaTrader 5 (MT5) account.'
+                                values={{
+                                    currency: getCurrencyDisplayCode(currency),
+                                }}
+                            />
+                        ) : (
+                            <Localize
+                                i18n_default_text='Please switch to your {{fiat_currency}} account to change currencies.'
+                                values={{
+                                    // eslint-disable-next-line
+                                    fiat_currency: props.current_fiat_currency.toUpperCase(),
+                                }}
+                            />
+                        )}
+                    </p>
+                </div>
+            )}
+            <ChangeAccountCurrency
+                className='account-wizard__body'
+                onSubmit={updateValue}
+                value={form_value}
+                form_error={form_error}
+                {...props}
+            />
+        </div>
+    );
+
     return (
         <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
-            <Tabs
-                active_index={active_index}
-                className='account-wizard add-or-manage tabs--desktop'
-                onTabItemClick={setActiveTabIndex}
-                top
-                header_fit_content={isDesktop()}
-            >
-                <div label={localize('Cryptocurrencies')}>
-                    <div
-                        className={classNames('add-crypto-currency', {
-                            'account-wizard--disabled': hasNoAvailableCrypto(),
-                        })}
-                    >
-                        {hasNoAvailableCrypto() && (
-                            <div className='account-wizard--disabled-message'>
-                                <p>
-                                    {localize(
-                                        'You already have an account for each of the cryptocurrencies available on {{deriv}}.',
-                                        {
-                                            deriv: website_name,
-                                        }
-                                    )}
-                                </p>
-                            </div>
-                        )}
-                        <AddCryptoCurrency
-                            className='account-wizard__body'
-                            onSubmit={updateValue}
-                            value={form_value}
-                            form_error={form_error}
-                            should_show_crypto_only={true}
-                            {...props}
-                        />
-                    </div>
-                </div>
-                {!is_deriv_crypto && (
-                    <div label={localize('Fiat currencies')}>
-                        {has_fiat ? (
-                            <div
-                                className={classNames('change-currency', {
-                                    'account-wizard--disabled': !can_change_fiat_currency,
-                                })}
-                            >
-                                {!can_change_fiat_currency && (
-                                    <div className='account-wizard--disabled-message'>
-                                        <p>
-                                            {current_currency_type === 'fiat' ? (
-                                                <Localize
-                                                    i18n_default_text='Currency change is not available because either you have deposited money into your {{currency}} account or you have created a real MetaTrader 5 (MT5) account.'
-                                                    values={{
-                                                        currency: getCurrencyDisplayCode(currency),
-                                                    }}
-                                                />
-                                            ) : (
-                                                <Localize
-                                                    i18n_default_text='Please switch to your {{fiat_currency}} account to change currencies.'
-                                                    values={{
-                                                        // eslint-disable-next-line
-                                                        fiat_currency: props.current_fiat_currency.toUpperCase(),
-                                                    }}
-                                                />
-                                            )}
-                                        </p>
-                                    </div>
-                                )}
-                                <ChangeAccountCurrency
-                                    className='account-wizard__body'
-                                    onSubmit={updateValue}
-                                    value={form_value}
-                                    form_error={form_error}
-                                    {...props}
-                                />
-                            </div>
-                        ) : (
+            {is_eu && has_fiat ? (
+                fiat_section
+            ) : (
+                <Tabs
+                    active_index={active_index}
+                    className='account-wizard add-or-manage tabs--desktop'
+                    onTabItemClick={setActiveTabIndex}
+                    top
+                    header_fit_content={isDesktop()}
+                >
+                    <div label={localize('Cryptocurrencies')}>
+                        <div
+                            className={classNames('add-crypto-currency', {
+                                'account-wizard--disabled': hasNoAvailableCrypto(),
+                            })}
+                        >
+                            {hasNoAvailableCrypto() && (
+                                <div className='account-wizard--disabled-message'>
+                                    <p>
+                                        {localize(
+                                            'You already have an account for each of the cryptocurrencies available on {{deriv}}.',
+                                            {
+                                                deriv: website_name,
+                                            }
+                                        )}
+                                    </p>
+                                </div>
+                            )}
                             <AddCryptoCurrency
                                 className='account-wizard__body'
                                 onSubmit={updateValue}
                                 value={form_value}
                                 form_error={form_error}
-                                should_show_fiat_only={true}
+                                should_show_crypto_only
                                 {...props}
                             />
-                        )}
+                        </div>
                     </div>
-                )}
-            </Tabs>
+                    {!is_deriv_crypto && (
+                        <div label={localize('Fiat currencies')}>
+                            {has_fiat ? (
+                                fiat_section
+                            ) : (
+                                <AddCryptoCurrency
+                                    className='account-wizard__body'
+                                    onSubmit={updateValue}
+                                    value={form_value}
+                                    form_error={form_error}
+                                    should_show_fiat_only={true}
+                                    {...props}
+                                />
+                            )}
+                        </div>
+                    )}
+                </Tabs>
+            )}
         </ThemedScrollbars>
     );
 };
@@ -195,6 +204,7 @@ export default connect(({ client }) => ({
     current_currency_type: client.current_currency_type,
     current_fiat_currency: client.current_fiat_currency,
     has_fiat: client.has_fiat,
+    is_eu: client.is_eu,
     setCurrency: client.setAccountCurrency,
     createCryptoAccount: client.createCryptoAccount,
 }))(AddOrManageAccounts);

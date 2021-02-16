@@ -49,7 +49,7 @@ const AppContents = ({
         }
     }, [tracking_status, is_logged_in, is_eu_country, is_logging_in]);
 
-    // Segment page view trigger
+    // rudderstack page view trigger
     identifyEvent();
     pageView();
 
@@ -121,14 +121,14 @@ AppContents.propTypes = {
 };
 
 export default withRouter(
-    connect(({ client, gtm, segment, ui }) => ({
+    connect(({ client, gtm, rudderstack, ui }) => ({
         is_eu_country: client.is_eu_country,
         is_eu: client.is_eu,
         is_logged_in: client.is_logged_in,
         is_logging_in: client.is_logging_in,
         pushDataLayer: gtm.pushDataLayer,
-        identifyEvent: segment.identifyEvent,
-        pageView: segment.pageView,
+        identifyEvent: rudderstack.identifyEvent,
+        pageView: rudderstack.pageView,
         is_app_disabled: ui.is_app_disabled,
         is_cashier_visible: ui.is_cashier_visible,
         is_dark_mode: ui.is_dark_mode_on,

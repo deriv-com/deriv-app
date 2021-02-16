@@ -52,22 +52,22 @@ const Deposit = ({
 }) => {
     React.useEffect(() => {
         setActiveTab(container);
-        if (!is_virtual) {
-            onMount();
-        }
+        onMount();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
         if (iframe_height && isDesktop()) {
             if (isCryptocurrency(currency) && typeof setSideNotes === 'function') {
-                if (/^(UST|eUSDT)$/i.test(currency)) {
-                    setSideNotes([<DepositeSideNote key={0} />, <USDTSideNote key={1} />]);
-                } else {
-                    setSideNotes([<DepositeSideNote key={0} />]);
-                }
-            }
+                const side_notes = [
+                    <DepositeSideNote key={0} />,
+                    ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
+                    ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
+                ];
+                setSideNotes(side_notes);
+            } else setSideNotes(null);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, iframe_height]);
 
     if (is_virtual) {

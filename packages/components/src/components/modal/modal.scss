@@ -94,7 +94,10 @@
         width: 100%;
         line-height: 24px;
         align-items: center;
-        border-bottom: 2px solid var(--general-section-2);
+
+        &__border-bottom {
+            border-bottom: 2px solid var(--general-section-2);
+        }
 
         &__title {
             @include typeface(--title-left-bold-black);

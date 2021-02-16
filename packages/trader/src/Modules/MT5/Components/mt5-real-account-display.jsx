@@ -1,6 +1,7 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
+import { getAccountTypeFields, getMT5AccountListKey, getMT5AccountKey } from '@deriv/shared';
 import {
     eu_real_financial_specs,
     real_financial_stp_specs,
@@ -34,6 +35,7 @@ const MT5RealAccountDisplay = ({
     onSelectAccount,
     openAccountTransfer,
     openPasswordModal,
+    isAccountOfTypeDisabled,
     current_list,
     has_mt5_account,
     openPasswordManager,
@@ -46,7 +48,8 @@ const MT5RealAccountDisplay = ({
     trading_servers,
     can_have_more_real_synthetic_mt5,
 }) => {
-    const should_show_trade_servers = (is_logged_in ? !is_eu : !is_eu_country) && can_have_more_real_synthetic_mt5;
+    const should_show_trade_servers =
+        (is_logged_in ? !is_eu && has_real_account : !is_eu_country) && can_have_more_real_synthetic_mt5;
     const [active_hover, setActiveHover] = React.useState(0);
 
     const has_required_credentials =
@@ -86,25 +89,34 @@ const MT5RealAccountDisplay = ({
         }
     };
 
-    const onClickFundRealSynthetic = () =>
-        openAccountTransfer(current_list['real.synthetic'], {
-            category: 'real',
-            type: 'synthetic',
-        });
-    const onClickFundRealFinancial = () =>
-        openAccountTransfer(current_list['real.financial'], {
-            category: 'real',
-            type: 'financial',
-        });
-    const onClickFundRealFinancialStp = () =>
-        openAccountTransfer(current_list['real.financial_stp'], {
-            category: 'real',
-            type: 'financial_stp',
+    const onClickFundReal = account =>
+        openAccountTransfer(current_list[getMT5AccountListKey(account)], {
+            category: account.account_type,
+            type: getMT5AccountKey(account.market_type, account.sub_account_type),
         });
 
     const handleHoverCard = name => {
         const real_synthetic_accounts_list = Object.keys(current_list).filter(key => key.startsWith('real.synthetic'));
         setActiveHover(real_synthetic_accounts_list.findIndex(t => current_list[t].group === name));
+    };
+
+    const isMT5AccountCardDisabled = sub_account_type => {
+        if (has_mt5_account_error) return true;
+
+        if (is_eu) {
+            const account = getAccountTypeFields({ category: 'real', type: sub_account_type });
+            return isAccountOfTypeDisabled(account?.account_type);
+        }
+
+        switch (sub_account_type) {
+            case 'synthetic':
+            case 'financial':
+                return !has_real_account;
+            case 'financial_stp':
+                return is_real_financial_stp_disabled;
+            default:
+                return false;
+        }
     };
 
     const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
@@ -125,7 +137,7 @@ const MT5RealAccountDisplay = ({
                               has_mt5_account_error={has_mt5_account_error}
                               title={localize('Synthetic')}
                               is_hovered={index === active_hover}
-                              is_disabled={!has_real_account || has_mt5_account_error}
+                              is_disabled={isMT5AccountCardDisabled('synthetic')}
                               type={{
                                   category: 'real',
                                   type: 'synthetic',
@@ -136,7 +148,7 @@ const MT5RealAccountDisplay = ({
                               commission_message={localize('No commission')}
                               onSelectAccount={onSelectRealSynthetic}
                               onPasswordManager={openPasswordManager}
-                              onClickFund={onClickFundRealSynthetic}
+                              onClickFund={onClickFundReal}
                               descriptor={localize(
                                   'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
                               )}
@@ -151,7 +163,7 @@ const MT5RealAccountDisplay = ({
                       key='real.synthetic'
                       has_mt5_account={has_mt5_account}
                       title={localize('Synthetic')}
-                      is_disabled={!has_real_account || has_mt5_account_error}
+                      is_disabled={isMT5AccountCardDisabled('synthetic')}
                       type={{
                           category: 'real',
                           type: 'synthetic',
@@ -162,7 +174,7 @@ const MT5RealAccountDisplay = ({
                       commission_message={localize('No commission')}
                       onSelectAccount={onSelectRealSynthetic}
                       onPasswordManager={openPasswordManager}
-                      onClickFund={onClickFundRealSynthetic}
+                      onClickFund={onClickFundReal}
                       descriptor={localize(
                           'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
                       )}
@@ -188,12 +200,12 @@ const MT5RealAccountDisplay = ({
             button_label={button_label}
             is_button_primary={is_pending_authentication}
             onPasswordManager={openPasswordManager}
-            onClickFund={onClickFundRealFinancialStp}
+            onClickFund={onClickFundReal}
             descriptor={localize(
                 'Trade major, minor, exotic currency pairs, and cryptocurrencies with Straight-Through Processing (STP) of your orders direct to the market.'
             )}
             specs={real_financial_stp_specs}
-            is_disabled={is_real_financial_stp_disabled || has_mt5_account_error}
+            is_disabled={isMT5AccountCardDisabled('financial_stp')}
             is_virtual={is_virtual}
             has_real_account={has_real_account}
             toggleAccountsDialog={toggleAccountsDialog}
@@ -206,7 +218,7 @@ const MT5RealAccountDisplay = ({
         <MT5AccountCard
             key='real.financial'
             has_mt5_account={has_mt5_account}
-            is_disabled={!has_real_account || has_mt5_account_error}
+            is_disabled={isMT5AccountCardDisabled('financial')}
             title={localize('Financial')}
             type={{
                 category: 'real',
@@ -216,7 +228,7 @@ const MT5RealAccountDisplay = ({
             commission_message={localize('No commission')}
             onSelectAccount={onSelectRealFinancial}
             onPasswordManager={openPasswordManager}
-            onClickFund={onClickFundRealFinancial}
+            onClickFund={onClickFundReal}
             descriptor={
                 is_eu || is_eu_country
                     ? localize(

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { toJS } from 'mobx';
 import { DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isMobile, useIsMounted } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { isContractElapsed } from 'Stores/Modules/Contract/Helpers/logic';
 import { Bounce, SlideIn } from 'App/Components/Animations';
@@ -78,93 +78,93 @@ const DigitsWrapper = ({
     );
 };
 
-class Digits extends React.PureComponent {
-    state = {
-        mounted: false,
+const Digits = React.memo(props => {
+    const [status, setStatus] = React.useState();
+    const [current_tick, setCurrentTick] = React.useState();
+    const [spot, setSpot] = React.useState();
+    const [is_selected_winning, setIsSelectedWinning] = React.useState();
+    const [is_latest, setIsLatest] = React.useState();
+    const [is_won, setIsWon] = React.useState();
+    const [is_lost, setIsLost] = React.useState();
+    const isMounted = useIsMounted();
+
+    const { contract_info, digits_array, is_digit_contract, is_trade_page, underlying } = props;
+
+    const onChangeStatus = params => {
+        setStatus(params.status);
+        setCurrentTick(params.current_tick);
     };
 
-    // TODO: make Digits into stateless component and fix issue with transition not working without mounted state
-    componentDidMount() {
-        this.setState({ mounted: true });
-    }
-
-    onChangeStatus = ({ status, current_tick }) => {
-        this.setState({ status, current_tick });
+    const onLastDigitSpot = params => {
+        setSpot(params.spot);
+        setIsLost(params.is_lost);
+        setIsSelectedWinning(params.is_selected_winning);
+        setIsLatest(params.is_latest);
+        setIsWon(params.is_won);
     };
 
-    onLastDigitSpot = ({ spot, is_lost, is_selected_winning, is_latest, is_won }) => {
-        this.setState({ spot, is_lost, is_selected_winning, is_latest, is_won });
-    };
-
-    get popover_message() {
-        const { contract_info, is_trade_page, underlying } = this.props;
+    const getPopoverMessage = () => {
         const underlying_name = is_trade_page ? underlying : contract_info.underlying;
 
         return localize('Last digit stats for latest 1000 ticks for {{underlying_name}}', {
             underlying_name: getMarketNamesMap()[underlying_name.toUpperCase()],
         });
-    }
+    };
 
-    render() {
-        const { contract_info, digits_array, is_digit_contract, is_trade_page } = this.props;
-        const { status, spot, is_lost, is_selected_winning, is_latest, is_won, current_tick } = this.state;
-        return (
-            <React.Fragment>
-                <DesktopWrapper>
-                    <SlideIn
-                        is_visible={(digits_array || is_digit_contract) && this.state.mounted}
-                        className='digits__container'
-                        keyname='digits'
-                        type='bottom'
+    return (
+        <React.Fragment>
+            <DesktopWrapper>
+                <SlideIn
+                    is_visible={(digits_array || is_digit_contract) && isMounted()}
+                    className='digits__container'
+                    keyname='digits'
+                    type='bottom'
+                >
+                    {is_trade_page && (
+                        <div className='digits__tooltip-container'>
+                            <Popover
+                                alignment='top'
+                                classNameBubble='digits__tooltip-bubble'
+                                icon='info'
+                                id='dt_last_digits_info_tooltip'
+                                margin={4}
+                                message={getPopoverMessage()}
+                            />
+                        </div>
+                    )}
+                    <DigitsWrapper {...props} />
+                </SlideIn>
+            </DesktopWrapper>
+            <MobileWrapper>
+                <div className='digits__container'>
+                    <Bounce
+                        is_visible={!!(is_digit_contract && status && spot && !!contract_info.entry_tick)}
+                        className={classNames('digits__digit-spot', {
+                            'digits__digit-spot--is-trading': is_trade_page,
+                        })}
+                        keyname='digits__digit-spot'
                     >
                         {is_trade_page && (
-                            <div className='digits__tooltip-container'>
-                                <Popover
-                                    alignment='top'
-                                    classNameBubble='digits__tooltip-bubble'
-                                    icon='info'
-                                    id='dt_last_digits_info_tooltip'
-                                    margin={4}
-                                    message={this.popover_message}
-                                />
-                            </div>
+                            <span className='digits__digit-spot-value'>
+                                <Localize i18n_default_text='Tick {{current_tick}} - ' values={{ current_tick }} />
+                            </span>
                         )}
-                        <DigitsWrapper {...this.props} />
-                    </SlideIn>
-                </DesktopWrapper>
-                <MobileWrapper>
-                    <div className='digits__container'>
-                        <Bounce
-                            is_visible={!!(is_digit_contract && status && spot && !!contract_info.entry_tick)}
-                            className={classNames('digits__digit-spot', {
-                                'digits__digit-spot--is-trading': is_trade_page,
-                            })}
-                            keyname='digits__digit-spot'
-                        >
-                            {is_trade_page && (
-                                <span className='digits__digit-spot-value'>
-                                    <Localize i18n_default_text='Tick {{current_tick}} - ' values={{ current_tick }} />
-                                </span>
-                            )}
-                            <DigitSpot
-                                current_spot={spot}
-                                is_lost={is_lost}
-                                is_selected_winning={is_selected_winning}
-                                is_visible={!!(is_latest && spot)}
-                                is_won={is_won}
-                            />
-                        </Bounce>
-                        <DigitsWrapper
-                            {...this.props}
-                            onChangeStatus={this.onChangeStatus}
-                            onLastDigitSpot={this.onLastDigitSpot}
+                        <DigitSpot
+                            current_spot={spot}
+                            is_lost={is_lost}
+                            is_selected_winning={is_selected_winning}
+                            is_visible={!!(is_latest && spot)}
+                            is_won={is_won}
                         />
-                    </div>
-                </MobileWrapper>
-            </React.Fragment>
-        );
-    }
-}
+                    </Bounce>
+                    <DigitsWrapper {...props} onChangeStatus={onChangeStatus} onLastDigitSpot={onLastDigitSpot} />
+                </div>
+            </MobileWrapper>
+        </React.Fragment>
+    );
+});
+
+Digits.displayName = 'Digits';
 
 Digits.propTypes = {
     contract_info: PropTypes.object,

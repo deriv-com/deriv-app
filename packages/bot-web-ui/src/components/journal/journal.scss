@@ -19,14 +19,15 @@
             align-self: center;
         }
         &__message {
-            line-height: 1.5;
-            font-size: 1.2rem;
-            color: var(--text-less-prominent);
             margin: 0 auto;
         }
         &__list {
             list-style-type: circle;
             margin-left: 20px;
+
+            li::marker {
+                color: var(--text-less-prominent);
+            }
         }
     }
     &__item {
@@ -63,8 +64,6 @@
                 cursor: pointer;
 
                 &--label {
-                    font-size: 1.4rem;
-                    color: var(--text-general);
                     margin-right: 0.8rem;
                 }
             }
@@ -83,15 +82,6 @@
             color: var(--text-less-prominent);
             font-size: var(--text-size--xxxs);
             margin-top: 6px;
-        }
-        &--success {
-            color: var(--status-success);
-        }
-        &--info {
-            color: var(--status-info);
-        }
-        &--warn {
-            color: var(--status-warning);
         }
         &--error {
             color: var(--status-danger);

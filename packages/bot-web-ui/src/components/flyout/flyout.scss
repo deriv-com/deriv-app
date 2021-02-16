@@ -106,12 +106,6 @@
             color: $COLOR_LIGHT_BLACK_1;
             background-color: var(--general-section-1);
             display: flex;
-
-            &:disabled {
-                .dc-btn__text {
-                    color: var(--text-disabled);
-                }
-            }
         }
     }
     &__item {
@@ -174,8 +168,6 @@
         }
         &-title {
             align-self: center;
-            font-size: 16px;
-            font-weight: bold;
         }
         &-footer {
             display: flex;
@@ -195,12 +187,7 @@
             justify-content: space-between;
 
             &-text {
-                font-size: 16px;
-                font-weight: bold;
                 align-self: center;
-            }
-            &-results {
-                color: $COLOR_GREEN_5;
             }
         }
         &-empty {

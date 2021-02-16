@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Button from '../button/button.jsx';
 import Icon from '../icon/icon.jsx';
+import Text from '../text';
 
 const Dialog = ({
     disableApp,
@@ -53,6 +54,7 @@ const Dialog = ({
         'dc-dialog__content--centered': is_content_centered,
     });
 
+    const is_text = typeof children === 'string' || typeof children?.props?.i18n_default_text === 'string';
     const dialog = (
         <CSSTransition
             appear
@@ -84,8 +86,10 @@ const Dialog = ({
                             </div>
                         )}
                     </div>
-                    {typeof children === 'string' ? (
-                        <p className={content_classes}>{children}</p>
+                    {is_text ? (
+                        <Text as='p' size='xs' styles={{ lineHeight: '1.43' }} className={content_classes}>
+                            {children}
+                        </Text>
                     ) : (
                         <div className={content_classes}>{children}</div>
                     )}

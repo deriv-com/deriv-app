@@ -39,55 +39,55 @@ const AdvertiserPageStats = ({ is_visible }) => {
                     >
                         <Table.Row className='advertiser-page__stats'>
                             <Table.Cell className='advertiser-page__stats-cell'>
-                                <Text color='less-prominent' size='xs' line_height='m'>
-                                    {localize('Total orders')}{' '}
+                                <Text align='center' color='less-prominent' size='xs' line_height='m'>
+                                    {localize('Total orders')}
                                 </Text>
-                                <Text color='prominent' size='s' weight='bold'>
+                                <Text align='center' color='prominent' size='s' weight='bold'>
                                     {total_orders_count || '-'}
                                 </Text>
                             </Table.Cell>
                             <div className='advertiser-page__stats-cell-separator' />
                             {isMobile() ? (
                                 <Table.Cell className='advertiser-page__stats-cell'>
-                                    <Text color='less-prominent' size='xs' line_height='m'>
-                                        {localize('Buy/Sell')}{' '}
+                                    <Text align='center' color='less-prominent' size='xs' line_height='m'>
+                                        {localize('Buy/Sell')}
                                     </Text>
-                                    <Text color='prominent' size='s' weight='bold'>
-                                        {`${buy_orders_count || '-'}/${sell_orders_count || '-'}`}{' '}
+                                    <Text align='center' color='prominent' size='s' weight='bold'>
+                                        {`${buy_orders_count || '-'}/${sell_orders_count || '-'}`}
                                     </Text>
                                 </Table.Cell>
                             ) : (
                                 <React.Fragment>
                                     <Table.Cell className='advertiser-page__stats-cell'>
                                         <Text color='less-prominent' size='xs' line_height='m'>
-                                            {localize('Buy')}{' '}
+                                            {localize('Buy')}
                                         </Text>
                                         <Text color='prominent' size='s' weight='bold'>
-                                            {buy_orders_count || '-'}{' '}
+                                            {buy_orders_count || '-'}
                                         </Text>
                                     </Table.Cell>
                                     <div className='advertiser-page__stats-cell-separator' />
                                     <Table.Cell className='advertiser-page__stats-cell'>
                                         <Text color='less-prominent' size='xs' line_height='m'>
-                                            {localize('Sell')}{' '}
+                                            {localize('Sell')}
                                         </Text>
                                         <Text color='prominent' size='s' weight='bold'>
-                                            {sell_orders_count || '-'}{' '}
+                                            {sell_orders_count || '-'}
                                         </Text>
                                     </Table.Cell>
                                 </React.Fragment>
                             )}
                             <div className='advertiser-page__stats-cell-separator' />
                             <Table.Cell className='advertiser-page__stats-cell'>
-                                <Text color='less-prominent' size='xs' line_height='m'>
+                                <Text align='center' color='less-prominent' size='xs' line_height='m'>
                                     {localize('Completion')}
                                 </Text>
                                 <div className='advertiser-page__stats-cell-completion'>
-                                    <Text color='prominent' size='s' weight='bold'>
-                                        {total_completion_rate ? `${total_completion_rate}%` : '-'}{' '}
+                                    <Text align='center' color='prominent' size='s' weight='bold'>
+                                        {total_completion_rate ? `${total_completion_rate}%` : '-'}
                                     </Text>
                                     <div className='advertiser-page__stats-cell-buy'>
-                                        <Text size='xs' color='prominent' line_height='m'>
+                                        <Text align='center' color='prominent' line_height='m' size='xs'>
                                             {localize('(Buy {{- buy_completion_rate }})', {
                                                 buy_completion_rate: buy_completion_rate
                                                     ? `${buy_completion_rate}%`
@@ -99,10 +99,10 @@ const AdvertiserPageStats = ({ is_visible }) => {
                             </Table.Cell>
                             <div className='advertiser-page__stats-cell-separator' />
                             <Table.Cell className='advertiser-page__stats-cell'>
-                                <Text color='less-prominent' size='xs' line_height='m'>
+                                <Text align='center' color='less-prominent' size='xs' line_height='m'>
                                     {localize('Avg. release time')}
                                 </Text>
-                                <Text color='prominent' size='s' weight='bold'>
+                                <Text align='center' color='prominent' size='s' weight='bold'>
                                     {release_time_avg
                                         ? localize('{{- avg_release_time_in_minutes}} min', {
                                               avg_release_time_in_minutes,

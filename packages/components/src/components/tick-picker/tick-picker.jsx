@@ -4,6 +4,7 @@ import throttle from 'lodash.throttle';
 import { useSwipeable } from 'react-swipeable';
 import Button from '../button/button.jsx';
 import Icon from '../icon';
+import Text from '../text';
 
 const THROTTLE_INTERVAL_TIME = 100;
 
@@ -68,10 +69,12 @@ const TickPicker = ({
                     <Icon icon='IcMinus' custom_color='var(--text-prominent)' />
                 </Button>
                 <div className='dc-tick-picker__holder' {...swipe_handlers}>
-                    <span className='dc-tick-picker__holder--large'>{normalizedTick(tick_value)}</span>
-                    <span className='dc-tick-picker__holder--small'>
+                    <Text styles={{ fontSize: '96px', lineHeight: 1, color: 'inherit' }}>
+                        {normalizedTick(tick_value)}
+                    </Text>
+                    <Text size='s' weight='bold' align='center' styles={{ color: 'inherit' }}>
                         {tick_value === 1 ? singular_label : plural_label}
-                    </span>
+                    </Text>
                 </div>
                 <Button rounded className='operator' onClick={handleIncrease}>
                     <Icon icon='IcAdd' custom_color='var(--text-prominent)' />
@@ -82,7 +85,17 @@ const TickPicker = ({
                     'dc-tick-picker__submit-wrapper--is-disabled': is_submit_disabled,
                 })}
             >
-                <Button rounded onClick={handleClick}>
+                <Button
+                    rounded
+                    onClick={handleClick}
+                    renderText={() =>
+                        is_submit_disabled && (
+                            <Text size='s' weight='bold' align='center' color='disabled'>
+                                {submit_label}
+                            </Text>
+                        )
+                    }
+                >
                     {submit_label}
                 </Button>
             </div>

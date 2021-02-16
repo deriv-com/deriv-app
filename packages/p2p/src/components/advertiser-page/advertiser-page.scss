@@ -88,20 +88,25 @@
 
             @include mobile {
                 min-width: 12rem;
-            }
 
-            &-completion {
-                display: flex;
-
-                @include mobile {
-                    flex-direction: column;
-                    padding-left: 0.5rem;
+                &:nth-child(3) {
+                    min-width: 14rem;
                 }
             }
 
             &-buy {
                 margin-left: 0.5rem;
                 margin-top: 0.14rem;
+            }
+
+            &-completion {
+                display: flex;
+
+                @include mobile {
+                    flex-direction: row;
+                    padding-left: 0.5rem;
+                    width: 14rem;
+                }
             }
 
             &-separator {

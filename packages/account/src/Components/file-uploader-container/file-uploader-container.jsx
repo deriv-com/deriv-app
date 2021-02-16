@@ -106,7 +106,7 @@ const FileUploaderContainer = ({ is_description_disabled, getSocket, onFileDrop,
             )}
             <div
                 className={classNames('account-poa__upload-file', {
-                    'account-poa__upload-file--dashboard': isDesktop && is_dashboard,
+                    'account-poa__upload-file--dashboard': isDesktop() && is_dashboard,
                 })}
             >
                 <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} />

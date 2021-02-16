@@ -8,7 +8,7 @@ import VerticalTabHeaders from './vertical-tab-headers.jsx';
 import VerticalTabHeaderTitle from './vertical-tab-header-title.jsx';
 import VerticalTabLayout from './vertical-tab-layout.jsx';
 import VerticalTabWrapper from './vertical-tab-wrapper.jsx';
-import Icon from '../icon';
+import Icon from '../icon.jsx';
 
 const setSelectedIndex = ({ current_path, list, is_routed, selected_index, setCurrTabIndex, setVerticalTabIndex }) => {
     let index;
@@ -119,7 +119,6 @@ const VerticalTab = ({
                         header_title={header_title}
                         tab_headers_note={tab_headers_note}
                     />
-                    {extra_content && extra_content}
                     {is_floating && tab_headers_note && (
                         <div className='dc-vertical-tab__tab-bottom-note'>{tab_headers_note}</div>
                     )}

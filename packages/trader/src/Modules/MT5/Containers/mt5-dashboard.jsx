@@ -156,7 +156,6 @@ class MT5Dashboard extends React.Component {
             standpoint,
             toggleAccountsDialog,
             toggleShouldShowRealAccountsList,
-            trading_servers,
             can_have_more_real_synthetic_mt5,
             upgradeable_landing_companies,
         } = this.props;
@@ -245,7 +244,6 @@ class MT5Dashboard extends React.Component {
                                                 standpoint={standpoint}
                                                 toggleAccountsDialog={toggleAccountsDialog}
                                                 toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
-                                                trading_servers={trading_servers}
                                                 can_have_more_real_synthetic_mt5={can_have_more_real_synthetic_mt5}
                                             />
                                         </React.Fragment>
@@ -476,7 +474,6 @@ export default withRouter(
         onUnmount: modules.mt5.onUnmount,
         toggleAccountsDialog: ui.toggleAccountsDialog,
         toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
-        trading_servers: client.trading_servers,
         can_have_more_real_synthetic_mt5: client.can_have_more_real_synthetic_mt5,
         upgradeable_landing_companies: client.upgradeable_landing_companies,
     }))(MT5Dashboard)

@@ -45,7 +45,6 @@ const MT5RealAccountDisplay = ({
     is_logged_in,
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
-    trading_servers,
     can_have_more_real_synthetic_mt5,
 }) => {
     const should_show_trade_servers =
@@ -153,7 +152,6 @@ const MT5RealAccountDisplay = ({
                                   'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
                               )}
                               specs={real_synthetic_specs}
-                              trading_servers={trading_servers}
                               onHover={handleHoverCard}
                           />
                       );
@@ -179,7 +177,6 @@ const MT5RealAccountDisplay = ({
                           'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
                       )}
                       specs={real_synthetic_specs}
-                      trading_servers={trading_servers}
                       onHover={handleHoverCard}
                   />,
               ]);

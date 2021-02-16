@@ -241,6 +241,12 @@ const getModules = ({ is_deriv_crypto }) => {
                               getTitle: () => localize('DP2P'),
                               icon_component: 'IcDp2p',
                           },
+                          {
+                              path: routes.cashier_p2p_verification,
+                              component: Cashier,
+                              getTitle: () => localize('DP2P'),
+                              icon_component: 'IcDp2p',
+                          },
                       ]),
                 {
                     id: 'gtm-onramp-tab',

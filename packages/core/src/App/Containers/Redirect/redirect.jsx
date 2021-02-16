@@ -62,7 +62,7 @@ const Redirect = ({
             break;
         }
         case 'verification': {
-            sessionStorage.setItem('redirect_url', `${routes.cashier_p2p}#verification`);
+            sessionStorage.setItem('redirect_url', routes.cashier_p2p_verification);
             window.location.href = loginUrl({
                 language: getLanguage(),
             });

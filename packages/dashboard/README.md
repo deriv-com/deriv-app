@@ -63,7 +63,6 @@
                 is_dark_mode_on: PropTypes.bool.isRequired,
                 language: PropTypes.string.isRequired,
                 components: PropTypes.shape({
-                    LoginPrompt: any,
                     Page404: any,
                 }).isRequired,
             }).isRequired,

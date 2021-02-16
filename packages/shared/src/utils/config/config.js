@@ -1,9 +1,5 @@
 import { isBot } from '../platform';
-import { getPlatformFromUrl, isStaging } from '../url/helpers';
-
-const DERIV_CRYPTO_STAGING_APP_ID = 2586;
-const DERIV_CRYPTO_STAGING_DBOT_APP_ID = 19112;
-const DERIV_CRYPTO_APP_ID = 1411;
+import { isStaging } from '../url/helpers';
 
 /*
  * Configuration values needed in js codes
@@ -21,7 +17,7 @@ export const domain_app_ids = {
     // these domains as supported "production domains"
     'deriv.app': 16929, // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
     'app.deriv.com': 16929,
-    'app.derivcrypto.com': DERIV_CRYPTO_APP_ID,
+    'myapps.deriv.com': 1411, // TODO: we need to create a new one
     'binary.com': 1,
 };
 
@@ -41,7 +37,6 @@ const isTestLink = () => {
 };
 
 export const getAppId = () => {
-    const { is_staging_deriv_crypto } = getPlatformFromUrl();
     let app_id = null;
     const user_app_id = ''; // you can insert Application ID of your registered application here
     const config_app_id = window.localStorage.getItem('config.app_id');
@@ -57,11 +52,7 @@ export const getAppId = () => {
         app_id = user_app_id;
     } else if (isStaging()) {
         window.localStorage.removeItem('config.default_app_id');
-        if (is_staging_deriv_crypto) {
-            app_id = isBot() ? DERIV_CRYPTO_STAGING_DBOT_APP_ID : DERIV_CRYPTO_STAGING_APP_ID;
-        } else {
-            app_id = isBot() ? 19112 : 16303; // it's being used in endpoint chrome extension - please do not remove
-        }
+        app_id = isBot() ? 19112 : 16303; // it's being used in endpoint chrome extension - please do not remove
     } else if (/localhost/i.test(window.location.hostname)) {
         app_id = 17044;
     } else {

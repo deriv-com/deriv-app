@@ -77,8 +77,6 @@ export const urlFor = (
     if (legacy) {
         if (getPlatformFromUrl().is_staging_deriv_app) {
             domain = domain.replace(/staging-app\.deriv\.com/, `staging.binary.com/${lang || 'en'}`);
-        } else if (getPlatformFromUrl().is_staging_deriv_crypto) {
-            domain = domain.replace(/staging-app\.derivcrypto\.com/, `staging.binary.com/${lang || 'en'}`);
         } else if (getPlatformFromUrl().is_deriv_app) {
             domain = domain.replace(/app\.deriv\.com/, `binary.com/${lang || 'en'}`);
         } else {

@@ -5,10 +5,6 @@ export const deriv_urls = Object.freeze({
     DERIV_DASHBOARD_STAGING: 'https://staging-myapps.deriv.com',
     DERIV_APP_PRODUCTION: 'https://app.deriv.com',
     DERIV_APP_STAGING: 'https://staging-app.deriv.com',
-    DERIV_APP_DASHBOARD_PRODUCTION: 'https://myapps.deriv.com',
-    DERIV_APP_DASHBOARD_STAGING: 'https://staging-myapps.deriv.com',
     SMARTTRADER_PRODUCTION: 'https://smarttrader.deriv.com',
     SMARTTRADER_STAGING: 'https://staging-smarttrader.deriv.com',
-    SMARTTRADER_CRYPTO_PRODUCTION: 'https://smarttrader.derivcrypto.com',
-    SMARTTRADER_CRYPTO_STAGING: 'https://staging-smarttrader.derivcrypto.com',
 });

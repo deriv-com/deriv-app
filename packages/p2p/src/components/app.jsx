@@ -63,6 +63,7 @@ const App = observer(props => {
     order_store.setOrderId(order_id);
 
     React.useEffect(() => {
+        // Redirect back to /p2p, this was implemented for the mobile team. Do not remove.
         if (/\/verification$/.test(history?.location.pathname)) {
             history.push(routes.cashier_p2p);
         }

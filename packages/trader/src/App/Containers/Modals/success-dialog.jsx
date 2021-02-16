@@ -30,7 +30,7 @@ const SuccessDialog = ({
 
     return (
         <Modal
-            className='mt5-success-dialog'
+            className='cfd-success-dialog'
             is_open={is_open}
             toggleModal={toggleModal}
             has_close_icon={has_close_icon}

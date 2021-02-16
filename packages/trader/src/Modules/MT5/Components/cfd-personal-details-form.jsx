@@ -185,7 +185,7 @@ const CFDPersonalDetailsForm = ({
                 <AutoHeightWrapper default_height={200} height_offset={isDesktop() ? 148 : null}>
                     {({ height, setRef }) => (
                         <form
-                            className='mt5-financial-stp-modal__form'
+                            className='cfd-financial-stp-modal__form'
                             ref={setRef}
                             onSubmit={handleSubmit}
                             autoComplete='off'

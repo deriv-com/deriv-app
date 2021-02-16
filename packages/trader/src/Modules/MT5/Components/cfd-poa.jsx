@@ -266,7 +266,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
             }) => (
                 <AutoHeightWrapper default_height={200}>
                     {({ setRef, height }) => (
-                        <form ref={setRef} onSubmit={handleSubmit} className='mt5-proof-of-address'>
+                        <form ref={setRef} onSubmit={handleSubmit} className='cfd-proof-of-address'>
                             <Div100vhContainer className='details-form' height_offset='100px' is_disabled={isDesktop()}>
                                 {is_loading && <Loading is_fullscreen={false} />}
                                 {is_form_visible && (
@@ -275,7 +275,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                         height={`${height - 77}px`}
                                         is_bypassed={isMobile()}
                                     >
-                                        <div className='mt5-proof-of-address__field-area'>
+                                        <div className='cfd-proof-of-address__field-area'>
                                             <FormSubHeader
                                                 subtitle={localize('(All fields are required)')}
                                                 title={localize('Address information')}
@@ -296,7 +296,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                                 placeholder={localize('Second line of address')}
                                                 onBlur={handleBlur}
                                             />
-                                            <div className='mt5-proof-of-address__inline-fields'>
+                                            <div className='cfd-proof-of-address__inline-fields'>
                                                 <InputField
                                                     maxLength={255}
                                                     name='address_city'
@@ -371,7 +371,7 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                                     required
                                                 />
                                             </div>
-                                            <div className='mt5-proof-of-address__file-upload'>
+                                            <div className='cfd-proof-of-address__file-upload'>
                                                 <FileUploaderContainer
                                                     onRef={ref => (file_uploader_ref = ref)}
                                                     getSocket={WS.getSocket}

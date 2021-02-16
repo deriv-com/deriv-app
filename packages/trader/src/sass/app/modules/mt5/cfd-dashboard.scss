@@ -437,7 +437,7 @@
 
 .cfd-real-accounts-display {
     transition: margin-bottom 0.3s ease-in-out;
-    margin-bottom: var(--mt5-real-acc-margin-bottom);
+    margin-bottom: var(--cfd-real-acc-margin-bottom);
     &__carousel {
         margin-bottom: -4rem;
     }
@@ -799,7 +799,7 @@
     }
 }
 
-.mt5-password-manager {
+.cfd-password-manager {
     margin: 5.6rem auto 3.2rem;
     width: 100%;
     height: 100%;
@@ -832,7 +832,7 @@
         margin: auto;
     }
     &__investor-wrapper {
-        .mt5-password-manager--paragraph:first-child {
+        .cfd-password-manager--paragraph:first-child {
             margin-bottom: 0.8rem;
         }
     }
@@ -905,7 +905,7 @@
     }
 }
 
-.mt5-financial-stp-modal {
+.cfd-financial-stp-modal {
     display: grid;
     grid-template-rows: 13rem minmax(10rem, 1fr);
     height: 100%;
@@ -1003,33 +1003,11 @@
         &_cfd-dashboard__compare-accounts {
             width: 904px;
         }
-        &_mt5-password-manager__modal {
+        &_cfd-password-manager__modal {
             height: 100% !important;
             min-height: calc(100vh - 22rem);
             width: 904px;
             max-height: calc(100vh - 48px - 36px) !important;
-        }
-    }
-}
-
-.mt5-details-form {
-    @include tablet {
-        display: grid;
-        grid-template-rows: 7rem minmax(10rem, 1fr);
-        height: auto;
-    }
-    &__fields {
-        padding: 0;
-    }
-    & .mt5-tax-identification-number {
-        margin-top: 1rem;
-    }
-    & .dc-autocomplete {
-        margin-bottom: 2.4rem;
-        &__input-field {
-            .dc-input {
-                margin-bottom: 0;
-            }
         }
     }
 }
@@ -1100,7 +1078,7 @@
     }
 }
 
-.mt5-proof-of-address {
+.cfd-proof-of-address {
     height: 100%;
     & .details-form {
         display: grid;
@@ -1166,7 +1144,7 @@
     }
 }
 
-.mt5-proof-of-identity {
+.cfd-proof-of-identity {
     height: 100%;
     overflow: auto;
 
@@ -1222,7 +1200,7 @@
     }
 }
 .dc-modal__container_cfd-pending-dialog,
-.dc-modal__container_mt5-success-dialog {
+.dc-modal__container_cfd-success-dialog {
     .dc-modal-header__title--cfd-pending-dialog {
         text-align: center;
         margin: auto;
@@ -1264,7 +1242,7 @@
         }
     }
 }
-.dc-modal__container_mt5-success-dialog {
+.dc-modal__container_cfd-success-dialog {
     .success-change__icon-area {
         width: 128px;
         margin: 2.4rem auto 0;

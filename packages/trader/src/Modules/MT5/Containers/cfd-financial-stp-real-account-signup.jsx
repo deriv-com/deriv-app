@@ -16,7 +16,7 @@ const index_lookup = {
     CFDPendingVerification: 3,
 };
 
-class MT5FinancialStpRealAccountSignup extends React.Component {
+class CFDFinancialStpRealAccountSignup extends React.Component {
     constructor(props) {
         super(props);
 
@@ -220,20 +220,20 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
         const height = this.getCurrent('height') || 'auto';
         return (
             <Div100vhContainer
-                className='mt5-financial-stp-modal'
+                className='cfd-financial-stp-modal'
                 id='real_mt5_financial_stp_account_opening'
                 is_disabled={isDesktop()}
                 height_offset='40px'
             >
-                <div className='mt5-financial-stp-modal__heading'>
+                <div className='cfd-financial-stp-modal__heading'>
                     {this.getCurrent() && (
                         <>
                             <DesktopWrapper>
                                 <FormProgress steps={this.state.items} current_step={this.state.step} />
                             </DesktopWrapper>
                             <MobileWrapper>
-                                <div className='mt5-financial-stp-modal__header-steps'>
-                                    <h4 className='mt5-financial-stp-modal__header-steps-title'>
+                                <div className='cfd-financial-stp-modal__header-steps'>
+                                    <h4 className='cfd-financial-stp-modal__header-steps-title'>
                                         <Localize
                                             i18n_default_text='Step {{step}}: {{step_title}} ({{step}} of {{steps}})'
                                             values={{
@@ -244,7 +244,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                                         />
                                     </h4>
                                     {this.state.items[this.state.step].header.active_title && (
-                                        <h4 className='mt5-financial-stp-modal__header-steps-subtitle'>
+                                        <h4 className='cfd-financial-stp-modal__header-steps-subtitle'>
                                             {this.state.items[this.state.step].header.active_title}
                                         </h4>
                                     )}
@@ -253,7 +253,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                         </>
                     )}
                 </div>
-                <div className='mt5-financial-stp-modal__body'>
+                <div className='cfd-financial-stp-modal__body'>
                     <BodyComponent
                         value={form_value}
                         index={this.state_index}
@@ -271,7 +271,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
     }
 }
 
-MT5FinancialStpRealAccountSignup.propTypes = {
+CFDFinancialStpRealAccountSignup.propTypes = {
     openPendingDialog: PropTypes.func,
     toggleModal: PropTypes.func,
 };
@@ -289,4 +289,4 @@ export default connect(({ client, modules: { mt5 }, ui }) => ({
     residence_list: client.residence_list,
     states_list: client.states_list,
     storeProofOfAddress: mt5.storeProofOfAddress,
-}))(MT5FinancialStpRealAccountSignup);
+}))(CFDFinancialStpRealAccountSignup);

@@ -38,11 +38,11 @@ class ProofOfIdentityForm extends React.PureComponent {
                 {({ handleSubmit }) => (
                     <AutoHeightWrapper default_height={200}>
                         {({ setRef, height }) => (
-                            <form ref={setRef} className='mt5-proof-of-identity' onSubmit={handleSubmit}>
+                            <form ref={setRef} className='cfd-proof-of-identity' onSubmit={handleSubmit}>
                                 <div className='details-form'>
                                     <input type='hidden' name='poi_state' value={this.state.poi_state} readOnly />
                                     <Div100vhContainer
-                                        className='mt5-proof-of-identity__fields'
+                                        className='cfd-proof-of-identity__fields'
                                         height_offset='180px'
                                         is_disabled={isDesktop()}
                                     >

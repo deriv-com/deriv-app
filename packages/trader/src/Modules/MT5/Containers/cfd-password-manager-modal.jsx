@@ -119,10 +119,10 @@ const CFDPasswordReset = ({ sendVerifyEmail, account_type, account_group, server
     );
 };
 
-const MT5PasswordSuccessMessage = ({ toggleModal, is_investor }) => (
-    <div className='mt5-password-manager__success'>
+const CFDPasswordSuccessMessage = ({ toggleModal, is_investor }) => (
+    <div className='cfd-password-manager__success'>
         <Icon icon='IcPasswordUpdated' size={128} />
-        <h1 className='mt5-password-manager__success-header'>
+        <h1 className='cfd-password-manager__success-header'>
             <Localize i18n_default_text='Password changed' />
         </h1>
         <Text as='p' size='xxs' align='center'>
@@ -132,14 +132,14 @@ const MT5PasswordSuccessMessage = ({ toggleModal, is_investor }) => (
                 <Localize i18n_default_text='Your password has been changed.' />
             )}
         </Text>
-        <Button onClick={toggleModal} className='mt5-password-manager__success-btn' primary large>
+        <Button onClick={toggleModal} className='cfd-password-manager__success-btn' primary large>
             <p className='dc-btn__text'>{localize('OK')}</p>
         </Button>
     </div>
 );
 
 const MT5PasswordManagerTabContentWrapper = ({ multi_step_ref, steps }) => (
-    <MultiStep ref={multi_step_ref} steps={steps} className='mt5-password-manager' lbl_previous={localize('Back')} />
+    <MultiStep ref={multi_step_ref} steps={steps} className='cfd-password-manager' lbl_previous={localize('Back')} />
 );
 
 const MainPasswordManager = ({
@@ -152,7 +152,7 @@ const MainPasswordManager = ({
     multi_step_ref,
 }) => {
     if (is_submit_success_main) {
-        return <MT5PasswordSuccessMessage toggleModal={toggleModal} />;
+        return <CFDPasswordSuccessMessage toggleModal={toggleModal} />;
     }
 
     const initial_values = { old_password: '', new_password: '', password_type: 'main' };
@@ -160,8 +160,8 @@ const MainPasswordManager = ({
     return (
         <Formik initialValues={initial_values} validate={validatePassword} onSubmit={onSubmit}>
             {({ isSubmitting, errors, setFieldTouched, values, touched }) => (
-                <Form className='mt5-password-manager__main-form' noValidate>
-                    {error_message_main && <p className='mt5-password-manager--error-message'>{error_message_main}</p>}
+                <Form className='cfd-password-manager__main-form' noValidate>
+                    {error_message_main && <p className='cfd-password-manager--error-message'>{error_message_main}</p>}
                     <Field name='old_password'>
                         {({ field }) => (
                             <PasswordInput
@@ -196,16 +196,16 @@ const MainPasswordManager = ({
                                             setFieldTouched('new_password', true, true);
                                             field.onChange(e);
                                         }}
-                                        className='mt5-password-manager__new-password'
+                                        className='cfd-password-manager__new-password'
                                         required
                                     />
                                 )}
                             </PasswordMeter>
                         )}
                     </Field>
-                    <div className='mt5-password-manager__actions'>
+                    <div className='cfd-password-manager__actions'>
                         <Button
-                            className='mt5-password-manager--button'
+                            className='cfd-password-manager--button'
                             is_disabled={
                                 isSubmitting ||
                                 !values.old_password ||
@@ -218,7 +218,7 @@ const MainPasswordManager = ({
                             large
                         />
                         <Button
-                            className='mt5-password-manager--button'
+                            className='cfd-password-manager--button'
                             type='button'
                             onClick={() => {
                                 setPasswordType('main');
@@ -245,27 +245,27 @@ const InvestorPasswordManager = ({
     validatePassword,
 }) => {
     if (is_submit_success_investor) {
-        return <MT5PasswordSuccessMessage toggleModal={toggleModal} is_investor />;
+        return <CFDPasswordSuccessMessage toggleModal={toggleModal} is_investor />;
     }
 
     const initial_values = { old_password: '', new_password: '', password_type: 'investor' };
 
     return (
-        <div className='mt5-password-manager__investor-wrapper'>
-            <Text as='p' size='xs' className='mt5-password-manager--paragraph'>
+        <div className='cfd-password-manager__investor-wrapper'>
+            <Text as='p' size='xs' className='cfd-password-manager--paragraph'>
                 <Localize i18n_default_text='Use this password to grant viewing access to another user. While they may view your trading account, they will not be able to trade or take any other actions.' />
             </Text>
-            <Text as='p' size='xs' className='mt5-password-manager--paragraph'>
+            <Text as='p' size='xs' className='cfd-password-manager--paragraph'>
                 <Localize i18n_default_text='If this is the first time you try to create a password, or you have forgotten your password, please reset it.' />
             </Text>
             {error_message_investor && (
-                <Text as='p' color='loss-danger' size='xs' className='mt5-password-manager--error-message'>
+                <Text as='p' color='loss-danger' size='xs' className='cfd-password-manager--error-message'>
                     {error_message_investor}
                 </Text>
             )}
             <Formik initialValues={initial_values} validate={validatePassword} onSubmit={onSubmit}>
                 {({ isSubmitting, errors, setFieldTouched, values, touched }) => (
-                    <Form className='mt5-password-manager__investor-form' noValidate>
+                    <Form className='cfd-password-manager__investor-form' noValidate>
                         <Field name='old_password'>
                             {({ field }) => (
                                 <PasswordInput
@@ -300,16 +300,16 @@ const InvestorPasswordManager = ({
                                                 setFieldTouched('new_password', true, true);
                                                 field.onChange(e);
                                             }}
-                                            className='mt5-password-manager__new-password'
+                                            className='cfd-password-manager__new-password'
                                             required
                                         />
                                     )}
                                 </PasswordMeter>
                             )}
                         </Field>
-                        <div className='mt5-password-manager__actions'>
+                        <div className='cfd-password-manager__actions'>
                             <Button
-                                className='mt5-password-manager--button'
+                                className='cfd-password-manager--button'
                                 is_disabled={
                                     isSubmitting ||
                                     !values.old_password ||
@@ -322,7 +322,7 @@ const InvestorPasswordManager = ({
                                 large
                             />
                             <Button
-                                className='mt5-password-manager--button'
+                                className='cfd-password-manager--button'
                                 type='button'
                                 onClick={() => {
                                     setPasswordType('investor');
@@ -433,7 +433,7 @@ const MT5PasswordManagerTabContent = ({ toggleModal, selected_login, email, setP
                         </ThemedScrollbars>
                     </DesktopWrapper>
                     <MobileWrapper>
-                        <Div100vhContainer className='mt5-password-manager__scroll-wrapper' height_offset='120px'>
+                        <Div100vhContainer className='cfd-password-manager__scroll-wrapper' height_offset='120px'>
                             <MainPasswordManager
                                 is_submit_success_main={is_submit_success_main}
                                 toggleModal={toggleModal}
@@ -461,7 +461,7 @@ const MT5PasswordManagerTabContent = ({ toggleModal, selected_login, email, setP
                         </ThemedScrollbars>
                     </DesktopWrapper>
                     <MobileWrapper>
-                        <Div100vhContainer className='mt5-password-manager__scroll-wrapper' height_offset='120px'>
+                        <Div100vhContainer className='cfd-password-manager__scroll-wrapper' height_offset='120px'>
                             <InvestorPasswordManager
                                 is_submit_success_investor={is_submit_success_investor}
                                 toggleModal={toggleModal}
@@ -528,7 +528,7 @@ const MT5PasswordManagerModal = ({
         <React.Suspense fallback={<UILoader />}>
             <DesktopWrapper>
                 <Modal
-                    className='mt5-password-manager__modal'
+                    className='cfd-password-manager__modal'
                     disableApp={disableApp}
                     enableApp={enableApp}
                     is_open={is_visible}

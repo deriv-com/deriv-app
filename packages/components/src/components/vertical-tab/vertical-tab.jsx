@@ -8,7 +8,7 @@ import VerticalTabHeaders from './vertical-tab-headers.jsx';
 import VerticalTabHeaderTitle from './vertical-tab-header-title.jsx';
 import VerticalTabLayout from './vertical-tab-layout.jsx';
 import VerticalTabWrapper from './vertical-tab-wrapper.jsx';
-import Icon from '../icon.jsx';
+import Icon from '../icon/icon.jsx';
 
 const setSelectedIndex = ({ current_path, list, is_routed, selected_index, setCurrTabIndex, setVerticalTabIndex }) => {
     let index;
@@ -35,7 +35,6 @@ const VerticalTab = ({
     action_bar_classname,
     className,
     current_path,
-    extra_content,
     extra_offset,
     has_mixed_dimensions,
     header_classname,

@@ -3,25 +3,26 @@ import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import YouMightLikeCard from './you-might-like-card';
 
+// TODO: UPDATE ICON STRINGS ONCE NEW SVGS HAVE BEEN UPLOADED
 const trader_types = [
     {
         code: '1',
         bg: '/trade-types/bg-options.png',
-        icon: 'IcDashboardOptions',
+        icon: 'IcDerivOutline',
         title: localize('Digital options'),
         sub_title: localize('Earn fixed payouts by predicting an asset price movements'),
     },
     {
         code: '2',
         bg: '/trade-types/bg-multipliers.png',
-        icon: 'IcDashboardMultipliers',
+        icon: 'IcDerivOutline',
         title: localize('Multipliers'),
         sub_title: localize('Amplify your gains without losing more than your stake.'),
     },
     {
         code: '3',
         bg: '/trade-types/bg-margin.png',
-        icon: 'IcDashboardOptions',
+        icon: 'IcDerivOutline',
         title: localize('Margin'),
         sub_title: localize('Trade with leverage and low spreads for better returns on successful trades.'),
     },

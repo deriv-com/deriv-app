@@ -16,6 +16,7 @@ import CFDPasswordModal from './cfd-password-modal.jsx';
 import CFDServerErrorDialog from './cfd-server-error-dialog.jsx';
 import CFDTopUpDemoModal from './cfd-top-up-demo-modal.jsx';
 import CFDResetPasswordModal from './cfd-reset-password-modal.jsx';
+import { general_messages } from '../Constants/cfd-shared-strings';
 import CFDFinancialStpPendingDialog from '../Components/cfd-financial-stp-pending-dialog.jsx';
 import { CFDInfoCopy } from '../Components/cfd-info-copy.jsx';
 import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display.jsx';
@@ -162,18 +163,6 @@ class CFDDashboard extends React.Component {
             upgradeable_landing_companies,
         } = this.props;
 
-        // TODO: Consolidate all strings related to a single file mapping
-        const WelcomeText = () => {
-            if (platform === 'dxtrade') {
-                if (is_logged_in) return localize('Welcome to your DXTrade account dashboard');
-                return localize('Welcome to DXTrade');
-            } else if (platform === 'mt5') {
-                if (is_logged_in) return localize('Welcome to your MetaTrader 5 (DMT5 account dashboard)');
-                return localize('Welcome to MetaTrader 5 (DMT5 account dashboard)');
-            }
-            return localize('Welcome to the CFD account dashboard');
-        };
-
         const should_show_missing_real_account =
             !is_eu && is_logged_in && !has_real_account && upgradeable_landing_companies?.length > 0;
         if ((!country && is_logged_in) || is_logging_in) return <Loading />; // Wait for country name to be loaded before rendering
@@ -186,7 +175,7 @@ class CFDDashboard extends React.Component {
                         <div className='cfd-dashboard'>
                             <div className='cfd-dashboard__welcome-message'>
                                 <h1 className='cfd-dashboard__welcome-message--heading'>
-                                    <Localize i18n_default_text={WelcomeText()} />
+                                    {general_messages.getWelcomeHeader(is_logged_in, platform)}
                                 </h1>
                             </div>
                             {has_mt5_account_error && (

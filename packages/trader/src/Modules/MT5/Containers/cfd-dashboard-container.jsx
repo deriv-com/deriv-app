@@ -1,19 +1,12 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { general_messages } from '../Constants/cfd-shared-strings';
 import { getMT5WebTerminalLink, getPlatformMt5DownloadLink } from '../Helpers/constants';
 
 const CFDDashboardContainer = ({ platform }) => (
     <div className='cfd-dashboard__download-center'>
-        <h1 className='cfd-dashboard__download-center--heading'>
-            {platform === 'mt5' && (
-                <Localize i18n_default_text='Run MT5 from your browser or download the MT5 app for your devices' />
-            )}
-            {platform === 'dxtrade' && (
-                <Localize i18n_default_text='Run DXTrade from your browser or download the DXTrade app for your devices' />
-            )}
-        </h1>
-
+        <h1 className='cfd-dashboard__download-center--heading'>{general_messages.getDownloadHeader(platform)}</h1>
         <div
             className='cfd-dashboard__download-center-options'
             style={{ justifyContent: platform === 'dxtrade' ? 'space-evenly' : null }}

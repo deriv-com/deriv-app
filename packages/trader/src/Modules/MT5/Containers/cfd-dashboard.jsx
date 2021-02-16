@@ -1,8 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, Icon, MobileWrapper, Tabs, PageError, Loading, Text } from '@deriv/components';
-// TODO: [mt5-redesign] replace tabs with radiogroup once card component is ready
-// import { DesktopWrapper, Icon, MobileWrapper, RadioGroup } from '@deriv/components';
 import { isEmptyObject, isMobile, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -269,74 +267,6 @@ class CFDDashboard extends React.Component {
                                         />
                                     </div>
                                 </LoadTab>
-                                {/* TODO: [mt5-redesign] replace tabs with radiogroup once card component is ready */}
-                                {/* {!is_loading && ( */}
-                                {/*    <RadioGroup */}
-                                {/*        className='radio-group__save-type' */}
-                                {/*        name='account_type' */}
-                                {/*        items={[ */}
-                                {/*            { */}
-                                {/*                id: 'demo', */}
-                                {/*                label: localize('Demo'), */}
-                                {/*                value: 'demo', */}
-                                {/*            }, */}
-                                {/*            { */}
-                                {/*                id: 'real', */}
-                                {/*                label: localize('Real'), */}
-                                {/*                value: 'real', */}
-                                {/*            }, */}
-                                {/*        ]} */}
-                                {/*        selected={this.state.is_demo_tab ? 'demo' : 'real'} */}
-                                {/*        onToggle={e => this.updateActiveIndex(e.target.value === 'demo' ? 0 : 1)} */}
-                                {/*    /> */}
-                                {/* )} */}
-                                {/* {this.state.is_demo_tab ? ( */}
-                                {/*    <CFDDemoAccountDisplay */}
-                                {/*        is_eu={is_eu} */}
-                                {/* TODO: remove eslint disable once this is uncommented */}
-                                {/* eslint-disable-next-line max-len */}
-                                {/*        is_logged_in={is_logged_in} */}
-                                {/*        has_maltainvest_account={has_maltainvest_account} */}
-                                {/*        openAccountNeededModal={openAccountNeededModal} */}
-                                {/*        standpoint={standpoint} */}
-                                {/*        is_loading={is_loading} */}
-                                {/*        has_mt5_account={has_mt5_account} */}
-                                {/*        current_list={current_list} */}
-                                {/*        onSelectAccount={createCFDAccount} */}
-                                {/*        landing_companies={landing_companies} */}
-                                {/*        openAccountTransfer={this.openAccountTransfer} */}
-                                {/*        openPasswordManager={this.togglePasswordManagerModal} */}
-                                {/*    /> */}
-                                {/* ) : ( */}
-                                {/*    <React.Fragment> */}
-                                {/*        {should_show_missing_real_account && ( */}
-                                {/*            <MissingRealAccount onClickSignup={beginRealSignupForMt5} /> */}
-                                {/*        )} */}
-                                {/*        <MT5RealAccountDisplay */}
-                                {/*            is_eu={is_eu} */}
-                                {/* TODO: remove eslint disable once this is uncommented */}
-                                {/* eslint-disable-next-line max-len */}
-                                {/*            is_eu_country={is_eu_country} */}
-                                {/*            is_logged_in={is_logged_in} */}
-                                {/*            has_maltainvest_account={has_maltainvest_account} */}
-                                {/*            has_malta_account={has_malta_account} */}
-                                {/*            openAccountNeededModal={openAccountNeededModal} */}
-                                {/*            current_list={current_list} */}
-                                {/*            account_status={account_status} */}
-                                {/*            has_mt5_account={has_mt5_account} */}
-                                {/*            onSelectAccount={createCFDAccount} */}
-                                {/*            account_settings={account_settings} */}
-                                {/*            landing_companies={landing_companies} */}
-                                {/*            is_pending_authentication={is_pending_authentication} */}
-                                {/*            is_fully_authenticated={is_fully_authenticated} */}
-                                {/*            openAccountTransfer={this.openAccountTransfer} */}
-                                {/*            openPasswordManager={this.togglePasswordManagerModal} */}
-                                {/*            openPasswordModal={this.openRealPasswordModal} */}
-                                {/*            has_real_account={has_real_account} */}
-                                {/*            standpoint={standpoint} */}
-                                {/*        /> */}
-                                {/*    </React.Fragment> */}
-                                {/* )} */}
                                 {platform === 'mt5' && (
                                     <div className='cfd-dashboard__info'>
                                         <div className='cfd-dashboard__info-description'>

@@ -42,8 +42,8 @@ const CFDDashboardContainer = ({ platform }) => (
                             {platform === 'dxtrade' && (
                                 <a
                                     className='cfd-dashboard__dxtrade-download'
-                                    href='#'
-                                    // target='_blank'
+                                    href='https://demo.dx.trade/'
+                                    target='_blank'
                                     rel='noopener noreferrer'
                                 >
                                     <Icon

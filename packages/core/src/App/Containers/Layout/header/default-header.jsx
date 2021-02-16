@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { useHistory, withRouter } from 'react-router-dom';
+import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
+import { Localize } from '@deriv/translations';
 import { routes, isMobile, getDecimalPlaces, getPlatformInformation } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
@@ -13,6 +14,18 @@ import { connect } from 'Stores/connect';
 import { clientNotifications } from 'Stores/Helpers/client-notifications';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
+
+const TryBeta = () => {
+    const history = useHistory();
+    return (
+        <div className='header__try-beta' onClick={() => history.push(routes.dashboard)}>
+            <Text size='xxxs' line_height='s' color='loss-danger' weight='bold'>
+                <Localize i18n_default_text='Try the new My Apps Beta!' />
+            </Text>
+            <Icon icon='IcArrowRight' color='red' className='header__try-beta--icon' />
+        </div>
+    );
+};
 
 const DefaultHeader = ({
     acc_switcher_disabled_message,
@@ -30,6 +43,8 @@ const DefaultHeader = ({
     is_acc_switcher_on,
     is_app_disabled,
     is_dark_mode,
+    is_eu,
+    is_eu_country,
     is_logged_in,
     is_logging_in,
     is_mt5_allowed,
@@ -125,6 +140,7 @@ const DefaultHeader = ({
                         'header__menu-right--hidden': isMobile() && is_logging_in,
                     })}
                 >
+                    {!is_logging_in && (is_logged_in ? !is_eu : !is_eu_country) && <TryBeta />}
                     {is_logging_in && (
                         <div
                             className={classNames('acc-info__preloader', {
@@ -178,6 +194,8 @@ DefaultHeader.propTypes = {
     is_acc_switcher_on: PropTypes.bool,
     is_app_disabled: PropTypes.bool,
     is_dark_mode: PropTypes.bool,
+    is_eu: PropTypes.bool,
+    is_eu_country: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
@@ -213,6 +231,8 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     is_acc_switcher_on: !!ui.is_accounts_switcher_on,
     is_app_disabled: ui.is_app_disabled,
     is_dark_mode: ui.is_dark_mode_on,
+    is_eu: client.is_eu,
+    is_eu_country: client.is_eu_country,
     is_loading: ui.is_loading,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,

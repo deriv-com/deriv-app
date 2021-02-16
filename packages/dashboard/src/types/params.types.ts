@@ -16,7 +16,7 @@ export type TRoute = {
 export type TRouteGroup = {
     default?: boolean;
     icon?: string;
-    label?: string;
+    getTitle?: () => string;
     path?: string;
     subitems?: number[];
 };

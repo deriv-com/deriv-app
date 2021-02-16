@@ -14,7 +14,11 @@ const offsetTop = (extra_offset, is_floating, ref, selected) => {
     );
     let selected_el = null;
 
-    selected_el = [...headers].find(header => header.innerText === selected.label);
+    selected_el = [...headers].find(header =>
+        typeof selected.getTitle === 'function'
+            ? header.innerText === selected.getTitle()
+            : header.innerText === selected.label
+    );
 
     if (selected_el) {
         item_offset = is_floating ? extra_offset || 18 : 10;

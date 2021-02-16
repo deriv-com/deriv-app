@@ -39,7 +39,7 @@ const Home: React.FC = () => {
             list_item.subroutes.forEach(item => subroutes.push(item));
             list_groups.push({
                 icon: list_item.icon,
-                label: list_item.label,
+                getTitle: list_item.getTitle,
                 subitems: (list_item.subroutes as number[]).map((subroute: number) => {
                     return subroutes.findIndex(sub => subroute === sub);
                 }),

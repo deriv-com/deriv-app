@@ -30,7 +30,7 @@ const VerticalTabHeaderGroup = ({
         onToggle(true);
     }, [show_items]);
 
-    const label = group.label || group.title; // group.label.charAt(0).toUpperCase() + group.label.slice(1).toLowerCase();
+    const label = typeof group.getTitle === 'function' ? group.getTitle() : group.label || group.title; // group.label.charAt(0).toUpperCase() + group.label.slice(1).toLowerCase();
     const handleClick = () => {
         if (!group.subitems && typeof onChange === 'function') {
             onChange(group);

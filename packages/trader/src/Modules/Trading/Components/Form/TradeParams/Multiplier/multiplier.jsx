@@ -13,7 +13,7 @@ const Multiplier = ({ multiplier, multiplier_range_list, onChange }) => {
             is_center
             header={localize('Multiplier')}
             header_tooltip={localize(
-                'Your profit is the percentage change in market price times your stake and the multiplier chosen here.'
+                'Your gross profit is the percentage change in market price times your stake and the multiplier chosen here.'
             )}
         >
             <Dropdown

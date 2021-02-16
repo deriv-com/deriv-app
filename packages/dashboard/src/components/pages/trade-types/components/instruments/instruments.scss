@@ -9,8 +9,7 @@
             margin-bottom: 0.8rem;
         }
         &-icon {
-            margin-right: 1.6rem;
-            margin-bottom: 0.8rem;
+            margin: 0 1.6rem 0.8rem 0;
         }
     }
     &__sub-instrument {
@@ -25,7 +24,7 @@
     }
     &__sub-instrument-items-container {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-columns: repeat(4, 1fr);
         grid-gap: 3.6rem;
         margin-top: 2rem;
         margin-bottom: 3.6rem;

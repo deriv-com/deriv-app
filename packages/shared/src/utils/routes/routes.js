@@ -72,7 +72,7 @@ export const routes = {
     platform_smarttrader: '/dashboard/platforms/smarttrader',
     platforms: '/dashboard/platforms',
 
-    trade_type_cdfs: '/dashboard/trade-types/cdfs',
+    trade_type_cfds: '/dashboard/trade-types/cdfs',
     trade_type_multipliers: '/dashboard/trade-types/multipliers',
     trade_type_options: '/dashboard/trade-types/options',
     trade_types: '/dashboard/trade-types',

@@ -87,7 +87,7 @@ export default connect(({ client, ui }) => ({
             platform_smarttrader: routes.platform_smarttrader,
             platforms: routes.platforms,
 
-            trade_type_cdfs: routes.trade_type_cdfs,
+            trade_type_cfds: routes.trade_type_cfds,
             trade_type_multipliers: routes.trade_type_multipliers,
             trade_type_options: routes.trade_type_options,
             trade_types: routes.trade_types,

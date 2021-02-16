@@ -28,7 +28,7 @@ export default class ConfigStore extends BaseStore {
         platform_smarttrader: '/platforms/smarttrader',
         platforms: '/platforms',
 
-        trade_type_cdfs: '/trade-types/cdfs',
+        trade_type_cfds: '/trade-types/cdfs',
         trade_type_multipliers: '/trade-types/multipliers',
         trade_type_options: '/trade-types/options',
         trade_types: '/trade-types',

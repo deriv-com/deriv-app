@@ -58,7 +58,7 @@ export type TRoutesProps = {
     platform_smarttrader: string;
     platforms: string;
 
-    trade_type_cdfs: string;
+    trade_type_cfds: string;
     trade_type_multipliers: string;
     trade_type_options: string;
     trade_types: string;

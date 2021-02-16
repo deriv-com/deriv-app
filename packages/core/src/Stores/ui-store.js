@@ -127,7 +127,7 @@ export default class UIStore extends BaseStore {
     mobile_toast_timeout = 3500;
     @observable.shallow toasts = [];
 
-    @observable is_mt5_page = false;
+    @observable is_cfd_page = false;
     @observable is_nativepicker_visible = false;
     @observable is_landscape = false;
 

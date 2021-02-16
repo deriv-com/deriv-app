@@ -9,7 +9,7 @@ import GetWalletModal from 'Components/modals/get-wallet-modal';
 
 // TODO: Temp component. This should be removed after linking my apps page with wallet creation flow.
 const TempGetDMT5Wallet: React.FC = observer(() => {
-    const { client_store, mt5_store, ui_store } = useStores();
+    const { client_store, cfd_store, ui_store } = useStores();
     const { is_real_acc_signup_on } = ui_store;
 
     if (!client_store.is_logged_in) return null;
@@ -19,7 +19,7 @@ const TempGetDMT5Wallet: React.FC = observer(() => {
                 {is_real_acc_signup_on && <AccountWizard />}
                 {!is_real_acc_signup_on && (
                     <Button.Group>
-                        <Button primary large onClick={mt5_store.enableMt5PasswordModal}>
+                        <Button primary large onClick={cfd_store.enableCFDPasswordModal}>
                             Get Mt5
                         </Button>
                         <Button primary large onClick={ui_store.enableGetPasswordModal}>

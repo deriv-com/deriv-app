@@ -208,12 +208,7 @@ const CFDAccountCard = ({
                         {getServerName(existing_data)}
                     </div>
                 )}
-                <div
-                    className={classNames('cfd-account-card__type', {
-                        'cfd-account-card__type--has-banner': has_popular_banner || has_demo_banner,
-                    })}
-                    id={`mt5_${type.category}_${type.type}`}
-                >
+                <div className='cfd-account-card__type' id={`mt5_${type.category}_${type.type}`}>
                     {icon}
                     <div className='cfd-account-card__type--description'>
                         <h1 className='cfd-account-card--heading'>{title}</h1>

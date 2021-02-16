@@ -43,7 +43,7 @@ const MT5AccountOpeningRealFinancialStpModal = ({
 
 export default connect(({ ui, modules }) => ({
     disableApp: ui.disableApp,
-    disableMt5FinancialStpModal: modules.mt5.disableMt5FinancialStpModal,
+    disableMt5FinancialStpModal: modules.cfd.disableMt5FinancialStpModal,
     enableApp: ui.enableApp,
-    is_mt5_financial_stp_modal_open: modules.mt5.is_mt5_financial_stp_modal_open,
+    is_mt5_financial_stp_modal_open: modules.cfd.is_mt5_financial_stp_modal_open,
 }))(MT5AccountOpeningRealFinancialStpModal);

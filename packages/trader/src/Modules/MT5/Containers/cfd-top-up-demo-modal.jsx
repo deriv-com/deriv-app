@@ -143,7 +143,7 @@ export default connect(({ ui, modules }) => ({
     is_top_up_virtual_success: ui.is_top_up_virtual_success,
     closeTopUpModal: ui.closeTopUpModal,
     closeSuccessTopUpModal: ui.closeSuccessTopUpModal,
-    current_account: modules.mt5.current_account,
-    mt5_companies: modules.mt5.mt5_companies,
-    topUpVirtual: modules.mt5.topUpVirtual,
+    current_account: modules.cfd.current_account,
+    mt5_companies: modules.cfd.mt5_companies,
+    topUpVirtual: modules.cfd.topUpVirtual,
 }))(CFDTopUpDemoModal);

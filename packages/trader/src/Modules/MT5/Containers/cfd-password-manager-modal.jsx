@@ -20,7 +20,7 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { isMobile, validLength, validPassword, getErrorMessages } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import MT5Store from 'Stores/Modules/MT5/mt5-store';
+import CFDStore from 'Stores/Modules/MT5/cfd-store';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }) => {
     const [count, setCount] = React.useState(count_from);
@@ -398,7 +398,7 @@ const MT5PasswordManagerTabContent = ({ toggleModal, selected_login, email, setP
                 return;
             }
 
-            const error = await MT5Store.changePassword({ login: selected_login, ...values });
+            const error = await CFDStore.changePassword({ login: selected_login, ...values });
             if (error) {
                 showError(values.password_type, error);
             } else {
@@ -571,9 +571,9 @@ MT5PasswordManagerModal.propTypes = {
     toggleModal: PropTypes.func,
 };
 
-export default connect(({ modules: { mt5 }, client, ui }) => ({
+export default connect(({ modules: { cfd }, client, ui }) => ({
     email: client.email,
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
-    sendVerifyEmail: mt5.sendVerifyEmail,
+    sendVerifyEmail: cfd.sendVerifyEmail,
 }))(MT5PasswordManagerModal);

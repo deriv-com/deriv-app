@@ -187,7 +187,7 @@ const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logge
     );
 };
 
-const CompareAccountFooter = () => {
+const CompareAccountFootNotes = () => {
     const footer_content = [
         {
             title: 'Maximum leverage',
@@ -358,7 +358,7 @@ const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in, p
                         ))}
                     </Table.Body>
                 </Table>
-                <CompareAccountFooter />
+                <CompareAccountFootNotes />
             </ThemedScrollbars>
         </div>
     );
@@ -431,11 +431,11 @@ const CompareAccountsModal = ({
 export default connect(({ modules, ui, client }) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
-    is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,
+    is_compare_accounts_visible: modules.cfd.is_compare_accounts_visible,
     is_loading: client.is_populating_mt5_account_list,
     is_eu: client.is_eu,
     is_eu_country: client.is_eu_country,
     is_logged_in: client.is_logged_in,
     landing_companies: client.landing_companies,
-    toggleCompareAccounts: modules.mt5.toggleCompareAccountsModal,
+    toggleCompareAccounts: modules.cfd.toggleCompareAccountsModal,
 }))(CompareAccountsModal);

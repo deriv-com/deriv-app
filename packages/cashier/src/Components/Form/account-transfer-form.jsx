@@ -25,10 +25,7 @@ const AccountOption = ({ trading_servers, mt5_login_list, account, idx, is_dark_
 
     if (account.is_mt) {
         const mt5_login = mt5_login_list.find(mt5_account => mt5_account.login === account.value);
-        server =
-            trading_servers.length > 1
-                ? trading_servers.find(trading_server => trading_server.id === mt5_login.server)
-                : undefined;
+        server = trading_servers.length > 1 ? mt5_login : undefined;
     }
 
     return (
@@ -57,8 +54,8 @@ const AccountOption = ({ trading_servers, mt5_login_list, account, idx, is_dark_
 
             {server && (
                 <Text color={is_dark_mode_on ? 'general' : 'colored-background'} size='xxs' className='badge-server'>
-                    {server.geolocation.region}&nbsp;
-                    {server.geolocation.sequence !== 1 ? server.geolocation.sequence : ''}
+                    {server.server_info.geolocation.region}&nbsp;
+                    {server.server_info.geolocation.sequence !== 1 ? server.server_info.geolocation.sequence : ''}
                 </Text>
             )}
 
@@ -179,9 +176,10 @@ const AccountTransferForm = ({
                 trading_servers.length > 1 &&
                 trading_servers.some(trading_server => trading_server.id === account_server?.server)
             ) {
-                const trading_server = trading_servers.find(t => t.id === account_server?.server);
-                server_region = `[${trading_server.geolocation.region}${
-                    trading_server.geolocation.sequence !== 1 ? trading_server.geolocation.sequence : ''
+                server_region = `[${account_server.server_info.geolocation.region}${
+                    account_server.server_info.geolocation.sequence !== 1
+                        ? account_server.server_info.geolocation.sequence
+                        : ''
                 }]`;
             }
 

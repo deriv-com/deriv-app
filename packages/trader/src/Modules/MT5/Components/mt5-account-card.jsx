@@ -125,17 +125,12 @@ const MT5AccountCard = ({
     is_trade_server_button_visible,
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
-    trading_servers,
 }) => {
     const icon = type.type ? <Icon icon={account_icons[type.type]} size={64} /> : null;
     const has_popular_banner = type.type === 'synthetic' && type.category === 'real' && !existing_data;
     const has_demo_banner = type.category === 'demo';
     const has_server_banner =
-        is_logged_in &&
-        existing_data &&
-        type.category === 'real' &&
-        type.type === 'synthetic' &&
-        trading_servers.some(server => server.id === existing_data.server);
+        existing_data && type.category === 'real' && type.type === 'synthetic' && existing_data?.server_info;
 
     const ref = React.useRef();
     const wrapper_ref = React.useRef();
@@ -158,22 +153,18 @@ const MT5AccountCard = ({
         return () => {};
     }, [onHover]);
 
-    {
-        /* TODO: [mt5-additional-platform] Remove this after BE is ready */
-    }
-    // const getServerName = React.useCallback(
-    //     data => {
-    //         const server = trading_servers?.find(s => s.id === data.server);
-    //         if (server) {
-    //             return `${server.geolocation.region} ${
-    //                 server.geolocation.sequence === 1 ? '' : server.geolocation.sequence
-    //             }`;
-    //         }
+    const getServerName = React.useCallback(
+        server => {
+            if (server) {
+                return `${server.server_info.geolocation.region} ${
+                    server.server_info.geolocation.sequence === 1 ? '' : server.server_info.geolocation.sequence
+                }`;
+            }
 
-    //         return '';
-    //     },
-    //     [existing_data, trading_servers]
-    // );
+            return '';
+        },
+        [existing_data]
+    );
 
     const handleClickSwitchAccount = () => {
         toggleShouldShowRealAccountsList(true);
@@ -206,9 +197,7 @@ const MT5AccountCard = ({
                 )}
                 {has_server_banner && (
                     <div className='mt5-account-card__banner mt5-account-card__banner--server'>
-                        {/* TODO: [mt5-additional-platform] Remove this after BE is ready */}
-                        {/* {getServerName(existing_data)} */}
-                        {existing_data?.server_info?.environment}
+                        {getServerName(existing_data)}
                     </div>
                 )}
                 <div
@@ -262,9 +251,7 @@ const MT5AccountCard = ({
                                             </td>
                                             <td className='mt5-account-card__specs-table-data'>
                                                 <p className='mt5-account-card--paragraph'>
-                                                    {/* TODO: [mt5-additional-platform] Remove this after BE is ready */}
-                                                    {/* {getServerName(existing_data)} */}
-                                                    {existing_data?.server_info?.environment}
+                                                    {getServerName(existing_data)}
                                                 </p>
                                             </td>
                                         </tr>

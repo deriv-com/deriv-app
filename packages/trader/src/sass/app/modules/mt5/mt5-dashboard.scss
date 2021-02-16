@@ -132,11 +132,13 @@
 
                 &-links {
                     display: flex;
+                    flex-direction: column;
                 }
                 &-row {
                     display: flex;
                     align-items: baseline;
                     justify-content: center;
+                    margin-bottom: 3.1rem;
 
                     > svg:first-child {
                         margin-bottom: 0.4rem;
@@ -149,7 +151,8 @@
                 }
                 &-download {
                     display: grid;
-                    align-content: end;
+                    grid-auto-flow: column;
+                    grid-gap: 0.8rem;
 
                     a {
                         margin-top: 0.4rem;

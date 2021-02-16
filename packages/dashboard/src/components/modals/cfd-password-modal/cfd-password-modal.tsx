@@ -88,17 +88,17 @@ const CFDPasswordForm = ({ ...props }) => (
 );
 
 const CFDPasswordModal = () => {
-    const { client_store, mt5_store, ui_store } = useStores();
+    const { client_store, cfd_store, ui_store } = useStores();
     const {
         account_title,
         account_type,
-        disableMt5PasswordModal,
-        has_mt5_error,
-        is_mt5_success_dialog_enabled,
-        is_mt5_password_modal_enabled,
+        disableCFDPasswordModal,
+        has_cfd_error,
+        is_cfd_success_dialog_enabled,
+        is_cfd_password_modal_enabled,
         setError,
-        setMt5SuccessDialog,
-    } = mt5_store;
+        setCFDSuccessDialog,
+    } = cfd_store;
 
     const { email_address } = client_store;
     const { enableGetPasswordModal } = ui_store;
@@ -129,23 +129,23 @@ const CFDPasswordModal = () => {
     };
 
     const closeDialogs = () => {
-        setMt5SuccessDialog(false);
+        setCFDSuccessDialog(false);
         setError(false);
     };
 
     const closeModal = () => {
         closeDialogs();
-        disableMt5PasswordModal();
+        disableCFDPasswordModal();
     };
 
     const submit = () => {
-        disableMt5PasswordModal();
+        disableCFDPasswordModal();
         setTimeout(() => {
             enableGetPasswordModal();
         }, 900);
     };
 
-    const should_show_password = is_mt5_password_modal_enabled && !has_mt5_error && !is_mt5_success_dialog_enabled;
+    const should_show_password = is_cfd_password_modal_enabled && !has_cfd_error && !is_cfd_success_dialog_enabled;
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
 
     return (

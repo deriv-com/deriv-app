@@ -222,7 +222,7 @@ const CFDServerForm = ({ ...props }) => {
 const CFDPasswordModal = ({
     account_title,
     account_type,
-    disableMt5PasswordModal,
+    disableCFDPasswordModal,
     email,
     // error_message,
     landing_companies,
@@ -231,10 +231,10 @@ const CFDPasswordModal = ({
     is_logged_in,
     form_error,
     history,
-    has_mt5_error,
-    is_mt5_password_modal_enabled,
-    is_mt5_success_dialog_enabled,
-    setMt5SuccessDialog,
+    has_cfd_error,
+    is_cfd_password_modal_enabled,
+    is_cfd_success_dialog_enabled,
+    setCFDSuccessDialog,
     setMt5Error,
     submitMt5Password,
     trading_servers,
@@ -272,18 +272,18 @@ const CFDPasswordModal = ({
     };
 
     const closeDialogs = () => {
-        setMt5SuccessDialog(false);
+        setCFDSuccessDialog(false);
         setMt5Error(false);
         setPassword('');
     };
 
     const closeModal = () => {
         closeDialogs();
-        disableMt5PasswordModal();
+        disableCFDPasswordModal();
     };
 
     const closeOpenSuccess = () => {
-        disableMt5PasswordModal();
+        disableCFDPasswordModal();
         closeDialogs();
         if (account_type.category === 'real') {
             sessionStorage.setItem('mt5_transfer_to_login_id', mt5_new_account.login);
@@ -292,8 +292,8 @@ const CFDPasswordModal = ({
     };
 
     const IconType = () => getIconFromType(account_type.type);
-    const should_show_password = is_mt5_password_modal_enabled && !has_mt5_error && !is_mt5_success_dialog_enabled;
-    const should_show_success = !has_mt5_error && is_mt5_success_dialog_enabled;
+    const should_show_password = is_cfd_password_modal_enabled && !has_cfd_error && !is_cfd_success_dialog_enabled;
+    const should_show_success = !has_cfd_error && is_cfd_success_dialog_enabled;
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
     const is_real_synthetic = [account_type.category, account_type.type].join('_') === 'real_synthetic';
     const should_show_server_form = (is_logged_in ? !is_eu : !is_eu_country) && is_real_synthetic && !!password;
@@ -311,10 +311,10 @@ const CFDPasswordModal = ({
     }, [password, should_show_server_form, is_submitting]);
 
     React.useEffect(() => {
-        if (has_mt5_error || is_mt5_success_dialog_enabled) {
+        if (has_cfd_error || is_cfd_success_dialog_enabled) {
             setPassword('');
         }
-    }, [has_mt5_error, is_mt5_success_dialog_enabled]);
+    }, [has_cfd_error, is_cfd_success_dialog_enabled]);
 
     return (
         <React.Fragment>
@@ -401,37 +401,37 @@ const CFDPasswordModal = ({
 CFDPasswordModal.propTypes = {
     account_title: PropTypes.string,
     account_type: PropTypes.object,
-    disableMt5PasswordModal: PropTypes.func,
+    disableCFDPasswordModal: PropTypes.func,
     email: PropTypes.string,
     error_message: PropTypes.string,
-    has_mt5_error: PropTypes.bool,
+    has_cfd_error: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_eu_country: PropTypes.bool,
     is_logged_in: PropTypes.bool,
-    is_mt5_password_modal_enabled: PropTypes.bool,
-    is_mt5_success_dialog_enabled: PropTypes.bool,
+    is_cfd_password_modal_enabled: PropTypes.bool,
+    is_cfd_success_dialog_enabled: PropTypes.bool,
     setMt5Error: PropTypes.func,
-    setMt5SuccessDialog: PropTypes.func,
+    setCFDSuccessDialog: PropTypes.func,
     submitMt5Password: PropTypes.func,
 };
 
 export default connect(({ client, modules }) => ({
     email: client.email,
-    account_title: modules.mt5.account_title,
-    account_type: modules.mt5.account_type,
-    disableMt5PasswordModal: modules.mt5.disableMt5PasswordModal,
-    error_message: modules.mt5.error_message,
-    has_mt5_error: modules.mt5.has_mt5_error,
+    account_title: modules.cfd.account_title,
+    account_type: modules.cfd.account_type,
+    disableCFDPasswordModal: modules.cfd.disableCFDPasswordModal,
+    error_message: modules.cfd.error_message,
+    has_cfd_error: modules.cfd.has_cfd_error,
     landing_companies: client.landing_companies,
     is_eu: client.is_eu,
     is_eu_country: client.is_eu_country,
     is_logged_in: client.is_logged_in,
-    is_mt5_success_dialog_enabled: modules.mt5.is_mt5_success_dialog_enabled,
-    is_mt5_password_modal_enabled: modules.mt5.is_mt5_password_modal_enabled,
-    setMt5Error: modules.mt5.setError,
-    setMt5SuccessDialog: modules.mt5.setMt5SuccessDialog,
-    submitMt5Password: modules.mt5.submitMt5Password,
-    mt5_new_account: modules.mt5.new_account_response,
+    is_cfd_success_dialog_enabled: modules.cfd.is_cfd_success_dialog_enabled,
+    is_cfd_password_modal_enabled: modules.cfd.is_cfd_password_modal_enabled,
+    setMt5Error: modules.cfd.setError,
+    setCFDSuccessDialog: modules.cfd.setCFDSuccessDialog,
+    submitMt5Password: modules.cfd.submitMt5Password,
+    mt5_new_account: modules.cfd.new_account_response,
     trading_servers: client.trading_servers,
     mt5_login_list: client.mt5_login_list,
 }))(withRouter(CFDPasswordModal));

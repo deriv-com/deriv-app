@@ -9,7 +9,7 @@ module.exports = function (env, argv) {
         devtool: IS_RELEASE ? 'source-map' : 'cheap-module-eval-source-map',
         entry: {
             trader: path.resolve(__dirname, '../src', 'index.js'),
-            MT5Store: 'Stores/Modules/MT5/mt5-store.js',
+            CFDStore: 'Stores/Modules/MT5/cfd-store.js',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

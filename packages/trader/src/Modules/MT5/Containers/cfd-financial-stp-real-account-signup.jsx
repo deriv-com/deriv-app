@@ -276,17 +276,17 @@ CFDFinancialStpRealAccountSignup.propTypes = {
     toggleModal: PropTypes.func,
 };
 
-export default connect(({ client, modules: { mt5 }, ui }) => ({
+export default connect(({ client, modules: { cfd }, ui }) => ({
     addNotificationByKey: ui.addNotificationMessageByKey,
     authentication_status: client.authentication_status,
     get_settings: client.account_settings,
     is_fully_authenticated: client.is_fully_authenticated,
     landing_company: client.landing_company,
-    openPendingDialog: mt5.openPendingDialog,
+    openPendingDialog: cfd.openPendingDialog,
     refreshNotifications: client.refreshNotifications,
     removeNotificationMessage: ui.removeNotificationMessage,
     removeNotificationByKey: ui.removeNotificationByKey,
     residence_list: client.residence_list,
     states_list: client.states_list,
-    storeProofOfAddress: mt5.storeProofOfAddress,
+    storeProofOfAddress: cfd.storeProofOfAddress,
 }))(CFDFinancialStpRealAccountSignup);

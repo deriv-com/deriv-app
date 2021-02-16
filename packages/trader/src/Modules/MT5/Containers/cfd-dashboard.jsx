@@ -68,7 +68,7 @@ class CFDDashboard extends React.Component {
             return;
         }
 
-        this.props.setMt5PasswordResetModal(true);
+        this.props.setCFDPasswordResetModal(true);
     };
 
     getIndexToSet = () => {
@@ -98,7 +98,7 @@ class CFDDashboard extends React.Component {
     openAccountTransfer = (data, meta) => {
         if (meta.category === 'real') {
             sessionStorage.setItem('mt5_transfer_to_login_id', data.login);
-            this.props.disableMt5PasswordModal();
+            this.props.disableCFDPasswordModal();
             this.props.history.push(routes.cashier_acc_transfer);
         } else {
             this.props.setCurrentAccount(data, meta);
@@ -131,7 +131,7 @@ class CFDDashboard extends React.Component {
             account_status,
             beginRealSignupForMt5,
             country,
-            createMT5Account,
+            createCFDAccount,
             current_list,
             isAccountOfTypeDisabled,
             is_accounts_switcher_on,
@@ -241,7 +241,7 @@ class CFDDashboard extends React.Component {
                                                 current_list={current_list}
                                                 account_status={account_status}
                                                 has_mt5_account={has_mt5_account}
-                                                onSelectAccount={createMT5Account}
+                                                onSelectAccount={createCFDAccount}
                                                 account_settings={account_settings}
                                                 landing_companies={landing_companies}
                                                 is_pending_authentication={is_pending_authentication}
@@ -272,7 +272,7 @@ class CFDDashboard extends React.Component {
                                             is_loading={is_loading}
                                             has_mt5_account={has_mt5_account}
                                             current_list={current_list}
-                                            onSelectAccount={createMT5Account}
+                                            onSelectAccount={createCFDAccount}
                                             landing_companies={landing_companies}
                                             openAccountTransfer={this.openAccountTransfer}
                                             openPasswordManager={this.togglePasswordManagerModal}
@@ -313,7 +313,7 @@ class CFDDashboard extends React.Component {
                                 {/*        is_loading={is_loading} */}
                                 {/*        has_mt5_account={has_mt5_account} */}
                                 {/*        current_list={current_list} */}
-                                {/*        onSelectAccount={createMT5Account} */}
+                                {/*        onSelectAccount={createCFDAccount} */}
                                 {/*        landing_companies={landing_companies} */}
                                 {/*        openAccountTransfer={this.openAccountTransfer} */}
                                 {/*        openPasswordManager={this.togglePasswordManagerModal} */}
@@ -335,7 +335,7 @@ class CFDDashboard extends React.Component {
                                 {/*            current_list={current_list} */}
                                 {/*            account_status={account_status} */}
                                 {/*            has_mt5_account={has_mt5_account} */}
-                                {/*            onSelectAccount={createMT5Account} */}
+                                {/*            onSelectAccount={createCFDAccount} */}
                                 {/*            account_settings={account_settings} */}
                                 {/*            landing_companies={landing_companies} */}
                                 {/*            is_pending_authentication={is_pending_authentication} */}
@@ -475,11 +475,11 @@ class CFDDashboard extends React.Component {
 
 export default withRouter(
     connect(({ client, modules, ui }) => ({
-        beginRealSignupForMt5: modules.mt5.beginRealSignupForMt5,
-        checkShouldOpenAccount: modules.mt5.checkShouldOpenAccount,
+        beginRealSignupForMt5: modules.cfd.beginRealSignupForMt5,
+        checkShouldOpenAccount: modules.cfd.checkShouldOpenAccount,
         country: client.account_settings.residence,
-        createMT5Account: modules.mt5.createMT5Account,
-        current_list: modules.mt5.current_list,
+        createCFDAccount: modules.cfd.createCFDAccount,
+        current_list: modules.cfd.current_list,
         landing_companies: client.landing_companies,
         isAccountOfTypeDisabled: client.isAccountOfTypeDisabled,
         is_logged_in: client.is_logged_in,
@@ -493,27 +493,27 @@ export default withRouter(
         has_malta_account: client.has_malta_account,
         can_upgrade_to: client.can_upgrade_to,
         account_settings: client.account_settings,
-        disableMt5PasswordModal: modules.mt5.disableMt5PasswordModal,
+        disableCFDPasswordModal: modules.cfd.disableCFDPasswordModal,
         is_pending_authentication: client.is_pending_authentication,
-        is_compare_accounts_visible: modules.mt5.is_compare_accounts_visible,
+        is_compare_accounts_visible: modules.cfd.is_compare_accounts_visible,
         is_fully_authenticated: client.is_fully_authenticated,
-        openPasswordModal: modules.mt5.enableMt5PasswordModal,
+        openPasswordModal: modules.cfd.enableCFDPasswordModal,
         openAccountNeededModal: ui.openAccountNeededModal,
         is_loading: client.is_populating_mt5_account_list,
         residence: client.residence,
-        has_mt5_account: modules.mt5.has_mt5_account,
+        has_mt5_account: modules.cfd.has_mt5_account,
         has_mt5_account_error: client.has_account_error_in_mt5_list,
         has_real_account: client.has_active_real_account,
-        setAccountType: modules.mt5.setAccountType,
-        setMt5PasswordResetModal: modules.mt5.setMt5PasswordResetModal,
-        setCurrentAccount: modules.mt5.setCurrentAccount,
+        setAccountType: modules.cfd.setAccountType,
+        setCFDPasswordResetModal: modules.cfd.setCFDPasswordResetModal,
+        setCurrentAccount: modules.cfd.setCurrentAccount,
         standpoint: client.standpoint,
-        toggleCompareAccounts: modules.mt5.toggleCompareAccountsModal,
+        toggleCompareAccounts: modules.cfd.toggleCompareAccountsModal,
         is_accounts_switcher_on: ui.is_accounts_switcher_on,
         openTopUpModal: ui.openTopUpModal,
         NotificationMessages: ui.notification_messages_ui,
-        onMount: modules.mt5.onMount,
-        onUnmount: modules.mt5.onUnmount,
+        onMount: modules.cfd.onMount,
+        onUnmount: modules.cfd.onUnmount,
         toggleAccountsDialog: ui.toggleAccountsDialog,
         toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
         trading_servers: client.trading_servers,

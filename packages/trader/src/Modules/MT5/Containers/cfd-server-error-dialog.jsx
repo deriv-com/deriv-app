@@ -5,19 +5,19 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
 const CFDServerErrorDialog = ({
-    clearMt5Error,
+    clearCFDError,
     disableApp,
     enableApp,
     error_message,
-    has_mt5_error,
-    is_mt5_success_dialog_enabled,
+    has_cfd_error,
+    is_cfd_success_dialog_enabled,
 }) => {
-    const should_show_error = has_mt5_error && !is_mt5_success_dialog_enabled;
+    const should_show_error = has_cfd_error && !is_cfd_success_dialog_enabled;
     return (
         <Dialog
             title={localize('Something’s not right')}
             confirm_button_text={localize('OK')}
-            onConfirm={clearMt5Error}
+            onConfirm={clearCFDError}
             disableApp={disableApp}
             enableApp={enableApp}
             is_visible={should_show_error}
@@ -28,19 +28,19 @@ const CFDServerErrorDialog = ({
 };
 
 CFDServerErrorDialog.propTypes = {
-    clearMt5Error: PropTypes.func,
+    clearCFDError: PropTypes.func,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     error_message: PropTypes.string,
-    has_mt5_error: PropTypes.bool,
-    is_mt5_success_dialog_enabled: PropTypes.bool,
+    has_cfd_error: PropTypes.bool,
+    is_cfd_success_dialog_enabled: PropTypes.bool,
 };
 
 export default connect(({ ui, modules }) => ({
-    clearMt5Error: modules.mt5.clearMt5Error,
+    clearCFDError: modules.cfd.clearCFDError,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
-    error_message: modules.mt5.error_message,
-    has_mt5_error: modules.mt5.has_mt5_error,
-    is_mt5_success_dialog_enabled: modules.mt5.is_mt5_success_dialog_enabled,
+    error_message: modules.cfd.error_message,
+    has_cfd_error: modules.cfd.has_cfd_error,
+    is_cfd_success_dialog_enabled: modules.cfd.is_cfd_success_dialog_enabled,
 }))(CFDServerErrorDialog);

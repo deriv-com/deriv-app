@@ -108,13 +108,13 @@ class CFDResetPasswordModal extends React.Component {
         return Object.keys(this.props.current_list).length !== 0;
     }
     render() {
-        const { is_mt5_reset_password_modal_enabled, setMt5PasswordResetModal, current_list } = this.props;
+        const { is_cfd_reset_password_modal_enabled, setCFDPasswordResetModal, current_list } = this.props;
 
         return (
             <Modal
                 className='cfd-reset-password-modal'
-                is_open={is_mt5_reset_password_modal_enabled}
-                toggleModal={() => setMt5PasswordResetModal(false)}
+                is_open={is_cfd_reset_password_modal_enabled}
+                toggleModal={() => setCFDPasswordResetModal(false)}
                 title={localize('Reset DMT5 password')}
             >
                 {!this.is_list_fetched && !this.state.has_error && <Loading is_fullscreen={false} />}
@@ -216,7 +216,7 @@ class CFDResetPasswordModal extends React.Component {
                             large
                             onClick={() => {
                                 this.clearAddressBar();
-                                setMt5PasswordResetModal(false);
+                                setCFDPasswordResetModal(false);
                             }}
                         >
                             <Localize i18n_default_text='Ok' />
@@ -240,7 +240,7 @@ class CFDResetPasswordModal extends React.Component {
                                 }}
                             />
                         </div>
-                        <Button primary large onClick={() => setMt5PasswordResetModal(false)}>
+                        <Button primary large onClick={() => setCFDPasswordResetModal(false)}>
                             <Localize i18n_default_text='Ok' />
                         </Button>
                     </div>
@@ -252,16 +252,16 @@ class CFDResetPasswordModal extends React.Component {
 
 CFDResetPasswordModal.propTypes = {
     email: PropTypes.string,
-    is_mt5_reset_password_modal_enabled: PropTypes.any,
-    setMt5PasswordResetModal: PropTypes.any,
+    is_cfd_reset_password_modal_enabled: PropTypes.any,
+    setCFDPasswordResetModal: PropTypes.any,
     current_list: PropTypes.any,
 };
 
 export default withRouter(
-    connect(({ modules: { mt5 }, client }) => ({
+    connect(({ modules: { cfd }, client }) => ({
         email: client.email,
-        is_mt5_reset_password_modal_enabled: mt5.is_mt5_reset_password_modal_enabled,
-        setMt5PasswordResetModal: mt5.setMt5PasswordResetModal,
-        current_list: mt5.current_list,
+        is_cfd_reset_password_modal_enabled: cfd.is_cfd_reset_password_modal_enabled,
+        setCFDPasswordResetModal: cfd.setCFDPasswordResetModal,
+        current_list: cfd.current_list,
     }))(CFDResetPasswordModal)
 );

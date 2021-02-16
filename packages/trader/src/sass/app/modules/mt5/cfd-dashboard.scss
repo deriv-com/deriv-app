@@ -597,7 +597,7 @@
         color: var(--text-profit-success);
     }
     &__banner {
-        position: relative;
+        position: absolute;
         transform: rotate(45deg);
         border-bottom: 2.3rem solid var(--brand-red-coral);
         border-left: 2.3rem solid transparent;
@@ -638,9 +638,6 @@
             .cfd-account-card--paragraph {
                 width: 18.8rem;
             }
-        }
-        &--has-banner {
-            margin-top: -23px;
         }
     }
     &__display {
@@ -754,7 +751,9 @@
 
             &__field {
                 height: 2.6rem;
-                border-right: 1px solid;
+                border-right: 1px solid var(--text-disabled);
+                color: var(--text-prominent);
+                -webkit-text-fill-color: var(--text-prominent);
             }
         }
         .dc-popover__wrapper {

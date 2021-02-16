@@ -10,7 +10,7 @@ type TGetPasswordModal = {
 };
 
 const GetPasswordModal: React.FC<TGetPasswordModal> = ({ app_title, app_icon }: TGetPasswordModal) => {
-    const { ui_store, mt5_store } = useStores();
+    const { ui_store, cfd_store } = useStores();
 
     const [wallets] = React.useState([
         'IcWalletSkrillLight',
@@ -31,7 +31,7 @@ const GetPasswordModal: React.FC<TGetPasswordModal> = ({ app_title, app_icon }: 
     ]);
 
     const { is_get_wallet_modal_open, disableGetPasswordModal } = ui_store;
-    const { beginRealSignupForMt5 } = mt5_store;
+    const { beginRealSignupForMt5 } = cfd_store;
 
     const closeModal = () => {
         disableGetPasswordModal();

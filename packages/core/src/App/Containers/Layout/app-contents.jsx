@@ -21,7 +21,7 @@ const AppContents = ({
     is_eu,
     is_logged_in,
     is_logging_in,
-    is_mt5_page,
+    is_cfd_page,
     is_positions_drawer_on,
     is_route_modal_on,
     notifyAppInstall,
@@ -87,7 +87,7 @@ const AppContents = ({
                 'app-contents--is-disabled': is_app_disabled,
                 'app-contents--is-mobile': isMobile(),
                 'app-contents--is-route-modal': is_route_modal_on,
-                'app-contents--is-scrollable': is_mt5_page || is_cashier_visible,
+                'app-contents--is-scrollable': is_cfd_page || is_cashier_visible,
             })}
         >
             <MobileWrapper>{children}</MobileWrapper>
@@ -115,7 +115,7 @@ AppContents.propTypes = {
     is_app_disabled: PropTypes.bool,
     is_cashier_visible: PropTypes.bool,
     is_logged_in: PropTypes.bool,
-    is_mt5_page: PropTypes.bool,
+    is_cfd_page: PropTypes.bool,
     is_positions_drawer_on: PropTypes.bool,
     is_route_modal_on: PropTypes.bool,
 };
@@ -132,7 +132,7 @@ export default withRouter(
         is_app_disabled: ui.is_app_disabled,
         is_cashier_visible: ui.is_cashier_visible,
         is_dark_mode: ui.is_dark_mode_on,
-        is_mt5_page: ui.is_mt5_page,
+        is_cfd_page: ui.is_cfd_page,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         is_route_modal_on: ui.is_route_modal_on,
         notifyAppInstall: ui.notifyAppInstall,

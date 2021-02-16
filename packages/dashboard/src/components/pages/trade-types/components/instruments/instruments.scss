@@ -24,8 +24,8 @@
     }
     &__sub-instrument-items-container {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        grid-gap: 3.6rem;
+        grid-template-columns: repeat(auto-fill, minmax(216px, 1fr));
+        grid-gap: 2.4rem;
         margin-top: 2rem;
         margin-bottom: 3.6rem;
     }

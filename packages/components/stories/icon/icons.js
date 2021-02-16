@@ -326,13 +326,9 @@ export const icons = {
     ],
     dashboard: [
         'IcDashboardAddress',
-        'IcDashboardAllMarkets',
         'IcDashboardCheck',
         'IcDashboardCurrency',
-        'IcDashboardHighleverageLowspread',
-        'IcDashboardLongShort',
         'IcDashboardMultipliers',
-        'IcDashboardOpenAccount',
         'IcDashboardOptions',
         'IcDashboardPersonalDetails',
         'IcDashboardTermsOfUse',

@@ -50,7 +50,6 @@ export const routes = {
     endpoint: '/endpoint',
     complaints_policy: '/complaints-policy',
 
-    dashboard_home: '/dashboard',
     dashboard: '/',
     about_us: '/about-us',
     explore: '/explore',

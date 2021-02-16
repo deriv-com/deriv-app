@@ -61,33 +61,6 @@ const getModules = ({ is_deriv_crypto, is_dashboard }) => {
             getTitle: () => localize('Bot'),
         },
         {
-            path: is_dashboard ? routes.dashboard : routes.dashboard_home,
-            component: Dashboard,
-            getTitle: () => localize('Dashboard'),
-            routes: [
-                {
-                    path: routes.explore,
-                    component: Dashboard,
-                    getTitle: () => localize('Explore'),
-                },
-                {
-                    path: routes.about_us,
-                    component: Dashboard,
-                    getTitle: () => localize('About Us'),
-                },
-                {
-                    path: routes.resources,
-                    component: Dashboard,
-                    getTitle: () => localize('Resources'),
-                },
-                {
-                    path: routes.platform_dmt5_synthetic,
-                    component: Dashboard,
-                    getTitle: () => localize('DMT5 Synthetic'),
-                },
-            ],
-        },
-        {
             path: routes.account_deactivated,
             component: Account,
             getTitle: () => localize('Account deactivated'),
@@ -252,47 +225,82 @@ const getModules = ({ is_deriv_crypto, is_dashboard }) => {
             ],
         },
         {
-            path: routes.root,
-            component: is_dashboard ? Dashboard : Trader,
-            getTitle: () => (is_dashboard ? localize('Dashboard') : localize('Trader')),
-            routes: [
-                { path: routes.mt5, component: Trader, getTitle: () => localize('MT5'), is_authenticated: false },
-                {
-                    path: routes.reports,
-                    component: Trader,
-                    getTitle: () => localize('Reports'),
-                    icon_component: 'IcReports',
-                    is_authenticated: true,
-                    routes: [
-                        {
-                            path: routes.positions,
-                            component: Trader,
-                            getTitle: () => localize('Open positions'),
-                            icon_component: 'IcOpenPositions',
-                            default: true,
-                        },
-                        {
-                            path: routes.profit,
-                            component: Trader,
-                            getTitle: () => localize('Profit table'),
-                            icon_component: 'IcProfitTable',
-                        },
-                        {
-                            path: routes.statement,
-                            component: Trader,
-                            getTitle: () => localize('Statement'),
-                            icon_component: 'IcStatement',
-                        },
-                    ],
-                },
-                {
-                    path: routes.contract,
-                    component: Trader,
-                    getTitle: () => localize('Contract Details'),
-                    is_authenticated: true,
-                },
-                { path: routes.error404, component: Trader, getTitle: () => localize('Error 404') },
-            ],
+            ...(is_dashboard
+                ? {
+                      path: routes.dashboard,
+                      component: Dashboard,
+                      getTitle: () => localize('Dashboard'),
+                      routes: [
+                          {
+                              path: routes.explore,
+                              component: Dashboard,
+                              getTitle: () => localize('Explore'),
+                          },
+                          {
+                              path: routes.about_us,
+                              component: Dashboard,
+                              getTitle: () => localize('About Us'),
+                          },
+                          {
+                              path: routes.resources,
+                              component: Dashboard,
+                              getTitle: () => localize('Resources'),
+                          },
+                          {
+                              path: routes.platform_dmt5_synthetic,
+                              component: Dashboard,
+                              getTitle: () => localize('DMT5 Synthetic'),
+                          },
+                      ],
+                  }
+                : {
+                      path: routes.root,
+                      component: Trader,
+                      getTitle: () => localize('Trader'),
+                      routes: [
+                          {
+                              path: routes.mt5,
+                              component: Trader,
+                              getTitle: () => localize('MT5'),
+                              is_authenticated: false,
+                          },
+                          {
+                              path: routes.reports,
+                              component: Trader,
+                              getTitle: () => localize('Reports'),
+                              icon_component: 'IcReports',
+                              is_authenticated: true,
+                              routes: [
+                                  {
+                                      path: routes.positions,
+                                      component: Trader,
+                                      getTitle: () => localize('Open positions'),
+                                      icon_component: 'IcOpenPositions',
+                                      default: true,
+                                  },
+                                  {
+                                      path: routes.profit,
+                                      component: Trader,
+                                      getTitle: () => localize('Profit table'),
+                                      icon_component: 'IcProfitTable',
+                                  },
+                                  {
+                                      path: routes.statement,
+                                      component: Trader,
+                                      getTitle: () => localize('Statement'),
+                                      icon_component: 'IcStatement',
+                                  },
+                              ],
+                          },
+                          {
+                              path: routes.contract,
+                              component: Trader,
+                              getTitle: () => localize('Contract Details'),
+                              is_authenticated: true,
+                          },
+                          { path: routes.error404, component: Trader, getTitle: () => localize('Error 404') },
+                      ],
+                  }),
         },
     ];
 

@@ -67,7 +67,6 @@ export const getDXTradeAccount = (market_type, sub_account_type) => {
     const dxtrade_account_key = getDXTradeAccountKey(market_type, sub_account_type);
     if (!dxtrade_account_key) return undefined;
 
-    console.log(DXTrade_text[dxtrade_account_key]);
     return DXTrade_text[dxtrade_account_key];
 };
 

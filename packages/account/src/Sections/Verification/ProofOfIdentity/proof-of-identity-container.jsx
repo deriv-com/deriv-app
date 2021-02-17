@@ -5,6 +5,7 @@ import { localize } from '@deriv/translations';
 import Limited from 'Components/poi-limited';
 import Unverified from 'Components/poi-unverified';
 import NotRequired from 'Components/poi-not-required';
+import RejectedReasons from 'Components/poi-rejected-reasons';
 import ErrorMessage from 'Components/error-component';
 import Onfido from './onfido.jsx';
 import { getIdentityStatus } from './proof-of-identity';
@@ -32,6 +33,8 @@ const ProofOfIdentityContainer = ({
     const [onfido_service_token, setOnfidoServiceToken] = React.useState(null);
     const [verification_status, setVerificationStatus] = useStateCallback({});
     const [submissions_left_key, setSubmissionsLeft] = React.useState(null);
+    const [rejected_reasons_key, setRejectedReasons] = React.useState([]);
+    const [is_continue_uploading, setContinueUploading] = React.useState(true);
     const previous_account_status = usePrevious(account_status);
 
     const getOnfidoServiceToken = React.useCallback(
@@ -75,12 +78,15 @@ const ProofOfIdentityContainer = ({
                 is_unwelcome,
                 onfido_supported_docs,
                 country_code,
+                rejected_reasons,
                 submissions_left,
             } = populateVerificationStatus(account_status_obj);
 
             const { identity, needs_verification } = account_status_obj.authentication;
 
             const identity_status = getIdentityStatus(identity, needs_verification, is_mx_mlt);
+
+            const has_no_rejections = !rejected_reasons?.length;
 
             setVerificationStatus({ allow_document_upload, has_poa, needs_poa, is_unwelcome }, () => {
                 setStatus(identity_status);
@@ -90,6 +96,8 @@ const ProofOfIdentityContainer = ({
                 setDocumentsSupported(onfido_supported_docs);
                 setCountryCode(country_code);
                 setSubmissionsLeft(submissions_left);
+                setRejectedReasons(rejected_reasons);
+                setContinueUploading(has_no_rejections);
                 refreshNotifications();
                 if (onStateChange) onStateChange({ status });
             });
@@ -142,6 +150,7 @@ const ProofOfIdentityContainer = ({
     }, [createVerificationConfig, previous_account_status, account_status]);
 
     const { has_poa, is_unwelcome, allow_document_upload } = verification_status;
+    const is_rejected = !!rejected_reasons_key.length;
 
     if (api_error)
         return (
@@ -151,6 +160,8 @@ const ProofOfIdentityContainer = ({
     if (is_unwelcome && !allow_document_upload) return <Unverified />;
     if (status === 'not_required') return <NotRequired />;
     if (!submissions_left_key) return <Limited />;
+    if (is_rejected && !is_continue_uploading)
+        return <RejectedReasons rejected_reasons={rejected_reasons_key} setContinueUploading={setContinueUploading} />;
 
     return (
         <Onfido

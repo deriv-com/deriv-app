@@ -75,7 +75,7 @@
         margin-bottom: 2.4em;
 
         &--heading {
-            @include typeface(--title-left-bold-black, none);
+            @include typeface(--title-center-bold-black, none);
             color: var(--text-general);
             line-height: 1.5;
         }
@@ -176,7 +176,7 @@
             }
         }
         &--heading {
-            @include typeface(--title-left-bold-black, none);
+            @include typeface(--title-center-bold-black, none);
             color: var(--text-general);
             line-height: 1.5;
             margin-left: 2.1rem;

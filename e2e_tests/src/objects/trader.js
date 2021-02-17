@@ -1,5 +1,4 @@
 const assert = require('assert').strict;
-const qawolf = require('qawolf');
 const {waitForWSSubset} = require('@root/_utils/websocket');
 const Common = require('./common');
 
@@ -28,7 +27,8 @@ class Trader extends Common {
         await this.page.fill('.data-hj-whitelist', name);
         await this.page.waitForSelector(`.sc-mcd__item--${code}`);
         await this.page.click(`.sc-mcd__item--${code}`);
-        await qawolf.assertElementText(this.page, '.cq-symbol', name);
+        const content = await this.page.textContent('.cq-symbol', name);
+        expect(content).toBe(name);
     }
 
     async openRecentPositionsDrawer() {
@@ -119,7 +119,8 @@ class Trader extends Common {
                 await this.page.click('#dc_m_toggle_item');
             }
 
-            await qawolf.assertElementText(this.page, '#dt_range_slider_label', `${duration_amount} ${duration_unit}`);
+            const content = await this.page.textContent('#dt_range_slider_label');
+            expect(content).toBe(`${duration_amount} ${duration_unit}`);
         }
     }
 
@@ -238,10 +239,10 @@ class Trader extends Common {
                     return Promise.resolve(current);
                 }
 
-                if (current<t) {
+                if (current < t) {
                     await increment();
                 }
-                if (current>t) {
+                if (current > t) {
                     await decrement();
                 }
                 const updated_duration = await this.page.$eval('.dc-tick-picker__holder--large', el => el.innerText);

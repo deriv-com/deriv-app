@@ -1,21 +1,23 @@
-{
+require('dotenv').config();
+
+module.exports = {
     "moduleNameMapper": {
-        "@root(.*)$": "<rootDir>/src/$1"
+        "@root(.*)$": "<rootDir>/src/$1",
     },
     "clearMocks": true,
     "setupFiles": [
-        "<rootDir>/jest.setup.js"
+        "<rootDir>/jest.setup.js",
     ],
     "testRegex": [
         "__tests__",
-        ".*.spec.js"
+        ".*.spec.js",
     ],
     "transform": {
         "^.+\\.jsx?$": "babel-jest",
-        "^.+/es/^.+$": "babel-jest"
+        "^.+/es/^.+$": "babel-jest",
     },
     "transformIgnorePatterns": [
         "/node_modules/(?!react-virtualized).+\\.js$",
-        "_utils/websocket.js"
-    ]
+        "_utils/websocket.js",
+    ],
 }

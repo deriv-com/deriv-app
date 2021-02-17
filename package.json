@@ -39,8 +39,7 @@
     "stylelint-formatter-pretty": "^2.1.0",
     "stylelint-no-unsupported-browser-features": "^4.0.0",
     "stylelint-selector-bem-pattern": "^2.1.0",
-    "stylelint-webpack-plugin": "^2.1.0",
-    "qawolf": "1.4.0"
+    "stylelint-webpack-plugin": "^2.1.0"
   },
   "scripts": {
     "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --hoist --strict && lerna link && npm run build:travis && npm run install:qa ;}; f",
@@ -65,7 +64,7 @@
     "test:mocha": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run test:mocha ;}; f",
     "test:stylelint": "stylelint \"./packages/*/src/**/*.s(a|c)ss\"",
     "test:jest": "jest --all --maxWorkers=2",
-    "test:qa": "node -r dotenv/config ./node_modules/.bin/qawolf test --maxWorkers=2 --detectOpenHandles --all-browsers --headless",
+    "test:qa": "jest --maxWorkers=2 --detectOpenHandles --testPathPattern=e2e_tests",
     "test:typecheck": "lerna exec --scope=@deriv/dashboard -- npm run test:typecheck",
     "stylelint:fix": "stylelint \"./packages/*/src/**/*.s(a|c)ss\" --fix",
     "translate": "f () { lerna exec --scope @deriv/translations -- npm run translate ;}; f",

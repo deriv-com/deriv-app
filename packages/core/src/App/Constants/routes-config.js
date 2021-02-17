@@ -246,6 +246,7 @@ const getModules = ({ is_deriv_crypto }) => {
                               component: Cashier,
                               getTitle: () => localize('DP2P'),
                               icon_component: 'IcDp2p',
+                              is_invisible: true,
                           },
                       ]),
                 {

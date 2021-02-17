@@ -27,7 +27,7 @@ const AccountList = ({
     const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
 
     return (
-        <>
+        <React.Fragment>
             <div
                 id={`dt_${loginid}`}
                 className={classNames('acc-switcher__account', {
@@ -96,7 +96,7 @@ const AccountList = ({
                     )}
                 </span>
             </div>
-        </>
+        </React.Fragment>
     );
 };
 

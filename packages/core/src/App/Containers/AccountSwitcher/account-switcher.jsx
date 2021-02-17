@@ -18,6 +18,9 @@ import {
     routes,
     isCryptocurrency,
     formatMoney,
+    getDXTradeAccount,
+    // getDXTradeAccountDisplay,
+    // getDXTradeAccountKey,
     getMT5Account,
     getMT5AccountDisplay,
     getMT5AccountKey,
@@ -38,6 +41,8 @@ const AccountSwitcher = props => {
     const [is_deriv_real_visible, setDerivRealVisible] = React.useState(true);
     const [is_dmt5_demo_visible, setDmt5DemoVisible] = React.useState(true);
     const [is_dmt5_real_visible, setDmt5RealVisible] = React.useState(true);
+    const [is_dxtrade_demo_visible, setDxtradeDemoVisible] = React.useState(true);
+    const [is_dxtrade_real_visible, setDxtradeRealVisible] = React.useState(true);
 
     const wrapper_ref = React.useRef();
 
@@ -47,10 +52,14 @@ const AccountSwitcher = props => {
                 return setDerivDemoVisible(!is_deriv_demo_visible);
             case 'demo_dmt5':
                 return setDmt5DemoVisible(!is_dmt5_demo_visible);
+            case 'demo_dxtrade':
+                return setDxtradeDemoVisible(!is_dxtrade_demo_visible);
             case 'real_deriv':
                 return setDerivRealVisible(!is_deriv_real_visible);
             case 'real_dmt5':
                 return setDmt5RealVisible(!is_dmt5_real_visible);
+            case 'real_dxtrade':
+                return setDxtradeRealVisible(!is_dxtrade_real_visible);
             default:
                 return false;
         }
@@ -77,6 +86,11 @@ const AccountSwitcher = props => {
     const redirectToMt5 = account_type => {
         closeAccountsDialog();
         props.history.push(`${routes.mt5}#${account_type}`);
+    };
+
+    const redirectToDXTrade = account_type => {
+        closeAccountsDialog();
+        props.history.push(`${routes.dxtrade}#${account_type}`);
     };
 
     const hasRequiredCredentials = () => {
@@ -111,13 +125,25 @@ const AccountSwitcher = props => {
         redirectToMt5('real');
     };
 
+    // const redirectToDXTradeReal = () => {
+    //     redirectToDXTrade('real');
+    // };
+
     const openMt5DemoAccount = account_type => {
         sessionStorage.setItem('open_mt5_account_type', `demo.${account_type}`);
         redirectToMt5Demo();
     };
 
+    const openDXTradeDemoAccount = () => {
+        redirectToDXTradeDemo();
+    };
+
     const redirectToMt5Demo = () => {
         redirectToMt5('demo');
+    };
+
+    const redirectToDXTradeDemo = () => {
+        redirectToDXTrade('demo');
     };
 
     const setAccountCurrency = () => {
@@ -234,8 +260,9 @@ const AccountSwitcher = props => {
         });
     };
 
-    const getSortedMT5List = () => {
-        // for MT5, synthetic, financial, financial stp
+    const getSortedCFDList = (platform = 'mt5') => {
+        // for DXTrade, MT5, synthetic, financial, financial stp
+        if (platform === 'dxtrade') return {};
         return props.mt5_login_list.slice().sort((a, b) => {
             const a_is_demo = isDemo(a);
             const b_is_demo = isDemo(b);
@@ -257,16 +284,49 @@ const AccountSwitcher = props => {
     };
 
     const getDemoMT5 = () => {
-        return getSortedMT5List().filter(isDemo);
+        return getSortedCFDList().filter(isDemo);
+    };
+
+    const getDemoDXTrade = () => {
+        // TODO: remove mock data and getSortedCFDList via dxtrade_login_list from API
+        const mock_data = [
+            {
+                account_type: 'demo',
+                balance: 10000,
+                country: 'aw',
+                currency: 'USD',
+                display_balance: '10000.00',
+                display_login: '2763297',
+                email: 'wwkwkw@deriv.com',
+                group: 'demop01_ts01syntheticsvg_std_usd',
+                landing_company_short: 'svg',
+                leverage: 500,
+                login: 'MTD2763297',
+                market_type: 'gaming',
+                name: 'John TerBaik',
+                server: 'demo01',
+                sub_account_type: 'financial',
+            },
+        ];
+        return mock_data;
     };
 
     const getRemainingDemoMT5 = () => {
         return getRemainingAccounts(getDemoMT5());
     };
 
-    const getRealMT5 = () => {
-        return getSortedMT5List().filter(account => !isDemo(account));
+    const getRemainingDemoDXTrade = () => {
+        return [];
+        // return getRemainingAccounts(getDemoDXTrade());
     };
+
+    const getRealMT5 = () => {
+        return getSortedCFDList().filter(account => !isDemo(account));
+    };
+
+    // const getRealDXTrade = () => {
+    //     return [];
+    // };
 
     const findServerForAccount = acc => {
         const server_name = acc.error ? acc.error.details.server : acc.server;
@@ -350,15 +410,29 @@ const AccountSwitcher = props => {
 
     if (!props.is_logged_in) return false;
 
-    const total_assets_message_demo = props.is_mt5_allowed
-        ? localize('Total assets in your Deriv and DMT5 demo accounts.')
-        : localize('Total assets in your Deriv demo accounts.');
+    const total_assets_message_demo = () => {
+        if (props.is_mt5_allowed && props.is_dxtrade_allowed) {
+            return localize('Total assets in your Deriv, DMT5 and DXTrade demo accounts.');
+        } else if (props.is_mt5_allowed && !props.is_dxtrade_allowed) {
+            return localize('Total assets in your Deriv and DMT5 demo accounts.');
+        } else if (!props.is_mt5_allowed && props.is_dxtrade_allowed) {
+            return localize('Total assets in your Deriv and DXTrade demo accounts.');
+        }
+        return localize('Total assets in your Deriv demo accounts.');
+    };
 
-    const total_assets_message_real = props.is_mt5_allowed
-        ? localize('Total assets in your Deriv and DMT5 real accounts.')
-        : localize('Total assets in your Deriv real accounts.');
+    const total_assets_message_real = () => {
+        if (props.is_mt5_allowed && props.is_dxtrade_allowed) {
+            return localize('Total assets in your Deriv, DMT5 and DXTrade real accounts.');
+        } else if (props.is_mt5_allowed && !props.is_dxtrade_allowed) {
+            return localize('Total assets in your Deriv and DMT5 real accounts.');
+        } else if (!props.is_mt5_allowed && props.is_dxtrade_allowed) {
+            return localize('Total assets in your Deriv and DXTrade real accounts.');
+        }
+        return localize('Total assets in your Deriv real accounts.');
+    };
 
-    const total_assets_message = isRealAccountTab ? total_assets_message_real : total_assets_message_demo;
+    const total_assets_message = isRealAccountTab ? total_assets_message_real() : total_assets_message_demo();
 
     const demo_accounts = (
         <div className='acc-switcher__list-wrapper'>
@@ -451,6 +525,55 @@ const AccountSwitcher = props => {
                         )}
                     </AccountWrapper>
                 </React.Fragment>
+            )}
+            {props.is_dxtrade_allowed && (
+                <AccountWrapper
+                    header={localize('DXTrade Accounts')}
+                    is_visible={is_dxtrade_demo_visible}
+                    toggleVisibility={() => {
+                        toggleVisibility('demo_dxtrade');
+                    }}
+                >
+                    <React.Fragment>
+                        {!!getDemoDXTrade().length && (
+                            <div className='acc-switcher__accounts'>
+                                {getDemoDXTrade().map(account => (
+                                    <AccountList
+                                        is_dark_mode_on={props.is_dark_mode_on}
+                                        key={account.login}
+                                        market_type={account.market_type}
+                                        sub_account_type={account.sub_account_type}
+                                        balance={account.balance}
+                                        currency={account.currency}
+                                        currency_icon={`IcDxtrade-${getDXTradeAccount(
+                                            account.market_type,
+                                            account.sub_account_type
+                                        )}`}
+                                        has_balance={'balance' in account}
+                                        loginid={account.display_login}
+                                        onClickAccount={redirectToDXTradeDemo}
+                                    />
+                                ))}
+                            </div>
+                        )}
+                        {getRemainingDemoDXTrade().map(account => (
+                            <div key={account.title} className='acc-switcher__new-account'>
+                                <Icon icon={`IcDxtrade-${account.icon}`} size={24} />
+                                <Text size='xs' color='general' className='acc-switcher__new-account-text'>
+                                    {account.title}
+                                </Text>
+                                <Button
+                                    onClick={() => openDXTradeDemoAccount(account.type)}
+                                    className='acc-switcher__new-account-btn'
+                                    secondary
+                                    small
+                                >
+                                    {localize('Add')}
+                                </Button>
+                            </div>
+                        ))}
+                    </React.Fragment>
+                </AccountWrapper>
             )}
         </div>
     );
@@ -730,6 +853,7 @@ const account_switcher = withRouter(
         is_fully_authenticated: client.is_fully_authenticated,
         is_loading_mt5: client.is_populating_mt5_account_list,
         is_logged_in: client.is_logged_in,
+        is_dxtrade_allowed: true, // TODO: connect to dxtrade account API
         is_mt5_allowed: client.is_mt5_allowed,
         is_pending_authentication: client.is_pending_authentication,
         is_uk: client.is_uk,

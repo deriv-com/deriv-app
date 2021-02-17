@@ -44,12 +44,8 @@
         top: 0;
         transform: translateY(0px);
         transition: transform 0.25s ease;
-
-        @include desktop {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
+        display: flex;
+        flex-flow: wrap;
 
         &-platform {
             position: relative;

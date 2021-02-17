@@ -338,7 +338,9 @@ export const icons = {
         'IcDxtradeDevicePhone',
         'IcDxtradeDeviceTablet',
         'IcDxtradeFinancialPlatform',
+        'IcDxtradeFinancial',
         'IcDxtradeSyntheticPlatform',
+        'IcDxtradeSynthetic',
     ],
     flag: [
         'IcFlagDe',

@@ -8,7 +8,7 @@
 /** @define mt5-dashboard; */
 .mt5-dashboard {
     padding: 4.8em 0;
-    max-width: 960px;
+    max-width: fit-content;
     margin: 0 auto;
 
     &--hint {
@@ -488,6 +488,9 @@
 
     &__wrapper {
         display: grid;
+        grid-template-rows: 1fr 4rem;
+        height: 100%;
+        justify-content: center;
 
         @include mobile {
             grid-template-rows: 1fr;

@@ -89,8 +89,8 @@
             @include mobile {
                 min-width: 12rem;
 
-                &:nth-child(3) {
-                    min-width: 14rem;
+                &:nth-child(5) {
+                    min-width: 16rem;
                 }
             }
 
@@ -105,7 +105,6 @@
                 @include mobile {
                     flex-direction: row;
                     padding-left: 0.5rem;
-                    width: 14rem;
                 }
             }
 

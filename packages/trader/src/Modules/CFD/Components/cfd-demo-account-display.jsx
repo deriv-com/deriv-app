@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import specifications from 'Modules/MT5/Constants/cfd-specifications';
+import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card.jsx';
 import Loading from '../../../templates/_common/components/loading.jsx';
 

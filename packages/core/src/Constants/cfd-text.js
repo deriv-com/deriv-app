@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 
-export const MT5_TEXT = {
+export const CFD_TEXT = {
     mt5: () => localize('MT5'),
     synthetic: () => localize('Synthetic'),
     financial: () => localize('Financial'),

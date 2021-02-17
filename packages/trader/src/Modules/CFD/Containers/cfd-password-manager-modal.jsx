@@ -20,7 +20,7 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { isMobile, validLength, validPassword, getErrorMessages } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import CFDStore from 'Stores/Modules/MT5/cfd-store';
+import CFDStore from 'Stores/Modules/CFD/cfd-store';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }) => {
     const [count, setCount] = React.useState(count_from);

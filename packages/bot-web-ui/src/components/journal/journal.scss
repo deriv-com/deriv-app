@@ -24,6 +24,10 @@
         &__list {
             list-style-type: circle;
             margin-left: 20px;
+
+            li::marker {
+                color: var(--text-less-prominent);
+            }
         }
     }
     &__item {

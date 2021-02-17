@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getMT5WebTerminalLink, getPlatformMt5DownloadLink } from '../Helpers/constants';
+import { getPlatformMt5DownloadLink } from '../Helpers/constants';
 
 const MT5DashboardContainer = () => (
     <div className='mt5-dashboard__download-center'>

@@ -65,6 +65,7 @@ const App = observer(props => {
     React.useEffect(() => {
         // Redirect back to /p2p, this was implemented for the mobile team. Do not remove.
         if (/\/verification$/.test(history?.location.pathname)) {
+            localStorage.setItem('is_verifying_p2p', true);
             history.push(routes.cashier_p2p);
         }
 
@@ -80,6 +81,11 @@ const App = observer(props => {
 
         waitWS('authorize').then(() => {
             general_store.onMount();
+
+            if (localStorage.getItem('is_verifying_p2p')) {
+                localStorage.removeItem('is_verifying_p2p');
+                general_store.setActiveIndex(general_store.path.my_ads);
+            }
         });
 
         return () => general_store.onUnmount();

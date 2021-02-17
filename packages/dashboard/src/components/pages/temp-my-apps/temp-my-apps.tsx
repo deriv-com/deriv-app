@@ -22,7 +22,6 @@ const TempGetDMT5Wallet: React.FC = () => {
 
     const onRedirect = () => {
         // TODO Redirect to current version
-        console.log('redirecting...');
     };
 
     return (

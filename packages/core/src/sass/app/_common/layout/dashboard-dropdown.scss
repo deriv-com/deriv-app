@@ -1,0 +1,38 @@
+.dashboard-dropdown {
+    display: flex;
+    width: auto;
+    position: absolute;
+    padding: 2.2rem 0.8rem;
+    z-index: -1;
+    height: auto;
+    transform: translateY(7.2rem);
+    background-color: rgb(255, 255, 255);
+    opacity: 0;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 16px 20px 0px;
+    border-radius: 0.4rem;
+    transition: opacity 0.3s ease 0s, transform 0.3s ease 0s;
+    animation-name: kQSNyM;
+    animation-fill-mode: both;
+    animation-duration: 0.3s;
+    overflow: visible;
+    left: 360px !important;
+
+    ::after {
+        content: ' ';
+        position: absolute;
+        top: -9px;
+        border-top: none;
+        border-right: 15px solid transparent;
+        border-left: 15px solid transparent;
+        border-bottom: 15px solid white;
+    }
+
+    > * {
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: 100%;
+        .active {
+            border: 0.2rem solid #{$color-green-3};
+        }
+    }
+}

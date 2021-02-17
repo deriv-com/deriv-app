@@ -255,14 +255,18 @@ const CFDRealAccountDisplay = ({
     return (
         <div className='cfd-real-accounts-display'>
             <DesktopWrapper>
-                <Carousel
-                    list={items}
-                    width={328}
-                    nav_position='middle'
-                    show_bullet={false}
-                    item_per_window={3}
-                    className='cfd-real-accounts-display__carousel'
-                />
+                {items.length < 4 ? (
+                    items
+                ) : (
+                    <Carousel
+                        list={items}
+                        width={328}
+                        nav_position='middle'
+                        show_bullet={false}
+                        item_per_window={3}
+                        className='cfd-real-accounts-display__carousel'
+                    />
+                )}
             </DesktopWrapper>
             <MobileWrapper>
                 {items.map(item => {

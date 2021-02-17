@@ -12,6 +12,9 @@ class UIStore extends BaseStore {
     public is_get_wallet_modal_open = false;
 
     @observable
+    public is_quick_guide_modal_open = false;
+
+    @observable
     public is_real_acc_signup_on = false;
 
     @observable
@@ -44,6 +47,11 @@ class UIStore extends BaseStore {
     public openRealAccountSignup(target = this.root_store.client_store.upgradeable_landing_companies?.[0]): void {
         this.is_real_acc_signup_on = true;
         this.real_account_signup_target = target;
+    }
+
+    @action.bound
+    public toggleQuickGuideModal(state_change = !this.is_quick_guide_modal_open): void {
+        this.is_quick_guide_modal_open = !!state_change;
     }
 }
 

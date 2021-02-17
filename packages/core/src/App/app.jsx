@@ -31,7 +31,7 @@ import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';
 import initStore from './app';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
-import { MT5_TEXT } from '../Constants/mt5-text';
+import { CFD_TEXT } from '../Constants/cfd-text';
 
 // eslint-disable-next-line import/extensions
 // eslint-disable-next-line import/no-unresolved
@@ -54,7 +54,7 @@ const App = ({ root_store }) => {
         // TODO: [translation-to-shared]: add translation implemnentation in shared
         setUrlLanguage(getLanguage());
         initFormErrorMessages(FORM_ERROR_MESSAGES);
-        setSharedMT5Text(MT5_TEXT);
+        setSharedMT5Text(CFD_TEXT);
     }, []);
 
     const handleResize = React.useCallback(() => {

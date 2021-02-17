@@ -2,7 +2,7 @@ import { action, computed, observable, runInAction } from 'mobx';
 import { getMT5AccountListKey, getAccountTypeFields } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import BaseStore from 'Stores/base-store';
-import { getMtCompanies } from './Helpers/mt5-config';
+import { getMtCompanies } from './Helpers/cfd-config';
 
 export default class CFDStore extends BaseStore {
     @observable is_compare_accounts_visible = false;

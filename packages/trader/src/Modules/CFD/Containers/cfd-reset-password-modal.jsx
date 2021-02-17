@@ -6,7 +6,7 @@ import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, 
 import { routes, validLength, validPassword, getErrorMessages } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { getMtCompanies } from 'Stores/Modules/MT5/Helpers/mt5-config';
+import { getMtCompanies } from 'Stores/Modules/MT5/Helpers/cfd-config';
 import { WS } from 'Services/ws-methods';
 
 const ResetPasswordIntent = ({ current_list, children, ...props }) => {

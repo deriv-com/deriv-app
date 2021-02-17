@@ -68,6 +68,7 @@ export default connect(({ client, ui }) => ({
             explore: routes.explore,
             resources: routes.resources,
             platform_dmt5_synthetic: routes.platform_dmt5_synthetic,
+            trade_types_cfd: routes.trade_types_cfd,
         },
     },
     ui: {

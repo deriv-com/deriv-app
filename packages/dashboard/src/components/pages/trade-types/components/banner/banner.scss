@@ -4,17 +4,25 @@
     position: relative;
     background-repeat: no-repeat;
 
+    &__carousel {
+        display: flex;
+        justify-content: center;
+    }
     &__frame {
         width: 100%;
         position: relative;
     }
     &__container {
         position: absolute;
-        top: 13.8rem;
+        top: 8.8rem;
         left: 8rem;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        max-width: 49.1rem;
+        max-width: 61.6rem;
+
+        &--title {
+            margin-top: 0.8rem;
+        }
     }
 }

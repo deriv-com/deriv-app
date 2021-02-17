@@ -2,12 +2,11 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import AppToTradeCard from './app-to-trade-card';
-import AppToTradeBenefit from './app-to-trade-benefit';
 
-const AppToTrade: React.FC<TAppToTradeProps> = ({ title, cards, benefit_description, benefit_data }) => {
+const AppToTrade: React.FC<TAppToTradeProps> = ({ title, cards, benefit_description }) => {
     return (
         <div className='dw-app-to-trade'>
-            <Text size='m' weight='bold' line_height='m'>
+            <Text size='m' as='h3' weight='bold' line_height='m'>
                 {title}
             </Text>
             <div
@@ -26,21 +25,9 @@ const AppToTrade: React.FC<TAppToTradeProps> = ({ title, cards, benefit_descript
                     </div>
                 ))}
             </div>
-            <div className='dw-app-to-trade__line' />
-            <Text line_height='m'>{benefit_description}</Text>
-            <div
-                className={classNames('dw-app-to-trade__benefits-wrapper', {
-                    'dw-app-to-trade__benefits-wrapper--three-column': benefit_data.length / 2 === 3,
-                })}
-            >
-                {benefit_data.map((data, idx) => (
-                    <div key={idx}>
-                        <AppToTradeBenefit icon={data.icon} description={data.description} />
-                    </div>
-                ))}
-            </div>
-
-            <div className='dw-app-to-trade__line' />
+            <Text className='dw-app-to-trade__benefit-description' line_height='m' as='p'>
+                {benefit_description}
+            </Text>
         </div>
     );
 };
@@ -50,16 +37,11 @@ type TCardDataItem = {
     sub_title: string;
     icon: string;
 };
-type TBenefitDataItem = {
-    description: string;
-    icon: string;
-};
 
 type TAppToTradeProps = {
     benefit_description: string;
     title: string;
     cards: Array<TCardDataItem>;
-    benefit_data: Array<TBenefitDataItem>;
 };
 
 export default AppToTrade;

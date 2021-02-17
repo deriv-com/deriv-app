@@ -85,6 +85,11 @@ const getModules = ({ is_deriv_crypto }) => {
                     component: Dashboard,
                     getTitle: () => localize('DMT5 Synthetic'),
                 },
+                {
+                    path: routes.trade_types_cfd,
+                    component: Dashboard,
+                    getTitle: () => localize('CFD'),
+                },
             ],
         },
         {

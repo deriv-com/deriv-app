@@ -11,6 +11,7 @@ export default class ConfigStore extends BaseStore {
         about_us: '/about-us',
         resources: '/resources',
         platform_dmt5_synthetic: '/platforms/dmt5_synthetic',
+        trade_types_cfd: '/trade-types/cfd',
     };
 
     public setConfig(config: TConfigProps): void {

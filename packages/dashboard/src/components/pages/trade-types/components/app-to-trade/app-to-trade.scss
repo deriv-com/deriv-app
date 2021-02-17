@@ -2,9 +2,9 @@
     margin-top: 4rem;
 
     &__cards-wrapper {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-gap: 2.4rem;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
         margin-top: 2.4rem;
 
         &--three-column {
@@ -36,18 +36,25 @@
         }
         &-button-wrapper {
             display: flex;
+            justify-content: flex-end;
+            width: 100%;
             margin-top: 1.6rem;
         }
         &-link {
-            color: $color-apple-blue;
+            color: var(--brand-red-coral);
             text-decoration: none;
             font-weight: bold;
             font-size: 12px;
             margin: auto 2.4rem auto 0;
         }
-        .dc-btn--primary {
-            background-color: $color-apple-blue;
+        .dc-btn--tertiary {
+            background-color: var(--button-tertiary-hover);
+            padding: 0.3rem 0.8rem;
         }
+    }
+    &__benefit-description {
+        display: flex;
+        margin: 4rem 0;
     }
     &__benefits-wrapper {
         display: grid;
@@ -66,12 +73,5 @@
         &-icon {
             margin-right: 1.6rem;
         }
-    }
-    &__line {
-        width: 93.6rem;
-        height: 1px;
-        border: 1px solid var(--general-section-1);
-        margin-top: 4rem;
-        margin-bottom: 4rem;
     }
 }

@@ -1,0 +1,46 @@
+.dw-instruments {
+    margin-top: 4rem;
+
+    &__instrument {
+        &-title-wrapper {
+            display: flex;
+            align-items: center;
+            margin-top: 3.2rem;
+            margin-bottom: 0.8rem;
+        }
+        &-icon {
+            margin: 0 1.6rem 0.8rem 0;
+        }
+    }
+    &__sub-instrument {
+        &-title {
+            display: flex;
+            margin-top: 3.2rem;
+        }
+        &-description {
+            display: flex;
+            margin-top: 0.8rem;
+        }
+    }
+    &__sub-instrument-items-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(216px, 1fr));
+        grid-gap: 2.4rem;
+        margin-top: 2rem;
+        margin-bottom: 3.6rem;
+    }
+    &__sub-instrument-item {
+        display: flex;
+        align-items: center;
+
+        &-icon {
+            margin-right: 1.6rem;
+        }
+    }
+    &__line {
+        width: 100%;
+        height: 1px;
+        border: 1px solid var(--general-section-1);
+        margin-top: 3.2rem;
+    }
+}

@@ -17,17 +17,17 @@ const AppToTradeCard: React.FC<TAppToTradeCardProps> = ({ icon, title, subtitle,
                     'dw-app-to-trade__card-content-wrapper--big-size': is_big_size,
                 })}
             >
-                <Text size='xs' weight='bold' line_height='l'>
+                <Text size='xs' as='h4' weight='bold' line_height='l'>
                     {title}
                 </Text>
-                <Text size='xxs' color='less-prominent' line_height='m'>
+                <Text size='xxs' as='p' color='less-prominent' line_height='m'>
                     {subtitle}
                 </Text>
                 <div className='dw-app-to-trade__card-button-wrapper'>
                     <Link to='/' className='dw-app-to-trade__card-link'>
                         {localize('Try demo')}
                     </Link>
-                    <Button type='button' text={localize('Get')} primary blue />
+                    <Button type='button' text={localize('Get')} tertiary />
                 </div>
             </div>
         </div>

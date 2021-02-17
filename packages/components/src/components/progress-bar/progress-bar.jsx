@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Text from '../text';
 
 function withinZeroAndOne(props, propName, componentName) {
     if (props[propName]) {
@@ -24,7 +25,9 @@ const ProgressBar = ({ className, danger_limit, label, value, warning_limit }) =
     }
     return (
         <div className={classNames('dc-progress-bar__container', className)}>
-            <p className='dc-progress-bar__label'>{label}</p>
+            <Text as='p' color='prominent' align='center' size='xs' weight='bold' className='dc-progress-bar__label'>
+                {label}
+            </Text>
             <div
                 className={classNames(
                     {

@@ -8,12 +8,17 @@ import { localize } from 'Components/i18next';
 import './advertiser-page.scss';
 
 const AdvertiserPageRow = observer(({ row: advert, showAdPopup }) => {
-    const { advertiser_page_store, general_store } = useStores();
+    const { advertiser_page_store, buy_sell_store, general_store } = useStores();
     const { currency } = general_store.client;
     const { local_currency, max_order_amount_limit_display, min_order_amount_limit_display, price_display } = advert;
 
     const is_buy_advert = advertiser_page_store.counterparty_type === buy_sell.BUY;
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
+
+    const showAdForm = () => {
+        buy_sell_store.setSelectedAdState(advert);
+        showAdPopup(advert);
+    };
 
     return (
         <Table.Row className='advertiser-page__adverts-table_row'>
@@ -27,7 +32,7 @@ const AdvertiserPageRow = observer(({ row: advert, showAdPopup }) => {
                 <Table.Cell />
             ) : (
                 <Table.Cell className='advertiser-page__adverts-button'>
-                    <Button primary small onClick={() => showAdPopup(advert)}>
+                    <Button is_disabled={general_store.is_barred} onClick={showAdForm} primary small>
                         {is_buy_advert ? localize('Buy') : localize('Sell')} {currency}
                     </Button>
                 </Table.Cell>

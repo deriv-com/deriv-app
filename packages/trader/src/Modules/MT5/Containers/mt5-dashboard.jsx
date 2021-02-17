@@ -97,6 +97,7 @@ class MT5Dashboard extends React.Component {
 
     openAccountTransfer = (data, meta) => {
         if (meta.category === 'real') {
+            sessionStorage.setItem('mt5_transfer_to_login_id', data.login);
             this.props.disableMt5PasswordModal();
             this.props.history.push(routes.cashier_acc_transfer);
         } else {
@@ -132,6 +133,7 @@ class MT5Dashboard extends React.Component {
             country,
             createMT5Account,
             current_list,
+            isAccountOfTypeDisabled,
             is_accounts_switcher_on,
             is_eu,
             is_eu_country,
@@ -156,8 +158,10 @@ class MT5Dashboard extends React.Component {
             toggleShouldShowRealAccountsList,
             trading_servers,
             can_have_more_real_synthetic_mt5,
+            upgradeable_landing_companies,
         } = this.props;
-        const should_show_missing_real_account = !is_eu && is_logged_in && !has_real_account;
+        const should_show_missing_real_account =
+            !is_eu && is_logged_in && !has_real_account && upgradeable_landing_companies?.length > 0;
         if ((!country && is_logged_in) || is_logging_in) return <Loading />; // Wait for country name to be loaded before rendering
 
         return (
@@ -236,6 +240,7 @@ class MT5Dashboard extends React.Component {
                                                 openAccountTransfer={this.openAccountTransfer}
                                                 openPasswordManager={this.togglePasswordManagerModal}
                                                 openPasswordModal={this.openRealPasswordModal}
+                                                isAccountOfTypeDisabled={isAccountOfTypeDisabled}
                                                 has_real_account={has_real_account}
                                                 standpoint={standpoint}
                                                 toggleAccountsDialog={toggleAccountsDialog}
@@ -436,6 +441,7 @@ export default withRouter(
         createMT5Account: modules.mt5.createMT5Account,
         current_list: modules.mt5.current_list,
         landing_companies: client.landing_companies,
+        isAccountOfTypeDisabled: client.isAccountOfTypeDisabled,
         is_logged_in: client.is_logged_in,
         is_logging_in: client.is_logging_in,
         is_eu: client.is_eu,
@@ -472,5 +478,6 @@ export default withRouter(
         toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
         trading_servers: client.trading_servers,
         can_have_more_real_synthetic_mt5: client.can_have_more_real_synthetic_mt5,
+        upgradeable_landing_companies: client.upgradeable_landing_companies,
     }))(MT5Dashboard)
 );

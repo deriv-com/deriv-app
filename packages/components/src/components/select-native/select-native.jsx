@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
-import Field from '../field';
+import Field from '../field/field.jsx';
 import Icon from '../icon/icon.jsx';
+import Text from '../text/text.jsx';
 
 const getDisplayText = (list_items, value) => {
     const dropdown_items = Array.isArray(list_items) ? list_items : [].concat(...Object.values(list_items));
@@ -20,10 +21,12 @@ const SelectNative = ({
     disabled,
     error,
     hint,
+    hide_selected_value,
     label,
     list_items,
     placeholder,
     should_show_empty_option = true,
+    suffix_icon,
     use_text,
     value,
     ...props
@@ -32,6 +35,7 @@ const SelectNative = ({
         className={classNames(className, 'dc-select-native', {
             'dc-select-native--disabled': disabled,
             'dc-select-native--error': error,
+            'dc-select-native--hide-selected-value': hide_selected_value,
         })}
     >
         <div className='dc-select-native__wrapper'>
@@ -44,7 +48,7 @@ const SelectNative = ({
                 <div className='dc-select-native__display'>
                     {list_items && value && (
                         <div className={classNames('dc-select-native__display-text', classNameDisplay)}>
-                            {use_text ? value : getDisplayText(list_items, value)}
+                            {!hide_selected_value && (use_text ? value : getDisplayText(list_items, value))}
                         </div>
                     )}
                 </div>
@@ -56,7 +60,11 @@ const SelectNative = ({
                 >
                     {label}
                 </div>
-                <Icon icon='IcChevronDown' className='dc-select-native__arrow' />
+                {!suffix_icon ? (
+                    <Icon icon='IcChevronDown' className='dc-select-native__arrow' />
+                ) : (
+                    <Icon className='dc-select-native__suffix-icon' icon={suffix_icon} size={16} fill />
+                )}
                 <select className='dc-select-native__picker' value={value} disabled={disabled} {...props}>
                     {Array.isArray(list_items) ? (
                         <React.Fragment>
@@ -102,7 +110,17 @@ const SelectNative = ({
                 {error && <Field message={error} type='error' />}
             </div>
         </div>
-        {!error && hint && <p className='dc-select-native__hint'>{hint}</p>}
+        {!error && hint && (
+            <Text
+                as='p'
+                color='less-prominent'
+                size='xxs'
+                styles={{ lineHeight: '1.8' }}
+                className='dc-select-native__hint'
+            >
+                {hint}
+            </Text>
+        )}
     </div>
 );
 
@@ -129,6 +147,7 @@ SelectNative.propTypes = {
     list_items: list_items_shape,
     placeholder: PropTypes.string,
     should_show_empty_option: PropTypes.bool,
+    suffix_icon: PropTypes.string,
     use_text: PropTypes.bool,
     value: PropTypes.string,
 };

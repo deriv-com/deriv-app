@@ -54,10 +54,6 @@
             @include mobile {
                 margin: 1.6rem 0;
             }
-
-            &--bold {
-                font-weight: bold;
-            }
         }
         &-scrollbar {
             height: calc(100% - 2.4rem - 9.2rem);

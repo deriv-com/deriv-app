@@ -15,6 +15,7 @@ import {
     PageOverlay,
     ThemedScrollbars,
     UILoader,
+    Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isMobile, validLength, validPassword, getErrorMessages } from '@deriv/shared';
@@ -67,9 +68,9 @@ const MT5PasswordReset = ({ sendVerifyEmail, account_type, account_group, server
             <h2 className='mt5-verification-email-sent__title'>
                 <Localize i18n_default_text="We've sent you an email" />
             </h2>
-            <p className='mt5-verification-email-sent__description'>
+            <Text as='p' size='xs' align='center'>
                 <Localize i18n_default_text='Please click on the link in the email to reset your password.' />
-            </p>
+            </Text>
             {!is_resend_verification_requested && (
                 <Button className='mt5-verification-email-sent__resend-button' primary onClick={onClickVerification}>
                     <Localize i18n_default_text="Didn't receive the email?" />
@@ -77,12 +78,18 @@ const MT5PasswordReset = ({ sendVerifyEmail, account_type, account_group, server
             )}
             {is_resend_verification_requested && (
                 <>
-                    <p className='mt5-verification-email-sent__title mt5-verification-email-sent__title--sub'>
+                    <Text
+                        as='p'
+                        size='xs'
+                        align='center'
+                        weight='bold'
+                        className='mt5-verification-email-sent__title--sub'
+                    >
                         <Localize i18n_default_text={"Didn't receive the email?"} />
-                    </p>
-                    <p className='mt5-verification-email-sent__description'>
+                    </Text>
+                    <Text as='p' size='xs' align='center'>
                         <Localize i18n_default_text="Check your spam or junk folder. If it's not there, try resending the email." />
-                    </p>
+                    </Text>
                     <Button
                         className='mt5-verification-email-sent__resend-button'
                         large
@@ -118,22 +125,20 @@ const MT5PasswordSuccessMessage = ({ toggleModal, is_investor }) => (
         <h1 className='mt5-password-manager__success-header'>
             <Localize i18n_default_text='Password changed' />
         </h1>
-        <p className='mt5-password-manager__success-paragraph'>
+        <Text as='p' size='xxs' align='center'>
             {is_investor ? (
                 <Localize i18n_default_text='Your investor password has been changed.' />
             ) : (
                 <Localize i18n_default_text='Your password has been changed.' />
             )}
-        </p>
+        </Text>
         <Button onClick={toggleModal} className='mt5-password-manager__success-btn' primary large>
             <p className='dc-btn__text'>{localize('OK')}</p>
         </Button>
     </div>
 );
 
-const multi_step_ref = React.createRef();
-
-const MT5PasswordManagerTabContentWrapper = ({ steps }) => (
+const MT5PasswordManagerTabContentWrapper = ({ multi_step_ref, steps }) => (
     <MultiStep ref={multi_step_ref} steps={steps} className='mt5-password-manager' lbl_previous={localize('Back')} />
 );
 
@@ -144,6 +149,7 @@ const MainPasswordManager = ({
     validatePassword,
     error_message_main,
     setPasswordType,
+    multi_step_ref,
 }) => {
     if (is_submit_success_main) {
         return <MT5PasswordSuccessMessage toggleModal={toggleModal} />;
@@ -216,7 +222,7 @@ const MainPasswordManager = ({
                             type='button'
                             onClick={() => {
                                 setPasswordType('main');
-                                multi_step_ref.current?.nextStep();
+                                multi_step_ref.current?.goNextStep();
                             }}
                             text={localize('Reset main password')}
                             tertiary
@@ -230,12 +236,13 @@ const MainPasswordManager = ({
 };
 
 const InvestorPasswordManager = ({
-    is_submit_success_investor,
-    toggleModal,
     error_message_investor,
-    validatePassword,
+    is_submit_success_investor,
+    multi_step_ref,
     onSubmit,
     setPasswordType,
+    toggleModal,
+    validatePassword,
 }) => {
     if (is_submit_success_investor) {
         return <MT5PasswordSuccessMessage toggleModal={toggleModal} is_investor />;
@@ -245,13 +252,17 @@ const InvestorPasswordManager = ({
 
     return (
         <div className='mt5-password-manager__investor-wrapper'>
-            <p className='mt5-password-manager--paragraph'>
+            <Text as='p' size='xs' className='mt5-password-manager--paragraph'>
                 <Localize i18n_default_text='Use this password to grant viewing access to another user. While they may view your trading account, they will not be able to trade or take any other actions.' />
-            </p>
-            <p className='mt5-password-manager--paragraph'>
+            </Text>
+            <Text as='p' size='xs' className='mt5-password-manager--paragraph'>
                 <Localize i18n_default_text='If this is the first time you try to create a password, or you have forgotten your password, please reset it.' />
-            </p>
-            {error_message_investor && <p className='mt5-password-manager--error-message'>{error_message_investor}</p>}
+            </Text>
+            {error_message_investor && (
+                <Text as='p' color='loss-danger' size='xs' className='mt5-password-manager--error-message'>
+                    {error_message_investor}
+                </Text>
+            )}
             <Formik initialValues={initial_values} validate={validatePassword} onSubmit={onSubmit}>
                 {({ isSubmitting, errors, setFieldTouched, values, touched }) => (
                     <Form className='mt5-password-manager__investor-form' noValidate>
@@ -315,7 +326,7 @@ const InvestorPasswordManager = ({
                                 type='button'
                                 onClick={() => {
                                     setPasswordType('investor');
-                                    multi_step_ref.current?.nextStep();
+                                    multi_step_ref.current?.goNextStep();
                                 }}
                                 text={localize('Create or reset investor password')}
                                 tertiary
@@ -329,7 +340,7 @@ const InvestorPasswordManager = ({
     );
 };
 
-const MT5PasswordManagerTabContent = ({ toggleModal, selected_login, email, setPasswordType }) => {
+const MT5PasswordManagerTabContent = ({ toggleModal, selected_login, email, setPasswordType, multi_step_ref }) => {
     const [active_tab_index, setActiveTabIndex] = React.useState(0);
     const [error_message_main, setErrorMessageMain] = React.useState('');
     const [is_submit_success_main, setSubmitSuccessMain] = React.useState(false);
@@ -417,6 +428,7 @@ const MT5PasswordManagerTabContent = ({ toggleModal, selected_login, email, setP
                                 validatePassword={validatePassword}
                                 error_message_main={error_message_main}
                                 setPasswordType={setPasswordType}
+                                multi_step_ref={multi_step_ref}
                             />
                         </ThemedScrollbars>
                     </DesktopWrapper>
@@ -429,6 +441,7 @@ const MT5PasswordManagerTabContent = ({ toggleModal, selected_login, email, setP
                                 validatePassword={validatePassword}
                                 error_message_main={error_message_main}
                                 setPasswordType={setPasswordType}
+                                multi_step_ref={multi_step_ref}
                             />
                         </Div100vhContainer>
                     </MobileWrapper>
@@ -443,6 +456,7 @@ const MT5PasswordManagerTabContent = ({ toggleModal, selected_login, email, setP
                                 validatePassword={validatePassword}
                                 onSubmit={onSubmit}
                                 setPasswordType={setPasswordType}
+                                multi_step_ref={multi_step_ref}
                             />
                         </ThemedScrollbars>
                     </DesktopWrapper>
@@ -455,6 +469,7 @@ const MT5PasswordManagerTabContent = ({ toggleModal, selected_login, email, setP
                                 validatePassword={validatePassword}
                                 onSubmit={onSubmit}
                                 setPasswordType={setPasswordType}
+                                multi_step_ref={multi_step_ref}
                             />
                         </Div100vhContainer>
                     </MobileWrapper>
@@ -477,6 +492,8 @@ const MT5PasswordManagerModal = ({
     selected_server,
     sendVerifyEmail,
 }) => {
+    const multi_step_ref = React.useRef();
+
     const [password_type, setPasswordType] = React.useState('main');
 
     if (!selected_login) return null;
@@ -490,6 +507,7 @@ const MT5PasswordManagerModal = ({
                     toggleModal={toggleModal}
                     password_type={password_type}
                     setPasswordType={setPasswordType}
+                    multi_step_ref={multi_step_ref}
                 />
             ),
         },
@@ -527,7 +545,7 @@ const MT5PasswordManagerModal = ({
                     height='688px'
                     width='904px'
                 >
-                    <MT5PasswordManagerTabContentWrapper steps={steps} />
+                    <MT5PasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
@@ -537,7 +555,7 @@ const MT5PasswordManagerModal = ({
                     header={localize('Manage password')}
                     onClickClose={toggleModal}
                 >
-                    <MT5PasswordManagerTabContentWrapper steps={steps} />
+                    <MT5PasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
                 </PageOverlay>
             </MobileWrapper>
         </React.Suspense>

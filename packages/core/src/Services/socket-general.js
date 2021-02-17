@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { flow } from 'mobx';
 import { State, getActivePlatform, getPropertyValue, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -9,6 +10,8 @@ let client_store, common_store, gtm_store;
 
 // TODO: update commented statements to the corresponding functions from app
 const BinarySocketGeneral = (() => {
+    let session_duration_limit, session_start_time, session_timeout;
+
     const onDisconnect = () => {
         common_store.setIsSocketOpened(false);
     };
@@ -56,7 +59,7 @@ const BinarySocketGeneral = (() => {
                 // Header.upgradeMessageVisibility();
                 break;
             case 'get_self_exclusion':
-                // SessionDurationLimit.exclusionResponseHandler(response);
+                setSessionDurationLimit(response);
                 break;
             case 'get_settings':
                 if (response.get_settings) {
@@ -84,6 +87,27 @@ const BinarySocketGeneral = (() => {
             client_store.setResidence(residence);
             WS.landingCompany(residence);
         }
+    };
+
+    const setSessionDurationLimit = user_limits => {
+        const duration = user_limits?.get_self_exclusion?.session_duration_limit;
+
+        session_start_time = new Date(sessionStorage.getItem('session_start_time') || ServerTime.get());
+        sessionStorage.setItem('session_start_time', session_start_time);
+
+        if (duration && duration !== session_duration_limit) {
+            const current_session_duration = session_duration_limit ? ServerTime.get() - moment(session_start_time) : 0;
+            const remaining_session_time = duration * 60 * 1000 - current_session_duration;
+            clearTimeout(session_timeout);
+            session_timeout = setTimeout(() => {
+                client_store.logout();
+                sessionStorage.removeItem('session_start_time');
+            }, remaining_session_time);
+        } else if (!duration) {
+            clearTimeout(session_timeout);
+        }
+
+        session_duration_limit = duration;
     };
 
     const setBalanceActiveAccount = flow(function* (obj_balance) {
@@ -152,10 +176,12 @@ const BinarySocketGeneral = (() => {
                 common_store.setError(true, { message: response.error.message });
                 break;
             case 'InvalidToken':
-                if (['cashier', 'paymentagent_withdraw', 'mt5_password_reset'].includes(msg_type)) {
+                if (
+                    ['cashier', 'paymentagent_withdraw', 'mt5_password_reset', 'new_account_virtual'].includes(msg_type)
+                ) {
                     return;
                 }
-                if (!['reset_password', 'new_account_virtual'].includes(msg_type)) {
+                if (!['reset_password'].includes(msg_type)) {
                     if (window.TrackJS) window.TrackJS.track('Custom InvalidToken error');
                 }
                 // eslint-disable-next-line no-case-declarations

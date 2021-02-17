@@ -8,7 +8,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 
 const MyAdsRowRenderer = observer(({ row: advert }) => {
-    const { my_ads_store } = useStores();
+    const { general_store, my_ads_store } = useStores();
     const {
         account_currency,
         amount,
@@ -126,7 +126,12 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                 </div>
             </Table.Cell>
             <Table.Cell className='p2p-my-ads__table-delete'>
-                <Icon icon='IcDelete' size={16} onClick={() => my_ads_store.onClickDelete(id)} />
+                <Icon
+                    icon='IcDelete'
+                    color={general_store.is_barred && 'disabled'}
+                    size={16}
+                    onClick={() => !general_store.is_barred && my_ads_store.onClickDelete(advert.id)}
+                />
             </Table.Cell>
         </Table.Row>
     );

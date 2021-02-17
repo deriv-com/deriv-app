@@ -128,9 +128,7 @@
         align-items: center;
     }
     &__description {
-        @include typeface(--small-center-normal-black);
         text-transform: none;
-        color: var(--text-general);
     }
     &--h4 {
         @include typeface(--small-center-bold-black);
@@ -141,10 +139,6 @@
         @include typeface(--title-center-bold-black);
         line-height: 1.5;
         color: var(--text-profit-success);
-    }
-    &--balance-descriptor {
-        @include typeface(--small-center-normal-black, none);
-        color: var(--text-general);
     }
 }
 
@@ -181,12 +175,9 @@
         margin: 0.8rem 0;
 
         &--sub {
-            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
             margin-top: 3rem;
         }
-    }
-    &__description {
-        @include typeface(--paragraph-center-normal-black);
     }
     &__resend-button {
         display: block;
@@ -263,8 +254,7 @@
         margin-bottom: 2.4rem;
 
         &--is-centered {
-            @include typeface(--paragraph-center-normal-black);
-            color: var(--text-prominent);
+            margin-bottom: 2.4rem;
             max-width: 70%;
         }
     }

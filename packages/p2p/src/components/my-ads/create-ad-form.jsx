@@ -208,28 +208,50 @@ const CreateAdForm = () => {
                                             </Field>
                                         </div>
                                         {is_sell_advert && (
-                                            <Field name='payment_info'>
-                                                {({ field }) => (
-                                                    <Input
-                                                        {...field}
-                                                        data-lpignore='true'
-                                                        type='textarea'
-                                                        error={
-                                                            touched.default_advert_description &&
-                                                            errors.default_advert_description
-                                                        }
-                                                        label={localize('Instructions (optional)')}
-                                                        hint={localize('This information will be visible to everyone')}
-                                                        className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                        initial_character_count={
-                                                            my_ads_store.default_advert_description.length
-                                                        }
-                                                        has_character_counter
-                                                        max_characters={300}
-                                                        required
-                                                    />
-                                                )}
-                                            </Field>
+                                            <React.Fragment>
+                                                <Field name='payment_info'>
+                                                    {({ field }) => (
+                                                        <Input
+                                                            {...field}
+                                                            data-lpignore='true'
+                                                            type='textarea'
+                                                            label={
+                                                                <Text color='less-prominent' size='xs'>
+                                                                    <Localize i18n_default_text='Your payment details' />
+                                                                </Text>
+                                                            }
+                                                            error={touched.payment_info && errors.payment_info}
+                                                            hint={localize('e.g. your bank/e-wallet account details')}
+                                                            className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
+                                                            initial_character_count={my_ads_store.payment_info.length}
+                                                            required
+                                                            has_character_counter
+                                                            max_characters={300}
+                                                        />
+                                                    )}
+                                                </Field>
+
+                                                <Field name='contact_info'>
+                                                    {({ field }) => (
+                                                        <Input
+                                                            {...field}
+                                                            data-lpignore='true'
+                                                            type='textarea'
+                                                            label={
+                                                                <Text color='less-prominent' size='xs'>
+                                                                    <Localize i18n_default_text='Your contact details' />{' '}
+                                                                </Text>
+                                                            }
+                                                            error={touched.contact_info && errors.contact_info}
+                                                            className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
+                                                            initial_character_count={my_ads_store.contact_info.length}
+                                                            required
+                                                            has_character_counter
+                                                            max_characters={300}
+                                                        />
+                                                    )}
+                                                </Field>
+                                            </React.Fragment>
                                         )}
                                         <Field name='default_advert_description'>
                                             {({ field }) => (
@@ -241,7 +263,11 @@ const CreateAdForm = () => {
                                                         touched.default_advert_description &&
                                                         errors.default_advert_description
                                                     }
-                                                    label={localize('Instructions (optional)')}
+                                                    label={
+                                                        <Text color='less-prominent' size='xs'>
+                                                            <Localize i18n_default_text='Instructions (optional)' />
+                                                        </Text>
+                                                    }
                                                     hint={localize('This information will be visible to everyone')}
                                                     className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
                                                     initial_character_count={

@@ -609,11 +609,12 @@
 
             &-title {
                 margin-bottom: 0.8rem;
+                text-align: inherit;
             }
 
             @include mobile {
                 width: 100%;
-                padding: 1.6rem;
+                padding: 1.6rem 0;
             }
         }
         &-resend,

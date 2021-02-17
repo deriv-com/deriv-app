@@ -34,7 +34,7 @@ const ProofOfIdentityContainer = ({
     const [verification_status, setVerificationStatus] = useStateCallback({});
     const [submissions_left_key, setSubmissionsLeft] = React.useState(null);
     const [rejected_reasons_key, setRejectedReasons] = React.useState([]);
-    const [is_continue_uploading, setContinueUploading] = React.useState(true);
+    const [is_continue_uploading, setContinueUploading] = React.useState(false);
     const previous_account_status = usePrevious(account_status);
 
     const getOnfidoServiceToken = React.useCallback(

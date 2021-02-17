@@ -6,13 +6,18 @@ import { isDesktop } from '@deriv/shared';
 
 const ListItem = ({ text }) => (
     <div className='account-management__list-message'>
-        <Icon className='account-management__list-icon' icon='IcCloseCircle' color='red' />
-        <Text className='account-management__list-text'>{text}</Text>
+        <div className='account-management__list-icon'>
+            <Icon icon='IcCloseCircle' color='red' />
+        </div>
+
+        <Text size='xs' className='account-management__list-text'>
+            {text}
+        </Text>
     </div>
 );
 
 const IconMessageList = ({ className, icon, message, message_list, onContinue }) => {
-    const has_minimum_list = message_list?.length > 3;
+    const has_maximum_list = message_list?.length > 3;
 
     return (
         <Div100vhContainer
@@ -43,21 +48,21 @@ const IconMessageList = ({ className, icon, message, message_list, onContinue })
                 </div>
                 {message_list && (
                     <div className='account-management__list-container'>
-                        {has_minimum_list ? (
-                            message_list.map((text, idx) => <ListItem key={idx} text={text} />)
-                        ) : (
+                        {has_maximum_list ? (
                             <MaximumList message_list={message_list} />
+                        ) : (
+                            message_list.map((text, idx) => <ListItem key={idx} text={text} />)
                         )}
                     </div>
                 )}
                 {onContinue && (
                     <Button
                         type='button'
-                        className='account-management__list-button'
+                        className='account-management__continue'
                         onClick={() => onContinue(true)}
                         large
                         text={localize('Upload Document')}
-                        secondary
+                        primary
                     />
                 )}
             </div>
@@ -76,11 +81,11 @@ const MaximumList = ({ message_list }) => {
             ))}
             <Button
                 type='button'
-                className='account-management__list-show'
-                onClick={() => setShowMore(true)}
+                className='account-management__list-button'
+                onClick={() => setShowMore(false)}
                 large
-                text={localize('Show more')}
-                secondary
+                text={localize('Show less')}
+                tertiary
             />
         </React.Fragment>
     ) : (
@@ -90,11 +95,11 @@ const MaximumList = ({ message_list }) => {
             ))}
             <Button
                 type='button'
-                className='account-management__list-show'
-                onClick={() => setShowMore(false)}
+                className='account-management__list-button'
+                onClick={() => setShowMore(true)}
                 large
-                text={localize('Show less')}
-                secondary
+                text={localize('Show more')}
+                tertiary
             />
         </React.Fragment>
     );

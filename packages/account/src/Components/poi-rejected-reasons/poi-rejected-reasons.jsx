@@ -7,7 +7,7 @@ export const POIRejectedReasons = ({ rejected_reasons, setContinueUploading }) =
     <IconMessageList
         message={localize('Your proof of identity submission failed because:')}
         icon={<Icon icon='IcPoiFailed' size={128} />}
-        list={rejected_reasons}
+        message_list={rejected_reasons}
         onContinue={setContinueUploading}
     />
 );

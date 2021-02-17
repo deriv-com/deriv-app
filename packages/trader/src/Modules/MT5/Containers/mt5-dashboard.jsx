@@ -341,10 +341,7 @@ class MT5Dashboard extends React.Component {
                                         className='mt5-dashboard__maintenance-icon'
                                     />
                                     <div className='mt5-dashboard__maintenance-text'>
-                                        <Localize
-                                            i18n_default_text='Server maintenance starting 03:00 GMT every Sunday. This process may take up to 2 hours to complete. <0 />Service may be disrupted during this time.'
-                                            components={[<br key={0} />]}
-                                        />
+                                        <Localize i18n_default_text='Server maintenance starting 03:00 GMT every Sunday. This process may take up to 2 hours to complete. Service may be disrupted during this time.' />
                                     </div>
                                 </div>
                             </div>

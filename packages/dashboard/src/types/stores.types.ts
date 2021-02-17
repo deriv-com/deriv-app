@@ -72,7 +72,6 @@ export type TRootStore = {
 
 export type TUIStore = {
     components: {
-        LoginPrompt?: React.ComponentType | React.ElementType;
         Page404?: React.ComponentType | React.ElementType;
     };
     is_dark_mode_on: boolean;

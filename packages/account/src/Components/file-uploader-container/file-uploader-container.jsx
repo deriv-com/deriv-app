@@ -9,14 +9,14 @@ import FileUploader from './file-uploader.jsx';
 
 const FileProperties = () => {
     const properties = [
-        { name: 'size', icon: 'IcPoaFileEightMb', text: 'Less than 8MB' },
-        { name: 'format', icon: 'IcPoaFileFormat', text: 'JPEG  JPG  PNG  PDF  GIF' },
-        { name: 'time', icon: 'IcPoaFileTime', text: '1 - 6 months old' },
-        { name: 'clear', icon: 'IcPoaFileClear', text: 'A clear colour photo or scanned image' },
+        { name: 'size', icon: 'IcPoaFileEightMb', text: localize('Less than 8MB') },
+        { name: 'format', icon: 'IcPoaFileFormat', text: localize('JPEG  JPG  PNG  PDF  GIF') },
+        { name: 'time', icon: 'IcPoaFileTime', text: localize('1 - 6 months old') },
+        { name: 'clear', icon: 'IcPoaFileClear', text: localize('A clear colour photo or scanned image') },
         {
             name: 'with-address',
             icon: 'IcPoaFileWithAddress',
-            text: 'Issued under your name with your current address',
+            text: localize('Issued under your name with your current address'),
         },
     ];
     return (
@@ -29,7 +29,7 @@ const FileProperties = () => {
                     <div className='account-poa__upload-property-wrapper'>
                         <Icon icon={item.icon} className='account-poa__upload-icon-dashboard' size={40} />
                         <Text size='xxxs' weight='bold' align='center'>
-                            {localize(item.text)}
+                            {item.text}
                         </Text>
                     </div>
                 </div>

@@ -17,5 +17,9 @@
     "transformIgnorePatterns": [
         "/node_modules/(?!react-virtualized).+\\.js$",
         "_utils/websocket.js"
+    ],
+    "reporters": [
+        "default",
+        "./src/_utils/reporter.js"
     ]
 }

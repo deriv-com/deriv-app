@@ -1,20 +1,9 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import {
-    redirectToLogin,
-    redirectToSignUp,
-    isEmptyObject,
-    routes,
-    removeBranchName,
-    default_title,
-    PlatformContext,
-} from '@deriv/shared';
+import { redirectToLogin, isEmptyObject, routes, removeBranchName, default_title } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
-import LoginPrompt from 'Components/Routes/login-prompt.jsx';
 
 const RouteWithSubRoutes = route => {
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
-
     const renderFactory = props => {
         let result = null;
         if (route.component === Redirect) {
@@ -27,13 +16,7 @@ const RouteWithSubRoutes = route => {
             }
             result = <Redirect to={to} />;
         } else if (route.is_authenticated && !route.is_logging_in && !route.is_logged_in) {
-            result = (
-                <LoginPrompt
-                    onLogin={() => redirectToLogin(route.is_logged_in, getLanguage())}
-                    onSignup={() => redirectToSignUp({ is_deriv_crypto })}
-                    page_title={route.getTitle()}
-                />
-            );
+            redirectToLogin(route.is_logged_in, getLanguage());
         } else {
             const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
             const has_default_subroute = !isEmptyObject(default_subroute);

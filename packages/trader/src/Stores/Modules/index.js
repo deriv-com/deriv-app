@@ -1,6 +1,6 @@
 import ContractReplayStore from './Contract/contract-replay-store';
 import ContractTradeStore from './Contract/contract-trade-store';
-import CFDStore from './MT5/cfd-store';
+import CFDStore from './CFD/cfd-store';
 import PortfolioStore from './Portfolio/portfolio-store';
 import ProfitTableStore from './Profit/profit-store';
 import StatementStore from './Statement/statement-store';

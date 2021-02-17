@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, MobileDialog, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import CFDFinancialStpRealAccountSignup from 'Modules/MT5/Containers/cfd-financial-stp-real-account-signup.jsx';
+import CFDFinancialStpRealAccountSignup from 'Modules/CFD/Containers/cfd-financial-stp-real-account-signup.jsx';
 
 const MT5AccountOpeningRealFinancialStpModal = ({
     disableApp,

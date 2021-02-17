@@ -17,10 +17,9 @@ import MT5ServerErrorDialog from './mt5-server-error-dialog.jsx';
 import Mt5TopUpDemoModal from './mt5-top-up-demo-modal.jsx';
 import MT5ResetPasswordModal from './mt5-reset-password-modal.jsx';
 import Mt5FinancialStpPendingDialog from '../Components/mt5-financial-stp-pending-dialog.jsx';
-import { MT5InfoCopy } from '../Components/mt5-info-copy.jsx';
 import { MT5DemoAccountDisplay } from '../Components/mt5-demo-account-display.jsx';
 import { MT5RealAccountDisplay } from '../Components/mt5-real-account-display.jsx';
-import { getBrokerName, getServerName, getPlatformMt5DownloadLink } from '../Helpers/constants';
+import { getPlatformMt5DownloadLink } from '../Helpers/constants';
 import 'Sass/app/modules/mt5/mt5-dashboard.scss';
 
 const LoadTab = ({ children, is_loading, loading_component, ...props }) => {
@@ -334,25 +333,6 @@ class MT5Dashboard extends React.Component {
                                 {/*        /> */}
                                 {/*    </React.Fragment> */}
                                 {/* )} */}
-                                <div className='mt5-dashboard__info'>
-                                    <div className='mt5-dashboard__info-description'>
-                                        <Localize i18n_default_text='Use these in your apps' />
-                                    </div>
-                                    <MT5InfoCopy
-                                        display_name={getBrokerName()}
-                                        text_copy={getBrokerName()}
-                                        label={localize('Broker')}
-                                        info_msg={localize('Click here to copy broker name.')}
-                                        success_msg={localize('Broker name copied!')}
-                                    />
-                                    <MT5InfoCopy
-                                        display_name={getServerName(this.state.is_demo_tab)}
-                                        text_copy={getServerName(this.state.is_demo_tab)}
-                                        label={localize('Server')}
-                                        info_msg={localize('Click here to copy server name.')}
-                                        success_msg={localize('Server name copied!')}
-                                    />
-                                </div>
                                 <CompareAccountsModal />
                                 <div className='mt5-dashboard__maintenance'>
                                     <Icon

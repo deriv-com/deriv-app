@@ -5,7 +5,7 @@ import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isEnded, isDigitContract } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { AssetInformation, ChartTitle } from 'Modules/SmartChart';
+import { ChartTitle } from 'Modules/SmartChart';
 
 const TradeInfo = ({ markers_array, granularity }) => {
     const latest_tick_contract = markers_array[markers_array.length - 1];
@@ -71,7 +71,6 @@ const TopWidgets = ({
             {InfoBox}
             <MobileWrapper>{portal}</MobileWrapper>
             <DesktopWrapper>{ChartTitleLocal}</DesktopWrapper>
-            <AssetInformation />
         </React.Fragment>
     );
 };

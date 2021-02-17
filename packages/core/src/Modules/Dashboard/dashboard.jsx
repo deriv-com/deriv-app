@@ -6,7 +6,6 @@ import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import ServerTime from '_common/base/server_time';
-import LoginPrompt from 'App/Components/Elements/login-prompt.jsx';
 import Page404 from 'Modules/Page404';
 
 const Dashboard = ({ client, config, ui }) => (
@@ -34,7 +33,6 @@ Dashboard.propTypes = {
         is_dark_mode_on: PropTypes.bool.isRequired,
         language: PropTypes.string.isRequired,
         components: PropTypes.shape({
-            LoginPrompt: any,
             Page404: any,
         }).isRequired,
     }).isRequired,
@@ -58,6 +56,7 @@ export default connect(({ client, ui }) => ({
         states_list: client.states_list,
         financial_assessment: client.financial_assessment,
         account_settings: client.account_settings,
+        accounts_list: client.accounts_list,
     },
     config: {
         asset_path: `${websiteUrl()}js/dashboard/assets`,
@@ -76,7 +75,6 @@ export default connect(({ client, ui }) => ({
         is_dark_mode_on: ui.is_dark_mode_on,
         language: getLanguage(),
         components: {
-            LoginPrompt,
             Page404,
         },
         real_account_signup: ui.real_account_signup,

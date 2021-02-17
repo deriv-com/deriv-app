@@ -103,7 +103,9 @@ export const isNavigationFromPlatform = (app_routing_history, platform_route, sh
                 // Return false when path matches a platform parent path, but don't return anything
                 // when a non-platform path was seen. i.e. navigating between /cashier and /reports
                 // should not affect navigating back to platform when clicking cross.
-                const platform_parent_paths = [routes.mt5, routes.bot, routes.trade].map(route => getParentPath(route));
+                const platform_parent_paths = [routes.mt5, routes.dxtrade, routes.bot, routes.trade].map(route =>
+                    getParentPath(route)
+                );
                 const is_other_platform_path = platform_parent_paths.includes(history_item_parent_path);
 
                 if (is_other_platform_path) {

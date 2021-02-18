@@ -31,7 +31,7 @@ const Routes: React.FC = () => {
                         <RouteWithSubroutes
                             key={idx}
                             Component404={ui_store.components.Page404}
-                            LoginPrompt={ui_store.components.LoginPrompt}
+                            should_redirect_login
                             {...route}
                         />
                     ))}

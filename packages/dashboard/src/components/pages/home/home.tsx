@@ -6,7 +6,7 @@ import { TRoute, TRouteGroup } from 'Types';
 import MyApps from 'Components/my-apps';
 
 import TempButtons from 'Components/temp-buttons';
-import TempGetDMT5Wallet from 'Components/pages/temp-get-dmt5-wallet';
+import TempMyApps from 'Components/pages/temp-my-apps';
 
 const Home: React.FC = () => {
     const list = [
@@ -15,7 +15,8 @@ const Home: React.FC = () => {
             icon: 'IcUserOutline',
             label: localize('My Deriv'),
             is_routed: true,
-            value: () => <MyApps />,
+            // value: () => <MyApps />,
+            value: () => <TempMyApps />,
         },
         {
             label: '',
@@ -59,7 +60,7 @@ const Home: React.FC = () => {
             subroutes: [
                 {
                     label: localize('DMT5'),
-                    value: () => <TempGetDMT5Wallet />,
+                    value: () => <Text>DMT5</Text>,
                 },
                 {
                     label: localize('DTrader'),

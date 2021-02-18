@@ -22,9 +22,9 @@ class logger {
      * @returns {Promise<void>}
      */
     static save = (test_path, name, results) => {
-        const splited = test_path.split('/')
-        const test_name = splited.pop().split('.')[0];
-        const category = splited.pop()
+        const split = test_path.split('/')
+        const test_name = split.pop().split('.')[0];
+        const category = split.pop()
         const file_path = `${output_dir}/${category}_${test_name}.json`
         if (!fs.existsSync(output_dir)) fs.mkdirSync(output_dir)
         if (!fs.existsSync(file_path))

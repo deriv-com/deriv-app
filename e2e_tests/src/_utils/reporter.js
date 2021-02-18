@@ -1,6 +1,6 @@
 const logger = require('./logger');
 
-class MyCustomReporter {
+class CLIReporter {
   constructor(globalConfig, options) {
     this._globalConfig = globalConfig;
     this._options = options;
@@ -11,4 +11,4 @@ class MyCustomReporter {
   }
 }
 
-module.exports = MyCustomReporter;
+module.exports = CLIReporter;

@@ -38,10 +38,10 @@ describe('Resource list in desktop', () => {
         }
         // remove duplicates
         data = data.filter((value, index, array) => array.findIndex(item => (item.name === value.name)) === index)
-        const totalKB = data.reduce((a, b) => { return { size: Number(a.size) + Number(b.size) } })
+        const total_bytes = data.reduce((a, b) => { return { size: Number(a.size) + Number(b.size) } }, { size: 0 })
         logger.save(expect.getState().testPath, 'Resource list in desktop:', {
             'Number of requests:': data.length,
-            'Total transfered data:': `${totalKB.size} (${totalKB.size / 1000000} MB)`,
+            'Total transfered data:': `${total_bytes.size} (${total_bytes.size / 1000000} MB)`,
             'Performance timing:': performance_timing.timing,
             'Request list:': data
         })
@@ -81,10 +81,10 @@ describe('Resource list in mobile', () => {
         }
         // remove duplicates
         data = data.filter((value, index, array) => array.findIndex(item => (item.name === value.name)) === index)
-        const totalKB = data.reduce((a, b) => { return { size: Number(a.size) + Number(b.size) } })
+        const total_bytes = data.reduce((a, b) => { return { size: Number(a.size) + Number(b.size) } }, { size: 0 })
         logger.save(expect.getState().testPath, 'Resource list in mobile:', {
             'Number of requests:': data.length,
-            'Total transfered data:': `${totalKB.size} (${totalKB.size / 1000000} MB)`,
+            'Total transfered data:': `${total_bytes.size} (${total_bytes.size / 1000000} MB)`,
             'Performance timing:': performance_timing.timing,
             'Request list:': data
         })

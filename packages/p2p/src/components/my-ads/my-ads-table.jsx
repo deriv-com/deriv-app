@@ -74,6 +74,7 @@ const MyAdsTable = () => {
                             has_more_items_to_load={my_ads_store.has_more_items_to_load}
                             loadMoreRowsFn={my_ads_store.loadMoreAds}
                             keyMapperFn={item => item.id}
+                            getRowSize={() => (isMobile() ? 123 : 56)}
                         />
                     </Table.Body>
                 </Table>

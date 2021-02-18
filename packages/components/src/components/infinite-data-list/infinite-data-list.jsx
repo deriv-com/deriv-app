@@ -13,6 +13,7 @@ const InfiniteDataList = ({
     loadMoreRowsFn,
     onScroll,
     rowRenderer,
+    getRowSize,
 }) => {
     const item_count = has_filler ? items.length - 1 : items.length;
     const row_count = has_more_items_to_load ? item_count + 1 : item_count;
@@ -33,6 +34,7 @@ const InfiniteDataList = ({
                 <DataList
                     className={data_list_className}
                     data_source={items}
+                    getRowSize={getRowSize}
                     keyMapper={keyMapperFn}
                     onRowsRendered={onRowsRendered}
                     onScroll={onScroll}

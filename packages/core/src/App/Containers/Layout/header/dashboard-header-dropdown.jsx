@@ -90,8 +90,10 @@ const HeaderItem = ({ icon, name, to }) => {
     );
 };
 
-const HeaderDropdown = ({ current_ref, onClickHandler, parent }) => {
+const HeaderDropdown = ({ current_ref, onClickHandler, parent, setRef }) => {
     const [left_offset, set_left_offset] = React.useState(current_ref?.offsetLeft);
+    const dropdown_container_ref = React.useRef(null);
+
     const updateOffsets = () => {
         if (current_ref) {
             set_left_offset(current_ref.offsetLeft);
@@ -99,15 +101,18 @@ const HeaderDropdown = ({ current_ref, onClickHandler, parent }) => {
     };
 
     React.useEffect(() => {
+        if (dropdown_container_ref) {
+            setRef(dropdown_container_ref);
+        }
         window.addEventListener('resize', updateOffsets);
         return () => {
             window.removeEventListener('resize', updateOffsets);
         };
-    });
+    }, []);
 
     return (
         <React.Fragment>
-            <div className='dashboard-header-dropdown' style={{ left: left_offset }}>
+            <div ref={dropdown_container_ref} className='dashboard-header-dropdown' style={{ left: left_offset }}>
                 <div className='wrapper'>
                     <div className='card-wrapper'>
                         {getNavigationItems(parent).map((item, idx) => (

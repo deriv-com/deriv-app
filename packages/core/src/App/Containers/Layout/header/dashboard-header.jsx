@@ -52,13 +52,33 @@ const LoggedOutHeader = () => {
     const { is_deriv_crypto } = React.useContext(PlatformContext);
     const [is_dropdown_visible, set_dropdown_visible] = React.useState(false);
     const [current_dropdown, set_current_dropdown] = React.useState('');
+    const [dropdown_link_ref, set_dropdown_link_ref] = React.useState(null);
     const [dropdown_ref, set_dropdown_ref] = React.useState(null);
 
     const handleDropdownClick = (dropdown, target) => {
         set_dropdown_visible(!is_dropdown_visible);
         set_current_dropdown(dropdown);
-        set_dropdown_ref(target);
+        if (target) {
+            set_dropdown_link_ref(target);
+        }
     };
+
+    const setDropdown = new_ref => set_dropdown_ref(new_ref);
+
+    // If the user clicks outside the region of current dropdown, it will hide it.
+    const handleOutsideClick = e => {
+        if (dropdown_link_ref && !dropdown_link_ref.contains(e.target)) {
+            if (dropdown_ref && dropdown_ref.current.contains(e.target)) return;
+            set_dropdown_visible(false);
+        }
+    };
+
+    React.useEffect(() => {
+        document.addEventListener('click', handleOutsideClick);
+        return () => {
+            document.removeEventListener('click', handleOutsideClick);
+        };
+    }, [dropdown_link_ref, dropdown_ref]);
 
     return (
         <React.Fragment>
@@ -113,7 +133,9 @@ const LoggedOutHeader = () => {
                     )}
                 </div>
             </header>
-            {is_dropdown_visible && <HeaderDropdown current_ref={dropdown_ref} parent={current_dropdown} />}
+            {is_dropdown_visible && (
+                <HeaderDropdown current_ref={dropdown_link_ref} parent={current_dropdown} setRef={setDropdown} />
+            )}
         </React.Fragment>
     );
 };

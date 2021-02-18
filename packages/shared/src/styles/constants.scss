@@ -42,7 +42,6 @@ $color-green-3: #00a79e;
 $color-green-4: #008079;
 $color-orange: #ff6444;
 $color-yellow: #ffad3a;
-$color-apple-blue: #0677af;
 $color-blue: #377cfc;
 $color-blue-1: #0dc2e7;
 $color-blue-2: #2a3052;
@@ -63,6 +62,8 @@ $alpha-color-white-1: transparentize($color-white, 0.04);
 $alpha-color-white-2: transparentize($color-white, 0.84);
 $alpha-color-white-3: transparentize($color-white, 0.92);
 $alpha-color-red-1: transparentize($color-red, 0.92);
+$alpha-color-red-2: transparentize($color-red, 0.84);
+$alpha-color-red-3: transparentize($color-red, 0.76);
 $alpha-color-green-1: transparentize($color-green-1, 0.08);
 $alpha-color-green-2: transparentize($color-green-3, 0.08);
 

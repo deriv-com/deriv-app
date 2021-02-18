@@ -16,14 +16,11 @@ import {
 } from '@deriv/components';
 import {
     routes,
-    isCryptocurrency,
     formatMoney,
     getDXTradeAccount,
     // getDXTradeAccountDisplay,
     // getDXTradeAccountKey,
     getMT5Account,
-    getMT5AccountDisplay,
-    getMT5AccountKey,
     getAccountTypeFields,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -32,6 +29,7 @@ import { connect } from 'Stores/connect';
 import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
+import { getSortedAccountList, getSortedCFDList, isDemo, getMtConfig } from './helpers';
 
 const AccountSwitcher = props => {
     const [active_tab_index, setActiveTabIndex] = React.useState(
@@ -156,8 +154,6 @@ const AccountSwitcher = props => {
         props.toggleAccountTypesModal(true);
     };
 
-    const isDemo = account => account.account_type === 'demo';
-
     // * mt5_login_list returns these:
     // landing_company_short: "svg" | "malta" | "maltainvest" |  "vanuatu"  | "labuan" | "bvi"
     // account_type: "real" | "demo"
@@ -186,45 +182,6 @@ const AccountSwitcher = props => {
         return [...gaming_config, ...financial_config];
     };
 
-    const getMtConfig = (market_type, landing_company, existing_mt5_accounts, trading_servers) => {
-        const mt5_config = [];
-        if (landing_company) {
-            Object.keys(landing_company).forEach(company => {
-                let has_account = existing_mt5_accounts.find(
-                    account => account.sub_account_type === company && account.market_type === market_type
-                );
-                if (has_account) {
-                    const number_market_type_available = trading_servers.filter(
-                        s =>
-                            s.supported_accounts.includes(market_type) &&
-                            !s.disabled &&
-                            !existing_mt5_accounts.some(
-                                acc =>
-                                    acc.account_type === 'real' &&
-                                    acc.market_type === market_type &&
-                                    acc.server === s.id
-                            )
-                    ).length;
-                    if (number_market_type_available && has_account.account_type === 'real') {
-                        has_account = false;
-                    }
-                }
-
-                if (!has_account) {
-                    const type = getMT5AccountKey(market_type, company);
-                    if (type) {
-                        mt5_config.push({
-                            icon: getMT5Account(market_type, company),
-                            title: getMT5AccountDisplay(market_type, company),
-                            type,
-                        });
-                    }
-                }
-            });
-        }
-        return mt5_config;
-    };
-
     const doSwitch = async loginid => {
         closeAccountsDialog();
         if (props.account_loginid === loginid) return;
@@ -239,52 +196,8 @@ const AccountSwitcher = props => {
     // Real accounts is always the first tab index based on design
     const isRealAccountTab = active_tab_index === 0;
 
-    const getSortedAccountList = () => {
-        // sort accounts as follows:
-        // top is fiat, then crypto (each alphabetically by currency), then demo
-        return props.account_list.slice().sort((a, b) => {
-            const a_currency = props.accounts[a.loginid].currency;
-            const b_currency = props.accounts[b.loginid].currency;
-            const a_is_crypto = isCryptocurrency(a_currency);
-            const b_is_crypto = isCryptocurrency(b_currency);
-            const a_is_fiat = !a_is_crypto;
-            const b_is_fiat = !b_is_crypto;
-            if (a.is_virtual || b.is_virtual) {
-                return a.is_virtual ? 1 : -1;
-            } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
-                return a_currency < b_currency ? -1 : 1;
-            } else if (a_is_fiat && b_is_crypto) {
-                return -1;
-            }
-            return 1;
-        });
-    };
-
-    const getSortedCFDList = (platform = 'mt5') => {
-        // for DXTrade, MT5, synthetic, financial, financial stp
-        if (platform === 'dxtrade') return {};
-        return props.mt5_login_list.slice().sort((a, b) => {
-            const a_is_demo = isDemo(a);
-            const b_is_demo = isDemo(b);
-
-            if (a_is_demo && !b_is_demo) {
-                return 1;
-            }
-            if (b_is_demo && !a_is_demo) {
-                return -1;
-            }
-            if (a.market_type === 'gaming') {
-                return -1;
-            }
-            if (a.sub_account_type === 'financial') {
-                return b.market_type === 'gaming' ? 1 : -1;
-            }
-            return 1;
-        });
-    };
-
     const getDemoMT5 = () => {
-        return getSortedCFDList().filter(isDemo);
+        return getSortedCFDList(props.mt5_login_list).filter(isDemo);
     };
 
     const getDemoDXTrade = () => {
@@ -321,7 +234,7 @@ const AccountSwitcher = props => {
     };
 
     const getRealMT5 = () => {
-        return getSortedCFDList().filter(account => !isDemo(account));
+        return getSortedCFDList(props.mt5_login_list).filter(account => !isDemo(account));
     };
 
     // const getRealDXTrade = () => {
@@ -444,7 +357,7 @@ const AccountSwitcher = props => {
                 }}
             >
                 <div className='acc-switcher__accounts'>
-                    {getSortedAccountList()
+                    {getSortedAccountList(props.account_list, props.accounts)
                         .filter(account => account.is_virtual)
                         .map(account => (
                             <AccountList
@@ -589,7 +502,7 @@ const AccountSwitcher = props => {
                     }}
                 >
                     <div className='acc-switcher__accounts'>
-                        {getSortedAccountList()
+                        {getSortedAccountList(props.account_list, props.accounts)
                             .filter(account => !account.is_virtual)
                             .map(account => {
                                 return (

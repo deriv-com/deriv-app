@@ -45,6 +45,7 @@ const TradeSettingsExtensions = ({ populateSettingsExtensions, store }) => {
 
     React.useEffect(() => {
         return () => populateSettingsExtensions(null);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => populateSettings());

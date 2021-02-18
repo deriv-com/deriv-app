@@ -26,6 +26,7 @@ const MobileDialog = props => {
         } else {
             footer_ref.current = true;
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [footer]);
 
     const checkVisibility = () => {

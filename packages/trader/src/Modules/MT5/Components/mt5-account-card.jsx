@@ -140,21 +140,30 @@ const MT5AccountCard = ({
     const button_ref = React.useRef();
 
     React.useEffect(() => {
-        if (existing_data) {
-            const show = () => {
-                onHover?.(existing_data.group);
-            };
+        onMount();
+        return () => {
+            onUnMount();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [onHover]);
 
+    const show = () => {
+        onHover?.(existing_data.group);
+    };
+
+    const onMount = () => {
+        if (existing_data) {
             ref.current.addEventListener('mouseenter', show);
             button_ref?.current?.addEventListener('mouseenter', show);
-
-            return () => {
-                ref.current.removeEventListener('mouseenter', show);
-                button_ref?.current?.removeEventListener('mouseenter', () => show);
-            };
         }
-        return () => {};
-    }, [onHover]);
+    };
+
+    const onUnMount = () => {
+        if (existing_data) {
+            ref.current.removeEventListener('mouseenter', show);
+            button_ref?.current?.removeEventListener('mouseenter', () => show);
+        }
+    };
 
     const getServerName = React.useCallback(
         data => {
@@ -167,6 +176,7 @@ const MT5AccountCard = ({
 
             return '';
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [existing_data, trading_servers]
     );
 

@@ -37,6 +37,7 @@ const FlyoutContent = props => {
 
     React.useEffect(() => {
         flyout_ref.current.scrollTop = 0;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selected_category]);
 
     React.useEffect(() => {
@@ -47,6 +48,7 @@ const FlyoutContent = props => {
                 block: 'start',
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active_helper]);
 
     return (

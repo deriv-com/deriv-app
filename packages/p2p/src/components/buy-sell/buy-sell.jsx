@@ -18,7 +18,7 @@ const BuySell = () => {
     const { buy_sell_store } = useStores();
     const [is_toggle_visible, setIsToggleVisible] = React.useState(true);
     const previous_scroll_top = React.useRef(0);
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => buy_sell_store.registerIsListedReaction(), []);
 
     const onScroll = event => {

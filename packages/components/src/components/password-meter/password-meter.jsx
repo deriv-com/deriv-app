@@ -22,6 +22,7 @@ const PasswordMeter = ({ children, has_error, input, custom_feedback_messages })
         }
 
         loadLibrary();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {

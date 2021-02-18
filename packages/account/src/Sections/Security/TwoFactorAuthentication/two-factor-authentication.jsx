@@ -29,6 +29,7 @@ const TwoFactorAuthentication = ({ email_address, is_switching }) => {
 
     React.useEffect(() => {
         getDigitStatus();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const generateQrCode = async () => {

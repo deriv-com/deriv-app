@@ -30,6 +30,7 @@ export const useHover = (refSetter, should_prevent_bubbling) => {
             };
         }
         return undefined;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ref]);
 
     return [ref, value];

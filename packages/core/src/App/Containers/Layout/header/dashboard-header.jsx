@@ -1,7 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import { Button, Icon, Text } from '@deriv/components';
+import { Button, Icon, Text, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { PlatformContext, redirectToLogin, redirectToSignUp, routes, isDesktop, isMobile } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -21,17 +21,8 @@ const LoggedInHeader = ({ is_dark_mode }) => {
         <header className='dashboard-header dashboard-header--logged-in'>
             <div className='dashboard-header__left'>
                 <div onClick={() => history.push(routes.dashboard)}>
-                    {isDesktop() ? (
-                        !is_dark_mode ? (
-                            <DerivLogoLight />
-                        ) : (
-                            <DerivLogoDark />
-                        )
-                    ) : !is_dark_mode ? (
-                        <DerivLogoLightMobile />
-                    ) : (
-                        <DerivLogoDarkMobile />
-                    )}
+                    <DesktopWrapper>{is_dark_mode ? <DerivLogoDark /> : <DerivLogoLight />}</DesktopWrapper>
+                    <MobileWrapper>{is_dark_mode ? <DerivLogoDarkMobile /> : <DerivLogoLightMobile />}</MobileWrapper>
                 </div>
             </div>
             <div className='dashboard-header__right--logged-in'>

@@ -50,6 +50,7 @@ const Cashier = ({
         return () => {
             toggleCashier();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onClickClose = () => routeBackInApp(history);

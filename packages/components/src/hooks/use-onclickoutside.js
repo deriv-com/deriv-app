@@ -17,5 +17,6 @@ export const useOnClickOutside = (ref, handler, validationFn) => {
         return () => {
             document.removeEventListener('mousedown', listener);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ref, handler]);
 };

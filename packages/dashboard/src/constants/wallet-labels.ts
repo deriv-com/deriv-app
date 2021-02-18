@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 
-export const getWalletLabels = () => ({
+export const getWalletLabels = (): any => ({
     DEPOSIT: localize('Deposit'),
     GET_WALLET: localize('Get more wallets'),
     RESET: localize('Reset'),

@@ -4,6 +4,7 @@ import { Dialog } from '@deriv/components';
 import { connect } from 'Stores/connect';
 
 const RoutePromptDialog = ({ continueRoute, is_confirmed, last_location, should_show, onCancel, onConfirm }) => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(continueRoute, [is_confirmed, last_location]);
 
     return (

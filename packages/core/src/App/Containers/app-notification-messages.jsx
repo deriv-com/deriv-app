@@ -47,6 +47,7 @@ const AppNotificationMessages = ({ marked_notifications, notification_messages, 
                 top: bounds.top + 8,
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const notifications = notification_messages

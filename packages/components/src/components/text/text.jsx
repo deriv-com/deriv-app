@@ -19,6 +19,7 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
         } else {
             setStyle(class_styles);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [size, color, line_height, weight, align]);
     const class_names = classNames('dc-text', className);
     return React.createElement(as || 'span', { className: class_names, style, ...props }, children);

@@ -250,10 +250,12 @@ const Dropdown = ({
         if (is_nativepicker && !is_nativepicker_visible && is_list_visible) {
             setIsListVisible(false);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_nativepicker, is_nativepicker_visible]);
 
     React.useEffect(() => {
         if (!initial_render.current && !is_list_visible && value) dropdown_ref.current.focus();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_list_visible]);
 
     const handleSelect = item => {

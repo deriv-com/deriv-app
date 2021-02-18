@@ -172,6 +172,7 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
                 setPreviousData(fetchFromStorage());
             }
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account_settings]);
 
     React.useEffect(() => {
@@ -185,6 +186,7 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
             setStateItems(items);
             setPreviousData([]);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [previous_data]);
 
     const fetchFromStorage = () => {

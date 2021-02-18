@@ -71,6 +71,7 @@ const AccountLimits = ({ account_limits, currency, getLimits, is_fully_authentic
     React.useEffect(() => {
         if (is_virtual) setLoading(false);
         else getLimits().then(setLoading(false));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {

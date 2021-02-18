@@ -8,6 +8,7 @@ const ReadMore = ({ expand_text, text, collapse_length, className }) => {
 
     React.useEffect(() => {
         updateContent(is_collapsed ? text.substring(0, collapse_length) : text);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_collapsed]);
 
     return (

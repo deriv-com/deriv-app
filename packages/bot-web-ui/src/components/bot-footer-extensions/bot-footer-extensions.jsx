@@ -16,6 +16,7 @@ const SecurityAndPrivacy = () => (
 
 const BotFooterExtensions = ({ active_tab, populateFooterExtensions, setActiveTab }) => {
     React.useEffect(() => populateFooter());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => () => populateFooterExtensions([]), []);
 
     const FooterTabs = () => (

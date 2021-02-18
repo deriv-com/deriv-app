@@ -94,6 +94,7 @@ const Onfido = ({
         } catch (err) {
             setOnfidoInitError(true);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [documents_supported, onComplete, onfido_service_token]);
 
     // didUpdate hook

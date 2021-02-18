@@ -30,6 +30,7 @@ const ContractUpdateForm = props => {
 
     React.useEffect(() => {
         return () => contract.clearContractUpdateConfigValues();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const {

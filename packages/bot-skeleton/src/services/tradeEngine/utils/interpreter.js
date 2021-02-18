@@ -13,6 +13,7 @@ JSInterpreter.prototype.takeStateSnapshot = function () {
 JSInterpreter.prototype.restoreStateSnapshot = function (snapshot) {
     this.stateStack = cloneThorough(snapshot, undefined, undefined, undefined, true);
     this.global = this.stateStack[0].scope.object || this.stateStack[0].scope;
+    /* eslint no-underscore-dangle: 0 */
     this.initFunc_(this, this.global);
 };
 

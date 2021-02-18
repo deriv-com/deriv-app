@@ -68,15 +68,22 @@ const ModalElement = ({
     useOnClickOutside(wrapper_ref, closeModal, validateClickOutside);
 
     React.useEffect(() => {
+        mountModal();
+        return () => {
+            unMountModal();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const mountModal = () => {
         el_ref.current.classList.add('dc-modal');
         modal_root_ref.current.appendChild(el_ref.current);
         if (typeof onMount === 'function') onMount();
-
-        return () => {
-            modal_root_ref.current.removeChild(el_ref.current);
-            if (typeof onUnmount === 'function') onUnmount();
-        };
-    }, []);
+    };
+    const unMountModal = () => {
+        modal_root_ref.current.removeChild(el_ref.current);
+        if (typeof onUnmount === 'function') onUnmount();
+    };
 
     const rendered_title = typeof renderTitle === 'function' ? renderTitle() : null;
 

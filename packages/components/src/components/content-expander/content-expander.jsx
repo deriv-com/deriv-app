@@ -33,6 +33,7 @@ const ContentExpander = ({
         if (typeof measure === 'function') {
             measure();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_visible]);
 
     return (

@@ -17,6 +17,7 @@ const Toast = ({ children, className, is_open = true, onClose, onClick, type = '
         }
 
         return undefined;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_open]);
 
     return (

@@ -12,6 +12,7 @@ const ExpansionPanel = ({ message, onResize }) => {
         if (typeof onResize === 'function') {
             onResize();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_open]);
 
     const onClick = () => {

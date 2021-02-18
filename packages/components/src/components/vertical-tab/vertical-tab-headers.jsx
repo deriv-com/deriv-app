@@ -47,6 +47,7 @@ const VerticalTabHeaders = ({
 
     React.useEffect(() => {
         setTop(offsetTop(extra_offset, is_floating, ref, selected));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selected]);
 
     return (

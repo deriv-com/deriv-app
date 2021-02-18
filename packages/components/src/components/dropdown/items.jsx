@@ -29,6 +29,7 @@ const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_a
         }
 
         return () => removeListeners();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [item]);
 
     return (

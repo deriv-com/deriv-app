@@ -19,6 +19,7 @@ const App = ({ passthrough }) => {
     const [root_store] = React.useState(initStore(passthrough.root_store, passthrough.WS));
     React.useEffect(() => {
         return () => root_store.ui.setPromptHandler(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

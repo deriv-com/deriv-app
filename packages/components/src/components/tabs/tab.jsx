@@ -25,6 +25,7 @@ const Tab = ({
 }) => {
     React.useEffect(() => {
         setActiveLineStyle();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [count, label, header_content]);
 
     const classes = classNames('dc-tabs__item', {

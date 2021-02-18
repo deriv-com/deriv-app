@@ -26,6 +26,7 @@ const VerticalTabHeaderGroup = ({
 
     React.useEffect(() => {
         onToggle(true);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [show_items]);
 
     const label = group.label || group.title; // group.label.charAt(0).toUpperCase() + group.label.slice(1).toLowerCase();

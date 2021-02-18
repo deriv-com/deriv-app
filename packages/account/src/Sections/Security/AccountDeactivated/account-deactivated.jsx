@@ -16,6 +16,7 @@ const AccountDeactivated = ({ logout }) => {
         return () => {
             if (handleInterval) clearInterval(handleInterval);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [timer, is_modal_open]);
 
     const counter = () => {

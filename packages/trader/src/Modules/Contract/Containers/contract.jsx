@@ -18,6 +18,7 @@ const Contract = ({ error_code, error_message, match, history, has_error, onMoun
             removeErrorMessage();
             onUnmount();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onMount, onUnmount, removeErrorMessage]);
 
     if (isNaN(match.params.contract_id)) {

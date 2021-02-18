@@ -36,6 +36,7 @@ const Input = ({
         if (current_focus === name) {
             ref.current.focus();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [current_focus, name]);
 
     const onBlur = () => setCurrentFocus(null);

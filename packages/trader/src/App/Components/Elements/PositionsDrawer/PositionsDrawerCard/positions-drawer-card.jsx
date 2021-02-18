@@ -141,30 +141,34 @@ const PositionsDrawerCard = ({
                     >
                         {contract_info.underlying ? contract_el : loader_el}
                     </div>
-                ) : is_link_disabled ? (
-                    <div
-                        className={classNames('dc-contract-card', {
-                            'dc-contract-card--green': !is_multiplier && profit_loss > 0 && !result,
-                            'dc-contract-card--red': !is_multiplier && profit_loss < 0 && !result,
-                        })}
-                    >
-                        {contract_info.underlying ? contract_el : loader_el}
-                    </div>
                 ) : (
-                    <NavLink
-                        className={classNames('dc-contract-card', {
-                            'dc-contract-card--green': !is_multiplier && profit_loss > 0 && !result,
-                            'dc-contract-card--red': !is_multiplier && profit_loss < 0 && !result,
-                        })}
-                        to={{
-                            pathname: `/contract/${contract_info.contract_id}`,
-                            state: {
-                                // from_table_row: true,
-                            },
-                        }}
-                    >
-                        {contract_info.underlying ? contract_el : loader_el}
-                    </NavLink>
+                    <React.Fragment>
+                        {is_link_disabled ? (
+                            <div
+                                className={classNames('dc-contract-card', {
+                                    'dc-contract-card--green': !is_multiplier && profit_loss > 0 && !result,
+                                    'dc-contract-card--red': !is_multiplier && profit_loss < 0 && !result,
+                                })}
+                            >
+                                {contract_info.underlying ? contract_el : loader_el}
+                            </div>
+                        ) : (
+                            <NavLink
+                                className={classNames('dc-contract-card', {
+                                    'dc-contract-card--green': !is_multiplier && profit_loss > 0 && !result,
+                                    'dc-contract-card--red': !is_multiplier && profit_loss < 0 && !result,
+                                })}
+                                to={{
+                                    pathname: `/contract/${contract_info.contract_id}`,
+                                    state: {
+                                        // from_table_row: true,
+                                    },
+                                }}
+                            >
+                                {contract_info.underlying ? contract_el : loader_el}
+                            </NavLink>
+                        )}
+                    </React.Fragment>
                 )}
                 {card_footer}
             </div>

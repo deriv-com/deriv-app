@@ -67,6 +67,7 @@ const VerticalTab = ({
             setCurrTabIndex,
             setVerticalTabIndex,
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [vertical_tab_index, list]);
 
     return (

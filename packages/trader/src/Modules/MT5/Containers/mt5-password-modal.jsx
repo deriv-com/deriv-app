@@ -144,6 +144,7 @@ const MT5ServerForm = ({ ...props }) => {
                 };
             })
             .sort((a, b) => (a.recommended ? a : b));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.trading_servers]);
 
     return (
@@ -308,6 +309,7 @@ const MT5PasswordModal = ({
                 setIsSubmitting(state);
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [password, should_show_server_form, is_submitting]);
 
     React.useEffect(() => {

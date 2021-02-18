@@ -40,10 +40,7 @@ storiesOf('Popup', module)
         'Basic usage',
         () => {
             const [visibility, setVisibility] = React.useState(false);
-            const toggleVisibility = () => {
-                console.log('*****');
-                setVisibility(!visibility);
-            };
+            const toggleVisibility = () => setVisibility(!visibility);
             return (
                 <Wrapper>
                     {!visibility && <Button onClick={toggleVisibility} text={'Click Me!'} primary medium />}

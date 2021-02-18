@@ -108,7 +108,7 @@ const HeaderDropdown = ({ current_ref, onClickHandler, parent, setRef }) => {
         return () => {
             window.removeEventListener('resize', updateOffsets);
         };
-    }, []);
+    });
 
     return (
         <React.Fragment>

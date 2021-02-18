@@ -69,6 +69,7 @@ const CFDDemoAccountDisplay = ({
                             }
                         )
                     }
+                    platform={platform}
                     descriptor={localize(
                         'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
                     )}
@@ -107,6 +108,7 @@ const CFDDemoAccountDisplay = ({
                             }
                         )
                     }
+                    platform={platform}
                     descriptor={
                         is_eu || is_eu_country
                             ? localize(

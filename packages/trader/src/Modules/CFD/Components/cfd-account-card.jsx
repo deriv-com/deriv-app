@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper, Input } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { CFDAccountCopy } from './cfd-account-copy.jsx';
 import { getMT5WebTerminalLink } from '../Helpers/constants';
@@ -127,6 +128,7 @@ const CFDAccountCard = ({
     is_logged_in,
     is_virtual,
     onHover,
+    platform,
     specs,
     title,
     type,
@@ -186,6 +188,8 @@ const CFDAccountCard = ({
         toggleShouldShowRealAccountsList(true);
         toggleAccountsDialog(true);
     };
+
+    const is_web_terminal_unsupported = isMobile() && platform === 'dxtrade';
 
     return (
         <div ref={wrapper_ref} className={classNames('cfd-account-card__wrapper')}>
@@ -304,7 +308,7 @@ const CFDAccountCard = ({
                             <Localize i18n_default_text='Select' />
                         </Button>
                     )}
-                    {existing_data && is_logged_in && (
+                    {existing_data && is_logged_in && !is_web_terminal_unsupported && (
                         <a
                             className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
                             type='button'

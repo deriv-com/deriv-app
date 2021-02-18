@@ -146,6 +146,7 @@ const CFDRealAccountDisplay = ({
                               onSelectAccount={onSelectRealSynthetic}
                               onPasswordManager={openPasswordManager}
                               onClickFund={onClickFundReal}
+                              platform={platform}
                               descriptor={localize(
                                   'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
                               )}
@@ -173,6 +174,7 @@ const CFDRealAccountDisplay = ({
                       onSelectAccount={onSelectRealSynthetic}
                       onPasswordManager={openPasswordManager}
                       onClickFund={onClickFundReal}
+                      platform={platform}
                       descriptor={localize(
                           'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
                       )}
@@ -232,6 +234,7 @@ const CFDRealAccountDisplay = ({
             onSelectAccount={onSelectRealFinancial}
             onPasswordManager={openPasswordManager}
             onClickFund={onClickFundReal}
+            platform={platform}
             descriptor={
                 is_eu || is_eu_country
                     ? localize(

@@ -606,6 +606,7 @@ export const icons = {
         'IcUnderlyingWLDUSD',
     ],
     wallet: [
+        'IcWalletClearFunds',
         'IcWalletCreditDebitLight',
         'IcWalletCredit',
         'IcWalletCryptoLight',

@@ -78,10 +78,12 @@ export type TUIStore = {
     init: (ui_props: TUIProps) => void;
     real_account_signup: unknown;
     real_account_signup_target: string;
+    is_clear_funds_modal_open: boolean;
     is_get_wallet_modal_open: boolean;
     is_real_acc_signup_on: boolean;
     resetRealAccountSignupParams?: () => void;
     openRealAccountSignup: () => void;
     enableGetPasswordModal: () => void;
     disableGetPasswordModal: () => void;
+    toggleClearFundsModal: (state_change?: boolean) => void;
 };

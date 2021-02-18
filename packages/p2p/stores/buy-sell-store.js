@@ -92,8 +92,12 @@ export default class BuySellStore extends BaseStore {
                 this.setContactInfo(p2p_advertiser_info.contact_info);
                 this.setPaymentInfo(p2p_advertiser_info.payment_info);
             } else {
-                this.setContactInfo('');
-                this.setPaymentInfo('');
+                if (response.error.code === 'PermissionDenied') {
+                    this.root_store.general_store.setIsBlocked(true);
+                } else {
+                    this.setContactInfo('');
+                    this.setPaymentInfo('');
+                }
             }
         });
     }

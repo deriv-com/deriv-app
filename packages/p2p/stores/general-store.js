@@ -409,6 +409,7 @@ export default class GeneralStore extends BaseStore {
             this.setNickname(p2p_advertiser_info.name);
             this.setUserBlockedUntil(p2p_advertiser_info.blocked_until);
             this.setShouldShowRealName(!!p2p_advertiser_info.show_name);
+            this.is_blocked && this.setIsBlocked(false);
         } else {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
 

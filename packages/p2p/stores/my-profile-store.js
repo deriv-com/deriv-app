@@ -36,8 +36,9 @@ export default class MyProfileStore extends BaseStore {
             } else {
                 if (response.error.code === 'PermissionDenied') {
                     this.root_store.general_store.setIsBlocked(true);
+                } else {
+                    this.setErrorMessage(response.error);
                 }
-                this.setErrorMessage(response.error);
             }
             this.setIsLoading(false);
         });

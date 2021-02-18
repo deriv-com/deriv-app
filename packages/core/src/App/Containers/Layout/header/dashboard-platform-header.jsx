@@ -19,7 +19,7 @@ const MyApps = () => {
 
     return (
         <div className='dashboard-platform-header__my-apps' onClick={() => history.push(routes.dashboard)}>
-            <Icon icon='IcWalletMyApps' size='16' />
+            <Icon icon='IcWalletMyApps' size={16} />
             <Text size='s' line_height='xxl' weight='bold' className='dashboard-platform-header__my-apps--title'>
                 {localize('My apps')}
             </Text>

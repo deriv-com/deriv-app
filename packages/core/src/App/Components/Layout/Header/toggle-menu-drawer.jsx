@@ -153,6 +153,7 @@ const ToggleMenuDrawer = React.forwardRef(
                     {!has_subroutes &&
                         route_config.routes.map((route, index) => {
                             if (
+                                !route.is_invisible &&
                                 (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
                                 (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
                                 (route.path !== routes.cashier_p2p || is_p2p_enabled) &&

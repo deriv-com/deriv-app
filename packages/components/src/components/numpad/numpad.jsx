@@ -176,12 +176,7 @@ const Numpad = ({
                     is_disabled={is_backspace_disabled}
                     text='⌫'
                     renderText={text => (
-                        <Text
-                            styles={{ fontSize: '1.8rem' }}
-                            weight='bold'
-                            align='center'
-                            color={is_backspace_disabled ? 'disabled' : 'general'}
-                        >
+                        <Text weight='bold' align='center' color={is_backspace_disabled ? 'disabled' : 'general'}>
                             {text}
                         </Text>
                     )}

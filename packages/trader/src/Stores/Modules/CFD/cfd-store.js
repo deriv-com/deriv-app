@@ -76,11 +76,11 @@ export default class CFDStore extends BaseStore {
     // other platforms can redirect to here using account switcher's `Add` account button
     // so in that case we should open the corresponding account opening modal on load/component update
     checkShouldOpenAccount() {
-        const account_type = sessionStorage.getItem('open_mt5_account_type');
+        const account_type = sessionStorage.getItem('open_cfd_account_type');
         if (account_type) {
             const [category, type, set_password] = account_type.split('.');
             this.createCFDAccount({ category, type, set_password });
-            sessionStorage.removeItem('open_mt5_account_type');
+            sessionStorage.removeItem('open_cfd_account_type');
         }
     }
 

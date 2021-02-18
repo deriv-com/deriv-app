@@ -10,8 +10,8 @@ import { getMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 import { WS } from 'Services/ws-methods';
 
 const ResetPasswordIntent = ({ current_list, children, ...props }) => {
-    const reset_password_intent = localStorage.getItem('mt5_reset_password_intent');
-    const reset_password_type = localStorage.getItem('mt5_reset_password_type') || 'main'; // Default to main
+    const reset_password_intent = localStorage.getItem('cfd_reset_password_intent');
+    const reset_password_type = localStorage.getItem('cfd_reset_password_type') || 'main'; // Default to main
     const has_intent =
         reset_password_intent && /(real|demo)\.(financial_stp|financial|synthetic)/.test(reset_password_intent);
 
@@ -52,9 +52,9 @@ class CFDResetPasswordModal extends React.Component {
         });
     };
     clearAddressBar = () => {
-        localStorage.removeItem('mt5_reset_password_intent');
-        localStorage.removeItem('mt5_reset_password_type');
-        localStorage.removeItem('mt5_reset_password_code');
+        localStorage.removeItem('cfd_reset_password_intent');
+        localStorage.removeItem('cfd_reset_password_type');
+        localStorage.removeItem('cfd_reset_password_code');
         this.props.history.push(`${routes.mt5}`);
     };
 
@@ -88,7 +88,7 @@ class CFDResetPasswordModal extends React.Component {
             login,
             password_type,
             new_password: values.new_password,
-            verification_code: localStorage.getItem('mt5_reset_password_code'),
+            verification_code: localStorage.getItem('cfd_reset_password_code'),
         };
 
         WS.mt5PasswordReset(request).then(response => {

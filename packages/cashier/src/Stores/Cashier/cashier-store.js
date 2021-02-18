@@ -983,10 +983,10 @@ export default class CashierStore extends BaseStore {
             this.setTransferLimit();
 
             if (this.config.account_transfer.accounts_list?.length > 0) {
-                const mt5_transfer_to_login_id = sessionStorage.getItem('mt5_transfer_to_login_id');
-                sessionStorage.removeItem('mt5_transfer_to_login_id');
+                const cfd_transfer_to_login_id = sessionStorage.getItem('cfd_transfer_to_login_id');
+                sessionStorage.removeItem('cfd_transfer_to_login_id');
                 const obj_values = this.config.account_transfer.accounts_list.find(
-                    account => account.value === mt5_transfer_to_login_id
+                    account => account.value === cfd_transfer_to_login_id
                 );
                 if (obj_values) {
                     if (hasTransferNotAllowedLoginid(obj_values.value)) {

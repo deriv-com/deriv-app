@@ -96,7 +96,7 @@ class CFDDashboard extends React.Component {
 
     openAccountTransfer = (data, meta) => {
         if (meta.category === 'real') {
-            sessionStorage.setItem('mt5_transfer_to_login_id', data.login);
+            sessionStorage.setItem('cfd_transfer_to_login_id', data.login);
             this.props.disableCFDPasswordModal();
             this.props.history.push(routes.cashier_acc_transfer);
         } else {

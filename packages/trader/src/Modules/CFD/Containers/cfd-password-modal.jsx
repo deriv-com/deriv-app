@@ -286,7 +286,7 @@ const CFDPasswordModal = ({
         disableCFDPasswordModal();
         closeDialogs();
         if (account_type.category === 'real') {
-            sessionStorage.setItem('mt5_transfer_to_login_id', mt5_new_account.login);
+            sessionStorage.setItem('cfd_transfer_to_login_id', mt5_new_account.login);
             history.push(routes.cashier_acc_transfer);
         }
     };

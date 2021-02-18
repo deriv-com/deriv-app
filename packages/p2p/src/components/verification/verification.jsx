@@ -25,7 +25,7 @@ const Verification = observer(() => {
                     <Localize i18n_default_text='Please register with us!' />
                 </div>
                 <div className='p2p-verification__text-description'>
-                    <Text as='p' size='xs' line_height='s'>
+                    <Text as='p' size='xs' line_height='s' align='center'>
                         <Localize i18n_default_text='To use DP2P, you need to choose a display name (a nickname) and verify your identity.' />
                     </Text>
                 </div>

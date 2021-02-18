@@ -508,8 +508,11 @@
             margin-bottom: 2.4rem;
             height: fit-content;
         }
-        &:not(:last-child) {
-            margin-right: 2.4rem;
+
+        @include desktop {
+            &:not(:last-child) {
+                margin-right: 2.4rem;
+            }
         }
     }
 

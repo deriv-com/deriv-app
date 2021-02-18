@@ -18,6 +18,9 @@ class UIStore extends BaseStore {
     public is_real_acc_signup_on = false;
 
     @observable
+    public is_trade_modal_open = false;
+
+    @observable
     public real_account_signup: unknown = {};
 
     @observable
@@ -41,6 +44,11 @@ class UIStore extends BaseStore {
     @action.bound
     public disableGetPasswordModal(): void {
         this.is_get_wallet_modal_open = false;
+    }
+
+    @action.bound
+    public toggleTradeModal(state_change = !this.is_trade_modal_open): void {
+        this.is_trade_modal_open = !!state_change;
     }
 
     @action.bound

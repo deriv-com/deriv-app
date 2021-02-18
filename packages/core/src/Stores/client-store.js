@@ -345,7 +345,7 @@ export default class ClientStore extends BaseStore {
             return is_included ? acc + 1 : acc;
         }, 0);
         const number_of_available_synthetic = this.trading_servers.reduce(
-            (acc, cur) => (cur.supporting_accounts.includes('gaming') && !cur.disabled ? acc + 1 : acc),
+            (acc, cur) => (cur.supported_accounts.includes('gaming') && !cur.disabled ? acc + 1 : acc),
             0
         );
         return number_of_current_added_synthetics < number_of_available_synthetic;

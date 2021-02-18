@@ -99,7 +99,8 @@
                 bottom: 2.3rem;
             }
 
-            &:hover {
+            &:hover,
+            &:active {
                 text-shadow: 0 0 0.8px #{$color-white}, 0 0 0.8px #{$color-white};
                 &::before {
                     width: 1.6rem;

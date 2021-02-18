@@ -1,23 +1,51 @@
-.dashboard-dropdown {
+.card-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    max-width: 42rem;
+}
+
+.card-link {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1rem 1.6rem;
+    text-decoration: none;
+    color: var(--text-prominent);
+
+    .icon {
+        margin-right: 1.9rem;
+    }
+
+    &:hover {
+        background-color: #{$color-grey-12};
+        opacity: 1;
+    }
+}
+
+.dashboard-header-dropdown {
     display: flex;
     width: auto;
     position: absolute;
     padding: 2.2rem 0.8rem;
-    z-index: -1;
+    z-index: 99;
     height: auto;
     transform: translateY(7.2rem);
-    background-color: rgb(255, 255, 255);
-    opacity: 0;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 16px 20px 0px;
+    background-color: #ffffff;
+    box-shadow: 0 16px 20px 0 rgba(0, 0, 0, 0.1);
     border-radius: 0.4rem;
-    transition: opacity 0.3s ease 0s, transform 0.3s ease 0s;
-    animation-name: kQSNyM;
+    transition: opacity 0.3s, transform 0.3s;
+    overflow: visible;
+    will-change: display, left, opacity;
+    animation-name: FadeInDown;
     animation-fill-mode: both;
     animation-duration: 0.3s;
-    overflow: visible;
-    left: 360px !important;
 
-    ::after {
+    &:after {
         content: ' ';
         position: absolute;
         top: -9px;
@@ -27,12 +55,23 @@
         border-bottom: 15px solid white;
     }
 
-    > * {
+    .wrapper {
         justify-content: flex-start;
         align-items: flex-start;
-        width: 100%;
+        width: 100% !important;
         .active {
-            border: 0.2rem solid #{$color-green-3};
+            border: 0.2rem solid #85acb0;
         }
+    }
+}
+
+@keyframes FadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(7.2rem) rotateY(-15deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(7.2rem) rotateY(0);
     }
 }

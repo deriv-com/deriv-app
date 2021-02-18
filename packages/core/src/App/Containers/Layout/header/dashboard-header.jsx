@@ -11,7 +11,6 @@ import DerivLogoDarkMobile from 'Assets/SvgComponents/header/deriv-logo-dark-mob
 import DerivLogoLight from 'Assets/SvgComponents/header/deriv-logo-light.svg';
 import DerivLogoLightMobile from 'Assets/SvgComponents/header/deriv-logo-light-mobile.svg';
 import DerivLogoText from 'Assets/SvgComponents/header/deriv-logo-text.svg';
-import DerivText from 'Assets/SvgComponents/header/deriv-text.svg';
 import HeaderDropdown from './dashboard-header-dropdown.jsx';
 import HeaderItemsLoader from '../../../Components/Layout/Header/Components/Preloader/header-items.jsx';
 
@@ -51,6 +50,15 @@ const LoggedInHeader = ({ is_dark_mode }) => {
 const LoggedOutHeader = () => {
     const history = useHistory();
     const { is_deriv_crypto } = React.useContext(PlatformContext);
+    const [is_dropdown_visible, set_dropdown_visible] = React.useState(false);
+    const [current_dropdown, set_current_dropdown] = React.useState('');
+    const [dropdown_ref, set_dropdown_ref] = React.useState(null);
+
+    const handleDropdownClick = (dropdown, target) => {
+        set_dropdown_visible(!is_dropdown_visible);
+        set_current_dropdown(dropdown);
+        set_dropdown_ref(target);
+    };
 
     return (
         <React.Fragment>
@@ -60,7 +68,6 @@ const LoggedOutHeader = () => {
                         {isDesktop() ? (
                             <React.Fragment>
                                 <DerivLogo className='dashboard-header__left--desktop-logo' />
-                                <DerivText />
                             </React.Fragment>
                         ) : (
                             <DerivLogoText />
@@ -71,10 +78,10 @@ const LoggedOutHeader = () => {
                     <Text color='colored-background' size='s' onClick={() => history.push(routes.explore)}>
                         {localize('Explore')}
                     </Text>
-                    <Text color='colored-background' size='s' onClick={() => history.push(routes.about_us)}>
+                    <Text color='colored-background' size='s' onClick={e => handleDropdownClick('about', e.target)}>
                         {localize('About us')}
                     </Text>
-                    <Text color='colored-background' size='s' onClick={() => history.push(routes.resources)}>
+                    <Text color='colored-background' size='s' onClick={e => handleDropdownClick('resources', e.target)}>
                         {localize('Resources')}
                     </Text>
                 </div>
@@ -106,7 +113,7 @@ const LoggedOutHeader = () => {
                     )}
                 </div>
             </header>
-            <HeaderDropdown />
+            {is_dropdown_visible && <HeaderDropdown current_ref={dropdown_ref} parent={current_dropdown} />}
         </React.Fragment>
     );
 };

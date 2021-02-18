@@ -132,9 +132,13 @@ class DeactivateAccountReason extends React.Component {
             } else {
                 this.setState({ remaining_characters: character_limit_no });
             }
-            const regex_rule = `^[0-9A-Za-z .,'-]{0,${max_characters}}$`;
-            if (!new RegExp(regex_rule).test(final_value)) {
-                error.characters_limits = `please insert up to ${max_input_characters_can_use} characters combine both fields.`;
+
+            if (!/^[0-9A-z .,'-]*$/.test(final_value)) {
+                error.characters_limits = localize("Must be numbers, letters, and special characters . , ' -");
+            }
+
+            if (final_value.length > max_characters) {
+                error.characters_count_exceed = `please insert up to ${max_input_characters_can_use} characters combine both fields.`;
             }
         } else {
             this.setState({ remaining_characters: character_limit_no });
@@ -380,9 +384,6 @@ class DeactivateAccountReason extends React.Component {
                                             remaining_characters: this.state.remaining_characters,
                                         })}
                                     </Text>
-                                    <Text size='xxs' as='p' color='less-prominent'>
-                                        {localize("Must be numbers, letters, and special characters . , ' -")}
-                                    </Text>
                                     {Object.keys(errors).length > 0 &&
                                         Object.entries(errors).map(([key, value]) => (
                                             <Text
@@ -396,11 +397,6 @@ class DeactivateAccountReason extends React.Component {
                                                 {value}
                                             </Text>
                                         ))}
-                                    {errors.characters_limits && (
-                                        <Text as='p' weight='bold' size='xs' color='loss-danger'>
-                                            {localize("Must be numbers, letters, and special characters . , ' -")}
-                                        </Text>
-                                    )}
                                 </div>
                                 <FormSubmitButton
                                     is_disabled={

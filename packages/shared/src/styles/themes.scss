@@ -94,9 +94,11 @@
         --button-primary-default: var(--brand-red-coral);
         --button-secondary-default: #{$color-grey-1};
         --button-tertiary-default: transparent;
+        --button-primary-light-default: #{$alpha-color-red-2};
         --button-primary-hover: #{$color-red-5};
         --button-secondary-hover: #{$alpha-color-black-3};
         --button-tertiary-hover: #{$alpha-color-red-1};
+        --button-primary-light-hover: #{$alpha-color-red-3};
         --button-toggle-primary: #{$color-blue-3};
         --button-toggle-secondary: #{$color-grey-5};
         // Overlay
@@ -131,9 +133,6 @@
         --status-info: #{$color-blue};
         --status-colored-background: #{$color-white};
         // Dashboard
-        --dashboard-primary: #{$color-blue-3};
-        --dashboard-hover: #{$color-blue-4};
-        --dashboard-alpha: #{$alpha-color-blue-2};
         --dashboard-swap-free: #{$gradient-color-black-3};
         --dashboard-app: #{$gradient-color-black-4};
         // Payment methods
@@ -160,7 +159,7 @@
         --gradient-right-edge: #{$gradient-color-white};
         // Badge
         --badge-white: #{$color-white};
-        --badge-blue: #{$color-apple-blue};
+        --badge-blue: #{$color-blue-4};
         --badge-violet: #{$color-blue-2};
         --badge-green: #{$color-green-3};
     }
@@ -195,9 +194,11 @@
         --button-primary-default: var(--brand-red-coral);
         --button-secondary-default: #{$color-grey-7};
         --button-tertiary-default: transparent;
+        --button-primary-light-default: #{$alpha-color-red-2};
         --button-primary-hover: #{$color-red-5};
         --button-secondary-hover: #{$alpha-color-white-3};
         --button-tertiary-hover: #{$alpha-color-red-1};
+        --button-primary-light-hover: #{$alpha-color-red-3};
         --button-toggle-primary: #{$color-blue-3};
         --button-toggle-secondary: #{$color-black-8};
         // Overlay
@@ -231,10 +232,6 @@
         --status-success: #{$color-green-3};
         --status-info: #{$color-blue};
         --status-colored-background: #{$color-white};
-        // Dashboard
-        --dashboard-primary: #{$color-blue-2};
-        --dashboard-hover: #{$color-blue-3};
-        --dashboard-alpha: #{$alpha-color-blue-2};
         // Transparentize
         --transparent-success: #{$alpha-color-green-2};
         --transparent-info: #{$alpha-color-blue-1};
@@ -245,7 +242,7 @@
         --gradient-right-edge: #{$gradient-color-black};
         // Badge
         --badge-white: #{$color-white};
-        --badge-blue: #{$color-apple-blue};
+        --badge-blue: #{$color-blue-4};
         --badge-violet: #{$color-blue-2};
         --badge-green: #{$color-green-3};
     }

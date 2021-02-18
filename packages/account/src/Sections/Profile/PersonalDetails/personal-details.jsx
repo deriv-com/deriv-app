@@ -873,13 +873,14 @@ export class PersonalDetailsForm extends React.Component {
                                 </FormBody>
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                    {!(isSubmitting || is_submit_success || (status && status.msg)) && (
-                                        <div className='account-form__footer-note'>
-                                            {localize(
-                                                'Please make sure your information is correct or it may affect your trading experience.'
-                                            )}
-                                        </div>
-                                    )}
+                                    {!this.props.is_virtual &&
+                                        !(isSubmitting || is_submit_success || (status && status.msg)) && (
+                                            <div className='account-form__footer-note'>
+                                                {localize(
+                                                    'Please make sure your information is correct or it may affect your trading experience.'
+                                                )}
+                                            </div>
+                                        )}
                                     <Button
                                         className={classNames('account-form__footer-btn', {
                                             'dc-btn--green': is_submit_success,

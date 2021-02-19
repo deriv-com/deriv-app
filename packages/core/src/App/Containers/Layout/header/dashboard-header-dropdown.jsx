@@ -114,7 +114,7 @@ const HeaderDropdown = ({ current_ref, onClickHandler, parent, setRef }) => {
         <React.Fragment>
             <div ref={dropdown_container_ref} className='dashboard-header-dropdown' style={{ left: left_offset }}>
                 <div className='dashboard-header-dropdown__wrapper'>
-                    <div className='dashboard-header-dropdown__wrapper__card-wrapper'>
+                    <div className='dashboard-header-dropdown__wrapper__card'>
                         {getNavigationItems(parent).map((item, idx) => (
                             <HeaderItem key={idx} onClick={onClickHandler} {...item} />
                         ))}

@@ -30,11 +30,12 @@
         justify-content: flex-start;
         align-items: flex-start;
         width: 100% !important;
+
         .active {
             border: 0.2rem solid #85acb0;
         }
 
-        &__card-wrapper {
+        &__card {
             display: flex;
             flex-direction: column;
             flex-wrap: wrap;

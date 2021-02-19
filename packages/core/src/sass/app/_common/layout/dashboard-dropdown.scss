@@ -1,32 +1,3 @@
-.card-wrapper {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    max-width: 42rem;
-}
-
-.card-link {
-    position: relative;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 1rem 1.6rem;
-    text-decoration: none;
-    color: var(--text-prominent);
-
-    .icon {
-        margin-right: 1.9rem;
-    }
-
-    &:hover {
-        background-color: #{$color-grey-12};
-        opacity: 1;
-    }
-}
-
 .dashboard-header-dropdown {
     display: flex;
     width: auto;
@@ -55,12 +26,41 @@
         border-bottom: 15px solid white;
     }
 
-    .wrapper {
+    &__wrapper {
         justify-content: flex-start;
         align-items: flex-start;
         width: 100% !important;
         .active {
             border: 0.2rem solid #85acb0;
+        }
+
+        &__card-wrapper {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            max-width: 42rem;
+        }
+    }
+
+    &__card-link {
+        position: relative;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 1rem 1.6rem;
+        text-decoration: none;
+        color: var(--text-prominent);
+
+        &__icon {
+            margin-right: 1.9rem;
+        }
+
+        &:hover {
+            background-color: #{$color-grey-12};
+            opacity: 1;
         }
     }
 }

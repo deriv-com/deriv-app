@@ -29,6 +29,7 @@ export default class PushwooshStore extends BaseStore {
                 safariWebsitePushID: 'web.com.deriv',
                 defaultNotificationTitle: 'Deriv.com',
                 defaultNotificationImage: urlForCurrentDomain('https://deriv.com/static/favicons/favicon-192x192.png'),
+                autoSubscribe: true,
             },
         ]);
         this.has_initialized = true;

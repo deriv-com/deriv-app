@@ -39,6 +39,7 @@ const Error = Loadable({
 });
 
 const Routes = ({
+    clearPortfolio,
     error,
     has_error,
     history,
@@ -56,6 +57,10 @@ const Routes = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        return () => clearPortfolio();
+    }, [clearPortfolio]);
 
     if (has_error) return <Error {...error} />;
 
@@ -77,6 +82,7 @@ Routes.propTypes = {
 // to prevent updates on <BinaryRoutes /> from being blocked
 export default withRouter(
     connect(({ client, common, modules, ui }) => ({
+        clearPortfolio: modules.portfolio.clearTable,
         error: common.error,
         has_error: common.has_error,
         is_logged_in: client.is_logged_in,

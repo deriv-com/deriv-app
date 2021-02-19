@@ -8,7 +8,7 @@ import NotRequired from 'Components/poi-not-required';
 import RejectedReasons from 'Components/poi-rejected-reasons';
 import ErrorMessage from 'Components/error-component';
 import Onfido from './onfido.jsx';
-import { getIdentityStatus } from './proof-of-identity';
+import { getIdentityStatus, onfido_status_codes } from './proof-of-identity';
 import { populateVerificationStatus } from '../Helpers/verification';
 
 const ProofOfIdentityContainer = ({
@@ -158,8 +158,8 @@ const ProofOfIdentityContainer = ({
         );
     if (is_loading || status.length === 0) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (is_unwelcome && !allow_document_upload) return <Unverified />;
-    if (status === 'not_required') return <NotRequired />;
-    if (!submissions_left_key) return <Limited />;
+    if (status === onfido_status_codes.not_required) return <NotRequired />;
+    if (!submissions_left_key && status !== onfido_status_codes.verified) return <Limited />;
     if (is_rejected && !is_continue_uploading)
         return <RejectedReasons rejected_reasons={rejected_reasons_key} setContinueUploading={setContinueUploading} />;
 

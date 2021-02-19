@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { localize, Localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
 import { getAccountTypeFields, getMT5AccountListKey, getMT5AccountKey } from '@deriv/shared';
@@ -261,7 +262,7 @@ const MT5RealAccountDisplay = ({
                     nav_position='middle'
                     show_bullet={false}
                     item_per_window={3}
-                    className='mt5-real-accounts-display__carousel'
+                    className={classNames('mt5-real-accounts-display__carousel', 'dc-carousel__wrapper--mt5')}
                 />
             </DesktopWrapper>
             <MobileWrapper>

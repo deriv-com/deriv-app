@@ -86,7 +86,11 @@ const Carousel = ({
                         }}
                     >
                         <div
-                            className='dc-carousel__wrapper'
+                            className={
+                                className.includes('dc-carousel__wrapper--mt5')
+                                    ? 'dc-carousel__wrapper dc-carousel__wrapper--mt5'
+                                    : 'dc-carousel__wrapper'
+                            }
                             style={{ transform: `translate3d(-${width * active_index}px, 0, 0)` }}
                         >
                             {list.map((type, idx) => (

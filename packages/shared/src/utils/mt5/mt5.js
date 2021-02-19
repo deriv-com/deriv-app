@@ -87,3 +87,6 @@ export const getMT5Account = (market_type, sub_account_type) => {
 export const setSharedMT5Text = all_shared_mt5_text => {
     MT5_text_translated = all_shared_mt5_text;
 };
+
+export const getMT5AccountListKey = account =>
+    `${account.account_type}.${getMT5AccountKey(account.market_type, account.sub_account_type)}@${account.server}`;

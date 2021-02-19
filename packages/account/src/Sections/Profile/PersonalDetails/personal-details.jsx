@@ -13,6 +13,7 @@ import {
     MobileWrapper,
     SelectNative,
     DateOfBirthPicker,
+    Text,
 } from '@deriv/components';
 import {
     toMoment,
@@ -875,11 +876,11 @@ export class PersonalDetailsForm extends React.Component {
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                     {!this.props.is_virtual &&
                                         !(isSubmitting || is_submit_success || (status && status.msg)) && (
-                                            <div className='account-form__footer-note'>
+                                            <Text className='account-form__footer-note'>
                                                 {localize(
                                                     'Please make sure your information is correct or it may affect your trading experience.'
                                                 )}
-                                            </div>
+                                            </Text>
                                         )}
                                     <Button
                                         className={classNames('account-form__footer-btn', {

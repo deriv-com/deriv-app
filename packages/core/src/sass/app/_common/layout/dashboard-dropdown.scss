@@ -16,6 +16,10 @@
     animation-fill-mode: both;
     animation-duration: 0.3s;
 
+    @include mobile {
+        display: none;
+    }
+
     &:after {
         content: ' ';
         position: absolute;

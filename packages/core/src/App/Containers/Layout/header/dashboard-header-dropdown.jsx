@@ -83,8 +83,8 @@ const getNavigationItems = type => {
 
 const HeaderItem = ({ icon, name, to }) => {
     return (
-        <a href={to} className='card-link'>
-            <div className='icon'>{icon}</div>
+        <a href={to} className='dashboard-header-dropdown__card-link'>
+            <div className='dashboard-header-dropdown__card-link__icon'>{icon}</div>
             <Text size='s'>{name}</Text>
         </a>
     );
@@ -113,8 +113,8 @@ const HeaderDropdown = ({ current_ref, onClickHandler, parent, setRef }) => {
     return (
         <React.Fragment>
             <div ref={dropdown_container_ref} className='dashboard-header-dropdown' style={{ left: left_offset }}>
-                <div className='wrapper'>
-                    <div className='card-wrapper'>
+                <div className='dashboard-header-dropdown__wrapper'>
+                    <div className='dashboard-header-dropdown__wrapper__card'>
                         {getNavigationItems(parent).map((item, idx) => (
                             <HeaderItem key={idx} onClick={onClickHandler} {...item} />
                         ))}

@@ -76,7 +76,7 @@ const LoggedOutHeader = () => {
         return () => {
             document.removeEventListener('click', handleOutsideClick);
         };
-    }, [dropdown_link_ref, dropdown_ref]);
+    }, [dropdown_ref]);
 
     return (
         <React.Fragment>

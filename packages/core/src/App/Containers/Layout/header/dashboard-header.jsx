@@ -50,28 +50,26 @@ const LoggedInHeader = ({ is_dark_mode }) => {
 const LoggedOutHeader = () => {
     const history = useHistory();
     const { is_deriv_crypto } = React.useContext(PlatformContext);
-    const [is_dropdown_visible, set_dropdown_visible] = React.useState(false);
     const [current_dropdown, set_current_dropdown] = React.useState('');
     const [dropdown_link_ref, set_dropdown_link_ref] = React.useState(null);
     const [dropdown_ref, set_dropdown_ref] = React.useState(null);
+    const nav_dropdown_ref = React.useRef(null);
 
     const handleDropdownClick = (dropdown, target) => {
-        set_dropdown_visible(!is_dropdown_visible);
         set_current_dropdown(dropdown);
         if (target) {
             set_dropdown_link_ref(target);
         }
     };
 
-    const setDropdown = new_ref => set_dropdown_ref(new_ref);
-
-    // If the user clicks outside the region of current dropdown, it will hide it.
     const handleOutsideClick = e => {
-        if (dropdown_link_ref && !dropdown_link_ref.contains(e.target)) {
+        if (nav_dropdown_ref.current && !nav_dropdown_ref.current.contains(e.target)) {
             if (dropdown_ref.current && dropdown_ref.current.contains(e.target)) return;
-            set_dropdown_visible(false);
+            set_current_dropdown('');
         }
     };
+
+    const setDropdown = new_ref => set_dropdown_ref(new_ref);
 
     React.useEffect(() => {
         document.addEventListener('click', handleOutsideClick);
@@ -86,15 +84,13 @@ const LoggedOutHeader = () => {
                 <div className='dashboard-header__left'>
                     <div onClick={() => history.push(routes.dashboard)}>
                         {isDesktop() ? (
-                            <React.Fragment>
-                                <DerivLogo className='dashboard-header__left--desktop-logo' />
-                            </React.Fragment>
+                            <DerivLogo className='dashboard-header__left--desktop-logo' />
                         ) : (
                             <DerivLogoText />
                         )}
                     </div>
                 </div>
-                <div className='dashboard-header__middle--logged-out'>
+                <div ref={nav_dropdown_ref} className='dashboard-header__middle--logged-out'>
                     <Text color='colored-background' size='s' onClick={() => history.push(routes.explore)}>
                         {localize('Explore')}
                     </Text>
@@ -133,12 +129,14 @@ const LoggedOutHeader = () => {
                     )}
                 </div>
             </header>
-            <HeaderDropdown
-                key={current_dropdown}
-                current_ref={dropdown_link_ref}
-                parent={current_dropdown}
-                setRef={setDropdown}
-            />
+            {current_dropdown && (
+                <HeaderDropdown
+                    key={current_dropdown}
+                    current_ref={dropdown_link_ref}
+                    parent={current_dropdown}
+                    setRef={setDropdown}
+                />
+            )}
         </React.Fragment>
     );
 };

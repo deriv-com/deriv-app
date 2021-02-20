@@ -68,7 +68,7 @@ const LoggedOutHeader = () => {
     // If the user clicks outside the region of current dropdown, it will hide it.
     const handleOutsideClick = e => {
         if (dropdown_link_ref && !dropdown_link_ref.contains(e.target)) {
-            if (dropdown_ref && dropdown_ref.current.contains(e.target)) return;
+            if (dropdown_ref.current && dropdown_ref.current.contains(e.target)) return;
             set_dropdown_visible(false);
         }
     };
@@ -133,9 +133,12 @@ const LoggedOutHeader = () => {
                     )}
                 </div>
             </header>
-            {is_dropdown_visible && (
-                <HeaderDropdown current_ref={dropdown_link_ref} parent={current_dropdown} setRef={setDropdown} />
-            )}
+            <HeaderDropdown
+                key={current_dropdown}
+                current_ref={dropdown_link_ref}
+                parent={current_dropdown}
+                setRef={setDropdown}
+            />
         </React.Fragment>
     );
 };

@@ -128,18 +128,24 @@ const MT5PasswordForm = props => (
 const MT5ServerForm = ({ ...props }) => {
     const available_servers = React.useMemo(() => {
         return props.trading_servers
-            .filter(server => !server.disabled)
             .map(server => {
                 // Transform properties to support radiogroup
-                const is_disabled = props.mt5_login_list.some(login_item => login_item.server === server.id);
+                const is_created = props.mt5_login_list.some(login_item => login_item.server === server.id);
+                let explanation_note = '';
+                if (server.disabled) {
+                    explanation_note = localize('(Temporarily unavailable)');
+                }
+                if (is_created) {
+                    explanation_note = localize('(Account created)');
+                }
                 return {
                     ...server,
                     ...{
                         label: `${server.geolocation.region} ${
                             server.geolocation.sequence === 1 ? '' : server.geolocation.sequence
-                        } ${is_disabled ? '(Account created)' : ''}`,
+                        } ${explanation_note}`,
                         value: server.id,
-                        disabled: is_disabled,
+                        disabled: server.disabled || is_created,
                     },
                 };
             })

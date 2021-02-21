@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import { Swipeable } from 'react-swipeable';
 import Card from './carousel-card.jsx';
 import Nav from './carousel-nav.jsx';
@@ -7,19 +8,20 @@ import Icon from '../icon';
 import { useInterval } from '../../hooks';
 
 const Carousel = ({
-    bullet_color,
     active_bullet_color,
+    autoplay_time,
+    bullet_color,
+    bullet_position,
     className,
     initial_index,
+    is_mt5,
+    item_per_window,
     list,
-    bullet_position,
     nav_position,
+    onItemSelect,
     show_bullet,
     show_nav,
-    onItemSelect,
-    autoplay_time,
     width,
-    item_per_window,
 }) => {
     const [active_index, setActiveIndex] = React.useState(initial_index);
 
@@ -86,11 +88,7 @@ const Carousel = ({
                         }}
                     >
                         <div
-                            className={
-                                className.includes('dc-carousel__wrapper--mt5')
-                                    ? 'dc-carousel__wrapper dc-carousel__wrapper--mt5'
-                                    : 'dc-carousel__wrapper'
-                            }
+                            className={classNames('dc-carousel__wrapper', { 'dc-carousel__wrapper--mt5': is_mt5 })}
                             style={{ transform: `translate3d(-${width * active_index}px, 0, 0)` }}
                         >
                             {list.map((type, idx) => (

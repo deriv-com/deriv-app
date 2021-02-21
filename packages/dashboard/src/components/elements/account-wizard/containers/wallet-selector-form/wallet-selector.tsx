@@ -12,6 +12,7 @@ import {
 import { isMobile, isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 const WalletSelector: React.FC = (props: any) => {
     const { onSubmit, getCurrentStep, goToNextStep, validate, onSubmitEnabledChange, selected_step_ref } = props;
     const [wallets] = React.useState([
@@ -30,10 +31,12 @@ const WalletSelector: React.FC = (props: any) => {
     ]);
     const is_submit_disabled_ref = React.useRef<boolean>(true);
 
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     const isSubmitDisabled = (values: any) => {
         return selected_step_ref?.current?.isSubmitting || !values.wallet;
     };
 
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     const checkSubmitStatus = (values: any) => {
         const is_submit_disabled = isSubmitDisabled(values);
 
@@ -43,6 +46,7 @@ const WalletSelector: React.FC = (props: any) => {
         }
     };
 
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     const handleValidate = (values: any) => {
         checkSubmitStatus(values);
         const { errors } = validate(values);

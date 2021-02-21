@@ -54,7 +54,10 @@ const Onfido = ({
         handleComplete();
     }, [handleComplete, onfido_init]);
 
-    const initOnfido = React.useCallback(async () => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const initOnfido = React.useCallback(initOnfidoCallBack, [documents_supported, onComplete, onfido_service_token]);
+
+    const initOnfidoCallBack = async () => {
         try {
             const onfido = await init({
                 containerId: onfido_container_id,
@@ -94,9 +97,7 @@ const Onfido = ({
         } catch (err) {
             setOnfidoInitError(true);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [documents_supported, onComplete, onfido_service_token]);
-
+    };
     // didUpdate hook
     React.useEffect(() => {
         if (previous_onfido_service_token && onfido_service_token) {

@@ -176,8 +176,14 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
     }, [account_settings]);
 
     React.useEffect(() => {
+        onDataUpdate();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [previous_data]);
+
+    const onDataUpdate = () => {
         if (previous_data.length > 0) {
             const items = [...state_items];
+            // eslint-disable-next-line  @typescript-eslint/no-explicit-any
             previous_data.forEach((item: any, index) => {
                 if (item instanceof Object) {
                     items[index].form_value = item;
@@ -186,8 +192,7 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
             setStateItems(items);
             setPreviousData([]);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [previous_data]);
+    };
 
     const fetchFromStorage = () => {
         const stored_items = localStorage.getItem('real_account_signup_wizard');
@@ -209,33 +214,38 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
             wizard_steps.push(personalDetailsConfig(props), addressDetailsConfig(props));
         }
 
-        return wizard_steps
-            .map(item => item.form_value)
-            .reduce((obj, item: any) => {
-                const values = fromEntries(new Map(Object.entries(item)));
-                if (values.date_of_birth) {
-                    values.date_of_birth = toMoment(values.date_of_birth).format('YYYY-MM-DD');
-                }
-                if (values.place_of_birth) {
-                    values.place_of_birth = values.place_of_birth
-                        ? getLocation(props.residence_list, values.place_of_birth, 'value')
-                        : '';
-                }
-                if (values.citizen) {
-                    values.citizen = values.citizen ? getLocation(props.residence_list, values.citizen, 'value') : '';
-                }
+        return (
+            wizard_steps
+                .map(item => item.form_value)
+                // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+                .reduce((obj, item: any) => {
+                    const values = fromEntries(new Map(Object.entries(item)));
+                    if (values.date_of_birth) {
+                        values.date_of_birth = toMoment(values.date_of_birth).format('YYYY-MM-DD');
+                    }
+                    if (values.place_of_birth) {
+                        values.place_of_birth = values.place_of_birth
+                            ? getLocation(props.residence_list, values.place_of_birth, 'value')
+                            : '';
+                    }
+                    if (values.citizen) {
+                        values.citizen = values.citizen
+                            ? getLocation(props.residence_list, values.citizen, 'value')
+                            : '';
+                    }
 
-                if (values.tax_residence) {
-                    values.tax_residence = values.tax_residence
-                        ? getLocation(props.residence_list, values.tax_residence, 'value')
-                        : values.tax_residence;
-                }
+                    if (values.tax_residence) {
+                        values.tax_residence = values.tax_residence
+                            ? getLocation(props.residence_list, values.tax_residence, 'value')
+                            : values.tax_residence;
+                    }
 
-                return {
-                    ...obj,
-                    ...values,
-                };
-            });
+                    return {
+                        ...obj,
+                        ...values,
+                    };
+                })
+        );
     };
 
     const clearError = () => {
@@ -251,6 +261,7 @@ const AccountWizard: React.FC<TAccountWizard> = (props: TAccountWizard) => {
         goToPreviousStep();
     };
 
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     const updateValue = (index: number, value: any, _setSubmitting: () => void, goToNextStep: () => void) => {
         saveFormData(index, value);
         clearError();

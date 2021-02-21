@@ -13,7 +13,6 @@ module.exports = {
     },
     rules: {
         'import/no-extraneous-dependencies': 'off',
-        "@typescript-eslint/no-explicit-any": "off",
         '@typescript-eslint/explicit-member-accessibility': ['error'],
     },
     parser: '@typescript-eslint/parser',

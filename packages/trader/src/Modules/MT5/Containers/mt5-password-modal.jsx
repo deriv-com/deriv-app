@@ -127,6 +127,11 @@ const MT5PasswordForm = props => (
 
 const MT5ServerForm = ({ ...props }) => {
     const available_servers = React.useMemo(() => {
+        onMT5ServerFormUpdate();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [props.trading_servers]);
+
+    const onMT5ServerFormUpdate = () => {
         return props.trading_servers
             .filter(server => !server.disabled)
             .map(server => {
@@ -144,8 +149,7 @@ const MT5ServerForm = ({ ...props }) => {
                 };
             })
             .sort((a, b) => (a.recommended ? a : b));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.trading_servers]);
+    };
 
     return (
         <Formik

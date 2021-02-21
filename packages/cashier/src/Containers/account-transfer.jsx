@@ -34,19 +34,27 @@ const AccountTransfer = ({
 }) => {
     const [is_loading_status, setIsLoadingStatus] = React.useState(true);
     React.useEffect(() => {
+        onMountAccountTransfer();
+
+        return () => {
+            onUnmountAccountTransfer();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const onMountAccountTransfer = () => {
         setActiveTab(container);
         onMount();
 
         WS.wait('authorize', 'website_status', 'get_settings', 'paymentagent_list').then(() => {
             setIsLoadingStatus(false);
         });
+    };
 
-        return () => {
-            setAccountTransferAmount('');
-            setIsTransferConfirm(false);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const onUnmountAccountTransfer = () => {
+        setAccountTransferAmount('');
+        setIsTransferConfirm(false);
+    };
 
     React.useEffect(() => {
         if (

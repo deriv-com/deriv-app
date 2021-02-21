@@ -59,6 +59,11 @@ const ProofOfAddressForm = ({
     const [form_state, setFormState] = useStateCallback({ should_show_form: true });
 
     React.useEffect(() => {
+        onMount();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const onMount = () => {
         fetchResidenceList().then(() => {
             Promise.all([fetchStatesList(), WS.wait('get_settings')]).then(() => {
                 const { citizen, tax_identification_number, tax_residence } = account_settings;
@@ -71,8 +76,7 @@ const ProofOfAddressForm = ({
                 );
             });
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    };
 
     const validateFields = values => {
         setFormState({ ...form_state, ...{ should_allow_submit: false } });

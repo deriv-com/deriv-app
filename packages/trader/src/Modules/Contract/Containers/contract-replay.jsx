@@ -44,6 +44,11 @@ const ContractReplay = ({
     const history = useHistory();
 
     React.useEffect(() => {
+        onContractReplayUpdate();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [contract_id, location, onMount, onUnmount]);
+
+    const onContractReplayUpdate = () => {
         const url_contract_id = +/[^/]*$/.exec(location.pathname)[0];
         onMount(contract_id || url_contract_id);
         setIsVisible(true);
@@ -52,8 +57,7 @@ const ContractReplay = ({
             setIsVisible(false);
             onUnmount();
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [contract_id, location, onMount, onUnmount]);
+    };
 
     const onClickClose = () => {
         setIsVisible(false);

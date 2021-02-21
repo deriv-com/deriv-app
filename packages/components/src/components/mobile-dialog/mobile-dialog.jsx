@@ -21,13 +21,17 @@ const MobileDialog = props => {
     const footer_ref = React.useRef(false);
     const [footer_height, setHeight] = React.useState(0);
     React.useEffect(() => {
+        onUpdateFooter();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [footer]);
+
+    const onUpdateFooter = () => {
         if (footer_ref.current && !footer_height) {
             setHeight(footer_ref.current.offsetHeight);
         } else {
             footer_ref.current = true;
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [footer]);
+    };
 
     const checkVisibility = () => {
         if (props.visible) {

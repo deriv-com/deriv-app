@@ -69,10 +69,14 @@ const AccountLimits = ({ account_limits, currency, getLimits, is_fully_authentic
     const [is_loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
-        if (is_virtual) setLoading(false);
-        else getLimits().then(setLoading(false));
+        return onMount();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const onMount = () => {
+        if (is_virtual) setLoading(false);
+        else getLimits().then(setLoading(false));
+    };
 
     React.useEffect(() => {
         if (!is_virtual && account_limits && is_loading) setLoading(false);

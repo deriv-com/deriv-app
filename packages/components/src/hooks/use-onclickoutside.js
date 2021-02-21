@@ -2,6 +2,11 @@ import React from 'react';
 
 export const useOnClickOutside = (ref, handler, validationFn) => {
     React.useEffect(() => {
+        onUpdateClickOutSide();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [ref, handler]);
+
+    const onUpdateClickOutSide = () => {
         const listener = event => {
             const path = event.path ?? event.composedPath?.();
 
@@ -17,6 +22,5 @@ export const useOnClickOutside = (ref, handler, validationFn) => {
         return () => {
             document.removeEventListener('mousedown', listener);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ref, handler]);
+    };
 };

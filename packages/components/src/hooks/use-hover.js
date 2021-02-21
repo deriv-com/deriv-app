@@ -9,6 +9,11 @@ export const useHover = (refSetter, should_prevent_bubbling) => {
     const handleHoverFinish = () => setValue(false);
 
     React.useEffect(() => {
+        onUpdateRef();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [ref]);
+
+    const onUpdateRef = () => {
         const node = ref.current;
         if (node) {
             if (should_prevent_bubbling) {
@@ -30,8 +35,7 @@ export const useHover = (refSetter, should_prevent_bubbling) => {
             };
         }
         return undefined;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ref]);
+    };
 
     return [ref, value];
 };

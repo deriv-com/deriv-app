@@ -5,6 +5,7 @@ export type TWizardItemConfig = {
         active_title: string;
         title: string;
     };
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     body: React.FC<any>;
     form_value?: {
         [x: string]: unknown;
@@ -28,5 +29,6 @@ export type TAccountWizard = {
     onCancel: () => void;
     real_account_signup_target: string;
     has_wallet_account: boolean;
+    // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     [x: string]: any;
 };

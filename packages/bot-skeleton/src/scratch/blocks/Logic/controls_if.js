@@ -81,7 +81,7 @@ Blockly.Blocks.controls_if = {
 
         let i = 1;
 
-        /* eslint no-constant-condition: ["error", { "checkLoops": false }]  */
+        // eslint-disable-next-line no-constant-condition
         while (true) {
             const input_names = this.getIfInputNames(i);
             const if_input = this.getInput(input_names.IF);
@@ -126,7 +126,7 @@ Blockly.Blocks.controls_if = {
 
             setTimeout(() => {
                 Blockly.Events.setGroup(group);
-                /* eslint no-underscore-dangle: 0 */
+                // eslint-disable-next-line no-underscore-dangle
                 this.bumpNeighbours_();
                 Blockly.Events.setGroup(false);
             }, Blockly.BUMP_DELAY);
@@ -146,7 +146,7 @@ Blockly.Blocks.controls_if = {
         }
 
         let i = 1;
-        /* eslint no-constant-condition: ["error", { "checkLoops": false }] */
+        // eslint-disable-next-line no-constant-condition
         while (true) {
             const input_names = this.getIfInputNames(i);
 

@@ -82,6 +82,11 @@ const DurationWrapper = props => {
     );
 
     React.useEffect(() => {
+        onMount();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const onMount = () => {
         const current_unit = is_advanced_duration ? advanced_duration_unit : simple_duration_unit;
         const current_duration = getDurationFromUnit(current_unit);
 
@@ -99,8 +104,7 @@ const DurationWrapper = props => {
         if (expiry_type === 'endtime') handleEndTime();
 
         assertDurationIsWithinBoundary(current_duration);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    };
 
     React.useEffect(() => {
         if (is_advanced_duration && expiry_type !== advanced_expiry_type) {

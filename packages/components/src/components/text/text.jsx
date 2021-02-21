@@ -6,6 +6,11 @@ import { isEmptyObject } from '@deriv/shared';
 const Text = ({ children, size, color, align, weight, line_height, as, className, styles, ...props }) => {
     const [style, setStyle] = React.useState({});
     React.useEffect(() => {
+        onUpdateText();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [size, color, line_height, weight, align]);
+
+    const onUpdateText = () => {
         const class_styles = {
             '--text-size': `var(--text-size-${size || 's'})`,
             '--text-color': `var(--text-${color || 'general'})`,
@@ -19,8 +24,7 @@ const Text = ({ children, size, color, align, weight, line_height, as, className
         } else {
             setStyle(class_styles);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [size, color, line_height, weight, align]);
+    };
     const class_names = classNames('dc-text', className);
     return React.createElement(as || 'span', { className: class_names, style, ...props }, children);
 };

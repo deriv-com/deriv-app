@@ -39,6 +39,14 @@ const Cashier = ({
     toggleCashier,
 }) => {
     React.useEffect(() => {
+        onMountCashier();
+        return () => {
+            toggleCashier();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const onMountCashier = () => {
         toggleCashier();
         // we still need to populate the tabs shown on cashier
         (async () => {
@@ -46,12 +54,7 @@ const Cashier = ({
             onMount();
             setAccountSwitchListener();
         })();
-
-        return () => {
-            toggleCashier();
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    };
 
     const onClickClose = () => routeBackInApp(history);
     const getMenuOptions = () => {

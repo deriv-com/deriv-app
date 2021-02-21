@@ -15,6 +15,11 @@ const PasswordMeter = ({ children, has_error, input, custom_feedback_messages })
     const isMounted = useIsMounted();
 
     React.useEffect(() => {
+        onMount();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const onMount = () => {
         async function loadLibrary() {
             const lib = await import('@contentpass/zxcvbn');
             zxcvbn.current = lib.default;
@@ -22,8 +27,7 @@ const PasswordMeter = ({ children, has_error, input, custom_feedback_messages })
         }
 
         loadLibrary();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    };
 
     React.useEffect(() => {
         if (typeof zxcvbn.current === 'function') {

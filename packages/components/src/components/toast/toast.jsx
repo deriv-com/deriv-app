@@ -7,6 +7,11 @@ const Toast = ({ children, className, is_open = true, onClose, onClick, type = '
     const [is_visible, setVisible] = React.useState(false);
 
     React.useEffect(() => {
+        onIsOpenUpdate();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [is_open]);
+
+    const onIsOpenUpdate = () => {
         setVisible(is_open);
 
         if (timeout) {
@@ -17,8 +22,7 @@ const Toast = ({ children, className, is_open = true, onClose, onClick, type = '
         }
 
         return undefined;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_open]);
+    };
 
     return (
         <CSSTransition

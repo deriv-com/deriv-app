@@ -78,10 +78,10 @@ const Withdrawal = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, iframe_url, verification_code]);
 
-    if (typeof is_10k_withdrawal_limit_reached === 'undefined') {
+    if (is_10k_withdrawal_limit_reached === undefined) {
         return <Loading is_fullscreen />;
     }
-    if (!is_10k_withdrawal_limit_reached) {
+    if (is_10k_withdrawal_limit_reached) {
         return <WithdrawalLocked is_10K_limit />;
     }
     if (verification_code || iframe_url) {

@@ -52,7 +52,7 @@ const AccountOption = ({ trading_servers, mt5_login_list, account, idx, is_dark_
                 </Text>
             </div>
 
-            {server && (
+            {server?.market_type === 'gaming' && (
                 <Text color={is_dark_mode_on ? 'general' : 'colored-background'} size='xxs' className='badge-server'>
                     {server.server_info.geolocation.region}&nbsp;
                     {server.server_info.geolocation.sequence !== 1 ? server.server_info.geolocation.sequence : ''}

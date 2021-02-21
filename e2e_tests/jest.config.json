@@ -20,6 +20,6 @@
     ],
     "reporters": [
         "default",
-        "./src/_utils/reporter.js"
+        "./src/_utils/cli_reporter.js"
     ]
 }

@@ -63,6 +63,13 @@ const initRoutesConfig = () => [
                 icon_component: 'IcDp2p',
             },
             {
+                path: routes.cashier_p2p_verification,
+                component: P2PCashier,
+                getTitle: () => localize('DP2P'),
+                icon_component: 'IcDp2p',
+                is_invisible: true,
+            },
+            {
                 id: 'gtm-onramp-tab',
                 path: routes.cashier_onramp,
                 component: OnRamp,

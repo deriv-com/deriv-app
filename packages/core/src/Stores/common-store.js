@@ -213,7 +213,7 @@ export default class CommonStore extends BaseStore {
                 // remove once p2p is ready
                 const ui_store = this.root_store.ui;
                 if (route_to_item.pathname === routes.cashier_p2p && ui_store.is_mobile)
-                    history.push(`${route_to_item.pathname}#verification`);
+                    history.push(`${route_to_item.pathname}/verification`);
                 else history.push(route_to_item.pathname);
                 return;
             }

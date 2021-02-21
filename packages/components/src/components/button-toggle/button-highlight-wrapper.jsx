@@ -5,7 +5,7 @@ import { Highlight } from './button-highlight.jsx';
 
 const class_selector = 'dc-button-menu__button--active';
 
-const HighlightWrapper = ({ children, className, has_rounded_button, highlight_color, ...other_props }) => {
+const HighlightWrapper = ({ children, className, has_rounded_button, ...other_props }) => {
     const [left, setLeft] = React.useState(0);
 
     const wrapper_ref = React.useRef();
@@ -54,12 +54,7 @@ const HighlightWrapper = ({ children, className, has_rounded_button, highlight_c
                     onClick: e => onClick(e, child.props.onClick),
                 })
             )}
-            <Highlight
-                has_rounded_button={has_rounded_button}
-                highlight_color={highlight_color}
-                left={left}
-                width={`${button_width}%`}
-            />
+            <Highlight has_rounded_button={has_rounded_button} left={left} width={`${button_width}%`} />
         </div>
     );
 };

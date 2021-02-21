@@ -1,14 +1,14 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, withRouter } from 'react-router-dom';
-import { Button, DesktopWrapper, Icon, MobileWrapper, Popover, Text } from '@deriv/components';
-import { getCurrencyDisplayCode, getPlatformInformation, isMobile, routes } from '@deriv/shared';
+import { Button, DesktopWrapper, Icon, MobileWrapper, Money, Popover, Text } from '@deriv/components';
+import { getPlatformInformation, isMobile, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { PlatformSwitcher, ToggleNotifications } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { connect } from 'Stores/connect';
-import { BinaryLink } from '../../../Components/Routes';
+import { BinaryLink } from 'App/Components/Routes';
 
 const Divider = () => {
     return <div className='dashboard-platform-header__divider' />;
@@ -88,7 +88,7 @@ const AccountBalance = ({ balance, currency }) => {
             <Divider />
             <Icon icon='IcWalletDerivApps' size={28} className='dashboard-platform-header__balance--icon' />
             <Text size='s' line_height='xxl' weight='bold' color='profit-success'>
-                {(typeof balance !== 'undefined' || !currency) && `${balance} ${getCurrencyDisplayCode(currency)}`}
+                <Money amount={balance} currency={currency} show_currency />
             </Text>
         </div>
     );
@@ -204,7 +204,7 @@ const DashboardPlatformHeader = ({
 DashboardPlatformHeader.propTypes = {
     account_status: PropTypes.object,
     app_routing_history: PropTypes.array,
-    balance: PropTypes.string,
+    balance: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     currency: PropTypes.string,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,

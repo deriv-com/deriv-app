@@ -3,19 +3,13 @@ import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { ButtonToggle } from '@deriv/components';
 
-type TAccountsButtonToggleProps = {
+type TAccountsToggleButtonProps = {
     onChangeAccount: (item: string) => void;
-    highlight_color?: string;
     className?: string;
     [k: string]: unknown;
 };
 
-const AccountsButtonToggle: React.FC<TAccountsButtonToggleProps> = ({
-    onChangeAccount,
-    highlight_color,
-    className,
-    ...props
-}) => {
+const AccountsToggleButton: React.FC<TAccountsToggleButtonProps> = ({ onChangeAccount, className, ...props }) => {
     const [selected, setSelected] = React.useState<string>('DEMO');
     const getAccountTypes = () => {
         return [
@@ -37,7 +31,6 @@ const AccountsButtonToggle: React.FC<TAccountsButtonToggleProps> = ({
                 className={classNames('button-toggle__items', className)}
                 is_animated
                 has_rounded_button
-                highlight_color={highlight_color}
                 name='account types'
                 onChange={(item: React.ChangeEvent<HTMLInputElement>) => {
                     onChangeAccount(item.target.value);
@@ -50,4 +43,4 @@ const AccountsButtonToggle: React.FC<TAccountsButtonToggleProps> = ({
     );
 };
 
-export default AccountsButtonToggle;
+export default AccountsToggleButton;

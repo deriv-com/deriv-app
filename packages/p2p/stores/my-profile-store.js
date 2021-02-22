@@ -59,9 +59,9 @@ export default class MyProfileStore extends BaseStore {
     handleSubmit(values) {
         requestWS({
             p2p_advertiser_update: 1,
-            contact_info: values.contact_info,
-            payment_info: values.payment_info,
-            default_advert_description: values.default_advert_description,
+            contact_info: values.contact_info.replace(/^\s+|\s+$|\s+(?=\s)/g, ''),
+            payment_info: values.payment_info.replace(/^\s+|\s+$|\s+(?=\s)/g, ''),
+            default_advert_description: values.default_advert_description.replace(/^\s+|\s+$|\s+(?=\s)/g, ''),
         }).then(response => {
             if (!response.error) {
                 const { p2p_advertiser_update } = response;

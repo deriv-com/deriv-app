@@ -164,24 +164,28 @@ const PersonalDetails = ({
                                         style={{ paddingBottom: isDesktop() ? 'unset' : null }}
                                     >
                                         {!is_dashboard && <FormSubHeader title={localize('Title and name')} />}
-                                        {'salutation' in props.value && ( // TODO: [deriv-eu] Remove salutation once api is optional
+                                        {
+                                            // TODO: [deriv-eu] Remove salutation once api is optional
                                             <RadioGroup
                                                 className='dc-radio__input'
                                                 name='salutation'
-                                                items={salutation_list.map(item => {
-                                                    if (disabled_items.includes('salutation')) {
-                                                        item.disabled = true;
-                                                    }
-                                                    return item;
-                                                })}
                                                 selected={values.salutation}
                                                 onToggle={e => {
                                                     e.persist();
                                                     setFieldValue('salutation', e.target.value);
                                                 }}
                                                 required
-                                            />
-                                        )}
+                                            >
+                                                {salutation_list.map(item => (
+                                                    <RadioGroup.Item
+                                                        key={item.value}
+                                                        label={item.label}
+                                                        value={item.value}
+                                                        disabled={disabled_items.includes('salutation')}
+                                                    />
+                                                ))}
+                                            </RadioGroup>
+                                        }
                                         {'first_name' in props.value && (
                                             <FormInputField
                                                 name='first_name'

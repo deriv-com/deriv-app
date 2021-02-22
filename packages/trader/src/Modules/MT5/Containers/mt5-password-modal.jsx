@@ -130,13 +130,9 @@ const MT5ServerForm = ({ ...props }) => {
         return props.trading_servers
             .map(server => {
                 // Transform properties to support radiogroup
-                const is_created = props.mt5_login_list.some(login_item => login_item.server === server.id);
                 let explanation_note = '';
                 if (server.disabled) {
                     explanation_note = localize('(Temporarily unavailable)');
-                }
-                if (is_created) {
-                    explanation_note = localize('(Account created)');
                 }
                 return {
                     ...server,
@@ -145,7 +141,7 @@ const MT5ServerForm = ({ ...props }) => {
                             server.geolocation.sequence === 1 ? '' : server.geolocation.sequence
                         } ${explanation_note}`,
                         value: server.id,
-                        disabled: server.disabled || is_created,
+                        disabled: server.disabled,
                     },
                 };
             })

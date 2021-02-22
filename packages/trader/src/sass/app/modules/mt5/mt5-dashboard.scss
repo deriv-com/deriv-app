@@ -591,7 +591,7 @@
         color: var(--text-profit-success);
     }
     &__banner {
-        position: relative;
+        position: absolute;
         transform: rotate(45deg);
         border-bottom: 2.3rem solid var(--brand-red-coral);
         border-left: 2.3rem solid transparent;
@@ -672,8 +672,7 @@
         margin-top: auto;
     }
     &__specs {
-        margin-top: 1.6rem;
-        max-width: 25rem;
+        margin: 1.6rem 0;
 
         &-table {
             width: 100%;
@@ -689,6 +688,82 @@
                 }
             }
         }
+    }
+    &__border {
+        width: 100%;
+        padding: 0 2rem;
+        &-icon {
+            vertical-align: middle;
+        }
+        &-text {
+            overflow: hidden;
+            text-align: center;
+            width: 100%;
+            &:before {
+                background-color: var(--text-less-prominent);
+                content: '';
+                display: inline-block;
+                height: 1px;
+                position: relative;
+                vertical-align: middle;
+                width: 50%;
+                right: 0.5em;
+                margin-left: -50%;
+            }
+            &:after {
+                background-color: var(--text-less-prominent);
+                content: '';
+                display: inline-block;
+                height: 1px;
+                position: relative;
+                vertical-align: middle;
+                width: 50%;
+                left: 0.5em;
+                margin-right: -50%;
+            }
+        }
+    }
+    &__login-specs {
+        margin: 1.6rem 0;
+        width: 100%;
+        padding: 0 1.8rem;
+
+        &-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: separate;
+            border-spacing: 0 0.8rem;
+
+            &-attribute {
+                width: 30%;
+                .mt5-account-card--paragraph {
+                    color: var(--text-general);
+                    margin-right: 2.4rem;
+                }
+            }
+            &-data {
+                width: 70%;
+                .mt5-account-card--paragraph {
+                    @include typeface(--paragraph-left-normal-black, none);
+                    line-height: 1.45;
+                }
+            }
+        }
+    }
+    &__spec-box {
+        display: grid;
+        grid-template-columns: 1fr 2.4rem;
+        border: 1px solid var(--border-normal);
+        border-radius: $BORDER_RADIUS;
+    }
+    &__spec-text {
+        padding: 0.4rem;
+    }
+    &__spec-copy {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        border-left: 1px solid var(--border-normal);
     }
     &__account-selection {
         align-items: center;

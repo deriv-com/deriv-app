@@ -45,9 +45,16 @@ const MT5PasswordForm = props => (
     <Formik
         initialValues={{
             password: '',
+            server: props.server,
         }}
         validate={props.validatePassword}
-        onSubmit={values => props.submitMt5Password(values.password)}
+        onSubmit={(values, actions) => {
+            let valuesObject = {
+                password: values.password,
+            };
+            if (values.server) valuesObject.server = values.server;
+            props.submitMt5Form(valuesObject, actions.setSubmitting);
+        }}
     >
         {({
             handleSubmit,
@@ -58,6 +65,7 @@ const MT5PasswordForm = props => (
             errors,
             values,
             touched,
+            isSubmitting,
         }) => (
             <form onSubmit={handleSubmit}>
                 <div className='mt5-password-modal__content'>
@@ -114,10 +122,10 @@ const MT5PasswordForm = props => (
                     is_disabled={!values.password || Object.keys(errors).length > 0}
                     has_cancel
                     cancel_label={localize('Cancel')}
-                    onCancel={props.closeModal}
+                    onCancel={props.onBack}
                     is_absolute={isMobile()}
-                    is_loading={props.is_submitting}
-                    label={props.should_show_server_form ? localize('Next') : localize('Add account')}
+                    is_loading={isSubmitting}
+                    label={localize('Add account')}
                     form_error={props.form_error}
                 />
             </form>
@@ -151,24 +159,10 @@ const MT5ServerForm = ({ ...props }) => {
     return (
         <Formik
             initialValues={{
-                password: props.password,
-                server:
-                    props.trading_servers.find(
-                        server =>
-                            !server.disabled &&
-                            !props.mt5_login_list.some(login_item => login_item.server === server.id)
-                    )?.id ?? '',
+                server: props.trading_servers.find(server => !server.disabled)?.id ?? '',
             }}
             validate={props.validateServer}
-            onSubmit={(values, actions) => {
-                props.submitMt5Form(
-                    {
-                        password: values.password,
-                        server: values.server,
-                    },
-                    actions.setSubmitting
-                );
-            }}
+            onSubmit={values => props.submitMt5Server(values.server)}
         >
             {({ handleSubmit, setFieldValue, errors, values, isSubmitting }) => (
                 <form onSubmit={handleSubmit}>
@@ -209,10 +203,10 @@ const MT5ServerForm = ({ ...props }) => {
                         is_disabled={isSubmitting || !values.server || Object.keys(errors).length > 0}
                         has_cancel
                         cancel_label={localize('Back')}
-                        onCancel={props.onBack}
+                        onCancel={props.closeModal}
                         is_absolute={isMobile()}
                         is_loading={isSubmitting}
-                        label={localize('Add account')}
+                        label={localize('Next')}
                         form_error={props.form_error}
                     />
                 </form>
@@ -244,6 +238,7 @@ const MT5PasswordModal = ({
     mt5_new_account,
 }) => {
     const [password, setPassword] = React.useState('');
+    const [server, setServer] = React.useState('');
     const [is_submitting, setIsSubmitting] = React.useState(false); // TODO handle this better
 
     const is_bvi = React.useMemo(() => {
@@ -276,7 +271,7 @@ const MT5PasswordModal = ({
     const closeDialogs = () => {
         setMt5SuccessDialog(false);
         setMt5Error(false);
-        setPassword('');
+        setServer('');
     };
 
     const closeModal = () => {
@@ -303,25 +298,13 @@ const MT5PasswordModal = ({
             (is_logged_in ? !is_eu : !is_eu_country) &&
             is_real_synthetic &&
             mt5_login_list.some(item => item.account_type === 'real' && item.market_type === 'gaming') &&
-            !!password
+            !server
         );
-    }, [is_eu, is_eu_country, is_logged_in, is_real_synthetic, password, mt5_login_list]);
-
-    // TODO handle submitting password without server in a better way
-    React.useEffect(() => {
-        if (!should_show_server_form && password && !is_submitting) {
-            setIsSubmitting(true);
-        } else if (is_submitting && password && is_logged_in) {
-            submitMt5Password({ password }, state => {
-                setPassword('');
-                setIsSubmitting(state);
-            });
-        }
-    }, [password, should_show_server_form, is_submitting]);
+    }, [is_eu, is_eu_country, is_logged_in, is_real_synthetic, server, mt5_login_list]);
 
     React.useEffect(() => {
         if (has_mt5_error || is_mt5_success_dialog_enabled) {
-            setPassword('');
+            setServer('');
         }
     }, [has_mt5_error, is_mt5_success_dialog_enabled]);
 
@@ -339,9 +322,8 @@ const MT5PasswordModal = ({
                             trading_servers={trading_servers}
                             mt5_login_list={mt5_login_list}
                             account_title={account_title}
-                            password={password}
-                            submitMt5Form={(v, setSubmitting) => submitMt5Password(v, setSubmitting)}
-                            onBack={() => setPassword('')}
+                            closeModal={closeModal}
+                            submitMt5Server={setServer}
                         />
                     ) : (
                         <MT5PasswordForm
@@ -350,7 +332,9 @@ const MT5PasswordModal = ({
                             account_title={account_title}
                             closeModal={closeModal}
                             form_error={form_error}
-                            submitMt5Password={setPassword}
+                            server={server}
+                            onBack={() => setServer('')}
+                            submitMt5Form={(v, setSubmitting) => submitMt5Password(v, setSubmitting)}
                             is_real_financial_stp={is_real_financial_stp}
                             validatePassword={validatePassword}
                             should_show_server_form={should_show_server_form}
@@ -371,9 +355,8 @@ const MT5PasswordModal = ({
                             trading_servers={trading_servers}
                             mt5_login_list={mt5_login_list}
                             account_title={account_title}
-                            password={password}
-                            submitMt5Form={(v, setSubmitting) => submitMt5Password(v, setSubmitting)}
-                            onBack={() => setPassword('')}
+                            closeModal={closeModal}
+                            submitMt5Server={setServer}
                         />
                     ) : (
                         <MT5PasswordForm
@@ -382,8 +365,10 @@ const MT5PasswordModal = ({
                             account_title={account_title}
                             closeModal={closeModal}
                             form_error={form_error}
+                            server={server}
+                            onBack={() => setServer('')}
+                            submitMt5Form={(v, setSubmitting) => submitMt5Password(v, setSubmitting)}
                             is_real_financial_stp={is_real_financial_stp}
-                            submitMt5Password={setPassword}
                             validatePassword={validatePassword}
                             should_show_server_form={should_show_server_form}
                         />

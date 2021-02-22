@@ -62,8 +62,8 @@ class Trader extends Common {
             }
         } else {
             try {
-                await this.page.waitForSelector('.dc-checkbox__box--active');
-                await this.page.click('.dc-checkbox__box--active');
+                await this.page.waitForSelector('.dc-checkbox__box--active', { timeout: 300});
+                await this.page.click('.dc-checkbox__box--active', { timeout: 300 });
             } catch (e) {
                 // No need to take action here. we can continue the pipeline.
             }
@@ -78,8 +78,9 @@ class Trader extends Common {
             await this.page.click('.dc-page-overlay__header-close');
             await this.unsetAllowEquals();
         } else {
-            await this.page.waitForSelector('.dc-result__close-btn');
-            await this.page.click('.dc-result__close-btn');
+            await this.page.waitForSelector('.dc-result__close-btn', { timeout: 300 });
+            await this.page.click('.dc-result__close-btn', { timeout: 300 });
+            await this.page.click('#dt_positions_toggle');
             await this.unsetAllowEquals();
         }
     }
@@ -245,13 +246,13 @@ class Trader extends Common {
                 if (current > t) {
                     await decrement();
                 }
-                const updated_duration = await this.page.$eval('.dc-tick-picker__holder--large', el => el.innerText);
+                const updated_duration = await this.page.$eval('.dc-tick-picker__holder > span:nth-child(1)', el => Number(el.textContent));
                 return await reachTarget(t, updated_duration);
             };
 
             await this.page.waitForSelector('.mobile-widget__amount');
             await this.page.click('.mobile-widget__amount');
-            const current_duration = await this.page.$eval('.dc-tick-picker__holder--large', el => el.innerText);
+            const current_duration = await this.page.$eval('.dc-tick-picker__holder > span:nth-child(1)', el => Number(el.textContent));
             await reachTarget(target, current_duration);
 
             await this.page.waitForSelector(

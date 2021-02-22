@@ -1,4 +1,5 @@
 const { waitForWSSubset } = require('@root/_utils/websocket');
+const context_options = require('@root/_config/context');
 
 class Common {
     constructor(page) {
@@ -65,7 +66,6 @@ class Common {
         await this.page.waitForSelector('text=Submit');
         await this.page.click('text=Submit');
         await this.page.waitForLoadState('load');
-        await this.saveState('LOGIN');
     }
 
     /**
@@ -86,40 +86,48 @@ class Common {
 
         if (grant) {
             await this.page.click('#btnGrant');
-            await this.page.waitForLoadState('domcontentloaded');
+            await waitForWSSubset(this.page, {
+                echo_req: {
+                    authorize: 1,
+                },
+            });
         }
 
-        await this.saveState('LOGIN');
+        // await this.saveState('LOGIN');
     }
 
-    async loadOrLogin(email, password, context, POM) {
-        const is_login_done = this.checkIfStateExists('LOGIN');
-        if (!is_login_done) {
-            await this.login(email, password);
-        } else {
-            context = await this.setState('LOGIN', context, POM);
-            await this.page.navigate();
-        }
-        return context;
+    // async loadOrLogin(email, password, context, POM) {
+    //     let new_context = context;
+    //     const is_login_done = this.checkIfStateExists('LOGIN');
+    //     if (!is_login_done) {
+    //         await this.login(email, password);
+    //     } else {
+    //         new_context = await this.setState('LOGIN', context, POM);
+    //         context.close();
+    //         await this.page.navigate();
+    //     }
+    //     return new_context;
+    // }
+
+    async saveState(target, context) {
+        const new_storage = await context.storageState();
+        process.env[target] = JSON.stringify(new_storage);
     }
 
-    async saveState(target) {
-        const storage = await this.page.context().storageState();
-        process.env[target] = JSON.stringify(storage);
-    }
-    async setState(target, context, POM) {
-        const storageState = JSON.parse(process.env[target]);
-        const new_context = await context.browser().newContext({ storageState });
-        // Try to reuse the same Page Object Model
-        if (POM) {
-            this.page = new POM(await context.newPage());
-        } else {
-            this.page = new Common(await context.newPage());
-        }
-        await this.page.navigate();
+    // async setState(target, context, POM) {
+    //     const storageState = JSON.parse(process.env[target]);
+    //     const new_context = await context.browser().newContext({ storageState, ...context_options });
+    //     const current_page = this.page;
+    //     // Try to reuse the same Page Object Model
+    //     if (POM) {
+    //         this.page = new POM(await context.newPage());
+    //     } else {
+    //         this.page = new Common(await context.newPage());
+    //     }
 
-        return new_context;
-    }
+        // current_page.close();
+        // return new_context;
+    // }
 
     async isMobile() {
         const { width } = await this.page.viewportSize();
@@ -234,10 +242,6 @@ class Common {
                 '.dc-dialog__content > .account-signup > form > .account-signup__password-selection > .dc-btn'
             );
         }
-        await waitForWSSubset(this.page, {
-            authorize: {},
-        });
-        await this.saveState('VIRTUAL')
     }
 
     async realAccountSignup(options) {
@@ -285,8 +289,8 @@ class Common {
         await this.fillAddressDetails();
         await this.fillTermsAndConditions();
         await this.waitForAccountDropdown();
-        await this.removeLoginState('VIRTUAL');
-        await this.saveState('REAL');
+        // await this.removeLoginState('VIRTUAL');
+        // await this.saveState('REAL');
     }
 
     async fillTermsAndConditions() {
@@ -405,7 +409,7 @@ class Common {
         return false;
     };
 
-    removeLoginState = (target ) => {
+    removeLoginState = target => {
         delete process.env[target];
     };
 }

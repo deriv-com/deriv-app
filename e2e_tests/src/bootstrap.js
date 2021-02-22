@@ -20,17 +20,22 @@ async function setUp(options) {
 
 async function tearDown(browser) {
     try {
-        // TODO [remove-qawolf]
-        // await qawolf.stopVideos();
         await browser.close();
     } catch (e) {
-        // eslint-disable-next-line no-console
         console.log(e);
     }
 }
 
 function getContext() {
     return context;
+}
+
+function getStorageState(which) {
+    const storage_string = process.env[which];
+    if (storage_string) {
+        return JSON.parse(storage_string);
+    }
+    return {};
 }
 
 // This is empty for now, since QAWolf will default to desktop
@@ -56,4 +61,5 @@ module.exports = {
     desktop_viewport,
     mobile_viewport,
     getContext,
+    getStorageState,
 }

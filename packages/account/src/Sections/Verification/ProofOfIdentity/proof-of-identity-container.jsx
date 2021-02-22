@@ -35,6 +35,7 @@ const ProofOfIdentityContainer = ({
     const [submissions_left_key, setSubmissionsLeft] = React.useState(null);
     const [rejected_reasons_key, setRejectedReasons] = React.useState([]);
     const [is_continue_uploading, setContinueUploading] = React.useState(false);
+    const [identity_status_key, setIdentityStatus] = React.useState(false);
     const previous_account_status = usePrevious(account_status);
 
     const getOnfidoServiceToken = React.useCallback(
@@ -90,6 +91,7 @@ const ProofOfIdentityContainer = ({
 
             setVerificationStatus({ allow_document_upload, has_poa, needs_poa, is_unwelcome }, () => {
                 setStatus(identity_status);
+                setIdentityStatus(identity?.status);
                 if (onfido_token) {
                     setOnfidoServiceToken(onfido_token);
                 }
@@ -150,7 +152,8 @@ const ProofOfIdentityContainer = ({
     }, [createVerificationConfig, previous_account_status, account_status]);
 
     const { has_poa, is_unwelcome, allow_document_upload } = verification_status;
-    const is_rejected = !!rejected_reasons_key.length;
+    const is_rejected = identity_status_key === onfido_status_codes.rejected;
+    const has_rejected_reasons = !!rejected_reasons_key.length && is_rejected;
 
     if (api_error)
         return (
@@ -159,8 +162,8 @@ const ProofOfIdentityContainer = ({
     if (is_loading || status.length === 0) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (is_unwelcome && !allow_document_upload) return <Unverified />;
     if (status === onfido_status_codes.not_required) return <NotRequired />;
-    if (!submissions_left_key && status !== onfido_status_codes.verified) return <Limited />;
-    if (is_rejected && !is_continue_uploading)
+    if (!submissions_left_key && is_rejected) return <Limited />;
+    if (has_rejected_reasons && !is_continue_uploading)
         return <RejectedReasons rejected_reasons={rejected_reasons_key} setContinueUploading={setContinueUploading} />;
 
     return (

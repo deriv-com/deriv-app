@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard, useHover } from '@deriv/components';
+import { isDesktop } from '@deriv/shared';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import { connect } from 'Stores/connect';
@@ -119,7 +120,7 @@ const ContractDrawerCard = ({
                 {is_market_closed && !getEndTime(contract_info) && (
                     <div
                         className={classNames({
-                            'contract-card__market-closed--hidden': should_hide_closed_overlay,
+                            'contract-card__market-closed--hidden': isDesktop() && should_hide_closed_overlay,
                         })}
                     >
                         <MarketClosedContractOverlay symbol={symbol} />

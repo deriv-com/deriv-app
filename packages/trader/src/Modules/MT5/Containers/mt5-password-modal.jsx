@@ -49,7 +49,7 @@ const MT5PasswordForm = props => (
         }}
         validate={props.validatePassword}
         onSubmit={(values, actions) => {
-            let valuesObject = {
+            const valuesObject = {
                 password: values.password,
             };
             if (values.server) valuesObject.server = values.server;
@@ -245,9 +245,7 @@ const MT5PasswordModal = ({
     mt5_login_list,
     mt5_new_account,
 }) => {
-    const [password, setPassword] = React.useState('');
     const [server, setServer] = React.useState('');
-    const [is_submitting, setIsSubmitting] = React.useState(false); // TODO handle this better
 
     const is_bvi = React.useMemo(() => {
         return landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
@@ -336,7 +334,6 @@ const MT5PasswordModal = ({
                     ) : (
                         <MT5PasswordForm
                             is_bvi={is_bvi}
-                            is_submitting={is_submitting}
                             account_title={account_title}
                             closeModal={closeModal}
                             form_error={form_error}
@@ -369,7 +366,6 @@ const MT5PasswordModal = ({
                     ) : (
                         <MT5PasswordForm
                             is_bvi={is_bvi}
-                            is_submitting={is_submitting}
                             account_title={account_title}
                             closeModal={closeModal}
                             form_error={form_error}

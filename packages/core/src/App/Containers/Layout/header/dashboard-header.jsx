@@ -50,26 +50,26 @@ const LoggedInHeader = ({ is_dark_mode }) => {
 const LoggedOutHeader = () => {
     const history = useHistory();
     const { is_deriv_crypto } = React.useContext(PlatformContext);
-    const [current_dropdown, set_current_dropdown] = React.useState('');
-    const [dropdown_link_ref, set_dropdown_link_ref] = React.useState(null);
-    const [dropdown_ref, set_dropdown_ref] = React.useState(null);
+    const [current_dropdown, setCurrentDropdown] = React.useState('');
+    const [dropdown_link_ref, setDropdownLinkRef] = React.useState(null);
+    const [dropdown_ref, setDropdownRef] = React.useState(null);
     const nav_dropdown_ref = React.useRef(null);
 
     const handleDropdownClick = (dropdown, target) => {
-        set_current_dropdown(dropdown);
+        setCurrentDropdown(dropdown);
         if (target) {
-            set_dropdown_link_ref(target);
+            setDropdownLinkRef(target);
         }
     };
 
     const handleOutsideClick = e => {
         if (nav_dropdown_ref.current && !nav_dropdown_ref.current.contains(e.target)) {
             if (dropdown_ref.current && dropdown_ref.current.contains(e.target)) return;
-            set_current_dropdown('');
+            setCurrentDropdown('');
         }
     };
 
-    const setDropdown = new_ref => set_dropdown_ref(new_ref);
+    const setDropdown = new_ref => setDropdownRef(new_ref);
 
     React.useEffect(() => {
         document.addEventListener('click', handleOutsideClick);

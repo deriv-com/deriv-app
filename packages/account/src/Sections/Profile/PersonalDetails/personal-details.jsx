@@ -876,7 +876,7 @@ export class PersonalDetailsForm extends React.Component {
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                     {!this.props.is_virtual &&
                                         !(isSubmitting || is_submit_success || (status && status.msg)) && (
-                                            <Text className='account-form__footer-note'>
+                                            <Text className='account-form__footer-note' size='xxxs'>
                                                 {localize(
                                                     'Please make sure your information is correct or it may affect your trading experience.'
                                                 )}

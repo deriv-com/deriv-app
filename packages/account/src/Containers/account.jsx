@@ -19,7 +19,7 @@ const AccountLogout = ({ logout, history }) => {
             }}
         >
             <div className='dc-vertical-tab__header-group account__logout-tab'>
-                <Text color='general' size='xs' weight='normal'>
+                <Text color='general' size='xxs' weight='normal'>
                     {localize('Log out')}
                 </Text>
             </div>

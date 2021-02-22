@@ -35,6 +35,21 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     .dc-vertical-tab--dashboard {
         height: unset;
+
+        .dc-vertical-tab__header {
+            font-size: 1.2rem;
+            padding-left: 3.9rem;
+
+            &__link {
+                margin-left: unset;
+            }
+            &--highlight {
+                border-left: unset;
+            }
+            &-group__icon {
+                margin-right: 0.9rem;
+            }
+        }
         & .account-form {
             &__personal-details,
             &__financial-assessment {
@@ -84,10 +99,15 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
             &__tab {
+                height: unset;
                 background-color: unset;
                 min-width: unset;
                 &-meta-wrapper {
                     width: 22.8rem;
+                    height: calc(100vh - 4.8rem);
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
                     border-right: 1px solid var(--general-section-1);
                     &--dashboard {
                         padding-top: 3.5rem;
@@ -114,6 +134,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
             &__header--active {
                 border-left: unset;
+                border-radius: unset;
                 border-right: 4px solid var(--brand-red-coral);
             }
         }

@@ -35,6 +35,7 @@ const VerticalTab = ({
     action_bar_classname,
     className,
     current_path,
+    extra_content,
     extra_offset,
     has_mixed_dimensions,
     header_classname,
@@ -121,6 +122,7 @@ const VerticalTab = ({
                     {is_floating && tab_headers_note && (
                         <div className='dc-vertical-tab__tab-bottom-note'>{tab_headers_note}</div>
                     )}
+                    {extra_content}
                 </div>
             )}
             <VerticalTabContentContainer

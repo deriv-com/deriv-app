@@ -166,15 +166,7 @@ const MT5AccountCard = ({
     };
 
     return (
-        <div
-            ref={wrapper_ref}
-            className={classNames('mt5-account-card__wrapper', {
-                'mt5-account-card__wrapper-shrinked':
-                    is_trade_server_button_visible &&
-                    type.category === 'real' &&
-                    (!should_show_trade_servers || !is_hovered),
-            })}
-        >
+        <div ref={wrapper_ref} className={'mt5-account-card__wrapper'}>
             <div
                 className={classNames('mt5-account-card', { 'mt5-account-card__logged-out': !is_logged_in })}
                 ref={ref}

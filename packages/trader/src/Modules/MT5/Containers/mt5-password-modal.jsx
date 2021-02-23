@@ -285,6 +285,14 @@ const MT5PasswordModal = ({
         disableMt5PasswordModal();
     };
 
+    const onBack = () => {
+        if (server) {
+            setServer('');
+        } else {
+            closeModal();
+        }
+    };
+
     const closeOpenSuccess = () => {
         disableMt5PasswordModal();
         closeDialogs();
@@ -338,7 +346,7 @@ const MT5PasswordModal = ({
                             closeModal={closeModal}
                             form_error={form_error}
                             server={server}
-                            onBack={() => setServer('')}
+                            onBack={onBack}
                             submitMt5Form={(v, setSubmitting) => submitMt5Password(v, setSubmitting)}
                             is_real_financial_stp={is_real_financial_stp}
                             validatePassword={validatePassword}
@@ -370,7 +378,7 @@ const MT5PasswordModal = ({
                             closeModal={closeModal}
                             form_error={form_error}
                             server={server}
-                            onBack={() => setServer('')}
+                            onBack={onBack}
                             submitMt5Form={(v, setSubmitting) => submitMt5Password(v, setSubmitting)}
                             is_real_financial_stp={is_real_financial_stp}
                             validatePassword={validatePassword}

@@ -403,8 +403,10 @@
 
 .mt5-real-accounts-display,
 .mt5-demo-accounts-display {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-auto-flow: column;
+    grid-gap: 2.4rem;
+    justify-content: center;
     margin-top: 2.4em;
     height: 100%;
 

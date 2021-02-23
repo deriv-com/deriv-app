@@ -3,7 +3,7 @@ const { replaceWebsocket, waitForWSSubset } = require('@root/_utils/websocket');
 const { setUp, tearDown, mobile_viewport } = require('@root/bootstrap');
 
 let browser, context, page;
-jest.setTimeout(20000);
+jest.setTimeout(60000);
 describe('Website status check', () => {
     beforeEach(async () => {
         const out = await setUp(mobile_viewport);

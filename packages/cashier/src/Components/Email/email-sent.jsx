@@ -7,10 +7,10 @@ import { connect } from 'Stores/connect';
 const EmailSent = ({ is_resend_clicked, resend_timeout, resendVerificationEmail, setVerificationResendClicked }) => (
     <div className='withdraw__email-sent'>
         <Icon icon='IcEmailSent' className='withdraw__icon' size={128} />
-        <Text as='p' weight='bold' className='withdraw__email-sent-title'>
+        <Text as='p' weight='bold' align='center' className='withdraw__email-sent-title'>
             <Localize i18n_default_text={"We've sent you an email."} />
         </Text>
-        <Text as='p' size='xs' line_height='s' className='withdraw__email-sent'>
+        <Text as='p' size='xs' line_height='s' align='center' className='withdraw__email-sent'>
             <Localize i18n_default_text='Please check your email for the verification link to complete the process.' />
         </Text>
         <div className='withdraw__email-resend'>

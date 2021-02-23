@@ -106,10 +106,17 @@ const copyConfig = base => {
                 to: 'public/images/sprite',
                 toType: 'dir',
             },
-
             {
                 from: path.resolve(__dirname, '../src/templates/app/manifest.json'),
                 to: 'manifest.json',
+                toType: 'file',
+                transform(content, path) {
+                    return transformContentUrlBase(content, path, base);
+                },
+            },
+            {
+                from: path.resolve(__dirname, '../src/templates/app/pushwoosh/pushwoosh-service-worker.js'),
+                to: 'pushwoosh-service-worker.js',
                 toType: 'file',
                 transform(content, path) {
                     return transformContentUrlBase(content, path, base);

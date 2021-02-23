@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Icon from '../icon';
-import Text from '../text';
+import Icon from '../icon/icon.jsx';
+import Text from '../text/text.jsx';
 
 class SubMenuSection extends React.PureComponent {
     render() {

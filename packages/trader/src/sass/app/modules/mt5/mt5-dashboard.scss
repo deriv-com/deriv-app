@@ -26,7 +26,7 @@
     }
     &__info {
         background: var(--fill-disabled);
-        margin-top: 2.4rem;
+        margin-top: 5rem;
         font-size: 1.4rem;
         color: var(--text-general);
         display: grid;
@@ -86,11 +86,14 @@
         display: flex;
         justify-content: space-between;
         margin: 2.4em 0;
+        max-width: 960px;
         padding: 1.6rem;
+        width: calc(100% - 2.4rem);
 
         &--heading {
             color: var(--text-prominent);
             line-height: 1.5;
+            margin-right: 1rem;
             @include typeface(--title-left-bold-black, none);
             @include mobile {
                 font-size: 1.2rem;
@@ -102,9 +105,11 @@
         @include mobile {
             flex-direction: column;
             padding: 0.8rem;
+            width: calc(100vw - 3.2rem);
 
             &--heading {
                 margin-bottom: 0.8rem;
+                margin-right: 0;
             }
             &--button {
                 width: 27rem;
@@ -398,13 +403,23 @@
 
 .mt5-real-accounts-display,
 .mt5-demo-accounts-display {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-auto-flow: column;
+    grid-gap: 2.4rem;
+    justify-content: space-between;
     margin-top: 2.4em;
     height: 100%;
 
     @include mobile {
+        overflow-x: hidden;
         flex-direction: column;
+        height: unset;
+    }
+}
+
+.mt5-demo-accounts-display .mt5-account-card__wrapper {
+    @include desktop {
+        height: auto;
     }
 }
 
@@ -466,10 +481,12 @@
     border-radius: 4px;
     display: flex;
     flex-flow: column nowrap;
-    min-height: 35.8rem;
+    min-height: 37rem;
     width: 30.4em;
     position: relative;
-    height: 100%;
+    @include desktop {
+        height: 100%;
+    }
 
     &__wrapper {
         display: grid;
@@ -482,8 +499,11 @@
             margin-bottom: 2.4rem;
             height: fit-content;
         }
-        &:not(:last-child) {
-            margin-right: 2.4rem;
+        @include desktop {
+            height: 100%;
+            &-shrinked {
+                height: calc(100% - 4rem);
+            }
         }
     }
 
@@ -521,13 +541,11 @@
         &-enter-done {
             transition: all 0.3s ease-in-out;
             opacity: 1;
-            height: 4rem;
         }
         &-enter,
         &-exit-done {
             transition: all 0.3s ease-in-out;
             opacity: 0;
-            height: 0;
         }
         &--icon {
             color: var(--status-colored-background);
@@ -577,9 +595,9 @@
         border-left: 2.3rem solid transparent;
         border-right: 2.3rem solid transparent;
         height: 0;
-        width: 10.6rem;
-        left: 22rem;
-        top: 1.7rem;
+        width: 13.7rem;
+        left: 19.4rem;
+        top: 2.8rem;
         color: var(--text-colored-background);
         font-weight: bold;
         line-height: 24px;
@@ -594,7 +612,7 @@
             border-bottom-color: $color-blue-2;
         }
         @include mobile {
-            left: calc(100vw - 11.6rem);
+            left: calc(100vw - 14.2rem);
         }
     }
     &__type {
@@ -610,7 +628,12 @@
                 margin-bottom: 0.8rem;
             }
             .mt5-account-card--paragraph {
-                width: 18.8rem;
+                width: 18.3rem;
+            }
+        }
+        &--has-banner {
+            .mt5-account-card--paragraph {
+                width: 15rem;
             }
         }
     }

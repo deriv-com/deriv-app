@@ -24,8 +24,7 @@ const AccountOption = ({ trading_servers, mt5_login_list, account, idx, is_dark_
     let server;
 
     if (account.is_mt) {
-        const mt5_login = mt5_login_list.find(mt5_account => mt5_account.login === account.value);
-        server = trading_servers.length > 1 ? mt5_login : undefined;
+        server = mt5_login_list.find(mt5_account => mt5_account.login === account.value);
     }
 
     return (

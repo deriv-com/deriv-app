@@ -135,7 +135,6 @@ class ConfigVerification {
     @observable is_email_sent = false;
     @observable is_resend_clicked = false;
     @observable resend_timeout = 60;
-    @observable is_10k_withdrawal_limit_reached = undefined;
 }
 
 export default class CashierStore extends BaseStore {
@@ -161,6 +160,7 @@ export default class CashierStore extends BaseStore {
     @observable is_p2p_visible = false;
     @observable p2p_notification_count = 0;
     @observable cashier_route_tab_index = 0;
+    @observable is_10k_withdrawal_limit_reached = undefined;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),

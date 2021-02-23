@@ -164,8 +164,7 @@ const PersonalDetails = ({
                                         style={{ paddingBottom: isDesktop() ? 'unset' : null }}
                                     >
                                         {!is_dashboard && <FormSubHeader title={localize('Title and name')} />}
-                                        {
-                                            // TODO: [deriv-eu] Remove salutation once api is optional
+                                        {'salutation' in props.value && ( // TODO: [deriv-eu] Remove salutation once api is optional
                                             <RadioGroup
                                                 className='dc-radio__input'
                                                 name='salutation'
@@ -185,7 +184,7 @@ const PersonalDetails = ({
                                                     />
                                                 ))}
                                             </RadioGroup>
-                                        }
+                                        )}
                                         {'first_name' in props.value && (
                                             <FormInputField
                                                 name='first_name'

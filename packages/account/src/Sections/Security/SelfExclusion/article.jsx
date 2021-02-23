@@ -50,7 +50,9 @@ const SEArticle = ({ toggleArticle, is_eu }) => {
 
     return (
         <article className='account__article'>
-            <h4 className='account__article-title'>{localize('About trading limits and self-exclusion')}</h4>
+            <Text as='h4' size='xs' color='prominent' weight='bold' className='account__article-title'>
+                {localize('About trading limits and self-exclusion')}
+            </Text>
             <Text as='p' size='xxs' className='account__article-description'>
                 {article_text}
             </Text>

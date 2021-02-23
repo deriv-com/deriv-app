@@ -13,6 +13,7 @@ import {
     MobileWrapper,
     SelectNative,
     DateOfBirthPicker,
+    Text,
 } from '@deriv/components';
 import {
     toMoment,
@@ -1001,17 +1002,14 @@ export class PersonalDetailsForm extends React.Component {
                                 </FormBody>
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                    {!(isSubmitting || is_submit_success || (status && status.msg)) && (
-                                        <div
-                                            className={classNames('account-form__footer-note', {
-                                                'account-form__footer-note--dashboard': is_dashboard,
-                                            })}
-                                        >
-                                            {localize(
-                                                'Please make sure your information is correct or it may affect your trading experience.'
-                                            )}
-                                        </div>
-                                    )}
+                                    {!this.props.is_virtual &&
+                                        !(isSubmitting || is_submit_success || (status && status.msg)) && (
+                                            <Text className='account-form__footer-note' size='xxxs'>
+                                                {localize(
+                                                    'Please make sure your information is correct or it may affect your trading experience.'
+                                                )}
+                                            </Text>
+                                        )}
                                     <Button
                                         className={classNames('account-form__footer-btn', {
                                             'dc-btn--green': is_submit_success,

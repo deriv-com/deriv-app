@@ -399,14 +399,13 @@ export class PersonalDetailsForm extends React.Component {
                         {show_form && (
                             <form
                                 noValidate
-                                className='account-form account-form__personal-details'
+                                className={classNames('account-form account-form__personal-details', {
+                                    'account-form account-form__personal-details--dashboard': is_dashboard,
+                                })}
                                 onSubmit={handleSubmit}
                             >
                                 <FormBody scroll_offset={isMobile() ? '199px' : '80px'}>
-                                    <FormSubHeader
-                                        title={localize('Details')}
-                                        subtitle={is_dashboard && `(${localize('All fields are required')})`}
-                                    />
+                                    <FormSubHeader title={localize('Details')} />
                                     {!is_virtual && (
                                         <React.Fragment>
                                             <FormBodySection
@@ -425,7 +424,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                         data-lpignore='true'
                                                                         autoComplete='new-password' // prevent chrome autocomplete
                                                                         type='text'
-                                                                        label={localize('Title')}
+                                                                        label={localize('Title*')}
                                                                         error={touched.salutation && errors.salutation}
                                                                         list_items={this.salutation_list}
                                                                         onItemSelection={({ value, text }) =>
@@ -435,6 +434,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                                 true
                                                                             )
                                                                         }
+                                                                        disabled={!this.isChangeableField('salutation')}
                                                                     />
                                                                 )}
                                                             </Field>
@@ -472,11 +472,7 @@ export class PersonalDetailsForm extends React.Component {
                                                             data-lpignore='true'
                                                             type='text'
                                                             name='last_name'
-                                                            label={
-                                                                is_dashboard
-                                                                    ? localize('Family name')
-                                                                    : localize('Last name*')
-                                                            }
+                                                            label={localize('Last name*')}
                                                             value={values.last_name}
                                                             onChange={handleChange}
                                                             onBlur={handleBlur}
@@ -811,141 +807,174 @@ export class PersonalDetailsForm extends React.Component {
                                                 </FormBodySection>
                                             </React.Fragment>
                                         )}
-                                        <FormSubHeader title={localize('Address')} />
-                                        <FormBodySection has_side_note={is_dashboard}>
-                                            <div className='account-address__details-section'>
-                                                <fieldset className='account-form__fieldset'>
-                                                    <Input
-                                                        data-lpignore='true'
-                                                        autoComplete='off' // prevent chrome autocomplete
-                                                        type='text'
-                                                        maxLength={70}
-                                                        name='address_line_1'
-                                                        label={localize('First line of address*')}
-                                                        value={values.address_line_1}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        error={touched.address_line_1 && errors.address_line_1}
-                                                        required
-                                                        disabled={!this.isChangeableField('address_line_1')}
-                                                    />
-                                                </fieldset>
-                                                <fieldset className='account-form__fieldset'>
-                                                    <Input
-                                                        data-lpignore='true'
-                                                        autoComplete='off' // prevent chrome autocomplete
-                                                        type='text'
-                                                        maxLength={70}
-                                                        name='address_line_2'
-                                                        label={localize('Second line of address (optional)')}
-                                                        value={values.address_line_2}
-                                                        error={touched.address_line_2 && errors.address_line_2}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        required
-                                                        disabled={!this.isChangeableField('address_line_2')}
-                                                    />
-                                                </fieldset>
-                                                <fieldset className='account-form__fieldset'>
-                                                    <Input
-                                                        data-lpignore='true'
-                                                        autoComplete='off' // prevent chrome autocomplete
-                                                        type='text'
-                                                        name='address_city'
-                                                        label={localize('Town/City*')}
-                                                        value={values.address_city}
-                                                        error={touched.address_city && errors.address_city}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        required
-                                                        disabled={!this.isChangeableField('address_city')}
-                                                    />
-                                                </fieldset>
-                                                <fieldset className='account-form__fieldset'>
-                                                    {states_list.length ? (
-                                                        <>
-                                                            <DesktopWrapper>
-                                                                <Field name='address_state'>
-                                                                    {({ field }) => (
-                                                                        <Autocomplete
-                                                                            {...field}
-                                                                            data-lpignore='true'
-                                                                            autoComplete='new-password' // prevent chrome autocomplete
-                                                                            type='text'
-                                                                            label={localize(
-                                                                                'State/Province (optional)'
-                                                                            )}
-                                                                            error={
-                                                                                touched.address_state &&
-                                                                                errors.address_state
-                                                                            }
-                                                                            list_items={states_list}
-                                                                            onItemSelection={({ value, text }) =>
-                                                                                setFieldValue(
-                                                                                    'address_state',
-                                                                                    value ? text : '',
-                                                                                    true
-                                                                                )
-                                                                            }
-                                                                            disabled={
-                                                                                !this.isChangeableField('address_state')
-                                                                            }
-                                                                        />
-                                                                    )}
-                                                                </Field>
-                                                            </DesktopWrapper>
-                                                            <MobileWrapper>
-                                                                <SelectNative
-                                                                    placeholder={localize('Please select')}
-                                                                    label={localize('State/Province (optional)')}
-                                                                    value={values.address_state}
-                                                                    list_items={states_list}
+                                        {(is_dashboard && is_virtual) ||
+                                            (!is_dashboard && (
+                                                <React.Fragment>
+                                                    <FormSubHeader title={localize('Address')} />
+                                                    <FormBodySection has_side_note={is_dashboard}>
+                                                        <div className='account-address__details-section'>
+                                                            <fieldset className='account-form__fieldset'>
+                                                                <Input
+                                                                    data-lpignore='true'
+                                                                    autoComplete='off' // prevent chrome autocomplete
+                                                                    type='text'
+                                                                    maxLength={70}
+                                                                    name='address_line_1'
+                                                                    label={localize('First line of address*')}
+                                                                    value={values.address_line_1}
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
                                                                     error={
-                                                                        touched.address_state && errors.address_state
+                                                                        touched.address_line_1 && errors.address_line_1
                                                                     }
-                                                                    use_text={true}
-                                                                    onChange={e =>
-                                                                        setFieldValue(
-                                                                            'address_state',
-                                                                            e.target.value,
-                                                                            true
-                                                                        )
-                                                                    }
-                                                                    disabled={!this.isChangeableField('address_state')}
+                                                                    required
+                                                                    disabled={!this.isChangeableField('address_line_1')}
                                                                 />
-                                                            </MobileWrapper>
-                                                        </>
-                                                    ) : (
-                                                        <Input
-                                                            data-lpignore='true'
-                                                            autoComplete='off' // prevent chrome autocomplete
-                                                            type='text'
-                                                            name='address_state'
-                                                            label={localize('State/Province (optional)')}
-                                                            value={values.address_state}
-                                                            error={touched.address_state && errors.address_state}
-                                                            onChange={handleChange}
-                                                            onBlur={handleBlur}
-                                                            disabled={!this.isChangeableField('address_state')}
-                                                        />
-                                                    )}
-                                                </fieldset>
-                                                <fieldset className='account-form__fieldset'>
-                                                    <Input
-                                                        data-lpignore='true'
-                                                        autoComplete='off' // prevent chrome autocomplete
-                                                        type='text'
-                                                        name='address_postcode'
-                                                        label={localize('Postal/ZIP code')}
-                                                        value={values.address_postcode}
-                                                        error={touched.address_postcode && errors.address_postcode}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        disabled={!this.isChangeableField('address_postcode')}
-                                                    />
-                                                </fieldset>
-                                            </div>
-                                        </FormBodySection>
+                                                            </fieldset>
+                                                            <fieldset className='account-form__fieldset'>
+                                                                <Input
+                                                                    data-lpignore='true'
+                                                                    autoComplete='off' // prevent chrome autocomplete
+                                                                    type='text'
+                                                                    maxLength={70}
+                                                                    name='address_line_2'
+                                                                    label={localize(
+                                                                        'Second line of address (optional)'
+                                                                    )}
+                                                                    value={values.address_line_2}
+                                                                    error={
+                                                                        touched.address_line_2 && errors.address_line_2
+                                                                    }
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    required
+                                                                    disabled={!this.isChangeableField('address_line_2')}
+                                                                />
+                                                            </fieldset>
+                                                            <fieldset className='account-form__fieldset'>
+                                                                <Input
+                                                                    data-lpignore='true'
+                                                                    autoComplete='off' // prevent chrome autocomplete
+                                                                    type='text'
+                                                                    name='address_city'
+                                                                    label={localize('Town/City*')}
+                                                                    value={values.address_city}
+                                                                    error={touched.address_city && errors.address_city}
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    required
+                                                                    disabled={!this.isChangeableField('address_city')}
+                                                                />
+                                                            </fieldset>
+                                                            <fieldset className='account-form__fieldset'>
+                                                                {states_list.length ? (
+                                                                    <>
+                                                                        <DesktopWrapper>
+                                                                            <Field name='address_state'>
+                                                                                {({ field }) => (
+                                                                                    <Autocomplete
+                                                                                        {...field}
+                                                                                        data-lpignore='true'
+                                                                                        autoComplete='new-password' // prevent chrome autocomplete
+                                                                                        type='text'
+                                                                                        label={localize(
+                                                                                            'State/Province (optional)'
+                                                                                        )}
+                                                                                        error={
+                                                                                            touched.address_state &&
+                                                                                            errors.address_state
+                                                                                        }
+                                                                                        list_items={states_list}
+                                                                                        onItemSelection={({
+                                                                                            value,
+                                                                                            text,
+                                                                                        }) =>
+                                                                                            setFieldValue(
+                                                                                                'address_state',
+                                                                                                value ? text : '',
+                                                                                                true
+                                                                                            )
+                                                                                        }
+                                                                                        disabled={
+                                                                                            !this.isChangeableField(
+                                                                                                'address_state'
+                                                                                            )
+                                                                                        }
+                                                                                    />
+                                                                                )}
+                                                                            </Field>
+                                                                        </DesktopWrapper>
+                                                                        <MobileWrapper>
+                                                                            <SelectNative
+                                                                                placeholder={localize('Please select')}
+                                                                                label={localize(
+                                                                                    'State/Province (optional)'
+                                                                                )}
+                                                                                value={values.address_state}
+                                                                                list_items={states_list}
+                                                                                error={
+                                                                                    touched.address_state &&
+                                                                                    errors.address_state
+                                                                                }
+                                                                                use_text={true}
+                                                                                onChange={e =>
+                                                                                    setFieldValue(
+                                                                                        'address_state',
+                                                                                        e.target.value,
+                                                                                        true
+                                                                                    )
+                                                                                }
+                                                                                disabled={
+                                                                                    !this.isChangeableField(
+                                                                                        'address_state'
+                                                                                    )
+                                                                                }
+                                                                            />
+                                                                        </MobileWrapper>
+                                                                    </>
+                                                                ) : (
+                                                                    <Input
+                                                                        data-lpignore='true'
+                                                                        autoComplete='off' // prevent chrome autocomplete
+                                                                        type='text'
+                                                                        name='address_state'
+                                                                        label={localize('State/Province (optional)')}
+                                                                        value={values.address_state}
+                                                                        error={
+                                                                            touched.address_state &&
+                                                                            errors.address_state
+                                                                        }
+                                                                        onChange={handleChange}
+                                                                        onBlur={handleBlur}
+                                                                        disabled={
+                                                                            !this.isChangeableField('address_state')
+                                                                        }
+                                                                    />
+                                                                )}
+                                                            </fieldset>
+                                                            <fieldset className='account-form__fieldset'>
+                                                                <Input
+                                                                    data-lpignore='true'
+                                                                    autoComplete='off' // prevent chrome autocomplete
+                                                                    type='text'
+                                                                    name='address_postcode'
+                                                                    label={localize('Postal/ZIP code')}
+                                                                    value={values.address_postcode}
+                                                                    error={
+                                                                        touched.address_postcode &&
+                                                                        errors.address_postcode
+                                                                    }
+                                                                    onChange={handleChange}
+                                                                    onBlur={handleBlur}
+                                                                    disabled={
+                                                                        !this.isChangeableField('address_postcode')
+                                                                    }
+                                                                />
+                                                            </fieldset>
+                                                        </div>
+                                                    </FormBodySection>
+                                                </React.Fragment>
+                                            ))}
                                     </React.Fragment>
                                     <FormSubHeader title={localize('Email preference')} />
                                     <FormBodySection
@@ -972,18 +1001,17 @@ export class PersonalDetailsForm extends React.Component {
                                 </FormBody>
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                    {!(isSubmitting || is_submit_success || (status && status.msg)) &&
-                                        (!is_dashboard || isMobile()) && (
-                                            <div
-                                                className={classNames('account-form__footer-note', {
-                                                    'account-form__footer-note--dashboard': is_dashboard,
-                                                })}
-                                            >
-                                                {localize(
-                                                    'Please make sure your information is correct or it may affect your trading experience.'
-                                                )}
-                                            </div>
-                                        )}
+                                    {!(isSubmitting || is_submit_success || (status && status.msg)) && (
+                                        <div
+                                            className={classNames('account-form__footer-note', {
+                                                'account-form__footer-note--dashboard': is_dashboard,
+                                            })}
+                                        >
+                                            {localize(
+                                                'Please make sure your information is correct or it may affect your trading experience.'
+                                            )}
+                                        </div>
+                                    )}
                                     <Button
                                         className={classNames('account-form__footer-btn', {
                                             'dc-btn--green': is_submit_success,

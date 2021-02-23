@@ -64,12 +64,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-left: 6rem;
             }
         }
-        & .account-form__fieldset {
-            margin-bottom: 3.2rem;
-        }
-        & .dc-field--error {
-            color: var(--text-loss-danger);
-        }
+
         & .dc-vertical-tab {
             &__title {
                 position: -webkit-sticky;
@@ -302,6 +297,8 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-top: 1rem;
                 @include mobile {
                     margin-top: unset;
+                    width: 100%;
+                    margin-bottom: 0.8rem;
                 }
             }
             &-content {
@@ -442,6 +439,23 @@ $MIN_HEIGHT_FLOATING: calc(
             position: unset;
         }
         &__personal-details {
+            &--dashboard {
+                & .account-form__fieldset {
+                    margin-bottom: 3.2rem;
+                    @include mobile {
+                        margin-bottom: 3.2rem;
+                    }
+                }
+                & .dc-field--error {
+                    color: var(--text-loss-danger);
+                }
+                & .account-form__footer-note {
+                    width: unset;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
+            }
             @include desktop {
                 .account__scrollbars_container {
                     padding-top: 2.4rem;
@@ -1844,7 +1858,7 @@ $MIN_HEIGHT_FLOATING: calc(
         justify-content: center;
         margin-top: 2.4rem;
 
-        :first-child {
+        & .dc-btn {
             margin-right: 0.8rem;
         }
     }

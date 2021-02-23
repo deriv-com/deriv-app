@@ -210,7 +210,7 @@ const MT5ServerForm = ({ ...props }) => {
                     <FormSubmitButton
                         is_disabled={isSubmitting || !values.server || Object.keys(errors).length > 0}
                         has_cancel
-                        cancel_label={localize('Back')}
+                        cancel_label={localize('Cancel')}
                         onCancel={props.closeModal}
                         is_absolute={isMobile()}
                         is_loading={isSubmitting}

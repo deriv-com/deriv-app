@@ -122,6 +122,7 @@ const MT5AccountCard = ({
     onClickFund,
     onPasswordManager,
     should_show_trade_servers,
+    is_trade_server_button_visible,
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
     trading_servers,
@@ -176,7 +177,15 @@ const MT5AccountCard = ({
     };
 
     return (
-        <div ref={wrapper_ref} className={classNames('mt5-account-card__wrapper')}>
+        <div
+            ref={wrapper_ref}
+            className={classNames('mt5-account-card__wrapper', {
+                'mt5-account-card__wrapper-shrinked':
+                    is_trade_server_button_visible &&
+                    type.category === 'real' &&
+                    (!should_show_trade_servers || !is_hovered),
+            })}
+        >
             <div
                 className={classNames('mt5-account-card', { 'mt5-account-card__logged-out': !is_logged_in })}
                 ref={ref}
@@ -336,7 +345,7 @@ const MT5AccountCard = ({
             <DesktopWrapper>
                 <CSSTransition
                     in={is_hovered && should_show_trade_servers}
-                    timeout={400}
+                    timeout={0}
                     classNames='mt5-account-card__add-server'
                     unmountOnExit
                 >

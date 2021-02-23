@@ -135,25 +135,22 @@ const MT5PasswordForm = props => (
 
 const MT5ServerForm = ({ ...props }) => {
     const available_servers = React.useMemo(() => {
-        return props.trading_servers
+        return [...props.trading_servers]
             .map(server => {
                 // Transform properties to support radiogroup
-                let explanation_note = '';
-                if (server.disabled) {
-                    explanation_note = localize('(Temporarily unavailable)');
-                }
                 return {
                     ...server,
                     ...{
                         label: `${server.geolocation.region} ${
                             server.geolocation.sequence === 1 ? '' : server.geolocation.sequence
-                        } ${explanation_note}`,
+                        } ${server.disabled ? `(${server.message_to_client})` : ''}`,
                         value: server.id,
                         disabled: server.disabled,
                     },
                 };
             })
-            .sort((a, b) => (a.recommended ? a : b));
+            .sort((a, b) => (a.recommended ? a : b))
+            .sort((a, b) => a.disabled - b.disabled);
     }, [props.trading_servers]);
 
     return (
@@ -181,15 +178,7 @@ const MT5ServerForm = ({ ...props }) => {
                                     className='mt5-password-modal__radio'
                                     name='server'
                                     required
-                                    selected={
-                                        props.trading_servers.find(
-                                            server =>
-                                                !server.disabled &&
-                                                !props.mt5_login_list.some(
-                                                    login_item => login_item.server === server.id
-                                                )
-                                        )?.id
-                                    }
+                                    selected={props.trading_servers.find(server => !server.disabled)?.id}
                                     onToggle={e => {
                                         e.persist();
                                         setFieldValue('server', e.target.value);

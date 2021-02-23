@@ -88,10 +88,12 @@
         margin: 2.4em 0;
         max-width: 960px;
         padding: 1.6rem;
+        width: calc(100% - 2.4rem);
 
         &--heading {
             color: var(--text-prominent);
             line-height: 1.5;
+            margin-right: 1rem;
             @include typeface(--title-left-bold-black, none);
             @include mobile {
                 font-size: 1.2rem;
@@ -107,6 +109,7 @@
 
             &--heading {
                 margin-bottom: 0.8rem;
+                margin-right: 0;
             }
             &--button {
                 width: 27rem;
@@ -405,6 +408,7 @@
     @include mobile {
         overflow-x: hidden;
         flex-direction: column;
+        height: unset;
     }
 }
 
@@ -583,9 +587,9 @@
         border-left: 2.3rem solid transparent;
         border-right: 2.3rem solid transparent;
         height: 0;
-        width: 10.6rem;
-        left: 22rem;
-        top: 1.7rem;
+        width: 13.7rem;
+        left: 19.4rem;
+        top: 2.8rem;
         color: var(--text-colored-background);
         font-weight: bold;
         line-height: 24px;
@@ -600,7 +604,7 @@
             border-bottom-color: $color-blue-2;
         }
         @include mobile {
-            left: calc(100vw - 11.6rem);
+            left: calc(100vw - 14.2rem);
         }
     }
     &__type {
@@ -616,11 +620,15 @@
                 margin-bottom: 0.8rem;
             }
             .mt5-account-card--paragraph {
-                width: 18.8rem;
+                width: 18.3rem;
             }
         }
         &--has-banner {
             margin-top: -23px;
+
+            .mt5-account-card--paragraph {
+                width: 15rem;
+            }
         }
     }
     &__display {
@@ -655,6 +663,7 @@
     }
     &__specs {
         margin-top: 1.6rem;
+        max-width: 25rem;
 
         &-table {
             width: 100%;

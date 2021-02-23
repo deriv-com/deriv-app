@@ -45,7 +45,7 @@ const getRowAction = row_obj => {
                   };
     } else if (
         row_obj.desc &&
-        ['deposit', 'withdrawal', 'adjustment', 'hold', 'release'].includes(row_obj.action_type)
+        ['deposit', 'withdrawal', 'transfer', 'adjustment', 'hold', 'release'].includes(row_obj.action_type)
     ) {
         action = {
             message: row_obj.desc,

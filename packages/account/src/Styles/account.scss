@@ -119,7 +119,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &-title {
-            @include typeface(--paragraph-left-bold-prominent, none);
             margin-bottom: 0.8rem;
             max-width: 18.8rem;
         }
@@ -301,7 +300,6 @@ $MIN_HEIGHT_FLOATING: calc(
                     }
                 }
                 .account-form__footer-note {
-                    font-size: 1rem;
                     height: auto;
                     margin-bottom: 1.6rem;
                 }
@@ -589,9 +587,6 @@ $MIN_HEIGHT_FLOATING: calc(
                     margin-bottom: 0;
                 }
             }
-            &--title {
-                @include typeface(--small-left-bold-black, none);
-            }
         }
         &__scrollbars {
             height: 100%;
@@ -632,7 +627,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__title {
-            @include typeface(--title-left-bold-prominent, none);
             margin-bottom: 1.5rem;
             margin-left: 1.2rem;
 
@@ -688,11 +682,9 @@ $MIN_HEIGHT_FLOATING: calc(
                 width: auto;
             }
             &--title {
-                @include typeface(--title-center-bold-prominent, none);
                 margin-top: 2.4rem;
             }
             &--message {
-                @include typeface(--paragraph-center-normal-black, none);
                 margin: 1.6rem 0 0;
             }
             &--code {
@@ -759,7 +751,6 @@ $MIN_HEIGHT_FLOATING: calc(
 
             &-header {
                 margin-top: 3.6rem;
-                @include typeface(--title-center-bold-prominent);
                 margin-bottom: 1.4rem;
             }
             &-item {
@@ -801,7 +792,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__header {
-            @include typeface(--paragraph-left-bold-prominent);
             margin-bottom: 1.6rem;
             margin-top: 2.4rem;
 
@@ -1027,13 +1017,9 @@ $MIN_HEIGHT_FLOATING: calc(
                         display: block;
 
                         &--title {
-                            font-size: var(--text-size-xxs);
-                            font-weight: var(--text-weight-bold);
                             font-stretch: normal;
                             font-style: normal;
-                            line-height: var(--text-lh-m);
                             letter-spacing: normal;
-                            color: var(--text-prominent);
                         }
                         &--action {
                             text-transform: capitalize;
@@ -1538,7 +1524,6 @@ $MIN_HEIGHT_FLOATING: calc(
             align-items: center;
 
             &-header {
-                @include typeface(--title-center-bold-prominent, none);
                 margin: 1.6rem 0 2.4rem;
             }
             &-image {

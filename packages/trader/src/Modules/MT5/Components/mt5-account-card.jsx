@@ -22,7 +22,7 @@ const AddTradeServerButton = React.forwardRef(({ onSelectAccount, is_disabled },
             ref={ref}
         >
             <span className='mt5-account-card__add-server--icon'>+</span>
-            <Localize i18n_default_text='Add more trade servers' />
+            <Localize i18n_default_text='Add region' />
         </div>
     );
 });

@@ -24,7 +24,6 @@ import {
     getDecimalPlaces,
     getCurrencyDisplayCode,
     validNumber,
-
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -776,18 +775,18 @@ class SelfExclusion extends React.Component {
                                                     </Text>
                                                     <Field name='timeout_until'>
                                                         {({ field }) => (
-                                                            <DatePicker 
-                                                                min_date={toMoment().format(
-                                                                    'YYYY-MM-DD'
-                                                                )}
-                                                                max_date={toMoment().add(6,'weeks').format(
-                                                                    'YYYY-MM-DD'
-                                                                )} 
+                                                            <DatePicker
+                                                                min_date={toMoment().format('YYYY-MM-DD')}
+                                                                max_date={toMoment()
+                                                                    .add(6, 'weeks')
+                                                                    .format('YYYY-MM-DD')}
                                                                 {...field}
                                                                 className='self-exclusion__input'
                                                                 label={localize('Date')}
-                                                                value={values.timeout_until && 
-                                                                    epochToMoment(values.timeout_until)}
+                                                                value={
+                                                                    values.timeout_until &&
+                                                                    epochToMoment(values.timeout_until)
+                                                                }
                                                                 onChange={({ target }) =>
                                                                     setFieldValue(
                                                                         'timeout_until',
@@ -811,12 +810,12 @@ class SelfExclusion extends React.Component {
                                                     <Field name='exclude_until'>
                                                         {({ field }) => (
                                                             <DatePicker
-                                                                min_date={toMoment().add(6, 'months').format(
-                                                                    'YYYY-MM-DD'
-                                                                )}
-                                                                max_date={toMoment().add(5, 'years').format(
-                                                                    'YYYY-MM-DD'
-                                                                )}
+                                                                min_date={toMoment()
+                                                                    .add(6, 'months')
+                                                                    .format('YYYY-MM-DD')}
+                                                                max_date={toMoment()
+                                                                    .add(5, 'years')
+                                                                    .format('YYYY-MM-DD')}
                                                                 {...field}
                                                                 alignment={is_tablet ? 'bottom' : 'left'}
                                                                 className='self-exclusion__input'

@@ -113,8 +113,8 @@ const AccountSwitcher = props => {
             );
         } else {
             if (should_redirect_fstp_password)
-                sessionStorage.setItem('open_mt5_account_type', `real.${account_type}.set_password`);
-            else sessionStorage.setItem('open_mt5_account_type', `real.${account_type}`);
+                sessionStorage.setItem('open_cfd_account_type', `real.${account_type}.set_password`);
+            else sessionStorage.setItem('open_cfd_account_type', `real.${account_type}`);
             redirectToMt5Real();
         }
     };
@@ -128,7 +128,7 @@ const AccountSwitcher = props => {
     // };
 
     const openMt5DemoAccount = account_type => {
-        sessionStorage.setItem('open_mt5_account_type', `demo.${account_type}`);
+        sessionStorage.setItem('open_cfd_account_type', `demo.${account_type}`);
         redirectToMt5Demo();
     };
 

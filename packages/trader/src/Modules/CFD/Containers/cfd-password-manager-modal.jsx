@@ -47,8 +47,8 @@ const CFDPasswordReset = ({ sendVerifyEmail, account_type, account_group, server
     const [is_resend_verification_sent, setResendVerificationSent] = React.useState(false);
 
     React.useEffect(() => {
-        localStorage.setItem('mt5_reset_password_intent', [server, account_group, account_type].join('.'));
-        localStorage.setItem('mt5_reset_password_type', password_type);
+        localStorage.setItem('cfd_reset_password_intent', [server, account_group, account_type].join('.'));
+        localStorage.setItem('cfd_reset_password_type', password_type);
         sendVerifyEmail();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

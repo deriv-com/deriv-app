@@ -24,9 +24,9 @@ const PaymentAgentReceipt = ({ currency, history, loginid, receipt, resetPayment
             <div className='cashier__success'>
                 <Text
                     as='h1'
+                    align='center'
                     color='prominent'
                     line_height='m'
-                    align='center'
                     size={isMobile() ? 'xs' : 's'}
                     weight='bold'
                 >

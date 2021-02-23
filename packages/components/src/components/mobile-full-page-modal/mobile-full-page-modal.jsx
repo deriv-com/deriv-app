@@ -7,14 +7,6 @@ import PageOverlay from '../page-overlay/page-overlay.jsx';
 import Icon from '../icon/icon.jsx';
 import Text from '../text/text.jsx';
 
-const MobileFullPageModalBodyWrapper = ({ className, children, should_wrap_body }) => {
-    if (should_wrap_body) {
-        return <div className={classNames('dc-mobile-full-page-modal__body', className)}>{children}</div>;
-    }
-
-    return children;
-};
-
 const MobileFullPageModal = ({
     body_className,
     className,
@@ -34,9 +26,7 @@ const MobileFullPageModal = ({
     page_header_trailing_icon,
     pageHeaderReturnFn,
     renderPageHeaderText,
-    // TODO: Refactor all MobileFullPageModal to allow its body to be wrapped (should_wrap_body).
     // opt-in for backward compatibility.
-    should_wrap_body,
     children,
 }) => (
     <FadeWrapper
@@ -82,9 +72,7 @@ const MobileFullPageModal = ({
                         )}
                     </div>
                 )}
-                <MobileFullPageModalBodyWrapper className={body_className} should_wrap_body={should_wrap_body}>
-                    {children}
-                </MobileFullPageModalBodyWrapper>
+                <div className={classNames('dc-mobile-full-page-modal__body', body_className)}>{children}</div>
                 {page_footer_children && (
                     <React.Fragment>
                         {page_footer_parent && (
@@ -123,7 +111,6 @@ MobileFullPageModal.propTypes = {
     page_header_trailing_icon: PropTypes.any,
     pageHeaderReturnFn: PropTypes.func,
     renderPageHeaderText: PropTypes.func,
-    should_wrap_body: PropTypes.bool,
 };
 
 export default MobileFullPageModal;

@@ -9,6 +9,7 @@
 
     @include mobile {
         transform: none;
+        padding: 1.6rem;
     }
 
     &__icon {
@@ -25,11 +26,7 @@
             color: var(--text-general);
         }
         &-description {
-            color: var(--text-general);
-            font-size: var(--text-size-xs);
-            font-weight: normal;
             margin-bottom: 2.4rem;
-            line-height: 1.43;
 
             & p:first-child {
                 margin-bottom: 0.4rem;

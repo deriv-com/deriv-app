@@ -1,5 +1,6 @@
 import { cloneObject } from '@deriv/shared';
 import { action, computed, observable, reaction } from 'mobx';
+import BaseStore from 'Stores/base_store';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS, subscribeWS } from 'Utils/websocket';
 
@@ -68,7 +69,21 @@ export default class OrderStore {
                     if (response.echo_req.active === active) {
                         const { list } = response.p2p_order_list;
                         this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
-                        this.setOrders(this.orders.concat(list));
+
+                        const old_list = [...this.orders];
+                        const new_list = [];
+
+                        list.forEach(order => {
+                            const old_list_idx = old_list.findIndex(o => o.id === order.id);
+
+                            if (old_list_idx > -1) {
+                                old_list[old_list_idx] = order;
+                            } else {
+                                new_list.push(order);
+                            }
+                        });
+
+                        this.setOrders([...old_list, ...new_list]);
                     }
                 } else {
                     this.setApiErrorMessage(response.error.message);

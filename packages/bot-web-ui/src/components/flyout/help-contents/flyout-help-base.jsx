@@ -1,4 +1,4 @@
-import { Button, Icon } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv/components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { localize } from '@deriv/translations';
@@ -29,7 +29,9 @@ const HelpBase = ({
                 <button className='dc-btn flyout__button-back' onClick={onBackClick}>
                     <Icon icon='IcArrowLeft' />
                 </button>
-                <span className='flyout__help-title'>{title}</span>
+                <Text weight='bold' className='flyout__help-title'>
+                    {title}
+                </Text>
                 <div className='flyout__item-buttons'>
                     <Button
                         className='flyout__button-add'
@@ -77,6 +79,13 @@ const HelpBase = ({
                         text={localize('Previous')}
                         type='button'
                         is_disabled={should_previous_disable}
+                        renderText={text =>
+                            should_previous_disable && (
+                                <Text size='xs' weight='bold' align='center' color='disabled'>
+                                    {text}
+                                </Text>
+                            )
+                        }
                     />
                     <Button
                         className='flyout__button-next'
@@ -85,6 +94,13 @@ const HelpBase = ({
                         text={localize('Next')}
                         type='button'
                         is_disabled={should_next_disable}
+                        renderText={text =>
+                            should_next_disable && (
+                                <Text size='xs' weight='bold' align='center' color='disabled'>
+                                    {text}
+                                </Text>
+                            )
+                        }
                     />
                 </div>
             )}

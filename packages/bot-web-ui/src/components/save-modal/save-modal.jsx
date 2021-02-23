@@ -10,9 +10,10 @@ import {
     Input,
     MobileFullPageModal,
     ThemedScrollbars,
+    Text,
 } from '@deriv/components';
 import { Formik, Form, Field } from 'formik';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { config, save_types } from '@deriv/bot-skeleton';
 import { connect } from 'Stores/connect';
 
@@ -93,13 +94,13 @@ const SaveModalForm = ({
                                             }),
                                         },
                                     ]}
-                                    selected={
-                                        is_authorised
-                                            ? is_local
-                                                ? save_types.LOCAL
-                                                : save_types.GOOGLE_DRIVE
-                                            : save_types.LOCAL
-                                    }
+                                    selected={(() => {
+                                        if (is_authorised) {
+                                            return is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE;
+                                        }
+
+                                        return save_types.LOCAL;
+                                    })()}
                                     onToggle={() => setFieldValue('is_local', !is_local)}
                                 />
                             </div>
@@ -110,7 +111,11 @@ const SaveModalForm = ({
                                             {...field}
                                             onChange={() => setFieldValue('save_as_collection', !save_as_collection)}
                                             defaultChecked={save_as_collection}
-                                            label={localize('Save as collection')}
+                                            label={
+                                                <Text color='general' size='xs' line_height='s' weight='bold'>
+                                                    <Localize i18n_default_text='Save as collection' />
+                                                </Text>
+                                            }
                                             classNameLabel='save-type__checkbox-text'
                                         />
                                     )}
@@ -223,18 +228,29 @@ const IconRadio = ({ icon, text, google_drive_connected, onDriveConnect }) => {
                             icon.props.className
                         ),
                     })}
-                <p
-                    className={classNames('save-type__radio-text', {
-                        'save-type__radio-text--disabled': is_drive_radio && !google_drive_connected,
-                    })}
+                <Text
+                    as='p'
+                    align='center'
+                    size='xxs'
+                    color={is_drive_radio && !google_drive_connected ? 'disabled' : 'prominent'}
+                    line_height='s'
+                    className='save-type__radio-text'
                 >
                     {localize(text)}
-                </p>
+                </Text>
             </div>
             {is_drive_radio && (
-                <p className='save-type__drive-status' onClick={onDriveConnect}>
+                <Text
+                    as='p'
+                    align='center'
+                    size='xs'
+                    weight='bold'
+                    styles={{ color: 'var(--brand-red-coral)' }}
+                    className='save-type__drive-status'
+                    onClick={onDriveConnect}
+                >
                     {localize(google_drive_connected ? localize('Disconnect') : localize('Connect'))}
-                </p>
+                </Text>
             )}
         </div>
     );

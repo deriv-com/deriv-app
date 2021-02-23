@@ -1,16 +1,20 @@
 import React from 'react';
-import { Icon } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 const EmptyPortfolioMessage = ({ error }) => (
     <div className='portfolio-empty'>
         <div className='portfolio-empty__wrapper'>
             {error ? (
-                <span className='portfolio-empty__text'>{error}</span>
+                <Text color='disabled' size='xs'>
+                    {error}
+                </Text>
             ) : (
                 <React.Fragment>
                     <Icon icon='IcPortfolio' className='portfolio-empty__icon' size={96} color='disabled' />
-                    <span className='portfolio-empty__text'>{localize('No open positions')}</span>
+                    <Text color='disabled' size='xs'>
+                        {localize('No open positions')}
+                    </Text>
                 </React.Fragment>
             )}
         </div>

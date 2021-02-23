@@ -7,6 +7,7 @@ export default class RootStore {
         this.modules = new ModulesStore(this, core_store);
         this.ui = core_store.ui;
         this.gtm = core_store.gtm;
-        this.segment = core_store.segment;
+        this.rudderstack = core_store.rudderstack;
+        this.pushwoosh = core_store.pushwoosh;
     }
 }

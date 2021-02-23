@@ -119,7 +119,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &-title {
-            @include typeface(--paragraph-left-bold-prominent, none);
             margin-bottom: 0.8rem;
             max-width: 18.8rem;
         }
@@ -301,7 +300,6 @@ $MIN_HEIGHT_FLOATING: calc(
                     }
                 }
                 .account-form__footer-note {
-                    font-size: 1rem;
                     height: auto;
                     margin-bottom: 1.6rem;
                 }
@@ -337,7 +335,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__occupation {
-            .dc-native-select__select,
             .dc-dropdown__display-text {
                 line-height: 1.6rem;
                 text-align: left;
@@ -590,9 +587,6 @@ $MIN_HEIGHT_FLOATING: calc(
                     margin-bottom: 0;
                 }
             }
-            &--title {
-                @include typeface(--small-left-bold-black, none);
-            }
         }
         &__scrollbars {
             height: 100%;
@@ -633,7 +627,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__title {
-            @include typeface(--title-left-bold-prominent, none);
             margin-bottom: 1.5rem;
             margin-left: 1.2rem;
 
@@ -689,11 +682,9 @@ $MIN_HEIGHT_FLOATING: calc(
                 width: auto;
             }
             &--title {
-                @include typeface(--title-center-bold-prominent, none);
                 margin-top: 2.4rem;
             }
             &--message {
-                @include typeface(--paragraph-center-normal-black, none);
                 margin: 1.6rem 0 0;
             }
             &--code {
@@ -760,7 +751,6 @@ $MIN_HEIGHT_FLOATING: calc(
 
             &-header {
                 margin-top: 3.6rem;
-                @include typeface(--title-center-bold-prominent);
                 margin-bottom: 1.4rem;
             }
             &-item {
@@ -802,7 +792,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__header {
-            @include typeface(--paragraph-left-bold-prominent);
             margin-bottom: 1.6rem;
             margin-top: 2.4rem;
 
@@ -1028,13 +1017,9 @@ $MIN_HEIGHT_FLOATING: calc(
                         display: block;
 
                         &--title {
-                            font-size: var(--text-size-xxs);
-                            font-weight: var(--text-weight-bold);
                             font-stretch: normal;
                             font-style: normal;
-                            line-height: var(--text-lh-m);
                             letter-spacing: normal;
-                            color: var(--text-prominent);
                         }
                         &--action {
                             text-transform: capitalize;
@@ -1539,7 +1524,6 @@ $MIN_HEIGHT_FLOATING: calc(
             align-items: center;
 
             &-header {
-                @include typeface(--title-center-bold-prominent, none);
                 margin: 1.6rem 0 2.4rem;
             }
             &-image {
@@ -1569,7 +1553,6 @@ $MIN_HEIGHT_FLOATING: calc(
             max-width: 440px;
             max-height: 480px;
             height: auto;
-            display: flex;
             flex-direction: column;
 
             &-header {
@@ -1650,6 +1633,7 @@ $MIN_HEIGHT_FLOATING: calc(
 /** @define deactivate-account; weak */
 .deactivate-account {
     max-width: 67.2rem;
+    padding-bottom: 1.6rem;
 
     &__information {
         @include typeface(--paragraph-left-normal-prominent, none);
@@ -1701,10 +1685,6 @@ $MIN_HEIGHT_FLOATING: calc(
         &__checkbox {
             margin-top: 10px;
             width: fit-content;
-
-            .dc-checkbox__label {
-                font-weight: normal;
-            }
         }
         &__input {
             margin: 16px 0 0;
@@ -1715,14 +1695,37 @@ $MIN_HEIGHT_FLOATING: calc(
                 min-height: 96px;
             }
         }
+
+        &__hint {
+            margin-top: 0.8rem;
+        }
+
+        &__footer {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            .dc-form-submit-button {
+                margin: 1.6rem 0;
+            }
+        }
     }
     @include mobile {
         width: calc(100% - 3rem);
         margin: 0 auto;
 
-        .dc-form-submit-button {
-            background-color: var(--general-main-1);
+        .deactivate-account-reasons {
+            &__footer {
+                display: flex;
+                flex-direction: column;
+
+                .dc-form-submit-button {
+                    margin: 0.8rem 0;
+                    background-color: var(--general-main-1);
+                }
+            }
         }
+
         &:first-child {
             & > div {
                 display: flex;
@@ -1739,13 +1742,10 @@ $MIN_HEIGHT_FLOATING: calc(
     @include mobile {
         max-height: 70vh;
     }
-    .deactivate-account-error-scroll {
-        overflow-y: auto;
-    }
     .dc-modal-header {
         border: none;
-        min-width: 430px;
-        margin-bottom: 8px;
+        max-width: 43rem;
+        margin-bottom: 0.8rem;
     }
     .account-closure-warning-modal {
         display: flex;
@@ -1759,8 +1759,12 @@ $MIN_HEIGHT_FLOATING: calc(
         }
 
         .dc-form-submit-button {
-            justify-content: center;
-            padding: 2rem 0 0;
+            align-self: center;
+            padding: 1.6rem 0 0;
+
+            > button {
+                width: 10.3rem;
+            }
 
             @include mobile {
                 background: unset;
@@ -1777,32 +1781,37 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         &__content-wrapper {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            margin-top: 4px;
+            margin-top: 0.8rem;
+
+            > :first-child {
+                margin-bottom: 0.4rem;
+            }
         }
     }
 
     .deactivate-account-error {
-        padding: 0 24px 24px 24px;
+        padding: 0 2.4rem;
         &__title {
-            margin-bottom: 5px;
+            margin-bottom: 0.5rem;
         }
         &__account-details {
             display: flex;
             align-items: center;
         }
         &__account {
-            margin-left: 8px;
+            margin-left: 0.8rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
         &__container {
             display: flex;
-            padding: 3px 3px 3px 16px;
+            padding: 0.3rem 0.3rem 0.3rem 1.6rem;
             justify-content: space-between;
             align-items: center;
-            max-width: 264px;
+            max-width: 26.4rem;
         }
         &__details {
             color: var(--text-prominent);
@@ -1810,11 +1819,16 @@ $MIN_HEIGHT_FLOATING: calc(
             line-height: 1.43;
         }
         &__button {
-            height: 40px;
-            width: 77px;
+            height: 4rem;
+            width: 7.7rem;
             float: right;
-            margin-right: 24px;
-            margin-bottom: 24px;
+            margin: 1.6rem 2.4rem;
+        }
+
+        @include mobile {
+            &__button {
+                margin: 1.6rem;
+            }
         }
     }
 }

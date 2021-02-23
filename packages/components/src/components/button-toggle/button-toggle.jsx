@@ -5,7 +5,7 @@ import HighlightWrapper from './button-highlight-wrapper.jsx';
 import Button from '../button/button.jsx';
 import Counter from '../counter/counter.jsx';
 
-const ButtonToggle = ({ buttons_arr, className, id, is_animated, name, onChange, value, has_rounded_button }) => {
+const ButtonToggle = ({ buttons_arr, className, has_rounded_button, id, is_animated, name, onChange, value }) => {
     const changeValue = selected_value => {
         if (value === selected_value) return;
         onChange({ target: { value: selected_value, name } });
@@ -30,6 +30,7 @@ const ButtonToggle = ({ buttons_arr, className, id, is_animated, name, onChange,
                     </Button>
                 );
             }),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [buttons_arr]
     );
 

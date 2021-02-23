@@ -1,0 +1,61 @@
+.dw-get {
+    margin-bottom: 2.8rem;
+
+    &__icon {
+        margin-right: 2.4rem;
+    }
+    &__wrapper {
+        display: flex;
+    }
+    &__full-width {
+        width: 100%;
+        flex-direction: column;
+    }
+    &__header {
+        align-items: flex-end;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 1.6rem;
+
+        &--left {
+            flex-direction: column;
+        }
+        &-center {
+            margin: 0 1.6rem;
+        }
+    }
+    &__share {
+        cursor: pointer;
+    }
+    &__trade {
+        width: fit-content;
+        margin: 1.6rem 0;
+    }
+    &__item {
+        align-items: center;
+        margin-right: 1.6rem;
+
+        &:last-child {
+            margin-right: 0;
+        }
+        &-wrapper {
+            flex-direction: column;
+            padding: 0 2.4rem;
+            border-left: 1px solid var(--general-section-1);
+
+            &:first-child {
+                padding-left: 0;
+                border-left: none;
+            }
+        }
+        &-title {
+            margin-bottom: 0.8rem;
+        }
+        &-icon {
+            margin-right: 0.8rem;
+        }
+        &-grid {
+            display: flex;
+        }
+    }
+}

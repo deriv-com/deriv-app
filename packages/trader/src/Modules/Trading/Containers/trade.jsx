@@ -295,6 +295,21 @@ const Chart = props => {
             yAxisMargin={{
                 top: isMobile() ? 76 : 106,
             }}
+            getIndicatorHeightRatio={(chart_height, indicator_count) => {
+                const isSmallScreen = chart_height < 780;
+                const isExtraSmallScreen = chart_height < 320;
+                const denominator = indicator_count >= 5 ? indicator_count : indicator_count + 1;
+                let reservedHeight = 0;
+                if (isMobile() && isExtraSmallScreen) reservedHeight = 100;
+                else if (isMobile() && isSmallScreen) reservedHeight = 120;
+                else reservedHeight = 320;
+
+                const indicatorsHeight = Math.round((chart_height - reservedHeight) / denominator);
+                return {
+                    height: indicatorsHeight,
+                    percent: indicatorsHeight / chart_height,
+                };
+            }}
         >
             <ChartMarkers />
         </SmartChart>

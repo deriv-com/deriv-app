@@ -581,7 +581,11 @@ $FLOATING_HEADER_HEIGHT: 41px;
             @include mobile {
                 background: transparent;
                 border-width: 0;
-                bottom: 2.8rem;
+                bottom: auto;
+                top: 5rem;
+                width: auto;
+                height: 40px;
+                display: flex;
 
                 /* postcss-bem-linter: ignore */
                 .sc-chart-mode,

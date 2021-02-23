@@ -194,6 +194,7 @@ jobs:
   release_staging:
     docker:
       - image: circleci/node:12.18.0-stretch
+    resource_class: medium+
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -209,6 +210,7 @@ jobs:
   release_staging_crypto:
     docker:
       - image: circleci/node:12.18.0-stretch
+    resource_class: medium+
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -228,6 +230,7 @@ jobs:
   release_production:
     docker:
       - image: circleci/node:12.18.0-stretch
+    resource_class: medium+
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -245,6 +248,7 @@ jobs:
   release_production_crypto:
     docker:
       - image: circleci/node:12.18.0-stretch
+    resource_class: medium+
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache

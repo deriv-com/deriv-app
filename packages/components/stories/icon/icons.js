@@ -88,6 +88,7 @@ export const icons = {
         'IcAccountError',
         'IcAccountLimits',
         'IcAccountMissingDetails',
+        'IcAccountTransferColored',
         'IcAccountTransfer',
         'IcAccountTrashCan',
         'IcAddBold',

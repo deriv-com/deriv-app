@@ -20,7 +20,7 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import FormError from '../Error/form-error.jsx';
 
-const AccountOption = ({ trading_servers, mt5_login_list, account, idx, is_dark_mode_on }) => {
+const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
     let server;
 
     if (account.is_mt) {
@@ -125,7 +125,6 @@ const AccountTransferForm = ({
     onChangeTransferTo,
     setErrorMessage,
     setIsTransferConfirm,
-    trading_servers,
     error,
 }) => {
     const [from_accounts, setFromAccounts] = React.useState({});
@@ -160,7 +159,6 @@ const AccountTransferForm = ({
         accounts_list.forEach((account, idx) => {
             const text = (
                 <AccountOption
-                    trading_servers={trading_servers}
                     mt5_login_list={mt5_login_list}
                     idx={idx}
                     account={account}
@@ -170,11 +168,7 @@ const AccountTransferForm = ({
             const value = account.value;
             const account_server = mt5_login_list.find(server => server.login === account.value);
             let server_region = '';
-            if (
-                account_server &&
-                trading_servers.length > 1 &&
-                trading_servers.some(trading_server => trading_server.id === account_server?.server)
-            ) {
+            if (account_server?.market_type === 'gaming') {
                 server_region = `[${account_server.server_info.geolocation.region}${
                     account_server.server_info.geolocation.sequence !== 1
                         ? account_server.server_info.geolocation.sequence
@@ -478,7 +472,6 @@ export default connect(({ client, modules, ui }) => ({
     setErrorMessage: modules.cashier.setErrorMessage,
     setIsTransferConfirm: modules.cashier.setIsTransferConfirm,
     setAccountTransferAmount: modules.cashier.setAccountTransferAmount,
-    trading_servers: client.trading_servers,
     transfer_fee: modules.cashier.config.account_transfer.transfer_fee,
     transfer_limit: modules.cashier.config.account_transfer.transfer_limit,
 }))(AccountTransferForm);

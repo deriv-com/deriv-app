@@ -501,9 +501,6 @@
         }
         @include desktop {
             height: 100%;
-            &-shrinked {
-                height: calc(100% - 4rem);
-            }
         }
     }
 

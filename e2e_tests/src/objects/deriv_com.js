@@ -16,7 +16,7 @@ class DerivCom extends Common {
         await this.page.goto(process.env.DERIV_COM_URL);
     }
 
-    async fakeEmail(prefix = 'e2e-', suffix = 'cr') {
+    async fakeEmail(prefix = 'e2e', suffix = 'cr') {
         const salt = await this.generateString();
 
         return `${prefix}+${suffix}${salt}@deriv.com`;

@@ -116,7 +116,6 @@ const MT5AccountCard = ({
     onClickFund,
     onPasswordManager,
     should_show_trade_servers,
-    is_trade_server_button_visible,
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
 }) => {

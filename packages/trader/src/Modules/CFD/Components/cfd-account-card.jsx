@@ -136,6 +136,7 @@ const CFDAccountCard = ({
     onClickFund,
     onPasswordManager,
     should_show_trade_servers,
+    is_trade_server_button_visible,
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
     trading_servers,
@@ -144,6 +145,7 @@ const CFDAccountCard = ({
     const has_popular_banner = type.type === 'synthetic' && type.category === 'real' && !existing_data;
     const has_demo_banner = type.category === 'demo';
     const has_server_banner =
+        is_logged_in &&
         existing_data &&
         type.category === 'real' &&
         type.type === 'synthetic' &&
@@ -192,7 +194,15 @@ const CFDAccountCard = ({
     const is_web_terminal_unsupported = isMobile() && platform === 'dxtrade';
 
     return (
-        <div ref={wrapper_ref} className={classNames('cfd-account-card__wrapper')}>
+        <div
+            ref={wrapper_ref}
+            className={classNames('cfd-account-card__wrapper', {
+                'cfd-account-card__wrapper-shrinked':
+                    is_trade_server_button_visible &&
+                    type.category === 'real' &&
+                    (!should_show_trade_servers || !is_hovered),
+            })}
+        >
             <div
                 className={classNames('cfd-account-card', { 'cfd-account-card__logged-out': !is_logged_in })}
                 ref={ref}
@@ -351,7 +361,7 @@ const CFDAccountCard = ({
             <DesktopWrapper>
                 <CSSTransition
                     in={is_hovered && should_show_trade_servers}
-                    timeout={400}
+                    timeout={0}
                     classNames='cfd-account-card__add-server'
                     unmountOnExit
                 >

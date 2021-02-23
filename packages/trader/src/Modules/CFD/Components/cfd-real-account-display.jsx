@@ -143,6 +143,7 @@ const CFDRealAccountDisplay = ({
                               }}
                               is_logged_in={is_logged_in}
                               should_show_trade_servers={should_show_trade_servers}
+                              is_trade_server_button_visible={should_show_trade_servers}
                               existing_data={acc}
                               commission_message={localize('No commission')}
                               onSelectAccount={onSelectRealSynthetic}
@@ -171,6 +172,7 @@ const CFDRealAccountDisplay = ({
                       }}
                       is_logged_in={is_logged_in}
                       should_show_trade_servers={should_show_trade_servers}
+                      is_trade_server_button_visible={should_show_trade_servers}
                       existing_data={undefined}
                       commission_message={localize('No commission')}
                       onSelectAccount={onSelectRealSynthetic}
@@ -188,14 +190,13 @@ const CFDRealAccountDisplay = ({
 
     const financial_stp_account = (landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) &&
         platform === 'mt5' && (
-            <CFDAccountCard
+            <MT5AccountCard
                 key='real.financial_stp'
                 has_mt5_account={has_mt5_account}
                 title={localize('Financial STP')}
                 type={{
                     category: 'real',
                     type: 'financial_stp',
-                    platform,
                 }}
                 is_logged_in={is_logged_in}
                 existing_data={
@@ -210,13 +211,14 @@ const CFDRealAccountDisplay = ({
                 descriptor={localize(
                     'Trade major, minor, exotic currency pairs, and cryptocurrencies with Straight-Through Processing (STP) of your orders direct to the market.'
                 )}
-                specs={specifications[platform].real_financial_stp_specs}
+                specs={real_financial_stp_specs}
                 is_disabled={isMT5AccountCardDisabled('financial_stp')}
                 is_virtual={is_virtual}
                 has_real_account={has_real_account}
                 toggleAccountsDialog={toggleAccountsDialog}
                 toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
                 is_accounts_switcher_on={is_accounts_switcher_on}
+                is_trade_server_button_visible={should_show_trade_servers}
             />
         );
 
@@ -252,6 +254,7 @@ const CFDRealAccountDisplay = ({
                     : specifications[platform].real_financial_specs
             }
             is_logged_in={is_logged_in}
+            is_trade_server_button_visible={should_show_trade_servers}
         />
     );
 

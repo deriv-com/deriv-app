@@ -32,12 +32,17 @@ const CFDDemoAccountDisplay = ({
         }
     };
 
+    const should_center_cards = platform === 'dxtrade' || !landing_companies?.mt_financial_company?.financial_stp;
+
     return is_loading ? (
         <div className='cfd-demo-accounts-display'>
             <Loading />
         </div>
     ) : (
-        <div className='cfd-demo-accounts-display'>
+        <div
+            className='cfd-demo-accounts-display'
+            style={{ justifyContent: should_center_cards ? 'center' : 'space-between' }}
+        >
             {(landing_companies?.mt_gaming_company?.financial || !is_logged_in) && (
                 <CFDAccountCard
                     has_mt5_account={has_mt5_account}

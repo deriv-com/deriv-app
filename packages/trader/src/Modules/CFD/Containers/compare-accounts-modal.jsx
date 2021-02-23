@@ -376,7 +376,10 @@ const CompareAccountsModal = ({
     platform,
     toggleCompareAccounts,
 }) => (
-    <div className='cfd-compare-accounts-modal__wrapper'>
+    <div
+        className='cfd-compare-accounts-modal__wrapper'
+        style={{ marginTop: platform === 'dxtrade' ? '5rem' : '2.4rem' }}
+    >
         <Button
             className='cfd-dashboard__welcome-message--button'
             has_effect

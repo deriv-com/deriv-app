@@ -262,7 +262,10 @@ const CFDRealAccountDisplay = ({
     const items = [...(synthetic_account_items || []), financial_account, financial_stp_account].filter(Boolean);
 
     return (
-        <div className='cfd-real-accounts-display'>
+        <div
+            className='cfd-real-accounts-display'
+            style={{ justifyContent: items.length < 3 ? 'center' : 'space-between' }}
+        >
             <DesktopWrapper>
                 {items.length < 4 ? (
                     items

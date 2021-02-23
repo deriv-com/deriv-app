@@ -127,7 +127,7 @@ const AdvertiserPage = () => {
                     ) : null}
                 </div>
             </div>
-            <AdvertiserPageStats is_visible={advertiser_page_store.is_stats_visible} />
+            <AdvertiserPageStats />
             <AdvertiserPageAdverts />
         </div>
     );

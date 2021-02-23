@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { InfiniteDataList, Loading, Table, Tabs } from '@deriv/components';
-import { isDesktop, isMobile, useIsMounted } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
@@ -11,26 +11,6 @@ import './advertiser-page.scss';
 
 const AdvertiserPageAdverts = () => {
     const { advertiser_page_store, general_store } = useStores();
-    const isMounted = useIsMounted();
-    const previous_scroll_top = React.useRef(0);
-
-    const onScroll = event => {
-        if (isMounted() && event.target.scrollTop !== previous_scroll_top.current) {
-            const is_scrolling_down = event.target.scrollTop > previous_scroll_top.current;
-            if (is_scrolling_down) {
-                if (advertiser_page_store.is_scroll_effect_enabled) {
-                    advertiser_page_store.setIsStatsVisible(false);
-                }
-            } else {
-                // if (!advertiser_page_store.is_scroll_effect_enabled) {
-                //     advertiser_page_store.setIsStatsVisible(true);
-                //     advertiser_page_store.setIsScrollEffectEnabled(true);
-                // }
-            }
-        }
-
-        previous_scroll_top.current = event.target.scrollTop;
-    };
 
     const AdvertiserPageRowRenderer = row_props => (
         <AdvertiserPageRow {...row_props} showAdPopup={advertiser_page_store.showAdPopup} />
@@ -78,7 +58,6 @@ const AdvertiserPageAdverts = () => {
                                     rowRenderer={AdvertiserPageRowRenderer}
                                     loadMoreRowsFn={advertiser_page_store.loadMoreAdvertiserAdverts}
                                     has_more_items_to_load={advertiser_page_store.has_more_adverts_to_load}
-                                    onScroll={onScroll}
                                 />
                             </Table.Body>
                         </Table>

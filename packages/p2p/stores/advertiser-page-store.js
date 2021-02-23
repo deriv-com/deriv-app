@@ -18,9 +18,7 @@ export default class AdvertiserPageStore extends BaseStore {
     @observable has_more_adverts_to_load = false;
     @observable is_loading = true;
     @observable is_loading_adverts = true;
-    @observable is_stats_visible = true;
     @observable is_submit_disabled = true;
-    @observable is_scroll_effect_enabled = true;
     @observable show_ad_popup = false;
     @observable submitForm = () => {};
 
@@ -137,11 +135,6 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     @action.bound
-    setIsScrollEffectEnabled(is_scroll_effect_enabled) {
-        this.is_scroll_effect_enabled = is_scroll_effect_enabled;
-    }
-
-    @action.bound
     onMount() {
         this.getAdvertiserInfo();
     }
@@ -209,11 +202,6 @@ export default class AdvertiserPageStore extends BaseStore {
     @action.bound
     setIsLoadingAdverts(is_loading_adverts) {
         this.is_loading_adverts = is_loading_adverts;
-    }
-
-    @action.bound
-    setIsStatsVisible(is_stats_visible) {
-        this.is_stats_visible = is_stats_visible;
     }
 
     @action.bound

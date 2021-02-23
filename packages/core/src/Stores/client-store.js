@@ -1456,6 +1456,7 @@ export default class ClientStore extends BaseStore {
         this.user_id = null;
         this.upgrade_info = undefined;
         this.accounts = {};
+        this.mt5_login_list = [];
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 
@@ -1470,9 +1471,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     async logout() {
         // TODO: [add-client-action] - Move logout functionality to client store
-        const logout_promise = requestLogout();
-
-        const response = await logout_promise;
+        const response = await requestLogout();
 
         if (response.logout === 1) {
             this.cleanUp();

@@ -821,7 +821,7 @@ class SelfExclusion extends React.Component {
                                                                 alignment={is_tablet ? 'bottom' : 'left'}
                                                                 className='self-exclusion__input'
                                                                 label={localize('Date')}
-                                                                value={values.exclude_until} 
+                                                                value={values.exclude_until}
                                                                 onChange={({ target }) =>
                                                                     setFieldValue(
                                                                         'exclude_until',

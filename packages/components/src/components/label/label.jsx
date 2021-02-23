@@ -9,6 +9,7 @@ const available_modes = [
     'warn',
     'danger',
     'info',
+    'transfer',
     'default-invert',
     'success-invert',
     'warn-invert',

@@ -20,8 +20,7 @@
     "deploy:clean": "echo \"No deploy:clean specified\"",
     "deploy:folder": "echo \"No deploy:folder specified\"",
     "deploy:staging": "echo \"No deploy:staging specified\"",
-    "deploy:production": "echo \"No deploy:production specified\"",
-    "test:eslint": "eslint \"./src/**/*.?(js|jsx)\""
+    "deploy:production": "echo \"No deploy:production specified\""
   },
   "bugs": {
     "url": "https://github.com/binary-com/deriv-app/issues"

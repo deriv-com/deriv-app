@@ -725,7 +725,7 @@ export default class CashierStore extends BaseStore {
     sortSupportedBanks() {
         // sort supported banks alphabetically by value, the option 'All payment agents' with value 0 should be on top
         this.config.payment_agent.supported_banks.replace(
-            this.config.payment_agent.supported_banks.slice().sort((a, b) => {
+            this.config.payment_agent.supported_banks.slice().sort(function (a, b) {
                 if (a.value < b.value) {
                     return -1;
                 }

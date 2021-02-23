@@ -1,4 +1,4 @@
-const webpackConfig = require('./webpack.config.js');
+const path = require('path');
 
 module.exports = {
     extends: [
@@ -8,7 +8,7 @@ module.exports = {
     ],
     settings: {
         'import/resolver': {
-            webpack: { config: webpackConfig({})},
+            webpack: { config: path.resolve(__dirname, 'webpack.config.js') },
         },
     },
     rules: {

@@ -8,7 +8,6 @@ const js_loaders = [
     {
         loader: 'babel-loader',
         options: {
-            cacheDirectory: true,
             rootMode: 'upward',
         },
     },
@@ -42,7 +41,6 @@ const svg_loaders = [
     {
         loader: 'babel-loader',
         options: {
-            cacheDirectory: true,
             rootMode: 'upward',
         },
     },
@@ -65,6 +63,9 @@ const svg_loaders = [
 const css_loaders = [
     {
         loader: MiniCssExtractPlugin.loader,
+        options: {
+            sourceMap: true,
+        },
     },
     {
         loader: 'css-loader',
@@ -76,8 +77,8 @@ const css_loaders = [
         loader: 'postcss-loader',
         options: {
             sourceMap: true,
-            postcssOptions: {
-                config: path.resolve(__dirname),
+            config: {
+                path: path.resolve(__dirname),
             },
         },
     },

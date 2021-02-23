@@ -54,7 +54,7 @@ const HighlightWrapper = ({ children, className, has_rounded_button, ...other_pr
                     onClick: e => onClick(e, child.props.onClick),
                 })
             )}
-            <Highlight left={left} width={`${button_width}%`} has_rounded_button={has_rounded_button} />
+            <Highlight has_rounded_button={has_rounded_button} left={left} width={`${button_width}%`} />
         </div>
     );
 };

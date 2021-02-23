@@ -73,10 +73,7 @@
     }
 
     @include mobile {
-        flex-direction: column;
         flex-wrap: unset;
-        overflow-x: hidden;
-        overflow-y: auto;
 
         & .account-wizard__btn-area {
             & .dc-btn,
@@ -262,6 +259,7 @@
 
     @include desktop {
         min-width: 440px;
+        height: 304px;
     }
     @include mobile {
         justify-content: flex-start;

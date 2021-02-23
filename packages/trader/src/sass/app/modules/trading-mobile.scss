@@ -227,9 +227,6 @@
                     color: var(--text-prominent);
                     text-align: left !important;
 
-                    .dc-btn__text {
-                        font-size: 1.8rem;
-                    }
                     &--is-left-aligned {
                         padding: 0 0 0 0.2rem;
                     }
@@ -244,12 +241,9 @@
                     .dc-numpad__number {
                         &[disabled] {
                             background-color: var(--general-disabled);
-
-                            .dc-btn__text {
-                                color: var(--text-disabled);
-                            }
                         }
-                        .dc-btn__text {
+                        .dc-text {
+                            font-size: 1.8rem;
                             /* -webkit-touch-callout only is supported on iOS webkit engine, thus it should apply iOS only styles */
                             @supports (-webkit-touch-callout: none) {
                                 @media only screen and (min-width: 360px) {

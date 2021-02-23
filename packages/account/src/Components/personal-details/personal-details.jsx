@@ -19,7 +19,7 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, isMobile, toMoment } from '@deriv/shared';
+import { isDesktop, isMobile, toMoment, PlatformContext } from '@deriv/shared';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import FormSubHeader from '../form-sub-header';
 
@@ -76,11 +76,11 @@ const PersonalDetails = ({
     residence_list,
     is_fully_authenticated,
     account_opening_reason_list,
-    is_dashboard,
     onSubmitEnabledChange,
     selected_step_ref,
     ...props
 }) => {
+    const { is_dashboard } = React.useContext(PlatformContext);
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
     const [warning_items, setWarningItems] = React.useState({});
@@ -470,6 +470,11 @@ const PersonalDetails = ({
                                                         value={values.tax_identification_confirm}
                                                         label={localize(
                                                             'I hereby confirm that the tax information I provided is true and complete. I will also inform Deriv Investments (Europe) Limited about any changes to this information.'
+                                                        )}
+                                                        renderlabel={title => (
+                                                            <Text size='xs' line_height='s'>
+                                                                {title}
+                                                            </Text>
                                                         )}
                                                         withTabIndex='0'
                                                     />

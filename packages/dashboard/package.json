@@ -36,6 +36,7 @@
         "classnames": "^2.2.6",
         "mobx": "^5.15.7",
         "mobx-react-lite": "^2.2.2",
+        "object.fromentries": "^2.0.0",
         "prop-types": "^15.7.2",
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0"
@@ -56,6 +57,7 @@
         "@deriv/api-types": "^1.0.1",
         "@deriv/publisher": "^0.0.1-beta4",
         "@types/classnames": "^2.2.11",
+        "@types/object.fromentries": "^2.0.0",
         "@types/react-router-dom": "^5.1.6",
         "@typescript-eslint/eslint-plugin": "^4.10.0",
         "@typescript-eslint/parser": "^4.10.0",

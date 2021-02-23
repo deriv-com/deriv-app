@@ -340,7 +340,7 @@ let routesConfig;
 const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
 // is_deriv_crypto = true as default to prevent route ui blinking
-const getRoutesConfig = ({ is_deriv_crypto = true, is_dashboard }) => {
+const getRoutesConfig = ({ is_deriv_crypto = true, is_dashboard = true }) => {
     if (!routesConfig) {
         routesConfig = initRoutesConfig({ is_deriv_crypto, is_dashboard });
         routesConfig.push(route_default);

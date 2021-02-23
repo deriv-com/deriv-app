@@ -5,7 +5,7 @@ const { replaceWebsocket } = require('@root/_utils/websocket');
 let browser, context, page;
 jest.setTimeout(70000);
 describe('Contract test', () => {
-    async function setUpTest () {
+    async function setUpTest() {
         await context.addInitScript(replaceWebsocket);
         page = new Trader(await context.newPage());
         await page.navigate();
@@ -36,6 +36,7 @@ describe('Contract test', () => {
     describe('Desktop', () => {
         beforeEach(async () => {
             context = await browser.newContext({
+                recordVideo: { dir: `temp/contract_purchase.test.js/` },
                 ignoreHTTPSErrors: true,
                 storageState: getStorageState('LOGIN'),
                 ...desktop_viewport,

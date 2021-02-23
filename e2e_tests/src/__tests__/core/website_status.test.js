@@ -1,6 +1,6 @@
-const Common = require("@root/objects/common");
-const {replaceWebsocket, waitForWSSubset} = require("@root/_utils/websocket");
-const {setUp, tearDown, mobile_viewport} = require('@root/bootstrap');
+const Common = require('@root/objects/common');
+const { replaceWebsocket, waitForWSSubset } = require('@root/_utils/websocket');
+const { setUp, tearDown, mobile_viewport } = require('@root/bootstrap');
 
 let browser, context, page;
 jest.setTimeout(20000);
@@ -9,6 +9,7 @@ describe('Website status check', () => {
         const out = await setUp(mobile_viewport);
         browser = out.browser;
         context = await browser.newContext({
+            recordVideo: { dir: `temp/website_status.test.js/` },
             ignoreHTTPSErrors: true,
         });
         await context.addInitScript(replaceWebsocket);
@@ -25,10 +26,9 @@ describe('Website status check', () => {
         await page.navigate();
         const message = await waitForWSSubset(page, {
             website_status: {
-                site_status: "up",
+                site_status: 'up',
             },
         });
-
         expect(message.website_status.site_status === 'up').toBe(true);
     });
-})
+});

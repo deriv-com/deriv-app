@@ -121,7 +121,7 @@ const MT5PasswordForm = props => (
                 <FormSubmitButton
                     is_disabled={!values.password || Object.keys(errors).length > 0}
                     has_cancel
-                    cancel_label={localize('Cancel')}
+                    cancel_label={props.server ? localize('Back') : localize('Cancel')}
                     onCancel={props.onBack}
                     is_absolute={isMobile()}
                     is_loading={isSubmitting}

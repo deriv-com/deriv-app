@@ -3,7 +3,6 @@ const IgnorePlugin = require('webpack').IgnorePlugin;
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const path = require('path');
-const TerserPlugin = require('terser-webpack-plugin');
 
 const { cssConfig } = require('./config');
 const {
@@ -86,15 +85,7 @@ const rules = (is_test_env = false, is_mocha_only = false) => [
           },
 ];
 
-const MINIMIZERS = !IS_RELEASE
-    ? []
-    : [
-          new TerserPlugin({
-              test: /\.js$/,
-              parallel: true,
-          }),
-          new OptimizeCssAssetsPlugin(),
-      ];
+const MINIMIZERS = !IS_RELEASE ? [] : [new OptimizeCssAssetsPlugin()];
 
 const plugins = () => [
     new CleanWebpackPlugin(),

@@ -1,6 +1,5 @@
 const publisher_utils = require('@deriv/publisher/utils');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 // const BundleAnalyzerPlugin    = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
@@ -13,7 +12,7 @@ module.exports = function () {
         entry: {
             index: path.resolve(__dirname, 'src/components', 'app.jsx'),
         },
-        mode: is_release ? 'production' : 'development',
+        mode: is_release ? 'production' : 'production',
         output: {
             path: path.resolve(__dirname, 'lib'),
             filename: 'index.js',
@@ -122,10 +121,6 @@ module.exports = function () {
             minimize: is_release,
             minimizer: is_release
                 ? [
-                    new TerserPlugin({
-                        test: /\.js$/,
-                        parallel: true,
-                    }),
                     new OptimizeCssAssetsPlugin(),
                 ]
                 : [],

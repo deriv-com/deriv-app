@@ -8,7 +8,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const path = require('path');
 const StylelintPlugin = require('stylelint-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 
@@ -100,16 +99,7 @@ const rules = (is_test_env = false, is_mocha_only = false) => [
           },
 ];
 
-const MINIMIZERS = !IS_RELEASE
-    ? []
-    : [
-          new TerserPlugin({
-              test: /\.js$/,
-              exclude: /(smartcharts)/,
-              parallel: true,
-          }),
-          new OptimizeCssAssetsPlugin(),
-      ];
+const MINIMIZERS = !IS_RELEASE ? [] : [new OptimizeCssAssetsPlugin()];
 
 const plugins = (base, is_test_env, is_mocha_only) => [
     new CleanWebpackPlugin(),

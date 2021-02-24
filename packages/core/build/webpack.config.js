@@ -23,7 +23,7 @@ module.exports = function (env, argv) {
         },
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: './index.js',
-        mode: IS_RELEASE ? 'production' : 'development',
+        mode: IS_RELEASE ? 'production' : 'production',
         module: {
             rules: rules(),
         },

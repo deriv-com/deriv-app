@@ -10,7 +10,7 @@ module.exports = function (env, argv) {
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: './index.js',
         externals: [nodeExternals()],
-        mode: IS_RELEASE ? 'development' : 'production',
+        mode: IS_RELEASE ? 'production' : 'production',
         module: {
             rules: rules(true, env && env.mocha_only),
         },

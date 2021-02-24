@@ -50,7 +50,7 @@ module.exports = function (env, argv) {
             'terms-of-use': 'Components/terms-of-use',
             'terms-of-use-config': 'Configs/terms-of-use-config',
         },
-        mode: IS_RELEASE ? 'production' : 'development',
+        mode: IS_RELEASE ? 'production' : 'production',
         module: {
             rules: rules(),
         },

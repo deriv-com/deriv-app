@@ -69,7 +69,6 @@
     "rimraf": "^3.0.2",
     "sass-loader": "^10.1.1",
     "sass-resources-loader": "^2.1.1",
-    "terser-webpack-plugin": "^5.1.1",
     "webpack": "^5.14.0"
   }
 }

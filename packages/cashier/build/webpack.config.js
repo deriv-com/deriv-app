@@ -11,7 +11,7 @@ module.exports = function (env, argv) {
             cashier: path.resolve(__dirname, '../src', 'index.js'),
             'cashier-store': path.resolve(__dirname, '../src', 'Stores/Cashier/cashier-store'),
         },
-        mode: IS_RELEASE ? 'production' : 'development',
+        mode: IS_RELEASE ? 'production' : 'production',
         module: {
             rules: rules(),
         },

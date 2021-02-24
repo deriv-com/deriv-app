@@ -11,7 +11,7 @@ module.exports = function (env, argv) {
             trader: path.resolve(__dirname, '../src', 'index.js'),
             MT5Store: 'Stores/Modules/MT5/mt5-store.js',
         },
-        mode: IS_RELEASE ? 'production' : 'development',
+        mode: IS_RELEASE ? 'production' : 'production',
         module: {
             rules: rules(),
         },

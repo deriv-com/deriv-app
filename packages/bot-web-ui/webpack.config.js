@@ -29,7 +29,7 @@ module.exports = function (env, argv) {
             publicPath: '/dist/',
             disableHostCheck: true,
         },
-        mode: is_release ? 'production' : 'development',
+        mode: is_release ? 'production' : 'production',
         devtool: is_release ? undefined : 'eval-cheap-module-source-map',
         target: 'web',
         module: {

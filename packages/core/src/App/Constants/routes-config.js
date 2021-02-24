@@ -52,40 +52,13 @@ const Dashboard = React.lazy(() => {
     return import(/* webpackChunkName: "dashboard" */ 'Modules/Dashboard');
 });
 
-const getModules = ({ is_deriv_crypto }) => {
+const getModules = ({ is_deriv_crypto, is_dashboard }) => {
     const modules = [
         {
             path: routes.bot,
             component: Bot,
             // Don't use `Localize` component since native html tag like `option` cannot render them
             getTitle: () => localize('Bot'),
-        },
-        {
-            path: routes.dashboard,
-            component: Dashboard,
-            getTitle: () => localize('Dashboard'),
-            routes: [
-                {
-                    path: routes.explore,
-                    component: Dashboard,
-                    getTitle: () => localize('Explore'),
-                },
-                {
-                    path: routes.about_us,
-                    component: Dashboard,
-                    getTitle: () => localize('About Us'),
-                },
-                {
-                    path: routes.resources,
-                    component: Dashboard,
-                    getTitle: () => localize('Resources'),
-                },
-                {
-                    path: routes.platform_dmt5_synthetic,
-                    component: Dashboard,
-                    getTitle: () => localize('DMT5 Synthetic'),
-                },
-            ],
         },
         {
             path: routes.account_deactivated,
@@ -259,47 +232,82 @@ const getModules = ({ is_deriv_crypto }) => {
             ],
         },
         {
-            path: routes.root,
-            component: Trader,
-            getTitle: () => localize('Trader'),
-            routes: [
-                { path: routes.mt5, component: Trader, getTitle: () => localize('MT5'), is_authenticated: false },
-                {
-                    path: routes.reports,
-                    component: Trader,
-                    getTitle: () => localize('Reports'),
-                    icon_component: 'IcReports',
-                    is_authenticated: true,
-                    routes: [
-                        {
-                            path: routes.positions,
-                            component: Trader,
-                            getTitle: () => localize('Open positions'),
-                            icon_component: 'IcOpenPositions',
-                            default: true,
-                        },
-                        {
-                            path: routes.profit,
-                            component: Trader,
-                            getTitle: () => localize('Profit table'),
-                            icon_component: 'IcProfitTable',
-                        },
-                        {
-                            path: routes.statement,
-                            component: Trader,
-                            getTitle: () => localize('Statement'),
-                            icon_component: 'IcStatement',
-                        },
-                    ],
-                },
-                {
-                    path: routes.contract,
-                    component: Trader,
-                    getTitle: () => localize('Contract Details'),
-                    is_authenticated: true,
-                },
-                { path: routes.error404, component: Trader, getTitle: () => localize('Error 404') },
-            ],
+            ...(is_dashboard
+                ? {
+                      path: routes.dashboard,
+                      component: Dashboard,
+                      getTitle: () => localize('Dashboard'),
+                      routes: [
+                          {
+                              path: routes.explore,
+                              component: Dashboard,
+                              getTitle: () => localize('Explore'),
+                          },
+                          {
+                              path: routes.about_us,
+                              component: Dashboard,
+                              getTitle: () => localize('About Us'),
+                          },
+                          {
+                              path: routes.resources,
+                              component: Dashboard,
+                              getTitle: () => localize('Resources'),
+                          },
+                          {
+                              path: routes.platform_dmt5_synthetic,
+                              component: Dashboard,
+                              getTitle: () => localize('DMT5 Synthetic'),
+                          },
+                      ],
+                  }
+                : {
+                      path: routes.root,
+                      component: Trader,
+                      getTitle: () => localize('Trader'),
+                      routes: [
+                          {
+                              path: routes.mt5,
+                              component: Trader,
+                              getTitle: () => localize('MT5'),
+                              is_authenticated: false,
+                          },
+                          {
+                              path: routes.reports,
+                              component: Trader,
+                              getTitle: () => localize('Reports'),
+                              icon_component: 'IcReports',
+                              is_authenticated: true,
+                              routes: [
+                                  {
+                                      path: routes.positions,
+                                      component: Trader,
+                                      getTitle: () => localize('Open positions'),
+                                      icon_component: 'IcOpenPositions',
+                                      default: true,
+                                  },
+                                  {
+                                      path: routes.profit,
+                                      component: Trader,
+                                      getTitle: () => localize('Profit table'),
+                                      icon_component: 'IcProfitTable',
+                                  },
+                                  {
+                                      path: routes.statement,
+                                      component: Trader,
+                                      getTitle: () => localize('Statement'),
+                                      icon_component: 'IcStatement',
+                                  },
+                              ],
+                          },
+                          {
+                              path: routes.contract,
+                              component: Trader,
+                              getTitle: () => localize('Contract Details'),
+                              is_authenticated: true,
+                          },
+                          { path: routes.error404, component: Trader, getTitle: () => localize('Error 404') },
+                      ],
+                  }),
         },
     ];
 
@@ -312,7 +320,7 @@ const lazyLoadComplaintsPolicy = makeLazyLoader(() =>
 
 // Order matters
 // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
-const initRoutesConfig = ({ is_deriv_crypto }) => [
+const initRoutesConfig = ({ is_deriv_crypto, is_dashboard }) => [
     { path: routes.index, component: RouterRedirect, getTitle: () => '', to: routes.root },
     { path: routes.endpoint, component: Endpoint, getTitle: () => 'Endpoint' }, // doesn't need localization as it's for internal use
     { path: routes.redirect, component: Redirect, getTitle: () => localize('Redirect') },
@@ -323,7 +331,7 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
         icon_component: 'IcComplaintsPolicy',
         is_authenticated: true,
     },
-    ...getModules({ is_deriv_crypto }),
+    ...getModules({ is_deriv_crypto, is_dashboard }),
 ];
 
 let routesConfig;
@@ -332,9 +340,9 @@ let routesConfig;
 const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
 // is_deriv_crypto = true as default to prevent route ui blinking
-const getRoutesConfig = ({ is_deriv_crypto = true }) => {
+const getRoutesConfig = ({ is_deriv_crypto = true, is_dashboard = true }) => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig({ is_deriv_crypto });
+        routesConfig = initRoutesConfig({ is_deriv_crypto, is_dashboard });
         routesConfig.push(route_default);
     }
     return routesConfig;

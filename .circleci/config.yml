@@ -76,7 +76,7 @@ commands:
     steps:
       - run:
           name: "Build all packages"
-          command: npm run build
+          command: npm run build:prod
 
   build_crypto:
     description: "Build crypto"

@@ -12,7 +12,7 @@ describe('Signup', () => {
         const out = await setUp({});
         browser = out.browser;
         context = await browser.newContext({
-            recordVideo: { dir: `temp/cr_signup.test.js/` },
+            recordVideo: { dir: `${process.env.E2E_ARTIFACT_PATH}temp/cr_signup.test.js/` },
             ignoreHTTPSErrors: true,
             ...mobile_viewport,
         });
@@ -26,7 +26,7 @@ describe('Signup', () => {
         await tearDown(browser);
     });
 
-    test("core/cr_signup", async () => {
+    test('core/cr_signup', async () => {
         await page.navigate();
         await page.connectToQA();
 

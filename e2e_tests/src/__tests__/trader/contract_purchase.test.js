@@ -36,7 +36,7 @@ describe('Contract test', () => {
     describe('Desktop', () => {
         beforeEach(async () => {
             context = await browser.newContext({
-                recordVideo: { dir: `temp/contract_purchase.test.js/` },
+                recordVideo: { dir: `${process.env.E2E_ARTIFACT_PATH}temp/contract_purchase.test.js/` },
                 ignoreHTTPSErrors: true,
                 storageState: getStorageState('LOGIN'),
                 ...desktop_viewport,

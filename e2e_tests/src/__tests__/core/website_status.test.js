@@ -9,7 +9,7 @@ describe('Website status check', () => {
         const out = await setUp(mobile_viewport);
         browser = out.browser;
         context = await browser.newContext({
-            recordVideo: { dir: `temp/website_status.test.js/` },
+            recordVideo: { dir: `${process.env.E2E_ARTIFACT_PATH}temp/website_status.test.js/` },
             ignoreHTTPSErrors: true,
         });
         await context.addInitScript(replaceWebsocket);

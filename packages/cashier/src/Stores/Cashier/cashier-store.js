@@ -725,7 +725,7 @@ export default class CashierStore extends BaseStore {
     sortSupportedBanks() {
         // sort supported banks alphabetically by value, the option 'All payment agents' with value 0 should be on top
         this.config.payment_agent.supported_banks.replace(
-            this.config.payment_agent.supported_banks.slice().sort(function (a, b) {
+            this.config.payment_agent.supported_banks.slice().sort((a, b) => {
                 if (a.value < b.value) {
                     return -1;
                 }
@@ -981,6 +981,21 @@ export default class CashierStore extends BaseStore {
             this.setTransferFee();
             this.setMinimumFee();
             this.setTransferLimit();
+
+            if (this.config.account_transfer.accounts_list?.length > 0) {
+                const mt5_transfer_to_login_id = sessionStorage.getItem('mt5_transfer_to_login_id');
+                sessionStorage.removeItem('mt5_transfer_to_login_id');
+                const obj_values = this.config.account_transfer.accounts_list.find(
+                    account => account.value === mt5_transfer_to_login_id
+                );
+                if (obj_values) {
+                    if (hasTransferNotAllowedLoginid(obj_values.value)) {
+                        // check if selected to is not allowed account
+                        obj_values.error = getSelectedError(obj_values.value);
+                    }
+                    this.setSelectedTo(obj_values);
+                }
+            }
         }
         this.setLoading(false);
     }
@@ -1108,6 +1123,7 @@ export default class CashierStore extends BaseStore {
         });
         const arr_accounts = [];
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
+
         accounts.forEach(account => {
             const obj_values = {
                 text:

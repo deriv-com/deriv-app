@@ -76,8 +76,13 @@ export default class LoadModalStore {
         }
 
         files = Array.from(files);
+
         if (!is_body) {
-            this.setLoadedLocalFile(files[0]);
+            if (files[0].name.includes('xml')) {
+                this.setLoadedLocalFile(files[0]);
+            } else {
+                throw Error('Invalid file format. Only XML is allowed.');
+            }
         }
         this.readFile(!is_body, event, files[0]);
         event.target.value = '';

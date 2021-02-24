@@ -41,7 +41,7 @@ const LocalComponent = ({ handleFileChange, is_mobile, loaded_local_file, setLoa
             <div className='load-strategy__local-dropzone'>
                 <input
                     type='file'
-                    ref={el => (file_input_ref.current = el)}
+                    ref={file_input_ref}
                     accept='.xml'
                     style={{ display: 'none' }}
                     onChange={e => handleFileChange(e, false)}

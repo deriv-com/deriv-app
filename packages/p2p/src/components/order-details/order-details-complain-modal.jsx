@@ -76,7 +76,6 @@ const OrderDetailsComplainModal = ({
                     />
                 }
                 page_footer_className='order-details-complain-modal__footer'
-                should_wrap_body
             >
                 <OrderDetailsComplainModalRadioGroup
                     is_buy_order_for_user={is_buy_order_for_user}

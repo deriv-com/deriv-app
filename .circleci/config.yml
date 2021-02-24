@@ -244,7 +244,7 @@ jobs:
 
   release_production_dashboard:
     docker:
-      - image: circleci/node:12.18.0-stretch
+      - image: circleci/node:12.18.0-stretch  
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache

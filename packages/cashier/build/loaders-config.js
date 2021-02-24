@@ -5,6 +5,7 @@ const js_loaders = [
     {
         loader: 'babel-loader',
         options: {
+            cacheDirectory: true,
             presets: ['@babel/preset-env', '@babel/preset-react'],
             plugins: [
                 ['@babel/plugin-proposal-decorators', { legacy: true }],
@@ -63,9 +64,6 @@ const svg_loaders = [
 const css_loaders = [
     {
         loader: MiniCssExtractPlugin.loader,
-        options: {
-            sourceMap: true,
-        },
     },
     {
         loader: 'css-loader',
@@ -77,8 +75,8 @@ const css_loaders = [
         loader: 'postcss-loader',
         options: {
             sourceMap: true,
-            config: {
-                path: path.resolve(__dirname),
+            postcssOptions: {
+                config: path.resolve(__dirname),
             },
         },
     },

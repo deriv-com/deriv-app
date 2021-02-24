@@ -342,10 +342,10 @@ class FinancialAssessment extends React.Component {
                         dirty,
                     }) => (
                         <>
-                            {isMobile() && is_confirmation_visible && (
+                            {!is_dashboard && isMobile() && is_confirmation_visible && (
                                 <ConfirmationPage toggleModal={this.toggleConfirmationModal} onSubmit={handleSubmit} />
                             )}
-                            {isDesktop() && (
+                            {(isDesktop() || is_dashboard) && (
                                 <ConfirmationModal
                                     is_visible={is_confirmation_visible}
                                     toggleModal={this.toggleConfirmationModal}
@@ -361,12 +361,7 @@ class FinancialAssessment extends React.Component {
                                     <FormBody scroll_offset={isMobile() ? (is_dashboard ? '160px' : '200px') : '80px'}>
                                         <FormSubHeader
                                             title={localize('Financial information')}
-                                            subtitle={
-                                                isDesktop() ||
-                                                (is_dashboard &&
-                                                    isMobile() &&
-                                                    `(${localize('All fields are required')})`)
-                                            }
+                                            subtitle={`(${localize('All fields are required')})`}
                                         />
                                         <FormBodySection
                                             has_side_note={is_dashboard}

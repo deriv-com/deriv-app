@@ -106,7 +106,7 @@ const MINIMIZERS = !IS_RELEASE
           new TerserPlugin({
               test: /\.js$/,
               exclude: /(smartcharts)/,
-              parallel: true,
+              parallel: 2,
           }),
           new OptimizeCssAssetsPlugin(),
       ];

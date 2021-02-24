@@ -302,7 +302,7 @@
             padding: 1rem 0.8rem;
         }
         &--scrollbar {
-            display: block;
+            display: block; // Safari needs this to work properly!
         }
         @include desktop {
             &__header {

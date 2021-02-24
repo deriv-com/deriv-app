@@ -101,9 +101,7 @@ export const initializeTranslations = async () => {
     await loadLanguageJson(initial_language);
 };
 
-export const getLanguage = () => {
-    return i18n.language || initial_language;
-};
+export const getLanguage = () => i18n.language || initial_language;
 
 // eslint-disable-next-line no-unused-vars
 export const changeLanguage = async (lang, cb) => {

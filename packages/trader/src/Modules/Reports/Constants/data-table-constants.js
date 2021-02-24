@@ -20,6 +20,7 @@ const getModeFromValue = key => {
         withdrawal: 'info',
         default: 'default',
         adjustment: 'adjustment',
+        transfer: 'transfer',
     };
 
     if (Object.keys(map).find(x => x === key)) {

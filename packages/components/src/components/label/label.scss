@@ -55,6 +55,13 @@
                 background-color: var(--status-success);
             }
         }
+        &--transfer {
+            color: var(--status-transfer);
+
+            &:after {
+                background-color: var(--status-transfer);
+            }
+        }
         &--default-invert {
             color: var(--status-less-prominent);
 

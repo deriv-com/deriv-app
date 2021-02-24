@@ -5,7 +5,9 @@ import { Text } from '@deriv/components';
 
 const Article = ({ className, title, descriptions }) => (
     <article className={classNames('account__article', className)}>
-        <h4 className='account__article-title'>{title}</h4>
+        <Text as='h4' size='xs' color='prominent' weight='bold' className='account__article-title'>
+            {title}
+        </Text>
         <ul className='account__article-list'>
             {descriptions &&
                 descriptions.map((desc, idx) => (

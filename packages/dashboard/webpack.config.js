@@ -134,7 +134,7 @@ module.exports = function () {
                 ? [
                     new TerserPlugin({
                         test: /\.js$/,
-                        parallel: true,
+                        parallel: false,
                     }),
                     new OptimizeCssAssetsPlugin(),
                 ]

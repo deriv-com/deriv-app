@@ -91,7 +91,7 @@ const MINIMIZERS = !IS_RELEASE
     : [
           new TerserPlugin({
               test: /\.js$/,
-              parallel: true,
+              parallel: false,
           }),
           new OptimizeCssAssetsPlugin(),
       ];

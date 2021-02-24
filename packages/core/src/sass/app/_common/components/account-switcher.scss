@@ -449,6 +449,9 @@
     margin-left: 0.5rem;
     height: 2.2rem;
 
+    &-bot {
+        color: var(--text-colored-background);
+    }
     &--disabled {
         background-color: var(--border-disabled);
     }

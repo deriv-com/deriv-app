@@ -183,8 +183,16 @@ const MT5ServerForm = ({ ...props }) => {
                                         e.persist();
                                         setFieldValue('server', e.target.value);
                                     }}
-                                    items={available_servers}
-                                />
+                                >
+                                    {available_servers.map(item => (
+                                        <RadioGroup.Item
+                                            key={item.value}
+                                            label={item.label}
+                                            value={item.value}
+                                            disabled={item.disabled}
+                                        />
+                                    ))}
+                                </RadioGroup>
                             </div>
                         </div>
                     </div>

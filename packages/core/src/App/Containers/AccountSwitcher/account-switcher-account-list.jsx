@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Money, Button, Text } from '@deriv/components';
-import { formatMoney, getCurrencyName, getMT5AccountDisplay, getCurrencyDisplayCode } from '@deriv/shared';
+import { formatMoney, getCurrencyName, getMT5AccountDisplay, getCurrencyDisplayCode, isBot } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
 const AccountList = ({
@@ -130,7 +130,13 @@ const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_d
         <div>
             {getMT5AccountDisplay(market_type, sub_account_type)}
             {server?.server_info.geolocation && market_type === 'gaming' && (
-                <Text color={is_dark_mode_on ? 'general' : 'colored-background'} size='xxs' className='badge-server'>
+                <Text
+                    color={is_dark_mode_on ? 'general' : 'colored-background'}
+                    size='xxs'
+                    className={classNames('badge-server', {
+                        'badge-server-bot': isBot(),
+                    })}
+                >
                     {server.server_info.geolocation.region}&nbsp;
                     {server.server_info.geolocation.sequence !== 1 ? server.server_info.geolocation.sequence : ''}
                 </Text>

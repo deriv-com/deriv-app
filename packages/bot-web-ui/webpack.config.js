@@ -30,10 +30,18 @@ module.exports = function (env, argv) {
             disableHostCheck: true,
         },
         mode: is_release ? 'production' : 'development',
-        devtool: is_release ? undefined : 'cheap-module-eval-source-map',
+        devtool: is_release ? undefined : 'eval-cheap-module-source-map',
         target: 'web',
         module: {
             rules: [
+                {
+                    // https://github.com/webpack/webpack/issues/11467
+                    test: /\.m?js/,
+                    include: /node_modules/,
+                    resolve: {
+                      fullySpecified: false,
+                    },
+                },
                 {
                     test: /\.(s*)css$/,
                     use: [
@@ -41,7 +49,10 @@ module.exports = function (env, argv) {
                         MiniCssExtractPlugin.loader,
                         {
                             loader: 'css-loader',
-                            options: { sourceMap: true },
+                            options: {
+                                sourceMap: true,
+                                url: false,
+                            },
                         },
                         {
                             loader: 'sass-loader',
@@ -57,6 +68,7 @@ module.exports = function (env, argv) {
                 },
                 {
                     test: /\.svg$/,
+                    exclude: /node_modules/,
                     use: [
                         {
                             loader: 'svg-sprite-loader',
@@ -76,7 +88,7 @@ module.exports = function (env, argv) {
                 {
                     test: /\.(js|jsx)$/,
                     exclude: /node_modules/,
-                    loader: ['@deriv/shared/src/loaders/react-import-loader.js'],
+                    loader: '@deriv/shared/src/loaders/react-import-loader.js',
                 },
                 {
                     test: /\.(js|jsx)$/,

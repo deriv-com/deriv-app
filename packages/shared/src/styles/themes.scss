@@ -36,7 +36,6 @@
     --brand-dark-grey: #{$color-black};
     --brand-red-coral: #{$color-red};
     --brand-orange: #{$color-orange};
-    --brand-apple-blue: #{$color-apple-blue};
     // Brand secondary colors
     --brand-secondary: #{$color-green};
 
@@ -80,7 +79,7 @@
         --text-disabled: #{$color-grey-6};
         --text-profit-success: #{$color-green-1};
         --text-loss-danger: #{$color-red-1};
-        --text-blue: #{$color-apple-blue};
+        --text-blue: #{$color-blue-3};
         --text-colored-background: #{$color-white};
         --icon-light-background: #{$color-black-9};
         --icon-dark-background: #{$color-white};
@@ -94,7 +93,6 @@
         --purchase-disabled-section: #{$color-grey-4};
         // Buttons
         --button-primary-default: var(--brand-red-coral);
-        --button-blue-default: var(--brand-apple-blue);
         --button-secondary-default: #{$color-grey-1};
         --button-tertiary-default: transparent;
         --button-primary-light-default: #{$alpha-color-red-2};

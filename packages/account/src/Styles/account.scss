@@ -413,6 +413,11 @@ $MIN_HEIGHT_FLOATING: calc(
 
                 @include desktop {
                     margin-left: 1.6rem;
+                    &-wrapper--dashboard {
+                        display: flex;
+                        width: 40rem;
+                        justify-content: space-between;
+                    }
                 }
                 @include mobile {
                     margin: 0 1.6rem;

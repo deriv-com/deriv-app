@@ -62,7 +62,7 @@ class ChangePasswordForm extends React.Component {
 
         if (values.new_password) {
             if (!validLength(values.new_password, { min: 8, max: 25 })) {
-                errors.new_password = localize('Password length should be between 8 to 25 characters.');
+                errors.new_password = localize('0% Weak; The password is too short');
             }
             if (values.old_password === values.new_password) {
                 errors.new_password = localize('Current password and new password cannot be the same.');
@@ -193,7 +193,7 @@ class ChangePasswordForm extends React.Component {
                                         is_loading={is_btn_loading}
                                         is_submit_success={is_submit_success}
                                         has_effect
-                                        text={is_dashboard ? localize('Save') : localize('Change password')}
+                                        text={is_dashboard ? localize('Next') : localize('Change password')}
                                         large
                                         primary
                                     />

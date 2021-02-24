@@ -12,6 +12,17 @@ const getTopUpConfig = () => {
     };
 };
 
+const getPlatformDXTradeDownloadLink = (platform = undefined) => {
+    switch (platform || OSDetect()) {
+        case 'ios':
+            return 'https://apps.apple.com/tt/app/dxtrade/id1510582738';
+        case 'android':
+            return 'https://play.google.com/store/apps/details?id=com.devexperts.dxmarket.client&hl=en';
+        default:
+            return getDXTradeWebTerminalLink(); // Web
+    }
+};
+
 const getPlatformMt5DownloadLink = (platform = undefined) => {
     switch (platform || OSDetect()) {
         case 'windows':
@@ -29,6 +40,10 @@ const getPlatformMt5DownloadLink = (platform = undefined) => {
     }
 };
 
+const getDXTradeWebTerminalLink = () => {
+    return 'https://demo.dx.trade/';
+};
+
 const getMT5WebTerminalLink = ({ category, loginid }) => {
     const is_demo = category === 'demo';
     const server = is_demo ? 'Deriv-Demo' : 'Deriv-Server';
@@ -37,4 +52,12 @@ const getMT5WebTerminalLink = ({ category, loginid }) => {
     return `https://trade.mql5.com/trade?servers=${server}&trade_server=${server}${login && `&login=${login}`}`;
 };
 
-export { getServerName, getBrokerName, getPlatformMt5DownloadLink, getMT5WebTerminalLink, getTopUpConfig };
+export {
+    getServerName,
+    getBrokerName,
+    getPlatformDXTradeDownloadLink,
+    getPlatformMt5DownloadLink,
+    getDXTradeWebTerminalLink,
+    getMT5WebTerminalLink,
+    getTopUpConfig,
+};

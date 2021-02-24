@@ -5,7 +5,7 @@ import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper, Input } from 
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { CFDAccountCopy } from './cfd-account-copy.jsx';
-import { getMT5WebTerminalLink } from '../Helpers/constants';
+import { getDXTradeWebTerminalLink, getMT5WebTerminalLink } from '../Helpers/constants';
 
 const account_icons = {
     mt5: {
@@ -322,10 +322,14 @@ const CFDAccountCard = ({
                         <a
                             className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
                             type='button'
-                            href={getMT5WebTerminalLink({
-                                category: type.category,
-                                loginid: existing_data.display_login,
-                            })}
+                            href={
+                                platform === 'dxtrade'
+                                    ? getDXTradeWebTerminalLink()
+                                    : getMT5WebTerminalLink({
+                                          category: type.category,
+                                          loginid: existing_data.display_login,
+                                      })
+                            }
                             target='_blank'
                             rel='noopener noreferrer'
                         >

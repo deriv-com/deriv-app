@@ -2,7 +2,12 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { general_messages } from '../Constants/cfd-shared-strings';
-import { getMT5WebTerminalLink, getPlatformMt5DownloadLink } from '../Helpers/constants';
+import {
+    getDXTradeWebTerminalLink,
+    getMT5WebTerminalLink,
+    getPlatformDXTradeDownloadLink,
+    getPlatformMt5DownloadLink,
+} from '../Helpers/constants';
 
 const CFDDashboardContainer = ({ platform }) => (
     <div className='cfd-dashboard__download-center'>
@@ -35,7 +40,7 @@ const CFDDashboardContainer = ({ platform }) => (
                             {platform === 'dxtrade' && (
                                 <a
                                     className='cfd-dashboard__dxtrade-download'
-                                    href='https://demo.dx.trade/'
+                                    href={getDXTradeWebTerminalLink()}
                                     target='_blank'
                                     rel='noopener noreferrer'
                                 >
@@ -122,7 +127,11 @@ const CFDDashboardContainer = ({ platform }) => (
                 <div className='cfd-dashboard__download-center-options--mobile-links'>
                     <a
                         className='cfd-dashboard__download-center-options--mobile-link'
-                        href={getPlatformMt5DownloadLink('android')}
+                        href={
+                            platform === 'dxtrade'
+                                ? getPlatformDXTradeDownloadLink('android')
+                                : getPlatformMt5DownloadLink('android')
+                        }
                         target='_blank'
                         rel='noopener noreferrer'
                     >
@@ -130,7 +139,11 @@ const CFDDashboardContainer = ({ platform }) => (
                     </a>
                     <a
                         className='cfd-dashboard__download-center-options--mobile-link'
-                        href={getPlatformMt5DownloadLink('ios')}
+                        href={
+                            platform === 'dxtrade'
+                                ? getPlatformDXTradeDownloadLink('ios')
+                                : getPlatformMt5DownloadLink('ios')
+                        }
                         target='_blank'
                         rel='noopener noreferrer'
                     >

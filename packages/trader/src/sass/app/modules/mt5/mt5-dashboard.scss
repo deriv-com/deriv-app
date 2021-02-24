@@ -301,6 +301,9 @@
             align-items: normal;
             padding: 1rem 0.8rem;
         }
+        &--scrollbar {
+            display: block;
+        }
         @include desktop {
             &__header {
                 background-color: var(--general-main-2);

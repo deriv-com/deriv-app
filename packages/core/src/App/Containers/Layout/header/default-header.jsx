@@ -4,7 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { routes, isMobile, getDecimalPlaces, getPlatformInformation } from '@deriv/shared';
+import { routes, isMobile, getDecimalPlaces, getPlatformInformation, getStaticUrl } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
@@ -17,8 +17,7 @@ import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Prel
 
 const TryBeta = () => {
     return (
-        <div className='header__try-beta' onClick={() => window.open('myapps.deriv.com')}>
-            {/* TODO: Use `getStaticUrl` whenever changes for accepting `is_dashboard` applied and it returns an independant url */}
+        <div className='header__try-beta' onClick={() => window.open(getStaticUrl('', { is_dashboard: true }))}>
             <Text size='xxxs' line_height='s' color='loss-danger' weight='bold'>
                 <Localize i18n_default_text='Try the new My Apps Beta!' />
             </Text>

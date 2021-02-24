@@ -62,9 +62,9 @@ export default Engine =>
                         resolve(lastTick);
                     })
                     .catch(e => {
-                        if (e.name === 'MarketIsClosed') {
+                        if (e.code === 'MarketIsClosed') {
                             globalObserver.emit('Error', e);
-                            resolve(e.name);
+                            resolve(e.code);
                         }
                     })
             );

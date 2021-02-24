@@ -62,7 +62,7 @@ Box.propTypes = {
     cards: PropTypes.array,
 };
 
-const FinancialBox = ({ derivOnClick, is_deriv_crypto, mt5OnClick, has_maltainvest_account, add_account_label }) => {
+const FinancialBox = ({ derivOnClick, is_dashboard, mt5OnClick, has_maltainvest_account, add_account_label }) => {
     return (
         <Box
             title={localize('Financial')}
@@ -89,12 +89,12 @@ const FinancialBox = ({ derivOnClick, is_deriv_crypto, mt5OnClick, has_maltainve
                         {
                             icon: 'IcBrandDtrader',
                             name: 'DTrader',
-                            path: getStaticUrl('/dtrader', { is_deriv_crypto }),
+                            path: getStaticUrl('/dtrader', { is_dashboard }),
                         },
                         {
                             icon: 'IcBrandDbot',
                             name: 'DBot',
-                            path: getStaticUrl('/dbot', { is_deriv_crypto }),
+                            path: getStaticUrl('/dbot', { is_dashboard }),
                         },
                         {
                             icon: 'IcBrandSmarttrader',
@@ -128,7 +128,7 @@ const FinancialBox = ({ derivOnClick, is_deriv_crypto, mt5OnClick, has_maltainve
                         {
                             icon: 'IcBrandDMT5',
                             name: 'MetaTrader 5',
-                            path: getStaticUrl('/dmt5', { is_deriv_crypto }),
+                            path: getStaticUrl('/dmt5', { is_dashboard }),
                         },
                     ]}
                 >
@@ -147,7 +147,7 @@ const FinancialBox = ({ derivOnClick, is_deriv_crypto, mt5OnClick, has_maltainve
     );
 };
 
-const SyntheticBox = ({ derivOnClick, add_account_label, is_deriv_crypto }) => {
+const SyntheticBox = ({ derivOnClick, add_account_label, is_dashboard }) => {
     return (
         <Box
             title={localize('Synthetic')}
@@ -189,12 +189,12 @@ const SyntheticBox = ({ derivOnClick, add_account_label, is_deriv_crypto }) => {
                         {
                             icon: 'IcBrandDtrader',
                             name: 'DTrader',
-                            path: getStaticUrl('dtrader', { is_deriv_crypto }),
+                            path: getStaticUrl('dtrader', { is_dashboard }),
                         },
                         {
                             icon: 'IcBrandDbot',
                             name: 'DBot',
-                            path: getStaticUrl('dbot', { is_deriv_crypto }),
+                            path: getStaticUrl('dbot', { is_dashboard }),
                         },
                         {
                             icon: 'IcBrandSmarttrader',
@@ -229,7 +229,7 @@ const AccountTypesModal = ({
     switchAccount,
     toggleAccountTypesModal,
 }) => {
-    const context_type = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     const closeModal = () => {
         toggleAccountTypesModal(false);
@@ -282,7 +282,7 @@ const AccountTypesModal = ({
                                         ? localize('Trade with this account')
                                         : localize('Add this real account')
                                 }
-                                is_deriv_crypto={context_type.is_deriv_crypto}
+                                is_dashboard={is_dashboard}
                             />
                             <FinancialBox
                                 derivOnClick={() => {
@@ -302,7 +302,7 @@ const AccountTypesModal = ({
                                     localize('Add this real account'),
                                     localize('Deriv Financial required'),
                                 ]}
-                                is_deriv_crypto={context_type.is_deriv_crypto}
+                                is_dashboard={is_dashboard}
                             />
                         </div>
                     </div>

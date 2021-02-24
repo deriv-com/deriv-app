@@ -71,7 +71,7 @@ export default function register() {
             // changes, eg a new worker has skipped waiting and become
             // the new active worker.
             if (AUTO_REFRESH_THRESHOLD > performance.now() && should_refresh_on_register) {
-                window.location.reload();
+                should_refresh_on_register = false;
             } else {
                 // eslint-disable-next-line no-console
                 console.log('First registration, no need to refresh.');

@@ -1,6 +1,7 @@
 const { setUp, tearDown, mobile_viewport, desktop_viewport, getStorageState } = require('@root/bootstrap');
 const Trader = require('@root/objects/trader');
 const { replaceWebsocket } = require('@root/_utils/websocket');
+const path = require('path');
 
 let browser, context, page;
 jest.setTimeout(70000);
@@ -36,7 +37,7 @@ describe('Contract test', () => {
     describe('Desktop', () => {
         beforeEach(async () => {
             context = await browser.newContext({
-                recordVideo: { dir: `${process.env.E2E_ARTIFACT_PATH}temp/contract_purchase.test.js/` },
+                recordVideo: { dir: path.resolve(process.env.E2E_ARTIFACT_PATH, 'contract_purchase.test.js') },
                 ignoreHTTPSErrors: true,
                 storageState: getStorageState('LOGIN'),
                 ...desktop_viewport,

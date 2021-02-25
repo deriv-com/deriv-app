@@ -3,6 +3,7 @@ const { setUp, tearDown, mobile_viewport } = require('@root/bootstrap');
 const Common = require('@root/objects/common');
 const DerivCom = require('@root/objects/deriv_com');
 const QAEmails = require('@root/objects/qa_emails');
+const path = require('path');
 
 let browser, context, page;
 jest.setTimeout(100000);
@@ -12,7 +13,7 @@ describe('Signup', () => {
         const out = await setUp({});
         browser = out.browser;
         context = await browser.newContext({
-            recordVideo: { dir: `${process.env.E2E_ARTIFACT_PATH}temp/cr_signup.test.js/` },
+            recordVideo: { dir: path.resolve(process.env.E2E_ARTIFACT_PATH, 'cr_signup.test.js') },
             ignoreHTTPSErrors: true,
             ...mobile_viewport,
         });

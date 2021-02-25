@@ -14,8 +14,7 @@ jobs:
               run: npm ci && npm run install:qa && npm run test:qa
               env:
                   # configure tests with environment variables
-                  FFMPEG_PATH: /usr/bin/ffmpeg # for recording video
-                  QAW_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
+                  E2E_ARTIFACT_PATH: ${{ github.workspace }}/artifacts
                   # you can also use GitHub secrets for environment variables
                   # https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets
                   # Valid username and password

@@ -68,44 +68,44 @@ export default Engine =>
             let has_informed_error = false;
 
             Promise.all(
-                this.proposal_templates.map(proposal =>
-                    doUntilDone(() =>
-                        this.api.subscribeToPriceForContractProposal(proposal).catch(error => {
-                            // We intercept ContractBuyValidationError as user may have specified
-                            // e.g. a DIGITUNDER 0 or DIGITOVER 9, while one proposal may be invalid
-                            // the other is valid. We will error on Purchase rather than here.
-                            if (error?.name === 'ContractBuyValidationError') {
-                                this.data.proposals.push({
-                                    ...error.error.echo_req,
-                                    ...error.error.echo_req.passthrough,
-                                    error,
-                                });
+                this.proposal_templates.map(proposal => {
+                    doUntilDone(() => this.api.send(proposal)).catch(error => {
+                        // We intercept ContractBuyValidationError as user may have specified
+                        // e.g. a DIGITUNDER 0 or DIGITOVER 9, while one proposal may be invalid
+                        // the other is valid. We will error on Purchase rather than here.
 
-                                return null;
-                            }
+                        if (error.error.code === 'ContractBuyValidationError') {
+                            this.data.proposals.push({
+                                ...error.error.echo_req,
+                                ...error.echo_req.passthrough,
+                                error,
+                            });
 
-                            if (!has_informed_error) {
-                                has_informed_error = true;
-                                this.$scope.observer.emit('Error', error.error.error);
-                            }
                             return null;
-                        })
-                    )
-                )
+                        }
+                        if (!has_informed_error) {
+                            has_informed_error = true;
+                            this.$scope.observer.emit('Error', error.error);
+                        }
+                        return null;
+                    });
+                })
             );
         }
 
         observeProposals() {
-            this.listen('proposal', response => {
-                const { passthrough, proposal } = response;
-
-                if (
-                    this.data.proposals.findIndex(p => p.id === proposal.id) === -1 &&
-                    !this.data.forget_proposal_ids.includes(proposal.id)
-                ) {
-                    // Add proposals based on the ID returned by the API.
-                    this.data.proposals.push({ ...proposal, ...passthrough });
-                    this.checkProposalReady();
+            this.api.onMessage().subscribe(response => {
+                if (response.data.msg_type === 'proposal') {
+                    const { passthrough, proposal } = response.data;
+                    if (
+                        proposal &&
+                        this.data.proposals.findIndex(p => p.id === proposal.id) === -1 &&
+                        !this.data.forget_proposal_ids.includes(proposal.id)
+                    ) {
+                        // Add proposals based on the ID returned by the API.
+                        this.data.proposals.push({ ...proposal, ...passthrough });
+                        this.checkProposalReady();
+                    }
                 }
             });
         }
@@ -128,7 +128,7 @@ export default Engine =>
                         return Promise.resolve();
                     }
 
-                    return doUntilDone(() => this.api.unsubscribeByID(proposal.id)).then(() => {
+                    return doUntilDone(() => this.api.forget(proposal.id)).then(() => {
                         removeForgetProposalById(proposal.id);
                     });
                 })

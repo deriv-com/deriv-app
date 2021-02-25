@@ -1,8 +1,15 @@
 import { Formik } from 'formik';
 import React from 'react';
-import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal, ThemedScrollbars } from '@deriv/components';
+import {
+    AutoHeightWrapper,
+    Div100vhContainer,
+    FormSubmitButton,
+    Modal,
+    ThemedScrollbars,
+    Text,
+} from '@deriv/components';
 
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { isDesktop, isMobile } from '@deriv/shared';
 import {
     AccountTurnover,
@@ -96,6 +103,29 @@ const TradingExperience = ({
     </React.Fragment>
 );
 
+const AcceptRisk = () => {
+    return (
+        <div className='accept-risk__container'>
+            <div className='accept-risk__header'>
+                <Text weight='bold' size='xs'>
+                    {localize('Appropriateness Test, WARNING:')}
+                </Text>
+            </div>
+            <Text as='p' size='xs'>
+                <Localize
+                    i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you (that is, whether you possess the experience and knowledge to understand the risks involved).<0/><1/>'
+                    components={[<br key={0} />, <br key={1} />]}
+                />
+                <Localize
+                    i18n_default_text='On the basis of the information provided in relation to your knowledge and experience, we consider that the investments available via this website are not appropriate for you.<0/><1/>'
+                    components={[<br key={0} />, <br key={1} />]}
+                />
+                <Localize i18n_default_text='By clicking Accept below and proceeding with the Account Opening you should note that you may be exposing yourself to risks (which may be significant, including the risk of loss of the entire sum invested) that you may not have the knowledge and experience to properly assess or mitigate.' />
+            </Text>
+        </div>
+    );
+};
+
 const FinancialDetails = props => {
     const handleCancel = values => {
         const current_step = props.getCurrentStep() - 1;
@@ -108,12 +138,15 @@ const FinancialDetails = props => {
         return errors;
     };
 
+    const { should_accept_financial_risk, onClose } = props;
+
     return (
         <Formik
             initialValues={{ ...props.value }}
             validate={handleValidate}
             onSubmit={(values, actions) => {
-                props.onSubmit(props.getCurrentStep() - 1, values, actions.setSubmitting, props.goToNextStep);
+                const form_values = { ...values, ...(should_accept_financial_risk ? { accept_risk: 1 } : {}) };
+                props.onSubmit(props.getCurrentStep() - 1, form_values, actions.setSubmitting, props.goToNextStep);
             }}
             validateOnMount
         >
@@ -137,39 +170,43 @@ const FinancialDetails = props => {
                                     is_disabled={isDesktop()}
                                 >
                                     <ThemedScrollbars autoHide={!(window.innerHeight < 890)} height={height - 77}>
-                                        <div className='details-form__elements  details-form__elements--wide'>
-                                            <FinancialInformation
-                                                shared_props={shared_props}
-                                                income_source_enum={props.income_source_enum}
-                                                employment_status_enum={props.employment_status_enum}
-                                                employment_industry_enum={props.employment_industry_enum}
-                                                occupation_enum={props.occupation_enum}
-                                                source_of_wealth_enum={props.source_of_wealth_enum}
-                                                education_level_enum={props.education_level_enum}
-                                                net_income_enum={props.net_income_enum}
-                                                estimated_worth_enum={props.estimated_worth_enum}
-                                                account_turnover_enum={props.account_turnover_enum}
-                                            />
-                                            <TradingExperience
-                                                shared_props={shared_props}
-                                                forex_trading_experience_enum={props.forex_trading_experience_enum}
-                                                forex_trading_frequency_enum={props.forex_trading_frequency_enum}
-                                                binary_options_trading_experience_enum={
-                                                    props.binary_options_trading_experience_enum
-                                                }
-                                                binary_options_trading_frequency_enum={
-                                                    props.binary_options_trading_frequency_enum
-                                                }
-                                                cfd_trading_experience_enum={props.cfd_trading_experience_enum}
-                                                cfd_trading_frequency_enum={props.cfd_trading_frequency_enum}
-                                                other_instruments_trading_experience_enum={
-                                                    props.other_instruments_trading_experience_enum
-                                                }
-                                                other_instruments_trading_frequency_enum={
-                                                    props.other_instruments_trading_frequency_enum
-                                                }
-                                            />
-                                        </div>
+                                        {should_accept_financial_risk ? (
+                                            <AcceptRisk />
+                                        ) : (
+                                            <div className='details-form__elements  details-form__elements--wide'>
+                                                <FinancialInformation
+                                                    shared_props={shared_props}
+                                                    income_source_enum={props.income_source_enum}
+                                                    employment_status_enum={props.employment_status_enum}
+                                                    employment_industry_enum={props.employment_industry_enum}
+                                                    occupation_enum={props.occupation_enum}
+                                                    source_of_wealth_enum={props.source_of_wealth_enum}
+                                                    education_level_enum={props.education_level_enum}
+                                                    net_income_enum={props.net_income_enum}
+                                                    estimated_worth_enum={props.estimated_worth_enum}
+                                                    account_turnover_enum={props.account_turnover_enum}
+                                                />
+                                                <TradingExperience
+                                                    shared_props={shared_props}
+                                                    forex_trading_experience_enum={props.forex_trading_experience_enum}
+                                                    forex_trading_frequency_enum={props.forex_trading_frequency_enum}
+                                                    binary_options_trading_experience_enum={
+                                                        props.binary_options_trading_experience_enum
+                                                    }
+                                                    binary_options_trading_frequency_enum={
+                                                        props.binary_options_trading_frequency_enum
+                                                    }
+                                                    cfd_trading_experience_enum={props.cfd_trading_experience_enum}
+                                                    cfd_trading_frequency_enum={props.cfd_trading_frequency_enum}
+                                                    other_instruments_trading_experience_enum={
+                                                        props.other_instruments_trading_experience_enum
+                                                    }
+                                                    other_instruments_trading_frequency_enum={
+                                                        props.other_instruments_trading_frequency_enum
+                                                    }
+                                                />
+                                            </div>
+                                        )}
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
                                 <Modal.Footer has_separator is_bypassed={isMobile()}>
@@ -179,10 +216,12 @@ const FinancialDetails = props => {
                                             isSubmitting || Object.keys(errors).length > 0
                                         }
                                         is_absolute={isMobile()}
-                                        label={localize('Next')}
+                                        label={should_accept_financial_risk ? localize('Accept') : localize('Next')}
                                         has_cancel
-                                        cancel_label={localize('Previous')}
-                                        onCancel={() => handleCancel(values)}
+                                        cancel_label={
+                                            should_accept_financial_risk ? localize('Decline') : localize('Previous')
+                                        }
+                                        onCancel={should_accept_financial_risk ? onClose : () => handleCancel(values)}
                                     />
                                 </Modal.Footer>
                             </form>

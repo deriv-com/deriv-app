@@ -3,7 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import Step from './wizard-step.jsx';
 
-const Wizard = ({ children, className, initial_step, onStepChange, nav, selected_step_ref }) => {
+const Wizard = React.forwardRef(({ children, className, initial_step, onStepChange, nav, selected_step_ref }, ref) => {
     const [active_step, setActiveStep] = React.useState(0);
 
     React.useEffect(() => {
@@ -60,6 +60,8 @@ const Wizard = ({ children, className, initial_step, onStepChange, nav, selected
         selected_step_ref,
     };
 
+    React.useImperativeHandle(ref, () => properties);
+
     const childrenWithProps = React.Children.map(getSteps(), (child, i) => {
         if (!child) return null;
 
@@ -75,7 +77,7 @@ const Wizard = ({ children, className, initial_step, onStepChange, nav, selected
             {childrenWithProps}
         </div>
     );
-};
+});
 
 Wizard.displayName = 'Wizard';
 Wizard.Step = Step;

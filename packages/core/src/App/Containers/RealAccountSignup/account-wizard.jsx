@@ -63,6 +63,8 @@ const AccountWizard = props => {
     const [form_error, setFormError] = React.useState('');
     const [previous_data, setPreviousData] = React.useState([]);
     const [state_items, setStateItems] = React.useState([]);
+    const wizard_ref = React.useRef();
+    const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
 
     React.useEffect(() => {
         props.fetchStatesList();
@@ -198,6 +200,11 @@ const AccountWizard = props => {
     const updateValue = (index, value, setSubmitting, goToNextStep) => {
         saveFormData(index, value);
         clearError();
+
+        if (value.accept_risk) {
+            setShouldAcceptFinancialRisk(false);
+        }
+
         // Check if account wizard is not finished
         if ((!props.has_currency && props.has_real_account) || index + 1 >= state_items.length) {
             createRealAccount(setSubmitting);
@@ -226,6 +233,7 @@ const AccountWizard = props => {
             });
             properties.bypass_to_personal = previous_data.length > 0;
         }
+        properties.should_accept_financial_risk = should_accept_financial_risk;
         return properties;
     };
 
@@ -253,9 +261,21 @@ const AccountWizard = props => {
                     }
                 })
                 .catch(error => {
-                    props.onError(error, state_items);
+                    if (error.code === 'show risk disclaimer') {
+                        setShouldAcceptFinancialRisk(true);
+                    } else {
+                        props.onError(error, state_items);
+                    }
                 })
                 .finally(() => props.setLoading(false));
+        }
+    };
+
+    const setRef = ref => {
+        wizard_ref.current = ref;
+
+        if (should_accept_financial_risk) {
+            wizard_ref.current?.goToStep(4);
         }
     };
 
@@ -272,6 +292,7 @@ const AccountWizard = props => {
                     onSubmit={updateValue}
                     onCancel={prevStep}
                     onSave={saveFormData}
+                    onClose={props.onClose}
                     has_currency={props.has_currency}
                     form_error={form_error}
                     {...passthrough}
@@ -294,6 +315,7 @@ const AccountWizard = props => {
 
         return (
             <Wizard
+                ref={setRef}
                 nav={navHeader}
                 className={classNames('account-wizard', {
                     'account-wizard--set-currency': !props.has_currency,

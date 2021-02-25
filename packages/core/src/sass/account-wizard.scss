@@ -220,6 +220,16 @@
                 }
             }
         }
+
+        .accept-risk {
+            &__header {
+                margin-bottom: 0.8rem;
+                padding-top: 4rem;
+            }
+            &__container {
+                padding: 0 7.2rem;
+            }
+        }
     }
     &__body {
         display: flex;

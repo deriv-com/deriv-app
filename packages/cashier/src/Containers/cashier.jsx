@@ -8,10 +8,9 @@ import {
     MobileWrapper,
     PageOverlay,
     VerticalTab,
-    Text,
     Loading,
 } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { getSelectedRoute, isMobile, routes } from '@deriv/shared';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
@@ -26,7 +25,7 @@ const Cashier = ({
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
     is_payment_agent_visible,
-    is_virtual,
+    // is_virtual,
     is_visible,
     location,
     onMount,
@@ -81,10 +80,10 @@ const Cashier = ({
     };
 
     const selected_route = isMobile() ? getSelectedRoute({ routes: routes_config, pathname: location.pathname }) : null;
-    const should_show_tab_headers_note =
-        !is_virtual &&
-        (location.pathname.startsWith(routes.cashier_deposit) ||
-            location.pathname.startsWith(routes.cashier_withdrawal));
+    // const should_show_tab_headers_note =
+    //     !is_virtual &&
+    //     (location.pathname.startsWith(routes.cashier_deposit) ||
+    //         location.pathname.startsWith(routes.cashier_withdrawal));
 
     const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: location.pathname }).default;
     if (!is_logged_in && is_logging_in) {
@@ -109,24 +108,25 @@ const Cashier = ({
                             is_full_width
                             is_routed
                             list={getMenuOptions()}
-                            tab_headers_note={
-                                should_show_tab_headers_note ? (
-                                    <Text as='p' size='xxs' className='cashier__tab-header-note'>
-                                        <Localize
-                                            i18n_default_text='Want to exchange between e-wallet currencies? Try <0>Ewallet.Exchange</0>'
-                                            components={[
-                                                <a
-                                                    key={0}
-                                                    href='https://ewallet.exchange'
-                                                    rel='noopener noreferrer'
-                                                    target='_blank'
-                                                    className='link'
-                                                />,
-                                            ]}
-                                        />
-                                    </Text>
-                                ) : undefined
-                            }
+                            // TODO: To be added once Ewallet.Exchange is available
+                            // tab_headers_note={
+                            //     should_show_tab_headers_note ? (
+                            //         <Text as='p' size='xxs' className='cashier__tab-header-note'>
+                            //             <Localize
+                            //                 i18n_default_text='Want to exchange between e-wallet currencies? Try <0>Ewallet.Exchange</0>'
+                            //                 components={[
+                            //                     <a
+                            //                         key={0}
+                            //                         href='https://ewallet.exchange'
+                            //                         rel='noopener noreferrer'
+                            //                         target='_blank'
+                            //                         className='link'
+                            //                     />,
+                            //                 ]}
+                            //             />
+                            //         </Text>
+                            //     ) : undefined
+                            // }
                         />
                     </DesktopWrapper>
                     <MobileWrapper>

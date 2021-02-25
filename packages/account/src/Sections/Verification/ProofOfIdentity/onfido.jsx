@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ThemedScrollbars, usePrevious } from '@deriv/components';
+import { Link } from 'react-router-dom';
+import { ThemedScrollbars, usePrevious, Text } from '@deriv/components';
 import { init } from 'onfido-sdk-ui';
-import { isMobile } from '@deriv/shared';
-import { getLanguage } from '@deriv/translations';
+import { isMobile, routes } from '@deriv/shared';
+import { getLanguage, Localize } from '@deriv/translations';
 import UploadComplete from 'Components/poi-upload-complete';
 import Unsupported from 'Components/poi-unsupported';
 import Expired from 'Components/poi-expired';
@@ -18,6 +19,14 @@ const OnfidoContainer = ({ height }) => {
     return (
         <ThemedScrollbars is_bypassed={isMobile()} height={height}>
             <div className='onfido-container'>
+                <div className='onfido-container__message'>
+                    <Text>
+                        <Localize
+                            i18n_default_text='Before uploading your document, please ensure that your <0>personal details</0> are updated to match your proof of identity. This will help to avoid delays during the verification process.'
+                            components={[<Link to={routes.personal_details} key={0} className='link' />]}
+                        />
+                    </Text>
+                </div>
                 <div id={onfido_container_id} />
             </div>
         </ThemedScrollbars>

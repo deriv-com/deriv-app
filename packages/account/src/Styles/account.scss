@@ -1460,6 +1460,12 @@ $MIN_HEIGHT_FLOATING: calc(
 /** @define onfido-container; weak */
 .onfido-container {
     margin-top: 24px;
+
+    &__message {
+        margin-bottom: 1.6rem;
+        padding: 0.8rem;
+        background: var(--general-section-1);
+    }
     @include mobile {
         margin-top: 0;
 

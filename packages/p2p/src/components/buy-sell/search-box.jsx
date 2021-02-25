@@ -62,16 +62,15 @@ const SearchBox = () => {
                                     placeholder={isDesktop() ? localize('Search by nickname') : localize('Search')}
                                     onKeyUp={() => onSearchKeyUp(submitForm)}
                                     onFocus={submitForm}
-                                    leading_icon={
+                                    leading_icon={<Icon icon='IcSearch' />}
+                                    trailing_icon={
                                         search ? (
                                             <Icon
                                                 icon='IcCloseCircle'
                                                 onClick={() => onSearchClear(setFieldValue)}
                                                 color='secondary'
                                             />
-                                        ) : (
-                                            <Icon icon='IcSearch' />
-                                        )
+                                        ) : null
                                     }
                                 />
                             )}

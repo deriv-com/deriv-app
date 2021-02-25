@@ -49,6 +49,7 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
                 () => {
                     buy_sell_store.setItems([]);
                     buy_sell_store.setIsLoading(true);
+                    buy_sell_store.setSearchTerm('');
                     buy_sell_store.loadMoreItems({ startIndex: 0 });
                 },
                 { fireImmediately: true }

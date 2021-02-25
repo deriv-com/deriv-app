@@ -225,9 +225,17 @@
             &__header {
                 margin-bottom: 0.8rem;
                 padding-top: 4rem;
+
+                @include mobile {
+                    padding-top: 1rem;
+                }
             }
             &__container {
                 padding: 0 7.2rem;
+
+                @include mobile {
+                    padding: 0 1.6rem;
+                }
             }
         }
     }

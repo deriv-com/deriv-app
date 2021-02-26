@@ -57,6 +57,8 @@ export class PersonalDetailsForm extends React.Component {
 
     onSubmit = async (values, { setStatus, setSubmitting }) => {
         setStatus({ msg: '' });
+        // TODO: Removed due to Critical Path blocking
+        delete values.phone;
         const request = this.makeSettingsRequest(values);
         this.setState({ is_btn_loading: true });
         const data = await WS.setSettings(request);
@@ -136,7 +138,7 @@ export class PersonalDetailsForm extends React.Component {
         const required_fields = [
             'first_name',
             'last_name',
-            'phone',
+            // 'phone',
             // 'account_opening_reason',
             'address_line_1',
             'address_city',
@@ -898,8 +900,8 @@ export class PersonalDetailsForm extends React.Component {
                                                       !values.first_name ||
                                                       errors.last_name ||
                                                       !values.last_name ||
-                                                      errors.phone ||
-                                                      !values.phone ||
+                                                      //   errors.phone ||
+                                                      //   !values.phone ||
                                                       (this.props.is_mf && errors.tax_residence) ||
                                                       (this.props.is_mf && !values.tax_residence) ||
                                                       (this.props.is_mf && errors.tax_identification_number) ||

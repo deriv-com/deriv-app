@@ -86,9 +86,7 @@ const PersonalDetails = ({
     const [warning_items, setWarningItems] = React.useState({});
     const is_submit_disabled_ref = React.useRef(true);
 
-    const isSubmitDisabled = errors => {
-        return selected_step_ref?.current?.isSubmitting || Object.keys(errors).length > 0;
-    };
+    const isSubmitDisabled = errors => selected_step_ref?.current?.isSubmitting || Object.keys(errors).length > 0;
 
     const checkSubmitStatus = errors => {
         const is_submit_disabled = isSubmitDisabled(errors);
@@ -319,22 +317,23 @@ const PersonalDetails = ({
                                                 )}
                                             </Field>
                                         )}
-                                        {'phone' in props.value && (
-                                            <FormInputField
-                                                name='phone'
-                                                label={
-                                                    is_svg || is_dashboard
-                                                        ? localize('Phone number*')
-                                                        : localize('Phone number')
-                                                }
-                                                placeholder={
-                                                    is_svg || is_dashboard
-                                                        ? localize('Phone number*')
-                                                        : localize('Phone number')
-                                                }
-                                                maxLength={50}
-                                            />
-                                        )}
+                                        {/* TODO: Removed due to Critical Path blocking */}
+                                        {/* {'phone' in props.value && ( */}
+                                        {/*    <FormInputField */}
+                                        {/*        name='phone' */}
+                                        {/*        label={ */}
+                                        {/*            is_svg || is_dashboard */}
+                                        {/*                ? localize('Phone number*') */}
+                                        {/*                : localize('Phone number') */}
+                                        {/*        } */}
+                                        {/*        placeholder={ */}
+                                        {/*            is_svg || is_dashboard */}
+                                        {/*                ? localize('Phone number*') */}
+                                        {/*                : localize('Phone number') */}
+                                        {/*        } */}
+                                        {/*        maxLength={50} */}
+                                        {/*    /> */}
+                                        {/* )} */}
                                         {('tax_residence' in props.value ||
                                             'tax_identification_number' in props.value) && (
                                             <React.Fragment>

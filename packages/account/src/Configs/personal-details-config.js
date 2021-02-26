@@ -66,15 +66,16 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
                 : '',
             rules: [['req', localize('Citizenship is required')]],
         },
-        phone: {
-            supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
-            default_value: account_settings.phone ?? '',
-            rules: [
-                ['req', localize('Phone is required')],
-                ['phone', localize('Phone is not in a proper format.')],
-                ['length', localize('Phone should be between 8 and 35 numbers.'), { min: 9, max: 36 }], // minimum characters required is 9 including (+) sign.
-            ],
-        },
+        // TODO: Removed due to Critical Path blocking
+        // phone: {
+        //     supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
+        //     default_value: account_settings.phone ?? '',
+        //     rules: [
+        //         ['req', localize('Phone is required')],
+        //         ['phone', localize('Phone is not in a proper format.')],
+        //         ['length', localize('Phone should be between 8 and 35 numbers.'), { min: 9, max: 36 }], // minimum characters required is 9 including (+) sign.
+        //     ],
+        // },
         tax_residence: {
             default_value: account_settings.tax_residence
                 ? residence_list.find(item => item.value === account_settings.tax_residence)?.text

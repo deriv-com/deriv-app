@@ -1,12 +1,12 @@
 import React from 'react';
 import { action, computed, observable, reaction } from 'mobx';
-import { isEmptyObject, isMobile, mobileOSDetect, routes, toMoment } from '@deriv/shared';
-import { localize, Localize } from 'Components/i18next';
+import { isEmptyObject, isMobile, routes, toMoment } from '@deriv/shared';
 import BaseStore from 'Stores/base_store';
+import { localize, Localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
-import { order_list } from '../src/constants/order-list';
+import { order_list } from '../constants/order-list';
 
 export default class GeneralStore extends BaseStore {
     @observable active_index = 0;

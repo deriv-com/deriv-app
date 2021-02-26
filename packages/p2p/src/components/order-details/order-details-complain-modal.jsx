@@ -100,8 +100,8 @@ const OrderDetailsComplainModal = ({
             )}
             width='440px'
         >
-            <Modal.Body>
-                <div className='order-details-complain-modal__body'>
+            <Modal.Body className='order-details-complain-modal__body'>
+                <div className='order-details-complain-modal__body-wrapper'>
                     <OrderDetailsComplainModalRadioGroup
                         is_buy_order_for_user={is_buy_order_for_user}
                         dispute_reason={dispute_reason}

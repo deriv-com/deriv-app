@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Dialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getCurrentProductionDomain } from '@deriv/shared';
@@ -51,8 +52,8 @@ const RedirectNoticeModal = ({ is_logged_in, is_eu }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return (
-        dialog_status && (
+    return ReactDOM.createPortal(
+        dialog_status ? (
             <Dialog
                 className='redirect-notice'
                 is_visible={dialog_status}
@@ -65,7 +66,8 @@ const RedirectNoticeModal = ({ is_logged_in, is_eu }) => {
             >
                 {localize('You are being redirected to an external website.')}
             </Dialog>
-        )
+        ) : null,
+        document.getElementById('popup_root')
     );
 };
 

@@ -99,16 +99,15 @@ const OrderDetailsComplainModal = ({
                 </Text>
             )}
             width='440px'
+            height='500px'
         >
             <Modal.Body className='order-details-complain-modal__body'>
-                <div className='order-details-complain-modal__body-wrapper'>
-                    <OrderDetailsComplainModalRadioGroup
-                        is_buy_order_for_user={is_buy_order_for_user}
-                        dispute_reason={dispute_reason}
-                        onCheckboxChange={onCheckboxChange}
-                    />
-                    <ComplainExplanation />
-                </div>
+                <OrderDetailsComplainModalRadioGroup
+                    is_buy_order_for_user={is_buy_order_for_user}
+                    dispute_reason={dispute_reason}
+                    onCheckboxChange={onCheckboxChange}
+                />
+                <ComplainExplanation />
             </Modal.Body>
             <Modal.Footer>
                 <div className='order-details-complain-modal__footer'>

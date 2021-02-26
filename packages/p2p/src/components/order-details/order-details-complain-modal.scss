@@ -1,9 +1,6 @@
 .order-details-complain-modal {
     &__body {
-        min-height: 30rem;
-        &-wrapper {
-            height: 37.1rem;
-        }
+        flex-grow: 1;
     }
 
     &__explanation {

@@ -34,16 +34,16 @@
         "deep-diff": "^1.0.2"
     },
     "dependencies": {
+        "@deriv/deriv-api": "^1.0.7",
         "@deriv/indicators": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/translations": "^1.0.0",
-        "binary-live-api": "^29.0.1",
         "binary-utils": "^4.23.0",
         "blockly": "3.20191014.4",
         "file-saver": "^2.0.2",
         "immutable": "^3.8.2",
-        "lz-string": "^1.4.4",
         "js-interpreter": "^2.1.0",
+        "lz-string": "^1.4.4",
         "redux": "^4.0.1",
         "redux-thunk": "^2.2.0",
         "scratch-blocks": "0.1.0-prerelease.20200917235131",

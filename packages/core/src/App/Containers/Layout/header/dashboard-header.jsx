@@ -54,7 +54,7 @@ const LoggedInHeader = ({ is_dark_mode }) => {
 
 const LoggedOutHeader = () => {
     const history = useHistory();
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     return (
         <header className='dashboard-header dashboard-header--logged-out'>
@@ -93,7 +93,7 @@ const LoggedOutHeader = () => {
                         className='dashboard-header__right--create-button'
                         primary
                         text={localize('Create free demo account')}
-                        onClick={() => redirectToSignUp({ is_deriv_crypto })}
+                        onClick={() => redirectToSignUp({ is_dashboard })}
                     />
                 </Button.Group>
                 {isMobile() && (

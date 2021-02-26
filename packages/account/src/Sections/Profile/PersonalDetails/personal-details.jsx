@@ -56,6 +56,8 @@ export class PersonalDetailsForm extends React.Component {
 
     onSubmit = async (values, { setStatus, setSubmitting }) => {
         setStatus({ msg: '' });
+        // TODO Removed due to Critical Path blocking
+        delete values.phone;
         const request = this.makeSettingsRequest(values);
         this.setState({ is_btn_loading: true });
         const data = await WS.setSettings(request);

@@ -161,7 +161,7 @@ export default class FlyoutHelpStore {
 
     // eslint-disable-next-line
     groupBy(nodes, should_include_block_only = false) {
-        return Array.from(nodes).reduce(function (block_group, node) {
+        return Array.from(nodes).reduce((block_group, node) => {
             const type = node.getAttribute('type');
 
             if (should_include_block_only && type === null) {

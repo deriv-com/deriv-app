@@ -14,7 +14,7 @@ Blockly.Blocks.trade_again = {
             colourSecondary: Blockly.Colours.Special1.colourSecondary,
             colourTertiary: Blockly.Colours.Special1.colourTertiary,
             previousStatement: null,
-            tooltip: localize('This blocks transfers control to the Purchase conditions block.'),
+            tooltip: localize('These blocks transfer control to the Purchase conditions block.'),
             category: Blockly.Categories.After_Purchase,
         };
     },

@@ -124,7 +124,9 @@ const renderList = (fields, login_history) => (
 
 const ListCell = ({ title, text, className }) => (
     <React.Fragment>
-        <h3 className='login-history__list__row__cell--title'>{title}</h3>
+        <Text as='h3' size='xxs' weight='bold' color='prominent' className='login-history__list__row__cell--title'>
+            {title}
+        </Text>
         <Text className={className} line_height='xs' size='xs'>
             {text}
         </Text>

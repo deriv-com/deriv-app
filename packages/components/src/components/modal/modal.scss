@@ -96,7 +96,7 @@
         align-items: center;
 
         &__border-bottom {
-            border-bottom: 2px solid var(--general-section-2);
+            border-bottom: 2px solid var(--general-section-2) !important;
         }
 
         &__title {
@@ -152,9 +152,6 @@
             .dc-modal-header__close {
                 z-index: 1;
             }
-        }
-        &--no-border {
-            border-bottom: none;
         }
 
         // fix for safari bug with header being truncated

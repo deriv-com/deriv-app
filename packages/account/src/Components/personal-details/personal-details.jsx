@@ -19,7 +19,7 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, isMobile, toMoment } from '@deriv/shared';
+import { isDesktop, isMobile, toMoment, PlatformContext } from '@deriv/shared';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import FormSubHeader from '../form-sub-header';
 
@@ -76,11 +76,11 @@ const PersonalDetails = ({
     residence_list,
     is_fully_authenticated,
     account_opening_reason_list,
-    is_dashboard,
     onSubmitEnabledChange,
     selected_step_ref,
     ...props
 }) => {
+    const { is_dashboard } = React.useContext(PlatformContext);
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
     const [warning_items, setWarningItems] = React.useState({});
@@ -168,19 +168,22 @@ const PersonalDetails = ({
                                             <RadioGroup
                                                 className='dc-radio__input'
                                                 name='salutation'
-                                                items={salutation_list.map(item => {
-                                                    if (disabled_items.includes('salutation')) {
-                                                        item.disabled = true;
-                                                    }
-                                                    return item;
-                                                })}
                                                 selected={values.salutation}
                                                 onToggle={e => {
                                                     e.persist();
                                                     setFieldValue('salutation', e.target.value);
                                                 }}
                                                 required
-                                            />
+                                            >
+                                                {salutation_list.map(item => (
+                                                    <RadioGroup.Item
+                                                        key={item.value}
+                                                        label={item.label}
+                                                        value={item.value}
+                                                        disabled={disabled_items.includes('salutation')}
+                                                    />
+                                                ))}
+                                            </RadioGroup>
                                         )}
                                         {'first_name' in props.value && (
                                             <FormInputField

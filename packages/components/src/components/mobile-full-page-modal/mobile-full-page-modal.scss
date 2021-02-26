@@ -7,6 +7,7 @@
     top: calc(#{$MOBILE_HEADER_HEIGHT} + #{$MOBILE_WRAPPER_HEADER_HEIGHT});
     background: var(--general-main-1);
     max-height: 100%;
+    overflow-y: scroll;
 
     &--flex {
         display: flex;

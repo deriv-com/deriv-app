@@ -5,7 +5,13 @@ import { useStores } from 'Stores';
 
 const CurrencySelectorForm: React.FC = props => {
     const { client_store, ui_store } = useStores();
-    const { currencies_list, currency, has_active_real_account, upgradeable_currencies } = client_store;
+    const {
+        currencies_list,
+        currency,
+        has_active_real_account,
+        upgradeable_currencies,
+        has_wallet_account,
+    } = client_store;
     const { real_account_signup, resetRealAccountSignupParams } = ui_store;
 
     return (
@@ -17,6 +23,7 @@ const CurrencySelectorForm: React.FC = props => {
             legal_allowed_currencies={upgradeable_currencies}
             real_account_signup={real_account_signup}
             resetRealAccountSignupParams={resetRealAccountSignupParams}
+            has_wallet_account={has_wallet_account}
             has_cancel
         />
     );

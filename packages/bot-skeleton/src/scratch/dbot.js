@@ -123,7 +123,7 @@ class DBot {
             const code = this.generateCode();
 
             if (this.interpreter !== null) {
-                this.stopBot();
+                this.interpreter = null;
             }
 
             this.interpreter = new Interpreter();
@@ -301,7 +301,6 @@ class DBot {
                     'One or more mandatory blocks are missing from your workspace. Please add the required block(s) and then try again.'
                 )
             );
-
             globalObserver.emit('Error', error);
 
             return false;

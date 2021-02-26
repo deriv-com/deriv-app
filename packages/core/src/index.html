@@ -120,9 +120,11 @@
                 };
             }(method);
         }
-        rudderanalytics.load('1lN3tsFD2nruGFgM5F074DC2hMB', 'https://hosted.rudderlabs.com');
-        //For example,
-        //rudderanalytics.load("1Qb1F3jSWv0eKFBPZcrM7ypgjVo", "http://localhost:8080");
+        // Production keys
+        rudderanalytics.load('1oV5agvlcnCZ6IH94wCKM1oR8Pd', 'https://deriv-dataplane.rudderstack.com');
+        // Staging keys
+        // rudderanalytics.load('1lN3tsFD2nruGFgM5F074DC2hMB', 'https://hosted.rudderlabs.com');
+        
         rudderanalytics.page();
     </script>
     <script async src="https://cdn.rudderlabs.com/rudder-analytics.min.js"></script>
@@ -216,6 +218,8 @@
     <!-- TODO: Use og_image.gif once the new design is ready -->
     <meta name="google" content="notranslate" />
     <meta name="referrer" content="origin" />
+
+    <link rel="manifest" href="/manifest.json">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://www.googletagmanager.com" />

@@ -119,7 +119,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &-title {
-            @include typeface(--paragraph-left-bold-prominent, none);
             margin-bottom: 0.8rem;
             max-width: 18.8rem;
         }
@@ -187,10 +186,8 @@ $MIN_HEIGHT_FLOATING: calc(
         &__fieldset {
             position: relative;
             max-width: 400px;
+            margin-top: 9px;
             margin-bottom: 18px;
-            &:not(:first-child) {
-                margin-top: 3rem;
-            }
 
             &--2-cols {
                 display: grid;
@@ -245,7 +242,6 @@ $MIN_HEIGHT_FLOATING: calc(
             border-top: 1px solid var(--general-section-1);
             border-width: 1px;
             background-color: var(--general-main-1);
-            transition: all 0.3s ease-out;
 
             &-note {
                 color: var(--text-prominent);
@@ -279,7 +275,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 padding-top: 0.8rem;
             }
             @include mobile {
-                padding: 16px 0;
+                padding: 16px 0px;
                 flex-direction: column;
                 height: auto;
                 align-items: initial;
@@ -304,7 +300,6 @@ $MIN_HEIGHT_FLOATING: calc(
                     }
                 }
                 .account-form__footer-note {
-                    font-size: 1rem;
                     height: auto;
                     margin-bottom: 1.6rem;
                 }
@@ -345,18 +340,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 text-align: left;
             }
         }
-        &__container {
-            display: grid;
-            grid-template-columns: 26rem 1fr;
-            grid-gap: 1.6rem;
-
-            @include mobile {
-                grid-template-columns: none;
-            }
-        }
-        &__help-text {
-            margin-top: 1.2rem;
-        }
     }
     &__initial-loader {
         height: calc(100vh - 240px);
@@ -372,21 +355,6 @@ $MIN_HEIGHT_FLOATING: calc(
     &__text {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-general);
-    }
-    &__alert-box {
-        padding: 0.8rem 0.8rem 1rem;
-        border-radius: $BORDER_RADIUS;
-        background-color: rgba(255, 173, 58, 0.16);
-        display: flex;
-        max-width: 69rem;
-
-        @include desktop {
-            margin-top: -2.4rem;
-        }
-
-        &-text {
-            padding-left: 0.8rem;
-        }
     }
     .account-management__message {
         margin-top: 1em;
@@ -482,6 +450,36 @@ $MIN_HEIGHT_FLOATING: calc(
                 padding: 0;
                 margin-bottom: 0;
             }
+        }
+    }
+    .account-management {
+        &__list {
+            &-container {
+                margin-top: 1.6rem;
+                max-width: 50.6rem;
+                display: flex;
+                flex-direction: column;
+            }
+            &-icon {
+                margin-right: 1.2rem;
+                margin-top: 0.2rem;
+            }
+            &-message {
+                display: flex;
+                margin-bottom: 1.6rem;
+
+                &:last-of-type {
+                    margin-bottom: 0;
+                }
+            }
+            &-button.dc-btn {
+                margin-top: 2.4rem;
+                width: fit-content;
+                align-self: center;
+            }
+        }
+        &__continue.dc-btn {
+            margin-top: 1.6rem;
         }
     }
     .account__text_container {
@@ -619,9 +617,6 @@ $MIN_HEIGHT_FLOATING: calc(
                     margin-bottom: 0;
                 }
             }
-            &--title {
-                @include typeface(--small-left-bold-black, none);
-            }
         }
         &__scrollbars {
             height: 100%;
@@ -662,7 +657,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__title {
-            @include typeface(--title-left-bold-prominent, none);
             margin-bottom: 1.5rem;
             margin-left: 1.2rem;
 
@@ -718,11 +712,9 @@ $MIN_HEIGHT_FLOATING: calc(
                 width: auto;
             }
             &--title {
-                @include typeface(--title-center-bold-prominent, none);
                 margin-top: 2.4rem;
             }
             &--message {
-                @include typeface(--paragraph-center-normal-black, none);
                 margin: 1.6rem 0 0;
             }
             &--code {
@@ -789,7 +781,6 @@ $MIN_HEIGHT_FLOATING: calc(
 
             &-header {
                 margin-top: 3.6rem;
-                @include typeface(--title-center-bold-prominent);
                 margin-bottom: 1.4rem;
             }
             &-item {
@@ -831,7 +822,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__header {
-            @include typeface(--paragraph-left-bold-prominent);
             margin-bottom: 1.6rem;
             margin-top: 2.4rem;
 
@@ -1057,13 +1047,9 @@ $MIN_HEIGHT_FLOATING: calc(
                         display: block;
 
                         &--title {
-                            font-size: var(--text-size-xxs);
-                            font-weight: var(--text-weight-bold);
                             font-stretch: normal;
                             font-style: normal;
-                            line-height: var(--text-lh-m);
                             letter-spacing: normal;
-                            color: var(--text-prominent);
                         }
                         &--action {
                             text-transform: capitalize;
@@ -1568,7 +1554,6 @@ $MIN_HEIGHT_FLOATING: calc(
             align-items: center;
 
             &-header {
-                @include typeface(--title-center-bold-prominent, none);
                 margin: 1.6rem 0 2.4rem;
             }
             &-image {

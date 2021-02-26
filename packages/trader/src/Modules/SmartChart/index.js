@@ -15,12 +15,10 @@ const load = component_name => () =>
     });
 
 export const SmartChart = React.lazy(load('SmartChart'));
-export const AssetInformation = React.lazy(load('AssetInformation'));
 export const ChartTitle = React.lazy(load('ChartTitle'));
 
 export const ChartSize = React.lazy(load('ChartSize'));
 export const ChartMode = React.lazy(load('ChartMode'));
-export const Comparison = React.lazy(load('Comparison'));
 export const DrawTools = React.lazy(load('DrawTools'));
 export const Share = React.lazy(load('Share'));
 export const StudyLegend = React.lazy(load('StudyLegend'));

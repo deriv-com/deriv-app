@@ -263,6 +263,7 @@ const MT5RealAccountDisplay = ({
                     item_per_window={3}
                     className={'mt5-real-accounts-display__carousel'}
                     is_mt5={true}
+                    is_logged_in={is_logged_in}
                 />
             </DesktopWrapper>
             <MobileWrapper>

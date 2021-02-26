@@ -31,7 +31,7 @@ const CurrencySelector = ({
     has_wallet_account,
     ...props
 }) => {
-    const { is_deriv_crypto, is_dashboard } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
     const crypto = legal_allowed_currencies.filter(currency => currency.type === 'crypto');
     const fiat = legal_allowed_currencies.filter(currency => currency.type === 'fiat');
     const [is_bypass_step, setIsBypassStep] = React.useState(false);
@@ -149,7 +149,7 @@ const CurrencySelector = ({
                                             <RadioButtonGroup
                                                 id='currency'
                                                 className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                                                label={is_deriv_crypto ? '' : localize('Cryptocurrencies')}
+                                                label={localize('Cryptocurrencies')}
                                                 value={values.currency}
                                                 error={errors.currency}
                                                 touched={touched.currency}

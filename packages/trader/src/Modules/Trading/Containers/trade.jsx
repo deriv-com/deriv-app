@@ -47,6 +47,8 @@ const Trade = ({
     const [try_synthetic_indices, setTrySyntheticIndices] = React.useState(false);
     const [is_digits_widget_active, setIsDigitsWidgetActive] = React.useState(false);
 
+    const extra_small_device = React.useMemo(() => window.innerHeight < 480, [window]);
+
     React.useEffect(() => {
         onMount();
         return () => onUnmount();
@@ -87,7 +89,7 @@ const Trade = ({
                 id='chart_container'
                 className='chart-container'
                 is_disabled={isDesktop()}
-                height_offset='259px'
+                height_offset={extra_small_device ? '210px' : '259px'}
             >
                 <NotificationMessages />
                 <React.Suspense
@@ -300,7 +302,7 @@ const Chart = props => {
                 const isExtraSmallScreen = chart_height < 320;
                 const denominator = indicator_count >= 5 ? indicator_count : indicator_count + 1;
                 let reservedHeight = 0;
-                if (isMobile() && isExtraSmallScreen) reservedHeight = 100;
+                if (isMobile() && isExtraSmallScreen) reservedHeight = 50;
                 else if (isMobile() && isSmallScreen) reservedHeight = 120;
                 else reservedHeight = 320;
 

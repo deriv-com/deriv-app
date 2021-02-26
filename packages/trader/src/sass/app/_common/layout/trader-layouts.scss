@@ -413,6 +413,15 @@ $FLOATING_HEADER_HEIGHT: 41px;
             width: 100%;
         }
     }
+    /* iPhone SE screen height fixes due to UI space restrictions */
+    @media only screen and (max-height: 480px) {
+        height: 186px;
+
+        .dc-collapsible {
+            transform: scale(1, 0.8);
+            left: 0.8rem;
+        }
+    }
 }
 
 /** @define chart-container; weak */

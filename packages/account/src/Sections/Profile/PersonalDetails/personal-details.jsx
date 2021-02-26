@@ -21,10 +21,10 @@ import {
     validAddress,
     validPostCode,
     validTaxID,
-    validPhone,
+    // validPhone,
     validLetterSymbol,
     validLength,
-    validCountryCode,
+    // validCountryCode,
     getLocation,
     removeObjProperties,
     filterObjProperties,
@@ -184,28 +184,28 @@ export class PersonalDetailsForm extends React.Component {
             errors.last_name = localize('You should enter 2-50 characters.');
         }
 
-        if (values.phone) {
-            // minimum characters required is 9 including (+) sign
-            // phone_trim uses regex that trims (+) sign
-            // minimum characters required w/o (+) sign is 8 characters.
-            const min_phone_number = 8;
-            const max_phone_number = 35;
-            const phone_trim = values.phone.replace(/\D/g, '');
-            const phone_error_message = localize(
-                'Please enter a valid phone number, including the country code (e.g +15417541234).'
-            );
-
-            if (!validLength(phone_trim, { min: min_phone_number, max: max_phone_number })) {
-                errors.phone = localize('You should enter {{min}}-{{max}} numbers.', {
-                    min: min_phone_number,
-                    max: max_phone_number,
-                });
-            } else if (!validCountryCode(this.props.residence_list, values.phone)) {
-                errors.phone = phone_error_message;
-            } else if (!validPhone(values.phone)) {
-                errors.phone = phone_error_message;
-            }
-        }
+        // if (values.phone) {
+        //     // minimum characters required is 9 including (+) sign
+        //     // phone_trim uses regex that trims (+) sign
+        //     // minimum characters required w/o (+) sign is 8 characters.
+        //     const min_phone_number = 8;
+        //     const max_phone_number = 35;
+        //     const phone_trim = values.phone.replace(/\D/g, '');
+        //     const phone_error_message = localize(
+        //         'Please enter a valid phone number, including the country code (e.g +15417541234).'
+        //     );
+        //
+        //     if (!validLength(phone_trim, { min: min_phone_number, max: max_phone_number })) {
+        //         errors.phone = localize('You should enter {{min}}-{{max}} numbers.', {
+        //             min: min_phone_number,
+        //             max: max_phone_number,
+        //         });
+        //     } else if (!validCountryCode(this.props.residence_list, values.phone)) {
+        //         errors.phone = phone_error_message;
+        //     } else if (!validPhone(values.phone)) {
+        //         errors.phone = phone_error_message;
+        //     }
+        // }
 
         const permitted_characters = "- . ' # ; : ( ) , @ /";
         const address_validation_message = localize(
@@ -591,19 +591,20 @@ export class PersonalDetailsForm extends React.Component {
                                     </fieldset>
                                     {!this.props.is_virtual && (
                                         <React.Fragment>
-                                            <fieldset className='account-form__fieldset'>
-                                                <Input
-                                                    data-lpignore='true'
-                                                    type='text'
-                                                    name='phone'
-                                                    label={localize('Phone number*')}
-                                                    value={values.phone}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    required
-                                                    error={touched.phone && errors.phone}
-                                                />
-                                            </fieldset>
+                                            {/* TODO: Removed due to Critical Path blocking */}
+                                            {/* <fieldset className='account-form__fieldset'> */}
+                                            {/*    <Input */}
+                                            {/*        data-lpignore='true' */}
+                                            {/*        type='text' */}
+                                            {/*        name='phone' */}
+                                            {/*        label={localize('Phone number*')} */}
+                                            {/*        value={values.phone} */}
+                                            {/*        onChange={handleChange} */}
+                                            {/*        onBlur={handleBlur} */}
+                                            {/*        required */}
+                                            {/*        error={touched.phone && errors.phone} */}
+                                            {/*    /> */}
+                                            {/* </fieldset> */}
                                             {/* Hide Account Opening Reason, uncomment block below to re-enable */}
                                             {/* <fieldset className='account-form__fieldset'> */}
                                             {/*    {account_opening_reason && is_fully_authenticated ? ( */}

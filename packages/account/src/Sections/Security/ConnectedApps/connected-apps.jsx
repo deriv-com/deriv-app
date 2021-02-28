@@ -106,7 +106,7 @@ class ConnectedApps extends React.Component {
                                 className='connected-apps'
                                 data_source={this.state.connected_apps}
                                 columns={GetConnectedAppsColumnsTemplate(this.handleToggleModal)}
-                                getRowSize={() => 56}
+                                getRowSize={is_dashboard ? 38 : 56}
                             />
                         </DesktopWrapper>
                         <MobileWrapper>

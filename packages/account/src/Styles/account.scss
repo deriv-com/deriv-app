@@ -1617,21 +1617,7 @@ $MIN_HEIGHT_FLOATING: calc(
         padding-left: 8px;
         padding-right: 8px;
     }
-    &__wrapper {
-        max-width: 682px;
-        max-height: 560px;
-        height: 100%;
-        width: 100%;
-        &--dashboard {
-            max-width: 80rem;
-            & .table__row {
-                grid-template-columns: 17rem 20rem 15.5rem 11rem;
-            }
-            & .data-list__item {
-                box-shadow: 0px 1.6rem #00000005, 0px 1.6rem #0000000d;
-            }
-        }
-    }
+
     &__loading {
         height: calc(100vh - 240px);
     }
@@ -1659,6 +1645,24 @@ $MIN_HEIGHT_FLOATING: calc(
                     width: 100%;
                     overflow: hidden;
                 }
+            }
+        }
+    }
+    &__wrapper {
+        max-width: 682px;
+        max-height: 560px;
+        height: 100%;
+        width: 100%;
+        &--dashboard {
+            max-width: 80rem;
+            & .table__cell {
+                height: 3.8rem;
+            }
+            & .table__row {
+                grid-template-columns: 17rem 20rem 15.5rem 11rem;
+            }
+            & .data-list__item {
+                box-shadow: 0px 1.6rem #00000005, 0px 1.6rem #0000000d;
             }
         }
     }

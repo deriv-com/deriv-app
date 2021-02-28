@@ -215,7 +215,9 @@ const AccountLimits = ({ account_limits, currency, getLimits, is_fully_authentic
                                     <tbody>
                                         <Row>
                                             <Td is_flex className='account-management-table__total-withdraw'>
-                                                {localize('Total withdrawal allowed')}
+                                                {is_dashboard
+                                                    ? localize('Total withdrawal limit')
+                                                    : localize('Total withdrawal allowed')}
                                                 {is_dashboard && (
                                                     <React.Fragment>
                                                         <Text
@@ -274,13 +276,9 @@ const AccountLimits = ({ account_limits, currency, getLimits, is_fully_authentic
                                         )}
                                     </Text>
                                 ) : (
-                                    <React.Fragment>
-                                        {!is_dashboard && (
-                                            <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
-                                                {localize('Stated limits are subject to change without prior notice.')}
-                                            </Text>
-                                        )}
-                                    </React.Fragment>
+                                    <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
+                                        {localize('Stated limits are subject to change without prior notice.')}
+                                    </Text>
                                 )}
                             </TextContainer>
                         </div>

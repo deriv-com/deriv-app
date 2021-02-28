@@ -35,7 +35,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                     'regular',
                     localize('City field is not in a proper format'),
                     {
-                        regex: /^[A-z0-9\s'.-]{0,35}$/,
+                        regex: /^[A-Za-z0-9\s'.-]{1,35}$/,
                     },
                 ],
             ],

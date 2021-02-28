@@ -113,7 +113,7 @@ class ConnectedApps extends React.Component {
                             <DataList
                                 className='connected-apps'
                                 data_source={this.state.connected_apps}
-                                row_gap={10}
+                                row_gap={is_dashboard ? 16 : 10}
                                 rowRenderer={this.mobileRowRenderer}
                             />
                         </MobileWrapper>
@@ -134,7 +134,11 @@ class ConnectedApps extends React.Component {
                             <Text as='p' color='prominent' weight='bold'>
                                 {localize('Confirm revoke access?')}
                             </Text>
-                            <div className='connected-app-modal__confirmation'>
+                            <div
+                                className={classNames('connected-app-modal__confirmation', {
+                                    'connected-app-modal__confirmation-dashboard': is_dashboard,
+                                })}
+                            >
                                 <Button secondary onClick={this.handleToggleModal}>
                                     {localize('Back')}
                                 </Button>

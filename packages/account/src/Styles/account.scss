@@ -1604,6 +1604,15 @@ $MIN_HEIGHT_FLOATING: calc(
         max-height: 560px;
         height: 100%;
         width: 100%;
+        &--dashboard {
+            max-width: 80rem;
+            & .table__row {
+                grid-template-columns: 17rem 20rem 15.5rem 11rem;
+            }
+            & .data-list__item {
+                box-shadow: 0px 1.6rem #00000005, 0px 1.6rem #0000000d;
+            }
+        }
     }
     &__loading {
         height: calc(100vh - 240px);
@@ -1842,13 +1851,17 @@ $MIN_HEIGHT_FLOATING: calc(
                     &__confirmation {
                         margin-top: 24px;
                         margin-bottom: 32px;
-
                         button {
                             width: 85px;
                             height: 40px;
                         }
                         > :first-child {
                             margin-right: 16px;
+                        }
+                        &-dashboard {
+                            button {
+                                width: unset;
+                            }
                         }
                     }
                 }

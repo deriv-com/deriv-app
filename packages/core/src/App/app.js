@@ -8,7 +8,18 @@ configure({ enforceActions: 'observed' });
 
 const setStorageEvents = root_store => {
     window.addEventListener('storage', evt => {
+        const active_loginid = root_store.client.loginid;
+
         switch (evt.key) {
+            case 'client.accounts':
+                if (
+                    document.hidden &&
+                    JSON.parse(evt.oldValue)[active_loginid]?.currency !==
+                        JSON.parse(evt.newValue)[active_loginid]?.currency
+                ) {
+                    window.location.reload();
+                }
+                break;
             case 'active_loginid':
                 if (document.hidden) {
                     window.location.reload();

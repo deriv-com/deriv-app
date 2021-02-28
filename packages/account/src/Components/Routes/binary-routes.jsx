@@ -5,7 +5,7 @@ import getRoutesConfig from 'Constants/routes-config';
 import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 
 const BinaryRoutes = props => {
-    const { is_deriv_crypto, is_dashboard } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     return (
         <React.Suspense
@@ -18,7 +18,7 @@ const BinaryRoutes = props => {
             }}
         >
             <Switch>
-                {getRoutesConfig({ is_deriv_crypto, is_dashboard }).map((route, idx) => (
+                {getRoutesConfig({ is_dashboard }).map((route, idx) => (
                     <RouteWithSubRoutes key={idx} {...route} {...props} />
                 ))}
             </Switch>

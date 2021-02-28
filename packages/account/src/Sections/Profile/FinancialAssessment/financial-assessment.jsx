@@ -607,7 +607,7 @@ class FinancialAssessment extends React.Component {
                                             <>
                                                 <FormSubHeader
                                                     title={localize('Trading experience')}
-                                                    subtitle={isDesktop() && `(${localize('All fields are required')})`}
+                                                    subtitle={`(${localize('All fields are required')})`}
                                                 />
                                                 <FormBodySection
                                                     has_side_note={is_dashboard}

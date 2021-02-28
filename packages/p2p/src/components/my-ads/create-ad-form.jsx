@@ -63,7 +63,10 @@ const CreateAdForm = () => {
                     return (
                         <div className='p2p-my-ads__form'>
                             <Form noValidate>
-                                <ThemedScrollbars className='p2p-my-ads__form-scrollbar'>
+                                <ThemedScrollbars
+                                    className='p2p-my-ads__form-scrollbar'
+                                    is_scrollbar_hidden={isMobile()}
+                                >
                                     <CreateAdFormWrapper>
                                         <div className='p2p-my-ads__form-summary'>
                                             <CreateAdSummary
@@ -238,7 +241,7 @@ const CreateAdForm = () => {
                                                             type='textarea'
                                                             label={
                                                                 <Text color='less-prominent' size='xs'>
-                                                                    <Localize i18n_default_text='Your contact details' />{' '}
+                                                                    <Localize i18n_default_text='Your contact details' />
                                                                 </Text>
                                                             }
                                                             error={touched.contact_info && errors.contact_info}

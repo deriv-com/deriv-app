@@ -83,7 +83,7 @@ const CreateAdForm = () => {
                                                 <Input
                                                     {...field}
                                                     data-lpignore='true'
-                                                    type='text'
+                                                    type='number'
                                                     error={touched.offer_amount && errors.offer_amount}
                                                     label={localize('Total amount')}
                                                     className='p2p-my-ads__form-field'
@@ -120,7 +120,7 @@ const CreateAdForm = () => {
                                                 <Input
                                                     {...field}
                                                     data-lpignore='true'
-                                                    type='text'
+                                                    type='number'
                                                     error={touched.price_rate && errors.price_rate}
                                                     label={localize('Fixed rate (1 {{currency}})', {
                                                         currency,
@@ -143,7 +143,7 @@ const CreateAdForm = () => {
                                                 <Input
                                                     {...field}
                                                     data-lpignore='true'
-                                                    type='text'
+                                                    type='number'
                                                     error={touched.min_transaction && errors.min_transaction}
                                                     label={localize('Min order')}
                                                     className='p2p-my-ads__form-field'
@@ -164,7 +164,7 @@ const CreateAdForm = () => {
                                                 <Input
                                                     {...field}
                                                     data-lpignore='true'
-                                                    type='text'
+                                                    type='number'
                                                     error={touched.max_transaction && errors.max_transaction}
                                                     label={localize('Max order')}
                                                     className='p2p-my-ads__form-field'

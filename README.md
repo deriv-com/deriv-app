@@ -27,6 +27,7 @@ This repository contains the various platforms of the Deriv application.
 - [Stylesheet guidelines](docs/Stylesheet/README.md) - Contains rules for CSS/SASS code style
 - [JavaScript guidelines](docs/JavaScript/README.md) - Contains rules for JS/JSX code style
 - [Modules docs](docs/Modules/README.md) - Contains implementation guides (i.e., scaffolding, code usage)
+- [e2e and performance testing docs](e2e_tests/README.md) - Contains documents for create and running e2e and performance tests
 
 [comment]: <> (TODO: Refactor Clean Project to be under usage)
 
@@ -61,6 +62,8 @@ All packages must contain the following scripts to perform the stated actions:
 | ✅            | `test`              | Runs the test suite with eslint, stylelint and jest.                                          |
 | ✅            | `test:mocha`        | Runs only the test suite.                                                                     |
 | ✅            | `test:jest`         | Runs only the jest test suite.                                                                |
+| ✅            | `test:qa`           | Runs the e2e test suite.                                                                      |
+| ✅            | `test:performance`  | Runs the performance test suite.                                                              |
 
 [comment]: <> (The following scripts are not to be used except for CI/CD environments)
 [comment]: <> (| ❌            | `deploy`            | Runs `build` script, then pushes the output to GH Pages.                                      |)

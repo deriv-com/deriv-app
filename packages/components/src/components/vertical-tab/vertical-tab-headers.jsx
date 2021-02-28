@@ -22,7 +22,7 @@ const offsetTop = (extra_offset, is_floating, ref, selected) => {
 
     if (selected_el) {
         item_offset = is_floating ? extra_offset || 18 : 10;
-        calculated_offset = selected_el.offsetTop - item_offset;
+        calculated_offset = selected_el.offsetTop && selected_el.offsetTop - item_offset;
     }
 
     return calculated_offset;

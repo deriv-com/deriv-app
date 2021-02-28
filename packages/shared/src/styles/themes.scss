@@ -19,6 +19,7 @@
     --text-lh-m: 1.5;
     --text-lh-l: 1.75;
     --text-lh-xl: 2;
+    --text-lh-xxl: 2.4;
 
     //Font Weight
     --text-weight-lighter: lighter;
@@ -130,6 +131,7 @@
         --status-danger: #{$color-red-1};
         --status-success: #{$color-green-1};
         --status-warning: #{$color-yellow};
+        --status-transfer: #{$color-orange};
         --status-info: #{$color-blue};
         --status-colored-background: #{$color-white};
         // Dashboard
@@ -232,6 +234,7 @@
         --status-danger: #{$color-red-2};
         --status-warning: #{$color-yellow};
         --status-success: #{$color-green-3};
+        --status-transfer: #{$color-orange};
         --status-info: #{$color-blue};
         --status-colored-background: #{$color-white};
         // Transparentize

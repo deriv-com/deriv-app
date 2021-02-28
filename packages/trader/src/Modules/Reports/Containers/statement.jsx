@@ -22,7 +22,7 @@ const getRowAction = row_obj => {
     if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
         action =
             getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()] &&
-            !isForwardStarting(row_obj.shortcode, row_obj.purchase_time)
+            !isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time)
                 ? getContractPath(row_obj.id)
                 : {
                       component: (
@@ -45,7 +45,7 @@ const getRowAction = row_obj => {
                   };
     } else if (
         row_obj.desc &&
-        ['deposit', 'withdrawal', 'adjustment', 'hold', 'release'].includes(row_obj.action_type)
+        ['deposit', 'withdrawal', 'transfer', 'adjustment', 'hold', 'release'].includes(row_obj.action_type)
     ) {
         action = {
             message: row_obj.desc,

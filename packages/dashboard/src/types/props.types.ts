@@ -32,7 +32,6 @@ export type TClientProps = {
 export type TConfigProps = {
     asset_path: string;
     has_router: boolean;
-    is_deriv_crypto: boolean;
     routes: TRoutesProps;
 };
 

@@ -348,7 +348,9 @@ export default class ClientStore extends BaseStore {
             (acc, cur) => (cur.supported_accounts.includes('gaming') && !cur.disabled ? acc + 1 : acc),
             0
         );
-        return number_of_current_added_synthetics < number_of_available_synthetic;
+        return (
+            number_of_current_added_synthetics > 0 && number_of_current_added_synthetics < number_of_available_synthetic
+        );
     }
 
     @computed
@@ -868,22 +870,16 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    async createCryptoAccount(currency, is_deriv_crypto) {
+    async createCryptoAccount(currency) {
         const residence = this.residence;
-        let data = {
+        const { date_of_birth, first_name, last_name } = this.account_settings;
+        const data = {
             residence,
             currency,
+            first_name,
+            last_name,
+            date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
         };
-
-        if (!is_deriv_crypto) {
-            const { date_of_birth, first_name, last_name } = this.account_settings;
-            data = {
-                ...data,
-                first_name,
-                last_name,
-                date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
-            };
-        }
 
         const response = await WS.newAccountReal(data);
         if (!response.error) {
@@ -1454,6 +1450,7 @@ export default class ClientStore extends BaseStore {
         this.user_id = null;
         this.upgrade_info = undefined;
         this.accounts = {};
+        this.mt5_login_list = [];
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 
@@ -1468,9 +1465,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     async logout() {
         // TODO: [add-client-action] - Move logout functionality to client store
-        const logout_promise = requestLogout();
-
-        const response = await logout_promise;
+        const response = await requestLogout();
 
         if (response.logout === 1) {
             this.cleanUp();
@@ -1699,8 +1694,7 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    onSignup({ password, residence, is_deriv_crypto, is_account_signup_modal_visible }, cb) {
-        const is_first_time_signup = is_account_signup_modal_visible;
+    onSignup({ password, residence }, cb) {
         if (!this.verification_code.signup || !password || !residence) return;
 
         // Currently the code doesn't reach here and the console log is needed for debugging.
@@ -1728,10 +1722,6 @@ export default class ClientStore extends BaseStore {
 
                 if (this.is_mt5_allowed) {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
-                }
-
-                if (is_deriv_crypto && is_first_time_signup) {
-                    this.root_store.ui.openRealAccountSignup();
                 }
             }
         });

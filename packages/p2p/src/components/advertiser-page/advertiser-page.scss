@@ -104,6 +104,7 @@
 
                 @include mobile {
                     flex-direction: row;
+                    justify-content: center;
                     padding-left: 0.5rem;
                 }
             }

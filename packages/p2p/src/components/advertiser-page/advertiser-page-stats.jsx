@@ -53,19 +53,19 @@ const AdvertiserPageStats = () => {
                         ) : (
                             <React.Fragment>
                                 <Table.Cell className='advertiser-page__stats-cell'>
-                                    <Text color='less-prominent' size='xs' line_height='m'>
+                                    <Text align='center' color='less-prominent' size='xs' line_height='m'>
                                         {localize('Buy')}
                                     </Text>
-                                    <Text color='prominent' size='s' weight='bold'>
+                                    <Text align='center' color='prominent' size='s' weight='bold'>
                                         {buy_orders_count || '-'}
                                     </Text>
                                 </Table.Cell>
                                 <div className='advertiser-page__stats-cell-separator' />
                                 <Table.Cell className='advertiser-page__stats-cell'>
-                                    <Text color='less-prominent' size='xs' line_height='m'>
+                                    <Text align='center' color='less-prominent' size='xs' line_height='m'>
                                         {localize('Sell')}
                                     </Text>
-                                    <Text color='prominent' size='s' weight='bold'>
+                                    <Text align='center' color='prominent' size='s' weight='bold'>
                                         {sell_orders_count || '-'}
                                     </Text>
                                 </Table.Cell>

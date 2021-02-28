@@ -413,7 +413,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     }
                 }
                 @include mobile {
-                    margin: 0 1.6rem;
+                    margin: 0 1rem;
 
                     &--has-bottom-margin {
                         margin-bottom: 1.6rem;
@@ -1118,6 +1118,11 @@ $MIN_HEIGHT_FLOATING: calc(
 
                 @include mobile {
                     position: absolute;
+                    &-dashboard {
+                        button {
+                            width: 100%;
+                        }
+                    }
                 }
             }
         }

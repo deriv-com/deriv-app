@@ -1,5 +1,6 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
+import classNames from 'classnames';
 import {
     Loading,
     ThemedScrollbars,
@@ -609,16 +610,6 @@ class SelfExclusion extends React.Component {
                                     ) : (
                                         <React.Fragment>
                                             <SectionHeader title={localize('Your stake and loss limits')} />
-
-                                            <Text
-                                                as='h2'
-                                                size='xs'
-                                                weight='bold'
-                                                color='prominent'
-                                                className='self-exclusion__header'
-                                            >
-                                                {localize('Your stake and loss limits')}
-                                            </Text>
                                             <div className='self-exclusion__item-wrapper'>
                                                 <div className='self-exclusion__item'>
                                                     <Text
@@ -769,15 +760,6 @@ class SelfExclusion extends React.Component {
                                                 </div>
                                             </div>
                                             <SectionHeader title={localize('Your session and login limits')} />
-                                            <Text
-                                                as='h2'
-                                                size='xs'
-                                                weight='bold'
-                                                color='prominent'
-                                                className='self-exclusion__header'
-                                            >
-                                                {localize('Your session and login limits')}
-                                            </Text>
                                             <div className='self-exclusion__item-wrapper'>
                                                 <div className='self-exclusion__item'>
                                                     <Text as='p' size='xs' className='self-exclusion__item-field'>
@@ -1049,15 +1031,6 @@ class SelfExclusion extends React.Component {
                                             <SectionHeader
                                                 title={localize('Your maximum account balance and open positions')}
                                             />
-                                            <Text
-                                                as='h2'
-                                                size='xs'
-                                                weight='bold'
-                                                color='prominent'
-                                                className='self-exclusion__header'
-                                            >
-                                                {localize('Your maximum account balance and open positions')}
-                                            </Text>
                                             <div className='self-exclusion__item-wrapper'>
                                                 <div className='self-exclusion__item'>
                                                     <Text as='p' size='xs' className='self-exclusion__item-field'>
@@ -1104,7 +1077,11 @@ class SelfExclusion extends React.Component {
                                                     </Field>
                                                 </div>
                                             </div>
-                                            <div className='self-exclusion__button-wrapper'>
+                                            <div
+                                                className={classNames('self-exclusion__button-wrapper', {
+                                                    'self-exclusion__button-wrapper-dashboard': is_dashboard,
+                                                })}
+                                            >
                                                 <Button
                                                     disabled={!dirty || !isValid || isSubmitting}
                                                     primary

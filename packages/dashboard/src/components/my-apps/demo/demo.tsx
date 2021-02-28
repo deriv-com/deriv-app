@@ -2,228 +2,44 @@ import * as React from 'react';
 import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { VirtualWalletCard, AppCard } from '@deriv/components';
-import { getAppCardLabels } from 'Constants/component-labels';
+import { getAppCardLabels, getWalletLabels } from 'Constants/component-labels';
+import AppSection from 'Components/my-apps/app-section';
+import GetWallet from 'Components/my-apps/get-wallet';
+import { response } from 'Components/my-apps/constants';
+import CFDsBanner from 'Components/my-apps/banner/app-banner/cfds-banner';
 
 const Demo: React.FC<TDemoProps> = ({}) => {
-    const deriv_apps = (
-        <AppCard
-            amount='0.00'
-            app_icon='IcBrandDerivApps'
-            app_name='Deriv Apps'
-            broker='Deriv Limited'
-            currency='USD'
-            getCardLabels={getAppCardLabels}
-            is_virtual={true}
-            linked_wallet='Virtual USD Wallet'
-            login_id='7926972'
-            onAddRealClick={() => {
-                console.log('Add real clicked!');
-            }}
-            onDepositClick={() => {
-                console.log('Deposit clicked!');
-            }}
-            onPlayClick={() => {
-                console.log('Play clicked!');
-            }}
-            onSettingsClick={() => {
-                console.log('Settings clicked!');
-            }}
-            onTransactionsClick={() => {
-                console.log('Transactions clicked!');
-            }}
-            onWithdrawClick={() => {
-                console.log('Withdraw clicked!');
-            }}
-            server='Deriv Server'
-            show_footer={true}
-            show_hover_actions={true}
-            variant='default'
-        />
-    );
+    const virtual_wallet_accounts = !!response.authorize.account_list.some(account => account.wallet)
+        ? response.authorize.account_list
+              .map(account => {
+                  if (account.wallet && !!account.is_virtual) return account;
+                  return;
+              })
+              .filter(account => account)
+        : [];
 
-    const financial_stp = (
-        <AppCard
-            amount='0.00'
-            app_icon='IcBrandDmt5FinancialStp'
-            app_name='DMT5 Financial STP'
-            broker='Deriv Limited'
-            currency='USD'
-            getCardLabels={getAppCardLabels}
-            is_virtual={true}
-            linked_wallet='Virtual USD Wallet'
-            login_id='7926972'
-            onAddRealClick={() => {
-                console.log('Add real clicked!');
-            }}
-            onDepositClick={() => {
-                console.log('Deposit clicked!');
-            }}
-            onPlayClick={() => {
-                console.log('Play clicked!');
-            }}
-            onSettingsClick={() => {
-                console.log('Settings clicked!');
-            }}
-            onTransactionsClick={() => {
-                console.log('Transactions clicked!');
-            }}
-            onWithdrawClick={() => {
-                console.log('Withdraw clicked!');
-            }}
-            server='Deriv Server'
-            show_footer={true}
-            show_hover_actions={true}
-            variant='default'
-        />
-    );
+    const virtual_trading_accounts = !!response.authorize.account_list.some(account => account.trading)
+        ? response.authorize.account_list
+              .map(account => {
+                  if (account.trading && !!account.is_virtual) return account;
+                  return;
+              })
+              .filter(account => account)
+        : [];
 
-    const financial = (
-        <AppCard
-            amount='0.00'
-            app_icon='IcBrandDmt5Financial'
-            app_name='DMT5 Financial'
-            broker='Deriv Limited'
-            currency='USD'
-            getCardLabels={getAppCardLabels}
-            is_virtual={true}
-            linked_wallet='Virtual USD Wallet'
-            login_id='7926972'
-            onAddRealClick={() => {
-                console.log('Add real clicked!');
-            }}
-            onDepositClick={() => {
-                console.log('Deposit clicked!');
-            }}
-            onPlayClick={() => {
-                console.log('Play clicked!');
-            }}
-            onSettingsClick={() => {
-                console.log('Settings clicked!');
-            }}
-            onTransactionsClick={() => {
-                console.log('Transactions clicked!');
-            }}
-            onWithdrawClick={() => {
-                console.log('Withdraw clicked!');
-            }}
-            server='Deriv Server'
-            show_footer={true}
-            show_hover_actions={true}
-            variant='default'
-        />
-    );
+    const virtual_mt5_accounts = [];
 
-    const synthetics = (
-        <AppCard
-            amount='0.00'
-            app_icon='IcBrandDmt5Synthetics'
-            app_name='DMT5 Synthetics'
-            broker='Deriv Limited'
-            currency='USD'
-            getCardLabels={getAppCardLabels}
-            is_virtual={true}
-            linked_wallet='Virtual USD Wallet'
-            login_id='7926972'
-            onAddRealClick={() => {
-                console.log('Add real clicked!');
-            }}
-            onDepositClick={() => {
-                console.log('Deposit clicked!');
-            }}
-            onPlayClick={() => {
-                console.log('Play clicked!');
-            }}
-            onSettingsClick={() => {
-                console.log('Settings clicked!');
-            }}
-            onTransactionsClick={() => {
-                console.log('Transactions clicked!');
-            }}
-            onWithdrawClick={() => {
-                console.log('Withdraw clicked!');
-            }}
-            server='Deriv Server'
-            show_footer={true}
-            show_hover_actions={true}
-            variant='default'
-        />
-    );
+    const getLinkedWallet = (login_id: string | undefined) => {
+        return virtual_wallet_accounts
+            .map(account => {
+                return account?.wallet.find(wallet => wallet.linked_id === login_id);
+            })
+            .filter(account => account)
+            .map(wallet => {
+                return wallet?.payment_method;
+            });
+    };
 
-    const synthetics_swap_free = (
-        <AppCard
-            amount='0.00'
-            app_icon='IcBrandDmt5Synthetics'
-            app_name='DMT5 Synthetics'
-            broker='Deriv Limited'
-            currency='USD'
-            getCardLabels={getAppCardLabels}
-            is_swap_free={true}
-            is_virtual={true}
-            linked_wallet='Virtual USD Wallet'
-            login_id='7926972'
-            onAddRealClick={() => {
-                console.log('Add real clicked!');
-            }}
-            onDepositClick={() => {
-                console.log('Deposit clicked!');
-            }}
-            onPlayClick={() => {
-                console.log('Play clicked!');
-            }}
-            onSettingsClick={() => {
-                console.log('Settings clicked!');
-            }}
-            onTransactionsClick={() => {
-                console.log('Transactions clicked!');
-            }}
-            onWithdrawClick={() => {
-                console.log('Withdraw clicked!');
-            }}
-            server='Deriv Server'
-            show_footer={true}
-            show_hover_actions={true}
-            variant='default'
-        />
-    );
-
-    const financial_swap_free = (
-        <AppCard
-            amount='0.00'
-            app_icon='IcBrandDmt5Financial'
-            app_name='DMT5 Financial'
-            broker='Deriv Limited'
-            currency='USD'
-            getCardLabels={getAppCardLabels}
-            is_swap_free={true}
-            is_virtual={true}
-            linked_wallet='Virtual USD Wallet'
-            login_id='7926972'
-            onAddRealClick={() => {
-                console.log('Add real clicked!');
-            }}
-            onDepositClick={() => {
-                console.log('Deposit clicked!');
-            }}
-            onPlayClick={() => {
-                console.log('Play clicked!');
-            }}
-            onSettingsClick={() => {
-                console.log('Settings clicked!');
-            }}
-            onTransactionsClick={() => {
-                console.log('Transactions clicked!');
-            }}
-            onWithdrawClick={() => {
-                console.log('Withdraw clicked!');
-            }}
-            server='Deriv Server'
-            show_footer={true}
-            show_hover_actions={true}
-            variant='default'
-        />
-    );
-    const cfd_apps = [synthetics, financial, financial_stp];
-    const swap_free_apps = [synthetics_swap_free, financial_swap_free];
     return (
         <React.Fragment>
             <div className='dw-my-apps__wallet-section'>
@@ -231,34 +47,126 @@ const Demo: React.FC<TDemoProps> = ({}) => {
                     {localize('My Wallets')}
                 </Text>
                 <div className='dw-my-apps__wallet-section-container'>
-                    <VirtualWalletCard />
+                    {virtual_wallet_accounts.length > 0 ? (
+                        virtual_wallet_accounts.map(account => {
+                            return (
+                                <VirtualWalletCard
+                                    amount={response.authorize.balance}
+                                    currency={response.authorize.currency}
+                                    getWalletLabels={getWalletLabels}
+                                    is_actions_footer={true}
+                                    onClickReset={() => {
+                                        console.log('Reset clicked!');
+                                    }}
+                                    onClickTransactions={() => {
+                                        console.log('Transactions clicked!');
+                                    }}
+                                    wallet_name={account?.wallet[0].payment_method}
+                                />
+                            );
+                        })
+                    ) : (
+                        <GetWallet
+                            label={localize('Get a demo wallet')}
+                            onClickGetWallet={() => {
+                                console.log('Get demo wallet clicked!');
+                            }}
+                        />
+                    )}
                 </div>
             </div>
-            <div className='dw-my-apps__app-section dw-my-apps__app-section-separator'>
-                <Text size='m' weight='bold' line_height='xs'>
-                    {localize('Options & Multipliers')}
-                </Text>
-                <div className='dw-my-apps__app-section-container'>{deriv_apps}</div>
-            </div>
-            <div className='dw-my-apps__app-section dw-my-apps__app-section-separator'>
-                <Text size='m' weight='bold' line_height='xs'>
-                    {localize('CFDs')}
-                </Text>
-                <div className='dw-my-apps__app-section-container'>
-                    {cfd_apps.map(item => {
-                        return <div className=' dw-my-apps__app-section--virtual'>{item}</div>;
+            <div className='dw-app-section'>
+                <AppSection title={localize('Options & Multipliers')} virtual={true}>
+                    {virtual_trading_accounts.map(account => {
+                        return (
+                            <AppCard
+                                amount={response.authorize.balance.toString()}
+                                app_icon='IcBrandDerivApps'
+                                app_name='Deriv Apps'
+                                broker={response.authorize.landing_company_fullname}
+                                currency={response.authorize.currency.toString()}
+                                getCardLabels={getAppCardLabels}
+                                is_swap_free={false}
+                                is_virtual={!!account?.is_virtual}
+                                linked_wallet={getLinkedWallet(account?.loginid).toString()}
+                                login_id={account?.loginid}
+                                onAddRealClick={() => {
+                                    console.log('Add real clicked!');
+                                }}
+                                onDepositClick={() => {
+                                    console.log('Deposit clicked!');
+                                }}
+                                onPlayClick={() => {
+                                    console.log('Play clicked!');
+                                }}
+                                onSettingsClick={() => {
+                                    console.log('Settings clicked!');
+                                }}
+                                onTransactionsClick={() => {
+                                    console.log('Transactions clicked!');
+                                }}
+                                onWithdrawClick={() => {
+                                    console.log('Withdraw clicked!');
+                                }}
+                                server='Deriv Server'
+                                show_footer={true}
+                                show_hover_actions={true}
+                                variant='default'
+                            />
+                        );
                     })}
-                </div>
+                </AppSection>
             </div>
-            <div className='dw-my-apps__app-section'>
-                <Text size='m' weight='bold' line_height='xs'>
-                    {localize('Swap-free')}
-                </Text>
-                <div className='dw-my-apps__app-section-container'>
-                    {swap_free_apps.map(item => {
-                        return <div className=' dw-my-apps__app-section--virtual'>{item}</div>;
-                    })}
-                </div>
+            <div className='dw-app-section'>
+                {virtual_mt5_accounts.length > 0 ? (
+                    <AppSection title={localize('CFDs')} virtual={true}>
+                        {/* {virtual_mt5_accounts.map(account => {
+                            return (
+                                <AppCard
+                                    amount={response.authorize.balance.toString()}
+                                    app_icon='IcBrandDerivApps'
+                                    app_name='Deriv Apps'
+                                    broker={response.authorize.landing_company_fullname}
+                                    currency={response.authorize.currency.toString()}
+                                    getCardLabels={getAppCardLabels}
+                                    is_swap_free={false}
+                                    is_virtual={!!account?.is_virtual}
+                                    linked_wallet={getLinkedWallet(account?.loginid).toString()}
+                                    login_id={account?.loginid}
+                                    onAddRealClick={() => {
+                                        console.log('Add real clicked!');
+                                    }}
+                                    onDepositClick={() => {
+                                        console.log('Deposit clicked!');
+                                    }}
+                                    onPlayClick={() => {
+                                        console.log('Play clicked!');
+                                    }}
+                                    onSettingsClick={() => {
+                                        console.log('Settings clicked!');
+                                    }}
+                                    onTransactionsClick={() => {
+                                        console.log('Transactions clicked!');
+                                    }}
+                                    onWithdrawClick={() => {
+                                        console.log('Withdraw clicked!');
+                                    }}
+                                    server='Deriv Server'
+                                    show_footer={true}
+                                    show_hover_actions={true}
+                                    variant='default'
+                                />
+                            );
+                        })} */}
+                    </AppSection>
+                ) : (
+                    <CFDsBanner
+                        getDmt5SyntheticsClick={() => console.log('DMT5 Synthetics clicked')}
+                        getDmt5FinancialClick={() => console.log('DMT5 Financial clicked')}
+                        getDmt5FinancialStpClick={() => console.log('DMT5FinancialSTP clicked')}
+                        small={true}
+                    />
+                )}
             </div>
         </React.Fragment>
     );

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import AccountsButtonToggle from 'Components/template/accounts-button-toggle';
+import AccountsButtonToggle from 'Components/template/accounts-toggle-button';
 import TotalBalance from 'Components/total-balance';
 import Real from 'Components/my-apps/real';
 import Demo from 'Components/my-apps/demo';

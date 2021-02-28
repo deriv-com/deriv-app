@@ -23,5 +23,5 @@ export const getAppCardLabels = () => ({
     BROKER: 'Broker',
     SERVER: 'Server',
     DEMO: 'Demo',
-    ADD_REAL: 'Add real',
+    ENABLE: 'Enable',
 });

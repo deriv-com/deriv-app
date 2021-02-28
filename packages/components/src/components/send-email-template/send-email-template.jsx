@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import { PlatformContext } from '@deriv/shared';
 import Button from '../button/button.jsx';
 import Icon from '../icon/icon.jsx';
@@ -57,7 +58,7 @@ const SendEmailTemplate = ({
     };
 
     return (
-        <div className='send-email-template'>
+        <div className={classNames('send-email-template', { 'send-email-template-dashboard': is_dashboard })}>
             <div className='send-email-template__sent'>
                 <Icon
                     icon={is_dashboard ? 'IcEmailSentDashboard' : 'IcEmailSent'}

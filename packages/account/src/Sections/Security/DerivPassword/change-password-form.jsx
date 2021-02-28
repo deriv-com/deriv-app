@@ -174,7 +174,7 @@ class ChangePasswordForm extends React.Component {
                                         })}
                                         type='button'
                                         onClick={this.props.onClickSendEmail}
-                                        text={localize('Forgot your password?')}
+                                        text={localize('Forgot password?')}
                                         tertiary
                                         large
                                     />
@@ -193,7 +193,7 @@ class ChangePasswordForm extends React.Component {
                                         is_loading={is_btn_loading}
                                         is_submit_success={is_submit_success}
                                         has_effect
-                                        text={is_dashboard ? localize('Next') : localize('Change password')}
+                                        text={localize('Change password')}
                                         large
                                         primary
                                     />

@@ -368,19 +368,6 @@ $MIN_HEIGHT_FLOATING: calc(
             border-width: 1px;
             background-color: var(--general-main-1);
 
-            &--dashboard {
-                width: 68.5rem;
-                margin-left: 6rem;
-                @include mobile {
-                    width: 100vw;
-                    margin-left: unset;
-                    & > div {
-                        display: flex;
-                        justify-content: space-between;
-                    }
-                }
-            }
-
             &-note {
                 color: var(--text-prominent);
                 font-size: var(--text-size-xxs);
@@ -401,6 +388,12 @@ $MIN_HEIGHT_FLOATING: calc(
                 height: 4rem;
                 margin-top: 0;
                 margin-bottom: 0;
+
+                &-wrapper {
+                    align-items: normal;
+                    display: flex;
+                    flex-direction: column;
+                }
 
                 &-dashboard {
                     .dc-btn__text {
@@ -427,6 +420,26 @@ $MIN_HEIGHT_FLOATING: calc(
                     }
                 }
             }
+
+            &--dashboard {
+                width: 68.5rem;
+                margin-left: 6rem;
+                @include mobile {
+                    width: 100vw;
+                    margin-left: unset;
+                    & .account-form__footer-btn {
+                        min-width: 35%;
+                        &-wrapper {
+                            flex-direction: row;
+                        }
+                    }
+                    & > div {
+                        display: flex;
+                        justify-content: space-between;
+                    }
+                }
+            }
+
             &-all-fields-required {
                 padding-bottom: 2.4rem;
                 padding-top: 0.8rem;
@@ -952,6 +965,11 @@ $MIN_HEIGHT_FLOATING: calc(
             width: 8.3rem;
             height: 12.3rem;
             margin-top: 6.4rem;
+        }
+    }
+    .send-email-template-dashboard {
+        @include desktop {
+            width: calc(100vw - 33rem);
         }
     }
     .self-exclusion {

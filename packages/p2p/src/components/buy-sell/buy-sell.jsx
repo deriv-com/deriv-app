@@ -19,7 +19,15 @@ const BuySell = () => {
     const [is_toggle_visible, setIsToggleVisible] = React.useState(true);
     const previous_scroll_top = React.useRef(0);
 
-    React.useEffect(() => buy_sell_store.registerIsListedReaction(), []);
+    React.useEffect(() => {
+        const disposeIsListedReaction = buy_sell_store.registerIsListedReaction();
+        const disposeAdvertIntervalReaction = buy_sell_store.registerAdvertIntervalReaction();
+
+        return () => {
+            disposeIsListedReaction();
+            disposeAdvertIntervalReaction();
+        };
+    }, []);
 
     const onScroll = event => {
         if (!buy_sell_store.show_advertiser_page) {

@@ -230,7 +230,6 @@ const CreateAdForm = () => {
                                                         />
                                                     )}
                                                 </Field>
-
                                                 <Field name='contact_info'>
                                                     {({ field }) => (
                                                         <Input

@@ -54,16 +54,8 @@ const validateSignup = (values, residence_list) => {
     return errors;
 };
 
-const AccountSignup = ({
-    enableApp,
-    isModalVisible,
-    clients_country,
-    is_account_signup_modal_visible,
-    onSignup,
-    residence_list,
-}) => {
-    const { is_deriv_crypto, is_dashboard } = React.useContext(PlatformContext);
-
+const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, residence_list }) => {
+    const { is_dashboard } = React.useContext(PlatformContext);
     const [api_error, setApiError] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
     const [country, setCountry] = React.useState('');
@@ -106,8 +98,6 @@ const AccountSignup = ({
         const modded_values = {
             ...values,
             residence: residence_list[index_of_selection].value,
-            is_deriv_crypto,
-            is_account_signup_modal_visible,
         };
         onSignup(modded_values, onSignupComplete);
     };
@@ -212,7 +202,7 @@ const AccountSignup = ({
                                                     primary
                                                     text={localize('Create new account')}
                                                     type='button'
-                                                    onClick={() => redirectToSignUp({ is_deriv_crypto, is_dashboard })}
+                                                    onClick={() => redirectToSignUp({ is_dashboard })}
                                                 />
                                             </div>
                                         </React.Fragment>
@@ -243,7 +233,6 @@ AccountSignup.propTypes = {
     onSignup: PropTypes.func,
     residence_list: PropTypes.array,
     isModalVisible: PropTypes.func,
-    is_account_signup_modal_visible: PropTypes.bool,
 };
 
 const AccountSignupModal = ({
@@ -280,7 +269,6 @@ const AccountSignupModal = ({
                 residence_list={residence_list}
                 isModalVisible={toggleAccountSignupModal}
                 enableApp={enableApp}
-                is_account_signup_modal_visible={is_visible}
             />
         </Dialog>
     );

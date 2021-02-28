@@ -452,6 +452,36 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
     }
+    .account-management {
+        &__list {
+            &-container {
+                margin-top: 1.6rem;
+                max-width: 50.6rem;
+                display: flex;
+                flex-direction: column;
+            }
+            &-icon {
+                margin-right: 1.2rem;
+                margin-top: 0.2rem;
+            }
+            &-message {
+                display: flex;
+                margin-bottom: 1.6rem;
+
+                &:last-of-type {
+                    margin-bottom: 0;
+                }
+            }
+            &-button.dc-btn {
+                margin-top: 2.4rem;
+                width: fit-content;
+                align-self: center;
+            }
+        }
+        &__continue.dc-btn {
+            margin-top: 1.6rem;
+        }
+    }
     .account__text_container {
         margin-top: 12px;
     }

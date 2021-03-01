@@ -26,6 +26,9 @@ const TradeHeaderExtensions = ({
     setAccountSwitchListener,
     store,
 }) => {
+    const is_logged_in_ref = React.useRef();
+    is_logged_in_ref.current = is_logged_in;
+
     const populateHeader = () => {
         const header_items = is_logged_in && (
             <MobileWrapper>
@@ -55,7 +58,7 @@ const TradeHeaderExtensions = ({
                 const { client } = store;
                 // Waits for login to complete
                 await when(() => !client.is_populating_account_list);
-                if (is_logged_in) {
+                if (is_logged_in_ref.current) {
                     await WS.wait('authorize');
                     onMountPositions();
                     onMountCashier(true);

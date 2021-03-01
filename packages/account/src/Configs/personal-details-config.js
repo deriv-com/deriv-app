@@ -76,7 +76,6 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
             rules: [
                 ['req', localize('Phone is required')],
                 ['phone', localize('Phone is not in a proper format.')],
-                ['length', localize('Phone should be between 9 and 35 numbers.'), { min: 9, max: 36 }],
                 [
                     value => {
                         // phone_trim uses regex that trims non-digits

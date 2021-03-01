@@ -29,7 +29,7 @@ const ModalElement = ({
     portalId,
     children,
     height,
-    should_header_stick_body,
+    should_header_stick_body = true,
     width,
     renderTitle,
     small,

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Button, Text, Icon } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { useStores } from 'Stores';
 import './app-banner.scss';
@@ -72,17 +72,17 @@ const CFDsBanner: React.FC<TCFDsBannerProps> = ({
     );
 };
 
-interface TCFDsAppProps {
+type TCFDsAppProps = {
     app_name: String;
     icon: String;
-    onClick: Function;
+    onClick: React.MouseEventHandler<HTMLButtonElement>;
     small: boolean;
-}
-interface TCFDsBannerProps {
-    getDmt5SyntheticsClick: Function;
-    getDmt5FinancialClick: Function;
-    getDmt5FinancialStpClick: Function;
+};
+type TCFDsBannerProps = {
+    getDmt5SyntheticsClick: React.MouseEventHandler<HTMLButtonElement>;
+    getDmt5FinancialClick: React.MouseEventHandler<HTMLButtonElement>;
+    getDmt5FinancialStpClick: React.MouseEventHandler<HTMLButtonElement>;
     small: boolean;
-}
+};
 
 export default CFDsBanner;

@@ -77,12 +77,12 @@ const TradingAppBanner: React.FC<TTradingAppBannerProps> = ({ getTradingAppClick
     );
 };
 
-interface TTradingAppProps {
+type TTradingAppProps = {
     small: boolean;
     icon: String;
-}
-interface TTradingAppBannerProps {
-    getTradingAppClick: Function;
+};
+type TTradingAppBannerProps = {
+    getTradingAppClick: React.MouseEventHandler<HTMLButtonElement>;
     small: boolean;
-}
+};
 export default TradingAppBanner;

@@ -1,3 +1,5 @@
+// TODO: Remove once API is ready
+
 export const response = {
     authorize: {
         account_list: [

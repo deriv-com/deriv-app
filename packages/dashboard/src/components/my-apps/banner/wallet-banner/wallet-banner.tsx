@@ -29,8 +29,8 @@ const WalletBanner: React.FC<TWalletBannerProps> = ({ getWalletClick }) => {
     );
 };
 
-interface TWalletBannerProps {
-    getWalletClick: Function;
-}
+type TWalletBannerProps = {
+    getWalletClick: React.MouseEventHandler<HTMLButtonElement>;
+};
 
 export default WalletBanner;

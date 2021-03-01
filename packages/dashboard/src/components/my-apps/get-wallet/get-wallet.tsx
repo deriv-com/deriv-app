@@ -17,9 +17,9 @@ const GetWallet: React.FC<TGetWalletProps> = ({ onClickGetWallet, label }) => {
     );
 };
 
-interface TGetWalletProps {
-    onClickGetWallet: Function;
+type TGetWalletProps = {
+    onClickGetWallet: React.MouseEventHandler<HTMLButtonElement>;
     label: String;
-}
+};
 
 export default GetWallet;

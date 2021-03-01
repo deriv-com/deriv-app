@@ -31,8 +31,8 @@ const AppSection: React.FC<TAppSectionProps> = ({ children, title, virtual }) =>
     );
 };
 
-interface TAppSectionProps {
+type TAppSectionProps = {
     title: string;
     virtual: boolean;
-}
+};
 export default AppSection;

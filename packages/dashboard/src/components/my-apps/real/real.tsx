@@ -9,14 +9,14 @@ import CFDsBanner from 'Components/my-apps/banner/app-banner/cfds-banner';
 import WalletBanner from 'Components/my-apps/banner/wallet-banner';
 import GetWalletModal from 'Components/modals/get-wallet-modal';
 import { getWalletLabels, getAppCardLabels } from 'Constants/component-labels';
-import { useStores } from 'Stores';
 import AppSection from 'Components/my-apps/app-section';
 import { response } from 'Components/my-apps/constants';
+import { useStores } from 'Stores';
 
 const Real: React.FC<TRealProps> = observer(({}) => {
     const { ui_store } = useStores();
 
-    // TODO: Refactor all these to store
+    // TODO: Refactor all these methods to store once API is ready
     const real_wallet_accounts = !!response.authorize.account_list.some(account => account.wallet)
         ? response.authorize.account_list
               .map(account => {
@@ -172,6 +172,9 @@ const Real: React.FC<TRealProps> = observer(({}) => {
                             small={true}
                         />
                     </div>
+                    {
+                        //TODO: Add logic for MT5 app cards once mt5_login_list API is ready
+                    }
                 </React.Fragment>
             )}
             <GetWalletModal app_title={localize('DMT5 Synthetic')} app_icon={'IcBrandDmt5Synthetics'} />

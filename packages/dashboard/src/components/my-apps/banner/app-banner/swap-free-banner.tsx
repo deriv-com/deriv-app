@@ -70,15 +70,15 @@ const SwapFreeBanner: React.FC<TSwapFreeBannerProps> = ({ getDmt5SyntheticsClick
     );
 };
 
-interface TSwapFreeAppProps {
+type TSwapFreeAppProps = {
     app_name: String;
     icon: String;
-    onClick: Function;
+    onClick: React.MouseEventHandler<HTMLButtonElement>;
     small: boolean;
-}
-interface TSwapFreeBannerProps {
-    getDmt5SyntheticsClick: Function;
-    getDmt5FinancialClick: Function;
+};
+type TSwapFreeBannerProps = {
+    getDmt5SyntheticsClick: React.MouseEventHandler<HTMLButtonElement>;
+    getDmt5FinancialClick: React.MouseEventHandler<HTMLButtonElement>;
     small: boolean;
-}
+};
 export default SwapFreeBanner;

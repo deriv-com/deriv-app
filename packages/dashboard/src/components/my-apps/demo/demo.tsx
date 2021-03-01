@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { VirtualWalletCard, AppCard } from '@deriv/components';
+import { AppCard, Text, VirtualWalletCard } from '@deriv/components';
 import { getAppCardLabels, getWalletLabels } from 'Constants/component-labels';
 import AppSection from 'Components/my-apps/app-section';
 import GetWallet from 'Components/my-apps/get-wallet';
@@ -9,6 +8,7 @@ import { response } from 'Components/my-apps/constants';
 import CFDsBanner from 'Components/my-apps/banner/app-banner/cfds-banner';
 
 const Demo: React.FC<TDemoProps> = ({}) => {
+    // TODO: Refactor all these methods to store once API is ready
     const virtual_wallet_accounts = !!response.authorize.account_list.some(account => account.wallet)
         ? response.authorize.account_list
               .map(account => {
@@ -79,6 +79,7 @@ const Demo: React.FC<TDemoProps> = ({}) => {
                 <AppSection title={localize('Options & Multipliers')} virtual={true}>
                     {virtual_trading_accounts.map(account => {
                         return (
+                            //TODO: Use values from API once ready
                             <AppCard
                                 amount={response.authorize.balance.toString()}
                                 app_icon='IcBrandDerivApps'
@@ -120,44 +121,9 @@ const Demo: React.FC<TDemoProps> = ({}) => {
             <div className='dw-app-section'>
                 {virtual_mt5_accounts.length > 0 ? (
                     <AppSection title={localize('CFDs')} virtual={true}>
-                        {/* {virtual_mt5_accounts.map(account => {
-                            return (
-                                <AppCard
-                                    amount={response.authorize.balance.toString()}
-                                    app_icon='IcBrandDerivApps'
-                                    app_name='Deriv Apps'
-                                    broker={response.authorize.landing_company_fullname}
-                                    currency={response.authorize.currency.toString()}
-                                    getCardLabels={getAppCardLabels}
-                                    is_swap_free={false}
-                                    is_virtual={!!account?.is_virtual}
-                                    linked_wallet={getLinkedWallet(account?.loginid).toString()}
-                                    login_id={account?.loginid}
-                                    onAddRealClick={() => {
-                                        console.log('Add real clicked!');
-                                    }}
-                                    onDepositClick={() => {
-                                        console.log('Deposit clicked!');
-                                    }}
-                                    onPlayClick={() => {
-                                        console.log('Play clicked!');
-                                    }}
-                                    onSettingsClick={() => {
-                                        console.log('Settings clicked!');
-                                    }}
-                                    onTransactionsClick={() => {
-                                        console.log('Transactions clicked!');
-                                    }}
-                                    onWithdrawClick={() => {
-                                        console.log('Withdraw clicked!');
-                                    }}
-                                    server='Deriv Server'
-                                    show_footer={true}
-                                    show_hover_actions={true}
-                                    variant='default'
-                                />
-                            );
-                        })} */}
+                        {
+                            //TODO: Add logic once mt5_login_list API is ready
+                        }
                     </AppSection>
                 ) : (
                     <CFDsBanner

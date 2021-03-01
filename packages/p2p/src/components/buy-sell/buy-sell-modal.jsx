@@ -97,7 +97,6 @@ const BuySellModal = observer(({ table_type, selected_ad, should_show_popup, set
                     />
                 }
                 page_footer_className='buy-sell__modal-footer'
-                should_wrap_body
             >
                 <Form
                     advert={selected_ad}

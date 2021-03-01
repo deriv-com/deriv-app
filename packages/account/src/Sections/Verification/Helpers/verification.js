@@ -9,6 +9,8 @@ export const populateVerificationStatus = account_status => {
     const allow_document_upload = account_status.status.some(status => status === 'allow_document_upload');
     const onfido_supported_docs = identity.services.onfido.documents_supported;
     const country_code = identity.services.onfido.country_code;
+    const submissions_left = identity.services.onfido.submissions_left;
+    const rejected_reasons = identity.services.onfido.last_rejected;
 
     return {
         allow_document_upload,
@@ -19,5 +21,7 @@ export const populateVerificationStatus = account_status => {
         needs_poa,
         needs_poi,
         onfido_supported_docs,
+        rejected_reasons,
+        submissions_left,
     };
 };

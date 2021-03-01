@@ -4,7 +4,8 @@
   "description": "E2E testing for DerivApp",
   "main": "bootstrap.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "create_test":"f () { node create_test $1 $2 ;}; f"
   },
   "author": "",
   "license": "ISC",

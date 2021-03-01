@@ -801,7 +801,7 @@ export default class ClientStore extends BaseStore {
         form_values.residence = this.residence;
         if (is_maltainvest_account) {
             currency = form_values.currency;
-            form_values.accept_risk = 1;
+            form_values.accept_risk = form_values.accept_risk || 0;
             delete form_values.currency;
         }
         const response = is_maltainvest_account

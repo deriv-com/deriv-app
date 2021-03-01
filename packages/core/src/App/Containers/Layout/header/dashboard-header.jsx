@@ -49,7 +49,7 @@ const LoggedInHeader = ({ is_dark_mode }) => {
 
 const LoggedOutHeader = () => {
     const history = useHistory();
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
     const [current_dropdown, setCurrentDropdown] = React.useState('');
     const [dropdown_link_ref, setDropdownLinkRef] = React.useState(null);
     const [dropdown_ref, setDropdownRef] = React.useState(null);

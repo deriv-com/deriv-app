@@ -22,12 +22,6 @@ function refreshOnUpdate() {
 }
 
 export default function register() {
-    navigator.serviceWorker.getRegistrations().then(registrations => {
-        if (registrations.length !== 0) {
-            should_refresh_on_register = true;
-        }
-    });
-
     // Register the service worker
     if (/* process.env.NODE_ENV === 'production' && */ 'serviceWorker' in navigator) {
         window.addEventListener('load', () => {

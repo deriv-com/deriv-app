@@ -185,10 +185,10 @@ export class PersonalDetailsForm extends React.Component {
         }
 
         if (values.phone) {
-            // minimum characters required is 10 including (+) sign
+            // minimum characters required is 9 including (+) sign
             // phone_trim uses regex that trims (+) sign
-            // minimum characters required w/o (+) sign is 9 characters.
-            const min_phone_number = 9;
+            // minimum characters required w/o (+) sign is 8 characters.
+            const min_phone_number = 8;
             const max_phone_number = 35;
             const phone_trim = values.phone.replace(/\D/g, '');
             const phone_error_message = localize(

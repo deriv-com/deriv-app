@@ -2,8 +2,7 @@ const { setUp, tearDown, mobile_viewport, desktop_viewport, getStorageState } = 
 const Trader = require('@root/objects/trader');
 const { replaceWebsocket } = require('@root/_utils/websocket');
 
-let browser, context, page;
-jest.setTimeout(70000);
+let page;
 describe('Contract test', () => {
     async function setUpTest() {
         await context.addInitScript(replaceWebsocket);
@@ -17,30 +16,14 @@ describe('Contract test', () => {
         await page.waitForAccountInfoDropdown();
     }
 
-    beforeAll(async () => {
-        const out = await setUp({});
-        browser = out.browser;
-    });
-
     afterEach(async () => {
         await page.clearTradeUIArtifacts();
         await page.saveState('LOGIN', context);
         await page.close();
-        await context.close();
-    });
-
-    afterAll(async () => {
-        await tearDown(browser);
     });
 
     describe('Desktop', () => {
         beforeEach(async () => {
-            context = await browser.newContext({
-                recordVideo: { dir: `${process.env.E2E_ARTIFACT_PATH}temp/contract_purchase.test.js/` },
-                ignoreHTTPSErrors: true,
-                storageState: getStorageState('LOGIN'),
-                ...desktop_viewport,
-            });
             await setUpTest();
         });
         test('trader/buy-contract rise', async () => {
@@ -64,12 +47,15 @@ describe('Contract test', () => {
         });
     });
     describe('Mobile', () => {
-        beforeEach(async () => {
-            context = await browser.newContext({
+        beforeAll(async () => {
+            await jestPlaywright.resetContext({
                 ignoreHTTPSErrors: true,
                 storageState: getStorageState('LOGIN'),
                 ...mobile_viewport,
             });
+        });
+
+        beforeEach(async () => {
             await setUpTest();
         });
 

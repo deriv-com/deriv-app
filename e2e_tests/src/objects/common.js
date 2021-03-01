@@ -92,42 +92,12 @@ class Common {
                 },
             });
         }
-
-        // await this.saveState('LOGIN');
     }
-
-    // async loadOrLogin(email, password, context, POM) {
-    //     let new_context = context;
-    //     const is_login_done = this.checkIfStateExists('LOGIN');
-    //     if (!is_login_done) {
-    //         await this.login(email, password);
-    //     } else {
-    //         new_context = await this.setState('LOGIN', context, POM);
-    //         context.close();
-    //         await this.page.navigate();
-    //     }
-    //     return new_context;
-    // }
 
     async saveState(target, context) {
         const new_storage = await context.storageState();
         process.env[target] = JSON.stringify(new_storage);
     }
-
-    // async setState(target, context, POM) {
-    //     const storageState = JSON.parse(process.env[target]);
-    //     const new_context = await context.browser().newContext({ storageState, ...context_options });
-    //     const current_page = this.page;
-    //     // Try to reuse the same Page Object Model
-    //     if (POM) {
-    //         this.page = new POM(await context.newPage());
-    //     } else {
-    //         this.page = new Common(await context.newPage());
-    //     }
-
-        // current_page.close();
-        // return new_context;
-    // }
 
     async isMobile() {
         const { width } = await this.page.viewportSize();
@@ -180,6 +150,11 @@ class Common {
 
     async setResidenceAndPassword(signup_url, country = 'Indonesia', password) {
         await this.page.goto(signup_url);
+        await waitForWSSubset(this.page, {
+            echo_req: {
+                residence_list: 1,
+            },
+        });
         if (await this.isMobile()) {
             await this.page.waitForSelector(
                 '.account-signup__residence-selection > .dc-select-native > .dc-select-native__wrapper > .dc-input > .dc-select-native__picker'
@@ -219,14 +194,15 @@ class Common {
             await this.waitForAccountDropdown();
         } else {
             await this.page.waitForSelector(
-                '#deriv_app > div.dc-dialog__wrapper.dc-dialog__wrapper--enter-done > div > div.dc-dialog__content.dc-dialog__content--centered > div > form > div > div > div > div > input'
+                '#signup_residence_select'
             );
             await this.page.fill(
-                '#deriv_app > div.dc-dialog__wrapper.dc-dialog__wrapper--enter-done > div > div.dc-dialog__content.dc-dialog__content--centered > div > form > div > div > div > div > input',
+                '#signup_residence_select',
                 country
             );
+            await this.page.press('#signup_residence_select', 'ArrowDown');
             await this.page.press(
-                '#deriv_app > div.dc-dialog__wrapper.dc-dialog__wrapper--enter-done > div > div.dc-dialog__content.dc-dialog__content--centered > div > form > div > div > div > div > input',
+                '#signup_residence_select',
                 'Enter'
             );
             await this.page.click('text=Next');

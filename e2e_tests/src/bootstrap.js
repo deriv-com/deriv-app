@@ -1,29 +1,38 @@
-const { chromium, webkit, firefox } = require('playwright');
+const browsers = require('playwright');
 const default_options = require('@root/_config/context');
 
-async function setUp(options) {
-    let browser;
-    if (options.browser) {
-        browser = await [browser].launch({
-            headless: false,
-        });
-    } else {
-        browser = await chromium.launch({
-            headless: false,
-        });
+let browser;
+let browser_requests = 0;
+
+async function setUp(options = {}) {
+    const browserType = browsers[options.browser || 'chromium'];
+    const getBrowserInstance = () => {
+        browser_requests += 1;
+        if (!browser) {
+            browser = browserType.launch({
+                ...default_options,
+                ...options,
+            });
+        }
+
+        return browser;
     }
 
     return {
-        browser,
+        getBrowserInstance,
     };
 }
 
 async function tearDown(browser) {
-    try {
-        await browser.close();
-    } catch (e) {
-        console.log(e);
+    browser_requests -= 1;
+    if (browser_requests) {
+        try {
+            await browser.close();
+        } catch (e) {
+            console.log(e);
+        }
     }
+
 }
 
 function getContext() {
@@ -54,7 +63,6 @@ const mobile_viewport = {
     defaultBrowserType: 'webkit',
 };
 
-
 module.exports = {
     setUp,
     tearDown,
@@ -62,4 +70,4 @@ module.exports = {
     mobile_viewport,
     getContext,
     getStorageState,
-}
+};

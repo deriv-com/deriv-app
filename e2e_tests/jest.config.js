@@ -1,23 +1,29 @@
+const path = require('path');
 require('dotenv').config();
 
 module.exports = {
-    "moduleNameMapper": {
-        "@root(.*)$": "<rootDir>/src/$1",
+    moduleNameMapper: {
+        '@root(.*)$': '<rootDir>/src/$1',
     },
-    "clearMocks": true,
-    "setupFiles": [
-        "<rootDir>/jest.setup.js",
-    ],
-    "testRegex": [
-        "__tests__",
-        ".*.spec.js",
-    ],
-    "transform": {
-        "^.+\\.jsx?$": "babel-jest",
-        "^.+/es/^.+$": "babel-jest",
+    bail: true,
+    clearMocks: true,
+    preset: 'jest-playwright-preset',
+    setupFiles: ['<rootDir>/jest.setup.js'],
+    testRegex: ['__tests__', '.*.spec.js'],
+    transform: {
+        '^.+\\.jsx?$': 'babel-jest',
+        '^.+/es/^.+$': 'babel-jest',
     },
-    "transformIgnorePatterns": [
-        "/node_modules/(?!react-virtualized).+\\.js$",
-        "_utils/websocket.js",
-    ],
-}
+    testEnvironmentOptions: {
+        'jest-playwright': {
+            browsers: [process.env.BROWSER || 'chromium'],
+            contextOptions: {
+                ignoreHTTPSErrors: true,
+                ...(process.env.ENABLE_VIDEO_RECORD ? {recordVideo: {
+                    dir: path.join(process.env.E2E_ARTIFACT_PATH, 'videos'),
+                }} : {}),
+            },
+        },
+    },
+    transformIgnorePatterns: ['/node_modules/(?!react-virtualized).+\\.js$', '_utils/websocket.js'],
+};

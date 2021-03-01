@@ -1,29 +1,18 @@
 const { replaceWebsocket } = require('@root/_utils/websocket');
-const { setUp, tearDown, mobile_viewport } = require('@root/bootstrap');
 const Common = require('@root/objects/common');
 const DerivCom = require('@root/objects/deriv_com');
 const QAEmails = require('@root/objects/qa_emails');
 
-let browser, context, page;
-jest.setTimeout(100000);
-
+let page;
+jest.setTimeout(200000);
 describe('Signup', () => {
     beforeEach(async () => {
-        const out = await setUp({});
-        browser = out.browser;
-        context = await browser.newContext({
-            recordVideo: { dir: `${process.env.E2E_ARTIFACT_PATH}temp/cr_signup.test.js/` },
-            ignoreHTTPSErrors: true,
-            ...mobile_viewport,
-        });
         await context.addInitScript(replaceWebsocket);
         page = new Common(await context.newPage());
     });
 
     afterEach(async () => {
         await page.close();
-        await context.close();
-        await tearDown(browser);
     });
 
     test('core/cr_signup', async () => {

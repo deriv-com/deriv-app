@@ -93,6 +93,26 @@
     }
 }
 
+.statement__row--detail-text-mobile {
+    width: calc(100vw - 32px);
+    height: 100%;
+    justify-content: left;
+    text-align: left;
+    padding: 6px 16px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    line-height: 1.43;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+.address-desc {
+    margin-bottom: 16px;
+}
+
 /* stylelint-disable-next-line plugin/selector-bem-pattern */
 .ReactVirtualized__List {
     outline: 0;

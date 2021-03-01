@@ -160,6 +160,9 @@ $side-padding: 1.2em;
                 }
             }
         }
+        .data-list__desc--wrapper {
+            justify-content: center;
+        }
     }
 
     &__content {

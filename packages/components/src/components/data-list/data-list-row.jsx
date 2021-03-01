@@ -2,6 +2,24 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
+const formatDesc = desc => {
+    if (desc.message.substring(0, 7) === 'Address') {
+        const address = desc.message.split(', ')[0].split(': ')[1];
+        const transaction = desc.message.split(', ')[1].split(': ')[1];
+
+        return (
+            <div className='statement__row--detail-text-mobile'>
+                <span className='address-title'>Address:</span>
+                <p className='address-desc'>{address}</p>
+                <span className='transaction-title'>Transaction:</span>
+                <p className='transaction-desc'>{transaction}</p>
+            </div>
+        );
+    }
+
+    return desc.message;
+};
+
 const DataListRow = ({ action_desc, destination_link, row_gap, row_key, rowRenderer, ...other_props }) => {
     const [show_desc, setShowDesc] = React.useState(false);
 
@@ -29,7 +47,7 @@ const DataListRow = ({ action_desc, destination_link, row_gap, row_key, rowRende
                                     {action_desc.component ? (
                                         <div>{action_desc.component}</div>
                                     ) : (
-                                        <p className='statement__row--detail-text'>{action_desc.message}</p>
+                                        formatDesc(action_desc)
                                     )}
                                 </div>
                             ) : (

@@ -24,7 +24,6 @@ import {
     validPhone,
     validLetterSymbol,
     validLength,
-    validCountryCode,
     getLocation,
     removeObjProperties,
     filterObjProperties,
@@ -197,8 +196,6 @@ export class PersonalDetailsForm extends React.Component {
                     min: min_phone_number,
                     max: max_phone_number,
                 });
-            } else if (!validCountryCode(this.props.residence_list, values.phone)) {
-                errors.phone = phone_error_message;
             } else if (!validPhone(values.phone)) {
                 errors.phone = phone_error_message;
             }

@@ -1,26 +1,22 @@
-const assert = require('assert').strict;
-const qawolf = require('qawolf');
 const logger = require('@root/_utils/logger');
 const { replaceWebsocket } = require('@root/_utils/websocket'); // TODO: Fix the path
-const { setUp, tearDown, mobile_viewport, desktop_viewport } = require('@root/bootstrap'); // TODO: Fix the path
-const Common = require('@root/objects/common'); // TODO: Fix the path
-let browser, context, page;
+const Common = require('@root/objects/common');
 
+let  page;
+
+jest.setTimeout(200000);
 describe('Resource list in desktop', () => {
     beforeEach(async () => {
-        const out = await setUp(desktop_viewport);
-        browser = out.browser;
-        context = out.context;
         await context.addInitScript(replaceWebsocket);
         page = new Common(await context.newPage());
     });
 
     afterEach(async () => {
-        await tearDown(browser);
+        await page.close();
     });
 
     test("[performance]-resources-desktop", async () => {
-        await page.navigate()
+        await page.navigate();
         await page.waitForSelector('.btn-purchase:not(.btn-purchase--disabled)')
 
         const performance_timing = JSON.parse(await page.evaluate(() => JSON.stringify(window.performance.toJSON())))
@@ -31,9 +27,9 @@ describe('Resource list in desktop', () => {
             const name = resource_list[i].name.split('/').pop().split('?')[0].split('#')[0]
             const type = name.split('.').pop()
             data.push({
-                name: name,
+                name,
                 size: resource_list[i].transferSize,
-                type: type,
+                type,
             })
         }
         // remove duplicates
@@ -43,7 +39,7 @@ describe('Resource list in desktop', () => {
             'Number of requests:': data.length,
             'Total transfered data:': `${total_bytes.size} (${total_bytes.size / 1000000} MB)`,
             'Performance timing:': performance_timing.timing,
-            'Request list:': data
+            'Request list:': data,
         })
 
     });
@@ -51,15 +47,12 @@ describe('Resource list in desktop', () => {
 
 describe('Resource list in mobile', () => {
     beforeEach(async () => {
-        const out = await setUp(mobile_viewport);
-        browser = out.browser;
-        context = out.context;
         await context.addInitScript(replaceWebsocket);
         page = new Common(await context.newPage());
     });
 
     afterEach(async () => {
-        await tearDown(browser);
+       await page.close();
     });
 
     test("[performance]-resources-mobile", async () => {
@@ -74,9 +67,9 @@ describe('Resource list in mobile', () => {
             const name = resource_list[i].name.split('/').pop().split('?')[0].split('#')[0]
             const type = name.split('.').pop()
             data.push({
-                name: name,
+                name,
                 size: resource_list[i].transferSize,
-                type: type,
+                type,
             })
         }
         // remove duplicates
@@ -86,7 +79,7 @@ describe('Resource list in mobile', () => {
             'Number of requests:': data.length,
             'Total transfered data:': `${total_bytes.size} (${total_bytes.size / 1000000} MB)`,
             'Performance timing:': performance_timing.timing,
-            'Request list:': data
+            'Request list:': data,
         })
     });
 })

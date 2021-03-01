@@ -1,22 +1,17 @@
-const assert = require('assert').strict;
-const qawolf = require('qawolf');
 const logger = require('@root/_utils/logger');
 const { replaceWebsocket } = require('@root/_utils/websocket'); // TODO: Fix the path
-const { setUp, tearDown, mobile_viewport, desktop_viewport } = require('@root/bootstrap'); // TODO: Fix the path
-const Common = require('@root/objects/common'); // TODO: Fix the path
-let browser, context, page;
+const Common = require('@root/objects/common');
+
+let page;
 
 describe('Time to chart ready in desktop', () => {
     beforeEach(async () => {
-        const out = await setUp(desktop_viewport);
-        browser = out.browser;
-        context = out.context;
         await context.addInitScript(replaceWebsocket);
         page = new Common(await context.newPage());
     });
 
     afterEach(async () => {
-        await tearDown(browser);
+        await page.close();
     });
 
     test("[performance]-time-to-chart-ready", async () => {
@@ -28,22 +23,19 @@ describe('Time to chart ready in desktop', () => {
         logger.save(expect.getState().testPath, 'Chart ready for desktop:', {
             'connection start:': performanceTiming.timing.connectStart,
             'chart ready time:': chart_ready_time,
-            'TTCR:': `${chart_ready_time - performanceTiming.timing.connectStart} (ms)`
+            'TTCR:': `${chart_ready_time - performanceTiming.timing.connectStart} (ms)`,
         })
     });
 })
 
 describe('Time to chart ready in mobile', () => {
     beforeEach(async () => {
-        const out = await setUp(mobile_viewport);
-        browser = out.browser;
-        context = out.context;
         await context.addInitScript(replaceWebsocket);
         page = new Common(await context.newPage());
     });
 
     afterEach(async () => {
-        await tearDown(browser);
+        await page.close();
     });
 
     test("[performance]-time-to-chart-ready", async () => {
@@ -55,7 +47,7 @@ describe('Time to chart ready in mobile', () => {
         logger.save(expect.getState().testPath, 'Chart ready for mobile:', {
             'connection start:': performance_timing.timing.connectStart,
             'chart ready time:': chart_ready_time,
-            'TTCR:': `${chart_ready_time - performance_timing.timing.connectStart} (ms)`
+            'TTCR:': `${chart_ready_time - performance_timing.timing.connectStart} (ms)`,
         })
     });
 })

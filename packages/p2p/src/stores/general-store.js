@@ -179,7 +179,7 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     onMount() {
         this.setIsLoading(true);
-        
+
         this.disposeUserBarredReaction = reaction(
             () => this.user_blocked_until,
             blocked_until => {
@@ -193,7 +193,7 @@ export default class GeneralStore extends BaseStore {
                 }
             }
         );
-        
+
         requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
             if (!error && get_account_status.risk_classification === 'high') {
                 this.setIsBlocked(true);
@@ -220,7 +220,6 @@ export default class GeneralStore extends BaseStore {
                     [this.setP2pOrderList]
                 ),
             };
-            
         });
     }
 

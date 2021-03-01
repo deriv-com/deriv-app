@@ -29,7 +29,7 @@ const ModalElement = ({
     portalId,
     children,
     height,
-    should_header_stick_body = true,
+    should_header_stick_body,
     width,
     renderTitle,
     small,
@@ -249,6 +249,7 @@ Modal.Footer = Footer;
 
 Modal.defaultProps = {
     has_close_icon: true,
+    should_header_stick_body: true,
 };
 
 Modal.propTypes = {

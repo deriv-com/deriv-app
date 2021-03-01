@@ -150,6 +150,7 @@ const ModalElement = ({
 
 ModalElement.defaultProps = {
     has_close_icon: true,
+    should_header_stick_body: true,
 };
 
 ModalElement.propTypes = {

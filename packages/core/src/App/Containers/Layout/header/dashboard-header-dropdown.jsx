@@ -90,12 +90,12 @@ const HeaderDropdownItem = ({ icon, name, to }) => {
 };
 
 const HeaderDropdown = ({ current_ref, onClickHandler, parent, setRef }) => {
-    const [left_offset, set_left_offset] = React.useState(current_ref?.offsetLeft);
+    const [left_offset, setLeftOffset] = React.useState(current_ref?.offsetLeft);
     const dropdown_container_ref = React.useRef(null);
 
     const updateOffsets = () => {
         if (current_ref) {
-            set_left_offset(current_ref.offsetLeft);
+            setLeftOffset(current_ref.offsetLeft);
         }
     };
 
@@ -107,7 +107,7 @@ const HeaderDropdown = ({ current_ref, onClickHandler, parent, setRef }) => {
         return () => {
             window.removeEventListener('resize', updateOffsets);
         };
-    });
+    }, [parent]);
 
     return (
         <React.Fragment>

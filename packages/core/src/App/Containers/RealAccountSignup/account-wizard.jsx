@@ -8,6 +8,7 @@ import { toMoment, getLocation, makeCancellablePromise } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import LoadingModal from './real-account-signup-loader.jsx';
+import AcceptRiskForm from './accept-risk-form.jsx';
 import { getItems } from './account-wizard-form';
 import 'Sass/details-form.scss';
 
@@ -63,6 +64,8 @@ const AccountWizard = props => {
     const [form_error, setFormError] = React.useState('');
     const [previous_data, setPreviousData] = React.useState([]);
     const [state_items, setStateItems] = React.useState([]);
+    const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
+    const is_financial_risk_accepted_ref = React.useRef(false);
 
     React.useEffect(() => {
         props.fetchStatesList();
@@ -190,6 +193,10 @@ const AccountWizard = props => {
         const clone = { ...form_values() };
         delete clone?.tax_identification_confirm; // This is a manual field and it does not require to be sent over
 
+        if (is_financial_risk_accepted_ref.current) {
+            clone.accept_risk = 1;
+        }
+
         return props.realAccountSignup(clone);
     };
 
@@ -198,6 +205,7 @@ const AccountWizard = props => {
     const updateValue = (index, value, setSubmitting, goToNextStep) => {
         saveFormData(index, value);
         clearError();
+
         // Check if account wizard is not finished
         if ((!props.has_currency && props.has_real_account) || index + 1 >= state_items.length) {
             createRealAccount(setSubmitting);
@@ -253,13 +261,23 @@ const AccountWizard = props => {
                     }
                 })
                 .catch(error => {
-                    props.onError(error, state_items);
+                    if (error.code === 'show risk disclaimer') {
+                        setShouldAcceptFinancialRisk(true);
+                    } else {
+                        props.onError(error, state_items);
+                    }
                 })
                 .finally(() => props.setLoading(false));
         }
     };
 
+    const onAcceptRisk = () => {
+        is_financial_risk_accepted_ref.current = true;
+        createRealAccount();
+    };
+
     if (props.is_loading) return <LoadingModal />;
+    if (should_accept_financial_risk) return <AcceptRiskForm onConfirm={onAcceptRisk} onClose={props.onClose} />;
     if (!mounted) return null;
     if (!finished) {
         const wizard_steps = state_items.map((step, step_index) => {

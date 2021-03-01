@@ -1627,7 +1627,9 @@ export default class ClientStore extends BaseStore {
         if (action === 'signup') {
             // If a user comes from the signup process,
             // we need to give him a clean setup
-            localStorage.clear();
+            if (!localStorage.getItem('config.server_url') && !localStorage.getItem('config.app_id')) {
+                localStorage.clear();
+            }
             // TODO: add await if error handling needs to happen before AccountSignup is initialised
             this.fetchResidenceList(); // Prefetch for use in account signup process
         }

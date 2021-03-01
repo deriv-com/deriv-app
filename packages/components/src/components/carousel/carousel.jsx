@@ -28,7 +28,7 @@ const Carousel = ({
     const computed_item_per_window = React.useMemo(() => {
         return Math.min(item_per_window, list.length);
     }, [item_per_window, list]);
-    const list_length = list.slice(computed_item_per_window - 1).length;
+    const sliced_list_length = list.slice(computed_item_per_window - 1).length;
 
     const handleNextClick = () => {
         const next_idx = active_index + 1;
@@ -64,7 +64,7 @@ const Carousel = ({
             className={classNames(className, { 'mt5-real-accounts-display__carousel--logged': is_logged_in })}
         >
             <div className={classNames('dc-carousel', { 'dc-carousel--mt5': is_mt5 })}>
-                {list_length > 1 && (
+                {sliced_list_length > 1 && (
                     <Nav
                         active_index={active_index}
                         bullet_color={bullet_color}
@@ -80,7 +80,7 @@ const Carousel = ({
                     />
                 )}
                 <div className='dc-carousel__container'>
-                    {show_nav && nav_position === 'middle' && list_length > 1 && (
+                    {show_nav && nav_position === 'middle' && sliced_list_length > 1 && (
                         <span
                             className={classNames('dc-carousel__icon', { 'dc-carousel__icon--left': is_mt5 })}
                             onClick={handlePrevClick}
@@ -91,7 +91,7 @@ const Carousel = ({
 
                     <div
                         className={classNames('dc-carousel__box', {
-                            'dc-carousel__box--mt5': is_mt5 && list_length > 1,
+                            'dc-carousel__box--mt5': is_mt5 && sliced_list_length > 1,
                         })}
                         style={{
                             width: `${computed_item_per_window * width}px`,
@@ -102,20 +102,20 @@ const Carousel = ({
                             style={{ transform: `translate3d(-${width * active_index}px, 0, 0)` }}
                         >
                             {list.map((type, idx) => (
-                                <Card key={idx} width={width} is_mt5={is_mt5} list_length={list_length}>
+                                <Card key={idx} width={width}>
                                     {list[idx]}
                                 </Card>
                             ))}
                         </div>
                     </div>
 
-                    {show_nav && nav_position === 'middle' && list_length > 1 && (
+                    {show_nav && nav_position === 'middle' && sliced_list_length > 1 && (
                         <span className='dc-carousel__icon' onClick={handleNextClick}>
                             <Icon icon='IcChevronRight' size='24' />
                         </span>
                     )}
                 </div>
-                {list_length > 1 && (
+                {sliced_list_length > 1 && (
                     <Nav
                         active_index={active_index}
                         bullet_color={bullet_color}

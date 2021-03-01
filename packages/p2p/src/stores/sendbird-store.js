@@ -13,7 +13,7 @@ export default class SendbirdStore extends BaseStore {
     @observable has_chat_error = null;
     @observable is_chat_loading = true;
     @observable should_show_chat_modal = false;
-    @observable should_show_chat_on_orders =  false;
+    @observable should_show_chat_on_orders = false;
 
     messages_ref = null;
     sendbird_api = null;
@@ -97,8 +97,8 @@ export default class SendbirdStore extends BaseStore {
     }
 
     @action.bound
-    setShouldShowChatOnOrders(should_show_chat_on_orders){
-        this.should_show_chat_on_orders =  should_show_chat_on_orders;
+    setShouldShowChatOnOrders(should_show_chat_on_orders) {
+        this.should_show_chat_on_orders = should_show_chat_on_orders;
     }
 
     initialiseChatWsConnection() {

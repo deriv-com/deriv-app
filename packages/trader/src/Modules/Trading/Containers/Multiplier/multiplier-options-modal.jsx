@@ -67,14 +67,13 @@ const MultiplierOptions = ({ multiplier, multiplier_range_list, onChange, toggle
             <RadioGroup
                 className='trade-params__multiplier-radio-group'
                 name='trade-params__multiplier-radio'
-                items={multiplier_range_list.map(({ text, value }) => ({
-                    id: text,
-                    label: text,
-                    value: value.toString(),
-                }))}
                 selected={!Number.isNaN(multiplier) ? multiplier.toString() : ''}
                 onToggle={onChangeMultiplier}
-            />
+            >
+                {multiplier_range_list.map(({ text, value }) => (
+                    <RadioGroup.Item key={value} id={text} label={text} value={value.toString()} />
+                ))}
+            </RadioGroup>
         </React.Fragment>
     );
 };

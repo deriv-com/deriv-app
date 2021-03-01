@@ -49,7 +49,7 @@ const LoggedInHeader = ({ is_dark_mode }) => {
 
 const LoggedOutHeader = () => {
     const history = useHistory();
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
     const [current_dropdown, set_current_dropdown] = React.useState('');
     const [dropdown_link_ref, set_dropdown_link_ref] = React.useState(null);
     const [dropdown_ref, set_dropdown_ref] = React.useState(null);
@@ -113,7 +113,7 @@ const LoggedOutHeader = () => {
                             className='dashboard-header__right--create-button'
                             primary
                             text={localize('Create free demo account')}
-                            onClick={() => redirectToSignUp({ is_deriv_crypto })}
+                            onClick={() => redirectToSignUp({ is_dashboard })}
                         />
                     </Button.Group>
                     {isMobile() && (

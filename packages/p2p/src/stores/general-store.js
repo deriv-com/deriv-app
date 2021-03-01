@@ -1,12 +1,12 @@
 import React from 'react';
 import { action, computed, observable, reaction } from 'mobx';
-import { isEmptyObject, isMobile, mobileOSDetect, routes, toMoment } from '@deriv/shared';
-import { localize, Localize } from 'Components/i18next';
+import { isEmptyObject, isMobile, routes, toMoment } from '@deriv/shared';
 import BaseStore from 'Stores/base_store';
+import { localize, Localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
-import { order_list } from '../src/constants/order-list';
+import { order_list } from '../constants/order-list';
 
 export default class GeneralStore extends BaseStore {
     @observable active_index = 0;
@@ -179,26 +179,6 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     onMount() {
         this.setIsLoading(true);
-        const { sendbird_store } = this.root_store;
-
-        this.ws_subscriptions = {
-            advertiser_subscription: subscribeWS(
-                {
-                    p2p_advertiser_info: 1,
-                    subscribe: 1,
-                },
-                [this.updateAdvertiserInfo, response => sendbird_store.handleP2pAdvertiserInfo(response)]
-            ),
-            order_list_subscription: subscribeWS(
-                {
-                    p2p_order_list: 1,
-                    subscribe: 1,
-                    offset: 0,
-                    limit: this.list_item_limit,
-                },
-                [this.setP2pOrderList]
-            ),
-        };
 
         this.disposeUserBarredReaction = reaction(
             () => this.user_blocked_until,
@@ -213,6 +193,34 @@ export default class GeneralStore extends BaseStore {
                 }
             }
         );
+
+        requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
+            if (!error && get_account_status.risk_classification === 'high') {
+                this.setIsBlocked(true);
+                return;
+            }
+
+            const { sendbird_store } = this.root_store;
+
+            this.ws_subscriptions = {
+                advertiser_subscription: subscribeWS(
+                    {
+                        p2p_advertiser_info: 1,
+                        subscribe: 1,
+                    },
+                    [this.updateAdvertiserInfo, response => sendbird_store.handleP2pAdvertiserInfo(response)]
+                ),
+                order_list_subscription: subscribeWS(
+                    {
+                        p2p_order_list: 1,
+                        subscribe: 1,
+                        offset: 0,
+                        limit: this.list_item_limit,
+                    },
+                    [this.setP2pOrderList]
+                ),
+            };
+        });
     }
 
     @action.bound

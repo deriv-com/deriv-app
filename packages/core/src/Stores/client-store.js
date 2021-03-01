@@ -1627,11 +1627,7 @@ export default class ClientStore extends BaseStore {
         if (action === 'signup') {
             // If a user comes from the signup process,
             // we need to give him a clean setup
-            localStorage.removeItem('cq-views');
-            localStorage.removeItem('layout-trade');
-            localStorage.removeItem('layout-base-chart');
-            localStorage.removeItem('contract_trade.chart_type');
-            localStorage.removeItem('contract_trade.granularity');
+            localStorage.clear();
             // TODO: add await if error handling needs to happen before AccountSignup is initialised
             this.fetchResidenceList(); // Prefetch for use in account signup process
         }

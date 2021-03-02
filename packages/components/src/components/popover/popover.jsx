@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import TinyPopover, { ArrowContainer } from 'react-tiny-popover';
+import { ArrowContainer, Popover as TinyPopover } from 'react-tiny-popover';
 import Icon from '../icon';
 import Text from '../text';
 import { useHover, useHoverCallback } from '../../hooks/use-hover';
@@ -61,7 +61,7 @@ const Popover = ({
             {(popover_ref || !relative_render) && (
                 <TinyPopover
                     isOpen={is_open ?? ((is_hovered && message) || (is_bubble_hover_enabled && is_bubble_hovered))}
-                    position={alignment}
+                    positions={[alignment]}
                     transitionDuration={0.25}
                     padding={margin + 8}
                     containerClassName={classNames({
@@ -70,10 +70,10 @@ const Popover = ({
                     windowBorderPadding={window_border}
                     {...(relative_render
                         ? {
-                              contentDestination: popover_ref,
-                              contentLocation: ({ targetRect, popoverRect, nudgedLeft }) => {
+                              ref: popover_ref,
+                              content: ({ childRect, popoverRect, nudgedLeft }) => {
                                   const screen_width = document.body.clientWidth;
-                                  const total_width = targetRect.right + (popoverRect.width - targetRect.width / 2);
+                                  const total_width = childRect.right + (popoverRect.width - childRect.width / 2);
                                   let top_offset = 0;
                                   let left_offset = 0;
 
@@ -86,17 +86,17 @@ const Popover = ({
                                                       : popoverRect.width) + margin
                                               ) * -1;
                                           top_offset =
-                                              targetRect.height > popoverRect.height
-                                                  ? (targetRect.height - popoverRect.height) / 2
-                                                  : ((popoverRect.height - targetRect.height) / 2) * -1;
+                                              childRect.height > popoverRect.height
+                                                  ? (childRect.height - popoverRect.height) / 2
+                                                  : ((popoverRect.height - childRect.height) / 2) * -1;
                                           break;
                                       }
                                       case 'right': {
                                           left_offset = popoverRect.width + margin;
                                           top_offset =
-                                              targetRect.height > popoverRect.height
-                                                  ? (targetRect.height - popoverRect.height) / 2
-                                                  : ((popoverRect.height - targetRect.height) / 2) * -1;
+                                              childRect.height > popoverRect.height
+                                                  ? (childRect.height - popoverRect.height) / 2
+                                                  : ((popoverRect.height - childRect.height) / 2) * -1;
                                           break;
                                       }
                                       case 'top': {
@@ -112,7 +112,7 @@ const Popover = ({
                                               total_width > screen_width
                                                   ? Math.abs(total_width - screen_width) * -1
                                                   : 0;
-                                          top_offset = targetRect.height + margin;
+                                          top_offset = childRect.height + margin;
                                           break;
                                       }
                                       default:
@@ -125,11 +125,11 @@ const Popover = ({
                               },
                           }
                         : { containerStyle: { zIndex: zIndex || 1 } })}
-                    content={({ position, targetRect, popoverRect }) => {
+                    content={({ position, childRect, popoverRect }) => {
                         return (
                             <ArrowContainer
                                 position={position}
-                                targetRect={targetRect}
+                                childRect={childRect}
                                 popoverRect={popoverRect}
                                 arrowColor={has_error ? 'var(--status-danger)' : 'var(--general-active)'}
                                 arrowSize={5}

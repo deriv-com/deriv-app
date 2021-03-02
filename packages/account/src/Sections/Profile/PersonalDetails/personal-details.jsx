@@ -867,7 +867,6 @@ export class PersonalDetailsForm extends React.Component {
                                                         autoComplete='off' // prevent chrome autocomplete
                                                         type='text'
                                                         ref={this.onScrollToRefMount}
-                                                        id='address_postcode'
                                                         name='address_postcode'
                                                         label={localize('Postal/ZIP code')}
                                                         value={values.address_postcode}

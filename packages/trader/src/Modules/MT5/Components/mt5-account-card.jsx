@@ -256,7 +256,7 @@ const MT5AccountCard = ({
                         <>
                             <MT5AccountCardSpecification height={272}>
                                 <p className='mt5-account-card__specification-description'>{descriptor}</p>
-                                <table className='mt5-account-card__specs-table'>
+                                <table className='mt5-account-card__specs-table mt5-account-card__specification-table'>
                                     <tbody>
                                         {Object.keys(specs).map((spec_attribute, idx) => (
                                             <tr key={idx} className='mt5-account-card__specs-table-row'>

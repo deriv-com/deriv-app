@@ -734,7 +734,9 @@
         }
         &-content {
             position: absolute;
-            display: block;
+            display: grid;
+            align-content: start;
+            justify-items: center;
             height: 0;
             overflow: hidden;
             width: calc(100% - 3rem);
@@ -749,6 +751,9 @@
         &-description {
             @include typeface(--paragraph-left-normal-prominent);
             padding: 1.6rem 0;
+        }
+        &-table {
+            width: fit-content;
         }
     }
     &__login-specs {

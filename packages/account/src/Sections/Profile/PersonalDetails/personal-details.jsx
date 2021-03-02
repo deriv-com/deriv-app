@@ -77,15 +77,15 @@ export class PersonalDetailsForm extends React.Component {
             this.setState({ is_btn_loading: false, is_submit_success: true });
             setTimeout(() => {
                 this.setState({ is_submit_success: false }, () => {
-                    // redirection back based on 'from' param in query string
                     setSubmitting(false);
-                    const url_query_string = window.location.search;
-                    const url_params = new URLSearchParams(url_query_string);
-                    if (url_params.get('from')) {
-                        this.props.history.push(routes[url_params.get('from')]);
-                    }
                 });
             }, 3000);
+            // redirection back based on 'from' param in query string
+            const url_query_string = window.location.search;
+            const url_params = new URLSearchParams(url_query_string);
+            if (url_params.get('from')) {
+                this.props.history.push(routes[url_params.get('from')]);
+            }
         }
     };
 
@@ -265,7 +265,7 @@ export class PersonalDetailsForm extends React.Component {
         // wait for node to be rendered, if node exists check the hash in url to scroll down to
         const section_hash = window.location.hash.substr(1);
 
-        if (section_hash === 'address_postcode') {
+        if (node?.name === section_hash) {
             node?.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
             // smooth scrolling animation is ~500ms, focus event cancels out scroll animation, hence the timeout offset
             setTimeout(() => {

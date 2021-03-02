@@ -50,6 +50,7 @@
         grid-template-areas: 'type spot profit';
         padding: 1.2rem 1.6rem; // Equal l+r with transaction__item padding.
         height: 5rem;
+        align-items: center;
 
         $header-grid-items: (unquote('type'), unquote('spot'), unquote('profit'));
 

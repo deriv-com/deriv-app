@@ -7,7 +7,7 @@
   "scripts": {
     "start": "npm run test && npm run serve",
     "serve": "echo \"Serving...\" && webpack --progress --watch --config \"./build/webpack.config.js\"",
-    "build": "f () { webpack --config \"./build/webpack.config.js\" --env base $1;}; f",
+    "build": "f () { webpack --config \"./build/webpack.config.js\" --env base=$1;}; f",
     "build:travis": "echo \"No build:travis specified\"",
     "test": "echo \"No mocha:test specified\"",
     "test:eslint": "eslint \"./src/**/*.?(js|jsx)\"",

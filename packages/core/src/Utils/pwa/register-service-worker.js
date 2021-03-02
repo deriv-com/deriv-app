@@ -22,12 +22,6 @@ function refreshOnUpdate() {
 }
 
 export default function register() {
-    navigator.serviceWorker.getRegistrations().then(registrations => {
-        if (registrations.length !== 0) {
-            should_refresh_on_register = true;
-        }
-    });
-
     // Register the service worker
     if (/* process.env.NODE_ENV === 'production' && */ 'serviceWorker' in navigator) {
         window.addEventListener('load', () => {
@@ -49,14 +43,12 @@ export default function register() {
                                     // the fresh content will have been added to the cache.
                                     // It's the perfect time to display a "New content is
                                     // available; please refresh." message in your web app.
-                                    console.log('New content is available; please refresh.'); // eslint-disable-line no-console
                                     const new_version_received = new Event('UpdateAvailable');
                                     document.dispatchEvent(new_version_received);
                                 } else {
                                     // At this point, everything has been precached.
                                     // It's the perfect time to display a
                                     // "Content is cached for offline use." message.
-                                    console.log('Content is cached for offline use.', performance.now()); // eslint-disable-line no-console
                                 }
                             }
                         };
@@ -72,9 +64,6 @@ export default function register() {
             // the new active worker.
             if (AUTO_REFRESH_THRESHOLD > performance.now() && should_refresh_on_register) {
                 should_refresh_on_register = false;
-            } else {
-                // eslint-disable-next-line no-console
-                console.log('First registration, no need to refresh.');
             }
         });
     }

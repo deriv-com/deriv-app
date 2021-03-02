@@ -36,6 +36,52 @@ const SpecBox = ({ value }) => (
     </div>
 );
 
+const MT5AccountCardSpecification = ({ children }) => {
+    const [isCollapsed, setCollapsed] = React.useState(false);
+    const contentRef = React.useRef();
+    React.useEffect(() => {
+        if (contentRef.current) {
+            if (isCollapsed) {
+                contentRef.current.style.maxHeight = contentRef.current.scrollHeight + 'px';
+            } else {
+                contentRef.current.style.maxHeight = null;
+            }
+        }
+    }, [isCollapsed, contentRef]);
+    return (
+        <div className='mt5-account-card__specification'>
+            <Text
+                className='mt5-account-card__specification-title'
+                size='xxs'
+                as='div'
+                align='center'
+                color='less-prominent'
+                onClick={() => {
+                    setCollapsed(isCollapsed => !isCollapsed);
+                }}
+            >
+                {localize('Specification')}
+                <Icon
+                    className={classNames('mt5-account-card__specification-icon', {
+                        'mt5-account-card__specification-icon--collapsed': isCollapsed,
+                    })}
+                    icon='IcChevronDown'
+                    color='secondary'
+                    size={12}
+                />
+            </Text>
+            <div
+                ref={contentRef}
+                className={classNames('mt5-account-card__specification-content', {
+                    'mt5-account-card__specification-content--collapsed': isCollapsed,
+                })}
+            >
+                {children}
+            </div>
+        </div>
+    );
+};
+
 const MT5AccountCardAction = ({
     button_label,
     handleClickSwitchAccount,
@@ -217,23 +263,33 @@ const MT5AccountCard = ({
                 <div className='mt5-account-card__cta'>
                     {existing_data?.login && is_logged_in ? (
                         <>
-                            <div className='mt5-account-card__border'>
+                            <MT5AccountCardSpecification>
                                 <Text
-                                    className='mt5-account-card__border-text'
-                                    size='xxs'
-                                    as='div'
-                                    align='center'
-                                    color='less-prominent'
+                                    as='p'
+                                    align='left'
+                                    size='xs'
+                                    color='prominent'
+                                    className='mt5-account-card__specification-description'
                                 >
-                                    {localize('Specification')}
-                                    <Icon
-                                        className='mt5-account-card__border-icon'
-                                        icon='IcChevronDown'
-                                        color='secondary'
-                                        size={12}
-                                    />
+                                    {descriptor}
                                 </Text>
-                            </div>
+                                <table className='mt5-account-card__specs-table mt5-account-card__specification-table'>
+                                    <tbody>
+                                        {Object.keys(specs).map((spec_attribute, idx) => (
+                                            <tr key={idx} className='mt5-account-card__specs-table-row'>
+                                                <td className='mt5-account-card__specs-table-attribute'>
+                                                    <p className='mt5-account-card--paragraph'>{spec_attribute}</p>
+                                                </td>
+                                                <td className='mt5-account-card__specs-table-data'>
+                                                    <p className='mt5-account-card--paragraph'>
+                                                        {specs[spec_attribute]}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </MT5AccountCardSpecification>
                             <div className='mt5-account-card__login-specs'>
                                 <Text as='p' color='less-prominent' size='xxxs' align='left'>
                                     {localize('Use below credential to login')}

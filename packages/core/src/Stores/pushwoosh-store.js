@@ -33,31 +33,35 @@ export default class PushwooshStore extends BaseStore {
             },
         ]);
         this.has_initialized = true;
-        this.sendTags();
+        push_woosh.push([
+            'onReady',
+            function (api) {
+                this.push_woosh.subscribe();
+                this.sendTags(api);
+            },
+        ]);
     };
 
     /**
      * Set tags containing client to pushwoosh
      */
     @action.bound
-    sendTags = () => {
-        this.push_woosh.push(api => {
-            api.getTags()
-                .then(result => {
-                    if (!result.result['Login ID'] || !result.result['Site Language'] || !result.result.Residence) {
-                        return api.setTags({
-                            'Login ID': this.root_store.client.loginid,
-                            'Site Language': getLanguage().toLowerCase(),
-                            Residence: this.root_store.client.residence,
-                        });
-                    }
-                    return null;
-                })
-                .catch(e => {
-                    // eslint-disable-next-line no-console
-                    console.error(e);
-                    return null;
-                });
-        });
+    sendTags = api => {
+        api.getTags()
+            .then(result => {
+                if (!result.result['Login ID'] || !result.result['Site Language'] || !result.result.Residence) {
+                    return api.setTags({
+                        'Login ID': this.root_store.client.loginid,
+                        'Site Language': getLanguage().toLowerCase(),
+                        Residence: this.root_store.client.residence,
+                    });
+                }
+                return null;
+            })
+            .catch(e => {
+                // eslint-disable-next-line no-console
+                console.error(e);
+                return null;
+            });
     };
 }

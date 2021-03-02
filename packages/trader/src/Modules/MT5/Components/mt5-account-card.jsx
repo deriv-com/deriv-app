@@ -42,12 +42,12 @@ const MT5AccountCardSpecification = ({ children, height }) => {
     React.useEffect(() => {
         if (content_ref.current) {
             if (is_collapsed) {
-                content_ref.current.style.height = (height ?? content_ref.current.scrollHeight) + 'px';
+                content_ref.current.style.height = `${height ?? content_ref.current.scrollHeight}px`;
             } else {
                 content_ref.current.style.height = null;
             }
         }
-    }, [is_collapsed, content_ref]);
+    }, [is_collapsed, content_ref, height]);
     return (
         <div className='mt5-account-card__specification'>
             <Text
@@ -57,7 +57,7 @@ const MT5AccountCardSpecification = ({ children, height }) => {
                 align='center'
                 color='less-prominent'
                 onClick={() => {
-                    setCollapsed(is_collapsed => !is_collapsed);
+                    setCollapsed(prev => !prev);
                 }}
             >
                 {localize('Specification')}

@@ -409,7 +409,7 @@ export class PersonalDetailsForm extends React.Component {
                                                     'We use the information you give us only for verification purposes. All information is kept confidential.'
                                                 )}
                                             >
-                                                {is_dashboard && (
+                                                {is_dashboard && is_eu && (
                                                     <fieldset className='account-form__fieldset'>
                                                         <DesktopWrapper>
                                                             <Field name='salutation'>
@@ -445,6 +445,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                 onChange={e =>
                                                                     setFieldValue('salutation', e.target.value, true)
                                                                 }
+                                                                disabled={!this.isChangeableField('salutation')}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>

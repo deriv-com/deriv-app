@@ -42,7 +42,7 @@ const TermsOfUse = ({
         <Formik
             initialValues={value}
             onSubmit={(values, actions) => {
-                onSubmit(getCurrentStep() - 1, values.agreed_tos, actions.setSubmitting, goToNextStep);
+                onSubmit(getCurrentStep() - 1, {}, actions.setSubmitting, goToNextStep);
             }}
         >
             {({ handleSubmit, values, isSubmitting }) => (

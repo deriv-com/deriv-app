@@ -393,6 +393,9 @@ $MIN_HEIGHT_FLOATING: calc(
                     align-items: normal;
                     display: flex;
                     flex-direction: row;
+                    @include mobile {
+                        flex-direction: column;
+                    }
                 }
 
                 &-dashboard {
@@ -408,7 +411,6 @@ $MIN_HEIGHT_FLOATING: calc(
                     margin-left: 1.6rem;
                     &-wrapper--dashboard {
                         display: flex;
-                        width: 40rem;
                         justify-content: space-between;
                     }
                 }
@@ -430,7 +432,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     & .account-form__footer-btn {
                         min-width: 35%;
                         &-wrapper {
-                            flex-direction: column;
+                            flex-direction: row;
                         }
                     }
                     & > div {

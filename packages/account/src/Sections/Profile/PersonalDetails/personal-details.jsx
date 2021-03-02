@@ -331,7 +331,6 @@ export class PersonalDetailsForm extends React.Component {
         const {
             form_initial_values: { ...form_initial_values },
             api_error,
-            is_eu,
             is_loading,
             is_state_loading,
             is_btn_loading,
@@ -340,8 +339,7 @@ export class PersonalDetailsForm extends React.Component {
         } = this.state;
 
         const { is_dashboard } = this.context;
-        const { residence_list, states_list, is_virtual, is_mf, is_svg } = this.props;
-
+        const { is_eu, residence_list, states_list, is_virtual, is_mf, is_svg } = this.props;
         if (api_error) return <LoadErrorMessage error_message={api_error} />;
 
         if (is_loading || is_state_loading || !residence_list.length) {

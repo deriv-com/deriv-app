@@ -107,6 +107,7 @@ import './common/ic-arrow-right-curly.svg';
 import './common/ic-arrow-right.svg';
 import './common/ic-arrow-up.svg';
 import './common/ic-attachment.svg';
+import './common/ic-bank-dashboard.svg';
 import './common/ic-bank.svg';
 import './common/ic-bell.svg';
 import './common/ic-black-warning.svg';

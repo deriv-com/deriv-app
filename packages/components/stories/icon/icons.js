@@ -113,6 +113,7 @@ export const icons = {
         'IcArrowRight',
         'IcArrowUp',
         'IcAttachment',
+        'IcBankDashboard',
         'IcBank',
         'IcBell',
         'IcBlackWarning',

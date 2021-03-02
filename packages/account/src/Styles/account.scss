@@ -549,6 +549,9 @@ $MIN_HEIGHT_FLOATING: calc(
         color: var(--text-general);
     }
     .account-management {
+        &__container-dashboard {
+            width: calc(100vw - 33rem);
+        }
         &__list {
             &-container {
                 margin-top: 1.6rem;

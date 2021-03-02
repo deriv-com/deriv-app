@@ -76,9 +76,9 @@ const FileUploaderContainer = ({ is_description_disabled, getSocket, onFileDrop,
                     )}
                     <li className='account-poa__upload-box'>
                         {is_dashboard ? (
-                            <Icon icon='IcPoaFileWithAddress' className='account-poa__upload-icon' size={24} />
+                            <Icon icon='IcBankDashboard' className='account-poa__upload-icon' size={24} />
                         ) : (
-                            <Icon icon='IcUser' className='account-poa__upload-icon' size={20} />
+                            <Icon icon='IcBank' className='account-poa__upload-icon' size={20} />
                         )}
                         <div className='account-poa__upload-item'>
                             <Localize i18n_default_text='A recent bank statement or government-issued letter with your name and address' />

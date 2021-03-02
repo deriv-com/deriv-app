@@ -7,13 +7,12 @@ const Colors = {
     FgBlue: "\x1b[34m",
     FgMagenta: "\x1b[35m",
     FgWhite: "\x1b[37m",
-    RESET: "\x1b[0m"
+    RESET: "\x1b[0m",
 }
 
 const output_dir = `${__dirname}/../../states/logger`
 
 class logger {
-
     /**
      * Save results of a test
      * @param test_path
@@ -30,7 +29,7 @@ class logger {
         if (!fs.existsSync(file_path))
             fs.writeFileSync(file_path, JSON.stringify([{ name, results }]));
         else {
-            let data = JSON.parse(fs.readFileSync(file_path));
+            const data = JSON.parse(fs.readFileSync(file_path));
             data.push({ name, results })
             fs.writeFileSync(file_path, JSON.stringify(data))
         }

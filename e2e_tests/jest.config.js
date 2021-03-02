@@ -19,11 +19,16 @@ module.exports = {
             browsers: [process.env.BROWSER || 'chromium'],
             contextOptions: {
                 ignoreHTTPSErrors: true,
-                ...(process.env.ENABLE_VIDEO_RECORD ? {recordVideo: {
-                    dir: path.join(process.env.E2E_ARTIFACT_PATH, 'videos'),
-                }} : {}),
+                ...(process.env.ENABLE_VIDEO_RECORD
+                    ? {
+                          recordVideo: {
+                              dir: path.join(process.env.E2E_ARTIFACT_PATH, 'videos'),
+                          },
+                      }
+                    : {}),
             },
         },
     },
     transformIgnorePatterns: ['/node_modules/(?!react-virtualized).+\\.js$', '_utils/websocket.js'],
+    reporters: ['default', './src/_utils/cli_reporter.js'],
 };

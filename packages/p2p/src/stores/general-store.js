@@ -30,7 +30,7 @@ export default class GeneralStore extends BaseStore {
     @observable user_blocked_until = null;
 
     custom_string = this.props?.custom_string;
-    list_item_limit = isMobile() ? 10 : 25;
+    list_item_limit = isMobile() ? 10 : 50;
     path = {
         buy_sell: 0,
         orders: 1,

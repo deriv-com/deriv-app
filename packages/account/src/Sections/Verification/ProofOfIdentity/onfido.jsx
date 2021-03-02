@@ -10,6 +10,7 @@ import Expired from 'Components/poi-expired';
 import OnfidoFailed from 'Components/poi-onfido-failed';
 import Verified from 'Components/poi-verified';
 import getOnfidoPhrases from 'Constants/onfido-phrases';
+import MissingPersonalDetails from 'Components/poi-missing-personal-details';
 import { onfido_status_codes } from './proof-of-identity';
 
 const onfido_container_id = 'onfido';
@@ -108,6 +109,10 @@ const Onfido = ({
     }, [initOnfido, previous_onfido_service_token, onfido_service_token, status]);
 
     if (status === onfido_status_codes.unsupported) return <Unsupported {...props} />;
+
+    if (onfido_init_error && onfido_service_token?.error?.code === 'InvalidPostalCode') {
+        return <MissingPersonalDetails has_invalid_postal_code from='proof_of_identity' />;
+    }
 
     if (onfido_init_error || onfido_service_token?.error) return <OnfidoFailed {...props} />;
 

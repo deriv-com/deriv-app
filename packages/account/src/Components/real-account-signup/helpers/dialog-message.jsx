@@ -26,7 +26,7 @@ export const DialogMessage = ({ status = EXPERIAN.SUCCESS, landing_company_short
                 break;
             case EXPERIAN.PENDING:
                 message = (
-                    <Localize i18n_default_text="You're able to get trading as soon as verification is complete." />
+                    <Localize i18n_default_text="You'll be able to get trading as soon as verification is complete." />
                 );
                 break;
             default:

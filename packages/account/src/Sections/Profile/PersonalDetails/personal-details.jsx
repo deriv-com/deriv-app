@@ -51,7 +51,7 @@ const InputGroup = ({ children, className }) => (
     </fieldset>
 );
 
-const TaxResidenceSelect = ({ field, touched, errors, setFieldValue, values }) => (
+const TaxResidenceSelect = ({ field, touched, errors, setFieldValue, values, is_changeable, residence_list }) => (
     <React.Fragment>
         <DesktopWrapper>
             <Autocomplete
@@ -61,8 +61,8 @@ const TaxResidenceSelect = ({ field, touched, errors, setFieldValue, values }) =
                 type='text'
                 label={localize('Tax residence*')}
                 error={touched.tax_residence && errors.tax_residence}
-                disabled={!this.isChangeableField('tax_residence')}
-                list_items={this.props.residence_list}
+                disabled={!is_changeable}
+                list_items={residence_list}
                 onItemSelection={({ value, text }) => setFieldValue('tax_residence', value ? text : '', true)}
                 required
             />
@@ -72,9 +72,9 @@ const TaxResidenceSelect = ({ field, touched, errors, setFieldValue, values }) =
                 placeholder={localize('Tax residence*')}
                 label={localize('Tax residence*')}
                 value={values.tax_residence}
-                list_items={this.props.residence_list}
+                list_items={residence_list}
                 error={touched.tax_residence && errors.tax_residence}
-                disabled={!this.isChangeableField('tax_residence')}
+                disabled={!is_changeable}
                 use_text={true}
                 onChange={e => setFieldValue('tax_residence', e.target.value, true)}
                 required
@@ -382,13 +382,20 @@ export class PersonalDetailsForm extends React.Component {
         if (this.props.is_mf) {
             if (form_initial_values.tax_residence) {
                 const is_single_tax_value = form_initial_values.tax_residence.indexOf(',') < 0;
+                // if there's only one tax residence set, show it in drop-down
                 if (is_single_tax_value) {
                     form_initial_values.tax_residence = getLocation(
                         residence_list,
                         form_initial_values.tax_residence,
                         'text'
                     );
+                } else if (this.isChangeableField('tax_residence')) {
+                    // if there are multiple tax residences and user is allowed to update it
+                    // select the first tax residence in drop-down
+                    const first_tax_residence = form_initial_values.tax_residence.split(',')[0];
+                    form_initial_values.tax_residence = getLocation(residence_list, first_tax_residence, 'text');
                 } else {
+                    // otherwise show all tax residences in a disabled input field
                     const tax_residences = [];
                     form_initial_values.tax_residence.split(',').forEach(residence => {
                         tax_residences.push(getLocation(residence_list, residence, 'text'));
@@ -685,37 +692,32 @@ export class PersonalDetailsForm extends React.Component {
                                                             <Field name='tax_residence'>
                                                                 {({ field }) => (
                                                                     <React.Fragment>
-                                                                        {Array.isArray(values.tax_residence) ? (
+                                                                        {Array.isArray(values.tax_residence) &&
+                                                                        !this.isChangeableField('tax_residence') ? (
                                                                             <fieldset className='account-form__fieldset'>
                                                                                 <Input
-                                                                                    data-lpignore='true'
                                                                                     type='text'
                                                                                     name='tax_residence'
                                                                                     label={localize('Tax residence*')}
                                                                                     value={values.tax_residence.join(
                                                                                         ', '
                                                                                     )}
-                                                                                    onChange={handleChange}
-                                                                                    onBlur={handleBlur}
-                                                                                    error={
-                                                                                        touched.tax_residence &&
-                                                                                        errors.tax_residence
-                                                                                    }
-                                                                                    disabled={
-                                                                                        !this.isChangeableField(
-                                                                                            'tax_residence'
-                                                                                        )
-                                                                                    }
-                                                                                    required
+                                                                                    disabled
                                                                                 />
                                                                             </fieldset>
                                                                         ) : (
                                                                             <TaxResidenceSelect
+                                                                                is_changeable={this.isChangeableField(
+                                                                                    'tax_residence'
+                                                                                )}
                                                                                 field={field}
                                                                                 touched={touched}
                                                                                 errors={errors}
                                                                                 setFieldValue={setFieldValue}
                                                                                 values={values}
+                                                                                residence_list={
+                                                                                    this.props.residence_list
+                                                                                }
                                                                             />
                                                                         )}
                                                                     </React.Fragment>

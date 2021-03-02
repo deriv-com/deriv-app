@@ -50,33 +50,33 @@ const LoggedInHeader = ({ is_dark_mode }) => {
 const LoggedOutHeader = () => {
     const history = useHistory();
     const { is_dashboard } = React.useContext(PlatformContext);
-    const [current_dropdown, setCurrentDropdown] = React.useState('');
-    const [dropdown_link_ref, setDropdownLinkRef] = React.useState(null);
-    const [dropdown_ref, setDropdownRef] = React.useState(null);
+    const [active_dropdown, setCurrentDropdown] = React.useState('');
+    const [active_link_ref, setActiveLinkRef] = React.useState(null);
+    const [active_dropdown_ref, setActiveDropdownRef] = React.useState(null);
     const nav_dropdown_ref = React.useRef(null);
 
     const handleDropdownClick = (dropdown, target) => {
         setCurrentDropdown(dropdown);
         if (target) {
-            setDropdownLinkRef(target);
+            setActiveLinkRef(target);
         }
     };
 
     const handleOutsideClick = e => {
         if (nav_dropdown_ref.current && !nav_dropdown_ref.current.contains(e.target)) {
-            if (dropdown_ref.current && dropdown_ref.current.contains(e.target)) return;
+            if (active_dropdown_ref.current && active_dropdown_ref.current.contains(e.target)) return;
             setCurrentDropdown('');
         }
     };
 
-    const setDropdown = new_ref => setDropdownRef(new_ref);
+    const setDropdown = new_ref => setActiveDropdownRef(new_ref);
 
     React.useEffect(() => {
         document.addEventListener('click', handleOutsideClick);
         return () => {
             document.removeEventListener('click', handleOutsideClick);
         };
-    }, [dropdown_ref]);
+    }, [active_dropdown_ref]);
 
     return (
         <React.Fragment>
@@ -129,11 +129,11 @@ const LoggedOutHeader = () => {
                     )}
                 </div>
             </header>
-            {current_dropdown && (
+            {active_dropdown && (
                 <HeaderDropdown
-                    key={current_dropdown}
-                    current_ref={dropdown_link_ref}
-                    parent={current_dropdown}
+                    key={active_dropdown}
+                    current_ref={active_link_ref}
+                    parent={active_dropdown}
                     setRef={setDropdown}
                 />
             )}

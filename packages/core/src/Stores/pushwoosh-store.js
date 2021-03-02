@@ -5,8 +5,8 @@ import { getLanguage } from '@deriv/translations';
 import BaseStore from './base-store';
 
 export default class PushwooshStore extends BaseStore {
-    // only available on production (bot and deriv)
-    is_applicable = /^(16929|19111|24091)$/.test(getAppId());
+    // only available on staging & production (bot and deriv)
+    is_applicable = /^(16929|19111|24091|16303)$/.test(getAppId());
     has_initialized = false;
     push_woosh = new Pushwoosh();
 
@@ -33,7 +33,7 @@ export default class PushwooshStore extends BaseStore {
             },
         ]);
         this.has_initialized = true;
-        push_woosh.push([
+        this.push_woosh.push([
             'onReady',
             function (api) {
                 this.push_woosh.subscribe();

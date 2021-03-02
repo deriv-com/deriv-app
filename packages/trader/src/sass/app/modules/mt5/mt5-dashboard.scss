@@ -691,16 +691,21 @@
             }
         }
     }
-    &__border {
+    &__specification {
+        position: relative;
         width: 100%;
-        padding: 0 2rem;
+        padding: 0 1.5rem;
         &-icon {
             vertical-align: middle;
+            &--collapsed {
+                transform: rotate(180deg);
+            }
         }
-        &-text {
+        &-title {
             overflow: hidden;
             text-align: center;
             width: 100%;
+            cursor: pointer;
             &:before {
                 background-color: var(--text-less-prominent);
                 content: '';
@@ -723,6 +728,23 @@
                 left: 0.5em;
                 margin-right: -50%;
             }
+        }
+        &-content {
+            position: absolute;
+            display: block;
+            max-height: 0;
+            overflow: hidden;
+            width: calc(100% - 3rem);
+            transition: max-height 0.2s ease-in;
+            z-index: 2;
+            opacity: 0.9;
+            background-color: var(--general-main-1);
+        }
+        &-description {
+            padding: 1.6rem 0;
+        }
+        &-table {
+            margin-bottom: 10.5rem;
         }
     }
     &__login-specs {

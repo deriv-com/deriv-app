@@ -94,14 +94,12 @@
 }
 
 .statement__row--detail-text-mobile {
-    width: calc(100vw - 32px);
+    width: calc(100vw - 3.2rem);
     height: 100%;
-    text-align: left;
-    padding: 6px 16px;
+    padding: 0.6rem 1.6rem;
     overflow-wrap: break-word;
     word-wrap: break-word;
     line-height: 1.43;
-    font-size: 14px;
     display: flex;
     justify-content: center;
     align-content: center;
@@ -109,7 +107,7 @@
 }
 
 .address-desc {
-    margin-bottom: 16px;
+    margin-bottom: 1.6rem;
 }
 
 /* stylelint-disable-next-line plugin/selector-bem-pattern */

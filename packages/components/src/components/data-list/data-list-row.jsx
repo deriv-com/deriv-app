@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import Text from '../text';
 
 const formatDesc = desc => {
     if (desc.message.substring(0, 7) === 'Address') {
@@ -9,10 +10,18 @@ const formatDesc = desc => {
 
         return (
             <div className='statement__row--detail-text-mobile'>
-                <span className='address-title'>Address:</span>
-                <p className='address-desc'>{address}</p>
-                <span className='transaction-title'>Transaction:</span>
-                <p className='transaction-desc'>{transaction}</p>
+                <Text className='address-title' size='xs'>
+                    Address:
+                </Text>
+                <Text className='address-desc' as='p' size='xs'>
+                    {address}
+                </Text>
+                <Text className='transaction-title' size='xs'>
+                    Transaction:
+                </Text>
+                <Text className='transaction-desc' as='p' size='xs'>
+                    {transaction}
+                </Text>
             </div>
         );
     }

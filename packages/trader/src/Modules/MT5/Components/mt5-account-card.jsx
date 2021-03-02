@@ -36,18 +36,18 @@ const SpecBox = ({ value }) => (
     </div>
 );
 
-const MT5AccountCardSpecification = ({ children }) => {
-    const [isCollapsed, setCollapsed] = React.useState(false);
-    const contentRef = React.useRef();
+const MT5AccountCardSpecification = ({ children, height }) => {
+    const [is_collapsed, setCollapsed] = React.useState(false);
+    const content_ref = React.useRef();
     React.useEffect(() => {
-        if (contentRef.current) {
-            if (isCollapsed) {
-                contentRef.current.style.maxHeight = contentRef.current.scrollHeight + 'px';
+        if (content_ref.current) {
+            if (is_collapsed) {
+                content_ref.current.style.height = (height ?? content_ref.current.scrollHeight) + 'px';
             } else {
-                contentRef.current.style.maxHeight = null;
+                content_ref.current.style.height = null;
             }
         }
-    }, [isCollapsed, contentRef]);
+    }, [is_collapsed, content_ref]);
     return (
         <div className='mt5-account-card__specification'>
             <Text
@@ -57,25 +57,20 @@ const MT5AccountCardSpecification = ({ children }) => {
                 align='center'
                 color='less-prominent'
                 onClick={() => {
-                    setCollapsed(isCollapsed => !isCollapsed);
+                    setCollapsed(is_collapsed => !is_collapsed);
                 }}
             >
                 {localize('Specification')}
                 <Icon
                     className={classNames('mt5-account-card__specification-icon', {
-                        'mt5-account-card__specification-icon--collapsed': isCollapsed,
+                        'mt5-account-card__specification-icon--collapsed': is_collapsed,
                     })}
                     icon='IcChevronDown'
                     color='secondary'
                     size={12}
                 />
             </Text>
-            <div
-                ref={contentRef}
-                className={classNames('mt5-account-card__specification-content', {
-                    'mt5-account-card__specification-content--collapsed': isCollapsed,
-                })}
-            >
+            <div ref={content_ref} className='mt5-account-card__specification-content'>
                 {children}
             </div>
         </div>
@@ -263,17 +258,9 @@ const MT5AccountCard = ({
                 <div className='mt5-account-card__cta'>
                     {existing_data?.login && is_logged_in ? (
                         <>
-                            <MT5AccountCardSpecification>
-                                <Text
-                                    as='p'
-                                    align='left'
-                                    size='xs'
-                                    color='prominent'
-                                    className='mt5-account-card__specification-description'
-                                >
-                                    {descriptor}
-                                </Text>
-                                <table className='mt5-account-card__specs-table mt5-account-card__specification-table'>
+                            <MT5AccountCardSpecification height={272}>
+                                <p className='mt5-account-card__specification-description'>{descriptor}</p>
+                                <table className='mt5-account-card__specs-table'>
                                     <tbody>
                                         {Object.keys(specs).map((spec_attribute, idx) => (
                                             <tr key={idx} className='mt5-account-card__specs-table-row'>

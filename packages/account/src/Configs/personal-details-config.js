@@ -1,4 +1,4 @@
-import { toMoment, getErrorMessages, generateValidationFunction, getDefaultFields } from '@deriv/shared';
+import { toMoment, getErrorMessages, generateValidationFunction, getDefaultFields, validLength } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 const personal_details_config = ({ residence_list, account_settings, is_dashboard }) => {
@@ -9,6 +9,10 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
     const disabled_items = [
         ...Object.keys(account_settings).filter(field_name => field_name !== 'account_opening_reason' && !!field_name),
     ];
+
+    // minimum characters required is 9 numbers (excluding +- signs or space)
+    const min_phone_number = 9;
+    const max_phone_number = 35;
 
     const config = {
         account_opening_reason: {
@@ -72,7 +76,17 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
             rules: [
                 ['req', localize('Phone is required')],
                 ['phone', localize('Phone is not in a proper format.')],
-                ['length', localize('Phone should be between 8 and 35 numbers.'), { min: 9, max: 36 }], // minimum characters required is 9 including (+) sign.
+                [
+                    value => {
+                        // phone_trim uses regex that trims non-digits
+                        const phone_trim = value.replace(/\D/g, '');
+                        return validLength(phone_trim, { min: min_phone_number, max: max_phone_number });
+                    },
+                    localize('You should enter {{min}}-{{max}} numbers.', {
+                        min: min_phone_number,
+                        max: max_phone_number,
+                    }),
+                ],
             ],
         },
         tax_residence: {

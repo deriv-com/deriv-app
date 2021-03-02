@@ -3,10 +3,10 @@ import { ButtonLink, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
 
-const GoToPersonalDetailsButton = ({ from, anchor }) => (
+const GoToPersonalDetailsButton = ({ anchor, from, text }) => (
     <ButtonLink to={`/account/personal-details${from ? `?from=${from}` : ''}${anchor ? `#${anchor}` : ''}`}>
         <Text className='dc-btn__text' weight='bold' as='p'>
-            {localize('Go to personal details')}
+            {text || localize('Go to personal details')}
         </Text>
     </ButtonLink>
 );
@@ -16,10 +16,14 @@ export const MissingPersonalDetails = ({ has_invalid_postal_code, from }) => {
         return (
             <IconMessageContent
                 message={localize('Your postal code is invalid')}
-                text={localize('Please correct your postal code in personal details before you verify your identity.')}
+                text={localize('Please check and update your postal code before submitting proof of identity.')}
                 icon={<Icon icon='IcAccountMissingDetails' size={128} />}
             >
-                <GoToPersonalDetailsButton anchor='address_postcode' from={from} />
+                <GoToPersonalDetailsButton
+                    anchor='address_postcode'
+                    from={from}
+                    text={localize('Update postal code')}
+                />
             </IconMessageContent>
         );
     return (

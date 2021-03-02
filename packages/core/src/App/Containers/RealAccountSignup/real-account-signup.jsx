@@ -342,7 +342,9 @@ const RealAccountSignup = ({
                         return null;
                     }}
                 >
-                    <ModalContent state_value={state_value} passthrough={state_index} is_loading={is_loading} />
+                    {is_real_acc_signup_on && (
+                        <ModalContent state_value={state_value} passthrough={state_index} is_loading={is_loading} />
+                    )}
                 </MobileDialog>
             </MobileWrapper>
         </React.Fragment>

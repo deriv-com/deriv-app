@@ -14,8 +14,8 @@ export const redirectToLogin = (is_logged_in, language, has_params = true) => {
     }
 };
 
-export const redirectToSignUp = ({ is_deriv_crypto }) => {
-    window.open(getStaticUrl('/signup/', { is_deriv_crypto }));
+export const redirectToSignUp = ({ is_dashboard }) => {
+    window.open(getStaticUrl('/signup/', { is_dashboard }));
 };
 
 export const loginUrl = ({ language }) => {
@@ -37,12 +37,6 @@ export const loginUrl = ({ language }) => {
 
     if (getAppId() === domain_app_ids['app.deriv.com'] && /^app\.deriv\.com$/.test(window.location.hostname)) {
         return getOAuthUrl('deriv.com');
-    }
-    if (
-        getAppId() === domain_app_ids['derivcrypto.com'] &&
-        /^(app\.)?derivcrypto\.com$/.test(window.location.hostname)
-    ) {
-        return getOAuthUrl('derivcrypto.com');
     }
     return urlForCurrentDomain(getOAuthUrl('deriv.com'));
 };

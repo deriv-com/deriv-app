@@ -6,6 +6,7 @@ import { observer as globalObserver } from '../../../utils/observer';
 export const tradeOptionToProposal = (trade_option, purchase_reference) =>
     trade_option.contractTypes.map(type => {
         const proposal = {
+            proposal: 1,
             duration_unit: trade_option.duration_unit,
             basis: trade_option.basis,
             currency: trade_option.currency,
@@ -52,20 +53,22 @@ const getBackoffDelayInMs = (error, delay_index) => {
     const max_delay = 15;
     const next_delay_in_seconds = Math.min(base_delay * delay_index, max_delay);
 
-    if (error?.name === 'RateLimit') {
+    if (error.error.code === 'RateLimit') {
         logError(
             localize('You are rate limited for: {{ message_type }}, retrying in {{ delay }}s (ID: {{ request }})', {
-                message_type: error.error.msg_type,
+                message_type: error.msg_type,
                 delay: next_delay_in_seconds,
-                request: error.error.echo_req.req_id,
+                request: error.echo_req.req_id,
             })
         );
-    } else if (error?.name === 'DisconnectError') {
+    } else if (error.error.code === 'DisconnectError') {
         logError(
             localize('You are disconnected, retrying in {{ delay }}s', {
                 delay: next_delay_in_seconds,
             })
         );
+    } else if (error.error.code === 'MarketIsClosed') {
+        logError(localize('This market is presently closed.'));
     } else {
         logError(
             localize('Request failed for: {{ message_type }}, retrying in {{ delay }}s', {
@@ -79,7 +82,7 @@ const getBackoffDelayInMs = (error, delay_index) => {
 };
 
 export const shouldThrowError = (error, errors_to_ignore = []) => {
-    if (!error) {
+    if (!error.error) {
         return false;
     }
 
@@ -89,8 +92,9 @@ export const shouldThrowError = (error, errors_to_ignore = []) => {
         'GetProposalFailure',
         'RateLimit',
         'DisconnectError',
+        'MarketIsClosed',
     ];
-    const is_ignorable_error = errors_to_ignore.concat(default_errors_to_ignore).includes(error.name);
+    const is_ignorable_error = errors_to_ignore.concat(default_errors_to_ignore).includes(error.error.code);
 
     return !is_ignorable_error;
 };
@@ -105,9 +109,8 @@ export const recoverFromError = (promiseFn, recoverFn, errors_to_ignore, delay_i
                     reject(error);
                     return;
                 }
-
                 recoverFn(
-                    error.name,
+                    error.error.code,
                     () =>
                         new Promise(recoverResolve => {
                             const getGlobalTimeouts = () => globalObserver.getState('global_timeouts') ?? [];

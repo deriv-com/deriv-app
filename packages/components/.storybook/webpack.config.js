@@ -39,6 +39,7 @@ module.exports = async ({ config, mode }) => {
         use: {
             loader: 'babel-loader',
             options: {
+                cacheDirectory: true,
                 presets: ['@babel/preset-env', '@babel/preset-react'],
                 plugins: [
                     ['@babel/plugin-proposal-decorators', { legacy: true }],

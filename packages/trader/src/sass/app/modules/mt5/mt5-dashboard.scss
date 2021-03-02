@@ -701,6 +701,9 @@
                 transform: rotate(180deg);
             }
         }
+        @include mobile {
+            padding: 0 1rem;
+        }
         &-title {
             overflow: hidden;
             text-align: center;
@@ -732,19 +735,20 @@
         &-content {
             position: absolute;
             display: block;
-            max-height: 0;
+            height: 0;
             overflow: hidden;
             width: calc(100% - 3rem);
-            transition: max-height 0.2s ease-in;
+            transition: height 0.2s ease-in;
             z-index: 2;
-            opacity: 0.9;
+            opacity: 0.95;
             background-color: var(--general-main-1);
+            @include mobile {
+                width: calc(100% - 2rem);
+            }
         }
         &-description {
+            @include typeface(--paragraph-left-normal-prominent);
             padding: 1.6rem 0;
-        }
-        &-table {
-            margin-bottom: 10.5rem;
         }
     }
     &__login-specs {

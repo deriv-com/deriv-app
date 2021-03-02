@@ -802,7 +802,7 @@ export class PersonalDetailsForm extends React.Component {
                                                 </FormBodySection>
                                             </React.Fragment>
                                         )}
-                                        {((is_dashboard && is_virtual) || !is_dashboard) && (
+                                        {!is_dashboard && !is_virtual && (
                                             <React.Fragment>
                                                 <FormSubHeader title={localize('Address')} />
                                                 <FormBodySection has_side_note={is_dashboard}>

@@ -295,7 +295,7 @@ const ProofOfAddressForm = ({
                                 <FormBodySection
                                     has_side_note={is_dashboard}
                                     side_note={localize(
-                                        'Please ensure that this address is the same as in your proof of address'
+                                        'An accurate and complete address helps to speed up your verification process.'
                                     )}
                                 >
                                     <div className='account-poa__details-section'>
@@ -446,7 +446,7 @@ const ProofOfAddressForm = ({
                                     />
                                 </FormBodySection>
                             </FormBody>
-                            <FormFooter>
+                            <FormFooter className='account-form__footer-poa'>
                                 {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
                                 <Button
                                     className='account-form__footer-btn'

@@ -1,11 +1,13 @@
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import React from 'react';
+import { PlatformContext } from '@deriv/shared';
 import { ContinueTradingButton } from 'Components/poa-continue-trading-button/continue-trading-button.jsx';
 import PoiButton from 'Components/poi-button';
 import IconMessageContent from 'Components/icon-message-content';
 
 export const Submitted = ({ needs_poi, is_description_disabled = false }) => {
+    const { is_dashboard } = React.useContext(PlatformContext);
     const message = localize('Your proof of address was submitted successfully');
     if (needs_poi) {
         return (
@@ -27,6 +29,7 @@ export const Submitted = ({ needs_poi, is_description_disabled = false }) => {
             message={message}
             text={localize('Your document is being reviewed, please check back in 1-3 days.')}
             icon={<Icon icon='IcPoaVerified' size={128} />}
+            full_width={is_dashboard}
         >
             {!is_description_disabled && <ContinueTradingButton />}
         </IconMessageContent>

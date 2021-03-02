@@ -437,9 +437,12 @@ $MIN_HEIGHT_FLOATING: calc(
                     }
                     & > div {
                         display: flex;
-                        justify-content: space-between;
+                        justify-content: space-around;
                     }
                 }
+            }
+            &-poa {
+                margin-left: unset;
             }
 
             &-all-fields-required {
@@ -1463,8 +1466,12 @@ $MIN_HEIGHT_FLOATING: calc(
             height: 240px;
             position: relative;
             max-width: 400px;
-            &--dashboard {
+            &-dashboard {
                 height: 10.5rem;
+                & .account-poa__upload-remove-btn {
+                    top: 25rem;
+                    right: 1rem;
+                }
             }
 
             &-zone {
@@ -1546,6 +1553,7 @@ $MIN_HEIGHT_FLOATING: calc(
             justify-content: flex-start;
             &-dashboard {
                 flex-direction: column;
+                margin-left: 2rem;
                 & span {
                     display: list-item;
                     list-style-type: disc;

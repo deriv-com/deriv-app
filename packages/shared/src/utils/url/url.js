@@ -77,12 +77,8 @@ export const urlFor = (
     if (legacy) {
         if (getPlatformFromUrl().is_staging_deriv_app) {
             domain = domain.replace(/staging-app\.deriv\.com/, `staging.binary.com/${lang || 'en'}`);
-        } else if (getPlatformFromUrl().is_staging_deriv_crypto) {
-            domain = domain.replace(/staging-app\.derivcrypto\.com/, `staging.binary.com/${lang || 'en'}`);
         } else if (getPlatformFromUrl().is_deriv_app) {
             domain = domain.replace(/app\.deriv\.com/, `binary.com/${lang || 'en'}`);
-        } else if (getPlatformFromUrl().is_deriv_crypto) {
-            domain = domain.replace(/app\.derivcrypto\.com/, `binary.com/${lang || 'en'}`);
         } else {
             domain = `https://binary.com/${lang || 'en'}/`;
         }
@@ -167,11 +163,11 @@ export const setUrlLanguage = lang => {
 export const getStaticUrl = (
     path = '',
     options = {
-        is_deriv_crypto: false,
+        is_dashboard: false,
     },
     is_document = false
 ) => {
-    const host = options.is_deriv_crypto ? deriv_urls.DERIV_CRYPTO_COM_PRODUCTION : deriv_urls.DERIV_COM_PRODUCTION;
+    const host = options.is_dashboard ? deriv_urls.DERIV_DASHBOARD_PRODUCTION : deriv_urls.DERIV_COM_PRODUCTION;
     let lang = default_language?.toLowerCase();
 
     if (lang && lang !== 'en') {

@@ -31,5 +31,6 @@ export const formatStatementTransaction = (transaction, currency, active_symbols
         shortcode,
         action_type: transaction.action_type,
         purchase_time: transaction.purchase_time,
+        transaction_time: transaction.transaction_time,
     };
 };

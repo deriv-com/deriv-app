@@ -51,6 +51,38 @@ const InputGroup = ({ children, className }) => (
     </fieldset>
 );
 
+const TaxResidenceSelect = ({ field, touched, errors, setFieldValue, values }) => (
+    <React.Fragment>
+        <DesktopWrapper>
+            <Autocomplete
+                {...field}
+                data-lpignore='true'
+                autoComplete='new-password' // prevent chrome autocomplete
+                type='text'
+                label={localize('Tax residence*')}
+                error={touched.tax_residence && errors.tax_residence}
+                disabled={!this.isChangeableField('tax_residence')}
+                list_items={this.props.residence_list}
+                onItemSelection={({ value, text }) => setFieldValue('tax_residence', value ? text : '', true)}
+                required
+            />
+        </DesktopWrapper>
+        <MobileWrapper>
+            <SelectNative
+                placeholder={localize('Tax residence*')}
+                label={localize('Tax residence*')}
+                value={values.tax_residence}
+                list_items={this.props.residence_list}
+                error={touched.tax_residence && errors.tax_residence}
+                disabled={!this.isChangeableField('tax_residence')}
+                use_text={true}
+                onChange={e => setFieldValue('tax_residence', e.target.value, true)}
+                required
+            />
+        </MobileWrapper>
+    </React.Fragment>
+);
+
 export class PersonalDetailsForm extends React.Component {
     state = { is_loading: true, is_state_loading: false, show_form: true };
 
@@ -348,9 +380,24 @@ export class PersonalDetailsForm extends React.Component {
             form_initial_values.address_state = '';
         }
         if (this.props.is_mf) {
-            form_initial_values.tax_residence = form_initial_values.tax_residence
-                ? getLocation(residence_list, form_initial_values.tax_residence, 'text')
-                : '';
+            if (form_initial_values.tax_residence) {
+                const is_single_tax_value = form_initial_values.tax_residence.indexOf(',') < 0;
+                if (is_single_tax_value) {
+                    form_initial_values.tax_residence = getLocation(
+                        residence_list,
+                        form_initial_values.tax_residence,
+                        'text'
+                    );
+                } else {
+                    const tax_residences = [];
+                    form_initial_values.tax_residence.split(',').forEach(residence => {
+                        tax_residences.push(getLocation(residence_list, residence, 'text'));
+                    });
+                    form_initial_values.tax_residence = tax_residences;
+                }
+            } else {
+                form_initial_values.tax_residence = '';
+            }
             if (!form_initial_values.tax_identification_number) form_initial_values.tax_identification_number = '';
         }
 
@@ -638,59 +685,39 @@ export class PersonalDetailsForm extends React.Component {
                                                             <Field name='tax_residence'>
                                                                 {({ field }) => (
                                                                     <React.Fragment>
-                                                                        <DesktopWrapper>
-                                                                            <Autocomplete
-                                                                                {...field}
-                                                                                data-lpignore='true'
-                                                                                autoComplete='new-password' // prevent chrome autocomplete
-                                                                                type='text'
-                                                                                label={localize('Tax residence*')}
-                                                                                error={
-                                                                                    touched.tax_residence &&
-                                                                                    errors.tax_residence
-                                                                                }
-                                                                                disabled={
-                                                                                    !this.isChangeableField(
-                                                                                        'tax_residence'
-                                                                                    )
-                                                                                }
-                                                                                list_items={this.props.residence_list}
-                                                                                onItemSelection={({ value, text }) =>
-                                                                                    setFieldValue(
-                                                                                        'tax_residence',
-                                                                                        value ? text : '',
-                                                                                        true
-                                                                                    )
-                                                                                }
-                                                                                required
+                                                                        {Array.isArray(values.tax_residence) ? (
+                                                                            <fieldset className='account-form__fieldset'>
+                                                                                <Input
+                                                                                    data-lpignore='true'
+                                                                                    type='text'
+                                                                                    name='tax_residence'
+                                                                                    label={localize('Tax residence*')}
+                                                                                    value={values.tax_residence.join(
+                                                                                        ', '
+                                                                                    )}
+                                                                                    onChange={handleChange}
+                                                                                    onBlur={handleBlur}
+                                                                                    error={
+                                                                                        touched.tax_residence &&
+                                                                                        errors.tax_residence
+                                                                                    }
+                                                                                    disabled={
+                                                                                        !this.isChangeableField(
+                                                                                            'tax_residence'
+                                                                                        )
+                                                                                    }
+                                                                                    required
+                                                                                />
+                                                                            </fieldset>
+                                                                        ) : (
+                                                                            <TaxResidenceSelect
+                                                                                field={field}
+                                                                                touched={touched}
+                                                                                errors={errors}
+                                                                                setFieldValue={setFieldValue}
+                                                                                values={values}
                                                                             />
-                                                                        </DesktopWrapper>
-                                                                        <MobileWrapper>
-                                                                            <SelectNative
-                                                                                placeholder={localize('Tax residence*')}
-                                                                                label={localize('Tax residence*')}
-                                                                                value={values.tax_residence}
-                                                                                list_items={this.props.residence_list}
-                                                                                error={
-                                                                                    touched.tax_residence &&
-                                                                                    errors.tax_residence
-                                                                                }
-                                                                                disabled={
-                                                                                    !this.isChangeableField(
-                                                                                        'tax_residence'
-                                                                                    )
-                                                                                }
-                                                                                use_text={true}
-                                                                                onChange={e =>
-                                                                                    setFieldValue(
-                                                                                        'tax_residence',
-                                                                                        e.target.value,
-                                                                                        true
-                                                                                    )
-                                                                                }
-                                                                                required
-                                                                            />
-                                                                        </MobileWrapper>
+                                                                        )}
                                                                     </React.Fragment>
                                                                 )}
                                                             </Field>

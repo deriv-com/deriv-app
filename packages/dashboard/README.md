@@ -51,7 +51,6 @@
             config: {
                 asset_path: PropTypes.string.isRequired,
                 has_router: PropTypes.bool.isRequired,
-                is_deriv_crypto: PropTypes.bool.isRequired,
                 routes: PropTypes.shape({
                     home: PropTypes.string.isRequired,
                     about_us: PropTypes.string.isRequired,
@@ -64,7 +63,6 @@
                 is_dark_mode_on: PropTypes.bool.isRequired,
                 language: PropTypes.string.isRequired,
                 components: PropTypes.shape({
-                    LoginPrompt: any,
                     Page404: any,
                 }).isRequired,
             }).isRequired,

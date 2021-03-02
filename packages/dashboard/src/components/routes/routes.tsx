@@ -25,13 +25,12 @@ const Routes: React.FC = () => {
                 <Switch>
                     {getRoutesConfig({
                         consumer_routes: config_store.routes,
-                        is_deriv_crypto: config_store.is_deriv_crypto,
                         Page404: ui_store.components.Page404,
                     }).map((route: TRoute, idx: number) => (
                         <RouteWithSubroutes
                             key={idx}
                             Component404={ui_store.components.Page404}
-                            LoginPrompt={ui_store.components.LoginPrompt}
+                            should_redirect_login
                             {...route}
                         />
                     ))}

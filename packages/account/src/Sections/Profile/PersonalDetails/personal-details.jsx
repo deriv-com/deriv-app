@@ -13,6 +13,7 @@ import {
     MobileWrapper,
     SelectNative,
     DateOfBirthPicker,
+    Text,
 } from '@deriv/components';
 import {
     toMoment,
@@ -23,7 +24,6 @@ import {
     validPhone,
     validLetterSymbol,
     validLength,
-    validCountryCode,
     getLocation,
     removeObjProperties,
     filterObjProperties,
@@ -184,23 +184,18 @@ export class PersonalDetailsForm extends React.Component {
         }
 
         if (values.phone) {
-            // minimum characters required is 9 including (+) sign
-            // phone_trim uses regex that trims (+) sign
-            // minimum characters required w/o (+) sign is 8 characters.
-            const min_phone_number = 8;
+            // minimum characters required is 9 numbers (excluding +- signs or space)
+            const min_phone_number = 9;
             const max_phone_number = 35;
+            // phone_trim uses regex that trims non-digits
             const phone_trim = values.phone.replace(/\D/g, '');
-            const phone_error_message = localize(
-                'Please enter a valid phone number, including the country code (e.g +15417541234).'
-            );
+            const phone_error_message = localize('Please enter a valid phone number (e.g. +15417541234).');
 
             if (!validLength(phone_trim, { min: min_phone_number, max: max_phone_number })) {
                 errors.phone = localize('You should enter {{min}}-{{max}} numbers.', {
                     min: min_phone_number,
                     max: max_phone_number,
                 });
-            } else if (!validCountryCode(this.props.residence_list, values.phone)) {
-                errors.phone = phone_error_message;
             } else if (!validPhone(values.phone)) {
                 errors.phone = phone_error_message;
             }
@@ -873,13 +868,14 @@ export class PersonalDetailsForm extends React.Component {
                                 </FormBody>
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                    {!(isSubmitting || is_submit_success || (status && status.msg)) && (
-                                        <div className='account-form__footer-note'>
-                                            {localize(
-                                                'Please make sure your information is correct or it may affect your trading experience.'
-                                            )}
-                                        </div>
-                                    )}
+                                    {!this.props.is_virtual &&
+                                        !(isSubmitting || is_submit_success || (status && status.msg)) && (
+                                            <Text className='account-form__footer-note' size='xxxs'>
+                                                {localize(
+                                                    'Please make sure your information is correct or it may affect your trading experience.'
+                                                )}
+                                            </Text>
+                                        )}
                                     <Button
                                         className={classNames('account-form__footer-btn', {
                                             'dc-btn--green': is_submit_success,

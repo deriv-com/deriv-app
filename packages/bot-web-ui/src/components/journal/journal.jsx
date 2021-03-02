@@ -35,7 +35,7 @@ const FormatMessage = ({ logType, className, extra }) => {
                     <Localize
                         i18n_default_text='<0>Bought</0>: {{longcode}} (ID: {{transaction_id}})'
                         values={{ longcode, transaction_id }}
-                        components={[<Text key={0} styles={{ color: 'var(--status-info)' }} />]}
+                        components={[<Text key={0} size='xxs' styles={{ color: 'var(--status-info)' }} />]}
                         options={{ interpolation: { escapeValue: false } }}
                     />
                 );
@@ -46,7 +46,7 @@ const FormatMessage = ({ logType, className, extra }) => {
                     <Localize
                         i18n_default_text='<0>Sold for</0>: {{sold_for}}'
                         values={{ sold_for }}
-                        components={[<Text key={0} styles={{ color: 'var(--status-warning)' }} />]}
+                        components={[<Text key={0} size='xxs' styles={{ color: 'var(--status-warning)' }} />]}
                     />
                 );
             }
@@ -58,7 +58,7 @@ const FormatMessage = ({ logType, className, extra }) => {
                         values={{
                             profit: `${formatMoney(currency, profit, true)} ${getCurrencyDisplayCode(currency)}`,
                         }}
-                        components={[<Text key={0} styles={{ color: 'var(--status-success)' }} />]}
+                        components={[<Text key={0} size='xxs' styles={{ color: 'var(--status-success)' }} />]}
                     />
                 );
             }
@@ -70,7 +70,7 @@ const FormatMessage = ({ logType, className, extra }) => {
                         values={{
                             profit: `${formatMoney(currency, profit, true)} ${getCurrencyDisplayCode(currency)}`,
                         }}
-                        components={[<Text key={0} styles={{ color: 'var(--status-danger)' }} />]}
+                        components={[<Text key={0} size='xxs' styles={{ color: 'var(--status-danger)' }} />]}
                     />
                 );
             }
@@ -231,7 +231,6 @@ const Journal = ({
         <div
             className={classnames('journal run-panel-tab__content--no-stat', {
                 'run-panel-tab__content': !is_mobile,
-                'run-panel-tab__content--journal-mobile': is_mobile && is_drawer_open,
             })}
         >
             <Tools {...props} />
@@ -260,9 +259,21 @@ const Journal = ({
                                         {localize('Here are the possible reasons:')}
                                     </Text>
                                     <ul className='journal-empty__list'>
-                                        <li>{localize('The bot is not running')}</li>
-                                        <li>{localize('The stats are cleared')}</li>
-                                        <li>{localize('All messages are filtered out')}</li>
+                                        <li>
+                                            <Text size='xxs' color='less-prominent'>
+                                                {localize('The bot is not running')}
+                                            </Text>
+                                        </li>
+                                        <li>
+                                            <Text size='xxs' color='less-prominent'>
+                                                {localize('The stats are cleared')}
+                                            </Text>
+                                        </li>
+                                        <li>
+                                            <Text size='xxs' color='less-prominent'>
+                                                {localize('All messages are filtered out')}
+                                            </Text>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

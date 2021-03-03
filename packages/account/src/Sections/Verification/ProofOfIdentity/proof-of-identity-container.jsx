@@ -19,6 +19,7 @@ const ProofOfIdentityContainer = ({
     refreshNotifications,
     removeNotificationMessage,
     onStateChange,
+    is_description_enabled = true,
     is_mx_mlt,
     height,
     redirect_button,
@@ -137,7 +138,7 @@ const ProofOfIdentityContainer = ({
         }
     }, [createVerificationConfig, previous_account_status, account_status]);
 
-    const { has_poa, is_unwelcome, allow_document_upload } = verification_status;
+    const { needs_poa, is_unwelcome, allow_document_upload } = verification_status;
 
     if (api_error)
         return (
@@ -153,9 +154,10 @@ const ProofOfIdentityContainer = ({
             documents_supported={documents_supported}
             status={status}
             onfido_service_token={onfido_service_token}
-            has_poa={has_poa}
+            needs_poa={needs_poa}
             height={height ?? null}
             handleComplete={handleComplete}
+            is_description_enabled={is_description_enabled}
             redirect_button={redirect_button}
         />
     );

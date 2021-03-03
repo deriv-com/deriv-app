@@ -276,6 +276,7 @@ class SelfExclusion extends React.Component {
 
     backToReview = () => {
         this.setState({ show_confirm: false });
+        this.setState({ is_confirm_page: false });
     };
 
     objectValuesToString = object => {
@@ -385,7 +386,7 @@ class SelfExclusion extends React.Component {
         const session_duration_digits = six_weeks.toString().length;
 
         return (
-            <section className='self-exclusion'>
+            <section className={classNames('self-exclusion', { 'self-exclusion-dashboard': is_dashboard })}>
                 <Div100vhContainer className='self-exclusion__wrapper' is_disabled={isDesktop()} height_offset='80px'>
                     <ThemedScrollbars className='self-exclusion__scrollbars' is_bypassed={isMobile()}>
                         <MobileWrapper>
@@ -479,15 +480,6 @@ class SelfExclusion extends React.Component {
                                             )}
                                             <div className='self-exclusion__confirm'>
                                                 <SectionHeader title={localize('You have set the following limits:')} />
-                                                <Text
-                                                    as='h2'
-                                                    color='prominent'
-                                                    weight='bold'
-                                                    align='center'
-                                                    className='self-exclusion__confirm-header'
-                                                >
-                                                    {localize('You have set the following limits:')}
-                                                </Text>
                                                 {changed_attributes.map((key, idx) => {
                                                     const need_date_format = ['exclude_until', 'timeout_until'];
                                                     const need_money_format = [
@@ -534,7 +526,7 @@ class SelfExclusion extends React.Component {
                                                 <Text
                                                     as='p'
                                                     size='xs'
-                                                    align='center'
+                                                    align={is_dashboard ? 'left' : 'center'}
                                                     className='self-exclusion__confirm-note'
                                                 >
                                                     {is_eu ? (
@@ -569,28 +561,39 @@ class SelfExclusion extends React.Component {
                                                 <Text
                                                     as='p'
                                                     size='xs'
-                                                    align='center'
+                                                    align={is_dashboard ? 'left' : 'center'}
                                                     color='loss-danger'
                                                     className='self-exclusion__error'
                                                 >
                                                     {submit_error_message}
                                                 </Text>
                                                 {is_eu ? (
-                                                    <Button
-                                                        is_loading={isSubmitting}
-                                                        is_disabled={isSubmitting}
-                                                        primary
-                                                        large
-                                                        type='submit'
-                                                        text={localize('Confirm my limits')}
-                                                    />
+                                                    <div className='self-exclusion__footer-button'>
+                                                        {is_dashboard && (
+                                                            <Button
+                                                                type='button'
+                                                                secondary
+                                                                large
+                                                                text={localize('Back')}
+                                                                onClick={this.backToReview}
+                                                            />
+                                                        )}
+                                                        <Button
+                                                            is_loading={isSubmitting}
+                                                            is_disabled={isSubmitting}
+                                                            primary
+                                                            large
+                                                            type='submit'
+                                                            text={localize('Confirm my limits')}
+                                                        />
+                                                    </div>
                                                 ) : (
                                                     <div className='self-exclusion__footer-button'>
                                                         {is_dashboard && (
                                                             <Button
+                                                                type='button'
                                                                 secondary
                                                                 large
-                                                                type='submit'
                                                                 text={localize('Back')}
                                                                 onClick={this.backToReview}
                                                             />
@@ -908,7 +911,6 @@ class SelfExclusion extends React.Component {
                                             )}
                                             {(this.props.is_mlt || this.props.is_mf || this.props.is_mx) && (
                                                 <React.Fragment>
-                                                    <SectionHeader title={localize('Your maximum deposit limit')} />
                                                     <Text
                                                         as='h2'
                                                         size='xs'

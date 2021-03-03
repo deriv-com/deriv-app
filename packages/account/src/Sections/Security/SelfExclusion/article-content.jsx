@@ -1,11 +1,12 @@
 // noop
 import React from 'react';
+import classNames from 'classnames';
 import { getStaticUrl, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 
-const ArticleContent = ({ is_eu, is_uk, toggleModal }) => {
+const ArticleContent = ({ is_eu, is_uk, toggleModal, remove_header }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
 
     const eu_items = [
@@ -122,11 +123,16 @@ const ArticleContent = ({ is_eu, is_uk, toggleModal }) => {
     const article_items = is_eu ? eu_items : non_eu_items;
 
     return (
-        <div className='self-exclusion__article'>
-            <div className='self-exclusion__article-header'>
-                <h3>{localize('About trading limits and self-exclusion')}</h3>
-                <Icon icon='IcCross' className='self-exclusion__article-icon' onClick={toggleModal} />
-            </div>
+        <div className={classNames('self-exclusion__article', { 'self-exclusion__article-dashboard': is_dashboard })}>
+            {!remove_header && (
+                <div className='self-exclusion__article-header'>
+                    <Text as='h3' align='left'>
+                        {localize('About trading limits and self-exclusion')}
+                    </Text>
+                    <Icon icon='IcCross' className='self-exclusion__article-icon' onClick={toggleModal} />
+                </div>
+            )}
+
             <div className='self-exclusion__article-content'>
                 <ul className='account__article-list'>
                     {article_items.map((article, idx) => (

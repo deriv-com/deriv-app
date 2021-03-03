@@ -239,6 +239,16 @@ $MIN_HEIGHT_FLOATING: calc(
             width: auto;
             margin: 1.6rem;
         }
+        &-dashboard {
+            @include mobile {
+                & svg {
+                    align-self: flex-start;
+                }
+                & .account__article-title {
+                    max-width: unset;
+                }
+            }
+        }
     }
     &-form {
         overflow: hidden;
@@ -1065,6 +1075,7 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-right: 1rem;
             @include mobile {
                 margin: 0 1.6rem;
+                padding-bottom: 2rem;
             }
         }
         &__header {
@@ -1153,6 +1164,14 @@ $MIN_HEIGHT_FLOATING: calc(
                 cursor: pointer;
                 font-weight: bold;
                 text-decoration: none;
+            }
+        }
+        &-dashboard {
+            width: calc(100vw - 33rem);
+            .self-exclusion__item {
+                display: flex;
+                justify-content: space-between;
+                flex-direction: column;
             }
         }
     }
@@ -1994,6 +2013,16 @@ $MIN_HEIGHT_FLOATING: calc(
             }
             &-content {
                 padding: 2.4rem;
+            }
+            &-dashboard {
+                max-height: 50rem;
+                & .self-exclusion__article-header {
+                    @include mobile {
+                        h3 {
+                            max-width: 60%;
+                        }
+                    }
+                }
             }
         }
     }

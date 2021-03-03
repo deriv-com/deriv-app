@@ -1,9 +1,11 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import classNames from 'classnames';
 import { Icon, StaticUrl, Text } from '@deriv/components';
-import { PlatformContext } from '@deriv/shared';
+import { PlatformContext, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import ArticleContent from './article-content.jsx';
 
 const SEArticle = ({ toggleArticle, is_eu }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
@@ -24,7 +26,7 @@ const SEArticle = ({ toggleArticle, is_eu }) => {
     const article_text = is_eu ? eu_text : non_eu_text;
 
     return (
-        <article className='account__article'>
+        <article className={classNames('account__article', { 'account__article-dashboard': is_dashboard })}>
             <Text
                 as='h4'
                 size='xs'
@@ -35,15 +37,21 @@ const SEArticle = ({ toggleArticle, is_eu }) => {
             >
                 {localize('About trading limits and self-exclusion')}
             </Text>
-            <Text as='p' size='xxs' className='account__article-description'>
-                {article_text}
-            </Text>
-            <div onClick={toggleArticle} className='link link--orange account__article-link'>
-                <Text size='xxs' color='loss-danger' line_height='s'>
-                    {localize('Learn more')}
-                </Text>
-                <Icon icon='IcChevronRight' className='account__article-link--icon' color='red' />
-            </div>
+            {is_dashboard && isDesktop() ? (
+                <ArticleContent remove_header />
+            ) : (
+                <React.Fragment>
+                    <Text as='p' size='xxs' className='account__article-description'>
+                        {article_text}
+                    </Text>
+                    <div onClick={toggleArticle} className='link link--orange account__article-link'>
+                        <Text size='xxs' color='loss-danger' line_height='s'>
+                            {localize('Learn more')}
+                        </Text>
+                        <Icon icon='IcChevronRight' className='account__article-link--icon' color='red' />
+                    </div>
+                </React.Fragment>
+            )}
         </article>
     );
 };

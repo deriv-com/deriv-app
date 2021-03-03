@@ -30,7 +30,7 @@ export default class GeneralStore extends BaseStore {
     @observable user_blocked_until = null;
 
     custom_string = this.props?.custom_string;
-    list_item_limit = isMobile() ? 10 : 25;
+    list_item_limit = isMobile() ? 10 : 50;
     path = {
         buy_sell: 0,
         orders: 1,
@@ -179,7 +179,7 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     onMount() {
         this.setIsLoading(true);
-        
+
         this.disposeUserBarredReaction = reaction(
             () => this.user_blocked_until,
             blocked_until => {
@@ -193,7 +193,7 @@ export default class GeneralStore extends BaseStore {
                 }
             }
         );
-        
+
         requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
             if (!error && get_account_status.risk_classification === 'high') {
                 this.setIsBlocked(true);
@@ -220,7 +220,6 @@ export default class GeneralStore extends BaseStore {
                     [this.setP2pOrderList]
                 ),
             };
-            
         });
     }
 

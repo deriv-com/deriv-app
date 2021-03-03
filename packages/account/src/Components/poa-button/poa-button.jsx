@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import React from 'react';
 
 export const PoaButton = () => (
-    <ButtonLink to={routes.proof_of_address}>
+    <ButtonLink className='account-management__button' to={routes.proof_of_address}>
         <Text className='dc-btn__text' as='p' weight='bold'>
             {localize('Proof of address')}
         </Text>

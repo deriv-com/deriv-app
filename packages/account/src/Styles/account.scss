@@ -433,6 +433,9 @@ $MIN_HEIGHT_FLOATING: calc(
             justify-content: space-between;
         }
     }
+    .account-management__button.dc-btn {
+        margin-top: 0.8rem;
+    }
     .account-management-leave-confirm,
     .account-management-submit-success {
         @include desktop {

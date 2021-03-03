@@ -12,7 +12,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
             default_value: account_settings.address_line_1 ?? '',
             rules: [
                 ['req', localize('Address line 1 is required')],
-                ['address', localize('Address is not in a proper format')],
+                ['address', localize('Only letters, spaces, hyphens, periods, and apostrophes are allowed.')],
                 ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
                 ['po_box', getErrorMessages().po_box()],
             ].filter(x => (is_svg ? x.indexOf('po_box') !== 0 : x)),
@@ -21,6 +21,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.address_line_2 ?? '',
             rules: [
+                ['address', localize('Only letters, spaces, hyphens, periods, and apostrophes are allowed.')],
                 ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
                 ['po_box', getErrorMessages().po_box()],
             ].filter(x => (is_svg ? x.indexOf('po_box') !== 0 : x)),
@@ -32,7 +33,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                 ['req', localize('City is required')],
                 [
                     'regular',
-                    localize('City field is not in a proper format'),
+                    localize('Only letters, spaces, hyphens, periods, and apostrophes are allowed.'),
                     {
                         regex: /^[a-zA-Z\s\W'.-]{1,35}$/,
                     },

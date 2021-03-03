@@ -16,7 +16,6 @@ export const formatStatementTransaction = (transaction, currency, active_symbols
     const display_name = shortcode
         ? getSymbolDisplayName(active_symbols, getMarketInformation(shortcode).underlying)
         : '';
-    const withdrawal_details = transaction.withdrawal_details;
 
     return {
         action: localize(toTitleCase(transaction.action_type) /* localize-ignore */), // handled in static_strings_app.js: 'Buy', 'Sell', 'Deposit', 'Withdrawal'
@@ -33,6 +32,6 @@ export const formatStatementTransaction = (transaction, currency, active_symbols
         action_type: transaction.action_type,
         purchase_time: transaction.purchase_time,
         transaction_time: transaction.transaction_time,
-        ...(withdrawal_details && { withdrawal_details }),
+        ...(transaction.withdrawal_details && { withdrawal_details: transaction.withdrawal_details }),
     };
 };

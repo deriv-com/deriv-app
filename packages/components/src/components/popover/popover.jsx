@@ -32,7 +32,7 @@ const Popover = ({
 }) => {
     const ref = React.useRef();
     const [popover_ref, setPopoverRef] = React.useState(undefined);
-    const [hover_ref, is_hovered] = useHover();
+    const [hover_ref, is_hovered] = useHover(null, true);
     const [bubble_hover_ref, is_bubble_hovered] = useHoverCallback();
 
     React.useEffect(() => {
@@ -62,7 +62,6 @@ const Popover = ({
                 <TinyPopover
                     isOpen={is_open ?? ((is_hovered && message) || (is_bubble_hover_enabled && is_bubble_hovered))}
                     positions={[alignment]}
-                    transitionDuration={0.25}
                     padding={margin + 8}
                     containerClassName={classNames({
                         'react-tiny-popover-container--disabled-pointer-event': should_disable_pointer_events,
@@ -70,7 +69,7 @@ const Popover = ({
                     windowBorderPadding={window_border}
                     {...(relative_render
                         ? {
-                              ref: popover_ref,
+                              containerParent: popover_ref,
                               content: ({ childRect, popoverRect, nudgedLeft }) => {
                                   const screen_width = document.body.clientWidth;
                                   const total_width = childRect.right + (popoverRect.width - childRect.width / 2);

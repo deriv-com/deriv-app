@@ -1,12 +1,20 @@
 import React from 'react';
+import { useIsMounted } from '@deriv/shared';
 
 export const useHover = (refSetter, should_prevent_bubbling) => {
+    const isMounted = useIsMounted();
     const [value, setValue] = React.useState(false);
     const default_ref = React.useRef(null);
     const ref = refSetter || default_ref;
 
     const handleHoverBegin = () => setValue(true);
-    const handleHoverFinish = () => setValue(false);
+    const handleHoverFinish = React.useCallback(() => {
+        setTimeout(() => {
+            if (isMounted()) {
+                setValue(false);
+            }
+        }, 100);
+    }, []);
 
     React.useEffect(() => {
         const node = ref.current;

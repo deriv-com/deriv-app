@@ -91,6 +91,7 @@ const TradeParamsMobile = ({ amount, currency, toggleModal, trade_store, trade_s
                     alignment='top'
                     icon='info'
                     id='dt_multiplier-stake__tooltip'
+                    is_bubble_hover_enabled
                     zIndex={9999}
                     message={
                         <Localize

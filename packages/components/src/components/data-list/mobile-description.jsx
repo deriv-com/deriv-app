@@ -1,6 +1,6 @@
 import React from 'react';
-import Text from '../text';
 import { localize } from '@deriv/translations';
+import Text from '../text';
 
 const MobileDescription = ({ desc }) => {
     if (desc.message.substring(0, 7) === 'Address') {
@@ -25,7 +25,11 @@ const MobileDescription = ({ desc }) => {
         );
     }
 
-    return <Text>{desc.message}</Text>;
+    return (
+        <Text size='xs' align='center'>
+            {desc.message}
+        </Text>
+    );
 };
 
-export default React.memo(MobileDescription);
+export default MobileDescription;

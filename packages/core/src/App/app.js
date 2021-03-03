@@ -26,6 +26,20 @@ const setStorageEvents = root_store => {
 };
 
 const initStore = notification_messages => {
+    const url_query_string = window.location.search;
+    const url_params = new URLSearchParams(url_query_string);
+    if (url_params.get('action') === 'signup') {
+        // If a user comes from the signup process,
+        // we need to give him a clean setup
+        const server_url = localStorage.getItem('config.server_url');
+        const app_id = localStorage.getItem('config.app_id');
+
+        localStorage.clear();
+
+        if (server_url) localStorage.setItem('config.server_url', server_url);
+        if (app_id) localStorage.setItem('config.app_id', app_id);
+    }
+
     const root_store = new RootStore();
 
     setStorageEvents(root_store);

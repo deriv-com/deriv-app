@@ -32,7 +32,7 @@ const Popover = ({
 }) => {
     const ref = React.useRef();
     const [popover_ref, setPopoverRef] = React.useState(undefined);
-    const [hover_ref, is_hovered] = useHover();
+    const [hover_ref, is_hovered] = useHover(null, true);
     const [bubble_hover_ref, is_bubble_hovered] = useHoverCallback();
 
     React.useEffect(() => {

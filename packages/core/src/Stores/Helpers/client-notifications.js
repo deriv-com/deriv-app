@@ -462,8 +462,11 @@ const checkAccountStatus = (
         needs_verification.includes('identity') &&
         (identity?.status !== 'expired' || identity?.status !== 'pending');
 
-    if (needs_poa && !(document.status === 'expired')) addNotificationMessage(clientNotifications().needs_poa);
-    if (needs_poi && !(identity.status === 'expired')) addNotificationMessage(clientNotifications().needs_poi);
+    const should_request_poa = needs_poa && !(document.status === 'expired');
+    const should_request_poi = needs_poi && !(identity.status === 'expired');
+
+    if (should_request_poa) addNotificationMessage(clientNotifications().needs_poa);
+    if (should_request_poi) addNotificationMessage(clientNotifications().needs_poi);
     if (cashier_locked) addNotificationMessage(clientNotifications().cashier_locked);
     if (withdrawal_locked) {
         // if client is withdrawal locked but it's because they need to authenticate
@@ -480,7 +483,9 @@ const checkAccountStatus = (
     }
     if (mt5_withdrawal_locked) addNotificationMessage(clientNotifications().mt5_withdrawal_locked);
     if (document_needs_action) addNotificationMessage(clientNotifications().document_needs_action);
-    if (unwelcome && !should_show_max_turnover) addNotificationMessage(clientNotifications().unwelcome);
+    if (unwelcome && !should_show_max_turnover && !should_request_poa && !should_request_poi) {
+        addNotificationMessage(clientNotifications().unwelcome);
+    }
 
     if (has_risk_assessment) addNotificationMessage(clientNotifications().risk);
     if (shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);

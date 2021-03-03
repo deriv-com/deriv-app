@@ -110,7 +110,7 @@ const Onfido = ({
 
     if (status === onfido_status_codes.unsupported) return <Unsupported {...props} />;
 
-    if (onfido_init_error && onfido_service_token?.error?.code === 'InvalidPostalCode' && status !== 'verified') {
+    if (onfido_service_token?.error?.code === 'InvalidPostalCode' && status !== 'verified') {
         return <MissingPersonalDetails has_invalid_postal_code from='proof_of_identity' />;
     } else if (onfido_init_error && onfido_service_token?.error && status !== 'verified') {
         return <OnfidoFailed {...props} />;

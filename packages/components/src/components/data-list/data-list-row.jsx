@@ -3,7 +3,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import MobileDescription from './mobile-description.jsx';
 
-const DataListRow = ({ action_desc, destination_link, row_gap, row_key, rowRenderer, ...other_props }) => {
+const DataListRow = ({ action_desc, desc_titles, destination_link, row_gap, row_key, rowRenderer, ...other_props }) => {
     const [show_desc, setShowDesc] = React.useState(false);
 
     return (
@@ -30,7 +30,7 @@ const DataListRow = ({ action_desc, destination_link, row_gap, row_key, rowRende
                                     {action_desc.component ? (
                                         <div>{action_desc.component}</div>
                                     ) : (
-                                        <MobileDescription desc={action_desc} />
+                                        <MobileDescription desc={action_desc} desc_titles={desc_titles} />
                                     )}
                                 </div>
                             ) : (

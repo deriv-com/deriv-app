@@ -1,5 +1,4 @@
 import React from 'react';
-import { localize } from '@deriv/translations';
 import Text from '../text';
 
 const MobileDescription = ({ desc, desc_titles }) => {

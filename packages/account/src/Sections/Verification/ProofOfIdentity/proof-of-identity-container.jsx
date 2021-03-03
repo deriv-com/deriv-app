@@ -21,7 +21,7 @@ const ProofOfIdentityContainer = ({
     refreshNotifications,
     removeNotificationMessage,
     onStateChange,
-    is_message_enabled,
+    is_message_enabled = true,
     is_mx_mlt,
     height,
     redirect_button,

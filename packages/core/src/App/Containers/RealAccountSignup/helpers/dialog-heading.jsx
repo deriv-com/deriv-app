@@ -11,13 +11,9 @@ import { EXPERIAN } from './constants';
 const IOMHeading = ({ status }) => (
     <h2>
         {status === EXPERIAN.SUCCESS && <Localize i18n_default_text='Your account is ready' />}
-        {status === EXPERIAN.WARN && <Localize i18n_default_text='Proof of address verification failed' />}
-        {status === EXPERIAN.DANGER && (
-            <Localize i18n_default_text='Proof of identity and address verification failed' />
-        )}
-        {status === EXPERIAN.PENDING && (
-            <Localize i18n_default_text='Your proofs of identity and address were submitted successfully' />
-        )}
+        {status === EXPERIAN.WARN && <Localize i18n_default_text='Please verify your address' />}
+        {status === EXPERIAN.DANGER && <Localize i18n_default_text='Please verify your identity and address' />}
+        {status === EXPERIAN.PENDING && <Localize i18n_default_text="We're processing your personal information" />}
     </h2>
 );
 

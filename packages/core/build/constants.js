@@ -123,17 +123,19 @@ const MINIMIZERS = !IS_RELEASE
       ];
 
 const plugins = ({ base, is_test_env, env }) => {
-    let is_crypto_app, is_qawolf;
-    try {
-        is_crypto_app = JSON.parse(env.IS_CRYPTO_APP);
-        is_qawolf = !!JSON.parse(env.IS_QAWOLF);
-    } catch (e) {
-        is_crypto_app = false;
-        is_qawolf = false;
+    let is_dashboard = false;
+    let is_qawolf = false;
+
+    if (env.IS_DASHBOARD) {
+        is_dashboard = !!JSON.parse(env.IS_DASHBOARD);
     }
+    if (env.IS_QAWOLF) {
+        is_qawolf = !!JSON.parse(env.IS_QAWOLF);
+    }
+
     return [
         new DefinePlugin({
-            'process.env.IS_CRYPTO_APP': is_crypto_app,
+            'process.env.IS_DASHBOARD': is_dashboard,
             'process.env.IS_QAWOLF': is_qawolf,
         }),
         new CleanWebpackPlugin(),

@@ -1,6 +1,5 @@
 import { cloneObject } from '@deriv/shared';
 import { action, computed, observable, reaction } from 'mobx';
-import BaseStore from 'Stores/base_store';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS, subscribeWS } from 'Utils/websocket';
 

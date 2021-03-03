@@ -223,6 +223,14 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
         return;
     }
 
+    //Firefox fix for Blockly widthcache bug
+    if (navigator.userAgent.search('Firefox') > 0) {
+        setTimeout(() => {
+            this.workspace.getAllFields().forEach(field => field.forceRerender()); //работает
+            console.log('rerender');
+        }, 0);
+    }
+
     const render_list = [];
     const COLLAPSED_INPUT_NAME = '_TEMP_COLLAPSED_INPUT';
 

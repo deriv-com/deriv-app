@@ -227,7 +227,7 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
     if (navigator.userAgent.search('Firefox') > 0) {
         setTimeout(() => {
             this.workspace.getAllFields().forEach(field => field.forceRerender());
-        }, 0);
+        }, 0); // Time duration must be 0
     }
 
     const render_list = [];

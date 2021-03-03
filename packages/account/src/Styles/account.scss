@@ -1462,9 +1462,10 @@ $MIN_HEIGHT_FLOATING: calc(
     margin-top: 24px;
 
     &__message {
-        margin-bottom: 1.6rem;
-        padding: 0.8rem;
-        background: var(--general-section-1);
+        padding: 1rem;
+        margin: 0 auto 1.4rem;
+        width: 94vw; // same as onfido
+        max-width: 53rem;
     }
     @include mobile {
         margin-top: 0;

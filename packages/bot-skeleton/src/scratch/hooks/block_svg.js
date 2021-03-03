@@ -226,8 +226,7 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
     //Firefox fix for Blockly widthcache bug
     if (navigator.userAgent.search('Firefox') > 0) {
         setTimeout(() => {
-            this.workspace.getAllFields().forEach(field => field.forceRerender()); //работает
-            console.log('rerender');
+            this.workspace.getAllFields().forEach(field => field.forceRerender());
         }, 0);
     }
 

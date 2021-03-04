@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { getPlatformRedirect } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import DemoMessage from 'Components/demo-message';
+import { WS } from 'Services/ws-methods';
 import ProofOfAddressContainer from './proof-of-address-container.jsx';
 
 const ProofOfAddress = ({
@@ -15,10 +16,12 @@ const ProofOfAddress = ({
 }) => {
     const history = useHistory();
     React.useEffect(() => {
-        if (!should_allow_authentication) {
-            const from_platform = getPlatformRedirect(app_routing_history);
-            routeBackInApp(history, [from_platform]);
-        }
+        WS.wait('get_account_status').then(() => {
+            if (!should_allow_authentication) {
+                const from_platform = getPlatformRedirect(app_routing_history);
+                routeBackInApp(history, [from_platform]);
+            }
+        });
     }, []);
 
     if (is_virtual) return <DemoMessage />;

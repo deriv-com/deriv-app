@@ -65,7 +65,15 @@ const ExtraInfo = ({ message, ...props }) => {
     );
 };
 
-const AccountLimits = ({ account_limits, currency, getLimits, is_fully_authenticated, is_switching, is_virtual }) => {
+const AccountLimits = ({
+    account_limits,
+    currency,
+    getLimits,
+    is_fully_authenticated,
+    is_switching,
+    is_virtual,
+    toggleAccountsDialog,
+}) => {
     const [is_loading, setLoading] = React.useState(true);
     const { is_dashboard } = React.useContext(PlatformContext);
     React.useEffect(() => {
@@ -78,7 +86,15 @@ const AccountLimits = ({ account_limits, currency, getLimits, is_fully_authentic
     }, [account_limits, is_virtual, is_loading]);
 
     if (is_switching) return <Loading />;
-    if (is_virtual) return <DemoMessage has_demo_icon={is_dashboard} full_width={is_dashboard} />;
+    if (is_virtual)
+        return (
+            <DemoMessage
+                has_demo_icon={is_dashboard}
+                full_width={is_dashboard}
+                has_account_switcher={is_dashboard}
+                toggleAccountsDialog={toggleAccountsDialog}
+            />
+        );
 
     const {
         api_initial_load_error,
@@ -299,13 +315,15 @@ AccountLimits.propTypes = {
     is_fully_authenticated: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_switching: PropTypes.bool,
+    toggleAccountsDialog: PropTypes.func,
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
     account_limits: client.account_limits,
     currency: client.currency,
     getLimits: client.getLimits,
     is_fully_authenticated: client.is_fully_authenticated,
     is_virtual: client.is_virtual,
     is_switching: client.is_switching,
+    toggleAccountsDialog: ui.toggleAccountsDialog,
 }))(AccountLimits);

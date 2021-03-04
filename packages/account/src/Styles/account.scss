@@ -84,6 +84,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     line-height: 1.5;
                     width: calc(100% - 2rem);
                     float: left;
+                    padding-left: 2rem;
                 }
                 &-close {
                     cursor: pointer;
@@ -1168,6 +1169,9 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         &-dashboard {
             width: calc(100vw - 33rem);
+            @include mobile {
+                width: 100%;
+            }
             .self-exclusion__item {
                 display: flex;
                 justify-content: space-between;
@@ -1454,6 +1458,16 @@ $MIN_HEIGHT_FLOATING: calc(
             &--active {
                 padding-left: 0;
             }
+        }
+    }
+    &__demo-message {
+        &-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+        &-button {
+            margin-top: 2.4rem;
+            align-self: center;
         }
     }
 }

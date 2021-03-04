@@ -19,9 +19,10 @@ const UploadComplete = ({ has_poa, is_description_enabled, redirect_button }) =>
                     is_dashboard ? (
                         <Icon icon='IcPoiVerifiedDashboard' width={273} height={128} />
                     ) : (
-                        <Icon icon='IcPoiVerifiedDashboard' size={128} />
+                        <Icon icon='IcPoiVerified' size={128} />
                     )
                 }
+                className={is_dashboard && 'account-management-dashboard'}
             >
                 {is_description_enabled && <ContinueTradingButton />}
             </IconMessageContent>
@@ -34,10 +35,10 @@ const UploadComplete = ({ has_poa, is_description_enabled, redirect_button }) =>
                 is_dashboard ? (
                     <Icon icon='IcPoiVerifiedDashboard' width={273} height={128} />
                 ) : (
-                    <Icon icon='IcPoiVerifiedDashboard' size={128} />
+                    <Icon icon='IcPoiVerified' size={128} />
                 )
             }
-            className='account-management-dashboard'
+            className={is_dashboard && 'account-management-dashboard'}
         >
             {is_description_enabled && (
                 <React.Fragment>

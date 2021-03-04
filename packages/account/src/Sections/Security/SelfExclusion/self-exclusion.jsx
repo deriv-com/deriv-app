@@ -42,7 +42,7 @@ const SectionHeader = ({ title }) => {
         return <FormSubHeader title={title} />;
     }
     return (
-        <Text as='h2' className='self-exclusion__header'>
+        <Text as='h2' weight={!is_dashboard && 'bold'} className='self-exclusion__header'>
             {title}
         </Text>
     );
@@ -526,7 +526,7 @@ class SelfExclusion extends React.Component {
                                                 <Text
                                                     as='p'
                                                     size='xs'
-                                                    align={is_dashboard ? 'left' : 'center'}
+                                                    align={is_dashboard && isMobile() ? 'left' : 'center'}
                                                     className='self-exclusion__confirm-note'
                                                 >
                                                     {is_eu ? (
@@ -561,7 +561,7 @@ class SelfExclusion extends React.Component {
                                                 <Text
                                                     as='p'
                                                     size='xs'
-                                                    align={is_dashboard ? 'left' : 'center'}
+                                                    align={is_dashboard && isMobile() ? 'left' : 'center'}
                                                     color='loss-danger'
                                                     className='self-exclusion__error'
                                                 >
@@ -911,15 +911,7 @@ class SelfExclusion extends React.Component {
                                             )}
                                             {(this.props.is_mlt || this.props.is_mf || this.props.is_mx) && (
                                                 <React.Fragment>
-                                                    <Text
-                                                        as='h2'
-                                                        size='xs'
-                                                        weight='bold'
-                                                        color='prominent'
-                                                        className='self-exclusion__header'
-                                                    >
-                                                        {localize('Your maximum deposit limit')}
-                                                    </Text>
+                                                    <SectionHeader title={localize('Your maximum deposit limit')} />
                                                     <div className='self-exclusion__item-wrapper'>
                                                         <div className='self-exclusion__item'>
                                                             <Text

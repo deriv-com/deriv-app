@@ -8,7 +8,7 @@ import WorkspaceControl from './workspace-control.jsx';
 
 const LocalComponent = ({ handleFileChange, is_mobile, loaded_local_file, setLoadedLocalFile }) => {
     const file_input_ref = React.useRef(null);
-    const [is_file_supported, setFileSupport] = React.useState(true);
+    const [is_file_supported, setIsFileSupported] = React.useState(true);
 
     if (loaded_local_file && is_file_supported) {
         return (
@@ -45,7 +45,7 @@ const LocalComponent = ({ handleFileChange, is_mobile, loaded_local_file, setLoa
                     ref={file_input_ref}
                     accept='.xml'
                     style={{ display: 'none' }}
-                    onChange={e => setFileSupport(handleFileChange(e, false))}
+                    onChange={e => setIsFileSupported(handleFileChange(e, false))}
                 />
                 <div
                     className='load-strategy__local-dropzone-area'
@@ -67,9 +67,11 @@ const LocalComponent = ({ handleFileChange, is_mobile, loaded_local_file, setLoa
                         </React.Fragment>
                     )}
                     <Button
-                        text={localize(
-                            is_file_supported ? 'Select an XML file from your device' : 'Please upload an XML file'
-                        )}
+                        text={
+                            is_file_supported
+                                ? localize('Select an XML file from your device')
+                                : localize('Please upload an XML file')
+                        }
                         onClick={() => file_input_ref.current.click()}
                         has_effect
                         primary

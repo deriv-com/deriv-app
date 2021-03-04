@@ -423,7 +423,6 @@ $MIN_HEIGHT_FLOATING: calc(
     .account-management__text-container {
         margin-top: 10px;
         max-width: 672px;
-        margin-bottom: 2em;
     }
     .account-management-flex-wrapper {
         display: flex;
@@ -432,8 +431,7 @@ $MIN_HEIGHT_FLOATING: calc(
             justify-content: space-between;
         }
     }
-    .account-management__button.dc-btn,
-    .account-management__continue.dc-btn {
+    .account-management__button.dc-btn {
         margin-top: 0.8rem;
     }
     .account-management-leave-confirm,

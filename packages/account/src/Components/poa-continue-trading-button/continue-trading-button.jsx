@@ -4,7 +4,7 @@ import React from 'react';
 
 export const ContinueTradingButton = () => (
     <ButtonLink to='/'>
-        <Text className='dc-btn__text account-management__continue' as='p' weight='bold'>
+        <Text className='dc-btn__text' as='p' weight='bold'>
             {localize('Continue trading')}
         </Text>
     </ButtonLink>

@@ -27,8 +27,10 @@ import {
     getLocation,
     removeObjProperties,
     filterObjProperties,
+    routes,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { withRouter } from 'react-router';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 // import { account_opening_reason_list }         from './constants';
@@ -91,12 +93,11 @@ export class PersonalDetailsForm extends React.Component {
         const request = this.makeSettingsRequest(values);
         this.setState({ is_btn_loading: true });
         const data = await WS.setSettings(request);
-        this.setState({ is_btn_loading: false });
-
-        setSubmitting(false);
 
         if (data.error) {
             setStatus({ msg: data.error.message });
+            this.setState({ is_btn_loading: false });
+            setSubmitting(false);
         } else {
             // force request to update settings cache since settings have been updated
             const response = await WS.authorized.storage.getSettings();
@@ -104,10 +105,19 @@ export class PersonalDetailsForm extends React.Component {
                 this.setState({ api_error: response.error.message });
                 return;
             }
-            this.setState({ ...response.get_settings, is_loading: false });
-            this.props.refreshNotifications();
-            this.setState({ is_submit_success: true });
+            this.setState({ is_btn_loading: false, is_submit_success: true });
             setTimeout(() => this.setState({ is_submit_success: false }), 3000);
+            setTimeout(() => {
+                this.setState({ is_submit_success: false }, () => {
+                    setSubmitting(false);
+                });
+            }, 3000);
+            // redirection back based on 'from' param in query string
+            const url_query_string = window.location.search;
+            const url_params = new URLSearchParams(url_query_string);
+            if (url_params.get('from')) {
+                this.props.history.push(routes[url_params.get('from')]);
+            }
         }
     };
 
@@ -282,6 +292,19 @@ export class PersonalDetailsForm extends React.Component {
     isChangeableField(name) {
         return this.state.changeable_fields.some(field => field === name);
     }
+
+    onScrollToRefMount = node => {
+        // wait for node to be rendered, if node exists check the hash in url to scroll down to
+        const section_hash = window.location.hash.substr(1);
+
+        if (node?.name === section_hash) {
+            node?.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+            // smooth scrolling animation is ~500ms, focus event cancels out scroll animation, hence the timeout offset
+            setTimeout(() => {
+                node?.focus();
+            }, 800);
+        }
+    };
 
     async componentDidMount() {
         // waits for residence to be populated
@@ -866,6 +889,7 @@ export class PersonalDetailsForm extends React.Component {
                                                         data-lpignore='true'
                                                         autoComplete='off' // prevent chrome autocomplete
                                                         type='text'
+                                                        ref={this.onScrollToRefMount}
                                                         name='address_postcode'
                                                         label={localize('Postal/ZIP code')}
                                                         value={values.address_postcode}
@@ -969,4 +993,4 @@ export default connect(({ client }) => ({
     fetchResidenceList: client.fetchResidenceList,
     fetchStatesList: client.fetchStatesList,
     refreshNotifications: client.refreshNotifications,
-}))(PersonalDetailsForm);
+}))(withRouter(PersonalDetailsForm));

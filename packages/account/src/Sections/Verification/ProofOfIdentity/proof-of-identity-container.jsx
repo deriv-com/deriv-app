@@ -86,7 +86,7 @@ const ProofOfIdentityContainer = ({
 
             const { identity, needs_verification } = account_status_obj.authentication;
 
-            const identity_status = getIdentityStatus(identity, needs_verification, is_mx_mlt);
+            const identity_status = getIdentityStatus(identity, needs_verification, is_mx_mlt, allow_document_upload);
 
             const has_no_rejections = !rejected_reasons?.length;
 

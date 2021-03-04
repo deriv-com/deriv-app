@@ -302,7 +302,7 @@ const Chart = props => {
                 const isExtraSmallScreen = chart_height < 320;
                 const denominator = indicator_count >= 5 ? indicator_count : indicator_count + 1;
                 let reservedHeight = 0;
-                if (isMobile() && isExtraSmallScreen) reservedHeight = 50;
+                if (isMobile() && isExtraSmallScreen) reservedHeight = 70;
                 else if (isMobile() && isSmallScreen) reservedHeight = 120;
                 else reservedHeight = 320;
 

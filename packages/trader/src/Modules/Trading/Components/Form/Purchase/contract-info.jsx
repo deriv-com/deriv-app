@@ -117,6 +117,7 @@ const ContractInfo = ({
                     alignment='left'
                     icon='info'
                     id={`dt_purchase_${type.toLowerCase()}_info`}
+                    is_bubble_hover_enabled
                     margin={210}
                     message={has_error_or_not_loaded ? '' : message}
                     relative_render

@@ -89,6 +89,7 @@ const CancelDeal = ({
                         alignment='left'
                         icon='info'
                         id='dt_multiplier-stake__tooltip'
+                        is_bubble_hover_enabled
                         classNameBubble='trade-container__deal-cancellation-popover'
                         zIndex={9999}
                         message={localize(

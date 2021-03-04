@@ -28,11 +28,12 @@ const USTPopover = ({ id }) => {
     return (
         <Popover
             alignment='top'
-            icon='info'
-            disable_message_icon
-            zIndex={9999}
             className='currency-list__popover'
+            disable_message_icon
+            icon='info'
+            is_bubble_hover_enabled
             message={popover_message}
+            zIndex={9999}
         />
     );
 };
@@ -60,13 +61,11 @@ const RadioButton = ({ field: { name, value, onChange, onBlur }, id, label, clas
                     'currency-list__item--current': props.selected,
                 })}
             >
-                <div>
-                    <Icon className='currency-list__icon' icon={`IcCurrency-${id.toLowerCase()}`} />
-                    {/^(UST|eUSDT)$/i.test(id) && <USTPopover id={id} />}
-                    <div className='label currency-list__item-text'>
-                        <div className='currency-list__item-label'>{label}</div>
-                        <div className='currency-list__item-code'>({getCurrencyDisplayCode(id)})</div>
-                    </div>
+                <Icon className='currency-list__icon' icon={`IcCurrency-${id.toLowerCase()}`} />
+                {/^(UST|eUSDT)$/i.test(id) && <USTPopover id={id} />}
+                <div className='label currency-list__item-text'>
+                    <div className='currency-list__item-label'>{label}</div>
+                    <div className='currency-list__item-code'>({getCurrencyDisplayCode(id)})</div>
                 </div>
             </label>
         </React.Fragment>

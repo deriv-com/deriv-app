@@ -69,6 +69,7 @@ const ProofOfIdentityContainer = ({
         (account_status_obj, onfido_token) => {
             const {
                 allow_document_upload,
+                allow_poi_resubmission,
                 has_poa,
                 needs_poa,
                 is_unwelcome,
@@ -78,7 +79,7 @@ const ProofOfIdentityContainer = ({
 
             const { identity, needs_verification } = account_status_obj.authentication;
 
-            const identity_status = getIdentityStatus(identity, needs_verification, is_mx_mlt, allow_document_upload);
+            const identity_status = getIdentityStatus(identity, needs_verification, is_mx_mlt, allow_poi_resubmission);
 
             setVerificationStatus({ allow_document_upload, has_poa, needs_poa, is_unwelcome }, () => {
                 setStatus(identity_status);

@@ -24,7 +24,7 @@ const TermsOfUse = ({
     real_account_signup_target,
     ...props
 }) => {
-    const { is_deriv_crypto, is_dashboard } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     const handleCancel = () => {
         const current_step = getCurrentStep() - 1;
@@ -32,9 +32,7 @@ const TermsOfUse = ({
     };
 
     const getSubmitButtonLabel = () => {
-        if (is_deriv_crypto) {
-            return localize('Next');
-        } else if (is_dashboard) {
+        if (is_dashboard) {
             return localize('Finish');
         }
         return localize('Add account');
@@ -44,7 +42,7 @@ const TermsOfUse = ({
         <Formik
             initialValues={value}
             onSubmit={(values, actions) => {
-                onSubmit(getCurrentStep() - 1, values.agreed_tos, actions.setSubmitting, goToNextStep);
+                onSubmit(getCurrentStep() - 1, {}, actions.setSubmitting, goToNextStep);
             }}
         >
             {({ handleSubmit, values, isSubmitting }) => (
@@ -90,7 +88,7 @@ const TermsOfUse = ({
                                 <FormSubmitButton
                                     is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
                                     label={getSubmitButtonLabel()}
-                                    has_cancel={!is_deriv_crypto}
+                                    has_cancel
                                     is_absolute={isMobile()}
                                     onCancel={() => handleCancel()}
                                     cancel_label={localize('Previous')}

@@ -19,7 +19,14 @@ const Fieldset = ({ children, className, header, header_tooltip, is_center, onMo
                 <div className={fieldset_header_class}>
                     <span className={fieldset_info_class}>{header}</span>
                     {header_tooltip && (
-                        <Popover alignment='left' icon='info' message={header_tooltip} margin={210} relative_render />
+                        <Popover
+                            alignment='left'
+                            icon='info'
+                            is_bubble_hover_enabled
+                            message={header_tooltip}
+                            margin={210}
+                            relative_render
+                        />
                     )}
                 </div>
             )}

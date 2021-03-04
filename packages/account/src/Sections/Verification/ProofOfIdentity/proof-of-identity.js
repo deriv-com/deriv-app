@@ -10,7 +10,7 @@ export const onfido_status_codes = {
     suspected: 'suspected',
 };
 
-export const getIdentityStatus = (identity, needs_verification, is_mlt_mx, allow_document_upload) => {
+export const getIdentityStatus = (identity, needs_verification, is_mlt_mx) => {
     const { status } = identity;
     const onfido_unsupported = !identity.services.onfido.is_country_supported;
     const submissions_allowed = needs_verification?.includes('identity');
@@ -18,9 +18,6 @@ export const getIdentityStatus = (identity, needs_verification, is_mlt_mx, allow
     if (onfido_unsupported) return onfido_status_codes.unsupported;
     if (!submissions_allowed) {
         if (status === 'none' && is_mlt_mx) {
-            return onfido_status_codes.not_required;
-        }
-        if (!allow_document_upload) {
             return onfido_status_codes.not_required;
         }
         return onfido_status_codes[status];

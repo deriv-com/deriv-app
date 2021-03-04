@@ -8,7 +8,6 @@ import UploadComplete from 'Components/poi-upload-complete';
 import Unsupported from 'Components/poi-unsupported';
 import Expired from 'Components/poi-expired';
 import OnfidoFailed from 'Components/poi-onfido-failed';
-import NotRequired from 'Components/poi-not-required';
 import Verified from 'Components/poi-verified';
 import getOnfidoPhrases from 'Constants/onfido-phrases';
 import { onfido_status_codes } from './proof-of-identity';

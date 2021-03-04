@@ -8,6 +8,7 @@ import UploadComplete from 'Components/poi-upload-complete';
 import Unsupported from 'Components/poi-unsupported';
 import Expired from 'Components/poi-expired';
 import OnfidoFailed from 'Components/poi-onfido-failed';
+import NotRequired from 'Components/poi-not-required';
 import Verified from 'Components/poi-verified';
 import getOnfidoPhrases from 'Constants/onfido-phrases';
 import { onfido_status_codes } from './proof-of-identity';
@@ -109,7 +110,7 @@ const Onfido = ({
 
     if (status === onfido_status_codes.unsupported) return <Unsupported {...props} />;
 
-    if (onfido_init_error || onfido_service_token?.error) return <OnfidoFailed {...props} />;
+    if (onfido_init_error || onfido_service_token?.error) return <NotRequired {...props} />;
 
     if (status === onfido_status_codes.onfido) return <OnfidoContainer height={height} />;
 

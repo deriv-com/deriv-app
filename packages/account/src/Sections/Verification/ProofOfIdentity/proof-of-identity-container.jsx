@@ -78,7 +78,7 @@ const ProofOfIdentityContainer = ({
 
             const { identity, needs_verification } = account_status_obj.authentication;
 
-            const identity_status = getIdentityStatus(identity, needs_verification, is_mx_mlt);
+            const identity_status = getIdentityStatus(identity, needs_verification, is_mx_mlt, allow_document_upload);
 
             setVerificationStatus({ allow_document_upload, has_poa, needs_poa, is_unwelcome }, () => {
                 setStatus(identity_status);

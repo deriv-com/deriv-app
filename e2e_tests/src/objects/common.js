@@ -1,5 +1,4 @@
 const { waitForWSSubset } = require('@root/_utils/websocket');
-const context_options = require('@root/_config/context');
 
 class Common {
     constructor(page) {
@@ -265,8 +264,6 @@ class Common {
         await this.fillAddressDetails();
         await this.fillTermsAndConditions();
         await this.waitForAccountDropdown();
-        // await this.removeLoginState('VIRTUAL');
-        // await this.saveState('REAL');
     }
 
     async fillTermsAndConditions() {

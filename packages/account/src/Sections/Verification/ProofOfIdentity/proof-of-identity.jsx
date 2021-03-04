@@ -57,6 +57,7 @@ class ProofOfIdentity extends React.Component {
                                     </Button>
                                 )
                             }
+                            is_description_enabled
                         />
                     </div>
                 )}

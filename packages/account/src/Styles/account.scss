@@ -257,11 +257,8 @@ $MIN_HEIGHT_FLOATING: calc(
             }
             &-btn {
                 height: 4rem;
-                margin-top: 0;
-                margin-bottom: 0;
-                @include desktop {
-                    margin-left: 1.6rem;
-                }
+                margin: 0 0 0 1.6rem;
+
                 @include mobile {
                     margin: 0 1.6rem;
 

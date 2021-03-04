@@ -185,6 +185,7 @@ DataList.Cell = DataListCell;
 DataList.propTypes = {
     className: PropTypes.string,
     data_source: PropTypes.array,
+    desc_titles: PropTypes.arrayOf(PropTypes.string),
     footer: PropTypes.object,
     getRowAction: PropTypes.func,
     getRowSize: PropTypes.func,

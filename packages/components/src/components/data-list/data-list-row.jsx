@@ -48,6 +48,7 @@ const DataListRow = ({ action_desc, desc_titles, destination_link, row_gap, row_
 
 DataListRow.propTypes = {
     action_desc: PropTypes.object,
+    desc_titles: PropTypes.arrayOf(PropTypes.string),
     destination_link: PropTypes.string,
     row_gap: PropTypes.number,
     row_key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

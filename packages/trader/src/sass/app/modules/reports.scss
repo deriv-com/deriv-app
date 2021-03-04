@@ -98,7 +98,6 @@ $side-padding: 1.2em;
         /* postcss-bem-linter: ignore */
         &-text {
             padding: 1.12em;
-            text-align: center;
         }
     }
     .dc-vertical-tab__content--floating {
@@ -160,8 +159,10 @@ $side-padding: 1.2em;
                 }
             }
         }
-        .data-list__desc--wrapper {
-            justify-content: center;
+        .data-list {
+            &__desc--wrapper {
+                justify-content: center;
+            }
         }
     }
 

@@ -176,7 +176,7 @@ const DatePicker = React.memo(props => {
         placeholder,
         ...other_props,
     };
-
+    
     return (
         <React.Fragment>
             <MobileWrapper>

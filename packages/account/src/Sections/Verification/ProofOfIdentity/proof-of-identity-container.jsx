@@ -21,6 +21,7 @@ const ProofOfIdentityContainer = ({
     refreshNotifications,
     removeNotificationMessage,
     onStateChange,
+    is_description_enabled,
     is_mx_mlt,
     height,
     redirect_button,
@@ -176,6 +177,7 @@ const ProofOfIdentityContainer = ({
             height={height ?? null}
             handleComplete={handleComplete}
             redirect_button={redirect_button}
+            is_description_enabled={is_description_enabled}
         />
     );
 };

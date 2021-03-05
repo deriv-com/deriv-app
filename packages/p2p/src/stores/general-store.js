@@ -215,6 +215,8 @@ export default class GeneralStore extends BaseStore {
                 }
             }
 
+            this.setIsBlocked(false);
+
             const { sendbird_store } = this.root_store;
 
             this.ws_subscriptions = {

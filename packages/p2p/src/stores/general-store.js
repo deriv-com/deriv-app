@@ -197,13 +197,19 @@ export default class GeneralStore extends BaseStore {
         requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
             if (!error && get_account_status.risk_classification === 'high') {
                 const { status } = get_account_status;
-
                 const is_cashier_locked = status.includes('cashier_locked');
                 const is_not_fully_authenticated = !status.includes('authenticated');
                 const is_fully_authenticated_but_poi_expired =
                     status.includes('authenticated') && status.includes('document_expired');
+                const is_fully_authenticated_but_needs_financial_assessment =
+                    status.includes('authenticated') && status.includes('financial_assessment_not_complete');
 
-                if (is_not_fully_authenticated || is_fully_authenticated_but_poi_expired || is_cashier_locked) {
+                if (
+                    is_cashier_locked ||
+                    is_not_fully_authenticated ||
+                    is_fully_authenticated_but_poi_expired ||
+                    is_fully_authenticated_but_needs_financial_assessment
+                ) {
                     this.setIsBlocked(true);
                     return;
                 }

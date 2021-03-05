@@ -47,7 +47,7 @@ const Trade = ({
     const [try_synthetic_indices, setTrySyntheticIndices] = React.useState(false);
     const [is_digits_widget_active, setIsDigitsWidgetActive] = React.useState(false);
 
-    const extra_small_device = React.useMemo(() => window.innerHeight < 480, [window]);
+    const extra_small_device = window.innerHeight < 480;
 
     React.useEffect(() => {
         onMount();
@@ -298,18 +298,18 @@ const Chart = props => {
                 top: isMobile() ? 76 : 106,
             }}
             getIndicatorHeightRatio={(chart_height, indicator_count) => {
-                const isSmallScreen = chart_height < 780;
-                const isExtraSmallScreen = chart_height < 320;
+                const is_small_screen = chart_height < 780;
+                const is_extra_small_screen = chart_height < 320;
                 const denominator = indicator_count >= 5 ? indicator_count : indicator_count + 1;
-                let reservedHeight = 0;
-                if (isMobile() && isExtraSmallScreen) reservedHeight = 70;
-                else if (isMobile() && isSmallScreen) reservedHeight = 120;
-                else reservedHeight = 320;
+                let reserved_height = 0;
+                if (isMobile() && is_extra_small_screen) reserved_height = 70;
+                else if (isMobile() && is_small_screen) reserved_height = 120;
+                else reserved_height = 320;
 
-                const indicatorsHeight = Math.round((chart_height - reservedHeight) / denominator);
+                const indicators_height = Math.round((chart_height - reserved_height) / denominator);
                 return {
-                    height: indicatorsHeight,
-                    percent: indicatorsHeight / chart_height,
+                    height: indicators_height,
+                    percent: indicators_height / chart_height,
                 };
             }}
         >

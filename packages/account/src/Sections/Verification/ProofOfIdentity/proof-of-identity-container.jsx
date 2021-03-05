@@ -179,7 +179,6 @@ const ProofOfIdentityContainer = ({
             handleComplete={handleComplete}
             is_description_enabled={is_description_enabled}
             redirect_button={redirect_button}
-            is_description_enabled={is_description_enabled}
         />
     );
 };

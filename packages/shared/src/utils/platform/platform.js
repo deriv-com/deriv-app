@@ -68,7 +68,7 @@ export const getPlatformRedirect = routing_history => {
 };
 
 export const isNavigationFromPlatform = (app_routing_history, platform_route, should_ignore_parent_path = false) => {
-    if (app_routing_history.length > 0) {
+    if (app_routing_history?.length > 0) {
         const getParentPath = pathname => (/^http/.test(pathname) ? false : pathname.split('/')[1]);
 
         for (let i = 0; i < app_routing_history.length; i++) {

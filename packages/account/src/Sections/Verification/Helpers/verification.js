@@ -7,11 +7,13 @@ export const populateVerificationStatus = account_status => {
 
     const is_unwelcome = account_status.status.some(status => status === 'unwelcome');
     const allow_document_upload = account_status.status.some(status => status === 'allow_document_upload');
+    const allow_poi_resubmission = account_status.status.some(status => status === 'allow_poi_resubmission');
     const onfido_supported_docs = identity.services.onfido.documents_supported;
     const country_code = identity.services.onfido.country_code;
 
     return {
         allow_document_upload,
+        allow_poi_resubmission,
         country_code,
         has_poa,
         has_poi,

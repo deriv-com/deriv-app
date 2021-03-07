@@ -31,6 +31,7 @@ const Redirect = ({
                 });
                 redirected_to_route = true;
             }
+            sessionStorage.removeItem('redirect_url');
             toggleAccountSignupModal(true);
             break;
         }

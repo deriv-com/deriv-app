@@ -158,6 +158,7 @@ const InputWithCheckbox = ({
                         alignment={tooltip_alignment || 'left'}
                         icon='info'
                         id={`dc_${name}-checkbox__tooltip`}
+                        is_bubble_hover_enabled
                         message={tooltip_label}
                         margin={isMobile() ? 0 : 210}
                         zIndex={9999}

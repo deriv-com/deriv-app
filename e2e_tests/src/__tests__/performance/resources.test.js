@@ -3,16 +3,15 @@ const Trader = require('@root/objects/trader');
 const default_context_config  = require('@root/_config/context')
 const { mobile_viewport } = require('@root/bootstrap');
 
-let page;
-
+let p;
 jest.setTimeout(200000);
 
 async function fetchPerformanceResults() {
-    await page.navigate();
-    await page.waitForChart();
+    await p.navigate();
+    await p.waitForChart();
 
-    const performance_timing = JSON.parse(await page.evaluate(() => JSON.stringify(window.performance.toJSON())));
-    const resource_list = JSON.parse(await page.evaluate(() => JSON.stringify(performance.getEntriesByType('resource'))));
+    const performance_timing = JSON.parse(await p.evaluate(() => JSON.stringify(window.performance.toJSON())));
+    const resource_list = JSON.parse(await p.evaluate(() => JSON.stringify(performance.getEntriesByType('resource'))));
 
     let data = [];
     for (let i = 0; i < resource_list.length; i++) {
@@ -34,18 +33,21 @@ async function fetchPerformanceResults() {
 
 describe('Resource list in desktop', () => {
     beforeEach(async () => {
-        page = new Trader(await context.newPage());
+        await jestPlaywright.resetContext({
+            ...default_context_config,
+        });
+        p = new Trader(page);
     });
 
     afterEach(async () => {
-        await page.close();
+        await p.close();
     });
 
     test("[performance]-resources-desktop", async () => {
         const { performance_timing, data, total_bytes } = await fetchPerformanceResults();
         logger.save(expect.getState().testPath, 'Resource list in desktop:', {
             'Number of requests:': data.length,
-            'Total transfered data:': `${total_bytes.size} (${total_bytes.size / 1000000} MB)`,
+            'Total transferred data:': `${total_bytes.size} (${total_bytes.size / 1000000} MB)`,
             'Performance timing:': performance_timing.timing,
             'Request list:': data,
         })
@@ -58,14 +60,11 @@ describe('Resource list in mobile', () => {
             ...default_context_config,
             ...mobile_viewport,
         });
-        page = new Trader(await context.newPage({
-            ...default_context_config,
-            ...mobile_viewport,
-        }));
+        p = new Trader(page);
     });
 
     afterEach(async () => {
-       await page.close();
+       await p.close();
     });
 
     test("[performance]-resources-mobile", async () => {

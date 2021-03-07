@@ -106,7 +106,7 @@ class Common {
 
     async navigate() {
         await this.blockExternals();
-        if (process.env.QA_SETUP === 'true') {
+        if (Number(process.env.QA_SETUP)) {
             await this.connectToQA();
         }
         await this.page.goto(process.env.HOME_URL);

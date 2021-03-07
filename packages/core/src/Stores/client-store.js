@@ -801,7 +801,7 @@ export default class ClientStore extends BaseStore {
         form_values.residence = this.residence;
         if (is_maltainvest_account) {
             currency = form_values.currency;
-            form_values.accept_risk = 1;
+            form_values.accept_risk = form_values.accept_risk || 0;
             delete form_values.currency;
         }
         const response = is_maltainvest_account
@@ -870,22 +870,16 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    async createCryptoAccount(currency, is_deriv_crypto) {
+    async createCryptoAccount(currency) {
         const residence = this.residence;
-        let data = {
+        const { date_of_birth, first_name, last_name } = this.account_settings;
+        const data = {
             residence,
             currency,
+            first_name,
+            last_name,
+            date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
         };
-
-        if (!is_deriv_crypto) {
-            const { date_of_birth, first_name, last_name } = this.account_settings;
-            data = {
-                ...data,
-                first_name,
-                last_name,
-                date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
-            };
-        }
 
         const response = await WS.newAccountReal(data);
         if (!response.error) {
@@ -1700,8 +1694,7 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    onSignup({ password, residence, is_deriv_crypto, is_account_signup_modal_visible }, cb) {
-        const is_first_time_signup = is_account_signup_modal_visible;
+    onSignup({ password, residence }, cb) {
         if (!this.verification_code.signup || !password || !residence) return;
 
         // Currently the code doesn't reach here and the console log is needed for debugging.
@@ -1729,10 +1722,6 @@ export default class ClientStore extends BaseStore {
 
                 if (this.is_mt5_allowed) {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
-                }
-
-                if (is_deriv_crypto && is_first_time_signup) {
-                    this.root_store.ui.openRealAccountSignup();
                 }
             }
         });

@@ -6,7 +6,7 @@ import { Icon, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 
 const ArticleContent = ({ is_eu, is_uk, toggleModal }) => {
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     const eu_items = [
         <Localize
@@ -18,7 +18,7 @@ const ArticleContent = ({ is_eu, is_uk, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getStaticUrl('/responsible', { is_deriv_crypto })}
+                    href={getStaticUrl('/responsible', { is_dashboard })}
                 />,
             ]}
         />,
@@ -92,7 +92,7 @@ const ArticleContent = ({ is_eu, is_uk, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getStaticUrl('/responsible', { is_deriv_crypto })}
+                    href={getStaticUrl('/responsible', { is_dashboard })}
                 />,
             ]}
         />,
@@ -113,7 +113,7 @@ const ArticleContent = ({ is_eu, is_uk, toggleModal }) => {
                     className='link link--orange'
                     rel='noopener noreferrer'
                     target='_blank'
-                    href={getStaticUrl('/contact-us', { is_deriv_crypto })}
+                    href={getStaticUrl('/contact-us', { is_dashboard })}
                 />,
             ]}
         />,

@@ -17,7 +17,11 @@
         width: 67.2rem; // TODO: Kill these fixed widths.
 
         @include mobile {
-            width: 100vw;
+            max-width: 90vw;
+
+            .p2p-my-ads__form-field {
+                margin-bottom: 0;
+            }
         }
     }
 
@@ -99,7 +103,7 @@
                 margin-bottom: 0;
 
                 @include mobile {
-                    width: 88vw;
+                    width: 90vw;
                 }
 
                 .dc-input__hint {

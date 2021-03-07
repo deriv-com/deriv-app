@@ -92,7 +92,7 @@ const MyAdsTable = () => {
     }
 
     return (
-        <Empty icon='IcCashierNoAds' title={localize('You have no adverts')}>
+        <Empty icon='IcCashierNoAds' title={localize('You have no ads.')}>
             <Button
                 className='p2p-empty__button'
                 is_disabled={general_store.is_barred}

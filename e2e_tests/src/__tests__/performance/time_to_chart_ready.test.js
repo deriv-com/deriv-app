@@ -1,13 +1,13 @@
 const logger = require('@root/_utils/logger');
-const { replaceWebsocket } = require('@root/_utils/websocket'); // TODO: Fix the path
-const Common = require('@root/objects/common');
+const Trader = require('@root/objects/trader');
+const default_context_config = require('@root/_config/context');
+const { mobile_viewport } = require('@root/bootstrap');
 
 let page;
 
 describe('Time to chart ready in desktop', () => {
     beforeEach(async () => {
-        await context.addInitScript(replaceWebsocket);
-        page = new Common(await context.newPage());
+        page = new Trader(await context.newPage());
     });
 
     afterEach(async () => {
@@ -16,7 +16,7 @@ describe('Time to chart ready in desktop', () => {
 
     test("[performance]-time-to-chart-ready", async () => {
         await page.navigate()
-        await page.waitForSelector('.smartcharts')
+        await page.waitForChart();
         const chart_ready_time = Date.now()
         const performanceTiming = JSON.parse(await page.evaluate(() => JSON.stringify(window.performance.toJSON())))
 
@@ -30,8 +30,11 @@ describe('Time to chart ready in desktop', () => {
 
 describe('Time to chart ready in mobile', () => {
     beforeEach(async () => {
-        await context.addInitScript(replaceWebsocket);
-        page = new Common(await context.newPage());
+        await jestPlaywright.resetContext({
+            ...default_context_config,
+            ...mobile_viewport,
+        });
+        page = new Trader(await context.newPage());
     });
 
     afterEach(async () => {
@@ -40,7 +43,7 @@ describe('Time to chart ready in mobile', () => {
 
     test("[performance]-time-to-chart-ready", async () => {
         await page.navigate()
-        await page.waitForSelector('.smartcharts')
+        await page.waitForChart();
         const chart_ready_time = Date.now()
         const performance_timing = JSON.parse(await page.evaluate(() => JSON.stringify(window.performance.toJSON())))
 

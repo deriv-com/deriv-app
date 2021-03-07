@@ -17,18 +17,11 @@ class Trader extends Common {
         await this.page.waitForSelector('.ciq-menu.ciq-enabled', {timeout: 120000});
     }
 
-    async chooseUnderlying(code, name) {
-        // Click market select
+    async chooseUnderlying(submarket, name) {
         await this.page.waitForSelector(MARKET_SELECT);
         await this.page.click(MARKET_SELECT);
-
-        // Wait for dropdown to load
-        await this.page.waitForSelector('.data-hj-whitelist');
-        await this.page.fill('.data-hj-whitelist', name);
-        await this.page.waitForSelector(`.sc-mcd__item--${code}`);
-        await this.page.click(`.sc-mcd__item--${code}`);
-        const content = await this.page.textContent('.cq-symbol', name);
-        expect(content).toBe(name);
+        await this.page.click(`//div[normalize-space(.)='${submarket}']`);
+        await this.page.click(`text="${name}"`);
     }
 
     async openRecentPositionsDrawer() {

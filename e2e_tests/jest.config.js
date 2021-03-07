@@ -19,7 +19,7 @@ module.exports = {
             browsers: [process.env.BROWSER || 'chromium'],
             contextOptions: {
                 ignoreHTTPSErrors: true,
-                ...(process.env.ENABLE_VIDEO_RECORD
+                ...(Number(process.env.ENABLE_VIDEO_RECORD)
                     ? {
                           recordVideo: {
                               dir: path.join(process.env.E2E_ARTIFACT_PATH, 'videos'),

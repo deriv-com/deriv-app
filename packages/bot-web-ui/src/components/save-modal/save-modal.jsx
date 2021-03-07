@@ -64,36 +64,6 @@ const SaveModalForm = ({
                                 <RadioGroup
                                     className='radio-group__save-type'
                                     name='is_local'
-                                    items={[
-                                        {
-                                            id: 'local',
-                                            label: (
-                                                <IconRadio
-                                                    text={localize('Local')}
-                                                    icon={
-                                                        <Icon icon={is_mobile ? 'IcMobile' : 'IcDesktop'} size={48} />
-                                                    }
-                                                />
-                                            ),
-                                            value: save_types.LOCAL,
-                                        },
-                                        {
-                                            id: 'drive',
-                                            label: (
-                                                <IconRadio
-                                                    text={'Google Drive'}
-                                                    icon={<Icon icon={'IcGoogleDrive'} size={48} />}
-                                                    google_drive_connected={is_authorised}
-                                                    onDriveConnect={onDriveConnect}
-                                                />
-                                            ),
-                                            value: save_types.GOOGLE_DRIVE,
-                                            disabled: !is_authorised,
-                                            className: classNames({
-                                                'dc-radio-group__item-disabled': !is_authorised,
-                                            }),
-                                        },
-                                    ]}
                                     selected={(() => {
                                         if (is_authorised) {
                                             return is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE;
@@ -102,7 +72,34 @@ const SaveModalForm = ({
                                         return save_types.LOCAL;
                                     })()}
                                     onToggle={() => setFieldValue('is_local', !is_local)}
-                                />
+                                >
+                                    <RadioGroup.Item
+                                        id='local'
+                                        label={
+                                            <IconRadio
+                                                text={localize('Local')}
+                                                icon={<Icon icon={is_mobile ? 'IcMobile' : 'IcDesktop'} size={48} />}
+                                            />
+                                        }
+                                        value={save_types.LOCAL}
+                                    />
+                                    <RadioGroup.Item
+                                        id='drive'
+                                        label={
+                                            <IconRadio
+                                                text={'Google Drive'}
+                                                icon={<Icon icon={'IcGoogleDrive'} size={48} />}
+                                                google_drive_connected={is_authorised}
+                                                onDriveConnect={onDriveConnect}
+                                            />
+                                        }
+                                        value={save_types.GOOGLE_DRIVE}
+                                        disabled={!is_authorised}
+                                        className={classNames({
+                                            'dc-radio-group__item-disabled': !is_authorised,
+                                        })}
+                                    />
+                                </RadioGroup>
                             </div>
                             <>
                                 <Field name='save_as_collection'>

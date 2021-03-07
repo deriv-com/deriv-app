@@ -51,7 +51,6 @@
             config: {
                 asset_path: PropTypes.string.isRequired,
                 has_router: PropTypes.bool.isRequired,
-                is_deriv_crypto: PropTypes.bool.isRequired,
                 routes: PropTypes.shape({
                     home: PropTypes.string.isRequired,
                     about_us: PropTypes.string.isRequired,

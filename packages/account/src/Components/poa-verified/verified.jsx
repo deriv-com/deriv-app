@@ -7,8 +7,9 @@ import { PoiButton } from 'Components/poi-button/poi-button.jsx';
 import IconMessageContent from 'Components/icon-message-content';
 import { ContinueTradingButton } from 'Components/poa-continue-trading-button/continue-trading-button.jsx';
 
-const Verified = ({ needs_poi, is_description_disabled = false }) => {
+export const Verified = ({ needs_poi, is_description_enabled = true }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
+
     const message = localize('Your proof of address is verified');
     if (needs_poi) {
         return (
@@ -32,7 +33,7 @@ const Verified = ({ needs_poi, is_description_disabled = false }) => {
                     <Icon icon='IcPoaVerified' size={128} className={is_dashboard && 'account-management-dashboard'} />
                 }
             >
-                {!is_description_disabled && <ContinueTradingButton />}
+                {!is_description_enabled && <ContinueTradingButton />}
             </IconMessageContent>
         </div>
     );

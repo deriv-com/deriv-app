@@ -38,7 +38,7 @@ const FileProperties = () => {
     );
 };
 
-const FileUploaderContainer = ({ is_description_disabled, getSocket, onFileDrop, onRef }) => {
+const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFileDrop, onRef }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
     const ref = React.useRef();
 
@@ -64,7 +64,7 @@ const FileUploaderContainer = ({ is_description_disabled, getSocket, onFileDrop,
     }
     return (
         <div className='account-poa__upload-section'>
-            {!is_description_disabled && (
+            {is_description_enabled && (
                 <ul className='account-poa__upload-list'>
                     {!is_dashboard && (
                         <li className='account-poa__upload-box'>
@@ -137,12 +137,8 @@ const FileUploaderContainer = ({ is_description_disabled, getSocket, onFileDrop,
     );
 };
 
-FileUploaderContainer.defaultProps = {
-    is_description_disabled: false,
-};
-
 FileUploaderContainer.propTypes = {
-    is_description_disabled: PropTypes.bool,
+    is_description_enabled: PropTypes.bool,
     getSocket: PropTypes.func,
     onFileDrop: PropTypes.func,
     onRef: PropTypes.func,

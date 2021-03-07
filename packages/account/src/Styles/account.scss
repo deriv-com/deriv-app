@@ -397,8 +397,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
             &-btn {
                 height: 4rem;
-                margin-top: 0;
-                margin-bottom: 0;
+                margin: 0 0 0 1.6rem;
 
                 &-wrapper {
                     align-items: normal;
@@ -670,6 +669,9 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-top: 1rem;
             max-width: 67.2rem;
             margin-bottom: 2em;
+        }
+        &__button.dc-btn {
+            margin-top: 0.8rem;
         }
         &-flex-wrapper {
             display: flex;

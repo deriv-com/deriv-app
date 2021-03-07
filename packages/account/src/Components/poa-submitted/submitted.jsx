@@ -7,7 +7,7 @@ import { ContinueTradingButton } from 'Components/poa-continue-trading-button/co
 import PoiButton from 'Components/poi-button';
 import IconMessageContent from 'Components/icon-message-content';
 
-export const Submitted = ({ needs_poi, is_description_disabled = false }) => {
+export const Submitted = ({ needs_poi, is_description_enabled = true }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
     const message = localize('Your proof of address was submitted successfully');
     if (needs_poi) {
@@ -46,7 +46,7 @@ export const Submitted = ({ needs_poi, is_description_disabled = false }) => {
                 icon={<Icon icon='IcPoaVerified' size={128} />}
                 full_width={is_dashboard}
             >
-                {!is_description_disabled && <ContinueTradingButton />}
+                {!is_description_enabled && <ContinueTradingButton />}
             </IconMessageContent>
         </div>
     );

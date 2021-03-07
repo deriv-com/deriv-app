@@ -14,7 +14,7 @@ const getDismissButton = ({ status, landing_company_shortcode, closeModal, switc
                 };
             } else if (status === EXPERIAN.WARN) {
                 return {
-                    label: localize('Trade on demo account'),
+                    label: localize('Trade on demo'),
                     action: () => {
                         closeModal();
                         switchToVirtual();
@@ -38,6 +38,7 @@ const getDismissButton = ({ status, landing_company_shortcode, closeModal, switc
 const getActionButton = ({
     status,
     landing_company_shortcode,
+    closeModal,
     closeModalAndOpenCashier,
     closeModalAndOpenPOI,
     closeModalAndOpenPOA,
@@ -51,11 +52,15 @@ const getActionButton = ({
                 };
             } else if (status === EXPERIAN.WARN) {
                 return {
-                    label: localize('Upload documents'),
+                    label: localize('Submit proof'),
                     action: closeModalAndOpenPOA,
                 };
+            } else if (status === EXPERIAN.PENDING) {
+                return {
+                    label: localize('OK'),
+                    action: closeModal,
+                };
             }
-
             return {
                 label: localize('Deposit now'),
                 action: closeModalAndOpenCashier,
@@ -77,6 +82,7 @@ const getActionButton = ({
 const DialogPrimaryButton = ({
     status,
     landing_company_shortcode,
+    closeModal,
     closeModalAndOpenCashier,
     closeModalAndOpenPOI,
     closeModalAndOpenPOA,
@@ -86,6 +92,7 @@ const DialogPrimaryButton = ({
     const { label, action } = getActionButton({
         status,
         landing_company_shortcode,
+        closeModal,
         closeModalAndOpenCashier,
         closeModalAndOpenPOI,
         closeModalAndOpenPOA,
@@ -93,7 +100,8 @@ const DialogPrimaryButton = ({
 
     return <Button primary text={label} onClick={action} />;
 };
-const DialogDismissButton = ({ status, landing_company_shortcode, closeModal, switchToVirtual }) => {
+const DialogDismissButton = ({ status, landing_company_shortcode, closeModal, switchToVirtual, is_bypassed }) => {
+    if (is_bypassed) return null;
     const { label, action } = getDismissButton({
         status,
         landing_company_shortcode,
@@ -116,6 +124,7 @@ export const DialogButtons = ({
         <div className='status-dialog__btn-area'>
             <DialogDismissButton
                 closeModal={closeModal}
+                is_bypassed={status === EXPERIAN.PENDING}
                 status={status}
                 landing_company_shortcode={landing_company_shortcode}
                 switchToVirtual={switchToVirtual}
@@ -123,6 +132,7 @@ export const DialogButtons = ({
             <DialogPrimaryButton
                 status={status}
                 landing_company_shortcode={landing_company_shortcode}
+                closeModal={closeModal}
                 closeModalAndOpenCashier={closeModalAndOpenCashier}
                 closeModalAndOpenPOI={closeModalAndOpenPOI}
                 closeModalAndOpenPOA={closeModalAndOpenPOA}

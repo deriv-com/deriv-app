@@ -7,10 +7,10 @@ import ContinueTradingButton from 'Components/poa-continue-trading-button';
 import PoaButton from 'Components/poa-button';
 import IconMessageContent from 'Components/icon-message-content';
 
-const Verified = ({ has_poa, is_description_enabled, redirect_button }) => {
+export const Verified = ({ needs_poa, is_description_enabled, redirect_button }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
     const message = localize('Your proof of identity is verified');
-    if (has_poa) {
+    if (!needs_poa) {
         return (
             <IconMessageContent
                 message={message}

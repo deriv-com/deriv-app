@@ -134,6 +134,10 @@ $MIN_HEIGHT_FLOATING: calc(
                 border-right: 4px solid var(--brand-red-coral);
             }
         }
+        @include desktop {
+            grid-template-rows: 5.2rem calc(100vh - 4.8rem - 3.6rem - 5.2rem);
+            overflow: hidden;
+        }
     }
     &__inset_header {
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);
@@ -1466,6 +1470,8 @@ $MIN_HEIGHT_FLOATING: calc(
         &-wrapper {
             display: flex;
             flex-direction: column;
+            width: 100%;
+            height: auto;
         }
         &-button {
             margin-top: 2.4rem;

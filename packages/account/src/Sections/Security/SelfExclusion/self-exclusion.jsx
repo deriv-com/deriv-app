@@ -367,7 +367,7 @@ class SelfExclusion extends React.Component {
 
         const currency_display = getCurrencyDisplayCode(currency);
         const session_duration_digits = six_weeks.toString().length;
-        
+
         return (
             <section className='self-exclusion'>
                 <Div100vhContainer className='self-exclusion__wrapper' is_disabled={isDesktop()} height_offset='80px'>
@@ -776,7 +776,9 @@ class SelfExclusion extends React.Component {
                                                     <Field name='timeout_until'>
                                                         {({ field }) => (
                                                             <DatePicker
-                                                                min_date={toMoment().add(1, 'days').format('YYYY-MM-DD')}
+                                                                min_date={toMoment()
+                                                                    .add(1, 'days')
+                                                                    .format('YYYY-MM-DD')}
                                                                 max_date={toMoment()
                                                                     .add(6, 'weeks')
                                                                     .format('YYYY-MM-DD')}
@@ -812,7 +814,8 @@ class SelfExclusion extends React.Component {
                                                         {({ field }) => (
                                                             <DatePicker
                                                                 min_date={toMoment()
-                                                                    .add(6, 'months').add(1, 'days')
+                                                                    .add(6, 'months')
+                                                                    .add(1, 'days')
                                                                     .format('YYYY-MM-DD')}
                                                                 max_date={toMoment()
                                                                     .add(5, 'years')

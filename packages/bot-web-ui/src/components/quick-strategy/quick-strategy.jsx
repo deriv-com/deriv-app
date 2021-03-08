@@ -22,6 +22,16 @@ import { config } from '@deriv/bot-skeleton';
 import { popover_zindex } from 'Constants/z-indexes';
 import { connect } from 'Stores/connect';
 
+const getFieldValue = (list_items, value) => {
+    const dropdown_items = Array.isArray(list_items) ? list_items : [].concat(...Object.values(list_items));
+    const list_obj = dropdown_items.find(item =>
+        typeof item.value !== 'string' ? item.value === value : item.value?.toLowerCase() === value?.toLowerCase()
+    );
+
+    if (list_obj) return list_obj.text;
+    return '';
+};
+
 const QuickStrategyForm = ({
     active_index,
     createStrategy,
@@ -93,6 +103,7 @@ const QuickStrategyForm = ({
                                                     type='text'
                                                     label={localize('Asset')}
                                                     list_items={symbol_dropdown}
+                                                    value={getFieldValue(symbol_dropdown, selected_symbol.value)}
                                                     onHideDropdownList={() => {
                                                         onHideDropdownList('symbol', values[field.name], setFieldValue);
                                                     }}
@@ -140,6 +151,10 @@ const QuickStrategyForm = ({
                                                     type='text'
                                                     label={localize('Trade type')}
                                                     list_items={trade_type_dropdown}
+                                                    value={getFieldValue(
+                                                        trade_type_dropdown,
+                                                        selected_trade_type.value
+                                                    )}
                                                     onHideDropdownList={() => {
                                                         onHideDropdownList(
                                                             'trade-type',
@@ -190,6 +205,10 @@ const QuickStrategyForm = ({
                                                     type='text'
                                                     label={localize('Duration unit')}
                                                     list_items={duration_unit_dropdown}
+                                                    value={getFieldValue(
+                                                        duration_unit_dropdown,
+                                                        selected_duration_unit.value
+                                                    )}
                                                     disabled={duration_unit_dropdown.length === 1}
                                                     onHideDropdownList={() => {
                                                         onHideDropdownList(

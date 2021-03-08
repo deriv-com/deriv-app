@@ -187,7 +187,9 @@ const ContractType = (() => {
     const getContractType = (list, contract_type) => {
         const arr_list = Object.keys(list || {})
             .reduce((k, l) => [...k, ...list[l].map(ct => ct.value)], [])
-            .filter(type => unsupported_contract_types_list.indexOf(type) === -1);
+            .filter(type => unsupported_contract_types_list.indexOf(type) === -1)
+            .sort((a, b) => (a === 'multiplier' || b === 'multiplier' ? -1 : 0));
+
         return {
             contract_type: getArrayDefaultValue(arr_list, contract_type),
         };

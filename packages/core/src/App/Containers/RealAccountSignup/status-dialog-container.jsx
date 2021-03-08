@@ -59,10 +59,15 @@ const StatusDialogContainer = ({
 
     return (
         <Div100vhContainer className='status-dialog' is_disabled={isDesktop()} height_offset='40px'>
+            {landing_company_shortcode === 'iom' && isDesktop() && (
+                <div onClick={closeModal} className='status-dialog__close'>
+                    <Icon icon='IcCross' />
+                </div>
+            )}
             <div
-                className={classNames('status-dialog__icon-area', {
-                    'status-dialog__icon-area--large': icon_size === 'large',
-                    'status-dialog__icon-area--xlarge': icon_size === 'xlarge',
+                className={classNames('status-dialog__header', {
+                    'status-dialog__header--large': icon_size === 'large',
+                    'status-dialog__header--xlarge': icon_size === 'xlarge',
                 })}
             >
                 <MainIcon currency={currency} />
@@ -71,8 +76,8 @@ const StatusDialogContainer = ({
                 {getStatus() === EXPERIAN.DANGER && <Danger className='bottom-right-overlay' />}
             </div>
             <div
-                className={classNames('status-dialog__body-area', {
-                    'status-dialog__body-area--no-grow': isMobile(),
+                className={classNames('status-dialog__body', {
+                    'status-dialog__body--no-grow': isMobile(),
                 })}
             >
                 <DialogHeading status={getStatus()} landing_company_shortcode={landing_company_shortcode} />

@@ -14,6 +14,11 @@ const MainIcon = ({ currency }) => <Icon icon={`IcCurrency-${currency.toLowerCas
 const Checkmark = ({ className }) => <Icon className={className} icon='IcCheckmarkCircle' color='green' size={24} />;
 const Warning = ({ className }) => <Icon className={className} icon='IcAlertDanger' size={24} />;
 const Danger = ({ className }) => <Icon className={className} icon='IcCrossCircle' size={24} color='red' />;
+const CloseIcon = ({ closeModal }) => (
+    <div onClick={closeModal} className='status-dialog__close'>
+        <Icon icon='IcCross' />
+    </div>
+);
 
 const StatusDialogContainer = ({
     closeModal,
@@ -59,11 +64,7 @@ const StatusDialogContainer = ({
 
     return (
         <Div100vhContainer className='status-dialog' is_disabled={isDesktop()} height_offset='40px'>
-            {landing_company_shortcode === 'iom' && isDesktop() && (
-                <div onClick={closeModal} className='status-dialog__close'>
-                    <Icon icon='IcCross' />
-                </div>
-            )}
+            {!isMobile() && <CloseIcon closeModal={closeModal} />}
             <div
                 className={classNames('status-dialog__header', {
                     'status-dialog__header--large': icon_size === 'large',

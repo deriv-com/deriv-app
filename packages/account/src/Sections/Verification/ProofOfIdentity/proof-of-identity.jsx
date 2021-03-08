@@ -14,6 +14,13 @@ class ProofOfIdentity extends React.Component {
         this.props.routeBackInApp(this.props.history, [redirect_route]);
     };
 
+    componentDidMount() {
+        if (!this.props.should_allow_authentication) {
+            const from_platform = getPlatformRedirect(this.props.app_routing_history);
+            this.props.routeBackInApp(this.props.history, [from_platform]);
+        }
+    }
+
     render() {
         const from_platform = getPlatformRedirect(this.props.app_routing_history);
         const should_show_redirect_btn = from_platform.name === 'P2P';
@@ -70,4 +77,5 @@ export default connect(({ client, ui, common }) => ({
     removeNotificationMessage: ui.removeNotificationMessage,
     routeBackInApp: common.routeBackInApp,
     app_routing_history: common.app_routing_history,
+    should_allow_authentication: client.should_allow_authentication,
 }))(withRouter(ProofOfIdentity));

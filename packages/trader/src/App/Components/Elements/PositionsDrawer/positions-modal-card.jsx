@@ -72,7 +72,7 @@ const PositionsModalCard = ({
                         icon={contract_info.underlying ? `IcUnderlying${contract_info.underlying}` : 'IcUnknown'}
                         size={34}
                     />
-                    <Text size='xxxs' className='positions-modal-card__symbol'>
+                    <Text size='xxs' className='positions-modal-card__symbol' weight='bold'>
                         {contract_info.display_name}
                     </Text>
                 </div>

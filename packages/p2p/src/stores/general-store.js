@@ -179,7 +179,7 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     onMount() {
         this.setIsLoading(true);
-        
+
         this.disposeUserBarredReaction = reaction(
             () => this.user_blocked_until,
             blocked_until => {
@@ -193,12 +193,29 @@ export default class GeneralStore extends BaseStore {
                 }
             }
         );
-        
+
         requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
             if (!error && get_account_status.risk_classification === 'high') {
-                this.setIsBlocked(true);
-                return;
+                const { status } = get_account_status;
+                const is_cashier_locked = status.includes('cashier_locked');
+                const is_not_fully_authenticated = !status.includes('authenticated');
+                const is_fully_authenticated_but_poi_expired =
+                    status.includes('authenticated') && status.includes('document_expired');
+                const is_fully_authenticated_but_needs_financial_assessment =
+                    status.includes('authenticated') && status.includes('financial_assessment_not_complete');
+
+                if (
+                    is_cashier_locked ||
+                    is_not_fully_authenticated ||
+                    is_fully_authenticated_but_poi_expired ||
+                    is_fully_authenticated_but_needs_financial_assessment
+                ) {
+                    this.setIsBlocked(true);
+                    return;
+                }
             }
+
+            this.setIsBlocked(false);
 
             const { sendbird_store } = this.root_store;
 
@@ -220,7 +237,6 @@ export default class GeneralStore extends BaseStore {
                     [this.setP2pOrderList]
                 ),
             };
-            
         });
     }
 

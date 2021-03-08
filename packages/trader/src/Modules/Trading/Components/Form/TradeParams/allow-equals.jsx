@@ -16,6 +16,7 @@ const AllowEquals = ({
     expiry_type,
     onChange,
     value,
+    has_equals_only,
 }) => {
     const has_callputequal_duration = hasDurationForCallPutEqual(
         contract_types_list,
@@ -44,6 +45,7 @@ const AllowEquals = ({
                     name='is_equal'
                     label={localize('Allow equals')}
                     classNameLabel='allow-equals__label'
+                    disabled={has_equals_only}
                 />
                 <Popover
                     alignment='left'
@@ -65,6 +67,7 @@ AllowEquals.propTypes = {
     contract_types_list: PropTypes.object,
     duration_unit: PropTypes.string,
     expiry_type: PropTypes.string,
+    has_equals_only: PropTypes.bool,
     onChange: PropTypes.func,
     value: PropTypes.number,
 };

@@ -105,8 +105,9 @@ export class PersonalDetailsForm extends React.Component {
                 this.setState({ api_error: response.error.message });
                 return;
             }
+            this.setState({ ...response.get_settings, is_loading: false });
+            this.props.refreshNotifications();
             this.setState({ is_btn_loading: false, is_submit_success: true });
-            setTimeout(() => this.setState({ is_submit_success: false }), 3000);
             setTimeout(() => {
                 this.setState({ is_submit_success: false }, () => {
                     setSubmitting(false);

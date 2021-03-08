@@ -119,6 +119,7 @@ const CFDAccountCard = ({
     descriptor,
     is_hovered,
     existing_data,
+    has_banner,
     has_mt5_account,
     has_mt5_account_error,
     has_real_account,
@@ -222,12 +223,22 @@ const CFDAccountCard = ({
                         {getServerName(existing_data)}
                     </div>
                 )}
-                <div className='cfd-account-card__type' id={`mt5_${type.category}_${type.type}`}>
+                <div
+                    className='cfd-account-card__type'
+                    id={`${platform === 'dxtrade' ? 'dxtrade' : 'mt5'}_${type.category}_${type.type}`}
+                >
                     {icon}
                     <div className='cfd-account-card__type--description'>
                         <h1 className='cfd-account-card--heading'>{title}</h1>
                         {(!existing_data || !is_logged_in) && (
-                            <p className='cfd-account-card--paragraph'>{descriptor}</p>
+                            <p
+                                className={classNames('cfd-account-card--paragraph', {
+                                    'cfd-account-card--paragraph-has-banner':
+                                        has_banner || has_popular_banner || has_server_banner,
+                                })}
+                            >
+                                {descriptor}
+                            </p>
                         )}
                         {existing_data && existing_data.display_balance && is_logged_in && (
                             <p className='cfd-account-card--balance'>

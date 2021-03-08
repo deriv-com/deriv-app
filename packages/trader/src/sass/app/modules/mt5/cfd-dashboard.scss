@@ -631,11 +631,10 @@
             }
             .cfd-account-card--paragraph {
                 width: 18.3rem;
-            }
-        }
-        &--has-banner {
-            .cfd-account-card--paragraph {
-                width: 15rem;
+
+                &-has-banner {
+                    width: 15rem;
+                }
             }
         }
     }

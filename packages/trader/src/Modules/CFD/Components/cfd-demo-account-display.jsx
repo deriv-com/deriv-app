@@ -84,6 +84,7 @@ const CFDDemoAccountDisplay = ({
                         [localize('Stop out level')]: localize('50%'),
                         [localize('Number of assets')]: localize('10+'),
                     }}
+                    has_banner
                 />
             )}
 
@@ -133,6 +134,7 @@ const CFDDemoAccountDisplay = ({
                                   [localize('Number of assets')]: localize('50+'),
                               }
                     }
+                    has_banner
                 />
             )}
             {(landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && platform === 'mt5' && (
@@ -175,6 +177,7 @@ const CFDDemoAccountDisplay = ({
                         [localize('Stop out level')]: localize('75%'),
                         [localize('Number of assets')]: localize('50+'),
                     }}
+                    has_banner
                 />
             )}
         </div>

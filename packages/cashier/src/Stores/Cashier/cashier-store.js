@@ -101,6 +101,7 @@ class ConfigAccountTransfer {
     @observable has_no_accounts_balance = false;
     @observable is_transfer_confirm = false;
     @observable is_transfer_successful = false;
+    @observable is_mt5_transfer_in_progress = false;
     @observable minimum_fee = null;
     @observable receipt = {};
     @observable selected_from = {};
@@ -724,7 +725,7 @@ export default class CashierStore extends BaseStore {
     sortSupportedBanks() {
         // sort supported banks alphabetically by value, the option 'All payment agents' with value 0 should be on top
         this.config.payment_agent.supported_banks.replace(
-            this.config.payment_agent.supported_banks.slice().sort(function (a, b) {
+            this.config.payment_agent.supported_banks.slice().sort((a, b) => {
                 if (a.value < b.value) {
                     return -1;
                 }
@@ -980,6 +981,21 @@ export default class CashierStore extends BaseStore {
             this.setTransferFee();
             this.setMinimumFee();
             this.setTransferLimit();
+
+            if (this.config.account_transfer.accounts_list?.length > 0) {
+                const mt5_transfer_to_login_id = sessionStorage.getItem('mt5_transfer_to_login_id');
+                sessionStorage.removeItem('mt5_transfer_to_login_id');
+                const obj_values = this.config.account_transfer.accounts_list.find(
+                    account => account.value === mt5_transfer_to_login_id
+                );
+                if (obj_values) {
+                    if (hasTransferNotAllowedLoginid(obj_values.value)) {
+                        // check if selected to is not allowed account
+                        obj_values.error = getSelectedError(obj_values.value);
+                    }
+                    this.setSelectedTo(obj_values);
+                }
+            }
         }
         this.setLoading(false);
     }
@@ -1068,15 +1084,15 @@ export default class CashierStore extends BaseStore {
         const mt5_login_list = (await this.WS.storage.mt5LoginList())?.mt5_login_list;
         // TODO: remove this temporary mapping when API adds market_type and sub_account_type to transfer_between_accounts
         const accounts = transfer_between_accounts.accounts.map(account => {
-            if (account.account_type === 'mt5') {
+            if (account.account_type === 'mt5' && Array.isArray(mt5_login_list) && mt5_login_list.length) {
                 // account_type in transfer_between_accounts (mt5|binary)
                 // gets overridden by account_type in mt5_login_list (demo|real)
                 // since in cashier all these are real accounts, the mt5 account type is what we want to keep
-                return {
-                    ...account,
-                    ...mt5_login_list.find(acc => acc.login === account.loginid),
-                    account_type: 'mt5',
-                };
+                const found_account = mt5_login_list.find(acc => acc.login === account.loginid);
+
+                if (found_account === undefined) return account;
+
+                return { ...account, ...found_account, account_type: 'mt5' };
             }
             return account;
         });
@@ -1107,6 +1123,7 @@ export default class CashierStore extends BaseStore {
         });
         const arr_accounts = [];
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
+
         accounts.forEach(account => {
             const obj_values = {
                 text:
@@ -1182,6 +1199,16 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setIsMT5TransferInProgress(is_mt5_transfer_in_progress) {
+        this.config[this.active_container].is_mt5_transfer_in_progress = is_mt5_transfer_in_progress;
+    }
+
+    @action.bound
+    isMT5TransferInProgress() {
+        return this.config[this.active_container]?.is_mt5_transfer_in_progress;
+    }
+
+    @action.bound
     setReceiptTransfer({ amount }) {
         this.config.account_transfer.receipt = {
             amount_transferred: amount,
@@ -1243,6 +1270,12 @@ export default class CashierStore extends BaseStore {
 
         this.setLoading(true);
         this.setErrorMessage('');
+
+        const is_mt_transfer =
+            this.config.account_transfer.selected_from.is_mt || this.config.account_transfer.selected_to.is_mt;
+
+        if (is_mt_transfer) this.setIsMT5TransferInProgress(true);
+
         const currency = this.config.account_transfer.selected_from.currency;
         const transfer_between_accounts = await this.WS.authorized.transferBetweenAccounts(
             this.config.account_transfer.selected_from.value,
@@ -1250,6 +1283,9 @@ export default class CashierStore extends BaseStore {
             currency,
             amount
         );
+
+        if (is_mt_transfer) this.setIsMT5TransferInProgress(false);
+
         if (transfer_between_accounts.error) {
             // if there is fiat2crypto transfer limit error, we need to refresh the account_status for authentication
             if (transfer_between_accounts.error.code === 'Fiat2CryptoTransferOverLimit') {
@@ -1270,12 +1306,14 @@ export default class CashierStore extends BaseStore {
                 }
                 // if one of the accounts was mt5
                 if (account.account_type === 'mt5') {
-                    // update the balance for account switcher by renewing the mt5_login_list response
-                    this.WS.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
-                    // update total balance since MT5 total only comes in non-stream balance call
-                    this.WS.balanceAll().then(response => {
-                        this.root_store.client.setBalanceOtherAccounts(response.balance);
-                    });
+                    Promise.all([this.WS.mt5LoginList(), this.WS.balanceAll()]).then(
+                        ([mt5_login_list_response, balance_response]) => {
+                            // update the balance for account switcher by renewing the mt5_login_list response
+                            this.root_store.client.responseMt5LoginList(mt5_login_list_response);
+                            // update total balance since MT5 total only comes in non-stream balance call
+                            this.root_store.client.setBalanceOtherAccounts(balance_response.balance);
+                        }
+                    );
                 }
             });
             this.setAccountTransferAmount(null);

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Checklist } from '@deriv/components';
+import { Icon, Checklist, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
@@ -25,9 +25,9 @@ const Verification = observer(() => {
                     <Localize i18n_default_text='Please register with us!' />
                 </div>
                 <div className='p2p-verification__text-description'>
-                    <p>
+                    <Text as='p' size='xs' line_height='s' align='center'>
                         <Localize i18n_default_text='To use DP2P, you need to choose a display name (a nickname) and verify your identity.' />
-                    </p>
+                    </Text>
                 </div>
             </div>
             <Checklist className='p2p-verification__checklist' items={general_store.getVerificationChecklist()} />

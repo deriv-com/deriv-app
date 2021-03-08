@@ -32,3 +32,9 @@ export const isMultiplier = ({ shortcode = '', shortcode_info = '' }) => {
         ? /^mult(up|down)$/.test(info_from_shortcode.category)
         : false;
 };
+
+export const isForwardStarting = (shortcode, purchase_time) => {
+    if (extractInfoFromShortcode(shortcode)?.multiplier) return false;
+    const start_time = shortcode.split('_').slice(-4)[0].replace(/\D/g, '');
+    return start_time && purchase_time && +start_time !== +purchase_time;
+};

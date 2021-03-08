@@ -106,7 +106,7 @@ const InputWithCheckbox = ({
             id={`dc_${name}_input`}
             inline_prefix={is_single_currency ? currency : null}
             is_autocomplete_disabled
-            is_float
+            is_float={getDecimalPlaces(currency) > 0}
             is_hj_whitelisted
             is_incrementable
             is_negative_disabled={is_negative_disabled}
@@ -158,6 +158,7 @@ const InputWithCheckbox = ({
                         alignment={tooltip_alignment || 'left'}
                         icon='info'
                         id={`dc_${name}-checkbox__tooltip`}
+                        is_bubble_hover_enabled
                         message={tooltip_label}
                         margin={isMobile() ? 0 : 210}
                         zIndex={9999}

@@ -65,6 +65,7 @@ const Amount = ({
     is_single_currency,
     onChange,
     setCurrentFocus,
+    stop_out,
     validation_errors,
 }) => {
     if (is_minimized) {
@@ -98,7 +99,7 @@ const Amount = ({
                 is_multiplier ? (
                     <Localize
                         i18n_default_text='To ensure your loss does not exceed your stake, your contract will be closed automatically when your loss equals to <0/>.'
-                        components={[<Money key={0} amount={amount} currency={currency} show_currency />]}
+                        components={[<Money key={0} amount={stop_out} currency={currency} show_currency />]}
                     />
                 ) : undefined
             }
@@ -208,6 +209,7 @@ export default connect(({ modules, client, ui }) => ({
     is_equal: modules.trade.is_equal,
     is_single_currency: client.is_single_currency,
     is_multiplier: modules.trade.is_multiplier,
+    stop_out: modules.trade.stop_out,
     onChange: modules.trade.onChange,
     setCurrentFocus: ui.setCurrentFocus,
     validation_errors: modules.trade.validation_errors,

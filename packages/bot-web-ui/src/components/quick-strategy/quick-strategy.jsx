@@ -12,6 +12,7 @@ import {
     IconTradeTypes,
     ThemedScrollbars,
     MobileFullPageModal,
+    Text,
 } from '@deriv/components';
 import classNames from 'classnames';
 
@@ -152,10 +153,10 @@ const QuickStrategyForm = ({
                                                     onScrollStop={() => onScrollStopDropdownList('trade-type')}
                                                     leading_icon={
                                                         selected_trade_type.icon && (
-                                                            <span className='quick_strategy__trade-type--icon'>
+                                                            <Text>
                                                                 <IconTradeTypes type={selected_trade_type.icon[0]} />
                                                                 <IconTradeTypes type={selected_trade_type.icon[1]} />
-                                                            </span>
+                                                            </Text>
                                                         )
                                                     }
                                                 />
@@ -410,7 +411,9 @@ const QuickStrategyForm = ({
 const MarketOption = ({ symbol }) => (
     <div key={symbol.value} className='quick-strategy__option'>
         <Icon icon={`IcUnderlying${symbol.value}`} size={32} />
-        <span className='quick-strategy__symbol'>{symbol.text}</span>
+        <Text className='quick-strategy__symbol' size='xs' color='prominent'>
+            {symbol.text}
+        </Text>
     </div>
 );
 
@@ -418,7 +421,9 @@ const TradeTypeOption = ({ trade_type }) => (
     <div key={trade_type.value} className='quick-strategy__option'>
         <IconTradeTypes type={trade_type.icon[0]} className='quick-strategy__icon' />
         <IconTradeTypes type={trade_type.icon[1]} className='quick-strategy__icon' />
-        <span className='quick-strategy__symbol'>{trade_type.text}</span>
+        <Text className='quick-strategy__symbol' size='xs' color='prominent'>
+            {trade_type.text}
+        </Text>
     </div>
 );
 const ContentRenderer = props => {

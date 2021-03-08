@@ -75,9 +75,9 @@ export default class ToolboxStore {
     adjustWorkspace() {
         const workspace = Blockly.derivWorkspace;
         const toolbox_width = document.getElementById('gtm-toolbox')?.getBoundingClientRect().width || 0;
-        const block_canvas_rect = workspace.svgBlockCanvas_.getBoundingClientRect(); // eslint-disable-line
+        const block_canvas_rect = workspace.svgBlockCanvas_?.getBoundingClientRect(); // eslint-disable-line
 
-        if (Math.round(block_canvas_rect.left) <= toolbox_width) {
+        if (Math.round(block_canvas_rect?.left) <= toolbox_width) {
             const scroll_distance = isMobile()
                 ? toolbox_width - block_canvas_rect.left + 20
                 : toolbox_width - block_canvas_rect.left + 36;

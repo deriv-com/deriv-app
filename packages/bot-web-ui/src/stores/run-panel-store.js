@@ -426,14 +426,16 @@ export default class RunPanelStore {
 
     @action.bound
     onError(data) {
-        if (unrecoverable_errors.includes(data.name)) {
+        // data.error for API errors, data for code errors
+        const error = data.error || data;
+        if (unrecoverable_errors.includes(error.code)) {
             this.root_store.summary_card.clear();
             this.error_type = error_types.UNRECOVERABLE_ERRORS;
         } else {
             this.error_type = error_types.RECOVERABLE_ERRORS;
         }
 
-        const error_message = data?.error?.error?.message ?? data?.message;
+        const error_message = error?.message;
         this.showErrorMessage(error_message);
     }
 

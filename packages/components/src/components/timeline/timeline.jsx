@@ -1,14 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
+import Text from '../text';
 
-const Oval = ({ children, is_disabled = false }) => {
+const Oval = ({ children }) => {
     return (
-        <div
-            className={classNames('dc-timeline__oval', {
-                'dc-timeline__oval--disabled': is_disabled,
-            })}
-        >
-            <span className='dc-timeline__number'>{children}</span>
+        <div className='dc-timeline__oval'>
+            <Text color='colored-background' sizd='s' weight='bold' className='dc-timeline__number'>
+                {children}
+            </Text>
         </div>
     );
 };

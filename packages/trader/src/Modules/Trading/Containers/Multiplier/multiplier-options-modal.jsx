@@ -1,23 +1,11 @@
 import React from 'react';
-import { Div100vhContainer, Modal, RadioGroup, Popover } from '@deriv/components';
+import { Div100vhContainer, Modal, RadioGroup, Popover, usePreventIOSZoom } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
 const MultiplierOptionsModal = ({ is_open, enableApp, disableApp, toggleModal }) => {
     // Fix to prevent iOS from zooming in erratically on quick taps
-    const preventIOSZoom = React.useCallback(event => {
-        if (event.touches.length > 1) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-    }, []);
-
-    React.useEffect(() => {
-        document.addEventListener('touchstart', event => preventIOSZoom(event), { passive: false });
-        return () => {
-            document.removeEventListener('touchstart', event => preventIOSZoom(event));
-        };
-    }, [preventIOSZoom]);
+    usePreventIOSZoom();
 
     return (
         <React.Fragment>
@@ -70,23 +58,23 @@ const MultiplierOptions = ({ multiplier, multiplier_range_list, onChange, toggle
                     alignment='top'
                     icon='info'
                     id='dt_multiplier-stake__tooltip'
+                    is_bubble_hover_enabled
                     zIndex={9999}
                     message={localize(
-                        'Your profit is the percentage change in market price times your stake and the multiplier chosen here.'
+                        'Your gross profit is the percentage change in market price times your stake and the multiplier chosen here.'
                     )}
                 />
             </div>
             <RadioGroup
                 className='trade-params__multiplier-radio-group'
                 name='trade-params__multiplier-radio'
-                items={multiplier_range_list.map(({ text, value }) => ({
-                    id: text,
-                    label: text,
-                    value: value.toString(),
-                }))}
                 selected={!Number.isNaN(multiplier) ? multiplier.toString() : ''}
                 onToggle={onChangeMultiplier}
-            />
+            >
+                {multiplier_range_list.map(({ text, value }) => (
+                    <RadioGroup.Item key={value} id={text} label={text} value={value.toString()} />
+                ))}
+            </RadioGroup>
         </React.Fragment>
     );
 };

@@ -214,7 +214,8 @@ const MT5POA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                 });
             });
         });
-    }, [form_state, refreshNotifications, setFormState]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [refreshNotifications, setFormState]);
 
     const isFormDisabled = (dirty, errors) => {
         if (form_state.poa_status === PoaStatusCodes.verified) {
@@ -391,13 +392,13 @@ const MT5POA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
                                 {poa_status !== PoaStatusCodes.none && !resubmit_poa && (
                                     <ThemedScrollbars height={height} is_bypassed={isMobile()}>
                                         {submitted_poa && (
-                                            <PoaSubmitted is_description_disabled={true} has_poi={has_poi} />
+                                            <PoaSubmitted is_description_enabled={false} has_poi={has_poi} />
                                         )}
                                         {poa_status === PoaStatusCodes.pending && (
-                                            <PoaNeedsReview is_description_disabled={true} />
+                                            <PoaNeedsReview is_description_enabled={false} />
                                         )}
                                         {poa_status === PoaStatusCodes.verified && (
-                                            <PoaVerified is_description_disabled={true} has_poi={has_poi} />
+                                            <PoaVerified is_description_enabled={false} has_poi={has_poi} />
                                         )}
                                         {poa_status === PoaStatusCodes.expired && (
                                             <PoaExpired onClick={handleResubmit} />

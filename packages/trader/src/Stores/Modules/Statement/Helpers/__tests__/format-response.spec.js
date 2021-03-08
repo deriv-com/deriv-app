@@ -20,6 +20,7 @@ describe('formatStatementTransaction', () => {
         contract_id: constant.id,
         app_id: constant.id,
         shortcode: 'shortcode',
+        purchase_time: 123456789,
     };
 
     let expected_result = {
@@ -35,6 +36,8 @@ describe('formatStatementTransaction', () => {
         id: constant.id,
         app_id: constant.id,
         shortcode: 'shortcode',
+        purchase_time: 123456789,
+        transaction_time: 123456789,
     };
 
     it('should return an object with values of object passed as argument', () => {

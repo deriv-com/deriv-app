@@ -111,13 +111,11 @@ const DetailComponent = ({ steps, onClickBack, root_class }) => {
         //     });
 
         uploadFiles(files)
-            .then(rs => {
-                console.log(rs);
+            .then(() => {
                 setStatus(STATUS.is_completed);
             })
-            .catch(err => {
+            .catch(() => {
                 onUploadError();
-                console.log(err);
             });
     };
 

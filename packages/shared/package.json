@@ -20,7 +20,8 @@
     "deploy:clean": "echo \"No deploy:clean specified\"",
     "deploy:folder": "echo \"No deploy:folder specified\"",
     "deploy:staging": "echo \"No deploy:staging specified\"",
-    "deploy:production": "echo \"No deploy:production specified\""
+    "deploy:production": "echo \"No deploy:production specified\"",
+    "test:eslint": "eslint \"./src/**/*.?(js|jsx)\""
   },
   "bugs": {
     "url": "https://github.com/binary-com/deriv-app/issues"
@@ -39,6 +40,7 @@
     "canvas-toBlob": "^1.0.0",
     "extend": "^3.0.2",
     "js-cookie": "^2.2.1",
+    "object.fromentries": "^2.0.0",
     "react": "^16.13.1"
   }
 }

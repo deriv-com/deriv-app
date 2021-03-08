@@ -4,10 +4,11 @@
     &__content {
         background-color: inherit;
         height: auto;
+    }
 
+    &__tab-meta-wrapper {
         &--floating {
-            margin-left: 0;
-            border-left: 1px solid $color-grey-2;
+            border-right: 1px solid $color-grey-2;
         }
     }
 
@@ -21,10 +22,12 @@
         }
 
         &--highlight {
-            color: #{$color-white};
-            background-color: #{$color-apple-blue};
-            border: none;
-            height: 30px;
+            height: 3rem;
+            transition: unset;
+            transform: translate3d(0, 1.6rem, 0);
+            border-left: unset;
+            border-right: 4px solid var(--brand-red-coral);
+            border-radius: 0 !important;
         }
 
         &__link {
@@ -68,7 +71,6 @@
     &__header,
     &__header-group {
         &--active &__link {
-            color: var(--text-colored-background);
             font-size: 1.5rem;
             font-weight: bold;
         }

@@ -67,21 +67,6 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
                             href='https://www.ibas-uk.com/'
                         />,
                     ]}
-                />,
-                <Localize
-                    key={1}
-                    i18n_default_text="<0/><1/>Alternatively, you can send your complaint to the <2>European Commission's Online Dispute Resolution (ODR)</2> platform."
-                    components={[
-                        <br key={0} />,
-                        <br key={1} />,
-                        <a
-                            key={2}
-                            className='link link--orange'
-                            rel='noopener noreferrer'
-                            target='_blank'
-                            href='https://ec.europa.eu/odr/'
-                        />,
-                    ]}
                 />
             );
             if (landing_company_shortcode === 'iom') {
@@ -93,6 +78,24 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
                     />
                 );
             } else {
+                texts.push(
+                    <Localize
+                        key={texts.length}
+                        i18n_default_text="<0/><1/>Alternatively, you can send your complaint to the <2>European Commission's Online Dispute Resolution (ODR)</2> platform. This is not applicable to UK clients."
+                        components={[
+                            <br key={0} />,
+                            <br key={1} />,
+                            <a
+                                key={2}
+                                className='link link--orange'
+                                rel='noopener noreferrer'
+                                target='_blank'
+                                href='https://ec.europa.eu/odr/'
+                            />,
+                        ]}
+                    />
+                );
+
                 texts.push(
                     <Localize
                         key={texts.length}
@@ -207,7 +210,7 @@ const getSubmissionOfAComplaintText = landing_company_shortcode => (
                 />,
             ]}
         />
-        {landing_company_shortcode !== 'maltainvest' && (
+        {landing_company_shortcode === 'malta' && (
             <Localize
                 i18n_default_text=' You may also call <0>+447723580049</0> to place your complaint.'
                 components={[
@@ -260,9 +263,14 @@ const Content = ({ is_uk, landing_company_shortcode, mt5_login_list }) => {
                     },
                     {
                         title: localize('3.3. Resolving your complaint'),
-                        text: localize(
-                            'We shall try to resolve your complaint within 10 business days. We will inform you of the outcome together with an explanation of our position and propose any remedial measures we intend to take.'
-                        ),
+                        text:
+                            landing_company_shortcode === 'malta'
+                                ? localize(
+                                      'We shall try to resolve your complaint within 10 business days. We will inform you of the outcome together with an explanation of our position and propose any remedial measures we intend to take.'
+                                  )
+                                : localize(
+                                      'We shall try to resolve your complaint within 15 business days. We will inform you of the outcome together with an explanation of our position and propose any remedial measures we intend to take.'
+                                  ),
                     },
                     {
                         title: localize('3.4. Your decision'),

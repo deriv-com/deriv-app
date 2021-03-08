@@ -37,6 +37,11 @@
             line-height: 1.5;
             opacity: 0;
             transition: opacity 0.25s;
+
+            /* To vertically align placeholder in Firefox */
+            @-moz-document url-prefix('') {
+                line-height: 1.25;
+            }
         }
         &--placeholder-visible::placeholder {
             opacity: 0.2;
@@ -58,7 +63,7 @@
             color: var(--text-disabled);
 
             & ~ label {
-                color: var(--text-disabled);
+                color: var(--text-disabled) !important;
             }
             & ~ svg {
                 .color1-fill {
@@ -84,7 +89,7 @@
                 opacity: 0.4;
             }
         }
-        &:not(.dc-input--no-placeholder):not(:focus):not(:disabled):not([value='']) {
+        &:not(.dc-input--no-placeholder):not(:focus):not([value='']) {
             & ~ label {
                 color: var(--text-general);
             }

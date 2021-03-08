@@ -217,6 +217,13 @@ export default class ClientStore extends BaseStore {
     get legal_allowed_currencies() {
         if (!this.landing_companies) return [];
         if (this.root_store.ui && this.root_store.ui.real_account_signup_target) {
+            if (this.root_store.ui.real_account_signup_target === 'manage') {
+                if (this.current_landing_company.shortcode === 'iom') {
+                    return this.landing_companies.gaming_company?.legal_allowed_currencies;
+                } else if (['malta', 'maltainvest'].includes(this.current_landing_company.shortcode)) {
+                    return this.landing_companies.financial_company?.legal_allowed_currencies;
+                }
+            }
             const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
             if (this.landing_companies[`${target}_company`] && this.current_landing_company && this.accounts) {
                 if (this.accounts[this.loginid] && !this.accounts[this.loginid].currency) {
@@ -341,7 +348,9 @@ export default class ClientStore extends BaseStore {
             (acc, cur) => (cur.supported_accounts.includes('gaming') && !cur.disabled ? acc + 1 : acc),
             0
         );
-        return number_of_current_added_synthetics < number_of_available_synthetic;
+        return (
+            number_of_current_added_synthetics > 0 && number_of_current_added_synthetics < number_of_available_synthetic
+        );
     }
 
     @computed
@@ -579,6 +588,11 @@ export default class ClientStore extends BaseStore {
     };
 
     @computed
+    get clients_country() {
+        return this.website_status?.clients_country;
+    }
+
+    @computed
     get is_eu_country() {
         const country = this.website_status.clients_country;
         if (country) return isEuCountry(country);
@@ -787,7 +801,7 @@ export default class ClientStore extends BaseStore {
         form_values.residence = this.residence;
         if (is_maltainvest_account) {
             currency = form_values.currency;
-            form_values.accept_risk = 1;
+            form_values.accept_risk = form_values.accept_risk || 0;
             delete form_values.currency;
         }
         const response = is_maltainvest_account
@@ -856,22 +870,16 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    async createCryptoAccount(currency, is_deriv_crypto) {
+    async createCryptoAccount(currency) {
         const residence = this.residence;
-        let data = {
+        const { date_of_birth, first_name, last_name } = this.account_settings;
+        const data = {
             residence,
             currency,
+            first_name,
+            last_name,
+            date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
         };
-
-        if (!is_deriv_crypto) {
-            const { date_of_birth, first_name, last_name } = this.account_settings;
-            data = {
-                ...data,
-                first_name,
-                last_name,
-                date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
-            };
-        }
 
         const response = await WS.newAccountReal(data);
         if (!response.error) {
@@ -912,6 +920,11 @@ export default class ClientStore extends BaseStore {
                 type === client_account_type) &&
             !this.isDisabled()
         );
+    };
+
+    isAccountOfTypeDisabled = type => {
+        const filtered_list = this.account_list.filter(acc => getClientAccountType(acc.loginid) === type);
+        return filtered_list.length > 0 && filtered_list.every(acc => acc.is_disabled);
     };
 
     getRiskAssessment = () => {
@@ -1025,7 +1038,7 @@ export default class ClientStore extends BaseStore {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
 
                 // Client comes back from oauth and logs in
-                await this.root_store.segment.identifyEvent();
+                await this.root_store.rudderstack.identifyEvent();
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',
@@ -1364,6 +1377,10 @@ export default class ClientStore extends BaseStore {
     // --> so we keep a separate balance subscription for the active account
     @action.bound
     setBalanceOtherAccounts(obj_balance) {
+        // Balance subscription response received when mt5 transfer is in progress should be ignored.
+        // After mt5 transfer is done, `balanceAll` is requested along with `mt5LoginList` in order to update the correct balance.
+        if (this.root_store.modules?.cashier?.isMT5TransferInProgress()) return;
+
         // Only the first response of balance:all will include all accounts
         // subsequent requests will be single account balance updates
         if (this.accounts[obj_balance?.loginid] && !obj_balance.accounts && obj_balance.loginid !== this.loginid) {
@@ -1433,6 +1450,7 @@ export default class ClientStore extends BaseStore {
         this.user_id = null;
         this.upgrade_info = undefined;
         this.accounts = {};
+        this.mt5_login_list = [];
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 
@@ -1447,14 +1465,12 @@ export default class ClientStore extends BaseStore {
     @action.bound
     async logout() {
         // TODO: [add-client-action] - Move logout functionality to client store
-        const logout_promise = requestLogout();
-
-        const response = await logout_promise;
+        const response = await requestLogout();
 
         if (response.logout === 1) {
             this.cleanUp();
 
-            this.root_store.segment.reset();
+            this.root_store.rudderstack.reset();
             this.setLogout(true);
         }
 
@@ -1678,8 +1694,7 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    onSignup({ password, residence, is_deriv_crypto, is_account_signup_modal_visible }, cb) {
-        const is_first_time_signup = is_account_signup_modal_visible;
+    onSignup({ password, residence }, cb) {
         if (!this.verification_code.signup || !password || !residence) return;
 
         // Currently the code doesn't reach here and the console log is needed for debugging.
@@ -1707,10 +1722,6 @@ export default class ClientStore extends BaseStore {
 
                 if (this.is_mt5_allowed) {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
-                }
-
-                if (is_deriv_crypto && is_first_time_signup) {
-                    this.root_store.ui.openRealAccountSignup();
                 }
             }
         });

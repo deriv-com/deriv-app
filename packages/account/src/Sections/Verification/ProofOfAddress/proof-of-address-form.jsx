@@ -135,6 +135,10 @@ const ProofOfAddressForm = ({
         setFormState({ ...form_state, ...{ is_btn_loading: true } });
         let settings_values = values;
 
+        if (values.address_state && states_list.length) {
+            settings_values.address_state = getLocation(states_list, values.address_state, 'value') || '';
+        }
+
         if (is_eu) {
             const { citizen, tax_residence, tax_identification_number } = form_values;
             settings_values = removeEmptyPropertiesFromObject({

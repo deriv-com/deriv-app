@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import TinyPopover, { ArrowContainer } from 'react-tiny-popover';
 import Icon from '../icon';
+import Text from '../text';
 import { useHover, useHoverCallback } from '../../hooks/use-hover';
 
 const Popover = ({
@@ -31,7 +32,7 @@ const Popover = ({
 }) => {
     const ref = React.useRef();
     const [popover_ref, setPopoverRef] = React.useState(undefined);
-    const [hover_ref, is_hovered] = useHover();
+    const [hover_ref, is_hovered] = useHover(null, true);
     const [bubble_hover_ref, is_bubble_hovered] = useHoverCallback();
 
     React.useEffect(() => {
@@ -147,13 +148,15 @@ const Popover = ({
                                             <Icon icon='IcInfoBlue' />
                                         </i>
                                     )}
-                                    <span
-                                        className={classNames('dc-popover__bubble__text', {
-                                            'dc-popover__bubble__text--error': has_error,
-                                        })}
-                                    >
-                                        {message}
-                                    </span>
+                                    {(has_error && (
+                                        <Text size='xxs' color='colored-background'>
+                                            {message}
+                                        </Text>
+                                    )) || (
+                                        <Text line_height='m' size='xxs' className='dc-popover__bubble__text'>
+                                            {message}
+                                        </Text>
+                                    )}
                                 </div>
                             </ArrowContainer>
                         );

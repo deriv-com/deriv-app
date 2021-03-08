@@ -28,8 +28,7 @@ const getFieldValue = (list_items, value) => {
         typeof item.value !== 'string' ? item.value === value : item.value?.toLowerCase() === value?.toLowerCase()
     );
 
-    if (list_obj) return list_obj.text;
-    return '';
+    return list_obj?.text || '';
 };
 
 const QuickStrategyForm = ({

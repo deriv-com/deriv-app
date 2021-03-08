@@ -46,14 +46,15 @@
         width: 100%;
     }
     &-column {
-        width: 32rem;
-        height: 46.3rem;
+        width: 35rem;
+        height: 51.3rem;
         position: relative;
         padding: 1.6rem 3.2rem;
         background-repeat: no-repeat;
         background-position: top right;
         @include mobile {
             width: 100%;
+            height: 55rem;
             box-shadow: none;
 
             &:not(:last-child) {
@@ -65,6 +66,10 @@
             box-shadow: 0 0 3rem 0.5rem var(--shadow-drop);
         }
         &--left {
+            @include desktop {
+                padding-right: 2rem;
+            }
+
             &:hover {
                 background-image: url('~Images/common/welcome-bg-blue.svg');
             }
@@ -73,6 +78,10 @@
             }
         }
         &--right {
+            @include desktop {
+                padding-left: 2rem;
+            }
+
             &:hover {
                 background-image: url('~Images/common/welcome-bg-red.svg');
             }
@@ -94,9 +103,13 @@
         &__description {
             @include typeface(--small-center-normal-prominent);
             line-height: 1.5;
-            height: 7.8rem;
+            height: 5.8rem;
             padding: 0.8rem 0 1.6rem;
             border-bottom: 1px solid var(--general-section-1);
+
+            @include mobile {
+                height: 6.8rem;
+            }
         }
         &__footer {
             position: absolute;
@@ -106,7 +119,7 @@
             @include mobile {
                 left: 3.2rem;
                 width: calc(100% - 6.4rem);
-                bottom: 0.6rem;
+                bottom: -0.4rem;
             }
 
             &__text {
@@ -123,7 +136,7 @@
         &__platforms {
             &__title {
                 @include typeface(--paragraph-center-bold-prominent);
-                padding: 2.4rem 1.6rem 1.6rem;
+                padding: 1.6rem;
             }
             &__container {
                 display: flex;
@@ -144,6 +157,7 @@
             &__icon {
                 grid-row: 1 / -1;
                 grid-column: 1;
+                margin-right: 1.2rem;
             }
             &__title {
                 @include typeface(--small-left-bold-prominent);
@@ -154,6 +168,23 @@
                 @include typeface(--small-left-normal-grey);
                 grid-row: 2;
                 grid-column: 2;
+                min-height: 3.6rem;
+
+                @include mobile {
+                    min-height: 4.8rem;
+                }
+            }
+            &-footer {
+                &--has-separator {
+                    border-bottom: 1px solid var(--border-disabled);
+                    padding-bottom: 1.6rem;
+                }
+                .dc-btn {
+                    width: 100%;
+                }
+            }
+            &:not(:first-child) {
+                margin-top: 2.4rem;
             }
         }
     }

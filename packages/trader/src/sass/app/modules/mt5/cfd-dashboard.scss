@@ -397,37 +397,6 @@
     }
 }
 
-// TODO: [mt5-redesign] replace tabs with radiogroup once card component is ready
-//.cfd-dashboard__accounts-display {
-//    div.radio-group__save-type {
-//        .dc-radio-group__item {
-//            padding: 0.6rem 1.1rem 0.6rem 0.8rem;
-//            flex-direction: row;
-//            width: auto;
-//            min-width: 8.3rem;
-//
-//            &--selected {
-//                .dc-radio-group__label {
-//                    font-weight: bold;
-//                }
-//            }
-//            &:not(.dc-radio-group__item--selected) {
-//                border: solid 1px var(--border-normal);
-//            }
-//            &:not(:last-child) {
-//                margin-right: 0.8rem;
-//            }
-//        }
-//        .dc-radio-group__circle {
-//            display: flex;
-//
-//            &:not(.dc-radio-group__circle--selected) {
-//                border-color: var(--border-hover);
-//            }
-//        }
-//    }
-//}
-
 .cfd-real-accounts-display,
 .cfd-demo-accounts-display {
     display: flex;
@@ -442,7 +411,7 @@
     }
 }
 
-.mt5-demo-accounts-display .mt5-account-card__wrapper {
+.cfd-demo-accounts-display .cfd-account-card__wrapper {
     @include desktop {
         height: auto;
     }
@@ -665,7 +634,7 @@
             }
         }
         &--has-banner {
-            .mt5-account-card--paragraph {
+            .cfd-account-card--paragraph {
                 width: 15rem;
             }
         }

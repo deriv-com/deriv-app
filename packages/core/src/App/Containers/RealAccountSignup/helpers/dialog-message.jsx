@@ -17,13 +17,16 @@ export const DialogMessage = ({ status = EXPERIAN.SUCCESS, landing_company_short
     } else {
         switch (status) {
             case EXPERIAN.WARN:
-                message = (
-                    <Localize i18n_default_text='We were unable to verify your proof of address document. You can upload a new document to try again.' />
-                );
+                message = <Localize i18n_default_text='To get trading, please confirm where you live.' />;
                 break;
             case EXPERIAN.DANGER:
                 message = (
-                    <Localize i18n_default_text='We were unable to verify your proof of identity and address documents. You can upload new documents to try again.' />
+                    <Localize i18n_default_text='To get trading, please confirm who you are, and where you live.' />
+                );
+                break;
+            case EXPERIAN.PENDING:
+                message = (
+                    <Localize i18n_default_text="You'll be able to get trading as soon as verification is complete." />
                 );
                 break;
             default:

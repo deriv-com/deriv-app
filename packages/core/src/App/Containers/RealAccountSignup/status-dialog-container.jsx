@@ -64,7 +64,7 @@ const StatusDialogContainer = ({
 
     return (
         <Div100vhContainer className='status-dialog' is_disabled={isDesktop()} height_offset='40px'>
-            {!isMobile() && <CloseIcon closeModal={closeModal} />}
+            {isDesktop() && <CloseIcon closeModal={closeModal} />}
             <div
                 className={classNames('status-dialog__header', {
                     'status-dialog__header--large': icon_size === 'large',

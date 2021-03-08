@@ -190,6 +190,10 @@
                     height: auto;
                 }
             }
+
+            @include mobile {
+                flex-grow: 0;
+            }
         }
         &--xlarge {
             svg:first-child {

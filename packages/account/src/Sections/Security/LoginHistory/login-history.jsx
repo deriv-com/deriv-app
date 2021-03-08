@@ -152,7 +152,7 @@ const renderList = (fields, login_history, is_dashboard) => {
 
 const ListCell = ({ title, text, className, right }) => (
     <React.Fragment>
-        <Text as='h3' align={right ? 'right' : 'left'} className='login-history__list__row__cell--title'>
+        <Text as='h3' align={right ? 'right' : 'left'} weight='bold' className='login-history__list__row__cell--title'>
             {title}
         </Text>
         <Text

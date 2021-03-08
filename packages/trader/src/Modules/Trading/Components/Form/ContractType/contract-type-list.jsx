@@ -4,7 +4,7 @@ import Item from './contract-type-item.jsx';
 
 const List = ({ handleInfoClick, handleSelect, list, name, value }) =>
     list.map((contract_category, key) => {
-        const contract_types = contract_category.contract_types.filter(contract_type => {
+        const contract_types = contract_category.contract_types?.filter(contract_type => {
             const base_contract_type = /^(.*)_equal$/.exec(contract_type.value)?.[1];
 
             if (base_contract_type) {

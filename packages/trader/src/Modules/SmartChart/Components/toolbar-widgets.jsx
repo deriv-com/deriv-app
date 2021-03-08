@@ -4,7 +4,7 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { ChartMode, DrawTools, Share, StudyLegend, Views, ToolbarWidget } from 'Modules/SmartChart';
 
 const ToolbarWidgets = ({ position, updateChartType, updateGranularity }) => (
-    <ToolbarWidget position={position || isMobile() ? 'top' : null}>
+    <ToolbarWidget position={position || isMobile() ? 'bottom' : null}>
         <ChartMode portalNodeId='modal_root' onChartType={updateChartType} onGranularity={updateGranularity} />
         <StudyLegend portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
         {isDesktop() && <Views portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />}

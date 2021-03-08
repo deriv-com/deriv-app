@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper, usePrevious } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
@@ -87,9 +88,12 @@ const Trade = ({
                     using css vh is not returning correct screen height */}
             <Div100vhContainer
                 id='chart_container'
-                className='chart-container'
+                className={classNames('chart-container', {
+                    'chart-container--indicator-mobile': isMobile() && !extra_small_device,
+                    'chart-container--no-indicator-mobile': isMobile() && extra_small_device,
+                })}
                 is_disabled={isDesktop()}
-                height_offset={extra_small_device ? '210px' : '259px'}
+                height_offset='259px'
             >
                 <NotificationMessages />
                 <React.Suspense
@@ -255,6 +259,8 @@ const Chart = props => {
 
     const barriers = main_barrier ? [main_barrier, ...extra_barriers] : extra_barriers;
 
+    const extra_small_device = window.innerHeight < 480;
+
     // max ticks to display for mobile view for tick chart
     const max_ticks = granularity === 0 ? 8 : 24;
 
@@ -265,6 +271,7 @@ const Chart = props => {
             ref={charts_ref}
             barriers={barriers}
             bottomWidgets={show_digits_stats && isDesktop() ? bottomWidgets : props.bottomWidgets}
+            clearStudyLegend={extra_small_device}
             crosshair={isMobile() ? 0 : undefined}
             crosshairTooltipLeftAllow={560}
             showLastDigitStats={isDesktop() ? show_digits_stats : false}

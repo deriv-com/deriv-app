@@ -19,7 +19,7 @@ const DemoMessage = ({ has_demo_icon, full_width, has_account_switcher, toggleAc
                     }}
                     className='account__demo-message-button'
                 >
-                    {localize('Switch accounts')}
+                    {localize('Add a real account')}
                 </Button>
             )}
         </IconMessageContent>

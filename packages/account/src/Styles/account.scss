@@ -565,6 +565,9 @@ $MIN_HEIGHT_FLOATING: calc(
     .account-management {
         &__container-dashboard {
             width: calc(100vw - 33rem);
+            @include mobile {
+                width: 100%;
+            }
         }
         &__list {
             &-container {
@@ -757,6 +760,9 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     .account__text_container {
         margin-top: 1.2rem;
+        @include mobile {
+            margin-bottom: 1.6rem;
+        }
     }
     .api-token {
         height: 100%;

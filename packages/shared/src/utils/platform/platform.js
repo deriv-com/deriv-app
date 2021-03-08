@@ -7,7 +7,7 @@ import { routes } from '../routes';
 export const platform_name = Object.freeze({
     DBot: 'DBot',
     DTrader: 'DTrader',
-    DXTrade: 'DXTrade',
+    DXTrade: 'DXtrade',
     DMT5: 'DMT5',
     SmartTrader: 'SmartTrader',
 });

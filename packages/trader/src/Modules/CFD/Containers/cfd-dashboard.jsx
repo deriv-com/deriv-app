@@ -289,28 +289,25 @@ class CFDDashboard extends React.Component {
                                     </div>
                                 )}
                                 <CompareAccountsModal platform={platform} />
-                                {/* TODO: Remove this part once design for dxtrade maintenance mesage is ready */}
-                                {platform === 'dxtrade' && (
-                                    <React.Fragment>
-                                        <br />
-                                        <br />
-                                    </React.Fragment>
-                                )}
-                                {platform === 'mt5' && (
-                                    <div className='cfd-dashboard__maintenance'>
-                                        <Icon
-                                            icon='IcAlertWarning'
-                                            size={isMobile() ? 28 : 16}
-                                            className='cfd-dashboard__maintenance-icon'
-                                        />
-                                        <div className='cfd-dashboard__maintenance-text'>
+
+                                <div className='cfd-dashboard__maintenance'>
+                                    <Icon
+                                        icon='IcAlertWarning'
+                                        size={isMobile() ? 28 : 16}
+                                        className='cfd-dashboard__maintenance-icon'
+                                    />
+                                    <div className='cfd-dashboard__maintenance-text'>
+                                        {platform === 'dxtrade' && (
+                                            <Localize i18n_default_text='Server maintenance starts at 09:00 GMT every Sunday and may last up to 2 hours. Service may be disrupted during this time.' />
+                                        )}
+                                        {platform === 'mt5' && (
                                             <Localize
                                                 i18n_default_text='Server maintenance starting 03:00 GMT every Sunday. This process may take up to 2 hours to complete. <0 />Service may be disrupted during this time.'
                                                 components={[<br key={0} />]}
                                             />
-                                        </div>
+                                        )}
                                     </div>
-                                )}
+                                </div>
                             </div>
                             <DesktopWrapper>
                                 <CFDDashboardContainer platform={platform} />

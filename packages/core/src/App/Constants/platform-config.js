@@ -26,9 +26,9 @@ const platform_config = [
     },
     {
         icon: 'IcBrandDxtrade',
-        title: () => localize('DXTrade'),
-        name: 'DXTrade',
-        description: () => localize('The platform of choice for professionals worldwide.'),
+        title: () => localize('DXtrade'),
+        name: 'DXtrade',
+        description: () => localize('Trade CFDs on a customisable, easy-to-use trading platform.'),
         link_to: routes.dxtrade,
     },
     {

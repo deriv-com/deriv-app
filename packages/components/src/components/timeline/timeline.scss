@@ -28,10 +28,6 @@
         position: absolute;
         padding-left: 1px;
         left: -13px;
-
-        &--disabled {
-            background-color: var(--text-general);
-        }
     }
     &__content {
         margin: 16px 0;

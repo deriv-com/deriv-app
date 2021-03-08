@@ -126,7 +126,7 @@ Blockly.ContextMenu.wsDeleteOption = function (ws, blocks) {
                 deleteNext();
             } else {
                 const msg = localize('Delete all {{ delete_count }} blocks?', { delete_count });
-                Blockly.confirm(msg, function (ok) {
+                Blockly.confirm(msg, ok => {
                     if (ok) {
                         deleteNext();
                     }

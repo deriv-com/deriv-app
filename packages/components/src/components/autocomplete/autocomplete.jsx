@@ -206,6 +206,8 @@ const Autocomplete = React.memo(props => {
     const onSelectItem = item => {
         if (!item) return;
 
+        if (item?.disabled && props.label === 'Tax residence') return;
+
         setInputValue(item.text ? item.text : item);
 
         if (typeof props.onItemSelection === 'function') {

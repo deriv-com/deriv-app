@@ -96,6 +96,7 @@ const ListItems = React.forwardRef((props, ref) => {
                         onItemSelection={onItemSelection}
                         is_object_list={is_object_list}
                         setActiveIndex={setActiveIndex}
+                        is_disabled={item?.disabled === 'DISABLED'}
                         child_ref={item_idx === active_index ? ref : null}
                     />
                 ))

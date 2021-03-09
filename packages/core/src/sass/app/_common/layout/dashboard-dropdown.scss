@@ -6,7 +6,7 @@
     z-index: 99;
     height: auto;
     transform: translateY(7.2rem);
-    background-color: #ffffff;
+    background-color: var(--general-main-1);
     box-shadow: 0 16px 20px 0 rgba(0, 0, 0, 0.1);
     border-radius: 0.4rem;
     transition: opacity 0.3s, transform 0.3s;
@@ -27,7 +27,7 @@
         border-top: none;
         border-right: 15px solid transparent;
         border-left: 15px solid transparent;
-        border-bottom: 15px solid #ffffff;
+        border-bottom: 15px solid var(--general-main-1);
     }
 
     &__wrapper {
@@ -36,7 +36,7 @@
         width: 100% !important;
 
         .active {
-            border: 0.2rem solid #85acb0;
+            border: 0.2rem solid var(--brand-secondary);
         }
 
         &__card {

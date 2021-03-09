@@ -110,17 +110,15 @@ const HeaderDropdown = ({ current_ref, onClickHandler, parent, setRef }) => {
     }, [parent]);
 
     return (
-        <React.Fragment>
-            <div ref={dropdown_container_ref} className='dashboard-header-dropdown' style={{ left: left_offset }}>
-                <div className='dashboard-header-dropdown__wrapper'>
-                    <div className='dashboard-header-dropdown__wrapper__card'>
-                        {getNavigationItems(parent).map((item, idx) => (
-                            <HeaderDropdownItem key={idx} onClick={onClickHandler} {...item} />
-                        ))}
-                    </div>
+        <div ref={setRef} className='dashboard-header-dropdown' style={{ left: left_offset }}>
+            <div className='dashboard-header-dropdown__wrapper'>
+                <div className='dashboard-header-dropdown__wrapper__card'>
+                    {getNavigationItems(parent).map((item, idx) => (
+                        <HeaderDropdownItem key={idx} onClick={onClickHandler} {...item} />
+                    ))}
                 </div>
             </div>
-        </React.Fragment>
+        </div>
     );
 };
 

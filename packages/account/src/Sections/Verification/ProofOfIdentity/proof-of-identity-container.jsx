@@ -2,11 +2,13 @@ import * as Cookies from 'js-cookie';
 import React from 'react';
 import { Loading, usePrevious, useStateCallback } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import Limited from 'Components/poi-limited';
 import Unverified from 'Components/poi-unverified';
 import NotRequired from 'Components/poi-not-required';
+import RejectedReasons from 'Components/poi-rejected-reasons';
 import ErrorMessage from 'Components/error-component';
 import Onfido from './onfido.jsx';
-import { getIdentityStatus } from './proof-of-identity';
+import { getIdentityStatus, onfido_status_codes } from './proof-of-identity';
 import { populateVerificationStatus } from '../Helpers/verification';
 
 const ProofOfIdentityContainer = ({
@@ -19,6 +21,7 @@ const ProofOfIdentityContainer = ({
     refreshNotifications,
     removeNotificationMessage,
     onStateChange,
+    is_description_enabled = true,
     is_mx_mlt,
     height,
     redirect_button,
@@ -30,6 +33,10 @@ const ProofOfIdentityContainer = ({
     const [country_code_key, setCountryCode] = React.useState(null);
     const [onfido_service_token, setOnfidoServiceToken] = React.useState(null);
     const [verification_status, setVerificationStatus] = useStateCallback({});
+    const [submissions_left_key, setSubmissionsLeft] = React.useState(null);
+    const [rejected_reasons_key, setRejectedReasons] = React.useState([]);
+    const [is_continue_uploading, setContinueUploading] = React.useState(false);
+    const [identity_status_key, setIdentityStatus] = React.useState(false);
     const previous_account_status = usePrevious(account_status);
 
     const getOnfidoServiceToken = React.useCallback(
@@ -68,24 +75,33 @@ const ProofOfIdentityContainer = ({
         (account_status_obj, onfido_token) => {
             const {
                 allow_document_upload,
+                allow_poi_resubmission,
                 has_poa,
                 needs_poa,
                 is_unwelcome,
                 onfido_supported_docs,
                 country_code,
+                rejected_reasons,
+                submissions_left,
             } = populateVerificationStatus(account_status_obj);
 
             const { identity, needs_verification } = account_status_obj.authentication;
 
-            const identity_status = getIdentityStatus(identity, needs_verification, is_mx_mlt);
+            const identity_status = getIdentityStatus(identity, needs_verification, is_mx_mlt, allow_poi_resubmission);
+
+            const has_no_rejections = !rejected_reasons?.length;
 
             setVerificationStatus({ allow_document_upload, has_poa, needs_poa, is_unwelcome }, () => {
                 setStatus(identity_status);
+                setIdentityStatus(identity?.status);
                 if (onfido_token) {
                     setOnfidoServiceToken(onfido_token);
                 }
                 setDocumentsSupported(onfido_supported_docs);
                 setCountryCode(country_code);
+                setSubmissionsLeft(submissions_left);
+                setRejectedReasons(rejected_reasons);
+                setContinueUploading(has_no_rejections);
                 refreshNotifications();
                 if (onStateChange) onStateChange({ status });
             });
@@ -137,7 +153,9 @@ const ProofOfIdentityContainer = ({
         }
     }, [createVerificationConfig, previous_account_status, account_status]);
 
-    const { has_poa, is_unwelcome, allow_document_upload } = verification_status;
+    const { needs_poa, is_unwelcome, allow_document_upload } = verification_status;
+    const is_rejected = identity_status_key === onfido_status_codes.rejected;
+    const has_rejected_reasons = !!rejected_reasons_key.length && is_rejected;
 
     if (api_error)
         return (
@@ -145,7 +163,10 @@ const ProofOfIdentityContainer = ({
         );
     if (is_loading || status.length === 0) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (is_unwelcome && !allow_document_upload) return <Unverified />;
-    if (status === 'not_required') return <NotRequired />;
+    if (status === onfido_status_codes.not_required) return <NotRequired />;
+    if (!submissions_left_key && is_rejected) return <Limited />;
+    if (has_rejected_reasons && !is_continue_uploading)
+        return <RejectedReasons rejected_reasons={rejected_reasons_key} setContinueUploading={setContinueUploading} />;
 
     return (
         <Onfido
@@ -153,9 +174,10 @@ const ProofOfIdentityContainer = ({
             documents_supported={documents_supported}
             status={status}
             onfido_service_token={onfido_service_token}
-            has_poa={has_poa}
+            needs_poa={needs_poa}
             height={height ?? null}
             handleComplete={handleComplete}
+            is_description_enabled={is_description_enabled}
             redirect_button={redirect_button}
         />
     );

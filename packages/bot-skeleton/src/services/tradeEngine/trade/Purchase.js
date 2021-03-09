@@ -41,8 +41,7 @@ export default Engine =>
                     buy_price: buy.buy_price,
                 });
             };
-
-            const action = () => this.api.buyContract(id, askPrice);
+            const action = () => this.api.send({ buy: id, price: askPrice });
             this.isSold = false;
             contractStatus({
                 id: 'contract.purchase_sent',
@@ -52,7 +51,6 @@ export default Engine =>
             if (!this.options.timeMachineEnabled) {
                 return doUntilDone(action).then(onSuccess);
             }
-
             return recoverFromError(
                 action,
                 (errorCode, makeDelay) => {

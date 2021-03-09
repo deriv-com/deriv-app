@@ -31,6 +31,7 @@ const Redirect = ({
                 });
                 redirected_to_route = true;
             }
+            sessionStorage.removeItem('redirect_url');
             toggleAccountSignupModal(true);
             break;
         }
@@ -62,7 +63,8 @@ const Redirect = ({
             break;
         }
         case 'verification': {
-            sessionStorage.setItem('redirect_url', `${routes.cashier_p2p}#verification`);
+            // Removing this will break mobile DP2P app. Do not remove.
+            sessionStorage.setItem('redirect_url', routes.cashier_p2p_verification);
             window.location.href = loginUrl({
                 language: getLanguage(),
             });

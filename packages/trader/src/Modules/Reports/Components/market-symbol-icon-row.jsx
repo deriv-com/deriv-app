@@ -55,11 +55,12 @@ const MarketSymbolIconRow = ({ icon, payload, show_description, should_show_mult
                 )}
             </div>
         );
-    } else if (['deposit', 'hold', 'release', 'withdrawal'].includes(payload.action_type)) {
+    } else if (['deposit', 'hold', 'release', 'withdrawal', 'transfer'].includes(payload.action_type)) {
         return (
             <div className='market-symbol-icon'>
                 {payload.action_type === 'deposit' && <Icon icon={icon || 'IcCashierDeposit'} size={32} />}
                 {payload.action_type === 'withdrawal' && <Icon icon='IcCashierWithdrawal' size={32} />}
+                {payload.action_type === 'transfer' && <Icon icon='IcAccountTransferColored' size={32} />}
                 {(payload.action_type === 'hold' || payload.action_type === 'release') && (
                     <Icon icon='IcCashierDp2p' size={32} />
                 )}

@@ -108,7 +108,14 @@ const App = observer(props => {
         );
     }
 
-    if (general_store.is_blocked) {
+    if (general_store.props.components.DepositsLocked && general_store.is_high_risk_fully_authed_without_fa) {
+        const { DepositsLocked } = general_store.props.components;
+        return <DepositsLocked />;
+    }
+
+    // Handles both "blocked" users and acts as a fallback in cases of where a consumer
+    // of the P2P library doesn't pass in a <DepositLocked> component through its props.
+    if (general_store.is_blocked || general_store.is_high_risk_fully_authed_without_fa) {
         return (
             <div className='p2p-cashier__blocked'>
                 <Icon icon='IcCashierDp2pBlocked' size={128} />
@@ -225,6 +232,7 @@ App.propTypes = {
         loginid: PropTypes.string.isRequired,
         residence: PropTypes.string.isRequired,
     }),
+    components: PropTypes.object,
     lang: PropTypes.string,
     modal_root_id: PropTypes.string.isRequired,
     order_id: PropTypes.string,

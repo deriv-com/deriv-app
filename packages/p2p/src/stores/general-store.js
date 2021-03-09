@@ -28,6 +28,7 @@ export default class GeneralStore extends BaseStore {
     @observable should_show_real_name = false;
     @observable show_popup = false;
     @observable user_blocked_until = null;
+    @observable is_high_risk_fully_authed_without_fa = false;
 
     custom_string = this.props?.custom_string;
     list_item_limit = isMobile() ? 10 : 50;
@@ -196,25 +197,28 @@ export default class GeneralStore extends BaseStore {
 
         requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
             if (!error && get_account_status.risk_classification === 'high') {
-                const { status } = get_account_status;
-                const is_cashier_locked = status.includes('cashier_locked');
-                const is_not_fully_authenticated = !status.includes('authenticated');
-                const is_fully_authenticated_but_poi_expired =
-                    status.includes('authenticated') && status.includes('document_expired');
-                const is_fully_authenticated_but_needs_financial_assessment =
-                    status.includes('authenticated') && status.includes('financial_assessment_not_complete');
+                const hasStatuses = statuses => statuses.every(status => get_account_status.status.includes(status));
 
-                if (
-                    is_cashier_locked ||
-                    is_not_fully_authenticated ||
-                    is_fully_authenticated_but_poi_expired ||
-                    is_fully_authenticated_but_needs_financial_assessment
-                ) {
+                const is_cashier_locked = hasStatuses(['cashier_locked']);
+                const is_not_fully_authenticated = !hasStatuses(['authenticated']);
+                const is_fully_authed_but_poi_expired = hasStatuses(['authenticated', 'document_expired']);
+                const is_fully_authed_but_needs_fa = hasStatuses([
+                    'authenticated',
+                    'financial_assessment_not_complete',
+                ]);
+
+                if (is_fully_authed_but_needs_fa) {
+                    // Send user to Financial Assessment if they can submit it.
+                    this.setIsHighRiskFullyAuthedWithoutFa(true);
+                    return;
+                } else if (is_cashier_locked || is_not_fully_authenticated || is_fully_authed_but_poi_expired) {
+                    // In all other cases, block P2P access.
                     this.setIsBlocked(true);
                     return;
                 }
             }
 
+            this.setIsHighRiskFullyAuthedWithoutFa(false);
             this.setIsBlocked(false);
 
             const { sendbird_store } = this.root_store;
@@ -315,6 +319,11 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     setIsBlocked(is_blocked) {
         this.is_blocked = is_blocked;
+    }
+
+    @action.bound
+    setIsHighRiskFullyAuthedWithoutFa(is_high_risk_fully_authed_without_fa) {
+        this.is_high_risk_fully_authed_without_fa = is_high_risk_fully_authed_without_fa;
     }
 
     @action.bound

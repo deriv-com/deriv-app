@@ -258,7 +258,7 @@
     flex-flow: column nowrap;
     flex-grow: 1;
     background: inherit;
-    height: calc(100% - 5.8rem);
+    height: 100%;
     position: relative;
 
     &__table-row {
@@ -293,36 +293,13 @@
             line-height: 1.5;
         }
     }
-    &__details {
-        padding: 1.6rem 2.4rem 0.8rem 2.4rem;
-    }
-    &__hint {
-        color: var(--text-less-prominent);
-        font-size: 12px;
-        line-height: 1.5em;
-        width: 100%;
-
-        @include mobile {
-            padding: 1.6rem;
-            border-top: 2px solid var(--border-disabled);
-        }
-    }
-    &__explanation {
-        padding-bottom: 1.6rem;
-
-        &-wrapper {
-            padding-top: 2.4rem;
-        }
-        &-index {
-            color: var(--brand-red-coral);
-        }
-        &-description {
-            padding-left: 1.5rem;
-        }
-    }
 
     .dc-table {
         padding: 0 30px;
+        @include desktop {
+            position: absolute;
+            height: 100%;
+        }
 
         &__header {
             border-bottom: none;
@@ -385,6 +362,23 @@
                 grid-template-columns: 1fr 1fr 1fr 1fr;
             }
         }
+    }
+}
+
+.cfd-compare-account--hint {
+    color: var(--text-less-prominent);
+    font-size: 12px;
+    line-height: 1.5em;
+    width: 100%;
+    padding: 1.6rem 2.4rem 0.8rem 2.4rem;
+
+    @include mobile {
+        padding: 1.6rem;
+        border-top: 2px solid var(--border-disabled);
+    }
+    @include desktop {
+        position: absolute;
+        bottom: 0;
     }
 }
 
@@ -742,7 +736,14 @@
         align-items: center;
         width: 27.2rem;
         justify-content: space-between;
-        padding: 1.6rem 0;
+
+        &:first-child {
+            padding-bottom: 0.8rem;
+        }
+
+        &-wrapper {
+            padding: 1.6rem 0;
+        }
 
         .dc-input {
             margin-bottom: 0;

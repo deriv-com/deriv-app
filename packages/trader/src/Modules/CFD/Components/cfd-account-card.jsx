@@ -49,9 +49,15 @@ const LoginBadge = ({ display_login, platform }) =>
             <CFDAccountCopy text={display_login} />
         </div>
     ) : (
-        <div className='cfd-account-card__login-input'>
-            <Text size='xs'>{localize('Username')}</Text>
-            <Input value={display_login} disabled trailing_icon={<CFDAccountCopy text={display_login} />} />
+        <div className='cfd-account-card__login-input-wrapper'>
+            <div className='cfd-account-card__login-input'>
+                <Text size='xs'>{localize('Username')}</Text>
+                <Input value={display_login} disabled trailing_icon={<CFDAccountCopy text={display_login} />} />
+            </div>
+            <div className='cfd-account-card__login-input'>
+                <Text size='xs'>{localize('Account ID')}</Text>
+                <Input value={display_login} disabled trailing_icon={<CFDAccountCopy text={display_login} />} />
+            </div>
         </div>
     );
 
@@ -305,23 +311,21 @@ const CFDAccountCard = ({
                                 {type.category === 'real' && <Localize i18n_default_text='Fund transfer' />}
                                 {type.category === 'demo' && <Localize i18n_default_text='Fund top up' />}
                             </Button>
-                            {type.platform === 'mt5' && (
-                                <Button
-                                    onClick={() => {
-                                        onPasswordManager(
-                                            existing_data.login,
-                                            title,
-                                            type.category,
-                                            type.type,
-                                            existing_data.server
-                                        );
-                                    }}
-                                    type='button'
-                                    secondary
-                                >
-                                    <Localize i18n_default_text='Password' />
-                                </Button>
-                            )}
+                            <Button
+                                onClick={() => {
+                                    onPasswordManager(
+                                        existing_data.login,
+                                        title,
+                                        type.category,
+                                        type.type,
+                                        existing_data.server
+                                    );
+                                }}
+                                type='button'
+                                secondary
+                            >
+                                <Localize i18n_default_text='Password' />
+                            </Button>
                         </div>
                     )}
                     {!existing_data && has_mt5_account && (

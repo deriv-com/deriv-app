@@ -71,7 +71,7 @@ describe('Resource list in mobile', () => {
         const { performance_timing, data, total_bytes } = await fetchPerformanceResults();
         logger.save(expect.getState().testPath, 'Resource list in mobile:', {
             'Number of requests:': data.length,
-            'Total transfered data:': `${total_bytes.size} (${total_bytes.size / 1000000} MB)`,
+            'Total transferred data:': `${total_bytes.size} (${total_bytes.size / 1000000} MB)`,
             'Performance timing:': performance_timing.timing,
             'Request list:': data,
         })

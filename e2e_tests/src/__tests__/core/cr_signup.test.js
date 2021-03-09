@@ -30,7 +30,7 @@ describe('Signup', () => {
         await dcom_page.navigate();
         await dcom_page.connectToQALocalStorage(browser);
         const email = await dcom_page.fakeEmail();
-        await dcom_page.signup(email, 'Abcd1234');
+        await dcom_page.signup(email);
         const qa_emails = new QAEmails(await context.newPage());
         await qa_emails.navigate();
         const signup_url = await qa_emails.findActivationLink(context, email);

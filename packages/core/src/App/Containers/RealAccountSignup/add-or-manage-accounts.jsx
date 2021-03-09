@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Tabs, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { getCurrencyDisplayCode, isDesktop, isMobile, website_name, PlatformContext } from '@deriv/shared';
+import { getCurrencyDisplayCode, isDesktop, isMobile, website_name } from '@deriv/shared';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
@@ -13,8 +13,6 @@ import 'Sass/add-or-manage.scss';
 import 'Sass/change-account.scss';
 
 const AddOrManageAccounts = props => {
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
-
     const {
         available_crypto_currencies,
         can_change_fiat_currency,
@@ -68,7 +66,7 @@ const AddOrManageAccounts = props => {
                     .finally(() => setLoading(false));
             } else {
                 // Add Crypto Account
-                createCryptoAccount(value, is_deriv_crypto)
+                createCryptoAccount(value)
                     .then(() => {
                         onSuccessSetAccountCurrency('', value);
                         setSubmitting(false);
@@ -91,7 +89,7 @@ const AddOrManageAccounts = props => {
 
     if (is_loading) return <LoadingModal />;
 
-    const fiat_section = (
+    const fiat_section = has_fiat && (
         <div
             className={classNames('change-currency', {
                 'account-wizard--disabled': !can_change_fiat_currency,
@@ -169,22 +167,20 @@ const AddOrManageAccounts = props => {
                             />
                         </div>
                     </div>
-                    {!is_deriv_crypto && (
-                        <div label={localize('Fiat currencies')}>
-                            {has_fiat ? (
-                                fiat_section
-                            ) : (
-                                <AddCryptoCurrency
-                                    className='account-wizard__body'
-                                    onSubmit={updateValue}
-                                    value={form_value}
-                                    form_error={form_error}
-                                    should_show_fiat_only={true}
-                                    {...props}
-                                />
-                            )}
-                        </div>
-                    )}
+                    <div label={localize('Fiat currencies')}>
+                        {has_fiat ? (
+                            fiat_section
+                        ) : (
+                            <AddCryptoCurrency
+                                className='account-wizard__body'
+                                onSubmit={updateValue}
+                                value={form_value}
+                                form_error={form_error}
+                                should_show_fiat_only={true}
+                                {...props}
+                            />
+                        )}
+                    </div>
                 </Tabs>
             )}
         </ThemedScrollbars>

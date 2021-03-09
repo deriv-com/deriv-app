@@ -6,7 +6,6 @@ import { Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/compo
 import { routes, isNavigationFromPlatform } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import ModalLoginPrompt from './modal-login-prompt.jsx';
 import AccountWizard from './account-wizard.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
 import SetCurrency from './set-currency.jsx';
@@ -59,7 +58,6 @@ const RealAccountSignup = ({
     is_belgium_residence,
     is_isle_of_man_residence,
     is_eu,
-    is_logged_in,
     is_real_acc_signup_on,
     real_account_signup_target,
     routing_history,
@@ -272,14 +270,7 @@ const RealAccountSignup = ({
     };
 
     // set title and body of the modal
-    const { title: Title, body: ModalContent } = is_logged_in
-        ? modal_content[getActiveModalIndex()]
-        : {
-              title: modal_content[getActiveModalIndex()].title
-                  ? () => modal_content[getActiveModalIndex()].title
-                  : null,
-              body: ModalLoginPrompt,
-          };
+    const { title: Title, body: ModalContent } = modal_content[getActiveModalIndex()];
     const {
         account_wizard,
         add_or_manage_account,
@@ -351,7 +342,9 @@ const RealAccountSignup = ({
                         return null;
                     }}
                 >
-                    <ModalContent state_value={state_value} passthrough={state_index} is_loading={is_loading} />
+                    {is_real_acc_signup_on && (
+                        <ModalContent state_value={state_value} passthrough={state_index} is_loading={is_loading} />
+                    )}
                 </MobileDialog>
             </MobileWrapper>
         </React.Fragment>
@@ -364,7 +357,6 @@ export default connect(({ ui, client, common }) => ({
     is_eu: client.is_eu,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     real_account_signup_target: ui.real_account_signup_target,
-    is_logged_in: client.is_logged_in,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     toggleWelcomeModal: ui.toggleWelcomeModal,
     setParams: ui.setRealAccountSignupParams,

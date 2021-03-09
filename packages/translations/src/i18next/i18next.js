@@ -29,7 +29,7 @@ const getUrlBase = (path = '') => {
     return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
 };
 
-const isStaging = () => /staging-app\.derivcrypto\.com|staging-app\.deriv\.com/i.test(window.location.hostname);
+const isStaging = () => /staging-app\.deriv\.com/i.test(window.location.hostname);
 
 const isLocal = () => /localhost\.binary\.sx/i.test(window.location.hostname);
 
@@ -101,9 +101,7 @@ export const initializeTranslations = async () => {
     await loadLanguageJson(initial_language);
 };
 
-export const getLanguage = () => {
-    return i18n.language || initial_language;
-};
+export const getLanguage = () => i18n.language || initial_language;
 
 // eslint-disable-next-line no-unused-vars
 export const changeLanguage = async (lang, cb) => {

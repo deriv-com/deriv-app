@@ -5,5 +5,6 @@ export default class RootStore {
         this.ui = core_store.ui;
         this.gtm = core_store.gtm;
         this.rudderstack = core_store.rudderstack;
+        this.pushwoosh = core_store.pushwoosh;
     }
 }

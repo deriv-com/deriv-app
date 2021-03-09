@@ -58,23 +58,23 @@ const MultiplierOptions = ({ multiplier, multiplier_range_list, onChange, toggle
                     alignment='top'
                     icon='info'
                     id='dt_multiplier-stake__tooltip'
+                    is_bubble_hover_enabled
                     zIndex={9999}
                     message={localize(
-                        'Your profit is the percentage change in market price times your stake and the multiplier chosen here.'
+                        'Your gross profit is the percentage change in market price times your stake and the multiplier chosen here.'
                     )}
                 />
             </div>
             <RadioGroup
                 className='trade-params__multiplier-radio-group'
                 name='trade-params__multiplier-radio'
-                items={multiplier_range_list.map(({ text, value }) => ({
-                    id: text,
-                    label: text,
-                    value: value.toString(),
-                }))}
                 selected={!Number.isNaN(multiplier) ? multiplier.toString() : ''}
                 onToggle={onChangeMultiplier}
-            />
+            >
+                {multiplier_range_list.map(({ text, value }) => (
+                    <RadioGroup.Item key={value} id={text} label={text} value={value.toString()} />
+                ))}
+            </RadioGroup>
         </React.Fragment>
     );
 };

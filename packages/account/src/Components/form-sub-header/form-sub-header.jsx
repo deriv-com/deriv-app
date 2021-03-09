@@ -10,8 +10,14 @@ export const FormSubHeader = ({ title, subtitle, description }) => (
             })}
         >
             <div className='account-form__header-section'>
-                <h1 className='account-form__title'>{title}</h1>
-                {subtitle && <h2 className='account-form__subtitle'>{subtitle}</h2>}
+                <Text as='h1' color='prominent' weight='bold' size='xs' className='account-form__title'>
+                    {title}
+                </Text>
+                {subtitle && (
+                    <Text as='h2' size='xxxs' color='prominent' className='account-form__subtitle'>
+                        {subtitle}
+                    </Text>
+                )}
             </div>
         </div>
         {description && (

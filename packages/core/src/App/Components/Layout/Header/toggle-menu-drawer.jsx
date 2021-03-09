@@ -88,11 +88,11 @@ const ToggleMenuDrawer = React.forwardRef(
         const [secondary_routes_config, setSecondaryRoutesConfig] = React.useState([]);
         const [is_submenu_expanded, expandSubMenu] = React.useState(false);
 
-        const { is_dashboard } = React.useContext(PlatformContext);
+        const { is_deriv_crypto } = React.useContext(PlatformContext);
 
         React.useEffect(() => {
             const processRoutes = () => {
-                const routes_config = getRoutesConfig({ is_dashboard });
+                const routes_config = getRoutesConfig({ is_deriv_crypto });
                 let primary_routes = [];
                 let secondary_routes = [];
 
@@ -118,7 +118,7 @@ const ToggleMenuDrawer = React.forwardRef(
             if (account_status || should_allow_authentication) {
                 processRoutes();
             }
-        }, [is_dashboard, account_status, should_allow_authentication]);
+        }, [is_deriv_crypto, account_status, should_allow_authentication]);
 
         const toggleDrawer = React.useCallback(() => {
             setIsOpen(!is_open);

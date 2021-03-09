@@ -1,0 +1,63 @@
+name: Push and pull Crowdin translations
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  push_and_pull_crowdin_translations:
+    if: github.repository == 'binary-com/deriv-app'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup node
+        uses: actions/setup-node@v1
+      - name: Checkout master branch
+        uses: actions/checkout@v2
+        with:
+          repository: "binary-com/deriv-app"
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      - name: Generate and push to Crowdin
+        run: |
+          branch_name="deriv_app_translations"
+
+          # Identify with Git
+          git config --global user.name "DerivFE"
+          git config --global user.email "80095553+DerivFE@users.noreply.github.com"
+
+          # Install Crowdin CLI
+          npm i -g @crowdin/cli
+          npm run bootstrap
+
+          # Create a new branch
+          git checkout -b "$branch_name"
+
+          # Run the extract-translations script
+          cd $(git rev-parse --show-toplevel)/packages/translations/scripts
+          node extract-translations.js
+
+          # Upload to Crowdin.
+          cd $(git rev-parse --show-toplevel)/packages/translations
+          crowdin upload sources -T ${{ secrets.CROWDIN_API_KEY }}
+
+          # Download latest translations from Crowdin
+          # cd $(git rev-parse --show-toplevel)/packages/translations
+          # crowdin download -T ${{ secrets.CROWDIN_API_KEY }}
+
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Found updated translation files. Creating a PR..."
+
+            # Commit the newly downloaded files
+            git commit -a -m "translations: sync translations with crowdin"
+
+            # Force push to this branch in case a previous run created it.
+            git push --set-upstream origin "$branch_name" -f
+
+            sudo apt install gh
+            gh auth login --with-token <<< ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+            gh pr close "$branch_name"
+            gh pr create --fill --base "master" --head "binary-com:$branch_name"
+          else
+            echo "No new translation files downloaded from Crowdin. Not creating a PR."
+          fi

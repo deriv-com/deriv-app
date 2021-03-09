@@ -58,6 +58,7 @@ const MultiplierOptions = ({ multiplier, multiplier_range_list, onChange, toggle
                     alignment='top'
                     icon='info'
                     id='dt_multiplier-stake__tooltip'
+                    is_bubble_hover_enabled
                     zIndex={9999}
                     message={localize(
                         'Your gross profit is the percentage change in market price times your stake and the multiplier chosen here.'

@@ -11,6 +11,10 @@
             margin: unset;
             padding: 0 1.6rem 1.6rem;
         }
+
+        .dc-list__item {
+            padding: 0.4rem 0;
+        }
     }
 
     .dc-input__wrapper {
@@ -416,5 +420,9 @@
 .dc-modal__container_p2p-my-ads__modal-error {
     .dc-modal-footer {
         padding-top: 0 !important;
+    }
+
+    .dc-modal-header {
+        padding-bottom: 1rem;
     }
 }

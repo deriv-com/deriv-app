@@ -62,12 +62,12 @@ const LoggedOutHeader = () => {
         }
     };
 
-    const handleOutsideClick = e => {
+    const handleOutsideClick = React.useCallback(e => {
         if (nav_dropdown_ref.current && !nav_dropdown_ref.current.contains(e.target)) {
             if (active_dropdown_ref.current && active_dropdown_ref.current.contains(e.target)) return;
             setCurrentDropdown('');
         }
-    };
+    });
 
     const setDropdown = new_ref => setActiveDropdownRef(new_ref);
 

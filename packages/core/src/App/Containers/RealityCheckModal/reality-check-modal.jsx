@@ -43,6 +43,7 @@ const RealityCheckModal = ({
     setRealityCheckDuration,
     setReportsTabIndex,
     setVisibilityRealityCheck,
+    show_reality_check,
 }) => {
     const history = useHistory();
 
@@ -81,7 +82,7 @@ const RealityCheckModal = ({
     // if user has seen the brief once and set
     // the initial reality check interval
     // we can show the summary from now on
-    if (!reality_check_dismissed && reality_check_duration) {
+    if (show_reality_check && !reality_check_dismissed && reality_check_duration) {
         return (
             <SummaryModal
                 disableApp={disableApp}
@@ -99,18 +100,22 @@ const RealityCheckModal = ({
         );
     }
 
-    return (
-        <BriefModal
-            disableApp={disableApp}
-            enableApp={enableApp}
-            is_visible={is_visible}
-            openStatement={openStatement}
-            validateForm={validateForm}
-            onSubmit={onSubmit}
-            logout={logoutClient}
-            IntervalField={IntervalField}
-        />
-    );
+    if (show_reality_check) {
+        return (
+            <BriefModal
+                disableApp={disableApp}
+                enableApp={enableApp}
+                is_visible={is_visible}
+                openStatement={openStatement}
+                validateForm={validateForm}
+                onSubmit={onSubmit}
+                logout={logoutClient}
+                IntervalField={IntervalField}
+            />
+        );
+    }
+
+    return null;
 };
 
 RealityCheckModal.propTypes = {
@@ -128,6 +133,7 @@ RealityCheckModal.propTypes = {
 
 export default connect(({ client, common, ui }) => ({
     logoutClient: client.logout,
+    show_reality_check: client.show_reality_check,
     is_visible: client.is_reality_check_visible,
     reality_check_dismissed: client.reality_check_dismissed,
     reality_check_duration: client.reality_check_duration,

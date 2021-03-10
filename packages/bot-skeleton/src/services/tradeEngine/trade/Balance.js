@@ -7,14 +7,16 @@ let balance_string = '';
 export default Engine =>
     class Balance extends Engine {
         observeBalance() {
-            this.listen('balance', r => {
-                const {
-                    balance: { balance: b, currency },
-                } = r;
+            this.api.onMessage().subscribe(({ data }) => {
+                if (data.msg_type === 'balance') {
+                    const {
+                        balance: { balance: b, currency },
+                    } = data;
 
-                balance_string = getFormattedText(b, currency);
+                    balance_string = getFormattedText(b, currency);
 
-                info({ accountID: this.accountInfo.loginid, balance: balance_string });
+                    info({ accountID: this.accountInfo.loginid, balance: balance_string });
+                }
             });
         }
 

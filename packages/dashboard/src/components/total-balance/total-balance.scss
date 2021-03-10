@@ -35,7 +35,7 @@
         flex-direction: row;
 
         &-amount {
-            color: #0796e0; // Update once Dashboard colors are added in themes.scss
+            color: var(--status-success);
         }
     }
 }

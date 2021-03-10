@@ -39,7 +39,6 @@ export type TClientStore = {
 export type TConfigStore = {
     asset_path: string;
     has_router: boolean;
-    is_deriv_crypto: boolean;
     redirect_404?: string;
     routes: TRoutesProps;
     setConfig: (config: TConfigProps) => void;
@@ -78,10 +77,14 @@ export type TUIStore = {
     init: (ui_props: TUIProps) => void;
     real_account_signup: unknown;
     real_account_signup_target: string;
+    is_clear_funds_modal_open: boolean;
     is_get_wallet_modal_open: boolean;
     is_real_acc_signup_on: boolean;
+    is_trade_modal_open: boolean;
     resetRealAccountSignupParams?: () => void;
     openRealAccountSignup: () => void;
     enableGetPasswordModal: () => void;
     disableGetPasswordModal: () => void;
+    toggleTradeModal: (state_change?: boolean) => void;
+    toggleClearFundsModal: (state_change?: boolean) => void;
 };

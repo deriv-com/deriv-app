@@ -37,6 +37,11 @@
             line-height: 1.5;
             opacity: 0;
             transition: opacity 0.25s;
+
+            /* To vertically align placeholder in Firefox */
+            @-moz-document url-prefix('') {
+                line-height: 1.25;
+            }
         }
         &--placeholder-visible::placeholder {
             opacity: 0.2;

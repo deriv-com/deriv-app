@@ -15,10 +15,12 @@ class ProofOfIdentity extends React.Component {
     };
 
     componentDidMount() {
-        if (!this.props.should_allow_authentication) {
-            const from_platform = getPlatformRedirect(this.props.app_routing_history);
-            this.props.routeBackInApp(this.props.history, [from_platform]);
-        }
+        WS.wait('get_account_status').then(() => {
+            if (!this.props.should_allow_authentication) {
+                const from_platform = getPlatformRedirect(this.props.app_routing_history);
+                this.props.routeBackInApp(this.props.history, [from_platform]);
+            }
+        });
     }
 
     render() {

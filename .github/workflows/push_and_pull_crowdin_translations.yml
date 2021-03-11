@@ -43,7 +43,7 @@ jobs:
 
           # Download latest translations from Crowdin
           # cd $(git rev-parse --show-toplevel)/packages/translations
-          # crowdin download -T ${{ secrets.CROWDIN_API_KEY }}
+          crowdin download -T ${{ secrets.CROWDIN_API_KEY }}
 
           if [ -z "$(git status --porcelain)" ]; then
             echo "Found updated translation files. Creating a PR..."

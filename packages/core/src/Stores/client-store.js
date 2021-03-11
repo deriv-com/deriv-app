@@ -147,12 +147,45 @@ export default class ClientStore extends BaseStore {
             : undefined;
     }
 
+    /**
+     * As discussed we have 3 scenario to show reality check
+     * one:
+     * 1. if landing company has reality check
+     * 2. if balance is not 0
+     * 3. start showing reality check
+     *
+     * two:
+     * 1. if landing company has reality check
+     * 2. if balance is 0
+     * 3. subscribe to transaction
+     * 4. call statement, if the length is 0
+     * 5. whenever has any transaction and start showing reality check
+     *
+     * three:
+     * 1. if landing company has reality check
+     * 2. if balance is 0
+     * 3. subscribe to transaction
+     * 4. call statement, if the length is more than 0
+     * 5. start showing reality check
+     */
     @computed
     get is_reality_check_visible() {
         if (!this.loginid || !this.landing_company) {
             return false;
         }
-        return !!(this.has_reality_check && !this.reality_check_dismissed);
+
+        const balance = this.obj_total_balance.amount_real;
+
+        if (!this.has_reality_check) return false;
+        // scenario one
+        if (!this.reality_check_dismissed && balance > 0) return true;
+        // scenario two
+        if (!this.reality_check_dismissed && balance === 0 && this.statement.count === 0 && !!this.last_transaction)
+            return true;
+        // scenario three
+        if (!this.reality_check_dismissed && balance === 0 && this.statement.count > 0) return true;
+
+        return false;
     }
 
     @computed
@@ -1862,41 +1895,6 @@ export default class ClientStore extends BaseStore {
         if (response.transaction) {
             this.last_transaction = response.transaction;
         }
-    }
-
-    /**
-     * As discussed we have 3 scenario to show reality check
-     * one:
-     * 1. if landing company has reality check
-     * 2. if balance is not 0
-     * 3. start showing reality check
-     *
-     * two:
-     * 1. if landing company has reality check
-     * 2. if balance is 0
-     * 3. subscribe to transaction
-     * 4. call statement, if the length is 0
-     * 5. whenever transaction returns deposit type, unsubscribe from transaction and start showing reality check
-     *
-     * three:
-     * 1. if landing company has reality check
-     * 2. if balance is 0
-     * 3. subscribe to transaction
-     * 4. call statement, if the length is more than 0
-     * 5. unsubscribe from transaction and start showing reality check
-     */
-    @computed
-    get show_reality_check() {
-        const balance = this.obj_total_balance.amount_real;
-        if (!this.has_reality_check) return false;
-        // scenario one
-        if (balance > 0) return true;
-        // scenario two
-        if (balance === 0 && this.statement.count === 0 && this.last_transaction?.action === 'deposit') return true;
-        // scenario three
-        if (balance === 0 && this.statement.count > 0) return true;
-
-        return false;
     }
 
     @action.bound

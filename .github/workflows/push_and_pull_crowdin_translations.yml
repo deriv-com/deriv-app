@@ -71,6 +71,6 @@ jobs:
 
             sudo apt install gh
             gh auth login --with-token <<< ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-            gh pr close "$branch_name"
+            gh pr close "$branch_name" || true
             gh pr create --fill --base "master" --head "binary-com:$branch_name"
           fi

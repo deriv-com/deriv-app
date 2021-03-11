@@ -3,7 +3,7 @@ const stylelintFormatter = require('stylelint-formatter-pretty');
 const { IS_RELEASE } = require('./constants');
 const { transformContentUrlBase } = require('./helpers');
 
-const copyConfig = base => {
+const copyConfig = (base, is_release) => {
     const patterns = [
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot-web-ui.main.css*'),
@@ -115,7 +115,7 @@ const copyConfig = base => {
         },
     ];
 
-    if (IS_RELEASE) {
+    if (is_release) {
         patterns.push({
             from: path.resolve(__dirname, '../src/templates/app/pushwoosh/pushwoosh-service-worker.js'),
             to: 'pushwoosh-service-worker.js',

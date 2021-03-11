@@ -108,6 +108,6 @@ jobs:
             # Use "gh" to create a PR from the CLI.
             sudo apt install gh
             gh auth login --with-token <<< ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-            gh pr close "$package_name"
+            gh pr close "$package_name" || true
             gh pr create --title "Bump $package_name from $safe_old_version to $new_version" --body "\`\`\`diff $pr_body \`\`\`" --base "master" --head "binary-com:$package_name"
           fi

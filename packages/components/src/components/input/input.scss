@@ -179,6 +179,7 @@
         }
     }
     &__label {
+        width: fit-content;
         color: var(--text-less-prominent);
         font-size: var(--text-size-xs);
         background-color: var(--fill-normal);
@@ -188,7 +189,6 @@
         top: 1rem;
         transition: 0.25s ease all;
         transform-origin: top left;
-        width: fit-content;
     }
     &:not(&--no-placeholder) {
         &__label {

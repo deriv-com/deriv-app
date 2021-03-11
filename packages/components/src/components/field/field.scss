@@ -6,6 +6,7 @@
     line-height: 1.25;
 
     &--error {
+        width: max-content;
         padding-left: 1rem;
         @include typeface(--small-left-normal-red);
     }

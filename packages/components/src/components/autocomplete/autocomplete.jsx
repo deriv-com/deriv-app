@@ -284,6 +284,7 @@ const Autocomplete = React.memo(props => {
                 }}
                 is_visible={should_show_list}
                 list_items={filtered_items}
+                should_ignore_on_select={should_ignore_on_select}
                 list_height={props.list_height}
                 // Autocomplete must use the `text` property and not the `value`, however DropdownList provides access to both
                 onItemSelection={onSelectItem}

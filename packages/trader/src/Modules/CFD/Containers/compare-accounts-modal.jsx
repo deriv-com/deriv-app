@@ -87,8 +87,7 @@ const filterAvailableAccounts = (landing_companies, table, is_logged_in, platfor
     });
 };
 
-const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logged_in, platform }) => {
-    const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
+const compareAccountsData = ({ landing_companies, is_logged_in, platform, show_eu_related }) => {
     return filterAvailableAccounts(
         landing_companies,
         [
@@ -192,13 +191,16 @@ const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logge
                 attribute: <CFDAttributeDescriber name={localize('Negative Balance Protection')} />,
                 dxtrade: {
                     synthetic: localize('Available'),
-                    financial: localize('N/A'),
+                    financial: show_eu_related ? localize('Required') : localize('N/A'),
                 },
             },
             {
                 attribute: <CFDAttributeDescriber name={localize('Number of assets')} />,
                 mt5: { synthetic: localize('10+'), financial: localize('50+'), financial_stp: localize('50+') },
-                dxtrade: { synthetic: localize('20+'), financial: localize('50+') },
+                dxtrade: {
+                    synthetic: localize('20+'),
+                    financial: show_eu_related ? localize('100+') : localize('50+'),
+                },
             },
             {
                 attribute: <CFDAttributeDescriber name={localize('Cryptocurrency trading')} />,
@@ -217,8 +219,12 @@ const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logge
                 dxtrade: {
                     synthetic: localize('Synthetics'),
                     financial: show_eu_related
-                        ? localize('FX-majors (standard), FX-minors, Commodities, Cryptocurrencies')
-                        : localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
+                        ? localize(
+                              'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies(except UK)'
+                          )
+                        : localize(
+                              'FX-majors (standard/micro lots), FX-minors, Smart-FX, Commodities, Cryptocurrencies, Stock, Stock Indices'
+                          ),
                 },
             },
         ].filter(row => row),
@@ -227,32 +233,39 @@ const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logge
     );
 };
 
-const CFDCompareAccountHint = () => (
+const CFDCompareAccountHint = (platform, show_eu_related) => (
     <div className='cfd-compare-account--hint'>
         <div className='cfd-compare-accounts__bullet-wrapper'>
             <span className='cfd-compare-accounts__bullet cfd-compare-accounts__bullet--circle' />
             <Localize i18n_default_text='At bank rollover, liquidity in the forex markets is reduced and may increase the spread and processing time for client orders. This happens around 21:00 GMT during daylight saving time, and 22:00 GMT non-daylight saving time.' />
         </div>
-        <div className='cfd-compare-accounts__bullet-wrapper'>
-            <Text
-                size='xs'
-                line_height='x'
-                weight='bold'
-                className='cfd-compare-accounts__bullet cfd-compare-accounts__bullet--star cfd-compare-accounts__star'
-            >
-                *
-            </Text>
-            <Localize i18n_default_text='To protect your portfolio from adverse market movements due to the market opening gap, we reserve the right to decrease leverage on all offered symbols for financial accounts before market close and increase it again after market open. Please make sure that you have enough funds available in your CFD account to support your positions at all times.' />
-        </div>
+        {(platform === 'mt5' || !show_eu_related) && (
+            <div className='cfd-compare-accounts__bullet-wrapper'>
+                <Text
+                    size='xs'
+                    line_height='x'
+                    weight='bold'
+                    className='cfd-compare-accounts__bullet cfd-compare-accounts__bullet--star cfd-compare-accounts__star'
+                >
+                    *
+                </Text>
+                <Localize
+                    i18n_default_text='To protect your portfolio from adverse market movements due to the market opening gap, we reserve the right to decrease leverage on all offered symbols for financial accounts before market close and increase it again after market open. Please make sure that you have enough funds available in your {{platform}} account to support your positions at all times.'
+                    values={{
+                        platform: platform === 'mt5' ? localize('MT5') : localize('DXTrade'),
+                    }}
+                />
+            </div>
+        )}
     </div>
 );
 
-const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in, platform }) => {
+const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_related }) => {
     const [cols, setCols] = React.useState([]);
     const [template_columns, updateColumnsStyle] = React.useState('1.5fr 1fr 2fr 1fr');
 
     React.useEffect(() => {
-        setCols(compareAccountsData({ landing_companies, is_eu, is_eu_country, is_logged_in, platform }));
+        setCols(compareAccountsData({ landing_companies, is_logged_in, platform, show_eu_related }));
 
         if (is_logged_in) {
             updateColumnsStyle(
@@ -264,11 +277,10 @@ const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in, p
     }, [
         landing_companies?.mt_financial_company,
         landing_companies?.mt_gaming_company,
-        is_eu,
         is_logged_in,
-        is_eu_country,
         landing_companies,
         platform,
+        show_eu_related,
     ]);
 
     return (
@@ -338,7 +350,7 @@ const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in, p
                 </Table.Body>
             </Table>
             <DesktopWrapper>
-                <CFDCompareAccountHint />
+                <CFDCompareAccountHint platform={platform} show_eu_related={show_eu_related} />
             </DesktopWrapper>
         </div>
     );
@@ -355,62 +367,64 @@ const CompareAccountsModal = ({
     is_eu_country,
     platform,
     toggleCompareAccounts,
-}) => (
-    <div
-        className='cfd-compare-accounts-modal__wrapper'
-        style={{ marginTop: platform === 'dxtrade' ? '5rem' : '2.4rem' }}
-    >
-        <Button
-            className='cfd-dashboard__welcome-message--button'
-            has_effect
-            text={localize('Compare accounts')}
-            onClick={toggleCompareAccounts}
-            secondary
-            disabled={is_loading}
-        />
-        <React.Suspense fallback={<UILoader />}>
-            <DesktopWrapper>
-                <Modal
-                    className='cfd-dashboard__compare-accounts'
-                    disableApp={disableApp}
-                    enableApp={enableApp}
-                    is_open={is_compare_accounts_visible}
-                    title={localize('Compare accounts')}
-                    toggleModal={toggleCompareAccounts}
-                    type='button'
-                    height='696px'
-                    width='903px'
-                >
-                    <ModalContent
-                        is_logged_in={is_logged_in}
-                        is_eu={is_eu}
-                        is_eu_country={is_eu_country}
-                        landing_companies={landing_companies}
-                        platform={platform}
-                    />
-                </Modal>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <MobileDialog
-                    portal_element_id='deriv_app'
-                    title={localize('Compare accounts')}
-                    wrapper_classname='cfd-dashboard__compare-accounts'
-                    visible={is_compare_accounts_visible}
-                    onClose={toggleCompareAccounts}
-                    footer={<CFDCompareAccountHint />}
-                >
-                    <ModalContent
-                        is_logged_in={is_logged_in}
-                        is_eu={is_eu}
-                        is_eu_country={is_eu_country}
-                        landing_companies={landing_companies}
-                        platform={platform}
-                    />
-                </MobileDialog>
-            </MobileWrapper>
-        </React.Suspense>
-    </div>
-);
+}) => {
+    const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
+
+    return (
+        <div
+            className='cfd-compare-accounts-modal__wrapper'
+            style={{ marginTop: platform === 'dxtrade' ? '5rem' : '2.4rem' }}
+        >
+            <Button
+                className='cfd-dashboard__welcome-message--button'
+                has_effect
+                text={localize('Compare accounts')}
+                onClick={toggleCompareAccounts}
+                secondary
+                disabled={is_loading}
+            />
+            <React.Suspense fallback={<UILoader />}>
+                <DesktopWrapper>
+                    <Modal
+                        className='cfd-dashboard__compare-accounts'
+                        disableApp={disableApp}
+                        enableApp={enableApp}
+                        is_open={is_compare_accounts_visible}
+                        title={localize('Compare accounts')}
+                        toggleModal={toggleCompareAccounts}
+                        type='button'
+                        height='696px'
+                        width='903px'
+                    >
+                        <ModalContent
+                            is_logged_in={is_logged_in}
+                            landing_companies={landing_companies}
+                            platform={platform}
+                            show_eu_related={show_eu_related}
+                        />
+                    </Modal>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <MobileDialog
+                        portal_element_id='deriv_app'
+                        title={localize('Compare accounts')}
+                        wrapper_classname='cfd-dashboard__compare-accounts'
+                        visible={is_compare_accounts_visible}
+                        onClose={toggleCompareAccounts}
+                        footer={<CFDCompareAccountHint platform={platform} show_eu_related={show_eu_related} />}
+                    >
+                        <ModalContent
+                            is_logged_in={is_logged_in}
+                            landing_companies={landing_companies}
+                            platform={platform}
+                            show_eu_related={show_eu_related}
+                        />
+                    </MobileDialog>
+                </MobileWrapper>
+            </React.Suspense>
+        </div>
+    );
+};
 
 export default connect(({ modules, ui, client }) => ({
     disableApp: ui.disableApp,

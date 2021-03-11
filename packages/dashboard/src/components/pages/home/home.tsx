@@ -22,7 +22,6 @@ const Home: React.FC = () => {
     ];
     const routes = getRoutesConfig({
         consumer_routes: config_store.routes,
-        is_deriv_crypto: config_store.is_deriv_crypto,
         Page404: ui_store.components.Page404,
     })[0].routes?.filter(route => {
         return sidebarItems.includes(route.path!);

@@ -34,10 +34,10 @@
         }
         @include mobile {
             width: 100%;
-            grid-auto-rows: minmax(23rem, auto);
             grid-auto-flow: row;
             grid-gap: 1rem;
             box-shadow: none;
+            margin-bottom: 0;
         }
         @include tablet {
             max-width: 90vw;

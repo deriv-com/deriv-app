@@ -36,6 +36,7 @@ const Autocomplete = React.memo(props => {
         value,
         list_items,
         autoComplete,
+        should_ignore_on_select,
         onHideDropdownList,
         onScrollStop,
         list_portal_id,
@@ -206,7 +207,7 @@ const Autocomplete = React.memo(props => {
     const onSelectItem = item => {
         if (!item) return;
 
-        if (item?.disabled && props.label === 'Tax residence') return;
+        if (item?.disabled && props.should_ignore_on_select) return;
 
         setInputValue(item.text ? item.text : item);
 

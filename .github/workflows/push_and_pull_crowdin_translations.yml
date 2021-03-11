@@ -27,7 +27,7 @@ jobs:
           git config --global user.email "80095553+DerivFE@users.noreply.github.com"
 
           # Install Crowdin CLI
-          npm i -g @crowdin/cli
+          sudo npm i -g @crowdin/cli
           npm run bootstrap
 
           # Create a new branch

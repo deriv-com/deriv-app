@@ -139,7 +139,7 @@ const plugins = ({ base, is_test_env, env }) => {
             'process.env.IS_QAWOLF': is_qawolf,
         }),
         new CleanWebpackPlugin(),
-        new CopyPlugin(copyConfig(base)),
+        new CopyPlugin(copyConfig(base, IS_RELEASE)),
         new HtmlWebPackPlugin(htmlOutputConfig()),
         new HtmlWebpackTagsPlugin(htmlInjectConfig()),
         new PreloadWebpackPlugin(htmlPreloadConfig()),

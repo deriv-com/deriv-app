@@ -115,17 +115,6 @@ const copyConfig = base => {
         },
     ];
 
-    if (IS_RELEASE) {
-        patterns.push({
-            from: path.resolve(__dirname, '../src/templates/app/pushwoosh/pushwoosh-service-worker.js'),
-            to: 'pushwoosh-service-worker.js',
-            toType: 'file',
-            transform(content, path) {
-                return transformContentUrlBase(content, path, base);
-            },
-        });
-    }
-
     return {
         patterns,
         options: {
@@ -139,6 +128,7 @@ const generateSWConfig = () => ({
     exclude: [/CNAME$/, /index\.html$/, /404\.html$/, /^localstorage-sync\.html$/, /\.map$/],
     skipWaiting: true,
     clientsClaim: true,
+    importScripts: ['https://cdn.pushwoosh.com/webpush/v3/pushwoosh-service-worker.js' + self.location.search],
 });
 
 const htmlOutputConfig = () => ({

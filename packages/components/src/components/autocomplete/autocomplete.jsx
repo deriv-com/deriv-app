@@ -207,7 +207,7 @@ const Autocomplete = React.memo(props => {
     const onSelectItem = item => {
         if (!item) return;
 
-        if (item?.disabled && props.should_ignore_on_select) return;
+        if (item?.disabled && should_ignore_on_select) return;
 
         setInputValue(item.text ? item.text : item);
 

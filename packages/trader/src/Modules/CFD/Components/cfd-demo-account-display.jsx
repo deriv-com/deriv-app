@@ -55,7 +55,9 @@ const CFDDemoAccountDisplay = ({
                     is_disabled={has_mt5_account_error}
                     is_logged_in={is_logged_in}
                     existing_data={
-                        current_list[Object.keys(current_list).find(key => key.startsWith('demo.synthetic'))]
+                        current_list[
+                            Object.keys(current_list).find(key => key.startsWith(`${platform}.demo.synthetic`))
+                        ]
                     }
                     commission_message={localize('No commission')}
                     onSelectAccount={() =>
@@ -67,7 +69,9 @@ const CFDDemoAccountDisplay = ({
                     onPasswordManager={openPasswordManager}
                     onClickFund={() =>
                         openAccountTransfer(
-                            current_list[Object.keys(current_list).find(key => key.startsWith('demo.synthetic'))],
+                            current_list[
+                                Object.keys(current_list).find(key => key.startsWith(`${platform}.demo.synthetic`))
+                            ],
                             {
                                 category: 'demo',
                                 type: 'synthetic',
@@ -100,14 +104,18 @@ const CFDDemoAccountDisplay = ({
                         platform,
                     }}
                     existing_data={
-                        current_list[Object.keys(current_list).find(key => key.startsWith('demo.financial@'))]
+                        current_list[
+                            Object.keys(current_list).find(key => key.startsWith(`${platform}.demo.financial@`))
+                        ]
                     }
                     commission_message={localize('No commission')}
                     onSelectAccount={openCFDAccount}
                     onPasswordManager={openPasswordManager}
                     onClickFund={() =>
                         openAccountTransfer(
-                            current_list[Object.keys(current_list).find(key => key.startsWith('demo.financial@'))],
+                            current_list[
+                                Object.keys(current_list).find(key => key.startsWith(`${platform}.demo.financial@`))
+                            ],
                             {
                                 category: 'demo',
                                 type: 'financial',
@@ -149,7 +157,9 @@ const CFDDemoAccountDisplay = ({
                     is_disabled={has_mt5_account_error}
                     is_logged_in={is_logged_in}
                     existing_data={
-                        current_list[Object.keys(current_list).find(key => key.startsWith('demo.financial_stp@'))]
+                        current_list[
+                            Object.keys(current_list).find(key => key.startsWith(`${platform}.demo.financial_stp@`))
+                        ]
                     }
                     commission_message={localize('No commission')}
                     onSelectAccount={() =>
@@ -161,7 +171,9 @@ const CFDDemoAccountDisplay = ({
                     onPasswordManager={openPasswordManager}
                     onClickFund={() =>
                         openAccountTransfer(
-                            current_list[Object.keys(current_list).find(key => key.startsWith('demo.financial_stp@'))],
+                            current_list[
+                                Object.keys(current_list).find(key => key.startsWith(`${platform}.demo.financial_stp@`))
+                            ],
                             {
                                 category: 'demo',
                                 type: 'financial_stp',

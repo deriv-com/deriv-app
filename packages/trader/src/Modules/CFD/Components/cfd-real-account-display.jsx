@@ -1,7 +1,7 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
-import { getAccountTypeFields, getMT5AccountListKey, getMT5AccountKey } from '@deriv/shared';
+import { getAccountTypeFields, getAccountListKey, getMT5AccountKey } from '@deriv/shared';
 import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card.jsx';
 
@@ -88,13 +88,15 @@ const CFDRealAccountDisplay = ({
     };
 
     const onClickFundReal = account =>
-        openAccountTransfer(current_list[getMT5AccountListKey(account)], {
+        openAccountTransfer(current_list[getAccountListKey(account, platform)], {
             category: account.account_type,
             type: getMT5AccountKey(account.market_type, account.sub_account_type),
         });
 
     const handleHoverCard = name => {
-        const real_synthetic_accounts_list = Object.keys(current_list).filter(key => key.startsWith('real.synthetic'));
+        const real_synthetic_accounts_list = Object.keys(current_list).filter(key =>
+            key.startsWith(`${platform}.real.synthetic`)
+        );
         setActiveHover(real_synthetic_accounts_list.findIndex(t => current_list[t].group === name));
     };
 
@@ -120,9 +122,9 @@ const CFDRealAccountDisplay = ({
     const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
     const synthetic_account_items =
         (landing_companies?.mt_gaming_company?.financial || !is_logged_in) &&
-        (Object.keys(current_list).some(key => key.startsWith('real.synthetic'))
+        (Object.keys(current_list).some(key => key.startsWith(`${platform}.real.synthetic`))
             ? Object.keys(current_list)
-                  .filter(key => key.startsWith('real.synthetic'))
+                  .filter(key => key.startsWith(`${platform}.real.synthetic`))
                   .reduce((acc, cur) => {
                       acc.push(current_list[cur]);
                       return acc;
@@ -201,7 +203,9 @@ const CFDRealAccountDisplay = ({
                 }}
                 is_logged_in={is_logged_in}
                 existing_data={
-                    current_list[Object.keys(current_list).find(key => key.startsWith('real.financial_stp@'))]
+                    current_list[
+                        Object.keys(current_list).find(key => key.startsWith(`${platform}.real.financial_stp@`))
+                    ]
                 }
                 commission_message={localize('No commission')}
                 onSelectAccount={onSelectRealFinancialStp}
@@ -234,7 +238,9 @@ const CFDRealAccountDisplay = ({
                 type: 'financial',
                 platform,
             }}
-            existing_data={current_list[Object.keys(current_list).find(key => key.startsWith('real.financial@'))]}
+            existing_data={
+                current_list[Object.keys(current_list).find(key => key.startsWith(`${platform}.real.financial@`))]
+            }
             commission_message={localize('No commission')}
             onSelectAccount={onSelectRealFinancial}
             onPasswordManager={openPasswordManager}

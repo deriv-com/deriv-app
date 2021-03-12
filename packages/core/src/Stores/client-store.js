@@ -46,6 +46,7 @@ export default class ClientStore extends BaseStore {
     @observable selected_currency = '';
     @observable is_populating_account_list = false;
     @observable is_populating_mt5_account_list = true;
+    @observable is_populating_dxtrade_account_list = true;
     @observable has_reality_check = false;
     @observable is_reality_check_dismissed;
     @observable reality_check_dur;
@@ -67,6 +68,9 @@ export default class ClientStore extends BaseStore {
     @observable mt5_disabled_signup_types = { real: false, demo: false };
     @observable mt5_login_list = [];
     @observable mt5_login_list_error = null;
+    @observable dxtrade_accounts_list = [];
+    @observable dxtrade_accounts_list_error = null;
+    @observable dxtrade_disabled_signup_types = { real: false, demo: false };
     @observable statement = [];
     @observable obj_total_balance = {
         amount_real: undefined,
@@ -1081,6 +1085,7 @@ export default class ClientStore extends BaseStore {
         if (this.is_logged_in) {
             WS.storage.mt5LoginList().then(this.responseMt5LoginList);
             WS.tradingServers().then(this.responseTradingServers);
+            WS.tradingPlatformAccountsList('dxtrade').then(this.responseTradingPlatformAccountsList);
             this.responseStatement(
                 await BinarySocket.send({
                     statement: 1,
@@ -1845,6 +1850,38 @@ export default class ClientStore extends BaseStore {
             });
         } else {
             this.mt5_login_list_error = response.error;
+        }
+    }
+
+    @action.bound
+    responseTradingPlatformAccountsList(response) {
+        const { platform } = response.echo_req;
+
+        this[`is_populating_${platform}_account_list`] = false;
+
+        if (!response.error) {
+            this[`${platform}_accounts_list`] = response.trading_platform_accounts.map(account => {
+                const display_login = account.error ? account.error.details.account_id : account.account_id;
+                if (account.error) {
+                    const { account_type, server } = account.error.details;
+                    // this.setMT5DisabledSignupTypes({
+                    //     real: account_type === 'real',
+                    //     demo: account_type === 'demo',
+                    // });
+                    return {
+                        account_type,
+                        display_login,
+                        has_error: true,
+                        server,
+                    };
+                }
+                return {
+                    ...account,
+                    display_login,
+                };
+            });
+        } else {
+            this[`${platform}_accounts_list_error`] = response.error;
         }
     }
 

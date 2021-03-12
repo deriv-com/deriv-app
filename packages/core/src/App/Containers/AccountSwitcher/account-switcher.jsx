@@ -123,9 +123,9 @@ const AccountSwitcher = props => {
         redirectToMt5('real');
     };
 
-    // const redirectToDXTradeReal = () => {
-    //     redirectToDXTrade('real');
-    // };
+    const redirectToDXTradeReal = () => {
+        redirectToDXTrade('real');
+    };
 
     const openMt5DemoAccount = account_type => {
         sessionStorage.setItem('open_cfd_account_type', `demo.${account_type}`);
@@ -134,6 +134,10 @@ const AccountSwitcher = props => {
 
     const openDXTradeDemoAccount = () => {
         redirectToDXTradeDemo();
+    };
+
+    const openDXTradeRealAccount = () => {
+        redirectToDXTradeReal();
     };
 
     const redirectToMt5Demo = () => {
@@ -165,18 +169,20 @@ const AccountSwitcher = props => {
     // * we should map them to landing_company:
     // mt_financial_company: { financial: {}, financial_stp: {}, swap_free: {} }
     // mt_gaming_company: { financial: {}, swap_free: {} }
-    const getRemainingAccounts = existing_mt5_accounts => {
+    const getRemainingAccounts = (existing_mt5_accounts, platform) => {
         const gaming_config = getMtConfig(
             'gaming',
             props.landing_companies?.mt_gaming_company,
             existing_mt5_accounts,
-            props.trading_servers
+            props.trading_servers,
+            platform
         );
         const financial_config = getMtConfig(
             'financial',
             props.landing_companies?.mt_financial_company,
             existing_mt5_accounts,
-            props.trading_servers
+            props.trading_servers,
+            platform
         );
 
         return [...gaming_config, ...financial_config];
@@ -201,45 +207,24 @@ const AccountSwitcher = props => {
     };
 
     const getDemoDXTrade = () => {
-        // TODO: remove mock data and getSortedCFDList via dxtrade_login_list from API
-        const mock_data = [
-            {
-                account_type: 'demo',
-                balance: 10000,
-                country: 'aw',
-                currency: 'USD',
-                display_balance: '10000.00',
-                display_login: '2763297',
-                email: 'wwkwkw@deriv.com',
-                group: 'demop01_ts01syntheticsvg_std_usd',
-                landing_company_short: 'svg',
-                leverage: 500,
-                login: 'MTD2763297',
-                market_type: 'gaming',
-                name: 'John TerBaik',
-                server: 'demo01',
-                sub_account_type: 'financial',
-            },
-        ];
-        return mock_data;
+        return getSortedCFDList(props.dxtrade_accounts_list).filter(isDemo);
     };
 
     const getRemainingDemoMT5 = () => {
-        return getRemainingAccounts(getDemoMT5());
+        return getRemainingAccounts(getDemoMT5(), 'mt5');
     };
 
     const getRemainingDemoDXTrade = () => {
-        return [];
-        // return getRemainingAccounts(getDemoDXTrade());
+        return getRemainingAccounts(getDemoDXTrade(), 'dxtrade');
     };
 
     const getRealMT5 = () => {
         return getSortedCFDList(props.mt5_login_list).filter(account => !isDemo(account));
     };
 
-    // const getRealDXTrade = () => {
-    //     return [];
-    // };
+    const getRealDXTrade = () => {
+        return getSortedCFDList(props.dxtrade_accounts_list).filter(account => !isDemo(account));
+    };
 
     const findServerForAccount = acc => {
         const server_name = acc.error ? acc.error.details.server : acc.server;
@@ -249,7 +234,11 @@ const AccountSwitcher = props => {
     };
 
     const getRemainingRealMT5 = () => {
-        return getRemainingAccounts(getRealMT5());
+        return getRemainingAccounts(getRealMT5(), 'mt5');
+    };
+
+    const getRemainingRealDXTrade = () => {
+        return getRemainingAccounts(getRealDXTrade(), 'dxtrade');
     };
 
     const canOpenMulti = () => {
@@ -313,6 +302,15 @@ const AccountSwitcher = props => {
     };
 
     const isRealMT5AddDisabled = sub_account_type => {
+        if (props.is_eu) {
+            const account = getAccountTypeFields({ category: 'real', type: sub_account_type });
+            return props.isAccountOfTypeDisabled(account?.account_type);
+        }
+
+        return !props.has_active_real_account;
+    };
+
+    const isRealDXTradeAddDisabled = sub_account_type => {
         if (props.is_eu) {
             const account = getAccountTypeFields({ category: 'real', type: sub_account_type });
             return props.isAccountOfTypeDisabled(account?.account_type);
@@ -480,6 +478,7 @@ const AccountSwitcher = props => {
                                     className='acc-switcher__new-account-btn'
                                     secondary
                                     small
+                                    is_disabled={props.dxtrade_disabled_signup_types.demo}
                                 >
                                     {localize('Add')}
                                 </Button>
@@ -634,6 +633,74 @@ const AccountSwitcher = props => {
                     </AccountWrapper>
                 </React.Fragment>
             )}
+            {props.is_dxtrade_allowed && (
+                <React.Fragment>
+                    <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
+                    <AccountWrapper
+                        header={localize('DXTrade Accounts')}
+                        is_visible={is_dxtrade_real_visible}
+                        toggleVisibility={() => {
+                            toggleVisibility('real_dxtrade');
+                        }}
+                    >
+                        {props.is_loading_dxtrade ? (
+                            <div className='acc-switcher__accounts--is-loading'>
+                                <AccountsItemLoader speed={3} />
+                            </div>
+                        ) : (
+                            <React.Fragment>
+                                {!!getRealDXTrade().length && (
+                                    <div className='acc-switcher__accounts'>
+                                        {getRealDXTrade().map(account => (
+                                            <AccountList
+                                                is_dark_mode_on={props.is_dark_mode_on}
+                                                key={account.login}
+                                                market_type={account.market_type}
+                                                sub_account_type={account.sub_account_type}
+                                                balance={account.balance}
+                                                currency={account.currency}
+                                                currency_icon={`IcDxtrade-${getDXTradeAccount(
+                                                    account.market_type,
+                                                    account.sub_account_type
+                                                )}`}
+                                                has_balance={'balance' in account}
+                                                has_error={account.has_error}
+                                                loginid={account.display_login}
+                                                onClickAccount={redirectToDXTradeReal}
+                                            />
+                                        ))}
+                                    </div>
+                                )}
+                                {getRemainingRealDXTrade().map(account => (
+                                    <div
+                                        key={account.title}
+                                        className={classNames('acc-switcher__new-account', {
+                                            'acc-switcher__new-account--disabled': props.dxtrade_login_list_error,
+                                        })}
+                                    >
+                                        <Icon icon={`IcDxtrade-${account.icon}`} size={24} />
+                                        <Text size='xs' color='general' className='acc-switcher__new-account-text'>
+                                            {account.title}
+                                        </Text>
+                                        <Button
+                                            onClick={() => openDXTradeRealAccount(account.type)}
+                                            className='acc-switcher__new-account-btn'
+                                            secondary
+                                            small
+                                            is_disabled={
+                                                props.dxtrade_disabled_signup_types.real ||
+                                                isRealDXTradeAddDisabled(account.type)
+                                            }
+                                        >
+                                            {localize('Add')}
+                                        </Button>
+                                    </div>
+                                ))}
+                            </React.Fragment>
+                        )}
+                    </AccountWrapper>
+                </React.Fragment>
+            )}
         </div>
     );
 
@@ -729,6 +796,7 @@ AccountSwitcher.propTypes = {
     is_eu: PropTypes.bool,
     is_fully_authenticated: PropTypes.bool,
     is_loading_mt5: PropTypes.bool,
+    is_loading_dxtrade: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
     is_pending_authentication: PropTypes.bool,
@@ -740,6 +808,7 @@ AccountSwitcher.propTypes = {
     logoutClient: PropTypes.func,
     mt5_disabled_signup_types: PropTypes.object,
     mt5_login_list: PropTypes.array,
+    dxtrade_disabled_signup_types: PropTypes.object,
     obj_total_balance: PropTypes.object,
     openRealAccountSignup: PropTypes.func,
     switchAccount: PropTypes.func,
@@ -765,6 +834,7 @@ const account_switcher = withRouter(
         is_eu: client.is_eu,
         is_fully_authenticated: client.is_fully_authenticated,
         is_loading_mt5: client.is_populating_mt5_account_list,
+        is_loading_dxtrade: client.is_populating_dxtrade_account_list,
         is_logged_in: client.is_logged_in,
         is_dxtrade_allowed: true, // TODO: connect to dxtrade account API
         is_mt5_allowed: client.is_mt5_allowed,
@@ -777,6 +847,9 @@ const account_switcher = withRouter(
         mt5_disabled_signup_types: client.mt5_disabled_signup_types,
         mt5_login_list: client.mt5_login_list,
         mt5_login_list_error: client.mt5_login_list_error,
+        dxtrade_accounts_list: client.dxtrade_accounts_list,
+        dxtrade_accounts_list_error: client.dxtrade_accounts_list_error,
+        dxtrade_disabled_signup_types: client.dxtrade_disabled_signup_types,
         obj_total_balance: client.obj_total_balance,
         switchAccount: client.switchAccount,
         resetVirtualBalance: client.resetVirtualBalance,

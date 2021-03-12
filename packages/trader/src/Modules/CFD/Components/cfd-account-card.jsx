@@ -36,7 +36,7 @@ const AddTradeServerButton = React.forwardRef(({ onSelectAccount, is_disabled },
 
 AddTradeServerButton.displayName = 'AddTradeServerButton';
 
-const LoginBadge = ({ display_login, platform }) =>
+const LoginBadge = ({ login, display_login, platform }) =>
     platform === 'mt5' ? (
         <div className='cfd-account-card__login'>
             <Localize
@@ -52,7 +52,7 @@ const LoginBadge = ({ display_login, platform }) =>
         <div className='cfd-account-card__login-input-wrapper'>
             <div className='cfd-account-card__login-input'>
                 <Text size='xs'>{localize('Username')}</Text>
-                <Input value={display_login} disabled trailing_icon={<CFDAccountCopy text={display_login} />} />
+                <Input value={login} disabled trailing_icon={<CFDAccountCopy text={login} />} />
             </div>
             <div className='cfd-account-card__login-input'>
                 <Text size='xs'>{localize('Account ID')}</Text>
@@ -295,7 +295,11 @@ const CFDAccountCard = ({
                     </div>
 
                     {existing_data?.login && is_logged_in && (
-                        <LoginBadge display_login={existing_data.display_login} platform={type.platform} />
+                        <LoginBadge
+                            login={existing_data.login}
+                            display_login={existing_data.display_login}
+                            platform={type.platform}
+                        />
                     )}
 
                     {((!existing_data && commission_message) || !is_logged_in) && (

@@ -46,10 +46,12 @@ export const getSortedCFDList = (mt5_login_list, platform = 'mt5') => {
 
 export const isDemo = account => account.account_type === 'demo';
 
-export const getMtConfig = (market_type, landing_company, existing_mt5_accounts, trading_servers) => {
+export const getMtConfig = (market_type, landing_company, existing_mt5_accounts, trading_servers, platform) => {
     const mt5_config = [];
     if (landing_company) {
         Object.keys(landing_company).forEach(company => {
+            if (company === 'financial_stp' && platform === 'dxtrade') return;
+
             let has_account = existing_mt5_accounts.find(
                 account => account.sub_account_type === company && account.market_type === market_type
             );

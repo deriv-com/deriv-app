@@ -1,5 +1,5 @@
 import { action, computed, observable, runInAction } from 'mobx';
-import { getMT5AccountListKey, getAccountTypeFields } from '@deriv/shared';
+import { getAccountListKey, getAccountTypeFields } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import BaseStore from 'Stores/base-store';
 import { getMtCompanies } from './Helpers/cfd-config';
@@ -46,8 +46,15 @@ export default class CFDStore extends BaseStore {
         const list = [];
 
         this.root_store.client.mt5_login_list.forEach(account => {
-            // e.g. real.financial_stp
-            list[getMT5AccountListKey(account)] = {
+            // e.g. mt5.real.financial_stp
+            list[getAccountListKey(account, 'mt5')] = {
+                ...account,
+            };
+        });
+
+        this.root_store.client.dxtrade_accounts_list.forEach(account => {
+            // e.g. dxtrade.real.financial_stp
+            list[getAccountListKey(account)] = {
                 ...account,
             };
         });

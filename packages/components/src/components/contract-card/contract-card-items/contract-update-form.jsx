@@ -22,6 +22,7 @@ const ContractUpdateForm = props => {
         addToast,
         current_focus,
         getCardLabels,
+        onMouseLeave,
         removeToast,
         setCurrentFocus,
         status,
@@ -89,6 +90,7 @@ const ContractUpdateForm = props => {
     const onClick = e => {
         updateLimitOrder();
         toggleDialog(e);
+        onMouseLeave?.();
     };
 
     const take_profit_input = (
@@ -184,6 +186,7 @@ ContractUpdateForm.propTypes = {
     addToast: PropTypes.func,
     contract: PropTypes.object,
     current_focus: PropTypes.string,
+    onMouseLeave: PropTypes.func,
     getCardLabels: PropTypes.func,
     removeToast: PropTypes.func,
     setCurrentFocus: PropTypes.func,

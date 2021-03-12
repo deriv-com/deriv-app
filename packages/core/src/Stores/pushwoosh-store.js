@@ -30,6 +30,7 @@ export default class PushwooshStore extends BaseStore {
                 defaultNotificationTitle: 'Deriv.com',
                 defaultNotificationImage: urlForCurrentDomain('https://deriv.com/static/favicons/favicon-192x192.png'),
                 autoSubscribe: true,
+                serviceWorkerUrl: '/service-worker.js',
             },
         ]);
         this.has_initialized = true;

@@ -264,7 +264,7 @@ const AccountSwitcher = props => {
 
     // SVG clients can't upgrade.
     const getRemainingRealAccounts = () => {
-        if (props.is_virtual || !canOpenMulti() || is_regulated_able_to_change_currency) {
+        if (props.is_eu || props.is_virtual || !canOpenMulti() || is_regulated_able_to_change_currency) {
             return props.upgradeable_landing_companies;
         }
         return [];

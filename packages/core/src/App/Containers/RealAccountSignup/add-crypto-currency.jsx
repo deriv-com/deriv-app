@@ -88,7 +88,7 @@ const AddCryptoCurrency = ({
                     )}
                     {canAddFiat() && (
                         <Text as='p' color='prominent' size='xxs' className='currency-selector__deposit-warn'>
-                            <Localize i18n_default_text='You’ll be not able to change currency once you have made a deposit.' />
+                            <Localize i18n_default_text='You’ll not be able to change currency once you have made a deposit.' />
                         </Text>
                     )}
                     {!should_show_fiat_only &&

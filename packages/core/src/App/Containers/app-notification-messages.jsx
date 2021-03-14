@@ -38,30 +38,31 @@ const NotificationsContent = ({ style, notifications, removeNotificationMessage 
 
 const AppNotificationMessages = ({ marked_notifications, notification_messages, removeNotificationMessage }) => {
     const [style, setStyle] = React.useState({});
-    const ref = React.createRef();
+    const [notifications_ref, setNotificationsRef] = React.useState(null);
 
     React.useEffect(() => {
-        if (ref.current?.parentElement && isMobile()) {
-            const bounds = ref.current.parentElement.getBoundingClientRect();
-            setStyle({
-                top: bounds.top + 8,
-            });
+        if (notifications_ref && isMobile()) {
+            const bounds = notifications_ref.parentElement.getBoundingClientRect();
+            setStyle({ top: bounds.top + 8 });
         }
-    }, []);
+    }, [notifications_ref]);
 
-    const notifications = notification_messages
-        .filter(
-            message =>
-                !marked_notifications.includes(message.key) &&
-                (isMobile() ? ['unwelcome', 'contract_sold', 'dp2p', 'tnc'].includes(message.key) : true)
-        )
-        .slice(0, isMobile() ? max_display_notifications_mobile : max_display_notifications);
+    const notifications = notification_messages.filter(message => {
+        const is_not_marked_notification = !marked_notifications.includes(message.key);
+        const is_non_hidden_notification = isMobile()
+            ? ['unwelcome', 'contract_sold', 'dp2p', 'tnc'].includes(message.key)
+            : true;
+        return is_not_marked_notification && is_non_hidden_notification;
+    });
 
-    return notifications.length ? (
-        <div ref={ref} className='notification-messages-bounds'>
+    const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
+    const notifications_sublist = notifications.slice(0, notifications_limit);
+
+    return notifications_sublist.length ? (
+        <div ref={ref => setNotificationsRef(ref)} className='notification-messages-bounds'>
             <Portal>
                 <NotificationsContent
-                    notifications={notifications}
+                    notifications={notifications_sublist}
                     style={style}
                     removeNotificationMessage={removeNotificationMessage}
                 />

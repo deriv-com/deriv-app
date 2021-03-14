@@ -23,12 +23,8 @@ function endChat() {
     window.LiveChatWidget.call('set_customer_name', ' ');
 
     customerSDK.on('connected', () => {
-        /* eslint-disable no-console */
-        console.log('livechat:', !!window.LiveChatWidget._h);
         if (!!window.LiveChatWidget._h && window.LiveChatWidget.get('chat_data')) {
             const { chatId, threadId } = window.LiveChatWidget.get('chat_data');
-            /* eslint-disable no-console */
-            console.log('liveChat::', chatId, threadId);
             if (threadId) {
                 customerSDK.deactivateChat({ chatId });
             }

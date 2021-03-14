@@ -66,9 +66,10 @@ const SearchBox = () => {
                                     trailing_icon={
                                         search ? (
                                             <Icon
+                                                className='search-box__cross-icon'
+                                                color='secondary'
                                                 icon='IcCloseCircle'
                                                 onClick={() => onSearchClear(setFieldValue)}
-                                                color='secondary'
                                             />
                                         ) : null
                                     }

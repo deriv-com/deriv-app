@@ -231,9 +231,6 @@
     @include mobile {
         height: $MOBILE_HEADER_HEIGHT;
 
-        .header__menu-left {
-            display: unset;
-        }
         .header__menu-left,
         .header__menu-right {
             height: #{$MOBILE_HEADER_HEIGHT - 1px};

@@ -1,7 +1,8 @@
 import * as React from 'react';
+import classNames from 'classnames';
 import { Formik, Field, Form } from 'formik';
 import { Div100vhContainer, Dropdown, Modal, Input, Button, Text, ThemedScrollbars } from '@deriv/components';
-import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
+import { formatMoney, isDesktop, isMobile, mobileOSDetect } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
@@ -22,6 +23,7 @@ const CreateAdForm = () => {
     const { general_store, my_ads_store } = useStores();
     const { currency, local_currency_config } = general_store.client;
     const available_balance = useUpdatingAvailableBalance();
+    const os = mobileOSDetect();
     const [is_api_error_modal_visible, setIsApiErrorModalVisible] = React.useState(false);
 
     React.useEffect(() => {
@@ -64,7 +66,9 @@ const CreateAdForm = () => {
                         <div className='p2p-my-ads__form'>
                             <Form noValidate>
                                 <ThemedScrollbars
-                                    className='p2p-my-ads__form-scrollbar'
+                                    className={classNames('p2p-my-ads__form-scrollbar', {
+                                        'p2p-my-ads__form-scrollbar--ios': is_sell_advert && os === 'iOS',
+                                    })}
                                     is_scrollbar_hidden={isMobile()}
                                 >
                                     <CreateAdFormWrapper>

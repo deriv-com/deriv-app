@@ -249,6 +249,7 @@ const CFDPasswordModal = ({
     trading_servers,
     mt5_login_list,
     mt5_new_account,
+    platform,
 }) => {
     const [password, setPassword] = React.useState('');
     const [is_submitting, setIsSubmitting] = React.useState(false); // TODO handle this better
@@ -350,6 +351,7 @@ const CFDPasswordModal = ({
                             account_title={account_title}
                             closeModal={closeModal}
                             form_error={form_error}
+                            platform={platform}
                             submitMt5Password={setPassword}
                             is_real_financial_stp={is_real_financial_stp}
                             validatePassword={validatePassword}
@@ -382,6 +384,7 @@ const CFDPasswordModal = ({
                             account_title={account_title}
                             closeModal={closeModal}
                             form_error={form_error}
+                            platform={platform}
                             is_real_financial_stp={is_real_financial_stp}
                             submitMt5Password={setPassword}
                             validatePassword={validatePassword}

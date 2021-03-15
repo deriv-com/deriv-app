@@ -7,7 +7,7 @@ import { connect } from 'Stores/connect';
 import ChangePasswordForm from './change-password-form.jsx';
 import ForgotYourPassword from './forgot-your-password.jsx';
 
-const DerivPassword = ({ email }) => {
+const Passwords = ({ email }) => {
     const multi_step_ref = React.useRef();
     const steps = [
         {
@@ -34,10 +34,10 @@ const DerivPassword = ({ email }) => {
     return <MultiStep ref={multi_step_ref} steps={steps} lbl_previous={localize('Back')} />;
 };
 
-DerivPassword.propTypes = {
+Passwords.propTypes = {
     email: PropTypes.string,
 };
 
 export default connect(({ client }) => ({
     email: client.email,
-}))(DerivPassword);
+}))(Passwords);

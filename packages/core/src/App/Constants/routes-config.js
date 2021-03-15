@@ -111,7 +111,7 @@ const getModules = ({ is_dashboard }) => {
                     icon: 'IcSecurity',
                     subroutes: [
                         {
-                            path: routes.deriv_password,
+                            path: routes.passwords,
                             component: Account,
                             getTitle: () => localize('Deriv password'),
                         },

@@ -7,7 +7,7 @@ export const routes = {
     personal_details: '/account/personal-details',
     proof_of_identity: '/account/proof-of-identity',
     proof_of_address: '/account/proof-of-address',
-    deriv_password: '/account/deriv-password',
+    passwords: '/account/passwords',
     deactivate_account: '/account/deactivate-account',
     account_deactivated: '/account-deactivated',
     account_limits: '/account/account-limits',

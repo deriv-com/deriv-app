@@ -32,7 +32,7 @@ const WithdrawalSideNote = () => {
         */
     ];
     const side_note_title =
-        notes.length > 1 ? <Localize i18n_default_text='Notes' /> : <Localize i18n_default_text='Note' />;
+        notes?.length > 1 ? <Localize i18n_default_text='Notes' /> : <Localize i18n_default_text='Note' />;
 
     return <SideNote has_bullets notes={notes} title={side_note_title} />;
 };

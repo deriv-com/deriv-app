@@ -98,7 +98,7 @@ const HeaderDropdown = ({ current_ref, onClickHandler, parent, setRef }) => {
         if (current_ref) {
             setLeftOffset(current_ref.offsetLeft);
         }
-    });
+    }, [current_ref]);
 
     React.useEffect(() => {
         if (dropdown_container_ref) {
@@ -108,7 +108,7 @@ const HeaderDropdown = ({ current_ref, onClickHandler, parent, setRef }) => {
         return () => {
             window.removeEventListener('resize', updateOffsets);
         };
-    }, [parent]);
+    }, [current_ref]);
 
     return (
         <div ref={setRef} className='dashboard-header-dropdown' style={{ left: left_offset }}>

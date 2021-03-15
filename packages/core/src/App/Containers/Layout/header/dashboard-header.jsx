@@ -62,12 +62,15 @@ const LoggedOutHeader = () => {
         }
     };
 
-    const handleOutsideClick = React.useCallback(e => {
-        if (nav_dropdown_ref.current && !nav_dropdown_ref.current.contains(e.target)) {
-            if (active_dropdown_ref.current && active_dropdown_ref.current.contains(e.target)) return;
-            setCurrentDropdown('');
-        }
-    });
+    const handleOutsideClick = React.useCallback(
+        e => {
+            if (nav_dropdown_ref.current && !nav_dropdown_ref.current.contains(e.target)) {
+                if (active_dropdown_ref.current && active_dropdown_ref.current.contains(e.target)) return;
+                setCurrentDropdown('');
+            }
+        },
+        [active_dropdown_ref.current]
+    );
 
     const setDropdown = new_ref => setActiveDropdownRef(new_ref);
 
@@ -76,7 +79,7 @@ const LoggedOutHeader = () => {
         return () => {
             document.removeEventListener('click', handleOutsideClick);
         };
-    }, [active_dropdown_ref]);
+    }, [active_dropdown_ref.current]);
 
     return (
         <React.Fragment>

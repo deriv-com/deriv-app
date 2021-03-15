@@ -43,17 +43,18 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
     const onChangeTableType = event => setTableType(event.target.value);
 
     React.useEffect(
-        () =>
+        () => {
+            buy_sell_store.setSearchTerm('');
             reaction(
                 () => buy_sell_store.should_use_client_limits,
                 () => {
                     buy_sell_store.setItems([]);
                     buy_sell_store.setIsLoading(true);
-                    buy_sell_store.setSearchTerm('');
                     buy_sell_store.loadMoreItems({ startIndex: 0 });
                 },
                 { fireImmediately: true }
-            ),
+            );
+        },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     );

@@ -2,6 +2,7 @@ let MT5_text_translated;
 
 // TODO: add swap_free to this file when ready
 const MT5_text = {
+    dxtrade: 'DXtrade',
     mt5: 'MT5',
     synthetic: 'Synthetic',
     financial: 'Financial',
@@ -88,8 +89,9 @@ export const setSharedMT5Text = all_shared_mt5_text => {
     MT5_text_translated = all_shared_mt5_text;
 };
 
-export const getAccountListKey = (account, platform) =>
-    `${account.platform || platform}.${account.account_type}.${getMT5AccountKey(
+export const getAccountListKey = (account, platform) => {
+    return `${account.platform || platform}.${account.account_type}.${getMT5AccountKey(
         account.market_type,
         account.sub_account_type
-    )}@${account.server}`;
+    )}@${platform === 'dxtrade' ? account.sub_account_type : account.server}`;
+};

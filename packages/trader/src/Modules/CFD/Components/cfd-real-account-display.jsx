@@ -32,7 +32,7 @@ const CFDRealAccountDisplay = ({
     openPasswordModal,
     isAccountOfTypeDisabled,
     current_list,
-    has_mt5_account,
+    has_cfd_account,
     openPasswordManager,
     account_settings,
     openAccountNeededModal,
@@ -133,7 +133,7 @@ const CFDRealAccountDisplay = ({
                       return (
                           <CFDAccountCard
                               key={index}
-                              has_mt5_account={has_mt5_account}
+                              has_cfd_account={has_cfd_account}
                               has_mt5_account_error={has_mt5_account_error}
                               title={localize('Synthetic')}
                               is_hovered={index === active_hover}
@@ -164,7 +164,7 @@ const CFDRealAccountDisplay = ({
             : [
                   <CFDAccountCard
                       key='real.synthetic'
-                      has_mt5_account={has_mt5_account}
+                      has_cfd_account={has_cfd_account}
                       title={localize('Synthetic')}
                       is_disabled={isMT5AccountCardDisabled('synthetic')}
                       type={{
@@ -194,7 +194,7 @@ const CFDRealAccountDisplay = ({
         platform === 'mt5' && (
             <CFDAccountCard
                 key='real.financial_stp'
-                has_mt5_account={has_mt5_account}
+                has_cfd_account={has_cfd_account}
                 title={localize('Financial STP')}
                 type={{
                     category: 'real',
@@ -230,7 +230,7 @@ const CFDRealAccountDisplay = ({
     const financial_account = (landing_companies?.mt_financial_company?.financial || !is_logged_in) && (
         <CFDAccountCard
             key='real.financial'
-            has_mt5_account={has_mt5_account}
+            has_cfd_account={has_cfd_account}
             is_disabled={isMT5AccountCardDisabled('financial')}
             title={localize('Financial')}
             type={{

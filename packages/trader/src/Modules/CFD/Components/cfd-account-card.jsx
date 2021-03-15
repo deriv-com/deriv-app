@@ -126,7 +126,7 @@ const CFDAccountCard = ({
     is_hovered,
     existing_data,
     has_banner,
-    has_mt5_account,
+    has_cfd_account,
     has_mt5_account_error,
     has_real_account,
     is_accounts_switcher_on,
@@ -332,7 +332,7 @@ const CFDAccountCard = ({
                             </Button>
                         </div>
                     )}
-                    {!existing_data && has_mt5_account && (
+                    {!existing_data && has_cfd_account && (
                         <Button className='cfd-account-card__account-selection' onClick={onSelectAccount} type='button'>
                             <Localize i18n_default_text='Select' />
                         </Button>
@@ -355,7 +355,7 @@ const CFDAccountCard = ({
                             <Localize i18n_default_text='Trade on web terminal' />
                         </a>
                     )}
-                    {!existing_data && !has_mt5_account && is_logged_in && (
+                    {!existing_data && !has_cfd_account && is_logged_in && (
                         <CFDAccountCardAction
                             button_label={button_label}
                             handleClickSwitchAccount={handleClickSwitchAccount}

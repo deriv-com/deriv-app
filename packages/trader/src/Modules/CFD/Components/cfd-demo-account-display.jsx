@@ -18,7 +18,7 @@ const CFDDemoAccountDisplay = ({
     openAccountTransfer,
     platform,
     current_list,
-    has_mt5_account,
+    has_cfd_account,
     openPasswordManager,
 }) => {
     const openCFDAccount = () => {
@@ -45,7 +45,7 @@ const CFDDemoAccountDisplay = ({
         >
             {(landing_companies?.mt_gaming_company?.financial || !is_logged_in) && (
                 <CFDAccountCard
-                    has_mt5_account={has_mt5_account}
+                    has_cfd_account={has_cfd_account}
                     title={localize('Synthetic')}
                     type={{
                         category: 'demo',
@@ -94,7 +94,7 @@ const CFDDemoAccountDisplay = ({
 
             {(landing_companies?.mt_financial_company?.financial || !is_logged_in) && (
                 <CFDAccountCard
-                    has_mt5_account={has_mt5_account}
+                    has_cfd_account={has_cfd_account}
                     title={localize('Financial')}
                     is_disabled={has_mt5_account_error}
                     is_logged_in={is_logged_in}
@@ -147,7 +147,7 @@ const CFDDemoAccountDisplay = ({
             )}
             {(landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && platform === 'mt5' && (
                 <CFDAccountCard
-                    has_mt5_account={has_mt5_account}
+                    has_cfd_account={has_cfd_account}
                     title={localize('Financial STP')}
                     type={{
                         category: 'demo',

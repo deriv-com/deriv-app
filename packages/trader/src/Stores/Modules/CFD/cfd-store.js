@@ -2,7 +2,7 @@ import { action, computed, observable, runInAction } from 'mobx';
 import { getAccountListKey, getAccountTypeFields } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import BaseStore from 'Stores/base-store';
-import { getMtCompanies } from './Helpers/cfd-config';
+import { getDxCompanies, getMtCompanies } from './Helpers/cfd-config';
 
 export default class CFDStore extends BaseStore {
     @observable is_compare_accounts_visible = false;
@@ -30,7 +30,7 @@ export default class CFDStore extends BaseStore {
     }
 
     @computed
-    get has_mt5_account() {
+    get has_cfd_account() {
         return this.current_list.length > 0;
     }
 
@@ -54,7 +54,7 @@ export default class CFDStore extends BaseStore {
 
         this.root_store.client.dxtrade_accounts_list.forEach(account => {
             // e.g. dxtrade.real.financial_stp
-            list[getAccountListKey(account)] = {
+            list[getAccountListKey(account, 'dxtrade')] = {
                 ...account,
             };
         });
@@ -65,6 +65,11 @@ export default class CFDStore extends BaseStore {
     // eslint-disable-next-line class-methods-use-this
     get mt5_companies() {
         return getMtCompanies();
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    get dxtrade_companies() {
+        return getDxCompanies();
     }
 
     @action.bound

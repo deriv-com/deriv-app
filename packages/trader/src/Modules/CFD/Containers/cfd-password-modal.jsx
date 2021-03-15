@@ -63,8 +63,9 @@ const CFDPasswordForm = props => (
                 <div className='cfd-password-modal__content'>
                     <h2 className='cfd-password-modal__title'>
                         <Localize
-                            i18n_default_text='Choose a password for your DMT5 {{ account_type }} account'
+                            i18n_default_text='Choose a password for your {{platform}} {{ account_type }} account'
                             values={{
+                                platform: props.platform === 'dxtrade' ? 'DXtrade' : 'DMT5',
                                 account_type: props.account_title,
                             }}
                         />

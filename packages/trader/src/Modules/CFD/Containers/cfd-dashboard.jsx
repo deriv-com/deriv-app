@@ -146,7 +146,7 @@ class CFDDashboard extends React.Component {
             landing_companies,
             has_malta_account,
             has_maltainvest_account,
-            has_mt5_account,
+            has_cfd_account,
             has_mt5_account_error,
             mt5_disabled_signup_types,
             has_real_account,
@@ -194,6 +194,7 @@ class CFDDashboard extends React.Component {
                             <div className='cfd-dashboard__accounts-display'>
                                 <CFDPasswordManagerModal
                                     is_visible={this.state.password_manager.is_visible}
+                                    platform={platform}
                                     selected_login={this.state.password_manager.selected_login}
                                     selected_account={this.state.password_manager.selected_account}
                                     selected_account_group={this.state.password_manager.selected_account_group}
@@ -227,7 +228,7 @@ class CFDDashboard extends React.Component {
                                                 openAccountNeededModal={openAccountNeededModal}
                                                 current_list={current_list}
                                                 account_status={account_status}
-                                                has_mt5_account={has_mt5_account}
+                                                has_cfd_account={has_cfd_account}
                                                 onSelectAccount={createCFDAccount}
                                                 account_settings={account_settings}
                                                 landing_companies={landing_companies}
@@ -257,7 +258,7 @@ class CFDDashboard extends React.Component {
                                             openAccountNeededModal={openAccountNeededModal}
                                             standpoint={standpoint}
                                             is_loading={is_loading}
-                                            has_mt5_account={has_mt5_account}
+                                            has_cfd_account={has_cfd_account}
                                             current_list={current_list}
                                             onSelectAccount={createCFDAccount}
                                             landing_companies={landing_companies}
@@ -354,8 +355,8 @@ class CFDDashboard extends React.Component {
                                     </div>
                                 </div>
                             </MobileWrapper>
-                            <CFDTopUpDemoModal />
-                            <CFDPasswordModal />
+                            <CFDTopUpDemoModal platform={platform} />
+                            <CFDPasswordModal platform={platform} />
                             <CFDServerErrorDialog />
                             {platform === 'mt5' && (
                                 <React.Fragment>
@@ -363,7 +364,7 @@ class CFDDashboard extends React.Component {
                                     <CFDFinancialStpPendingDialog />
                                 </React.Fragment>
                             )}
-                            <CFDResetPasswordModal />
+                            <CFDResetPasswordModal platform={platform} />
                         </div>
                     </div>
                 ) : (
@@ -417,7 +418,7 @@ export default withRouter(
         openAccountNeededModal: ui.openAccountNeededModal,
         is_loading: client.is_populating_mt5_account_list,
         residence: client.residence,
-        has_mt5_account: modules.cfd.has_mt5_account,
+        has_cfd_account: modules.cfd.has_cfd_account,
         has_mt5_account_error: client.has_account_error_in_mt5_list,
         has_real_account: client.has_active_real_account,
         setAccountType: modules.cfd.setAccountType,

@@ -7,6 +7,7 @@ import { connect } from 'Stores/connect';
 import { getTopUpConfig } from '../Helpers/constants';
 
 const CFDTopUpDemoModal = ({
+    dxtrade_companies,
     mt5_companies,
     current_account,
     closeSuccessTopUpModal,
@@ -14,18 +15,19 @@ const CFDTopUpDemoModal = ({
     is_top_up_virtual_open,
     is_top_up_virtual_in_progress,
     is_top_up_virtual_success,
+    platform,
     topUpVirtual,
 }) => {
     const getAccountTitle = React.useCallback(() => {
-        if (!mt5_companies || !current_account) return '';
+        if ((!mt5_companies && !dxtrade_companies) || !current_account) return '';
         return mt5_companies[current_account.category][current_account.type].title;
-    }, [mt5_companies, current_account]);
+    }, [mt5_companies, dxtrade_companies, current_account]);
 
     const onCloseSuccess = () => {
         closeSuccessTopUpModal();
     };
 
-    if (!mt5_companies || !current_account) return null;
+    if ((!mt5_companies && !dxtrade_companies) || !current_account) return null;
 
     const { currency, minimum_amount, additional_amount } = getTopUpConfig();
 
@@ -56,8 +58,11 @@ const CFDTopUpDemoModal = ({
                     </Text>
                     <h4 className='dc-modal__container_top-up-virtual--h4'>
                         <Localize
-                            i18n_default_text='DMT5 {{ account_title }} account'
-                            values={{ account_title: getAccountTitle() }}
+                            i18n_default_text='{{ platform }} {{ account_title }} account'
+                            values={{
+                                platform: platform === 'dxtrade' ? 'DXtrade' : 'DMT5',
+                                account_title: getAccountTitle(),
+                            }}
                         />
                     </h4>
                     <div>
@@ -144,6 +149,7 @@ export default connect(({ ui, modules }) => ({
     closeTopUpModal: ui.closeTopUpModal,
     closeSuccessTopUpModal: ui.closeSuccessTopUpModal,
     current_account: modules.cfd.current_account,
+    dxtrade_companies: modules.cfd.dxtrade_companies,
     mt5_companies: modules.cfd.mt5_companies,
     topUpVirtual: modules.cfd.topUpVirtual,
 }))(CFDTopUpDemoModal);

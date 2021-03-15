@@ -484,6 +484,7 @@ const MT5PasswordManagerModal = ({
     email,
     disableApp,
     is_visible,
+    platform,
     selected_login,
     selected_account,
     toggleModal,
@@ -534,10 +535,12 @@ const MT5PasswordManagerModal = ({
                     is_open={is_visible}
                     title={
                         selected_account_group === 'real'
-                            ? localize('Manage DMT5 Real {{account_title}} account password', {
+                            ? localize('Manage {{platform}} Real {{account_title}} account password', {
+                                  platform: platform === 'dxtrade' ? 'DXtrade' : 'DMT5',
                                   account_title: selected_account,
                               })
-                            : localize('Manage DMT5 Demo {{account_title}} account password', {
+                            : localize('Manage {{platform}} Demo {{account_title}} account password', {
+                                  platform: platform === 'dxtrade' ? 'DXtrade' : 'DMT5',
                                   account_title: selected_account,
                               })
                     }

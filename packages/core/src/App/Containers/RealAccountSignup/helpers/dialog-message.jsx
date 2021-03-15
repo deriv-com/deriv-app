@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { EXPERIAN } from './constants';
 
@@ -34,7 +35,11 @@ export const DialogMessage = ({ status = EXPERIAN.SUCCESS, landing_company_short
         }
     }
 
-    return <p className='status-dialog__text'>{message}</p>;
+    return (
+        <Text as='p' align='center' className='status-dialog__message-text' color='general' size='xs'>
+            {message}
+        </Text>
+    );
 };
 
 DialogMessage.propTypes = {

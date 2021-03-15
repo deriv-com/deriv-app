@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router';
 import {
     Button,
@@ -42,7 +42,7 @@ const AccountSwitcher = props => {
     const wrapper_ref = React.useRef();
     const mtd5_ref = React.useRef(null);
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (mtd5_ref.current && is_dmt5_real_visible) {
             mtd5_ref.current.scrollIntoView({
                 behavior: 'smooth',

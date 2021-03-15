@@ -1083,8 +1083,8 @@ export default class ClientStore extends BaseStore {
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
-            WS.storage.mt5LoginList().then(this.responseMt5LoginList);
-            WS.tradingServers().then(this.responseTradingServers);
+            await WS.storage.mt5LoginList().then(this.responseMt5LoginList);
+            await WS.tradingServers().then(this.responseTradingServers);
             WS.tradingPlatformAccountsList('dxtrade').then(this.responseTradingPlatformAccountsList);
             this.responseStatement(
                 await BinarySocket.send({
@@ -1864,10 +1864,12 @@ export default class ClientStore extends BaseStore {
                 const display_login = account.error ? account.error.details.account_id : account.account_id;
                 if (account.error) {
                     const { account_type, server } = account.error.details;
-                    // this.setMT5DisabledSignupTypes({
-                    //     real: account_type === 'real',
-                    //     demo: account_type === 'demo',
-                    // });
+                    if (platform === 'mt5') {
+                        this.setMT5DisabledSignupTypes({
+                            real: account_type === 'real',
+                            demo: account_type === 'demo',
+                        });
+                    }
                     return {
                         account_type,
                         display_login,

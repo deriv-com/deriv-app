@@ -69,7 +69,7 @@ const LoggedOutHeader = () => {
                 setCurrentDropdown('');
             }
         },
-        [active_dropdown_ref.current]
+        [active_dropdown_ref?.current]
     );
 
     const setDropdown = new_ref => setActiveDropdownRef(new_ref);
@@ -79,7 +79,7 @@ const LoggedOutHeader = () => {
         return () => {
             document.removeEventListener('click', handleOutsideClick);
         };
-    }, [active_dropdown_ref.current]);
+    }, [active_dropdown_ref?.current]);
 
     return (
         <React.Fragment>

@@ -180,7 +180,12 @@ export default class ClientStore extends BaseStore {
         // scenario one
         if (!this.reality_check_dismissed && balance > 0) return true;
         // scenario two
-        if (!this.reality_check_dismissed && balance === 0 && this.statement.count === 0 && !!this.last_transaction)
+        if (
+            !this.reality_check_dismissed &&
+            balance === 0 &&
+            this.statement.count === 0 &&
+            !!this.last_transaction.action
+        )
             return true;
         // scenario three
         if (!this.reality_check_dismissed && balance === 0 && this.statement.count > 0) return true;

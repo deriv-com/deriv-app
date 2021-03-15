@@ -184,7 +184,7 @@ export default class ClientStore extends BaseStore {
             !this.reality_check_dismissed &&
             balance === 0 &&
             this.statement.count === 0 &&
-            !!this.last_transaction.action
+            !!this.last_transaction?.action
         )
             return true;
         // scenario three

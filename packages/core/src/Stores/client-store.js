@@ -1083,8 +1083,8 @@ export default class ClientStore extends BaseStore {
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
-            await WS.storage.mt5LoginList().then(this.responseMt5LoginList);
-            await WS.tradingServers().then(this.responseTradingServers);
+            WS.storage.mt5LoginList().then(this.responseMt5LoginList);
+            WS.tradingServers().then(this.responseTradingServers);
             WS.tradingPlatformAccountsList('dxtrade').then(this.responseTradingPlatformAccountsList);
             this.responseStatement(
                 await BinarySocket.send({

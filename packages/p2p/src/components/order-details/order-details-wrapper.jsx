@@ -4,9 +4,10 @@ import { Icon, MobileFullPageModal } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import { useStores } from 'Stores';
+import OrderDetailsFooter from 'Components/order-details/order-details-footer.jsx';
 
 const OrderDetailsWrapper = ({ children, onPageReturn, page_title }) => {
-    const { sendbird_store } = useStores();
+    const { order_store, sendbird_store } = useStores();
 
     return isMobile() ? (
         <MobileFullPageModal
@@ -23,6 +24,11 @@ const OrderDetailsWrapper = ({ children, onPageReturn, page_title }) => {
                     width={16}
                     onClick={() => sendbird_store.setShouldShowChatModal(true)}
                 />
+            }
+            page_footer_children={
+                order_store.order_information.should_show_order_footer && (
+                    <OrderDetailsFooter order_information={order_store.order_information} />
+                )
             }
         >
             {children}

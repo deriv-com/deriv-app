@@ -33,6 +33,7 @@ export default class PushwooshStore extends BaseStore {
             },
         ]);
         this.has_initialized = true;
+
         this.push_woosh.push([
             'onReady',
             api => {

@@ -128,7 +128,7 @@ const generateSWConfig = () => ({
     exclude: [/CNAME$/, /index\.html$/, /404\.html$/, /^localstorage-sync\.html$/, /\.map$/],
     skipWaiting: true,
     clientsClaim: true,
-    importScripts: [`https://cdn.pushwoosh.com/webpush/v3/pushwoosh-service-worker.js`],
+    // importScripts: [`https://cdn.pushwoosh.com/webpush/v3/pushwoosh-service-worker.js`],
 });
 
 const htmlOutputConfig = () => ({

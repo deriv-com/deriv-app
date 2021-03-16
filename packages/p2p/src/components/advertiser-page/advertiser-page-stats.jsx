@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Popover, Table, Text, ThemedScrollbars } from '@deriv/components';
+import { Icon, PopoverMobile, Table, Text, ThemedScrollbars } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -9,6 +9,7 @@ import './advertiser-page.scss';
 
 const AdvertiserPageStats = () => {
     const { advertiser_page_store } = useStores();
+    const [is_field_info_tooltip_open, setIsFieldInfoTooltipOpen] = React.useState(false);
 
     const {
         buy_completion_rate,
@@ -47,7 +48,7 @@ const AdvertiserPageStats = () => {
                                     {localize('Buy/Sell')}
                                 </Text>
                                 <Text align='center' color='prominent' size='s' weight='bold'>
-                                    {`${buy_orders_count || '-'}/${sell_orders_count || '-'}`}
+                                    {`${buy_orders_count || '-'} / ${sell_orders_count || '-'}`}
                                 </Text>
                             </Table.Cell>
                         ) : (
@@ -107,15 +108,17 @@ const AdvertiserPageStats = () => {
                     </Table.Row>
                 </ThemedScrollbars>
             </Table>
-            <Popover
+            <PopoverMobile
+                button_text={localize('Got it')}
                 className='advertiser-page__popover-icon'
-                alignment='top'
+                is_open={is_field_info_tooltip_open}
                 message={localize(
                     "These fields are based on the last 30 days' activity: Buy, Sell, Completion, and Avg. release time."
                 )}
+                setIsOpen={setIsFieldInfoTooltipOpen}
             >
                 <Icon icon='IcInfoOutline' size={16} />
-            </Popover>
+            </PopoverMobile>
         </div>
     );
 };

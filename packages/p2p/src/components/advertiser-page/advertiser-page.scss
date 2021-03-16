@@ -10,6 +10,7 @@
         width: 657px;
 
         @include mobile {
+            padding-top: 1.6rem;
             width: 100vw;
         }
 
@@ -18,6 +19,10 @@
 
             @include mobile {
                 margin: 0 1.6rem;
+
+                .dp2p-avatar {
+                    align-self: center;
+                }
             }
         }
 

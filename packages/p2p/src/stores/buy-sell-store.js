@@ -91,13 +91,11 @@ export default class BuySellStore extends BaseStore {
                 const { p2p_advertiser_info } = response;
                 this.setContactInfo(p2p_advertiser_info.contact_info);
                 this.setPaymentInfo(p2p_advertiser_info.payment_info);
+            } else if (response.error.code === 'PermissionDenied') {
+                this.root_store.general_store.setIsBlocked(true);
             } else {
-                if (response.error.code === 'PermissionDenied') {
-                    this.root_store.general_store.setIsBlocked(true);
-                } else {
-                    this.setContactInfo('');
-                    this.setPaymentInfo('');
-                }
+                this.setContactInfo('');
+                this.setPaymentInfo('');
             }
         });
     }
@@ -182,6 +180,8 @@ export default class BuySellStore extends BaseStore {
 
                         this.setItems([...old_items, ...new_items]);
                     }
+                } else if (response.error.code === 'PermissionDenied') {
+                    this.root_store.general_store.setIsBlocked(true);
                 } else {
                     this.setApiErrorMessage(response.error.message);
                 }

@@ -427,15 +427,7 @@ export default class GeneralStore extends BaseStore {
     updateAdvertiserInfo(response) {
         const { p2p_advertiser_info } = response;
 
-        if (!response.error) {
-            this.setAdvertiserId(p2p_advertiser_info.id);
-            this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
-            this.setIsListed(!!p2p_advertiser_info.is_listed);
-            this.setNickname(p2p_advertiser_info.name);
-            this.setUserBlockedUntil(p2p_advertiser_info.blocked_until);
-            this.setShouldShowRealName(!!p2p_advertiser_info.show_name);
-            this.is_blocked && this.setIsBlocked(false);
-        } else {
+        if (response.error) {
             this.ws_subscriptions.advertiser_subscription.unsubscribe();
 
             if (response.error.code === 'RestrictedCountry') {
@@ -445,6 +437,17 @@ export default class GeneralStore extends BaseStore {
             } else if (response.error.code === 'PermissionDenied') {
                 this.setIsBlocked(true);
             }
+        } else {
+            if (this.is_blocked) {
+                this.setIsBlocked(false);
+            }
+
+            this.setAdvertiserId(p2p_advertiser_info.id);
+            this.setIsAdvertiser(!!p2p_advertiser_info.is_approved);
+            this.setIsListed(!!p2p_advertiser_info.is_listed);
+            this.setNickname(p2p_advertiser_info.name);
+            this.setUserBlockedUntil(p2p_advertiser_info.blocked_until);
+            this.setShouldShowRealName(!!p2p_advertiser_info.show_name);
         }
 
         if (!this.is_advertiser) {

@@ -33,12 +33,10 @@ export default class MyProfileStore extends BaseStore {
                 this.setContactInfo(p2p_advertiser_info.contact_info);
                 this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
                 this.setPaymentInfo(p2p_advertiser_info.payment_info);
+            } else if (response.error.code === 'PermissionDenied') {
+                this.root_store.general_store.setIsBlocked(true);
             } else {
-                if (response.error.code === 'PermissionDenied') {
-                    this.root_store.general_store.setIsBlocked(true);
-                } else {
-                    this.setErrorMessage(response.error);
-                }
+                this.setErrorMessage(response.error);
             }
             this.setIsLoading(false);
         });

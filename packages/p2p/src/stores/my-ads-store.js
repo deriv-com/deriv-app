@@ -57,14 +57,12 @@ export default class MyAdsStore extends BaseStore {
                 this.setContactInfo(p2p_advertiser_info.contact_info);
                 this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
                 this.setPaymentInfo(p2p_advertiser_info.payment_info);
+            } else if (response.error.code === 'PermissionDenied') {
+                this.root_store.general_store.setIsBlocked(true);
             } else {
-                if (response.error.code === 'PermissionDenied') {
-                    this.root_store.general_store.setIsBlocked(true);
-                } else {
-                    this.setContactInfo('');
-                    this.setDefaultAdvertDescription('');
-                    this.setPaymentInfo('');
-                }
+                this.setContactInfo('');
+                this.setDefaultAdvertDescription('');
+                this.setPaymentInfo('');
             }
             this.setIsFormLoading(false);
         });
@@ -100,7 +98,11 @@ export default class MyAdsStore extends BaseStore {
         requestWS(create_advert).then(response => {
             // If we get an error we should let the user submit the form again else we just go back to the list of ads
             if (response.error) {
-                this.setApiErrorMessage(response.error.message);
+                if (response.error.code === 'PermissionDenied') {
+                    this.root_store.general_store.setIsBlocked(true);
+                } else {
+                    this.setApiErrorMessage(response.error.message);
+                }
                 setSubmitting(false);
             } else {
                 this.setShowAdForm(false);
@@ -157,6 +159,8 @@ export default class MyAdsStore extends BaseStore {
                     const { list } = response.p2p_advertiser_adverts;
                     this.setHasMoreItemsToLoad(list.length >= list_item_limit);
                     this.setAdverts(this.adverts.concat(list));
+                } else if (response.error.code === 'PermissionDenied') {
+                    this.root_store.general_store.setIsBlocked(true);
                 } else {
                     this.setApiErrorMessage(response.error.message);
                 }

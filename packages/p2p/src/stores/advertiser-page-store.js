@@ -107,12 +107,10 @@ export default class AdvertiserPageStore extends BaseStore {
                 this.setAdvertiserInfo(p2p_advertiser_info);
                 this.setAdvertiserFirstName(p2p_advertiser_info.first_name);
                 this.setAdvertiserLastName(p2p_advertiser_info.last_name);
+            } else if (response.error.code === 'PermissionDenied') {
+                this.root_store.general_store.setIsBlocked(true);
             } else {
-                if (response.error.code === 'PermissionDenied') {
-                    this.root_store.general_store.setIsBlocked(true);
-                } else {
-                    this.setErrorMessage(response.error);
-                }
+                this.setErrorMessage(response.error);
             }
             this.setIsLoading(false);
         });

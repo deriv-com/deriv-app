@@ -357,6 +357,7 @@ import './mt5/ic-mt5-financial.svg';
 import './mt5/ic-mt5-high-leverage.svg';
 import './mt5/ic-mt5-liquid-risk.svg';
 import './mt5/ic-mt5-margin-trading.svg';
+import './mt5/ic-mt5-one-password.svg';
 import './mt5/ic-mt5-open-markets.svg';
 import './mt5/ic-mt5-password-updated.svg';
 import './mt5/ic-mt5-responsive.svg';

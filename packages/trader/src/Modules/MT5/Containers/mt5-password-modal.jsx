@@ -99,7 +99,7 @@ const MT5PasswordForm = props => {
             return undefined;
         }
         if (!props.should_set_trading_password) {
-            return history.push(routes.deriv_password);
+            return history.push(routes.passwords);
         }
         return props.onCancel();
     }, [has_cancel_button, props.should_show_server_form, props.should_set_trading_password]);

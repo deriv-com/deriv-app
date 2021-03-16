@@ -788,7 +788,13 @@
     &--error-message {
         margin-bottom: 1em;
     }
-    &__main-form,
+    &__trading-password-wrapper {
+        display: grid;
+        grid-auto-rows: auto;
+        justify-items: center;
+        grid-gap: 1rem;
+        margin-top: 3.2rem;
+    }
     &__investor-wrapper {
         margin: 3.2rem 0.5rem 0;
 

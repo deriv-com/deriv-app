@@ -1,6 +1,11 @@
 @import '../_common/components/composite-calendar';
 
 $side-padding: 1.2em;
+.reports-copy {
+    display: flex;
+    align-items: center;
+    padding-left: 2rem;
+}
 
 /** @define reports; weak */
 .reports {

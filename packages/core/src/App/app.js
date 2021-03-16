@@ -49,7 +49,7 @@ const initStore = notification_messages => {
     // OutdatedBrowser.init(root_store);!
     root_store.client.init();
     root_store.ui.init(notification_messages);
-    root_store.pushwoosh.init();
+    // root_store.pushwoosh.init();
 
     return root_store;
 };

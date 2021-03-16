@@ -1,12 +1,24 @@
 import React from 'react';
+import cn from 'classnames';
 import { localize } from '@deriv/translations';
 import { Timeline } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import DetailComponent from './detail-component.jsx';
 import { Documents } from './documents.jsx';
-import { getDocumentIndex } from './constants';
+import { getDocumentIndex, DOCUMENT_TYPES } from './constants';
 
-const Unsupported = ({ residence }) => {
+const checkNimcStep = steps => {
+    let has_nimc = false;
+    steps.forEach(step => {
+        if (step.document_type === DOCUMENT_TYPES.NIMC) {
+            has_nimc = true;
+        }
+    });
+    return has_nimc;
+};
+
+const Unsupported = ({ residence, ...props }) => {
     const [detail, setDetail] = React.useState(null);
     const toggleDetail = index => setDetail(index);
     const documents = getDocumentIndex({
@@ -17,15 +29,23 @@ const Unsupported = ({ residence }) => {
     if (detail !== null) {
         return (
             <DetailComponent
-                steps={documents[detail].steps}
-                root_class='unsupported-country-poi'
+                //is_onfido_supported={(residence === 'ng' && !checkNimcStep(documents[detail].steps))}
+                is_onfido_supported={false}
+                document={documents[detail]}
+                root_class='manual-poi'
                 onClickBack={() => setDetail(null)}
+                {...props}
             />
         );
     }
 
     return (
-        <Timeline className='unsupported-country-poi' disabled_items={[2]}>
+        <Timeline
+            className={cn('manual-poi', {
+                'manual-poi--mobile': isMobile(),
+            })}
+            disabled_items={[2]}
+        >
             <Timeline.Item item_title={localize('Please upload one of the following documents:')}>
                 <Documents documents={documents} toggleDetail={toggleDetail} />
             </Timeline.Item>

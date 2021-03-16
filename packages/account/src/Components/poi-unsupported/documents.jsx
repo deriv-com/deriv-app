@@ -11,7 +11,7 @@ export const Documents = ({ toggleDetail, documents }) => (
                     height: '11.2rem',
                 }}
                 key={index}
-                renderContent={() => <CardWithArrow onClick={() => toggleDetail(index)} {...item} />}
+                renderContent={() => <CardWithArrow onClick={() => toggleDetail(index)} {...item.card} />}
             />
         ))}
     </React.Fragment>

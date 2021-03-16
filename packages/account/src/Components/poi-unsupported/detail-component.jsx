@@ -1,10 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Loading, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Submitted from 'Components/poa-submitted';
 import uploadFile from 'Components/file-uploader-container/upload-file';
 import { WS } from 'Services/ws-methods';
-import Details from './details.jsx';
+import Onfido from 'Sections/Verification/ProofOfIdentity/onfido.jsx';
+import CardDetails from './card-details';
 
 const ACTIONS = {
     ADD_FILE: 'ADD_FILE',
@@ -49,19 +51,28 @@ const getActiveStep = (files, steps) => {
     return active_step;
 };
 
-const DetailComponent = ({ steps, onClickBack, root_class }) => {
+const DetailComponent = ({
+    document,
+    onClickBack,
+    root_class,
+    country_code_key,
+    documents_supported,
+    onfido_service_token,
+    height,
+    handleComplete,
+    is_onfido_supported,
+    ...props
+}) => {
     const [status, setStatus] = React.useState();
     const [file_list, dispatchFileList] = React.useReducer(reducerFiles, []);
-    const active_step = getActiveStep(file_list, steps);
-    const is_last_step = steps.length === active_step + 1;
 
     const onConfirm = (data, callback) => {
-        if (is_last_step) {
-            onComplete([...file_list, data]);
-        } else {
-            dispatchFileList({ type: ACTIONS.ADD_FILE, payload: data });
-            callback();
-        }
+        // if (is_last_step) {
+        //     onComplete([...file_list, data]);
+        // } else {
+        //     dispatchFileList({ type: ACTIONS.ADD_FILE, payload: data });
+        //     callback();
+        // }
     };
 
     const onUploadError = () => dispatchFileList({ type: ACTIONS.REMOVE_ALL });
@@ -73,9 +84,9 @@ const DetailComponent = ({ steps, onClickBack, root_class }) => {
             const results = [];
             const uploadNext = () => {
                 const item = files[file_to_upload_index];
-                const { file, documentType, pageType } = item;
+                const { file, document_type, pageType } = item;
                 uploadFile(file, WS.getSocket, {
-                    documentType,
+                    documentType: document_type,
                     pageType,
                     expirationDate: '2022-10-30',
                     documentId: '1234',
@@ -128,36 +139,44 @@ const DetailComponent = ({ steps, onClickBack, root_class }) => {
             return <Submitted />;
         default:
             return (
-                <div className={`${root_class}__detail`}>
-                    <div className={`${root_class}__detail-header`} onClick={onClickBack}>
-                        <Icon icon='IcArrowLeftBold' />
-                        <Text as='p' size='xs' weight='bold' color='prominent' className={`${root_class}__back-title`}>
-                            {localize('Back')}
-                        </Text>
-                    </div>
-                    <div className={`${root_class}__preview-name-container`}>
-                        {file_list.map((item, index) => {
-                            return (
-                                <div key={`${item.file.name}-${index}`} className={`${root_class}__preview-name`}>
-                                    <Text size='xxxs' color='less-prominent' weight='bold'>
-                                        {item.file.name}
-                                    </Text>
-                                    <Icon icon='IcCloseCircle' onClick={() => removeImagePreview(index)} />
-                                </div>
-                            );
-                        })}
-                    </div>
-                    <div className={`${root_class}__detail-grid`}>
-                        <Details
-                            step={steps[active_step]}
-                            active_step={active_step}
-                            onConfirm={onConfirm}
-                            root_class={root_class}
-                        />
-                    </div>
-                </div>
+                <React.Fragment>
+                    {is_onfido_supported ? (
+                        <React.Fragment>
+                            <div className={`${root_class}__detail-header`} onClick={onClickBack}>
+                                <Icon icon='IcArrowLeftBold' />
+                                <Text
+                                    as='p'
+                                    size='xs'
+                                    weight='bold'
+                                    color='prominent'
+                                    className={`${root_class}__back-title`}
+                                >
+                                    {localize('Back')}
+                                </Text>
+                            </div>
+                            <Onfido
+                                country_code={country_code_key}
+                                documents_supported={[document.onfido_name]}
+                                onfido_service_token={onfido_service_token}
+                                height={height ?? null}
+                                handleComplete={handleComplete}
+                                {...props}
+                            />
+                        </React.Fragment>
+                    ) : (
+                        <CardDetails data={document.details} onConfirm={onConfirm} goToCards={onClickBack} />
+                    )}
+                </React.Fragment>
             );
     }
+};
+
+DetailComponent.propTypes = {
+    handleComplete: PropTypes.func,
+    has_poa: PropTypes.bool,
+    onfido_service_token: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+    country_code_key: PropTypes.number,
+    height: PropTypes.number,
 };
 
 export default DetailComponent;

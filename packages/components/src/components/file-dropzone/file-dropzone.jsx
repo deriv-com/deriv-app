@@ -25,6 +25,18 @@ const FadeInMessage = ({ is_visible, children, key, timeout }) => (
     </CSSTransition>
 );
 
+const PreviewSingle = props => {
+    if (props.preview_single) {
+        return <div className='dc-file-dropzone__message'>{props.preview_single}</div>;
+    } else {
+        return (
+            <Text size='xxs' weight='bold' align='center' className='dc-file-dropzone__filename'>
+                {props.filename_limit ? truncateFileName(props.value[0], props.filename_limit) : props.value[0].name}
+            </Text>
+        );
+    }
+};
+
 const FileDropzone = ({ className, ...props }) => (
     <Dropzone
         // sends back accepted files array
@@ -84,14 +96,7 @@ const FileDropzone = ({ className, ...props }) => (
                                       {props.filename_limit ? truncateFileName(file, props.filename_limit) : file.name}
                                   </Text>
                               ))
-                            : props.value[0] &&
-                              !isDragActive && (
-                                  <Text size='xxs' weight='bold' align='center' className='dc-file-dropzone__filename'>
-                                      {props.filename_limit
-                                          ? truncateFileName(props.value[0], props.filename_limit)
-                                          : props.value[0].name}
-                                  </Text>
-                              )}
+                            : props.value[0] && !isDragActive && <PreviewSingle {...props} />}
                         <FadeInMessage
                             // message shown if there are errors with the dragged file
                             is_visible={isDragReject}

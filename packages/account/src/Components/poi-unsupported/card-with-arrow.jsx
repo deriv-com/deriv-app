@@ -1,33 +1,21 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
-
-const card_inside_style = {
-    alignItems: 'center',
-    cursor: 'pointer',
-    display: 'flex',
-    justifyContent: 'flex-start',
-    userSelect: 'none',
-};
-
-const start_align_style = {
-    margin: '0 0 0 2rem',
-    width: '100%',
-};
+import { isMobile } from '@deriv/shared';
 
 const CardWithArrow = ({ onClick, title, description, icon }) => {
     return (
-        <div style={card_inside_style} onClick={onClick}>
-            <Icon icon={icon} size={64} />
-            <div style={start_align_style}>
-                <Text as='p' weight='bold' color='prominent'>
+        <div className='manual-poi__card' onClick={onClick}>
+            <Icon className='manual-poi__card-icon' icon={icon} size={64} />
+            <div className='manual-poi__card-content'>
+                <Text as='p' size='xs' weight='bold' color='prominent'>
                     {title}
                 </Text>
-                <Text as='p' size='xxs'>
+                <Text as='p' size={isMobile() ? 'xxxs' : 'xxs'}>
                     {description}
                 </Text>
             </div>
 
-            <Icon icon='IcChevronRight' size={24} />
+            <Icon icon='IcChevronRight' size={isMobile() ? 23 : 31} />
         </div>
     );
 };

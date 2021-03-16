@@ -20,9 +20,10 @@ const Timeline = ({ children, disabled_items, ...props }) => {
                     key={idx}
                     className={classNames('dc-timeline__flex', {
                         'dc-timeline__flex--no-border': children.length === idx + 1,
+                        'dc-timeline__flex--disabled': disabled_items && disabled_items.includes(idx + 1),
                     })}
                 >
-                    <Oval is_disabled={disabled_items && disabled_items.includes(idx + 1)}>{idx + 1}</Oval>
+                    <Oval>{idx + 1}</Oval>
                     <div className='dc-timeline__container'>
                         <h2 className='dc-timeline__title'>{child.props.item_title}</h2>
                         <div className='dc-timeline__content'>{child}</div>

@@ -40,11 +40,11 @@ const AccountSwitcher = props => {
     const [is_dmt5_real_visible, setDmt5RealVisible] = React.useState(false);
 
     const wrapper_ref = React.useRef();
-    const mtd5_ref = React.useRef(null);
+    const dmt5_ref = React.useRef(null);
 
     React.useEffect(() => {
-        if (mtd5_ref.current && is_dmt5_real_visible) {
-            mtd5_ref.current.scrollIntoView({
+        if (dmt5_ref.current && is_dmt5_real_visible) {
+            dmt5_ref.current.scrollIntoView({
                 behavior: 'smooth',
                 block: 'end',
                 inline: 'nearest',
@@ -467,7 +467,7 @@ const AccountSwitcher = props => {
     );
 
     const real_accounts = (
-        <div ref={mtd5_ref} className='acc-switcher__list-wrapper'>
+        <div ref={dmt5_ref} className='acc-switcher__list-wrapper'>
             <React.Fragment>
                 <AccountWrapper
                     header={localize('Deriv Accounts')}

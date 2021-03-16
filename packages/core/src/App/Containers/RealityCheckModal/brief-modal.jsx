@@ -22,7 +22,7 @@ const BriefModal = ({
             is_open={is_visible}
             disableApp={disableApp}
             has_close_icon={false}
-            title={localize('Trading statistics report')}
+            title={localize('Reality check')}
             portalId='modal_root_absolute'
             width='720px'
         >
@@ -56,7 +56,7 @@ const BriefModal = ({
                                     className='reality-check__text reality-check__text--description'
                                 >
                                     <Localize
-                                        i18n_default_text='Would like to check your statement first? <0>Check Statement</0>'
+                                        i18n_default_text='Would you like to check your statement first? <0>Check statement</0>'
                                         components={[<a key={0} className='link' onClick={openStatement} />]}
                                     />
                                 </Text>

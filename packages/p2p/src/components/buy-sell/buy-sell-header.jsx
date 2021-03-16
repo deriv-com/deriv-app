@@ -82,7 +82,7 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
             </div>
             <div className='buy-sell__header-match-ads'>
                 <Checkbox
-                    label={localize('Show all the matching ads')}
+                    label={localize('Show the matching ads')}
                     onChange={() => buy_sell_store.setShouldUseClientLimits(!buy_sell_store.should_use_client_limits)}
                     value={buy_sell_store.should_use_client_limits}
                 />

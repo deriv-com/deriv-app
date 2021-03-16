@@ -14,7 +14,7 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
         }
     };
 
-    const ReportsClipboard = ({ text_copy, info_message, success_message, className }) => {
+    const ReportsClipboard = ({ text_copy }) => {
         const [is_copied, setIsCopied] = React.useState(false);
         let timeout_clipboard = null;
 

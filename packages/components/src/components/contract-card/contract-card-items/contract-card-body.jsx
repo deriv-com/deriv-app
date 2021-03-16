@@ -34,6 +34,7 @@ const MultiplierCardBody = ({
     getContractById,
     is_mobile,
     is_sold,
+    onMouseLeave,
     removeToast,
     setCurrentFocus,
     should_show_cancellation_warning,
@@ -107,6 +108,7 @@ const MultiplierCardBody = ({
                             getCardLabels={getCardLabels}
                             getContractById={getContractById}
                             is_valid_to_cancel={is_valid_to_cancel}
+                            onMouseLeave={onMouseLeave}
                             removeToast={removeToast}
                             setCurrentFocus={setCurrentFocus}
                             should_show_cancellation_warning={should_show_cancellation_warning}
@@ -149,6 +151,7 @@ const ContractCardBody = ({
     is_mobile,
     is_multiplier,
     is_sold,
+    onMouseLeave,
     status,
     server_time,
     removeToast,
@@ -172,6 +175,7 @@ const ContractCardBody = ({
             getContractById={getContractById}
             is_mobile={is_mobile}
             is_sold={is_sold}
+            onMouseLeave={onMouseLeave}
             status={status}
             removeToast={removeToast}
             setCurrentFocus={setCurrentFocus}
@@ -267,6 +271,7 @@ ContractCardBody.propTypes = {
     is_mobile: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_sold: PropTypes.bool,
+    onMouseLeave: PropTypes.bool,
     removeToast: PropTypes.func,
     server_time: PropTypes.object,
     setCurrentFocus: PropTypes.func,

@@ -441,6 +441,7 @@ export default class CashierStore extends BaseStore {
                 this.setLoading(false);
                 // set the height of the container after content loads so that the
                 // loading bar stays vertically centered until the end
+                // As cashier.deriv.com is not supported the dark theme for the deposit, when we switch to the dark theme the IFrame height (with white background)is too small so we've added the condition to update height
                 if (this.active_container === 'deposit' && e.data < 540) {
                     this.setContainerHeight('540');
                 } else {

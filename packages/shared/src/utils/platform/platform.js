@@ -7,7 +7,7 @@ import { routes } from '../routes';
 export const platform_name = Object.freeze({
     DBot: 'DBot',
     DTrader: 'DTrader',
-    DXTrade: 'DXtrade',
+    DXtrade: 'DXtrade',
     DMT5: 'DMT5',
     SmartTrader: 'SmartTrader',
 });
@@ -20,14 +20,14 @@ export const isMT5 = () =>
     /^\/mt5/.test(window.location.pathname) ||
     (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'mt5');
 
-export const isDXTrade = () =>
+export const isDXtrade = () =>
     /^\/dxtrade/.test(window.location.pathname) ||
     (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'dxtrade');
 
 export const getPathname = () => {
     if (isBot()) return platform_name.DBot;
     if (isMT5()) return platform_name.DMT5;
-    if (isDXTrade()) return platform_name.DXTrade;
+    if (isDXtrade()) return platform_name.DXtrade;
     switch (window.location.pathname.split('/')[1]) {
         case '':
             return platform_name.DTrader;
@@ -49,8 +49,8 @@ export const getPlatformInformation = routing_history => {
         return { header: platform_name.DMT5, icon: 'IcBrandDmt5' };
     }
 
-    if (isDXTrade() || isNavigationFromPlatform(routing_history, routes.dxtrade)) {
-        return { header: platform_name.DXTrade, icon: 'IcBrandDxtrade' };
+    if (isDXtrade() || isNavigationFromPlatform(routing_history, routes.dxtrade)) {
+        return { header: platform_name.DXtrade, icon: 'IcBrandDxtrade' };
     }
 
     if (isNavigationFromPlatform(routing_history, routes.smarttrader)) {
@@ -62,7 +62,7 @@ export const getPlatformInformation = routing_history => {
 export const getActivePlatform = routing_history => {
     if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return 'DBot';
     if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return 'DMT5';
-    if (isDXTrade() || isNavigationFromPlatform(routing_history, routes.dxtrade)) return 'DXTrade';
+    if (isDXtrade() || isNavigationFromPlatform(routing_history, routes.dxtrade)) return 'DXtrade';
     if (isNavigationFromPlatform(routing_history, routes.smarttrader)) return 'SmartTrader';
     return 'DTrader';
 };
@@ -72,8 +72,8 @@ export const getPlatformRedirect = routing_history => {
         return { name: platform_name.DBot, route: routes.bot };
     if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5))
         return { name: platform_name.DMT5, route: routes.mt5 };
-    if (isDXTrade() || isNavigationFromPlatform(routing_history, routes.dxtrade))
-        return { name: platform_name.DXTrade, route: routes.dxtrade };
+    if (isDXtrade() || isNavigationFromPlatform(routing_history, routes.dxtrade))
+        return { name: platform_name.DXtrade, route: routes.dxtrade };
     if (isNavigationFromPlatform(routing_history, routes.smarttrader))
         return { name: platform_name.SmartTrader, route: routes.smarttrader };
     if (isNavigationFromP2P(routing_history, routes.cashier_p2p)) return { name: 'P2P', route: routes.cashier_p2p };

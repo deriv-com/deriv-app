@@ -78,11 +78,11 @@ export default class MyAdsStore extends BaseStore {
         const create_advert = {
             p2p_advert_create: 1,
             type: values.type,
-            amount: values.offer_amount,
-            max_order_amount: values.max_transaction,
-            min_order_amount: values.min_transaction,
+            amount: Number(values.offer_amount),
+            max_order_amount: Number(values.max_transaction),
+            min_order_amount: Number(values.min_transaction),
             payment_method: 'bank_transfer', // TODO: Allow for other types of payment_method.
-            rate: values.price_rate,
+            rate: Number(values.price_rate),
         };
 
         if (values.contact_info && is_sell_ad) {

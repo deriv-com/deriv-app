@@ -11,7 +11,7 @@ const path = require('path');
 const StylelintPlugin = require('stylelint-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const AssetsManifestPlugin = require('webpack-manifest-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const DefinePlugin = require('webpack').DefinePlugin;
 
@@ -66,6 +66,14 @@ const ALIASES = {
 
 const rules = (is_test_env = false, is_mocha_only = false) => [
     {
+        // https://github.com/webpack/webpack/issues/11467
+        test: /\.m?js/,
+        include: /node_modules/,
+        resolve: {
+            fullySpecified: false,
+        },
+    },
+    {
         test: /\.(js|jsx)$/,
         exclude: is_test_env ? /node_modules/ : /node_modules|__tests__/,
         include: is_test_env ? /__tests__|src/ : /src/,
@@ -107,39 +115,40 @@ const MINIMIZERS = !IS_RELEASE
     ? []
     : [
           new TerserPlugin({
-              test: /\.js/,
+              test: /\.js$/,
               exclude: /(smartcharts)/,
-              parallel: true,
-              sourceMap: true,
+              parallel: 2,
           }),
           new OptimizeCssAssetsPlugin(),
       ];
 
 const plugins = ({ base, is_test_env, env }) => {
-    let is_crypto_app, is_qawolf;
-    try {
-        is_crypto_app = JSON.parse(env.IS_CRYPTO_APP);
-        is_qawolf = !!JSON.parse(env.IS_QAWOLF);
-    } catch (e) {
-        is_crypto_app = false;
-        is_qawolf = false;
+    let is_dashboard = false;
+    let is_qawolf = false;
+
+    if (env.IS_DASHBOARD) {
+        is_dashboard = !!JSON.parse(env.IS_DASHBOARD);
     }
+    if (env.IS_QAWOLF) {
+        is_qawolf = !!JSON.parse(env.IS_QAWOLF);
+    }
+
     return [
         new DefinePlugin({
-            'process.env.IS_CRYPTO_APP': is_crypto_app,
+            'process.env.IS_DASHBOARD': is_dashboard,
             'process.env.IS_QAWOLF': is_qawolf,
         }),
         new CleanWebpackPlugin(),
-        new CopyPlugin(copyConfig(base)),
+        new CopyPlugin(copyConfig(base, IS_RELEASE)),
         new HtmlWebPackPlugin(htmlOutputConfig()),
         new HtmlWebpackTagsPlugin(htmlInjectConfig()),
         new PreloadWebpackPlugin(htmlPreloadConfig()),
-        new IgnorePlugin(/^\.\/locale$/, /moment$/),
+        new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
         new MiniCssExtractPlugin(cssConfig()),
         new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
         ...(IS_RELEASE
             ? []
-            : [new AssetsManifestPlugin({ fileName: 'asset-manifest.json', filter: file => file.name !== 'CNAME' })]),
+            : [new WebpackManifestPlugin({ fileName: 'asset-manifest.json', filter: file => file.name !== 'CNAME' })]),
         ...(is_test_env && !env.mocha_only
             ? [new StylelintPlugin(stylelintConfig())]
             : [

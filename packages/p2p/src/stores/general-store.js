@@ -1,12 +1,12 @@
 import React from 'react';
 import { action, computed, observable, reaction } from 'mobx';
-import { isEmptyObject, isMobile, mobileOSDetect, routes, toMoment } from '@deriv/shared';
-import { localize, Localize } from 'Components/i18next';
+import { isEmptyObject, isMobile, routes, toMoment } from '@deriv/shared';
 import BaseStore from 'Stores/base_store';
+import { localize, Localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
-import { order_list } from '../src/constants/order-list';
+import { order_list } from '../constants/order-list';
 
 export default class GeneralStore extends BaseStore {
     @observable active_index = 0;
@@ -30,7 +30,7 @@ export default class GeneralStore extends BaseStore {
     @observable user_blocked_until = null;
 
     custom_string = this.props?.custom_string;
-    list_item_limit = isMobile() ? 10 : 25;
+    list_item_limit = isMobile() ? 10 : 50;
     path = {
         buy_sell: 0,
         orders: 1,
@@ -179,26 +179,6 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     onMount() {
         this.setIsLoading(true);
-        const { sendbird_store } = this.root_store;
-
-        this.ws_subscriptions = {
-            advertiser_subscription: subscribeWS(
-                {
-                    p2p_advertiser_info: 1,
-                    subscribe: 1,
-                },
-                [this.updateAdvertiserInfo, response => sendbird_store.handleP2pAdvertiserInfo(response)]
-            ),
-            order_list_subscription: subscribeWS(
-                {
-                    p2p_order_list: 1,
-                    subscribe: 1,
-                    offset: 0,
-                    limit: this.list_item_limit,
-                },
-                [this.setP2pOrderList]
-            ),
-        };
 
         this.disposeUserBarredReaction = reaction(
             () => this.user_blocked_until,
@@ -213,6 +193,51 @@ export default class GeneralStore extends BaseStore {
                 }
             }
         );
+
+        requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
+            if (!error && get_account_status.risk_classification === 'high') {
+                const { status } = get_account_status;
+                const is_cashier_locked = status.includes('cashier_locked');
+                const is_not_fully_authenticated = !status.includes('authenticated');
+                const is_fully_authenticated_but_poi_expired =
+                    status.includes('authenticated') && status.includes('document_expired');
+                const is_fully_authenticated_but_needs_financial_assessment =
+                    status.includes('authenticated') && status.includes('financial_assessment_not_complete');
+
+                if (
+                    is_cashier_locked ||
+                    is_not_fully_authenticated ||
+                    is_fully_authenticated_but_poi_expired ||
+                    is_fully_authenticated_but_needs_financial_assessment
+                ) {
+                    this.setIsBlocked(true);
+                    return;
+                }
+            }
+
+            this.setIsBlocked(false);
+
+            const { sendbird_store } = this.root_store;
+
+            this.ws_subscriptions = {
+                advertiser_subscription: subscribeWS(
+                    {
+                        p2p_advertiser_info: 1,
+                        subscribe: 1,
+                    },
+                    [this.updateAdvertiserInfo, response => sendbird_store.handleP2pAdvertiserInfo(response)]
+                ),
+                order_list_subscription: subscribeWS(
+                    {
+                        p2p_order_list: 1,
+                        subscribe: 1,
+                        offset: 0,
+                        limit: this.list_item_limit,
+                    },
+                    [this.setP2pOrderList]
+                ),
+            };
+        });
     }
 
     @action.bound

@@ -148,8 +148,6 @@ export default class BuySellStore extends BaseStore {
 
     @action.bound
     loadMoreItems({ startIndex }) {
-        this.setIsLoading(true);
-
         const { general_store } = this.root_store;
         const counterparty_type = this.is_buy ? buy_sell.BUY : buy_sell.SELL;
 
@@ -159,6 +157,7 @@ export default class BuySellStore extends BaseStore {
                 counterparty_type,
                 offset: startIndex,
                 limit: general_store.list_item_limit,
+                use_client_limits: 1,
             }).then(response => {
                 if (!response.error) {
                     // Ignore any responses that don't match our request. This can happen
@@ -404,5 +403,33 @@ export default class BuySellStore extends BaseStore {
         });
 
         return errors;
+    }
+
+    registerAdvertIntervalReaction() {
+        const disposeAdvertIntervalReaction = reaction(
+            () => this.selected_ad_state,
+            () => {
+                clearInterval(this.limits_interval);
+
+                if (this.selected_ad_state) {
+                    const updateAdvert = () => {
+                        requestWS({ p2p_advert_info: 1, id: this.selected_ad_state.id, use_client_limits: 1 }).then(
+                            response => {
+                                if (response.error) return;
+                                const { p2p_advert_info } = response;
+
+                                if (this.selected_ad_state?.id === p2p_advert_info.id) {
+                                    this.setSelectedAdState(p2p_advert_info);
+                                }
+                            }
+                        );
+                    };
+
+                    this.limits_interval = setInterval(updateAdvert, 10000);
+                }
+            }
+        );
+
+        return () => disposeAdvertIntervalReaction();
     }
 }

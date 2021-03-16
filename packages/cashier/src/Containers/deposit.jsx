@@ -4,6 +4,7 @@ import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CashierContainer from '../Components/cashier-container.jsx';
+import CashierDefault from '../Components/CashierDefault/cashier-default.jsx';
 import Error from '../Components/Error/error.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
 import CashierLocked from '../Components/Error/cashier-locked.jsx';
@@ -38,12 +39,14 @@ const DepositeSideNote = () => {
 
 const Deposit = ({
     is_cashier_locked,
+    is_deposit_cash,
     is_deposit_locked,
     is_virtual,
     error,
     iframe_height,
     iframe_url,
     setActiveTab,
+    setIsDepositCash,
     onMount,
     container,
     currency,
@@ -52,6 +55,7 @@ const Deposit = ({
 }) => {
     React.useEffect(() => {
         setActiveTab(container);
+        setIsDepositCash(false);
         onMount();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -69,32 +73,36 @@ const Deposit = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, iframe_height]);
+    if (is_deposit_cash) {
+        if (is_virtual) {
+            return <Virtual />;
+        }
+        if (error.is_ask_uk_funds_protection) {
+            return <FundsProtection />;
+        }
+        if (error.is_self_exclusion_max_turnover_set) {
+            return <MaxTurnover />;
+        }
+        if (is_deposit_locked) {
+            return <DepositsLocked />;
+        }
+        if (is_cashier_locked) {
+            return <CashierLocked />;
+        }
+        if (error.message) {
+            return <Error error={error} />;
+        }
 
-    if (is_virtual) {
-        return <Virtual />;
+        return <CashierContainer iframe_height={iframe_height} iframe_url={iframe_url} is_loading={is_loading} />;
     }
-    if (error.is_ask_uk_funds_protection) {
-        return <FundsProtection />;
-    }
-    if (error.is_self_exclusion_max_turnover_set) {
-        return <MaxTurnover />;
-    }
-    if (is_deposit_locked) {
-        return <DepositsLocked />;
-    }
-    if (is_cashier_locked) {
-        return <CashierLocked />;
-    }
-    if (error.message) {
-        return <Error error={error} />;
-    }
-    return <CashierContainer iframe_height={iframe_height} iframe_url={iframe_url} is_loading={is_loading} />;
+    return <CashierDefault />;
 };
 
 Deposit.propTypes = {
     container: PropTypes.string,
     error: PropTypes.object,
     is_cashier_locked: PropTypes.bool,
+    is_deposit_cash: PropTypes.bool,
     is_deposit_locked: PropTypes.bool,
     iframe_height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     iframe_url: PropTypes.string,
@@ -102,12 +110,14 @@ Deposit.propTypes = {
     is_virtual: PropTypes.bool,
     onMount: PropTypes.func,
     setActiveTab: PropTypes.func,
+    setIsDepositCash: PropTypes.func,
     setSideNotes: PropTypes.func,
     standpoint: PropTypes.object,
 };
 
 export default connect(({ client, modules }) => ({
     is_cashier_locked: modules.cashier.is_cashier_locked,
+    is_deposit_cash: modules.cashier.is_deposit_cash,
     is_deposit_locked: modules.cashier.is_deposit_locked,
     is_virtual: client.is_virtual,
     container: modules.cashier.config.deposit.container,
@@ -118,5 +128,6 @@ export default connect(({ client, modules }) => ({
     is_loading: modules.cashier.is_loading,
     onMount: modules.cashier.onMount,
     setActiveTab: modules.cashier.setActiveTab,
+    setIsDepositCash: modules.cashier.setIsDepositCash,
     standpoint: client.standpoint,
 }))(Deposit);

@@ -9,10 +9,12 @@ const MT5ServerErrorDialog = ({
     disableApp,
     enableApp,
     error_message,
+    error_type,
     has_mt5_error,
     is_mt5_success_dialog_enabled,
 }) => {
-    const should_show_error = has_mt5_error && !is_mt5_success_dialog_enabled;
+    const should_show_error =
+        has_mt5_error && !is_mt5_success_dialog_enabled && !['PasswordReset', 'PasswordError'].includes(error_type);
     return (
         <Dialog
             title={localize('Something’s not right')}
@@ -41,6 +43,7 @@ export default connect(({ ui, modules }) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     error_message: modules.mt5.error_message,
+    error_type: modules.mt5.error_type,
     has_mt5_error: modules.mt5.has_mt5_error,
     is_mt5_success_dialog_enabled: modules.mt5.is_mt5_success_dialog_enabled,
 }))(MT5ServerErrorDialog);

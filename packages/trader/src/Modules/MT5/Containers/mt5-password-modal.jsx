@@ -2,6 +2,7 @@ import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import {
     DesktopWrapper,
     FormSubmitButton,
@@ -12,6 +13,7 @@ import {
     PasswordInput,
     PasswordMeter,
     RadioGroup,
+    Text,
 } from '@deriv/components';
 import { isMobile, routes, validLength, validPassword, getErrorMessages } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -19,6 +21,30 @@ import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import 'Sass/app/modules/mt5/mt5.scss';
 import { connect } from 'Stores/connect';
 
+const PasswordModalHeader = ({
+    should_set_trading_password,
+    should_show_server_form,
+    account_title,
+    is_password_reset_error,
+}) => (
+    <Text as='span' line_height='24' weight='bold' size='xs'>
+        {!should_show_server_form && should_set_trading_password && !is_password_reset_error && (
+            <Localize i18n_default_text='Set a trading password' />
+        )}
+        {!should_show_server_form && !should_set_trading_password && !is_password_reset_error && (
+            <Localize i18n_default_text='Enter your trading password' />
+        )}
+        {!should_show_server_form && is_password_reset_error && <Localize i18n_default_text='Too many attempts' />}
+        {should_show_server_form && (
+            <Localize
+                i18n_default_text='Choose a server for your DMT5 {{ account_type }} account'
+                values={{
+                    account_type: account_title,
+                }}
+            />
+        )}
+    </Text>
+);
 const getSubmitText = (account_title, category) => {
     if (category === 'real') {
         return localize(
@@ -41,89 +67,149 @@ const getIconFromType = type => {
     }
 };
 
-const MT5PasswordForm = props => (
-    <Formik
-        initialValues={{
-            password: '',
-        }}
-        validate={props.validatePassword}
-        onSubmit={values => props.submitMt5Password(values.password)}
-    >
-        {({
-            handleSubmit,
-            // setFieldValue,
-            setFieldTouched,
-            handleChange,
-            handleBlur,
-            errors,
-            values,
-            touched,
-        }) => (
-            <form onSubmit={handleSubmit}>
-                <div className='mt5-password-modal__content'>
-                    <h2 className='mt5-password-modal__title'>
-                        <Localize
-                            i18n_default_text='Choose a password for your DMT5 {{ account_type }} account'
-                            values={{
-                                account_type: props.account_title,
-                            }}
-                        />
-                    </h2>
-                    <div className='dc-modal__container_mt5-password-modal__body'>
-                        <div className='input-element'>
-                            <PasswordMeter
-                                input={values.password}
-                                has_error={!!(touched.password && errors.password)}
-                                custom_feedback_messages={getErrorMessages().password_warnings}
-                            >
-                                {({ has_warning }) => (
-                                    <PasswordInput
-                                        autoComplete='new-password'
-                                        label={localize('Create a password')}
-                                        error={touched.password && errors.password}
-                                        hint={
-                                            !has_warning &&
-                                            localize(
-                                                'Minimum of eight lower and uppercase English letters with numbers'
-                                            )
-                                        }
-                                        name='password'
-                                        value={values.password}
-                                        onBlur={handleBlur}
-                                        onChange={e => {
-                                            setFieldTouched('password', true);
-                                            handleChange(e);
-                                        }}
-                                    />
-                                )}
-                            </PasswordMeter>
-                        </div>
-                        {props.is_real_financial_stp && !props.is_bvi && (
-                            <div className='dc-modal__container_mt5-password-modal__description'>
-                                <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).' />
-                            </div>
-                        )}
-                        {props.is_real_financial_stp && props.is_bvi && (
-                            <div className='dc-modal__container_mt5-password-modal__description'>
-                                <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (BVI) Ltd. All trading in this account is subject to the regulations and guidelines of the British Virgin Islands Financial Services Commission (BVIFSC). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the British Virgin Islands Financial Services Commission (BVIFSC).' />
-                            </div>
-                        )}
+const MT5PasswordForm = props => {
+    const button_label = React.useMemo(() => {
+        if (props.should_show_server_form) {
+            return localize('Next');
+        } else if (!props.should_show_server_form && props.should_set_trading_password) {
+            return localize('Set trading password');
+        } else if (props.error_type === 'PasswordReset') {
+            return localize('Try later');
+        }
+        return localize('Add account');
+    }, [props.should_show_server_form, props.should_set_trading_password, props.error_type]);
+    const has_cancel_button = React.useMemo(() => {
+        return (
+            props.should_show_server_form || !props.should_set_trading_password || props.error_type === 'PasswordReset'
+        );
+    }, [props.should_show_server_form, props.should_set_trading_password, props.error_type]);
+    const cancel_button_label = React.useMemo(() => {
+        if (props.should_set_trading_password && props.error_type !== 'PasswordReset') {
+            return null;
+        }
+        if (props.should_show_server_form) {
+            return localize('Cancel');
+        }
+
+        return localize('Forgot password?');
+    }, [props.should_show_server_form, props.should_set_trading_password]);
+    const history = useHistory();
+    const handleCancel = React.useCallback(() => {
+        if (!has_cancel_button) {
+            return undefined;
+        }
+        if (!props.should_set_trading_password) {
+            return history.push(routes.deriv_password);
+        }
+        return props.onCancel();
+    }, [has_cancel_button, props.should_show_server_form, props.should_set_trading_password]);
+    if (props.error_type === 'PasswordReset') {
+        return (
+            <React.Fragment>
+                <div className='mt5-password-reset'>
+                    <div className='mt5-password-modal__content mt5-password-modal__content--password-reset'>
+                        <Text as='p' line_height='24' size='xs'>
+                            <Localize i18n_default_text='Please try again in a minute.' />
+                        </Text>
                     </div>
+                    <Formik onSubmit={props.closeModal} initialValues={{}}>
+                        {({ handleSubmit }) => (
+                            <form onSubmit={handleSubmit}>
+                                <FormSubmitButton
+                                    has_cancel={has_cancel_button}
+                                    cancel_label={cancel_button_label}
+                                    onCancel={handleCancel}
+                                    is_absolute={isMobile()}
+                                    label={button_label}
+                                />
+                            </form>
+                        )}
+                    </Formik>
                 </div>
-                <FormSubmitButton
-                    is_disabled={!values.password || Object.keys(errors).length > 0}
-                    has_cancel
-                    cancel_label={localize('Cancel')}
-                    onCancel={props.closeModal}
-                    is_absolute={isMobile()}
-                    is_loading={props.is_submitting}
-                    label={props.should_show_server_form ? localize('Next') : localize('Add account')}
-                    form_error={props.form_error}
-                />
-            </form>
-        )}
-    </Formik>
-);
+            </React.Fragment>
+        );
+    }
+
+    return (
+        <Formik
+            initialValues={props.values}
+            validate={props.validatePassword}
+            enableReinitialize
+            onSubmit={values => props.submitMt5Password(values.password)}
+        >
+            {({
+                handleSubmit,
+                // setFieldValue,
+                setFieldTouched,
+                handleChange,
+                handleBlur,
+                errors,
+                values,
+                touched,
+            }) => (
+                <form onSubmit={handleSubmit}>
+                    <div className='mt5-password-modal__content'>
+                        <div className='dc-modal__container_mt5-password-modal__body'>
+                            <div className='input-element'>
+                                <PasswordMeter
+                                    input={values.password}
+                                    has_error={!!(touched.password && errors.password) || props.error_message}
+                                    custom_feedback_messages={getErrorMessages().password_warnings}
+                                >
+                                    {({ has_warning }) => (
+                                        <PasswordInput
+                                            autoComplete='new-password'
+                                            label={localize('Trading password')}
+                                            error={(touched.password && errors.password) || props.error_message}
+                                            hint={
+                                                !has_warning &&
+                                                localize(
+                                                    'Minimum of eight lower and uppercase English letters with numbers'
+                                                )
+                                            }
+                                            name='password'
+                                            value={values.password}
+                                            onBlur={handleBlur}
+                                            onChange={e => {
+                                                setFieldTouched('password', true);
+                                                handleChange(e);
+                                            }}
+                                        />
+                                    )}
+                                </PasswordMeter>
+                            </div>
+                            {props.is_real_financial_stp && !props.is_bvi && (
+                                <div className='dc-modal__container_mt5-password-modal__description'>
+                                    <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).' />
+                                </div>
+                            )}
+                            {props.should_set_trading_password && (
+                                <Text size='xs' as='p'>
+                                    <Localize i18n_default_text='Use this to log in and trade on MT5 and DXTrade. ' />
+                                </Text>
+                            )}
+                            {props.is_real_financial_stp && props.is_bvi && (
+                                <div className='dc-modal__container_mt5-password-modal__description'>
+                                    <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (BVI) Ltd. All trading in this account is subject to the regulations and guidelines of the British Virgin Islands Financial Services Commission (BVIFSC). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the British Virgin Islands Financial Services Commission (BVIFSC).' />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <FormSubmitButton
+                        is_disabled={!values.password || Object.keys(errors).length > 0}
+                        has_cancel={has_cancel_button}
+                        cancel_label={cancel_button_label}
+                        onCancel={handleCancel}
+                        is_absolute={isMobile()}
+                        is_loading={props.is_submitting}
+                        label={button_label}
+                        form_error={props.form_error}
+                    />
+                </form>
+            )}
+        </Formik>
+    );
+};
 
 const MT5ServerForm = ({ ...props }) => {
     const available_servers = React.useMemo(() => {
@@ -171,14 +257,6 @@ const MT5ServerForm = ({ ...props }) => {
             {({ handleSubmit, setFieldValue, errors, values, isSubmitting }) => (
                 <form onSubmit={handleSubmit}>
                     <div className='mt5-password-modal__content'>
-                        <h2>
-                            <Localize
-                                i18n_default_text='Choose a server for your DMT5 {{ account_type }} account'
-                                values={{
-                                    account_type: props.account_title,
-                                }}
-                            />
-                        </h2>
                         <div className='dc-modal__container_mt5-password-modal__body'>
                             <div className='input-element'>
                                 <RadioGroup
@@ -230,24 +308,26 @@ const MT5ServerForm = ({ ...props }) => {
 const MT5PasswordModal = ({
     account_title,
     account_type,
+    account_status,
     disableMt5PasswordModal,
     email,
-    // error_message,
-    landing_companies,
+    error_message,
+    error_type,
+    form_error,
+    history,
     is_eu,
     is_eu_country,
     is_logged_in,
-    form_error,
-    history,
-    has_mt5_error,
     is_mt5_password_modal_enabled,
     is_mt5_success_dialog_enabled,
+    has_mt5_error,
+    landing_companies,
+    mt5_login_list,
+    mt5_new_account,
     setMt5SuccessDialog,
     setMt5Error,
     submitMt5Password,
     trading_servers,
-    mt5_login_list,
-    mt5_new_account,
 }) => {
     const [password, setPassword] = React.useState('');
     const [is_submitting, setIsSubmitting] = React.useState(false); // TODO handle this better
@@ -255,6 +335,27 @@ const MT5PasswordModal = ({
     const is_bvi = React.useMemo(() => {
         return landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
     }, [landing_companies]);
+
+    const should_set_trading_password = React.useMemo(
+        () => Array.isArray(account_status.status) && account_status.status.includes('trading_password_required'),
+        [account_status]
+    );
+
+    const is_password_error = error_type === 'PasswordError';
+    const is_password_reset = error_type === 'PasswordReset';
+
+    const should_show_password =
+        is_mt5_password_modal_enabled &&
+        !is_mt5_success_dialog_enabled &&
+        (!has_mt5_error || is_password_reset || is_password_error);
+
+    const should_show_success = !has_mt5_error && is_mt5_success_dialog_enabled;
+
+    const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
+
+    const is_real_synthetic = [account_type.category, account_type.type].join('_') === 'real_synthetic';
+
+    const should_show_server_form = (is_logged_in ? !is_eu : !is_eu_country) && is_real_synthetic && !!password;
 
     const validatePassword = values => {
         const errors = {};
@@ -300,11 +401,6 @@ const MT5PasswordModal = ({
     };
 
     const IconType = () => getIconFromType(account_type.type);
-    const should_show_password = is_mt5_password_modal_enabled && !has_mt5_error && !is_mt5_success_dialog_enabled;
-    const should_show_success = !has_mt5_error && is_mt5_success_dialog_enabled;
-    const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
-    const is_real_synthetic = [account_type.category, account_type.type].join('_') === 'real_synthetic';
-    const should_show_server_form = (is_logged_in ? !is_eu : !is_eu_country) && is_real_synthetic && !!password;
 
     // TODO handle submitting password without server in a better way
     React.useEffect(() => {
@@ -319,10 +415,10 @@ const MT5PasswordModal = ({
     }, [password, should_show_server_form, is_submitting]);
 
     React.useEffect(() => {
-        if (has_mt5_error || is_mt5_success_dialog_enabled) {
+        if (has_mt5_error || is_mt5_success_dialog_enabled || is_password_error) {
             setPassword('');
         }
-    }, [has_mt5_error, is_mt5_success_dialog_enabled]);
+    }, [has_mt5_error, is_mt5_success_dialog_enabled, is_password_error]);
 
     return (
         <React.Fragment>
@@ -331,7 +427,15 @@ const MT5PasswordModal = ({
                     className='mt5-password-modal'
                     is_open={should_show_password}
                     toggleModal={closeModal}
-                    has_close_icon
+                    should_header_stick_body
+                    renderTitle={() => (
+                        <PasswordModalHeader
+                            should_show_server_form={should_show_server_form}
+                            should_set_trading_password={should_set_trading_password}
+                            account_title={account_title}
+                            is_password_reset_error={is_password_reset}
+                        />
+                    )}
                 >
                     {should_show_server_form ? (
                         <MT5ServerForm
@@ -348,11 +452,17 @@ const MT5PasswordModal = ({
                             is_submitting={is_submitting}
                             account_title={account_title}
                             closeModal={closeModal}
+                            error_type={error_type}
+                            error_message={error_message}
                             form_error={form_error}
+                            should_set_trading_password={should_set_trading_password}
                             submitMt5Password={setPassword}
                             is_real_financial_stp={is_real_financial_stp}
                             validatePassword={validatePassword}
                             should_show_server_form={should_show_server_form}
+                            values={{
+                                password,
+                            }}
                         />
                     )}
                 </Modal>
@@ -380,8 +490,12 @@ const MT5PasswordModal = ({
                             is_submitting={is_submitting}
                             account_title={account_title}
                             closeModal={closeModal}
+                            error_type={error_type}
+                            error_message={error_message}
                             form_error={form_error}
+                            has_mt5_error={has_mt5_error}
                             is_real_financial_stp={is_real_financial_stp}
+                            should_set_trading_password={should_set_trading_password}
                             submitMt5Password={setPassword}
                             validatePassword={validatePassword}
                             should_show_server_form={should_show_server_form}
@@ -427,8 +541,10 @@ export default connect(({ client, modules }) => ({
     email: client.email,
     account_title: modules.mt5.account_title,
     account_type: modules.mt5.account_type,
+    account_status: client.account_status,
     disableMt5PasswordModal: modules.mt5.disableMt5PasswordModal,
     error_message: modules.mt5.error_message,
+    error_type: modules.mt5.error_type,
     has_mt5_error: modules.mt5.has_mt5_error,
     landing_companies: client.landing_companies,
     is_eu: client.is_eu,

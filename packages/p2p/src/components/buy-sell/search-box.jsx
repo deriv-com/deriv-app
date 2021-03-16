@@ -11,8 +11,6 @@ const SearchBox = () => {
     const { buy_sell_store } = useStores();
 
     const onSearch = ({ search }) => {
-        const search_results = [];
-
         buy_sell_store.setSearchTerm(search.trim());
 
         if (!search.trim()) {
@@ -20,17 +18,8 @@ const SearchBox = () => {
             return;
         }
 
-        buy_sell_store.items.forEach(item => {
-            if (item.advertiser_details.name.toLowerCase().includes(search.toLowerCase().trim())) {
-                search_results.push(item);
-            }
-        });
-
-        if (search_results.length) {
-            buy_sell_store.setSearchResults(search_results);
-        } else {
-            buy_sell_store.setSearchResults([]);
-        }
+        buy_sell_store.setIsLoading(true);
+        buy_sell_store.loadMoreItems({ startIndex: 0 });
     };
 
     const onSearchClear = setFieldValue => {

@@ -76,15 +76,13 @@ export default class BuySellStore extends BaseStore {
 
     @computed
     get rendered_items() {
-        if (isMobile() && this.items.length > 0) {
+        if (isMobile()) {
             if (this.search_term) {
                 if (this.search_results.length) {
                     return [{ id: 'WATCH_THIS_SPACE' }, ...this.search_results];
-                } else {
-                    return [{ id: 'WATCH_THIS_SPACE' }, { id: 'NO_MATCH_ROW' }];
                 }
+                return [{ id: 'WATCH_THIS_SPACE' }, { id: 'NO_MATCH_ROW' }];
             }
-
             // This allows for the sliding animation on the Buy/Sell toggle as it pushes
             // an empty item with an item that holds the same height of the toggle container.
             // Also see: buy-sell-row.jsx
@@ -94,11 +92,9 @@ export default class BuySellStore extends BaseStore {
         if (this.search_term) {
             if (this.search_results.length) {
                 return this.search_results;
-            } else {
-                return [{ id: 'NO_MATCH_ROW' }];
             }
+            return [{ id: 'NO_MATCH_ROW' }];
         }
-
         return this.items;
     }
 
@@ -170,7 +166,7 @@ export default class BuySellStore extends BaseStore {
         return new Promise(resolve => {
             requestWS({
                 p2p_advert_list: 1,
-                counterparty_type: counterparty_type,
+                counterparty_type,
                 offset: startIndex,
                 limit: general_store.list_item_limit,
                 sort_by: this.sort_by,
@@ -198,6 +194,26 @@ export default class BuySellStore extends BaseStore {
                         });
 
                         this.setItems([...old_items, ...new_items]);
+
+                        const search_results = [];
+
+                        if (this.search_term) {
+                            this.items.forEach(item => {
+                                if (
+                                    item.advertiser_details.name
+                                        .toLowerCase()
+                                        .includes(this.search_term.toLowerCase().trim())
+                                ) {
+                                    search_results.push(item);
+                                }
+                            });
+                        }
+
+                        if (search_results.length) {
+                            this.setSearchResults(search_results);
+                        } else {
+                            this.setSearchResults([]);
+                        }
                     }
                 } else {
                     this.setApiErrorMessage(response.error.message);

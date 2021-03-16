@@ -236,7 +236,7 @@ export default class CashierStore extends BaseStore {
                 // wait for client settings to be populated in client-store
                 await this.WS.wait('get_settings');
 
-                if (this.root_store.client.is_logged_in && !this.root_store.client.is_virtual) {
+                if (this.root_store.client.is_logged_in) {
                     await this.checkP2pStatus();
                     await this.filterPaymentAgentList();
                 }
@@ -249,7 +249,7 @@ export default class CashierStore extends BaseStore {
         const advertiser_info = await this.WS.authorized.p2pAdvertiserInfo();
         const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
         const is_p2p_restricted = advertiser_error === 'RestrictedCountry' || advertiser_error === 'RestrictedCurrency';
-        this.setIsP2pVisible(!is_p2p_restricted);
+        this.setIsP2pVisible(!(is_p2p_restricted || this.root_store.client.is_virtual));
     }
 
     @action.bound

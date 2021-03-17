@@ -4,7 +4,7 @@ import { Dialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getCurrentProductionDomain } from '@deriv/shared';
 
-const RedirectNoticeModal = ({ is_logged_in, is_eu }) => {
+const RedirectNoticeModal = ({ is_logged_in, is_eu, portal_id }) => {
     const [dialog_status, setDialogStatus] = React.useState(false);
     const [external_link, setExternalLink] = React.useState('');
 
@@ -33,12 +33,12 @@ const RedirectNoticeModal = ({ is_logged_in, is_eu }) => {
     };
 
     const onClickExternalLink = e => {
-        const linkElement = e.target.tagName === 'A' ? e.target : e.target.closest('a');
-        if (linkElement) {
-            if (isThirdPartyLink(linkElement.href) && is_logged_in && is_eu) {
+        const link_element = e.target.tagName === 'A' ? e.target : e.target.closest('a');
+        if (link_element) {
+            if (isThirdPartyLink(link_element.href) && is_logged_in && is_eu) {
                 e.preventDefault();
                 e.stopPropagation();
-                setExternalLink(linkElement.href);
+                setExternalLink(link_element.href);
                 setDialogStatus(true);
             }
         }
@@ -71,7 +71,7 @@ const RedirectNoticeModal = ({ is_logged_in, is_eu }) => {
                 {localize('You are being redirected to an external website.')}
             </Dialog>
         ) : null,
-        document.getElementById('popup_root')
+        document.getElementById(portal_id)
     );
 };
 

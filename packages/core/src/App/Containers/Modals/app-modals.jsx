@@ -72,7 +72,7 @@ const AppModals = ({
 
     return (
         <>
-            <RedirectNoticeModal is_logged_in={is_logged_in} is_eu={is_eu} />
+            <RedirectNoticeModal is_logged_in={is_logged_in} is_eu={is_eu} portal_id='popup_root' />
             {ComponentToLoad ? <React.Suspense fallback={<div />}>{ComponentToLoad}</React.Suspense> : null}
         </>
     );

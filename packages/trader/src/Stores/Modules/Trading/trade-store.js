@@ -39,6 +39,7 @@ export default class TradeStore extends BaseStore {
     @observable is_purchase_enabled = false;
     @observable is_trade_enabled = false;
     @observable is_equal = 0;
+    @observable has_equals_only = false;
 
     // Underlying
     @observable symbol;

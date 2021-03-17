@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { routes, isMobile, getDecimalPlaces, getPlatformInformation } from '@deriv/shared';
+import { routes, isMobile, getDecimalPlaces, getPlatformInformation, truncateFileName } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
@@ -71,7 +71,7 @@ const DefaultHeader = ({
                 return !is_logged_in || is_mt5_allowed;
             }
             if (is_mf && config.href === routes.smarttrader) {
-                return;
+                return false;
             }
             return true;
         });

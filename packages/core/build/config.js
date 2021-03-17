@@ -114,17 +114,6 @@ const copyConfig = base => {
         },
     ];
 
-    if (is_release) {
-        patterns.push({
-            from: path.resolve(__dirname, '../src/templates/app/pushwoosh/pushwoosh-service-worker.js'),
-            to: 'pushwoosh-service-worker.js',
-            toType: 'file',
-            transform(content, path) {
-                return transformContentUrlBase(content, path, base);
-            },
-        });
-    }
-
     return {
         patterns,
         options: {

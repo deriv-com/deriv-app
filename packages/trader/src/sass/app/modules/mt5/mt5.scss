@@ -1,25 +1,16 @@
 .dc-modal__container_mt5-password-modal,
 .dc-mobile-dialog__mt5-password-modal {
-    max-width: 424px;
-    min-height: 300px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
 
-    h2 {
-        @include typeface(--title-center-bold-black);
-        color: var(--text-prominent);
-        text-transform: none;
-        margin: 0.4rem 2.2rem 2.4rem;
-        max-width: 30rem;
-    }
     form {
         flex-grow: 1;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
-        padding: 2rem;
+        padding: 0 2rem 1.2rem;
 
         @include mobile {
             padding: 0;
@@ -36,10 +27,7 @@
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        align-items: center;
-    }
-    .dc-modal-header {
-        display: none;
+        align-items: flex-start;
     }
     .dc-input {
         &__label {
@@ -64,12 +52,11 @@
         margin-top: 3em;
     }
     & .dc-password-meter__container {
-        flex-grow: 0;
-        width: 30rem;
+        flex-grow: 1;
         margin: auto;
 
         .dc-password-input__field {
-            margin-bottom: 9.7rem;
+            margin-bottom: 5rem;
         }
         @include mobile {
             width: calc(100vw - 4.8rem);
@@ -90,6 +77,18 @@
             height: 100%;
             max-height: calc(100% - 6.4rem);
             padding: 2rem;
+        }
+    }
+    @include tablet-up {
+        .mt5-password-modal__content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin-bottom: 2rem;
+
+            &--password-reset {
+                padding: 0 2.5rem;
+            }
         }
     }
 }
@@ -230,10 +229,6 @@
         }
     }
     &__password-area {
-        @include desktop {
-            width: 30rem;
-            height: 12rem;
-        }
         @include mobile {
             width: 100%;
             max-width: calc(100% - 2.4rem);
@@ -274,11 +269,19 @@
     }
     @include mobile {
         & .dc-form-submit-button {
-            position: relative;
-            background-color: unset;
-            border: none;
-            bottom: unset;
+            all: unset;
         }
+    }
+}
+
+.mt5-trading-password-required {
+    display: grid;
+    grid-auto-rows: auto;
+    grid-gap: 1.2rem;
+    justify-items: center;
+    @include tablet-up {
+        max-width: 364px;
+        margin: 0 3.2rem 3.2rem;
     }
 }
 

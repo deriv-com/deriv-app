@@ -25,6 +25,8 @@ export default class MT5Store extends BaseStore {
 
     @observable current_account = undefined; // this is a tmp value, don't rely on it, unless you set it first.
 
+    @observable error_type = undefined;
+
     constructor({ root_store }) {
         super({ root_store });
     }
@@ -95,14 +97,21 @@ export default class MT5Store extends BaseStore {
     }
 
     @action.bound
-    clearMt5Error() {
+    resetFormErrors() {
         this.error_message = '';
+        this.error_type = undefined;
         this.has_mt5_error = false;
+    }
+
+    @action.bound
+    clearMt5Error() {
+        this.resetFormErrors();
         this.is_mt5_password_modal_enabled = false;
     }
 
     @action.bound
     createMT5Account({ category, type, set_password }) {
+        this.clearMt5Error();
         this.setAccountType({
             category,
             type,
@@ -204,6 +213,7 @@ export default class MT5Store extends BaseStore {
     setError(state, obj) {
         this.has_mt5_error = state;
         this.error_message = obj ? obj.message : '';
+        this.error_type = obj?.code ?? undefined;
     }
 
     @action.bound

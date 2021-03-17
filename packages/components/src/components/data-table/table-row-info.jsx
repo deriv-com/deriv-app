@@ -7,6 +7,7 @@ import Icon from '../icon';
 
 const TableRowInfo = ({ replace, is_footer, cells, className }) => {
     const [show_details, setShowDetails] = React.useState(false);
+    const [is_copied, setIsCopied] = React.useState(false);
 
     const toggleDetails = () => {
         if (replace) {
@@ -14,27 +15,23 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
         }
     };
 
-    const CopyButton = ({ text_copy }) => {
-        const [icon, setIcon] = React.useState('IcClipboard');
-
-        const success = () => {
-            setIcon('IcCheckmarkCircle');
-            setTimeout(() => {
-                setIcon('IcClipboard');
-            }, 1000);
-        };
-
-        const copyText = event => {
-            navigator.clipboard.writeText(text_copy);
-            event.stopPropagation();
-            success();
-        };
-
-        return <Icon icon={icon} onClick={event => copyText(event)} />;
+    const onCopySuccess = () => {
+        setIsCopied(true);
+        setTimeout(() => {
+            setIsCopied(false);
+        }, 300);
     };
-    CopyButton.propTypes = {
-        text_copy: PropTypes.string,
+
+    const onClickCopy = event => {
+        event.stopPropagation();
+        navigator.clipboard.writeText(replace.message).then(() => {
+            onCopySuccess();
+        });
     };
+
+    const copy_to_clipboard = (
+        <Icon icon={is_copied ? 'IcCheckmarkCircle' : 'IcCopy'} onClick={event => onClickCopy(event)} />
+    );
 
     return (
         <div
@@ -45,10 +42,12 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
                 <ThemedScrollbars height='80px'>
                     <div>
                         {replace?.component ?? (
-                            <Text as='p' size='xs' className='statement__row--detail-text'>
-                                {replace.message}
-                                <CopyButton text_copy={replace.message} />
-                            </Text>
+                            <div className='table__row--info'>
+                                <Text as='p' size='xs' className='statement__row--detail-text'>
+                                    {replace.message}
+                                </Text>
+                                {copy_to_clipboard}
+                            </div>
                         )}
                     </div>
                 </ThemedScrollbars>

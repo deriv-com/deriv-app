@@ -14,7 +14,7 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
         }
     };
 
-    const CopyButton = ({ text_copy }) => {
+    const CopyButton = () => {
         const [icon, setIcon] = React.useState('IcClipboard');
 
         const success = () => {
@@ -25,15 +25,18 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
         };
 
         const copyText = event => {
-            navigator.clipboard.writeText(text_copy);
             event.stopPropagation();
-            success();
+            navigator.clipboard
+                .writeText(replace.message)
+                .then(() => {
+                    success();
+                })
+                .catch(e => {
+                    console.error('Could not copy text: ', e);
+                });
         };
 
         return <Icon icon={icon} onClick={event => copyText(event)} />;
-    };
-    CopyButton.propTypes = {
-        text_copy: PropTypes.string,
     };
 
     return (
@@ -47,7 +50,7 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
                         {replace?.component ?? (
                             <Text as='p' size='xs' className='statement__row--detail-text'>
                                 {replace.message}
-                                <CopyButton text_copy={replace.message} />
+                                <CopyButton />
                             </Text>
                         )}
                     </div>

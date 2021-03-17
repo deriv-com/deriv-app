@@ -50,7 +50,7 @@ const AccountSwitcher = props => {
                 inline: 'nearest',
             });
         }
-    }, [is_dmt5_real_visible]);
+    }, [is_dmt5_real_visible, dmt5_ref]);
 
     const toggleVisibility = section => {
         switch (section) {

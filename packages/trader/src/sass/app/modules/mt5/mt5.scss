@@ -274,6 +274,17 @@
     }
 }
 
+.mt5-trading-password-required {
+    display: grid;
+    grid-auto-rows: auto;
+    grid-gap: 1.2rem;
+    justify-items: center;
+    @include tablet-up {
+        max-width: 364px;
+        margin: 0 3.2rem 3.2rem;
+    }
+}
+
 /** @define poi-icon-row; weak */
 .poi-icon-row {
     display: flex;

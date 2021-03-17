@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { useHistory } from 'react-router-dom';
+import { useHistory, NavLink } from 'react-router-dom';
 import {
     DesktopWrapper,
     FormSubmitButton,
@@ -21,30 +21,59 @@ import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import 'Sass/app/modules/mt5/mt5.scss';
 import { connect } from 'Stores/connect';
 
+const RequireTradingPasswordModal = ({ should_set_trading_password, has_mt5_account, children }) => {
+    if (should_set_trading_password && has_mt5_account) {
+        return (
+            <div className='mt5-trading-password-required'>
+                <Icon icon='IcMt5OnePassword' size='128' />
+                <Text as='h2' size='s' line_height='24' weight='bold'>
+                    <Localize i18n_default_text='Set your trading password' />
+                </Text>
+                <Text as='p' size='xs' align='center'>
+                    <Localize i18n_default_text='You can now create one secure password to log into all your DMT5 accounts.' />
+                </Text>
+                <NavLink to={routes.passwords} className='dc-btn dc-btn--primary dc-btn__large'>
+                    <Text color='colored-background' weight='bold' size='xs'>
+                        <Localize i18n_default_text='Set your trading password' />
+                    </Text>
+                </NavLink>
+            </div>
+        );
+    }
+    return children;
+};
+
 const PasswordModalHeader = ({
     should_set_trading_password,
     should_show_server_form,
     account_title,
     is_password_reset_error,
-}) => (
-    <Text as='span' line_height='24' weight='bold' size='xs'>
-        {!should_show_server_form && should_set_trading_password && !is_password_reset_error && (
-            <Localize i18n_default_text='Set a trading password' />
-        )}
-        {!should_show_server_form && !should_set_trading_password && !is_password_reset_error && (
-            <Localize i18n_default_text='Enter your trading password' />
-        )}
-        {!should_show_server_form && is_password_reset_error && <Localize i18n_default_text='Too many attempts' />}
-        {should_show_server_form && (
-            <Localize
-                i18n_default_text='Choose a server for your DMT5 {{ account_type }} account'
-                values={{
-                    account_type: account_title,
-                }}
-            />
-        )}
-    </Text>
-);
+    has_mt5_account,
+}) => {
+    if (should_set_trading_password && has_mt5_account && !should_show_server_form) {
+        return null;
+    }
+
+    return (
+        <Text as='span' line_height='24' weight='bold' size='xs'>
+            {!should_show_server_form && should_set_trading_password && !is_password_reset_error && (
+                <Localize i18n_default_text='Set a trading password' />
+            )}
+            {!should_show_server_form && !should_set_trading_password && !is_password_reset_error && (
+                <Localize i18n_default_text='Enter your trading password' />
+            )}
+            {!should_show_server_form && is_password_reset_error && <Localize i18n_default_text='Too many attempts' />}
+            {should_show_server_form && (
+                <Localize
+                    i18n_default_text='Choose a server for your DMT5 {{ account_type }} account'
+                    values={{
+                        account_type: account_title,
+                    }}
+                />
+            )}
+        </Text>
+    );
+};
 const getSubmitText = (account_title, category) => {
     if (category === 'real') {
         return localize(
@@ -335,6 +364,7 @@ const MT5PasswordModal = ({
     const is_bvi = React.useMemo(() => {
         return landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
     }, [landing_companies]);
+    const has_mt5_account = React.useMemo(() => Boolean(mt5_login_list?.length), [mt5_login_list]);
 
     const should_set_trading_password = React.useMemo(
         () => Array.isArray(account_status.status) && account_status.status.includes('trading_password_required'),
@@ -433,38 +463,45 @@ const MT5PasswordModal = ({
                             should_show_server_form={should_show_server_form}
                             should_set_trading_password={should_set_trading_password}
                             account_title={account_title}
+                            has_mt5_account={has_mt5_account}
                             is_password_reset_error={is_password_reset}
                         />
                     )}
                 >
-                    {should_show_server_form ? (
-                        <MT5ServerForm
-                            trading_servers={trading_servers}
-                            mt5_login_list={mt5_login_list}
-                            account_title={account_title}
-                            password={password}
-                            submitMt5Form={(v, setSubmitting) => submitMt5Password(v, setSubmitting)}
-                            onBack={() => setPassword('')}
-                        />
-                    ) : (
-                        <MT5PasswordForm
-                            is_bvi={is_bvi}
-                            is_submitting={is_submitting}
-                            account_title={account_title}
-                            closeModal={closeModal}
-                            error_type={error_type}
-                            error_message={error_message}
-                            form_error={form_error}
-                            should_set_trading_password={should_set_trading_password}
-                            submitMt5Password={setPassword}
-                            is_real_financial_stp={is_real_financial_stp}
-                            validatePassword={validatePassword}
-                            should_show_server_form={should_show_server_form}
-                            values={{
-                                password,
-                            }}
-                        />
-                    )}
+                    <RequireTradingPasswordModal
+                        has_mt5_account={has_mt5_account}
+                        should_set_trading_password={should_set_trading_password}
+                    >
+                        {should_show_server_form ? (
+                            <MT5ServerForm
+                                trading_servers={trading_servers}
+                                mt5_login_list={mt5_login_list}
+                                account_title={account_title}
+                                password={password}
+                                submitMt5Form={(v, setSubmitting) => submitMt5Password(v, setSubmitting)}
+                                onBack={() => setPassword('')}
+                            />
+                        ) : (
+                            <MT5PasswordForm
+                                is_bvi={is_bvi}
+                                is_submitting={is_submitting}
+                                account_title={account_title}
+                                closeModal={closeModal}
+                                error_type={error_type}
+                                error_message={error_message}
+                                has_mt5_account={has_mt5_account}
+                                form_error={form_error}
+                                should_set_trading_password={should_set_trading_password}
+                                submitMt5Password={setPassword}
+                                is_real_financial_stp={is_real_financial_stp}
+                                validatePassword={validatePassword}
+                                should_show_server_form={should_show_server_form}
+                                values={{
+                                    password,
+                                }}
+                            />
+                        )}
+                    </RequireTradingPasswordModal>
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
@@ -498,6 +535,7 @@ const MT5PasswordModal = ({
                             should_set_trading_password={should_set_trading_password}
                             submitMt5Password={setPassword}
                             validatePassword={validatePassword}
+                            has_mt5_account={has_mt5_account}
                             should_show_server_form={should_show_server_form}
                         />
                     )}

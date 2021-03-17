@@ -5,15 +5,13 @@ import React from 'react';
 import { Icon, DesktopWrapper, Text } from '@deriv/components';
 import IconTradeCategory from 'Assets/Trading/Categories/icon-trade-categories.jsx';
 
-const Item = ({ contract_types, handleInfoClick, handleSelect, is_equal, name, value }) =>
+const Item = ({ contract_types, handleInfoClick, handleSelect, name, value }) =>
     contract_types.map((type, idx) => (
         <div
             id={`dt_contract_${type.value}_item`}
             key={idx}
             className={classNames('contract-type-item', {
                 'contract-type-item--selected': value === type.value,
-                'contract-type-item--invisible':
-                    (type.value === 'rise_fall' && is_equal) || (type.value === 'rise_fall_equal' && !is_equal),
             })}
             name={name}
             value={type.value}
@@ -35,7 +33,6 @@ Item.propTypes = {
     contract_types: MobxPropTypes.arrayOrObservableArray,
     handleInfoClick: PropTypes.func,
     handleSelect: PropTypes.func,
-    is_equal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     name: PropTypes.string,
     value: PropTypes.string,
 };

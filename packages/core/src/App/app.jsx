@@ -39,6 +39,7 @@ import 'Sass/app.scss';
 
 const initCashierStore = () => {
     root_store.modules.attachModule('cashier', new CashierStore({ root_store, WS }));
+    console.log('Hello');
 };
 
 const App = ({ root_store }) => {

@@ -1,9 +1,8 @@
 const path = require('path');
 const stylelintFormatter = require('stylelint-formatter-pretty');
-const { IS_RELEASE } = require('./constants');
 const { transformContentUrlBase } = require('./helpers');
 
-const copyConfig = (base, is_release) => {
+const copyConfig = base => {
     const patterns = [
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot-web-ui.main.css*'),
@@ -123,18 +122,20 @@ const copyConfig = (base, is_release) => {
     };
 };
 
-const generateSWConfig = () => ({
+const generateSWConfig = is_release => ({
     cleanupOutdatedCaches: true,
     exclude: [/CNAME$/, /index\.html$/, /404\.html$/, /^localstorage-sync\.html$/, /\.map$/],
     skipWaiting: true,
     clientsClaim: true,
-    // importScripts: [`https://cdn.pushwoosh.com/webpush/v3/pushwoosh-service-worker.js`],
+    ...(is_release && {
+        importScripts: [`https://cdn.pushwoosh.com/webpush/v3/pushwoosh-service-worker.js`],
+    }),
 });
 
-const htmlOutputConfig = () => ({
+const htmlOutputConfig = is_release => ({
     template: 'index.html',
     filename: 'index.html',
-    minify: !IS_RELEASE
+    minify: !is_release
         ? false
         : {
               collapseWhitespace: true,

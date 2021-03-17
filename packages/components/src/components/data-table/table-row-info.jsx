@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ThemedScrollbars from '../themed-scrollbars';
 import Text from '../text';
-import Icon from '../icon';
+import Icon from '../icon/icon.jsx';
 
 const TableRowInfo = ({ replace, is_footer, cells, className }) => {
     const [show_details, setShowDetails] = React.useState(false);

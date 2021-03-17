@@ -427,6 +427,56 @@
             }
         }
     }
+
+    &-default {
+        &-header {
+            text-align: center;
+        }
+
+        &-detail {
+            margin: 2.4rem 2.4rem 0;
+
+            &__div {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                padding: 1.6rem;
+                position: static;
+                width: 100%;
+                border: 2px solid var(--general-section-1);
+                border-radius: $BORDER_RADIUS * 2;
+                margin: 0.8rem 0rem;
+                cursor: pointer;
+            }
+            &__content {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                width: 100%;
+            }
+            &__text {
+                position: static;
+                width: 100%;
+            }
+            &__array {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                position: static;
+                height: 2.5rem;
+                margin-top: 1.6rem;
+            }
+            &__icons {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                width: 4rem;
+                height: 2.5rem;
+                margin: 0rem 0.8rem;
+            }
+        }
+    }
 }
 
 /** @define cashier-page-wrapper */
@@ -1358,55 +1408,3 @@ div.payment-agent-transfer {
     }
 }
 /* stylelint-enable plugin/selector-bem-pattern */
-
-.cashier-default {
-    &-header {
-        text-align: center;
-    }
-
-    &-detail {
-        margin-top: 2.4rem;
-        margin-left: 2.4rem;
-        margin-right: 2.4rem;
-
-        &__div {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 1.6rem;
-            position: static;
-            width: 100%;
-            border: 2px solid var(--general-section-1);
-            border-radius: $BORDER_RADIUS * 2;
-            margin: 0.8rem 0rem;
-            cursor: pointer;
-        }
-        &__content {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            width: 100%;
-        }
-        &__text {
-            position: static;
-            width: 100%;
-        }
-        &__array {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            position: static;
-            height: 2.5rem;
-            margin-top: 1.6rem;
-        }
-        &__icons {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            width: 4rem;
-            height: 2.5rem;
-            margin: 0rem 0.8rem;
-        }
-    }
-}

@@ -1,7 +1,9 @@
+import { localize } from '@deriv/translations';
+
 const cash_contents = [
-    { title: 'Credit/debit cards', icons: ['IcStockVisa', 'IcStockMasterCard'] },
+    { title: localize('Credit/debit cards'), icons: ['IcStockVisa', 'IcStockMasterCard'] },
     {
-        title: 'Bank wire',
+        title: localize('Bank wire'),
         icons: [
             'IcWalletZingpayLight',
             'IcCashierNganLoung',
@@ -12,7 +14,7 @@ const cash_contents = [
         ],
     },
     {
-        title: 'E-wallets',
+        title: localize('E-wallets'),
         icons: [
             'IcWalletSkrillLight',
             'IcWalletNetellerLight',
@@ -27,11 +29,11 @@ const cash_contents = [
 ];
 const crypto_contents = [
     {
-        title: 'Cryptos',
+        title: localize('Cryptos'),
         icons: ['IcCashierBitcoin', 'IcCashierEthereum', 'IcCashierLiteCoin', 'IcCashierUsdCoin', 'IcCashierTether'],
     },
     {
-        title: 'Buy Cryptos',
+        title: localize('Buy Cryptos'),
         icons: ['IcCashierQrCode', 'IcCashierChangelly', 'IcCashierXanpoolLight', 'IcCashierBanxaLight'],
     },
 ];
@@ -67,8 +69,8 @@ const dp2p_contents = [
 const createCashProvider = onClick => {
     return {
         detail_click: onClick,
-        detail_description: 'Deposit cash via payment methods available in your country.',
-        detail_header: 'Deposit cash',
+        detail_description: localize('Deposit cash via payment methods available in your country.'),
+        detail_header: localize('Deposit cash'),
         detail_contents: cash_contents,
     };
 };
@@ -76,8 +78,8 @@ const createCashProvider = onClick => {
 const createCryptoProvider = onClick => {
     return {
         detail_click: onClick,
-        detail_description: 'Receive crypto to a deposit address, or buy crypto with cash.',
-        detail_header: 'Deposit crypto',
+        detail_description: localize('Receive crypto to a deposit address, or buy crypto with cash.'),
+        detail_header: localize('Deposit crypto'),
         detail_contents: crypto_contents,
     };
 };
@@ -85,9 +87,10 @@ const createCryptoProvider = onClick => {
 const createPaymentAgentProvider = onClick => {
     return {
         detail_click: onClick,
-        detail_description:
-            'Deposit in your local currency via an authorised, independent payment agent in your country.',
-        detail_header: 'Deposit via Payment Agent',
+        detail_description: localize(
+            'Deposit in your local currency via an authorised, independent payment agent in your country.'
+        ),
+        detail_header: localize('Deposit via Payment Agent'),
         detail_contents: payment_agent_contents,
     };
 };
@@ -95,9 +98,10 @@ const createPaymentAgentProvider = onClick => {
 const createDp2pProvider = onClick => {
     return {
         detail_click: onClick,
-        detail_description:
-            'Deposit in your local currency via peer-to-peer exchange with fellow traders in your country.',
-        detail_header: 'Deposit with DP2P',
+        detail_description: localize(
+            'Deposit in your local currency via peer-to-peer exchange with fellow traders in your country.'
+        ),
+        detail_header: localize('Deposit with DP2P'),
         detail_contents: dp2p_contents,
     };
 };

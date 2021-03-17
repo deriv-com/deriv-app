@@ -25,7 +25,7 @@ const fileReadErrorMessage = filename => {
     return localize('Unable to read file {{name}}', { name: filename });
 };
 
-const FileUploader = React.forwardRef(({ onFileDrop, message, preview_single, getSocket }, ref) => {
+const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
     const [document_file, setDocumentFile] = useStateCallback({ files: [], error_message: null });
 
     const handleAcceptedFiles = files => {
@@ -94,15 +94,14 @@ const FileUploader = React.forwardRef(({ onFileDrop, message, preview_single, ge
                 filename_limit={32}
                 hover_message={localize('Drop files here..')}
                 max_size={max_document_size}
-                message={message || UploadMessage}
-                preview_single={preview_single}
+                message={UploadMessage}
                 multiple={false}
                 onDropAccepted={handleAcceptedFiles}
                 onDropRejected={handleRejectedFiles}
                 validation_error_message={document_file.error_message}
                 value={document_file.files}
             />
-            {!preview_single && (document_file.files.length > 0 || !!document_file.error_message) && (
+            {(document_file.files.length > 0 || !!document_file.error_message) && (
                 <div className='account-poa__upload-remove-btn-container'>
                     <Icon
                         icon='IcCloseCircle'

@@ -37,7 +37,7 @@ const PreviewSingle = props => {
     }
 };
 
-const FileDropzone = ({ className, ...props }) => (
+const FileDropzone = ({ className, noClick = false, ...props }) => (
     <Dropzone
         // sends back accepted files array
         onDropAccepted={props.onDropAccepted}
@@ -49,8 +49,9 @@ const FileDropzone = ({ className, ...props }) => (
         accept={props.accept}
         // set maximum size limit for file, in bytes (binary)
         maxSize={props.max_size}
+        noClick={noClick}
     >
-        {({ getRootProps, getInputProps, isDragAccept, isDragActive, isDragReject }) => {
+        {({ getRootProps, getInputProps, isDragAccept, isDragActive, isDragReject, open }) => {
             return (
                 <div
                     {...getRootProps()}
@@ -59,6 +60,7 @@ const FileDropzone = ({ className, ...props }) => (
                         'dc-file-dropzone--has-file': isDragActive || props.value.length > 0,
                         'dc-file-dropzone--has-error':
                             (isDragReject || !!props.validation_error_message) && !isDragAccept,
+                        'dc-file-dropzone--is-noclick': noClick,
                     })}
                 >
                     <input {...getInputProps()} />
@@ -73,7 +75,9 @@ const FileDropzone = ({ className, ...props }) => (
                             }
                             timeout={150}
                         >
-                            <div className='dc-file-dropzone__message'>{props.message}</div>
+                            <div className='dc-file-dropzone__message'>
+                                {noClick ? props.message(open) : props.message}
+                            </div>
                         </FadeInMessage>
                         <FadeInMessage
                             // message shown on hover if files are accepted onDrag
@@ -96,7 +100,9 @@ const FileDropzone = ({ className, ...props }) => (
                                       {props.filename_limit ? truncateFileName(file, props.filename_limit) : file.name}
                                   </Text>
                               ))
-                            : props.value[0] && !isDragActive && <PreviewSingle {...props} />}
+                            : props.value[0] &&
+                              !isDragActive &&
+                              !props.validation_error_message && <PreviewSingle {...props} />}
                         <FadeInMessage
                             // message shown if there are errors with the dragged file
                             is_visible={isDragReject}
@@ -116,7 +122,9 @@ const FileDropzone = ({ className, ...props }) => (
                             <div
                                 className={classNames('dc-file-dropzone__message', 'dc-file-dropzone__message--error')}
                             >
-                                {props.validation_error_message}
+                                {noClick && typeof props.validation_error_message === 'function'
+                                    ? props.validation_error_message(open)
+                                    : props.validation_error_message}
                             </div>
                         </FadeInMessage>
                     </div>

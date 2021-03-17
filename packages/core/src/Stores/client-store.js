@@ -407,6 +407,11 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_social_signup() {
+        return this.account_status?.status?.some(status => status === 'social_signup');
+    }
+
+    @computed
     get is_financial_information_incomplete() {
         return this.account_status?.status?.some(status => status === 'financial_information_not_complete');
     }

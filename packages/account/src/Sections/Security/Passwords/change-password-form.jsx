@@ -1,15 +1,12 @@
-import classNames from 'classnames';
 import React from 'react';
 import { Formik } from 'formik';
-import { FormSubmitErrorMessage, Button, Loading, PasswordInput, PasswordMeter } from '@deriv/components';
+import { Loading, PasswordInput, PasswordMeter } from '@deriv/components';
 import { withRouter } from 'react-router-dom';
 import { routes, isMobile, validPassword, validLength, getErrorMessages } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
-import FormSubHeader from 'Components/form-sub-header';
-import FormBody from 'Components/form-body';
-import FormFooter from 'Components/form-footer';
+import PasswordsFooter from './passwords-footer.jsx';
 
 class ChangePasswordForm extends React.Component {
     state = {
@@ -100,15 +97,14 @@ class ChangePasswordForm extends React.Component {
                         handleSubmit,
                         isSubmitting,
                     }) => (
-                        <form className='account-form account__password-wrapper' onSubmit={handleSubmit}>
+                        <form className='account__passwords-item-right' onSubmit={handleSubmit}>
                             {is_loading ? (
-                                <FormBody>
+                                <div>
                                     <Loading is_fullscreen={false} className='account__initial-loader' />;
-                                </FormBody>
+                                </div>
                             ) : (
-                                <FormBody scroll_offset={isMobile() ? '200px' : '55px'}>
-                                    <FormSubHeader title={localize('Change your Deriv password')} />
-                                    <fieldset className='account-form__fieldset'>
+                                <div scroll_offset={isMobile() ? '200px' : '55px'}>
+                                    <fieldset className='account__passwords-fieldset'>
                                         <PasswordInput
                                             autoComplete='current-password'
                                             label={localize('Current password')}
@@ -119,7 +115,7 @@ class ChangePasswordForm extends React.Component {
                                             onChange={handleChange}
                                         />
                                     </fieldset>
-                                    <fieldset className='account-form__fieldset'>
+                                    <fieldset className='account__passwords-fieldset'>
                                         <PasswordMeter
                                             input={new_pw_input}
                                             has_error={!!(touched.new_password && errors.new_password)}
@@ -141,45 +137,17 @@ class ChangePasswordForm extends React.Component {
                                             />
                                         </PasswordMeter>
                                     </fieldset>
-                                </FormBody>
+                                </div>
                             )}
-                            <FormFooter>
-                                {status?.msg && (
-                                    <FormSubmitErrorMessage
-                                        className={classNames({ 'account-form__error-message': isMobile() })}
-                                        message={status.msg}
-                                    />
-                                )}
-                                <Button
-                                    className={classNames('account-form__footer-btn', {
-                                        'account-form__footer-btn--has-bottom-margin': isMobile(),
-                                    })}
-                                    type='button'
-                                    onClick={this.props.onClickSendEmail}
-                                    text={localize('Forgot your password?')}
-                                    tertiary
-                                    large
-                                />
-                                <Button
-                                    className='account-form__footer-btn'
-                                    type='submit'
-                                    is_disabled={
-                                        isSubmitting ||
-                                        !!(
-                                            errors.new_password ||
-                                            !values.new_password ||
-                                            errors.old_password ||
-                                            !values.old_password
-                                        )
-                                    }
-                                    is_loading={is_btn_loading}
-                                    is_submit_success={is_submit_success}
-                                    has_effect
-                                    text={localize('Change password')}
-                                    primary
-                                    large
-                                />
-                            </FormFooter>
+                            <PasswordsFooter
+                                errors={errors}
+                                is_btn_loading={is_btn_loading}
+                                is_submit_success={is_submit_success}
+                                isSubmitting={isSubmitting}
+                                onClickSendEmail={this.props.onClickSendEmail}
+                                status={status}
+                                values={values}
+                            />
                         </form>
                     )}
                 </Formik>

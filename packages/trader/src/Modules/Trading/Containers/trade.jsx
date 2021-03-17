@@ -157,6 +157,8 @@ export default connect(({ common, modules, ui }) => ({
 /* eslint-disable */
 import { SmartChart } from 'Modules/SmartChart';
 
+const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChart innerRef={ref} {...props} />);
+
 // ChartMarkers --------------------------
 const Markers = ({ markers_array, is_dark_theme, granularity, currency, config }) =>
     markers_array.map(marker => {
@@ -259,7 +261,7 @@ const Chart = props => {
     if (!symbol || active_symbols.length === 0) return null;
 
     return (
-        <SmartChart
+        <SmartChartWithRef
             ref={charts_ref}
             barriers={barriers}
             bottomWidgets={show_digits_stats && isDesktop() ? bottomWidgets : props.bottomWidgets}
@@ -297,7 +299,7 @@ const Chart = props => {
             }}
         >
             <ChartMarkers />
-        </SmartChart>
+        </SmartChartWithRef>
     );
 };
 

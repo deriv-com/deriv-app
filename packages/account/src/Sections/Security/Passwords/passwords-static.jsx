@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { Localize, localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
 import DerivComLogo from '../../../Assets/ic-brand-deriv-red.svg';
-import DerivGoLogo from '../../../Assets/ic-brand-deriv-go.svg';
+import DerivGoLight from '../../../Assets/ic-brand-deriv-go-light.svg';
+import DerivGoDark from '../../../Assets/ic-brand-deriv-go-dark.svg';
 
-const PasswordsStatic = ({ is_deriv_password = false }) => (
+const PasswordsStatic = ({ is_dark_mode_on, is_deriv_password = false }) => (
     <React.Fragment>
         {is_deriv_password ? (
             <div className='account__passwords-item-left'>
@@ -23,7 +24,7 @@ const PasswordsStatic = ({ is_deriv_password = false }) => (
                     <Icon icon='IcBrandDtrader' size={32} />
                     <Icon icon='IcBrandDbot' size={32} />
                     <Icon icon='IcBrandSmarttrader' size={32} />
-                    <DerivGoLogo />
+                    {is_dark_mode_on ? <DerivGoDark /> : <DerivGoLight />}
                 </div>
             </div>
         ) : (

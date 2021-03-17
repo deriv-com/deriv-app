@@ -14,60 +14,26 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
         }
     };
 
-    const ReportsClipboard = ({ text_copy }) => {
-        const [is_copied, setIsCopied] = React.useState(false);
-        let timeout_clipboard = null;
+    const CopyButton = ({ text_copy }) => {
+        const [icon, setIcon] = React.useState('IcClipboard');
 
-        const copyToClipboard = text => {
-            const textField = document.createElement('textarea');
-            textField.innerText = text;
-            document.body.appendChild(textField);
-            textField.select();
-            document.execCommand('copy');
-            textField.remove();
+        const success = () => {
+            setIcon('IcCheckmarkCircle');
+            setTimeout(() => {
+                setIcon('IcClipboard');
+            }, 1000);
         };
 
-        const onClick = event => {
-            copyToClipboard(text_copy);
-            setIsCopied(true);
+        const copyText = event => {
+            navigator.clipboard.writeText(text_copy);
             event.stopPropagation();
-            timeout_clipboard = setTimeout(() => {
-                setIsCopied(false);
-            }, 2000);
+            success();
         };
 
-        React.useEffect(() => {
-            return () => clearTimeout(timeout_clipboard);
-        }, []);
-
-        return (
-            <>
-                {is_copied && (
-                    <Icon
-                        icon='IcCheckmarkCircle'
-                        custom_color='var(--status-success)'
-                        className={classNames('dc-clipboard', className)}
-                        onClick={event => {
-                            event.stopPropagation();
-                        }}
-                    />
-                )}
-                {!is_copied && (
-                    <Icon
-                        icon='IcClipboard'
-                        custom_color='var(--text-less-prominent)'
-                        className={classNames('dc-clipboard', className)}
-                        onClick={onClick}
-                    />
-                )}
-            </>
-        );
+        return <Icon icon={icon} onClick={event => copyText(event)} />;
     };
-    ReportsClipboard.propTypes = {
+    CopyButton.propTypes = {
         text_copy: PropTypes.string,
-        info_message: PropTypes.string,
-        success_message: PropTypes.string,
-        className: PropTypes.string,
     };
 
     return (
@@ -79,16 +45,10 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
                 <ThemedScrollbars height='80px'>
                     <div>
                         {replace?.component ?? (
-                            <div className='reports-copy'>
-                                <Text as='p' size='xs' className='statement__row--detail-text'>
-                                    {replace.message}
-                                </Text>
-                                <ReportsClipboard
-                                    text_copy={replace.message}
-                                    info_message={'Copy to clipboard'}
-                                    success_message={'Copied!'}
-                                />
-                            </div>
+                            <Text as='p' size='xs' className='statement__row--detail-text'>
+                                {replace.message}
+                                <CopyButton text_copy={replace.message} />
+                            </Text>
                         )}
                     </div>
                 </ThemedScrollbars>

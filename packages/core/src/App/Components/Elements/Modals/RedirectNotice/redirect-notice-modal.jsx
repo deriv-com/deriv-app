@@ -33,10 +33,14 @@ const RedirectNoticeModal = ({ is_logged_in, is_eu }) => {
     };
 
     const onClickExternalLink = e => {
-        if (isThirdPartyLink(e.target.href) && is_logged_in && is_eu) {
-            setExternalLink(e.target.href);
-            e.preventDefault();
-            setDialogStatus(true);
+        const linkElement = e.target.tagName === 'A' ? e.target : e.target.closest('a');
+        if (linkElement) {
+            if (isThirdPartyLink(linkElement.href) && is_logged_in && is_eu) {
+                e.preventDefault();
+                e.stopPropagation();
+                setExternalLink(linkElement.href);
+                setDialogStatus(true);
+            }
         }
     };
 

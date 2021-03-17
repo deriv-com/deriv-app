@@ -47,6 +47,10 @@ $header-height: 52px;
             max-height: 64px;
             width: 100%;
         }
+        &--info {
+            display: flex;
+            align-items: center;
+        }
     }
     &__head {
         border-bottom: 2px solid var(--general-section-1);

@@ -30,9 +30,7 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
     };
 
     const copy_to_clipboard = (
-        <div>
-            <Icon icon={is_copied ? 'IcCheckmarkCircle' : 'IcCopy'} onClick={event => onClickCopy(event)} />
-        </div>
+        <Icon icon={is_copied ? 'IcCheckmarkCircle' : 'IcCopy'} onClick={event => onClickCopy(event)} />
     );
 
     return (
@@ -44,7 +42,7 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
                 <ThemedScrollbars height='80px'>
                     <div>
                         {replace?.component ?? (
-                            <div className='reports-copy'>
+                            <div className='table__row--info'>
                                 <Text as='p' size='xs' className='statement__row--detail-text'>
                                     {replace.message}
                                 </Text>

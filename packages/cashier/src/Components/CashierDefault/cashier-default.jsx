@@ -3,7 +3,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { isCryptocurrency, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { Text } from '@deriv/components';
+import { ThemedScrollbars, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import Providers from 'Config/cashier-default-providers';
 import CashierDefaultDetail from './cashier-default-detail.jsx';
@@ -59,21 +59,23 @@ const CashierDefault = ({
     };
 
     return (
-        <div>
+        <div style={{ height: 'calc(100vh - 20rem)' }}>
             <div className='cashier-default-header'>
                 <Text size='sm'>
                     <Localize i18n_default_text='Choose a way to fund your account' />
                 </Text>
             </div>
-            {getDepositOptions()?.map(deposit => (
-                <CashierDefaultDetail
-                    key={deposit.detail_header}
-                    detail_click={deposit.detail_click}
-                    detail_contents={deposit.detail_contents}
-                    detail_description={deposit.detail_description}
-                    detail_header={deposit.detail_header}
-                />
-            ))}
+            <ThemedScrollbars>
+                {getDepositOptions()?.map(deposit => (
+                    <CashierDefaultDetail
+                        key={deposit.detail_header}
+                        detail_click={deposit.detail_click}
+                        detail_contents={deposit.detail_contents}
+                        detail_description={deposit.detail_description}
+                        detail_header={deposit.detail_header}
+                    />
+                ))}
+            </ThemedScrollbars>
         </div>
     );
 };

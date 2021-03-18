@@ -435,6 +435,7 @@
 
         &-detail {
             margin: 2.4rem 2.4rem 0;
+            width: 62rem;
 
             &__div {
                 display: flex;
@@ -443,11 +444,13 @@
                 align-items: flex-start;
                 padding: 1.6rem;
                 position: static;
-                width: 100%;
                 border: 2px solid var(--general-section-1);
                 border-radius: $BORDER_RADIUS * 2;
                 margin: 0.8rem 0rem;
                 cursor: pointer;
+            }
+            &__icon {
+                margin-left: 1.2rem;
             }
             &__content {
                 display: flex;

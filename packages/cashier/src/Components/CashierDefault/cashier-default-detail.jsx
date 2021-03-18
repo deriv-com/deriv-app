@@ -13,7 +13,7 @@ const CashierDefaultDetail = ({ detail_click, detail_contents, detail_descriptio
                     <Text size='xs' className='cashier-default-detail__text'>
                         {detail_description}
                     </Text>
-                    <Icon icon='IcChevronRight' size={16} />
+                    <Icon className='cashier-default-detail__icon' icon='IcChevronRight' size={16} />
                 </div>
                 <div>
                     {detail_contents.map(content => (

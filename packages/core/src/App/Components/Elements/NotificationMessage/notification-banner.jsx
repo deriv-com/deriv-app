@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon, StaticUrl } from '@deriv/components';
+import { Button, Icon, StaticUrl, Text } from '@deriv/components';
 import { getUrlBase } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
 const NotificationBanner = ({ onClick, header, message, button_text, img_src, img_alt, redirect_link }) => (
     <div className='notification-banner'>
         <div className='notification-banner--left'>
-            <h4 className='notification-banner__title'>
+            <Text as='h4' weight='bold' className='notification-banner__title'>
                 <Localize i18n_default_text={header} />
-            </h4>
+            </Text>
             <p className='notification-banner__description'>
                 <Localize i18n_default_text={message} />
             </p>

@@ -23,9 +23,9 @@ const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSi
                     )}
                 />
             )}
-            <h2 className='cashier__virtual-header'>
+            <Text as='h2' align='center' weight='bold' color='prominent' className='cashier__virtual-header'>
                 <Localize i18n_default_text={"You're currently using a demo account"} />
-            </h2>
+            </Text>
             {has_real_account ? (
                 <React.Fragment>
                     <Text

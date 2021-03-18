@@ -1329,8 +1329,8 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 }
 
-/** @define forgot-password; weak */
-.forgot-password {
+/** @define sent-email; weak */
+.sent-email {
     display: grid;
     grid-template-rows: 1fr 1fr 1fr;
     grid-row-gap: 16px;

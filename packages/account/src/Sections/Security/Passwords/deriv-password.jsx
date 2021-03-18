@@ -8,8 +8,9 @@ import FormSubHeader from 'Components/form-sub-header';
 import ChangePasswordForm from './change-password-form.jsx';
 import SocialPasswordForm from './social-password-form.jsx';
 import PasswordsStatic from './passwords-static.jsx';
+import SentEmailModal from './sent-email-modal.jsx';
 
-const UnlinkConfirmationDialog = ({ is_open, onClose, onConfirm }) => (
+const UnlinkConfirmationModal = ({ is_open, onClose, onConfirm }) => (
     <Modal
         is_open={is_open}
         is_confirmation_modal
@@ -30,12 +31,21 @@ const UnlinkConfirmationDialog = ({ is_open, onClose, onConfirm }) => (
 
 const DerivPassword = ({ email, is_dark_mode_on, is_social_signup }) => {
     const [is_unlink_modal_open, setIsUnlinkModalOpen] = React.useState(false);
+    const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
-    const toggleUnlinkModal = () => {
-        setIsUnlinkModalOpen(false);
+    const toggleUnlinkModal = (state_change = !is_unlink_modal_open) => {
+        setIsUnlinkModalOpen(!!state_change);
     };
 
-    const toggleEmailSentModal = () => {};
+    const toggleSentEmailModal = (state_change = !is_sent_email_modal_open) => {
+        setIsSentEmailModalOpen(!!state_change);
+    };
+
+    const onClickSendEmail = () => {
+        WS.verifyEmail(email, 'reset_password');
+        toggleUnlinkModal(false);
+        toggleSentEmailModal(true);
+    };
 
     return (
         <React.Fragment>
@@ -48,16 +58,17 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup }) => {
                     <ChangePasswordForm
                         onClickSendEmail={() => {
                             WS.verifyEmail(email, 'reset_password');
-                            // multi_step_ref.current?.goNextStep();
+                            toggleSentEmailModal(true);
                         }}
                     />
                 )}
             </div>
-            <UnlinkConfirmationDialog
+            <UnlinkConfirmationModal
                 is_open={is_unlink_modal_open}
-                onClose={() => toggleUnlinkModal()}
-                onConfirm={() => toggleEmailSentModal}
+                onClose={() => toggleUnlinkModal(false)}
+                onConfirm={() => onClickSendEmail()}
             />
+            <SentEmailModal is_open={is_sent_email_modal_open} onClose={() => toggleSentEmailModal(false)} />
         </React.Fragment>
     );
 };

@@ -421,7 +421,6 @@ export const icons = {
         'IcStockDelta',
         'IcStockDuetscheBank',
         'IcStockEbay',
-        'IcStockFacebookLogo',
         'IcStockFacebook',
         'IcStockFedex',
         'IcStockGm',

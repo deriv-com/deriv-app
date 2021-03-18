@@ -401,7 +401,6 @@ import './stock/ic-stock-dell.svg';
 import './stock/ic-stock-delta.svg';
 import './stock/ic-stock-duetsche-bank.svg';
 import './stock/ic-stock-ebay.svg';
-import './stock/ic-stock-facebook-logo.svg';
 import './stock/ic-stock-facebook.svg';
 import './stock/ic-stock-fedex.svg';
 import './stock/ic-stock-gm.svg';

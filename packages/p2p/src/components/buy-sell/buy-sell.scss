@@ -5,6 +5,10 @@
     flex-direction: column;
 
     &__advertiser-page-return {
+        .dc-text {
+            align-self: flex-start;
+        }
+
         @include mobile {
             border-bottom: 1px solid var(--general-section-1);
             margin-bottom: unset;

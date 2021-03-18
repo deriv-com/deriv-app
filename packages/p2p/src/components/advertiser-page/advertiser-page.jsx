@@ -102,9 +102,9 @@ const AdvertiserPage = () => {
                 </div>
                 <div className='advertiser-page__header-verification'>
                     {basic_verification ? (
-                        <div>
+                        <div className='advertiser-page__header-verification-id'>
                             <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'} line_height='m'>
-                                {localize('ID verified')}{' '}
+                                {localize('ID verified')}
                             </Text>
                             <Icon
                                 className='advertiser-page__header-verification-icon'
@@ -116,7 +116,7 @@ const AdvertiserPage = () => {
                     {full_verification ? (
                         <div className='advertiser-page__header-verification-status'>
                             <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'} line_height='m'>
-                                {localize('Address verified')}{' '}
+                                {localize('Address verified')}
                             </Text>
                             <Icon
                                 className='advertiser-page__header-verification-icon'

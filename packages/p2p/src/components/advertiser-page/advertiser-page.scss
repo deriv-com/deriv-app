@@ -48,21 +48,21 @@
                 right: 1.6rem;
             }
 
+            &-icon {
+                margin-left: 0.4rem;
+                vertical-align: sub;
+
+                @include mobile {
+                    vertical-align: text-top;
+                }
+            }
+
             &-id {
                 justify-self: flex-end;
             }
 
             &-status {
                 margin-left: 1.6rem;
-            }
-
-            &-icon {
-                margin-left: 0.4rem;
-                vertical-align: bottom;
-
-                @include mobile {
-                    vertical-align: text-top;
-                }
             }
         }
     }

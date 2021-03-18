@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Icon, PopoverMobile, Table, Text, ThemedScrollbars } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
-import { localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import './advertiser-page.scss';
 
@@ -112,9 +112,11 @@ const AdvertiserPageStats = () => {
                 button_text={localize('Got it')}
                 className='advertiser-page__popover-icon'
                 is_open={is_field_info_tooltip_open}
-                message={localize(
-                    "These fields are based on the last 30 days' activity: Buy, Sell, Completion, and Avg. release time."
-                )}
+                message={
+                    <Text color='prominent' line_height='m' size='xs'>
+                        <Localize i18n_default_text="These fields are based on the last 30 days' activity: Buy, Sell, Completion, and Avg. release time." />
+                    </Text>
+                }
                 setIsOpen={setIsFieldInfoTooltipOpen}
             >
                 <Icon icon='IcInfoOutline' size={16} />

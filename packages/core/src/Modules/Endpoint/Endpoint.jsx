@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
-import { Button, Input, Checkbox } from '@deriv/components';
+import { Button, Input, Checkbox, Text } from '@deriv/components';
 import { getDebugServiceWorker, getAppId, getSocketURL, PlatformContext } from '@deriv/shared';
 // eslint-disable-next-line import/extensions
 
@@ -61,17 +61,16 @@ const Endpoint = () => {
         >
             {({ errors, isSubmitting, touched, values, handleChange, setFieldTouched }) => (
                 <Form style={{ width: '30vw', minWidth: '300px', margin: '20vh auto' }}>
-                    <h1
+                    <div
                         style={{
-                            fontWeight: 'bold',
-                            color: 'var(--text-prominent)',
                             marginBottom: '1.6rem',
-                            fontSize: 'var(--text-size-s)',
-                            lineHeight: 'normal',
                         }}
                     >
-                        Change API endpoint
-                    </h1>
+                        <Text as='h1' weight='bold' color='prominent'>
+                            Change API endpoint
+                        </Text>
+                    </div>
+
                     <InputField name='server' label='Server' hint='e.g. frontend.binaryws.com' />
                     <InputField
                         name='app_id'

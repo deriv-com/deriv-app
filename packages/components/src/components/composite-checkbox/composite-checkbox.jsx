@@ -26,6 +26,7 @@ const CompositeCheckbox = ({ name, value, onChange, className, label, id, descri
             <Text
                 as='p'
                 size='xxxs'
+                line_height='s'
                 className={classNames('composite-checkbox__description', `${className}__description`)}
             >
                 {description}

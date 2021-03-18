@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { localize } from '@deriv/translations';
 import ThemedScrollbars from '../themed-scrollbars';
 import Text from '../text';
 import Icon from '../icon/icon.jsx';
@@ -24,13 +25,17 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
 
     const onClickCopy = event => {
         event.stopPropagation();
-        navigator.clipboard.writeText(replace.message).then(() => {
+        navigator.clipboard.writeText(replace.message.match(/(([a-zA-Z0-9]{44}))/g)[0]).then(() => {
             onCopySuccess();
         });
     };
 
     const copy_to_clipboard = (
-        <Icon icon={is_copied ? 'IcCheckmarkCircle' : 'IcCopy'} onClick={event => onClickCopy(event)} />
+        <Icon
+            icon={is_copied ? 'IcCheckmarkCircle' : 'IcCopy'}
+            className='table__row--icon'
+            onClick={event => onClickCopy(event)}
+        />
     );
 
     return (
@@ -45,8 +50,8 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
                             <div className='table__row--info'>
                                 <Text as='p' size='xs' className='statement__row--detail-text'>
                                     {replace.message}
+                                    {replace.message.includes(localize('Address')) ? copy_to_clipboard : null}
                                 </Text>
-                                {copy_to_clipboard}
                             </div>
                         )}
                     </div>

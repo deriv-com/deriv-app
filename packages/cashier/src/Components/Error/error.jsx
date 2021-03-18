@@ -9,7 +9,7 @@ const ErrorComponent = ({ header, message, button_link, onClickButton, button_te
         <Icon icon='IcCashierError' className='cashier-error__icon' />
         {header && <h2 className='cashier-error__header'>{header}</h2>}
         {message && (
-            <Text as='p' size='xs' line_height='s' className='cashier__paragraph' align='center'>
+            <Text as='p' align='center' size='xs' line_height='s' className='cashier__paragraph'>
                 {message}
             </Text>
         )}

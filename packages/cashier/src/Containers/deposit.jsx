@@ -41,6 +41,7 @@ const DepositeSideNote = () => {
 
 const Deposit = ({
     is_cashier_locked,
+    is_cashier_default,
     is_deposit_cash,
     is_deposit_locked,
     is_virtual,
@@ -64,7 +65,7 @@ const Deposit = ({
 
     React.useEffect(() => {
         if (iframe_height && isDesktop()) {
-            if (isCryptocurrency(currency) && typeof setSideNotes === 'function') {
+            if (isCryptocurrency(currency) && typeof setSideNotes === 'function' && !is_cashier_default) {
                 const side_notes = [
                     <DepositeSideNote key={0} />,
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
@@ -74,7 +75,7 @@ const Deposit = ({
             } else setSideNotes(null);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, iframe_height]);
+    }, [currency, iframe_height, is_cashier_default]);
     if (is_deposit_cash) {
         if (is_virtual) {
             return <Virtual />;
@@ -103,6 +104,7 @@ const Deposit = ({
 Deposit.propTypes = {
     container: PropTypes.string,
     error: PropTypes.object,
+    is_cashier_default: PropTypes.bool,
     is_cashier_locked: PropTypes.bool,
     is_deposit_cash: PropTypes.bool,
     is_deposit_locked: PropTypes.bool,
@@ -118,6 +120,7 @@ Deposit.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
+    is_cashier_default: modules.cashier.is_cashier_default,
     is_cashier_locked: modules.cashier.is_cashier_locked,
     is_deposit_cash: modules.cashier.is_deposit_cash,
     is_deposit_locked: modules.cashier.is_deposit_locked,

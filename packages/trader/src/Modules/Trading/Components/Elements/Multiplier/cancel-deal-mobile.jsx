@@ -89,6 +89,7 @@ const CancelDeal = ({
                         alignment='left'
                         icon='info'
                         id='dt_multiplier-stake__tooltip'
+                        is_bubble_hover_enabled
                         classNameBubble='trade-container__deal-cancellation-popover'
                         zIndex={9999}
                         message={localize(
@@ -101,14 +102,13 @@ const CancelDeal = ({
                         <RadioGroup
                             className='trade-params__multiplier-radio-group'
                             name='trade-params__multiplier-radio'
-                            items={cancellation_range_list.map(({ text, value }) => ({
-                                id: text,
-                                label: text,
-                                value: value.toString(),
-                            }))}
                             selected={cancellation_duration}
                             onToggle={event => onChangeCancellationDuration({ event, onChangeMultiple })}
-                        />
+                        >
+                            {cancellation_range_list.map(({ text, value }) => (
+                                <RadioGroup.Item key={value} id={text} label={text} value={value.toString()} />
+                            ))}
+                        </RadioGroup>
                     </React.Fragment>
                 )}
             </Fieldset>

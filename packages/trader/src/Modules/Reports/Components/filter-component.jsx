@@ -29,6 +29,10 @@ const TransactionFilter = ({ action_type, handleFilterChange }) => {
             text: localize('Withdrawal'),
             value: 'withdrawal',
         },
+        // {
+        //     text: localize('Transfer'),
+        //     value: 'transfer',
+        // },
     ];
 
     return (

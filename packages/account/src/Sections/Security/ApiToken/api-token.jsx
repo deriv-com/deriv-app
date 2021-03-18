@@ -194,7 +194,15 @@ class ApiToken extends React.Component {
                 <Modal className='api_token__modal' is_open={show_delete} has_close_icon={false}>
                     <div className='api-token__popup'>
                         <Icon icon='IcRemoveToken' className='api-token__popup-image' />
-                        <h4 className='api-token__popup-header'>{localize('Confirm delete token?')}</h4>
+                        <Text
+                            as='h4'
+                            align='center'
+                            color='prominent'
+                            weight='bold'
+                            className='api-token__popup-header'
+                        >
+                            {localize('Confirm delete token?')}
+                        </Text>
                         <div className='api-token__popup-buttons'>
                             <Button type='button' secondary large onClick={this.closeDialog}>
                                 {localize('Back')}
@@ -386,17 +394,27 @@ class ApiToken extends React.Component {
                                                         <div key={idx} className='api-token__scope'>
                                                             <div className='api-token__scope-item'>
                                                                 <div>
-                                                                    <h5 className='api-token__scope--title'>
+                                                                    <Text
+                                                                        as='h5'
+                                                                        size='xxs'
+                                                                        weight='bold'
+                                                                        className='api-token__scope--title'
+                                                                    >
                                                                         {localize('Name')}
-                                                                    </h5>
+                                                                    </Text>
                                                                     <Text as='p'>{token.display_name}</Text>
                                                                 </div>
                                                             </div>
                                                             <div className='api-token__scope-item'>
                                                                 <div>
-                                                                    <h5 className='api-token__scope--title'>
+                                                                    <Text
+                                                                        as='h5'
+                                                                        size='xxs'
+                                                                        weight='bold'
+                                                                        className='api-token__scope--title'
+                                                                    >
                                                                         {localize('Token')}
-                                                                    </h5>
+                                                                    </Text>
                                                                     <Text as='p'>
                                                                         <div className='api-token__clipboard-wrapper'>
                                                                             <Text size='xs'>{token.token}</Text>
@@ -405,17 +423,27 @@ class ApiToken extends React.Component {
                                                                     </Text>
                                                                 </div>
                                                                 <div>
-                                                                    <h5 className='api-token__scope--title'>
+                                                                    <Text
+                                                                        as='h5'
+                                                                        size='xxs'
+                                                                        weight='bold'
+                                                                        className='api-token__scope--title'
+                                                                    >
                                                                         {localize('Last Used')}
-                                                                    </h5>
+                                                                    </Text>
                                                                     <Text as='p'>{token.last_used}</Text>
                                                                 </div>
                                                             </div>
                                                             <div className='api-token__scope-item'>
                                                                 <div>
-                                                                    <h5 className='api-token__scope--title'>
+                                                                    <Text
+                                                                        as='h5'
+                                                                        size='xxs'
+                                                                        weight='bold'
+                                                                        className='api-token__scope--title'
+                                                                    >
                                                                         {localize('Scope')}
-                                                                    </h5>
+                                                                    </Text>
                                                                     <Text as='p'>{token.scopes}</Text>
                                                                 </div>
                                                                 <div>

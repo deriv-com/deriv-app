@@ -47,7 +47,6 @@ const SetResidenceForm = ({
                                 onItemSelection={({ value, text }) =>
                                     setFieldValue('residence', value ? text : '', true)
                                 }
-                                should_filter_by_char
                             />
                         </DesktopWrapper>
                         <MobileWrapper>

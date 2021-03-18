@@ -63,6 +63,7 @@ const Amount = ({
     is_multiplier,
     is_nativepicker,
     is_single_currency,
+    has_equals_only,
     onChange,
     setCurrentFocus,
     stop_out,
@@ -160,6 +161,7 @@ const Amount = ({
                 expiry_type={expiry_type}
                 onChange={onChange}
                 value={parseInt(is_equal)}
+                has_equals_only={has_equals_only}
             />
             {is_multiplier && (
                 <MultipliersInfo
@@ -189,6 +191,7 @@ Amount.propTypes = {
     is_multiplier: PropTypes.bool,
     is_nativepicker: PropTypes.bool,
     is_single_currency: PropTypes.bool,
+    has_equals_only: PropTypes.bool,
     setCurrentFocus: PropTypes.func,
     onChange: PropTypes.func,
     validation_errors: PropTypes.object,
@@ -209,6 +212,7 @@ export default connect(({ modules, client, ui }) => ({
     is_equal: modules.trade.is_equal,
     is_single_currency: client.is_single_currency,
     is_multiplier: modules.trade.is_multiplier,
+    has_equals_only: modules.trade.has_equals_only,
     stop_out: modules.trade.stop_out,
     onChange: modules.trade.onChange,
     setCurrentFocus: ui.setCurrentFocus,

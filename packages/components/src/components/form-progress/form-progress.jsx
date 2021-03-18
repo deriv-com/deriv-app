@@ -35,7 +35,9 @@ class FormProgress extends React.PureComponent {
         return (
             <div className='dc-form-progress'>
                 <div className='dc-form-progress__header'>
-                    <h2>{steps[current_step].header.active_title}</h2>
+                    <Text as='h2' color='prominent' weight='bold' line_height='unset'>
+                        {steps[current_step].header.active_title}
+                    </Text>
                     <div className='dc-form-progress__steps'>
                         <div
                             className='dc-form-progress__steps--before'

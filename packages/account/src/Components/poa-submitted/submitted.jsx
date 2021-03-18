@@ -5,7 +5,7 @@ import { ContinueTradingButton } from 'Components/poa-continue-trading-button/co
 import PoiButton from 'Components/poi-button';
 import IconMessageContent from 'Components/icon-message-content';
 
-export const Submitted = ({ needs_poi, is_description_disabled = false }) => {
+export const Submitted = ({ needs_poi, is_description_enabled = true }) => {
     const message = localize('Your proof of address was submitted successfully');
     if (needs_poi) {
         return (
@@ -28,7 +28,7 @@ export const Submitted = ({ needs_poi, is_description_disabled = false }) => {
             text={localize('Your document is being reviewed, please check back in 1-3 days.')}
             icon={<Icon icon='IcPoaVerified' size={128} />}
         >
-            {!is_description_disabled && <ContinueTradingButton />}
+            {!is_description_enabled && <ContinueTradingButton />}
         </IconMessageContent>
     );
 };

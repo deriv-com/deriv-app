@@ -34,10 +34,10 @@
         }
         @include mobile {
             width: 100%;
-            grid-auto-rows: minmax(23rem, auto);
             grid-auto-flow: row;
             grid-gap: 1rem;
             box-shadow: none;
+            margin-bottom: 0;
         }
         @include tablet {
             max-width: 90vw;
@@ -62,22 +62,6 @@
     }
     &__box-footer {
         margin-bottom: 0.8rem;
-    }
-    &__box-icons {
-        display: grid;
-        @include tablet-up {
-            grid-auto-flow: row;
-            grid-gap: 0.8rem 1.6rem;
-            grid-template-columns: repeat(auto-fit, 4.8rem);
-        }
-        @include mobile {
-            grid-template-columns: repeat(4, 1fr);
-        }
-        @include tablet {
-            grid-auto-flow: initial;
-            grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
-            width: auto;
-        }
     }
     &__box-icon {
         height: 4.8rem;

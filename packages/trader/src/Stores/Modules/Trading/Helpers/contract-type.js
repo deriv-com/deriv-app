@@ -167,6 +167,7 @@ const ContractType = (() => {
         const obj_multiplier_range_list = getMultiplierRange(contract_type, multiplier);
         const obj_cancellation = getCancellation(contract_type, cancellation_duration, symbol);
         const obj_expiry_type = getExpiryType(obj_duration_units_list, expiry_type);
+        const obj_equal = getEqualProps(contract_type);
 
         return {
             ...form_components,
@@ -181,13 +182,16 @@ const ContractType = (() => {
             ...obj_expiry_type,
             ...obj_multiplier_range_list,
             ...obj_cancellation,
+            ...obj_equal,
         };
     };
 
     const getContractType = (list, contract_type) => {
         const arr_list = Object.keys(list || {})
             .reduce((k, l) => [...k, ...list[l].map(ct => ct.value)], [])
-            .filter(type => unsupported_contract_types_list.indexOf(type) === -1);
+            .filter(type => unsupported_contract_types_list.indexOf(type) === -1)
+            .sort((a, b) => (a === 'multiplier' || b === 'multiplier' ? -1 : 0));
+
         return {
             contract_type: getArrayDefaultValue(arr_list, contract_type),
         };
@@ -547,6 +551,18 @@ const ContractType = (() => {
             cancellation_range_list: arr_cancellation_range.map(d => ({ text: `${getText(d)}`, value: d })),
             ...(should_show_cancellation ? {} : { has_cancellation: false }),
         };
+    };
+
+    const getEqualProps = contract_type => {
+        const base_contract_type = /^(.*)_equal$/.exec(contract_type)?.[1];
+
+        if (base_contract_type && !available_contract_types[base_contract_type]) {
+            return {
+                is_equal: 1,
+                has_equals_only: true,
+            };
+        }
+        return {};
     };
 
     return {

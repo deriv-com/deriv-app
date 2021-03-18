@@ -89,7 +89,7 @@ const GeneralErrorContent = ({ message, onClick }) => (
     </React.Fragment>
 );
 
-const character_limit_no = 255;
+const character_limit_no = 250;
 
 class DeactivateAccountReason extends React.Component {
     state = {

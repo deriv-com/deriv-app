@@ -25,6 +25,7 @@ const Calendar = React.memo(
                 onSelect,
                 start_date,
                 value,
+                should_show_today,
             },
             ref
         ) => {
@@ -168,6 +169,7 @@ const Calendar = React.memo(
                         hovered_date={hovered_date}
                         onMouseOver={onMouseOver}
                         onMouseLeave={onMouseLeave}
+                        should_show_today={should_show_today}
                     />
                     <Footer footer={footer} has_today_btn={has_today_btn} onClick={setToday} />
                 </div>

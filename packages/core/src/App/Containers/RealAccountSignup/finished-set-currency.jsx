@@ -67,7 +67,7 @@ const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
                 <IconWon className='bottom-right-overlay' />
             </div>
             <div className={classNames('status-dialog__body', { 'status-dialog__body--no-grow': isMobile() })}>
-                <Text as='h2' align='center' className='status-dialog__message-header' color='general' weight='bold'>
+                <Text as='h2' align='center' className='status-dialog__message-header' weight='bold'>
                     <Localize i18n_default_text='Success!' />
                 </Text>
                 <SuccessMessage prev={prev} current={current} />

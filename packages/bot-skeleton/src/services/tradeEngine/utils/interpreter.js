@@ -22,7 +22,7 @@ const shouldRestartOnError = (bot, errorName = '') =>
     !unrecoverable_errors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
 
 const shouldStopOnError = (bot, errorName = '') => {
-    const stopErrors = ['SellNotAvailableCustom'];
+    const stopErrors = ['SellNotAvailableCustom', 'ContractCreationFailure'];
     if (stopErrors.includes(errorName) && botInitialized(bot)) {
         return true;
     }
@@ -117,18 +117,18 @@ export default class Interpreter {
                     return;
                 }
                 // DBot handles 'InvalidToken' internally
-                if (e.name === 'InvalidToken') {
+                if (e.code === 'InvalidToken') {
                     globalObserver.emit('client.invalid_token');
                     return;
                 }
-                if (shouldStopOnError(this.bot, e.name)) {
+                if (shouldStopOnError(this.bot, e?.code)) {
                     globalObserver.emit('ui.log.error', e.message);
                     globalObserver.emit('bot.click_stop');
                     return;
                 }
 
                 this.is_error_triggered = true;
-                if (!shouldRestartOnError(this.bot, e.name) || !botStarted(this.bot)) {
+                if (!shouldRestartOnError(this.bot, e.code) || !botStarted(this.bot)) {
                     reject(e);
                     return;
                 }
@@ -165,12 +165,11 @@ export default class Interpreter {
     }
 
     terminateSession() {
-        const { socket } = this.$scope.api;
-
-        if (socket.readyState === 0) {
-            socket.addEventListener('open', () => this.$scope.api.disconnect());
-        } else if (socket.readyState === 1) {
-            this.$scope.api.disconnect();
+        const { connection } = this.$scope.api;
+        if (connection.readyState === 0) {
+            connection.addEventListener('open', () => connection.close());
+        } else if (connection.readyState === 1) {
+            connection.close();
         }
 
         this.stopped = true;
@@ -218,7 +217,10 @@ export default class Interpreter {
                     callback(interpreter.nativeToPseudo(rv));
                     this.loop();
                 })
-                .catch(e => this.$scope.observer.emit('Error', e));
+                .catch(e => {
+                    // e.error for errors get from API, e for code errors
+                    this.$scope.observer.emit('Error', e.error || e);
+                });
         };
 
         // TODO: This is a workaround, create issue on original repo, once fixed

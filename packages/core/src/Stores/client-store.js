@@ -217,13 +217,6 @@ export default class ClientStore extends BaseStore {
     get legal_allowed_currencies() {
         if (!this.landing_companies) return [];
         if (this.root_store.ui && this.root_store.ui.real_account_signup_target) {
-            if (this.root_store.ui.real_account_signup_target === 'manage') {
-                if (this.current_landing_company.shortcode === 'iom') {
-                    return this.landing_companies.gaming_company?.legal_allowed_currencies;
-                } else if (['malta', 'maltainvest'].includes(this.current_landing_company.shortcode)) {
-                    return this.landing_companies.financial_company?.legal_allowed_currencies;
-                }
-            }
             const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
             if (this.landing_companies[`${target}_company`] && this.current_landing_company && this.accounts) {
                 if (this.accounts[this.loginid] && !this.accounts[this.loginid].currency) {
@@ -291,7 +284,6 @@ export default class ClientStore extends BaseStore {
             }
             return acc;
         }, []);
-
         return !!this.upgradeable_currencies.filter(acc => values.includes(acc.value) && acc.type === 'fiat').length;
     }
 
@@ -801,7 +793,7 @@ export default class ClientStore extends BaseStore {
         form_values.residence = this.residence;
         if (is_maltainvest_account) {
             currency = form_values.currency;
-            form_values.accept_risk = 1;
+            form_values.accept_risk = form_values.accept_risk || 0;
             delete form_values.currency;
         }
         const response = is_maltainvest_account
@@ -848,44 +840,45 @@ export default class ClientStore extends BaseStore {
             previous_currency: this.currency,
         });
         if (!response.error) {
-            runInAction(() => {
-                const new_account = { ...this.accounts[this.loginid] };
-                new_account.currency = currency;
-                if (!('balance' in new_account)) new_account.balance = 0;
-                this.accounts[this.loginid] = new_account;
-            });
-            localStorage.setItem(storage_key, JSON.stringify(this.accounts));
-            LocalStore.setObject(storage_key, JSON.parse(JSON.stringify(this.accounts)));
-            this.selectCurrency(currency);
-            this.root_store.ui.removeNotificationMessage({
-                key: 'currency',
-            });
-            this.root_store.ui.removeNotificationByKey({
-                key: 'currency',
-            });
-            await this.init();
+            await this.updateAccountCurrency(currency);
             return Promise.resolve(response);
         }
         return Promise.reject(response.error);
     }
 
     @action.bound
-    async createCryptoAccount(currency, is_deriv_crypto) {
+    async updateAccountCurrency(currency, is_set_storage = true) {
+        runInAction(() => {
+            const new_account = { ...this.accounts[this.loginid] };
+            new_account.currency = currency;
+            if (!('balance' in new_account)) new_account.balance = 0;
+            this.accounts[this.loginid] = new_account;
+        });
+        if (is_set_storage) {
+            localStorage.setItem(storage_key, JSON.stringify(this.accounts));
+            LocalStore.setObject(storage_key, JSON.parse(JSON.stringify(this.accounts)));
+        }
+        this.selectCurrency(currency);
+        this.root_store.ui.removeNotificationMessage({
+            key: 'currency',
+        });
+        this.root_store.ui.removeNotificationByKey({
+            key: 'currency',
+        });
+        await this.init();
+    }
+
+    @action.bound
+    async createCryptoAccount(currency) {
         const residence = this.residence;
-        let data = {
+        const { date_of_birth, first_name, last_name } = this.account_settings;
+        const data = {
             residence,
             currency,
+            first_name,
+            last_name,
+            date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
         };
-
-        if (!is_deriv_crypto) {
-            const { date_of_birth, first_name, last_name } = this.account_settings;
-            data = {
-                ...data,
-                first_name,
-                last_name,
-                date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
-            };
-        }
 
         const response = await WS.newAccountReal(data);
         if (!response.error) {
@@ -1700,8 +1693,7 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    onSignup({ password, residence, is_deriv_crypto, is_account_signup_modal_visible }, cb) {
-        const is_first_time_signup = is_account_signup_modal_visible;
+    onSignup({ password, residence }, cb) {
         if (!this.verification_code.signup || !password || !residence) return;
 
         // Currently the code doesn't reach here and the console log is needed for debugging.
@@ -1729,10 +1721,6 @@ export default class ClientStore extends BaseStore {
 
                 if (this.is_mt5_allowed) {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
-                }
-
-                if (is_deriv_crypto && is_first_time_signup) {
-                    this.root_store.ui.openRealAccountSignup();
                 }
             }
         });

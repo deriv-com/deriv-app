@@ -71,6 +71,7 @@ const CancelDeal = ({
                     alignment='left'
                     icon='info'
                     id='dt_cancellation-checkbox__tooltip'
+                    is_bubble_hover_enabled
                     message={localize(
                         'Cancel your trade anytime within a chosen time-frame. Triggered automatically if your trade reaches the stop out level within the chosen time-frame.'
                     )}

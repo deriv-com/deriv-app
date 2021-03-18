@@ -13,7 +13,7 @@ const ErrorComponent = ({ header, message, button_link, onClickButton, button_te
             </Text>
         )}
         {message && (
-            <Text as='p' size='xs' line_height='s' align='center' className='cashier__paragraph'>
+            <Text as='p' align='center' size='xs' line_height='s' className='cashier__paragraph'>
                 {message}
             </Text>
         )}

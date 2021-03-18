@@ -613,14 +613,7 @@
 
             @include mobile {
                 width: 100%;
-                padding: 1.6rem;
-            }
-        }
-        &-resend,
-        &-sent {
-            &-text {
-                font-size: 1.4rem;
-                line-height: 1.43;
+                padding: 1.6rem 0;
             }
         }
         &-resend {

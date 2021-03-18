@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { loginUrl, routes } from '@deriv/shared';
+import { loginUrl, routes, PlatformContext } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
@@ -17,11 +18,20 @@ const Redirect = ({
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     setVerificationCode(url_params.get('code'), url_params.get('action'));
 
     switch (url_params.get('action')) {
         case 'signup': {
+            if (is_dashboard) {
+                history.push({
+                    pathname: routes.dashboard,
+                    search: url_query_string,
+                });
+                redirected_to_route = true;
+            }
+            sessionStorage.removeItem('redirect_url');
             toggleAccountSignupModal(true);
             break;
         }
@@ -53,7 +63,8 @@ const Redirect = ({
             break;
         }
         case 'verification': {
-            sessionStorage.setItem('redirect_url', `${routes.cashier_p2p}#verification`);
+            // Removing this will break mobile DP2P app. Do not remove.
+            sessionStorage.setItem('redirect_url', routes.cashier_p2p_verification);
             window.location.href = loginUrl({
                 language: getLanguage(),
             });

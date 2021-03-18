@@ -46,7 +46,7 @@ const ContractCardHeader = ({
             >
                 <div id='dc-contract_card_underlying_label' className='dc-contract-card__underlying-name'>
                     <Icon icon={underlying ? `IcUnderlying${underlying}` : 'IcUnknown'} width={40} size={32} />
-                    <Text size='xxxs' className='dc-contract-card__symbol'>
+                    <Text size='xxs' className='dc-contract-card__symbol' weight='bold'>
                         {display_name || contract_info.display_name}
                     </Text>
                 </div>

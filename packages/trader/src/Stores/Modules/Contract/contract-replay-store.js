@@ -1,5 +1,5 @@
 import { action, observable } from 'mobx';
-import { routes, isEmptyObject } from '@deriv/shared';
+import { routes, isEmptyObject, isForwardStarting } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import ContractStore from './contract-store';
@@ -15,6 +15,7 @@ export default class ContractReplayStore extends BaseStore {
     @observable error_message = '';
     @observable error_code = '';
     @observable is_chart_loading = true;
+    @observable is_chart_scaling = false;
     @observable is_forward_starting = false;
     // ---- chart props
     @observable margin;
@@ -131,7 +132,8 @@ export default class ContractReplayStore extends BaseStore {
 
         const is_forward_starting =
             !!this.contract_info.is_forward_starting ||
-            this.contract_info.purchase_time !== this.contract_info.date_start;
+            isForwardStarting(this.contract_info.shortcode, this.contract_info.purchase_time);
+
         this.is_forward_starting = is_forward_starting;
 
         // update the contract_store here passing contract_info
@@ -168,9 +170,33 @@ export default class ContractReplayStore extends BaseStore {
     chartStateChange(state) {
         this.chart_state = state;
 
+        // SmartChart has a weird interaction for getting scale 1:1,
+        // the process of loading an expired contract should follow this,
+        // show loading, first load the chart, then add the endEpoch then request for
+        // scale 1:1 and then wait till chart perform the scale 1:1 then
+        // hide the loading.
         switch (state) {
+            case 'INITIAL':
+                this.is_chart_scaling = false;
+                // this is for deriv resizing from desktop to mobile,
+                // that show the loading till the chart reflect complete
+                if (!this.is_chart_loading) this.is_chart_loading = true;
+                break;
+            case 'READY':
+                setTimeout(
+                    action(() => (this.is_chart_scaling = true)),
+                    10
+                );
+                break;
             case 'SCROLL_TO_LEFT':
-                this.is_chart_loading = false;
+                // this Delay is for when the chart try to sacle 1:1 and we want to hide
+                // scale 1:1 jumping from the user
+                setTimeout(
+                    action(() => {
+                        this.is_chart_loading = false;
+                    }),
+                    20
+                );
                 break;
             default:
         }

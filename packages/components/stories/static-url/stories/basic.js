@@ -4,9 +4,7 @@ import { boolean } from '@storybook/addon-knobs';
 import StaticUrl from 'Components/static-url';
 import Wrapper from '../../shared/wrapper';
 
-const Provider = ({ children }) => (
-    <PlatformContext.Provider value={{ is_deriv_crypto: false }}>{children}</PlatformContext.Provider>
-);
+const Provider = ({ children }) => <PlatformContext.Provider>{children}</PlatformContext.Provider>;
 
 const Basic = () => (
     <Provider>

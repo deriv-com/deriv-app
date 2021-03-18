@@ -284,7 +284,6 @@ export default class ClientStore extends BaseStore {
             }
             return acc;
         }, []);
-
         return !!this.upgradeable_currencies.filter(acc => values.includes(acc.value) && acc.type === 'fiat').length;
     }
 
@@ -341,7 +340,9 @@ export default class ClientStore extends BaseStore {
             (acc, cur) => (cur.supported_accounts.includes('gaming') && !cur.disabled ? acc + 1 : acc),
             0
         );
-        return number_of_current_added_synthetics < number_of_available_synthetic;
+        return (
+            number_of_current_added_synthetics > 0 && number_of_current_added_synthetics < number_of_available_synthetic
+        );
     }
 
     @computed
@@ -579,6 +580,11 @@ export default class ClientStore extends BaseStore {
     };
 
     @computed
+    get clients_country() {
+        return this.website_status?.clients_country;
+    }
+
+    @computed
     get is_eu_country() {
         const country = this.website_status.clients_country;
         if (country) return isEuCountry(country);
@@ -787,7 +793,7 @@ export default class ClientStore extends BaseStore {
         form_values.residence = this.residence;
         if (is_maltainvest_account) {
             currency = form_values.currency;
-            form_values.accept_risk = 1;
+            form_values.accept_risk = form_values.accept_risk || 0;
             delete form_values.currency;
         }
         const response = is_maltainvest_account
@@ -834,44 +840,45 @@ export default class ClientStore extends BaseStore {
             previous_currency: this.currency,
         });
         if (!response.error) {
-            runInAction(() => {
-                const new_account = { ...this.accounts[this.loginid] };
-                new_account.currency = currency;
-                if (!('balance' in new_account)) new_account.balance = 0;
-                this.accounts[this.loginid] = new_account;
-            });
-            localStorage.setItem(storage_key, JSON.stringify(this.accounts));
-            LocalStore.setObject(storage_key, JSON.parse(JSON.stringify(this.accounts)));
-            this.selectCurrency(currency);
-            this.root_store.ui.removeNotificationMessage({
-                key: 'currency',
-            });
-            this.root_store.ui.removeNotificationByKey({
-                key: 'currency',
-            });
-            await this.init();
+            await this.updateAccountCurrency(currency);
             return Promise.resolve(response);
         }
         return Promise.reject(response.error);
     }
 
     @action.bound
-    async createCryptoAccount(currency, is_deriv_crypto) {
+    async updateAccountCurrency(currency, is_set_storage = true) {
+        runInAction(() => {
+            const new_account = { ...this.accounts[this.loginid] };
+            new_account.currency = currency;
+            if (!('balance' in new_account)) new_account.balance = 0;
+            this.accounts[this.loginid] = new_account;
+        });
+        if (is_set_storage) {
+            localStorage.setItem(storage_key, JSON.stringify(this.accounts));
+            LocalStore.setObject(storage_key, JSON.parse(JSON.stringify(this.accounts)));
+        }
+        this.selectCurrency(currency);
+        this.root_store.ui.removeNotificationMessage({
+            key: 'currency',
+        });
+        this.root_store.ui.removeNotificationByKey({
+            key: 'currency',
+        });
+        await this.init();
+    }
+
+    @action.bound
+    async createCryptoAccount(currency) {
         const residence = this.residence;
-        let data = {
+        const { date_of_birth, first_name, last_name } = this.account_settings;
+        const data = {
             residence,
             currency,
+            first_name,
+            last_name,
+            date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
         };
-
-        if (!is_deriv_crypto) {
-            const { date_of_birth, first_name, last_name } = this.account_settings;
-            data = {
-                ...data,
-                first_name,
-                last_name,
-                date_of_birth: toMoment(date_of_birth).format('YYYY-MM-DD'),
-            };
-        }
 
         const response = await WS.newAccountReal(data);
         if (!response.error) {
@@ -1369,6 +1376,10 @@ export default class ClientStore extends BaseStore {
     // --> so we keep a separate balance subscription for the active account
     @action.bound
     setBalanceOtherAccounts(obj_balance) {
+        // Balance subscription response received when mt5 transfer is in progress should be ignored.
+        // After mt5 transfer is done, `balanceAll` is requested along with `mt5LoginList` in order to update the correct balance.
+        if (this.root_store.modules?.cashier?.isMT5TransferInProgress()) return;
+
         // Only the first response of balance:all will include all accounts
         // subsequent requests will be single account balance updates
         if (this.accounts[obj_balance?.loginid] && !obj_balance.accounts && obj_balance.loginid !== this.loginid) {
@@ -1438,6 +1449,7 @@ export default class ClientStore extends BaseStore {
         this.user_id = null;
         this.upgrade_info = undefined;
         this.accounts = {};
+        this.mt5_login_list = [];
         localStorage.setItem('active_loginid', this.loginid);
         localStorage.setItem('client.accounts', JSON.stringify(this.accounts));
 
@@ -1452,9 +1464,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     async logout() {
         // TODO: [add-client-action] - Move logout functionality to client store
-        const logout_promise = requestLogout();
-
-        const response = await logout_promise;
+        const response = await requestLogout();
 
         if (response.logout === 1) {
             this.cleanUp();
@@ -1683,8 +1693,7 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    onSignup({ password, residence, is_deriv_crypto, is_account_signup_modal_visible }, cb) {
-        const is_first_time_signup = is_account_signup_modal_visible;
+    onSignup({ password, residence }, cb) {
         if (!this.verification_code.signup || !password || !residence) return;
 
         // Currently the code doesn't reach here and the console log is needed for debugging.
@@ -1712,10 +1721,6 @@ export default class ClientStore extends BaseStore {
 
                 if (this.is_mt5_allowed) {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
-                }
-
-                if (is_deriv_crypto && is_first_time_signup) {
-                    this.root_store.ui.openRealAccountSignup();
                 }
             }
         });

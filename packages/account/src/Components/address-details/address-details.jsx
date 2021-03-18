@@ -15,7 +15,7 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, isMobile, getLocation, makeCancellablePromise } from '@deriv/shared';
+import { isDesktop, isMobile, getLocation, makeCancellablePromise, PlatformContext } from '@deriv/shared';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
 const InputField = props => {
@@ -48,11 +48,11 @@ const AddressDetails = ({
     onSubmit,
     is_svg,
     is_gb_residence,
-    is_dashboard,
     onSubmitEnabledChange,
     selected_step_ref,
     ...props
 }) => {
+    const { is_dashboard } = React.useContext(PlatformContext);
     const [has_fetched_states_list, setHasFetchedStatesList] = React.useState(false);
     const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
 
@@ -60,7 +60,9 @@ const AddressDetails = ({
         const { cancel, promise } = makeCancellablePromise(props.fetchStatesList());
         promise.then(() => {
             setHasFetchedStatesList(true);
-            setAddressStateToDisplay(getLocation(states_list, props.value.address_state, 'text'));
+            if (props.value.address_state) {
+                setAddressStateToDisplay(getLocation(states_list, props.value.address_state, 'text'));
+            }
         });
         return () => {
             setHasFetchedStatesList(false);
@@ -111,7 +113,7 @@ const AddressDetails = ({
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({ handleSubmit, errors, values, setFieldValue }) => (
+            {({ handleSubmit, errors, values, setFieldValue, handleChange, setFieldTouched }) => (
                 <AutoHeightWrapper default_height={350} height_offset={isDesktop() ? 80 : null}>
                     {({ setRef, height }) => (
                         <form ref={setRef} onSubmit={handleSubmit}>
@@ -243,6 +245,10 @@ const AddressDetails = ({
                                                     : localize('Postal/ZIP Code')
                                             }
                                             placeholder={localize('Postal/ZIP Code')}
+                                            onChange={e => {
+                                                setFieldTouched('address_postcode', true);
+                                                handleChange(e);
+                                            }}
                                         />
                                     </div>
                                 </ThemedScrollbars>

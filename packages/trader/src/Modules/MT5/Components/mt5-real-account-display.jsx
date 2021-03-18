@@ -1,7 +1,7 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
-import { getAccountTypeFields } from '@deriv/shared';
+import { getAccountTypeFields, getMT5AccountListKey, getMT5AccountKey } from '@deriv/shared';
 import {
     eu_real_financial_specs,
     real_financial_stp_specs,
@@ -89,20 +89,10 @@ const MT5RealAccountDisplay = ({
         }
     };
 
-    const onClickFundRealSynthetic = () =>
-        openAccountTransfer(current_list['real.synthetic'], {
-            category: 'real',
-            type: 'synthetic',
-        });
-    const onClickFundRealFinancial = () =>
-        openAccountTransfer(current_list['real.financial'], {
-            category: 'real',
-            type: 'financial',
-        });
-    const onClickFundRealFinancialStp = () =>
-        openAccountTransfer(current_list['real.financial_stp'], {
-            category: 'real',
-            type: 'financial_stp',
+    const onClickFundReal = account =>
+        openAccountTransfer(current_list[getMT5AccountListKey(account)], {
+            category: account.account_type,
+            type: getMT5AccountKey(account.market_type, account.sub_account_type),
         });
 
     const handleHoverCard = name => {
@@ -154,11 +144,12 @@ const MT5RealAccountDisplay = ({
                               }}
                               is_logged_in={is_logged_in}
                               should_show_trade_servers={should_show_trade_servers}
+                              is_trade_server_button_visible={should_show_trade_servers}
                               existing_data={acc}
                               commission_message={localize('No commission')}
                               onSelectAccount={onSelectRealSynthetic}
                               onPasswordManager={openPasswordManager}
-                              onClickFund={onClickFundRealSynthetic}
+                              onClickFund={onClickFundReal}
                               descriptor={localize(
                                   'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
                               )}
@@ -180,11 +171,12 @@ const MT5RealAccountDisplay = ({
                       }}
                       is_logged_in={is_logged_in}
                       should_show_trade_servers={should_show_trade_servers}
+                      is_trade_server_button_visible={should_show_trade_servers}
                       existing_data={undefined}
                       commission_message={localize('No commission')}
                       onSelectAccount={onSelectRealSynthetic}
                       onPasswordManager={openPasswordManager}
-                      onClickFund={onClickFundRealSynthetic}
+                      onClickFund={onClickFundReal}
                       descriptor={localize(
                           'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
                       )}
@@ -210,7 +202,7 @@ const MT5RealAccountDisplay = ({
             button_label={button_label}
             is_button_primary={is_pending_authentication}
             onPasswordManager={openPasswordManager}
-            onClickFund={onClickFundRealFinancialStp}
+            onClickFund={onClickFundReal}
             descriptor={localize(
                 'Trade major, minor, exotic currency pairs, and cryptocurrencies with Straight-Through Processing (STP) of your orders direct to the market.'
             )}
@@ -221,6 +213,7 @@ const MT5RealAccountDisplay = ({
             toggleAccountsDialog={toggleAccountsDialog}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
             is_accounts_switcher_on={is_accounts_switcher_on}
+            is_trade_server_button_visible={should_show_trade_servers}
         />
     );
 
@@ -238,7 +231,7 @@ const MT5RealAccountDisplay = ({
             commission_message={localize('No commission')}
             onSelectAccount={onSelectRealFinancial}
             onPasswordManager={openPasswordManager}
-            onClickFund={onClickFundRealFinancial}
+            onClickFund={onClickFundReal}
             descriptor={
                 is_eu || is_eu_country
                     ? localize(
@@ -250,13 +243,17 @@ const MT5RealAccountDisplay = ({
             }
             specs={should_show_eu ? eu_real_financial_specs : real_financial_specs}
             is_logged_in={is_logged_in}
+            is_trade_server_button_visible={should_show_trade_servers}
         />
     );
 
     const items = [...(synthetic_account_items || []), financial_account, financial_stp_account].filter(Boolean);
 
     return (
-        <div className='mt5-real-accounts-display'>
+        <div
+            className='mt5-real-accounts-display'
+            style={{ justifyContent: items.length < 3 ? 'center' : 'space-between' }}
+        >
             <DesktopWrapper>
                 <Carousel
                     list={items}

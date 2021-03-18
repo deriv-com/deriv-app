@@ -15,6 +15,7 @@ export type TClientStore = {
     email_address: string;
     currencies_list: TCurrenciesList;
     currency: string;
+    is_logged_in: boolean;
     financial_assessment: GetFinancialAssessment;
     residence_list: ResidenceList;
     states_list: StatesList;
@@ -32,12 +33,12 @@ export type TClientStore = {
     realAccountSignup?: () => Promise<void>;
     has_currency?: () => boolean;
     setAccountCurrency?: () => void;
+    has_wallet_account: boolean;
 };
 
 export type TConfigStore = {
     asset_path: string;
     has_router: boolean;
-    is_deriv_crypto: boolean;
     redirect_404?: string;
     routes: TRoutesProps;
     setConfig: (config: TConfigProps) => void;
@@ -70,16 +71,20 @@ export type TRootStore = {
 
 export type TUIStore = {
     components: {
-        LoginPrompt?: React.ComponentType | React.ElementType;
         Page404?: React.ComponentType | React.ElementType;
     };
     is_dark_mode_on: boolean;
     init: (ui_props: TUIProps) => void;
     real_account_signup: unknown;
     real_account_signup_target: string;
+    is_clear_funds_modal_open: boolean;
     is_get_wallet_modal_open: boolean;
     is_real_acc_signup_on: boolean;
+    is_trade_modal_open: boolean;
     resetRealAccountSignupParams?: () => void;
+    openRealAccountSignup: () => void;
     enableGetPasswordModal: () => void;
     disableGetPasswordModal: () => void;
+    toggleTradeModal: (state_change?: boolean) => void;
+    toggleClearFundsModal: (state_change?: boolean) => void;
 };

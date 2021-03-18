@@ -31,12 +31,17 @@ const MT5DemoAccountDisplay = ({
         }
     };
 
+    const should_center_cards = !landing_companies?.mt_financial_company?.financial_stp;
+
     return is_loading ? (
         <div className='mt5-demo-accounts-display'>
             <Loading />
         </div>
     ) : (
-        <div className='mt5-demo-accounts-display'>
+        <div
+            className='mt5-demo-accounts-display'
+            style={{ justifyContent: should_center_cards ? 'center' : 'space-between' }}
+        >
             {(landing_companies?.mt_gaming_company?.financial || !is_logged_in) && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}

@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
-import { isMobile } from '@deriv/shared';
-import { Icon, Loading, Modal, Tabs, Text } from '@deriv/components';
+import { isMobile, routes } from '@deriv/shared';
+import { HintBox, Icon, Loading, Modal, Tabs, Text } from '@deriv/components';
 import ServerTime from 'Utils/server-time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
@@ -48,12 +48,27 @@ const P2pWrapper = ({ className, children }) => (
 
 const App = observer(props => {
     const { general_store, order_store } = useStores();
-    const { className, is_mobile, lang, order_id, server_time, should_show_verification, websocket_api } = props;
+    const {
+        className,
+        history,
+        is_mobile,
+        lang,
+        order_id,
+        server_time,
+        should_show_verification,
+        websocket_api,
+    } = props;
     general_store.setAppProps(props);
     general_store.setWebsocketInit(websocket_api, general_store.client.local_currency_config.decimal_places);
     order_store.setOrderId(order_id);
 
     React.useEffect(() => {
+        // Redirect back to /p2p, this was implemented for the mobile team. Do not remove.
+        if (/\/verification$/.test(history?.location.pathname)) {
+            localStorage.setItem('is_verifying_p2p', true);
+            history.push(routes.cashier_p2p);
+        }
+
         setLanguage(lang);
         ServerTime.init(server_time);
 
@@ -66,6 +81,11 @@ const App = observer(props => {
 
         waitWS('authorize').then(() => {
             general_store.onMount();
+
+            if (localStorage.getItem('is_verifying_p2p')) {
+                localStorage.removeItem('is_verifying_p2p');
+                general_store.setActiveIndex(general_store.path.my_ads);
+            }
         });
 
         return () => general_store.onUnmount();

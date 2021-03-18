@@ -1,6 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
-import { Formik, Field } from 'formik';
+import { Formik, Field, Form } from 'formik';
 import { localize } from '@deriv/translations';
 import { isMobile, supported_filetypes, max_document_size } from '@deriv/shared';
 import { Button, DatePicker, Input, Icon, Text, FileDropzone } from '@deriv/components';
@@ -227,6 +227,19 @@ const CardDetails = ({ data, goToCards }) => {
             }
         });
 
+        documents.forEach(document => {
+            const { name, label } = document;
+            const value = values[name];
+
+            if (checkIsEmpty(value)) {
+                errors[name] = localize('{{label}} is required.', {
+                    label,
+                });
+            } else if (value.errors?.length) {
+                errors[name] = value.errors[0];
+            }
+        });
+
         return errors;
     };
 
@@ -239,16 +252,16 @@ const CardDetails = ({ data, goToCards }) => {
             <Formik initialValues={setInitialValues([...fields, ...documents])} validate={validateFields}>
                 {({
                     values,
-                    errors,
+                    // errors,
                     isValid,
-                    dirty,
-                    handleChange,
-                    handleBlur,
+                    // dirty,
+                    // handleChange,
+                    // handleBlur,
                     isSubmitting,
-                    handleSubmit,
-                    setFieldValue,
+                    // handleSubmit,
+                    // setFieldValue,
                 }) => (
-                    <React.Fragment>
+                    <Form>
                         <Text as='h3' size='s' weight='bold' color='prominent'>
                             {fields_title}
                         </Text>
@@ -279,9 +292,16 @@ const CardDetails = ({ data, goToCards }) => {
                         <div className={`${root_class}__divider ${root_class}__divider--m16`} />
                         <div className={`${root_class}__btns`}>
                             <Button onClick={goBack} secondary large text={localize('Go back')} />
-                            <Button onClick={() => {}} primary large is_disabled={true} text={localize('Next')} />
+                            <Button
+                                type='submit'
+                                onClick={() => {}}
+                                primary
+                                large
+                                is_disabled={!isValid || isSubmitting}
+                                text={localize('Next')}
+                            />
                         </div>
-                    </React.Fragment>
+                    </Form>
                 )}
             </Formik>
         </div>

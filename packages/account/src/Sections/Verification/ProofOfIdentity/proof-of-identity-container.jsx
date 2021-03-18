@@ -30,6 +30,7 @@ const ProofOfIdentityContainer = ({
     onStateChange,
     is_description_enabled = true,
     is_mx_mlt,
+    is_nigeria,
     height,
     redirect_button,
 }) => {
@@ -94,7 +95,13 @@ const ProofOfIdentityContainer = ({
 
             const { identity, needs_verification } = account_status_obj.authentication;
 
-            const identity_status = getIdentityStatus(identity, needs_verification, is_mx_mlt, allow_poi_resubmission);
+            const identity_status = getIdentityStatus(
+                identity,
+                needs_verification,
+                is_mx_mlt,
+                is_nigeria,
+                allow_poi_resubmission
+            );
 
             const has_no_rejections = !rejected_reasons?.length;
 
@@ -189,7 +196,7 @@ const ProofOfIdentityContainer = ({
         handleComplete,
         ...common_props,
     };
-    return <Unsupported {...onfido_props} />;
+
     switch (status) {
         case onfido_status_codes.onfido:
             return <Onfido {...onfido_props} />;

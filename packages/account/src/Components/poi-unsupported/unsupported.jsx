@@ -8,10 +8,10 @@ import DetailComponent from './detail-component.jsx';
 import { Documents } from './documents.jsx';
 import { getDocumentIndex, DOCUMENT_TYPES } from './constants';
 
-const checkNimcStep = steps => {
+const checkNimcStep = documents => {
     let has_nimc = false;
-    steps.forEach(step => {
-        if (step.document_type === DOCUMENT_TYPES.NIMC) {
+    documents.forEach(document => {
+        if (document.document_type === DOCUMENT_TYPES.NIMC) {
             has_nimc = true;
         }
     });
@@ -29,7 +29,7 @@ const Unsupported = ({ residence, ...props }) => {
     if (detail !== null) {
         return (
             <DetailComponent
-                //is_onfido_supported={(residence === 'ng' && !checkNimcStep(documents[detail].steps))}
+                //is_onfido_supported={(residence === 'ng' && !checkNimcStep(documents[detail].details.documents))}
                 is_onfido_supported={false}
                 document={documents[detail]}
                 root_class='manual-poi'

@@ -14,15 +14,15 @@ const PAGE_TYPE = {
     PHOTO: 'photo',
 };
 
-const step_selfie = {
-    document_type: DOCUMENT_TYPES.OTHER,
-    pageType: PAGE_TYPE.PHOTO,
-    icon: 'IcSelfie',
-    title: localize('Upload your selfie'),
-    description: localize(
-        'Face forward and remove your glasses if necessary. Make sure your eyes are clearly visible and your face is within the frame.'
-    ),
-};
+// const step_selfie = {
+//     document_type: DOCUMENT_TYPES.OTHER,
+//     pageType: PAGE_TYPE.PHOTO,
+//     icon: 'IcSelfie',
+//     title: localize('Upload your selfie'),
+//     description: localize(
+//         'Face forward and remove your glasses if necessary. Make sure your eyes are clearly visible and your face is within the frame.'
+//     ),
+// };
 
 const date_field = {
     name: 'expiry_date',

@@ -28,13 +28,12 @@ const FadeInMessage = ({ is_visible, children, key, timeout }) => (
 const PreviewSingle = props => {
     if (props.preview_single) {
         return <div className='dc-file-dropzone__message'>{props.preview_single}</div>;
-    } else {
-        return (
-            <Text size='xxs' weight='bold' align='center' className='dc-file-dropzone__filename'>
-                {props.filename_limit ? truncateFileName(props.value[0], props.filename_limit) : props.value[0].name}
-            </Text>
-        );
     }
+    return (
+        <Text size='xxs' weight='bold' align='center' className='dc-file-dropzone__filename'>
+            {props.filename_limit ? truncateFileName(props.value[0], props.filename_limit) : props.value[0].name}
+        </Text>
+    );
 };
 
 const FileDropzone = ({ className, noClick = false, ...props }) => (

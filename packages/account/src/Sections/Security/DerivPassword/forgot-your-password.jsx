@@ -27,14 +27,6 @@ const ForgotYourPassword = ({ onClickSendEmail }) => (
                     </Text>
                 </div>
                 <div className='forgot-password__content'>
-                    <Icon icon='IcEmail' size={32} />
-                    <Text size='xxs' as='p'>
-                        {localize(
-                            'You accidentally gave us another email address (Usually a work or a personal one instead of the one you meant).'
-                        )}
-                    </Text>
-                </div>
-                <div className='forgot-password__content'>
                     <Icon icon='IcEmailFirewall' size={32} />
                     <Text size='xxs' as='p'>
                         {localize(

@@ -94,7 +94,8 @@
 
                 &.dc-dropdown__display-placeholder--is-title {
                     transform: translate(0, -1.7rem) scale(0.75);
-                    padding: 0 4px;
+                    padding: 0 2px;
+                    white-space: nowrap;
 
                     .dc-dropdown__display-placeholder-text {
                         color: var(--text-general) !important;

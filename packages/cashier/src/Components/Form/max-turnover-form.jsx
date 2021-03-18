@@ -3,12 +3,18 @@ import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
 import { getDecimalPlaces, routes, validNumber } from '@deriv/shared';
-import { Button, Input } from '@deriv/components';
+import { Button, Input, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
 
-const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
+const MaxTurnoverForm = ({
+    onMount,
+    setErrorConfig,
+    currency,
+    removeNotificationByKey,
+    removeNotificationMessageByKey,
+}) => {
     const initial_values = {
         max_30day_turnover: '',
     };
@@ -34,12 +40,17 @@ const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
 
     const handleSubmit = (values, { setSubmitting, setStatus }) => {
         setSubmitting(true);
+
         WS.send({ set_self_exclusion: 1, max_30day_turnover: values.max_30day_turnover }).then(response => {
             if (response.error) {
                 setStatus(response.error);
             } else {
                 setErrorConfig('is_self_exclusion_max_turnover_set', false);
                 onMount();
+
+                // Clear "max_turnover_limit_not_set" notification.
+                removeNotificationByKey({ key: 'max_turnover_limit_not_set' });
+                removeNotificationMessageByKey({ key: 'max_turnover_limit_not_set' });
             }
             setSubmitting(false);
         });
@@ -47,7 +58,9 @@ const MaxTurnoverForm = ({ onMount, setErrorConfig, currency }) => {
 
     return (
         <div className='max-turnover'>
-            <h2 className='max-turnover__title'>{localize('30 days max total stake')}</h2>
+            <Text as='h2' weight='bold' align='center' className='max-turnover__title'>
+                {localize('30 days max total stake')}
+            </Text>
 
             <Formik initialValues={initial_values} onSubmit={handleSubmit} validate={validateFields}>
                 {({ values, errors, isValid, handleChange, handleBlur, isSubmitting, dirty, status }) => (
@@ -106,10 +119,14 @@ MaxTurnoverForm.propTypes = {
     currency: PropTypes.string,
     onMount: PropTypes.func,
     setErrorConfig: PropTypes.func,
+    removeNotificationByKey: PropTypes.func,
+    removeNotificationMessageByKey: PropTypes.func,
 };
 
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules, ui }) => ({
     currency: client.currency,
     onMount: modules.cashier.onMount,
     setErrorConfig: modules.cashier.setErrorConfig,
+    removeNotificationByKey: ui.removeNotificationByKey,
+    removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
 }))(MaxTurnoverForm);

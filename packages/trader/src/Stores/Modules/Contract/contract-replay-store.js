@@ -1,5 +1,5 @@
 import { action, observable } from 'mobx';
-import { routes, isEmptyObject } from '@deriv/shared';
+import { routes, isEmptyObject, isForwardStarting } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import ContractStore from './contract-store';
@@ -132,7 +132,8 @@ export default class ContractReplayStore extends BaseStore {
 
         const is_forward_starting =
             !!this.contract_info.is_forward_starting ||
-            this.contract_info.purchase_time !== this.contract_info.date_start;
+            isForwardStarting(this.contract_info.shortcode, this.contract_info.purchase_time);
+
         this.is_forward_starting = is_forward_starting;
 
         // update the contract_store here passing contract_info

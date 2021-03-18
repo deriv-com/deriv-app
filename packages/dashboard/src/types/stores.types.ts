@@ -39,7 +39,6 @@ export type TClientStore = {
 export type TConfigStore = {
     asset_path: string;
     has_router: boolean;
-    is_deriv_crypto: boolean;
     redirect_404?: string;
     routes: TRoutesProps;
     setConfig: (config: TConfigProps) => void;

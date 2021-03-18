@@ -513,20 +513,22 @@ export default class UIStore extends BaseStore {
             // Remove notification messages if it was already closed by user and exists in LocalStore
             const active_loginid = LocalStore.get('active_loginid');
             const messages = LocalStore.getObject('notification_messages');
+
             if (active_loginid) {
                 // Check if is existing message to remove already closed messages stored in LocalStore
                 const is_existing_message = Array.isArray(messages[active_loginid])
                     ? messages[active_loginid].includes(notification.key)
                     : false;
+
                 if (is_existing_message) {
                     this.markNotificationMessage({ key: notification.key });
-                } else {
-                    this.notification_messages = [...this.notification_messages, notification].sort(
-                        isMobile() ? sortNotificationsMobile : sortNotifications
-                    );
-                    if (!excluded_notifications.includes(notification.key)) {
-                        this.updateNotifications(this.notification_messages);
-                    }
+                }
+
+                const sortFn = isMobile() ? sortNotificationsMobile : sortNotifications;
+                this.notification_messages = [...this.notification_messages, notification].sort(sortFn);
+
+                if (!excluded_notifications.includes(notification.key)) {
+                    this.updateNotifications(this.notification_messages);
                 }
             }
         }

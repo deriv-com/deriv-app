@@ -10,7 +10,7 @@ const USTPopover = ({ id }) => {
         popover_message = (
             <Localize
                 i18n_default_text={
-                    'Tether on Omnilayer (USDT) is a version of Tether, a digital token issued on blockchains and holds a value pegged to 1 USD at all times.<0 /><0 />USDT is built on the bitcoin blockchain via Omni Layer, a platform for digital assets and currencies that run in the bitcoin network.'
+                    'Send only Tether Omni to this deposit address.<0 /><0 />Sending Tether ERC20 to this address will result in the loss of your deposit.'
                 }
                 components={[<br key={0} />]}
             />

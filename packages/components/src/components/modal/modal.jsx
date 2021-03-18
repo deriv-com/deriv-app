@@ -6,6 +6,7 @@ import { CSSTransition } from 'react-transition-group';
 import Body from './modal-body.jsx';
 import Footer from './modal-footer.jsx';
 import Icon from '../icon/icon.jsx';
+import Text from '../text/text.jsx';
 import { useOnClickOutside } from '../../hooks';
 
 const ModalElement = ({
@@ -109,22 +110,30 @@ const ModalElement = ({
                     }}
                 >
                     {rendered_title && (
-                        <h3
+                        <Text
+                            as='h3'
+                            color='prominent'
+                            weight='bold'
+                            styles={{ lineHeight: '2.4rem' }}
                             className={classNames('dc-modal-header__title', {
                                 [`dc-modal-header__title--${className}`]: className,
                             })}
                         >
                             {rendered_title}
-                        </h3>
+                        </Text>
                     )}
                     {title && (
-                        <h3
+                        <Text
+                            as='h3'
+                            color='prominent'
+                            weight='bold'
+                            styles={{ lineHeight: '2.4rem' }}
                             className={classNames('dc-modal-header__title', {
                                 [`dc-modal-header__title--${className}`]: className,
                             })}
                         >
                             {title}
-                        </h3>
+                        </Text>
                     )}
                     {header && (
                         <div

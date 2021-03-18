@@ -14,7 +14,6 @@
     }
     &__title {
         max-width: 500px;
-        @include typeface(--paragraph-left-normal-prominent);
     }
     &__oval {
         width: 24px;

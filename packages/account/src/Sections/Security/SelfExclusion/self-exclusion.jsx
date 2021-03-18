@@ -17,8 +17,8 @@ import {
 import {
     getPropertyValue,
     toMoment,
-    epochToMoment,
     isDesktop,
+    epochToMoment,
     isMobile,
     formatMoney,
     getDecimalPlaces,
@@ -776,7 +776,14 @@ class SelfExclusion extends React.Component {
                                                     <Field name='timeout_until'>
                                                         {({ field }) => (
                                                             <DatePicker
+                                                                min_date={toMoment()
+                                                                    .add(1, 'days')
+                                                                    .format('YYYY-MM-DD')}
+                                                                max_date={toMoment()
+                                                                    .add(6, 'weeks')
+                                                                    .format('YYYY-MM-DD')}
                                                                 {...field}
+                                                                should_show_today={false}
                                                                 className='self-exclusion__input'
                                                                 label={localize('Date')}
                                                                 value={
@@ -806,6 +813,13 @@ class SelfExclusion extends React.Component {
                                                     <Field name='exclude_until'>
                                                         {({ field }) => (
                                                             <DatePicker
+                                                                min_date={toMoment()
+                                                                    .add(6, 'months')
+                                                                    .add(1, 'days')
+                                                                    .format('YYYY-MM-DD')}
+                                                                max_date={toMoment()
+                                                                    .add(5, 'years')
+                                                                    .format('YYYY-MM-DD')}
                                                                 {...field}
                                                                 alignment={is_tablet ? 'bottom' : 'left'}
                                                                 className='self-exclusion__input'

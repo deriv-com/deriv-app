@@ -244,8 +244,6 @@
             }
         }
         h2 {
-            @include typeface(--title-center-bold-black);
-
             @include mobile {
                 font-size: 1.2rem;
                 text-align: left;
@@ -355,17 +353,9 @@
                 background: var(--general-section-2);
 
                 &-title {
-                    color: var(--brand-red-coral);
-                    font-size: 1.4rem;
-                    font-weight: bold;
-                    line-height: 20px;
                     padding: 0 1.6rem 0.8rem;
                 }
                 &-subtitle {
-                    color: var(--text-prominent);
-                    line-height: 18px;
-                    font-size: 1.2rem;
-                    font-weight: bold;
                     padding: 1.6rem 1.6rem 0;
                 }
             }
@@ -377,18 +367,10 @@
 .change-currency {
     height: 100%;
 
-    &__title,
-    &__sub-title {
-        @include typeface(--title-left-bold-black);
-        color: var(--text-prominent);
-        text-align: center;
-    }
     &__title {
         margin-top: 3rem;
     }
     &__sub-title {
-        font-size: var(--text-size-xxs);
-        font-weight: normal;
         margin-bottom: 1rem;
     }
     &__button {

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
-import { Button, DesktopWrapper, Input } from '@deriv/components';
+import { Button, DesktopWrapper, Input, Text } from '@deriv/components';
 import { getDecimalPlaces, validNumber, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -72,9 +72,15 @@ const PaymentAgentTransferForm = ({
     return (
         <div className='cashier__wrapper payment-agent-transfer__container'>
             <DesktopWrapper>
-                <h2 className='cashier__header cashier__content-header'>
+                <Text
+                    as='h2'
+                    color='prominent'
+                    weight='bold'
+                    align='center'
+                    className='cashier__header cashier__content-header'
+                >
                     <Localize i18n_default_text='Transfer to client' />
-                </h2>
+                </Text>
             </DesktopWrapper>
             <Formik
                 initialValues={{

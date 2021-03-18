@@ -7,26 +7,34 @@ import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggl
 import { connect, MobxContentProvider } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 
-const TradeHeaderExtensions = ({
-    active_positions_count,
-    disableApp,
-    enableApp,
-    is_logged_in,
-    is_positions_empty,
-    onMountCashier,
-    onMountPositions,
-    onPositionsCancel,
-    onPositionsRemove,
-    onPositionsSell,
-    onUnmountPositions,
-    populateHeaderExtensions,
-    positions_currency,
-    positions_error,
-    positions,
-    setAccountSwitchListener,
-    store,
-}) => {
-    const populateHeader = () => {
+const TradeHeaderExtensions = props => {
+    const {
+        disableApp,
+        enableApp,
+        onMountCashier,
+        onMountPositions,
+        onPositionsCancel,
+        onPositionsRemove,
+        onPositionsSell,
+        onUnmountPositions,
+        populateHeaderExtensions,
+        setAccountSwitchListener,
+        store,
+    } = props;
+
+    const props_ref = React.useRef();
+    props_ref.current = props;
+
+    const populateHeader = React.useCallback(() => {
+        const {
+            is_logged_in,
+            is_positions_empty,
+            active_positions_count,
+            positions,
+            positions_currency,
+            positions_error,
+        } = props_ref.current;
+
         const header_items = is_logged_in && (
             <MobileWrapper>
                 <MobxContentProvider store={store}>
@@ -47,7 +55,7 @@ const TradeHeaderExtensions = ({
         );
 
         populateHeaderExtensions(header_items);
-    };
+    }, [disableApp, enableApp, onPositionsCancel, onPositionsRemove, onPositionsSell, populateHeaderExtensions, store]);
 
     React.useEffect(() => {
         const waitForLogin = async () => {
@@ -55,7 +63,7 @@ const TradeHeaderExtensions = ({
                 const { client } = store;
                 // Waits for login to complete
                 await when(() => !client.is_populating_account_list);
-                if (is_logged_in) {
+                if (props_ref.current.is_logged_in) {
                     await WS.wait('authorize');
                     onMountPositions();
                     onMountCashier(true);
@@ -72,8 +80,15 @@ const TradeHeaderExtensions = ({
             if (isMobile()) onUnmountPositions();
             populateHeaderExtensions(null);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [
+        onMountCashier,
+        onMountPositions,
+        onUnmountPositions,
+        populateHeader,
+        populateHeaderExtensions,
+        setAccountSwitchListener,
+        store,
+    ]);
 
     React.useEffect(() => {
         populateHeader();

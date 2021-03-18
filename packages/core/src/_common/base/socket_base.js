@@ -316,6 +316,12 @@ const BinarySocketBase = (() => {
             platform,
         });
 
+    const tradingPlatformNewAccount = values =>
+        deriv_api.send({
+            trading_platform_new_account: 1,
+            ...values,
+        });
+
     return {
         init,
         openNewConnection,
@@ -387,6 +393,7 @@ const BinarySocketBase = (() => {
         realityCheck,
         tradingServers,
         tradingPlatformAccountsList,
+        tradingPlatformNewAccount,
     };
 })();
 

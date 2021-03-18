@@ -480,7 +480,16 @@ const checkAccountStatus = (
     }
     if (mt5_withdrawal_locked) addNotificationMessage(clientNotifications().mt5_withdrawal_locked);
     if (document_needs_action) addNotificationMessage(clientNotifications().document_needs_action);
-    if (unwelcome && !should_show_max_turnover) addNotificationMessage(clientNotifications().unwelcome);
+
+    // if client is unwelcome because they need to submit verification, we don't need to show unwelcome message as well
+    const should_hide_unwelcome =
+        needs_verification.length ||
+        /^pending|expired$/.test(document.status) ||
+        /^pending|expired$/.test(identity.status);
+
+    if (unwelcome && !should_show_max_turnover && !should_hide_unwelcome) {
+        addNotificationMessage(clientNotifications().unwelcome);
+    }
 
     if (has_risk_assessment) addNotificationMessage(clientNotifications().risk);
     if (shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);

@@ -7,13 +7,9 @@
         text-transform: none;
     }
     &__title {
-        @include typeface(--title-center-bold-black);
-        color: var(--text-prominent);
         margin-top: 3rem;
     }
     &__sub-title {
-        @include typeface(--small-center-normal-black);
-        color: var(--text-general);
         margin-bottom: 1.6rem;
     }
 }

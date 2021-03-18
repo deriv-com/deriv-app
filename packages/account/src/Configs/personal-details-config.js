@@ -185,17 +185,10 @@ const personalDetailsConfig = (
                     label: localize('Mr'),
                     value: 'Mr',
                 },
-                {
-                    label: localize('Mrs'),
-                    value: 'Mrs',
-                },
+
                 {
                     label: localize('Ms'),
                     value: 'Ms',
-                },
-                {
-                    label: localize('Miss'),
-                    value: 'Miss',
                 },
             ],
             disabled_items,

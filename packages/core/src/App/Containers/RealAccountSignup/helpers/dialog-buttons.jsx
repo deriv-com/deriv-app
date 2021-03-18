@@ -121,7 +121,7 @@ export const DialogButtons = ({
     switchToVirtual,
 }) => {
     return (
-        <div className='status-dialog__btn-area'>
+        <div className='status-dialog__footer'>
             <DialogDismissButton
                 closeModal={closeModal}
                 is_bypassed={status === EXPERIAN.PENDING}

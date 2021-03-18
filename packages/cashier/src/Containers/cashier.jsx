@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {
+    Button,
     DesktopWrapper,
     Div100vhContainer,
     FadeWrapper,
@@ -11,7 +12,7 @@ import {
     Loading,
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getSelectedRoute, isMobile, routes } from '@deriv/shared';
+import { getSelectedRoute, getStaticUrl, isMobile, routes } from '@deriv/shared';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import 'Sass/cashier.scss';
@@ -108,6 +109,15 @@ const Cashier = ({
                             is_full_width
                             is_routed
                             list={getMenuOptions()}
+                            tab_headers_note={
+                                <Button
+                                    id='cashier_learn_more'
+                                    className='cashier-page-wrapper__button'
+                                    text={localize('Learn more about payment methods')}
+                                    onClick={() => window.open(getStaticUrl('/payment-methods'))}
+                                    secondary
+                                />
+                            }
                             // TODO: Uncomment when Ewallet.Exchange is available
                             // tab_headers_note={
                             //     should_show_tab_headers_note ? (

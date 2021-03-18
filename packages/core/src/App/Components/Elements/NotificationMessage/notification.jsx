@@ -52,7 +52,9 @@ const Notification = ({ data, removeNotificationMessage }) => {
                         <NotificationStatusIcons type={data.type} />
                     </div>
                     <div className='notification__text-container'>
-                        <h4 className='notification__header'>{data.header}</h4>
+                        <Text as='h4' weight='bold' className='notification__header'>
+                            {data.header}
+                        </Text>
                         {data.timeout && (
                             <LinearProgress
                                 className='notification__timeout'

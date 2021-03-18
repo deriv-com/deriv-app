@@ -1,5 +1,6 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
+import { Text } from '@deriv/components';
 
 export const Hr = () => <div className='terms-of-use__hr' />;
 
@@ -15,9 +16,9 @@ export const BrokerSpecificMessage = ({ target }) => (
 
 export const SVGDescription = () => (
     <React.Fragment>
-        <h4>
+        <Text as='h4' size='xs' weight='bold'>
             <Localize i18n_default_text={'Jurisdiction and choice of law'} />
-        </h4>
+        </Text>
         <p>
             <Localize
                 i18n_default_text={
@@ -26,9 +27,9 @@ export const SVGDescription = () => (
             />
         </p>
         <Hr />
-        <h4>
+        <Text as='h4' size='xs' weight='bold'>
             <Localize i18n_default_text={'Risk warning'} />
-        </h4>
+        </Text>
         <p>
             <Localize
                 i18n_default_text={
@@ -41,9 +42,9 @@ export const SVGDescription = () => (
 
 export const IOMDescription = () => (
     <React.Fragment>
-        <h4>
+        <Text as='h4' size='xs' weight='bold'>
             <Localize i18n_default_text={'Jurisdiction and choice of law'} />
-        </h4>
+        </Text>
         <p>
             <Localize
                 i18n_default_text={
@@ -56,9 +57,9 @@ export const IOMDescription = () => (
 
 export const MaltaDescription = () => (
     <React.Fragment>
-        <h4>
+        <Text as='h4' size='xs' weight='bold'>
             <Localize i18n_default_text={'Jurisdiction and choice of law'} />
-        </h4>
+        </Text>
         <p>
             <Localize
                 i18n_default_text={
@@ -71,9 +72,9 @@ export const MaltaDescription = () => (
 
 export const MaltaInvestDescription = () => (
     <React.Fragment>
-        <h4>
+        <Text as='h4' size='xs' weight='bold'>
             <Localize i18n_default_text={'Jurisdiction and choice of law'} />
-        </h4>
+        </Text>
         <p>
             <Localize
                 i18n_default_text={
@@ -82,9 +83,9 @@ export const MaltaInvestDescription = () => (
             />
         </p>
         <Hr />
-        <h4>
+        <Text as='h4' size='xs' weight='bold'>
             <Localize i18n_default_text='Risk warning' />
-        </h4>
+        </Text>
         <p>
             <Localize
                 i18n_default_text={
@@ -97,9 +98,9 @@ export const MaltaInvestDescription = () => (
 
 export const SamoaDescription = () => (
     <React.Fragment>
-        <h4>
+        <Text as='h4' size='xs' weight='bold'>
             <Localize i18n_default_text={'Jurisdiction and choice of law'} />
-        </h4>
+        </Text>
         <p>
             <Localize
                 i18n_default_text={
@@ -108,9 +109,9 @@ export const SamoaDescription = () => (
             />
         </p>
         <Hr />
-        <h4>
+        <Text as='h4' size='xs' weight='bold'>
             <Localize i18n_default_text={'Risk warning'} />
-        </h4>
+        </Text>
         <p>
             <Localize
                 i18n_default_text={
@@ -123,9 +124,9 @@ export const SamoaDescription = () => (
 
 export const SharedMessage = () => (
     <React.Fragment>
-        <h4>
+        <Text as='h4' size='xs' weight='bold'>
             <Localize i18n_default_text='Real accounts are not available to politically exposed persons (PEPs).' />
-        </h4>
+        </Text>
         <p>
             <Localize i18n_default_text='A politically exposed person (PEP) is someone appointed with a prominent public position. Close associates and family members of a PEP are also considered to be PEPs.' />
         </p>

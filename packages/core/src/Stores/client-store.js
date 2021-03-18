@@ -840,25 +840,32 @@ export default class ClientStore extends BaseStore {
             previous_currency: this.currency,
         });
         if (!response.error) {
-            runInAction(() => {
-                const new_account = { ...this.accounts[this.loginid] };
-                new_account.currency = currency;
-                if (!('balance' in new_account)) new_account.balance = 0;
-                this.accounts[this.loginid] = new_account;
-            });
-            localStorage.setItem(storage_key, JSON.stringify(this.accounts));
-            LocalStore.setObject(storage_key, JSON.parse(JSON.stringify(this.accounts)));
-            this.selectCurrency(currency);
-            this.root_store.ui.removeNotificationMessage({
-                key: 'currency',
-            });
-            this.root_store.ui.removeNotificationByKey({
-                key: 'currency',
-            });
-            await this.init();
+            await this.updateAccountCurrency(currency);
             return Promise.resolve(response);
         }
         return Promise.reject(response.error);
+    }
+
+    @action.bound
+    async updateAccountCurrency(currency, is_set_storage = true) {
+        runInAction(() => {
+            const new_account = { ...this.accounts[this.loginid] };
+            new_account.currency = currency;
+            if (!('balance' in new_account)) new_account.balance = 0;
+            this.accounts[this.loginid] = new_account;
+        });
+        if (is_set_storage) {
+            localStorage.setItem(storage_key, JSON.stringify(this.accounts));
+            LocalStore.setObject(storage_key, JSON.parse(JSON.stringify(this.accounts)));
+        }
+        this.selectCurrency(currency);
+        this.root_store.ui.removeNotificationMessage({
+            key: 'currency',
+        });
+        this.root_store.ui.removeNotificationByKey({
+            key: 'currency',
+        });
+        await this.init();
     }
 
     @action.bound

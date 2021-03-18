@@ -150,6 +150,7 @@ const ModalElement = ({
 
 ModalElement.defaultProps = {
     has_close_icon: true,
+    should_header_stick_body: true,
 };
 
 ModalElement.propTypes = {
@@ -249,6 +250,7 @@ Modal.Footer = Footer;
 
 Modal.defaultProps = {
     has_close_icon: true,
+    should_header_stick_body: true,
 };
 
 Modal.propTypes = {

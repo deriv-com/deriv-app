@@ -160,6 +160,7 @@ export default class CashierStore extends BaseStore {
     @observable p2p_notification_count = 0;
     @observable cashier_route_tab_index = 0;
     @observable is_deposit_cash = false;
+    @observable is_cashier_default = true;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -212,6 +213,11 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setIsDepositCash(is_deposit_cash) {
         this.is_deposit_cash = is_deposit_cash;
+    }
+
+    @action.bound
+    setIsCashierDefault(is_cashier_default) {
+        this.is_cashier_default = is_cashier_default;
     }
 
     @action.bound

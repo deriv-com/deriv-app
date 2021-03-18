@@ -15,9 +15,16 @@ const CashierDefault = ({
     is_p2p_enabled,
     is_payment_agent_visible,
     openRealAccountSignup,
+    setIsCashierDefault,
     setIsDepositCash,
 }) => {
     const history = useHistory();
+
+    React.useEffect(() => {
+        setIsCashierDefault(true);
+        return () => setIsCashierDefault(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const onClickDeposit = () => {
         setIsDepositCash(true);
@@ -87,6 +94,7 @@ CashierDefault.propTypes = {
     is_p2p_enabled: PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
     openRealAccountSignup: PropTypes.func,
+    setIsCashierDefault: PropTypes.func,
     setIsDepositCash: PropTypes.func,
 };
 
@@ -97,5 +105,6 @@ export default connect(({ client, modules, ui }) => ({
     is_p2p_enabled: modules.cashier.is_p2p_enabled,
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
     openRealAccountSignup: ui.openRealAccountSignup,
+    setIsCashierDefault: modules.cashier.setIsCashierDefault,
     setIsDepositCash: modules.cashier.setIsDepositCash,
 }))(CashierDefault);

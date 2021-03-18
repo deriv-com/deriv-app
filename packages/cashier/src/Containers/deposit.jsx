@@ -76,10 +76,10 @@ const Deposit = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, iframe_height, is_cashier_default]);
+    if (is_virtual) {
+        return <Virtual />;
+    }
     if (is_deposit_cash) {
-        if (is_virtual) {
-            return <Virtual />;
-        }
         if (error.is_ask_uk_funds_protection) {
             return <FundsProtection />;
         }

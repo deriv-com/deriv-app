@@ -9,7 +9,7 @@ import Providers from 'Config/cashier-default-providers';
 import CashierDefaultDetail from './cashier-default-detail.jsx';
 
 const CashierDefault = ({
-    account_needed_modal_props,
+    accounts_list,
     currency,
     is_eu,
     is_p2p_enabled,
@@ -19,6 +19,8 @@ const CashierDefault = ({
     setIsDepositCash,
 }) => {
     const history = useHistory();
+    const is_crypto = !!currency && isCryptocurrency(currency);
+    const has_crypto_account = accounts_list.some(x => x.is_crypto);
 
     React.useEffect(() => {
         setIsCashierDefault(true);
@@ -32,8 +34,12 @@ const CashierDefault = ({
     };
 
     const onClickCrypto = () => {
+        if (is_crypto) {
+            onClickDeposit();
+            return;
+        }
         history.push(routes.trade);
-        openRealAccountSignup(account_needed_modal_props.target);
+        openRealAccountSignup('deposit_cash');
     };
 
     const onClickPaymentAgent = () => {
@@ -44,24 +50,20 @@ const CashierDefault = ({
         history.push(routes.cashier_p2p);
     };
 
-    const is_crypto = !!currency && isCryptocurrency(currency);
-
     const getDepositOptions = () => {
         const options = [];
-
-        options.push(Providers.createCashProvider(onClickDeposit));
-        if (!is_eu) {
-            options.push(Providers.createCryptoProvider(onClickCrypto));
-
-            // Put the crypto option first in case the account is crypto.
-            if (is_crypto)
-                options.sort(
-                    (first_option, second_option) => options.indexOf(second_option) - options.indexOf(first_option)
-                );
+        if (!is_crypto) {
+            options.push(Providers.createCashProvider(onClickDeposit));
         }
-
-        if (is_payment_agent_visible) options.push(Providers.createPaymentAgentProvider(onClickPaymentAgent));
-        if (is_p2p_enabled) options.push(Providers.createDp2pProvider(onClickDp2p));
+        if (!is_eu && (is_crypto || !has_crypto_account)) {
+            options.push(Providers.createCryptoProvider(onClickCrypto));
+        }
+        if (is_payment_agent_visible) {
+            options.push(Providers.createPaymentAgentProvider(onClickPaymentAgent));
+        }
+        if (is_p2p_enabled) {
+            options.push(Providers.createDp2pProvider(onClickDp2p));
+        }
         return options;
     };
 
@@ -89,6 +91,7 @@ const CashierDefault = ({
 
 CashierDefault.propTypes = {
     account_needed_modal_props: PropTypes.object,
+    accounts_list: PropTypes.array,
     currency: PropTypes.string,
     is_eu: PropTypes.bool,
     is_p2p_enabled: PropTypes.bool,
@@ -100,6 +103,7 @@ CashierDefault.propTypes = {
 
 export default connect(({ client, modules, ui }) => ({
     account_needed_modal_props: ui.account_needed_modal_props,
+    accounts_list: modules.cashier.config.account_transfer.accounts_list,
     currency: client.currency,
     is_eu: client.is_eu,
     is_p2p_enabled: modules.cashier.is_p2p_enabled,

@@ -58,7 +58,7 @@ const SendEmailTemplate = ({
         <div className='send-email-template'>
             <div className='send-email-template__sent'>
                 <Icon icon='IcEmailSent' className='send-email-template__icon' size={128} />
-                <Text as='h1' align='center' className='send-email-template__title' weight='bold'>
+                <Text as='h1' align='center' className='send-email-template__title' color='prominent' weight='bold'>
                     {title}
                 </Text>
                 <Text

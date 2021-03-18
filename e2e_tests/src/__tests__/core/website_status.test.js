@@ -1,30 +1,29 @@
-const assert = require('assert').strict;
-const Common = require("@root/objects/common");
-const {replaceWebsocket, waitForWSSubset} = require("@root/_utils/websocket");
-const {setUp, tearDown, mobile_viewport} = require('@root/bootstrap');
+const Common = require('@root/objects/common');
+const { replaceWebsocket, waitForWSSubset } = require('@root/_utils/websocket');
+const default_context_config = require('@root/_config/context');
 
-let browser, context, page;
+let p;
 
-beforeEach(async () => {
-    const out = await setUp(mobile_viewport);
-    browser = out.browser;
-    context = out.context;
-
-    await context.addInitScript(replaceWebsocket);
-    page = new Common(await context.newPage());
-});
-
-afterEach(async () => {
-    await tearDown(browser);
-});
-
-test('It should send website_status on page start', async () => {
-    await page.navigate();
-    const message = await waitForWSSubset(page, {
-        website_status: {
-            site_status: "up",
-        },
+describe('Website status check', () => {
+    beforeEach(async () => {
+        await jestPlaywright.resetContext({
+            ...default_context_config,
+        });
+        await context.addInitScript(replaceWebsocket);
+        p = new Common(page);
     });
 
-    assert.ok(message.website_status.site_status === 'up', 'Could not receive website status');
+    afterEach(async () => {
+        await p.close();
+    });
+
+    test('It should send website_status on page start', async () => {
+        await p.navigate();
+        const message = await waitForWSSubset(p, {
+            website_status: {
+                site_status: 'up',
+            },
+        });
+        expect(message.website_status.site_status === 'up').toBe(true);
+    });
 });

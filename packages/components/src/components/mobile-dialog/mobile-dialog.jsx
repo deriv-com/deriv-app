@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Icon from '../icon/icon.jsx';
+import Text from '../text/text.jsx';
 import Div100vhContainer from '../div100vh-container';
 
 const MobileDialog = props => {
@@ -82,7 +83,16 @@ const MobileDialog = props => {
                     height_offset={props.content_height_offset || '8px'}
                 >
                     <div className='dc-mobile-dialog__header'>
-                        <h2 className='dc-mobile-dialog__title'>{renderTitle ? renderTitle() : title}</h2>
+                        <Text
+                            as='h2'
+                            size='xs'
+                            color='prominent'
+                            weight='bold'
+                            line_height='unset'
+                            className='dc-mobile-dialog__title'
+                        >
+                            {renderTitle ? renderTitle() : title}
+                        </Text>
                         <div className='icons dc-btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
                             <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
                         </div>

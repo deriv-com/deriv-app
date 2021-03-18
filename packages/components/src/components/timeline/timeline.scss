@@ -15,11 +15,6 @@
     }
     &__title {
         max-width: 500px;
-        @include typeface(--paragraph-left-bold-prominent);
-
-        @at-root .dc-timeline__flex--disabled & {
-            color: $color-grey-7;
-        }
     }
     &__oval {
         width: 24px;

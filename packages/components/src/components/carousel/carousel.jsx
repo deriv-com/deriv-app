@@ -30,6 +30,12 @@ const Carousel = ({
     }, [item_per_window, list]);
     const sliced_list_length = list.slice(computed_item_per_window - 1).length;
 
+    React.useEffect(() => {
+        if (list.slice(computed_item_per_window - 1).length <= 1) {
+            setActiveIndex(0);
+        }
+    }, [list]);
+
     const handleNextClick = () => {
         const next_idx = active_index + 1;
         const has_reached_end = next_idx === list.length - computed_item_per_window + 1;

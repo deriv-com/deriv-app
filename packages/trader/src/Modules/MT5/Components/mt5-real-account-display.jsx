@@ -45,11 +45,9 @@ const MT5RealAccountDisplay = ({
     is_logged_in,
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
-    trading_servers,
     can_have_more_real_synthetic_mt5,
 }) => {
-    const should_show_trade_servers =
-        (is_logged_in ? !is_eu && has_real_account : !is_eu_country) && can_have_more_real_synthetic_mt5;
+    const should_show_trade_servers = is_logged_in && !is_eu && has_real_account && can_have_more_real_synthetic_mt5;
     const [active_hover, setActiveHover] = React.useState(0);
 
     const has_required_credentials =
@@ -144,7 +142,6 @@ const MT5RealAccountDisplay = ({
                               }}
                               is_logged_in={is_logged_in}
                               should_show_trade_servers={should_show_trade_servers}
-                              is_trade_server_button_visible={should_show_trade_servers}
                               existing_data={acc}
                               commission_message={localize('No commission')}
                               onSelectAccount={onSelectRealSynthetic}
@@ -154,7 +151,6 @@ const MT5RealAccountDisplay = ({
                                   'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
                               )}
                               specs={real_synthetic_specs}
-                              trading_servers={trading_servers}
                               onHover={handleHoverCard}
                           />
                       );
@@ -171,7 +167,6 @@ const MT5RealAccountDisplay = ({
                       }}
                       is_logged_in={is_logged_in}
                       should_show_trade_servers={should_show_trade_servers}
-                      is_trade_server_button_visible={should_show_trade_servers}
                       existing_data={undefined}
                       commission_message={localize('No commission')}
                       onSelectAccount={onSelectRealSynthetic}
@@ -181,7 +176,6 @@ const MT5RealAccountDisplay = ({
                           'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
                       )}
                       specs={real_synthetic_specs}
-                      trading_servers={trading_servers}
                       onHover={handleHoverCard}
                   />,
               ]);
@@ -213,7 +207,6 @@ const MT5RealAccountDisplay = ({
             toggleAccountsDialog={toggleAccountsDialog}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
             is_accounts_switcher_on={is_accounts_switcher_on}
-            is_trade_server_button_visible={should_show_trade_servers}
         />
     );
 
@@ -243,7 +236,6 @@ const MT5RealAccountDisplay = ({
             }
             specs={should_show_eu ? eu_real_financial_specs : real_financial_specs}
             is_logged_in={is_logged_in}
-            is_trade_server_button_visible={should_show_trade_servers}
         />
     );
 

@@ -43,13 +43,13 @@ const SpecBox = ({ value }) => (
     </div>
 );
 
-const MT5AccountCardSpecification = ({ children, height }) => {
+const CFDAccountCardSpecification = ({ children, height }) => {
     const [is_collapsed, setCollapsed] = React.useState(false);
     const content_ref = React.useRef();
     React.useEffect(() => {
         if (content_ref.current) {
             if (is_collapsed) {
-                content_ref.current.style.height = `${height ?? content_ref.current.scrollHeight}px`;
+                content_ref.current.style.height = `${height ? height - 18 : content_ref.current.scrollHeight}px`;
             } else {
                 content_ref.current.style.height = null;
             }
@@ -182,6 +182,7 @@ const CFDAccountCard = ({
     const ref = React.useRef();
     const wrapper_ref = React.useRef();
     const button_ref = React.useRef();
+    const cta_ref = React.useRef();
 
     React.useEffect(() => {
         if (existing_data) {
@@ -265,10 +266,10 @@ const CFDAccountCard = ({
                         )}
                     </div>
                 </div>
-                <div className='cfd-account-card__cta'>
+                <div ref={cta_ref} className='cfd-account-card__cta'>
                     {existing_data?.login && is_logged_in ? (
                         <>
-                            <MT5AccountCardSpecification height={272}>
+                            <CFDAccountCardSpecification height={cta_ref.current?.clientHeight}>
                                 <p className='cfd-account-card__specification-description'>{descriptor}</p>
                                 <table className='cfd-account-card__specs-table cfd-account-card__specification-table'>
                                     <tbody>
@@ -286,7 +287,7 @@ const CFDAccountCard = ({
                                         ))}
                                     </tbody>
                                 </table>
-                            </MT5AccountCardSpecification>
+                            </CFDAccountCardSpecification>
                             <div className='cfd-account-card__login-specs'>
                                 <Text as='p' color='less-prominent' size='xxxs' align='left'>
                                     {localize('Use below credential to login')}

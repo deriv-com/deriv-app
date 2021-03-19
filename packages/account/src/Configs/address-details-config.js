@@ -21,6 +21,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.address_line_2 ?? '',
             rules: [
+                ['address', localize('Address is not in a proper format')],
                 ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
                 ['po_box', getErrorMessages().po_box()],
             ].filter(x => (is_svg ? x.indexOf('po_box') !== 0 : x)),
@@ -34,7 +35,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                     'regular',
                     localize('City field is not in a proper format'),
                     {
-                        regex: /^[a-zA-Z\s\W'.-]{1,35}$/,
+                        regex: /^[A-Za-z0-9\s'.-]{1,35}$/,
                     },
                 ],
             ],

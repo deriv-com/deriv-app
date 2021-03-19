@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
-import { Icon, Checklist } from '@deriv/components';
+import { Icon, Checklist, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CashierLocked from './cashier-locked.jsx';
@@ -42,7 +42,9 @@ const WithdrawalLocked = ({ account_status, is_withdrawal_lock, is_ask_financial
             {items.length || is_withdrawal_lock ? (
                 <div className='cashier-locked'>
                     <Icon icon='IcCashierWithdrawalLock' className='cashier-locked__icon' />
-                    <h2 className='cashier-locked__title'>{localize('Withdrawals are locked')}</h2>
+                    <Text as='h2' weight='bold' align='center' className='cashier-locked__title'>
+                        {localize('Withdrawals are locked')}
+                    </Text>
                     {is_withdrawal_lock ? (
                         <p className='cashier-locked__desc'>{localize('Please check your email for more details.')}</p>
                     ) : (

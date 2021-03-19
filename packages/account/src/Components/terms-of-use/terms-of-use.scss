@@ -20,10 +20,8 @@
         }
     }
     h4 {
-        @include typeface(--paragraph-left-bold-black);
         margin: 1rem 0;
         text-transform: none;
-        color: var(--text-general);
     }
     p {
         @include typeface(--paragraph-left-normal-black);

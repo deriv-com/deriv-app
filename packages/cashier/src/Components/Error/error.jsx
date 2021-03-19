@@ -7,9 +7,13 @@ import { connect } from 'Stores/connect';
 const ErrorComponent = ({ header, message, button_link, onClickButton, button_text, footer }) => (
     <div className='cashier__wrapper cashier__wrapper-error'>
         <Icon icon='IcCashierError' className='cashier-error__icon' />
-        {header && <h2 className='cashier-error__header'>{header}</h2>}
+        {header && (
+            <Text as='h2' color='loss-danger' weight='bold' align='center' className='cashier-error__header'>
+                {header}
+            </Text>
+        )}
         {message && (
-            <Text as='p' size='xs' line_height='s' className='cashier__paragraph' align='center'>
+            <Text as='p' align='center' size='xs' line_height='s' className='cashier__paragraph'>
                 {message}
             </Text>
         )}
@@ -21,7 +25,11 @@ const ErrorComponent = ({ header, message, button_link, onClickButton, button_te
         {!button_link && button_text && (
             <Button className='cashier-error__button' onClick={onClickButton} text={button_text} primary large />
         )}
-        {footer && <h2 className='cashier-error__footer'>{footer}</h2>}
+        {footer && (
+            <Text as='h2' size='xxs'>
+                {footer}
+            </Text>
+        )}
     </div>
 );
 

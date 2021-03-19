@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { localize } from '../../../../translations';
 import Text from '../text';
 import Icon from '../icon/icon.jsx';
 
@@ -63,9 +62,7 @@ const DataListRow = ({ action_desc, destination_link, row_gap, row_key, rowRende
                                                 align='center'
                                             >
                                                 {action_desc.message}
-                                                {action_desc.message.includes(localize('Address'))
-                                                    ? copy_to_clipboard
-                                                    : null}
+                                                {action_desc.message.includes(': ') ? copy_to_clipboard : null}
                                             </Text>
                                         </div>
                                     )}

@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { localize } from '../../../../translations';
 import ThemedScrollbars from '../themed-scrollbars';
 import Text from '../text';
 import Icon from '../icon/icon.jsx';
@@ -50,7 +49,7 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
                             <div className='table__row--info'>
                                 <Text as='p' size='xs' className='statement__row--detail-text' align='center'>
                                     {replace.message}
-                                    {replace.message.includes(localize('Address')) ? copy_to_clipboard : null}
+                                    {replace.message.includes(': ') ? copy_to_clipboard : null}
                                 </Text>
                             </div>
                         )}

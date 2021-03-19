@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Icon from '../icon';
+import Icon from '../icon/icon.jsx';
+import Text from '../text/text.jsx';
 
 class SubMenuSection extends React.PureComponent {
     render() {
@@ -12,7 +13,9 @@ class SubMenuSection extends React.PureComponent {
                         <Icon className='dc-mobile-drawer__submenu-section-title-icon' icon={this.props.section_icon} />
                     )}
                     {this.props.section_title && (
-                        <h3 className='dc-mobile-drawer__submenu-section-title-text'>{this.props.section_title}</h3>
+                        <Text as='h3' size='xs' weight='bold' className='dc-mobile-drawer__submenu-section-title-text'>
+                            {this.props.section_title}
+                        </Text>
                     )}
                 </div>
                 <div className='dc-mobile-drawer__submenu-section-content'>{this.props.children}</div>

@@ -84,9 +84,9 @@ const AccountTransferBullet = ({ children }) => (
 const AccountTransferNote = ({ currency, transfer_fee, minimum_fee }) => (
     <div className='account-transfer__notes'>
         <DesktopWrapper>
-            <div className='cashier__header account-transfer__notes-header'>
+            <Text as='h2' color='prominent' weight='bold' className='cashier__header account-transfer__notes-header'>
                 <Localize i18n_default_text='Notes' />
-            </div>
+            </Text>
         </DesktopWrapper>
         <AccountTransferBullet>
             <Localize
@@ -255,9 +255,15 @@ const AccountTransferForm = ({
 
     return (
         <div className='cashier__wrapper account-transfer__wrapper'>
-            <h2 className='cashier__header cashier__content-header'>
+            <Text
+                as='h2'
+                color='prominent'
+                weight='bold'
+                align='center'
+                className='cashier__header cashier__content-header'
+            >
                 {localize('Transfer between your accounts in Deriv')}
-            </h2>
+            </Text>
             <Formik
                 initialValues={{
                     amount: account_transfer_amount || '',

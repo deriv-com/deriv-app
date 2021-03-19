@@ -10,7 +10,7 @@ import { EXPERIAN } from './constants';
  * @param {EXPERIAN} status - Experian result
  */
 const IOMHeading = ({ status }) => (
-    <Text as='h2' align='center' className='status-dialog__message-header' color='general' weight='bold'>
+    <Text as='h2' align='center' className='status-dialog__message-header' weight='bold'>
         {status === EXPERIAN.SUCCESS && <Localize i18n_default_text='Your account is ready' />}
         {status === EXPERIAN.WARN && <Localize i18n_default_text='Please verify your address' />}
         {status === EXPERIAN.DANGER && <Localize i18n_default_text='Please verify your identity and address' />}
@@ -33,7 +33,7 @@ export const DialogHeading = ({ status, landing_company_shortcode }) => {
             return <IOMHeading status={status} />;
         default:
             return (
-                <Text as='h2' align='center' className='status-dialog__message-header' color='general' weight='bold'>
+                <Text as='h2' align='center' className='status-dialog__message-header' weight='bold'>
                     <Localize i18n_default_text='Your account is ready' />
                 </Text>
             );

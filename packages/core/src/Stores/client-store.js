@@ -1893,6 +1893,13 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    transactionResponseCall(response) {
+        if (response.transaction) {
+            this.last_transaction = response.transaction;
+        }
+    }
+
+    @action.bound
     getChangeableFields() {
         const get_settings =
             Object.keys(this.account_settings).length === 0

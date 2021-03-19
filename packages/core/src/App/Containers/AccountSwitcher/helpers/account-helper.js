@@ -57,12 +57,7 @@ export const getMtConfig = (market_type, landing_company, existing_mt5_accounts,
             );
             if (has_account) {
                 const number_market_type_available = trading_servers.filter(
-                    s =>
-                        s.supported_accounts.includes(market_type) &&
-                        !s.disabled &&
-                        !existing_mt5_accounts.some(
-                            acc => acc.account_type === 'real' && acc.market_type === market_type && acc.server === s.id
-                        )
+                    s => s.supported_accounts.includes(market_type) && !s.disabled
                 ).length;
                 if (number_market_type_available && has_account.account_type === 'real') {
                     has_account = false;

@@ -284,6 +284,7 @@ export default class CFDStore extends BaseStore {
                 this.setCFDNewAccount(response.mt5_new_account);
                 this.is_cfd_password_modal_enabled = false;
                 this.has_cfd_error = false;
+                WS.tradingServers().then(this.root_store.client.responseTradingServers);
                 setTimeout(() => this.setCFDSuccessDialog(true), 300);
             });
         } else {

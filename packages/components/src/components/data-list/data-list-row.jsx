@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { localize } from '@deriv/translations';
+import Text from '../text';
 import Icon from '../icon/icon.jsx';
 
 const DataListRow = ({ action_desc, destination_link, row_gap, row_key, rowRenderer, ...other_props }) => {
@@ -55,12 +56,17 @@ const DataListRow = ({ action_desc, destination_link, row_gap, row_key, rowRende
                                         <div>{action_desc.component}</div>
                                     ) : (
                                         <div className='table__row--info'>
-                                            <p className='statement__row--detail-text'>
+                                            <Text
+                                                as='p'
+                                                size='xs'
+                                                className='statement__row--detail-text'
+                                                align='center'
+                                            >
                                                 {action_desc.message}
                                                 {action_desc.message.includes(localize('Address'))
                                                     ? copy_to_clipboard
                                                     : null}
-                                            </p>
+                                            </Text>
                                         </div>
                                     )}
                                 </div>

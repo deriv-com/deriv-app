@@ -48,7 +48,7 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
                     <div>
                         {replace?.component ?? (
                             <div className='table__row--info'>
-                                <Text as='p' size='xs' className='statement__row--detail-text'>
+                                <Text as='p' size='xs' className='statement__row--detail-text' align='center'>
                                     {replace.message}
                                     {replace.message.includes(localize('Address')) ? copy_to_clipboard : null}
                                 </Text>

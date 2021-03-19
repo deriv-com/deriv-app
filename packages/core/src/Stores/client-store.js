@@ -221,13 +221,6 @@ export default class ClientStore extends BaseStore {
     get legal_allowed_currencies() {
         if (!this.landing_companies) return [];
         if (this.root_store.ui && this.root_store.ui.real_account_signup_target) {
-            if (this.root_store.ui.real_account_signup_target === 'manage') {
-                if (this.current_landing_company.shortcode === 'iom') {
-                    return this.landing_companies.gaming_company?.legal_allowed_currencies;
-                } else if (['malta', 'maltainvest'].includes(this.current_landing_company.shortcode)) {
-                    return this.landing_companies.financial_company?.legal_allowed_currencies;
-                }
-            }
             const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
             if (this.landing_companies[`${target}_company`] && this.current_landing_company && this.accounts) {
                 if (this.accounts[this.loginid] && !this.accounts[this.loginid].currency) {
@@ -295,7 +288,6 @@ export default class ClientStore extends BaseStore {
             }
             return acc;
         }, []);
-
         return !!this.upgradeable_currencies.filter(acc => values.includes(acc.value) && acc.type === 'fiat').length;
     }
 
@@ -342,19 +334,14 @@ export default class ClientStore extends BaseStore {
     @computed
     get can_have_more_real_synthetic_mt5() {
         const number_of_current_added_synthetics = this.mt5_login_list.reduce((acc, cur) => {
-            const is_included =
-                cur.account_type === 'real' &&
-                cur.market_type === 'gaming' &&
-                this.trading_servers.some(server => server.id === cur.server);
+            const is_included = cur.account_type === 'real' && cur.market_type === 'gaming';
             return is_included ? acc + 1 : acc;
         }, 0);
         const number_of_available_synthetic = this.trading_servers.reduce(
             (acc, cur) => (cur.supported_accounts.includes('gaming') && !cur.disabled ? acc + 1 : acc),
             0
         );
-        return (
-            number_of_current_added_synthetics > 0 && number_of_current_added_synthetics < number_of_available_synthetic
-        );
+        return number_of_current_added_synthetics > 0 && number_of_available_synthetic > 0;
     }
 
     @computed
@@ -852,25 +839,32 @@ export default class ClientStore extends BaseStore {
             previous_currency: this.currency,
         });
         if (!response.error) {
-            runInAction(() => {
-                const new_account = { ...this.accounts[this.loginid] };
-                new_account.currency = currency;
-                if (!('balance' in new_account)) new_account.balance = 0;
-                this.accounts[this.loginid] = new_account;
-            });
-            localStorage.setItem(storage_key, JSON.stringify(this.accounts));
-            LocalStore.setObject(storage_key, JSON.parse(JSON.stringify(this.accounts)));
-            this.selectCurrency(currency);
-            this.root_store.ui.removeNotificationMessage({
-                key: 'currency',
-            });
-            this.root_store.ui.removeNotificationByKey({
-                key: 'currency',
-            });
-            await this.init();
+            await this.updateAccountCurrency(currency);
             return Promise.resolve(response);
         }
         return Promise.reject(response.error);
+    }
+
+    @action.bound
+    async updateAccountCurrency(currency, is_set_storage = true) {
+        runInAction(() => {
+            const new_account = { ...this.accounts[this.loginid] };
+            new_account.currency = currency;
+            if (!('balance' in new_account)) new_account.balance = 0;
+            this.accounts[this.loginid] = new_account;
+        });
+        if (is_set_storage) {
+            localStorage.setItem(storage_key, JSON.stringify(this.accounts));
+            LocalStore.setObject(storage_key, JSON.parse(JSON.stringify(this.accounts)));
+        }
+        this.selectCurrency(currency);
+        this.root_store.ui.removeNotificationMessage({
+            key: 'currency',
+        });
+        this.root_store.ui.removeNotificationByKey({
+            key: 'currency',
+        });
+        await this.init();
     }
 
     @action.bound

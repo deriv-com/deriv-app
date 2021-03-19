@@ -151,7 +151,7 @@ export default class CFDStore extends BaseStore {
     }
 
     @action.bound
-    openAccount(values) {
+    openMT5Account(values) {
         const name = this.getName();
         const leverage = this.mt5_companies[this.account_type.category][this.account_type.type].leverage;
         const type_request = getAccountTypeFields(this.account_type);
@@ -163,6 +163,16 @@ export default class CFDStore extends BaseStore {
             name,
             ...(values.server ? { server: values.server } : {}),
             ...type_request,
+        });
+    }
+
+    @action.bound
+    openCFDAccount(values) {
+        return WS.tradingPlatformNewAccount({
+            password: values.password,
+            platform: values.platform,
+            account_type: this.account_type.category,
+            market_type: this.account_type.type,
         });
     }
 
@@ -219,8 +229,8 @@ export default class CFDStore extends BaseStore {
     }
 
     @action.bound
-    setMt5Account(mt5_new_account) {
-        this.new_account_response = mt5_new_account;
+    setCFDNewAccount(cfd_new_account) {
+        this.new_account_response = cfd_new_account;
     }
 
     @action.bound
@@ -266,12 +276,33 @@ export default class CFDStore extends BaseStore {
 
     @action.bound
     async submitMt5Password(values, setSubmitting) {
-        const response = await this.openAccount(values);
+        const response = await this.openMT5Account(values);
         if (!response.error) {
             WS.authorized.storage.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
             WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
             runInAction(() => {
-                this.setMt5Account(response.mt5_new_account);
+                this.setCFDNewAccount(response.mt5_new_account);
+                this.is_cfd_password_modal_enabled = false;
+                this.has_cfd_error = false;
+                WS.tradingServers().then(this.root_store.client.responseTradingServers);
+                setTimeout(() => this.setCFDSuccessDialog(true), 300);
+            });
+        } else {
+            this.setError(true, response.error);
+        }
+        setSubmitting(false);
+    }
+
+    @action.bound
+    async submitCFDPassword(values, setSubmitting) {
+        const response = await this.openCFDAccount(values);
+        if (!response.error) {
+            WS.tradingPlatformAccountsList(values.platform).then(
+                this.root_store.client.responseTradingPlatformAccountsList
+            );
+            WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
+            runInAction(() => {
+                this.setCFDNewAccount(response.trading_platform_new_account);
                 this.is_cfd_password_modal_enabled = false;
                 this.has_cfd_error = false;
                 setTimeout(() => this.setCFDSuccessDialog(true), 300);

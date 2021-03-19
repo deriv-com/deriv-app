@@ -16,10 +16,9 @@ import CFDTopUpDemoModal from './cfd-top-up-demo-modal.jsx';
 import CFDResetPasswordModal from './cfd-reset-password-modal.jsx';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import CFDFinancialStpPendingDialog from '../Components/cfd-financial-stp-pending-dialog.jsx';
-import { CFDInfoCopy } from '../Components/cfd-info-copy.jsx';
 import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display.jsx';
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display.jsx';
-import { getBrokerName, getServerName, getPlatformMt5DownloadLink } from '../Helpers/constants';
+import { getPlatformMt5DownloadLink } from '../Helpers/constants';
 import 'Sass/app/modules/mt5/cfd-dashboard.scss';
 
 const LoadTab = ({ children, is_loading, loading_component, ...props }) => {
@@ -156,7 +155,6 @@ class CFDDashboard extends React.Component {
             standpoint,
             toggleAccountsDialog,
             toggleShouldShowRealAccountsList,
-            trading_servers,
             can_have_more_real_synthetic_mt5,
             upgradeable_landing_companies,
         } = this.props;
@@ -244,7 +242,6 @@ class CFDDashboard extends React.Component {
                                                 standpoint={standpoint}
                                                 toggleAccountsDialog={toggleAccountsDialog}
                                                 toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
-                                                trading_servers={trading_servers}
                                                 can_have_more_real_synthetic_mt5={can_have_more_real_synthetic_mt5}
                                             />
                                         </React.Fragment>
@@ -268,29 +265,7 @@ class CFDDashboard extends React.Component {
                                         />
                                     </div>
                                 </LoadTab>
-                                {platform === 'mt5' && (
-                                    <div className='cfd-dashboard__info'>
-                                        <div className='cfd-dashboard__info-description'>
-                                            <Localize i18n_default_text='Use these in your apps' />
-                                        </div>
-                                        <CFDInfoCopy
-                                            display_name={getBrokerName()}
-                                            text_copy={getBrokerName()}
-                                            label={localize('Broker')}
-                                            info_msg={localize('Click here to copy broker name.')}
-                                            success_msg={localize('Broker name copied!')}
-                                        />
-                                        <CFDInfoCopy
-                                            display_name={getServerName(this.state.is_demo_tab)}
-                                            text_copy={getServerName(this.state.is_demo_tab)}
-                                            label={localize('Server')}
-                                            info_msg={localize('Click here to copy server name.')}
-                                            success_msg={localize('Server name copied!')}
-                                        />
-                                    </div>
-                                )}
                                 <CompareAccountsModal platform={platform} />
-
                                 <div className='cfd-dashboard__maintenance'>
                                     <Icon
                                         icon='IcAlertWarning'
@@ -302,10 +277,7 @@ class CFDDashboard extends React.Component {
                                             <Localize i18n_default_text='Server maintenance starts at 09:00 GMT every Sunday and may last up to 2 hours. Service may be disrupted during this time.' />
                                         )}
                                         {platform === 'mt5' && (
-                                            <Localize
-                                                i18n_default_text='Server maintenance starting 03:00 GMT every Sunday. This process may take up to 2 hours to complete. <0 />Service may be disrupted during this time.'
-                                                components={[<br key={0} />]}
-                                            />
+                                            <Localize i18n_default_text='Server maintenance starting 03:00 GMT every Sunday. This process may take up to 2 hours to complete. Service may be disrupted during this time.' />
                                         )}
                                     </div>
                                 </div>
@@ -433,7 +405,6 @@ export default withRouter(
         onUnmount: modules.cfd.onUnmount,
         toggleAccountsDialog: ui.toggleAccountsDialog,
         toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
-        trading_servers: client.trading_servers,
         can_have_more_real_synthetic_mt5: client.can_have_more_real_synthetic_mt5,
         upgradeable_landing_companies: client.upgradeable_landing_companies,
     }))(CFDDashboard)

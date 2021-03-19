@@ -45,9 +45,16 @@ const CFDPasswordForm = props => (
     <Formik
         initialValues={{
             password: '',
+            server: props.server,
         }}
         validate={props.validatePassword}
-        onSubmit={values => props.submitMt5Password(values.password)}
+        onSubmit={(values, actions) => {
+            const valuesObject = {
+                password: values.password,
+            };
+            if (values.server) valuesObject.server = values.server;
+            props.submitPassword(valuesObject, actions.setSubmitting);
+        }}
     >
         {({
             handleSubmit,
@@ -58,6 +65,7 @@ const CFDPasswordForm = props => (
             errors,
             values,
             touched,
+            isSubmitting,
         }) => (
             <form onSubmit={handleSubmit}>
                 <div className='cfd-password-modal__content'>
@@ -114,11 +122,11 @@ const CFDPasswordForm = props => (
                 <FormSubmitButton
                     is_disabled={!values.password || Object.keys(errors).length > 0}
                     has_cancel
-                    cancel_label={localize('Cancel')}
-                    onCancel={props.closeModal}
+                    cancel_label={props.server ? localize('Back') : localize('Cancel')}
+                    onCancel={props.onBack}
                     is_absolute={isMobile()}
-                    is_loading={props.is_submitting}
-                    label={props.should_show_server_form ? localize('Next') : localize('Add account')}
+                    is_loading={isSubmitting}
+                    label={localize('Add account')}
                     form_error={props.form_error}
                 />
             </form>
@@ -128,46 +136,31 @@ const CFDPasswordForm = props => (
 
 const CFDServerForm = ({ ...props }) => {
     const available_servers = React.useMemo(() => {
-        return props.trading_servers
-            .filter(server => !server.disabled)
+        return [...props.trading_servers]
             .map(server => {
                 // Transform properties to support radiogroup
-                const is_disabled = props.mt5_login_list.some(login_item => login_item.server === server.id);
                 return {
                     ...server,
                     ...{
                         label: `${server.geolocation.region} ${
                             server.geolocation.sequence === 1 ? '' : server.geolocation.sequence
-                        } ${is_disabled ? '(Account created)' : ''}`,
+                        } ${server.disabled ? `(${server.message_to_client})` : ''}`,
                         value: server.id,
-                        disabled: is_disabled,
+                        disabled: server.disabled,
                     },
                 };
             })
-            .sort((a, b) => (a.recommended ? a : b));
+            .sort((a, b) => (a.recommended ? a : b))
+            .sort((a, b) => a.disabled - b.disabled);
     }, [props.trading_servers]);
 
     return (
         <Formik
             initialValues={{
-                password: props.password,
-                server:
-                    props.trading_servers.find(
-                        server =>
-                            !server.disabled &&
-                            !props.mt5_login_list.some(login_item => login_item.server === server.id)
-                    )?.id ?? '',
+                server: props.trading_servers.find(server => !server.disabled)?.id ?? '',
             }}
             validate={props.validateServer}
-            onSubmit={(values, actions) => {
-                props.submitMt5Form(
-                    {
-                        password: values.password,
-                        server: values.server,
-                    },
-                    actions.setSubmitting
-                );
-            }}
+            onSubmit={values => props.submitMt5Server(values.server)}
         >
             {({ handleSubmit, setFieldValue, errors, values, isSubmitting }) => (
                 <form onSubmit={handleSubmit}>
@@ -186,15 +179,7 @@ const CFDServerForm = ({ ...props }) => {
                                     className='cfd-password-modal__radio'
                                     name='server'
                                     required
-                                    selected={
-                                        props.trading_servers.find(
-                                            server =>
-                                                !server.disabled &&
-                                                !props.mt5_login_list.some(
-                                                    login_item => login_item.server === server.id
-                                                )
-                                        )?.id
-                                    }
+                                    selected={props.trading_servers.find(server => !server.disabled)?.id}
                                     onToggle={e => {
                                         e.persist();
                                         setFieldValue('server', e.target.value);
@@ -215,11 +200,11 @@ const CFDServerForm = ({ ...props }) => {
                     <FormSubmitButton
                         is_disabled={isSubmitting || !values.server || Object.keys(errors).length > 0}
                         has_cancel
-                        cancel_label={localize('Back')}
-                        onCancel={props.onBack}
+                        cancel_label={localize('Cancel')}
+                        onCancel={props.closeModal}
                         is_absolute={isMobile()}
                         is_loading={isSubmitting}
-                        label={localize('Add account')}
+                        label={localize('Next')}
                         form_error={props.form_error}
                     />
                 </form>
@@ -243,16 +228,16 @@ const CFDPasswordModal = ({
     has_cfd_error,
     is_cfd_password_modal_enabled,
     is_cfd_success_dialog_enabled,
+    platform,
     setCFDSuccessDialog,
     setMt5Error,
     submitMt5Password,
+    submitCFDPassword,
     trading_servers,
     mt5_login_list,
-    mt5_new_account,
-    platform,
+    cfd_new_account,
 }) => {
-    const [password, setPassword] = React.useState('');
-    const [is_submitting, setIsSubmitting] = React.useState(false); // TODO handle this better
+    const [server, setServer] = React.useState('');
 
     const is_bvi = React.useMemo(() => {
         return landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
@@ -284,7 +269,7 @@ const CFDPasswordModal = ({
     const closeDialogs = () => {
         setCFDSuccessDialog(false);
         setMt5Error(false);
-        setPassword('');
+        setServer('');
     };
 
     const closeModal = () => {
@@ -292,12 +277,29 @@ const CFDPasswordModal = ({
         disableCFDPasswordModal();
     };
 
+    const onBack = () => {
+        if (server) {
+            setServer('');
+        } else {
+            closeModal();
+        }
+    };
+
     const closeOpenSuccess = () => {
         disableCFDPasswordModal();
         closeDialogs();
         if (account_type.category === 'real') {
-            sessionStorage.setItem('cfd_transfer_to_login_id', mt5_new_account.login);
+            sessionStorage.setItem('cfd_transfer_to_login_id', cfd_new_account.login);
             history.push(routes.cashier_acc_transfer);
+        }
+    };
+
+    const submitPassword = (values, setSubmitting) => {
+        if (platform === 'mt5') {
+            submitMt5Password(values, setSubmitting);
+        } else {
+            values.platform = platform;
+            submitCFDPassword(values, setSubmitting);
         }
     };
 
@@ -306,23 +308,19 @@ const CFDPasswordModal = ({
     const should_show_success = !has_cfd_error && is_cfd_success_dialog_enabled;
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
     const is_real_synthetic = [account_type.category, account_type.type].join('_') === 'real_synthetic';
-    const should_show_server_form = (is_logged_in ? !is_eu : !is_eu_country) && is_real_synthetic && !!password;
-
-    // TODO handle submitting password without server in a better way
-    React.useEffect(() => {
-        if (!should_show_server_form && password && !is_submitting) {
-            setIsSubmitting(true);
-        } else if (is_submitting && password && is_logged_in) {
-            submitMt5Password({ password }, state => {
-                setPassword('');
-                setIsSubmitting(state);
-            });
-        }
-    }, [password, should_show_server_form, is_submitting]);
+    const should_show_server_form = React.useMemo(() => {
+        return (
+            (is_logged_in ? !is_eu : !is_eu_country) &&
+            is_real_synthetic &&
+            mt5_login_list.some(item => item.account_type === 'real' && item.market_type === 'gaming') &&
+            !server &&
+            platform === 'mt5'
+        );
+    }, [is_eu, is_eu_country, is_logged_in, is_real_synthetic, server, mt5_login_list, platform]);
 
     React.useEffect(() => {
         if (has_cfd_error || is_cfd_success_dialog_enabled) {
-            setPassword('');
+            setServer('');
         }
     }, [has_cfd_error, is_cfd_success_dialog_enabled]);
 
@@ -340,22 +338,22 @@ const CFDPasswordModal = ({
                             trading_servers={trading_servers}
                             mt5_login_list={mt5_login_list}
                             account_title={account_title}
-                            password={password}
-                            submitMt5Form={(v, setSubmitting) => submitMt5Password(v, setSubmitting)}
-                            onBack={() => setPassword('')}
+                            closeModal={closeModal}
+                            submitMt5Server={setServer}
                         />
                     ) : (
                         <CFDPasswordForm
                             is_bvi={is_bvi}
-                            is_submitting={is_submitting}
                             account_title={account_title}
                             closeModal={closeModal}
                             form_error={form_error}
-                            platform={platform}
-                            submitMt5Password={setPassword}
+                            server={server}
+                            onBack={onBack}
+                            submitPassword={submitPassword}
                             is_real_financial_stp={is_real_financial_stp}
                             validatePassword={validatePassword}
                             should_show_server_form={should_show_server_form}
+                            platform={platform}
                         />
                     )}
                 </Modal>
@@ -373,22 +371,22 @@ const CFDPasswordModal = ({
                             trading_servers={trading_servers}
                             mt5_login_list={mt5_login_list}
                             account_title={account_title}
-                            password={password}
-                            submitMt5Form={(v, setSubmitting) => submitMt5Password(v, setSubmitting)}
-                            onBack={() => setPassword('')}
+                            closeModal={closeModal}
+                            submitMt5Server={setServer}
                         />
                     ) : (
                         <CFDPasswordForm
                             is_bvi={is_bvi}
-                            is_submitting={is_submitting}
                             account_title={account_title}
                             closeModal={closeModal}
                             form_error={form_error}
-                            platform={platform}
+                            server={server}
+                            onBack={onBack}
+                            submitPassword={(v, setSubmitting) => submitMt5Password(v, setSubmitting)}
                             is_real_financial_stp={is_real_financial_stp}
-                            submitMt5Password={setPassword}
                             validatePassword={validatePassword}
                             should_show_server_form={should_show_server_form}
+                            platform={platform}
                         />
                     )}
                 </MobileDialog>
@@ -422,9 +420,12 @@ CFDPasswordModal.propTypes = {
     is_logged_in: PropTypes.bool,
     is_cfd_password_modal_enabled: PropTypes.bool,
     is_cfd_success_dialog_enabled: PropTypes.bool,
+    platform: PropTypes.string,
     setMt5Error: PropTypes.func,
     setCFDSuccessDialog: PropTypes.func,
     submitMt5Password: PropTypes.func,
+    submitCFDPassword: PropTypes.func,
+    cfd_new_account: PropTypes.object,
 };
 
 export default connect(({ client, modules }) => ({
@@ -443,7 +444,8 @@ export default connect(({ client, modules }) => ({
     setMt5Error: modules.cfd.setError,
     setCFDSuccessDialog: modules.cfd.setCFDSuccessDialog,
     submitMt5Password: modules.cfd.submitMt5Password,
-    mt5_new_account: modules.cfd.new_account_response,
+    submitCFDPassword: modules.cfd.submitCFDPassword,
+    cfd_new_account: modules.cfd.new_account_response,
     trading_servers: client.trading_servers,
     mt5_login_list: client.mt5_login_list,
 }))(withRouter(CFDPasswordModal));

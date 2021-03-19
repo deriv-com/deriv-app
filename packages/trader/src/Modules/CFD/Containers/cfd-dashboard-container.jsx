@@ -4,7 +4,6 @@ import { Localize } from '@deriv/translations';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import {
     getDXTradeWebTerminalLink,
-    getMT5WebTerminalLink,
     getPlatformDXTradeDownloadLink,
     getPlatformMt5DownloadLink,
 } from '../Helpers/constants';
@@ -69,24 +68,6 @@ const CFDDashboardContainer = ({ platform }) => (
                                     </div>
                                 </a>
                             )}
-                            {platform === 'mt5' && (
-                                <React.Fragment>
-                                    <a
-                                        href={getMT5WebTerminalLink({ category: 'demo' })}
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                    >
-                                        <Icon icon='IcInstallationWebDemo' width={138} height={40} />
-                                    </a>
-                                    <a
-                                        href={getMT5WebTerminalLink({ category: 'real' })}
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                    >
-                                        <Icon icon='IcInstallationWebReal' width={138} height={40} />
-                                    </a>
-                                </React.Fragment>
-                            )}
                         </div>
                     </div>
                     {platform === 'mt5' && (
@@ -104,7 +85,7 @@ const CFDDashboardContainer = ({ platform }) => (
                     )}
                 </div>
                 {platform === 'mt5' && (
-                    <Text as='p' size='xxxs' className='cfd-dashboard__download-center--hint'>
+                    <Text as='p' align='center' size='xxxs' className='cfd-dashboard__download-center--hint'>
                         <Localize i18n_default_text='The MT5 desktop app is not supported by Windows XP, Windows 2003, and Windows Vista.' />
                     </Text>
                 )}

@@ -8,7 +8,7 @@
 /** @define mt5-dashboard; */
 .mt5-dashboard {
     padding: 4.8em 0;
-    max-width: 960px;
+    max-width: fit-content;
     margin: 0 auto;
 
     &--hint {
@@ -75,7 +75,7 @@
         margin-bottom: 2.4em;
 
         &--heading {
-            @include typeface(--title-left-bold-black, none);
+            @include typeface(--title-center-bold-black, none);
             color: var(--text-general);
             line-height: 1.5;
         }
@@ -132,11 +132,13 @@
 
                 &-links {
                     display: flex;
+                    flex-direction: column;
                 }
                 &-row {
                     display: flex;
                     align-items: baseline;
                     justify-content: center;
+                    margin-bottom: 3.1rem;
 
                     > svg:first-child {
                         margin-bottom: 0.4rem;
@@ -149,7 +151,8 @@
                 }
                 &-download {
                     display: grid;
-                    align-content: end;
+                    grid-auto-flow: column;
+                    grid-gap: 0.8rem;
 
                     a {
                         margin-top: 0.4rem;
@@ -178,7 +181,7 @@
             }
         }
         &--heading {
-            @include typeface(--title-left-bold-black, none);
+            @include typeface(--title-center-bold-black, none);
             color: var(--text-general);
             line-height: 1.5;
             margin-left: 2.1rem;
@@ -298,6 +301,9 @@
             align-items: normal;
             padding: 1rem 0.8rem;
         }
+        &--scrollbar {
+            display: block; // Safari needs this to work properly!
+        }
         @include desktop {
             &__header {
                 background-color: var(--general-main-2);
@@ -400,12 +406,16 @@
 
 .mt5-real-accounts-display,
 .mt5-demo-accounts-display {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-auto-flow: column;
+    grid-gap: 2.4rem;
+    justify-content: center;
     margin-top: 2.4em;
     height: 100%;
 
     @include mobile {
+        display: flex;
+        gap: 0;
         overflow-x: hidden;
         flex-direction: column;
         height: unset;
@@ -485,6 +495,9 @@
 
     &__wrapper {
         display: grid;
+        grid-template-rows: 1fr 4rem;
+        height: 100%;
+        justify-content: center;
 
         @include mobile {
             grid-template-rows: 1fr;
@@ -493,9 +506,6 @@
         }
         @include desktop {
             height: 100%;
-            &-shrinked {
-                height: calc(100% - 4rem);
-            }
         }
 
         &:not(:last-child) {
@@ -585,7 +595,7 @@
         color: var(--text-profit-success);
     }
     &__banner {
-        position: relative;
+        position: absolute;
         transform: rotate(45deg);
         border-bottom: 2.3rem solid var(--brand-red-coral);
         border-left: 2.3rem solid transparent;
@@ -628,8 +638,6 @@
             }
         }
         &--has-banner {
-            margin-top: -23px;
-
             .mt5-account-card--paragraph {
                 width: 15rem;
             }
@@ -666,8 +674,7 @@
         margin-top: auto;
     }
     &__specs {
-        margin-top: 1.6rem;
-        max-width: 25rem;
+        margin: 1.6rem 0;
 
         &-table {
             width: 100%;
@@ -683,6 +690,114 @@
                 }
             }
         }
+    }
+    &__specification {
+        position: relative;
+        width: 100%;
+        padding: 0 1.5rem;
+        &-icon {
+            vertical-align: middle;
+            &--collapsed {
+                transform: rotate(180deg);
+            }
+        }
+        @include mobile {
+            padding: 0 1rem;
+        }
+        &-title {
+            overflow: hidden;
+            text-align: center;
+            width: 100%;
+            cursor: pointer;
+            &:before {
+                background-color: var(--text-less-prominent);
+                content: '';
+                display: inline-block;
+                height: 1px;
+                position: relative;
+                vertical-align: middle;
+                width: 50%;
+                right: 0.5em;
+                margin-left: -50%;
+            }
+            &:after {
+                background-color: var(--text-less-prominent);
+                content: '';
+                display: inline-block;
+                height: 1px;
+                position: relative;
+                vertical-align: middle;
+                width: 50%;
+                left: 0.5em;
+                margin-right: -50%;
+            }
+        }
+        &-content {
+            position: absolute;
+            display: grid;
+            align-content: start;
+            justify-items: center;
+            height: 0;
+            overflow: hidden;
+            width: calc(100% - 3rem);
+            transition: height 0.2s ease-in;
+            z-index: 2;
+            opacity: 0.95;
+            background-color: var(--general-main-1);
+            @include mobile {
+                width: calc(100% - 2rem);
+            }
+        }
+        &-description {
+            @include typeface(--paragraph-left-normal-prominent);
+            padding: 1.6rem 0;
+        }
+        &-table {
+            width: fit-content;
+        }
+    }
+    &__login-specs {
+        margin: 1.6rem 0;
+        width: 100%;
+        padding: 0 1.8rem;
+
+        &-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: separate;
+            border-spacing: 0 0.8rem;
+
+            &-attribute {
+                width: 30%;
+                .mt5-account-card--paragraph {
+                    color: var(--text-general);
+                    margin-right: 2.4rem;
+                }
+            }
+            &-data {
+                width: 70%;
+                .mt5-account-card--paragraph {
+                    @include typeface(--paragraph-left-normal-black, none);
+                    line-height: 1.45;
+                }
+            }
+        }
+    }
+    &__spec-box {
+        display: grid;
+        grid-template-columns: 1fr 2.4rem;
+        border: 1px solid var(--border-normal);
+        border-radius: $BORDER_RADIUS;
+    }
+    &__spec-text {
+        padding: 0.4rem;
+        font-family: Courier, monospace;
+    }
+    &__spec-copy {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        border-left: 1px solid var(--border-normal);
     }
     &__account-selection {
         align-items: center;

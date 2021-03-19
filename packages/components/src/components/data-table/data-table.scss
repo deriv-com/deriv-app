@@ -47,9 +47,8 @@ $header-height: 52px;
             max-height: 64px;
             width: 100%;
         }
-        &--info {
-            display: flex;
-            align-items: center;
+        &--icon {
+            margin-left: 1rem;
         }
     }
     &__head {

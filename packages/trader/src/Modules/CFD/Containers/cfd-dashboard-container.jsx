@@ -15,10 +15,7 @@ const CFDDashboardContainer = ({ platform }) => (
             className='cfd-dashboard__download-center-options'
             style={{ justifyContent: platform === 'dxtrade' ? 'space-evenly' : null }}
         >
-            <div
-                className='cfd-dashboard__download-center-options--desktop'
-                style={{ marginTop: platform === 'dxtrade' ? 'auto' : null }}
-            >
+            <div className='cfd-dashboard__download-center-options--desktop'>
                 <div className='cfd-dashboard__download-center-options--desktop-links'>
                     <div>
                         <div className='cfd-dashboard__download-center-options--desktop-row'>
@@ -35,7 +32,7 @@ const CFDDashboardContainer = ({ platform }) => (
                                 </React.Fragment>
                             )}
                         </div>
-                        <div className='cfd-dashboard__download-center-options--desktop-row'>
+                        <div>
                             {platform === 'dxtrade' && (
                                 <a
                                     className='cfd-dashboard__dxtrade-download'

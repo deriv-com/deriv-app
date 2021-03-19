@@ -668,10 +668,16 @@
         }
     }
     &__cta {
-        align-items: center;
         display: flex;
         flex-direction: column;
         margin-top: auto;
+
+        &-wrapper {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
     }
     &__specs {
         margin: 1.6rem 0;
@@ -692,13 +698,11 @@
         }
     }
     &__specification {
-        position: relative;
-        width: 100%;
-        padding: 0 1.5rem;
         &-icon {
+            transform: rotate(180deg);
             vertical-align: middle;
             &--collapsed {
-                transform: rotate(180deg);
+                transform: rotate(0deg);
             }
         }
         @include mobile {
@@ -709,6 +713,13 @@
             text-align: center;
             width: 100%;
             cursor: pointer;
+
+            &-wrapper {
+                position: relative;
+                width: 100%;
+                padding: 0 1.5rem;
+            }
+
             &:before {
                 background-color: var(--text-less-prominent);
                 content: '';
@@ -737,13 +748,17 @@
             display: grid;
             align-content: start;
             justify-items: center;
-            height: 0;
+            height: 100%;
             overflow: hidden;
             width: calc(100% - 3rem);
             transition: height 0.2s ease-in;
             z-index: 2;
             opacity: 0.95;
             background-color: var(--general-main-1);
+
+            &--is-collapsed {
+                height: 0;
+            }
             @include mobile {
                 width: calc(100% - 2rem);
             }

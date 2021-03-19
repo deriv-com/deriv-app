@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { localize } from '@deriv/translations';
+import { localize } from '../../../../translations';
 import Text from '../text';
 import Icon from '../icon/icon.jsx';
 

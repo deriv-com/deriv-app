@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { localize } from '@deriv/translations';
+import { localize } from '../../../../translations';
 import ThemedScrollbars from '../themed-scrollbars';
 import Text from '../text';
 import Icon from '../icon/icon.jsx';

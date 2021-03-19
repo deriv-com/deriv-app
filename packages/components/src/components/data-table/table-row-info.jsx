@@ -46,12 +46,10 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
                 <ThemedScrollbars height='80px'>
                     <div>
                         {replace?.component ?? (
-                            <div className='table__row--info'>
-                                <Text as='p' size='xs' className='statement__row--detail-text' align='center'>
-                                    {replace.message}
-                                    {replace.message.includes(': ') ? copy_to_clipboard : null}
-                                </Text>
-                            </div>
+                            <Text as='p' size='xs' className='statement__row--detail-text' align='center'>
+                                {replace.message}
+                                {replace.message.includes(': ') ? copy_to_clipboard : null}
+                            </Text>
                         )}
                     </div>
                 </ThemedScrollbars>

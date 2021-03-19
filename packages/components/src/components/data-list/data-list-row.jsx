@@ -54,17 +54,10 @@ const DataListRow = ({ action_desc, destination_link, row_gap, row_key, rowRende
                                     {action_desc.component ? (
                                         <div>{action_desc.component}</div>
                                     ) : (
-                                        <div className='table__row--info'>
-                                            <Text
-                                                as='p'
-                                                size='xs'
-                                                className='statement__row--detail-text'
-                                                align='center'
-                                            >
-                                                {action_desc.message}
-                                                {action_desc.message.includes(': ') ? copy_to_clipboard : null}
-                                            </Text>
-                                        </div>
+                                        <Text as='p' size='xs' className='statement__row--detail-text' align='center'>
+                                            {action_desc.message}
+                                            {action_desc.message.includes(': ') ? copy_to_clipboard : null}
+                                        </Text>
                                     )}
                                 </div>
                             ) : (

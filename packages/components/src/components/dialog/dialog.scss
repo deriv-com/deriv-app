@@ -68,10 +68,7 @@
     }
     &__header {
         align-self: flex-start;
-        @include typeface(--title-left-bold-black, none);
         margin-bottom: 2.4rem;
-        line-height: 1.5;
-        color: var(--text-prominent);
 
         &-wrapper {
             width: 100%;

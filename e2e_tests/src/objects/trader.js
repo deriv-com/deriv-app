@@ -1,5 +1,4 @@
 const assert = require('assert').strict;
-const qawolf = require('qawolf');
 const {waitForWSSubset} = require('@root/_utils/websocket');
 const Common = require('./common');
 
@@ -18,17 +17,11 @@ class Trader extends Common {
         await this.page.waitForSelector('.ciq-menu.ciq-enabled', {timeout: 120000});
     }
 
-    async chooseUnderlying(code, name) {
-        // Click market select
+    async chooseUnderlying(submarket, name) {
         await this.page.waitForSelector(MARKET_SELECT);
         await this.page.click(MARKET_SELECT);
-
-        // Wait for dropdown to load
-        await this.page.waitForSelector('.data-hj-whitelist');
-        await this.page.fill('.data-hj-whitelist', name);
-        await this.page.waitForSelector(`.sc-mcd__item--${code}`);
-        await this.page.click(`.sc-mcd__item--${code}`);
-        await qawolf.assertElementText(this.page, '.cq-symbol', name);
+        await this.page.click(`//div[normalize-space(.)='${submarket}']`);
+        await this.page.click(`text="${name}"`);
     }
 
     async openRecentPositionsDrawer() {
@@ -62,8 +55,8 @@ class Trader extends Common {
             }
         } else {
             try {
-                await this.page.waitForSelector('.dc-checkbox__box--active');
-                await this.page.click('.dc-checkbox__box--active');
+                await this.page.waitForSelector('.dc-checkbox__box--active', { timeout: 300});
+                await this.page.click('.dc-checkbox__box--active', { timeout: 300 });
             } catch (e) {
                 // No need to take action here. we can continue the pipeline.
             }
@@ -78,8 +71,9 @@ class Trader extends Common {
             await this.page.click('.dc-page-overlay__header-close');
             await this.unsetAllowEquals();
         } else {
-            await this.page.waitForSelector('.dc-result__close-btn');
-            await this.page.click('.dc-result__close-btn');
+            await this.page.waitForSelector('.dc-result__close-btn', { timeout: 300 });
+            await this.page.click('.dc-result__close-btn', { timeout: 300 });
+            await this.page.click('#dt_positions_toggle');
             await this.unsetAllowEquals();
         }
     }
@@ -119,7 +113,8 @@ class Trader extends Common {
                 await this.page.click('#dc_m_toggle_item');
             }
 
-            await qawolf.assertElementText(this.page, '#dt_range_slider_label', `${duration_amount} ${duration_unit}`);
+            const content = await this.page.textContent('#dt_range_slider_label');
+            expect(content).toBe(`${duration_amount} ${duration_unit}`);
         }
     }
 
@@ -238,19 +233,19 @@ class Trader extends Common {
                     return Promise.resolve(current);
                 }
 
-                if (current<t) {
+                if (current < t) {
                     await increment();
                 }
-                if (current>t) {
+                if (current > t) {
                     await decrement();
                 }
-                const updated_duration = await this.page.$eval('.dc-tick-picker__holder--large', el => el.innerText);
+                const updated_duration = await this.page.$eval('.dc-tick-picker__holder > span:nth-child(1)', el => Number(el.textContent));
                 return await reachTarget(t, updated_duration);
             };
 
             await this.page.waitForSelector('.mobile-widget__amount');
             await this.page.click('.mobile-widget__amount');
-            const current_duration = await this.page.$eval('.dc-tick-picker__holder--large', el => el.innerText);
+            const current_duration = await this.page.$eval('.dc-tick-picker__holder > span:nth-child(1)', el => Number(el.textContent));
             await reachTarget(target, current_duration);
 
             await this.page.waitForSelector(

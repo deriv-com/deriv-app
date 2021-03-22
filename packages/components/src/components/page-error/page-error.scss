@@ -34,11 +34,6 @@
             margin: 0 auto;
         }
     }
-    &__header {
-        @include typeface(--xheading-center-bold-black, none);
-        color: var(--text-prominent);
-        line-height: 44px;
-    }
     &__message {
         @include typeface(--title-center-normal-black, none);
         max-width: 502px;

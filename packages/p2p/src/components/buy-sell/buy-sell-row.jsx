@@ -53,11 +53,11 @@ const BuySellRow = ({ row: advert }) => {
                         <Text size='xs' line_height='m' color='general' weight='bold'>
                             {advertiser_name}
                         </Text>
-                        {advert.advertiser_details.completion_rate ? (
+                        {advert.advertiser_details.total_completion_rate ? (
                             <Text color='less-prominent' size='xxs'>
                                 <Localize
-                                    i18n_default_text='Completion rate: {{completion_rate}}%'
-                                    values={{ completion_rate: advert.advertiser_details.completion_rate }}
+                                    i18n_default_text='Completion rate: {{total_completion_rate}}%'
+                                    values={{ total_completion_rate: advert.advertiser_details.total_completion_rate }}
                                 />
                             </Text>
                         ) : null}
@@ -116,11 +116,11 @@ const BuySellRow = ({ row: advert }) => {
                         >
                             {advertiser_name}
                         </div>
-                        {!!advert.advertiser_details.completion_rate && (
+                        {!!advert.advertiser_details.total_completion_rate && (
                             <Text color='less-prominent' size='xxs'>
                                 <Localize
-                                    i18n_default_text='Completion rate: {{completion_rate}}%'
-                                    values={{ completion_rate: advert.advertiser_details.completion_rate }}
+                                    i18n_default_text='Completion rate: {{total_completion_rate}}%'
+                                    values={{ total_completion_rate: advert.advertiser_details.total_completion_rate }}
                                 />
                             </Text>
                         )}

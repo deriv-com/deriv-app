@@ -24,7 +24,7 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
 
     const onClickCopy = event => {
         event.stopPropagation();
-        navigator.clipboard.writeText(replace.message.match(/(([a-zA-Z0-9]{44}))/g)[0]).then(() => {
+        navigator.clipboard.writeText(replace.message.split(/,| /)[1]).then(() => {
             onCopySuccess();
         });
     };

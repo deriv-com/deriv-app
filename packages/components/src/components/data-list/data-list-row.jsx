@@ -17,7 +17,7 @@ const DataListRow = ({ action_desc, destination_link, row_gap, row_key, rowRende
 
     const onClickCopy = event => {
         event.stopPropagation();
-        navigator.clipboard.writeText(action_desc.message.match(/(([a-zA-Z0-9]{44}))/g)[0]).then(() => {
+        navigator.clipboard.writeText(action_desc.message.split(/,| /)[1]).then(() => {
             onCopySuccess();
         });
     };

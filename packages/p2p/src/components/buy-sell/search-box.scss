@@ -28,8 +28,12 @@
             &__field {
                 flex-grow: 1;
                 height: 4rem;
-                padding: 2rem 3rem 2rem 1rem;
+                padding-right: 3rem;
                 width: unset;
+
+                @include mobile {
+                    padding: 0 2.8rem 0 0.4rem;
+                }
             }
 
             &__leading-icon {

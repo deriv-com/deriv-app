@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { Mt5AccountCopy } from './mt5-account-copy.jsx';
 import { getMT5WebTerminalLink } from '../Helpers/constants';
 
@@ -22,25 +22,60 @@ const AddTradeServerButton = React.forwardRef(({ onSelectAccount, is_disabled },
             ref={ref}
         >
             <span className='mt5-account-card__add-server--icon'>+</span>
-            <Localize i18n_default_text='Add more trade servers' />
+            <Localize i18n_default_text='Add region' />
         </div>
     );
 });
 
 AddTradeServerButton.displayName = 'AddTradeServerButton';
 
-const LoginBadge = ({ display_login }) => (
-    <div className='mt5-account-card__login'>
-        <Localize
-            i18n_default_text='<0>Account login no.</0><1>{{display_login}}</1>'
-            values={{
-                display_login,
-            }}
-            components={[<span key={0} />, <strong key={1} />]}
-        />
-        <Mt5AccountCopy text={display_login} />
+const SpecBox = ({ value }) => (
+    <div className='mt5-account-card__spec-box'>
+        <span className='mt5-account-card__spec-text'>{value}</span>
+        <Mt5AccountCopy text={value} className='mt5-account-card__spec-copy' />
     </div>
 );
+
+const MT5AccountCardSpecification = ({ children, height }) => {
+    const [is_collapsed, setCollapsed] = React.useState(false);
+    const content_ref = React.useRef();
+    React.useEffect(() => {
+        if (content_ref.current) {
+            if (is_collapsed) {
+                content_ref.current.style.height = `${height ?? content_ref.current.scrollHeight}px`;
+            } else {
+                content_ref.current.style.height = null;
+            }
+        }
+    }, [is_collapsed, content_ref, height]);
+    return (
+        <div className='mt5-account-card__specification'>
+            <Text
+                className='mt5-account-card__specification-title'
+                size='xxs'
+                as='div'
+                align='center'
+                color='less-prominent'
+                onClick={() => {
+                    setCollapsed(prev => !prev);
+                }}
+            >
+                {localize('Specification')}
+                <Icon
+                    className={classNames('mt5-account-card__specification-icon', {
+                        'mt5-account-card__specification-icon--collapsed': is_collapsed,
+                    })}
+                    icon='IcChevronDown'
+                    color='secondary'
+                    size={12}
+                />
+            </Text>
+            <div ref={content_ref} className='mt5-account-card__specification-content'>
+                {children}
+            </div>
+        </div>
+    );
+};
 
 const MT5AccountCardAction = ({
     button_label,
@@ -122,10 +157,8 @@ const MT5AccountCard = ({
     onClickFund,
     onPasswordManager,
     should_show_trade_servers,
-    is_trade_server_button_visible,
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
-    trading_servers,
 }) => {
     const icon = type.type ? <Icon icon={account_icons[type.type]} size={64} /> : null;
     const has_popular_banner = type.type === 'synthetic' && type.category === 'real' && !existing_data;
@@ -135,7 +168,7 @@ const MT5AccountCard = ({
         existing_data &&
         type.category === 'real' &&
         type.type === 'synthetic' &&
-        trading_servers.some(server => server.id === existing_data.server);
+        existing_data?.server_info;
 
     const ref = React.useRef();
     const wrapper_ref = React.useRef();
@@ -159,17 +192,16 @@ const MT5AccountCard = ({
     }, [onHover]);
 
     const getServerName = React.useCallback(
-        data => {
-            const server = trading_servers?.find(s => s.id === data.server);
+        server => {
             if (server) {
-                return `${server.geolocation.region} ${
-                    server.geolocation.sequence === 1 ? '' : server.geolocation.sequence
+                return `${server.server_info.geolocation.region} ${
+                    server.server_info.geolocation.sequence === 1 ? '' : server.server_info.geolocation.sequence
                 }`;
             }
 
             return '';
         },
-        [existing_data, trading_servers]
+        [existing_data]
     );
 
     const handleClickSwitchAccount = () => {
@@ -178,15 +210,7 @@ const MT5AccountCard = ({
     };
 
     return (
-        <div
-            ref={wrapper_ref}
-            className={classNames('mt5-account-card__wrapper', {
-                'mt5-account-card__wrapper-shrinked':
-                    is_trade_server_button_visible &&
-                    type.category === 'real' &&
-                    (!should_show_trade_servers || !is_hovered),
-            })}
-        >
+        <div ref={wrapper_ref} className={'mt5-account-card__wrapper'}>
             <div
                 className={classNames('mt5-account-card', { 'mt5-account-card__logged-out': !is_logged_in })}
                 ref={ref}
@@ -232,41 +256,107 @@ const MT5AccountCard = ({
                 </div>
 
                 <div className='mt5-account-card__cta'>
-                    <div className='mt5-account-card__specs'>
-                        <table className='mt5-account-card__specs-table'>
-                            <tbody>
-                                {Object.keys(specs).map((spec_attribute, idx) => (
-                                    <tr key={idx} className='mt5-account-card__specs-table-row'>
-                                        <td className='mt5-account-card__specs-table-attribute'>
-                                            <p className='mt5-account-card--paragraph'>{spec_attribute}</p>
-                                        </td>
-                                        <td className='mt5-account-card__specs-table-data'>
-                                            <p className='mt5-account-card--paragraph'>{specs[spec_attribute]}</p>
-                                        </td>
-                                    </tr>
-                                ))}
-                                {has_server_banner &&
-                                    existing_data &&
-                                    type.type === 'synthetic' &&
-                                    type.category === 'real' && (
-                                        <tr key={existing_data.server} className='mt5-account-card__specs-table-row'>
-                                            <td className='mt5-account-card__specs-table-attribute'>
-                                                <p className='mt5-account-card--paragraph'>
-                                                    <Localize i18n_default_text='Trade server: ' />
-                                                </p>
+                    {existing_data?.login && is_logged_in ? (
+                        <>
+                            <MT5AccountCardSpecification height={272}>
+                                <p className='mt5-account-card__specification-description'>{descriptor}</p>
+                                <table className='mt5-account-card__specs-table mt5-account-card__specification-table'>
+                                    <tbody>
+                                        {Object.keys(specs).map((spec_attribute, idx) => (
+                                            <tr key={idx} className='mt5-account-card__specs-table-row'>
+                                                <td className='mt5-account-card__specs-table-attribute'>
+                                                    <p className='mt5-account-card--paragraph'>{spec_attribute}</p>
+                                                </td>
+                                                <td className='mt5-account-card__specs-table-data'>
+                                                    <p className='mt5-account-card--paragraph'>
+                                                        {specs[spec_attribute]}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </MT5AccountCardSpecification>
+                            <div className='mt5-account-card__login-specs'>
+                                <Text as='p' color='less-prominent' size='xxxs' align='left'>
+                                    {localize('Use below credential to login')}
+                                </Text>
+                                <table className='mt5-account-card__login-specs-table'>
+                                    <tbody>
+                                        <tr className='mt5-account-card__login-specs-table-row'>
+                                            <td className='mt5-account-card__login-specs-table-attribute'>
+                                                <div className='mt5-account-card--paragraph'>{localize('Broker')}</div>
                                             </td>
-                                            <td className='mt5-account-card__specs-table-data'>
-                                                <p className='mt5-account-card--paragraph'>
-                                                    {getServerName(existing_data)}
-                                                </p>
+                                            <td className='mt5-account-card__login-specs-table-data'>
+                                                <div className='mt5-account-card--paragraph'>
+                                                    <SpecBox value={'Deriv Limited'} />
+                                                </div>
                                             </td>
                                         </tr>
-                                    )}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {existing_data?.login && is_logged_in && <LoginBadge display_login={existing_data.display_login} />}
+                                        <tr className='mt5-account-card__login-specs-table-row'>
+                                            <td className='mt5-account-card__login-specs-table-attribute'>
+                                                <div className='mt5-account-card--paragraph'>{localize('Server')}</div>
+                                            </td>
+                                            <td className='mt5-account-card__login-specs-table-data'>
+                                                <div className='mt5-account-card--paragraph'>
+                                                    <SpecBox value={existing_data.server_info.environment} />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr className='mt5-account-card__login-specs-table-row'>
+                                            <td className='mt5-account-card__login-specs-table-attribute'>
+                                                <div className='mt5-account-card--paragraph'>
+                                                    {localize('Login ID')}
+                                                </div>
+                                            </td>
+                                            <td className='mt5-account-card__login-specs-table-data'>
+                                                <div className='mt5-account-card--paragraph'>
+                                                    <SpecBox value={existing_data.display_login} />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </>
+                    ) : (
+                        <div className='mt5-account-card__specs'>
+                            <table className='mt5-account-card__specs-table'>
+                                <tbody>
+                                    {Object.keys(specs).map((spec_attribute, idx) => (
+                                        <tr key={idx} className='mt5-account-card__specs-table-row'>
+                                            <td className='mt5-account-card__specs-table-attribute'>
+                                                <p className='mt5-account-card--paragraph'>{spec_attribute}</p>
+                                            </td>
+                                            <td className='mt5-account-card__specs-table-data'>
+                                                <p className='mt5-account-card--paragraph'>{specs[spec_attribute]}</p>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    {has_server_banner &&
+                                        existing_data &&
+                                        type.type === 'synthetic' &&
+                                        type.category === 'real' && (
+                                            <tr
+                                                key={existing_data.server}
+                                                className='mt5-account-card__specs-table-row'
+                                            >
+                                                <td className='mt5-account-card__specs-table-attribute'>
+                                                    <p className='mt5-account-card--paragraph'>
+                                                        <Localize i18n_default_text='Trade server: ' />
+                                                    </p>
+                                                </td>
+                                                <td className='mt5-account-card__specs-table-data'>
+                                                    <p className='mt5-account-card--paragraph'>
+                                                        {getServerName(existing_data)}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        )}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
 
                     {((!existing_data && commission_message) || !is_logged_in) && (
                         <div className='mt5-account-card__commission'>
@@ -310,6 +400,7 @@ const MT5AccountCard = ({
                             href={getMT5WebTerminalLink({
                                 category: type.category,
                                 loginid: existing_data.display_login,
+                                server_name: existing_data.server_info.environment,
                             })}
                             target='_blank'
                             rel='noopener noreferrer'

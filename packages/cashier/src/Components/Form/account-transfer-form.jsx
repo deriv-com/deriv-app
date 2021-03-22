@@ -20,15 +20,11 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import FormError from '../Error/form-error.jsx';
 
-const AccountOption = ({ trading_servers, mt5_login_list, account, idx, is_dark_mode_on }) => {
+const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
     let server;
 
     if (account.is_mt) {
-        const mt5_login = mt5_login_list.find(mt5_account => mt5_account.login === account.value);
-        server =
-            trading_servers.length > 1
-                ? trading_servers.find(trading_server => trading_server.id === mt5_login.server)
-                : undefined;
+        server = mt5_login_list.find(mt5_account => mt5_account.login === account.value);
     }
 
     return (
@@ -55,10 +51,10 @@ const AccountOption = ({ trading_servers, mt5_login_list, account, idx, is_dark_
                 </Text>
             </div>
 
-            {server && (
+            {server?.market_type === 'gaming' && (
                 <Text color={is_dark_mode_on ? 'general' : 'colored-background'} size='xxs' className='badge-server'>
-                    {server.geolocation.region}&nbsp;
-                    {server.geolocation.sequence !== 1 ? server.geolocation.sequence : ''}
+                    {server.server_info.geolocation.region}&nbsp;
+                    {server.server_info.geolocation.sequence !== 1 ? server.server_info.geolocation.sequence : ''}
                 </Text>
             )}
 
@@ -84,9 +80,9 @@ const AccountTransferBullet = ({ children }) => (
 const AccountTransferNote = ({ currency, transfer_fee, minimum_fee }) => (
     <div className='account-transfer__notes'>
         <DesktopWrapper>
-            <div className='cashier__header account-transfer__notes-header'>
+            <Text as='h2' color='prominent' weight='bold' className='cashier__header account-transfer__notes-header'>
                 <Localize i18n_default_text='Notes' />
-            </div>
+            </Text>
         </DesktopWrapper>
         <AccountTransferBullet>
             <Localize
@@ -129,7 +125,6 @@ const AccountTransferForm = ({
     onChangeTransferTo,
     setErrorMessage,
     setIsTransferConfirm,
-    trading_servers,
     error,
 }) => {
     const [from_accounts, setFromAccounts] = React.useState({});
@@ -164,7 +159,6 @@ const AccountTransferForm = ({
         accounts_list.forEach((account, idx) => {
             const text = (
                 <AccountOption
-                    trading_servers={trading_servers}
                     mt5_login_list={mt5_login_list}
                     idx={idx}
                     account={account}
@@ -174,14 +168,11 @@ const AccountTransferForm = ({
             const value = account.value;
             const account_server = mt5_login_list.find(server => server.login === account.value);
             let server_region = '';
-            if (
-                account_server &&
-                trading_servers.length > 1 &&
-                trading_servers.some(trading_server => trading_server.id === account_server?.server)
-            ) {
-                const trading_server = trading_servers.find(t => t.id === account_server?.server);
-                server_region = `[${trading_server.geolocation.region}${
-                    trading_server.geolocation.sequence !== 1 ? trading_server.geolocation.sequence : ''
+            if (account_server?.market_type === 'gaming') {
+                server_region = `[${account_server.server_info.geolocation.region}${
+                    account_server.server_info.geolocation.sequence !== 1
+                        ? account_server.server_info.geolocation.sequence
+                        : ''
                 }]`;
             }
 
@@ -255,9 +246,15 @@ const AccountTransferForm = ({
 
     return (
         <div className='cashier__wrapper account-transfer__wrapper'>
-            <h2 className='cashier__header cashier__content-header'>
+            <Text
+                as='h2'
+                color='prominent'
+                weight='bold'
+                align='center'
+                className='cashier__header cashier__content-header'
+            >
                 {localize('Transfer between your accounts in Deriv')}
-            </h2>
+            </Text>
             <Formik
                 initialValues={{
                     amount: account_transfer_amount || '',
@@ -481,7 +478,6 @@ export default connect(({ client, modules, ui }) => ({
     setErrorMessage: modules.cashier.setErrorMessage,
     setIsTransferConfirm: modules.cashier.setIsTransferConfirm,
     setAccountTransferAmount: modules.cashier.setAccountTransferAmount,
-    trading_servers: client.trading_servers,
     transfer_fee: modules.cashier.config.account_transfer.transfer_fee,
     transfer_limit: modules.cashier.config.account_transfer.transfer_limit,
 }))(AccountTransferForm);

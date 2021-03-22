@@ -713,6 +713,7 @@
             text-align: center;
             width: 100%;
             cursor: pointer;
+            user-select: none;
 
             &-wrapper {
                 position: relative;

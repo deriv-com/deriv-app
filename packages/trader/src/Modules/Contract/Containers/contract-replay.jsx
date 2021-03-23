@@ -29,6 +29,7 @@ const ContractReplay = ({
     is_dark_theme,
     is_digit_contract,
     is_forward_starting,
+    is_market_closed,
     is_sell_requested,
     is_valid_to_cancel,
     onClickCancel,
@@ -71,6 +72,7 @@ const ContractReplay = ({
             contract_update_history={contract_update_history}
             is_chart_loading={is_chart_loading}
             is_dark_theme={is_dark_theme}
+            is_market_closed={is_market_closed}
             is_multiplier={is_multiplier}
             is_sell_requested={is_sell_requested}
             is_valid_to_cancel={is_valid_to_cancel}
@@ -174,6 +176,7 @@ export default connect(({ common, modules, ui }) => {
         contract_update: contract_store.contract_update,
         contract_update_history: contract_store.contract_update_history,
         is_digit_contract: contract_store.is_digit_contract,
+        is_market_closed: contract_replay.is_market_closed,
         is_sell_requested: contract_replay.is_sell_requested,
         is_valid_to_cancel: contract_replay.is_valid_to_cancel,
         onClickCancel: contract_replay.onClickCancel,

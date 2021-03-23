@@ -1,38 +1,50 @@
-const qawolf = require('qawolf');
+const browsers = require('playwright');
 const default_options = require('@root/_config/context');
 
-async function setUp(options) {
-    let browser;
-    if (options.browser) {
-        browser = await qawolf.launch({ browserName: options.browser });
-    } else {
-        browser = await qawolf.launch();
+let browser;
+let browser_requests = 0;
+
+async function setUp(options = {}) {
+    const browserType = browsers[options.browser || 'chromium'];
+    const getBrowserInstance = () => {
+        browser_requests += 1;
+        if (!browser) {
+            browser = browserType.launch({
+                ...default_options,
+                ...options,
+            });
+        }
+
+        return browser;
     }
 
-    const context = await browser.newContext({
-        ...default_options,
-        ...options,
-    });
-    await qawolf.register(context);
-
     return {
-        browser,
-        context,
+        getBrowserInstance,
     };
 }
 
 async function tearDown(browser) {
-    try {
-        await qawolf.stopVideos();
-        await browser.close();
-    } catch (e) {
-        // eslint-disable-next-line no-console
-        console.log(e);
+    browser_requests -= 1;
+    if (browser_requests) {
+        try {
+            await browser.close();
+        } catch (e) {
+            console.log(e);
+        }
     }
+
 }
 
 function getContext() {
     return context;
+}
+
+function getStorageState(which) {
+    const storage_string = process.env[which];
+    if (storage_string) {
+        return JSON.parse(storage_string);
+    }
+    return {};
 }
 
 // This is empty for now, since QAWolf will default to desktop
@@ -51,11 +63,11 @@ const mobile_viewport = {
     defaultBrowserType: 'webkit',
 };
 
-
 module.exports = {
     setUp,
     tearDown,
     desktop_viewport,
     mobile_viewport,
     getContext,
-}
+    getStorageState,
+};

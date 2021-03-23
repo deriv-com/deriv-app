@@ -6,7 +6,6 @@ import BaseStore from 'Stores/base_store';
 import { countDecimalPlaces } from 'Utils/string';
 import { decimalValidator, lengthValidator, textValidator } from 'Utils/validations';
 import { requestWS } from 'Utils/websocket';
-import { useUpdatingAvailableBalance } from 'Components/hooks';
 
 export default class MyAdsStore extends BaseStore {
     @observable adverts = [];

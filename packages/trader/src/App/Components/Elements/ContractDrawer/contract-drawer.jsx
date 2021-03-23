@@ -20,6 +20,7 @@ const ContractDrawer = ({
     is_mobile,
     is_sell_requested,
     is_dark_theme,
+    is_market_closed,
     is_multiplier,
     onClickCancel,
     onClickSell,
@@ -58,6 +59,7 @@ const ContractDrawer = ({
                     contract_update={contract_update}
                     currency={currency}
                     is_mobile={is_mobile}
+                    is_market_closed={is_market_closed}
                     is_multiplier={is_multiplier}
                     is_sell_requested={is_sell_requested}
                     is_collapsed={should_show_contract_audit}
@@ -162,6 +164,7 @@ ContractDrawer.propTypes = {
     contract_info: PropTypes.object,
     is_chart_loading: PropTypes.bool,
     is_dark_theme: PropTypes.bool,
+    is_market_closed: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_history_tab_active: PropTypes.bool,
     is_sell_requested: PropTypes.bool,

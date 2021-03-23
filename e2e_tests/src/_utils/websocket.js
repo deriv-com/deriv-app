@@ -80,7 +80,7 @@ const waitForWSSubset = async (page, subset, options = {timeout: 6000}) => {
         }));
     } catch (err) {
         const messages = await page.evaluate('window.messages');
-        if (process.env.DEBUG_WS === 'true') {
+        if (Number(process.env.DEBUG_WS)) {
             console.dir(messages);
         }
         return null;

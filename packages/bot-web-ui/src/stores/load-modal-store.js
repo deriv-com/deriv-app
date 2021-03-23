@@ -13,9 +13,9 @@ export default class LoadModalStore {
         );
         reaction(
             () => this.is_load_modal_open,
-            is_load_modal_open => {
+            async is_load_modal_open => {
                 if (is_load_modal_open) {
-                    this.setRecentStrategies(getSavedWorkspaces() || []);
+                    this.setRecentStrategies((await getSavedWorkspaces()) || []);
                 } else {
                     this.onLoadModalClose();
                 }

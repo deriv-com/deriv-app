@@ -23,7 +23,14 @@ const NotificationsList = ({ notifications, toggleDialog }) => (
     <React.Fragment>
         {notifications.map(item => (
             <div className='notifications-item' key={item.key}>
-                <h2 className='notifications-item__title'>
+                <Text
+                    as='h2'
+                    className='notifications-item__title'
+                    weight='bold'
+                    size='xs'
+                    line_height='m'
+                    color='prominent'
+                >
                     {item.type && (
                         <Icon
                             icon={
@@ -37,7 +44,7 @@ const NotificationsList = ({ notifications, toggleDialog }) => (
                         />
                     )}
                     {item.header}
-                </h2>
+                </Text>
                 <div className='notifications-item__message'>{item.message}</div>
                 <div className='notifications-item__action'>
                     {!isEmptyObject(item.action) && (
@@ -80,9 +87,18 @@ const NotificationListWrapper = React.forwardRef(({ notifications, toggleDialog 
     return (
         <div className='notifications-dialog' ref={ref}>
             <div className='notifications-dialog__header'>
-                <h2 className='notifications-dialog__header-text'>
+                <Text
+                    as='h2'
+                    className='notifications-dialog__header-text'
+                    size='s'
+                    weight='bold'
+                    color='prominent'
+                    styles={{
+                        lineHeight: '1.6rem',
+                    }}
+                >
                     <Localize i18n_default_text='Notifications' />
-                </h2>
+                </Text>
             </div>
             <div
                 className={classNames('notifications-dialog__content', {

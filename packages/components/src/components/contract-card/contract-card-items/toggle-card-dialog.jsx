@@ -22,6 +22,7 @@ const ToggleCardDialog = ({
     getCardLabels,
     getContractById,
     is_valid_to_cancel,
+    onMouseLeave,
     removeToast,
     setCurrentFocus,
     should_show_cancellation_warning,
@@ -141,6 +142,7 @@ const ToggleCardDialog = ({
                             current_focus={current_focus}
                             getCardLabels={getCardLabels}
                             getContractById={getContractById}
+                            onMouseLeave={onMouseLeave}
                             removeToast={removeToast}
                             contract={contract}
                             setCurrentFocus={setCurrentFocus}
@@ -164,6 +166,7 @@ const ToggleCardDialog = ({
                         current_focus={current_focus}
                         getCardLabels={getCardLabels}
                         getContractById={getContractById}
+                        onMouseLeave={onMouseLeave}
                         removeToast={removeToast}
                         contract={contract}
                         setCurrentFocus={setCurrentFocus}
@@ -184,6 +187,7 @@ ToggleCardDialog.propTypes = {
     getCardLabels: PropTypes.func,
     getContractById: PropTypes.func,
     is_valid_to_cancel: PropTypes.bool,
+    onMouseLeave: PropTypes.bool,
     removeToast: PropTypes.func,
     setCurrentFocus: PropTypes.func,
     should_show_cancellation_warning: PropTypes.bool,

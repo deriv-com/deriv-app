@@ -30,14 +30,19 @@ const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
 const Trade = ({
     contract_type,
     form_components,
+    getFirstOpenMarket,
     is_chart_loading,
     is_dark_theme,
+    is_eu,
     is_market_closed,
+    is_market_unavailable_visible,
+    is_synthetics_unavailable,
     is_trade_enabled,
     network_status,
     NotificationMessages,
     onMount,
     onUnmount,
+    prepareTradeStore,
     setMobileDigitView,
     show_digits_stats,
     symbol,
@@ -45,10 +50,26 @@ const Trade = ({
     const [digits, setDigits] = React.useState([]);
     const [tick, setTick] = React.useState({});
     const [try_synthetic_indices, setTrySyntheticIndices] = React.useState(false);
+    const [try_open_markets, setTryOpenMarkets] = React.useState(false);
+    const [category, setCategory] = React.useState(null);
+    const [subcategory, setSubcategory] = React.useState(null);
     const [is_digits_widget_active, setIsDigitsWidgetActive] = React.useState(false);
 
     React.useEffect(() => {
         onMount();
+        if (is_eu) {
+            const setMarket = async () => {
+                const markets_to_search = ['forex', 'indices', 'commodities']; // none-synthetic
+                const { category: market_cat, subcategory: market_subcat } =
+                    (await getFirstOpenMarket(markets_to_search)) ?? {};
+                if (market_cat) {
+                    setCategory(market_cat);
+                    setSubcategory(market_subcat);
+                }
+            };
+
+            setMarket();
+        }
         return () => onUnmount();
     }, [onMount, onUnmount]);
 
@@ -57,6 +78,7 @@ const Trade = ({
             setDigits([]);
         }
         setTrySyntheticIndices(false);
+        setTryOpenMarkets(false);
     }, [symbol, setDigits, setTrySyntheticIndices]);
 
     const bottomWidgets = React.useCallback(({ digits: d, tick: t }) => {
@@ -68,12 +90,24 @@ const Trade = ({
         setIsDigitsWidgetActive(index === 0);
     };
 
-    const onTrySyntheticIndicesClick = () => {
-        setTrySyntheticIndices(true);
-        setTimeout(() => setTrySyntheticIndices(false));
+    const onTryOtherMarkets = async () => {
+        if (is_eu || is_synthetics_unavailable) {
+            setTryOpenMarkets(true);
+            setTimeout(() => setTryOpenMarkets(false));
+        } else {
+            setTrySyntheticIndices(true);
+            setTimeout(() => setTrySyntheticIndices(false));
+        }
     };
 
     const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
+
+    let open_market = null;
+    if (try_synthetic_indices) {
+        open_market = { category: 'synthetic_index' };
+    } else if (try_open_markets && category) {
+        open_market = { category, subcategory };
+    }
 
     return (
         <div id='trade_container' className='trade-container'>
@@ -96,7 +130,11 @@ const Trade = ({
                     <DesktopWrapper>
                         <div className='chart-container__wrapper'>
                             <ChartLoader is_visible={is_chart_loading} />
-                            <ChartTrade try_synthetic_indices={try_synthetic_indices} />
+                            <ChartTrade
+                                try_synthetic_indices={try_synthetic_indices}
+                                try_open_markets={try_open_markets}
+                                open_market={open_market}
+                            />
                         </div>
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -115,6 +153,8 @@ const Trade = ({
                                 bottomWidgets={show_digits_stats ? bottomWidgets : undefined}
                                 is_digits_widget_active={show_digits_stats ? is_digits_widget_active : undefined}
                                 try_synthetic_indices={try_synthetic_indices}
+                                try_open_markets={try_open_markets}
+                                open_market={open_market}
                             />
                         </SwipeableWrapper>
                     </MobileWrapper>
@@ -124,7 +164,16 @@ const Trade = ({
                 <Test />
             </Div100vhContainer>
             <div className={form_wrapper_class}>
-                {is_market_closed && <MarketIsClosedOverlay onClick={onTrySyntheticIndicesClick} />}
+                {is_market_closed && !is_market_unavailable_visible && (
+                    <MarketIsClosedOverlay
+                        is_eu={is_eu}
+                        is_synthetics_unavailable={is_synthetics_unavailable}
+                        {...(is_eu && category && { is_market_available: true })}
+                        onClick={onTryOtherMarkets}
+                        onMarketOpen={prepareTradeStore}
+                        symbol={symbol}
+                    />
+                )}
                 <FormLayout
                     is_market_closed={is_market_closed}
                     is_trade_enabled={
@@ -136,7 +185,10 @@ const Trade = ({
     );
 };
 
-export default connect(({ common, modules, ui }) => ({
+export default connect(({ client, common, modules, ui }) => ({
+    getFirstOpenMarket: modules.trade.getFirstOpenMarket,
+    is_eu: client.is_eu,
+    is_synthetics_unavailable: client.is_synthetics_unavailable,
     network_status: common.network_status,
     contract_type: modules.trade.contract_type,
     form_components: modules.trade.form_components,
@@ -144,12 +196,14 @@ export default connect(({ common, modules, ui }) => ({
     is_market_closed: modules.trade.is_market_closed,
     show_digits_stats: modules.trade.show_digits_stats,
     is_trade_enabled: modules.trade.is_trade_enabled,
+    prepareTradeStore: modules.trade.prepareTradeStore,
     setMobileDigitView: modules.trade.setMobileDigitView,
     symbol: modules.trade.symbol,
     onMount: modules.trade.onMount,
     onUnmount: modules.trade.onUnmount,
     purchase_info: modules.trade.purchase_info,
     NotificationMessages: ui.notification_messages_ui,
+    is_market_unavailable_visible: ui.has_only_forward_starting_contracts,
 }))(Trade);
 
 // CHART (ChartTrade)--------------------------------------------------------
@@ -186,6 +240,7 @@ const Chart = props => {
         active_symbols,
         chart_layout,
         chart_type,
+        chartStateChange,
         exportLayout,
         extra_barriers = [],
         end_epoch,
@@ -222,11 +277,11 @@ const Chart = props => {
     const topWidgets = React.useCallback(({ ...params }) => {
         // changing reference of topWidgets function by adding dependencies to useCallback results in Smartcharts performance drop.
         // so, using props_ref to get current props value
-        const { is_digits_widget_active, try_synthetic_indices } = props_ref.current;
+        const { is_digits_widget_active, try_synthetic_indices, try_open_markets, open_market } = props_ref.current;
         return (
             <ChartTopWidgets
-                active_category={try_synthetic_indices ? 'synthetic_index' : null}
-                open={!!try_synthetic_indices}
+                open_market={open_market}
+                open={try_synthetic_indices || try_open_markets}
                 charts_ref={charts_ref}
                 is_digits_widget_active={is_digits_widget_active}
                 {...params}
@@ -280,6 +335,7 @@ const Chart = props => {
             requestForgetStream={wsForgetStream}
             requestSubscribe={wsSubscribe}
             settings={settings}
+            stateChangeListener={chartStateChange}
             symbol={symbol}
             topWidgets={is_trade_enabled ? topWidgets : null}
             isConnectionOpened={is_socket_opened}
@@ -305,6 +361,7 @@ Chart.propTypes = {
     bottomWidgets: PropTypes.func,
     chart_type: PropTypes.string,
     chart_layout: PropTypes.any,
+    chartStateChange: PropTypes.func,
     exportLayout: PropTypes.func,
     end_epoch: PropTypes.number,
     granularity: PropTypes.number,
@@ -328,6 +385,7 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
     is_socket_opened: common.is_socket_opened,
     granularity: modules.contract_trade.granularity,
     chart_type: modules.contract_trade.chart_type,
+    chartStateChange: modules.trade.chartStateChange,
     settings: {
         assetInformation: false, // ui.is_chart_asset_info_visible,
         countdown: ui.is_chart_countdown_visible,

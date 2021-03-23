@@ -157,6 +157,7 @@
         // Gradient
         --gradient-success: #{$gradient-color-green-1};
         --gradient-danger: #{$gradient-color-red-1};
+        --contract-gradient-danger: #{$contract-gradient-color-red-1};
         --gradient-right-edge: #{$gradient-color-white};
         // Badge
         --badge-white: #{$color-white};
@@ -241,6 +242,7 @@
         // Gradient
         --gradient-success: #{$gradient-color-green-2};
         --gradient-danger: #{$gradient-color-red-2};
+        --contract-gradient-danger: #{$contract-gradient-color-red-2};
         --gradient-right-edge: #{$gradient-color-black};
         // Badge
         --badge-white: #{$color-white};

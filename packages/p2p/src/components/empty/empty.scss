@@ -29,5 +29,9 @@
     &__button {
         text-decoration: none;
         margin-top: 1.6rem;
+
+        @include mobile {
+            width: calc(100vw - 3.2rem);
+        }
     }
 }

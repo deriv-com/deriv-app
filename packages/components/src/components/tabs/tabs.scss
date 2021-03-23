@@ -49,6 +49,9 @@
         &:not(&--header-fit-content) {
             justify-content: center;
         }
+        &--overflow-hidden {
+            overflow-y: hidden;
+        }
     }
     &__item {
         list-style: none;
@@ -85,9 +88,28 @@
             width: var(--tab-width);
         }
     }
+
     &__active {
         font-weight: 700;
         color: var(--text-prominent);
+
+        &:after {
+            border-bottom: 2px solid var(--brand-red-coral);
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            display: block;
+            width: 100%;
+
+            @media (min-width: 325px) {
+                bottom: 0;
+            }
+        }
+
+        &--is-p2p {
+            position: relative;
+        }
     }
     &__active-line {
         display: block;

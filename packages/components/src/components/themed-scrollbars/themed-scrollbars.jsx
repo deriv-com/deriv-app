@@ -20,6 +20,7 @@ const ThemedScrollbars = ({
     const [hoverRef, isHovered] = useHover(refSetter);
 
     if (is_bypassed) return children;
+
     return (
         <div
             ref={hoverRef}

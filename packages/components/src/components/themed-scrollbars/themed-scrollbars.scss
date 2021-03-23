@@ -34,6 +34,27 @@
             overflow-x: overlay;
         }
     }
+    &--p2p-cashier-wrapper {
+        white-space: nowrap;
+        margin-bottom: -3rem;
+        padding-bottom: 3rem;
+
+        & li {
+            display: inline-block;
+            box-sizing: border-box;
+            margin-left: 1.5rem;
+            vertical-align: middle;
+            width: unset;
+
+            &:first-child {
+                margin-left: 0.9rem;
+            }
+
+            &:nth-child(4) {
+                margin-right: 1.5rem;
+            }
+        }
+    }
     &::-webkit-scrollbar {
         width: 5px;
         height: 5px;

@@ -8,8 +8,10 @@
     margin-top: 6.8rem;
 
     @include mobile {
-        transform: none;
+        margin-top: 1rem;
         padding: 1.6rem;
+        transform: none;
+        width: 100vw;
     }
 
     &__icon {

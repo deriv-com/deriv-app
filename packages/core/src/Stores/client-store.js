@@ -18,7 +18,7 @@ import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
-import { isEuCountry } from '_common/utility';
+import { isEuCountry, isSyntheticsUnavailable } from '_common/utility';
 import BaseStore from './base-store';
 import { getClientAccountType, getAccountTitle } from './Helpers/client';
 import { createDeviceDataObject, getCookieObject, setDeviceDataCookie } from './Helpers/device';
@@ -585,6 +585,12 @@ export default class ClientStore extends BaseStore {
         if (country) return isEuCountry(country);
         return false;
     }
+
+    @computed
+    get is_synthetics_unavailable() {
+        return isSyntheticsUnavailable(this.residence);
+    }
+
     /**
      * Store Values relevant to the loginid to local storage.
      *

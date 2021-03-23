@@ -18,7 +18,12 @@ import ServerTime from '_common/base/server_time';
 import { processPurchase } from './Actions/purchase';
 import * as Symbol from './Actions/symbol';
 import getValidationRules, { getMultiplierValidationRules } from './Constants/validation-rules';
-import { isMarketClosed, pickDefaultSymbol, showUnavailableLocationError } from './Helpers/active-symbols';
+import {
+    pickDefaultSymbol,
+    showUnavailableLocationError,
+    isMarketClosed,
+    findFirstOpenMarket,
+} from './Helpers/active-symbols';
 import ContractType from './Helpers/contract-type';
 import { convertDurationLimit, resetEndTimeOnVolatilityIndices } from './Helpers/duration';
 import { processTradeParams } from './Helpers/process';
@@ -325,7 +330,7 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    async prepareTradeStore() {
+    async prepareTradeStore(should_set_default_symbol = true) {
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
         await when(() => !this.root_store.client.is_populating_account_list);
 
@@ -349,8 +354,7 @@ export default class TradeStore extends BaseStore {
             const symbol_to_update = await pickDefaultSymbol(this.active_symbols);
             await this.processNewValuesAsync({ symbol: symbol_to_update });
         }
-
-        await this.setDefaultSymbol();
+        if (should_set_default_symbol) await this.setDefaultSymbol();
         await this.setContractTypes();
         await this.processNewValuesAsync(
             {
@@ -381,6 +385,8 @@ export default class TradeStore extends BaseStore {
         if (name === 'symbol' && value) {
             // set trade params skeleton and chart loader to true until processNewValuesAsync resolves
             this.setChartStatus(true);
+            // reset market close status
+            this.setMarketStatus(false);
             this.is_trade_enabled = false;
             // this.root_store.modules.contract_trade.contracts = [];
             // TODO: Clear the contracts in contract-trade-store
@@ -1022,7 +1028,6 @@ export default class TradeStore extends BaseStore {
         if (this.is_trade_component_mounted && this.should_skip_prepost_lifecycle) {
             return;
         }
-
         this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
         this.onLogout(this.logoutListener);
@@ -1139,6 +1144,20 @@ export default class TradeStore extends BaseStore {
         this.should_refresh_active_symbols = false;
     }
 
+    @action.bound
+    chartStateChange(state, option) {
+        const market_close_prop = 'isClosed';
+        switch (state) {
+            case 'MARKET_STATE_CHANGE':
+                if (option && market_close_prop in option) {
+                    if (this.is_trade_component_mounted && option[market_close_prop] !== this.is_market_closed)
+                        this.prepareTradeStore(false);
+                }
+                break;
+            default:
+        }
+    }
+
     refToAddTick = ref => {
         this.addTickByProposal = ref;
     };
@@ -1151,5 +1170,21 @@ export default class TradeStore extends BaseStore {
     @computed
     get is_multiplier() {
         return this.contract_type === 'multiplier';
+    }
+
+    async getFirstOpenMarket(markets_to_search) {
+        if (this.active_symbols?.length) {
+            return findFirstOpenMarket(this.active_symbols, markets_to_search);
+        }
+        const { active_symbols, error } = this.should_refresh_active_symbols
+            ? // if SmartCharts has requested active_symbols, we wait for the response
+              await WS.wait('active_symbols')
+            : // else requests new active_symbols
+              await WS.authorized.activeSymbols();
+        if (error) {
+            this.root_store.common.showError({ message: localize('Trading is unavailable at this time.') });
+            return undefined;
+        }
+        return findFirstOpenMarket(active_symbols, markets_to_search);
     }
 }

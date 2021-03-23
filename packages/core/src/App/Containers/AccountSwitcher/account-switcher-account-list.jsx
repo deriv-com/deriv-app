@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Money, Button, Text } from '@deriv/components';
-import { formatMoney, getCurrencyName, getMT5AccountDisplay, getCurrencyDisplayCode } from '@deriv/shared';
+import { formatMoney, getCurrencyName, getMT5AccountDisplay, getCurrencyDisplayCode, isBot } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
 const AccountList = ({
@@ -118,10 +118,10 @@ const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_d
                 <Text color='disabled' size='xs'>
                     <Localize i18n_default_text='Unavailable' />
                 </Text>
-                {server?.geolocation && (
+                {server?.server_info?.geolocation && market_type === 'gaming' && (
                     <Text color='less-prominent' size='xxs' className='badge-server badge-server--disabled'>
-                        {server.geolocation.region}&nbsp;
-                        {server.geolocation.sequence !== 1 ? server.geolocation.sequence : ''}
+                        {server.server_info.geolocation.region}&nbsp;
+                        {server.server_info.geolocation.sequence !== 1 ? server.server_info.geolocation.sequence : ''}
                     </Text>
                 )}
             </div>
@@ -129,10 +129,16 @@ const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_d
     return (
         <div>
             {getMT5AccountDisplay(market_type, sub_account_type)}
-            {server?.geolocation && (
-                <Text color={is_dark_mode_on ? 'general' : 'colored-background'} size='xxs' className='badge-server'>
-                    {server.geolocation.region}&nbsp;
-                    {server.geolocation.sequence !== 1 ? server.geolocation.sequence : ''}
+            {server?.server_info?.geolocation && market_type === 'gaming' && (
+                <Text
+                    color={is_dark_mode_on ? 'general' : 'colored-background'}
+                    size='xxs'
+                    className={classNames('badge-server', {
+                        'badge-server-bot': isBot(),
+                    })}
+                >
+                    {server.server_info.geolocation.region}&nbsp;
+                    {server.server_info.geolocation.sequence !== 1 ? server.server_info.geolocation.sequence : ''}
                 </Text>
             )}
         </div>

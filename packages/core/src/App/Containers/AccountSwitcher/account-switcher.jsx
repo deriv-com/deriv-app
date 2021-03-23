@@ -169,15 +169,7 @@ const AccountSwitcher = props => {
                 );
                 if (has_account) {
                     const number_market_type_available = trading_servers.filter(
-                        s =>
-                            s.supported_accounts.includes(market_type) &&
-                            !s.disabled &&
-                            !existing_mt5_accounts.some(
-                                acc =>
-                                    acc.account_type === 'real' &&
-                                    acc.market_type === market_type &&
-                                    acc.server === s.id
-                            )
+                        s => s.supported_accounts.includes(market_type) && !s.disabled
                     ).length;
                     if (number_market_type_available && has_account.account_type === 'real') {
                         has_account = false;
@@ -270,8 +262,8 @@ const AccountSwitcher = props => {
 
     const findServerForAccount = acc => {
         const server_name = acc.error ? acc.error.details.server : acc.server;
-        return props.trading_servers.length > 1
-            ? props.trading_servers.find(server => server.id === server_name)
+        return props.mt5_login_list.length > 1
+            ? props.mt5_login_list.find(server => server.server === server_name)
             : null;
     };
 
@@ -291,7 +283,7 @@ const AccountSwitcher = props => {
 
     // SVG clients can't upgrade.
     const getRemainingRealAccounts = () => {
-        if (props.is_virtual || !canOpenMulti() || is_regulated_able_to_change_currency) {
+        if (props.is_eu || props.is_virtual || !canOpenMulti() || is_regulated_able_to_change_currency) {
             return props.upgradeable_landing_companies;
         }
         return [];

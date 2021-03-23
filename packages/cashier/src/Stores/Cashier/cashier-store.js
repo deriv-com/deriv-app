@@ -441,7 +441,12 @@ export default class CashierStore extends BaseStore {
                 this.setLoading(false);
                 // set the height of the container after content loads so that the
                 // loading bar stays vertically centered until the end
-                this.setContainerHeight(+e.data || '1200');
+                // As cashier.deriv.com is not supported the dark theme for the deposit, when we switch to the dark theme the IFrame height (with white background)is too small so we've added the condition to update height
+                if (this.active_container === 'deposit' && e.data < 540) {
+                    this.setContainerHeight('540');
+                } else {
+                    this.setContainerHeight(+e.data || '1200');
+                }
                 // do not remove the listener
                 // on every iframe screen change we need to update the height to more/less to match the new content
             }
@@ -725,7 +730,7 @@ export default class CashierStore extends BaseStore {
     sortSupportedBanks() {
         // sort supported banks alphabetically by value, the option 'All payment agents' with value 0 should be on top
         this.config.payment_agent.supported_banks.replace(
-            this.config.payment_agent.supported_banks.slice().sort(function (a, b) {
+            this.config.payment_agent.supported_banks.slice().sort((a, b) => {
                 if (a.value < b.value) {
                     return -1;
                 }

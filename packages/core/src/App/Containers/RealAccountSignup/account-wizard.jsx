@@ -3,11 +3,12 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, FormProgress, Wizard } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, FormProgress, Wizard, Text } from '@deriv/components';
 import { toMoment, getLocation, makeCancellablePromise } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import LoadingModal from './real-account-signup-loader.jsx';
+import AcceptRiskForm from './accept-risk-form.jsx';
 import { getItems } from './account-wizard-form';
 import 'Sass/details-form.scss';
 
@@ -24,8 +25,25 @@ const StepperHeader = ({ has_target, has_real_account, has_currency, items, getC
                     </DesktopWrapper>
                     <MobileWrapper>
                         <div className='account-wizard__header-steps'>
-                            {active_title && <h4 className='account-wizard__header-steps-subtitle'>{active_title}</h4>}
-                            <h4 className='account-wizard__header-steps-title'>
+                            {active_title && (
+                                <Text
+                                    as='h4'
+                                    size='xxs'
+                                    weight='bold'
+                                    color='prominent'
+                                    styles={{ lineHeight: '1.8rem' }}
+                                    className='account-wizard__header-steps-subtitle'
+                                >
+                                    {active_title}
+                                </Text>
+                            )}
+                            <Text
+                                as='h4'
+                                styles={{ lineHeight: '20px', color: 'var(--brand-red-coral)' }}
+                                size='xs'
+                                weight='bold'
+                                className='account-wizard__header-steps-title'
+                            >
                                 <Localize
                                     i18n_default_text='Step {{step}}: {{step_title}} ({{step}} of {{steps}})'
                                     values={{
@@ -34,7 +52,7 @@ const StepperHeader = ({ has_target, has_real_account, has_currency, items, getC
                                         step_title,
                                     }}
                                 />
-                            </h4>
+                            </Text>
                         </div>
                     </MobileWrapper>
                 </React.Fragment>
@@ -47,9 +65,9 @@ const StepperHeader = ({ has_target, has_real_account, has_currency, items, getC
                                 <Localize i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.' />
                             </p>
                         )}
-                        <h2>
+                        <Text as='h2' weight='bold' align='center'>
                             <Localize i18n_default_text='Please choose your currency' />
-                        </h2>
+                        </Text>
                     </div>
                 )}
             </DesktopWrapper>
@@ -63,6 +81,8 @@ const AccountWizard = props => {
     const [form_error, setFormError] = React.useState('');
     const [previous_data, setPreviousData] = React.useState([]);
     const [state_items, setStateItems] = React.useState([]);
+    const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
+    const is_financial_risk_accepted_ref = React.useRef(false);
 
     React.useEffect(() => {
         props.fetchStatesList();
@@ -190,6 +210,10 @@ const AccountWizard = props => {
         const clone = { ...form_values() };
         delete clone?.tax_identification_confirm; // This is a manual field and it does not require to be sent over
 
+        if (is_financial_risk_accepted_ref.current) {
+            clone.accept_risk = 1;
+        }
+
         return props.realAccountSignup(clone);
     };
 
@@ -198,6 +222,7 @@ const AccountWizard = props => {
     const updateValue = (index, value, setSubmitting, goToNextStep) => {
         saveFormData(index, value);
         clearError();
+
         // Check if account wizard is not finished
         if ((!props.has_currency && props.has_real_account) || index + 1 >= state_items.length) {
             createRealAccount(setSubmitting);
@@ -253,13 +278,23 @@ const AccountWizard = props => {
                     }
                 })
                 .catch(error => {
-                    props.onError(error, state_items);
+                    if (error.code === 'show risk disclaimer') {
+                        setShouldAcceptFinancialRisk(true);
+                    } else {
+                        props.onError(error, state_items);
+                    }
                 })
                 .finally(() => props.setLoading(false));
         }
     };
 
+    const onAcceptRisk = () => {
+        is_financial_risk_accepted_ref.current = true;
+        createRealAccount();
+    };
+
     if (props.is_loading) return <LoadingModal />;
+    if (should_accept_financial_risk) return <AcceptRiskForm onConfirm={onAcceptRisk} onClose={props.onClose} />;
     if (!mounted) return null;
     if (!finished) {
         const wizard_steps = state_items.map((step, step_index) => {

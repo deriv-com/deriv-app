@@ -10,7 +10,7 @@ import { default_delay, types } from './constants';
 import { BinaryLink } from '../../Routes';
 
 const Notification = ({ data, removeNotificationMessage }) => {
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
     const destroy = is_closed_by_user => {
         removeNotificationMessage(data);
 
@@ -52,7 +52,9 @@ const Notification = ({ data, removeNotificationMessage }) => {
                         <NotificationStatusIcons type={data.type} />
                     </div>
                     <div className='notification__text-container'>
-                        <h4 className='notification__header'>{data.header}</h4>
+                        <Text as='h4' weight='bold' className='notification__header'>
+                            {data.header}
+                        </Text>
                         {data.timeout && (
                             <LinearProgress
                                 className='notification__timeout'
@@ -81,7 +83,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                     ) : (
                                         <Button
                                             className='notification__cta-button'
-                                            onClick={() => data.action.onClick({ is_deriv_crypto })}
+                                            onClick={() => data.action.onClick({ is_dashboard })}
                                             text={data.action.text}
                                             secondary
                                             renderText={text => (

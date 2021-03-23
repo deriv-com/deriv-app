@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { EXPERIAN } from './constants';
 
@@ -9,16 +10,12 @@ import { EXPERIAN } from './constants';
  * @param {EXPERIAN} status - Experian result
  */
 const IOMHeading = ({ status }) => (
-    <h2>
+    <Text as='h2' align='center' className='status-dialog__message-header' weight='bold'>
         {status === EXPERIAN.SUCCESS && <Localize i18n_default_text='Your account is ready' />}
-        {status === EXPERIAN.WARN && <Localize i18n_default_text='Proof of address verification failed' />}
-        {status === EXPERIAN.DANGER && (
-            <Localize i18n_default_text='Proof of identity and address verification failed' />
-        )}
-        {status === EXPERIAN.PENDING && (
-            <Localize i18n_default_text='Your proofs of identity and address were submitted successfully' />
-        )}
-    </h2>
+        {status === EXPERIAN.WARN && <Localize i18n_default_text='Please verify your address' />}
+        {status === EXPERIAN.DANGER && <Localize i18n_default_text='Please verify your identity and address' />}
+        {status === EXPERIAN.PENDING && <Localize i18n_default_text="We're processing your personal information" />}
+    </Text>
 );
 
 /**
@@ -36,9 +33,9 @@ export const DialogHeading = ({ status, landing_company_shortcode }) => {
             return <IOMHeading status={status} />;
         default:
             return (
-                <h2>
+                <Text as='h2' align='center' className='status-dialog__message-header' weight='bold'>
                     <Localize i18n_default_text='Your account is ready' />
-                </h2>
+                </Text>
             );
     }
 };

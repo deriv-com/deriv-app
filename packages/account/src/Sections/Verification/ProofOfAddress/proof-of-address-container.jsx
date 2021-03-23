@@ -62,7 +62,7 @@ const ProofOfAddressContainer = ({ is_mx_mlt, refreshNotifications }) => {
         case PoaStatusCodes.none:
             return <ProofOfAddressForm onSubmit={() => onSubmit({ needs_poi })} />;
         case PoaStatusCodes.pending:
-            return <NeedsReview />;
+            return <NeedsReview needs_poi={needs_poi} />;
         case PoaStatusCodes.verified:
             return <Verified needs_poi={needs_poi} />;
         case PoaStatusCodes.expired:

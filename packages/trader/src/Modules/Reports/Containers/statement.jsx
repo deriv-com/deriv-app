@@ -18,7 +18,6 @@ import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.
 
 const getRowAction = row_obj => {
     let action;
-
     if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
         action =
             getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()] &&
@@ -43,10 +42,17 @@ const getRowAction = row_obj => {
                           />
                       ),
                   };
-    } else if (
-        row_obj.desc &&
-        ['deposit', 'withdrawal', 'transfer', 'adjustment', 'hold', 'release'].includes(row_obj.action_type)
-    ) {
+    } else if (row_obj.action_type === 'withdrawal') {
+        if (row_obj.withdrawal_details && row_obj.longcode) {
+            action = {
+                message: `${row_obj.withdrawal_details} ${row_obj.longcode}`,
+            };
+        } else {
+            action = {
+                message: row_obj.desc,
+            };
+        }
+    } else if (row_obj.desc && ['deposit', 'transfer', 'adjustment', 'hold', 'release'].includes(row_obj.action_type)) {
         action = {
             message: row_obj.desc,
         };

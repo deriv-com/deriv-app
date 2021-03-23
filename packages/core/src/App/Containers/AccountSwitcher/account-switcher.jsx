@@ -50,6 +50,7 @@ const AccountSwitcher = props => {
                 inline: 'nearest',
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_dmt5_real_visible]);
 
     const toggleVisibility = section => {

@@ -17,8 +17,12 @@ const messages = () => [
 
 const Headers = ({ heading, subheading }) => (
     <React.Fragment>
-        <h1 className='add-crypto-currency__title'>{heading}</h1>
-        <h3 className='add-crypto-currency__sub-title'>{subheading}</h3>
+        <Text as='h1' color='prominent' align='center' weight='bold' className='add-crypto-currency__title'>
+            {heading}
+        </Text>
+        <Text as='h3' size='xxs' color='prominent' align='center' className='add-crypto-currency__sub-title'>
+            {subheading}
+        </Text>
     </React.Fragment>
 );
 

@@ -4,6 +4,10 @@
     flex-direction: column;
     justify-content: space-between;
 
+    &--mt5 {
+        justify-content: unset;
+    }
+
     &__container {
         display: flex;
         flex-direction: row;
@@ -12,14 +16,22 @@
     }
     &__box {
         overflow: hidden;
+
+        &--mt5 {
+            margin-left: -2.4rem;
+        }
     }
     &__wrapper {
         display: flex;
         flex-direction: row;
         transition: transform 0.3s linear;
-        padding: 0.5rem 0;
         width: fit-content;
+        padding: 0.5rem 0;
         height: 100%;
+
+        &--mt5 {
+            padding-top: unset;
+        }
     }
     &__card {
         display: flex;
@@ -45,6 +57,9 @@
             margin: 0 auto;
             position: relative;
         }
+        &--lower {
+            margin-bottom: 0;
+        }
         &-item {
             width: 0.8rem;
             height: 0.8rem;
@@ -64,5 +79,10 @@
     }
     &__icon {
         cursor: pointer;
+
+        &--left {
+            position: relative;
+            right: 5.2rem;
+        }
     }
 }

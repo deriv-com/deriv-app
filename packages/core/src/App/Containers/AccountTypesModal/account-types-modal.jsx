@@ -6,7 +6,6 @@ import {
     MobileCarousel,
     DesktopWrapper,
     Div100vhContainer,
-    Icon,
     Modal,
     ThemedScrollbars,
     Text,
@@ -27,11 +26,18 @@ const getTargetLoginid = (accounts, target_landing_company_shortcode) =>
         return acc;
     }, '');
 
-const Box = ({ title, description, footer_text, icons, cards }) => {
+const Box = ({ title, description, footer_text, cards }) => {
     return (
         <div className='account-types__box'>
             <div className='account-types__box-left'>
-                <h2 className='account-types__box-title'>{title}</h2>
+                <Text
+                    as='h2'
+                    styles={{ color: 'var(--brand-red-coral)' }}
+                    weight='bold'
+                    className='account-types__box-title'
+                >
+                    {title}
+                </Text>
                 <Text as='p' size='xs' line_height='s' className='account-types__box-description'>
                     {description}
                 </Text>
@@ -40,11 +46,6 @@ const Box = ({ title, description, footer_text, icons, cards }) => {
                         {footer_text}
                     </Text>
                 )}
-                <div className='account-types__box-icons'>
-                    {icons.map((icon, index) => {
-                        return <Icon className='account-types__box-icon' icon={icon} key={index} />;
-                    })}
-                </div>
             </div>
             <MobileWrapper>
                 <MobileCarousel>{cards}</MobileCarousel>

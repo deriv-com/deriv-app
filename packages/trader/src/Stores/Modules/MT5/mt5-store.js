@@ -262,6 +262,7 @@ export default class MT5Store extends BaseStore {
                 this.setMt5Account(response.mt5_new_account);
                 this.is_mt5_password_modal_enabled = false;
                 this.has_mt5_error = false;
+                WS.tradingServers().then(this.root_store.client.responseTradingServers);
                 setTimeout(() => this.setMt5SuccessDialog(true), 300);
             });
         } else {

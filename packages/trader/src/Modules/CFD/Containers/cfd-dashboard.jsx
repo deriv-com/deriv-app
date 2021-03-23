@@ -213,7 +213,10 @@ class CFDDashboard extends React.Component {
                                     <div label={localize('Real account')} data-hash='real'>
                                         <React.Fragment>
                                             {should_show_missing_real_account && (
-                                                <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
+                                                <MissingRealAccount
+                                                    onClickSignup={beginRealSignupForMt5}
+                                                    platform={platform}
+                                                />
                                             )}
                                             <CFDRealAccountDisplay
                                                 is_accounts_switcher_on={is_accounts_switcher_on}

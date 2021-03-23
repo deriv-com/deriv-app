@@ -7,13 +7,12 @@ const Colors = {
     FgBlue: "\x1b[34m",
     FgMagenta: "\x1b[35m",
     FgWhite: "\x1b[37m",
-    RESET: "\x1b[0m"
+    RESET: "\x1b[0m",
 }
 
 const output_dir = `${__dirname}/../../states/logger`
 
 class logger {
-
     /**
      * Save results of a test
      * @param test_path
@@ -30,13 +29,34 @@ class logger {
         if (!fs.existsSync(file_path))
             fs.writeFileSync(file_path, JSON.stringify([{ name, results }]));
         else {
-            let data = JSON.parse(fs.readFileSync(file_path));
+            const data = JSON.parse(fs.readFileSync(file_path));
             data.push({ name, results })
             fs.writeFileSync(file_path, JSON.stringify(data))
         }
     }
 
     static log = () => {
+        const printLine = (body) => {
+            console.log(Colors.FgYellow, body, Colors.RESET);
+        }
+
+        const printTable = (body) => {
+            console.table(body);
+        }
+
+        const createReport = ([key, value]) => {
+            console.log('>', Colors.FgYellow, key, Colors.RESET);
+            if (['string', 'number'].includes(typeof value)) {
+                printLine(value);
+            } else if (value.length) {
+                printTable(value);
+            } else if (typeof value === 'object') {
+                createReport(Object.entries(value));
+            } else {
+                console.log(typeof value);
+            }
+        }
+
         if (!fs.existsSync(output_dir)) return
         const files = fs.readdirSync(output_dir)
         if (files.length) console.log(Colors.FgGreen, '\nTEST RESULTS\n', Colors.RESET);
@@ -44,7 +64,9 @@ class logger {
             const data = JSON.parse(fs.readFileSync(`${output_dir}/${file}`));
             data.forEach(item => {
                 console.log(Colors.FgRed, '\n>', Colors.FgYellow, item.name, Colors.RESET);
-                console.log(item.results, '\n');
+                Object.entries(item.results)
+                    .forEach(createReport)
+                // console.log(item.results, '\n');
             })
             fs.unlinkSync(`${output_dir}/${file}`)
         });

@@ -10,7 +10,7 @@ const USTPopover = ({ id }) => {
         popover_message = (
             <Localize
                 i18n_default_text={
-                    'Tether on Omnilayer (USDT) is a version of Tether, a digital token issued on blockchains and holds a value pegged to 1 USD at all times.<0 /><0 />USDT is built on the bitcoin blockchain via Omni Layer, a platform for digital assets and currencies that run in the bitcoin network.'
+                    'Send only Tether Omni to this deposit address.<0 /><0 />Sending Tether ERC20 to this address will result in the loss of your deposit.'
                 }
                 components={[<br key={0} />]}
             />
@@ -28,11 +28,12 @@ const USTPopover = ({ id }) => {
     return (
         <Popover
             alignment='top'
-            icon='info'
-            disable_message_icon
-            zIndex={9999}
             className='currency-list__popover'
+            disable_message_icon
+            icon='info'
+            is_bubble_hover_enabled
             message={popover_message}
+            zIndex={9999}
         />
     );
 };
@@ -60,13 +61,11 @@ const RadioButton = ({ field: { name, value, onChange, onBlur }, id, label, clas
                     'currency-list__item--current': props.selected,
                 })}
             >
-                <div>
-                    <Icon className='currency-list__icon' icon={`IcCurrency-${id.toLowerCase()}`} />
-                    {/^(UST|eUSDT)$/i.test(id) && <USTPopover id={id} />}
-                    <div className='label currency-list__item-text'>
-                        <div className='currency-list__item-label'>{label}</div>
-                        <div className='currency-list__item-code'>({getCurrencyDisplayCode(id)})</div>
-                    </div>
+                <Icon className='currency-list__icon' icon={`IcCurrency-${id.toLowerCase()}`} />
+                {/^(UST|eUSDT)$/i.test(id) && <USTPopover id={id} />}
+                <div className='label currency-list__item-text'>
+                    <div className='currency-list__item-label'>{label}</div>
+                    <div className='currency-list__item-code'>({getCurrencyDisplayCode(id)})</div>
                 </div>
             </label>
         </React.Fragment>

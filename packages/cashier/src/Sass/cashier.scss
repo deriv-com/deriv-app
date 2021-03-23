@@ -26,7 +26,6 @@
         background: var(--status-default);
 
         &-header {
-            text-align: center;
             margin-bottom: 3.2rem;
 
             @include mobile {
@@ -103,11 +102,6 @@
         }
     }
     &__header {
-        font-size: 1.6rem;
-        line-height: 1.5;
-        font-weight: bold;
-        color: var(--text-prominent);
-
         @include mobile {
             font-size: 1.4rem;
         }
@@ -347,14 +341,6 @@
             margin: 2.4rem 0 0;
         }
     }
-    &__usdt-side-note {
-        &--header {
-            font-size: 1.6rem;
-            line-height: 1.5;
-            font-weight: bold;
-            color: var(--text-prominent);
-        }
-    }
     &__account-switch-text {
         color: var(--text-loss-danger);
         cursor: pointer;
@@ -365,7 +351,6 @@
     }
     &__virtual {
         &-header {
-            @include typeface(--title-center-bold-prominent);
             margin-top: 0;
             margin-bottom: 1.6rem;
 
@@ -432,10 +417,6 @@
             margin-bottom: 1.6rem;
         }
         &__header {
-            color: var(--text-loss-danger);
-            font-weight: bold;
-            font-size: 1.6rem;
-            line-height: 1.5;
             margin-bottom: 0.8rem;
         }
         &__button {
@@ -444,9 +425,6 @@
             @include mobile {
                 width: calc(100% - 3.2rem);
             }
-        }
-        &__footer {
-            font-size: 1.2rem;
         }
     }
 }
@@ -479,7 +457,6 @@
         margin-bottom: 2.4rem;
     }
     &__title {
-        @include typeface(--title-center-bold-black);
         margin-bottom: 0.8rem;
     }
     &__desc {
@@ -510,7 +487,6 @@
     margin: 4rem auto 0;
 
     &__title {
-        @include typeface(--title-center-bold-black);
         margin-bottom: 3.2rem;
     }
     &__desc {
@@ -563,7 +539,6 @@
         margin-bottom: 2.4rem;
     }
     &__title {
-        @include typeface(--title-center-bold-black);
         margin-bottom: 0.8rem;
     }
     &__desc {
@@ -574,11 +549,7 @@
 /** @define withdraw */
 .withdraw {
     &__header {
-        font-weight: bold;
         margin-bottom: 8px;
-        font-size: 1.6rem;
-        line-height: 1.5;
-        color: var(--text-general);
     }
 
     &__verify-button {
@@ -614,13 +585,6 @@
             @include mobile {
                 width: 100%;
                 padding: 1.6rem 0;
-            }
-        }
-        &-resend,
-        &-sent {
-            &-text {
-                font-size: 1.4rem;
-                line-height: 1.43;
             }
         }
         &-resend {
@@ -720,8 +684,6 @@
     &__list {
         &-header {
             margin-top: 32px;
-            font-size: 1.4rem;
-            line-height: 1.43;
         }
         &-selector {
             margin-bottom: 8px;

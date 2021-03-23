@@ -177,7 +177,15 @@ const BinarySocketGeneral = (() => {
                 break;
             case 'InvalidToken':
                 if (
-                    ['cashier', 'paymentagent_withdraw', 'mt5_password_reset', 'new_account_virtual'].includes(msg_type)
+                    [
+                        'cashier',
+                        'paymentagent_withdraw',
+                        'mt5_password_reset',
+                        'new_account_virtual',
+                        'p2p_advertiser_info',
+                        'portfolio',
+                        'proposal_open_contract',
+                    ].includes(msg_type)
                 ) {
                     return;
                 }

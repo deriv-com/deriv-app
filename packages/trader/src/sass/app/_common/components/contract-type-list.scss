@@ -57,9 +57,6 @@
             }
         }
     }
-    &--invisible {
-        display: none;
-    }
     &--selected {
         background: var(--state-active);
         color: var(--text-prominent);

@@ -76,7 +76,7 @@ const Checkbox = React.forwardRef(
                 >
                     {!!checked && <Icon icon='IcCheckmark' color='active' />}
                 </span>
-                <Text size='xs' className={classNames('dc-checkbox__label', classNameLabel)}>
+                <Text size='xs' line_height='unset' className={classNames('dc-checkbox__label', classNameLabel)}>
                     {label}
                 </Text>
             </label>

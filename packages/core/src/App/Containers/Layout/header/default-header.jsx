@@ -26,6 +26,7 @@ const DefaultHeader = ({
     enableApp,
     header_extension,
     history,
+    is_mf,
     is_acc_switcher_disabled,
     is_acc_switcher_on,
     is_app_disabled,
@@ -68,6 +69,9 @@ const DefaultHeader = ({
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
                 return !is_logged_in || is_mt5_allowed;
+            }
+            if (is_mf && config.href === routes.smarttrader) {
+                return false;
             }
             return true;
         });
@@ -205,6 +209,7 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     addNotificationMessage: ui.addNotificationMessage,
     app_routing_history: common.app_routing_history,
     balance: client.balance,
+    is_mf: client.landing_company_shortcode === 'maltainvest',
     currency: client.currency,
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,

@@ -89,7 +89,24 @@ const GeneralErrorContent = ({ message, onClick }) => (
     </React.Fragment>
 );
 
-const character_limit_no = 255;
+const character_limit_no = 250;
+
+const allowed_keys = new Set([
+    'Alt',
+    'ArrowDown',
+    'ArrowLeft',
+    'ArrowRight',
+    'ArrowUp',
+    'Backspace',
+    'Clear',
+    'Cut',
+    'Copy',
+    'Control',
+    'Delete',
+    'End',
+    'Home',
+    'Shift',
+]);
 
 class DeactivateAccountReason extends React.Component {
     state = {
@@ -113,28 +130,20 @@ class DeactivateAccountReason extends React.Component {
         if ((values.otherTradingPlatforms + values.doToImprove).length > 0 || selected_reason_count) {
             const max_characters = character_limit_no;
             const final_value = preparingReason(values);
-            const selected_reasons = selectedReasons(values)
-                .map(val => val[0])
-                .toString();
-            const is_other_trading_platform__has_value = !!values.otherTradingPlatforms.length;
-            const is_to_do_improve_has_value = !!values.doToImprove.length;
-            let max_input_characters_can_use = max_characters - selected_reasons.length;
-            // by adding new fields, we are adding 2 more characters to the final value
-            if (is_other_trading_platform__has_value) {
-                max_input_characters_can_use -= 2;
-            }
-            if (is_to_do_improve_has_value) {
-                max_input_characters_can_use -= 2;
-            }
+
             const remaining_characters = max_characters - final_value.length;
             if (remaining_characters >= 0) {
                 this.setState({ remaining_characters });
             } else {
-                this.setState({ remaining_characters: character_limit_no });
+                this.setState({ remaining_characters: 0 });
             }
-            const regex_rule = `^[0-9A-Za-z .,'-]{0,${max_characters}}$`;
-            if (!new RegExp(regex_rule).test(final_value)) {
-                error.characters_limits = `please insert up to ${max_input_characters_can_use} characters combine both fields.`;
+
+            if (!/^[0-9A-z .,'-]*$/.test(final_value)) {
+                error.characters_limits = localize("Must be numbers, letters, and special characters . , ' -");
+            }
+
+            if (final_value.length > max_characters) {
+                error.characters_count_exceed = 'Please enter no more than 255 characters for both fields.';
             }
         } else {
             this.setState({ remaining_characters: character_limit_no });
@@ -197,6 +206,18 @@ class DeactivateAccountReason extends React.Component {
                 is_modal_open: true,
                 is_loading: false,
             });
+        }
+    };
+
+    handleInputKeyDown = e => {
+        if (this.state.remaining_characters <= 0 && !allowed_keys.has(e.key)) {
+            e.preventDefault();
+        }
+    };
+
+    handleInputPaste = e => {
+        if (this.state.remaining_characters <= 0) {
+            e.preventDefault();
         }
     };
 
@@ -350,6 +371,8 @@ class DeactivateAccountReason extends React.Component {
                                         name='otherTradingPlatforms'
                                         value={values.otherTradingPlatforms}
                                         onChange={handleChange}
+                                        onKeyDown={this.handleInputKeyDown}
+                                        onPaste={this.handleInputPaste}
                                     />
                                 )}
                             </Field>
@@ -365,6 +388,8 @@ class DeactivateAccountReason extends React.Component {
                                         name='doToImprove'
                                         value={values.doToImprove}
                                         onChange={handleChange}
+                                        onKeyDown={this.handleInputKeyDown}
+                                        onPaste={this.handleInputPaste}
                                     />
                                 )}
                             </Field>
@@ -380,9 +405,6 @@ class DeactivateAccountReason extends React.Component {
                                             remaining_characters: this.state.remaining_characters,
                                         })}
                                     </Text>
-                                    <Text size='xxs' as='p' color='less-prominent'>
-                                        {localize("Must be numbers, letters, and special characters . , ' -")}
-                                    </Text>
                                     {Object.keys(errors).length > 0 &&
                                         Object.entries(errors).map(([key, value]) => (
                                             <Text
@@ -396,11 +418,6 @@ class DeactivateAccountReason extends React.Component {
                                                 {value}
                                             </Text>
                                         ))}
-                                    {errors.characters_limits && (
-                                        <Text as='p' weight='bold' size='xs' color='loss-danger'>
-                                            {localize("Must be numbers, letters, and special characters . , ' -")}
-                                        </Text>
-                                    )}
                                 </div>
                                 <FormSubmitButton
                                     is_disabled={

@@ -433,6 +433,10 @@
     margin-bottom: var(--mt5-real-acc-margin-bottom);
     &__carousel {
         margin-bottom: -4rem;
+
+        &--logged {
+            margin-bottom: calc(-4rem - 2.4rem);
+        }
     }
     &__add-trading-server {
         width: 100%;

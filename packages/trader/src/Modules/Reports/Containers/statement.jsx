@@ -43,9 +43,15 @@ const getRowAction = row_obj => {
                       ),
                   };
     } else if (row_obj.action_type === 'withdrawal') {
-        action = {
-            message: `${row_obj.withdrawal_details} ${row_obj.longcode}`,
-        };
+        if (row_obj.withdrawal_details && row_obj.longcode) {
+            action = {
+                message: `${row_obj.withdrawal_details} ${row_obj.longcode}`,
+            };
+        } else {
+            action = {
+                message: row_obj.desc,
+            };
+        }
     } else if (row_obj.desc && ['deposit', 'transfer', 'adjustment', 'hold', 'release'].includes(row_obj.action_type)) {
         action = {
             message: row_obj.desc,

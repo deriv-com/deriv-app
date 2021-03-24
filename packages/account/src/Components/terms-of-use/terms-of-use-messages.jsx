@@ -48,7 +48,7 @@ export const IOMDescription = () => (
         <p>
             <Localize
                 i18n_default_text={
-                    'Your account will be opened with Deriv (MX) Ltd, regulated by the UK Gaming Commission (UKGC) and subject to the jurisdiction and laws of Isle of Man.'
+                    'Your account will be opened with Deriv (MX) Ltd, regulated by the UK Gaming Commission (UKGC) and subject to the jurisdiction and laws of the Isle of Man.'
                 }
             />
         </p>

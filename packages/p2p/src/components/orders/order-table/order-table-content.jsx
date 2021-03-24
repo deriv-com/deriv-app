@@ -68,7 +68,7 @@ const OrderTableContent = () => {
     }
 
     return (
-        <Empty has_tabs icon='IcNoOrder' title={localize('You have no orders')}>
+        <Empty has_tabs icon='IcNoOrder' title={localize('You have no orders.')}>
             {general_store.is_active_tab && (
                 <Button primary large className='p2p-empty__button' onClick={() => general_store.handleTabClick(0)}>
                     <Localize i18n_default_text='Buy/Sell' />

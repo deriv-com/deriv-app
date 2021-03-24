@@ -1,6 +1,7 @@
 import React from 'react';
 import { Field as FormField, Formik, Form } from 'formik';
-import { Input, Icon } from '@deriv/components';
+import debounce from 'lodash.debounce';
+import { Icon, Input } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -9,6 +10,10 @@ import 'Components/buy-sell/search-box.scss';
 
 const SearchBox = () => {
     const { buy_sell_store } = useStores();
+
+    const returnedFunction = debounce(() => {
+        buy_sell_store.loadMoreItems({ startIndex: 0 });
+    }, 1000);
 
     const onSearch = ({ search }) => {
         buy_sell_store.setSearchTerm(search.trim());
@@ -19,7 +24,7 @@ const SearchBox = () => {
         }
 
         buy_sell_store.setIsLoading(true);
-        buy_sell_store.loadMoreItems({ startIndex: 0 });
+        returnedFunction();
     };
 
     const onSearchClear = setFieldValue => {

@@ -22,6 +22,7 @@ const Button = ({
     is_submit_success,
     is_button_toggle,
     is_circle,
+    is_circular,
     is_plus,
     large,
     medium,
@@ -59,6 +60,7 @@ const Button = ({
             'dc-btn__toggle': is_button_toggle,
             'dc-btn--plus': is_plus,
             'dc-btn--circle': is_circle,
+            'dc-btn--circular': is_circular,
         },
         className
     );
@@ -83,7 +85,7 @@ const Button = ({
             {is_loading && <ButtonLoading />}
             {is_submit_success && <Icon icon='IcCheckmark' color='active' size={24} />}
             {is_plus && <Icon icon='IcAddBold' color='black' size={18} />}
-            {!text && children && (
+            {!text && !is_loading && children && (
                 <Text size='xs' weight='bold' align='center' className={classNames('dc-btn__text', classNameSpan)}>
                     {children}
                 </Text>

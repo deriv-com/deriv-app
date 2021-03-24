@@ -1,9 +1,34 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import Text from '../text';
+import Icon from '../icon/icon.jsx';
 
 const DataListRow = ({ action_desc, destination_link, row_gap, row_key, rowRenderer, ...other_props }) => {
     const [show_desc, setShowDesc] = React.useState(false);
+    const [is_copied, setIsCopied] = React.useState(false);
+
+    const onCopySuccess = () => {
+        setIsCopied(true);
+        setTimeout(() => {
+            setIsCopied(false);
+        }, 300);
+    };
+
+    const onClickCopy = event => {
+        event.stopPropagation();
+        navigator.clipboard.writeText(action_desc.message.split(/,| /)[1]).then(() => {
+            onCopySuccess();
+        });
+    };
+
+    const copy_to_clipboard = (
+        <Icon
+            icon={is_copied ? 'IcCheckmarkCircle' : 'IcCopy'}
+            className='table__row--icon'
+            onClick={event => onClickCopy(event)}
+        />
+    );
 
     return (
         <div className='data-list__row--wrapper' style={{ paddingBottom: `${row_gap || 0}px` }}>
@@ -29,7 +54,10 @@ const DataListRow = ({ action_desc, destination_link, row_gap, row_key, rowRende
                                     {action_desc.component ? (
                                         <div>{action_desc.component}</div>
                                     ) : (
-                                        <p className='statement__row--detail-text'>{action_desc.message}</p>
+                                        <Text as='p' size='xs' className='statement__row--detail-text' align='center'>
+                                            {action_desc.message}
+                                            {action_desc.message.includes(': ') ? copy_to_clipboard : null}
+                                        </Text>
                                     )}
                                 </div>
                             ) : (

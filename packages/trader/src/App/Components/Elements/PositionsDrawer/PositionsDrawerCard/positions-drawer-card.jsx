@@ -71,6 +71,9 @@ const PositionsDrawerCard = ({
             current_focus={current_focus}
             getCardLabels={getCardLabels}
             getContractById={getContractById}
+            onMouseLeave={() => {
+                if (typeof onMouseLeave === 'function') onMouseLeave();
+            }}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
             removeToast={removeToast}

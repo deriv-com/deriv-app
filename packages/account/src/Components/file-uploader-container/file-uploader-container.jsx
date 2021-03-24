@@ -4,7 +4,7 @@ import { Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import FileUploader from './file-uploader.jsx';
 
-const FileUploaderContainer = ({ is_description_disabled, getSocket, onFileDrop, onRef }) => {
+const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFileDrop, onRef }) => {
     const ref = React.useRef();
 
     const getSocketFunc = getSocket ?? WS.getSocket;
@@ -17,7 +17,7 @@ const FileUploaderContainer = ({ is_description_disabled, getSocket, onFileDrop,
     }, [onRef, ref]);
     return (
         <div className='account-poa__upload-section'>
-            {!is_description_disabled && (
+            {is_description_enabled && (
                 <ul className='account-poa__upload-list'>
                     <li className='account-poa__upload-box'>
                         <Icon icon='IcUtility' className='account-poa__upload-icon' size={20} />
@@ -62,10 +62,6 @@ const FileUploaderContainer = ({ is_description_disabled, getSocket, onFileDrop,
             </div>
         </div>
     );
-};
-
-FileUploaderContainer.defaultProps = {
-    is_description_disabled: false,
 };
 
 export default FileUploaderContainer;

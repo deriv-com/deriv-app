@@ -421,7 +421,6 @@ $MIN_HEIGHT_FLOATING: calc(
     .account-management__text-container {
         margin-top: 10px;
         max-width: 672px;
-        margin-bottom: 2em;
     }
     .account-management-flex-wrapper {
         display: flex;
@@ -429,6 +428,9 @@ $MIN_HEIGHT_FLOATING: calc(
         &--space-between {
             justify-content: space-between;
         }
+    }
+    .account-management__button.dc-btn {
+        margin-top: 0.8rem;
     }
     .account-management-leave-confirm,
     .account-management-submit-success {
@@ -1457,6 +1459,13 @@ $MIN_HEIGHT_FLOATING: calc(
 /** @define onfido-container; weak */
 .onfido-container {
     margin-top: 24px;
+
+    &__message {
+        padding: 1rem;
+        margin: 0 auto 1.4rem;
+        width: 94vw; // same as onfido
+        max-width: 53rem;
+    }
     @include mobile {
         margin-top: 0;
 

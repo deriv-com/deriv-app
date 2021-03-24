@@ -14,9 +14,9 @@ const openStatement = (history, resetPaymentAgentTransfer) => {
 const PaymentAgentTransferReceipt = ({ currency, history, loginid, receipt, resetPaymentAgentTransfer }) => (
     <div className='cashier__wrapper payment-agent-transfer__wrapper'>
         <div className='cashier__success'>
-            <h2 className='cashier__header'>
+            <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header'>
                 <Localize i18n_default_text='Your funds have been transferred' />
-            </h2>
+            </Text>
             <div className='cashier__transferred-amount cashier__text--bold'>
                 {formatMoney(currency, receipt.amount_transferred, true)} {getCurrencyDisplayCode(currency)}
             </div>

@@ -10,6 +10,7 @@ export default class ContractReplayStore extends BaseStore {
     @observable chart_state = '';
     @observable contract_store = { contract_info: {} };
     // --- Observable properties ---
+    @observable is_market_closed = false;
     @observable is_sell_requested = false;
     @observable has_error = false;
     @observable error_message = '';
@@ -167,8 +168,9 @@ export default class ContractReplayStore extends BaseStore {
     }
 
     @action.bound
-    chartStateChange(state) {
+    chartStateChange(state, option) {
         this.chart_state = state;
+        const market_close_prop = 'isClosed';
 
         // SmartChart has a weird interaction for getting scale 1:1,
         // the process of loading an expired contract should follow this,
@@ -197,6 +199,11 @@ export default class ContractReplayStore extends BaseStore {
                     }),
                     20
                 );
+                break;
+            case 'MARKET_STATE_CHANGE':
+                if (option && market_close_prop in option) {
+                    this.is_market_closed = option[market_close_prop];
+                }
                 break;
             default:
         }

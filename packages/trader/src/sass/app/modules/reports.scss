@@ -98,6 +98,7 @@ $side-padding: 1.2em;
         /* postcss-bem-linter: ignore */
         &-text {
             padding: 1.12em;
+            word-break: break-all;
         }
     }
     .dc-vertical-tab__content--floating {

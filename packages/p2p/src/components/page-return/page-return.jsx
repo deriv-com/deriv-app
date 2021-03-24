@@ -1,11 +1,12 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import PropTypes from 'prop-types';
 import './page-return.scss';
 
-const PageReturn = ({ onClick, page_title }) => {
+const PageReturn = ({ className, onClick, page_title }) => {
     return (
-        <div className='page-return'>
+        <div className={classNames('page-return', className)}>
             <div onClick={onClick} className='page-return__button'>
                 <Icon icon='IcArrowLeftBold' size={16} />
             </div>

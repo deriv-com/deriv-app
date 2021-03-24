@@ -11,6 +11,7 @@ const SortDropdown = () => {
     const [selected_value, setSelectedValue] = React.useState('rate');
 
     const handleChange = e => {
+        buy_sell_store.setIsLoading(true);
         setSelectedValue(e.target.value);
         buy_sell_store.setItems([]);
         buy_sell_store.setSortBy(e.target.value);
@@ -27,6 +28,7 @@ const SortDropdown = () => {
                 { text: localize('Completion rate'), value: 'completion' },
             ]}
             onChange={handleChange}
+            placeholder={localize('Sort by')}
             value={selected_value}
         />
     );

@@ -13,9 +13,9 @@ export default class LoadModalStore {
         );
         reaction(
             () => this.is_load_modal_open,
-            is_load_modal_open => {
+            async is_load_modal_open => {
                 if (is_load_modal_open) {
-                    this.setRecentStrategies(getSavedWorkspaces() || []);
+                    this.setRecentStrategies((await getSavedWorkspaces()) || []);
                 } else {
                     this.onLoadModalClose();
                 }
@@ -76,11 +76,17 @@ export default class LoadModalStore {
         }
 
         files = Array.from(files);
+
         if (!is_body) {
-            this.setLoadedLocalFile(files[0]);
+            if (files[0].name.includes('xml')) {
+                this.setLoadedLocalFile(files[0]);
+            } else {
+                return false;
+            }
         }
         this.readFile(!is_body, event, files[0]);
         event.target.value = '';
+        return true;
     }
 
     @action.bound

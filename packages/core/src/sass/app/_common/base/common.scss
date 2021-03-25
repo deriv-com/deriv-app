@@ -136,6 +136,9 @@ html,
     &--right {
         float: right;
     }
+    &--prominent {
+        color: var(--text-prominent);
+    }
 }
 
 /** @define icon */

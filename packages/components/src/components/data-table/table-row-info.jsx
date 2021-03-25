@@ -7,12 +7,15 @@ import Icon from '../icon/icon.jsx';
 
 const TableRowInfo = ({ replace, is_footer, cells, className }) => {
     const [show_details, setShowDetails] = React.useState(false);
+    const [has_copy_icon, setHasCopyIcon] = React.useState(false);
     const [is_copied, setIsCopied] = React.useState(false);
-    const cryptocurrency = 'BTC' || 'ETH' || 'LTC' || 'USDT';
 
     const toggleDetails = () => {
         if (replace) {
             setShowDetails(!show_details);
+            if (/^[0-9a-zA-Z]+.{25,34}/gm.test(replace.message.split(/,| /)[1])) {
+                setHasCopyIcon(true);
+            }
         }
     };
 
@@ -49,7 +52,7 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
                         {replace?.component ?? (
                             <Text as='p' size='xs' className='statement__row--detail-text' align='center'>
                                 {replace.message}
-                                {replace.message.includes(cryptocurrency) ? copy_to_clipboard : null}
+                                {has_copy_icon ? copy_to_clipboard : null}
                             </Text>
                         )}
                     </div>

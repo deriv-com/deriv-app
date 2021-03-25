@@ -36,8 +36,7 @@ const Tab = ({
         'dc-tabs__item--header-fit-content': header_fit_content,
         'dc-tabs__item--is-hidden': is_label_hidden,
         [`dc-tabs__item--${className}`]: className,
-        'dc-tabs__active:after': is_scrollable,
-        'dc-tabs__active--is-p2p': is_scrollable,
+        'dc-tabs--is-scrollable': is_scrollable && is_active,
     });
     const title_color = is_active ? active_icon_color : icon_color;
     return (

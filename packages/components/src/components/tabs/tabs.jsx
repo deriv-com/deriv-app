@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import Tab from './tab.jsx';
 import { useConstructor } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars';
-import ConditionalWrapper from '../conditional-wrapper';
 
 const Tabs = ({
     active_icon_color,
@@ -134,16 +133,11 @@ const Tabs = ({
                     })}
                     ref={tabs_wrapper_ref}
                 >
-                    <ConditionalWrapper
-                        condition={is_scrollable}
-                        wrap={content => (
-                            <ThemedScrollbars
-                                className='dc-themed-scrollbars--p2p-cashier-wrapper'
-                                is_only_horizontal={true}
-                            >
-                                {content}
-                            </ThemedScrollbars>
-                        )}
+                    <ThemedScrollbars
+                        className='dc-themed-scrollbars-wrapper'
+                        is_only_horizontal={true}
+                        height={68}
+                        is_bypassed={!is_scrollable}
                     >
                         {React.Children.map(children, (child, index) => {
                             if (!child) return null;
@@ -161,7 +155,7 @@ const Tabs = ({
                                     is_label_hidden={children.length === 1 && single_tab_has_no_label}
                                     label={label}
                                     id={id}
-                                    is_scrollable={true}
+                                    is_scrollable={is_scrollable}
                                     top={top}
                                     bottom={bottom}
                                     header_fit_content={header_fit_content}
@@ -184,7 +178,7 @@ const Tabs = ({
                                 style={active_line_style}
                             />
                         )}
-                    </ConditionalWrapper>
+                    </ThemedScrollbars>
                 </ul>
             </div>
             <div

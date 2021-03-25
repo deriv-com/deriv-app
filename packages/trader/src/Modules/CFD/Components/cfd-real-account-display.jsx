@@ -273,7 +273,9 @@ const CFDRealAccountDisplay = ({
                         nav_position='middle'
                         show_bullet={false}
                         item_per_window={3}
-                        className='cfd-real-accounts-display__carousel'
+                        className={'cfd-real-accounts-display__carousel'}
+                        is_mt5={true}
+                        is_logged_in={is_logged_in}
                     />
                 )}
             </DesktopWrapper>

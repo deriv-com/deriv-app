@@ -17,7 +17,7 @@ const IntervalField = ({ values, touched, errors, handleChange, handleBlur }) =>
                     {...field}
                     data-lpignore='true'
                     type='text'
-                    label={localize('Time interval')}
+                    label={localize('…. minutes from now')}
                     value={values.interval}
                     onChange={handleChange}
                     onBlur={handleBlur}

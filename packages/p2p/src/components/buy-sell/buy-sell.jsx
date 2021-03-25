@@ -19,6 +19,16 @@ const BuySell = () => {
     const [is_toggle_visible, setIsToggleVisible] = React.useState(true);
     const previous_scroll_top = React.useRef(0);
 
+    React.useEffect(() => {
+        const disposeIsListedReaction = buy_sell_store.registerIsListedReaction();
+        const disposeAdvertIntervalReaction = buy_sell_store.registerAdvertIntervalReaction();
+
+        return () => {
+            disposeIsListedReaction();
+            disposeAdvertIntervalReaction();
+        };
+    }, []);
+
     const onScroll = event => {
         if (isMounted() && event.target.scrollTop !== previous_scroll_top.current) {
             const is_scrolling_down = event.target.scrollTop > previous_scroll_top.current;

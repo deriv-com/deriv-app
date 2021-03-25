@@ -4,6 +4,7 @@ const EVERY_HOUR = 3600000; // 1000 * 60 * 60
 const AUTO_REFRESH_THRESHOLD = 10000; // 10 Seconds
 
 let interval_id;
+let should_refresh_on_register = false;
 
 function refreshOnUpdate() {
     return swRegistrationObject => {
@@ -42,14 +43,12 @@ export default function register() {
                                     // the fresh content will have been added to the cache.
                                     // It's the perfect time to display a "New content is
                                     // available; please refresh." message in your web app.
-                                    console.log('New content is available; please refresh.'); // eslint-disable-line no-console
                                     const new_version_received = new Event('UpdateAvailable');
                                     document.dispatchEvent(new_version_received);
                                 } else {
                                     // At this point, everything has been precached.
                                     // It's the perfect time to display a
                                     // "Content is cached for offline use." message.
-                                    console.log('Content is cached for offline use.'); // eslint-disable-line no-console
                                 }
                             }
                         };
@@ -63,8 +62,8 @@ export default function register() {
             // This fires when the service worker controlling this page
             // changes, eg a new worker has skipped waiting and become
             // the new active worker.
-            if (AUTO_REFRESH_THRESHOLD > performance.now()) {
-                window.location.reload();
+            if (AUTO_REFRESH_THRESHOLD > performance.now() && should_refresh_on_register) {
+                should_refresh_on_register = false;
             }
         });
     }

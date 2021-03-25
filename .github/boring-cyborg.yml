@@ -7,6 +7,8 @@ labelPRBasedOnFilePath:
     - packages/components/**/*
   Core:
     - packages/core/**/*
+  Dashboard:
+    - packages/dashboard/**/*
   P2P:
     - packages/p2p/**/*
   Shared:

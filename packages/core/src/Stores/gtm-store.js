@@ -53,6 +53,7 @@ export default class GTMStore extends BaseStore {
                 visitorId: this.visitorId,
                 currency: this.root_store.client.currency,
                 userId: this.root_store.client.user_id,
+                email: this.root_store.client.email,
             }),
             loggedIn: this.root_store.client.is_logged_in,
             theme: this.root_store.ui.is_dark_mode_on ? 'dark' : 'light',
@@ -141,7 +142,7 @@ export default class GTMStore extends BaseStore {
 
         const affiliate_token = Cookies.getJSON('affiliate_tracking');
         if (affiliate_token) {
-            this.pushDataLayer({ affiliate_token: affiliate_token.t });
+            this.pushDataLayer({ affiliate_token });
         }
 
         // Get current time (moment, set by server), else fallback to client time

@@ -3,17 +3,11 @@
     padding: 0 16px;
 
     &__title {
-        color: var(--text-prominent);
-        font-size: 1.6rem;
-        font-weight: bold;
         margin-bottom: 0.8rem;
         line-height: 1.5;
     }
     &__subtitle {
-        font-size: 1.4rem;
         margin-bottom: 1.6rem;
-        color: var(--text-general);
-        line-height: 20px;
     }
     &__icon {
         margin-top: 5.6rem;

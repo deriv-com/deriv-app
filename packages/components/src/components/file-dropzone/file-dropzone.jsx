@@ -2,6 +2,8 @@ import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import Dropzone from 'react-dropzone';
+import { truncateFileName } from '@deriv/shared';
+import Text from '../text';
 
 const FadeInMessage = ({ is_visible, children, key, timeout }) => (
     <CSSTransition
@@ -69,15 +71,26 @@ const FileDropzone = ({ className, ...props }) => (
                             <div className='dc-file-dropzone__message'>{props.hover_message}</div>
                         </FadeInMessage>
                         {/* Handle cases for displaying multiple files and single filenames */}
+
                         {props.multiple && props.value.length > 0 && !props.validation_error_message
                             ? props.value.map((file, idx) => (
-                                  <span key={idx} className='dc-file-dropzone__filename'>
-                                      {file.name}
-                                  </span>
+                                  <Text
+                                      size='xxs'
+                                      weight='bold'
+                                      align='center'
+                                      key={idx}
+                                      className='dc-file-dropzone__filename'
+                                  >
+                                      {props.filename_limit ? truncateFileName(file, props.filename_limit) : file.name}
+                                  </Text>
                               ))
                             : props.value[0] &&
                               !isDragActive && (
-                                  <span className='dc-file-dropzone__filename'>{props.value[0].name}</span>
+                                  <Text size='xxs' weight='bold' align='center' className='dc-file-dropzone__filename'>
+                                      {props.filename_limit
+                                          ? truncateFileName(props.value[0], props.filename_limit)
+                                          : props.value[0].name}
+                                  </Text>
                               )}
                         <FadeInMessage
                             // message shown if there are errors with the dragged file

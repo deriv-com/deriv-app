@@ -7,6 +7,7 @@
     top: calc(#{$MOBILE_HEADER_HEIGHT} + #{$MOBILE_WRAPPER_HEADER_HEIGHT});
     background: var(--general-main-1);
     max-height: 100%;
+    overflow-y: scroll;
 
     &--flex {
         display: flex;
@@ -14,12 +15,21 @@
         flex: 1;
     }
 
+    &--popup {
+        height: calc(100% - #{$MOBILE_HEADER_HEIGHT} - 1px);
+        top: calc(#{$MOBILE_HEADER_HEIGHT} - 1px);
+    }
+
     &__header {
         align-items: center;
-        border-bottom: 2px solid var(--general-section-2);
         display: flex;
         flex-direction: row;
         padding: 1.6rem;
+        flex: 0;
+
+        &--border-bottom {
+            border-bottom: 2px solid var(--general-section-2);
+        }
 
         &-return {
             display: flex;
@@ -38,7 +48,9 @@
     }
 
     &__body {
+        display: flex;
         flex: 1;
+        min-height: 0;
         overflow-y: auto;
     }
 

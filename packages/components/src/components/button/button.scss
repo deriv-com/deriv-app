@@ -30,20 +30,41 @@
     }
     &__text,
     &__icon {
-        @include typeface(--paragraph-center-bold-black, unset);
-        color: var(--text-general);
         display: flex;
         pointer-events: none;
     }
     &__icon {
+        @include typeface(--paragraph-center-bold-black, unset);
+        color: var(--text-general);
         padding-right: 0.8rem;
         pointer-events: none;
+
+        &--circle {
+            padding-right: 0;
+        }
     }
     &:not([disabled]):hover {
         text-decoration: none;
     }
     &__rounded {
         border-radius: 24px;
+    }
+    &--plus {
+        width: 2.4rem;
+        height: 2.4rem !important;
+        border: 1px solid var(--border-hover) !important;
+        padding: 0 !important;
+        background: inherit;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    &--circle {
+        height: 3.2rem;
+        width: 3.2rem !important;
+        border-radius: 50%;
+    }
+    &--circular {
+        border-radius: 100px;
     }
     &--primary {
         background: var(--button-primary-default);
@@ -63,6 +84,26 @@
         .dc-btn__text,
         .dc-btn__icon {
             color: var(--text-colored-background);
+        }
+
+        &__light {
+            background: var(--button-primary-light-default);
+
+            &:hover:not([disabled]) {
+                background: var(--button-primary-light-hover);
+            }
+            &:active:not([disabled]) {
+                background: var(--button-primary-light-default);
+            }
+            &:disabled,
+            &[disabled] {
+                opacity: 0.32;
+                cursor: not-allowed !important;
+            }
+            .dc-btn__text,
+            .dc-btn__icon {
+                color: var(--brand-red-coral);
+            }
         }
     }
     &--secondary {
@@ -102,6 +143,23 @@
         &[disabled] {
             opacity: 0.32;
             cursor: not-allowed !important;
+        }
+    }
+    &--alternate {
+        background: var(--button-tertiary-default);
+        border: 2px solid var(--button-primary-default);
+
+        &:hover:not([disabled]) {
+            background: var(--button-primary-default);
+
+            .dc-btn__text {
+                color: var(--text-colored-background);
+            }
+        }
+
+        .dc-btn__text,
+        .dc-btn__icon {
+            color: var(--brand-red-coral);
         }
     }
     /* TODO: confirm this button with designer are we still using this? */

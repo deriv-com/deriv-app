@@ -8,7 +8,7 @@
 /** @define mt5-dashboard; */
 .mt5-dashboard {
     padding: 4.8em 0;
-    max-width: 960px;
+    max-width: fit-content;
     margin: 0 auto;
 
     &--hint {
@@ -26,7 +26,7 @@
     }
     &__info {
         background: var(--fill-disabled);
-        margin-top: 2.4rem;
+        margin-top: 5rem;
         font-size: 1.4rem;
         color: var(--text-general);
         display: grid;
@@ -53,8 +53,6 @@
             padding-right: 0.8rem;
         }
         &-label {
-            color: var(--text-general);
-            font-weight: normal;
             padding-right: 0.4rem;
         }
         @include mobile {
@@ -77,8 +75,8 @@
         margin-bottom: 2.4em;
 
         &--heading {
-            @include typeface(--title-left-bold-black, none);
-            color: var(--text-prominent);
+            @include typeface(--title-center-bold-black, none);
+            color: var(--text-general);
             line-height: 1.5;
         }
     }
@@ -88,11 +86,14 @@
         display: flex;
         justify-content: space-between;
         margin: 2.4em 0;
+        max-width: 960px;
         padding: 1.6rem;
+        width: calc(100% - 2.4rem);
 
         &--heading {
             color: var(--text-prominent);
             line-height: 1.5;
+            margin-right: 1rem;
             @include typeface(--title-left-bold-black, none);
             @include mobile {
                 font-size: 1.2rem;
@@ -104,9 +105,11 @@
         @include mobile {
             flex-direction: column;
             padding: 0.8rem;
+            width: calc(100vw - 3.2rem);
 
             &--heading {
                 margin-bottom: 0.8rem;
+                margin-right: 0;
             }
             &--button {
                 width: 27rem;
@@ -115,44 +118,51 @@
     }
     &__download-center {
         border-top: 2px solid var(--general-section-1);
-        padding-top: 4rem;
-        padding-bottom: 6.8rem;
+        padding-top: 2rem;
+        padding-bottom: 5.8rem;
 
         &-options {
             display: flex;
             justify-content: center;
 
-            &--desktop,
+            &--desktop {
+                display: block;
+                align-items: baseline;
+                flex-flow: column nowrap;
+
+                &-links {
+                    display: flex;
+                    flex-direction: column;
+                }
+                &-row {
+                    display: flex;
+                    align-items: baseline;
+                    justify-content: center;
+                    margin-bottom: 3.1rem;
+
+                    > svg:first-child {
+                        margin-bottom: 0.4rem;
+                        margin-right: 0.8rem;
+                    }
+                    a > svg {
+                        margin-top: 0.8rem;
+                        margin-right: 0.8rem;
+                    }
+                }
+                &-download {
+                    display: grid;
+                    grid-auto-flow: column;
+                    grid-gap: 0.8rem;
+
+                    a {
+                        margin-top: 0.4rem;
+                    }
+                }
+            }
             &--mobile {
                 align-items: center;
                 display: flex;
                 flex-flow: column nowrap;
-            }
-            &--desktop {
-                &-devices {
-                    display: flex;
-                    align-items: baseline;
-                    > svg:first-child {
-                        margin-left: 4.3rem;
-                        margin-right: 0.4rem;
-                    }
-                    > svg:not(:last-child) {
-                        margin-bottom: 1.1rem;
-                    }
-                    a svg {
-                        margin-left: 5.2rem;
-                    }
-                }
-                &-links {
-                    display: flex;
-                }
-                &-link {
-                    &:not(:last-child) {
-                        margin-right: 0.8rem;
-                    }
-                }
-            }
-            &--mobile {
                 margin-left: 4.7rem;
 
                 &-devices {
@@ -171,14 +181,13 @@
             }
         }
         &--heading {
-            @include typeface(--title-left-bold-black, none);
-            color: var(--text-prominent);
+            @include typeface(--title-center-bold-black, none);
+            color: var(--text-general);
             line-height: 1.5;
             margin-left: 2.1rem;
             margin-bottom: 4.2rem;
         }
         &--hint {
-            @include typeface(--xsmall-left-normal-black, none);
             margin-top: 1.6rem;
         }
         @include mobile {
@@ -194,6 +203,10 @@
         &-icon {
             margin-right: 0.8rem;
             margin-top: 0.2rem;
+
+            @include mobile {
+                margin-top: -0.2rem;
+            }
         }
         &-text {
             text-align: left;
@@ -210,17 +223,8 @@
 }
 
 .mt5-attribute-describer {
-    @include typeface(--paragraph-left-bold-black, none);
-    font-size: 14px;
-    font-weight: bold;
-    line-height: 1.43;
-    color: var(--text-general);
-
     .counter {
         color: var(--brand-red-coral);
-        font-size: 1rem;
-        font-weight: bold;
-        line-height: 1.43;
         vertical-align: top;
     }
     @include mobile {
@@ -240,15 +244,12 @@
         grid-template-columns: var(--mt5-compare-accounts-template-columns);
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);
     }
-
     &__table-row-eu {
         grid-template-columns: 1.5fr 2fr 2fr;
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);
     }
-
     &__star {
         color: var(--brand-red-coral);
-        font-weight: bold;
     }
     &__bullet {
         flex: none;
@@ -263,9 +264,7 @@
             height: 0.4rem;
         }
         &--star {
-            font-size: 14px;
             margin-right: 1rem;
-            line-height: 1.43;
         }
         &-wrapper {
             display: flex;
@@ -301,6 +300,9 @@
             border-bottom: none;
             align-items: normal;
             padding: 1rem 0.8rem;
+        }
+        &--scrollbar {
+            display: block; // Safari needs this to work properly!
         }
         @include desktop {
             &__header {
@@ -362,6 +364,15 @@
     }
 }
 
+.mt5-dashboard__accounts-error {
+    background-color: rgba(255, 173, 58, 0.16);
+    margin: 1.2rem 0;
+
+    &-message {
+        padding: 0.8rem 2.4rem;
+    }
+}
+
 // TODO: [mt5-redesign] replace tabs with radiogroup once card component is ready
 //.mt5-dashboard__accounts-display {
 //    div.radio-group__save-type {
@@ -395,13 +406,82 @@
 
 .mt5-real-accounts-display,
 .mt5-demo-accounts-display {
-    display: flex;
+    display: grid;
+    grid-auto-flow: column;
+    grid-gap: 2.4rem;
     justify-content: center;
     margin-top: 2.4em;
-    justify-content: center;
+    height: 100%;
 
     @include mobile {
+        display: flex;
+        gap: 0;
+        overflow-x: hidden;
         flex-direction: column;
+        height: unset;
+    }
+}
+
+.mt5-demo-accounts-display .mt5-account-card__wrapper {
+    @include desktop {
+        height: auto;
+    }
+}
+
+.mt5-real-accounts-display {
+    transition: margin-bottom 0.3s ease-in-out;
+    margin-bottom: var(--mt5-real-acc-margin-bottom);
+    &__carousel {
+        margin-bottom: -4rem;
+
+        &--logged {
+            margin-bottom: calc(-4rem - 2.4rem);
+        }
+    }
+    &__add-trading-server {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        height: 4rem;
+        position: relative;
+        margin-top: -4rem;
+        margin-left: 2rem;
+
+        &-text {
+            margin-left: 1rem;
+        }
+        &-icon {
+            color: var(--status-colored-background);
+            background-color: var(--brand-red-coral);
+            border-radius: 50%;
+            width: 2.4rem;
+            height: 2.4rem;
+            font-size: 1.8rem;
+            display: block;
+            text-align: center;
+            padding: 0.2rem;
+        }
+        &-exit,
+        &-enter-done {
+            transition: all 0.3s ease-in-out;
+            opacity: 1;
+        }
+        &-enter,
+        &-exit-done {
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+        }
+        &-wrapper {
+            @include mobile {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-top: 2rem;
+            }
+        }
     }
 }
 
@@ -410,22 +490,101 @@
     border-radius: 4px;
     display: flex;
     flex-flow: column nowrap;
-    min-height: 35.8rem;
+    min-height: 37rem;
     width: 30.4em;
+    position: relative;
+    @include desktop {
+        height: 100%;
+    }
+
+    &__wrapper {
+        display: grid;
+        grid-template-rows: 1fr 4rem;
+        height: 100%;
+        justify-content: center;
+
+        @include mobile {
+            grid-template-rows: 1fr;
+            margin-bottom: 2.4rem;
+            height: fit-content;
+        }
+        @include desktop {
+            height: 100%;
+        }
+
+        &:not(:last-child) {
+            margin-right: 2.4rem;
+        }
+    }
 
     &__logged-out {
         min-height: 29rem;
     }
 
-    &:not(:last-child) {
-        margin-right: 2.4rem;
+    &__add-server {
+        font-size: 1.4rem;
+        cursor: pointer;
+        display: grid;
+        grid-auto-flow: column;
+        grid-gap: 0.4rem;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 4rem;
+        color: var(--text-prominent);
+
+        @include mobile {
+            height: 4rem;
+            align-content: start;
+        }
+
+        &--disabled {
+            cursor: not-allowed;
+            color: var(--text-disabled);
+
+            .mt5-account-card__add-server--icon {
+                background-color: var(--border-disabled);
+                color: var(--text-disabled);
+            }
+        }
+        &-exit,
+        &-enter-done {
+            transition: all 0.3s ease-in-out;
+            opacity: 1;
+        }
+        &-enter,
+        &-exit-done {
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+        }
+        &--icon {
+            color: var(--status-colored-background);
+            background-color: var(--brand-red-coral);
+            border-radius: 100%;
+            width: 2.4rem;
+            height: 2.4rem;
+            font-size: 1.8rem;
+            display: block;
+            text-align: center;
+            padding: 0.2rem;
+        }
     }
+
+    &__server {
+        font-size: 1.4rem;
+        text-align: left;
+        width: 27.2rem;
+        &--value {
+            font-weight: bold;
+        }
+    }
+
     &:hover {
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
     }
     &--heading {
         @include typeface(--title-left-bold-black, none);
-        color: var(--text-prominent);
+        color: var(--text-general);
         line-height: 1.5;
     }
     &--paragraph {
@@ -440,15 +599,15 @@
         color: var(--text-profit-success);
     }
     &__banner {
-        position: relative;
+        position: absolute;
         transform: rotate(45deg);
         border-bottom: 2.3rem solid var(--brand-red-coral);
         border-left: 2.3rem solid transparent;
         border-right: 2.3rem solid transparent;
         height: 0;
-        width: 10.6rem;
-        left: 22rem;
-        top: 1.7rem;
+        width: 13.7rem;
+        left: 19.4rem;
+        top: 2.8rem;
         color: var(--text-colored-background);
         font-weight: bold;
         line-height: 24px;
@@ -458,8 +617,12 @@
         &--demo {
             border-bottom-color: var(--brand-secondary);
         }
+        &--server {
+            // TODO: Add a CSS variable
+            border-bottom-color: $color-blue-2;
+        }
         @include mobile {
-            left: calc(100vw - 11.6rem);
+            left: calc(100vw - 14.2rem);
         }
     }
     &__type {
@@ -475,11 +638,13 @@
                 margin-bottom: 0.8rem;
             }
             .mt5-account-card--paragraph {
-                width: 18.8rem;
+                width: 18.3rem;
             }
         }
         &--has-banner {
-            margin-top: -23px;
+            .mt5-account-card--paragraph {
+                width: 15rem;
+            }
         }
     }
     &__display {
@@ -513,7 +678,7 @@
         margin-top: auto;
     }
     &__specs {
-        margin-top: 1.6rem;
+        margin: 1.6rem 0;
 
         &-table {
             width: 100%;
@@ -525,21 +690,118 @@
             &-data {
                 .mt5-account-card--paragraph {
                     @include typeface(--paragraph-left-bold-black, none);
-                    color: var(--text-prominent);
                     line-height: 1.45;
                 }
             }
         }
     }
-
-    &__commission {
-        text-align: center;
-        margin-top: 1.6rem;
-        margin-bottom: 1.6rem;
-
-        &.mt5-account-card--paragraph {
-            line-height: 1.4;
+    &__specification {
+        position: relative;
+        width: 100%;
+        padding: 0 1.5rem;
+        &-icon {
+            vertical-align: middle;
+            &--collapsed {
+                transform: rotate(180deg);
+            }
         }
+        @include mobile {
+            padding: 0 1rem;
+        }
+        &-title {
+            overflow: hidden;
+            text-align: center;
+            width: 100%;
+            cursor: pointer;
+            &:before {
+                background-color: var(--text-less-prominent);
+                content: '';
+                display: inline-block;
+                height: 1px;
+                position: relative;
+                vertical-align: middle;
+                width: 50%;
+                right: 0.5em;
+                margin-left: -50%;
+            }
+            &:after {
+                background-color: var(--text-less-prominent);
+                content: '';
+                display: inline-block;
+                height: 1px;
+                position: relative;
+                vertical-align: middle;
+                width: 50%;
+                left: 0.5em;
+                margin-right: -50%;
+            }
+        }
+        &-content {
+            position: absolute;
+            display: grid;
+            align-content: start;
+            justify-items: center;
+            height: 0;
+            overflow: hidden;
+            width: calc(100% - 3rem);
+            transition: height 0.2s ease-in;
+            z-index: 2;
+            opacity: 0.95;
+            background-color: var(--general-main-1);
+            @include mobile {
+                width: calc(100% - 2rem);
+            }
+        }
+        &-description {
+            @include typeface(--paragraph-left-normal-prominent);
+            padding: 1.6rem 0;
+        }
+        &-table {
+            width: fit-content;
+        }
+    }
+    &__login-specs {
+        margin: 1.6rem 0;
+        width: 100%;
+        padding: 0 1.8rem;
+
+        &-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: separate;
+            border-spacing: 0 0.8rem;
+
+            &-attribute {
+                width: 30%;
+                .mt5-account-card--paragraph {
+                    color: var(--text-general);
+                    margin-right: 2.4rem;
+                }
+            }
+            &-data {
+                width: 70%;
+                .mt5-account-card--paragraph {
+                    @include typeface(--paragraph-left-normal-black, none);
+                    line-height: 1.45;
+                }
+            }
+        }
+    }
+    &__spec-box {
+        display: grid;
+        grid-template-columns: 1fr 2.4rem;
+        border: 1px solid var(--border-normal);
+        border-radius: $BORDER_RADIUS;
+    }
+    &__spec-text {
+        padding: 0.4rem;
+        font-family: Courier, monospace;
+    }
+    &__spec-copy {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        border-left: 1px solid var(--border-normal);
     }
     &__account-selection {
         align-items: center;
@@ -580,7 +842,7 @@
         display: flex;
         padding: 0.8rem;
         justify-content: center;
-        margin: 2.4rem 0 1.6rem;
+        margin: 1rem 0 1.6rem;
         width: 272px;
 
         strong {
@@ -605,7 +867,6 @@
         }
     }
     &__action-wrapper {
-        height: 4rem;
         margin: 0 auto 1.3rem;
         padding-top: 1rem;
         width: 75%;
@@ -621,6 +882,7 @@
     }
     @include mobile {
         width: calc(100vw - 3.2rem);
+        height: fit-content;
 
         &:not(:last-child) {
             margin-bottom: 2.4rem;
@@ -640,13 +902,9 @@
     }
 
     &--paragraph {
-        @include typeface(--paragraph-left-normal-black, none);
-        color: var(--text-general);
         margin-bottom: 3.2rem;
     }
     &--error-message {
-        @include typeface(--paragraph-left-normal-black, none);
-        color: var(--text-loss-danger);
         margin-bottom: 1em;
     }
     &__main-form,
@@ -681,9 +939,6 @@
     }
     &__new-password {
         margin-bottom: 8.6rem;
-        .dc-input__hint {
-            text-align: left;
-        }
     }
     &__actions {
         align-items: center;
@@ -707,9 +962,6 @@
         &-header {
             @include typeface(--paragraph-center-bold-black);
             margin: 1.6rem 0 0.8rem;
-        }
-        &-paragraph {
-            @include typeface(--small-center-normal-black);
         }
         &-btn {
             margin-top: 3.2rem;
@@ -766,7 +1018,6 @@
 
         & .details-form__description {
             width: 100%;
-            text-align: center;
         }
     }
     @include mobile {
@@ -842,8 +1093,6 @@
         color: var(--text-prominent);
     }
     &__description {
-        @include typeface(--paragraph-center-normal-black);
-        color: var(--text-prominent);
         margin: 0.6rem 0 0;
     }
     &__btn-area {
@@ -862,10 +1111,10 @@
         min-width: initial;
         &_mt5-password-modal {
             &__description {
-                @include typeface(--small-left-normal-black);
+                @include typeface(--xsmall-left-normal-black);
                 line-height: 1.5;
                 max-width: 300px;
-                margin: -2.7rem 0 0.4rem;
+                margin: -2.7rem 0 2.4rem;
                 color: var(--text-less-prominent);
             }
         }

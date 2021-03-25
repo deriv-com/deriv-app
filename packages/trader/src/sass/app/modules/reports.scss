@@ -16,6 +16,9 @@ $side-padding: 1.2em;
             padding: 0 1.6rem 1.6rem;
         }
 
+        flex-direction: column-reverse;
+        padding-bottom: 0;
+
         &-filter {
             position: relative;
             display: flex;
@@ -23,6 +26,11 @@ $side-padding: 1.2em;
             @include desktop {
                 max-width: 36rem;
                 margin-left: auto;
+            }
+            &--statement {
+                @include desktop {
+                    max-width: 50rem;
+                }
             }
         }
 
@@ -35,7 +43,7 @@ $side-padding: 1.2em;
             padding-bottom: 0;
 
             &-filter {
-                padding-bottom: 1.6rem;
+                padding: 0 0 1.6rem;
             }
             #dt_calendar_input {
                 text-align: left;
@@ -90,6 +98,7 @@ $side-padding: 1.2em;
         /* postcss-bem-linter: ignore */
         &-text {
             padding: 1.12em;
+            word-break: break-all;
         }
     }
     .dc-vertical-tab__content--floating {
@@ -234,13 +243,14 @@ $side-padding: 1.2em;
         justify-content: flex-end;
     }
     &__account-statistics {
+        background-color: var(--general-section-1);
         @include desktop {
-            width: 52rem;
+            margin: 1.6rem 0;
+            width: 100%;
         }
         @include mobile {
             margin: 0.8rem 0 1.6rem;
             order: 1;
-            height: 4rem;
         }
         height: 4.8rem;
         display: flex;
@@ -249,9 +259,7 @@ $side-padding: 1.2em;
 
         &-item {
             flex: 1;
-            border-right: 1px solid var(--border-normal);
             display: flex;
-            max-width: 19rem;
 
             &:last-child {
                 border-right: unset;
@@ -276,31 +284,33 @@ $side-padding: 1.2em;
         &--is-rectangle {
             height: 100%;
             display: flex;
-            flex-direction: column;
             justify-content: center;
+            margin: auto;
 
             @include desktop {
                 padding: 0.4rem 1.6rem;
             }
+            @include mobile {
+                flex-direction: column;
+            }
         }
         &-title {
-            text-align: left;
-            color: var(--text-less-prominent);
-            font-size: 1.4rem;
-            margin-bottom: 9px;
+            margin: auto;
 
             @include mobile {
                 font-size: 1rem;
+                margin-bottom: 0;
             }
         }
         &-amount {
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.6rem;
-            color: var(--text-prominent);
+            margin: auto;
 
+            @include desktop {
+                margin-left: 1rem;
+            }
             @include mobile {
                 font-size: 1.4rem;
+                margin-top: 1rem;
             }
         }
     }
@@ -928,7 +938,6 @@ $side-padding: 1.2em;
 /** @define empty-trade-history; weak*/
 .empty-trade-history {
     width: 100%;
-    height: 100%;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
@@ -942,10 +951,7 @@ $side-padding: 1.2em;
         @include colorIcon(var(--text-disabled));
     }
     &__text {
-        font-size: em(14px);
-        text-align: center;
         line-height: 20px;
-        color: var(--text-disabled);
     }
     .dc-btn {
         width: 100%;

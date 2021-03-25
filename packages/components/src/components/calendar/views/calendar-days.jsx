@@ -15,6 +15,7 @@ import {
 import { CommonPropTypes } from './types';
 import Popover from '../../popover';
 import { getDaysOfTheWeek, week_headers_abbr } from '../helpers';
+import Text from '../../text';
 
 const getDays = ({
     calendar_date,
@@ -30,6 +31,7 @@ const getDays = ({
     disabled_days,
     onMouseOver,
     onMouseLeave,
+    should_show_today = true,
 }) => {
     // adjust Calendar week by 1 day so that Calendar week starts on Monday
     // change to zero to set Calendar week to start on Sunday
@@ -105,7 +107,7 @@ const getDays = ({
                 key={date}
                 className={classNames('dc-calendar__cell', {
                     'dc-calendar__cell--active': is_active,
-                    'dc-calendar__cell--today': is_today,
+                    'dc-calendar__cell--today': should_show_today && is_today,
                     'dc-calendar__cell--active-duration': is_active && has_range_selection && !is_today,
                     'dc-calendar__cell--today-duration': is_today && has_range_selection,
                     'dc-calendar__cell--disabled': is_disabled,
@@ -143,9 +145,9 @@ const Days = props => {
     return (
         <div className='dc-calendar__body dc-calendar__body--date'>
             {Object.keys(week_headers_abbr).map((item, idx) => (
-                <span key={idx} className='dc-calendar__text dc-calendar__text--bold'>
+                <Text size='xxs' align='center' weight='bold' key={idx}>
                     {week_headers_abbr[item]}
-                </span>
+                </Text>
             ))}
             {days}
         </div>

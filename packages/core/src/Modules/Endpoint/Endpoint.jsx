@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
-import { Button, Input, Checkbox } from '@deriv/components';
+import { Button, Input, Checkbox, Text } from '@deriv/components';
 import { getDebugServiceWorker, getAppId, getSocketURL, PlatformContext } from '@deriv/shared';
 // eslint-disable-next-line import/extensions
 
@@ -31,8 +31,8 @@ const Endpoint = () => {
             initialValues={{
                 app_id: getAppId(),
                 server: getSocketURL(),
-                is_deriv_crypto_enabled: platform_store.is_deriv_crypto,
-                is_debug_service_worker_enabled: getDebugServiceWorker(),
+                is_dashboard_enabled: platform_store.is_dashboard,
+                is_debug_service_worker_enabled: !!getDebugServiceWorker(),
             }}
             validate={values => {
                 const errors = {};
@@ -53,25 +53,24 @@ const Endpoint = () => {
             onSubmit={values => {
                 localStorage.setItem('config.app_id', values.app_id);
                 localStorage.setItem('config.server_url', values.server);
-                localStorage.setItem(platform_store.DERIV_CRYPTO_KEY, values.is_deriv_crypto_enabled);
+                localStorage.setItem(platform_store.DERIV_DASHBOARD_KEY, values.is_dashboard_enabled);
                 localStorage.setItem('debug_service_worker', values.is_debug_service_worker_enabled ? 1 : 0);
-                platform_store.setDerivCrypto(values.is_deriv_crypto_enabled);
+                platform_store.setDerivDashboard(values.is_dashboard_enabled);
                 location.reload();
             }}
         >
             {({ errors, isSubmitting, touched, values, handleChange, setFieldTouched }) => (
                 <Form style={{ width: '30vw', minWidth: '300px', margin: '20vh auto' }}>
-                    <h1
+                    <div
                         style={{
-                            fontWeight: 'bold',
-                            color: 'var(--text-prominent)',
                             marginBottom: '1.6rem',
-                            fontSize: 'var(--text-size-s)',
-                            lineHeight: 'normal',
                         }}
                     >
-                        Change API endpoint
-                    </h1>
+                        <Text as='h1' weight='bold' color='prominent'>
+                            Change API endpoint
+                        </Text>
+                    </div>
+
                     <InputField name='server' label='Server' hint='e.g. frontend.binaryws.com' />
                     <InputField
                         name='app_id'
@@ -90,16 +89,16 @@ const Endpoint = () => {
                             </React.Fragment>
                         }
                     />
-                    <Field name='is_deriv_crypto_enabled'>
+                    <Field name='is_dashboard_enabled'>
                         {({ field }) => (
                             <div style={{ marginTop: '4.5rem', marginBottom: '1.6rem' }}>
                                 <Checkbox
                                     {...field}
-                                    label='Enable Deriv Crypto'
-                                    value={values.is_deriv_crypto_enabled}
+                                    label='Enable Dashboard'
+                                    value={values.is_dashboard_enabled}
                                     onChange={e => {
                                         handleChange(e);
-                                        setFieldTouched('is_deriv_crypto_enabled', true);
+                                        setFieldTouched('is_dashboard_enabled', true);
                                     }}
                                 />
                             </div>
@@ -126,7 +125,7 @@ const Endpoint = () => {
                             !!(
                                 (!touched.server &&
                                     !touched.app_id &&
-                                    !touched.is_deriv_crypto_enabled &&
+                                    !touched.is_dashboard_enabled &&
                                     !touched.is_debug_service_worker_enabled) ||
                                 !values.server ||
                                 !values.app_id ||
@@ -144,7 +143,6 @@ const Endpoint = () => {
                         onClick={() => {
                             localStorage.removeItem('config.app_id');
                             localStorage.removeItem('config.server_url');
-                            localStorage.removeItem(platform_store.DERIV_CRYPTO_KEY);
                             location.reload();
                         }}
                         text='Reset to original settings'

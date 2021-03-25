@@ -2,9 +2,18 @@ import classNames from 'classnames';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Dialog, PasswordInput, PasswordMeter, Text } from '@deriv/components';
-import { validPassword, validLength, website_name, getErrorMessages, PlatformContext } from '@deriv/shared';
+import { Button, Dialog, Loading, PasswordInput, PasswordMeter, Text } from '@deriv/components';
+import {
+    validPassword,
+    getLocation,
+    validLength,
+    website_name,
+    getErrorMessages,
+    PlatformContext,
+    redirectToSignUp,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import 'Sass/app/modules/account-signup.scss';
@@ -45,52 +54,59 @@ const validateSignup = (values, residence_list) => {
     return errors;
 };
 
-class AccountSignup extends React.Component {
-    static contextType = PlatformContext;
-    state = {
-        has_valid_residence: false,
-        pw_input: '',
+const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, residence_list }) => {
+    const { is_dashboard } = React.useContext(PlatformContext);
+    const [api_error, setApiError] = React.useState(false);
+    const [is_loading, setIsLoading] = React.useState(true);
+    const [country, setCountry] = React.useState('');
+    const [pw_input, setPWInput] = React.useState('');
+    const [has_valid_residence, setHasValidResidence] = React.useState(false);
+
+    const updatePassword = new_password => {
+        setPWInput(new_password);
     };
 
-    updatePassword = string => {
-        this.setState({ pw_input: string });
+    const onResidenceSelection = () => {
+        setHasValidResidence(true);
     };
 
-    onResidenceSelection = () => {
-        this.setState({ has_valid_residence: true });
-    };
+    // didMount lifecycle hook
+    React.useEffect(() => {
+        WS.wait('website_status', 'residence_list').then(() => {
+            if (clients_country && residence_list) {
+                setCountry(getLocation(residence_list, clients_country, 'text'));
+            }
+            setIsLoading(false);
+        });
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    onSignupComplete = error => {
-        // Handle lower level modal controls due to overriding modal rendering
-        this.props.isModalVisible(false);
-        this.props.enableApp();
-
-        // Error would be returned on invalid token (and the like) cases.
-        // TODO: Proper error handling (currently we have no place to put the message)
+    const onSignupComplete = error => {
         if (error) {
-            throw Error(error);
+            setApiError(error);
+        } else {
+            isModalVisible(false);
+            enableApp();
         }
     };
 
-    render() {
-        const { onSignup, residence_list, is_account_signup_modal_visible } = this.props;
+    const validateSignupPassthrough = values => validateSignup(values, residence_list);
+    const onSignupPassthrough = values => {
+        const index_of_selection = residence_list.findIndex(
+            item => item.text.toLowerCase() === values.residence.toLowerCase()
+        );
 
-        const validateSignupPassthrough = values => validateSignup(values, residence_list);
-        const onSignupPassthrough = values => {
-            const index_of_selection = residence_list.findIndex(
-                item => item.text.toLowerCase() === values.residence.toLowerCase()
-            );
-
-            const modded_values = {
-                ...values,
-                residence: residence_list[index_of_selection].value,
-                is_deriv_crypto: this.context.is_deriv_crypto,
-                is_account_signup_modal_visible,
-            };
-            onSignup(modded_values, this.onSignupComplete);
+        const modded_values = {
+            ...values,
+            residence: residence_list[index_of_selection].value,
         };
-        return (
-            <div className='account-signup'>
+        onSignup(modded_values, onSignupComplete);
+    };
+
+    return (
+        <div className='account-signup'>
+            {is_loading ? (
+                <Loading is_fullscreen={false} />
+            ) : (
                 <Formik
                     initialValues={signupInitialValues}
                     validate={validateSignupPassthrough}
@@ -107,63 +123,90 @@ class AccountSignup extends React.Component {
                         touched,
                     }) => (
                         <Form>
-                            <React.Fragment>
-                                {!this.state.has_valid_residence ? (
-                                    <ResidenceForm
-                                        header_text={localize('Thanks for verifying your email')}
-                                        class_prefix='account-signup'
-                                        errors={errors}
-                                        touched={touched}
-                                        setFieldTouched={setFieldTouched}
-                                        setFieldValue={setFieldValue}
-                                        residence_list={residence_list}
-                                    >
-                                        <Button
-                                            className={classNames('account-signup__btn', {
-                                                'account-signup__btn--disabled': !values.residence || errors.residence,
-                                            })}
-                                            type='button'
-                                            is_disabled={!values.residence || !!errors.residence}
-                                            onClick={this.onResidenceSelection}
-                                            primary
-                                            text={localize('Next')}
-                                        />
-                                    </ResidenceForm>
-                                ) : (
-                                    <div className='account-signup__password-selection'>
-                                        <Text as='p' weight='bold' className='account-signup__heading'>
-                                            <Localize i18n_default_text='Keep your account secure with a password' />
-                                        </Text>
-                                        <Field name='password'>
-                                            {({ field }) => (
-                                                <PasswordMeter
-                                                    input={this.state.pw_input}
-                                                    has_error={!!(touched.password && errors.password)}
-                                                    custom_feedback_messages={getErrorMessages().password_warnings}
-                                                >
-                                                    <PasswordInput
-                                                        {...field}
-                                                        autoComplete='new-password'
-                                                        className='account-signup__password-field'
-                                                        label={localize('Create a password')}
-                                                        error={touched.password && errors.password}
-                                                        required
-                                                        value={values.password}
-                                                        onBlur={handleBlur}
-                                                        onChange={e => {
-                                                            const input = e.target;
-                                                            setFieldTouched('password', true);
-                                                            if (input) this.updatePassword(input.value);
-                                                            handleChange(e);
-                                                        }}
-                                                    />
-                                                </PasswordMeter>
-                                            )}
-                                        </Field>
-                                        <Text align='center' as='p' size='xxs' className='account-signup__subtext'>
-                                            <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
-                                        </Text>
+                            {!has_valid_residence ? (
+                                <ResidenceForm
+                                    header_text={localize('Thanks for verifying your email')}
+                                    class_prefix='account-signup'
+                                    errors={errors}
+                                    touched={touched}
+                                    setFieldTouched={setFieldTouched}
+                                    setFieldValue={setFieldValue}
+                                    residence_list={residence_list}
+                                    default_value={country}
+                                >
+                                    <Button
+                                        className={classNames('account-signup__btn', {
+                                            'account-signup__btn--disabled': !values.residence || errors.residence,
+                                        })}
+                                        type='button'
+                                        is_disabled={!values.residence || !!errors.residence}
+                                        onClick={onResidenceSelection}
+                                        primary
+                                        text={localize('Next')}
+                                    />
+                                </ResidenceForm>
+                            ) : (
+                                <div className='account-signup__password-selection'>
+                                    <Text as='p' weight='bold' className='account-signup__heading'>
+                                        <Localize i18n_default_text='Keep your account secure with a password' />
+                                    </Text>
+                                    <Field name='password'>
+                                        {({ field }) => (
+                                            <PasswordMeter
+                                                input={pw_input}
+                                                has_error={!!(touched.password && errors.password)}
+                                                custom_feedback_messages={getErrorMessages().password_warnings}
+                                            >
+                                                <PasswordInput
+                                                    {...field}
+                                                    className='account-signup__password-field'
+                                                    label={localize('Create a password')}
+                                                    error={touched.password && errors.password}
+                                                    required
+                                                    value={values.password}
+                                                    onBlur={handleBlur}
+                                                    onChange={e => {
+                                                        const input = e.target;
+                                                        setFieldTouched('password', true);
+                                                        if (input) updatePassword(input.value);
+                                                        handleChange(e);
+                                                    }}
+                                                />
+                                            </PasswordMeter>
+                                        )}
+                                    </Field>
 
+                                    <Text as='p' size='xxs' className='account-signup__subtext' align='center'>
+                                        <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
+                                    </Text>
+
+                                    {api_error ? (
+                                        <React.Fragment>
+                                            <Text
+                                                as='p'
+                                                size='xxs'
+                                                color='loss-danger'
+                                                className='account-signup__subtext account-signup__subtext--error'
+                                                align='center'
+                                            >
+                                                {api_error}
+                                            </Text>
+                                            <div className='account-signup__error-wrapper'>
+                                                <Button
+                                                    secondary
+                                                    text={localize('Cancel')}
+                                                    type='button'
+                                                    onClick={() => isModalVisible(false)}
+                                                />
+                                                <Button
+                                                    primary
+                                                    text={localize('Create new account')}
+                                                    type='button'
+                                                    onClick={() => redirectToSignUp({ is_dashboard })}
+                                                />
+                                            </div>
+                                        </React.Fragment>
+                                    ) : (
                                         <Button
                                             className={classNames('account-signup__btn', {
                                                 'account-signup__btn--disabled':
@@ -174,26 +217,28 @@ class AccountSignup extends React.Component {
                                             text={localize('Start trading')}
                                             primary
                                         />
-                                    </div>
-                                )}
-                            </React.Fragment>
+                                    )}
+                                </div>
+                            )}
                         </Form>
                     )}
                 </Formik>
-            </div>
-        );
-    }
-}
+            )}
+        </div>
+    );
+};
 
 AccountSignup.propTypes = {
+    enableApp: PropTypes.func,
     onSignup: PropTypes.func,
     residence_list: PropTypes.array,
+    isModalVisible: PropTypes.func,
 };
 
 const AccountSignupModal = ({
     enableApp,
     disableApp,
-    is_eu,
+    clients_country,
     is_loading,
     is_visible,
     is_logged_in,
@@ -219,21 +264,20 @@ const AccountSignupModal = ({
             is_content_centered
         >
             <AccountSignup
+                clients_country={clients_country}
                 onSignup={onSignup}
                 residence_list={residence_list}
-                is_eu={is_eu}
                 isModalVisible={toggleAccountSignupModal}
                 enableApp={enableApp}
-                is_account_signup_modal_visible={is_visible}
             />
         </Dialog>
     );
 };
 
 AccountSignupModal.propTypes = {
+    clients_country: PropTypes.string,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
-    is_eu: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
     onSignup: PropTypes.func,
@@ -245,10 +289,10 @@ export default connect(({ ui, client }) => ({
     toggleAccountSignupModal: ui.toggleAccountSignupModal,
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
-    is_eu: client.is_eu,
     is_loading: ui.is_loading,
     onSignup: client.onSignup,
     is_logged_in: client.is_logged_in,
     residence_list: client.residence_list,
+    clients_country: client.clients_country,
     logout: client.logout,
 }))(AccountSignupModal);

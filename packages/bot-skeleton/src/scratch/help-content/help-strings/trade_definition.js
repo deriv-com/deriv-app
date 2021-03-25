@@ -11,7 +11,7 @@ export default {
         localize('Select your desired trade type. For example, Up/Down > Rise/Fall'),
         localize('3. Contract Type'),
         localize(
-            'Choose what type of contract you want to trade. For example, for the Rise/Fall trade type you can choose on of three options: Rise, Fall, or Both. Selected option will determine available options for the Purchase block.'
+            'Choose what type of contract you want to trade. For example, for the Rise/Fall trade type you can choose one of three options: Rise, Fall, or Both. Selected option will determine available options for the Purchase block.'
         ),
         localize('4. Default Candle Interval'),
         localize('Sets the default time interval for blocks that read list of candles.'),

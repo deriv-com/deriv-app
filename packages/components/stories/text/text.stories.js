@@ -15,6 +15,14 @@ stories.add('basic usage', () => (
             <Text size='xl' align='right' weight='bold' color='loss-danger'>
                 Test Text Components
             </Text>
+            {/* Adding Paragraph */}
+            <Text as='p' size='xl' align='right' weight='bold' color='loss-danger'>
+                Test Paragraph Components
+            </Text>
+            {/* Adding Header */}
+            <Text as='h1' size='xl' align='right' weight='bold' color='loss-danger'>
+                Test Header Components
+            </Text>
         </div>
     </Theme>
 ));

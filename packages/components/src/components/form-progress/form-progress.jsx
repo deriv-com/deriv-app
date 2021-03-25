@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Text from '../text';
 
 class FormProgress extends React.PureComponent {
     constructor(props) {
@@ -30,10 +31,13 @@ class FormProgress extends React.PureComponent {
 
     render() {
         const { current_step, steps } = this.props;
+        let { active } = false;
         return (
             <div className='dc-form-progress'>
                 <div className='dc-form-progress__header'>
-                    <h2>{steps[current_step].header.active_title}</h2>
+                    <Text as='h2' color='prominent' weight='bold' line_height='unset'>
+                        {steps[current_step].header.active_title}
+                    </Text>
                     <div className='dc-form-progress__steps'>
                         <div
                             className='dc-form-progress__steps--before'
@@ -42,16 +46,31 @@ class FormProgress extends React.PureComponent {
                             }}
                         />
                         {steps.map((item, idx) => (
-                            <div
-                                key={idx + 1}
-                                className={classNames('dc-form-progress__step', {
-                                    'dc-form-progress__step--active': idx <= current_step,
-                                    'dc-form-progress__step--current': idx === current_step,
-                                })}
-                            >
-                                <span className='identifier'>{idx + 1}</span>
-                                <p className='title'>{item.header.title}</p>
-                            </div>
+                            <React.Fragment key={idx + 1}>
+                                {(active = idx === current_step)}
+                                <div className='dc-form-progress__step'>
+                                    <Text
+                                        align='center'
+                                        size='xs'
+                                        weight='bold'
+                                        color='colored-background'
+                                        className={classNames('identifier', {
+                                            'identifier--active': idx <= current_step,
+                                        })}
+                                    >
+                                        {idx + 1}
+                                    </Text>
+                                    <Text
+                                        as='p'
+                                        align='center'
+                                        size='xxs'
+                                        weight={active ? 'bold' : 'unset'}
+                                        color={active ? 'loss-danger' : 'prominent'}
+                                    >
+                                        {item.header.title}
+                                    </Text>
+                                </div>
+                            </React.Fragment>
                         ))}
                         <div ref={this.el_completed_bar} className='dc-form-progress__steps--after' />
                     </div>

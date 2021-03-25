@@ -94,12 +94,12 @@
         width: 100%;
         line-height: 24px;
         align-items: center;
-        border-bottom: 2px solid var(--general-section-2);
+
+        &__border-bottom {
+            border-bottom: 2px solid var(--general-section-2) !important;
+        }
 
         &__title {
-            @include typeface(--title-left-bold-black);
-            color: var(--text-prominent);
-            line-height: 24px;
             padding: 1.6rem 2.4rem;
             display: flex;
             align-items: center;
@@ -162,6 +162,10 @@
     }
     /** @define dc-modal-body */
     &-body {
+        &:first-child {
+            padding-top: 2.4rem;
+        }
+
         padding: 2.4rem;
         font-size: 1.4rem;
         line-height: 1.43;

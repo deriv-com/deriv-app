@@ -1,19 +1,19 @@
 import React from 'react';
 import { Clipboard } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
 
-class Mt5AccountCopy extends React.PureComponent {
-    render() {
-        return (
+const Mt5AccountCopy = ({ text, className }) => {
+    return (
+        <div className={className}>
             <Clipboard
-                text_copy={this.props.text}
-                info_message={localize(
-                    'Click here to copy account login number and paste into the login box in MT5 platform along with your password.'
-                )}
-                success_message={localize('Account login number copied!')}
+                text_copy={text}
+                info_message={isMobile() ? '' : localize('copy')}
+                success_message={localize('copied!')}
+                popoverAlignment={isMobile() ? 'left' : 'bottom'}
             />
-        );
-    }
-}
+        </div>
+    );
+};
 
 export { Mt5AccountCopy };

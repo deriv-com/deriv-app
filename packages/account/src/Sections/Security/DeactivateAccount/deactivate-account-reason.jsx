@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Formik, Field } from 'formik';
-import { Checkbox, Input, FormSubmitButton, Modal, Icon, Loading, Text } from '@deriv/components';
+import { Checkbox, Input, FormSubmitButton, Modal, Icon, Loading, Text, Button } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 import AccountHasBalanceOrOpenPositions from './account-has-balance.jsx';
@@ -57,8 +57,6 @@ const WarningModal = props => {
                 <Text as='p' className='account-closure-warning-modal__content'>
                     {localize('You’ll be logged out automatically.')}
                 </Text>
-            </div>
-            <div className='account-closure-warning-modal__content-wrapper'>
                 <Text as='p' size='xs' color='prominent'>
                     <Localize
                         i18n_default_text='You will <0>NOT</0> be able to log in again.'
@@ -78,8 +76,41 @@ const WarningModal = props => {
     );
 };
 
+const GeneralErrorContent = ({ message, onClick }) => (
+    <React.Fragment>
+        <div className='deactivate-account-error__container deactivate-account-error__container-message'>
+            <div className='deactivate-account-error__details deactivate-account-error__details-message'>{message}</div>
+        </div>
+        <div>
+            <Button className='deactivate-account-error__button' primary onClick={onClick}>
+                {localize('OK')}
+            </Button>
+        </div>
+    </React.Fragment>
+);
+
+const character_limit_no = 250;
+
+const allowed_keys = new Set([
+    'Alt',
+    'ArrowDown',
+    'ArrowLeft',
+    'ArrowRight',
+    'ArrowUp',
+    'Backspace',
+    'Clear',
+    'Cut',
+    'Copy',
+    'Control',
+    'Delete',
+    'End',
+    'Home',
+    'Shift',
+]);
+
 class DeactivateAccountReason extends React.Component {
     state = {
+        api_error_message: '',
         is_loading: false,
         is_account_deactivated: false,
         is_modal_open: false,
@@ -88,40 +119,34 @@ class DeactivateAccountReason extends React.Component {
         which_modal_should_render: undefined,
         is_checkbox_disabled: false,
         total_checkbox_checked: 0,
-        remaining_characters: undefined,
+        remaining_characters: character_limit_no,
     };
     validateFields = values => {
         const error = {};
         const selected_reason_count = selectedReasons(values).length;
         if (!selected_reason_count) {
-            error.empty_reason = localize('please select at least one reason');
+            error.empty_reason = localize('Please select at least one reason');
         }
-        if ((values.otherTradingPlatforms + values.doToImprove).length > 0) {
-            const max_characters = 250;
+        if ((values.otherTradingPlatforms + values.doToImprove).length > 0 || selected_reason_count) {
+            const max_characters = character_limit_no;
             const final_value = preparingReason(values);
-            const selected_reasons = selectedReasons(values)
-                .map(val => val[0])
-                .toString();
-            const is_other_trading_platform__has_value = !!values.otherTradingPlatforms.length;
-            const is_to_do_improve_has_value = !!values.doToImprove.length;
-            let max_input_characters_can_use = max_characters - selected_reasons.length;
-            // by adding new fields, we are adding 2 more characters to the final value
-            if (is_other_trading_platform__has_value) {
-                max_input_characters_can_use -= 2;
-            }
-            if (is_to_do_improve_has_value) {
-                max_input_characters_can_use -= 2;
-            }
+
             const remaining_characters = max_characters - final_value.length;
             if (remaining_characters >= 0) {
                 this.setState({ remaining_characters });
             } else {
-                this.setState({ remaining_characters: undefined });
+                this.setState({ remaining_characters: 0 });
             }
-            const regex_rule = `^[0-9A-Za-z .,'-]{0,${max_characters}}$`;
-            if (!new RegExp(regex_rule).test(final_value)) {
-                error.characters_limits = `please insert up to ${max_input_characters_can_use} characters combine both fields.`;
+
+            if (!/^[0-9A-z .,'-]*$/.test(final_value)) {
+                error.characters_limits = localize("Must be numbers, letters, and special characters . , ' -");
             }
+
+            if (final_value.length > max_characters) {
+                error.characters_count_exceed = 'Please enter no more than 255 characters for both fields.';
+            }
+        } else {
+            this.setState({ remaining_characters: character_limit_no });
         }
         return error;
     };
@@ -159,19 +184,52 @@ class DeactivateAccountReason extends React.Component {
             account_closure: 1,
             reason: this.state.reason,
         });
-        this.setState({ is_loading: false });
+
         if (account_closure_response.account_closure === 1) {
             this.setState({ is_account_deactivated: true });
         } else {
+            const { code, message, details } = account_closure_response.error;
+            const getModalToRender = () => {
+                if (code === 'AccountHasBalanceOrOpenPositions') {
+                    return 'AccountHasBalanceOrOpenPositions';
+                }
+                if (code === 'MT5AccountInaccessible') {
+                    return 'inaccessible_modal';
+                }
+                return 'error_modal';
+            };
+
             this.setState({
-                which_modal_should_render: account_closure_response.error.code,
-                details: account_closure_response.error.details,
+                which_modal_should_render: getModalToRender(),
+                details,
+                api_error_message: message,
                 is_modal_open: true,
+                is_loading: false,
             });
         }
     };
+
+    handleInputKeyDown = e => {
+        if (this.state.remaining_characters <= 0 && !allowed_keys.has(e.key)) {
+            e.preventDefault();
+        }
+    };
+
+    handleInputPaste = e => {
+        if (this.state.remaining_characters <= 0) {
+            e.preventDefault();
+        }
+    };
+
     render() {
         if (this.state.is_account_deactivated) return <Redirect to={routes.account_deactivated} />;
+
+        const getModalTitle = () => {
+            if (this.state.which_modal_should_render === 'error_modal') return localize('An error occurred');
+            if (this.state.which_modal_should_render === 'inaccessible_modal')
+                return localize('Inaccessible MT5 account(s)');
+            return this.state.which_modal_should_render !== 'warning_modal' ? localize('Action required') : undefined;
+        };
         return this.state.is_loading ? (
             <Loading is_fullscreen={false} />
         ) : (
@@ -313,6 +371,8 @@ class DeactivateAccountReason extends React.Component {
                                         name='otherTradingPlatforms'
                                         value={values.otherTradingPlatforms}
                                         onChange={handleChange}
+                                        onKeyDown={this.handleInputKeyDown}
+                                        onPaste={this.handleInputPaste}
                                     />
                                 )}
                             </Field>
@@ -328,44 +388,48 @@ class DeactivateAccountReason extends React.Component {
                                         name='doToImprove'
                                         value={values.doToImprove}
                                         onChange={handleChange}
+                                        onKeyDown={this.handleInputKeyDown}
+                                        onPaste={this.handleInputPaste}
                                     />
                                 )}
                             </Field>
-                            {this.state.remaining_characters >= 0 && (
-                                <Text weight='bold' size='xs' as='p'>
-                                    {localize('Remaining characters: {{remaining_characters}}', {
-                                        remaining_characters: this.state.remaining_characters,
-                                    })}
-                                </Text>
-                            )}
-                            {Object.keys(errors).length > 0 &&
-                                Object.entries(errors).map(([key, value]) => (
+                            <div className='deactivate-account-reasons__footer'>
+                                <div>
                                     <Text
+                                        size='xxs'
                                         as='p'
-                                        weight='bold'
-                                        size='xs'
-                                        color='loss-danger'
-                                        className='deactivate-account-reasons__error'
-                                        key={key}
+                                        color='less-prominent'
+                                        className='deactivate-account-reasons__hint'
                                     >
-                                        {value}
+                                        {localize('Remaining characters: {{remaining_characters}}', {
+                                            remaining_characters: this.state.remaining_characters,
+                                        })}
                                     </Text>
-                                ))}
-                            {errors.characters_limits && (
-                                <Text as='p' weight='bold' size='xs' color='loss-danger'>
-                                    {localize("Must be numbers, letters, and special characters . , ' -")}
-                                </Text>
-                            )}
-                            <FormSubmitButton
-                                is_disabled={
-                                    // eslint-disable-next-line no-unused-vars
-                                    Object.keys(errors).length > 0
-                                }
-                                label={localize('Continue')}
-                                has_cancel
-                                cancel_label={localize('Back')}
-                                onCancel={() => this.props.onBackClick()}
-                            />
+                                    {Object.keys(errors).length > 0 &&
+                                        Object.entries(errors).map(([key, value]) => (
+                                            <Text
+                                                as='p'
+                                                weight='bold'
+                                                size='xs'
+                                                color='loss-danger'
+                                                className='deactivate-account-reasons__error'
+                                                key={key}
+                                            >
+                                                {value}
+                                            </Text>
+                                        ))}
+                                </div>
+                                <FormSubmitButton
+                                    is_disabled={
+                                        // eslint-disable-next-line no-unused-vars
+                                        Object.keys(errors).length > 0
+                                    }
+                                    label={localize('Continue')}
+                                    has_cancel
+                                    cancel_label={localize('Back')}
+                                    onCancel={() => this.props.onBackClick()}
+                                />
+                            </div>
                         </form>
                     )}
                 </Formik>
@@ -373,11 +437,7 @@ class DeactivateAccountReason extends React.Component {
                     className='deactivate-account-reasons'
                     is_open={this.state.is_modal_open}
                     toggleModal={() => this.setState({ is_modal_open: !this.state.is_modal_open })}
-                    title={
-                        this.state.which_modal_should_render !== 'warning_modal'
-                            ? localize('Action required')
-                            : undefined
-                    }
+                    title={getModalTitle()}
                 >
                     {this.state.which_modal_should_render === 'warning_modal' && (
                         <WarningModal closeModal={this.closeModal} startDeactivating={this.startDeactivating} />
@@ -389,6 +449,9 @@ class DeactivateAccountReason extends React.Component {
                             client_accounts={this.props.client_accounts}
                             onBackClick={this.props.onBackClick}
                         />
+                    )}
+                    {this.state.which_modal_should_render === 'inaccessible_modal' && (
+                        <GeneralErrorContent message={this.state.api_error_message} onClick={this.closeModal} />
                     )}
                 </Modal>
             </div>

@@ -21,7 +21,7 @@ const getFormattedData = login_history => {
         const time = environment_split[1].replace('GMT', '');
         const date_time = convertDateFormat(`${date} ${time}`, 'D-MMMM-YY hh:mm:ss', 'YYYY-MM-DD hh:mm:ss');
         data[i].date = `${date_time} GMT`;
-        data[i].action = login_history[i].action;
+        data[i].action = login_history[i].action === 'login' ? localize('Login') : localize('Logout');
         const user_agent = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
         const ua = Bowser.getParser(user_agent)?.getBrowser();
         data[i].browser = ua ? `${ua.name} v${ua.version}` : localize('Unknown');
@@ -48,7 +48,7 @@ const LoginHistoryContent = ({ data }) => {
 };
 
 const renderTable = (fields, login_history) => (
-    <Table className='login-history__table'>
+    <Table fixed className='login-history__table'>
         <Table.Header>
             <Table.Row className='login-history__table__header'>
                 <Table.Head>{fields.date}</Table.Head>
@@ -124,7 +124,9 @@ const renderList = (fields, login_history) => (
 
 const ListCell = ({ title, text, className }) => (
     <React.Fragment>
-        <h3 className='login-history__list__row__cell--title'>{title}</h3>
+        <Text as='h3' size='xxs' weight='bold' color='prominent' className='login-history__list__row__cell--title'>
+            {title}
+        </Text>
         <Text className={className} line_height='xs' size='xs'>
             {text}
         </Text>

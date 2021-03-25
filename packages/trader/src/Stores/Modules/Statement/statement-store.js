@@ -17,6 +17,7 @@ export default class StatementStore extends BaseStore {
     @observable date_from = null;
     @observable date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     @observable error = '';
+    @observable action_type = 'all';
     @observable filtered_date_range;
 
     // `client_loginid` is only used to detect if this is in sync with the client-store, don't rely on
@@ -61,10 +62,21 @@ export default class StatementStore extends BaseStore {
         if (!this.shouldFetchNextBatch(should_load_partially)) return;
         this.is_loading = true;
 
+        const optional_arguments = getDateBoundaries(
+            this.date_from,
+            this.date_to,
+            this.partial_fetch_time,
+            should_load_partially
+        );
+
+        if (this.action_type !== 'all') {
+            optional_arguments.action_type = this.action_type;
+        }
+
         const response = await WS.statement(
             batch_size,
             !should_load_partially ? this.data.length : undefined,
-            getDateBoundaries(this.date_from, this.date_to, this.partial_fetch_time, should_load_partially)
+            optional_arguments
         );
         this.statementHandler(response, should_load_partially);
     }
@@ -101,6 +113,13 @@ export default class StatementStore extends BaseStore {
         this.filtered_date_range = date_range;
         this.date_from = date_values?.from ?? (date_values.is_batch ? null : this.date_from);
         this.date_to = date_values?.to ?? this.date_to;
+        this.clearTable();
+        this.fetchNextBatch();
+    }
+
+    @action.bound
+    handleFilterChange(filterValue = {}) {
+        this.action_type = filterValue;
         this.clearTable();
         this.fetchNextBatch();
     }

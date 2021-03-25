@@ -13,6 +13,7 @@ import {
     MobileWrapper,
     SelectNative,
     DateOfBirthPicker,
+    Text,
 } from '@deriv/components';
 import {
     toMoment,
@@ -23,12 +24,13 @@ import {
     validPhone,
     validLetterSymbol,
     validLength,
-    validCountryCode,
     getLocation,
     removeObjProperties,
     filterObjProperties,
+    routes,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { withRouter } from 'react-router';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 // import { account_opening_reason_list }         from './constants';
@@ -51,6 +53,38 @@ const InputGroup = ({ children, className }) => (
     </fieldset>
 );
 
+const TaxResidenceSelect = ({ field, touched, errors, setFieldValue, values, is_changeable, residence_list }) => (
+    <React.Fragment>
+        <DesktopWrapper>
+            <Autocomplete
+                {...field}
+                data-lpignore='true'
+                autoComplete='new-password' // prevent chrome autocomplete
+                type='text'
+                label={localize('Tax residence*')}
+                error={touched.tax_residence && errors.tax_residence}
+                disabled={!is_changeable}
+                list_items={residence_list}
+                onItemSelection={({ value, text }) => setFieldValue('tax_residence', value ? text : '', true)}
+                required
+            />
+        </DesktopWrapper>
+        <MobileWrapper>
+            <SelectNative
+                placeholder={localize('Tax residence*')}
+                label={localize('Tax residence*')}
+                value={values.tax_residence}
+                list_items={residence_list}
+                error={touched.tax_residence && errors.tax_residence}
+                disabled={!is_changeable}
+                use_text={true}
+                onChange={e => setFieldValue('tax_residence', e.target.value, true)}
+                required
+            />
+        </MobileWrapper>
+    </React.Fragment>
+);
+
 export class PersonalDetailsForm extends React.Component {
     state = { is_loading: true, is_state_loading: false, show_form: true };
 
@@ -59,12 +93,11 @@ export class PersonalDetailsForm extends React.Component {
         const request = this.makeSettingsRequest(values);
         this.setState({ is_btn_loading: true });
         const data = await WS.setSettings(request);
-        this.setState({ is_btn_loading: false });
-
-        setSubmitting(false);
 
         if (data.error) {
             setStatus({ msg: data.error.message });
+            this.setState({ is_btn_loading: false });
+            setSubmitting(false);
         } else {
             // force request to update settings cache since settings have been updated
             const response = await WS.authorized.storage.getSettings();
@@ -74,8 +107,18 @@ export class PersonalDetailsForm extends React.Component {
             }
             this.setState({ ...response.get_settings, is_loading: false });
             this.props.refreshNotifications();
-            this.setState({ is_submit_success: true });
-            setTimeout(() => this.setState({ is_submit_success: false }), 3000);
+            this.setState({ is_btn_loading: false, is_submit_success: true });
+            setTimeout(() => {
+                this.setState({ is_submit_success: false }, () => {
+                    setSubmitting(false);
+                });
+            }, 3000);
+            // redirection back based on 'from' param in query string
+            const url_query_string = window.location.search;
+            const url_params = new URLSearchParams(url_query_string);
+            if (url_params.get('from')) {
+                this.props.history.push(routes[url_params.get('from')]);
+            }
         }
     };
 
@@ -95,7 +138,7 @@ export class PersonalDetailsForm extends React.Component {
             request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
         }
 
-        if (this.props.is_eu) {
+        if (this.props.is_mf) {
             if (request.tax_residence) {
                 request.tax_residence = getLocation(this.props.residence_list, request.tax_residence, 'value');
             }
@@ -111,6 +154,8 @@ export class PersonalDetailsForm extends React.Component {
 
         if (request.place_of_birth) {
             request.place_of_birth = getLocation(this.props.residence_list, request.place_of_birth, 'value');
+        } else {
+            delete request.place_of_birth;
         }
 
         if (request.address_state) {
@@ -139,7 +184,10 @@ export class PersonalDetailsForm extends React.Component {
             'address_city',
         ];
         if (this.props.is_eu) {
-            const required_tax_fields = ['citizen', 'tax_residence', 'tax_identification_number'];
+            required_fields.push('citizen');
+        }
+        if (this.props.is_mf) {
+            const required_tax_fields = ['tax_residence', 'tax_identification_number'];
             required_fields.push(...required_tax_fields);
         }
 
@@ -179,23 +227,18 @@ export class PersonalDetailsForm extends React.Component {
         }
 
         if (values.phone) {
-            // minimum characters required is 9 including (+) sign
-            // phone_trim uses regex that trims (+) sign
-            // minimum characters required w/o (+) sign is 8 characters.
-            const min_phone_number = 8;
+            // minimum characters required is 9 numbers (excluding +- signs or space)
+            const min_phone_number = 9;
             const max_phone_number = 35;
+            // phone_trim uses regex that trims non-digits
             const phone_trim = values.phone.replace(/\D/g, '');
-            const phone_error_message = localize(
-                'Please enter a valid phone number, including the country code (e.g +15417541234).'
-            );
+            const phone_error_message = localize('Please enter a valid phone number (e.g. +15417541234).');
 
             if (!validLength(phone_trim, { min: min_phone_number, max: max_phone_number })) {
                 errors.phone = localize('You should enter {{min}}-{{max}} numbers.', {
                     min: min_phone_number,
                     max: max_phone_number,
                 });
-            } else if (!validCountryCode(this.props.residence_list, values.phone)) {
-                errors.phone = phone_error_message;
             } else if (!validPhone(values.phone)) {
                 errors.phone = phone_error_message;
             }
@@ -251,6 +294,19 @@ export class PersonalDetailsForm extends React.Component {
         return this.state.changeable_fields.some(field => field === name);
     }
 
+    onScrollToRefMount = node => {
+        // wait for node to be rendered, if node exists check the hash in url to scroll down to
+        const section_hash = window.location.hash.substr(1);
+
+        if (node?.name === section_hash) {
+            node?.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+            // smooth scrolling animation is ~500ms, focus event cancels out scroll animation, hence the timeout offset
+            setTimeout(() => {
+                node?.focus();
+            }, 800);
+        }
+    };
+
     async componentDidMount() {
         // waits for residence to be populated
         await WS.wait('get_settings');
@@ -272,7 +328,8 @@ export class PersonalDetailsForm extends React.Component {
         if (
             Object.values(this.props.account_settings).join('|') !==
                 Object.values(prevProps.account_settings).join('|') ||
-            this.props.is_eu !== prevProps.is_eu
+            this.props.is_eu !== prevProps.is_eu ||
+            this.props.is_mf !== prevProps.is_mf
         ) {
             this.initializeFormValues();
         }
@@ -288,8 +345,8 @@ export class PersonalDetailsForm extends React.Component {
             const hidden_settings = [
                 'account_opening_reason',
                 'allow_copiers',
-                !this.props.is_eu && 'tax_residence',
-                !this.props.is_eu && 'tax_identification_number',
+                !this.props.is_mf && 'tax_residence',
+                !this.props.is_mf && 'tax_identification_number',
                 'client_tnc_status',
                 'country_code',
                 'has_secret_answer',
@@ -341,10 +398,32 @@ export class PersonalDetailsForm extends React.Component {
         } else {
             form_initial_values.address_state = '';
         }
-        if (this.props.is_eu) {
-            form_initial_values.tax_residence = form_initial_values.tax_residence
-                ? getLocation(residence_list, form_initial_values.tax_residence, 'text')
-                : '';
+        if (this.props.is_mf) {
+            if (form_initial_values.tax_residence) {
+                const is_single_tax_value = form_initial_values.tax_residence.indexOf(',') < 0;
+                // if there's only one tax residence set, show it in drop-down
+                if (is_single_tax_value) {
+                    form_initial_values.tax_residence = getLocation(
+                        residence_list,
+                        form_initial_values.tax_residence,
+                        'text'
+                    );
+                } else if (this.isChangeableField('tax_residence')) {
+                    // if there are multiple tax residences and user is allowed to update it
+                    // select the first tax residence in drop-down
+                    const first_tax_residence = form_initial_values.tax_residence.split(',')[0];
+                    form_initial_values.tax_residence = getLocation(residence_list, first_tax_residence, 'text');
+                } else {
+                    // otherwise show all tax residences in a disabled input field
+                    const tax_residences = [];
+                    form_initial_values.tax_residence.split(',').forEach(residence => {
+                        tax_residences.push(getLocation(residence_list, residence, 'text'));
+                    });
+                    form_initial_values.tax_residence = tax_residences;
+                }
+            } else {
+                form_initial_values.tax_residence = '';
+            }
             if (!form_initial_values.tax_identification_number) form_initial_values.tax_identification_number = '';
         }
 
@@ -448,9 +527,13 @@ export class PersonalDetailsForm extends React.Component {
                                                                 data-lpignore='true'
                                                                 autoComplete='new-password' // prevent chrome autocomplete
                                                                 type='text'
-                                                                label={localize('Place of birth*')}
+                                                                label={
+                                                                    this.props.is_svg
+                                                                        ? localize('Place of birth')
+                                                                        : localize('Place of birth*')
+                                                                }
                                                                 error={touched.place_of_birth && errors.place_of_birth}
-                                                                required
+                                                                required={!this.props.is_svg}
                                                                 disabled={!this.isChangeableField('place_of_birth')}
                                                                 list_items={this.props.residence_list}
                                                                 onItemSelection={({ value, text }) =>
@@ -467,8 +550,12 @@ export class PersonalDetailsForm extends React.Component {
                                                 <MobileWrapper>
                                                     <SelectNative
                                                         placeholder={localize('Please select')}
-                                                        label={localize('Place of birth*')}
-                                                        required
+                                                        label={
+                                                            this.props.is_svg
+                                                                ? localize('Place of birth')
+                                                                : localize('Place of birth*')
+                                                        }
+                                                        required={!this.props.is_svg}
                                                         disabled={!this.isChangeableField('place_of_birth')}
                                                         value={values.place_of_birth}
                                                         list_items={this.props.residence_list}
@@ -616,7 +703,7 @@ export class PersonalDetailsForm extends React.Component {
                                             {/*        /> */}
                                             {/*    )} */}
                                             {/* </fieldset> */}
-                                            {this.props.is_eu && (
+                                            {this.props.is_mf && (
                                                 <React.Fragment>
                                                     <FormSubHeader title={localize('Tax information')} />
                                                     {'tax_residence' in values && (
@@ -624,59 +711,34 @@ export class PersonalDetailsForm extends React.Component {
                                                             <Field name='tax_residence'>
                                                                 {({ field }) => (
                                                                     <React.Fragment>
-                                                                        <DesktopWrapper>
-                                                                            <Autocomplete
-                                                                                {...field}
-                                                                                data-lpignore='true'
-                                                                                autoComplete='new-password' // prevent chrome autocomplete
-                                                                                type='text'
-                                                                                label={localize('Tax residence*')}
-                                                                                error={
-                                                                                    touched.tax_residence &&
-                                                                                    errors.tax_residence
+                                                                        {Array.isArray(values.tax_residence) &&
+                                                                        !this.isChangeableField('tax_residence') ? (
+                                                                            <fieldset className='account-form__fieldset'>
+                                                                                <Input
+                                                                                    type='text'
+                                                                                    name='tax_residence'
+                                                                                    label={localize('Tax residence*')}
+                                                                                    value={values.tax_residence.join(
+                                                                                        ', '
+                                                                                    )}
+                                                                                    disabled
+                                                                                />
+                                                                            </fieldset>
+                                                                        ) : (
+                                                                            <TaxResidenceSelect
+                                                                                is_changeable={this.isChangeableField(
+                                                                                    'tax_residence'
+                                                                                )}
+                                                                                field={field}
+                                                                                touched={touched}
+                                                                                errors={errors}
+                                                                                setFieldValue={setFieldValue}
+                                                                                values={values}
+                                                                                residence_list={
+                                                                                    this.props.residence_list
                                                                                 }
-                                                                                disabled={
-                                                                                    !this.isChangeableField(
-                                                                                        'tax_residence'
-                                                                                    )
-                                                                                }
-                                                                                list_items={this.props.residence_list}
-                                                                                onItemSelection={({ value, text }) =>
-                                                                                    setFieldValue(
-                                                                                        'tax_residence',
-                                                                                        value ? text : '',
-                                                                                        true
-                                                                                    )
-                                                                                }
-                                                                                required
                                                                             />
-                                                                        </DesktopWrapper>
-                                                                        <MobileWrapper>
-                                                                            <SelectNative
-                                                                                placeholder={localize('Tax residence*')}
-                                                                                label={localize('Tax residence*')}
-                                                                                value={values.tax_residence}
-                                                                                list_items={this.props.residence_list}
-                                                                                error={
-                                                                                    touched.tax_residence &&
-                                                                                    errors.tax_residence
-                                                                                }
-                                                                                disabled={
-                                                                                    !this.isChangeableField(
-                                                                                        'tax_residence'
-                                                                                    )
-                                                                                }
-                                                                                use_text={true}
-                                                                                onChange={e =>
-                                                                                    setFieldValue(
-                                                                                        'tax_residence',
-                                                                                        e.target.value,
-                                                                                        true
-                                                                                    )
-                                                                                }
-                                                                                required
-                                                                            />
-                                                                        </MobileWrapper>
+                                                                        )}
                                                                     </React.Fragment>
                                                                 )}
                                                             </Field>
@@ -828,6 +890,7 @@ export class PersonalDetailsForm extends React.Component {
                                                         data-lpignore='true'
                                                         autoComplete='off' // prevent chrome autocomplete
                                                         type='text'
+                                                        ref={this.onScrollToRefMount}
                                                         name='address_postcode'
                                                         label={localize('Postal/ZIP code')}
                                                         value={values.address_postcode}
@@ -859,13 +922,14 @@ export class PersonalDetailsForm extends React.Component {
                                 </FormBody>
                                 <FormFooter>
                                     {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                    {!(isSubmitting || is_submit_success || (status && status.msg)) && (
-                                        <div className='account-form__footer-note'>
-                                            {localize(
-                                                'Please make sure your information is correct or it may affect your trading experience.'
-                                            )}
-                                        </div>
-                                    )}
+                                    {!this.props.is_virtual &&
+                                        !(isSubmitting || is_submit_success || (status && status.msg)) && (
+                                            <Text className='account-form__footer-note' size='xxxs'>
+                                                {localize(
+                                                    'Please make sure your information is correct or it may affect your trading experience.'
+                                                )}
+                                            </Text>
+                                        )}
                                     <Button
                                         className={classNames('account-form__footer-btn', {
                                             'dc-btn--green': is_submit_success,
@@ -883,12 +947,12 @@ export class PersonalDetailsForm extends React.Component {
                                                       !values.last_name ||
                                                       errors.phone ||
                                                       !values.phone ||
-                                                      (this.props.is_eu && errors.tax_residence) ||
-                                                      (this.props.is_eu && !values.tax_residence) ||
-                                                      (this.props.is_eu && errors.tax_identification_number) ||
-                                                      (this.props.is_eu && !values.tax_identification_number) ||
-                                                      errors.place_of_birth ||
-                                                      !values.place_of_birth ||
+                                                      (this.props.is_mf && errors.tax_residence) ||
+                                                      (this.props.is_mf && !values.tax_residence) ||
+                                                      (this.props.is_mf && errors.tax_identification_number) ||
+                                                      (this.props.is_mf && !values.tax_identification_number) ||
+                                                      (!this.props.is_svg && errors.place_of_birth) ||
+                                                      (!this.props.is_svg && !values.place_of_birth) ||
                                                       // (errors.account_opening_reason || !values.account_opening_reason) ||
                                                       errors.address_line_1 ||
                                                       !values.address_line_1 ||
@@ -922,10 +986,12 @@ export default connect(({ client }) => ({
     has_residence: client.has_residence,
     getChangeableFields: client.getChangeableFields,
     is_eu: client.is_eu,
+    is_mf: client.landing_company_shortcode === 'maltainvest',
+    is_svg: client.is_svg,
     is_virtual: client.is_virtual,
     residence_list: client.residence_list,
     states_list: client.states_list,
     fetchResidenceList: client.fetchResidenceList,
     fetchStatesList: client.fetchStatesList,
     refreshNotifications: client.refreshNotifications,
-}))(PersonalDetailsForm);
+}))(withRouter(PersonalDetailsForm));

@@ -98,48 +98,6 @@ $MIN_HEIGHT_FLOATING: calc(
             padding-bottom: unset;
         }
     }
-    &__article {
-        padding: 1.6rem 2.4rem;
-        background: var(--general-section-1);
-        width: 25.6rem;
-        height: fit-content;
-        margin-left: 1.2rem;
-        border-radius: 8px;
-
-        &-list {
-            @include typeface(--paragraph-left-bold-black, none);
-            padding-left: 1.6rem;
-            list-style-type: disc;
-
-            & > li {
-                margin-bottom: 0.8rem;
-            }
-            & > li:last-child {
-                margin-bottom: 0;
-            }
-        }
-        &-title {
-            @include typeface(--paragraph-left-bold-prominent, none);
-            margin-bottom: 0.8rem;
-            max-width: 18.8rem;
-        }
-        &-description {
-            margin-bottom: 1.6rem;
-        }
-        &-link {
-            display: flex;
-
-            &--icon {
-                margin-left: 4px;
-                width: 16px;
-                height: 16px;
-            }
-        }
-        @include mobile {
-            width: auto;
-            margin: 1.6rem;
-        }
-    }
     &-form {
         overflow: hidden;
         height: 100%;
@@ -258,11 +216,8 @@ $MIN_HEIGHT_FLOATING: calc(
             }
             &-btn {
                 height: 4rem;
-                margin-top: 0;
-                margin-bottom: 0;
-                @include desktop {
-                    margin-left: 1.6rem;
-                }
+                margin: 0 0 0 1.6rem;
+
                 @include mobile {
                     margin: 0 1.6rem;
 
@@ -301,7 +256,6 @@ $MIN_HEIGHT_FLOATING: calc(
                     }
                 }
                 .account-form__footer-note {
-                    font-size: 1rem;
                     height: auto;
                     margin-bottom: 1.6rem;
                 }
@@ -337,7 +291,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__occupation {
-            .dc-native-select__select,
             .dc-dropdown__display-text {
                 line-height: 1.6rem;
                 text-align: left;
@@ -427,7 +380,6 @@ $MIN_HEIGHT_FLOATING: calc(
     .account-management__text-container {
         margin-top: 10px;
         max-width: 672px;
-        margin-bottom: 2em;
     }
     .account-management-flex-wrapper {
         display: flex;
@@ -435,6 +387,9 @@ $MIN_HEIGHT_FLOATING: calc(
         &--space-between {
             justify-content: space-between;
         }
+    }
+    .account-management__button.dc-btn {
+        margin-top: 0.8rem;
     }
     .account-management-leave-confirm,
     .account-management-submit-success {
@@ -453,6 +408,36 @@ $MIN_HEIGHT_FLOATING: calc(
                 padding: 0;
                 margin-bottom: 0;
             }
+        }
+    }
+    .account-management {
+        &__list {
+            &-container {
+                margin-top: 1.6rem;
+                max-width: 50.6rem;
+                display: flex;
+                flex-direction: column;
+            }
+            &-icon {
+                margin-right: 1.2rem;
+                margin-top: 0.2rem;
+            }
+            &-message {
+                display: flex;
+                margin-bottom: 1.6rem;
+
+                &:last-of-type {
+                    margin-bottom: 0;
+                }
+            }
+            &-button.dc-btn {
+                margin-top: 2.4rem;
+                width: fit-content;
+                align-self: center;
+            }
+        }
+        &__continue.dc-btn {
+            margin-top: 1.6rem;
         }
     }
     .account__text_container {
@@ -484,119 +469,6 @@ $MIN_HEIGHT_FLOATING: calc(
 
         @include desktop {
             max-width: 546px;
-        }
-    }
-    .api-token {
-        height: 100%;
-        width: 100%;
-
-        & .dc-timeline__container {
-            width: 100%;
-        }
-        & .dc-table__cell {
-            padding: 1.8rem 0;
-        }
-        & .dc-popover__target {
-            display: flex;
-        }
-        & .dc-dialog__content {
-            max-width: 100%;
-            width: 100%;
-            height: 100%;
-        }
-        & .dc-table__head {
-            @include typeface(--paragraph-left-bold-prominent, none);
-        }
-        &__wrapper {
-            display: flex;
-            width: 100%;
-            height: 100%;
-        }
-        &__input-group {
-            display: flex;
-            margin-top: 2.7rem;
-        }
-        &__input {
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-            border-right: 0;
-        }
-        &__button {
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-            margin-left: -1px;
-        }
-        &__checkbox-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-            grid-gap: 1.6rem;
-
-            @include mobile {
-                grid-template-columns: 1fr;
-            }
-        }
-        &__table-row {
-            grid-template-columns: 1fr 1.4fr 1.3fr 0.7fr 7.7rem;
-        }
-        &__clipboard {
-            margin: 0 1rem;
-            cursor: pointer;
-
-            &-wrapper {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                width: 95%;
-
-                > span {
-                    margin-right: 0.4rem;
-                }
-            }
-        }
-        &__timeline {
-            padding: 0 1.4rem;
-
-            @include mobile {
-                margin-left: 1.2rem;
-
-                & .dc-timeline {
-                    &__flex {
-                        margin-top: 2.4rem;
-                    }
-                }
-            }
-        }
-        &__scope {
-            background: var(--general-section-1);
-            padding: 0.8rem;
-            margin-bottom: 1.6rem;
-
-            &:last-child {
-                margin-bottom: 0;
-            }
-            &-item {
-                margin-bottom: 0.8rem;
-                display: grid;
-                grid-template-columns: 1.6fr 0.4fr;
-
-                > div {
-                    min-width: 7.8rem;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                }
-                &:last-child {
-                    margin-bottom: 0;
-                }
-            }
-            &--title {
-                @include typeface(--small-left-bold-black, none);
-            }
-        }
-        &__scrollbars {
-            height: 100%;
-            width: 100%;
         }
     }
     .two-factor {
@@ -633,12 +505,10 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__title {
-            @include typeface(--title-left-bold-prominent, none);
             margin-bottom: 1.5rem;
             margin-left: 1.2rem;
 
             @include mobile {
-                padding-top: 2.4rem;
                 margin-right: 1.2rem;
             }
         }
@@ -689,11 +559,9 @@ $MIN_HEIGHT_FLOATING: calc(
                 width: auto;
             }
             &--title {
-                @include typeface(--title-center-bold-prominent, none);
                 margin-top: 2.4rem;
             }
             &--message {
-                @include typeface(--paragraph-center-normal-black, none);
                 margin: 1.6rem 0 0;
             }
             &--code {
@@ -716,273 +584,6 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-top: 6.4rem;
         }
     }
-    .self-exclusion {
-        height: 100%;
-        width: 100%;
-
-        & .dc-dialog__content {
-            max-width: 100%;
-            width: 100%;
-            height: 100%;
-        }
-        & .dc-input__label {
-            background: var(--general-main-1);
-        }
-        & .dc-field--error {
-            padding-left: 0;
-        }
-        &__wrapper {
-            display: flex;
-            width: 100%;
-            height: 100%;
-
-            @media (min-width: 1025px) and (max-width: 1199px) {
-                .account__article {
-                    width: 19rem; // Need to decrease width for better user experience and wider Fields
-                }
-            }
-
-            @include mobile {
-                flex-direction: column;
-                overflow-y: auto;
-                max-height: calc(100% - 72px);
-            }
-        }
-        &__error {
-            margin-top: 1.6rem;
-            margin-bottom: 1.6rem;
-        }
-        &__confirm {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-
-            &-header {
-                margin-top: 3.6rem;
-                @include typeface(--title-center-bold-prominent);
-                margin-bottom: 1.4rem;
-            }
-            &-item {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                grid-gap: 1.6rem;
-                padding: 1.6rem 0;
-                border-bottom: 1px solid var(--border-normal);
-                max-width: 40rem;
-                width: 100%;
-            }
-            &-note {
-                margin: 2.4rem 0;
-                max-width: 67.2rem;
-            }
-            &-bold {
-                @include typeface(--paragraph-left-bold-red);
-            }
-        }
-        &__back {
-            @include typeface(--paragraph-left-bold-prominent);
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-
-            &:hover {
-                text-decoration: underline;
-            }
-            & > svg {
-                width: 1.6rem;
-                height: 1.6rem;
-                margin-right: 0.8rem;
-            }
-        }
-        &__form {
-            margin-right: 1rem;
-            @include mobile {
-                margin: 0 1.6rem;
-            }
-        }
-        &__header {
-            @include typeface(--paragraph-left-bold-prominent);
-            margin-bottom: 1.6rem;
-            margin-top: 2.4rem;
-
-            &:first-child {
-                margin-top: 0;
-            }
-        }
-        &__item {
-            background: var(--general-main-1);
-            border: 1px solid var(--border-normal);
-            padding: 1.6rem;
-            border-radius: 4px;
-
-            &-wrapper {
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
-                grid-gap: 1.6rem;
-
-                @media (max-width: 1024px) {
-                    grid-template-columns: 1fr;
-                }
-                @include mobile {
-                    grid-template-columns: 1fr;
-                }
-            }
-            &-title {
-                @include typeface(--paragraph-left-bold-prominent);
-                margin-bottom: 0.8rem;
-            }
-            &-field {
-                margin-bottom: 1.4rem;
-            }
-        }
-        &__link {
-            color: var(--text-general);
-        }
-        &__scrollbars {
-            height: 100%;
-            width: 100%;
-            flex: 1;
-        }
-        &__button {
-            &-wrapper {
-                position: sticky;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                height: 7.2rem;
-                padding: 1.4rem 2.4rem;
-                background-color: var(--general-main-1);
-                border-top: 1px solid var(--border-normal);
-                display: flex;
-                align-items: center;
-                justify-content: flex-end;
-                margin-top: 2.4rem;
-
-                @include mobile {
-                    position: absolute;
-                }
-            }
-        }
-        &__warning {
-            background-color: rgba(255, 173, 58, 0.3);
-            border-radius: $BORDER_RADIUS;
-            margin-top: 0.8rem;
-            position: relative;
-
-            &-icon {
-                position: absolute;
-                top: 0.8rem;
-                left: 0.8rem;
-            }
-            &-textbox {
-                padding: 0.9rem 3.2rem;
-            }
-            &-link {
-                color: var(--text-general);
-                cursor: pointer;
-                font-weight: bold;
-                text-decoration: none;
-            }
-        }
-    }
-    .account-limit-container {
-        height: 100%;
-        width: 100%;
-
-        &__wrapper {
-            display: flex;
-            width: 100%;
-            height: 100%;
-
-            @include mobile {
-                flex-direction: column;
-
-                .account__scrollbars_container--grid-layout {
-                    overflow: unset;
-                }
-                &:last-child {
-                    padding-bottom: 1.6rem;
-                }
-            }
-        }
-        &__scrollbars {
-            height: 100%;
-            width: 100%;
-            flex: 1;
-        }
-        &-title {
-            @include mobile {
-                padding-bottom: 0.8rem;
-            }
-        }
-        .account-management-table {
-            tr th:nth-child(2),
-            tr td:nth-child(2) {
-                text-align: right;
-            }
-            th {
-                padding: 2rem 0 0.8rem;
-                border-bottom: 2px solid var(--general-section-1);
-            }
-            td {
-                line-height: 3.6rem;
-
-                .account-limit-container__extra-info {
-                    padding-bottom: 0.8rem;
-                }
-                @include mobile {
-                    line-height: 2.4rem;
-                }
-            }
-        }
-        .account-management-flex-wrapper {
-            @include desktop {
-                align-items: center;
-            }
-            @include mobile {
-                flex-direction: column;
-            }
-        }
-        &__extra-info {
-            line-height: 1.4rem;
-            color: var(--text-less-prominent);
-            font-size: 1rem;
-            font-weight: normal;
-        }
-        @include mobile {
-            &__main-text {
-                margin-top: 2.4rem;
-                font-size: 1.2rem;
-            }
-            &__content {
-                padding: 0 0.8rem;
-            }
-            .account__text {
-                font-size: 1rem;
-            }
-        }
-    }
-    .account-limit-popover {
-        display: flex;
-        align-content: center;
-        padding-left: 4px;
-        @extend %inline-icon;
-    }
-    .account-limit-popover-target {
-        height: 100%;
-        display: flex;
-        align-items: center;
-    }
-    .account-limit-info {
-        &__inset_header {
-            display: flex;
-            align-items: center;
-        }
-        * {
-            padding-left: 8px;
-        }
-    }
     .login-history {
         height: 100%;
         width: 100%;
@@ -994,9 +595,10 @@ $MIN_HEIGHT_FLOATING: calc(
             &__row,
             &__header {
                 /* Date-Action-Browser-IP-Status */
-                grid-template-columns: 190px 65px 248px minmax(133px, 308px) 120px;
+                grid-template-columns: 19rem 7.5rem 24.8rem minmax(13.3rem, 30.8rem) 12rem;
                 padding: 1rem;
                 padding-left: 0;
+                background-color: var(--general-main-1);
             }
             &__row {
                 border-bottom: 1px solid var(--border-disabled);
@@ -1027,13 +629,9 @@ $MIN_HEIGHT_FLOATING: calc(
                         display: block;
 
                         &--title {
-                            font-size: var(--text-size-xxs);
-                            font-weight: var(--text-weight-bold);
                             font-stretch: normal;
                             font-style: normal;
-                            line-height: var(--text-lh-m);
                             letter-spacing: normal;
-                            color: var(--text-prominent);
                         }
                         &--action {
                             text-transform: capitalize;
@@ -1444,6 +1042,13 @@ $MIN_HEIGHT_FLOATING: calc(
 /** @define onfido-container; weak */
 .onfido-container {
     margin-top: 24px;
+
+    &__message {
+        padding: 1rem;
+        margin: 0 auto 1.4rem;
+        width: 94vw; // same as onfido
+        max-width: 53rem;
+    }
     @include mobile {
         margin-top: 0;
 
@@ -1538,7 +1143,6 @@ $MIN_HEIGHT_FLOATING: calc(
             align-items: center;
 
             &-header {
-                @include typeface(--title-center-bold-prominent, none);
                 margin: 1.6rem 0 2.4rem;
             }
             &-image {
@@ -1562,77 +1166,6 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 }
 
-.dc-modal__container_self_exclusion__article-modal {
-    .self-exclusion {
-        &__article {
-            max-width: 440px;
-            max-height: 480px;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-
-            &-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 1.6rem 2.4rem;
-                @include typeface(--title-center-bold-prominent, none);
-                border-bottom: 1px solid var(--border-normal);
-            }
-            &-icon {
-                cursor: pointer;
-            }
-            &-content {
-                padding: 2.4rem;
-            }
-        }
-    }
-}
-
-.dc-modal__container_self_exclusion__modal {
-    .self-exclusion {
-        &__popup {
-            display: flex;
-            width: 440px;
-            height: 392px;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-            padding: 2.4rem;
-
-            &-header {
-                @include typeface(--title-center-bold-prominent, none);
-                margin: 3.3rem 0 0.8rem;
-            }
-            &-desc {
-                @include typeface(--paragraph-center-normal-black, none);
-                margin-bottom: 2.4rem;
-            }
-            &-image {
-                width: 12.8rem;
-                height: 12.8rem;
-            }
-            &-buttons {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-
-                & > button:first-child {
-                    width: fit-content;
-                    margin-bottom: 1.6rem;
-                }
-            }
-            &-error {
-                margin-top: 1.6rem;
-                @include typeface(--paragraph-center-bold-red, none);
-            }
-            @include mobile {
-                width: 300px;
-                height: 272px;
-            }
-        }
-    }
-}
 /* stylelint-enable */
 
 /** @define proof-of-identity */
@@ -1648,6 +1181,7 @@ $MIN_HEIGHT_FLOATING: calc(
 /** @define deactivate-account; weak */
 .deactivate-account {
     max-width: 67.2rem;
+    padding-bottom: 1.6rem;
 
     &__information {
         @include typeface(--paragraph-left-normal-prominent, none);
@@ -1699,10 +1233,6 @@ $MIN_HEIGHT_FLOATING: calc(
         &__checkbox {
             margin-top: 10px;
             width: fit-content;
-
-            .dc-checkbox__label {
-                font-weight: normal;
-            }
         }
         &__input {
             margin: 16px 0 0;
@@ -1713,14 +1243,37 @@ $MIN_HEIGHT_FLOATING: calc(
                 min-height: 96px;
             }
         }
+
+        &__hint {
+            margin-top: 0.8rem;
+        }
+
+        &__footer {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            .dc-form-submit-button {
+                margin: 1.6rem 0;
+            }
+        }
     }
     @include mobile {
         width: calc(100% - 3rem);
         margin: 0 auto;
 
-        .dc-form-submit-button {
-            background-color: var(--general-main-1);
+        .deactivate-account-reasons {
+            &__footer {
+                display: flex;
+                flex-direction: column;
+
+                .dc-form-submit-button {
+                    margin: 0.8rem 0;
+                    background-color: var(--general-main-1);
+                }
+            }
         }
+
         &:first-child {
             & > div {
                 display: flex;
@@ -1737,13 +1290,10 @@ $MIN_HEIGHT_FLOATING: calc(
     @include mobile {
         max-height: 70vh;
     }
-    .deactivate-account-error-scroll {
-        overflow-y: auto;
-    }
     .dc-modal-header {
         border: none;
-        min-width: 430px;
-        margin-bottom: 8px;
+        max-width: 43rem;
+        margin-bottom: 0.8rem;
     }
     .account-closure-warning-modal {
         display: flex;
@@ -1757,8 +1307,12 @@ $MIN_HEIGHT_FLOATING: calc(
         }
 
         .dc-form-submit-button {
-            justify-content: center;
-            padding: 2rem 0 0;
+            align-self: center;
+            padding: 1.6rem 0 0;
+
+            > button {
+                width: 10.3rem;
+            }
 
             @include mobile {
                 background: unset;
@@ -1775,32 +1329,37 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         &__content-wrapper {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            margin-top: 4px;
+            margin-top: 0.8rem;
+
+            > :first-child {
+                margin-bottom: 0.4rem;
+            }
         }
     }
 
     .deactivate-account-error {
-        padding: 0 24px 24px 24px;
+        padding: 0 2.4rem;
         &__title {
-            margin-bottom: 5px;
+            margin-bottom: 0.5rem;
         }
         &__account-details {
             display: flex;
             align-items: center;
         }
         &__account {
-            margin-left: 8px;
+            margin-left: 0.8rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
         &__container {
             display: flex;
-            padding: 3px 3px 3px 16px;
+            padding: 0.3rem 0.3rem 0.3rem 1.6rem;
             justify-content: space-between;
             align-items: center;
-            max-width: 264px;
+            max-width: 26.4rem;
         }
         &__details {
             color: var(--text-prominent);
@@ -1808,11 +1367,16 @@ $MIN_HEIGHT_FLOATING: calc(
             line-height: 1.43;
         }
         &__button {
-            height: 40px;
-            width: 77px;
+            height: 4rem;
+            width: 7.7rem;
             float: right;
-            margin-right: 24px;
-            margin-bottom: 24px;
+            margin: 1.6rem 2.4rem;
+        }
+
+        @include mobile {
+            &__button {
+                margin: 1.6rem;
+            }
         }
     }
 }

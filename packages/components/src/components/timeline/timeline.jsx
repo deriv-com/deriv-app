@@ -1,10 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
+import Text from '../text';
 
 const Oval = ({ children }) => {
     return (
         <div className='dc-timeline__oval'>
-            <span className='dc-timeline__number'>{children}</span>
+            <Text color='colored-background' sizd='s' weight='bold' className='dc-timeline__number'>
+                {children}
+            </Text>
         </div>
     );
 };
@@ -21,7 +24,9 @@ const Timeline = ({ children, ...props }) => {
                 >
                     <Oval>{idx + 1}</Oval>
                     <div className='dc-timeline__container'>
-                        <h2 className='dc-timeline__title'>{child.props.item_title}</h2>
+                        <Text as='h2' color='prominent' size='xs' className='dc-timeline__title'>
+                            {child.props.item_title}
+                        </Text>
                         <div className='dc-timeline__content'>{child}</div>
                     </div>
                 </div>

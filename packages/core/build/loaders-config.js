@@ -4,9 +4,11 @@ const path = require('path');
 const js_loaders = [
     '@deriv/shared/src/loaders/react-import-loader.js',
     '@deriv/shared/src/loaders/deriv-account-loader.js',
+    '@deriv/shared/src/loaders/deriv-cashier-loader.js',
     {
         loader: 'babel-loader',
         options: {
+            cacheDirectory: true,
             rootMode: 'upward',
         },
     },
@@ -40,6 +42,7 @@ const svg_loaders = [
     {
         loader: 'babel-loader',
         options: {
+            cacheDirectory: true,
             rootMode: 'upward',
         },
     },
@@ -62,9 +65,6 @@ const svg_loaders = [
 const css_loaders = [
     {
         loader: MiniCssExtractPlugin.loader,
-        options: {
-            sourceMap: true,
-        },
     },
     {
         loader: 'css-loader',
@@ -76,8 +76,8 @@ const css_loaders = [
         loader: 'postcss-loader',
         options: {
             sourceMap: true,
-            config: {
-                path: path.resolve(__dirname),
+            postcssOptions: {
+                config: path.resolve(__dirname),
             },
         },
     },

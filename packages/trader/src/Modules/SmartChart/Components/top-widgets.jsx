@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isEnded, isDigitContract } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { AssetInformation, ChartTitle } from 'Modules/SmartChart';
+import { ChartTitle } from 'Modules/SmartChart';
 
 const TradeInfo = ({ markers_array, granularity }) => {
     const latest_tick_contract = markers_array[markers_array.length - 1];
@@ -17,9 +17,9 @@ const TradeInfo = ({ markers_array, granularity }) => {
     const { contract_type, tick_stream, tick_count } = latest_tick_contract.contract_info;
     const current_tick = isDigitContract(contract_type) ? tick_stream.length : Math.max(tick_stream.length - 1, 0);
     return (
-        <span className='recent-trade-info'>
+        <Text weight='bold' className='recent-trade-info'>
             {localize('Tick')} {current_tick}/{tick_count}
-        </span>
+        </Text>
     );
 };
 
@@ -35,13 +35,13 @@ const TopWidgets = ({
     onSymbolChange,
     y_axis_width,
     theme,
-    active_category,
+    open_market,
     open,
     is_digits_widget_active,
 }) => {
     const ChartTitleLocal = (
         <ChartTitle
-            active_category={active_category}
+            open_market={open_market}
             open={open}
             enabled={is_title_enabled}
             onChange={onSymbolChange}
@@ -71,7 +71,6 @@ const TopWidgets = ({
             {InfoBox}
             <MobileWrapper>{portal}</MobileWrapper>
             <DesktopWrapper>{ChartTitleLocal}</DesktopWrapper>
-            <AssetInformation />
         </React.Fragment>
     );
 };

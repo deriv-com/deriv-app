@@ -1,11 +1,12 @@
 import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { FormSubmitButton } from '@deriv/components';
+import { FormSubmitButton, Text } from '@deriv/components';
 import { isMobile, reorderCurrencies } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
-import { RadioButtonGroup, RadioButton } from './currency-selector.jsx';
+import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
+import './currency-selector.scss';
 
 const FIAT_CURRENCY_TYPE = 'fiat';
 
@@ -29,13 +30,13 @@ const ChangeAccountCurrency = ({ legal_allowed_currencies, value, onSubmit, form
                         handleSubmit();
                     }}
                 >
-                    <h1 className='change-currency__title'>
+                    <Text as='h1' color='prominent' weight='bold' align='center' className='change-currency__title'>
                         <Localize i18n_default_text='Change your currency' />
-                    </h1>
-                    <h3 className='change-currency__sub-title'>
+                    </Text>
+                    <Text as='h3' size='xxs' align='center' className='change-currency__sub-title'>
                         <Localize i18n_default_text='Choose the currency you would like to trade with.' />
-                    </h3>
-                    <RadioButtonGroup
+                    </Text>
+                    <CurrencyRadioButtonGroup
                         id='fiat'
                         label={localize('Cryptocurrencies')}
                         className='currency-selector__radio-group currency-selector__radio-group--with-margin'
@@ -48,14 +49,14 @@ const ChangeAccountCurrency = ({ legal_allowed_currencies, value, onSubmit, form
                         {getReorderedCurrencies().map(currency => (
                             <Field
                                 key={currency.value}
-                                component={RadioButton}
+                                component={CurrencyRadioButton}
                                 name='fiat'
                                 id={currency.value}
                                 label={currency.name}
                                 selected={currency.value === props.currency}
                             />
                         ))}
-                    </RadioButtonGroup>
+                    </CurrencyRadioButtonGroup>
                     <FormSubmitButton
                         className='change-currency__button'
                         is_disabled={isSubmitting || !values.fiat}

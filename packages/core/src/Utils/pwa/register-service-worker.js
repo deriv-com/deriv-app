@@ -1,7 +1,7 @@
 import { getUrlBase } from '@deriv/shared';
 
 const EVERY_HOUR = 3600000; // 1000 * 60 * 60
-const AUTO_REFRESH_THRESHOLD = 10000; // 10 Seconds
+const AUTO_REFRESH_THRESHOLD = 120000; // 120 Seconds
 
 let interval_id;
 let should_refresh_on_register = false;
@@ -34,10 +34,16 @@ export default function register() {
                     }, EVERY_HOUR);
 
                     registration.onupdatefound = () => {
+                        console.log(`SW Update found: ${navigator.serviceWorker.controller.scriptURL}`);
                         const installingWorker = registration.installing;
                         installingWorker.onstatechange = () => {
                             if (installingWorker.state === 'installed') {
-                                if (navigator.serviceWorker.controller && AUTO_REFRESH_THRESHOLD < performance.now()) {
+                                if (
+                                    navigator.serviceWorker.controller &&
+                                    should_refresh_on_register &&
+                                    navigator.serviceWorker.controller.scriptURL.replace(location.href, '') ===
+                                        'service-worker.js'
+                                ) {
                                     // User's first visit:
                                     // At this point, the old content will have been purged and
                                     // the fresh content will have been added to the cache.
@@ -62,9 +68,7 @@ export default function register() {
             // This fires when the service worker controlling this page
             // changes, eg a new worker has skipped waiting and become
             // the new active worker.
-            if (AUTO_REFRESH_THRESHOLD > performance.now() && should_refresh_on_register) {
-                should_refresh_on_register = false;
-            }
+            should_refresh_on_register = AUTO_REFRESH_THRESHOLD > performance.now();
         });
     }
 }

@@ -5,16 +5,7 @@ import { Div100vhContainer, Modal, FormSubmitButton, Text } from '@deriv/compone
 import { isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
-const BriefModal = ({
-    disableApp,
-    enableApp,
-    IntervalField,
-    is_visible,
-    logout,
-    onSubmit,
-    openStatement,
-    validateForm,
-}) => {
+const BriefModal = ({ disableApp, enableApp, IntervalField, is_visible, logout, onSubmit, validateForm }) => {
     return (
         <Modal
             className='reality-check'

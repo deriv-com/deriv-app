@@ -22,7 +22,7 @@ const BriefModal = ({
             is_open={is_visible}
             disableApp={disableApp}
             has_close_icon={false}
-            title={localize('Reality check')}
+            title={localize('Your trading status')}
             portalId='modal_root_absolute'
             width='720px'
         >
@@ -47,7 +47,7 @@ const BriefModal = ({
                                     line_height='m'
                                     className='reality-check__text reality-check__text--description'
                                 >
-                                    <Localize i18n_default_text='Options trading can become a real addiction, as can any other activity pushed to its limits. To avoid the danger of such an addiction, we provide a reality-check that gives you a summary of your trades and accounts on a regular basis.' />
+                                    <Localize i18n_default_text='From time to time, we’ll show you how long you’ve been trading and how much you’ve won or lost.' />
                                 </Text>
                                 <Text
                                     as='p'
@@ -55,10 +55,7 @@ const BriefModal = ({
                                     line_height='m'
                                     className='reality-check__text reality-check__text--description'
                                 >
-                                    <Localize
-                                        i18n_default_text='Would you like to check your statement first? <0>Check statement</0>'
-                                        components={[<a key={0} className='link' onClick={openStatement} />]}
-                                    />
+                                    <Localize i18n_default_text='This is so that you can decide whether to keep trading or to stop.' />
                                 </Text>
 
                                 <div className='reality-check__separator reality-check__separator--large' />
@@ -70,7 +67,7 @@ const BriefModal = ({
                                     align='center'
                                     className='reality-check__text reality-check__text--center'
                                 >
-                                    <Localize i18n_default_text='Please specify your preferred interval reality check in minutes:' />
+                                    <Localize i18n_default_text='When do you want to see this information?' />
                                 </Text>
 
                                 <IntervalField

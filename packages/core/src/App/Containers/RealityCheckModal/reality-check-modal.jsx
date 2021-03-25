@@ -21,7 +21,7 @@ const IntervalField = ({ values, touched, errors, handleChange, handleBlur }) =>
                     value={values.interval}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    hint={localize('Interval should be between 10-60 minutes')}
+                    hint={localize('Min: 10 minutes     Max: 60 minutes')}
                     required
                     error={touched.interval && errors.interval}
                     autoComplete='off'

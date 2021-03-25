@@ -113,7 +113,7 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
                         const tax_regex = from_list[0]?.tin_format?.[0];
                         return tax_regex ? new RegExp(tax_regex).test(value) : true;
                     },
-                    localize('This Tax Identification Number (TIN) is invalid.'),
+                    localize('Please enter a valid Tax Identification Number (TIN).'),
                 ],
             ],
         },

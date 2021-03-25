@@ -232,7 +232,8 @@ const MT5AccountCard = ({
                 )}
                 <div
                     className={classNames('mt5-account-card__type', {
-                        'mt5-account-card__type--has-banner': has_popular_banner || has_demo_banner,
+                        'mt5-account-card__type--has-banner':
+                            has_popular_banner || has_demo_banner || has_server_banner,
                     })}
                     id={`mt5_${type.category}_${type.type}`}
                 >

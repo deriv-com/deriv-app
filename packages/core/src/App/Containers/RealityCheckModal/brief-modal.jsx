@@ -34,7 +34,7 @@ const BriefModal = ({ disableApp, enableApp, IntervalField, is_visible, logout, 
                             >
                                 <Text
                                     as='p'
-                                    size='xs'
+                                    size='s'
                                     line_height='m'
                                     className='reality-check__text reality-check__text--description'
                                 >
@@ -42,18 +42,18 @@ const BriefModal = ({ disableApp, enableApp, IntervalField, is_visible, logout, 
                                 </Text>
                                 <Text
                                     as='p'
-                                    size='xs'
+                                    size='s'
                                     line_height='m'
                                     className='reality-check__text reality-check__text--description'
                                 >
                                     <Localize i18n_default_text='This is so that you can decide whether to keep trading or to stop.' />
                                 </Text>
 
-                                <div className='reality-check__separator reality-check__separator--large' />
+                                <div className='reality-check__separator' />
 
                                 <Text
                                     as='p'
-                                    size='xs'
+                                    size='s'
                                     line_height='m'
                                     align='center'
                                     className='reality-check__text reality-check__text--center'

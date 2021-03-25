@@ -71,6 +71,12 @@
         overflow-x: auto;
     }
 
+    &__modal {
+        @include mobile {
+            max-width: 100vw;
+        }
+    }
+
     &__stats {
         border-bottom: none;
         display: flex;

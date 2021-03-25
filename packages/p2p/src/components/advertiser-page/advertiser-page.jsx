@@ -1,14 +1,12 @@
 import React from 'react';
-import { Button, Icon, Loading, Modal, Text, ThemedScrollbars } from '@deriv/components';
+import { Icon, Loading, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import PropTypes from 'prop-types';
 import { buy_sell } from 'Constants/buy-sell';
-import BuySellForm from 'Components/buy-sell/buy-sell-form.jsx';
-import FormError from 'Components/form/error.jsx';
+import BuySellModal from 'Components/buy-sell/buy-sell-modal.jsx';
 import { localize } from 'Components/i18next';
-import NicknameForm from 'Components/nickname/nickname-form.jsx';
 import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
 import { useStores } from 'Stores';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
@@ -16,7 +14,7 @@ import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
-    const { advertiser_page_store, general_store } = useStores();
+    const { advertiser_page_store } = useStores();
 
     const { basic_verification, first_name, full_verification, last_name } = advertiser_page_store.advertiser_info;
 
@@ -32,8 +30,6 @@ const AdvertiserPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const Form = general_store.nickname ? BuySellForm : NicknameForm;
-
     if (advertiser_page_store.is_loading) {
         return <Loading is_fullscreen={false} />;
     }
@@ -44,46 +40,12 @@ const AdvertiserPage = () => {
 
     return (
         <div className='advertiser-page'>
-            {advertiser_page_store.show_ad_popup && (
-                <Modal
-                    className='buy-sell__modal'
-                    height={advertiser_page_store.counterparty_type === buy_sell.BUY ? '400px' : '649px'}
-                    width='456px'
-                    is_open={advertiser_page_store.show_ad_popup}
-                    title={advertiser_page_store.modal_title}
-                    toggleModal={advertiser_page_store.onCancelClick}
-                >
-                    {/* Parent height - Modal.Header height - Modal.Footer height */}
-                    <ThemedScrollbars height='calc(100% - 5.8rem - 7.4rem)'>
-                        <Modal.Body>
-                            <Form
-                                advert={advertiser_page_store.advert}
-                                handleClose={advertiser_page_store.onCancelClick}
-                                handleConfirm={advertiser_page_store.onConfirmClick}
-                                setIsSubmitDisabled={advertiser_page_store.setIsSubmitDisabled}
-                                setErrorMessage={advertiser_page_store.setFormErrorMessage}
-                                setSubmitForm={advertiser_page_store.setSubmitForm}
-                            />
-                        </Modal.Body>
-                    </ThemedScrollbars>
-                    <Modal.Footer has_separator>
-                        <FormError message={advertiser_page_store.form_error_message} />
-                        <Button.Group>
-                            <Button secondary type='button' onClick={advertiser_page_store.onCancelClick} large>
-                                {localize('Cancel')}
-                            </Button>
-                            <Button
-                                is_disabled={advertiser_page_store.is_submit_disabled}
-                                primary
-                                large
-                                onClick={advertiser_page_store.submitForm}
-                            >
-                                {localize('Confirm')}
-                            </Button>
-                        </Button.Group>
-                    </Modal.Footer>
-                </Modal>
-            )}
+            <BuySellModal
+                selected_ad={advertiser_page_store.advert}
+                should_show_popup={advertiser_page_store.show_ad_popup}
+                setShouldShowPopup={advertiser_page_store.setShowAdPopup}
+                table_type={advertiser_page_store.counterparty_type === buy_sell.BUY ? buy_sell.BUY : buy_sell.SELL}
+            />
             <div className='advertiser-page__header'>
                 <div className='advertiser-page__header-details'>
                     <UserAvatar nickname={advertiser_page_store.advertiser_details_name} size={32} text_size='xxs' />

@@ -79,7 +79,7 @@ const MT5RealAccountDisplay = ({
         }
     };
     const onSelectRealFinancialStp = () => {
-        WS.triggerMt5AccountBO();
+        WS.triggerMt5AccountBO({ email: client_email });
         const account_type = {
             category: 'real',
             type: 'financial_stp',

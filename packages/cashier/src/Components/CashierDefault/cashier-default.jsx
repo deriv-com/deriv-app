@@ -11,6 +11,7 @@ import CashierDefaultDetail from './cashier-default-detail.jsx';
 const CashierDefault = ({
     accounts_list,
     currency,
+    is_mobile,
     is_eu,
     is_p2p_enabled,
     is_payment_agent_visible,
@@ -38,7 +39,6 @@ const CashierDefault = ({
             onClickDeposit();
             return;
         }
-        history.push(routes.trade);
         openRealAccountSignup('deposit_cash');
     };
 
@@ -68,9 +68,9 @@ const CashierDefault = ({
     };
 
     return (
-        <div style={{ height: 'calc(100vh - 20rem)' }}>
+        <div className='cashier-default'>
             <div className='cashier-default-header'>
-                <Text size='sm'>
+                <Text size={is_mobile ? 's' : 'sm'}>
                     <Localize i18n_default_text='Choose a way to fund your account' />
                 </Text>
             </div>
@@ -82,6 +82,7 @@ const CashierDefault = ({
                         detail_contents={deposit.detail_contents}
                         detail_description={deposit.detail_description}
                         detail_header={deposit.detail_header}
+                        is_mobile={is_mobile}
                     />
                 ))}
             </ThemedScrollbars>
@@ -90,9 +91,9 @@ const CashierDefault = ({
 };
 
 CashierDefault.propTypes = {
-    account_needed_modal_props: PropTypes.object,
     accounts_list: PropTypes.array,
     currency: PropTypes.string,
+    is_mobile: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_p2p_enabled: PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
@@ -102,10 +103,10 @@ CashierDefault.propTypes = {
 };
 
 export default connect(({ client, modules, ui }) => ({
-    account_needed_modal_props: ui.account_needed_modal_props,
     accounts_list: modules.cashier.config.account_transfer.accounts_list,
     currency: client.currency,
     is_eu: client.is_eu,
+    is_mobile: ui.is_mobile,
     is_p2p_enabled: modules.cashier.is_p2p_enabled,
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
     openRealAccountSignup: ui.openRealAccountSignup,

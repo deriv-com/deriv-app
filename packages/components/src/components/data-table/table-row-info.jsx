@@ -8,6 +8,7 @@ import Icon from '../icon/icon.jsx';
 const TableRowInfo = ({ replace, is_footer, cells, className }) => {
     const [show_details, setShowDetails] = React.useState(false);
     const [is_copied, setIsCopied] = React.useState(false);
+    const cryptocurrency = 'BTC' || 'ETH' || 'LTC' || 'USDT';
 
     const toggleDetails = () => {
         if (replace) {
@@ -48,7 +49,7 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
                         {replace?.component ?? (
                             <Text as='p' size='xs' className='statement__row--detail-text' align='center'>
                                 {replace.message}
-                                {replace.message.includes(': ') ? copy_to_clipboard : null}
+                                {replace.message.includes(cryptocurrency) ? copy_to_clipboard : null}
                             </Text>
                         )}
                     </div>

@@ -10,6 +10,7 @@ const Clipboard = ({
     success_message,
     className,
     popoverClassName,
+    popover_props = {},
     popoverAlignment = 'bottom',
 }) => {
     const [is_copied, setIsCopied] = React.useState(false);
@@ -43,6 +44,7 @@ const Clipboard = ({
                 classNameBubble={classNames('dc-clipboard__popover', popoverClassName)}
                 message={is_copied ? success_message : info_message}
                 relative_render
+                {...popover_props}
             >
                 {is_copied && (
                     <Icon

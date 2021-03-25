@@ -11,6 +11,7 @@
 
 export { default as Accordion } from './components/accordion';
 export { default as AppCard } from './components/app-card';
+export { default as AppSettings } from './components/app-settings';
 export { default as AutoHeightWrapper } from './components/auto-height-wrapper';
 export { default as Autocomplete } from './components/autocomplete';
 export { default as AutoSizer } from './components/autosizer';

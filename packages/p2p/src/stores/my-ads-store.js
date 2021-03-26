@@ -12,17 +12,18 @@ export default class MyAdsStore extends BaseStore {
     @observable api_error = '';
     @observable api_error_message = '';
     @observable api_table_error_message = '';
+    @observable available_balance = null;
     @observable contact_info = '';
     @observable default_advert_description = '';
     @observable error_message = '';
     @observable has_more_items_to_load = false;
-    @observable is_form_loading = true;
-    @observable is_table_loading = true;
+    @observable is_delete_modal_open = false;
+    @observable is_form_loading = false;
+    @observable is_table_loading = false;
     @observable is_loading = false;
     @observable item_offset = 0;
     @observable payment_info = '';
     @observable selected_ad_id = '';
-    @observable should_show_popup = false;
     @observable show_ad_form = false;
 
     @action.bound
@@ -57,6 +58,7 @@ export default class MyAdsStore extends BaseStore {
                 this.setContactInfo(p2p_advertiser_info.contact_info);
                 this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
                 this.setPaymentInfo(p2p_advertiser_info.payment_info);
+                this.setAvailableBalance(p2p_advertiser_info.balance_available);
             } else {
                 this.setContactInfo('');
                 this.setDefaultAdvertDescription('');
@@ -132,7 +134,7 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     onClickDelete = id => {
         this.setSelectedAdId(id);
-        this.setShouldShowPopup(true);
+        this.setIsDeleteModalOpen(true);
     };
 
     @action.bound
@@ -196,6 +198,11 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
+    setAvailableBalance(available_balance) {
+        this.available_balance = available_balance;
+    }
+
+    @action.bound
     setContactInfo(contact_info) {
         this.contact_info = contact_info;
     }
@@ -213,6 +220,11 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setHasMoreItemsToLoad(has_more_items_to_load) {
         this.has_more_items_to_load = has_more_items_to_load;
+    }
+
+    @action.bound
+    setIsDeleteModalOpen(is_delete_modal_open) {
+        this.is_delete_modal_open = is_delete_modal_open;
     }
 
     @action.bound
@@ -246,19 +258,12 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    setShouldShowPopup(should_show_popup) {
-        this.should_show_popup = should_show_popup;
-    }
-
-    @action.bound
     setShowAdForm(show_ad_form) {
         this.show_ad_form = show_ad_form;
     }
 
     @action.bound
     validateCreateAdForm(values) {
-        // TODO: uncomment this when we have available_price
-        // const available_price = ;
         const validations = {
             default_advert_description: [v => !v || lengthValidator(v), v => !v || textValidator(v)],
             max_transaction: [
@@ -283,9 +288,7 @@ export default class MyAdsStore extends BaseStore {
             ],
             offer_amount: [
                 v => !!v,
-                // TODO: uncomment this when we have available_price
-                // v => v > available_price,
-                // TODO: remove v > 0 check when we have available_price
+                v => (values.type === buy_sell.SELL ? v <= this.available_balance : !!v),
                 v => !isNaN(v),
                 v =>
                     v > 0 &&
@@ -340,8 +343,7 @@ export default class MyAdsStore extends BaseStore {
 
         const getOfferAmountMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
-            // TODO: uncomment this when we have available_price
-            // localize('Min is {{value}}', { value: available_price }),
+            localize('Max available amount is {{value}}', { value: this.available_balance }),
             localize('Enter a valid amount'),
             localize('Enter a valid amount'),
             localize('{{field_name}} should not be below Min limit', { field_name }),

@@ -127,7 +127,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
                                 this.api.send({ proposal_open_contract: 1, contract_id: contract.contract_id });
                             }, ['PriceMoved']);
                         }
-                    }, 1000);
+                    }, 1500);
                 }
                 if (data.msg_type === 'authorize') {
                     this.accountInfo = data;

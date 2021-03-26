@@ -22,10 +22,7 @@ module.exports = function (env, argv) {
             },
         },
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
-        entry: {
-            main: './index.js',
-            importPushwoosh: './import-pushwoosh.js',
-        },
+        entry: './index.js',
         mode: IS_RELEASE ? 'production' : 'development',
         module: {
             rules: rules(),
@@ -60,7 +57,6 @@ module.exports = function (env, argv) {
             },
         },
         output: {
-            globalObject: 'this',
             filename: 'js/core.[name].[contenthash].js',
             publicPath: base,
             path: path.resolve(__dirname, '../dist'),

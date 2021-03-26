@@ -57,6 +57,7 @@ module.exports = function (env, argv) {
             },
         },
         output: {
+            globalObject: 'this',
             filename: 'js/core.[name].[contenthash].js',
             publicPath: base,
             path: path.resolve(__dirname, '../dist'),

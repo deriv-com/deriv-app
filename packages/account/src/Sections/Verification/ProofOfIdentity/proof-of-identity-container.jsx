@@ -154,7 +154,7 @@ const ProofOfIdentityContainer = ({
     }, [createVerificationConfig, previous_account_status, account_status]);
 
     const { needs_poa, is_unwelcome, allow_document_upload } = verification_status;
-    const is_rejected = identity_status_key === onfido_status_codes.rejected;
+    const is_rejected = identity_status_key === onfido_status_codes.rejected || onfido_status_codes.suspected;
     const has_rejected_reasons = !!rejected_reasons_key.length && is_rejected;
 
     if (api_error)

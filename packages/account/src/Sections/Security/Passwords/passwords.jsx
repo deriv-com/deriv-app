@@ -2,10 +2,10 @@ import React from 'react';
 import DerivPassword from './deriv-password.jsx';
 import TradingPassword from './trading-password.jsx';
 
-const Passwords = ({ email }) => (
+const Passwords = () => (
     <div className='account__passwords'>
-        <DerivPassword email={email} />
-        <TradingPassword email={email} />
+        <DerivPassword />
+        <TradingPassword />
     </div>
 );
 

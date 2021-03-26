@@ -113,7 +113,7 @@ const getModules = ({ is_dashboard }) => {
                         {
                             path: routes.passwords,
                             component: Account,
-                            getTitle: () => localize('Deriv password'),
+                            getTitle: () => localize('Passwords'),
                         },
                         {
                             path: routes.self_exclusion,

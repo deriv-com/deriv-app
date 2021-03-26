@@ -128,7 +128,7 @@ const generateSWConfig = is_release => ({
     skipWaiting: true,
     clientsClaim: true,
     ...(is_release && {
-        importScripts: [`https://cdn.pushwoosh.com/webpush/v3/pushwoosh-service-worker.js`],
+        importScripts: [`https://cdn.pushwoosh.com/webpush/v3/pushwoosh-service-worker.js${self.location.search}`],
     }),
 });
 

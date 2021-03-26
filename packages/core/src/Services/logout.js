@@ -1,5 +1,5 @@
 import { init } from '@livechat/customer-sdk';
-import { removeCookies, livechat_client_id, livechat_license_id } from '@deriv/shared';
+import { removeCookies, livechat_client_id, livechat_license_id, isTestLink } from '@deriv/shared';
 import SocketCache from '_common/base/socket_cache';
 import WS from './ws-methods';
 
@@ -37,6 +37,8 @@ const doLogout = response => {
     removeCookies('affiliate_token', 'affiliate_tracking', 'onfido_token');
     SocketCache.clear();
     sessionStorage.clear();
-    endChat();
+    if (!isTestLink()) {
+        endChat();
+    }
     return response;
 };

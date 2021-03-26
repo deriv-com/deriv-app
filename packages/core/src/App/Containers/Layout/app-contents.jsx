@@ -5,7 +5,6 @@ import { withRouter } from 'react-router';
 import WS from 'Services/ws-methods';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
 import { CookieStorage, isMobile, TRACKING_STATUS_KEY } from '@deriv/shared';
-import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import { connect } from 'Stores/connect';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 
@@ -18,7 +17,6 @@ const AppContents = ({
     is_cashier_visible,
     is_dark_mode,
     is_eu_country,
-    is_eu,
     is_logged_in,
     is_logging_in,
     is_mt5_page,
@@ -92,7 +90,6 @@ const AppContents = ({
         >
             <MobileWrapper>{children}</MobileWrapper>
             <DesktopWrapper>
-                <RedirectNoticeModal is_logged_in={is_logged_in} is_eu={is_eu} />
                 {/* Calculate height of user screen and offset height of header and footer */}
                 <ThemedScrollbars height='calc(100vh - 84px)' has_horizontal>
                     {children}

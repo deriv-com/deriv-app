@@ -1,9 +1,9 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
-import Article from 'Components/article';
+import AccountArticle from 'Components/article/article.jsx';
 
-const ATArticle = () => (
-    <Article
+const ApiTokenArticle = () => (
+    <AccountArticle
         title={localize('API token')}
         descriptions={[
             <Localize
@@ -14,4 +14,4 @@ const ATArticle = () => (
     />
 );
 
-export default ATArticle;
+export default ApiTokenArticle;

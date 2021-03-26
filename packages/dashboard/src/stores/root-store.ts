@@ -10,8 +10,7 @@ export default class RootStore {
     public cfd_store: unknown;
     public ws: unknown;
 
-    public constructor(ws: unknown) {
-        this.ws = ws;
+    public constructor() {
         this.ui_store = new UIStore(this);
         this.client_store = new ClientStore(this);
         this.config_store = new ConfigStore(this);

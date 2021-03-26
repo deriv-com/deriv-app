@@ -4,9 +4,9 @@ import RootStore from './root-store';
 
 let stores_context: React.Context<TRootStore>;
 
-export const useStores = (ws?: unknown): TRootStore => {
+export const initContext = (): void => {
     if (!stores_context) {
-        const root_store = new RootStore(ws);
+        const root_store = new RootStore();
 
         stores_context = React.createContext<TRootStore>({
             ui_store: root_store.ui_store,
@@ -15,6 +15,6 @@ export const useStores = (ws?: unknown): TRootStore => {
             cfd_store: root_store.cfd_store as TCFDStore,
         });
     }
-
-    return React.useContext(stores_context);
 };
+
+export const useStores = (): TRootStore => React.useContext(stores_context);

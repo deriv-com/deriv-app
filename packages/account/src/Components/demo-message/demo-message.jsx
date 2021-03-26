@@ -1,13 +1,9 @@
 import React from 'react';
-import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import IconMessageContent from 'Components/icon-message-content';
+import IconWithMessage from 'Components/icon-with-message';
 
 const DemoMessage = () => (
-    <IconMessageContent
-        message={localize('This feature is not available for demo accounts.')}
-        icon={<Icon icon='IcPoaLock' size={128} />}
-    />
+    <IconWithMessage icon='IcPoaLock' message={localize('This feature is not available for demo accounts.')} />
 );
 
 export default DemoMessage;

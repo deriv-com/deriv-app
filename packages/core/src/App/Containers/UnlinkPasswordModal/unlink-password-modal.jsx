@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
-import { Button, Dialog, PasswordInput, PasswordMeter, Text } from '@deriv/components';
-import { redirectToLogin, validPassword, validLength, getErrorMessages } from '@deriv/shared';
-import { getLanguage, localize, Localize } from '@deriv/translations';
+import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text } from '@deriv/components';
+import { getErrorMessages, toTitleCase, validPassword, validLength } from '@deriv/shared';
+import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/index';
 
-const ResetPassword = ({ logoutClient, verification_code }) => {
+const UnlinkPassword = ({ social_identity_provider, toggleResetPasswordModal, verification_code }) => {
     const onResetComplete = (error_msg, actions) => {
         actions.setSubmitting(false);
         actions.resetForm({ password: '' });
@@ -18,12 +18,7 @@ const ResetPassword = ({ logoutClient, verification_code }) => {
             actions.setStatus({ error_msg });
             return;
         }
-
         actions.setStatus({ reset_complete: true });
-
-        logoutClient().then(() => {
-            redirectToLogin(false, getLanguage(), false);
-        });
     };
 
     const handleSubmit = (values, actions) => {
@@ -65,7 +60,7 @@ const ResetPassword = ({ logoutClient, verification_code }) => {
     const reset_initial_values = { password: '' };
 
     return (
-        <div className='reset-password'>
+        <div className='unlink-password'>
             <Formik
                 initialValues={reset_initial_values}
                 initialStatus={{ reset_complete: false, error_msg: '' }}
@@ -76,20 +71,35 @@ const ResetPassword = ({ logoutClient, verification_code }) => {
                     <Form>
                         <React.Fragment>
                             {status.reset_complete ? (
-                                <div className='reset-password__password-selection'>
-                                    <Text as='p' weight='bold' className='reset-password__heading'>
-                                        <Localize i18n_default_text='Your password has been changed' />
+                                <div className='unlink-password__password-success'>
+                                    <Icon
+                                        className='unlink-password__icon'
+                                        icon={`IcUnlink${toTitleCase(social_identity_provider)}`}
+                                        size={128}
+                                    />
+                                    <Text as='p' weight='bold' className='unlink-password__heading'>
+                                        <Localize i18n_default_text='Success!' />
                                     </Text>
-                                    <Text align='center' as='p' size='xxs' className='reset-password__subtext'>
-                                        <Localize i18n_default_text='We will now redirect you to the login page.' />
+                                    <Text align='center' as='p' size='xs' className='unlink-password__subtext'>
+                                        <Localize
+                                            i18n_default_text={`Your Deriv account is unlinked from ${toTitleCase(
+                                                social_identity_provider
+                                            )}. Use your email and password for future log in.`}
+                                        />
                                     </Text>
+                                    <Button type='button' onClick={() => toggleResetPasswordModal(false)} primary large>
+                                        <Localize i18n_default_text='Got it' />
+                                    </Button>
                                 </div>
                             ) : (
-                                <div className='reset-password__password-selection'>
-                                    <Text as='p' weight='bold' className='reset-password__heading'>
-                                        <Localize i18n_default_text='Choose a new password' />
+                                <div className='unlink-password__set-password'>
+                                    <Text as='p' weight='bold' className='unlink-password__heading'>
+                                        <Localize i18n_default_text='Deriv password' />
                                     </Text>
-                                    <fieldset className='reset-password__fieldset'>
+                                    <Text as='p' size='xs' className='unlink-password__subtext'>
+                                        <Localize i18n_default_text='Enter a new password for your Deriv account.' />
+                                    </Text>
+                                    <fieldset className='unlink-password__input-field'>
                                         <PasswordMeter
                                             input={values.password}
                                             has_error={!!(touched.password && errors.password)}
@@ -97,9 +107,9 @@ const ResetPassword = ({ logoutClient, verification_code }) => {
                                         >
                                             <PasswordInput
                                                 autoComplete='new-password'
-                                                className='reset-password__password-field'
+                                                className='unlink-password__password-field'
                                                 name='password'
-                                                label={localize('Create a password')}
+                                                label={localize('Deriv password')}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                                 error={touched.password && errors.password}
@@ -109,7 +119,7 @@ const ResetPassword = ({ logoutClient, verification_code }) => {
                                             />
                                         </PasswordMeter>
                                     </fieldset>
-                                    <Text align='center' as='p' size='xxs' className='reset-password__subtext'>
+                                    <Text as='p' size='xs' className='unlink-password__hint'>
                                         {status.error_msg ? (
                                             <Localize
                                                 i18n_default_text='{{error_msg}}'
@@ -119,17 +129,17 @@ const ResetPassword = ({ logoutClient, verification_code }) => {
                                             <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
                                         )}
                                     </Text>
-
                                     <Button
-                                        className={classNames('reset-password__btn', {
-                                            'reset-password__btn--disabled':
+                                        className={classNames('unlink-password__btn', {
+                                            'unlink-password__btn--disabled':
                                                 !values.password || errors.password || isSubmitting,
                                         })}
                                         type='submit'
                                         is_disabled={!values.password || !!errors.password || isSubmitting}
                                         primary
+                                        large
                                     >
-                                        <Localize i18n_default_text='Reset my password' />
+                                        <Localize i18n_default_text='Confirm' />
                                     </Button>
                                 </div>
                             )}
@@ -141,25 +151,43 @@ const ResetPassword = ({ logoutClient, verification_code }) => {
     );
 };
 
-ResetPassword.propTypes = {
-    logoutClient: PropTypes.func,
+UnlinkPassword.propTypes = {
+    toggleResetPasswordModal: PropTypes.func,
     verification_code: PropTypes.string,
 };
 
-const ResetPasswordModal = ({ disableApp, enableApp, is_loading, is_visible, logoutClient, verification_code }) => {
+const UnlinkPasswordModal = ({
+    disableApp,
+    enableApp,
+    is_loading,
+    is_visible,
+    social_identity_provider,
+    toggleResetPasswordModal,
+    verification_code,
+}) => {
     return (
-        <Dialog is_visible={is_visible} disableApp={disableApp} enableApp={enableApp} is_loading={is_loading}>
-            <ResetPassword verification_code={verification_code} logoutClient={logoutClient} />
+        <Dialog
+            className='unlink-password__dialog'
+            is_visible={is_visible}
+            disableApp={disableApp}
+            enableApp={enableApp}
+            is_loading={is_loading}
+        >
+            <UnlinkPassword
+                social_identity_provider={social_identity_provider}
+                toggleResetPasswordModal={toggleResetPasswordModal}
+                verification_code={verification_code}
+            />
         </Dialog>
     );
 };
 
-ResetPasswordModal.propTypes = {
+UnlinkPasswordModal.propTypes = {
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
-    logoutClient: PropTypes.func,
+    toggleResetPasswordModal: PropTypes.func,
     verification_code: PropTypes.string,
 };
 
@@ -168,6 +196,7 @@ export default connect(({ ui, client }) => ({
     enableApp: ui.enableApp,
     is_loading: ui.is_loading,
     is_visible: ui.is_reset_password_modal_visible,
-    logoutClient: client.logout,
+    social_identity_provider: client.social_identity_provider,
+    toggleResetPasswordModal: ui.toggleResetPasswordModal,
     verification_code: client.verification_code.reset_password,
-}))(ResetPasswordModal);
+}))(UnlinkPasswordModal);

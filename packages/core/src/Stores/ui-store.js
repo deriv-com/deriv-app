@@ -47,6 +47,7 @@ export default class UIStore extends BaseStore {
     @observable is_account_signup_modal_visible = false;
     @observable is_set_residence_modal_visible = false;
     @observable is_reset_password_modal_visible = false;
+    @observable is_reset_trading_password_modal_visible = false;
     // @observable is_purchase_lock_on       = false;
 
     // SmartCharts Controls
@@ -626,7 +627,13 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     toggleResetPasswordModal(state_change = !this.is_reset_password_modal_visible) {
+        console.log('STATE_CHANGE: ', state_change);
         this.is_reset_password_modal_visible = state_change;
+    }
+
+    @action.bound
+    toggleResetTradingPasswordModal(state_change = !this.is_reset_trading_password_modal_visible) {
+        this.is_reset_trading_password_modal_visible = state_change;
     }
 
     @action.bound

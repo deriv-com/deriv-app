@@ -939,11 +939,16 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 
-    &__modal-close {
-        display: flex;
-        justify-content: flex-end;
-        padding: 1rem 1rem 3.4rem;
-        cursor: pointer;
+    &__modal {
+        &-close {
+            display: flex;
+            justify-content: flex-end;
+            padding: 1rem 1rem 3.4rem;
+            cursor: pointer;
+        }
+        &-unlink-title {
+            margin: 0.8rem 2.4rem;
+        }
     }
 }
 /** @define connected-apps; weak */

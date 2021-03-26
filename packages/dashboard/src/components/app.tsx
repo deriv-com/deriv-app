@@ -3,12 +3,16 @@ import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useDeepEffect } from '@deriv/components';
 import Routes from 'Components/routes/routes';
-import { useStores } from 'Stores';
+import { initWs } from 'Services/websocket';
+import { useStores, initContext } from 'Stores';
 import { TUIProps, TClientProps, TConfigProps } from 'Types';
 import './app.scss';
 
 const App: React.FC<TAppProps> = ({ className, client, config, ui, ws }) => {
-    const { client_store, config_store, ui_store } = useStores(ws);
+    initContext();
+    initWs(ws);
+
+    const { client_store, config_store, ui_store } = useStores();
 
     // Different consumers of this package have different sized headers and footers so they
     // need to be offset in order to fill the entire page.

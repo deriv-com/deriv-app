@@ -21,6 +21,7 @@ const DataList = React.memo(
         onRowsRendered,
         onScroll,
         setListRef,
+        overscanRowCount,
         ...other_props
     }) => {
         const [is_loading, setLoading] = React.useState(true);
@@ -147,7 +148,7 @@ const DataList = React.memo(
                                             deferredMeasurementCache={cache.current}
                                             height={height}
                                             onRowsRendered={onRowsRendered}
-                                            overscanRowCount={1}
+                                            overscanRowCount={overscanRowCount || 1}
                                             ref={ref => setRef(ref)}
                                             rowCount={data_source.length}
                                             rowHeight={is_dynamic_height ? cache?.current.rowHeight : getRowSize}

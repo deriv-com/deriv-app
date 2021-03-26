@@ -627,7 +627,6 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     toggleResetPasswordModal(state_change = !this.is_reset_password_modal_visible) {
-        console.log('STATE_CHANGE: ', state_change);
         this.is_reset_password_modal_visible = state_change;
     }
 

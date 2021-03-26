@@ -22,7 +22,6 @@ const Carousel = ({
     show_bullet,
     show_nav,
     width,
-    is_logged_in,
 }) => {
     const [active_index, setActiveIndex] = React.useState(initial_index);
     const computed_item_per_window = React.useMemo(() => {
@@ -64,11 +63,7 @@ const Carousel = ({
     }, [active_index, list, onItemSelect]);
 
     return (
-        <Swipeable
-            onSwipedLeft={handleNextClick}
-            onSwipedRight={handlePrevClick}
-            className={classNames(className, { 'mt5-real-accounts-display__carousel--logged': is_logged_in })}
-        >
+        <Swipeable onSwipedLeft={handleNextClick} onSwipedRight={handlePrevClick} className={className}>
             <div className={classNames('dc-carousel', { 'dc-carousel--mt5': is_mt5 })}>
                 {sliced_list_length > 1 && (
                     <Nav

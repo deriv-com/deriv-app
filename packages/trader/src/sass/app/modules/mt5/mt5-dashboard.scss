@@ -410,7 +410,7 @@
     grid-auto-flow: column;
     grid-gap: 2.4rem;
     justify-content: center;
-    margin-top: 2.4em;
+    padding-top: 2.4em;
     height: 100%;
 
     @include mobile {
@@ -431,55 +431,16 @@
 .mt5-real-accounts-display {
     transition: margin-bottom 0.3s ease-in-out;
     margin-bottom: var(--mt5-real-acc-margin-bottom);
-    &__carousel {
-        margin-bottom: -4rem;
 
-        &--logged {
-            margin-bottom: calc(-4rem - 2.4rem);
-        }
+    .dc-carousel__card,
+    .dc-carousel__wrapper {
+        padding: 0;
     }
-    &__add-trading-server {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        cursor: pointer;
-        transition: all 0.3s ease-in-out;
-        height: 4rem;
-        position: relative;
-        margin-top: -4rem;
-        margin-left: 2rem;
 
-        &-text {
-            margin-left: 1rem;
-        }
-        &-icon {
-            color: var(--status-colored-background);
-            background-color: var(--brand-red-coral);
-            border-radius: 50%;
-            width: 2.4rem;
-            height: 2.4rem;
-            font-size: 1.8rem;
-            display: block;
-            text-align: center;
-            padding: 0.2rem;
-        }
-        &-exit,
-        &-enter-done {
-            transition: all 0.3s ease-in-out;
-            opacity: 1;
-        }
-        &-enter,
-        &-exit-done {
-            transition: all 0.3s ease-in-out;
-            opacity: 0;
-        }
-        &-wrapper {
-            @include mobile {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-top: 2rem;
+    &--has-trade-servers {
+        .mt5-account-card__wrapper {
+            @include desktop {
+                grid-template-rows: 1fr 4rem;
             }
         }
     }
@@ -499,7 +460,7 @@
 
     &__wrapper {
         display: grid;
-        grid-template-rows: 1fr 4rem;
+        grid-template-rows: 1fr;
         height: 100%;
         justify-content: center;
 
@@ -510,10 +471,6 @@
         }
         @include desktop {
             height: 100%;
-        }
-
-        &:not(:last-child) {
-            margin-right: 2.4rem;
         }
     }
 

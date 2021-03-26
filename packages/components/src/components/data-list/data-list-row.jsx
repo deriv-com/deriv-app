@@ -6,7 +6,14 @@ import Icon from '../icon/icon.jsx';
 
 const DataListRow = ({ action_desc, destination_link, row_gap, row_key, rowRenderer, ...other_props }) => {
     const [show_desc, setShowDesc] = React.useState(false);
+    const [has_copy_icon, setHasCopyIcon] = React.useState(false);
     const [is_copied, setIsCopied] = React.useState(false);
+
+    if (action_desc) {
+        if (/^[0-9a-zA-Z]+.{25,34}/gm.test(action_desc.message.split(/,| /)[1])) {
+            setHasCopyIcon(true);
+        }
+    }
 
     const onCopySuccess = () => {
         setIsCopied(true);
@@ -56,7 +63,7 @@ const DataListRow = ({ action_desc, destination_link, row_gap, row_key, rowRende
                                     ) : (
                                         <Text as='p' size='xs' className='statement__row--detail-text' align='center'>
                                             {action_desc.message}
-                                            {action_desc.message.includes(': ') ? copy_to_clipboard : null}
+                                            {has_copy_icon ? copy_to_clipboard : null}
                                         </Text>
                                     )}
                                 </div>

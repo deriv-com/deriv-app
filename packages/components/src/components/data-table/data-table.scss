@@ -47,6 +47,9 @@ $header-height: 52px;
             max-height: 64px;
             width: 100%;
         }
+        &--icon {
+            margin-left: 1rem;
+        }
     }
     &__head {
         border-bottom: 2px solid var(--general-section-1);

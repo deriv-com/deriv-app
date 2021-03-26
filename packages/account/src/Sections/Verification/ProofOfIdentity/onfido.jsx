@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ThemedScrollbars, usePrevious } from '@deriv/components';
+import { Link } from 'react-router-dom';
+import { ThemedScrollbars, usePrevious, Text } from '@deriv/components';
 import { init } from 'onfido-sdk-ui';
-import { isMobile } from '@deriv/shared';
-import { getLanguage } from '@deriv/translations';
+import { isMobile, routes } from '@deriv/shared';
+import { getLanguage, Localize } from '@deriv/translations';
 import UploadComplete from 'Components/poi-upload-complete';
 import Unsupported from 'Components/poi-unsupported';
 import Expired from 'Components/poi-expired';
@@ -15,10 +16,21 @@ import { onfido_status_codes } from './proof-of-identity';
 
 const onfido_container_id = 'onfido';
 
-const OnfidoContainer = ({ height }) => {
+const OnfidoContainer = ({ height, is_message_enabled }) => {
     return (
         <ThemedScrollbars is_bypassed={isMobile()} height={height}>
             <div className='onfido-container'>
+                {is_message_enabled && (
+                    <div className='onfido-container__message'>
+                        <Text size='xs'>
+                            <Localize
+                                i18n_default_text='Before uploading your document, please ensure that your <0>personal details</0> are updated to match your proof of identity. This will help to avoid delays during the verification process.'
+                                components={[<Link to={routes.personal_details} key={0} className='link' />]}
+                            />
+                        </Text>
+                    </div>
+                )}
+
                 <div id={onfido_container_id} />
             </div>
         </ThemedScrollbars>
@@ -30,6 +42,7 @@ const Onfido = ({
     country_code,
     handleComplete,
     height,
+    is_message_enabled,
     onfido_service_token,
     status,
     ...props
@@ -116,7 +129,8 @@ const Onfido = ({
         return <OnfidoFailed {...props} />;
     }
 
-    if (status === onfido_status_codes.onfido) return <OnfidoContainer height={height} />;
+    if (status === onfido_status_codes.onfido)
+        return <OnfidoContainer height={height} is_message_enabled={is_message_enabled} />;
 
     switch (status) {
         case onfido_status_codes.pending:
@@ -138,6 +152,7 @@ Onfido.propTypes = {
     documents_supported: PropTypes.array,
     handleComplete: PropTypes.func,
     has_poa: PropTypes.bool,
+    is_message_enabled: PropTypes.bool,
     onfido_service_token: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
     status: PropTypes.oneOf(Object.keys(onfido_status_codes)),
 };

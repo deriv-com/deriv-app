@@ -633,6 +633,7 @@ export const icons = {
         'IcWalletSticpayLight',
         'IcWalletSticpay',
         'IcWalletTradeTypes',
+        'IcWalletTransactionsEmpty',
         'IcWalletWallets',
         'IcWalletWebmoneyLight',
         'IcWalletWebmoney',

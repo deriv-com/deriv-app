@@ -9,8 +9,10 @@ module.exports = function (env, argv) {
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: {
             account: path.resolve(__dirname, '../src', 'index.js'),
+            'account-limits': 'Components/account-limits',
             'address-details': 'Components/address-details',
             'address-details-config': 'Configs/address-details-config',
+            'api-token': 'Components/api-token',
             'currency-selector': 'Components/currency-selector',
             'currency-selector-config': 'Configs/currency-selector-config',
             'currency-selector-schema': 'Configs/currency-selector-schema',
@@ -45,6 +47,7 @@ module.exports = function (env, argv) {
             'poi-verified': 'Components/poi-verified',
             'proof-of-identity-container': 'Sections/Verification/ProofOfIdentity/proof-of-identity-container.jsx',
             'proof-of-address-container': 'Sections/Verification/ProofOfAddress/proof-of-address-container.jsx',
+            'self-exclusion': 'Components/self-exclusion',
             'scrollbars-container': 'Components/scrollbars-container',
             'text-container': 'Components/text-container',
             'terms-of-use': 'Components/terms-of-use',

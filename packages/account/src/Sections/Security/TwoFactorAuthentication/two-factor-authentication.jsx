@@ -17,7 +17,7 @@ import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import LoadErrorMessage from 'Components/load-error-message';
 import DigitForm from './digit-form.jsx';
-import Article from './article.jsx';
+import TwoFactorAuthenticationArticle from './two-factor-authentication-article.jsx';
 
 const TwoFactorAuthentication = ({ email_address, is_switching }) => {
     const [is_loading, setLoading] = React.useState(true);
@@ -103,7 +103,7 @@ const TwoFactorAuthentication = ({ email_address, is_switching }) => {
                 hideHorizontal={true}
             >
                 <MobileWrapper>
-                    <Article />
+                    <TwoFactorAuthenticationArticle />
                 </MobileWrapper>
                 <Text as='h2' color='prominent' weight='bold' className='two-factor__title'>
                     {localize('How to set up 2FA for your Deriv account')}
@@ -176,7 +176,7 @@ const TwoFactorAuthentication = ({ email_address, is_switching }) => {
                 </div>
             </ThemedScrollbars>
             <DesktopWrapper>
-                <Article />
+                <TwoFactorAuthenticationArticle />
             </DesktopWrapper>
         </React.Fragment>
     );

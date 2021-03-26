@@ -22,7 +22,10 @@ module.exports = function (env, argv) {
             },
         },
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
-        entry: './index.js',
+        entry: {
+            main: './index.js',
+            importPushwoosh: './import-pushwoosh.js',
+        },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {
             rules: rules(),

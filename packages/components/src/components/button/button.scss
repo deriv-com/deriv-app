@@ -63,6 +63,9 @@
         width: 3.2rem !important;
         border-radius: 50%;
     }
+    &--circular {
+        border-radius: 100px;
+    }
     &--primary {
         background: var(--button-primary-default);
         color: var(--text-colored-background);

@@ -18,7 +18,7 @@ import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
-import { isEuCountry } from '_common/utility';
+import { isEuCountry, isSyntheticsUnavailable } from '_common/utility';
 import BaseStore from './base-store';
 import { getClientAccountType, getAccountTitle } from './Helpers/client';
 import { createDeviceDataObject, getCookieObject, setDeviceDataCookie } from './Helpers/device';
@@ -330,19 +330,14 @@ export default class ClientStore extends BaseStore {
     @computed
     get can_have_more_real_synthetic_mt5() {
         const number_of_current_added_synthetics = this.mt5_login_list.reduce((acc, cur) => {
-            const is_included =
-                cur.account_type === 'real' &&
-                cur.market_type === 'gaming' &&
-                this.trading_servers.some(server => server.id === cur.server);
+            const is_included = cur.account_type === 'real' && cur.market_type === 'gaming';
             return is_included ? acc + 1 : acc;
         }, 0);
         const number_of_available_synthetic = this.trading_servers.reduce(
             (acc, cur) => (cur.supported_accounts.includes('gaming') && !cur.disabled ? acc + 1 : acc),
             0
         );
-        return (
-            number_of_current_added_synthetics > 0 && number_of_current_added_synthetics < number_of_available_synthetic
-        );
+        return number_of_current_added_synthetics > 0 && number_of_available_synthetic > 0;
     }
 
     @computed
@@ -605,6 +600,12 @@ export default class ClientStore extends BaseStore {
         if (country) return isEuCountry(country);
         return false;
     }
+
+    @computed
+    get is_synthetics_unavailable() {
+        return isSyntheticsUnavailable(this.residence);
+    }
+
     /**
      * Store Values relevant to the loginid to local storage.
      *

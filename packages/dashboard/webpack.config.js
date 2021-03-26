@@ -27,6 +27,7 @@ module.exports = function () {
                 Assets: path.resolve(__dirname, 'src/assets'),
                 Components: path.resolve(__dirname, 'src/components'),
                 Constants: path.resolve(__dirname, 'src/constants'),
+                Services: path.resolve(__dirname, 'src/services'),
                 Stores: path.resolve(__dirname, 'src/stores'),
                 Types: path.resolve(__dirname, 'src/types'),
                 Utils: path.resolve(__dirname, 'src/utils'),
@@ -63,7 +64,7 @@ module.exports = function () {
                                 cacheDirectory: true,
                                 rootMode: 'upward',
                             },
-                        }
+                        },
                     ],
                 },
                 {
@@ -76,11 +77,11 @@ module.exports = function () {
                         'style-loader',
                         ...(is_publishing
                             ? [
-                                {
-                                    loader: MiniCssExtractPlugin.loader,
-                                },
-                                '@deriv/publisher/utils/css-unit-loader.js',
-                            ]
+                                  {
+                                      loader: MiniCssExtractPlugin.loader,
+                                  },
+                                  '@deriv/publisher/utils/css-unit-loader.js',
+                              ]
                             : []),
                         {
                             loader: 'css-loader',
@@ -132,12 +133,12 @@ module.exports = function () {
             minimize: is_release,
             minimizer: is_release
                 ? [
-                    new TerserPlugin({
-                        test: /\.js$/,
-                        parallel: 2,
-                    }),
-                    new OptimizeCssAssetsPlugin(),
-                ]
+                      new TerserPlugin({
+                          test: /\.js$/,
+                          parallel: 2,
+                      }),
+                      new OptimizeCssAssetsPlugin(),
+                  ]
                 : [],
         },
         devtool: is_release ? undefined : 'eval-cheap-module-source-map',
@@ -156,5 +157,5 @@ module.exports = function () {
                 }),
             },
         ],
-    }
+    };
 };

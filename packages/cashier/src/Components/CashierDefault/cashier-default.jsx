@@ -11,13 +11,15 @@ import CashierDefaultDetail from './cashier-default-detail.jsx';
 const CashierDefault = ({
     accounts_list,
     currency,
-    is_mobile,
+    is_dark_mode_on,
     is_eu,
+    is_mobile,
     is_p2p_enabled,
     is_payment_agent_visible,
     openRealAccountSignup,
     setIsCashierDefault,
     setIsDepositCash,
+    toggleAccountsDialog,
 }) => {
     const history = useHistory();
     const is_crypto = !!currency && isCryptocurrency(currency);
@@ -39,6 +41,10 @@ const CashierDefault = ({
             onClickDeposit();
             return;
         }
+        if (has_crypto_account) {
+            toggleAccountsDialog();
+            return;
+        }
         openRealAccountSignup('deposit_cash');
     };
 
@@ -52,11 +58,15 @@ const CashierDefault = ({
 
     const getDepositOptions = () => {
         const options = [];
-        if (!is_crypto) {
-            options.push(Providers.createCashProvider(onClickDeposit));
-        }
-        if (!is_eu && (is_crypto || !has_crypto_account)) {
+        options.push(Providers.createCashProvider(onClickDeposit));
+        if (!is_eu) {
             options.push(Providers.createCryptoProvider(onClickCrypto));
+
+            // Put the crypto option first in case the account is crypto.
+            if (is_crypto)
+                options.sort(
+                    (first_option, second_option) => options.indexOf(second_option) - options.indexOf(first_option)
+                );
         }
         if (is_payment_agent_visible) {
             options.push(Providers.createPaymentAgentProvider(onClickPaymentAgent));
@@ -74,7 +84,7 @@ const CashierDefault = ({
                     <Localize i18n_default_text='Choose a way to fund your account' />
                 </Text>
             </div>
-            <ThemedScrollbars>
+            <ThemedScrollbars className='cashier-default-content'>
                 {getDepositOptions()?.map(deposit => (
                     <CashierDefaultDetail
                         key={deposit.detail_header}
@@ -82,6 +92,7 @@ const CashierDefault = ({
                         detail_contents={deposit.detail_contents}
                         detail_description={deposit.detail_description}
                         detail_header={deposit.detail_header}
+                        is_dark_mode_on={is_dark_mode_on}
                         is_mobile={is_mobile}
                     />
                 ))}
@@ -93,18 +104,21 @@ const CashierDefault = ({
 CashierDefault.propTypes = {
     accounts_list: PropTypes.array,
     currency: PropTypes.string,
-    is_mobile: PropTypes.bool,
+    is_dark_mode_on: PropTypes.bool,
     is_eu: PropTypes.bool,
+    is_mobile: PropTypes.bool,
     is_p2p_enabled: PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
     openRealAccountSignup: PropTypes.func,
     setIsCashierDefault: PropTypes.func,
     setIsDepositCash: PropTypes.func,
+    toggleAccountsDialog: PropTypes.func,
 };
 
 export default connect(({ client, modules, ui }) => ({
     accounts_list: modules.cashier.config.account_transfer.accounts_list,
     currency: client.currency,
+    is_dark_mode_on: ui.is_dark_mode_on,
     is_eu: client.is_eu,
     is_mobile: ui.is_mobile,
     is_p2p_enabled: modules.cashier.is_p2p_enabled,
@@ -112,4 +126,5 @@ export default connect(({ client, modules, ui }) => ({
     openRealAccountSignup: ui.openRealAccountSignup,
     setIsCashierDefault: modules.cashier.setIsCashierDefault,
     setIsDepositCash: modules.cashier.setIsDepositCash,
+    toggleAccountsDialog: ui.toggleAccountsDialog,
 }))(CashierDefault);

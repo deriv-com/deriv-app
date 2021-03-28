@@ -1,53 +1,70 @@
 import { localize } from '@deriv/translations';
 
 const cash_contents = [
-    { title: localize('Credit/debit cards'), icons: ['IcStockVisa', 'IcStockMasterCard'] },
+    {
+        title: localize('Credit/debit cards'),
+        icons: [
+            { light: 'IcStockVisa', dark: 'IcStockVisaDark' },
+            { light: 'IcStockMasterCard', dark: 'IcStockMasterCardDark' },
+        ],
+    },
     {
         title: localize('Bank wire'),
         icons: [
-            'IcWalletZingpayLight',
-            'IcCashierNganLoung',
-            'IcCashierPayRetailers',
-            'IcWalletPaytrustLight',
-            'IcCashierHelpToPay',
-            'IcCashierDragonPay',
+            { light: 'IcWalletZingpayLight', dark: 'IcWalletZingpayDark' },
+            { light: 'IcCashierNganLoungLight', dark: 'IcCashierNganLoungDark' },
+            { light: 'IcCashierPayRetailersLight', dark: 'IcCashierPayRetailersDark' },
+            { light: 'IcWalletPaytrustLight', dark: 'IcWalletPaytrustDark' },
+            { light: 'IcCashierHelpToPayLight', dark: 'IcCashierHelpToPayDark' },
+            { light: 'IcCashierDragonPayLight', dark: 'IcCashierDragonPayDark' },
         ],
     },
     {
         title: localize('E-wallets'),
         icons: [
-            'IcWalletSkrillLight',
-            'IcWalletNetellerLight',
-            'IcWalletSticpayLight',
-            'IcCashierAirTm',
-            'IcCashierPayLivre',
-            'IcWalletFasapayLight',
-            'IcWalletJetonLight',
-            'IcCashierPerfectMoney',
+            { light: 'IcWalletSkrillLight', dark: 'IcWalletSkrillDark' },
+            { light: 'IcWalletNetellerLight', dark: 'IcWalletNetellerDark' },
+            { light: 'IcWalletSticpayLight', dark: 'IcWalletSticpayDark' },
+            { light: 'IcCashierAirTmLight', dark: 'IcCashierAirTmDark' },
+            { light: 'IcCashierPayLivreLight', dark: 'IcCashierPayLivreDark' },
+            { light: 'IcWalletFasapayLight', dark: 'IcWalletFasapayDark' },
+            { light: 'IcWalletJetonLight', dark: 'IcWalletJetonDark' },
+            { light: 'IcCashierPerfectMoneyLight', dark: 'IcCashierPerfectMoneyDark' },
         ],
     },
 ];
 const crypto_contents = [
     {
         title: localize('Cryptos'),
-        icons: ['IcCashierBitcoin', 'IcCashierEthereum', 'IcCashierLiteCoin', 'IcCashierUsdCoin', 'IcCashierTether'],
+        icons: [
+            { light: 'IcCashierBitcoinLight', dark: 'IcCashierBitcoinDark' },
+            { light: 'IcCashierEthereumLight', dark: 'IcCashierEthereumDark' },
+            { light: 'IcCashierLiteCoinLight', dark: 'IcCashierLiteCoinDark' },
+            { light: 'IcCashierUsdCoinLight', dark: 'IcCashierUsdCoinDark' },
+            { light: 'IcCashierTetherLight', dark: 'IcCashierTetherDark' },
+        ],
     },
     {
         title: localize('Buy Cryptos'),
-        icons: ['IcCashierQrCode', 'IcCashierChangelly', 'IcCashierXanpoolLight', 'IcCashierBanxaLight'],
+        icons: [
+            { light: 'IcCashierQrCodeLight', dark: 'IcCashierQrCodeDark' },
+            { light: 'IcCashierChangellyLight', dark: 'IcCashierChangellyDark' },
+            { light: 'IcCashierXanpoolLight', dark: 'IcCashierXanpoolDark' },
+            { light: 'IcCashierBanxaLight', dark: 'IcCashierBanxaDark' },
+        ],
     },
 ];
 const payment_agent_contents = [
     {
         title: '',
         icons: [
-            'IcCashierMandiriPay',
-            'IcCashierCimbNiaga',
-            'IcCashierBankBri',
-            'IcCashierBca',
-            'IcCashierEthereum',
-            'IcCashierBitcoin',
-            'IcCashierTether',
+            // { light: 'IcCashierMandiriPay', dark: 'IcCashierMandiriPay' },
+            // { light: 'IcCashierCimbNiaga', dark: 'IcCashierCimbNiaga' },
+            // { light: 'IcCashierBankBri', dark: 'IcCashierBankBri' },
+            // { light: 'IcCashierBca', dark: 'IcCashierBca' },
+            // { light: 'IcCashierEthereumLight', dark: 'IcCashierEthereumDark' },
+            // { light: 'IcCashierBitcoinLight', dark: 'IcCashierBitcoinDark' },
+            // { light: 'IcCashierTetherLight', dark: 'IcCashierTetherDark' },
         ],
     },
 ];
@@ -55,13 +72,13 @@ const dp2p_contents = [
     {
         title: '',
         icons: [
-            'IcCashierMandiriPay',
-            'IcCashierCimbNiaga',
-            'IcCashierBankBri',
-            'IcCashierBca',
-            'IcCashierEthereum',
-            'IcCashierBitcoin',
-            'IcCashierTether',
+            // { light: 'IcCashierMandiriPay', dark: 'IcCashierMandiriPay' },
+            // { light: 'IcCashierCimbNiaga', dark: 'IcCashierCimbNiaga' },
+            // { light: 'IcCashierBankBri', dark: 'IcCashierBankBri' },
+            // { light: 'IcCashierBca', dark: 'IcCashierBca' },
+            // { light: 'IcCashierEthereumLight', dark: 'IcCashierEthereumDark' },
+            // { light: 'IcCashierBitcoinLight', dark: 'IcCashierBitcoinDark' },
+            // { light: 'IcCashierTetherLight', dark: 'IcCashierTetherDark' },
         ],
     },
 ];

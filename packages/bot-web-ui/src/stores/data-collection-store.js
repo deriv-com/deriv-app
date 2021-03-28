@@ -30,17 +30,21 @@ export default class DataCollectionStore {
     strategy_content = '';
     transaction_ids = {};
 
-    async trackRun() {
+    getXmlString() {
         const xml_dom = this.cleanXmlDom(Blockly.Xml.workspaceToDom(DBot.workspace, /* opt_noId */ true));
-        const xml_string = Blockly.Xml.domToText(xml_dom);
-        const xml_hash = this.getHash(xml_string);
+        return Blockly.Xml.domToText(xml_dom);
+    }
 
-        if (this.getHash(this.strategy_content) !== xml_hash) {
+    getXmlHash() {
+        return this.getHash(this.getXmlString());
+    }
+
+    async trackRun() {
+        if (this.getHash(this.strategy_content) !== this.getXmlHash()) {
             this.should_post_xml = true;
-            this.setStrategyContent(xml_string);
+            this.setStrategyContent(this.getXmlString());
         }
 
-        this.setRunId(this.getHash(xml_hash + this.root_store.core.client.loginid + Math.random()));
         this.setRunStart(this.root_store.common.server_time.unix());
     }
 
@@ -69,7 +73,7 @@ export default class DataCollectionStore {
                     },
                 };
             };
-
+            this.setRunId(this.getHash(this.getXmlHash() + this.root_store.core.client.loginid + Math.random()));
             fetch(
                 `${this.endpoint}/${this.run_id}/${transaction_id}/${this.run_start}/${this.getHash(
                     this.strategy_content

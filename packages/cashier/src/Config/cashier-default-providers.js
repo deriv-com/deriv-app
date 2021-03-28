@@ -57,29 +57,13 @@ const crypto_contents = [
 const payment_agent_contents = [
     {
         title: '',
-        icons: [
-            // { light: 'IcCashierMandiriPay', dark: 'IcCashierMandiriPay' },
-            // { light: 'IcCashierCimbNiaga', dark: 'IcCashierCimbNiaga' },
-            // { light: 'IcCashierBankBri', dark: 'IcCashierBankBri' },
-            // { light: 'IcCashierBca', dark: 'IcCashierBca' },
-            // { light: 'IcCashierEthereumLight', dark: 'IcCashierEthereumDark' },
-            // { light: 'IcCashierBitcoinLight', dark: 'IcCashierBitcoinDark' },
-            // { light: 'IcCashierTetherLight', dark: 'IcCashierTetherDark' },
-        ],
+        icons: [],
     },
 ];
 const dp2p_contents = [
     {
         title: '',
-        icons: [
-            // { light: 'IcCashierMandiriPay', dark: 'IcCashierMandiriPay' },
-            // { light: 'IcCashierCimbNiaga', dark: 'IcCashierCimbNiaga' },
-            // { light: 'IcCashierBankBri', dark: 'IcCashierBankBri' },
-            // { light: 'IcCashierBca', dark: 'IcCashierBca' },
-            // { light: 'IcCashierEthereumLight', dark: 'IcCashierEthereumDark' },
-            // { light: 'IcCashierBitcoinLight', dark: 'IcCashierBitcoinDark' },
-            // { light: 'IcCashierTetherLight', dark: 'IcCashierTetherDark' },
-        ],
+        icons: [],
     },
 ];
 

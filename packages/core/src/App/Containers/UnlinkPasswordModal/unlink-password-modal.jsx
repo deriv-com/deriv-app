@@ -87,7 +87,15 @@ const UnlinkPassword = ({ social_identity_provider, toggleResetPasswordModal, ve
                                             )}. Use your email and password for future log in.`}
                                         />
                                     </Text>
-                                    <Button type='button' onClick={() => toggleResetPasswordModal(false)} primary large>
+                                    <Button
+                                        type='button'
+                                        onClick={() => {
+                                            toggleResetPasswordModal(false);
+                                            WS.getAccountStatus();
+                                        }}
+                                        primary
+                                        large
+                                    >
                                         <Localize i18n_default_text='Got it' />
                                     </Button>
                                 </div>

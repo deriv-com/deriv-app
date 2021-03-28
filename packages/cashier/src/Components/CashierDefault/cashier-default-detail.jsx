@@ -23,7 +23,7 @@ const CashierDefaultDetail = ({
                     </Text>
                     <Icon icon='IcChevronRight' size={16} />
                 </div>
-                {detail_contents.map(content => (
+                {detail_contents?.map(content => (
                     <div key={content.title} className='cashier-default-detail__array'>
                         <Text size='xxs' weight='bold' color='less-prominent'>
                             {content.title}

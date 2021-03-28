@@ -2,27 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import IconMessageContent from 'Components/icon-message-content';
+import IconWithMessage from 'Components/icon-with-message';
 
-const DemoMessage = ({ has_demo_icon, full_width, has_account_switcher, toggleAccountsDialog }) => (
+const DemoMessage = ({ has_demo_icon, has_account_switcher, toggleAccountsDialog }) => (
     <div className='account__demo-message-wrapper'>
-        <IconMessageContent
+        <IconWithMessage
+            icon={has_demo_icon ? 'IcPoaLockDemo' : 'IcPoaLock'}
             message={localize('This feature is not available for demo accounts.')}
-            icon={<Icon icon={has_demo_icon ? 'IcPoaLockDemo' : 'IcPoaLock'} size={128} />}
-            full_width={full_width}
-        >
-            {has_account_switcher && (
-                <Button
-                    primary
-                    onClick={() => {
-                        toggleAccountsDialog();
-                    }}
-                    className='account__demo-message-button'
-                >
-                    {localize('Add a real account')}
-                </Button>
-            )}
-        </IconMessageContent>
+        />
+        {has_account_switcher && (
+            <Button
+                primary
+                onClick={() => {
+                    toggleAccountsDialog();
+                }}
+                className='account__demo-message-button'
+            >
+                {localize('Add a real account')}
+            </Button>
+        )}
     </div>
 );
 

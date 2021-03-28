@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
-import React from 'react';
+import * as React from 'react';
+import { withRouter } from 'react-router';
 import {
-    AccountLimits,
+    AccountLimits as AccountLimitsFooter,
     EndpointNote,
     GoToDeriv,
     HelpCentre,
@@ -71,7 +71,7 @@ const Footer = ({
                 <FooterIconSeparator />
                 <GoToDeriv />
                 <ResponsibleTrading />
-                {is_logged_in && <AccountLimits />}
+                {is_logged_in && <AccountLimitsFooter />}
                 {!is_virtual && <RegulatoryInformation landing_company={landing_company_shortcode} is_eu={is_eu} />}
                 <FooterIconSeparator />
                 <HelpCentre />

@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 
-const CashierDefaultDetail = ({ detail_click, detail_contents, detail_description, detail_header, is_mobile }) => {
+const CashierDefaultDetail = ({
+    detail_click,
+    detail_contents,
+    detail_description,
+    detail_header,
+    is_dark_mode_on,
+    is_mobile,
+}) => {
     return (
         <div className='cashier-default-detail'>
             <Text size='sm' weight='bold'>
@@ -24,7 +31,7 @@ const CashierDefaultDetail = ({ detail_click, detail_contents, detail_descriptio
                         <div className={classNames({ 'cashier-default-detail__icons-array': !is_mobile })}>
                             {content.icons?.map(icon => (
                                 <div key={icon} className='cashier-default-detail__icon'>
-                                    <Icon icon={icon} height={40} width={40} />
+                                    <Icon icon={is_dark_mode_on ? icon.dark : icon.light} height={40} width={40} />
                                 </div>
                             ))}
                         </div>

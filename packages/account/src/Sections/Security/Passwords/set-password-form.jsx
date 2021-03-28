@@ -13,7 +13,7 @@ const SetPasswordForm = ({ email }) => {
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
 
-    const onSubmit = (values, { setSubmitting, setStatus, resetForm }) => {
+    const onSubmit = (values, { setSubmitting, setStatus }) => {
         setStatus({ msg: '' });
         setIsBtnLoading(true);
         const params = {

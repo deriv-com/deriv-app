@@ -71,7 +71,6 @@ const ProofOfAddressForm = ({
                 );
             });
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const validateFields = values => {

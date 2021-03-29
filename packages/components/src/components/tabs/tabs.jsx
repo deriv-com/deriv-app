@@ -127,7 +127,7 @@ const Tabs = ({
                 >
                     <ThemedScrollbars
                         className='dc-themed-scrollbars-wrapper'
-                        is_only_horizontal={true}
+                        is_only_horizontal
                         height={68}
                         is_bypassed={!is_scrollable}
                     >

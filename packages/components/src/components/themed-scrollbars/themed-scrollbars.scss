@@ -44,10 +44,14 @@
         & li {
             display: inline-block;
             box-sizing: border-box;
-            padding: 0 1.1rem;
+            padding: 0 3rem;
             vertical-align: middle;
             width: unset;
             height: 40px;
+
+            @include mobile {
+                padding: 0 1.1rem;
+            }
         }
     }
     &::-webkit-scrollbar {

@@ -16,7 +16,7 @@ const cash_contents = [
             { light: 'IcCashierPayRetailersLight', dark: 'IcCashierPayRetailersDark' },
             { light: 'IcWalletPaytrustLight', dark: 'IcWalletPaytrustDark' },
             { light: 'IcCashierHelpToPayLight', dark: 'IcCashierHelpToPayDark' },
-            { light: 'IcCashierDragonPayLight', dark: 'IcCashierDragonPayDark' },
+            { light: 'IcCashierDragonpayLight', dark: 'IcCashierDragonpayDark' },
         ],
     },
     {

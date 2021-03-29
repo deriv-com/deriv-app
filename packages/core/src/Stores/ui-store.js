@@ -631,8 +631,8 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleResetTradingPasswordModal(state_change = !this.is_reset_trading_password_modal_visible) {
-        this.is_reset_trading_password_modal_visible = state_change;
+    setResetTradingPasswordModalOpen(is_reset_trading_password_modal_visible) {
+        this.is_reset_trading_password_modal_visible = is_reset_trading_password_modal_visible;
     }
 
     @action.bound

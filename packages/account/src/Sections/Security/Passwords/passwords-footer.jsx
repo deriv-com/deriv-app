@@ -23,9 +23,8 @@ const PasswordsFooter = ({
         )}
         {is_set_trade_password ? (
             <Button
-                className={classNames('account__passwords-footer-btn', {
-                    'dc-btn--green': is_submit_success,
-                })}
+                className='account__passwords-footer-btn'
+                green={is_submit_success}
                 type='submit'
                 is_disabled={isSubmitting || !!(errors.new_password || !values.new_password)}
                 is_loading={is_btn_loading}
@@ -38,7 +37,7 @@ const PasswordsFooter = ({
         ) : (
             <React.Fragment>
                 <Button
-                    className={classNames('account__passwords-footer-btn')}
+                    className='account__passwords-footer-btn'
                     type='button'
                     onClick={onClickSendEmail}
                     text={localize('Forgot password')}
@@ -46,9 +45,8 @@ const PasswordsFooter = ({
                     large
                 />
                 <Button
-                    className={classNames('account__passwords-footer-btn', {
-                        'dc-btn--green': is_submit_success,
-                    })}
+                    className='account__passwords-footer-btn'
+                    green={is_submit_success}
                     type='submit'
                     is_disabled={
                         isSubmitting ||

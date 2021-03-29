@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Localize, localize } from '@deriv/translations';
 import { Icon, Popover, Text } from '@deriv/components';
+import { connect } from 'Stores/connect';
 import DerivComLogo from '../../../Assets/ic-brand-deriv-red.svg';
 import DerivGoLight from '../../../Assets/ic-brand-deriv-go-light.svg';
 import DerivGoDark from '../../../Assets/ic-brand-deriv-go-dark.svg';
 
-const PasswordsStatic = ({ is_dark_mode_on, is_deriv_password = false, is_trading_password_required = false }) => (
+const PasswordsStatic = ({ is_dark_mode_on, is_deriv_password, is_trading_password_required }) => (
     <React.Fragment>
         {is_deriv_password ? (
             <div className='account__passwords-item-left'>
@@ -35,7 +36,7 @@ const PasswordsStatic = ({ is_dark_mode_on, is_deriv_password = false, is_tradin
                     <Popover alignment='bottom' message={localize('SmartTrader')}>
                         <Icon icon='IcBrandSmarttrader' size={32} />
                     </Popover>
-                    <Popover alignment='bottom' message={localize('Deriv GO')}>
+                    <Popover alignment='bottom' message={localize('Deriv Go')}>
                         {is_dark_mode_on ? <DerivGoDark /> : <DerivGoLight />}
                     </Popover>
                 </div>
@@ -62,9 +63,12 @@ const PasswordsStatic = ({ is_dark_mode_on, is_deriv_password = false, is_tradin
     </React.Fragment>
 );
 
-PasswordsStatic.prototype = {
-    is_deriv_password: PropTypes.boolean,
-    is_trading_password_required: PropTypes.boolean,
+PasswordsStatic.PropTypes = {
+    is_dark_mode_on: PropTypes.bool,
+    is_deriv_password: PropTypes.bool,
+    is_trading_password_required: PropTypes.bool,
 };
 
-export default PasswordsStatic;
+export default connect(({ ui }) => ({
+    is_dark_mode_on: ui.is_dark_mode_on,
+}))(PasswordsStatic);

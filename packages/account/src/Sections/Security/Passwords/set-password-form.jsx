@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { PasswordInput, PasswordMeter } from '@deriv/components';
-import { withRouter } from 'react-router-dom';
-import { isMobile, validPassword, validLength, getErrorMessages } from '@deriv/shared';
+import { isMobile, useIsMounted, validPassword, validLength, getErrorMessages } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
@@ -13,6 +12,8 @@ const SetPasswordForm = ({ email }) => {
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
 
+    const isMounted = useIsMounted();
+
     const onSubmit = (values, { setSubmitting, setStatus }) => {
         setStatus({ msg: '' });
         setIsBtnLoading(true);
@@ -21,17 +22,21 @@ const SetPasswordForm = ({ email }) => {
             old_password: '',
         };
         WS.tradingPlatformPasswordChange(params).then(data => {
-            setIsBtnLoading(false);
-            if (data.error) {
-                setStatus({ msg: data.error.message });
-                setSubmitting(false);
-            } else {
-                setIsSubmitSuccess(true);
-                setTimeout(() => {
-                    WS.getAccountStatus();
-                    setIsSubmitSuccess(false);
+            if (isMounted()) {
+                setIsBtnLoading(false);
+                if (data.error) {
+                    setStatus({ msg: data.error.message });
                     setSubmitting(false);
-                }, 3000);
+                } else {
+                    setIsSubmitSuccess(true);
+                    setTimeout(() => {
+                        if (isMounted()) {
+                            WS.getAccountStatus();
+                            setIsSubmitSuccess(false);
+                            setSubmitting(false);
+                        }
+                    }, 3000);
+                }
             }
         });
     };
@@ -114,4 +119,4 @@ SetPasswordForm.propTypes = {
 
 export default connect(({ client }) => ({
     email: client.email,
-}))(withRouter(SetPasswordForm));
+}))(SetPasswordForm);

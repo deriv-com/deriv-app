@@ -9,9 +9,18 @@ import { connect } from 'Stores/connect';
 import PasswordsFooter from './passwords-footer.jsx';
 
 class ChangePasswordForm extends React.Component {
+    is_mounted = false;
     state = {
         is_loading: false,
     };
+
+    componentDidMount() {
+        this.is_mounted = true;
+    }
+
+    componentWillUnmount() {
+        this.is_mounted = false;
+    }
 
     handlePasswordChange = () => {
         const params = {
@@ -31,18 +40,22 @@ class ChangePasswordForm extends React.Component {
         this.setState({ is_btn_loading: true });
         if (this.props.is_trading_password) {
             WS.tradingPlatformPasswordChange(values).then(data => {
-                this.setState({ is_btn_loading: false });
-                if (data.error) {
-                    setStatus({ msg: data.error.message });
-                    setSubmitting(false);
-                } else {
-                    this.setState({ is_submit_success: true });
-                    resetForm({ new_password: '' });
-                    setTimeout(() => {
-                        this.setState({ is_submit_success: false }, () => {
-                            setSubmitting(false);
-                        });
-                    }, 3000);
+                if (this.is_mounted) {
+                    this.setState({ is_btn_loading: false });
+                    if (data.error) {
+                        setStatus({ msg: data.error.message });
+                        setSubmitting(false);
+                    } else {
+                        this.setState({ is_submit_success: true });
+                        resetForm({ new_password: '' });
+                        setTimeout(() => {
+                            if (this.is_mounted) {
+                                this.setState({ is_submit_success: false }, () => {
+                                    setSubmitting(false);
+                                });
+                            }
+                        }, 3000);
+                    }
                 }
             });
         } else {

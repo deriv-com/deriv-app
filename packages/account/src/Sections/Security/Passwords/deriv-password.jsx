@@ -10,21 +10,13 @@ import ChangePasswordForm from './change-password-form.jsx';
 import PasswordsStatic from './passwords-static.jsx';
 import SentEmailModal from './sent-email-modal.jsx';
 
-const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identity_provider }) => {
+const DerivPassword = ({ email, is_social_signup, social_identity_provider }) => {
     const [is_unlink_modal_open, setIsUnlinkModalOpen] = React.useState(false);
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
-    const toggleUnlinkModal = (state_change = !is_unlink_modal_open) => {
-        setIsUnlinkModalOpen(!!state_change);
-    };
-
-    const toggleSentEmailModal = (state_change = !is_sent_email_modal_open) => {
-        setIsSentEmailModalOpen(!!state_change);
-    };
-
     const onClickSendEmail = () => {
         WS.verifyEmail(email, 'reset_password');
-        toggleUnlinkModal(false);
+        setIsUnlinkModalOpen(false);
     };
 
     const capitalize_identifier = social_identity_provider ? toTitleCase(social_identity_provider) : '';
@@ -48,7 +40,7 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
         <React.Fragment>
             <FormSubHeader title={localize('Deriv password')} />
             <div className='account__passwords-wrapper'>
-                <PasswordsStatic is_dark_mode_on={is_dark_mode_on} is_deriv_password />
+                <PasswordsStatic is_deriv_password />
                 {is_social_signup ? (
                     <React.Fragment>
                         <div className='account__passwords-item-right passwords-social-buttons'>
@@ -56,8 +48,8 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                             <Button
                                 className='account__passwords-footer-btn'
                                 onClick={() => {
-                                    toggleUnlinkModal(true);
-                                    toggleSentEmailModal(true);
+                                    setIsUnlinkModalOpen(true);
+                                    setIsSentEmailModalOpen(true);
                                 }}
                                 type='button'
                                 text={localize('Unlink')}
@@ -70,7 +62,7 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                     <ChangePasswordForm
                         onClickSendEmail={() => {
                             WS.verifyEmail(email, 'reset_password');
-                            toggleSentEmailModal(true);
+                            setIsSentEmailModalOpen(true);
                         }}
                     />
                 )}
@@ -78,7 +70,7 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
             <SentEmailModal
                 is_unlink_modal={is_unlink_modal_open}
                 is_open={is_sent_email_modal_open}
-                onClose={() => toggleSentEmailModal(false)}
+                onClose={() => setIsSentEmailModalOpen(false)}
                 identifier_title={capitalize_identifier}
                 onConfirm={() => onClickSendEmail()}
             />
@@ -88,14 +80,12 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
 
 DerivPassword.propTypes = {
     email: PropTypes.string,
-    is_dark_mode_on: PropTypes.bool,
     is_social_signup: PropTypes.bool,
     social_identity_provider: PropTypes.string,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client }) => ({
     email: client.email,
-    is_dark_mode_on: ui.is_dark_mode_on,
     is_social_signup: client.is_social_signup,
     social_identity_provider: client.social_identity_provider,
 }))(DerivPassword);

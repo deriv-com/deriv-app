@@ -1,24 +1,29 @@
 import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Button, Icon, Modal, SendEmailTemplate, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
-const no_email_content = [
-    {
-        icon: 'IcEmailSpam',
-        content: localize('The email is in your spam folder (Sometimes things get lost there).'),
-    },
-    {
-        icon: 'IcEmail',
-        content: localize(
-            'You accidentally gave us another email address (Usually a work or a personal one instead of the one you meant).'
-        ),
-    },
-    {
-        icon: 'IcEmailFirewall',
-        content: localize('We can’t deliver the email to this address (Usually because of firewalls or filtering).'),
-    },
-];
+const getNoEmailContentStrings = () => {
+    return [
+        {
+            icon: 'IcEmailSpam',
+            content: localize('The email is in your spam folder (Sometimes things get lost there).'),
+        },
+        {
+            icon: 'IcEmail',
+            content: localize(
+                'You accidentally gave us another email address (Usually a work or a personal one instead of the one you meant).'
+            ),
+        },
+        {
+            icon: 'IcEmailFirewall',
+            content: localize(
+                'We can’t deliver the email to this address (Usually because of firewalls or filtering).'
+            ),
+        },
+    ];
+};
 
 const SentEmailModal = ({ identifier_title, is_open, is_unlink_modal, onClose, onConfirm }) => {
     const getSubtitle = () => {
@@ -30,7 +35,8 @@ const SentEmailModal = ({ identifier_title, is_open, is_unlink_modal, onClose, o
             case 'Google':
             case 'Facebook':
                 subtitle = localize(
-                    `Check your ${identifier_title} account email and click the link in the email to proceed.`
+                    'Check your {{ identifier_title }} account email and click the link in the email to proceed.',
+                    { identifier_title }
                 );
                 break;
             default:
@@ -42,7 +48,7 @@ const SentEmailModal = ({ identifier_title, is_open, is_unlink_modal, onClose, o
 
     return (
         <Modal
-            className={!is_unlink_modal && 'sent-email__modal'}
+            className={classNames({ 'sent-email__modal': !is_unlink_modal })}
             is_open={is_open}
             has_close_icon={!is_unlink_modal}
             should_header_stick_body
@@ -87,7 +93,7 @@ const SentEmailModal = ({ identifier_title, is_open, is_unlink_modal, onClose, o
                         txt_resend={localize('Resend email')}
                         txt_resend_in={localize('Resend email in {{seconds}}s', { seconds: '{{seconds}}' })}
                     >
-                        {no_email_content.map((item, idx) => (
+                        {getNoEmailContentStrings().map((item, idx) => (
                             <div className='sent-email__content' key={idx}>
                                 <Icon icon={item.icon} size={32} />
                                 <Text size='xxs' as='p'>

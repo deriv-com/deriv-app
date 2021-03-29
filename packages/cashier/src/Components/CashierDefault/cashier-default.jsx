@@ -3,10 +3,10 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { isCryptocurrency, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { ThemedScrollbars, Text } from '@deriv/components';
+import { Loading, ThemedScrollbars, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import Providers from 'Config/cashier-default-providers';
-import CashierDefaultDetail from './cashier-default-detail.jsx';
+import CashierDefaultDetails from 'Components/CashierDefault/cashier-default-details.jsx';
 
 const CashierDefault = ({
     accounts_list,
@@ -16,14 +16,16 @@ const CashierDefault = ({
     is_mobile,
     is_p2p_enabled,
     is_payment_agent_visible,
+    is_switching,
     openRealAccountSignup,
     setIsCashierDefault,
-    setIsDepositCash,
+    setIsDeposit,
     toggleAccountsDialog,
 }) => {
     const history = useHistory();
     const is_crypto = !!currency && isCryptocurrency(currency);
     const has_crypto_account = accounts_list.some(x => x.is_crypto);
+    const has_fiat_account = accounts_list.some(x => !x.is_crypto);
 
     React.useEffect(() => {
         setIsCashierDefault(true);
@@ -31,14 +33,21 @@ const CashierDefault = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onClickDeposit = () => {
-        setIsDepositCash(true);
-        history.push(routes.cashier_deposit);
+    const onClickDepositCash = () => {
+        if (!is_crypto) {
+            setIsDeposit(true);
+            return;
+        }
+        if (has_fiat_account) {
+            toggleAccountsDialog();
+            return;
+        }
+        openRealAccountSignup('deposit_cash');
     };
 
-    const onClickCrypto = () => {
+    const onClickDepositCrypto = () => {
         if (is_crypto) {
-            onClickDeposit();
+            setIsDeposit(true);
             return;
         }
         if (has_crypto_account) {
@@ -58,9 +67,9 @@ const CashierDefault = ({
 
     const getDepositOptions = () => {
         const options = [];
-        options.push(Providers.createCashProvider(onClickDeposit));
+        options.push(Providers.createCashProvider(onClickDepositCash));
         if (!is_eu) {
-            options.push(Providers.createCryptoProvider(onClickCrypto));
+            options.push(Providers.createCryptoProvider(onClickDepositCrypto));
 
             // Put the crypto option first in case the account is crypto.
             if (is_crypto)
@@ -77,6 +86,7 @@ const CashierDefault = ({
         return options;
     };
 
+    if (is_switching || accounts_list.length === 0) return <Loading className='cashier-default__loader' />;
     return (
         <div className='cashier-default'>
             <div className='cashier-default-header'>
@@ -85,9 +95,9 @@ const CashierDefault = ({
                 </Text>
             </div>
             <ThemedScrollbars className='cashier-default-content'>
-                {getDepositOptions()?.map(deposit => (
-                    <CashierDefaultDetail
-                        key={deposit.detail_header}
+                {getDepositOptions()?.map((deposit, idx) => (
+                    <CashierDefaultDetails
+                        key={`${deposit.detail_header}${idx}`}
                         detail_click={deposit.detail_click}
                         detail_contents={deposit.detail_contents}
                         detail_description={deposit.detail_description}
@@ -109,9 +119,10 @@ CashierDefault.propTypes = {
     is_mobile: PropTypes.bool,
     is_p2p_enabled: PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
+    is_switching: PropTypes.bool,
     openRealAccountSignup: PropTypes.func,
     setIsCashierDefault: PropTypes.func,
-    setIsDepositCash: PropTypes.func,
+    setIsDeposit: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
 };
 
@@ -123,8 +134,9 @@ export default connect(({ client, modules, ui }) => ({
     is_mobile: ui.is_mobile,
     is_p2p_enabled: modules.cashier.is_p2p_enabled,
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
+    is_switching: client.is_switching,
     openRealAccountSignup: ui.openRealAccountSignup,
     setIsCashierDefault: modules.cashier.setIsCashierDefault,
-    setIsDepositCash: modules.cashier.setIsDepositCash,
+    setIsDeposit: modules.cashier.setIsDeposit,
     toggleAccountsDialog: ui.toggleAccountsDialog,
 }))(CashierDefault);

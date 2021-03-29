@@ -42,14 +42,14 @@ const DepositeSideNote = () => {
 const Deposit = ({
     is_cashier_locked,
     is_cashier_default,
-    is_deposit_cash,
+    is_deposit,
     is_deposit_locked,
     is_virtual,
     error,
     iframe_height,
     iframe_url,
     setActiveTab,
-    setIsDepositCash,
+    setIsDeposit,
     onMount,
     container,
     currency,
@@ -58,7 +58,7 @@ const Deposit = ({
 }) => {
     React.useEffect(() => {
         setActiveTab(container);
-        setIsDepositCash(false);
+        setIsDeposit(false);
         onMount();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -79,7 +79,7 @@ const Deposit = ({
     if (is_virtual) {
         return <Virtual />;
     }
-    if (is_deposit_cash) {
+    if (is_deposit) {
         if (error.is_ask_uk_funds_protection) {
             return <FundsProtection />;
         }
@@ -106,7 +106,7 @@ Deposit.propTypes = {
     error: PropTypes.object,
     is_cashier_default: PropTypes.bool,
     is_cashier_locked: PropTypes.bool,
-    is_deposit_cash: PropTypes.bool,
+    is_deposit: PropTypes.bool,
     is_deposit_locked: PropTypes.bool,
     iframe_height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     iframe_url: PropTypes.string,
@@ -114,7 +114,7 @@ Deposit.propTypes = {
     is_virtual: PropTypes.bool,
     onMount: PropTypes.func,
     setActiveTab: PropTypes.func,
-    setIsDepositCash: PropTypes.func,
+    setIsDeposit: PropTypes.func,
     setSideNotes: PropTypes.func,
     standpoint: PropTypes.object,
 };
@@ -122,7 +122,7 @@ Deposit.propTypes = {
 export default connect(({ client, modules }) => ({
     is_cashier_default: modules.cashier.is_cashier_default,
     is_cashier_locked: modules.cashier.is_cashier_locked,
-    is_deposit_cash: modules.cashier.is_deposit_cash,
+    is_deposit: modules.cashier.is_deposit,
     is_deposit_locked: modules.cashier.is_deposit_locked,
     is_virtual: client.is_virtual,
     container: modules.cashier.config.deposit.container,
@@ -133,6 +133,6 @@ export default connect(({ client, modules }) => ({
     is_loading: modules.cashier.is_loading,
     onMount: modules.cashier.onMount,
     setActiveTab: modules.cashier.setActiveTab,
-    setIsDepositCash: modules.cashier.setIsDepositCash,
+    setIsDeposit: modules.cashier.setIsDeposit,
     standpoint: client.standpoint,
 }))(Deposit);

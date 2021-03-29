@@ -17,13 +17,33 @@ import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 
 const DetailsComponent = ({ message = '' }) => {
-    const has_copy_icon = /^[0-9a-zA-Z]+.{25,34}/gm.test(message.split(/,| /)[1]);
-    const text_copy = message.split(/,| /)[4];
+    const blockchain_hash_match = /:\s([0-9a-zA-Z]+.{25,34})/gm.exec(message.split(/,\s/)[1]);
+    const blockchain_hash = blockchain_hash_match?.[1];
+
+    let messages = [message];
+
+    if (blockchain_hash) {
+        const lines = message.split(/,\s/);
+        messages = lines.map((text, index) => {
+            if (index !== lines.length - 1) {
+                return `${text}, `;
+            }
+            return text;
+        });
+    }
 
     return (
         <Text as='div' size='xs' className='statement__row--detail-text' align='center'>
-            {message}
-            {has_copy_icon && text_copy ? <Clipboard text_copy={text_copy} popoverAlignment='top' /> : null}
+            {messages.map((text, index) => {
+                return (
+                    <div key={text}>
+                        {text}
+                        {blockchain_hash && index === messages.length - 1 && (
+                            <Clipboard text_copy={blockchain_hash} popoverAlignment='top' />
+                        )}
+                    </div>
+                );
+            })}
         </Text>
     );
 };

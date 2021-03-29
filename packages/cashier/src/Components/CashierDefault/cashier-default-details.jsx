@@ -29,8 +29,8 @@ const CashierDefaultDetails = ({
                             {content.title}
                         </Text>
                         <div className={classNames({ 'cashier-default-detail__icons-array': !is_mobile })}>
-                            {content.icons?.map((icon, idx) => (
-                                <div key={`${icon}${idx}`} className='cashier-default-detail__icon'>
+                            {content.icons?.map((icon, index) => (
+                                <div key={`${icon}${index}`} className='cashier-default-detail__icon'>
                                     <Icon icon={is_dark_mode_on ? icon.dark : icon.light} height={40} width={40} />
                                 </div>
                             ))}

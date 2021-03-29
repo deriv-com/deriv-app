@@ -87,6 +87,10 @@ const eu_countries = [
 ];
 // check if client is from EU
 const isEuCountry = country => eu_countries.includes(country);
+// countries where synthetics are not offered
+const countries_without_synthetics = ['sg', 'de', 'gr', 'es', 'au', 'it', 'lu'];
+// check if synthetics are offered based on country
+const isSyntheticsUnavailable = country => countries_without_synthetics.includes(country);
 
 module.exports = {
     template,
@@ -94,5 +98,6 @@ module.exports = {
     getStaticHash,
     PromiseClass,
     isEuCountry,
+    isSyntheticsUnavailable,
     copyToClipboard,
 };

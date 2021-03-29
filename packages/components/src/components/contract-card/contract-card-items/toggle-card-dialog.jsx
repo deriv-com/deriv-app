@@ -187,7 +187,7 @@ ToggleCardDialog.propTypes = {
     getCardLabels: PropTypes.func,
     getContractById: PropTypes.func,
     is_valid_to_cancel: PropTypes.bool,
-    onMouseLeave: PropTypes.bool,
+    onMouseLeave: PropTypes.func,
     removeToast: PropTypes.func,
     setCurrentFocus: PropTypes.func,
     should_show_cancellation_warning: PropTypes.bool,

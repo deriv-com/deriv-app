@@ -1,16 +1,27 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import Footer from './popup-footer.jsx';
+import PopupFooter from './popup-footer.jsx';
+import PopupContext from './popup-context';
 import Tabs from '../tabs';
 
-const renderBody = body => (typeof body === 'function' ? body() : null);
-const renderFooter = footer => (typeof footer === 'function' ? footer() : null);
+const PopupBody = () => {
+    const {
+        active_tab_icon_color,
+        header_backgound_color,
+        tab_icon_color,
+        tabs_detail,
+        overlay_ref,
+        setIsOverlayShown,
+        Component,
+    } = React.useContext(PopupContext);
 
-const Body = ({ active_tab_icon_color, background_color, className, tab_icon_color, tabs_detail }) => {
+    if (typeof Component === 'function') {
+        return <Component overlay_ref={overlay_ref} setIsOverlayShown={setIsOverlayShown} />;
+    }
+
     return (
         <Tabs
             active_icon_color={active_tab_icon_color}
-            background_color={background_color}
+            background_color={header_backgound_color}
             className='popup'
             center
             fit_content
@@ -21,13 +32,20 @@ const Body = ({ active_tab_icon_color, background_color, className, tab_icon_col
             top
         >
             {tabs_detail.map(detail => {
+                const { id, icon, has_footer_separator, renderBody, renderFooter, title } = detail;
+
+                const BodyComponent = typeof renderBody === 'function' ? renderBody : null;
+                const FooterComponent = typeof renderFooter === 'function' ? renderFooter : null;
+
                 return (
-                    <div key={detail.id} label={detail.title} icon={detail.icon}>
-                        {renderBody(detail.renderBody)}
-                        {detail.renderFooter && (
-                            <Footer className={className} has_separator={detail.has_footer_separator}>
-                                {renderFooter(detail.renderFooter)}
-                            </Footer>
+                    <div key={id} label={title} icon={icon}>
+                        {BodyComponent && (
+                            <BodyComponent overlay_ref={overlay_ref} setIsOverlayShown={setIsOverlayShown} />
+                        )}
+                        {FooterComponent && (
+                            <PopupFooter has_separator={has_footer_separator}>
+                                <FooterComponent />
+                            </PopupFooter>
                         )}
                     </div>
                 );
@@ -36,21 +54,4 @@ const Body = ({ active_tab_icon_color, background_color, className, tab_icon_col
     );
 };
 
-Body.propTypes = {
-    active_tab_icon_color: PropTypes.string,
-    background_color: PropTypes.string,
-    className: PropTypes.string,
-    tabs_detail: PropTypes.arrayOf(
-        PropTypes.shape({
-            has_footer_separator: PropTypes.bool,
-            renderBody: PropTypes.func,
-            renderFooter: PropTypes.func,
-            icon: PropTypes.string,
-            id: PropTypes.number,
-            title: PropTypes.string,
-        })
-    ),
-    tab_icon_color: PropTypes.string,
-};
-
-export default Body;
+export default PopupBody;

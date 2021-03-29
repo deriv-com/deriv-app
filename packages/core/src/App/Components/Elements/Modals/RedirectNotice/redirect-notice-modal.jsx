@@ -1,9 +1,10 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Dialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getCurrentProductionDomain } from '@deriv/shared';
 
-const RedirectNoticeModal = ({ is_logged_in, is_eu }) => {
+const RedirectNoticeModal = ({ is_logged_in, is_eu, portal_id }) => {
     const [dialog_status, setDialogStatus] = React.useState(false);
     const [external_link, setExternalLink] = React.useState('');
 
@@ -32,10 +33,14 @@ const RedirectNoticeModal = ({ is_logged_in, is_eu }) => {
     };
 
     const onClickExternalLink = e => {
-        if (isThirdPartyLink(e.target.href) && is_logged_in && is_eu) {
-            setExternalLink(e.target.href);
-            e.preventDefault();
-            setDialogStatus(true);
+        const link_element = e.target.tagName === 'A' ? e.target : e.target.closest('a');
+        if (link_element) {
+            if (isThirdPartyLink(link_element.href) && is_logged_in && is_eu) {
+                e.preventDefault();
+                e.stopPropagation();
+                setExternalLink(link_element.href);
+                setDialogStatus(true);
+            }
         }
     };
 
@@ -51,8 +56,8 @@ const RedirectNoticeModal = ({ is_logged_in, is_eu }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return (
-        dialog_status && (
+    return ReactDOM.createPortal(
+        dialog_status ? (
             <Dialog
                 className='redirect-notice'
                 is_visible={dialog_status}
@@ -65,7 +70,8 @@ const RedirectNoticeModal = ({ is_logged_in, is_eu }) => {
             >
                 {localize('You are being redirected to an external website.')}
             </Dialog>
-        )
+        ) : null,
+        document.getElementById(portal_id)
     );
 };
 

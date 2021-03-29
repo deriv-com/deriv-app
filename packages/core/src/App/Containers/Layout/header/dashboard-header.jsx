@@ -45,13 +45,7 @@ const LoggedInHeader = ({ is_dark_mode }) => {
                     <React.Fragment>
                         <Icon icon={'IcNotificationClear'} height={20} width={17} />
                         <div className='dashboard-header__right--logged-in-separator' />
-                        <ToggleMenuDrawer
-                            alignment={'right'}
-                            is_dashboard
-                            is_logged_in
-                            should_allow_authentication
-                            title={''}
-                        />
+                        <ToggleMenuDrawer alignment={'right'} is_logged_in should_allow_authentication title={''} />
                     </React.Fragment>
                 )}
             </div>
@@ -106,7 +100,7 @@ const LoggedOutHeader = () => {
                 {isMobile() && (
                     <React.Fragment>
                         <div className='dashboard-header__right--logged-out-separator' />
-                        <ToggleMenuDrawer alignment={'right'} is_dashboard should_allow_authentication title={''} />
+                        <ToggleMenuDrawer alignment={'right'} should_allow_authentication title={''} />
                     </React.Fragment>
                 )}
             </div>

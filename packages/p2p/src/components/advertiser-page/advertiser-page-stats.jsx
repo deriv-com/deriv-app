@@ -48,7 +48,7 @@ const AdvertiserPageStats = () => {
                                     {localize('Buy/Sell')}
                                 </Text>
                                 <Text align='center' color='prominent' size='s' weight='bold'>
-                                    {`${buy_orders_count || '-'} / ${sell_orders_count || '-'}`}
+                                    {`${buy_orders_count}/${sell_orders_count}`}
                                 </Text>
                             </Table.Cell>
                         ) : (
@@ -58,7 +58,7 @@ const AdvertiserPageStats = () => {
                                         {localize('Buy')}
                                     </Text>
                                     <Text align='center' color='prominent' size='s' weight='bold'>
-                                        {buy_orders_count || '-'}
+                                        {buy_orders_count}
                                     </Text>
                                 </Table.Cell>
                                 <div className='advertiser-page__stats-cell-separator' />
@@ -67,7 +67,7 @@ const AdvertiserPageStats = () => {
                                         {localize('Sell')}
                                     </Text>
                                     <Text align='center' color='prominent' size='s' weight='bold'>
-                                        {sell_orders_count || '-'}
+                                        {sell_orders_count}
                                     </Text>
                                 </Table.Cell>
                             </React.Fragment>

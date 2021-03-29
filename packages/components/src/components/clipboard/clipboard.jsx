@@ -4,7 +4,15 @@ import PropTypes from 'prop-types';
 import Popover from '../popover';
 import Icon from '../icon';
 
-const Clipboard = ({ text_copy, info_message, success_message, className, popoverClassName }) => {
+const Clipboard = ({
+    text_copy,
+    info_message,
+    success_message,
+    className,
+    popoverClassName,
+    popover_props = {},
+    popoverAlignment = 'bottom',
+}) => {
     const [is_copied, setIsCopied] = React.useState(false);
     let timeout_clipboard = null;
 
@@ -32,10 +40,11 @@ const Clipboard = ({ text_copy, info_message, success_message, className, popove
     return (
         <>
             <Popover
-                alignment='bottom'
+                alignment={popoverAlignment}
                 classNameBubble={classNames('dc-clipboard__popover', popoverClassName)}
                 message={is_copied ? success_message : info_message}
                 relative_render
+                {...popover_props}
             >
                 {is_copied && (
                     <Icon
@@ -62,5 +71,6 @@ Clipboard.propTypes = {
     success_message: PropTypes.string,
     className: PropTypes.string,
     popoverClassName: PropTypes.string,
+    popoverAlignment: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
 };
 export default Clipboard;

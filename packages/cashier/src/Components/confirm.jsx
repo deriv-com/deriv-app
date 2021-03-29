@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { Button, Icon } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv/components';
 import FormError from './Error/form-error.jsx';
 
 const Row = ({ item_key, label, value }) => (
@@ -31,7 +31,15 @@ const Row = ({ item_key, label, value }) => (
 const Confirm = ({ data, error, header, onClickBack, onClickConfirm }) => (
     <div className='cashier__wrapper cashier__wrapper--confirm'>
         <Icon icon='IcConfirmDetails' width='128' height='128' />
-        <h2 className='cashier__header cashier__confirm-header'>{header}</h2>
+        <Text
+            as='h2'
+            color='prominent'
+            align='center'
+            weight='bold'
+            className='cashier__header cashier__confirm-header'
+        >
+            {header}
+        </Text>
         <div className='cashier__confirm-column-wrapper'>
             <div className='cashier__confirm-column'>
                 {data.map((d, key) => (

@@ -38,6 +38,7 @@ const OrderTable = ({ showDetails }) => {
                             onChange={({ target: { value } }) => general_store.setOrderTableType(value)}
                             value={general_store.order_table_type}
                             has_rounded_button
+                            large
                         />
                     </ToggleContainer>
                 </div>

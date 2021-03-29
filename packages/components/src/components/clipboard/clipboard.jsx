@@ -25,12 +25,13 @@ const Clipboard = ({
         textField.remove();
     };
 
-    const onClick = () => {
+    const onClick = ev => {
         copyToClipboard(text_copy);
         setIsCopied(true);
         timeout_clipboard = setTimeout(() => {
             setIsCopied(false);
         }, 2000);
+        ev.stopPropagation();
     };
 
     React.useEffect(() => {

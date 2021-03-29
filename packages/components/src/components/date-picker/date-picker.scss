@@ -144,6 +144,9 @@
             &--is-focused {
                 color: var(--brand-secondary);
             }
+            .dc-input--disabled & {
+                color: var(--text-disabled);
+            }
         }
         &__error {
             display: flex;

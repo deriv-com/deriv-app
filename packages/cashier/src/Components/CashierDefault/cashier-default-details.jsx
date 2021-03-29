@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 
-const CashierDefaultDetail = ({
+const CashierDefaultDetails = ({
     detail_click,
     detail_contents,
     detail_description,
@@ -23,14 +23,14 @@ const CashierDefaultDetail = ({
                     </Text>
                     <Icon icon='IcChevronRight' size={16} />
                 </div>
-                {detail_contents?.map(content => (
-                    <div key={content.title} className='cashier-default-detail__array'>
+                {detail_contents?.map((content, idx) => (
+                    <div key={`${content.title}${idx}`} className='cashier-default-detail__array'>
                         <Text size='xxs' weight='bold' color='less-prominent'>
                             {content.title}
                         </Text>
                         <div className={classNames({ 'cashier-default-detail__icons-array': !is_mobile })}>
-                            {content.icons?.map(icon => (
-                                <div key={icon} className='cashier-default-detail__icon'>
+                            {content.icons?.map((icon, idx) => (
+                                <div key={`${icon}${idx}`} className='cashier-default-detail__icon'>
                                     <Icon icon={is_dark_mode_on ? icon.dark : icon.light} height={40} width={40} />
                                 </div>
                             ))}
@@ -42,7 +42,7 @@ const CashierDefaultDetail = ({
     );
 };
 
-CashierDefaultDetail.propTypes = {
+CashierDefaultDetails.propTypes = {
     detail_click: PropTypes.func,
     detail_contents: PropTypes.array,
     detail_description: PropTypes.string,
@@ -50,4 +50,4 @@ CashierDefaultDetail.propTypes = {
     is_mobile: PropTypes.bool,
 };
 
-export default CashierDefaultDetail;
+export default CashierDefaultDetails;

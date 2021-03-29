@@ -159,7 +159,7 @@ export default class CashierStore extends BaseStore {
     @observable is_p2p_visible = false;
     @observable p2p_notification_count = 0;
     @observable cashier_route_tab_index = 0;
-    @observable is_deposit_cash = false;
+    @observable is_deposit = false;
     @observable is_cashier_default = true;
 
     @observable config = {
@@ -211,8 +211,8 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setIsDepositCash(is_deposit_cash) {
-        this.is_deposit_cash = is_deposit_cash;
+    setIsDeposit(is_deposit) {
+        this.is_deposit = is_deposit;
     }
 
     @action.bound

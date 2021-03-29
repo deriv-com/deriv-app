@@ -435,6 +435,10 @@
             height: unset;
             margin-top: 2.4rem;
         }
+        &__loader {
+            position: fixed;
+            left: 0;
+        }
         &-header {
             text-align: center;
         }

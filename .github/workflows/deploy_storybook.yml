@@ -1,11 +1,15 @@
-name: deploy_storybook
+name: Build and Deploy Storybook to Vercel
 
-# Run this workflow every time a new commit pushed to your repository
-on: push
-
+on:
+  push:
+    branches:
+      - master
+      - storybook_deploy
+    paths:
+      - packages/components/**
 
 jobs:
-  build:
+  build_storybook:
     runs-on: ubuntu-latest
 
     strategy:
@@ -20,6 +24,5 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
       - run: npm run bootstrap
-      - run: npm run build components
       - run: npm run storybook:build
         working-directory: ./packages/components

@@ -118,11 +118,6 @@
 
                 &--has-error {
                     padding-top: unset;
-                    color: var(--brand-red-coral) !important;
-                }
-
-                &--disabled {
-                    color: var(--text-disabled) !important;
                 }
             }
         }
@@ -148,9 +143,6 @@
             }
             &--is-focused {
                 color: var(--brand-secondary);
-            }
-            .dc-input--disabled & {
-                color: var(--text-disabled);
             }
         }
         &__error {

@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import classNames from 'classnames';
-import { Loading, ThemedScrollbars, Text } from '@deriv/components';
-import { formatMoney, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
+import { Loading, ThemedScrollbars, Text, Button } from '@deriv/components';
+import { formatMoney, isDesktop, isMobile, useIsMounted, PlatformContext } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import DemoMessage from 'Components/demo-message';
@@ -14,6 +14,22 @@ import AccountLimitsOverlay from './account-limits-overlay.jsx';
 import AccountLimitsTableCell from './account-limits-table-cell.jsx';
 import AccountLimitsTableHeader from './account-limits-table-header.jsx';
 import AccountLimitsTurnoverLimitRow from './account-limits-turnover-limit-row.jsx';
+
+const VirtualAccountButton = ({ toggleAccountsDialog }) => {
+    const { is_dashboard } = React.useContext(PlatformContext);
+    if (!is_dashboard) return '';
+    return (
+        <Button
+            primary
+            onClick={() => {
+                toggleAccountsDialog();
+            }}
+            className='account__demo-message-button'
+        >
+            {localize('Add a real account')}
+        </Button>
+    );
+};
 
 const AccountLimits = ({
     account_limits,
@@ -28,10 +44,12 @@ const AccountLimits = ({
     setIsOverlayShown: setIsPopupOverlayShown,
     should_bypass_scrollbars,
     should_show_article,
+    toggleAccountsDialog,
 }) => {
     const isMounted = useIsMounted();
     const [is_loading, setLoading] = React.useState(false);
     const [is_overlay_shown, setIsOverlayShown] = React.useState(false);
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     React.useEffect(() => {
         if (is_virtual) {
@@ -63,7 +81,15 @@ const AccountLimits = ({
     }
 
     if (is_virtual) {
-        return <DemoMessage />;
+        return (
+            <div
+                className={classNames('account__demo-message-wrapper', {
+                    'account__demo-message-dashboard': is_dashboard,
+                })}
+            >
+                <DemoMessage more_content={<VirtualAccountButton toggleAccountsDialog={toggleAccountsDialog} />} />;
+            </div>
+        );
     }
 
     const {

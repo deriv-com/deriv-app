@@ -115,6 +115,9 @@ $MIN_HEIGHT_FLOATING: calc(
                 & .dc-checkbox__box {
                     margin-left: 0;
                 }
+                & .da-account-limits__wrapper {
+                    width: calc(100vw - 33rem);
+                }
 
                 margin: 2rem 0 0 7rem;
 
@@ -1010,6 +1013,11 @@ $MIN_HEIGHT_FLOATING: calc(
             flex-direction: column;
             width: 100%;
             height: auto;
+            @include desktop {
+                &--dashboard {
+                    width: calc(100vw - 33rem);
+                }
+            }
         }
         &-button {
             margin-top: 2.4rem;

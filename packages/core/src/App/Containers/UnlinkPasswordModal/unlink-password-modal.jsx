@@ -3,18 +3,20 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text } from '@deriv/components';
-import { getErrorMessages, toTitleCase, validPassword, validLength } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { getErrorMessages, redirectToLogin, toTitleCase, validPassword, validLength } from '@deriv/shared';
+import { getLanguage, localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { WS } from 'Services/index';
+import { WS } from 'Services';
 
-const UnlinkPassword = ({ social_identity_provider, toggleResetPasswordModal, verification_code }) => {
+const UnlinkPassword = ({ logoutClient, social_identity_provider, toggleResetPasswordModal, verification_code }) => {
     const onResetComplete = (error_msg, actions) => {
         actions.setSubmitting(false);
         actions.resetForm({ password: '' });
         // Error would be returned on invalid token (and the like) cases.
         // TODO: Proper error handling (currently we have no place to put the message)
         if (error_msg) {
+            // eslint-disable-next-line no-console
+            console.error(error_msg);
             actions.setStatus({ error_msg });
             return;
         }
@@ -82,16 +84,21 @@ const UnlinkPassword = ({ social_identity_provider, toggleResetPasswordModal, ve
                                     </Text>
                                     <Text align='center' as='p' size='xs' className='unlink-password__subtext'>
                                         <Localize
-                                            i18n_default_text={`Your Deriv account is unlinked from ${toTitleCase(
-                                                social_identity_provider
-                                            )}. Use your email and password for future log in.`}
+                                            i18n_default_text={
+                                                'Your Deriv account is unlinked from {{social_identity_provider}}. Use your email and password for future log in.'
+                                            }
+                                            values={{
+                                                social_identity_provider: toTitleCase(social_identity_provider),
+                                            }}
                                         />
                                     </Text>
                                     <Button
                                         type='button'
                                         onClick={() => {
                                             toggleResetPasswordModal(false);
-                                            WS.getAccountStatus();
+                                            logoutClient().then(() => {
+                                                redirectToLogin(false, getLanguage(), false);
+                                            });
                                         }}
                                         primary
                                         large
@@ -160,6 +167,7 @@ const UnlinkPassword = ({ social_identity_provider, toggleResetPasswordModal, ve
 };
 
 UnlinkPassword.propTypes = {
+    logoutClient: PropTypes.func,
     toggleResetPasswordModal: PropTypes.func,
     verification_code: PropTypes.string,
 };
@@ -169,6 +177,7 @@ const UnlinkPasswordModal = ({
     enableApp,
     is_loading,
     is_visible,
+    logoutClient,
     social_identity_provider,
     toggleResetPasswordModal,
     verification_code,
@@ -182,6 +191,7 @@ const UnlinkPasswordModal = ({
             is_loading={is_loading}
         >
             <UnlinkPassword
+                logoutClient={logoutClient}
                 social_identity_provider={social_identity_provider}
                 toggleResetPasswordModal={toggleResetPasswordModal}
                 verification_code={verification_code}
@@ -195,6 +205,7 @@ UnlinkPasswordModal.propTypes = {
     enableApp: PropTypes.func,
     is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
+    logoutClient: PropTypes.func,
     toggleResetPasswordModal: PropTypes.func,
     verification_code: PropTypes.string,
 };
@@ -204,6 +215,7 @@ export default connect(({ ui, client }) => ({
     enableApp: ui.enableApp,
     is_loading: ui.is_loading,
     is_visible: ui.is_reset_password_modal_visible,
+    logoutClient: client.logout,
     social_identity_provider: client.social_identity_provider,
     toggleResetPasswordModal: ui.toggleResetPasswordModal,
     verification_code: client.verification_code.reset_password,

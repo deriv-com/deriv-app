@@ -12,6 +12,11 @@ import SentEmailModal from './sent-email-modal.jsx';
 const TradingPassword = ({ email, is_trading_password_required }) => {
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
+    const onClickSendEmail = () => {
+        WS.verifyEmail(email, 'trading_platform_password_reset');
+        setIsSentEmailModalOpen(true);
+    };
+
     return (
         <React.Fragment>
             <FormSubHeader title={localize('Trading password')} />
@@ -20,20 +25,15 @@ const TradingPassword = ({ email, is_trading_password_required }) => {
                 {is_trading_password_required ? (
                     <SetPasswordForm />
                 ) : (
-                    <ChangePasswordForm
-                        is_trading_password
-                        onClickSendEmail={() => {
-                            WS.verifyEmail(email, 'trading_platform_password_reset');
-                            setIsSentEmailModalOpen(true);
-                        }}
-                    />
+                    <ChangePasswordForm is_trading_password onClickSendEmail={onClickSendEmail} />
                 )}
+                <SentEmailModal
+                    is_open={is_sent_email_modal_open}
+                    identifier_title='trading_password'
+                    onClose={() => setIsSentEmailModalOpen(false)}
+                    onClickSendEmail={onClickSendEmail}
+                />
             </div>
-            <SentEmailModal
-                is_open={is_sent_email_modal_open}
-                identifier_title='trading_password'
-                onClose={() => setIsSentEmailModalOpen(false)}
-            />
         </React.Fragment>
     );
 };

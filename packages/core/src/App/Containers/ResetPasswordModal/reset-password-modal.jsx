@@ -15,6 +15,8 @@ const ResetPassword = ({ logoutClient, verification_code }) => {
         // Error would be returned on invalid token (and the like) cases.
         // TODO: Proper error handling (currently we have no place to put the message)
         if (error_msg) {
+            // eslint-disable-next-line no-console
+            console.error(error_msg);
             actions.setStatus({ error_msg });
             return;
         }

@@ -66,14 +66,15 @@ const DerivPassword = ({ email, is_social_signup, social_identity_provider }) =>
                         }}
                     />
                 )}
+                <SentEmailModal
+                    is_unlink_modal={is_unlink_modal_open}
+                    is_open={is_sent_email_modal_open}
+                    onClose={() => setIsSentEmailModalOpen(false)}
+                    identifier_title={capitalize_identifier}
+                    onClickSendEmail={onClickSendEmail}
+                    onConfirm={onClickSendEmail}
+                />
             </div>
-            <SentEmailModal
-                is_unlink_modal={is_unlink_modal_open}
-                is_open={is_sent_email_modal_open}
-                onClose={() => setIsSentEmailModalOpen(false)}
-                identifier_title={capitalize_identifier}
-                onConfirm={() => onClickSendEmail()}
-            />
         </React.Fragment>
     );
 };

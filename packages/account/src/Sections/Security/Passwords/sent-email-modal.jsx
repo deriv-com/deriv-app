@@ -1,8 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Button, Icon, Modal, SendEmailTemplate, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { Button, Div100vhContainer, Icon, Modal, SendEmailTemplate, Text } from '@deriv/components';
+import { isDesktop } from '@deriv/shared';
 
 const getNoEmailContentStrings = () => {
     return [
@@ -25,7 +26,7 @@ const getNoEmailContentStrings = () => {
     ];
 };
 
-const SentEmailModal = ({ identifier_title, is_open, is_unlink_modal, onClose, onConfirm }) => {
+const SentEmailModal = ({ identifier_title, is_open, is_unlink_modal, onClose, onConfirm, onClickSendEmail }) => {
     const getSubtitle = () => {
         let subtitle = '';
         switch (identifier_title) {
@@ -81,28 +82,35 @@ const SentEmailModal = ({ identifier_title, is_open, is_unlink_modal, onClose, o
                     </Modal.Footer>
                 </React.Fragment>
             ) : (
-                <Modal.Body>
-                    <div onClick={onClose} className='sent-email__modal-close'>
-                        <Icon icon='IcCross' />
-                    </div>
-                    <SendEmailTemplate
-                        className='sent-email'
-                        title={localize('We’ve sent you an email')}
-                        subtitle={getSubtitle()}
-                        lbl_no_receive={localize("Didn't receive the email?")}
-                        txt_resend={localize('Resend email')}
-                        txt_resend_in={localize('Resend email in {{seconds}}s', { seconds: '{{seconds}}' })}
-                    >
-                        {getNoEmailContentStrings().map((item, idx) => (
-                            <div className='sent-email__content' key={idx}>
-                                <Icon icon={item.icon} size={32} />
-                                <Text size='xxs' as='p'>
-                                    {item.content}
-                                </Text>
-                            </div>
-                        ))}
-                    </SendEmailTemplate>
-                </Modal.Body>
+                <Div100vhContainer
+                    className='account__scrollbars_container-wrapper'
+                    is_disabled={isDesktop()}
+                    height_offset='80px'
+                >
+                    <Modal.Body>
+                        <div onClick={onClose} className='sent-email__modal-close'>
+                            <Icon icon='IcCross' />
+                        </div>
+                        <SendEmailTemplate
+                            className='sent-email'
+                            title={localize('We’ve sent you an email')}
+                            subtitle={getSubtitle()}
+                            lbl_no_receive={localize("Didn't receive the email?")}
+                            txt_resend={localize('Resend email')}
+                            txt_resend_in={localize('Resend email in {{seconds}}s', { seconds: '{{seconds}}' })}
+                            onClickSendEmail={onClickSendEmail}
+                        >
+                            {getNoEmailContentStrings().map((item, idx) => (
+                                <div className='sent-email__content' key={idx}>
+                                    <Icon icon={item.icon} size={32} />
+                                    <Text size='xxs' as='p'>
+                                        {item.content}
+                                    </Text>
+                                </div>
+                            ))}
+                        </SendEmailTemplate>
+                    </Modal.Body>
+                </Div100vhContainer>
             )}
         </Modal>
     );
@@ -114,6 +122,7 @@ SentEmailModal.propTypes = {
     is_unlink_modal: PropTypes.bool,
     onClose: PropTypes.func,
     onConfirm: PropTypes.func,
+    onClickSendEmail: PropTypes.func,
 };
 
 export default SentEmailModal;

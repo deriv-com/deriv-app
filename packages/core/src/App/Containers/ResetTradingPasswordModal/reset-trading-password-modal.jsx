@@ -6,7 +6,7 @@ import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text } from '@deriv
 import { getErrorMessages, validPassword, validLength } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { WS } from 'Services/index';
+import { WS } from 'Services';
 
 const ResetTradingPassword = ({ toggleResetTradingPasswordModal, verification_code }) => {
     const onResetComplete = (error_msg, actions) => {
@@ -15,6 +15,8 @@ const ResetTradingPassword = ({ toggleResetTradingPasswordModal, verification_co
         // Error would be returned on invalid token (and the like) cases.
         // TODO: Proper error handling (currently we have no place to put the message)
         if (error_msg) {
+            // eslint-disable-next-line no-console
+            console.error(error_msg);
             actions.setStatus({ error_msg });
             return;
         }

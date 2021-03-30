@@ -1229,8 +1229,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
 .dc-modal__container_sent-email__modal {
     @include mobile {
-        height: unset !important;
-        max-height: 100vh !important;
+        height: 42rem !important;
         overflow-y: scroll !important;
     }
 }

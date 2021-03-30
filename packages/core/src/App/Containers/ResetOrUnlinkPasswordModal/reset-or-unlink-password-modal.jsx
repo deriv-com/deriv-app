@@ -1,6 +1,6 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { WS } from 'Services/index';
+import { WS } from 'Services';
 import UnlinkPasswordModal from '../UnlinkPasswordModal';
 import ResetPasswordModal from '../ResetPasswordModal';
 

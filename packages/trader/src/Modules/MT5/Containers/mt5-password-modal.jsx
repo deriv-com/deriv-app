@@ -96,6 +96,17 @@ const getIconFromType = type => {
     }
 };
 
+const getCancelButtonLabel = ({ should_set_trading_password, error_type, should_show_server_form }) => {
+    if (should_set_trading_password && error_type !== 'PasswordReset') {
+        return null;
+    }
+    if (should_show_server_form) {
+        return localize('Cancel');
+    }
+
+    return localize('Forgot password?');
+};
+
 const MT5PasswordForm = props => {
     const button_label = React.useMemo(() => {
         if (props.should_show_server_form) {
@@ -107,23 +118,11 @@ const MT5PasswordForm = props => {
         }
         return localize('Add account');
     }, [props.should_show_server_form, props.should_set_trading_password, props.error_type]);
-    const has_cancel_button = React.useMemo(() => {
-        return (
-            props.should_show_server_form || !props.should_set_trading_password || props.error_type === 'PasswordReset'
-        );
-    }, [props.should_show_server_form, props.should_set_trading_password, props.error_type]);
-    const cancel_button_label = React.useMemo(() => {
-        if (props.should_set_trading_password && props.error_type !== 'PasswordReset') {
-            return null;
-        }
-        if (props.should_show_server_form) {
-            return localize('Cancel');
-        }
-
-        return localize('Forgot password?');
-    }, [props.should_show_server_form, props.should_set_trading_password, props.error_type]);
+    const has_cancel_button =
+        props.should_show_server_form || !props.should_set_trading_password || props.error_type === 'PasswordReset';
+    const cancel_button_label = getCancelButtonLabel(props);
     const history = useHistory();
-    const handleCancel = React.useCallback(() => {
+    const handleCancel = () => {
         if (!has_cancel_button) {
             return undefined;
         }
@@ -131,7 +130,8 @@ const MT5PasswordForm = props => {
             return history.push(routes.passwords);
         }
         return props.onCancel();
-    }, [has_cancel_button, props, history]);
+    };
+
     if (props.error_type === 'PasswordReset') {
         return (
             <React.Fragment>
@@ -337,16 +337,10 @@ const MT5PasswordModal = ({
 }) => {
     const [server, setServer] = React.useState('');
 
-    const is_bvi = React.useMemo(() => {
-        return landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
-    }, [landing_companies]);
-    const has_mt5_account = React.useMemo(() => Boolean(mt5_login_list?.length), [mt5_login_list]);
-
-    const should_set_trading_password = React.useMemo(
-        () => Array.isArray(account_status.status) && account_status.status.includes('trading_password_required'),
-        [account_status]
-    );
-
+    const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
+    const has_mt5_account = Boolean(mt5_login_list?.length);
+    const should_set_trading_password =
+        Array.isArray(account_status.status) && account_status.status.includes('trading_password_required');
     const is_password_error = error_type === 'PasswordError';
     const is_password_reset = error_type === 'PasswordReset';
 

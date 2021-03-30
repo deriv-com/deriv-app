@@ -24,6 +24,7 @@
         "paths": {
             "Components/*": ["src/components/*"],
             "Constants/*": ["src/constants/*"],
+            "Services/*": ["src/services/*"],
             "Stores": ["src/stores"],
             "Types": ["src/types"],
             "Utils": ["src/utils"]

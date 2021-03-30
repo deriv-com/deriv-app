@@ -28,16 +28,21 @@ export default class PushwooshStore extends BaseStore {
                 applicationCode: 'DD293-35A19',
                 safariWebsitePushID: 'web.com.deriv',
                 defaultNotificationTitle: 'Deriv.com',
-                defaultNotificationImage: urlForCurrentDomain('https://deriv.com/static/favicons/favicon-192x192.png'),
+                defaultNotificationImage: urlForCurrentDomain('https://deriv.com/favicons/favicon-192x192.png'),
                 autoSubscribe: true,
                 serviceWorkerUrl: '/service-worker.js',
             },
         ]);
         this.has_initialized = true;
+
         this.push_woosh.push([
             'onReady',
             api => {
-                this.push_woosh.subscribe();
+                this.push_woosh.isSubscribed().then(is_subscribed => {
+                    if (!is_subscribed) {
+                        this.push_woosh.subscribe();
+                    }
+                });
                 this.sendTags(api);
             },
         ]);

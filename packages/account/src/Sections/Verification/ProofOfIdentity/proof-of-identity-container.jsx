@@ -21,6 +21,7 @@ const ProofOfIdentityContainer = ({
     refreshNotifications,
     removeNotificationMessage,
     onStateChange,
+    is_message_enabled = true,
     is_description_enabled = true,
     is_mx_mlt,
     height,
@@ -177,6 +178,7 @@ const ProofOfIdentityContainer = ({
             needs_poa={needs_poa}
             height={height ?? null}
             handleComplete={handleComplete}
+            is_message_enabled={is_message_enabled}
             is_description_enabled={is_description_enabled}
             redirect_button={redirect_button}
         />

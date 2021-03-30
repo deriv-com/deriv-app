@@ -134,7 +134,7 @@ export const load = ({
                     save_modal.updateBotName(file_name);
                     workspace.clearUndo();
                     workspace.current_strategy_id = strategy_id || Blockly.utils.genUid();
-                    saveWorkspaceToRecent(xml, from);
+                    await saveWorkspaceToRecent(xml, from);
                 }
             }
 

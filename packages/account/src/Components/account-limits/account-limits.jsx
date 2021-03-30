@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import classNames from 'classnames';
-import { Loading, ThemedScrollbars, Text, Button } from '@deriv/components';
+import { Loading, ThemedScrollbars, Text, Button, ButtonLink } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile, useIsMounted, PlatformContext } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
@@ -252,7 +252,39 @@ const AccountLimits = ({
                                                 <React.Fragment>
                                                     <tr>
                                                         <AccountLimitsTableCell>
-                                                            <Localize i18n_default_text='Total withdrawal allowed' />
+                                                            <Localize
+                                                                i18n_default_text={
+                                                                    is_dashboard
+                                                                        ? 'Total withdrawal limit'
+                                                                        : 'Total withdrawal allowed'
+                                                                }
+                                                            />
+                                                            {is_dashboard && !is_fully_authenticated && (
+                                                                <React.Fragment>
+                                                                    <Text
+                                                                        size={isMobile() ? 'xxxs' : 'xxs'}
+                                                                        className='account-management-table__verify'
+                                                                        color='less-prominent'
+                                                                        line_height='xs'
+                                                                    >
+                                                                        {localize(
+                                                                            'To increase limit please verify your identity'
+                                                                        )}
+                                                                    </Text>
+                                                                    <ButtonLink
+                                                                        to='/account/proof-of-identity'
+                                                                        size='small'
+                                                                    >
+                                                                        <Text
+                                                                            weight='bold'
+                                                                            color='colored-background'
+                                                                            size={isMobile() ? 'xxxs' : 'xxs'}
+                                                                        >
+                                                                            {localize('Verify')}
+                                                                        </Text>
+                                                                    </ButtonLink>
+                                                                </React.Fragment>
+                                                            )}
                                                         </AccountLimitsTableCell>
                                                         <AccountLimitsTableCell align='right'>
                                                             {formatMoney(currency, num_of_days_limit, true)}
@@ -282,15 +314,18 @@ const AccountLimits = ({
                                             )}
                                         </tbody>
                                     </table>
-                                    <div className='da-account-limits__text-container'>
-                                        <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
-                                            {is_fully_authenticated ? (
-                                                <Localize i18n_default_text='Your account is fully authenticated and your withdrawal limits have been lifted.' />
-                                            ) : (
-                                                <Localize i18n_default_text='Stated limits are subject to change without prior notice.' />
-                                            )}
-                                        </Text>
-                                    </div>
+                                    {!is_dashboard ||
+                                        (isMobile() && (
+                                            <div className='da-account-limits__text-container'>
+                                                <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
+                                                    {is_fully_authenticated ? (
+                                                        <Localize i18n_default_text='Your account is fully authenticated and your withdrawal limits have been lifted.' />
+                                                    ) : (
+                                                        <Localize i18n_default_text='Stated limits are subject to change without prior notice.' />
+                                                    )}
+                                                </Text>
+                                            </div>
+                                        ))}
                                 </React.Fragment>
                             )}
                         </ThemedScrollbars>

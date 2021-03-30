@@ -57,7 +57,12 @@ const Routes = ({
                     match_patterns: [
                         {
                             from: getRoutesConfig()
-                                .map(route => route.path)
+                                .flatMap(route => {
+                                    if (route.routes) {
+                                        return route.routes.map(subroute => subroute.path);
+                                    }
+                                    return [route.path];
+                                })
                                 .filter(path => path && path !== routes.mt5),
                             to: [routes.mt5],
                         },

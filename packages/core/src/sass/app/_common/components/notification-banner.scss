@@ -31,9 +31,6 @@
         width: 138px;
     }
     &__title {
-        font-size: 1.6rem;
-        font-weight: bold;
-        line-height: 1.5;
         @include desktop {
             white-space: nowrap;
         }

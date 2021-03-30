@@ -41,7 +41,16 @@ const WelcomeColumn = ({
                     {platforms.map((platform, index) => (
                         <div className='welcome-column__platform' key={index}>
                             <Icon className='welcome-column__platform__icon' icon={platform.icon} size={32} />
-                            <h3 className='welcome-column__platform__title'>{platform.title}</h3>
+                            <Text
+                                as='h3'
+                                weight='bold'
+                                align='center'
+                                color='prominent'
+                                size='xs'
+                                className='welcome-column__platform__title'
+                            >
+                                {platform.title}
+                            </Text>
                             <Text
                                 as='p'
                                 color='less-prominent'
@@ -165,7 +174,9 @@ const WelcomeModal = ({ toggleWelcomeModal, history }) => {
     return (
         <Modal width='760px' className='welcome' is_open={true} has_close_icon={false} has_outer_content={true}>
             <ThemedScrollbars height={700}>
-                <h2 className='welcome__title'>{localize('Where would you like to start?')}</h2>
+                <Text as='h2' weight='bold' align='center' color='prominent' className='welcome__title'>
+                    {localize('Where would you like to start?')}
+                </Text>
                 <div
                     className={classNames('welcome__message', 'welcome__message--left', {
                         'welcome__message--visible': hovered === 'left',

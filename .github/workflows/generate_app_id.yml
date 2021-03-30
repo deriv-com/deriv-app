@@ -11,12 +11,12 @@ jobs:
         steps:
             - name: Capture Vercel preview URL
               id: vercel_preview_url
-              uses: aaron-binary/vercel-preview-url-action@v0.0.2
+              uses: binary-com/vercel-preview-url-action@v0.0.3
               with:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             - name: Generate Deriv App ID for deployment Preview URL
               id: generate_app_id
-              uses: aaron-binary/deriv-app-id-action@v1
+              uses: binary-com/deriv-app-id-action@v1
               with:
                   DERIV_API_TOKEN: ${{ secrets.DERIV_API_TOKEN }}
                   DERIV_APP_ID: ${{ secrets.DERIV_APP_ID }}

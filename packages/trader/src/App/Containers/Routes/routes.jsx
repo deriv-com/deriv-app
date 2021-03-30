@@ -9,16 +9,16 @@ import BinaryRoutes from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
 import { connect } from 'Stores/connect';
 
-const checkRoutingMatch = (route_list, path, exact = true) => {
-    return route_list.some(route => !!matchPath(path, { path: route, exact }));
+const checkRoutingMatch = (route_list, path) => {
+    return route_list.some(route => !!matchPath(path, { path: route, exact: true }));
 };
 
-const tradePageMountingMiddleware = ({ path_from, path_to, action, match_patterns, callback, exact }) => {
+const tradePageMountingMiddleware = ({ path_from, path_to, action, match_patterns, callback }) => {
     if (action === 'PUSH' || action === 'POP') {
         // We use matchPath here because on route, there will be extra
         // parameters which matchPath takes into account.
         const has_match = match_patterns.some(
-            pattern => checkRoutingMatch(pattern.from, path_from, exact) && checkRoutingMatch(pattern.to, path_to)
+            pattern => checkRoutingMatch(pattern.from, path_from) && checkRoutingMatch(pattern.to, path_to)
         );
 
         callback(has_match);
@@ -68,7 +68,6 @@ const Routes = ({
                             clearPortfolio();
                         }
                     },
-                    exact: false,
                 });
 
                 return tradePageMountingMiddleware({

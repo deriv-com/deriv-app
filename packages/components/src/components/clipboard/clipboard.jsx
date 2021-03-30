@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { useIsMounted } from '@deriv/shared';
 import Popover from '../popover';
 import Icon from '../icon';
 
@@ -14,6 +15,7 @@ const Clipboard = ({
     popoverAlignment = 'bottom',
 }) => {
     const [is_copied, setIsCopied] = React.useState(false);
+    const isMounted = useIsMounted();
     let timeout_clipboard = null;
 
     const copyToClipboard = text => {
@@ -25,12 +27,15 @@ const Clipboard = ({
         textField.remove();
     };
 
-    const onClick = () => {
+    const onClick = event => {
         copyToClipboard(text_copy);
         setIsCopied(true);
         timeout_clipboard = setTimeout(() => {
-            setIsCopied(false);
+            if (isMounted()) {
+                setIsCopied(false);
+            }
         }, 2000);
+        event.stopPropagation();
     };
 
     React.useEffect(() => {

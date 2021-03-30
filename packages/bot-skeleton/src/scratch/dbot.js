@@ -295,18 +295,24 @@ class DBot {
      * Checks whether the workspace contains all required blocks before running the strategy.
      */
     checkForRequiredBlocks() {
-        let message;
+        let error;
 
-        if (!hasAllRequiredBlocks(this.workspace)) message = 'missing from';
-        if (!isAllRequiredBlocksEnabled(this.workspace)) message = 'disabled in';
-
-        if (message) {
-            const error = new Error(
+        if (!hasAllRequiredBlocks(this.workspace)) {
+            error = new Error(
                 localize(
-                    `One or more mandatory blocks are ${message} your workspace. Please add the required block(s) and then try again.`
+                    'One or more mandatory blocks are missing from your workspace. Please add the required block(s) and then try again.'
                 )
             );
+        }
+        if (!isAllRequiredBlocksEnabled(this.workspace)) {
+            error = new Error(
+                localize(
+                    'One or more mandatory blocks are disabled in your workspace. Please enable the required block(s) and then try again.'
+                )
+            );
+        }
 
+        if (error) {
             globalObserver.emit('Error', error);
             return false;
         }

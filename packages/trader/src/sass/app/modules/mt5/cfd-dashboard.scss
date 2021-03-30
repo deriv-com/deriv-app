@@ -438,7 +438,7 @@
     }
 
     &--has-trade-servers {
-        .mt5-account-card__wrapper {
+        .cfd-account-card__wrapper {
             @include desktop {
                 grid-template-rows: 1fr 4rem;
             }

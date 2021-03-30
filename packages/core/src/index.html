@@ -124,8 +124,10 @@
         rudderanalytics.load('1oV5agvlcnCZ6IH94wCKM1oR8Pd', 'https://deriv-dataplane.rudderstack.com');
         // Staging keys
         // rudderanalytics.load('1lN3tsFD2nruGFgM5F074DC2hMB', 'https://hosted.rudderlabs.com');
-        
-        rudderanalytics.page();
+
+        rudderanalytics.page(
+            window.location.hostname + window.location.pathname,
+        );
     </script>
     <script async src="https://cdn.rudderlabs.com/rudder-analytics.min.js"></script>
     <!-- End RudderStack Script -->

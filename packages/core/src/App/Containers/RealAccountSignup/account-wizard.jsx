@@ -14,7 +14,6 @@ import 'Sass/details-form.scss';
 
 const StepperHeader = ({ has_target, has_real_account, has_currency, items, getCurrentStep, getTotalSteps }) => {
     const step = getCurrentStep() - 1;
-    const active_title = items[step].header.active_title;
     const step_title = items[step].header.title;
     return (
         <React.Fragment>

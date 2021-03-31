@@ -12,6 +12,7 @@ const Redirect = ({
     setVerificationCode,
     hasAnyRealAccount,
     openRealAccountSignup,
+    setResetTradingPasswordModalOpen,
     toggleAccountSignupModal,
     toggleResetPasswordModal,
 }) => {
@@ -37,6 +38,10 @@ const Redirect = ({
         }
         case 'reset_password': {
             toggleResetPasswordModal(true);
+            break;
+        }
+        case 'trading_platform_password_reset': {
+            setResetTradingPasswordModalOpen(true);
             break;
         }
         case 'payment_withdraw': {
@@ -94,6 +99,7 @@ const Redirect = ({
 Redirect.propTypes = {
     getServerTime: PropTypes.object,
     history: PropTypes.object,
+    setResetTradingPasswordModalOpen: PropTypes.func,
     setVerificationCode: PropTypes.func,
     toggleAccountSignupModal: PropTypes.func,
     toggleResetPasswordModal: PropTypes.func,
@@ -106,6 +112,7 @@ export default withRouter(
         fetchResidenceList: client.fetchResidenceList,
         hasAnyRealAccount: client.hasAnyRealAccount,
         openRealAccountSignup: ui.openRealAccountSignup,
+        setResetTradingPasswordModalOpen: ui.setResetTradingPasswordModalOpen,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,
         toggleResetPasswordModal: ui.toggleResetPasswordModal,
     }))(Redirect)

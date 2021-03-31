@@ -170,11 +170,7 @@ class MT5Dashboard extends React.Component {
                         <div className='mt5-dashboard'>
                             <div className='mt5-dashboard__welcome-message'>
                                 <h1 className='mt5-dashboard__welcome-message--heading'>
-                                    {is_logged_in ? (
-                                        <Localize i18n_default_text='Welcome to your MetaTrader 5 (DMT5 account dashboard)' />
-                                    ) : (
-                                        <Localize i18n_default_text='Welcome to MetaTrader 5 (DMT5 account dashboard)' />
-                                    )}
+                                    <Localize i18n_default_text='Welcome to Deriv MT5 (DMT5) dashboard' />
                                 </h1>
                             </div>
                             {has_mt5_account_error && (

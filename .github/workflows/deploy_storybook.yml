@@ -10,7 +10,7 @@ on:
 
 jobs:
   deploy_storybook:
-    timeout-minutes: 5
+    timeout-minutes: 10
     runs-on: ubuntu-latest
 
     strategy:

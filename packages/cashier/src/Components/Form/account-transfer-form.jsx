@@ -29,14 +29,10 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
 
     return (
         <React.Fragment key={idx}>
-            {(account.currency || account.mt_icon) && (
+            {(account.currency || account.platform_icon) && (
                 <div>
                     <Icon
-                        icon={
-                            account.mt_icon
-                                ? `IcMt5-${account.mt_icon}`
-                                : `IcCurrency-${account.currency.toLowerCase()}`
-                        }
+                        icon={account.platform_icon || `IcCurrency-${account.currency.toLowerCase()}`}
                         className='account-transfer__currency-icon'
                     />
                 </div>
@@ -44,7 +40,7 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
 
             <div className='account-transfer__currency-wrapper'>
                 <Text size='xxs' line_height='xs' styles={{ color: 'inherit', fontWeight: 'inherit' }}>
-                    {account.is_mt ? account.mt_icon : getCurrencyName(account.text)}
+                    {account.is_mt || account.is_dxtrade ? account.market_type : getCurrencyName(account.text)}
                 </Text>
                 <Text size='xxxs' align='left' color='less-prominent'>
                     {account.value}
@@ -104,8 +100,10 @@ let remaining_transfers, transfer_to_hint;
 
 let accounts_from = [];
 let mt_accounts_from = [];
+let dxtrade_accounts_from = [];
 let accounts_to = [];
 let mt_accounts_to = [];
+let dxtrade_accounts_to = [];
 
 const AccountTransferForm = ({
     account_transfer_amount,
@@ -146,6 +144,19 @@ const AccountTransferForm = ({
         return undefined;
     };
 
+    const getAccounts = (type, { is_mt, is_dxtrade }) => {
+        if (type === 'from') {
+            if (is_mt) return mt_accounts_from;
+            if (is_dxtrade) return dxtrade_accounts_from;
+            return accounts_from;
+        } else if (type === 'to') {
+            if (is_mt) return mt_accounts_to;
+            if (is_dxtrade) return dxtrade_accounts_to;
+            return accounts_to;
+        }
+        return [];
+    };
+
     React.useEffect(() => {
         onMount();
     }, [onMount]);
@@ -153,8 +164,10 @@ const AccountTransferForm = ({
     React.useEffect(() => {
         accounts_from = [];
         mt_accounts_from = [];
+        dxtrade_accounts_from = [];
         accounts_to = [];
         mt_accounts_to = [];
+        dxtrade_accounts_to = [];
 
         accounts_list.forEach((account, idx) => {
             const text = (
@@ -167,6 +180,8 @@ const AccountTransferForm = ({
             );
             const value = account.value;
             const account_server = mt5_login_list.find(server => server.login === account.value);
+
+            const is_cfd_account = account.is_mt || account.is_dxtrade;
             let server_region = '';
             if (account_server?.market_type === 'gaming') {
                 server_region = `[${account_server.server_info.geolocation.region}${
@@ -176,43 +191,53 @@ const AccountTransferForm = ({
                 }]`;
             }
 
-            (account.is_mt ? mt_accounts_from : accounts_from).push({
+            getAccounts('from', account).push({
                 text,
                 value,
                 is_mt: account.is_mt,
+                is_dxtrade: account.is_dxtrade,
                 nativepicker_text: `${
-                    account.is_mt ? account.mt_icon : getCurrencyName(account.currency)
-                } ${server_region} (${account.balance} ${account.is_mt ? account.currency : account.text})`,
+                    is_cfd_account ? account.market_type : getCurrencyName(account.currency)
+                } ${server_region} (${account.balance} ${is_cfd_account ? account.currency : account.text})`,
             });
             const is_selected_from = account.value === selected_from.value;
+
+            if ((selected_from.is_mt && account.is_dxtrade) || (selected_from.is_dxtrade && account.is_mt)) return;
+
             // account from and to cannot be the same
             if (!is_selected_from) {
                 const is_selected_from_mt = selected_from.is_mt && account.is_mt;
+                const is_selected_from_dxtrade = selected_from.is_dxtrade && account.is_dxtrade;
                 const is_selected_from_crypto = selected_from.is_crypto && account.is_crypto;
+
                 // cannot transfer to MT account from MT
                 // cannot transfer to crypto account from crypto
+                // cannot transfer to Dxtrade account from Dxtrade
 
-                const is_disabled = is_selected_from_mt || is_selected_from_crypto;
+                const is_disabled = is_selected_from_mt || is_selected_from_crypto || is_selected_from_dxtrade;
 
-                (account.is_mt ? mt_accounts_to : accounts_to).push({
+                getAccounts('to', account).push({
                     text,
                     value,
                     is_mt: account.is_mt,
+                    is_dxtrade: account.is_dxtrade,
                     disabled: is_disabled,
                     nativepicker_text: `${
-                        account.is_mt ? account.mt_icon : getCurrencyName(account.currency)
-                    } ${server_region} (${account.balance} ${account.is_mt ? account.currency : account.text})`,
+                        is_cfd_account ? account.account_type : getCurrencyName(account.currency)
+                    } ${server_region} (${account.balance} ${is_cfd_account ? account.currency : account.text})`,
                 });
             }
         });
 
         setFromAccounts({
             ...(mt_accounts_from.length && { [localize('DMT5 accounts')]: mt_accounts_from }),
+            ...(dxtrade_accounts_from.length && { [localize('Deriv X accounts')]: dxtrade_accounts_from }),
             ...(accounts_from.length && { [localize('Deriv accounts')]: accounts_from }),
         });
 
         setToAccounts({
             ...(mt_accounts_to.length && { [localize('DMT5 accounts')]: mt_accounts_to }),
+            ...(dxtrade_accounts_to.length && { [localize('Deriv X accounts')]: dxtrade_accounts_to }),
             ...(accounts_to.length && { [localize('Deriv accounts')]: accounts_to }),
         });
     }, [accounts_list, selected_to, selected_from]);

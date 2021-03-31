@@ -72,22 +72,14 @@ const AccountTransferReceipt = ({
                         <div className='cashier__text--faint'>{selected_from.value}</div>
                     </div>
                     <Icon
-                        icon={
-                            selected_from.mt_icon
-                                ? `IcMt5-${selected_from.mt_icon}`
-                                : `IcCurrency-${selected_from.currency?.toLowerCase()}`
-                        }
+                        icon={selected_from.platform_icon || `IcCurrency-${selected_from.currency?.toLowerCase()}`}
                         size={32}
                     />
                 </span>
                 <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
                 <span className='account-transfer__transfer-details-to'>
                     <Icon
-                        icon={
-                            selected_to.mt_icon
-                                ? `IcMt5-${selected_to.mt_icon}`
-                                : `IcCurrency-${selected_to.currency?.toLowerCase()}`
-                        }
+                        icon={selected_to.platform_icon || `IcCurrency-${selected_to.currency?.toLowerCase()}`}
                         size={32}
                     />
                     <div className='cashier__transferred-details'>

@@ -12,6 +12,7 @@ import {
     getPropertyValue,
     getMT5AccountDisplay,
     getMT5Account,
+    getDXTradeAccount,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import OnRampStore from './on-ramp-store';
@@ -1059,10 +1060,13 @@ export default class CashierStore extends BaseStore {
     setTransferLimit() {
         const is_mt_transfer =
             this.config.account_transfer.selected_from.is_mt || this.config.account_transfer.selected_to.is_mt;
+        const is_dxtrade_transfer =
+            this.config.account_transfer.selected_from.is_dxtrade ||
+            this.config.account_transfer.selected_to.is_dxtrade;
         const transfer_limit = getPropertyValue(getCurrencies(), [
             this.config.account_transfer.selected_from.currency,
             'transfer_between_accounts',
-            is_mt_transfer ? 'limits_mt5' : 'limits',
+            is_mt_transfer || is_dxtrade_transfer ? 'limits_mt5' : 'limits',
         ]);
         const balance = this.config.account_transfer.selected_from.balance;
         const decimal_places = getDecimalPlaces(this.config.account_transfer.selected_from.currency);
@@ -1087,6 +1091,9 @@ export default class CashierStore extends BaseStore {
         }
 
         const mt5_login_list = (await this.WS.storage.mt5LoginList())?.mt5_login_list;
+        // TODO: move `tradingPlatformAccountsList` to deriv-api to use storage
+        const dxtrade_accounts_list = (await this.WS.tradingPlatformAccountsList('dxtrade'))?.trading_platform_accounts;
+
         // TODO: remove this temporary mapping when API adds market_type and sub_account_type to transfer_between_accounts
         const accounts = transfer_between_accounts.accounts.map(account => {
             if (account.account_type === 'mt5' && Array.isArray(mt5_login_list) && mt5_login_list.length) {
@@ -1098,6 +1105,20 @@ export default class CashierStore extends BaseStore {
                 if (found_account === undefined) return account;
 
                 return { ...account, ...found_account, account_type: 'mt5' };
+            }
+            if (
+                account.account_type === 'dxtrade' &&
+                Array.isArray(dxtrade_accounts_list) &&
+                dxtrade_accounts_list.length
+            ) {
+                // account_type in transfer_between_accounts (mt5|binary)
+                // gets overridden by account_type in dxtrade_accounts_list (demo|real)
+                // since in cashier all these are real accounts, the mt5 account type is what we want to keep
+                const found_account = dxtrade_accounts_list.find(acc => acc.account_id === account.loginid);
+
+                if (found_account === undefined) return account;
+
+                return { ...account, ...found_account, account_type: 'dxtrade' };
             }
             return account;
         });
@@ -1142,8 +1163,13 @@ export default class CashierStore extends BaseStore {
                 currency: account.currency,
                 is_crypto: isCryptocurrency(account.currency),
                 is_mt: account.account_type === 'mt5',
-                ...(account.account_type === 'mt5' && {
-                    mt_icon: getMT5Account(account.market_type, account.sub_account_type),
+                is_dxtrade: account.account_type === 'dxtrade',
+                ...((account.account_type === 'mt5' || account.account_type === 'dxtrade') && {
+                    platform_icon:
+                        account.account_type === 'mt5'
+                            ? `IcMt5-${getMT5Account(account.market_type, account.sub_account_type)}`
+                            : `IcDxtrade-${getDXTradeAccount(account.market_type, account.sub_account_type)}`,
+                    market_type: getMT5Account(account.market_type, account.sub_account_type),
                 }),
             };
             // set current logged in client as the default transfer from account
@@ -1232,10 +1258,19 @@ export default class CashierStore extends BaseStore {
         // switch the value of selected_from and selected_to
         if (selected_from.value === this.config.account_transfer.selected_to.value) {
             this.onChangeTransferTo({ target: { value: this.config.account_transfer.selected_from.value } });
-        } else if (selected_from.is_mt && this.config.account_transfer.selected_to.is_mt) {
+        } else if (
+            (selected_from.is_mt && this.config.account_transfer.selected_to.is_mt) ||
+            (selected_from.is_dxtrade && this.config.account_transfer.selected_to.is_dxtrade) ||
+            (selected_from.is_dxtrade && this.config.account_transfer.selected_to.is_mt) ||
+            (selected_from.is_mt && this.config.account_transfer.selected_to.is_dxtrade)
+        ) {
             // not allowed to transfer from MT to MT
-            const first_non_mt = this.config.account_transfer.accounts_list.find(account => !account.is_mt);
-            this.onChangeTransferTo({ target: { value: first_non_mt.value } });
+            // not allowed to transfer from Dxtrade to Dxtrade
+            // not allowed to transfer between MT and Dxtrade
+            const first_non_cfd = this.config.account_transfer.accounts_list.find(
+                account => !account.is_mt && !account.is_dxtrade
+            );
+            this.onChangeTransferTo({ target: { value: first_non_cfd.value } });
         } else if (selected_from.is_crypto && this.config.account_transfer.selected_to.is_crypto) {
             // not allowed to transfer crypto to crypto
             const first_fiat = this.config.account_transfer.accounts_list.find(account => !account.is_crypto);
@@ -1316,6 +1351,17 @@ export default class CashierStore extends BaseStore {
                             // update the balance for account switcher by renewing the mt5_login_list response
                             this.root_store.client.responseMt5LoginList(mt5_login_list_response);
                             // update total balance since MT5 total only comes in non-stream balance call
+                            this.root_store.client.setBalanceOtherAccounts(balance_response.balance);
+                        }
+                    );
+                }
+                // if one of the accounts was dxtrade
+                if (account.account_type === 'dxtrade') {
+                    Promise.all([this.WS.tradingPlatformAccountsList('dxtrade'), this.WS.balanceAll()]).then(
+                        ([dxtrade_login_list_response, balance_response]) => {
+                            // update the balance for account switcher by renewing the dxtrade_login_list_response
+                            this.root_store.client.responseTradingPlatformAccountsList(dxtrade_login_list_response);
+                            // update total balance since Dxtrade total only comes in non-stream balance call
                             this.root_store.client.setBalanceOtherAccounts(balance_response.balance);
                         }
                     );

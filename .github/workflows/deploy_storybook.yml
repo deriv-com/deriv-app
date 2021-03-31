@@ -1,4 +1,4 @@
-name: Build and Deploy Storybook to Vercel
+name: Test Build and Deploy Storybook to Vercel
 
 on:
   push:
@@ -10,11 +10,12 @@ on:
 
 jobs:
   deploy_storybook:
+    timeout-minutes: 5
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [14.x]
 
     steps:
       - uses: actions/checkout@v2
@@ -23,14 +24,16 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
-      - run: npm run bootstrap
-      - run: npm run storybook:build
+      - run: npm run bootstrap && npm run build components
+      - run: |
+          npm run test
+          echo "Exited with '$?'"
         working-directory: ./packages/components
       - name: Deploy storybook
         id: storybook_preview_url
         uses: amondnet/vercel-action@v20
         with:
-            vercel-token: ${{ secrets.VERCEL_STORYBOOK_TOKEN }} # Required
-            vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}  #Required
-            vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}} #Required
+            vercel-token: ${{ secrets.VERCEL_STORYBOOK_TOKEN }}
+            vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
+            vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
 

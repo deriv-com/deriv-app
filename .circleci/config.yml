@@ -25,7 +25,7 @@ commands:
       - checkout
       - run:
           name: "Compress git objects"
-          command: git gc
+          command: git gc --force
       - save_cache:
           name: Git save cache
           key: source-v{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ .Revision }}
@@ -244,7 +244,7 @@ jobs:
 
   release_production_dashboard:
     docker:
-      - image: circleci/node:12.18.0-stretch  
+      - image: circleci/node:12.18.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -260,7 +260,7 @@ jobs:
       - notify_slack
     environment:
       NODE_ENV: staging
-  
+
   build_and_test:
     docker:
       - image: circleci/node:12.18.0-stretch

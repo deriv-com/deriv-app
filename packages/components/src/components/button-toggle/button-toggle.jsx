@@ -5,17 +5,7 @@ import HighlightWrapper from './button-highlight-wrapper.jsx';
 import Button from '../button/button.jsx';
 import Counter from '../counter/counter.jsx';
 
-const ButtonToggle = ({
-    buttons_arr,
-    className,
-    has_rounded_button,
-    id,
-    is_animated,
-    large,
-    name,
-    onChange,
-    value,
-}) => {
+const ButtonToggle = ({ buttons_arr, className, has_rounded_button, id, is_animated, name, onChange, value }) => {
     const changeValue = selected_value => {
         if (value === selected_value) return;
         onChange({ target: { value: selected_value, name } });
@@ -26,7 +16,6 @@ const ButtonToggle = ({
             buttons_arr.map((val, idx) => {
                 const menuClassNames = classNames('dc-button-menu__button', {
                     'dc-button-menu__button--active': val.value === value,
-                    'dc-button-menu__button--large': large,
                 });
                 return (
                     <Button

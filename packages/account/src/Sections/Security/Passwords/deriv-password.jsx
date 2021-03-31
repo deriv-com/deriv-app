@@ -72,7 +72,6 @@ const DerivPassword = ({ email, is_social_signup, social_identity_provider }) =>
                     onClose={() => setIsSentEmailModalOpen(false)}
                     identifier_title={capitalize_identifier}
                     onClickSendEmail={onClickSendEmail}
-                    onConfirm={onClickSendEmail}
                 />
             </div>
         </React.Fragment>

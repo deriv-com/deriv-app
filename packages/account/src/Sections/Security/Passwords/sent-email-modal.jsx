@@ -26,7 +26,7 @@ const getNoEmailContentStrings = () => {
     ];
 };
 
-const SentEmailModal = ({ identifier_title, is_open, is_unlink_modal, onClose, onConfirm, onClickSendEmail }) => {
+const SentEmailModal = ({ identifier_title, is_open, is_unlink_modal, onClose, onClickSendEmail }) => {
     const getSubtitle = () => {
         let subtitle = '';
         switch (identifier_title) {
@@ -73,7 +73,7 @@ const SentEmailModal = ({ identifier_title, is_open, is_unlink_modal, onClose, o
                     </Text>
                     <Modal.Footer>
                         <Button onClick={onClose} has_effect text={localize('Cancel')} secondary large />
-                        <Button has_effect onClick={onConfirm} primary large>
+                        <Button has_effect onClick={onClickSendEmail} primary large>
                             <Localize
                                 i18n_default_text='Unlink from {{identifier_title}}'
                                 values={{ identifier_title }}
@@ -121,7 +121,6 @@ SentEmailModal.propTypes = {
     is_open: PropTypes.bool,
     is_unlink_modal: PropTypes.bool,
     onClose: PropTypes.func,
-    onConfirm: PropTypes.func,
     onClickSendEmail: PropTypes.func,
 };
 

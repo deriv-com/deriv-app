@@ -128,7 +128,7 @@ const Tabs = ({
                     <ThemedScrollbars
                         className='dc-themed-scrollbars-wrapper'
                         is_only_horizontal
-                        height={68}
+                        is_scrollbar_hidden
                         is_bypassed={!is_scrollable}
                     >
                         {React.Children.map(children, (child, index) => {

@@ -43,6 +43,7 @@
         "file-saver": "^2.0.2",
         "immutable": "^3.8.2",
         "js-interpreter": "^2.1.0",
+        "localforage": "^1.9.0",
         "lz-string": "^1.4.4",
         "redux": "^4.0.1",
         "redux-thunk": "^2.2.0",

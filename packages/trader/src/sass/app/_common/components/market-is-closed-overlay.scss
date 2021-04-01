@@ -9,16 +9,46 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 0 32px;
+    padding: 0;
     background-color: var(--overlay-inside-dialog);
     z-index: 1000;
 
-    p {
-        @include typeface(--paragraph-center-normal-black);
-        color: var(--text-prominent);
-        text-transform: none;
+    &--loading {
+        display: none;
+    }
+    &__main-heading {
+        margin-bottom: 2rem;
+    }
+    &__open-date,
+    &__main-message {
+        margin-bottom: 2rem;
+    }
+    &__open-at,
+    &__come-back {
+        &--main-page {
+            margin-bottom: 1rem;
+        }
+    }
+    &__separator {
+        margin-top: 1rem;
+        border: 2px solid var(--general-section-1);
+        width: 19.2rem;
+        margin-bottom: 2rem;
     }
     &__button {
-        @include toEm('height', 40px);
+        height: 40px;
+        margin-top: 1rem;
+    }
+
+    @include mobile {
+        position: unset;
+        top: unset;
+        left: unset;
+        overflow-y: scroll;
+        padding-top: 16rem;
+
+        &__button {
+            min-height: 4rem;
+        }
     }
 }

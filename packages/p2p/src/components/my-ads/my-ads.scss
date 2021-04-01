@@ -3,8 +3,35 @@
     display: flex;
     flex-direction: column;
 
+    @include mobile {
+        margin-top: 1.6rem;
+
+        .page-return {
+            border-bottom: 2px solid var(--general-section-1);
+            margin: unset;
+            padding: 0 1.6rem 1.6rem;
+        }
+
+        .dc-list {
+            margin-left: 1vw;
+            width: 88vw;
+
+            &__item {
+                padding-top: 0.4rem;
+            }
+        }
+    }
+
     .dc-input__wrapper {
         width: 67.2rem; // TODO: Kill these fixed widths.
+
+        @include mobile {
+            max-width: 90vw;
+
+            .p2p-my-ads__form-field {
+                margin-bottom: 0;
+            }
+        }
     }
 
     &__header {
@@ -13,32 +40,79 @@
         margin: 2.4rem 0 1.6rem;
         justify-content: space-between;
         min-height: 50px;
+
+        @include mobile {
+            justify-content: flex-end;
+            margin: unset;
+        }
     }
 
     &__form {
+        @include mobile {
+            .dc-input__footer {
+                justify-content: space-between;
+                width: 86vw;
+            }
+
+            .dc-input__hint--relative {
+                margin-left: unset;
+            }
+        }
+
         &-summary {
             color: var(--text-less-prominent);
             font-size: 1.4rem;
             margin-bottom: -1.6rem;
+
+            @include mobile {
+                margin: 1.6rem 0;
+            }
         }
         &-scrollbar {
+            height: calc(100% - 2.4rem - 9.2rem);
             position: absolute;
-            height: calc(100% - 2.4rem - 92px);
             width: calc(100% - 4.8rem);
+
+            @include mobile {
+                height: calc(100vh - 33.5rem);
+                margin: 0 1.6rem;
+                position: unset;
+                width: 90vw;
+            }
+
+            &--ios {
+                @include mobile {
+                    height: calc(100vh - 39rem);
+                }
+            }
         }
         &-container {
             display: flex;
-            width: 67.2rem;
             height: 8rem;
+            width: 67.2rem;
+
+            @include mobile {
+                flex-direction: column;
+                height: unset;
+                width: unset;
+            }
         }
         &-field {
-            margin-top: 4.3rem;
             height: 4rem;
-            margin-left: 0;
             margin-bottom: 0;
+            margin-left: 0;
+            margin-top: 4.3rem;
+
+            @include mobile {
+                margin: 2.1rem 0;
+            }
 
             &:not(:last-child) {
                 margin-right: 2.4rem;
+
+                @include mobile {
+                    margin-right: unset;
+                }
             }
             &--single {
                 width: 18.9rem;
@@ -46,16 +120,43 @@
             &--textarea {
                 height: 9.6rem;
                 margin-bottom: 0;
+
+                @include mobile {
+                    width: 90vw;
+                }
+
+                .dc-input__hint {
+                    top: 9.7rem;
+                }
+                .dc-input__counter {
+                    top: 9.7rem;
+                    right: 0rem;
+
+                    @include mobile {
+                        display: flex;
+                        right: 0;
+                    }
+                }
             }
         }
         &-button {
             margin-left: 0.8rem;
         }
         &-footer {
-            display: flex;
             align-items: center;
-            justify-content: flex-end;
             background-color: var(--general-main-1);
+            display: flex;
+            justify-content: flex-end;
+
+            @include mobile {
+                border-top: 2px solid var(--general-section-1);
+                bottom: 0;
+                flex-direction: row;
+                padding: 1.6rem;
+                position: fixed;
+                right: 0;
+                width: 100vw;
+            }
         }
     }
 
@@ -81,6 +182,14 @@
                 cursor: pointer;
                 margin-right: 2.4rem;
             }
+
+            @include mobile {
+                align-items: center;
+                background-color: var(--brand-red-coral);
+                cursor: pointer;
+                display: flex;
+                height: 100%;
+            }
         }
         &-available {
             flex-flow: column;
@@ -89,14 +198,31 @@
 
             &-progress {
                 margin-bottom: 0.4rem;
+
+                @include mobile {
+                    margin: 0.4rem 0;
+                }
             }
         }
         &-row {
             padding: 1.6rem;
             grid-template-columns: 2fr 2fr 2fr 2fr 1fr;
+
+            @include mobile {
+                grid-template-columns: unset;
+                padding: 1.6rem;
+                width: 100%;
+            }
+            &-details {
+                display: flex;
+                justify-content: space-between;
+            }
         }
         &--disabled {
             .dc-table__cell {
+                color: var(--text-disabled);
+            }
+            .dc-text {
                 color: var(--text-disabled);
             }
             .dc-progress-indicator {
@@ -250,7 +376,14 @@
             margin-top: 12px;
         }
     }
+    &__create {
+        margin: 1.6rem;
+        width: 90vw;
 
+        &-container {
+            border-top: 2px solid var(--general-section-1);
+        }
+    }
     &__data-list {
         flex: 1;
 
@@ -262,25 +395,36 @@
             flex: 1;
         }
     }
-}
 
-.toggle-ads {
-    align-items: center;
-    display: flex;
-    font-size: var(--text-size-s);
-    justify-items: flex-start;
+    &__page-return {
+        border-bottom: 2px solid var(--general-section-1);
+        margin: unset;
+        padding: 0 2rem 1.6rem;
+    }
 
-    &__switch {
-        transform: scale(0.5) translateX(-50%);
-    }
-    &__message {
-        margin-right: 1.6rem;
-    }
-    &--on {
-        color: var(--text-profit-success);
-    }
-    &--off {
-        color: var(--text-less-prominent);
+    .toggle-ads {
+        align-items: center;
+        display: flex;
+        font-size: var(--text-size-s);
+        justify-items: flex-start;
+        margin-right: -50px; // Minus half of &__switch width
+
+        &__switch {
+            transform: scale(0.5) translateX(-50%);
+        }
+        &__message {
+            margin-right: 1.6rem;
+        }
+        &--on {
+            color: var(--text-profit-success);
+        }
+        &--off {
+            color: var(--text-less-prominent);
+        }
+
+        @include mobile {
+            padding-right: 1.6rem;
+        }
     }
 }
 
@@ -291,5 +435,9 @@
 .dc-modal__container_p2p-my-ads__modal-error {
     .dc-modal-footer {
         padding-top: 0 !important;
+    }
+
+    .dc-modal-header {
+        padding-bottom: 1rem;
     }
 }

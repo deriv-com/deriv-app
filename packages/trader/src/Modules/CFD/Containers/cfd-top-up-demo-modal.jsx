@@ -60,7 +60,7 @@ const CFDTopUpDemoModal = ({
                         <Localize
                             i18n_default_text='{{ platform }} {{ account_title }} account'
                             values={{
-                                platform: platform === 'dxtrade' ? 'DXtrade' : 'DMT5',
+                                platform: platform === 'dxtrade' ? 'Deriv X' : 'DMT5',
                                 account_title: getAccountTitle(),
                             }}
                         />

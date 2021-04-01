@@ -7,7 +7,7 @@ import { routes } from '../routes';
 export const platform_name = Object.freeze({
     DBot: 'DBot',
     DTrader: 'DTrader',
-    DXtrade: 'DXtrade',
+    DXtrade: 'Deriv X',
     DMT5: 'DMT5',
     SmartTrader: 'SmartTrader',
 });
@@ -62,7 +62,7 @@ export const getPlatformInformation = routing_history => {
 export const getActivePlatform = routing_history => {
     if (isBot() || isNavigationFromPlatform(routing_history, routes.bot)) return 'DBot';
     if (isMT5() || isNavigationFromPlatform(routing_history, routes.mt5)) return 'DMT5';
-    if (isDXtrade() || isNavigationFromPlatform(routing_history, routes.dxtrade)) return 'DXtrade';
+    if (isDXtrade() || isNavigationFromPlatform(routing_history, routes.dxtrade)) return 'Deriv X';
     if (isNavigationFromPlatform(routing_history, routes.smarttrader)) return 'SmartTrader';
     return 'DTrader';
 };

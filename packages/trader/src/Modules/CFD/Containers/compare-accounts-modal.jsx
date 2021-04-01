@@ -223,7 +223,7 @@ const compareAccountsData = ({ landing_companies, is_logged_in, platform, show_e
                               'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies(except UK)'
                           )
                         : localize(
-                              'FX-majors (standard/micro lots), FX-minors, Smart-FX, Commodities, Cryptocurrencies, Stock, Stock Indices'
+                              'FX-majors (standard/micro lots), FX-minors, Smart-FX, Commodities, Cryptocurrencies'
                           ),
                 },
             },
@@ -233,41 +233,45 @@ const compareAccountsData = ({ landing_companies, is_logged_in, platform, show_e
     );
 };
 
-const CFDCompareAccountHint = (platform, show_eu_related) => (
-    <div className='cfd-compare-account--hint'>
-        <div className='cfd-compare-accounts__bullet-wrapper'>
-            <span className='cfd-compare-accounts__bullet cfd-compare-accounts__bullet--circle' />
-            <Localize i18n_default_text='At bank rollover, liquidity in the forex markets is reduced and may increase the spread and processing time for client orders. This happens around 21:00 GMT during daylight saving time, and 22:00 GMT non-daylight saving time.' />
-        </div>
-        {(platform === 'mt5' || !show_eu_related) && (
+const CFDCompareAccountHint = ({ platform, show_risk_message }) => {
+    return (
+        <div className='cfd-compare-account--hint'>
             <div className='cfd-compare-accounts__bullet-wrapper'>
-                <Text
-                    size='xs'
-                    line_height='x'
-                    weight='bold'
-                    className='cfd-compare-accounts__bullet cfd-compare-accounts__bullet--star cfd-compare-accounts__star'
-                >
-                    *
-                </Text>
-                <Localize
-                    i18n_default_text='To protect your portfolio from adverse market movements due to the market opening gap, we reserve the right to decrease leverage on all offered symbols for financial accounts before market close and increase it again after market open. Please make sure that you have enough funds available in your {{platform}} account to support your positions at all times.'
-                    values={{
-                        platform: platform === 'mt5' ? localize('MT5') : localize('DXTrade'),
-                    }}
-                />
+                <span className='cfd-compare-accounts__bullet cfd-compare-accounts__bullet--circle' />
+                <Localize i18n_default_text='At bank rollover, liquidity in the forex markets is reduced and may increase the spread and processing time for client orders. This happens around 21:00 GMT during daylight saving time, and 22:00 GMT non-daylight saving time.' />
             </div>
-        )}
-    </div>
-);
+            {show_risk_message && (
+                <div className='cfd-compare-accounts__bullet-wrapper'>
+                    <Text
+                        size='xs'
+                        line_height='x'
+                        weight='bold'
+                        className='cfd-compare-accounts__bullet cfd-compare-accounts__bullet--star cfd-compare-accounts__star'
+                    >
+                        *
+                    </Text>
+                    <Localize
+                        i18n_default_text='To protect your portfolio from adverse market movements due to the market opening gap, we reserve the right to decrease leverage on all offered symbols for financial accounts before market close and increase it again after market open. Please make sure that you have enough funds available in your {{platform}} account to support your positions at all times.'
+                        values={{
+                            platform: platform === 'mt5' ? localize('MT5') : localize('Deriv X'),
+                        }}
+                    />
+                </div>
+            )}
+        </div>
+    );
+};
 
 const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_related }) => {
     const [cols, setCols] = React.useState([]);
-    const [template_columns, updateColumnsStyle] = React.useState('1.5fr 1fr 2fr 1fr');
+    const [template_columns, updateColumnsStyle] = React.useState(
+        platform === 'dxtrade' ? '1.5fr 1fr 2fr' : '1.5fr 1fr 2fr 1fr'
+    );
 
     React.useEffect(() => {
         setCols(compareAccountsData({ landing_companies, is_logged_in, platform, show_eu_related }));
 
-        if (is_logged_in) {
+        if (is_logged_in && platform === 'mt5') {
             updateColumnsStyle(
                 `1.5fr ${landing_companies?.mt_gaming_company?.financial ? '1fr' : ''} ${
                     landing_companies?.mt_financial_company?.financial ? '2fr' : ''
@@ -283,6 +287,8 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
         show_eu_related,
     ]);
 
+    const show_risk_message = platform === 'mt5' || !show_eu_related;
+
     return (
         <div
             className='cfd-compare-accounts'
@@ -290,7 +296,7 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
                 '--cfd-compare-accounts-template-columns': template_columns,
             }}
         >
-            <Table fixed scroll_height={isMobile() ? '100%' : 'calc(100% - 130px)'}>
+            <Table fixed scroll_height={isMobile() ? '100%' : `calc(100% - ${show_risk_message ? '130px' : '50px'})`}>
                 <Table.Header>
                     <Table.Row className='cfd-compare-accounts__table-row'>
                         <Table.Head fixed />
@@ -350,7 +356,7 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
                 </Table.Body>
             </Table>
             <DesktopWrapper>
-                <CFDCompareAccountHint platform={platform} show_eu_related={show_eu_related} />
+                <CFDCompareAccountHint platform={platform} show_risk_message={show_risk_message} />
             </DesktopWrapper>
         </div>
     );

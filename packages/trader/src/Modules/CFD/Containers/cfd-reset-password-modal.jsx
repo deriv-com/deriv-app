@@ -115,7 +115,7 @@ class CFDResetPasswordModal extends React.Component {
                 className='cfd-reset-password-modal'
                 is_open={is_cfd_reset_password_modal_enabled}
                 toggleModal={() => setCFDPasswordResetModal(false)}
-                title={platform === 'dxtrade' ? localize('Reset DXtrade password') : localize('Reset DMT5 password')}
+                title={platform === 'dxtrade' ? localize('Reset Deriv X password') : localize('Reset DMT5 password')}
             >
                 {!this.is_list_fetched && !this.state.has_error && <Loading is_fullscreen={false} />}
                 {this.is_list_fetched && !this.state.has_error && !this.state.is_finished && (

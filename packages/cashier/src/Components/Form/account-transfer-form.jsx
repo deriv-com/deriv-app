@@ -261,7 +261,9 @@ const AccountTransferForm = ({
         const internal_remaining_transfers = daily_transfers?.internal?.available;
 
         const is_mt_transfer = selected_to.is_mt || selected_from.is_mt;
-        remaining_transfers = is_mt_transfer ? mt5_remaining_transfers : internal_remaining_transfers;
+        const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
+        remaining_transfers =
+            is_mt_transfer || is_dxtrade_transfer ? mt5_remaining_transfers : internal_remaining_transfers;
 
         transfer_to_hint =
             +remaining_transfers === 1

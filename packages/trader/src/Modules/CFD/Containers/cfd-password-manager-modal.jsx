@@ -536,11 +536,11 @@ const MT5PasswordManagerModal = ({
                     title={
                         selected_account_group === 'real'
                             ? localize('Manage {{platform}} Real {{account_title}} account password', {
-                                  platform: platform === 'dxtrade' ? 'DXtrade' : 'DMT5',
+                                  platform: platform === 'dxtrade' ? 'Deriv X' : 'DMT5',
                                   account_title: selected_account,
                               })
                             : localize('Manage {{platform}} Demo {{account_title}} account password', {
-                                  platform: platform === 'dxtrade' ? 'DXtrade' : 'DMT5',
+                                  platform: platform === 'dxtrade' ? 'Deriv X' : 'DMT5',
                                   account_title: selected_account,
                               })
                     }

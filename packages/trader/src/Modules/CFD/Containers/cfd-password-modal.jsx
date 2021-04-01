@@ -73,7 +73,7 @@ const CFDPasswordForm = props => (
                         <Localize
                             i18n_default_text='Choose a password for your {{platform}} {{ account_type }} account'
                             values={{
-                                platform: props.platform === 'dxtrade' ? 'DXtrade' : 'DMT5',
+                                platform: props.platform === 'dxtrade' ? 'Deriv X' : 'DMT5',
                                 account_type: props.account_title,
                             }}
                         />

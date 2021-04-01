@@ -128,10 +128,10 @@ const WelcomeModal = ({ toggleWelcomeModal, history }) => {
                 },
                 {
                     icon: 'IcBrandDxtrade',
-                    title: localize('Deriv DXtrade'),
+                    title: localize('Deriv X'),
                     description: localize('Trade CFDs on a customisable, easy-to-use trading platform.'),
                     onButtonClick: () => switchPlatform(routes.dxtrade),
-                    button_text: localize('Trade on DXtrade'),
+                    button_text: localize('Trade on Deriv X'),
                 },
             ]}
             title={localize('CFDs')}

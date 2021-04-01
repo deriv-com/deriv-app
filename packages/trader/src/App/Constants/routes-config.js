@@ -50,7 +50,7 @@ const initRoutesConfig = () => {
             path: routes.dxtrade,
             // eslint-disable-next-line react/display-name
             component: props => <CFD {...props} platform='dxtrade' />,
-            getTitle: () => localize('DXTrade'),
+            getTitle: () => localize('Deriv X'),
             is_authenticated: false,
         },
         {

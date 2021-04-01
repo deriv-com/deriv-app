@@ -130,6 +130,7 @@ class MT5Dashboard extends React.Component {
             account_status,
             beginRealSignupForMt5,
             country,
+            client_email,
             createMT5Account,
             current_list,
             isAccountOfTypeDisabled,

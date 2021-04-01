@@ -23,6 +23,7 @@ const getRealFinancialStpBtnLbl = (is_fully_authenticated, is_pending_authentica
 };
 
 const MT5RealAccountDisplay = ({
+    client_email,
     has_real_account,
     is_accounts_switcher_on,
     is_eu,

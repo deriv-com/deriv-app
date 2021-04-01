@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Tab from './tab.jsx';
 import { useConstructor } from '../../hooks';
-import ThemedScrollbars from '../themed-scrollbars';
+import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 
 const Tabs = ({
     active_icon_color,
@@ -23,6 +23,7 @@ const Tabs = ({
     icon_size,
     is_100vw,
     is_scrollable,
+    is_overflow_hidden,
     onTabItemClick,
     should_update_hash,
     single_tab_has_no_label,
@@ -129,7 +130,7 @@ const Tabs = ({
                         'dc-tabs__list--center': center,
                         'dc-tabs__list--header-fit-content': header_fit_content,
                         [`dc-tabs__list--${className}`]: className,
-                        'dc-tabs__list--overflow-hidden': is_scrollable,
+                        'dc-tabs__list--overflow-hidden': is_overflow_hidden,
                     })}
                     ref={tabs_wrapper_ref}
                 >

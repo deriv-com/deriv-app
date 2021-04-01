@@ -183,6 +183,7 @@ const App = observer(props => {
                         header_fit_content={!isMobile()}
                         is_100vw={isMobile()}
                         is_scrollable
+                        is_overflow_hidden
                     >
                         <div label={localize('Buy / Sell')}>
                             {general_store.is_barred && <TemporaryBarredMessage />}

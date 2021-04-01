@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Tab from './tab.jsx';
 import { useConstructor } from '../../hooks';
-import ThemedScrollbars from '../themed-scrollbars';
+import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
 
 const Tabs = ({
     active_icon_color,
@@ -23,6 +23,8 @@ const Tabs = ({
     icon_size,
     is_100vw,
     is_full_width,
+    is_scrollable,
+    is_overflow_hidden,
     onTabItemClick,
     should_update_hash,
     single_tab_has_no_label,
@@ -50,7 +52,8 @@ const Tabs = ({
         }
     }, []);
 
-    let initial_index_to_show;
+    let initial_index_to_show, tab_width;
+
     useConstructor(() => {
         initial_index_to_show = active_index || 0;
         if (should_update_hash) {
@@ -101,7 +104,12 @@ const Tabs = ({
     };
 
     const valid_children = children.filter(child => child);
-    const tab_width = fit_content ? '150px' : `${(100 / valid_children.length).toFixed(2)}%`;
+
+    if (is_scrollable) {
+        tab_width = 'unset';
+    } else {
+        tab_width = fit_content ? '150px' : `${(100 / valid_children.length).toFixed(2)}%`;
+    }
 
     return (
         <div
@@ -122,6 +130,7 @@ const Tabs = ({
                         'dc-tabs__list--header-fit-content': header_fit_content,
                         'dc-tabs__list--full-width': is_full_width,
                         [`dc-tabs__list--${className}`]: className,
+                        'dc-tabs__list--overflow-hidden': is_overflow_hidden,
                     })}
                     ref={tabs_wrapper_ref}
                 >

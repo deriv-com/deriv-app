@@ -17,6 +17,7 @@ const Tab = ({
     icon_size,
     id,
     is_active,
+    is_scrollable,
     is_label_hidden,
     label,
     onClick,
@@ -35,7 +36,7 @@ const Tab = ({
         'dc-tabs__item--header-fit-content': header_fit_content,
         'dc-tabs__item--is-hidden': is_label_hidden,
         [`dc-tabs__item--${className}`]: className,
-        'dc-tabs--is-scrollable': is_scrollable && is_active,
+        'dc-tabs--is-scrollable-and-active': is_scrollable && is_active,
     });
     const title_color = is_active ? active_icon_color : icon_color;
     return (

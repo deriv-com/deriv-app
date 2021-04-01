@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { PasswordInput, PasswordMeter } from '@deriv/components';
-import { useHistory, withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { routes, isMobile, useIsMounted, validPassword, validLength, getErrorMessages } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
@@ -53,14 +53,16 @@ const ChangePasswordForm = ({ email, is_trading_password, logout, onClickSendEma
             });
         } else {
             WS.authorized.storage.changePassword(values).then(data => {
-                setIsBtnLoading(false);
-                if (data.error) {
-                    setStatus({ msg: data.error.message });
-                } else {
-                    setIsSubmitSuccess(true);
-                    logout().then(handlePasswordChange);
+                if (isMounted()) {
+                    setIsBtnLoading(false);
+                    if (data.error) {
+                        setStatus({ msg: data.error.message });
+                    } else {
+                        setIsSubmitSuccess(true);
+                        logout().then(handlePasswordChange);
+                    }
+                    setSubmitting(false);
                 }
-                setSubmitting(false);
             });
         }
     };
@@ -162,4 +164,4 @@ ChangePasswordForm.propTypes = {
 export default connect(({ client }) => ({
     logout: client.logout,
     email: client.email,
-}))(withRouter(ChangePasswordForm));
+}))(ChangePasswordForm);

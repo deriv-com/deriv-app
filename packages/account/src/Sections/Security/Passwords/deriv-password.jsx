@@ -19,22 +19,7 @@ const DerivPassword = ({ email, is_social_signup, social_identity_provider }) =>
         setIsUnlinkModalOpen(false);
     };
 
-    const capitalize_identifier = social_identity_provider ? toTitleCase(social_identity_provider) : '';
-
-    const getSocialidentityProvider = () => {
-        if (!social_identity_provider) return '';
-        return (
-            <React.Fragment>
-                <Icon icon={`IcStock${capitalize_identifier}`} size={16} />
-                <Text size='xs'>
-                    <Localize
-                        i18n_default_text='Linked with {{identifier_title}}'
-                        values={{ identifier_title: capitalize_identifier }}
-                    />
-                </Text>
-            </React.Fragment>
-        );
-    };
+    const capitalized_identifier = social_identity_provider ? toTitleCase(social_identity_provider) : '';
 
     return (
         <React.Fragment>
@@ -44,7 +29,21 @@ const DerivPassword = ({ email, is_social_signup, social_identity_provider }) =>
                 {is_social_signup ? (
                     <React.Fragment>
                         <div className='account__passwords-item-right passwords-social-buttons'>
-                            <div className='account__passwords-linked'>{getSocialidentityProvider()}</div>
+                            <div className='account__passwords-linked'>
+                                {social_identity_provider ? (
+                                    <React.Fragment>
+                                        <Icon icon={`IcStock${capitalized_identifier}`} size={16} />
+                                        <Text size='xs'>
+                                            <Localize
+                                                i18n_default_text='Linked with {{identifier_title}}'
+                                                values={{ identifier_title: capitalized_identifier }}
+                                            />
+                                        </Text>
+                                    </React.Fragment>
+                                ) : (
+                                    ''
+                                )}
+                            </div>
                             <Button
                                 className='account__passwords-footer-btn'
                                 onClick={() => {
@@ -70,7 +69,7 @@ const DerivPassword = ({ email, is_social_signup, social_identity_provider }) =>
                     is_unlink_modal={is_unlink_modal_open}
                     is_open={is_sent_email_modal_open}
                     onClose={() => setIsSentEmailModalOpen(false)}
-                    identifier_title={capitalize_identifier}
+                    identifier_title={capitalized_identifier}
                     onClickSendEmail={onClickSendEmail}
                 />
             </div>

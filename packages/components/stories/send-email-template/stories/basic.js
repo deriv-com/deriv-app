@@ -12,7 +12,6 @@ const Basic = () => (
             subtitle='Please click on the link in the email to reset your password.'
             lbl_no_receive={`Didn't receive the email?`}
             txt_resend='Resend email'
-            txt_resend_in='Resend email in {{seconds}}s'
         >
             <div className='send-email-storybook-error'>
                 We can’t deliver the email to this address (Usually because of firewalls or filtering).

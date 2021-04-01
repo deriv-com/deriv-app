@@ -27,16 +27,16 @@ const PasswordsStatic = ({ is_dark_mode_on, is_deriv_password, is_trading_passwo
                     </Text>
                 </div>
                 <div className='passwords-static__icons'>
-                    <Popover alignment='bottom' message={localize('DTrader')}>
+                    <Popover alignment='bottom' message='DTrader'>
                         <Icon icon='IcBrandDtrader' size={32} />
                     </Popover>
-                    <Popover alignment='bottom' message={localize('DBot')}>
+                    <Popover alignment='bottom' message='DBot'>
                         <Icon icon='IcBrandDbot' size={32} />
                     </Popover>
-                    <Popover alignment='bottom' message={localize('SmartTrader')}>
+                    <Popover alignment='bottom' message='SmartTrader'>
                         <Icon icon='IcBrandSmarttrader' size={32} />
                     </Popover>
-                    <Popover alignment='bottom' message={localize('Deriv Go')}>
+                    <Popover alignment='bottom' message='Deriv Go'>
                         {is_dark_mode_on ? <DerivGoDark /> : <DerivGoLight />}
                     </Popover>
                 </div>
@@ -52,7 +52,7 @@ const PasswordsStatic = ({ is_dark_mode_on, is_deriv_password, is_trading_passwo
                             {localize('Apps you have linked to this password:')}
                         </Text>
                         <div className='passwords-static__icons'>
-                            <Popover alignment='bottom' message={localize('Deriv MT5')}>
+                            <Popover alignment='bottom' message='Deriv MT5'>
                                 <Icon icon='IcBrandDmt5' size={32} />
                             </Popover>
                         </div>

@@ -8,16 +8,19 @@ import { isDesktop } from '@deriv/shared';
 const getNoEmailContentStrings = () => {
     return [
         {
+            key: 'email_spam',
             icon: 'IcEmailSpam',
             content: localize('The email is in your spam folder (Sometimes things get lost there).'),
         },
         {
+            key: 'wrong_email',
             icon: 'IcEmail',
             content: localize(
                 'You accidentally gave us another email address (Usually a work or a personal one instead of the one you meant).'
             ),
         },
         {
+            key: 'email_firewall',
             icon: 'IcEmailFirewall',
             content: localize(
                 'We can’t deliver the email to this address (Usually because of firewalls or filtering).'
@@ -97,11 +100,10 @@ const SentEmailModal = ({ identifier_title, is_open, is_unlink_modal, onClose, o
                             subtitle={getSubtitle()}
                             lbl_no_receive={localize("Didn't receive the email?")}
                             txt_resend={localize('Resend email')}
-                            txt_resend_in={localize('Resend email in {{seconds}}s', { seconds: '{{seconds}}' })}
                             onClickSendEmail={onClickSendEmail}
                         >
-                            {getNoEmailContentStrings().map((item, idx) => (
-                                <div className='sent-email__content' key={idx}>
+                            {getNoEmailContentStrings().map(item => (
+                                <div className='sent-email__content' key={item.key}>
                                     <Icon icon={item.icon} size={32} />
                                     <Text size='xxs' as='p'>
                                         {item.content}

@@ -1,13 +1,14 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Button, InfiniteDataList, Loading, Table } from '@deriv/components';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import Empty from 'Components/empty/empty.jsx';
 import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
-import Popup from 'Components/orders/popup.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { useStores } from 'Stores';
+import MyAdsDeleteModal from './my-ads-delete-modal.jsx';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
 
 const getHeaders = offered_currency => [
@@ -39,9 +40,16 @@ const MyAdsTable = () => {
         return (
             <React.Fragment>
                 <div className='p2p-my-ads__header'>
-                    <Button large primary is_disabled={general_store.is_barred} onClick={my_ads_store.onClickCreate}>
-                        {localize('Create new ad')}
-                    </Button>
+                    {isDesktop() && (
+                        <Button
+                            large
+                            primary
+                            is_disabled={general_store.is_barred}
+                            onClick={my_ads_store.onClickCreate}
+                        >
+                            {localize('Create new ad')}
+                        </Button>
+                    )}
                     <ToggleAds />
                 </div>
                 <Table
@@ -49,13 +57,15 @@ const MyAdsTable = () => {
                         'p2p-my-ads__table--disabled': !general_store.is_listed || general_store.is_barred,
                     })}
                 >
-                    <Table.Header>
-                        <Table.Row className='p2p-my-ads__table-row'>
-                            {getHeaders(general_store.client.currency).map(header => (
-                                <Table.Head key={header.text}>{header.text}</Table.Head>
-                            ))}
-                        </Table.Row>
-                    </Table.Header>
+                    {isDesktop() && (
+                        <Table.Header>
+                            <Table.Row className='p2p-my-ads__table-row'>
+                                {getHeaders(general_store.client.currency).map(header => (
+                                    <Table.Head key={header.text}>{header.text}</Table.Head>
+                                ))}
+                            </Table.Row>
+                        </Table.Header>
+                    )}
                     <Table.Body className='p2p-my-ads__table-body'>
                         <InfiniteDataList
                             data_list_className='p2p-my-ads__data-list'
@@ -64,26 +74,25 @@ const MyAdsTable = () => {
                             has_more_items_to_load={my_ads_store.has_more_items_to_load}
                             loadMoreRowsFn={my_ads_store.loadMoreAds}
                             keyMapperFn={item => item.id}
+                            getRowSize={() => (isMobile() ? 123 : 56)}
                         />
                     </Table.Body>
                 </Table>
-                <Popup
-                    cancel_text={localize('Cancel')}
-                    confirm_text={localize('Delete')}
-                    has_cancel
-                    message={localize('You will NOT be able to restore it.')}
-                    onCancel={my_ads_store.onClickCancel}
-                    onClickConfirm={my_ads_store.onClickConfirm}
-                    setShouldShowPopup={my_ads_store.setShouldShowPopup}
-                    should_show_popup={my_ads_store.should_show_popup}
-                    title={localize('Do you want to delete this ad?')}
-                />
+
+                {isMobile() && (
+                    <div className='p2p-my-ads__create-container'>
+                        <Button className='p2p-my-ads__create' large primary onClick={my_ads_store.onClickCreate}>
+                            {localize('Create new ad')}
+                        </Button>
+                    </div>
+                )}
+                <MyAdsDeleteModal />
             </React.Fragment>
         );
     }
 
     return (
-        <Empty icon='IcCashierNoAds' title={localize('You have no adverts')}>
+        <Empty icon='IcCashierNoAds' title={localize('You have no ads.')}>
             <Button
                 className='p2p-empty__button'
                 is_disabled={general_store.is_barred}

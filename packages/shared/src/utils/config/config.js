@@ -32,7 +32,7 @@ export const isProduction = () => {
     return new RegExp(`^(${all_domains.join('|')})$`, 'i').test(window.location.hostname);
 };
 
-const isTestLink = () => {
+export const isTestLink = () => {
     return /^((.*)\.binary\.sx)$/i.test(window.location.hostname);
 };
 

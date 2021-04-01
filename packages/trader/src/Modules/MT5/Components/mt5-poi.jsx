@@ -51,6 +51,7 @@ const MT5POI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                                         }}
                                         is_trading_button_enabled={false}
                                         is_description_enabled={false}
+                                        is_message_enabled={false}
                                     />
                                 </Div100vhContainer>
                                 <Modal.Footer is_bypassed={isMobile()}>

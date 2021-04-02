@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import './blockly';
-import { hasAllRequiredBlocks, updateDisabledBlocks } from './utils';
+import { hasAllRequiredBlocks, isAllRequiredBlocksEnabled, updateDisabledBlocks } from './utils';
 import main_xml from './xml/main.xml';
 import DBotStore from './dbot-store';
 import { save_types } from '../constants';
@@ -21,6 +21,7 @@ class DBot {
      * Initialises the workspace and mounts it to a container element (app_contents).
      */
     async initWorkspace(public_path, store, api_helpers_store, is_mobile) {
+        const recent_files = await getSavedWorkspaces();
         return new Promise((resolve, reject) => {
             __webpack_public_path__ = public_path; // eslint-disable-line no-global-assign
             ApiHelpers.setInstance(api_helpers_store);
@@ -49,9 +50,9 @@ class DBot {
                 });
 
                 this.workspace.cached_xml = { main: main_xml };
-                this.workspace.save_workspace_interval = setInterval(() => {
+                this.workspace.save_workspace_interval = setInterval(async () => {
                     // Periodically save the workspace.
-                    saveWorkspaceToRecent(Blockly.Xml.workspaceToDom(this.workspace), save_types.UNSAVED);
+                    await saveWorkspaceToRecent(Blockly.Xml.workspaceToDom(this.workspace), save_types.UNSAVED);
                 }, 10000);
 
                 this.workspace.addChangeListener(this.valueInputLimitationsListener.bind(this));
@@ -66,7 +67,6 @@ class DBot {
                 this.addBeforeRunFunction(this.checkForRequiredBlocks.bind(this));
 
                 // Push main.xml to workspace and reset the undo stack.
-                const recent_files = getSavedWorkspaces();
                 this.workspace.current_strategy_id = Blockly.utils.genUid();
                 let strategy_to_load = main_xml;
                 let file_name = config.default_file_name;
@@ -295,14 +295,25 @@ class DBot {
      * Checks whether the workspace contains all required blocks before running the strategy.
      */
     checkForRequiredBlocks() {
+        let error;
+
         if (!hasAllRequiredBlocks(this.workspace)) {
-            const error = new Error(
+            error = new Error(
                 localize(
                     'One or more mandatory blocks are missing from your workspace. Please add the required block(s) and then try again.'
                 )
             );
-            globalObserver.emit('Error', error);
+        }
+        if (!isAllRequiredBlocksEnabled(this.workspace)) {
+            error = new Error(
+                localize(
+                    'One or more mandatory blocks are disabled in your workspace. Please enable the required block(s) and then try again.'
+                )
+            );
+        }
 
+        if (error) {
+            globalObserver.emit('Error', error);
             return false;
         }
 

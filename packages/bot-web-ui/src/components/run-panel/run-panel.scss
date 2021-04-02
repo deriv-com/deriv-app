@@ -187,7 +187,7 @@
     }
 }
 
-.self-exclusion {
+.db-self-exclusion {
     font-size: var(--text-size-xs);
     font-weight: normal;
     line-height: 1.43;
@@ -263,7 +263,7 @@
         top: 0px;
         background: var(--general-main-1);
 
-        .self-exclusion {
+        .db-self-exclusion {
             height: calc(100vh - 40px);
             display: flex;
             justify-content: space-between;

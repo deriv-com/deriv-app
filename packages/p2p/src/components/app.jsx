@@ -102,9 +102,9 @@ const App = observer(props => {
     // TODO: remove allowed_currency check once we publish this to everyone
     if (general_store.client.is_virtual || general_store.client.currency !== allowed_currency) {
         return (
-            <h1 className='p2p-not-allowed'>
+            <Text as='h1' align='center' size='xs' className='p2p-not-allowed'>
                 {localize('This feature is only available for real-money USD accounts right now.')}
-            </h1>
+            </Text>
         );
     }
 

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { when } from 'mobx';
 import { MobileWrapper } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isMobile, routes } from '@deriv/shared';
 import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggle-positions-mobile.jsx';
 import { connect, MobxContentProvider } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
@@ -25,6 +25,8 @@ const TradeHeaderExtensions = props => {
     const props_ref = React.useRef();
     props_ref.current = props;
 
+    const show_positions_toggle = location.pathname !== routes.mt5;
+
     const populateHeader = React.useCallback(() => {
         const {
             is_logged_in,
@@ -35,7 +37,7 @@ const TradeHeaderExtensions = props => {
             positions_error,
         } = props_ref.current;
 
-        const header_items = is_logged_in && (
+        const header_items = is_logged_in && show_positions_toggle && (
             <MobileWrapper>
                 <MobxContentProvider store={store}>
                     <TogglePositionsMobile
@@ -55,11 +57,20 @@ const TradeHeaderExtensions = props => {
         );
 
         populateHeaderExtensions(header_items);
-    }, [disableApp, enableApp, onPositionsCancel, onPositionsRemove, onPositionsSell, populateHeaderExtensions, store]);
+    }, [
+        disableApp,
+        enableApp,
+        onPositionsCancel,
+        onPositionsRemove,
+        onPositionsSell,
+        populateHeaderExtensions,
+        store,
+        show_positions_toggle,
+    ]);
 
     React.useEffect(() => {
         const waitForLogin = async () => {
-            if (isMobile()) {
+            if (isMobile() && show_positions_toggle) {
                 const { client } = store;
                 // Waits for login to complete
                 await when(() => !client.is_populating_account_list);
@@ -88,6 +99,7 @@ const TradeHeaderExtensions = props => {
         populateHeaderExtensions,
         setAccountSwitchListener,
         store,
+        show_positions_toggle,
     ]);
 
     React.useEffect(() => {

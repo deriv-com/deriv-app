@@ -32,7 +32,7 @@ BuySellFormReceiveAmount.propTypes = {
 
 const BuySellForm = observer(props => {
     const isMounted = useIsMounted();
-    const { buy_sell_store } = useStores();
+    const { advertiser_page_store, buy_sell_store } = useStores();
 
     buy_sell_store.setFormProps(props);
 
@@ -64,6 +64,7 @@ const BuySellForm = observer(props => {
                 }
             );
 
+            advertiser_page_store.setFormErrorMessage('');
             buy_sell_store.setInitialReceiveAmount();
 
             if (buy_sell_store.is_sell_advert) {

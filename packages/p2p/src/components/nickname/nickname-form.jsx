@@ -31,7 +31,15 @@ const NicknameForm = observer(({ handleClose }) => {
                     <Form className='nickname__form-wrapper' noValidate>
                         <div className='nickname__form-content nickname__form-content__centre'>
                             <Icon icon='IcCashierP2pUser' width='128' height='128' />
-                            <h5 className='nickname__form-content--title'>{localize('Choose a nickname')}</h5>
+                            <Text
+                                as='h5'
+                                size='s'
+                                weight='bold'
+                                line_height='unset'
+                                className='nickname__form-content--title'
+                            >
+                                {localize('Choose a nickname')}
+                            </Text>
                             <Text as='p' size='xs' line_height='unset' className='nickname__form-content--text'>
                                 {localize('You will appear to other users as')}
                             </Text>

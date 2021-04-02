@@ -144,20 +144,20 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                             <p className='livechat__title'>{localize('Live chat')}</p>
                         </div>
                     ) : (
-                        <Popover
-                            className='footer__link'
-                            classNameBubble='help-centre__tooltip'
-                            alignment='top'
-                            message={localize('Live chat')}
+                        <div
+                            onClick={() => {
+                                window.LiveChatWidget.call('maximize');
+                            }}
                         >
-                            <Icon
-                                icon='IcLiveChat'
-                                className='footer__icon gtm-deriv-livechat'
-                                onClick={() => {
-                                    window.LiveChatWidget.call('maximize');
-                                }}
-                            />
-                        </Popover>
+                            <Popover
+                                className='footer__link'
+                                classNameBubble='help-centre__tooltip'
+                                alignment='top'
+                                message={localize('Live chat')}
+                            >
+                                <Icon icon='IcLiveChat' className='footer__icon gtm-deriv-livechat' />
+                            </Popover>
+                        </div>
                     )}
                 </React.Fragment>
             )}

@@ -42,8 +42,8 @@ const FormSubmitButton = ({
                 type='submit'
                 text={label}
                 is_loading={is_loading}
-                primary
                 large
+                primary
                 {...props}
             />
         </div>

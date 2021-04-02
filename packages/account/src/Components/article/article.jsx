@@ -24,7 +24,7 @@ const Article = ({ title, descriptions, onClickLearnMore }) => {
                             {descriptions.map((description, idx) => (
                                 <li key={idx}>
                                     <Text size='xxs' line_height='xs'>
-                                        {description}
+                                        {description.component || description}
                                     </Text>
                                 </li>
                             ))}

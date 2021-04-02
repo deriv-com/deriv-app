@@ -21,6 +21,7 @@ const ProofOfIdentityContainer = ({
     refreshNotifications,
     removeNotificationMessage,
     onStateChange,
+    is_message_enabled = true,
     is_description_enabled = true,
     is_mx_mlt,
     height,
@@ -154,7 +155,8 @@ const ProofOfIdentityContainer = ({
     }, [createVerificationConfig, previous_account_status, account_status]);
 
     const { needs_poa, is_unwelcome, allow_document_upload } = verification_status;
-    const is_rejected = identity_status_key === onfido_status_codes.rejected;
+    const rejectionStatus = [onfido_status_codes.rejected, onfido_status_codes.suspected];
+    const is_rejected = rejectionStatus.map(status => onfido_status_codes[status]).includes(identity_status_key);
     const has_rejected_reasons = !!rejected_reasons_key.length && is_rejected;
 
     if (api_error)
@@ -177,6 +179,7 @@ const ProofOfIdentityContainer = ({
             needs_poa={needs_poa}
             height={height ?? null}
             handleComplete={handleComplete}
+            is_message_enabled={is_message_enabled}
             is_description_enabled={is_description_enabled}
             redirect_button={redirect_button}
         />

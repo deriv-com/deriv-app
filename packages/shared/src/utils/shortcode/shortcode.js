@@ -1,20 +1,37 @@
+// category_underlying_amount
+const base_pattern =
+    '^([A-Z]+)_((?:1HZ[0-9-V]+)|(?:(?:CRASH|BOOM)[0-9\\d]+)|(?:OTC_[A-Z0-9]+)|R_[\\d]{2,3}|[A-Z]+)_([\\d.]+)';
+
+// category_underlying_amount_multiplier_starttime
+const multipliers_regex = new RegExp(`${base_pattern}_(\\d+)_(\\d+)`);
+
+// category_underlying_amount_starttime_endtime_barrier
+const options_regex = new RegExp(`${base_pattern}_(\\d+)_([A-Z\\d]+)_?([A-Z\\d]+)?`);
+
 export const extractInfoFromShortcode = shortcode => {
     const info_from_shortcode = {
         category: '',
         underlying: '',
         barrier_1: '',
     };
+
+    const is_multipliers = /^MULT/i.test(shortcode);
     // First group of regex pattern captures the trade category, second group captures the market's underlying
-    const pattern = new RegExp('^([A-Z]+)_((1HZ[0-9-V]+)|((CRASH|BOOM)[0-9\\d]+)|(OTC_[A-Z0-9]+)|R_[\\d]{2,3}|[A-Z]+)');
+    const pattern = is_multipliers ? multipliers_regex : options_regex;
     const extracted = pattern.exec(shortcode);
     if (extracted !== null) {
         info_from_shortcode.category = extracted[1].toLowerCase();
         info_from_shortcode.underlying = extracted[2];
 
+        if (is_multipliers) {
+            info_from_shortcode.multiplier = extracted[4];
+            info_from_shortcode.start_time = extracted[5];
+        } else {
+            info_from_shortcode.start_time = extracted[4];
+        }
+
         if (/^(CALL|PUT)$/i.test(info_from_shortcode.category)) {
-            info_from_shortcode.barrier_1 = shortcode.split('_').slice(-2)[0];
-        } else if (/^MULT/i.test(info_from_shortcode.category)) {
-            info_from_shortcode.multiplier = shortcode.split('_').slice(-5)[0];
+            info_from_shortcode.barrier_1 = extracted[6];
         }
     }
 
@@ -34,7 +51,8 @@ export const isMultiplier = ({ shortcode = '', shortcode_info = '' }) => {
 };
 
 export const isForwardStarting = (shortcode, purchase_time) => {
-    if (extractInfoFromShortcode(shortcode)?.multiplier) return false;
-    const start_time = shortcode.split('_').slice(-4)[0].replace(/\D/g, '');
+    const shortcode_info = extractInfoFromShortcode(shortcode);
+    if (shortcode_info?.multiplier) return false;
+    const start_time = shortcode_info?.start_time;
     return start_time && purchase_time && +start_time !== +purchase_time;
 };

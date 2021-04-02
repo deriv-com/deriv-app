@@ -82,7 +82,7 @@
     "@deriv/account": "^1.0.0",
     "@deriv/components": "^1.0.0",
     "@deriv/deriv-api": "^1.0.7",
-    "@deriv/deriv-charts": "0.3.15",
+    "@deriv/deriv-charts": "0.3.16",
     "@deriv/shared": "^1.0.0",
     "@deriv/translations": "^1.0.0",
     "acorn": "^6.1.1",

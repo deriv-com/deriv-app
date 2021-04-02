@@ -9,7 +9,6 @@
 
 .welcome {
     &__title {
-        @include typeface(--title-center-bold-prominent);
         margin: 2.4rem;
     }
     &__message {
@@ -122,7 +121,6 @@
         }
         &__platforms {
             &__title {
-                @include typeface(--paragraph-center-bold-prominent);
                 padding: 2.4rem 1.6rem 1.6rem;
             }
             &__container {

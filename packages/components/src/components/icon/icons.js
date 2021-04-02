@@ -607,6 +607,7 @@ import './wallet/ic-wallet-skrill-light.svg';
 import './wallet/ic-wallet-sticpay-light.svg';
 import './wallet/ic-wallet-sticpay.svg';
 import './wallet/ic-wallet-trade-types.svg';
+import './wallet/ic-wallet-transactions-empty.svg';
 import './wallet/ic-wallet-wallets.svg';
 import './wallet/ic-wallet-webmoney-light.svg';
 import './wallet/ic-wallet-webmoney.svg';

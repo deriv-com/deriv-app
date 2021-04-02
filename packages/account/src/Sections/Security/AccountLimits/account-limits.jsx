@@ -1,7 +1,7 @@
 import AccountLimits from 'Components/account-limits/account-limits.jsx';
 import { connect } from 'Stores/connect';
 
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
     account_limits: client.account_limits,
     currency: client.currency,
     getLimits: client.getLimits,
@@ -9,4 +9,5 @@ export default connect(({ client }) => ({
     is_virtual: client.is_virtual,
     is_switching: client.is_switching,
     should_show_article: true,
+    toggleAccountsDialog: ui.toggleAccountsDialog,
 }))(AccountLimits);

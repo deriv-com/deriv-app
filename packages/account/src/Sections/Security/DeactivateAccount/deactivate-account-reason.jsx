@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { routes } from '@deriv/shared';
+import classNames from 'classnames';
+import { routes, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Formik, Field } from 'formik';
 import { Checkbox, Input, FormSubmitButton, Modal, Icon, Loading, Text, Button } from '@deriv/components';
@@ -109,6 +110,7 @@ const allowed_keys = new Set([
 ]);
 
 class DeactivateAccountReason extends React.Component {
+    static contextType = PlatformContext;
     state = {
         api_error_message: '',
         is_loading: false,
@@ -230,10 +232,16 @@ class DeactivateAccountReason extends React.Component {
                 return localize('Inaccessible MT5 account(s)');
             return this.state.which_modal_should_render !== 'warning_modal' ? localize('Action required') : undefined;
         };
+        const { is_dashboard } = this.context;
+
         return this.state.is_loading ? (
             <Loading is_fullscreen={false} />
         ) : (
-            <div className='deactivate-account-reasons'>
+            <div
+                className={classNames('deactivate-account-reasons', {
+                    'deactivate-account-reasons--dashboard': is_dashboard,
+                })}
+            >
                 <Text weight='bold' size='xs' className='deactivate-account-reasons__title' as='p'>
                     {localize('Please tell us why you’re leaving. (Select up to 3 reasons.)')}
                 </Text>
@@ -394,7 +402,7 @@ class DeactivateAccountReason extends React.Component {
                                 )}
                             </Field>
                             <div className='deactivate-account-reasons__footer'>
-                                <div>
+                                <div className='deactivate-account-reasons__hint-wrapper'>
                                     <Text
                                         size='xxs'
                                         as='p'
@@ -411,7 +419,7 @@ class DeactivateAccountReason extends React.Component {
                                                 as='p'
                                                 weight='bold'
                                                 size='xs'
-                                                color='loss-danger'
+                                                color={is_dashboard ? 'blue' : 'loss-danger'}
                                                 className='deactivate-account-reasons__error'
                                                 key={key}
                                             >

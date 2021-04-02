@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import { Swipeable } from 'react-swipeable';
 import Card from './carousel-card.jsx';
 import Nav from './carousel-nav.jsx';
@@ -7,25 +8,26 @@ import Icon from '../icon';
 import { useInterval } from '../../hooks';
 
 const Carousel = ({
-    bullet_color,
     active_bullet_color,
+    autoplay_time,
+    bullet_color,
+    bullet_position,
     className,
     initial_index,
+    is_mt5,
+    item_per_window,
     list,
-    bullet_position,
     nav_position,
+    onItemSelect,
     show_bullet,
     show_nav,
-    onItemSelect,
-    autoplay_time,
     width,
-    item_per_window,
 }) => {
     const [active_index, setActiveIndex] = React.useState(initial_index);
-
     const computed_item_per_window = React.useMemo(() => {
         return Math.min(item_per_window, list.length);
     }, [item_per_window, list]);
+    const sliced_list_length = list.slice(computed_item_per_window - 1).length;
 
     React.useEffect(() => {
         if (list.slice(computed_item_per_window - 1).length <= 1) {
@@ -62,8 +64,8 @@ const Carousel = ({
 
     return (
         <Swipeable onSwipedLeft={handleNextClick} onSwipedRight={handlePrevClick} className={className}>
-            <div className='dc-carousel'>
-                {list.slice(computed_item_per_window - 1).length > 1 && (
+            <div className={classNames('dc-carousel', { 'dc-carousel--mt5': is_mt5 })}>
+                {sliced_list_length > 1 && (
                     <Nav
                         active_index={active_index}
                         bullet_color={bullet_color}
@@ -79,20 +81,25 @@ const Carousel = ({
                     />
                 )}
                 <div className='dc-carousel__container'>
-                    {show_nav && nav_position === 'middle' && list.slice(computed_item_per_window - 1).length > 1 && (
-                        <span className='dc-carousel__icon' onClick={handlePrevClick}>
+                    {show_nav && nav_position === 'middle' && sliced_list_length > 1 && (
+                        <span
+                            className={classNames('dc-carousel__icon', { 'dc-carousel__icon--left': is_mt5 })}
+                            onClick={handlePrevClick}
+                        >
                             <Icon icon='IcChevronLeft' size='24' />
                         </span>
                     )}
 
                     <div
-                        className='dc-carousel__box'
+                        className={classNames('dc-carousel__box', {
+                            'dc-carousel__box--mt5': is_mt5 && sliced_list_length > 1,
+                        })}
                         style={{
                             width: `${computed_item_per_window * width}px`,
                         }}
                     >
                         <div
-                            className='dc-carousel__wrapper'
+                            className={classNames('dc-carousel__wrapper', { 'dc-carousel__wrapper--mt5': is_mt5 })}
                             style={{ transform: `translate3d(-${width * active_index}px, 0, 0)` }}
                         >
                             {list.map((type, idx) => (
@@ -103,18 +110,18 @@ const Carousel = ({
                         </div>
                     </div>
 
-                    {show_nav && nav_position === 'middle' && list.slice(computed_item_per_window - 1).length > 1 && (
+                    {show_nav && nav_position === 'middle' && sliced_list_length > 1 && (
                         <span className='dc-carousel__icon' onClick={handleNextClick}>
                             <Icon icon='IcChevronRight' size='24' />
                         </span>
                     )}
                 </div>
-                {list.slice(computed_item_per_window - 1).length > 1 && (
+                {sliced_list_length > 1 && (
                     <Nav
                         active_index={active_index}
                         bullet_color={bullet_color}
                         active_bullet_color={active_bullet_color}
-                        className='dc-carousel__nav--lower'
+                        className={classNames({ 'dc-carousel__nav--lower': list.length < 5 })}
                         handleNextClick={handleNextClick}
                         handlePrevClick={handlePrevClick}
                         handleNavigationClick={setActiveIndex}

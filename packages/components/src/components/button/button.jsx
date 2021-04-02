@@ -46,6 +46,7 @@ const Button = ({
         {
             'dc-btn__effect': has_effect,
             'dc-btn--primary': primary,
+            'dc-btn--blue': blue,
             'dc-btn--secondary': secondary,
             'dc-btn--tertiary': tertiary,
             'dc-btn--primary__light': primary_light,

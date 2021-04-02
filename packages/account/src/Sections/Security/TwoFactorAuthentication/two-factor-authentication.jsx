@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import React from 'react';
 import QRCode from 'qrcode.react';
 import {
@@ -11,7 +12,7 @@ import {
     Loading,
     Text,
 } from '@deriv/components';
-import { getPropertyValue, isMobile } from '@deriv/shared';
+import { getPropertyValue, isMobile, PlatformContext } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
@@ -26,6 +27,7 @@ const TwoFactorAuthentication = ({ email_address, is_switching }) => {
     const [error_message, setErrorMessage] = React.useState('');
     const [secret_key, setSecretKey] = React.useState('');
     const [qr_secret_key, setQrSecretKey] = React.useState('');
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     React.useEffect(() => {
         getDigitStatus();
@@ -183,7 +185,13 @@ const TwoFactorAuthentication = ({ email_address, is_switching }) => {
 
     return (
         <section className='two-factor'>
-            <div className='two-factor__wrapper'>{is_two_factor_enabled ? TwoFactorEnabled : TwoFactorDisabled}</div>
+            <div
+                className={classNames('two-factor__wrapper', {
+                    'two-factor__wrapper-dashboard': is_dashboard,
+                })}
+            >
+                {is_two_factor_enabled ? TwoFactorEnabled : TwoFactorDisabled}
+            </div>
         </section>
     );
 };

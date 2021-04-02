@@ -2,7 +2,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, DataList, DataTable, Text, Clipboard } from '@deriv/components';
 import { extractInfoFromShortcode, isForwardStarting, urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
@@ -15,6 +15,38 @@ import AccountStatistics from '../Components/account-statistics.jsx';
 import FilterComponent from '../Components/filter-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
+
+const DetailsComponent = ({ message = '' }) => {
+    const blockchain_hash_match = /:\s([0-9a-zA-Z]+.{25,34})/gm.exec(message.split(/,\s/)[1]);
+    const blockchain_hash = blockchain_hash_match?.[1];
+
+    let messages = [message];
+
+    if (blockchain_hash) {
+        const lines = message.split(/,\s/);
+        messages = lines.map((text, index) => {
+            if (index !== lines.length - 1) {
+                return `${text}, `;
+            }
+            return text;
+        });
+    }
+
+    return (
+        <Text as='div' size='xs' className='statement__row--detail-text' align='center'>
+            {messages.map((text, index) => {
+                return (
+                    <div key={text}>
+                        {text}
+                        {blockchain_hash && index === messages.length - 1 && (
+                            <Clipboard text_copy={blockchain_hash} popoverAlignment='top' />
+                        )}
+                    </div>
+                );
+            })}
+        </Text>
+    );
+};
 
 const getRowAction = row_obj => {
     let action;
@@ -56,6 +88,10 @@ const getRowAction = row_obj => {
         action = {
             message: row_obj.desc,
         };
+    }
+
+    if (action?.message) {
+        action.component = <DetailsComponent message={action.message} />;
     }
 
     return action;

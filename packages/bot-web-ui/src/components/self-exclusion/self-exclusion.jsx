@@ -103,21 +103,21 @@ const SelfExclusionForm = props => {
     };
 
     return (
-        <div className='self-exclusion'>
-            <div className='self-exclusion__content'>
-                <div className='self-exclusion__info'>
+        <div className='db-self-exclusion'>
+            <div className='db-self-exclusion__content'>
+                <div className='db-self-exclusion__info'>
                     {localize('Enter limits to stop your bot from trading when any of these conditions are met.')}
                 </div>
                 <Formik initialValues={initial_values} validate={validateFields} onSubmit={onSubmitLimits}>
                     {({ values, touched, errors, isValid, handleChange }) => {
                         return (
                             <Form>
-                                <div className='self-exclusion__form-group'>
+                                <div className='db-self-exclusion__form-group'>
                                     <Field name='form_max_losses'>
                                         {({ field }) => (
                                             <Input
                                                 {...field}
-                                                className='self-exclusion__input'
+                                                className='db-self-exclusion__input'
                                                 type='text'
                                                 label={localize('Daily loss limit')}
                                                 value={values.form_max_losses}
@@ -130,13 +130,13 @@ const SelfExclusionForm = props => {
                                         )}
                                     </Field>
                                 </div>
-                                <div className='self-exclusion__form-group'>
+                                <div className='db-self-exclusion__form-group'>
                                     <Field name='run_limit'>
                                         {({ field }) => {
                                             return (
                                                 <Input
                                                     {...field}
-                                                    className='self-exclusion__input'
+                                                    className='db-self-exclusion__input'
                                                     type='text'
                                                     label={localize('Maximum consecutive trades')}
                                                     value={values.run_limit}
@@ -151,11 +151,11 @@ const SelfExclusionForm = props => {
                                     </Field>
                                 </div>
                                 <div
-                                    className={classNames('self-exclusion__footer', {
-                                        'self-exclusion__footer--relative': is_mobile && is_onscreen_keyboard_active,
+                                    className={classNames('db-self-exclusion__footer', {
+                                        'db-self-exclusion__footer--relative': is_mobile && is_onscreen_keyboard_active,
                                     })}
                                 >
-                                    <div className='self-exclusion__footer-btn-group'>
+                                    <div className='db-self-exclusion__footer-btn-group'>
                                         <Button
                                             large
                                             text={localize('Cancel')}
@@ -206,7 +206,7 @@ const SelfExclusion = props => {
                     has_close_icon
                     width='500px'
                     toggleModal={resetSelfExclusion}
-                    className='self-exclusion__modal'
+                    className='db-self-exclusion__modal'
                     title={localize('Limits')}
                 >
                     <SelfExclusionForm {...props} />

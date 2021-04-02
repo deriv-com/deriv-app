@@ -1,9 +1,9 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
-import Article from 'Components/article';
+import AccountArticle from 'Components/article/article.jsx';
 
-const TFAArticle = () => (
-    <Article
+const TwoFactorAuthenticationArticle = () => (
+    <AccountArticle
         title={localize('Two-factor authentication (2FA)')}
         descriptions={[
             <Localize
@@ -14,4 +14,4 @@ const TFAArticle = () => (
     />
 );
 
-export default TFAArticle;
+export default TwoFactorAuthenticationArticle;

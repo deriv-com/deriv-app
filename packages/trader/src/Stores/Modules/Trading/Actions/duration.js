@@ -9,13 +9,20 @@ export const onChangeExpiry = store => {
         store.contract_expiry_type !== contract_expiry_type && // barrier value changes for tick/intraday/daily
         ContractType.getBarriers(store.contract_type, contract_expiry_type);
 
+    return {
+        contract_expiry_type,
+        ...obj_barriers,
+    };
+};
+
+export const onChangeContractType = store => {
+    const contract_expiry_type = getExpiryType(store);
+
     const { duration, duration_min_max, duration_unit } = store;
 
     const obj_duration = assertDuration({ contract_expiry_type, duration, duration_min_max, duration_unit });
 
     return {
-        contract_expiry_type,
-        ...obj_barriers,
         ...obj_duration,
     };
 };

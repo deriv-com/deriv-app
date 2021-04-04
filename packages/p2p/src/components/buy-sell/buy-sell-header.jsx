@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { CSSTransition } from 'react-transition-group';
 import { reaction } from 'mobx';
 import { ButtonToggle, Checkbox, Icon, PopoverMobile } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize } from 'Components/i18next';
@@ -11,6 +9,7 @@ import ToggleContainer from 'Components/misc/toggle-container.jsx';
 import SearchBox from 'Components/buy-sell/search-box.jsx';
 import SortDropdown from 'Components/buy-sell/sort-dropdown.jsx';
 import { useStores } from 'Stores';
+import AnimationWrapper from 'Components/misc/animation-wrapper.jsx';
 import 'Components/buy-sell/buy-sell-header.scss';
 
 const getBuySellFilters = () => [
@@ -24,18 +23,6 @@ const getBuySellFilters = () => [
     },
 ];
 
-const AnimationWrapper = ({ children, is_visible }) => {
-    if (isMobile()) {
-        return (
-            <CSSTransition in={is_visible} timeout={250} classNames='buy-sell__header-animation'>
-                {children}
-            </CSSTransition>
-        );
-    }
-
-    return children;
-};
-
 const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
     const { buy_sell_store } = useStores();
     const [is_no_match_tooltip_open, setIsNoMatchTooltipOpen] = React.useState(false);
@@ -45,7 +32,7 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
     React.useEffect(
         () => {
             buy_sell_store.setSearchTerm('');
-            reaction(
+            return reaction(
                 () => buy_sell_store.should_use_client_limits,
                 () => {
                     buy_sell_store.setItems([]);

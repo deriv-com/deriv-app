@@ -1092,8 +1092,7 @@ export default class CashierStore extends BaseStore {
     async sortAccountsTransfer(response_accounts) {
         const transfer_between_accounts = response_accounts || (await this.WS.authorized.transferBetweenAccounts());
         if (!this.config.account_transfer.accounts_list.length) {
-            // should have more than one account
-            if (transfer_between_accounts.error || transfer_between_accounts.accounts.length <= 1) {
+            if (transfer_between_accounts.error) {
                 return;
             }
         }
@@ -1116,28 +1115,32 @@ export default class CashierStore extends BaseStore {
         // sort accounts as follows:
         // for MT5, synthetic, financial, financial stp
         // for non-MT5, fiat, crypto (alphabetically by currency)
-        accounts.sort((a, b) => {
-            const a_is_mt = a.account_type === 'mt5';
-            const b_is_mt = b.account_type === 'mt5';
-            const a_is_crypto = !a_is_mt && isCryptocurrency(a.currency);
-            const b_is_crypto = !b_is_mt && isCryptocurrency(b.currency);
-            const a_is_fiat = !a_is_mt && !a_is_crypto;
-            const b_is_fiat = !b_is_mt && !b_is_crypto;
-            if (a_is_mt && b_is_mt) {
-                if (a.market_type === 'gaming') {
+        // should have more than one account
+        if (transfer_between_accounts.accounts.length > 1) {
+            accounts.sort((a, b) => {
+                const a_is_mt = a.account_type === 'mt5';
+                const b_is_mt = b.account_type === 'mt5';
+                const a_is_crypto = !a_is_mt && isCryptocurrency(a.currency);
+                const b_is_crypto = !b_is_mt && isCryptocurrency(b.currency);
+                const a_is_fiat = !a_is_mt && !a_is_crypto;
+                const b_is_fiat = !b_is_mt && !b_is_crypto;
+                if (a_is_mt && b_is_mt) {
+                    if (a.market_type === 'gaming') {
+                        return -1;
+                    }
+                    if (a.sub_account_type === 'financial') {
+                        return b.market_type === 'gaming' ? 1 : -1;
+                    }
+                    return 1;
+                } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
+                    return a.currency < b.currency ? -1 : 1;
+                } else if ((a_is_crypto && b_is_mt) || (a_is_fiat && b_is_crypto) || (a_is_fiat && b_is_mt)) {
                     return -1;
                 }
-                if (a.sub_account_type === 'financial') {
-                    return b.market_type === 'gaming' ? 1 : -1;
-                }
-                return 1;
-            } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
-                return a.currency < b.currency ? -1 : 1;
-            } else if ((a_is_crypto && b_is_mt) || (a_is_fiat && b_is_crypto) || (a_is_fiat && b_is_mt)) {
-                return -1;
-            }
-            return a_is_mt ? -1 : 1;
-        });
+                return a_is_mt ? -1 : 1;
+            });
+        }
+
         const arr_accounts = [];
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
 

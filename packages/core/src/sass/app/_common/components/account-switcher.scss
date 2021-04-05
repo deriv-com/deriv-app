@@ -194,6 +194,12 @@
             height: 100%;
             border-radius: 0;
         }
+        .dc-themed-scrollbars {
+            scrollbar-color: var(--text-less-prominent) transparent;
+            &::-webkit-scrollbar-thumb {
+                background-color: var(--text-less-prominent);
+            }
+        }
     }
     &__new-account {
         display: flex;

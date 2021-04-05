@@ -6,10 +6,7 @@ import { Localize, localize } from '@deriv/translations';
 import { Button, Icon, Popup, Text } from '@deriv/components';
 import SelfExclusionContext from './self-exclusion-context';
 
-const SelfExclusionArticleContent = ({ is_in_overlay }) => {
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
-    const { is_app_settings, is_eu, is_uk, toggleArticle, overlay_ref } = React.useContext(SelfExclusionContext);
-
+export const selfExclusionArticleItems = ({ is_eu, is_uk, is_deriv_crypto, is_app_settings }) => {
     const getEuItems = () => {
         const eu_items = [
             {
@@ -146,11 +143,17 @@ const SelfExclusionArticleContent = ({ is_in_overlay }) => {
     ];
 
     const article_items = is_eu ? getEuItems() : getNonEuItems();
-    const keyed_article_items = article_items.map((article_item, idx) => ({
+    return article_items.map((article_item, idx) => ({
         ...article_item,
         key: `self_exclusion_desc_${idx}`,
     }));
+};
 
+const SelfExclusionArticleContent = ({ is_in_overlay }) => {
+    const { is_app_settings, toggleArticle, overlay_ref, is_eu, is_uk } = React.useContext(SelfExclusionContext);
+    const { is_deriv_crypto } = React.useContext(PlatformContext);
+
+    const keyed_article_items = selfExclusionArticleItems({ is_eu, is_uk, is_deriv_crypto, is_app_settings });
     if (is_in_overlay) {
         return (
             <Popup.Overlay

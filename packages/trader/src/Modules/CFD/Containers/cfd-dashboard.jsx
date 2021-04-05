@@ -280,7 +280,7 @@ class CFDDashboard extends React.Component {
                                             <Localize i18n_default_text='Server maintenance starts at 09:00 GMT every Sunday and may last up to 2 hours. Service may be disrupted during this time.' />
                                         )}
                                         {platform === 'mt5' && (
-                                            <Localize i18n_default_text='Server maintenance starting 03:00 GMT every Sunday. This process may take up to 2 hours to complete. Service may be disrupted during this time.' />
+                                            <Localize i18n_default_text='Server maintenance starting 01:00 GMT every Sunday. This process may take up to 2 hours to complete. Service may be disrupted during this time.' />
                                         )}
                                     </div>
                                 </div>

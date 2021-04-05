@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getMT5WebTerminalLink, getPlatformMt5DownloadLink } from '../Helpers/constants';
+import { getPlatformMt5DownloadLink } from '../Helpers/constants';
 
 const MT5DashboardContainer = () => (
     <div className='mt5-dashboard__download-center'>
@@ -17,22 +17,6 @@ const MT5DashboardContainer = () => (
                             <Icon icon='IcMt5DeviceDesktop' width={118} height={85} />
                             <Icon icon='IcMt5DeviceLaptop' width={75} height={51} />
                         </div>
-                        <div className='mt5-dashboard__download-center-options--desktop-row'>
-                            <a
-                                href={getMT5WebTerminalLink({ category: 'demo' })}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                            >
-                                <Icon icon='IcInstallationWebDemo' width={138} height={40} />
-                            </a>
-                            <a
-                                href={getMT5WebTerminalLink({ category: 'real' })}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                            >
-                                <Icon icon='IcInstallationWebReal' width={138} height={40} />
-                            </a>
-                        </div>
                     </div>
                     <div className='mt5-dashboard__download-center-options--desktop-download'>
                         <a href={getPlatformMt5DownloadLink('windows')} target='_blank' rel='noopener noreferrer'>
@@ -46,7 +30,7 @@ const MT5DashboardContainer = () => (
                         </a>
                     </div>
                 </div>
-                <Text as='p' size='xxxs' className='mt5-dashboard__download-center--hint'>
+                <Text as='p' align='center' size='xxxs' className='mt5-dashboard__download-center--hint'>
                     <Localize i18n_default_text='The MT5 desktop app is not supported by Windows XP, Windows 2003, and Windows Vista.' />
                 </Text>
             </div>

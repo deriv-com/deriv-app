@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { AutoHeightWrapper, Button } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getPlatformRedirect } from '@deriv/shared';
+import { getPlatformRedirect, PlatformContext } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 import DemoMessage from 'Components/demo-message';
@@ -10,6 +10,7 @@ import MissingPersonalDetails from 'Components/poi-missing-personal-details';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
 
 class ProofOfIdentity extends React.Component {
+    static contextType = PlatformContext;
     routeBackTo = redirect_route => {
         this.props.routeBackInApp(this.props.history, [redirect_route]);
     };

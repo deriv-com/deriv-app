@@ -10,10 +10,13 @@
         flex: 1;
 
         &-wrapper {
-            gap: 2.4rem;
+            $gap: 2.4rem;
             display: flex;
-            margin-bottom: 1.6rem;
-            align-items: flex-start;
+            margin: calc(-1 * #{$gap}) 0 1.6rem calc(-1 * #{$gap});
+
+            & > * {
+                margin: $gap 0 0 $gap;
+            }
 
             > .dc-input {
                 margin-top: 1rem; // Compensate for label.

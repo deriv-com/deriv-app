@@ -6,10 +6,10 @@ export const GoToDeriv = () => {
     const message = localize('Go to Deriv.com');
 
     return (
-        <Popover alignment='top' message={message} className='footer__link'>
-            <StaticUrl href='/'>
+        <StaticUrl href='/' className='footer__link'>
+            <Popover alignment='top' message={message}>
                 <Icon icon='IcDerivOutline' className='footer__icon ic-deriv__icon' />
-            </StaticUrl>
-        </Popover>
+            </Popover>
+        </StaticUrl>
     );
 };

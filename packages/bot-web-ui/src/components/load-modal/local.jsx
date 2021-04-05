@@ -8,8 +8,9 @@ import WorkspaceControl from './workspace-control.jsx';
 
 const LocalComponent = ({ handleFileChange, is_mobile, loaded_local_file, setLoadedLocalFile }) => {
     const file_input_ref = React.useRef(null);
+    const [is_file_supported, setIsFileSupported] = React.useState(true);
 
-    if (loaded_local_file) {
+    if (loaded_local_file && is_file_supported) {
         return (
             <div className='load-strategy__container load-strategy__container--has-footer'>
                 <div className='load-strategy__local-preview'>
@@ -41,10 +42,10 @@ const LocalComponent = ({ handleFileChange, is_mobile, loaded_local_file, setLoa
             <div className='load-strategy__local-dropzone'>
                 <input
                     type='file'
-                    ref={el => (file_input_ref.current = el)}
+                    ref={file_input_ref}
                     accept='.xml'
                     style={{ display: 'none' }}
-                    onChange={e => handleFileChange(e, false)}
+                    onChange={e => setIsFileSupported(handleFileChange(e, false))}
                 />
                 <div
                     className='load-strategy__local-dropzone-area'
@@ -58,7 +59,7 @@ const LocalComponent = ({ handleFileChange, is_mobile, loaded_local_file, setLoa
                         <React.Fragment>
                             <Icon icon={'IcPc'} className='load-strategy__local-icon' size={is_mobile ? 96 : 128} />
                             <div className='load-strategy__local-title'>
-                                <Localize i18n_default_text='Drag your file here' />
+                                <Localize i18n_default_text='Drag your XML file here' />
                             </div>
                             <div className='load-strategy__local-description'>
                                 <Localize i18n_default_text='or, if you prefer...' />
@@ -66,7 +67,11 @@ const LocalComponent = ({ handleFileChange, is_mobile, loaded_local_file, setLoa
                         </React.Fragment>
                     )}
                     <Button
-                        text={localize('Select a file from your device')}
+                        text={
+                            is_file_supported
+                                ? localize('Select an XML file from your device')
+                                : localize('Please upload an XML file')
+                        }
                         onClick={() => file_input_ref.current.click()}
                         has_effect
                         primary

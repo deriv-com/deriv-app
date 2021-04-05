@@ -37,9 +37,20 @@ const AccountSwitcher = props => {
     const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
     const [is_deriv_real_visible, setDerivRealVisible] = React.useState(true);
     const [is_dmt5_demo_visible, setDmt5DemoVisible] = React.useState(true);
-    const [is_dmt5_real_visible, setDmt5RealVisible] = React.useState(true);
+    const [is_dmt5_real_visible, setDmt5RealVisible] = React.useState(false);
 
     const wrapper_ref = React.useRef();
+    const dmt5_ref = React.useRef(null);
+
+    React.useEffect(() => {
+        if (dmt5_ref.current && is_dmt5_real_visible) {
+            dmt5_ref.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'end',
+                inline: 'nearest',
+            });
+        }
+    }, [is_dmt5_real_visible]);
 
     const toggleVisibility = section => {
         switch (section) {
@@ -169,15 +180,7 @@ const AccountSwitcher = props => {
                 );
                 if (has_account) {
                     const number_market_type_available = trading_servers.filter(
-                        s =>
-                            s.supported_accounts.includes(market_type) &&
-                            !s.disabled &&
-                            !existing_mt5_accounts.some(
-                                acc =>
-                                    acc.account_type === 'real' &&
-                                    acc.market_type === market_type &&
-                                    acc.server === s.id
-                            )
+                        s => s.supported_accounts.includes(market_type) && !s.disabled
                     ).length;
                     if (number_market_type_available && has_account.account_type === 'real') {
                         has_account = false;
@@ -270,8 +273,8 @@ const AccountSwitcher = props => {
 
     const findServerForAccount = acc => {
         const server_name = acc.error ? acc.error.details.server : acc.server;
-        return props.trading_servers.length > 1
-            ? props.trading_servers.find(server => server.id === server_name)
+        return props.mt5_login_list.length > 1
+            ? props.mt5_login_list.find(server => server.server === server_name)
             : null;
     };
 
@@ -456,7 +459,7 @@ const AccountSwitcher = props => {
     );
 
     const real_accounts = (
-        <div className='acc-switcher__list-wrapper'>
+        <div ref={dmt5_ref} className='acc-switcher__list-wrapper'>
             <React.Fragment>
                 <AccountWrapper
                     header={localize('Deriv Accounts')}

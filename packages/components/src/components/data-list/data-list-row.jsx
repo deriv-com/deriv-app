@@ -4,7 +4,6 @@ import { NavLink } from 'react-router-dom';
 
 const DataListRow = ({ action_desc, destination_link, row_gap, row_key, rowRenderer, ...other_props }) => {
     const [show_desc, setShowDesc] = React.useState(false);
-
     return (
         <div className='data-list__row--wrapper' style={{ paddingBottom: `${row_gap || 0}px` }}>
             {destination_link ? (
@@ -26,11 +25,7 @@ const DataListRow = ({ action_desc, destination_link, row_gap, row_key, rowRende
                         <div className={'data-list__item'} onClick={() => setShowDesc(!show_desc)}>
                             {show_desc ? (
                                 <div className={'data-list__desc--wrapper'}>
-                                    {action_desc.component ? (
-                                        <div>{action_desc.component}</div>
-                                    ) : (
-                                        <p className='statement__row--detail-text'>{action_desc.message}</p>
-                                    )}
+                                    {action_desc.component && <div>{action_desc.component}</div>}
                                 </div>
                             ) : (
                                 rowRenderer({ ...other_props })

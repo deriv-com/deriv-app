@@ -32,6 +32,9 @@ export const formatStatementTransaction = (transaction, currency, active_symbols
         action_type: transaction.action_type,
         purchase_time: transaction.purchase_time,
         transaction_time: transaction.transaction_time,
-        ...(transaction.withdrawal_details && { withdrawal_details: transaction.withdrawal_details }),
+        ...(transaction.withdrawal_details && {
+            withdrawal_details: transaction.withdrawal_details,
+            longcode: transaction.longcode,
+        }),
     };
 };

@@ -4,6 +4,26 @@
     display: flex;
     flex-direction: column;
 
+    &__advertiser-page-return {
+        .dc-text {
+            align-self: flex-start;
+        }
+
+        @include mobile {
+            border-bottom: 1px solid var(--general-section-1);
+            margin-bottom: unset;
+            padding-bottom: 1.2rem;
+
+            .page-return__button {
+                padding: 0 1.6rem;
+            }
+
+            .dc-text {
+                align-self: self-end;
+            }
+        }
+    }
+
     &__empty {
         margin-top: calc(#{$mobile_tabs_height} + 2.4rem); // Tabs + Margin
     }

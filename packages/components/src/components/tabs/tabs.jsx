@@ -21,6 +21,7 @@ const Tabs = ({
     icon_color,
     icon_size,
     is_100vw,
+    is_full_width,
     onTabItemClick,
     should_update_hash,
     single_tab_has_no_label,
@@ -118,6 +119,7 @@ const Tabs = ({
                         'dc-tabs__list--bottom': bottom,
                         'dc-tabs__list--center': center,
                         'dc-tabs__list--header-fit-content': header_fit_content,
+                        'dc-tabs__list--full-width': is_full_width,
                         [`dc-tabs__list--${className}`]: className,
                     })}
                     ref={tabs_wrapper_ref}

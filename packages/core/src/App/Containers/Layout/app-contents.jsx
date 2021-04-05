@@ -26,7 +26,6 @@ const AppContents = ({
     pageView,
     pushDataLayer,
 }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
     const [show_cookie_banner, setShowCookieBanner] = React.useState(false);
     const [is_gtm_tracking, setIsGtmTracking] = React.useState(false);
     const { is_dashboard } = React.useContext(PlatformContext);

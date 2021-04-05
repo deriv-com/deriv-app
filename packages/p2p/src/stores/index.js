@@ -29,6 +29,7 @@ export const useStores = () => {
 
         stores_context = React.createContext({
             general_store: root_store.general_store,
+
             advertiser_page_store: root_store.advertiser_page_store,
             buy_sell_store: root_store.buy_sell_store,
             my_ads_store: root_store.my_ads_store,

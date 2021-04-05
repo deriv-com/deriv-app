@@ -12,27 +12,6 @@
         transform-origin: top;
     }
 
-    &-animation {
-        &-enter {
-            transform: scale3d(1, 0, 1);
-            opacity: 0;
-
-            &-done {
-                transform: scale3d(1, 1, 1);
-                opacity: 1;
-            }
-        }
-        &-exit {
-            transform: scale3d(1, 1, 1);
-            opacity: 1;
-
-            &-done {
-                transform: scale3d(1, 0, 1);
-                opacity: 0;
-            }
-        }
-    }
-
     &-filters {
         width: 16.8rem;
         height: 3.6rem;

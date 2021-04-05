@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import './blockly';
-import { hasAllRequiredBlocks, updateDisabledBlocks } from './utils';
+import { hasAllRequiredBlocks, isAllRequiredBlocksEnabled, updateDisabledBlocks } from './utils';
 import main_xml from './xml/main.xml';
 import DBotStore from './dbot-store';
 import { save_types } from '../constants';
@@ -295,14 +295,25 @@ class DBot {
      * Checks whether the workspace contains all required blocks before running the strategy.
      */
     checkForRequiredBlocks() {
+        let error;
+
         if (!hasAllRequiredBlocks(this.workspace)) {
-            const error = new Error(
+            error = new Error(
                 localize(
                     'One or more mandatory blocks are missing from your workspace. Please add the required block(s) and then try again.'
                 )
             );
-            globalObserver.emit('Error', error);
+        }
+        if (!isAllRequiredBlocksEnabled(this.workspace)) {
+            error = new Error(
+                localize(
+                    'One or more mandatory blocks are disabled in your workspace. Please enable the required block(s) and then try again.'
+                )
+            );
+        }
 
+        if (error) {
+            globalObserver.emit('Error', error);
             return false;
         }
 

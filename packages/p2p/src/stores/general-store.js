@@ -25,7 +25,7 @@ export default class GeneralStore extends BaseStore {
     @observable orders = [];
     @observable parameters = null;
     @observable poi_status = null;
-    @observable props = {};
+    @observable.ref props = {};
     @observable should_show_real_name = false;
     @observable should_show_popup = false;
     @observable user_blocked_until = null;

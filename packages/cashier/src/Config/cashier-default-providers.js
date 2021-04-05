@@ -49,14 +49,10 @@ const DragonPayIconLight = () => {
                     y2='2.90379'
                     gradientUnits='userSpaceOnUse'
                 >
-                    {/* eslint-disable-next-line */}
-                    <stop stop-color='#FCF7A1' />
-                    {/* eslint-disable-next-line */}
-                    <stop offset='0.2' stop-color='#FFCA00' />
-                    {/* eslint-disable-next-line */}
-                    <stop offset='0.58' stop-color='#D21824' />
-                    {/* eslint-disable-next-line */}
-                    <stop offset='1' stop-color='#B31A1E' />
+                    <stop stopColor='#FCF7A1' />
+                    <stop offset='0.2' stopColor='#FFCA00' />
+                    <stop offset='0.58' stopColor='#D21824' />
+                    <stop offset='1' stopColor='#B31A1E' />
                 </linearGradient>
                 <linearGradient
                     id='paint1_linear'
@@ -66,12 +62,9 @@ const DragonPayIconLight = () => {
                     y2='5.55487'
                     gradientUnits='userSpaceOnUse'
                 >
-                    {/* eslint-disable-next-line */}
-                    <stop stop-color='#FCF7A1' />
-                    {/* eslint-disable-next-line */}
-                    <stop offset='0.42' stop-color='#FFCA00' />
-                    {/* eslint-disable-next-line */}
-                    <stop offset='1' stop-color='#F43221' />
+                    <stop stopColor='#FCF7A1' />
+                    <stop offset='0.42' stopColor='#FFCA00' />
+                    <stop offset='1' stopColor='#F43221' />
                 </linearGradient>
             </defs>
         </svg>
@@ -125,14 +118,10 @@ const DragonPayIconDark = () => {
                     y2='2.90379'
                     gradientUnits='userSpaceOnUse'
                 >
-                    {/* eslint-disable-next-line */}
-                    <stop stop-color='#FCF7A1' />
-                    {/* eslint-disable-next-line */}
-                    <stop offset='0.2' stop-color='#FFCA00' />
-                    {/* eslint-disable-next-line */}
-                    <stop offset='0.58' stop-color='#D21824' />
-                    {/* eslint-disable-next-line */}
-                    <stop offset='1' stop-color='#B31A1E' />
+                    <stop stopColor='#FCF7A1' />
+                    <stop offset='0.2' stopColor='#FFCA00' />
+                    <stop offset='0.58' stopColor='#D21824' />
+                    <stop offset='1' stopColor='#B31A1E' />
                 </linearGradient>
                 <linearGradient
                     id='paint1_linear'
@@ -142,12 +131,9 @@ const DragonPayIconDark = () => {
                     y2='5.55487'
                     gradientUnits='userSpaceOnUse'
                 >
-                    {/* eslint-disable-next-line */}
-                    <stop stop-color='#FCF7A1' />
-                    {/* eslint-disable-next-line */}
-                    <stop offset='0.42' stop-color='#FFCA00' />
-                    {/* eslint-disable-next-line */}
-                    <stop offset='1' stop-color='#F43221' />
+                    <stop stopColor='#FCF7A1' />
+                    <stop offset='0.42' stopColor='#FFCA00' />
+                    <stop offset='1' stopColor='#F43221' />
                 </linearGradient>
             </defs>
         </svg>

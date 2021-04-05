@@ -44,8 +44,6 @@ export const icons = {
         'IcCashierDeposit',
         'IcCashierDp2pBlocked',
         'IcCashierDp2p',
-        'IcCashierDragonpayDark',
-        'IcCashierDragonpayLight',
         'IcCashierError',
         'IcCashierEthereumDark',
         'IcCashierEthereumLight',

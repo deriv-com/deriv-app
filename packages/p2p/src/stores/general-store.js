@@ -1,6 +1,6 @@
 import React from 'react';
 import { action, computed, observable, reaction } from 'mobx';
-import { isEmptyObject, isMobile, routes, toMoment } from '@deriv/shared';
+import { isEmptyObject, isMobile, toMoment } from '@deriv/shared';
 import BaseStore from 'Stores/base_store';
 import { localize, Localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
@@ -25,12 +25,12 @@ export default class GeneralStore extends BaseStore {
     @observable orders = [];
     @observable parameters = null;
     @observable poi_status = null;
+    @observable props = {};
     @observable should_show_real_name = false;
-    @observable show_popup = false;
+    @observable should_show_popup = false;
     @observable user_blocked_until = null;
     @observable is_high_risk_fully_authed_without_fa = false;
 
-    custom_string = this.props?.custom_string;
     list_item_limit = isMobile() ? 10 : 50;
     path = {
         buy_sell: 0,
@@ -38,7 +38,6 @@ export default class GeneralStore extends BaseStore {
         my_ads: 2,
         my_profile: 3,
     };
-    props = {};
     ws_subscriptions = {};
     service_token_timeout;
 
@@ -65,6 +64,17 @@ export default class GeneralStore extends BaseStore {
     @computed
     get is_my_profile_tab_visible() {
         return this.is_advertiser && !this.root_store.my_profile_store.should_hide_my_profile_tab;
+    }
+
+    @computed
+    get is_unsupported_account() {
+        const allowed_currency = 'USD';
+        return this.client?.is_virtual || this.client?.currency !== allowed_currency;
+    }
+
+    @computed
+    get should_show_dp2p_blocked() {
+        return this.is_dp2p_blocked || this.is_high_risk_fully_authed_without_fa;
     }
 
     @action.bound
@@ -160,24 +170,6 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    getVerificationChecklist = () => [
-        {
-            content: this.nickname || <Localize i18n_default_text='Choose your nickname' />,
-            status: this.nickname ? 'done' : 'action',
-            onClick: this.nickname ? () => {} : this.toggleNicknamePopup,
-        },
-        {
-            content: this.poiStatusText(this.poi_status),
-            status: this.poi_status === 'verified' ? 'done' : 'action',
-            onClick:
-                this.poi_status === 'verified'
-                    ? () => {}
-                    : () => (window.location.href = `${this.props.poi_url}?ext_platform_url=${routes.cashier_p2p}`),
-            is_disabled: this.poi_status !== 'verified' && !this.nickname,
-        },
-    ];
-
-    @action.bound
     onMount() {
         this.setIsLoading(true);
 
@@ -220,6 +212,7 @@ export default class GeneralStore extends BaseStore {
 
             this.setIsHighRiskFullyAuthedWithoutFa(false);
             this.setIsBlocked(false);
+            this.setIsLoading(false);
 
             const { sendbird_store } = this.root_store;
 
@@ -258,7 +251,7 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     onNicknamePopupClose() {
-        this.setShowPopup(false);
+        this.setShouldShowPopup(false);
     }
 
     poiStatusText = status => {
@@ -302,6 +295,7 @@ export default class GeneralStore extends BaseStore {
         this.advertiser_id = advertiser_id;
     }
 
+    @action.bound
     setAppProps(props) {
         this.props = props;
     }
@@ -412,8 +406,8 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    setShowPopup(show_popup) {
-        this.show_popup = show_popup;
+    setShouldShowPopup(should_show_popup) {
+        this.should_show_popup = should_show_popup;
     }
 
     @action.bound
@@ -428,7 +422,7 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     toggleNicknamePopup() {
-        this.setShowPopup(!this.show_popup);
+        this.setShouldShowPopup(!this.should_show_popup);
         this.resetNicknameErrorState();
     }
 

@@ -1,4 +1,4 @@
-.nickname__form {
+.dp2p-nickname__form {
     &-header {
         border-bottom: 1px solid var(--general-section-2);
 
@@ -138,7 +138,6 @@
         cursor: pointer;
         fill: var(--text-general);
     }
-
     &-wrapper {
         @include mobile {
             height: 100%;

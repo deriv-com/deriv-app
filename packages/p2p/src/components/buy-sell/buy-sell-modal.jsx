@@ -8,7 +8,7 @@ import { localize } from 'Components/i18next';
 import FormError from 'Components/form/error.jsx';
 import { useStores } from 'Stores';
 import BuySellForm from './buy-sell-form.jsx';
-import NicknameForm from '../nickname/nickname-form.jsx';
+import NicknameForm from '../nickname-form';
 import 'Components/buy-sell/buy-sell-modal.scss';
 
 const BuySellModalFooter = ({ onCancel, error_message, is_submit_disabled, onSubmit }) => {

@@ -5,7 +5,6 @@ import { getLanguage } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import P2P from '@deriv/p2p';
-import DepositsLocked from 'Components/Error/deposit-locked.jsx';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import { get, init, timePromise } from '_common/server_time';
@@ -75,9 +74,6 @@ const P2PCashier = ({
     return (
         <P2P
             client={{ currency, local_currency_config, is_virtual, residence, loginid }}
-            components={{
-                DepositsLocked,
-            }}
             history={history}
             is_dark_mode_on={is_dark_mode_on}
             is_mobile={is_mobile}

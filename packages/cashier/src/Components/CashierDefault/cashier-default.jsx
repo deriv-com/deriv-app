@@ -86,8 +86,7 @@ const CashierDefault = ({
         return options;
     };
 
-    if (is_switching || (accounts_list.length === 0 && !is_crypto))
-        return <Loading className='cashier-default__loader' />;
+    if (is_switching || accounts_list.length === 0) return <Loading className='cashier-default__loader' />;
 
     return (
         <div className='cashier-default'>

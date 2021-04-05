@@ -6,7 +6,7 @@ import { Formik, Field } from 'formik';
 import { Checkbox, Input, FormSubmitButton, Modal, Icon, Loading, Text, Button } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
-import AccountHasBalanceOrOpenPositions from './account-has-balance.jsx';
+import ActionRequired from './account-has-balance.jsx';
 
 const initial_form = {
     'I have other financial priorities': false,
@@ -190,8 +190,8 @@ class DeactivateAccountReason extends React.Component {
         } else {
             const { code, message, details } = account_closure_response.error;
             const getModalToRender = () => {
-                if (code === 'AccountHasBalanceOrOpenPositions') {
-                    return 'AccountHasBalanceOrOpenPositions';
+                if (code === 'AccountHasBalanceOrOpenPositionsOrPendingWithdrawals') {
+                    return 'action_required_modal';
                 }
                 if (code === 'MT5AccountInaccessible') {
                     return 'inaccessible_modal';
@@ -442,8 +442,8 @@ class DeactivateAccountReason extends React.Component {
                     {this.state.which_modal_should_render === 'warning_modal' && (
                         <WarningModal closeModal={this.closeModal} startDeactivating={this.startDeactivating} />
                     )}
-                    {this.state.which_modal_should_render === 'AccountHasBalanceOrOpenPositions' && (
-                        <AccountHasBalanceOrOpenPositions
+                    {this.state.which_modal_should_render === 'action_required_modal' && (
+                        <ActionRequired
                             details={this.state.details}
                             mt5_login_list={this.props.mt5_login_list}
                             client_accounts={this.props.client_accounts}

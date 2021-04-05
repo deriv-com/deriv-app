@@ -42,12 +42,24 @@ const Content = ({ currency_icon, loginid, title, value }) => (
     </div>
 );
 
-const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_accounts, onBackClick }) => {
+const ActionRequired = ({ details, mt5_login_list, client_accounts, onBackClick }) => {
     const deriv_open_positions = [];
     const deriv_balance = [];
     const mt5_open_positions = [];
     const mt5_balance = [];
+    const account_pending_withdrawals = [];
 
+    if (details.pending_withdrawals) {
+        Object.keys(details.pending_withdrawals).forEach(login_id => {
+            const info = {
+                withdrawals: details.pending_withdrawals[login_id],
+            };
+            const deriv_account = getDerivAccount(client_accounts, login_id);
+            if (deriv_account) {
+                account_pending_withdrawals.push({ ...deriv_account, ...info });
+            }
+        });
+    }
     if (details.open_positions) {
         Object.keys(details.open_positions).forEach(login_id => {
             const info = {
@@ -122,6 +134,31 @@ const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_acco
                         ))}
                     </Wrapper>
                 )}
+                {!!account_pending_withdrawals.length && (
+                    <Wrapper title={localize('Pending withdrawal request:')}>
+                        <Text as='p'>
+                            {localize(
+                                'We are still processing your withdrawal request.\nPlease wait for the transaction to be completed before deactivating your account.'
+                            )}
+                        </Text>
+                        {account_pending_withdrawals.map(account => (
+                            <Content
+                                key={account.loginid}
+                                currency_icon={`IcCurrency-${account.icon}`}
+                                loginid={account.loginid}
+                                title={account.title}
+                                value={
+                                    <Localize
+                                        i18n_default_text='{{pending_withdrawals}}'
+                                        values={{ pending_withdrawals: account.withdrawals }}
+                                    />
+                                }
+                            />
+                        ))}
+                    </Wrapper>
+                )}
+                {/* {!!deriv_balance.length && ( */}
+                {/* )} */}
                 {!!mt5_open_positions.length && (
                     <Wrapper title={localize('You have open positions in these DMT5 accounts:')}>
                         {mt5_open_positions.map(account => (
@@ -169,4 +206,4 @@ const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_acco
     );
 };
 
-export default AccountHasBalanceOrOpenPositions;
+export default ActionRequired;

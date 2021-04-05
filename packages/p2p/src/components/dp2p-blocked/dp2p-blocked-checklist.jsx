@@ -14,7 +14,11 @@ const Dp2pBlockedChecklist = () => {
             {
                 content: localize('Complete the financial assessment form'),
                 status: 'action',
-                onClick: () => history.push(routes.financial_assessment),
+                onClick: () =>
+                    history.push({
+                        pathname: routes.financial_assessment,
+                        state: { is_from_p2p: true },
+                    }),
             },
         ];
 

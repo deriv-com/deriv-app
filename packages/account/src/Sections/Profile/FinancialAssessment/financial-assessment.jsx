@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Formik } from 'formik';
-import { withRouter } from 'react-router';
+import { useHistory, useLocation, withRouter } from 'react-router';
 import {
     FormSubmitErrorMessage,
     Loading,
@@ -117,30 +117,37 @@ const ConfirmationPage = ({ toggleModal, onSubmit }) => (
     </div>
 );
 
-const SubmittedPage = withRouter(({ history }) => {
-    const redirectToPOA = () => {
-        history.push(routes.proof_of_address);
+const SubmittedPage = () => {
+    const history = useHistory();
+    const location = useLocation();
+
+    const { is_from_p2p } = location.state;
+    const button_text = is_from_p2p ? localize('Back to DP2P') : localize('Continue');
+    const icon_text = is_from_p2p
+        ? undefined
+        : localize('Let’s continue with providing proofs of address and identity.');
+
+    const onClickButton = () => {
+        if (is_from_p2p) {
+            history.push(routes.cashier_p2p);
+        } else {
+            history.push(routes.proof_of_address);
+        }
     };
+
     return (
         <IconMessageContent
             className='submit-success'
             message={localize('Financial assessment submitted successfully')}
-            text={localize('Let’s continue with providing proofs of address and identity.')}
+            text={icon_text}
             icon={<Icon icon='IcSuccess' width={96} height={90} />}
         >
             <div className='account-management-flex-wrapper account-management-submit-success'>
-                <Button
-                    type='button'
-                    has_effect
-                    text={localize('Continue')}
-                    onClick={() => redirectToPOA()}
-                    primary
-                    large
-                />
+                <Button type='button' has_effect text={button_text} onClick={onClickButton} primary large />
             </div>
         </IconMessageContent>
     );
-});
+};
 
 class FinancialAssessment extends React.Component {
     static contextType = PlatformContext;

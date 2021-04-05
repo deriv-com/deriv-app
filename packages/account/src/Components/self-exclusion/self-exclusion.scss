@@ -178,6 +178,7 @@
     }
     &__form {
         margin-right: 1rem;
+        height: 100%;
 
         @include mobile {
             margin: 1.6rem;
@@ -188,6 +189,19 @@
         @include typeface(--paragraph-left-bold-prominent);
         margin-bottom: 1.6rem;
         margin-top: 2.4rem;
+        &-border {
+            display: flex;
+            white-space: nowrap;
+            &:after {
+                border-top: 1px solid var(--general-section-1);
+                content: '';
+                height: 100%;
+                width: 100%;
+                margin-top: 0.8rem;
+                display: block;
+                margin-left: 0.8rem;
+            }
+        }
 
         &:first-child {
             margin-top: 0;
@@ -198,6 +212,9 @@
         border: 1px solid var(--border-normal);
         padding: 1.6rem;
         border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
 
         &-wrapper {
             display: grid;

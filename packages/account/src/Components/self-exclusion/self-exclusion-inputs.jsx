@@ -1,20 +1,33 @@
 import * as React from 'react';
+import classNames from 'classnames';
 import { Button, DatePicker, Icon, Input, Text } from '@deriv/components';
-import { epochToMoment, toMoment, PlatformContext } from '@deriv/shared';
+import { epochToMoment, toMoment, PlatformContext, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { Field, useFormikContext } from 'formik';
 import SelfExclusionContext from './self-exclusion-context';
 import SelfExclusionFooter from './self-exclusion-footer.jsx';
 
+const SectionTitle = ({ title, has_border_line }) => {
+    return (
+        <Text
+            as='h2'
+            weight='bold'
+            size={isMobile() ? 'xxs' : 'xs'}
+            className={classNames('da-self-exclusion__header', {
+                'da-self-exclusion__header-border': has_border_line,
+            })}
+        >
+            {title}
+        </Text>
+    );
+};
+
 const StakeLossAndLimitsInputs = () => {
     const { currency_display, getMaxLength } = React.useContext(SelfExclusionContext);
     const { errors, handleBlur, handleChange, values } = useFormikContext();
-
     return (
         <React.Fragment>
-            <h2 className='da-self-exclusion__header'>
-                <Localize i18n_default_text='Your stake and loss limits' />
-            </h2>
+            <SectionTitle title={<Localize i18n_default_text='Your stake and loss limits' />} />
             <div className='da-self-exclusion__item-wrapper'>
                 <div className='da-self-exclusion__item'>
                     <h3 className='da-self-exclusion__item-title'>
@@ -153,12 +166,14 @@ const StakeLossAndLimitsInputs = () => {
 const SessionAndLoginLimitsInputs = () => {
     const { is_mlt, is_mx, is_tablet, session_duration_digits } = React.useContext(SelfExclusionContext);
     const { errors, handleBlur, handleChange, setFieldValue, values } = useFormikContext();
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     return (
         <React.Fragment>
-            <h2 className='da-self-exclusion__header'>
-                <Localize i18n_default_text='Your session and login limits' />
-            </h2>
+            <SectionTitle
+                title={<Localize i18n_default_text='Your session and login limits' />}
+                has_border_line={is_dashboard}
+            />
             <div className='da-self-exclusion__item-wrapper'>
                 <div className='da-self-exclusion__item'>
                     <Text as='p' size='xs' className='da-self-exclusion__item-field'>
@@ -295,12 +310,14 @@ const SessionAndLoginLimitsInputs = () => {
 const MaximumAccountBalanceAndOpenPositionsInputs = () => {
     const { currency_display, getMaxLength } = React.useContext(SelfExclusionContext);
     const { errors, handleBlur, handleChange, values } = useFormikContext();
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     return (
         <React.Fragment>
-            <h2 className='da-self-exclusion__header'>
-                <Localize i18n_default_text='Your maximum account balance and open positions' />
-            </h2>
+            <SectionTitle
+                title={<Localize i18n_default_text='Your maximum account balance and open positions' />}
+                has_border_line={is_dashboard}
+            />
             <div className='da-self-exclusion__item-wrapper'>
                 <div className='da-self-exclusion__item'>
                     <Text as='p' size='xs' className='da-self-exclusion__item-field'>
@@ -352,6 +369,7 @@ const MaximumAccountBalanceAndOpenPositionsInputs = () => {
 const MaximumDepositLimitInputs = () => {
     const { currency, is_mlt, is_mf, is_mx, getMaxLength } = React.useContext(SelfExclusionContext);
     const { errors, handleBlur, handleChange, values } = useFormikContext();
+    const { is_dashboard } = React.useContext(PlatformContext);
     const should_render = is_mlt || is_mf || is_mx;
 
     if (!should_render) {
@@ -360,9 +378,10 @@ const MaximumDepositLimitInputs = () => {
 
     return (
         <React.Fragment>
-            <h2 className='da-self-exclusion__header'>
-                <Localize i18n_default_text='Your maximum deposit limit' />
-            </h2>
+            <SectionTitle
+                title={<Localize i18n_default_text='Your maximum deposit limit' />}
+                has_border_line={is_dashboard}
+            />
             <div className='da-self-exclusion__item-wrapper'>
                 <div className='da-self-exclusion__item'>
                     <h3 className='da-self-exclusion__item-title'>

@@ -30,12 +30,14 @@ const BuySell = () => {
     }, []);
 
     const onScroll = event => {
-        if (isMounted() && event.target.scrollTop !== previous_scroll_top.current) {
-            const is_scrolling_down = event.target.scrollTop > previous_scroll_top.current;
-            setIsToggleVisible(!is_scrolling_down);
-        }
+        if (!buy_sell_store.show_advertiser_page) {
+            if (isMounted() && event.target.scrollTop !== previous_scroll_top.current) {
+                const is_scrolling_down = event.target.scrollTop > previous_scroll_top.current;
+                setIsToggleVisible(!is_scrolling_down);
+            }
 
-        previous_scroll_top.current = event.target.scrollTop;
+            previous_scroll_top.current = event.target.scrollTop;
+        }
     };
 
     if (buy_sell_store.should_show_verification) {
@@ -50,7 +52,11 @@ const BuySell = () => {
     if (buy_sell_store.show_advertiser_page && !buy_sell_store.should_show_verification) {
         return (
             <React.Fragment>
-                <PageReturn onClick={buy_sell_store.hideAdvertiserPage} page_title={localize("Advertiser's page")} />
+                <PageReturn
+                    className='buy-sell__advertiser-page-return'
+                    onClick={buy_sell_store.hideAdvertiserPage}
+                    page_title={localize("Advertiser's page")}
+                />
                 <AdvertiserPage />
             </React.Fragment>
         );

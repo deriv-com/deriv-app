@@ -50,7 +50,7 @@ export default class RudderStackStore extends BaseStore {
             this.has_identified &&
             current_page !== this.current_page
         ) {
-            window.rudderanalytics.page(window.location.hostname + window.location.pathname);
+            window.rudderanalytics.page(current_page);
             this.current_page = current_page;
         }
     }

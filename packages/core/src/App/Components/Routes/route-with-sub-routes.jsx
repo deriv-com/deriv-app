@@ -13,6 +13,11 @@ const RouteWithSubRoutes = route => {
         return true;
     };
 
+    const isAlreadyRedirecting = () => {
+        const url_params = new URLSearchParams(location.search);
+        return url_params.get('is_redirecting') === 'true';
+    };
+
     const renderFactory = props => {
         let result = null;
         const pathname = removeBranchName(location.pathname).replace(/\/$/, '');
@@ -27,8 +32,14 @@ const RouteWithSubRoutes = route => {
                 to = location.pathname.toLowerCase().replace(route.path, '');
             }
             result = <Redirect to={to} />;
-        } else if (is_valid_route && route.is_authenticated && !route.is_logged_in && !route.is_logging_in) {
-            redirectToLogin(route.is_logged_in, getLanguage(), true, 1000);
+        } else if (
+            is_valid_route &&
+            route.is_authenticated &&
+            !route.is_logged_in &&
+            !route.is_logging_in &&
+            !isAlreadyRedirecting()
+        ) {
+            redirectToLogin(route.is_logged_in, getLanguage());
         } else {
             const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
             const has_default_subroute = !isEmptyObject(default_subroute);

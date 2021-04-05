@@ -40,8 +40,6 @@ import './cashier/ic-cashier-deposit-lock.svg';
 import './cashier/ic-cashier-deposit.svg';
 import './cashier/ic-cashier-dp2p-blocked.svg';
 import './cashier/ic-cashier-dp2p.svg';
-import './cashier/ic-cashier-dragonpay-dark.svg';
-import './cashier/ic-cashier-dragonpay-light.svg';
 import './cashier/ic-cashier-error.svg';
 import './cashier/ic-cashier-ethereum-dark.svg';
 import './cashier/ic-cashier-ethereum-light.svg';

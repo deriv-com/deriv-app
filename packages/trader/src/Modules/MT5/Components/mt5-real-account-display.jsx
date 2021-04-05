@@ -9,7 +9,6 @@ import {
     real_financial_specs,
     real_synthetic_specs,
 } from 'Modules/MT5/Constants/mt5-specifications';
-import { WS } from 'Services/ws-methods';
 import { MT5AccountCard } from './mt5-account-card.jsx';
 
 const getRealFinancialStpBtnLbl = (is_fully_authenticated, is_pending_authentication, has_required_credentials) => {
@@ -78,7 +77,6 @@ const MT5RealAccountDisplay = ({
         }
     };
     const onSelectRealFinancialStp = () => {
-        WS.triggerMt5AccountBO({ email: client_email });
         const account_type = {
             category: 'real',
             type: 'financial_stp',

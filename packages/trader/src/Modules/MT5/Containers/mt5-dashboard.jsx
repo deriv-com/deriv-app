@@ -218,7 +218,6 @@ class MT5Dashboard extends React.Component {
                                                 <MissingRealAccount onClickSignup={beginRealSignupForMt5} />
                                             )}
                                             <MT5RealAccountDisplay
-                                                client_email={client_email}
                                                 is_accounts_switcher_on={is_accounts_switcher_on}
                                                 is_eu={is_eu}
                                                 is_eu_country={is_eu_country}

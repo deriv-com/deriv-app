@@ -66,13 +66,8 @@ const DetailComponent = ({
     const [status, setStatus] = React.useState();
     const [file_list, dispatchFileList] = React.useReducer(reducerFiles, []);
 
-    const onConfirm = (data, callback) => {
-        // if (is_last_step) {
-        //     onComplete([...file_list, data]);
-        // } else {
-        //     dispatchFileList({ type: ACTIONS.ADD_FILE, payload: data });
-        //     callback();
-        // }
+    const onConfirm = (values, actions) => {
+        console.log(values);
     };
 
     const onUploadError = () => dispatchFileList({ type: ACTIONS.REMOVE_ALL });

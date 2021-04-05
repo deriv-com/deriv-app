@@ -1,5 +1,7 @@
 import { localize } from '@deriv/translations';
 
+export const ROOT_CLASS = 'manual-poi-details';
+
 export const DOCUMENT_TYPES = {
     NATIONAL_IDENTITY_CARD: 'national_identity_card',
     NIMC: 'nimc',
@@ -14,15 +16,13 @@ const PAGE_TYPE = {
     PHOTO: 'photo',
 };
 
-// const step_selfie = {
-//     document_type: DOCUMENT_TYPES.OTHER,
-//     pageType: PAGE_TYPE.PHOTO,
-//     icon: 'IcSelfie',
-//     title: localize('Upload your selfie'),
-//     description: localize(
-//         'Face forward and remove your glasses if necessary. Make sure your eyes are clearly visible and your face is within the frame.'
-//     ),
-// };
+export const SELFIE_DOCUMENT = {
+    document_type: DOCUMENT_TYPES.OTHER,
+    pageType: PAGE_TYPE.PHOTO,
+    name: 'selfie',
+    icon: 'IcSelfie',
+    info: localize('Upload your selfie'),
+};
 
 const date_field = {
     name: 'expiry_date',

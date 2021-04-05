@@ -1,6 +1,8 @@
 .manual-poi-details {
     margin: 0 -1rem;
     max-width: 67.2rem;
+    height: 100%;
+    display: flex;
 
     &--mobile {
         padding: 2.4rem 1.6rem;
@@ -8,6 +10,14 @@
 
     h3 {
         margin-bottom: 2.5rem;
+    }
+    &__form {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    &__fields-content {
+        flex: auto;
     }
     &__fields-wrap {
         display: flex;
@@ -116,12 +126,12 @@
         height: 7.9rem;
         margin-bottom: 1.5rem;
     }
-    &__footer {
+    &__icons {
         display: flex;
         flex-wrap: wrap;
         margin-bottom: 1.7rem;
     }
-    &__footer-item {
+    &__icons-item {
         flex: 0.25;
         display: flex;
         flex-direction: column;
@@ -148,7 +158,11 @@
         }
     }
     &__btns {
+        height: 7.2rem;
+        flex: none;
+        border-top: 2px solid var(--general-section-1);
         display: flex;
+        align-items: center;
         justify-content: flex-end;
 
         .dc-btn:not(:last-of-type) {

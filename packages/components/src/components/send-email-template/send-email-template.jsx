@@ -47,9 +47,7 @@ const SendEmailTemplate = ({
         setIsResendBtnDisabled(true);
         resend_interval = setInterval(() => {
             if (--timeout) {
-                setResendEmailBtnText(
-                    localize('Resend email in {{ timeout_in_seconds }}s', { timeout_in_seconds: timeout })
-                );
+                setResendEmailBtnText(txt_resend + ' ' + timeout);
             } else {
                 setIsResendBtnDisabled(false);
                 setResendEmailBtnText(txt_resend);

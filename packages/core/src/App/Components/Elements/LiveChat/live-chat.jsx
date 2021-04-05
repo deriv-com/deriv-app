@@ -45,18 +45,23 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
         if (window.LiveChatWidget) {
             window.LiveChatWidget.on('ready', () => {
                 let session_variables = {
+                    is_logged_in: false,
                     loginid: '',
                     landing_company_shortcode: '',
                     currency: '',
                     residence: '',
                     email: '',
+                    utm_source: '',
+                    utm_medium: '',
+                    utm_campaign: '',
                 };
                 if (is_logged_in) {
                     // client logged in
                     const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
-                    const client_information = Cookies.get('client_information', {
+                    const client_information = Cookies.getJSON('client_information', {
                         domain,
                     });
+                    const utm_data = Cookies.getJSON('utm_data', { domain });
                     if (client_information) {
                         const {
                             loginid,
@@ -66,13 +71,18 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                             residence,
                             first_name,
                             last_name,
-                        } = JSON.parse(client_information) || {};
+                        } = client_information || {};
+                        const { utm_source, utm_medium, utm_campaign } = utm_data || {};
                         session_variables = {
+                            ...(is_logged_in && { is_logged_in }),
                             ...(loginid && { loginid }),
                             ...(landing_company_shortcode && { landing_company_shortcode }),
                             ...(currency && { currency }),
                             ...(residence && { residence }),
                             ...(email && { email }),
+                            ...(utm_source && { utm_source }),
+                            ...(utm_medium && { utm_medium }),
+                            ...(utm_campaign && { utm_campaign }),
                         };
                         // prefill name and email fields
                         window.LiveChatWidget.call('set_session_variables', session_variables);

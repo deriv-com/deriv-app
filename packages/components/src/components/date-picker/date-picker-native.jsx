@@ -51,7 +51,7 @@ const Native = ({
                 {value && (
                     <Text
                         size='xs'
-                        color='prominent'
+                        styles={{ color: 'inherit' }}
                         className={classNames('dc-datepicker__display-text', {
                             'dc-datepicker__display-text--disabled': disabled,
                         })}

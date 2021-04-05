@@ -4,13 +4,12 @@ on:
   push:
     branches:
       - master
-      - storybook_deploy
     paths:
       - packages/components/**
 
 jobs:
   deploy_storybook:
-    if: ${{ github.repository == 'binary-com/deriv-app' || github.repository == 'zaki-binary/deriv-app' }}
+    if: ${{ github.repository == 'binary-com/deriv-app' }}
     runs-on: ubuntu-latest
 
     steps:

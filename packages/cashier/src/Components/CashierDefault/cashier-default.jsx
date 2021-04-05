@@ -54,7 +54,7 @@ const CashierDefault = ({
             toggleAccountsDialog();
             return;
         }
-        openRealAccountSignup('deposit_cash');
+        openRealAccountSignup('deposit_crypto');
     };
 
     const onClickPaymentAgent = () => {

@@ -1,5 +1,6 @@
 import * as Cookies from 'js-cookie';
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import { Loading, usePrevious, useStateCallback } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Limited from 'Components/poi-limited';
@@ -132,7 +133,6 @@ const ProofOfIdentityContainer = ({
             if (onStateChange) onStateChange({ status: 'pending' });
         });
     };
-
     // component didMount hook
     React.useEffect(() => {
         getAccountStatus().then(response => {
@@ -155,7 +155,10 @@ const ProofOfIdentityContainer = ({
     }, [createVerificationConfig, previous_account_status, account_status]);
 
     const { needs_poa, is_unwelcome, allow_document_upload } = verification_status;
-    const is_rejected = identity_status_key === onfido_status_codes.rejected;
+    const rejectionStatus = [onfido_status_codes.rejected, onfido_status_codes.suspected];
+    const is_rejected = rejectionStatus
+        .map(status_code => onfido_status_codes[status_code])
+        .includes(identity_status_key);
     const has_rejected_reasons = !!rejected_reasons_key.length && is_rejected;
 
     if (api_error)
@@ -163,7 +166,7 @@ const ProofOfIdentityContainer = ({
             <ErrorMessage error_message={localize('Sorry, there was a connection error. Please try again later.')} />
         );
     if (is_loading || status.length === 0) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    if (is_unwelcome && !allow_document_upload) return <Unverified />;
+    if (is_unwelcome && !allow_document_upload) return <Unverified is_description_enabled={is_description_enabled} />;
     if (status === onfido_status_codes.not_required) return <NotRequired />;
     if (!submissions_left_key && is_rejected) return <Limited />;
     if (has_rejected_reasons && !is_continue_uploading)
@@ -183,6 +186,22 @@ const ProofOfIdentityContainer = ({
             redirect_button={redirect_button}
         />
     );
+};
+
+ProofOfIdentityContainer.propTypes = {
+    account_status: PropTypes.object,
+    addNotificationByKey: PropTypes.func,
+    getAccountStatus: PropTypes.func,
+    is_description_enabled: PropTypes.bool,
+    serviceToken: PropTypes.func,
+    notificationEvent: PropTypes.func,
+    removeNotificationByKey: PropTypes.func,
+    refreshNotifications: PropTypes.func,
+    removeNotificationMessage: PropTypes.func,
+    onStateChange: PropTypes.func,
+    is_mx_mlt: PropTypes.bool,
+    height: PropTypes.number,
+    redirect_button: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
 };
 
 export default ProofOfIdentityContainer;

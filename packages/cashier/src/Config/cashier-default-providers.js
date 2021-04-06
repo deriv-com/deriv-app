@@ -179,7 +179,7 @@ const crypto_contents = [
         icons: [
             { light: 'IcCashierBitcoinLight', dark: 'IcCashierBitcoinDark', size: 72 },
             { light: 'IcCashierEthereumLight', dark: 'IcCashierEthereumDark', size: 72 },
-            { light: 'IcCashierLiteCoinLight', dark: 'IcCashierLiteCoinDark', size: 72 },
+            { light: 'IcCashierLiteCoinLight', dark: 'IcCashierLiteCoinDark' },
             { light: 'IcCashierUsdCoinLight', dark: 'IcCashierUsdCoinDark', size: 72 },
             { light: 'IcCashierTetherLight', dark: 'IcCashierTetherDark', size: 72 },
         ],

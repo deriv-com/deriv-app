@@ -1639,7 +1639,7 @@ export default class ClientStore extends BaseStore {
         const param_list = [
             'date_first_contact',
             'signup_device',
-            'gclid',
+            'gclid_url',
             'utm_source',
             'utm_ad_id',
             'utm_adgroup_id',

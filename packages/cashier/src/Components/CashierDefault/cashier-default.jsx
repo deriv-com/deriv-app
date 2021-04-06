@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { isCryptocurrency, routes } from '@deriv/shared';
+import { getStaticUrl, isCryptocurrency, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { Loading, ThemedScrollbars, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
@@ -20,6 +20,7 @@ const CashierDefault = ({
     openRealAccountSignup,
     setIsCashierDefault,
     setIsDeposit,
+    setManageRealAccountActiveTabIndex,
     toggleAccountsDialog,
 }) => {
     const history = useHistory();
@@ -42,7 +43,8 @@ const CashierDefault = ({
             toggleAccountsDialog();
             return;
         }
-        openRealAccountSignup('deposit_cash');
+        setManageRealAccountActiveTabIndex(1);
+        openRealAccountSignup('manage');
     };
 
     const onClickDepositCrypto = () => {
@@ -54,7 +56,8 @@ const CashierDefault = ({
             toggleAccountsDialog();
             return;
         }
-        openRealAccountSignup('deposit_crypto');
+        setManageRealAccountActiveTabIndex(0);
+        openRealAccountSignup('manage');
     };
 
     const onClickPaymentAgent = () => {
@@ -87,25 +90,35 @@ const CashierDefault = ({
     };
 
     if (is_switching || accounts_list.length === 0) return <Loading className='cashier-default__loader' />;
+
     return (
         <div className='cashier-default'>
             <div className='cashier-default-header'>
-                <Text size={is_mobile ? 's' : 'sm'}>
+                <Text size={is_mobile ? 's' : 'sm'} line_height='xxl'>
                     <Localize i18n_default_text='Choose a way to fund your account' />
                 </Text>
             </div>
+            {is_mobile && (
+                <div className='cashier-default-header' onClick={() => window.open(getStaticUrl('/payment-methods'))}>
+                    <Text size='xs' color='red'>
+                        <Localize i18n_default_text='Learn more about payment methods' />
+                    </Text>
+                </div>
+            )}
             <ThemedScrollbars className='cashier-default-content'>
-                {getDepositOptions()?.map((deposit, idx) => (
-                    <CashierDefaultDetails
-                        key={`${deposit.detail_header}${idx}`}
-                        detail_click={deposit.detail_click}
-                        detail_contents={deposit.detail_contents}
-                        detail_description={deposit.detail_description}
-                        detail_header={deposit.detail_header}
-                        is_dark_mode_on={is_dark_mode_on}
-                        is_mobile={is_mobile}
-                    />
-                ))}
+                <div className='cashier-default-content__description'>
+                    {getDepositOptions()?.map((deposit, idx) => (
+                        <CashierDefaultDetails
+                            key={`${deposit.detail_header}${idx}`}
+                            detail_click={deposit.detail_click}
+                            detail_contents={deposit.detail_contents}
+                            detail_description={deposit.detail_description}
+                            detail_header={deposit.detail_header}
+                            is_dark_mode_on={is_dark_mode_on}
+                            is_mobile={is_mobile}
+                        />
+                    ))}
+                </div>
             </ThemedScrollbars>
         </div>
     );
@@ -123,6 +136,7 @@ CashierDefault.propTypes = {
     openRealAccountSignup: PropTypes.func,
     setIsCashierDefault: PropTypes.func,
     setIsDeposit: PropTypes.func,
+    setManageRealAccountActiveTabIndex: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
 };
 
@@ -138,5 +152,6 @@ export default connect(({ client, modules, ui }) => ({
     openRealAccountSignup: ui.openRealAccountSignup,
     setIsCashierDefault: modules.cashier.setIsCashierDefault,
     setIsDeposit: modules.cashier.setIsDeposit,
+    setManageRealAccountActiveTabIndex: ui.setManageRealAccountActiveTabIndex,
     toggleAccountsDialog: ui.toggleAccountsDialog,
 }))(CashierDefault);

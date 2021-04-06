@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, Text } from '@deriv/components';
+import { Icon, NewsTicker, Text } from '@deriv/components';
 
 const CashierDefaultDetails = ({
     detail_click,
@@ -21,32 +21,29 @@ const CashierDefaultDetails = ({
                     <Text size='xs' className='cashier-default-detail__text'>
                         {detail_description}
                     </Text>
-                    <Icon icon='IcChevronRight' size={16} />
+                    <Icon icon='IcChevronRightBold' size={16} />
                 </div>
                 {detail_contents?.map((content, idx) => (
                     <div key={`${content.title}${idx}`} className='cashier-default-detail__array'>
                         <Text size='xxs' weight='bold' color='less-prominent'>
                             {content.title}
                         </Text>
-                        <div className={classNames({ 'cashier-default-detail__icons-array': !is_mobile })}>
-                            {content.icons?.map((icon, index) => {
-                                if (typeof icon.light === 'string') {
-                                    return (
-                                        <div key={`${icon}${index}`} className='cashier-default-detail__icon'>
-                                            <Icon
-                                                icon={is_dark_mode_on ? icon.dark : icon.light}
-                                                width={icon.size ?? 56}
-                                                height={36}
-                                            />
-                                        </div>
-                                    );
-                                }
-                                return (
-                                    <div key={`${icon}${index}`} className='cashier-default-detail__icon'>
-                                        {is_dark_mode_on ? icon.dark : icon.light}
-                                    </div>
-                                );
-                            })}
+                        <div className='cashier-default-detail__icons'>
+                            <NewsTicker speed={10}>
+                                <div className={classNames({ 'cashier-default-detail__icons-array': !is_mobile })}>
+                                    {content.icons?.map((icon, index) => {
+                                        return (
+                                            <div key={`${icon}${index}`} className='cashier-default-detail__icon'>
+                                                <Icon
+                                                    icon={is_dark_mode_on ? icon.dark : icon.light}
+                                                    width={icon.size ?? 72}
+                                                    height={45}
+                                                />
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </NewsTicker>
                         </div>
                     </div>
                 ))}

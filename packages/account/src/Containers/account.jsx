@@ -1,13 +1,31 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { VerticalTab, DesktopWrapper, MobileWrapper, FadeWrapper, PageOverlay, Loading } from '@deriv/components';
-import { routes as shared_routes, isEmptyObject, isMobile, getSelectedRoute } from '@deriv/shared';
+import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text } from '@deriv/components';
+import { routes as shared_routes, isEmptyObject, isMobile, getSelectedRoute, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { flatten } from '../Helpers/flatten';
 import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
 import 'Styles/account.scss';
+
+const AccountLogout = ({ logout, history }) => {
+    return (
+        <div
+            className='dc-vertical-tab__header account__logout '
+            onClick={() => {
+                history.push(shared_routes.index);
+                logout();
+            }}
+        >
+            <div className='dc-vertical-tab__header-group account__logout-tab'>
+                <Text color='general' size='xxs' weight='normal'>
+                    {localize('Log out')}
+                </Text>
+            </div>
+        </div>
+    );
+};
 
 const Account = ({
     account_status,
@@ -18,6 +36,7 @@ const Account = ({
     is_virtual,
     is_visible,
     location,
+    logout,
     needs_financial_assessment,
     routeBackInApp,
     routes,
@@ -25,6 +44,7 @@ const Account = ({
     toggleAccount,
 }) => {
     const [is_loading, setIsLoading] = React.useState(true);
+    const { is_dashboard } = React.useContext(PlatformContext);
     const subroutes = flatten(routes.map(i => i.subroutes));
     let list_groups = [...routes];
     list_groups = list_groups.map(route_group => ({
@@ -93,11 +113,29 @@ const Account = ({
     return (
         <FadeWrapper is_visible={is_visible} className='account-page-wrapper' keyname='account-page-wrapper'>
             <div className='account'>
-                <PageOverlay
-                    header={isMobile() ? selected_route.getTitle() : localize('Settings')}
-                    onClickClose={onClickClose}
-                >
-                    <DesktopWrapper>
+                {isMobile() && selected_route ? (
+                    <PageOverlay header={selected_route.getTitle()} onClickClose={onClickClose}>
+                        <selected_route.component component_icon={selected_route.icon_component} />
+                    </PageOverlay>
+                ) : is_dashboard ? (
+                    <VerticalTab
+                        title={selected_route.getTitle()}
+                        onClickClose={onClickClose}
+                        alignment='center'
+                        is_collapsible={false}
+                        is_grid
+                        is_floating
+                        className='dashboard'
+                        classNameHeader='account__inset_header'
+                        current_path={location.pathname}
+                        is_routed
+                        is_full_width
+                        list={subroutes}
+                        list_groups={list_groups}
+                        extra_content={is_dashboard && <AccountLogout logout={logout} history={history} />}
+                    />
+                ) : (
+                    <PageOverlay header={localize('Settings')} onClickClose={onClickClose}>
                         <VerticalTab
                             alignment='center'
                             is_floating
@@ -108,11 +146,8 @@ const Account = ({
                             list={subroutes}
                             list_groups={list_groups}
                         />
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        {selected_route && <selected_route.component component_icon={selected_route.icon_component} />}
-                    </MobileWrapper>
-                </PageOverlay>
+                    </PageOverlay>
+                )}
             </div>
         </FadeWrapper>
     );
@@ -127,6 +162,7 @@ Account.propTypes = {
     is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
     location: PropTypes.object,
+    logout: PropTypes.func,
     needs_financial_assessment: PropTypes.bool,
     routes: PropTypes.arrayOf(PropTypes.object),
     should_allow_authentication: PropTypes.bool,
@@ -140,6 +176,7 @@ export default connect(({ client, common, ui }) => ({
     is_logging_in: client.is_logging_in,
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,
+    logout: client.logout,
     needs_financial_assessment: client.needs_financial_assessment,
     routeBackInApp: common.routeBackInApp,
     should_allow_authentication: client.should_allow_authentication,

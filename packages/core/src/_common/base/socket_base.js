@@ -21,6 +21,7 @@ const BinarySocketBase = (() => {
     let wrong_app_id = 0;
     let is_disconnect_called = false;
     let is_connected_before = false;
+    let is_switching_socket = false;
 
     const availability = {
         is_up: true,
@@ -41,7 +42,8 @@ const BinarySocketBase = (() => {
 
     const closeAndOpenNewConnection = () => {
         close();
-        openNewConnection(true);
+        is_switching_socket = true;
+        openNewConnection();
     };
 
     const hasReadyState = (...states) => binary_socket && states.some(s => binary_socket.readyState === s);
@@ -53,7 +55,7 @@ const BinarySocketBase = (() => {
         client_store = client;
     };
 
-    const openNewConnection = is_switching_socket => {
+    const openNewConnection = () => {
         if (wrong_app_id === getAppId()) return;
 
         if (!is_switching_socket) config.wsEvent('init');
@@ -109,6 +111,8 @@ const BinarySocketBase = (() => {
         deriv_api.onClose().subscribe(() => {
             if (!is_switching_socket) {
                 config.wsEvent('close');
+            } else {
+                is_switching_socket = false;
             }
 
             if (wrong_app_id !== getAppId() && typeof config.onDisconnect === 'function' && !is_disconnect_called) {
@@ -228,8 +232,8 @@ const BinarySocketBase = (() => {
     const profitTable = (limit, offset, date_boundaries) =>
         deriv_api.send({ profit_table: 1, description: 1, limit, offset, ...date_boundaries });
 
-    const statement = (limit, offset, date_boundaries) =>
-        deriv_api.send({ statement: 1, description: 1, limit, offset, ...date_boundaries });
+    const statement = (limit, offset, other_properties) =>
+        deriv_api.send({ statement: 1, description: 1, limit, offset, ...other_properties });
 
     const verifyEmail = (email, type) => deriv_api.send({ verify_email: email, type });
 

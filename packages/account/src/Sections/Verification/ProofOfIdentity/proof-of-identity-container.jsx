@@ -1,5 +1,6 @@
 import * as Cookies from 'js-cookie';
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import { Loading, usePrevious, useStateCallback } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Limited from 'Components/poi-limited';
@@ -21,6 +22,8 @@ const ProofOfIdentityContainer = ({
     refreshNotifications,
     removeNotificationMessage,
     onStateChange,
+    is_message_enabled = true,
+    is_description_enabled = true,
     is_mx_mlt,
     height,
     redirect_button,
@@ -74,6 +77,7 @@ const ProofOfIdentityContainer = ({
         (account_status_obj, onfido_token) => {
             const {
                 allow_document_upload,
+                allow_poi_resubmission,
                 has_poa,
                 needs_poa,
                 is_unwelcome,
@@ -85,7 +89,7 @@ const ProofOfIdentityContainer = ({
 
             const { identity, needs_verification } = account_status_obj.authentication;
 
-            const identity_status = getIdentityStatus(identity, needs_verification, is_mx_mlt);
+            const identity_status = getIdentityStatus(identity, needs_verification, is_mx_mlt, allow_poi_resubmission);
 
             const has_no_rejections = !rejected_reasons?.length;
 
@@ -129,7 +133,6 @@ const ProofOfIdentityContainer = ({
             if (onStateChange) onStateChange({ status: 'pending' });
         });
     };
-
     // component didMount hook
     React.useEffect(() => {
         getAccountStatus().then(response => {
@@ -151,8 +154,11 @@ const ProofOfIdentityContainer = ({
         }
     }, [createVerificationConfig, previous_account_status, account_status]);
 
-    const { has_poa, is_unwelcome, allow_document_upload } = verification_status;
-    const is_rejected = identity_status_key === onfido_status_codes.rejected;
+    const { needs_poa, is_unwelcome, allow_document_upload } = verification_status;
+    const rejectionStatus = [onfido_status_codes.rejected, onfido_status_codes.suspected];
+    const is_rejected = rejectionStatus
+        .map(status_code => onfido_status_codes[status_code])
+        .includes(identity_status_key);
     const has_rejected_reasons = !!rejected_reasons_key.length && is_rejected;
 
     if (api_error)
@@ -160,7 +166,7 @@ const ProofOfIdentityContainer = ({
             <ErrorMessage error_message={localize('Sorry, there was a connection error. Please try again later.')} />
         );
     if (is_loading || status.length === 0) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    if (is_unwelcome && !allow_document_upload) return <Unverified />;
+    if (is_unwelcome && !allow_document_upload) return <Unverified is_description_enabled={is_description_enabled} />;
     if (status === onfido_status_codes.not_required) return <NotRequired />;
     if (!submissions_left_key && is_rejected) return <Limited />;
     if (has_rejected_reasons && !is_continue_uploading)
@@ -172,12 +178,30 @@ const ProofOfIdentityContainer = ({
             documents_supported={documents_supported}
             status={status}
             onfido_service_token={onfido_service_token}
-            has_poa={has_poa}
+            needs_poa={needs_poa}
             height={height ?? null}
             handleComplete={handleComplete}
+            is_message_enabled={is_message_enabled}
+            is_description_enabled={is_description_enabled}
             redirect_button={redirect_button}
         />
     );
+};
+
+ProofOfIdentityContainer.propTypes = {
+    account_status: PropTypes.object,
+    addNotificationByKey: PropTypes.func,
+    getAccountStatus: PropTypes.func,
+    is_description_enabled: PropTypes.bool,
+    serviceToken: PropTypes.func,
+    notificationEvent: PropTypes.func,
+    removeNotificationByKey: PropTypes.func,
+    refreshNotifications: PropTypes.func,
+    removeNotificationMessage: PropTypes.func,
+    onStateChange: PropTypes.func,
+    is_mx_mlt: PropTypes.bool,
+    height: PropTypes.number,
+    redirect_button: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
 };
 
 export default ProofOfIdentityContainer;

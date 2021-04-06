@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { routes } from '@deriv/shared';
-import { Icon, Checklist } from '@deriv/components';
+import { Icon, Checklist, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -26,7 +26,9 @@ const TransferLocked = ({
     return (
         <div className='cashier-locked'>
             <Icon icon='IcMoneyTransfer' className='cashier-locked__icon' />
-            <h2 className='cashier-locked__title'>{localize('Transfers are locked')}</h2>
+            <Text as='h2' weight='bold' align='center' className='cashier-locked__title'>
+                {localize('Transfers are locked')}
+            </Text>
             <React.Fragment>
                 <p className='cashier-locked__desc'>
                     {localize('To enable this feature you must complete the following:')}

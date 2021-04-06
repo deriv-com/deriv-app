@@ -75,7 +75,7 @@ const Redirect = ({
             });
             break;
         }
-        case 'mt5_password_reset': {
+        case 'trading_platform_investor_password_reset': {
             localStorage.setItem('mt5_reset_password_code', url_params.get('code'));
             const is_demo = localStorage.getItem('mt5_reset_password_intent')?.includes('demo');
             history.push(`${routes.mt5}#${is_demo ? 'demo' : 'real'}#reset-password`);

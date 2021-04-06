@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSafeState } from '@deriv/components';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import OrderDetails from 'Components/order-details/order-details.jsx';
@@ -12,7 +13,7 @@ const Orders = observer(() => {
     // This is a bit hacky, but it allows us to force re-render this
     // component when the timer expired. This is created due to BE
     // not expiring orders on time. Remove this when they do.
-    const [, forceRerender] = React.useState();
+    const [, forceRerender] = useSafeState();
     order_store.setForceRerenderOrders(forceRerender);
 
     React.useEffect(() => {

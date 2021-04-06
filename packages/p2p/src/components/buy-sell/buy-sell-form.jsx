@@ -30,7 +30,7 @@ BuySellFormReceiveAmount.propTypes = {
     local_currency: PropTypes.string.isRequired,
 };
 
-const BuySellForm = observer(props => {
+const BuySellForm = props => {
     const isMounted = useIsMounted();
     const { advertiser_page_store, buy_sell_store } = useStores();
 
@@ -257,7 +257,7 @@ const BuySellForm = observer(props => {
             }}
         </Formik>
     );
-});
+};
 
 BuySellForm.propTypes = {
     advert: PropTypes.object,
@@ -278,4 +278,4 @@ BuySellForm.propTypes = {
     validatePopup: PropTypes.func,
 };
 
-export default BuySellForm;
+export default observer(BuySellForm);

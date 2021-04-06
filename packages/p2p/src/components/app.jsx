@@ -14,11 +14,11 @@ const App = props => {
     const { general_store, order_store } = useStores();
     const { className, history, lang, order_id, server_time, websocket_api } = props;
 
-    general_store.setAppProps(props);
-    general_store.setWebsocketInit(websocket_api, general_store.client.local_currency_config.decimal_places);
-    order_store.setOrderId(order_id);
-
     React.useEffect(() => {
+        general_store.setAppProps(props);
+        general_store.setWebsocketInit(websocket_api, general_store.client.local_currency_config.decimal_places);
+        order_store.setOrderId(order_id);
+
         // Redirect back to /p2p, this was implemented for the mobile team. Do not remove.
         if (/\/verification$/.test(history?.location.pathname)) {
             localStorage.setItem('is_verifying_p2p', true);

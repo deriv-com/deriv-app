@@ -322,9 +322,15 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get has_account_error_in_mt5_list() {
+    get has_account_error_in_mt5_real_list() {
         if (!this.is_logged_in) return false;
-        return this.mt5_login_list?.some(account => !!account.has_error);
+        return this.mt5_login_list?.some(account => !!account.has_error && account.account_type === 'real');
+    }
+
+    @computed
+    get has_account_error_in_mt5_demo_list() {
+        if (!this.is_logged_in) return false;
+        return this.mt5_login_list?.some(account => !!account.has_error && account.account_type === 'demo');
     }
 
     @computed
@@ -638,7 +644,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setMT5DisabledSignupTypes(disabled_types_obj) {
         const current_list = this.mt5_disabled_signup_types;
-        this.mt5_disabled_signup_types = { current_list, ...disabled_types_obj };
+        this.mt5_disabled_signup_types = { ...current_list, ...disabled_types_obj };
     }
 
     @action.bound
@@ -1827,10 +1833,16 @@ export default class ClientStore extends BaseStore {
                 );
                 if (account.error) {
                     const { account_type, server } = account.error.details;
-                    this.setMT5DisabledSignupTypes({
-                        real: account_type === 'real',
-                        demo: account_type === 'demo',
-                    });
+                    if (account_type === 'real') {
+                        this.setMT5DisabledSignupTypes({
+                            real: true,
+                        });
+                    }
+                    if (account_type === 'demo') {
+                        this.setMT5DisabledSignupTypes({
+                            demo: true,
+                        });
+                    }
                     return {
                         account_type,
                         display_login,

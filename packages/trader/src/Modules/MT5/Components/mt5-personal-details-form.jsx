@@ -20,6 +20,7 @@ import {
 import { FormSubHeader } from '@deriv/account';
 import { isDeepEqual, isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { WS } from 'Services/ws-methods';
 
 const getAccountOpeningReasonList = () => [
     {
@@ -135,6 +136,7 @@ const MT5PersonalDetailsForm = ({
     value,
     index,
     form_error,
+    client_email,
 }) => {
     const account_opening_reason = getAccountOpeningReasonList();
     const is_tin_required = landing_company?.config?.tax_details_required ?? false;
@@ -144,8 +146,10 @@ const MT5PersonalDetailsForm = ({
         onCancel();
     };
 
-    const onSubmitForm = (values, actions) =>
+    const onSubmitForm = (values, actions) => {
         submitForm(values, actions, index, onSubmit, !isDeepEqual(value, values), residence_list);
+        WS.triggerMt5DryRun({ email: client_email });
+    };
 
     if (residence_list.length === 0) return <Loading is_fullscreen={false} />;
     if (is_loading) return <Loading is_fullscreen={false} />;

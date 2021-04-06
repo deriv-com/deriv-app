@@ -218,6 +218,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
             return Object.assign(arr, { [item]: this.props[item] });
         }, {});
         const height = this.getCurrent('height') || 'auto';
+
         return (
             <Div100vhContainer
                 className='mt5-financial-stp-modal'
@@ -263,6 +264,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                         onCancel={this.prevStep}
                         onSave={this.saveFormData}
                         form_error={this.state.form_error}
+                        client_email={this.props.client_email}
                         {...passthrough}
                     />
                 </div>
@@ -280,6 +282,7 @@ export default connect(({ client, modules: { mt5 }, ui }) => ({
     addNotificationByKey: ui.addNotificationMessageByKey,
     authentication_status: client.authentication_status,
     get_settings: client.account_settings,
+    client_email: client.email,
     is_fully_authenticated: client.is_fully_authenticated,
     landing_company: client.landing_company,
     openPendingDialog: mt5.openPendingDialog,

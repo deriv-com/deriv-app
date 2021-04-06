@@ -256,12 +256,6 @@ export default class MT5Store extends BaseStore {
     async submitMt5Password(values, setSubmitting) {
         const response = await this.openAccount(values);
         if (!response.error) {
-            const is_real_financial_stp =
-                [this.account_type.category, this.account_type.type].join('_') === 'real_financial_stp';
-
-            if (is_real_financial_stp) {
-                WS.triggerMt5DryRun({ email: this.root_store.client.email });
-            }
             WS.authorized.storage.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
             WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
             runInAction(() => {

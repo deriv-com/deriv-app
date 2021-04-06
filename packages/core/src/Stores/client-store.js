@@ -404,12 +404,12 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_social_signup() {
-        return this.account_status?.status?.some(status => status === 'social_signup');
+        return this.account_status?.status?.includes('social_signup');
     }
 
     @computed
     get is_trading_password_required() {
-        return this.account_status?.status?.some(status => status === 'trading_password_required');
+        return this.account_status?.status?.includes('trading_password_required');
     }
 
     @computed

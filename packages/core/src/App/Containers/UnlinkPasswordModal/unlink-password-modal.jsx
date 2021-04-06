@@ -136,10 +136,7 @@ const UnlinkPassword = ({ logoutClient, social_identity_provider, toggleResetPas
                                     </fieldset>
                                     <Text as='p' size='xs' className='unlink-password__hint'>
                                         {status.error_msg ? (
-                                            <Localize
-                                                i18n_default_text='{{error_msg}}'
-                                                values={{ error_msg: status.error_msg }}
-                                            />
+                                            localize(status.error_msg)
                                         ) : (
                                             <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
                                         )}

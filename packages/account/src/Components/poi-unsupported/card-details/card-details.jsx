@@ -1,10 +1,12 @@
 import React from 'react';
 import DocumentsUpload from './documents-upload.jsx';
 import SelfieUpload from './selfie-upload.jsx';
+import { SELFIE_DOCUMENT } from '../constants';
 import './card-details.scss';
 
-const CardDetails = ({ data, goToCards, onConfirm }) => {
-    const [documents, setDocuments] = React.useState({});
+const CardDetails = ({ data, goToCards, onComplete }) => {
+    const [documents, setDocuments] = React.useState();
+    const [selfie, setSelfie] = React.useState();
     const [is_selfie_upload, setIsSelfieUpload] = React.useState(false);
 
     const onSubmitDucuments = values => {
@@ -13,7 +15,7 @@ const CardDetails = ({ data, goToCards, onConfirm }) => {
     };
 
     const onConfirmDocuments = values => {
-        onConfirm({ ...documents, ...values });
+        onComplete({ ...documents, ...values });
     };
 
     return (
@@ -26,7 +28,12 @@ const CardDetails = ({ data, goToCards, onConfirm }) => {
                     onSubmit={onSubmitDucuments}
                 />
             ) : (
-                <SelfieUpload boBack={() => setIsSelfieUpload(false)} onConfirm={onConfirmDocuments} />
+                <SelfieUpload
+                    initial_values={selfie}
+                    goBack={() => setIsSelfieUpload(false)}
+                    onConfirm={onConfirmDocuments}
+                    onFileDrop={value => setSelfie({ [SELFIE_DOCUMENT.name]: value })}
+                />
             )}
         </React.Fragment>
     );

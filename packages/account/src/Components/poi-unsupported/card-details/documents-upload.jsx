@@ -38,7 +38,7 @@ const IconsItem = ({ data }) => (
     </div>
 );
 
-const DocumentsUpload = ({ data, goToCards, onSubmit }) => {
+const DocumentsUpload = ({ initial_values, data, goToCards, onSubmit }) => {
     const { fields, documents_title, documents } = data;
 
     const fields_title = localize('First, enter your {{label}} and the expiry date.', {
@@ -56,7 +56,7 @@ const DocumentsUpload = ({ data, goToCards, onSubmit }) => {
             })}
         >
             <Formik
-                initialValues={setInitialValues([...fields, ...documents])}
+                initialValues={initial_values || setInitialValues([...fields, ...documents])}
                 validate={values => validateFields(values, fields, documents)}
                 onSubmit={onSubmit}
             >
@@ -103,6 +103,7 @@ const DocumentsUpload = ({ data, goToCards, onSubmit }) => {
 };
 
 DocumentsUpload.propTypes = {
+    initial_values: PropTypes.object,
     data: PropTypes.object,
     goToCards: PropTypes.func,
     onSubmit: PropTypes.func,

@@ -15,8 +15,6 @@ export const checkIsEmpty = value => {
 export const validateFields = (values, fields = [], documents = []) => {
     const errors = {};
 
-    console.log(values, fields, documents);
-
     fields.forEach(field => {
         const { name, label, type } = field;
         const value = values[name];

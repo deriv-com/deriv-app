@@ -259,6 +259,7 @@ import './common/ic-poi-failed-dashboard.svg';
 import './common/ic-poi-failed.svg';
 import './common/ic-poi-file-format.svg';
 import './common/ic-poi-file-size.svg';
+import './common/ic-poi-frame.svg';
 import './common/ic-poi-identity-card.svg';
 import './common/ic-poi-nimc-slip-horizontal.svg';
 import './common/ic-poi-nimc-slip.svg';

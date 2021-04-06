@@ -9,7 +9,7 @@ import Uploader from './uploader.jsx';
 import { setInitialValues, validateFields } from './utils';
 import { ROOT_CLASS, SELFIE_DOCUMENT } from '../constants';
 
-const SelfieUpload = ({ goBack, onConfirm }) => {
+const SelfieUpload = ({ initial_values, goBack, onConfirm, onFileDrop }) => {
     return (
         <div
             className={cn(ROOT_CLASS, {
@@ -17,18 +17,24 @@ const SelfieUpload = ({ goBack, onConfirm }) => {
             })}
         >
             <Formik
-                initialValues={setInitialValues([SELFIE_DOCUMENT])}
-                validate={values => validateFields(values, null, [SELFIE_DOCUMENT])}
+                initialValues={initial_values || setInitialValues([SELFIE_DOCUMENT])}
+                validate={values => validateFields(values, undefined, [SELFIE_DOCUMENT])}
                 onSubmit={onConfirm}
             >
-                {({ values, isValid }) => (
+                {({ values, isValid, isSubmitting }) => (
                     <Form className={`${ROOT_CLASS}__form`}>
                         <div className={`${ROOT_CLASS}__fields-content`}>
                             <Text as='h3' size='s' weight='bold' color='prominent'>
                                 {localize('Upload your selfie')}
                             </Text>
                             <div className={`${ROOT_CLASS}__uploaders-wrap`}>
-                                <Uploader data={SELFIE_DOCUMENT} value={values[SELFIE_DOCUMENT.name]} is_full={true} />
+                                <Uploader
+                                    data={SELFIE_DOCUMENT}
+                                    value={values[SELFIE_DOCUMENT.name]}
+                                    is_full={true}
+                                    onChange={onFileDrop}
+                                    has_frame
+                                />
                             </div>
                             <div className={`${ROOT_CLASS}__notice`}>
                                 <Text as='p' size='xs' color='general'>
@@ -44,7 +50,7 @@ const SelfieUpload = ({ goBack, onConfirm }) => {
                                 type='submit'
                                 primary
                                 large
-                                is_disabled={!isValid}
+                                is_disabled={!isValid || isSubmitting}
                                 text={localize('Confirm and upload')}
                             />
                         </div>
@@ -56,6 +62,7 @@ const SelfieUpload = ({ goBack, onConfirm }) => {
 };
 
 SelfieUpload.propTypes = {
+    initial_values: PropTypes.object,
     goBack: PropTypes.func,
     onConfirm: PropTypes.func,
 };

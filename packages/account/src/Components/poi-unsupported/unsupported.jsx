@@ -29,8 +29,7 @@ const Unsupported = ({ residence, ...props }) => {
     if (detail !== null) {
         return (
             <DetailComponent
-                //is_onfido_supported={(residence === 'ng' && !checkNimcStep(documents[detail].details.documents))}
-                is_onfido_supported={false}
+                is_onfido_supported={residence === 'ng' && !checkNimcStep(documents[detail].details.documents)}
                 document={documents[detail]}
                 root_class='manual-poi'
                 onClickBack={() => setDetail(null)}

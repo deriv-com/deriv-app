@@ -106,9 +106,21 @@
         align-items: center;
         justify-content: center;
 
+        &--has-frame {
+            background-size: contain;
+        }
+
         .manual-poi-details--mobile & {
             height: 13.4rem;
         }
+    }
+    &__uploader-frame {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: auto;
     }
     &__uploader-remove {
         position: absolute;

@@ -42,7 +42,7 @@ export const getDocumentIndex = ({ residence }) => [
         details: {
             fields: [
                 {
-                    name: 'passport_number',
+                    name: 'document_id',
                     label: localize('Passport number'),
                     type: 'text',
                     required: true,
@@ -72,7 +72,7 @@ export const getDocumentIndex = ({ residence }) => [
             fields_title: localize('First, enter your driving licence number and the expiry date.'),
             fields: [
                 {
-                    name: 'driving_licence_number',
+                    name: 'document_id',
                     label: 'Driving licence number',
                     type: 'text',
                     required: true,
@@ -109,7 +109,7 @@ export const getDocumentIndex = ({ residence }) => [
             fields_title: localize('First, enter your identity card number and the expiry date.'),
             fields: [
                 {
-                    name: 'identity_card_number',
+                    name: 'document_id',
                     label: 'Identity card number',
                     type: 'text',
                     required: true,

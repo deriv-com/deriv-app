@@ -3,52 +3,17 @@ import PropTypes from 'prop-types';
 import { Loading, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Submitted from 'Components/poa-submitted';
+import PoiUnsupportedFailed from 'Components/poi-unsupported-failed';
 import uploadFile from 'Components/file-uploader-container/upload-file';
 import { WS } from 'Services/ws-methods';
 import Onfido from 'Sections/Verification/ProofOfIdentity/onfido.jsx';
 import CardDetails from './card-details';
-
-const ACTIONS = {
-    ADD_FILE: 'ADD_FILE',
-    REMOVE_FILE: 'REMOVE_FILE',
-    REMOVE_ALL: 'REMOVE_ALL',
-};
+import { SELFIE_DOCUMENT } from './constants';
 
 const STATUS = {
-    is_uploading: 'is_uploading',
-    is_completed: 'is_completed',
-};
-
-const reducerFiles = (state, { type, payload }) => {
-    const target_index = state.findIndex(el => el.step === payload);
-
-    switch (type) {
-        case ACTIONS.ADD_FILE:
-            return [...state, payload];
-        case ACTIONS.REMOVE_FILE:
-            return [...state.slice(0, target_index), ...state.slice(target_index + 1)];
-        case ACTIONS.REMOVE_ALL:
-            return [];
-        default:
-            return state;
-    }
-};
-
-const getActiveStep = (files, steps) => {
-    let active_step = null;
-    if (!files.length) {
-        return 0;
-    }
-    const confirmed_steps = files.map(file => {
-        return file.step;
-    });
-
-    steps.forEach((step, index) => {
-        if (active_step === null && !confirmed_steps.includes(index)) {
-            active_step = index;
-        }
-    });
-    return active_step;
+    IS_UPLOADING: 'IS_UPLOADING',
+    IS_COMPLETED: 'IS_COMPLETED',
+    IS_FAILED: 'IS_FAILED',
 };
 
 const DetailComponent = ({
@@ -64,16 +29,12 @@ const DetailComponent = ({
     ...props
 }) => {
     const [status, setStatus] = React.useState();
-    const [file_list, dispatchFileList] = React.useReducer(reducerFiles, []);
+    const [response_error, setError] = React.useState();
 
-    const onConfirm = (values, actions) => {
-        console.log(values);
-    };
-
-    const onUploadError = () => dispatchFileList({ type: ACTIONS.REMOVE_ALL });
-
-    const uploadFiles = files =>
+    const uploadFiles = data =>
         new Promise((resolve, reject) => {
+            const docs = document.details.documents.map(item => item.name);
+            const files = Object.values(data).filter(item => [...docs, SELFIE_DOCUMENT.name].includes(item.name));
             const files_length = files.length;
             let file_to_upload_index = 0;
             const results = [];
@@ -83,55 +44,49 @@ const DetailComponent = ({
                 uploadFile(file, WS.getSocket, {
                     documentType: document_type,
                     pageType,
-                    expirationDate: '2022-10-30',
-                    documentId: '1234',
+                    expirationDate:
+                        typeof data.expiry_date?.format === 'function' ? data.expiry_date.format('YYYY-MM-DD') : '',
+                    documentId: data.document_id || '',
                 })
-                    .then(res => {
-                        file_to_upload_index += 1;
-                        if (file_to_upload_index < files_length) {
-                            results.push(res);
-                            uploadNext();
+                    .then(response => {
+                        if (response.warning || response.error) {
+                            setStatus(STATUS.IS_FAILED);
+                            setError(
+                                response.message || (response.error ? response.error.message : localize('Failed'))
+                            );
                         } else {
-                            resolve(results);
+                            file_to_upload_index += 1;
+                            if (file_to_upload_index < files_length) {
+                                results.push(response);
+                                uploadNext();
+                            } else {
+                                resolve(results);
+                            }
                         }
                     })
                     .catch(error => {
                         reject(error);
                     });
             };
+
             uploadNext();
         });
 
-    const onComplete = files => {
-        setStatus(STATUS.is_uploading);
+    const onComplete = values => {
+        setStatus(STATUS.IS_UPLOADING);
 
-        // const { file, documentType, pageType } = files[0];
-        // uploadFile(file, WS.getSocket, documentType, pageType)
-        //     .then(rs => {
-        //         console.log(rs);
-        //         setStatus(STATUS.is_completed);
-        //     })
-        //     .catch(err => {
-        //         onUploadError();
-        //         console.log(err);
-        //     });
-
-        uploadFiles(files)
-            .then(() => {
-                setStatus(STATUS.is_completed);
-            })
-            .catch(() => {
-                onUploadError();
-            });
+        uploadFiles(values).then(() => {
+            setStatus(STATUS.IS_COMPLETED);
+        });
     };
 
-    const removeImagePreview = index => dispatchFileList({ type: ACTIONS.REMOVE_FILE, payload: index });
-
     switch (status) {
-        case STATUS.is_uploading:
+        case STATUS.IS_UPLOADING:
             return <Loading is_fullscreen={false} is_slow_loading status={[localize('Uploading documents')]} />;
-        case STATUS.is_completed:
+        case STATUS.IS_COMPLETED:
             return <Submitted />;
+        case STATUS.IS_FAILED:
+            return <PoiUnsupportedFailed error={response_error} />;
         default:
             return (
                 <React.Fragment>
@@ -159,7 +114,7 @@ const DetailComponent = ({
                             />
                         </React.Fragment>
                     ) : (
-                        <CardDetails data={document.details} onConfirm={onConfirm} goToCards={onClickBack} />
+                        <CardDetails data={document.details} onComplete={onComplete} goToCards={onClickBack} />
                     )}
                 </React.Fragment>
             );

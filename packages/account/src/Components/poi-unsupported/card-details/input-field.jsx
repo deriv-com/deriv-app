@@ -32,7 +32,6 @@ const InputField = ({ data }) => {
                             name={data.name}
                             label={data.label}
                             error={touched[field.name] && errors[field.name]}
-                            value={field.value ? field.value.format('DD MMM YYYY') : ''}
                             readOnly
                         />
                     )}

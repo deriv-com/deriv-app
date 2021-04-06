@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="278" height="168" viewBox="0 0 278 168">
+    <g fill="none" fill-rule="evenodd">
+        <g>
+            <g>
+                <g transform="translate(-501 -187) translate(304 124) translate(198 64)">
+                    <rect width="276" height="166" rx="12"/>
+                    <path stroke="#BCCDCE" stroke-linecap="round" stroke-width="2" d="M227 0h37c6.627 0 12 5.373 12 12v38h0M49 0H12C5.373 0 0 5.373 0 12v38h0M49 166H12c-6.627 0-12-5.373-12-12v-38h0M227 166h37c6.627 0 12-5.373 12-12v-38h0"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

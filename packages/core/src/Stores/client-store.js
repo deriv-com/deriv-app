@@ -1652,6 +1652,7 @@ export default class ClientStore extends BaseStore {
             'utm_medium',
             'utm_term',
             'utm_content',
+            'affiliate_token',
         ];
         const signup_params = {};
         const url_params = new URLSearchParams(window.location.search);
@@ -1661,11 +1662,6 @@ export default class ClientStore extends BaseStore {
                 signup_params[key] = url_params.get(key);
             }
         });
-
-        const affiliate_token = url_params.get('affiliate_tracking');
-        if (affiliate_token) {
-            signup_params.affiliate_token = affiliate_token;
-        }
 
         return signup_params;
     }

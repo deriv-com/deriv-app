@@ -260,7 +260,7 @@ export default class MT5Store extends BaseStore {
                 [this.account_type.category, this.account_type.type].join('_') === 'real_financial_stp';
 
             if (is_real_financial_stp) {
-                WS.triggerMt5AccountBO({ email: this.root_store.client.email });
+                WS.triggerMt5DryRun({ email: this.root_store.client.email });
             }
             WS.authorized.storage.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
             WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier

@@ -146,7 +146,7 @@ Input.propTypes = {
     hint: PropTypes.oneOfType([PropTypes.any, PropTypes.node]),
     is_relative_hint: PropTypes.bool,
     initial_character_count: PropTypes.number,
-    label: PropTypes.string,
+    label: PropTypes.any,
     leading_icon: PropTypes.any,
     max_characters: PropTypes.number,
     trailing_icon: PropTypes.any,

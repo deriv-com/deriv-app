@@ -13,8 +13,12 @@ const MainContentContainer = ({ active_tab, is_loading }) => {
         <React.Fragment>
             {Blockly.derivWorkspace && (
                 <React.Fragment>
-                    <Toolbox />
-                    <Flyout />
+                    {active_tab === tabs_title.WORKSPACE && (
+                        <React.Fragment>
+                            <Toolbox />
+                            <Flyout />
+                        </React.Fragment>
+                    )}
                     {active_tab === tabs_title.CHART && (
                         <div className='bot__chart-container-wrapper'>
                             <div

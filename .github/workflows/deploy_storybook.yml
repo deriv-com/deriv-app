@@ -9,7 +9,7 @@ on:
 
 jobs:
   deploy_storybook:
-    if: ${{ github.repository == 'binary-com/deriv-app' }}
+    if: ${{ github.repository == 'binary-com/deriv-app' || github.repository == 'zaki-binary/deriv-app' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -29,7 +29,8 @@ jobs:
         id: storybook_preview_url
         uses: amondnet/vercel-action@v20
         with:
-            vercel-token: ${{ secrets.VERCEL_STORYBOOK_TOKEN }}
-            vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
-            vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
+            vercel-token: ${{ secrets.VERCEL_TOKEN }}
+            vercel-org-id: ${{ secrets.VERCEL_STORYBOOK_ORG_ID}}
+            vercel-project-id: ${{ secrets.VERCEL_STORYBOOK_PROJECT_ID}}
+            github-comment: false
 

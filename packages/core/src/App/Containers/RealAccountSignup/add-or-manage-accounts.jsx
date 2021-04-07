@@ -2,8 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Tabs, ThemedScrollbars } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
-import { getCurrencyDisplayCode, isDesktop, isMobile, website_name } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { isDesktop, isMobile, website_name } from '@deriv/shared';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
@@ -17,7 +17,6 @@ const AddOrManageAccounts = props => {
         available_crypto_currencies,
         can_change_fiat_currency,
         createCryptoAccount,
-        currency,
         current_currency_type,
         has_fiat,
         is_eu,
@@ -95,34 +94,13 @@ const AddOrManageAccounts = props => {
                 'account-wizard--disabled': !can_change_fiat_currency,
             })}
         >
-            {!can_change_fiat_currency && (
-                <div className='account-wizard--disabled-message'>
-                    <p>
-                        {current_currency_type === 'fiat' ? (
-                            <Localize
-                                i18n_default_text='Currency change is not available because either you have deposited money into your {{currency}} account or you have created a real MetaTrader 5 (MT5) account.'
-                                values={{
-                                    currency: getCurrencyDisplayCode(currency),
-                                }}
-                            />
-                        ) : (
-                            <Localize
-                                i18n_default_text='Please switch to your {{fiat_currency}} account to change currencies.'
-                                values={{
-                                    // eslint-disable-next-line
-                                    fiat_currency: props.current_fiat_currency.toUpperCase(),
-                                }}
-                            />
-                        )}
-                    </p>
-                </div>
-            )}
             <ChangeAccountCurrency
                 className='account-wizard__body'
                 onSubmit={updateValue}
                 value={form_value}
                 form_error={form_error}
-                {...props}
+                can_change_fiat_currency={can_change_fiat_currency}
+                current_currency_type={current_currency_type}
             />
         </div>
     );
@@ -196,7 +174,6 @@ AddOrManageAccounts.propTypes = {
 export default connect(({ client }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     can_change_fiat_currency: client.can_change_fiat_currency,
-    currency: client.currency,
     current_currency_type: client.current_currency_type,
     current_fiat_currency: client.current_fiat_currency,
     has_fiat: client.has_fiat,

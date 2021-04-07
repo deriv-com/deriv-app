@@ -4,7 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import WS from 'Services/ws-methods';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
-import { CookieStorage, isMobile, TRACKING_STATUS_KEY } from '@deriv/shared';
+import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 
@@ -28,6 +28,7 @@ const AppContents = ({
 }) => {
     const [show_cookie_banner, setShowCookieBanner] = React.useState(false);
     const [is_gtm_tracking, setIsGtmTracking] = React.useState(false);
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     const tracking_status = tracking_status_cookie.get(TRACKING_STATUS_KEY);
 
@@ -86,6 +87,7 @@ const AppContents = ({
                 'app-contents--is-mobile': isMobile(),
                 'app-contents--is-route-modal': is_route_modal_on,
                 'app-contents--is-scrollable': is_mt5_page || is_cashier_visible,
+                'app-contents--is-dashboard': is_dashboard,
             })}
         >
             <MobileWrapper>{children}</MobileWrapper>

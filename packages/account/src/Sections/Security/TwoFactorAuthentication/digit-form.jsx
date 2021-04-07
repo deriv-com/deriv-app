@@ -85,8 +85,8 @@ const DigitForm = ({ is_enabled, setEnabled }) => {
                             is_loading={isSubmitting}
                             is_submit_success={is_success}
                             text={button_text}
-                            primary
                             large
+                            primary
                         />
                     </div>
                 </Form>

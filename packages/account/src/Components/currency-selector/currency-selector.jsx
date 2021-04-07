@@ -120,56 +120,54 @@ const CurrencySelector = ({
                                 is_disabled={isDesktop()}
                             >
                                 <ThemedScrollbars is_bypassed={isMobile()} height={height}>
-                                    {reorderCurrencies(fiat).length > 0 &&
-                                        real_account_signup_target !== 'deposit_crypto' && (
-                                            <React.Fragment>
-                                                <RadioButtonGroup
-                                                    id='currency'
-                                                    className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                                                    label={localize('Fiat currencies')}
-                                                    is_fiat
-                                                    value={values.currency}
-                                                    error={errors.currency}
-                                                    touched={touched.currency}
-                                                    item_count={reorderCurrencies(fiat).length}
-                                                >
-                                                    {reorderCurrencies(fiat).map(currency => (
-                                                        <Field
-                                                            key={currency.value}
-                                                            component={RadioButton}
-                                                            name='currency'
-                                                            id={currency.value}
-                                                            label={currency.name}
-                                                        />
-                                                    ))}
-                                                </RadioButtonGroup>
-                                                {reorderCurrencies(crypto, 'crypto').length > 0 && <Hr />}
-                                            </React.Fragment>
-                                        )}
-                                    {reorderCurrencies(crypto, 'crypto').length > 0 &&
-                                        real_account_signup_target !== 'deposit_cash' && (
-                                            <React.Fragment>
-                                                <RadioButtonGroup
-                                                    id='currency'
-                                                    className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                                                    label={localize('Cryptocurrencies')}
-                                                    value={values.currency}
-                                                    error={errors.currency}
-                                                    touched={touched.currency}
-                                                    item_count={reorderCurrencies(crypto, 'crypto').length}
-                                                >
-                                                    {reorderCurrencies(crypto, 'crypto').map(currency => (
-                                                        <Field
-                                                            key={currency.value}
-                                                            component={RadioButton}
-                                                            name='currency'
-                                                            id={currency.value}
-                                                            label={currency.name}
-                                                        />
-                                                    ))}
-                                                </RadioButtonGroup>
-                                            </React.Fragment>
-                                        )}
+                                    {reorderCurrencies(fiat).length > 0 && (
+                                        <React.Fragment>
+                                            <RadioButtonGroup
+                                                id='currency'
+                                                className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                                                label={localize('Fiat currencies')}
+                                                is_fiat
+                                                value={values.currency}
+                                                error={errors.currency}
+                                                touched={touched.currency}
+                                                item_count={reorderCurrencies(fiat).length}
+                                            >
+                                                {reorderCurrencies(fiat).map(currency => (
+                                                    <Field
+                                                        key={currency.value}
+                                                        component={RadioButton}
+                                                        name='currency'
+                                                        id={currency.value}
+                                                        label={currency.name}
+                                                    />
+                                                ))}
+                                            </RadioButtonGroup>
+                                            {reorderCurrencies(crypto, 'crypto').length > 0 && <Hr />}
+                                        </React.Fragment>
+                                    )}
+                                    {reorderCurrencies(crypto, 'crypto').length > 0 && (
+                                        <React.Fragment>
+                                            <RadioButtonGroup
+                                                id='currency'
+                                                className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                                                label={localize('Cryptocurrencies')}
+                                                value={values.currency}
+                                                error={errors.currency}
+                                                touched={touched.currency}
+                                                item_count={reorderCurrencies(crypto, 'crypto').length}
+                                            >
+                                                {reorderCurrencies(crypto, 'crypto').map(currency => (
+                                                    <Field
+                                                        key={currency.value}
+                                                        component={RadioButton}
+                                                        name='currency'
+                                                        id={currency.value}
+                                                        label={currency.name}
+                                                    />
+                                                ))}
+                                            </RadioButtonGroup>
+                                        </React.Fragment>
+                                    )}
                                 </ThemedScrollbars>
                             </Div100vhContainer>
                             <Modal.Footer is_bypassed={isMobile()}>

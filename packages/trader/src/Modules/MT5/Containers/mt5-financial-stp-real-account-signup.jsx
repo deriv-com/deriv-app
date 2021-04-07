@@ -123,6 +123,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                 setSubmitting(false);
                 return;
             }
+            if (index === 0) await WS.triggerMt5DryRun({ email: this.props.client_email });
             this.initiatePersonalDetails(setSubmitting);
         }
         this.saveFormData(index, value);
@@ -264,7 +265,6 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                         onCancel={this.prevStep}
                         onSave={this.saveFormData}
                         form_error={this.state.form_error}
-                        client_email={this.props.client_email}
                         {...passthrough}
                     />
                 </div>

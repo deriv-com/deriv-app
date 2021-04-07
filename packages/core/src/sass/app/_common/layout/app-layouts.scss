@@ -112,6 +112,10 @@
         &--is-scrollable {
             overflow-y: auto;
         }
+        &--is-dashboard {
+            height: calc(100% - #{$MOBILE_HEADER_HEIGHT_DASHBOARD});
+            margin-top: $MOBILE_HEADER_HEIGHT_DASHBOARD;
+        }
         .ciq-menu {
             top: 0;
             margin: 0.8rem;

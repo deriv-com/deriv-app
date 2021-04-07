@@ -19,6 +19,17 @@ $MIN_HEIGHT_FLOATING: calc(
     &--floating {
         justify-content: center;
     }
+    &--grid {
+        display: grid;
+        height: calc(100vh - #{$HEADER_HEIGHT});
+        grid-template-areas: 'form-sidebar form-title' 'form-sidebar form-content';
+        grid-template-rows: 5.2rem auto;
+    }
+    &__title {
+        grid-area: form-title;
+        height: 5rem;
+        border-top: 1px solid var(--general-section-1);
+    }
     &__content-container,
     &__content-inner {
         position: relative;
@@ -26,10 +37,6 @@ $MIN_HEIGHT_FLOATING: calc(
         height: 100%;
         width: 100%;
         display: flex;
-    }
-    &__content-container {
-        flex-flow: column nowrap;
-        flex-grow: 1;
     }
     &--full-screen {
         min-height: $MIN_HEIGHT_FULL_SCREEN;
@@ -80,7 +87,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
         &--floating {
             min-width: 256px;
-            padding: 0.8rem;
+            padding: 0.8rem 0.8rem 0;
             border-radius: #{$BORDER_RADIUS * 2};
 
             .dc-vertical-tab__header--highlight {
@@ -90,6 +97,7 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         &-meta-wrapper {
             // a class used to wrap `.dc-vertical-tab__tab-bottom-note` and `.dc-vertical-tab__tab`
+            grid-area: form-sidebar;
             &--floating {
                 position: sticky;
                 top: calc(2.4rem + 41px); // 41px for the header of PageOverlay
@@ -207,6 +215,12 @@ $MIN_HEIGHT_FLOATING: calc(
         border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
         position: relative;
         background-color: var(--general-main-1);
+
+        grid-area: form-content;
+        &-container {
+            flex-flow: column nowrap;
+            flex-grow: 1;
+        }
 
         &-side-note {
             max-width: 256px;

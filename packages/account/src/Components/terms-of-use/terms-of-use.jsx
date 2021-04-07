@@ -49,12 +49,12 @@ const TermsOfUse = ({
                 <AutoHeightWrapper default_height={200}>
                     {({ setRef, height }) => (
                         <form ref={setRef} onSubmit={handleSubmit}>
-                            <ThemedScrollbars is_bypassed={isMobile()} height={height - 72}>
-                                <Div100vhContainer
-                                    className='terms-of-use'
-                                    height_offset={is_dashboard ? '242px' : '110px'}
-                                    is_disabled={isDesktop()}
-                                >
+                            <Div100vhContainer
+                                className='terms-of-use'
+                                height_offset={is_dashboard ? '242px' : '110px'}
+                                is_disabled={isDesktop()}
+                            >
+                                <ThemedScrollbars autoHide={!(window.innerHeight < 890)} height={height - 72}>
                                     <BrokerSpecificMessage target={real_account_signup_target} />
                                     <Hr />
                                     <SharedMessage />
@@ -82,8 +82,8 @@ const TermsOfUse = ({
                                             />
                                         }
                                     />
-                                </Div100vhContainer>
-                            </ThemedScrollbars>
+                                </ThemedScrollbars>
+                            </Div100vhContainer>
                             <Modal.Footer has_separator is_bypassed={isMobile()}>
                                 <FormSubmitButton
                                     is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}

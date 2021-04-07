@@ -57,6 +57,11 @@ const QuickStrategyForm = ({
             const validation_errors = validateQuickStrategy(values);
             const is_valid = Object.keys(validation_errors).length === 0;
             const is_submit_enabled = !isSubmitting && is_valid;
+            const is_safari =
+                /constructor/i.test(window.HTMLElement) ||
+                (function (p) {
+                    return p.toString() === '[object SafariRemoteNotification]';
+                })(!window['safari'] || (typeof safari !== 'undefined' && window['safari'].pushNotification));
 
             return (
                 <Form
@@ -68,8 +73,7 @@ const QuickStrategyForm = ({
                         <div
                             className={classNames('quick-strategy__form-content', {
                                 'quick-strategy__form-content--active-keyboard': is_onscreen_keyboard_active,
-                                'quick-strategy__form-content--safari-fix':
-                                    navigator.userAgent.toLowerCase().indexOf('safari/') > -1,
+                                'quick-strategy__form-content--safari-fix': is_safari,
                             })}
                         >
                             <div className='quick-strategy__description'>{description}</div>

@@ -68,6 +68,8 @@ const QuickStrategyForm = ({
                         <div
                             className={classNames('quick-strategy__form-content', {
                                 'quick-strategy__form-content--active-keyboard': is_onscreen_keyboard_active,
+                                'quick-strategy__form-content--safari-fix':
+                                    navigator.userAgent.toLowerCase().indexOf('safari/') > -1,
                             })}
                         >
                             <div className='quick-strategy__description'>{description}</div>

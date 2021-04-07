@@ -18,6 +18,7 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_DERIV_ORG_ID}}
           vercel-project-id: ${{ secrets.VERCEL_DERIV_PROJECT_ID}}
+          vercel-project-name: deriv-app
           github-comment: false
       - name: Create commit comment
         uses: peter-evans/commit-comment@v1

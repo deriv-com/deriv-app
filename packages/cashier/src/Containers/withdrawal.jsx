@@ -22,7 +22,7 @@ const WithdrawalSideNote = () => {
         />,
         <Localize
             i18n_default_text='It may take up to <0>6 confirmations</0> for your funds to be reflected in your destination wallet.'
-            key={0}
+            key={1}
             components={[<Text key={0} size='xxs' weight='bold' />]}
         />,
         /*

@@ -34,6 +34,22 @@
             overflow-x: overlay;
         }
     }
+    &-wrapper {
+        display: flex;
+        justify-content: space-between;
+        white-space: nowrap;
+        margin-bottom: -3rem;
+        padding-bottom: 3rem;
+
+        & li {
+            display: inline-block;
+            box-sizing: border-box;
+            padding: 0 1.1rem;
+            vertical-align: middle;
+            width: unset;
+            height: 40px;
+        }
+    }
     &::-webkit-scrollbar {
         width: 5px;
         height: 5px;

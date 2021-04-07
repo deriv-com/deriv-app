@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Tab from './tab.jsx';
 import { useConstructor } from '../../hooks';
+import ThemedScrollbars from '../themed-scrollbars';
 
 const Tabs = ({
     active_icon_color,
@@ -124,44 +125,52 @@ const Tabs = ({
                     })}
                     ref={tabs_wrapper_ref}
                 >
-                    {React.Children.map(children, (child, index) => {
-                        if (!child) return null;
-                        const { count, header_content, icon, label, id } = child.props;
-                        return (
-                            <Tab
-                                active_icon_color={active_icon_color}
-                                className={className}
-                                count={count}
-                                icon={icon}
-                                icon_color={icon_color}
-                                icon_size={icon_size}
-                                is_active={index === active_tab_index}
-                                key={label}
-                                is_label_hidden={children.length === 1 && single_tab_has_no_label}
-                                label={label}
-                                id={id}
-                                top={top}
-                                bottom={bottom}
-                                header_fit_content={header_fit_content}
-                                active_tab_ref={index === active_tab_index ? active_tab_ref : null}
-                                header_content={header_content}
-                                onClick={() => onClickTabItem(index)}
-                                setActiveLineStyle={setActiveLineStyle}
+                    <ThemedScrollbars
+                        className='dc-themed-scrollbars-wrapper'
+                        is_only_horizontal={true}
+                        height={68}
+                        is_bypassed={!is_scrollable}
+                    >
+                        {React.Children.map(children, (child, index) => {
+                            if (!child) return null;
+                            const { count, header_content, icon, label, id } = child.props;
+                            return (
+                                <Tab
+                                    active_icon_color={active_icon_color}
+                                    className={className}
+                                    count={count}
+                                    icon={icon}
+                                    icon_color={icon_color}
+                                    icon_size={icon_size}
+                                    is_active={index === active_tab_index}
+                                    key={label}
+                                    is_label_hidden={children.length === 1 && single_tab_has_no_label}
+                                    label={label}
+                                    id={id}
+                                    is_scrollable={is_scrollable}
+                                    top={top}
+                                    bottom={bottom}
+                                    header_fit_content={header_fit_content}
+                                    active_tab_ref={index === active_tab_index ? active_tab_ref : null}
+                                    header_content={header_content}
+                                    onClick={() => onClickTabItem(index)}
+                                    setActiveLineStyle={setActiveLineStyle}
+                                />
+                            );
+                        })}
+                        {has_active_line && !is_scrollable && (
+                            <span
+                                className={classNames('dc-tabs__active-line', {
+                                    'dc-tabs__active-line--top': top,
+                                    'dc-tabs__active-line--bottom': bottom,
+                                    'dc-tabs__active-line--fit-content': fit_content,
+                                    'dc-tabs__active-line--header-fit-content': header_fit_content,
+                                    'dc-tabs__active-line--is-hidden': children.length === 1 && single_tab_has_no_label,
+                                })}
+                                style={active_line_style}
                             />
-                        );
-                    })}
-                    {has_active_line && (
-                        <span
-                            className={classNames('dc-tabs__active-line', {
-                                'dc-tabs__active-line--top': top,
-                                'dc-tabs__active-line--bottom': bottom,
-                                'dc-tabs__active-line--fit-content': fit_content,
-                                'dc-tabs__active-line--header-fit-content': header_fit_content,
-                                'dc-tabs__active-line--is-hidden': children.length === 1 && single_tab_has_no_label,
-                            })}
-                            style={active_line_style}
-                        />
-                    )}
+                        )}
+                    </ThemedScrollbars>
                 </ul>
             </div>
             <div

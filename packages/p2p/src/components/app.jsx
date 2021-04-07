@@ -182,6 +182,10 @@ const App = observer(props => {
                         top
                         header_fit_content={!isMobile()}
                         is_100vw={isMobile()}
+<<<<<<< HEAD
+=======
+                        is_scrollable
+>>>>>>> 348b91dfd... fix: scroll for p2p cashier tabs
                     >
                         <div label={localize('Buy / Sell')}>
                             {general_store.is_barred && <TemporaryBarredMessage />}

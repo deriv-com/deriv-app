@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Deploy storybook
+      - name: Deploy Application
         id: preview_url
         uses: amondnet/vercel-action@v20
         with:

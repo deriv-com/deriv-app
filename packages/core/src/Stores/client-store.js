@@ -8,7 +8,6 @@ import {
     isDesktopOs,
     isEmptyObject,
     LocalStore,
-    removeEmptyPropertiesFromObject,
     setCurrencies,
     State,
     toMoment,
@@ -21,7 +20,7 @@ import * as SocketCache from '_common/base/socket_cache';
 import { isEuCountry, isSyntheticsUnavailable } from '_common/utility';
 import BaseStore from './base-store';
 import { getClientAccountType, getAccountTitle } from './Helpers/client';
-import { createDeviceDataObject, getCookieObject, setDeviceDataCookie } from './Helpers/device';
+import { setDeviceDataCookie } from './Helpers/device';
 import { handleClientNotifications, clientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
@@ -1632,15 +1631,15 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setDeviceData() {
-        // Set client URL params on init
-        const affiliate_token = Cookies.getJSON('affiliate_tracking');
-        const date_first_contact_cookie = setDeviceDataCookie(
+        setDeviceDataCookie('signup_device', isDesktopOs() ? 'desktop' : 'mobile');
+    }
+
+    @action.bound
+    getSignupParams() {
+        const param_list = [
             'date_first_contact',
-            this.root_store.common.server_time.format('YYYY-MM-DD')
-        );
-        const signup_device_cookie = setDeviceDataCookie('signup_device', isDesktopOs() ? 'desktop' : 'mobile');
-        const cookies_list = [
-            'gclid',
+            'signup_device',
+            'gclid_url',
             'utm_source',
             'utm_ad_id',
             'utm_adgroup_id',
@@ -1653,18 +1652,18 @@ export default class ClientStore extends BaseStore {
             'utm_medium',
             'utm_term',
             'utm_content',
+            'affiliate_token',
         ];
-        const cookies = {
-            signup_device: signup_device_cookie,
-            date_first_contact: date_first_contact_cookie,
-        };
+        const signup_params = {};
+        const url_params = new URLSearchParams(window.location.search);
 
-        cookies_list.forEach(element => {
-            cookies[element] = getCookieObject(element);
+        param_list.forEach(key => {
+            if (url_params.get(key)) {
+                signup_params[key] = url_params.get(key);
+            }
         });
 
-        const device_data = createDeviceDataObject(cookies);
-        this.device_data = { ...this.device_data, ...device_data, affiliate_token };
+        return signup_params;
     }
 
     @action.bound
@@ -1699,32 +1698,29 @@ export default class ClientStore extends BaseStore {
 
         // Currently the code doesn't reach here and the console log is needed for debugging.
         // TODO: remove console log when AccountSignup component and validation are ready
-        WS.newAccountVirtual(
-            this.verification_code.signup,
-            password,
-            residence,
-            removeEmptyPropertiesFromObject(this.device_data)
-        ).then(async response => {
-            if (response.error) {
-                cb(response.error.message);
-            } else {
-                cb();
-                // Initialize client store with new user login
-                const { client_id, currency, oauth_token } = response.new_account_virtual;
-                await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
+        WS.newAccountVirtual(this.verification_code.signup, password, residence, this.getSignupParams()).then(
+            async response => {
+                if (response.error) {
+                    cb(response.error.message);
+                } else {
+                    cb();
+                    // Initialize client store with new user login
+                    const { client_id, currency, oauth_token } = response.new_account_virtual;
+                    await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
 
-                // GTM Signup event
-                this.root_store.gtm.pushDataLayer({
-                    event: 'virtual_signup',
-                });
+                    // GTM Signup event
+                    this.root_store.gtm.pushDataLayer({
+                        event: 'virtual_signup',
+                    });
 
-                this.root_store.ui.showAccountTypesModalForEuropean();
+                    this.root_store.ui.showAccountTypesModalForEuropean();
 
-                if (this.is_mt5_allowed) {
-                    this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
+                    if (this.is_mt5_allowed) {
+                        this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
+                    }
                 }
             }
-        });
+        );
     }
 
     async switchToNewlyCreatedAccount(client_id, oauth_token, currency) {

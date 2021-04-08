@@ -22,15 +22,17 @@ const AddOrManageAccounts = props => {
         has_fiat,
         is_eu,
         is_loading,
+        manage_real_account_tab_index,
         onError,
         onSuccessSetAccountCurrency,
         setCurrency,
         setLoading,
     } = props;
 
-    const [active_index, setActiveIndex] = React.useState(
-        has_fiat && available_crypto_currencies?.length === 0 ? 1 : 0
-    );
+    const initial_active_index =
+        manage_real_account_tab_index ?? (has_fiat && available_crypto_currencies?.length === 0) ? 1 : 0;
+
+    const [active_index, setActiveIndex] = React.useState(initial_active_index);
     const [form_error] = React.useState('');
     const [form_value] = React.useState({ crypto: '', fiat: '' });
 
@@ -188,12 +190,13 @@ const AddOrManageAccounts = props => {
 };
 
 AddOrManageAccounts.propTypes = {
+    active_tab_index: PropTypes.number,
     onError: PropTypes.func,
     onLoading: PropTypes.func,
     onSuccessSetAccountCurrency: PropTypes.func,
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     can_change_fiat_currency: client.can_change_fiat_currency,
     currency: client.currency,
@@ -201,6 +204,7 @@ export default connect(({ client }) => ({
     current_fiat_currency: client.current_fiat_currency,
     has_fiat: client.has_fiat,
     is_eu: client.is_eu,
+    manage_real_account_tab_index: ui.manage_real_account_tab_index,
     setCurrency: client.setAccountCurrency,
     createCryptoAccount: client.createCryptoAccount,
 }))(AddOrManageAccounts);

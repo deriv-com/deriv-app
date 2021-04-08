@@ -26,7 +26,6 @@ const AddOrManageAccounts = props => {
         setCurrency,
         setLoading,
     } = props;
-
     const [active_index, setActiveIndex] = React.useState(
         has_fiat && available_crypto_currencies?.length === 0 ? 1 : 0
     );
@@ -166,9 +165,28 @@ const AddOrManageAccounts = props => {
 };
 
 AddOrManageAccounts.propTypes = {
+    available_crypto_currencies: PropTypes.arrayOf({
+        fractional_digits: PropTypes.number,
+        is_deposit_suspended: PropTypes.number,
+        is_suspended: PropTypes.number,
+        is_withdrawal_suspended: PropTypes.number,
+        name: PropTypes.string,
+        stake_default: PropTypes.number,
+        transfer_between_accounts: PropTypes.object,
+        type: PropTypes.string,
+        value: PropTypes.string,
+    }),
     onError: PropTypes.func,
     onLoading: PropTypes.func,
     onSuccessSetAccountCurrency: PropTypes.func,
+    is_eu: PropTypes.bool,
+    setCurrency: PropTypes.func,
+    createCryptoAccount: PropTypes.func,
+    has_fiat: PropTypes.bool,
+    can_change_fiat_currency: PropTypes.bool,
+    current_currency_type: PropTypes.string,
+    is_loading: PropTypes.bool,
+    setLoading: PropTypes.func,
 };
 
 export default connect(({ client }) => ({

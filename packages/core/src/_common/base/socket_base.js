@@ -232,8 +232,8 @@ const BinarySocketBase = (() => {
     const profitTable = (limit, offset, date_boundaries) =>
         deriv_api.send({ profit_table: 1, description: 1, limit, offset, ...date_boundaries });
 
-    const statement = (limit, offset, date_boundaries) =>
-        deriv_api.send({ statement: 1, description: 1, limit, offset, ...date_boundaries });
+    const statement = (limit, offset, other_properties) =>
+        deriv_api.send({ statement: 1, description: 1, limit, offset, ...other_properties });
 
     const verifyEmail = (email, type) => deriv_api.send({ verify_email: email, type });
 

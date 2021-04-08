@@ -32,7 +32,7 @@ export default class PortfolioStore extends BaseStore {
 
     @action.bound
     initializePortfolio = async should_clear_table => {
-        if (this.is_subscribed_to_poc || should_clear_table) {
+        if (this.has_subscribed_to_poc_and_transaction || should_clear_table) {
             this.clearTable();
         }
         this.is_loading = true;
@@ -40,7 +40,7 @@ export default class PortfolioStore extends BaseStore {
         WS.portfolio().then(this.portfolioHandler);
         WS.subscribeProposalOpenContract(null, this.proposalOpenContractQueueHandler);
         WS.subscribeTransaction(this.transactionHandler);
-        this.is_subscribed_to_poc = true;
+        this.has_subscribed_to_poc_and_transaction = true;
     };
 
     @action.bound
@@ -50,8 +50,10 @@ export default class PortfolioStore extends BaseStore {
         this.is_loading = false;
         this.error = '';
         this.updatePositions();
-        WS.forgetAll('proposal_open_contract', 'transaction');
-        this.is_subscribed_to_poc = false;
+        if (this.has_subscribed_to_poc_and_transaction) {
+            WS.forgetAll('proposal_open_contract', 'transaction');
+        }
+        this.has_subscribed_to_poc_and_transaction = false;
     }
 
     @action.bound
@@ -381,7 +383,7 @@ export default class PortfolioStore extends BaseStore {
         this.onSwitchAccount(this.accountSwitcherListener);
         this.onNetworkStatusChange(this.networkStatusChangeListener);
         this.onLogout(this.logoutListener);
-        if (this.positions.length === 0) {
+        if (this.positions.length === 0 && !this.has_subscribed_to_poc_and_transaction) {
             // TODO: Optimise the way is_logged_in changes are detected for "logging in" and "already logged on" states
             if (this.root_store.client.is_logged_in) {
                 this.initializePortfolio();

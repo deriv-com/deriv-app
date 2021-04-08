@@ -123,9 +123,9 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                 setSubmitting(false);
                 return;
             }
-            if (index === 0) await WS.triggerMt5DryRun({ email: this.props.client_email });
             this.initiatePersonalDetails(setSubmitting);
         }
+        if (index === 0) await WS.triggerMt5DryRun({ email: this.props.client_email });
         this.saveFormData(index, value);
         this.nextStep(setSubmitting);
     };

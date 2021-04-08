@@ -7,6 +7,7 @@ export const requestLogout = () => WS.logout().then(doLogout);
 
 function endChat() {
     const session_variables = {
+        is_logged_in: false,
         loginid: '',
         landing_company_shortcode: '',
         currency: '',

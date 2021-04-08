@@ -21,7 +21,7 @@ const CashierDefaultDetails = ({
                     <Text size='xs' className='cashier-default-detail__text'>
                         {detail_description}
                     </Text>
-                    <Icon icon='IcChevronRight' size={16} />
+                    <Icon icon='IcChevronRightBold' size={16} />
                 </div>
                 {detail_contents?.map((content, idx) => (
                     <div key={`${content.title}${idx}`} className='cashier-default-detail__array'>
@@ -30,20 +30,13 @@ const CashierDefaultDetails = ({
                         </Text>
                         <div className={classNames({ 'cashier-default-detail__icons-array': !is_mobile })}>
                             {content.icons?.map((icon, index) => {
-                                if (typeof icon.light === 'string') {
-                                    return (
-                                        <div key={`${icon}${index}`} className='cashier-default-detail__icon'>
-                                            <Icon
-                                                icon={is_dark_mode_on ? icon.dark : icon.light}
-                                                width={icon.size ?? 56}
-                                                height={36}
-                                            />
-                                        </div>
-                                    );
-                                }
                                 return (
                                     <div key={`${icon}${index}`} className='cashier-default-detail__icon'>
-                                        {is_dark_mode_on ? icon.dark : icon.light}
+                                        <Icon
+                                            icon={is_dark_mode_on ? icon.dark : icon.light}
+                                            width={icon.size ?? 56}
+                                            height={36}
+                                        />
                                     </div>
                                 );
                             })}

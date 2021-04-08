@@ -20,6 +20,7 @@ import 'Sass/cashier.scss';
 const Cashier = ({
     history,
     is_account_transfer_visible,
+    is_cashier_default,
     is_logged_in,
     is_logging_in,
     is_onramp_tab_visible,
@@ -94,7 +95,7 @@ const Cashier = ({
         <FadeWrapper is_visible={is_visible} className='cashier-page-wrapper' keyname='cashier-page-wrapper'>
             <div className='cashier'>
                 <PageOverlay
-                    header={isMobile() ? selected_route.getTitle() : localize('Cashier')}
+                    header={isMobile() && !is_cashier_default ? selected_route.getTitle() : localize('Cashier')}
                     onClickClose={onClickClose}
                 >
                     <DesktopWrapper>
@@ -180,6 +181,7 @@ Cashier.propTypes = {
 
 export default connect(({ client, common, modules, ui }) => ({
     is_account_transfer_visible: modules.cashier.is_account_transfer_visible,
+    is_cashier_default: modules.cashier.is_cashier_default,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,

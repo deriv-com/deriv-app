@@ -20,6 +20,7 @@ const CashierDefault = ({
     openRealAccountSignup,
     setIsCashierDefault,
     setIsDeposit,
+    setManageRealAccountActiveTabIndex,
     toggleAccountsDialog,
 }) => {
     const history = useHistory();
@@ -42,6 +43,7 @@ const CashierDefault = ({
             toggleAccountsDialog();
             return;
         }
+        setManageRealAccountActiveTabIndex(1);
         openRealAccountSignup('manage');
     };
 
@@ -54,6 +56,7 @@ const CashierDefault = ({
             toggleAccountsDialog();
             return;
         }
+        setManageRealAccountActiveTabIndex(0);
         openRealAccountSignup('manage');
     };
 
@@ -96,17 +99,19 @@ const CashierDefault = ({
                 </Text>
             </div>
             <ThemedScrollbars className='cashier-default-content'>
-                {getDepositOptions()?.map((deposit, idx) => (
-                    <CashierDefaultDetails
-                        key={`${deposit.detail_header}${idx}`}
-                        detail_click={deposit.detail_click}
-                        detail_contents={deposit.detail_contents}
-                        detail_description={deposit.detail_description}
-                        detail_header={deposit.detail_header}
-                        is_dark_mode_on={is_dark_mode_on}
-                        is_mobile={is_mobile}
-                    />
-                ))}
+                <div className='cashier-default-content__description'>
+                    {getDepositOptions()?.map((deposit, idx) => (
+                        <CashierDefaultDetails
+                            key={`${deposit.detail_header}${idx}`}
+                            detail_click={deposit.detail_click}
+                            detail_contents={deposit.detail_contents}
+                            detail_description={deposit.detail_description}
+                            detail_header={deposit.detail_header}
+                            is_dark_mode_on={is_dark_mode_on}
+                            is_mobile={is_mobile}
+                        />
+                    ))}
+                </div>
             </ThemedScrollbars>
         </div>
     );
@@ -124,6 +129,7 @@ CashierDefault.propTypes = {
     openRealAccountSignup: PropTypes.func,
     setIsCashierDefault: PropTypes.func,
     setIsDeposit: PropTypes.func,
+    setManageRealAccountActiveTabIndex: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
 };
 
@@ -139,5 +145,6 @@ export default connect(({ client, modules, ui }) => ({
     openRealAccountSignup: ui.openRealAccountSignup,
     setIsCashierDefault: modules.cashier.setIsCashierDefault,
     setIsDeposit: modules.cashier.setIsDeposit,
+    setManageRealAccountActiveTabIndex: ui.setManageRealAccountActiveTabIndex,
     toggleAccountsDialog: ui.toggleAccountsDialog,
 }))(CashierDefault);

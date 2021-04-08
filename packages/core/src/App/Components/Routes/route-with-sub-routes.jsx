@@ -30,7 +30,7 @@ const RouteWithSubRoutes = route => {
         } else if (is_valid_route && route.is_authenticated && !route.is_logged_in && !route.is_logging_in) {
             const { location } = props;
             const url_search_params = new URLSearchParams(location.search);
-            if (url_search_params.get('is_redirecting') !== 'true') {
+            if (url_search_params.has('is_redirecting')) {
                 redirectToLogin(route.is_logged_in, getLanguage());
             }
         } else {

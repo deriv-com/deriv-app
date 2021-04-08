@@ -47,7 +47,12 @@ const ChangeAccountCurrency = ({
                     </Text>
                     {!can_change_fiat_currency && (
                         <div className='account-wizard--disabled-message'>
-                            <p>
+                            <Text
+                                as='p'
+                                align='center'
+                                size='xxs'
+                                className='account-wizard--disabled-message-description'
+                            >
                                 {current_currency_type === 'fiat' ? (
                                     <Localize
                                         i18n_default_text='Currency change is not available because either you have deposited money into your {{currency}} account or you have created a real MetaTrader 5 (MT5) account.'
@@ -64,7 +69,7 @@ const ChangeAccountCurrency = ({
                                         }}
                                     />
                                 )}
-                            </p>
+                            </Text>
                         </div>
                     )}
                     <CurrencyRadioButtonGroup

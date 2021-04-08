@@ -292,18 +292,11 @@
             display: flex;
             justify-content: center;
 
-            p {
-                color: var(--text-general);
-                font-size: var(--text-size-s);
-                line-height: 1.5;
+            &-description {
                 width: 78%;
-                text-align: center;
-            }
-            p:first-child {
                 margin-top: 6rem;
                 background-color: var(--general-section-1);
-                font-size: 1.2rem;
-                height: 58px;
+                height: 5.8rem;
                 display: flex;
                 justify-content: center;
                 align-items: center;

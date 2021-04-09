@@ -24,13 +24,12 @@ const ResetTradingPassword = ({ toggleResetTradingPasswordModal, verification_co
     };
 
     const handleSubmit = (values, actions) => {
-        const api_request = {
-            reset_password: 1,
+        const params = {
             new_password: values.password,
             verification_code,
         };
 
-        WS.resetPassword(api_request).then(async response => {
+        WS.tradingPlatformPasswordReset(params).then(async response => {
             if (response.error) {
                 onResetComplete(response.error.message, actions);
             } else {

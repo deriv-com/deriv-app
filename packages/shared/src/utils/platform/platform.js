@@ -21,8 +21,8 @@ export const isMT5 = () =>
     (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'mt5');
 
 export const isDXtrade = () =>
-    /^\/dxtrade/.test(window.location.pathname) ||
-    (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'dxtrade');
+    /^\/derivx/.test(window.location.pathname) ||
+    (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'derivx');
 
 export const getPathname = () => {
     if (isBot()) return platform_name.DBot;

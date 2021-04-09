@@ -570,12 +570,23 @@ export default class ClientStore extends BaseStore {
         return this.isMT5Allowed(this.landing_companies);
     }
 
+    @computed
+    get is_dxtrade_allowed() {
+        return this.isDxtradeAllowed();
+    }
+
     isMT5Allowed = landing_companies => {
         // default allowing mt5 to true before landing_companies gets populated
         // since most clients are allowed to use mt5
         if (!landing_companies || !Object.keys(landing_companies).length) return true;
 
         return 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
+    };
+
+    isDxtradeAllowed = () => {
+        if (!this.website_status?.clients_country || !this.landing_companies) return false;
+
+        return this.is_svg || (!this.is_logged_in && !this.is_eu && !this.is_eu_country);
     };
 
     @computed

@@ -40,7 +40,7 @@ const AccountSwitcher = props => {
     const [is_dmt5_demo_visible, setDmt5DemoVisible] = React.useState(true);
     const [is_dmt5_real_visible, setDmt5RealVisible] = React.useState(false);
     const [is_dxtrade_demo_visible, setDxtradeDemoVisible] = React.useState(true);
-    const [is_dxtrade_real_visible, setDxtradeRealVisible] = React.useState(true);
+    const [is_dxtrade_real_visible, setDxtradeRealVisible] = React.useState(false);
 
     const wrapper_ref = React.useRef();
     const dmt5_ref = React.useRef(null);
@@ -847,7 +847,7 @@ const account_switcher = withRouter(
         is_loading_mt5: client.is_populating_mt5_account_list,
         is_loading_dxtrade: client.is_populating_dxtrade_account_list,
         is_logged_in: client.is_logged_in,
-        is_dxtrade_allowed: true, // TODO: connect to dxtrade account API
+        is_dxtrade_allowed: client.is_dxtrade_allowed,
         is_mt5_allowed: client.is_mt5_allowed,
         is_pending_authentication: client.is_pending_authentication,
         is_uk: client.is_uk,

@@ -563,6 +563,10 @@ $MIN_HEIGHT_FLOATING: calc(
             gap: 0.8rem;
             margin-top: 0.8rem;
             justify-content: flex-end;
+
+            @include mobile {
+                display: unset;
+            }
         }
 
         &-linked {

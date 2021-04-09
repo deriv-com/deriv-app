@@ -73,10 +73,11 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                     utm_medium: utm_medium ?? '',
                     utm_campaign: utm_campaign ?? '',
                 };
-
+                console.log(session_variables);
                 window.LiveChatWidget.call('set_session_variables', session_variables);
 
                 if (is_logged_in) {
+                    console.log('set names and email');
                     // client logged in
                     // prepfill name and email
                     window.LiveChatWidget.call('set_customer_email', session_variables.email);
@@ -88,6 +89,7 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                         window.LiveChatWidget.call('set_customer_name', `${client_first_name} ${client_last_name}`);
                     };
                 } else {
+                    console.log('clear names and email');
                     // client not logged in
                     // clear name and email fields
                     window.LiveChatWidget.call('set_customer_email', ' ');

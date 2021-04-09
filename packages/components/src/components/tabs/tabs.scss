@@ -59,6 +59,9 @@
         &:not(&--header-fit-content) {
             justify-content: center;
         }
+        &--full-width {
+            width: 100vw;
+        }
     }
     &__item {
         list-style: none;
@@ -87,6 +90,18 @@
         &--is-hidden {
             display: none;
         }
+        &--is-scrollable-and-active {
+            position: relative;
+
+            &:after {
+                border-bottom: 2px solid var(--brand-red-coral);
+                content: '';
+                position: absolute;
+                left: 0;
+                display: block;
+                width: 100%;
+            }
+        }
         &:not(.dc-tabs__active) {
             cursor: pointer;
             color: var(--text-general);
@@ -98,19 +113,6 @@
     &__active {
         font-weight: 700;
         color: var(--text-prominent);
-    }
-
-    &--is-scrollable-and-active {
-        position: relative;
-
-        &:after {
-            border-bottom: 2px solid var(--brand-red-coral);
-            content: '';
-            position: absolute;
-            left: 0;
-            display: block;
-            width: 100%;
-        }
     }
 
     &__active-line {

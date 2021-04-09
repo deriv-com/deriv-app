@@ -259,6 +259,7 @@ const Journal = ({
                                     weight='bold'
                                     align='center'
                                     color='less-prominent'
+                                    line_height='xs'
                                     className='journal-empty__header'
                                 >
                                     {localize('There are no messages to display')}

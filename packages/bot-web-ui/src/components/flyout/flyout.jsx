@@ -73,7 +73,7 @@ const FlyoutContent = props => {
                 )}
                 {is_empty ? (
                     <div className='flyout__search-empty'>
-                        <Text as='h2' weight='bold'>
+                        <Text as='h2' weight='bold' line_height='xs'>
                             {localize('No results found')}
                         </Text>
                     </div>

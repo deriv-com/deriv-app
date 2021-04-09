@@ -262,14 +262,21 @@ const AccountTransferForm = ({
 
         const is_mt_transfer = selected_to.is_mt || selected_from.is_mt;
         const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
-        remaining_transfers =
-            is_mt_transfer || is_dxtrade_transfer ? mt5_remaining_transfers : internal_remaining_transfers;
 
-        transfer_to_hint =
-            +remaining_transfers === 1
-                ? localize('You have {{number}} transfer remaining for today.', { number: remaining_transfers })
-                : localize('You have {{number}} transfers remaining for today.', { number: remaining_transfers });
+        if (is_dxtrade_transfer) {
+            remaining_transfers = undefined;
+            transfer_to_hint = '';
+        } else {
+            remaining_transfers = is_mt_transfer ? mt5_remaining_transfers : internal_remaining_transfers;
+
+            transfer_to_hint =
+                +remaining_transfers === 1
+                    ? localize('You have {{number}} transfer remaining for today.', { number: remaining_transfers })
+                    : localize('You have {{number}} transfers remaining for today.', { number: remaining_transfers });
+        }
     }, [selected_to, selected_from, account_limits]);
+
+    const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
 
     return (
         <div className='cashier__wrapper account-transfer__wrapper'>
@@ -447,7 +454,7 @@ const AccountTransferForm = ({
                                         is_disabled={
                                             !isValid ||
                                             isSubmitting ||
-                                            !+remaining_transfers ||
+                                            (is_dxtrade_transfer ? false : !+remaining_transfers) ||
                                             !!selected_from.error ||
                                             !!selected_to.error
                                         }

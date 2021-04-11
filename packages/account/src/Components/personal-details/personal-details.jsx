@@ -316,6 +316,7 @@ const PersonalDetails = ({
                                                                 }}
                                                                 {...field}
                                                                 required
+                                                                hide_disabled={false}
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>

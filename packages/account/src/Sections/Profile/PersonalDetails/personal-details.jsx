@@ -701,6 +701,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                 onChange={e =>
                                                                     setFieldValue('citizen', e.target.value, true)
                                                                 }
+                                                                hide_disabled={false}
                                                             />
                                                         </MobileWrapper>
                                                     </MobileWrapper>

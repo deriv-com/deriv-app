@@ -14,8 +14,8 @@ const cash_contents = [
             { light: 'IcWalletZingpayLight', dark: 'IcWalletZingpayDark' },
             { light: 'IcCashierNganLoungLight', dark: 'IcCashierNganLoungDark' },
             { light: 'IcCashierPayRetailersLight', dark: 'IcCashierPayRetailersDark' },
-            { light: 'IcWalletPaytrustLight', dark: 'IcWalletPaytrustDark', size: 64 },
-            { light: 'IcCashierHelpToPayLight', dark: 'IcCashierHelpToPayDark', size: 48 },
+            { light: 'IcWalletPaytrustLight', dark: 'IcWalletPaytrustDark' },
+            { light: 'IcCashierHelpToPayLight', dark: 'IcCashierHelpToPayDark' },
             { light: 'ic-cashier-dragon-phoenix', dark: 'ic-cashier-dragon-phoenix' },
             { light: 'ic-cashier-online-naira-light', dark: 'ic-cashier-online-naira-dark' },
             { light: 'ic-cashier-directa-light', dark: 'ic-cashier-directa-dark' },
@@ -39,11 +39,11 @@ const crypto_contents = [
     {
         title: localize('Cryptos'),
         icons: [
-            { light: 'IcCashierBitcoinLight', dark: 'IcCashierBitcoinDark', size: 72 },
-            { light: 'IcCashierEthereumLight', dark: 'IcCashierEthereumDark', size: 72 },
+            { light: 'IcCashierBitcoinLight', dark: 'IcCashierBitcoinDark' },
+            { light: 'IcCashierEthereumLight', dark: 'IcCashierEthereumDark' },
             { light: 'IcCashierLiteCoinLight', dark: 'IcCashierLiteCoinDark' },
-            { light: 'IcCashierUsdCoinLight', dark: 'IcCashierUsdCoinDark', size: 72 },
-            { light: 'IcCashierTetherLight', dark: 'IcCashierTetherDark', size: 72 },
+            { light: 'IcCashierUsdCoinLight', dark: 'IcCashierUsdCoinDark' },
+            { light: 'IcCashierTetherLight', dark: 'IcCashierTetherDark' },
         ],
     },
     {
@@ -51,8 +51,8 @@ const crypto_contents = [
         icons: [
             { light: 'IcCashierQrCodeLight', dark: 'IcCashierQrCodeDark', size: 40 },
             { light: 'IcCashierChangellyRowLight', dark: 'IcCashierChangellyRowDark' },
-            { light: 'IcCashierXanpoolSmallLight', dark: 'IcCashierXanpoolSmallDark' },
-            { light: 'IcCashierBanxaSmallLight', dark: 'IcCashierBanxaSmallDark' },
+            { light: 'IcCashierXanpoolSmallLight', dark: 'IcCashierXanpoolSmallDark', size: 56 },
+            { light: 'IcCashierBanxaSmallLight', dark: 'IcCashierBanxaSmallDark', size: 56 },
         ],
     },
 ];

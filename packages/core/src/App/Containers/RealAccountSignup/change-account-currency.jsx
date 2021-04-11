@@ -122,4 +122,5 @@ ChangeAccountCurrency.propTypes = {
 export default connect(({ client }) => ({
     legal_allowed_currencies: client.upgradeable_currencies,
     client_currency: client.currency,
+    current_fiat_currency: client.current_fiat_currency,
 }))(ChangeAccountCurrency);

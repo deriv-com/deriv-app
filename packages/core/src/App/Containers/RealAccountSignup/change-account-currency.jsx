@@ -64,8 +64,7 @@ const ChangeAccountCurrency = ({
                                     <Localize
                                         i18n_default_text='Please switch to your {{fiat_currency}} account to change currencies.'
                                         values={{
-                                            // eslint-disable-next-line
-                                            fiat_currency: current_fiat_currency.toUpperCase(),
+                                            fiat_currency: current_fiat_currency?.toUpperCase?.(),
                                         }}
                                     />
                                 )}

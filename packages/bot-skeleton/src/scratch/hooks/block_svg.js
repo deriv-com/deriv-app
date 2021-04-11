@@ -223,6 +223,14 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
         return;
     }
 
+    // Firefox fix for Blockly widthcache bug
+    if (navigator.userAgent.search('Firefox') > 0) {
+        setTimeout(() => {
+            this.workspace.getAllFields().forEach(field => field.forceRerender());
+        }, 0); /* Time duration must be 0. We need this function
+        asynchronous for proper rerender after block resizing. */
+    }
+
     const render_list = [];
     const COLLAPSED_INPUT_NAME = '_TEMP_COLLAPSED_INPUT';
 
@@ -283,4 +291,34 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
 
     // Check whether the collapsed block needs to be highlighted.
     this.setErrorHighlighted(collapsed && this.hasErrorHighlightedDescendant());
+};
+
+/**
+ * @deriv/bot: Add check for workspace.getCanvas() before appendChild() is called.
+ */
+Blockly.BlockSvg.prototype.initSvg = function () {
+    goog.asserts.assert(this.workspace.rendered, 'Workspace is headless.');
+    if (!this.isInsertionMarker()) {
+        // Insertion markers not allowed to have inputs or icons
+        // Input shapes are empty holes drawn when a value input is not connected.
+        // eslint-disable-next-line no-cond-assign
+        for (let i = 0, input; (input = this.inputList[i]); i++) {
+            input.init();
+            input.initOutlinePath(this.svgGroup_);
+        }
+        const icons = this.getIcons();
+        for (let i = 0; i < icons.length; i++) {
+            icons[i].createIcon();
+        }
+    }
+    this.updateColour();
+    this.updateMovable();
+    if (!this.workspace.options.readOnly && !this.eventsInit_) {
+        Blockly.bindEventWithChecks_(this.getSvgRoot(), 'mousedown', this, this.onMouseDown_);
+    }
+    this.eventsInit_ = true;
+
+    if (!this.getSvgRoot().parentNode && this.workspace.getCanvas()) {
+        this.workspace.getCanvas().appendChild(this.getSvgRoot());
+    }
 };

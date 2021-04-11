@@ -2,7 +2,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import Loadable from 'react-loadable-hooks';
+import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
 import { urlForLanguage } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
@@ -18,56 +18,70 @@ const Error = Loadable({
     },
 });
 
-class Routes extends React.Component {
-    unlisten_to_change = null;
-    initial_route = null;
+const Routes = ({
+    addRouteHistoryItem,
+    error,
+    has_error,
+    history,
+    is_logged_in,
+    is_logging_in,
+    location,
+    passthrough,
+    setAppRouterHistory,
+    setInitialRouteHistoryItem,
+}) => {
+    const initial_route = React.useRef(null);
+    const unlisten_to_change = React.useRef(null);
 
-    componentDidMount() {
-        if (!this.unlisten_to_change && !this.initial_route) {
-            this.initial_route = this.props.location.pathname;
+    React.useEffect(() => {
+        if (!unlisten_to_change.current && !initial_route.current) {
+            initial_route.current = location.pathname;
         }
 
-        this.props.setInitialRouteHistoryItem(this.props.history.location);
+        setInitialRouteHistoryItem(history.location);
 
-        this.unlisten_to_change = this.props.history.listen((route_to, action) => {
-            if (['PUSH', 'POP'].includes(action)) this.props.addRouteHistoryItem({ ...route_to, action });
+        unlisten_to_change.current = history.listen((route_to, action) => {
+            if (['PUSH', 'POP'].includes(action)) addRouteHistoryItem({ ...route_to, action });
         });
 
-        this.props.setAppRouterHistory(this.props.history);
+        setAppRouterHistory(history);
+
+        return () => {
+            if (typeof unlisten_to_change.current === 'function') {
+                unlisten_to_change.current();
+                unlisten_to_change.current = null;
+                initial_route.current = null;
+            }
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const lang = getLanguage();
+    const lang_regex = /[?&]lang=/;
+
+    if (has_error) {
+        return <Error {...error} />;
     }
 
-    componentWillUnmount() {
-        if (typeof this.unlisten_to_change === 'function') {
-            this.unlisten_to_change();
-            this.unlisten_to_change = null;
-            this.initial_route = null;
-        }
+    // we need to replace state of history object on every route
+    // to prevent language query parameter from disappering for non-english languages
+    if (!lang_regex.test(location.search) && lang !== 'EN') {
+        window.history.replaceState({}, document.title, urlForLanguage(lang));
     }
 
-    render() {
-        const { error, has_error, is_logged_in, passthrough } = this.props;
-        const lang = getLanguage();
-        const lang_regex = /[?&]lang=/;
-
-        if (has_error) {
-            return <Error {...error} />;
-        }
-
-        // we need to replace state of history object on every route
-        // to prevent language query parameter from disappering for non-english languages
-        if (!lang_regex.test(location.search) && lang !== 'EN') {
-            window.history.replaceState({}, document.title, urlForLanguage(lang));
-        }
-
-        return <BinaryRoutes is_logged_in={is_logged_in} passthrough={passthrough} />;
-    }
-}
+    return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;
+};
 
 Routes.propTypes = {
+    addRouteHistoryItem: PropTypes.func,
     error: MobxPropTypes.objectOrObservableObject,
     has_error: PropTypes.bool,
+    history: PropTypes.object,
     is_logged_in: PropTypes.bool,
+    is_logging_in: PropTypes.bool,
     is_virtual: PropTypes.bool,
+    setAppRouterHistory: PropTypes.func,
+    setInitialRouteHistoryItem: PropTypes.func,
 };
 
 // need to wrap withRouter around connect
@@ -75,6 +89,7 @@ Routes.propTypes = {
 export default withRouter(
     connect(({ client, common }) => ({
         is_logged_in: client.is_logged_in,
+        is_logging_in: client.is_logging_in,
         error: common.error,
         has_error: common.has_error,
         setAppRouterHistory: common.setAppRouterHistory,

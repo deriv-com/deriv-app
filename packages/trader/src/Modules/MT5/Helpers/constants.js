@@ -18,6 +18,8 @@ const getPlatformMt5DownloadLink = (platform = undefined) => {
             return 'https://download.mql5.com/cdn/web/deriv.limited/mt5/deriv5setup.exe';
         case 'linux':
             return 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux';
+        case 'macos':
+            return 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg';
         case 'ios':
             return 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server';
         case 'android':
@@ -27,9 +29,9 @@ const getPlatformMt5DownloadLink = (platform = undefined) => {
     }
 };
 
-const getMT5WebTerminalLink = ({ category, loginid }) => {
+const getMT5WebTerminalLink = ({ category, loginid, server_name = 'Deriv-Server' }) => {
     const is_demo = category === 'demo';
-    const server = is_demo ? 'Deriv-Demo' : 'Deriv-Server';
+    const server = is_demo ? 'Deriv-Demo' : server_name;
     const login = loginid ?? '';
 
     return `https://trade.mql5.com/trade?servers=${server}&trade_server=${server}${login && `&login=${login}`}`;

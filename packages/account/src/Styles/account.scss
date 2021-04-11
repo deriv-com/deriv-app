@@ -33,6 +33,115 @@ $MIN_HEIGHT_FLOATING: calc(
             background-color: var(--general-main-1);
         }
     }
+    .dc-vertical-tab--dashboard {
+        height: unset;
+
+        .dc-vertical-tab__header {
+            font-size: 1.2rem;
+            padding-left: 3.9rem;
+
+            &__link {
+                margin-left: unset;
+            }
+            &--highlight {
+                border-left: unset;
+            }
+            &-group__icon {
+                margin-right: 0.9rem;
+            }
+        }
+        & .account-form {
+            &__personal-details,
+            &__financial-assessment {
+                .account__scrollbars_container {
+                    width: 68.5rem;
+                    margin-left: 6rem;
+                    padding-top: 0;
+                }
+            }
+            &__password-wrapper {
+                width: 68.5rem;
+                margin-left: 6rem;
+            }
+        }
+
+        & .dc-vertical-tab {
+            &__title {
+                position: -webkit-sticky;
+                position: sticky;
+                top: 0;
+                z-index: 2;
+                background-color: var(--general-main-1);
+                padding: 0.8rem 2.4rem;
+                border-bottom: 1px solid var(--general-section-1);
+                width: calc(100vw - 22.8rem);
+                &-text {
+                    flex: 1;
+                    text-align: center;
+                    font-size: var(--text-size-m);
+                    color: var(--text-prominent);
+                    font-weight: bold;
+                    line-height: 1.5;
+                    width: calc(100% - 2rem);
+                    float: left;
+                    padding-left: 2rem;
+                }
+                &-close {
+                    cursor: pointer;
+                    height: 1.6rem;
+                    position: absolute;
+                    right: 3.2rem;
+                    top: 1.6rem;
+                }
+            }
+            &__tab {
+                height: unset;
+                background-color: unset;
+                min-width: unset;
+                &-meta-wrapper {
+                    width: 22.8rem;
+                    height: calc(100vh - 4.8rem);
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    border-right: 1px solid var(--general-section-1);
+                    &--dashboard {
+                        padding-top: 3.5rem;
+                        top: unset;
+                    }
+                }
+            }
+            &__content {
+                & .dc-checkbox__box {
+                    margin-left: 0;
+                }
+                & .da-account-limits__wrapper {
+                    width: calc(100vw - 33rem);
+                }
+
+                margin: 2rem 0 0 7rem;
+
+                width: fit-content;
+                max-width: calc(100vw - 33rem);
+                & > div {
+                    height: calc(100vh - 14.5rem);
+                }
+                & .proof-of-identity {
+                    width: calc(100vw - 33rem);
+                }
+            }
+
+            &__header--active {
+                border-left: unset;
+                border-radius: unset;
+                border-right: 4px solid var(--brand-red-coral);
+            }
+        }
+        @include desktop {
+            grid-template-rows: 5.2rem calc(100vh - 4.8rem - 3.6rem - 5.2rem);
+            overflow: hidden;
+        }
+    }
     &__inset_header {
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);
 
@@ -98,48 +207,6 @@ $MIN_HEIGHT_FLOATING: calc(
             padding-bottom: unset;
         }
     }
-    &__article {
-        padding: 1.6rem 2.4rem;
-        background: var(--general-section-1);
-        width: 25.6rem;
-        height: fit-content;
-        margin-left: 1.2rem;
-        border-radius: 8px;
-
-        &-list {
-            @include typeface(--paragraph-left-bold-black, none);
-            padding-left: 1.6rem;
-            list-style-type: disc;
-
-            & > li {
-                margin-bottom: 0.8rem;
-            }
-            & > li:last-child {
-                margin-bottom: 0;
-            }
-        }
-        &-title {
-            @include typeface(--paragraph-left-bold-prominent, none);
-            margin-bottom: 0.8rem;
-            max-width: 18.8rem;
-        }
-        &-description {
-            margin-bottom: 1.6rem;
-        }
-        &-link {
-            display: flex;
-
-            &--icon {
-                margin-left: 4px;
-                width: 16px;
-                height: 16px;
-            }
-        }
-        @include mobile {
-            width: auto;
-            margin: 1.6rem;
-        }
-    }
     &-form {
         overflow: hidden;
         height: 100%;
@@ -183,6 +250,30 @@ $MIN_HEIGHT_FLOATING: calc(
             align-self: baseline;
             padding-right: 0.8rem;
             margin-top: 0.2rem;
+        }
+        &__section {
+            display: grid;
+            grid-template-areas: 'section-side-note section-content';
+            @include mobile {
+                grid-template-areas: 'section-side-note' 'section-content';
+            }
+            &-side-note {
+                grid-area: section-side-note;
+                width: 26rem;
+                margin-top: 1rem;
+                @include mobile {
+                    margin-top: unset;
+                    width: 100%;
+                    margin-bottom: 0.8rem;
+                }
+            }
+            &-content {
+                grid-area: section-content;
+                width: 40rem;
+                @include mobile {
+                    width: 100%;
+                }
+            }
         }
         &__fieldset {
             position: relative;
@@ -254,23 +345,72 @@ $MIN_HEIGHT_FLOATING: calc(
                 @include mobile {
                     width: auto;
                     text-align: center;
+                    &--dashboard {
+                        margin: 0 1.6rem;
+                        text-align: left;
+                    }
                 }
             }
             &-btn {
                 height: 4rem;
-                margin-top: 0;
-                margin-bottom: 0;
+                margin: 0 0 0 1.6rem;
+
+                &-wrapper {
+                    align-items: normal;
+                    display: flex;
+                    flex-direction: row;
+                    @include mobile {
+                        flex-direction: column;
+                    }
+                }
+
+                &-dashboard {
+                    .dc-btn__text {
+                        color: var(--text-prominent);
+                    }
+                }
+                &-dashboard:hover {
+                    background-color: unset !important;
+                }
+
                 @include desktop {
                     margin-left: 1.6rem;
+                    &-wrapper--dashboard {
+                        display: flex;
+                        justify-content: space-between;
+                    }
                 }
                 @include mobile {
-                    margin: 0 1.6rem;
+                    margin: 0 1rem;
 
                     &--has-bottom-margin {
                         margin-bottom: 1.6rem;
                     }
                 }
             }
+
+            &--dashboard {
+                width: 68.5rem;
+                margin-left: 6rem;
+                @include mobile {
+                    width: 100vw;
+                    margin-left: unset;
+                    & .account-form__footer-btn {
+                        min-width: 35%;
+                        &-wrapper {
+                            flex-direction: row;
+                        }
+                    }
+                    & > div {
+                        display: flex;
+                        justify-content: space-around;
+                    }
+                }
+            }
+            &-poa {
+                margin-left: unset;
+            }
+
             &-all-fields-required {
                 padding-bottom: 2.4rem;
                 padding-top: 0.8rem;
@@ -287,6 +427,23 @@ $MIN_HEIGHT_FLOATING: calc(
             position: unset;
         }
         &__personal-details {
+            &--dashboard {
+                & .account-form__fieldset {
+                    margin-bottom: 3.2rem;
+                    @include mobile {
+                        margin-bottom: 3.2rem;
+                    }
+                }
+                & .dc-field--error {
+                    color: var(--text-loss-danger);
+                }
+                & .account-form__footer-note {
+                    width: unset;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
+            }
             @include desktop {
                 .account__scrollbars_container {
                     padding-top: 2.4rem;
@@ -301,7 +458,6 @@ $MIN_HEIGHT_FLOATING: calc(
                     }
                 }
                 .account-form__footer-note {
-                    font-size: 1rem;
                     height: auto;
                     margin-bottom: 1.6rem;
                 }
@@ -337,7 +493,6 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__occupation {
-            .dc-native-select__select,
             .dc-dropdown__display-text {
                 line-height: 1.6rem;
                 text-align: left;
@@ -359,244 +514,206 @@ $MIN_HEIGHT_FLOATING: calc(
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-general);
     }
-    .account-management__message {
-        margin-top: 1em;
-        font-weight: bold;
-        font-size: var(--text-size-s);
-        color: var(--text-general);
-
-        &-content {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            margin: 0 16px;
-            align-items: center;
-            flex-direction: column;
-
-            .dc-btn {
-                height: 4rem;
-                margin-top: 3.2rem;
-
-                @include mobile {
-                    margin: 1.6rem 0;
-                    padding: 1.6rem;
-                    width: 100%;
-                }
-            }
-        }
-        &-icon {
-            width: 128px;
-            height: 128px;
-            margin-top: 80px;
-
+    .account-management {
+        &__container-dashboard {
+            width: calc(100vw - 33rem);
             @include mobile {
-                margin-top: 4rem;
-
-                /* iPhone SE screen height fixes due to UI space restrictions */
-                @media only screen and (max-height: 480px) {
-                    margin-top: 3.2rem;
-                }
+                width: 100%;
             }
         }
-        &-title {
-            font-size: var(--text-size-xs);
-            margin-bottom: 1em;
-            text-align: center;
-        }
-        &-subtitle {
-            font-size: var(--text-size-xxs);
-            font-weight: 400;
-            text-align: center;
-            line-height: 1.5;
-        }
-        &-wrapper {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-
-            @include mobile {
-                overflow-x: hidden;
-                overflow-y: auto;
-            }
-        }
-        @include mobile {
-            line-height: 20px;
-            text-align: center;
-        }
-    }
-    .account-management__text-container {
-        margin-top: 10px;
-        max-width: 672px;
-        margin-bottom: 2em;
-    }
-    .account-management-flex-wrapper {
-        display: flex;
-
-        &--space-between {
-            justify-content: space-between;
-        }
-    }
-    .account-management-leave-confirm,
-    .account-management-submit-success {
-        @include desktop {
-            .dc-btn--primary {
-                width: 130px;
-                margin-left: 0.8rem;
-            }
-        }
-        @include mobile {
-            flex-direction: column;
-            width: 100%;
-            margin-top: 1.2rem;
-
-            .dc-btn {
-                padding: 0;
-                margin-bottom: 0;
-            }
-        }
-    }
-    .account__text_container {
-        margin-top: 12px;
-    }
-    .account-management-table {
-        width: 100%;
-
-        thead {
-            position: relative;
-
-            tr {
-                padding-bottom: 8px;
-            }
-            th {
-                @include typeface(--paragraph-left-bold-black, none);
-                color: var(--text-prominent);
-                @include mobile {
-                    font-size: 1.2rem;
-                    color: var(--text-general);
-                }
-            }
-        }
-        tbody {
-            tr td {
-                border-bottom: 1px solid var(--general-section-1);
-            }
-        }
-
-        @include desktop {
-            max-width: 546px;
-        }
-    }
-    .api-token {
-        height: 100%;
-        width: 100%;
-
-        & .dc-timeline__container {
-            width: 100%;
-        }
-        & .dc-table__cell {
-            padding: 1.8rem 0;
-        }
-        & .dc-popover__target {
-            display: flex;
-        }
-        & .dc-dialog__content {
-            max-width: 100%;
-            width: 100%;
-            height: 100%;
-        }
-        & .dc-table__head {
-            @include typeface(--paragraph-left-bold-prominent, none);
-        }
-        &__wrapper {
-            display: flex;
-            width: 100%;
-            height: 100%;
-        }
-        &__input-group {
-            display: flex;
-            margin-top: 2.7rem;
-        }
-        &__input {
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-            border-right: 0;
-        }
-        &__button {
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-            margin-left: -1px;
-        }
-        &__checkbox-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-            grid-gap: 1.6rem;
-
-            @include mobile {
-                grid-template-columns: 1fr;
-            }
-        }
-        &__table-row {
-            grid-template-columns: 1fr 1.4fr 1.3fr 0.7fr 7.7rem;
-        }
-        &__clipboard {
-            margin: 0 1rem;
-            cursor: pointer;
-
-            &-wrapper {
+        &__list {
+            &-container {
+                margin-top: 1.6rem;
+                max-width: 50.6rem;
                 display: flex;
-                align-items: center;
-                justify-content: space-between;
-                width: 95%;
-
-                > span {
-                    margin-right: 0.4rem;
-                }
+                flex-direction: column;
             }
-        }
-        &__timeline {
-            padding: 0 1.4rem;
-
-            @include mobile {
-                margin-left: 1.2rem;
-
-                & .dc-timeline {
-                    &__flex {
-                        margin-top: 2.4rem;
-                    }
-                }
+            &-icon {
+                margin-right: 1.2rem;
+                margin-top: 0.2rem;
             }
-        }
-        &__scope {
-            background: var(--general-section-1);
-            padding: 0.8rem;
-            margin-bottom: 1.6rem;
+            &-message {
+                display: flex;
+                margin-bottom: 1.6rem;
 
-            &:last-child {
-                margin-bottom: 0;
-            }
-            &-item {
-                margin-bottom: 0.8rem;
-                display: grid;
-                grid-template-columns: 1.6fr 0.4fr;
-
-                > div {
-                    min-width: 7.8rem;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                }
-                &:last-child {
+                &:last-of-type {
                     margin-bottom: 0;
                 }
             }
-            &--title {
-                @include typeface(--small-left-bold-black, none);
+            &-button.dc-btn {
+                margin-top: 2.4rem;
+                width: fit-content;
+                align-self: center;
             }
         }
-        &__scrollbars {
-            height: 100%;
+        &__continue.dc-btn {
+            margin-top: 1.6rem;
+        }
+
+        &__message {
+            margin-top: 1em;
+
+            &-content {
+                display: flex;
+                width: 100%;
+                height: 100%;
+                margin: 0 16px;
+                align-items: center;
+                flex-direction: column;
+
+                .dc-btn {
+                    height: 4rem;
+                    margin-top: 3.2rem;
+
+                    @include mobile {
+                        margin: 1.6rem 0;
+                        padding: 1.6rem;
+                        width: 100%;
+                    }
+                }
+            }
+            &-icon {
+                width: 12.8rem;
+                height: 12.8rem;
+                margin-top: 8rem;
+
+                @include mobile {
+                    margin-top: 4rem;
+
+                    /* iPhone SE screen height fixes due to UI space restrictions */
+                    @media only screen and (max-height: 480px) {
+                        margin-top: 3.2rem;
+                    }
+                }
+            }
+            &-title {
+                font-size: var(--text-size-xs);
+                margin-bottom: 1rem;
+                text-align: center;
+            }
+            &-subtitle {
+                font-size: var(--text-size-xxs);
+                font-weight: 400;
+                text-align: center;
+                line-height: 1.5;
+            }
+            &-wrapper {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+
+                &-full-width {
+                    width: calc(100vw - 33rem);
+                    @include mobile {
+                        width: 100%;
+                    }
+                }
+
+                @include mobile {
+                    overflow-x: hidden;
+                    overflow-y: auto;
+                }
+            }
+            @include mobile {
+                line-height: 2rem;
+                text-align: center;
+            }
+        }
+        &-dashboard {
+            &__message-icon {
+                width: unset;
+            }
+        }
+        &__text-container {
+            margin-top: 1rem;
+            max-width: 67.2rem;
+            margin-bottom: 2em;
+        }
+        &__button.dc-btn {
+            margin-top: 0.8rem;
+        }
+        &-flex-wrapper {
+            display: flex;
+
+            &--space-between {
+                justify-content: space-between;
+            }
+        }
+        &-leave-confirm,
+        &-submit-success {
+            @include desktop {
+                .dc-btn--primary {
+                    width: 13rem;
+                    margin-left: 0.8rem;
+                }
+            }
+            @include mobile {
+                flex-direction: column;
+                width: 100%;
+                margin-top: 1.2rem;
+
+                .dc-btn {
+                    padding: 0;
+                    margin-bottom: 0;
+                }
+            }
+        }
+        &-table {
             width: 100%;
+
+            thead {
+                position: relative;
+
+                tr {
+                    padding-bottom: 0.8rem;
+                }
+                th {
+                    @include typeface(--paragraph-left-bold-black, none);
+                    color: var(--text-prominent);
+                    @include mobile {
+                        font-size: 1.2rem;
+                        color: var(--text-general);
+                    }
+                }
+            }
+            tbody {
+                tr td {
+                    border-bottom: 1px solid var(--general-section-1);
+                }
+            }
+
+            &__total-withdraw {
+                & .dc-btn__small {
+                    width: 5rem;
+                    margin: 0 0.6rem;
+                    @include mobile {
+                        margin: 1.1rem 0;
+                    }
+                }
+            }
+
+            &__verify {
+                margin-left: 0.6rem;
+                @include mobile {
+                    margin-left: unset;
+                }
+            }
+
+            @include desktop {
+                max-width: 54.6rem;
+            }
+        }
+    }
+    .dashboard__message-content {
+        margin-top: 8rem;
+        @include mobile {
+            margin-top: 4rem;
+        }
+    }
+    .account__text_container {
+        margin-top: 1.2rem;
+        @include mobile {
+            margin-bottom: 1.6rem;
         }
     }
     .two-factor {
@@ -619,6 +736,16 @@ $MIN_HEIGHT_FLOATING: calc(
             width: 100%;
             height: 100%;
 
+            &-dashboard {
+                width: calc(100vw - 33rem);
+                & .dc-timeline__title {
+                    max-width: unset;
+                }
+                @include mobile {
+                    width: 100%;
+                }
+            }
+
             &--enabled {
                 display: flex;
                 flex-direction: column;
@@ -633,12 +760,10 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__title {
-            @include typeface(--title-left-bold-prominent, none);
             margin-bottom: 1.5rem;
             margin-left: 1.2rem;
 
             @include mobile {
-                padding-top: 2.4rem;
                 margin-right: 1.2rem;
             }
         }
@@ -689,11 +814,9 @@ $MIN_HEIGHT_FLOATING: calc(
                 width: auto;
             }
             &--title {
-                @include typeface(--title-center-bold-prominent, none);
                 margin-top: 2.4rem;
             }
             &--message {
-                @include typeface(--paragraph-center-normal-black, none);
                 margin: 1.6rem 0 0;
             }
             &--code {
@@ -716,273 +839,6 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-top: 6.4rem;
         }
     }
-    .self-exclusion {
-        height: 100%;
-        width: 100%;
-
-        & .dc-dialog__content {
-            max-width: 100%;
-            width: 100%;
-            height: 100%;
-        }
-        & .dc-input__label {
-            background: var(--general-main-1);
-        }
-        & .dc-field--error {
-            padding-left: 0;
-        }
-        &__wrapper {
-            display: flex;
-            width: 100%;
-            height: 100%;
-
-            @media (min-width: 1025px) and (max-width: 1199px) {
-                .account__article {
-                    width: 19rem; // Need to decrease width for better user experience and wider Fields
-                }
-            }
-
-            @include mobile {
-                flex-direction: column;
-                overflow-y: auto;
-                max-height: calc(100% - 72px);
-            }
-        }
-        &__error {
-            margin-top: 1.6rem;
-            margin-bottom: 1.6rem;
-        }
-        &__confirm {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-
-            &-header {
-                margin-top: 3.6rem;
-                @include typeface(--title-center-bold-prominent);
-                margin-bottom: 1.4rem;
-            }
-            &-item {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                grid-gap: 1.6rem;
-                padding: 1.6rem 0;
-                border-bottom: 1px solid var(--border-normal);
-                max-width: 40rem;
-                width: 100%;
-            }
-            &-note {
-                margin: 2.4rem 0;
-                max-width: 67.2rem;
-            }
-            &-bold {
-                @include typeface(--paragraph-left-bold-red);
-            }
-        }
-        &__back {
-            @include typeface(--paragraph-left-bold-prominent);
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-
-            &:hover {
-                text-decoration: underline;
-            }
-            & > svg {
-                width: 1.6rem;
-                height: 1.6rem;
-                margin-right: 0.8rem;
-            }
-        }
-        &__form {
-            margin-right: 1rem;
-            @include mobile {
-                margin: 0 1.6rem;
-            }
-        }
-        &__header {
-            @include typeface(--paragraph-left-bold-prominent);
-            margin-bottom: 1.6rem;
-            margin-top: 2.4rem;
-
-            &:first-child {
-                margin-top: 0;
-            }
-        }
-        &__item {
-            background: var(--general-main-1);
-            border: 1px solid var(--border-normal);
-            padding: 1.6rem;
-            border-radius: 4px;
-
-            &-wrapper {
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
-                grid-gap: 1.6rem;
-
-                @media (max-width: 1024px) {
-                    grid-template-columns: 1fr;
-                }
-                @include mobile {
-                    grid-template-columns: 1fr;
-                }
-            }
-            &-title {
-                @include typeface(--paragraph-left-bold-prominent);
-                margin-bottom: 0.8rem;
-            }
-            &-field {
-                margin-bottom: 1.4rem;
-            }
-        }
-        &__link {
-            color: var(--text-general);
-        }
-        &__scrollbars {
-            height: 100%;
-            width: 100%;
-            flex: 1;
-        }
-        &__button {
-            &-wrapper {
-                position: sticky;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                height: 7.2rem;
-                padding: 1.4rem 2.4rem;
-                background-color: var(--general-main-1);
-                border-top: 1px solid var(--border-normal);
-                display: flex;
-                align-items: center;
-                justify-content: flex-end;
-                margin-top: 2.4rem;
-
-                @include mobile {
-                    position: absolute;
-                }
-            }
-        }
-        &__warning {
-            background-color: rgba(255, 173, 58, 0.3);
-            border-radius: $BORDER_RADIUS;
-            margin-top: 0.8rem;
-            position: relative;
-
-            &-icon {
-                position: absolute;
-                top: 0.8rem;
-                left: 0.8rem;
-            }
-            &-textbox {
-                padding: 0.9rem 3.2rem;
-            }
-            &-link {
-                color: var(--text-general);
-                cursor: pointer;
-                font-weight: bold;
-                text-decoration: none;
-            }
-        }
-    }
-    .account-limit-container {
-        height: 100%;
-        width: 100%;
-
-        &__wrapper {
-            display: flex;
-            width: 100%;
-            height: 100%;
-
-            @include mobile {
-                flex-direction: column;
-
-                .account__scrollbars_container--grid-layout {
-                    overflow: unset;
-                }
-                &:last-child {
-                    padding-bottom: 1.6rem;
-                }
-            }
-        }
-        &__scrollbars {
-            height: 100%;
-            width: 100%;
-            flex: 1;
-        }
-        &-title {
-            @include mobile {
-                padding-bottom: 0.8rem;
-            }
-        }
-        .account-management-table {
-            tr th:nth-child(2),
-            tr td:nth-child(2) {
-                text-align: right;
-            }
-            th {
-                padding: 2rem 0 0.8rem;
-                border-bottom: 2px solid var(--general-section-1);
-            }
-            td {
-                line-height: 3.6rem;
-
-                .account-limit-container__extra-info {
-                    padding-bottom: 0.8rem;
-                }
-                @include mobile {
-                    line-height: 2.4rem;
-                }
-            }
-        }
-        .account-management-flex-wrapper {
-            @include desktop {
-                align-items: center;
-            }
-            @include mobile {
-                flex-direction: column;
-            }
-        }
-        &__extra-info {
-            line-height: 1.4rem;
-            color: var(--text-less-prominent);
-            font-size: 1rem;
-            font-weight: normal;
-        }
-        @include mobile {
-            &__main-text {
-                margin-top: 2.4rem;
-                font-size: 1.2rem;
-            }
-            &__content {
-                padding: 0 0.8rem;
-            }
-            .account__text {
-                font-size: 1rem;
-            }
-        }
-    }
-    .account-limit-popover {
-        display: flex;
-        align-content: center;
-        padding-left: 4px;
-        @extend %inline-icon;
-    }
-    .account-limit-popover-target {
-        height: 100%;
-        display: flex;
-        align-items: center;
-    }
-    .account-limit-info {
-        &__inset_header {
-            display: flex;
-            align-items: center;
-        }
-        * {
-            padding-left: 8px;
-        }
-    }
     .login-history {
         height: 100%;
         width: 100%;
@@ -994,7 +850,7 @@ $MIN_HEIGHT_FLOATING: calc(
             &__row,
             &__header {
                 /* Date-Action-Browser-IP-Status */
-                grid-template-columns: 190px 65px 248px minmax(133px, 308px) 120px;
+                grid-template-columns: 19rem 7.5rem 24.8rem minmax(13.3rem, 30.8rem) 12rem;
                 padding: 1rem;
                 padding-left: 0;
                 background-color: var(--general-main-1);
@@ -1019,6 +875,8 @@ $MIN_HEIGHT_FLOATING: calc(
                     background-color: var(--general-main-2);
                     margin-bottom: 1rem;
                     padding: 1rem;
+                    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05), 0px 16px 20px rgba(0, 0, 0, 0.05);
+                    border-radius: 0.4rem;
                 }
                 &__row {
                     grid-template-columns: 3fr 1fr;
@@ -1028,16 +886,15 @@ $MIN_HEIGHT_FLOATING: calc(
                         display: block;
 
                         &--title {
-                            font-size: var(--text-size-xxs);
-                            font-weight: var(--text-weight-bold);
                             font-stretch: normal;
                             font-style: normal;
-                            line-height: var(--text-lh-m);
                             letter-spacing: normal;
-                            color: var(--text-prominent);
                         }
                         &--action {
                             text-transform: capitalize;
+                        }
+                        &--right {
+                            float: right;
                         }
                         &--browser,
                         &--ip-value {
@@ -1094,6 +951,10 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
     &-page-wrapper {
+        &--dashboard {
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
         @include mobile {
             height: 100%;
         }
@@ -1131,6 +992,38 @@ $MIN_HEIGHT_FLOATING: calc(
         height: 100%;
         margin: 0;
     }
+    &__logout {
+        margin: 0 0.8rem;
+        padding: 0 1.2rem;
+        &-tab {
+            padding-left: 0;
+        }
+    }
+    & .dc-checkbox-blue {
+        & .dc-checkbox__box {
+            margin-left: 0;
+            &--active {
+                padding-left: 0;
+            }
+        }
+    }
+    &__demo-message {
+        &-wrapper {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: auto;
+            @include desktop {
+                &--dashboard {
+                    width: calc(100vw - 33rem);
+                }
+            }
+        }
+        &-button {
+            margin-top: 2.4rem;
+            align-self: center;
+        }
+    }
 }
 
 /** @define account-poa; weak */
@@ -1143,6 +1036,9 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-top: 1em;
             display: flex;
             flex-wrap: wrap;
+        }
+        &-dashboard {
+            max-width: calc(100% - 42rem);
         }
         &-list {
             width: 100%;
@@ -1160,18 +1056,68 @@ $MIN_HEIGHT_FLOATING: calc(
             height: 240px;
             position: relative;
             max-width: 400px;
+            &-dashboard {
+                height: 10.5rem;
+                & .account-poa__upload-remove-btn {
+                    top: 25rem;
+                    right: 1rem;
+                }
+            }
+
+            &-zone {
+                max-width: 40rem;
+                height: 24rem;
+                padding: 0.8rem;
+            }
 
             @include mobile {
                 flex: unset;
                 margin-bottom: 2.4rem;
             }
         }
+        &-property {
+            display: grid;
+            grid-template-areas:
+                'file-size file-size file-format file-format file-time file-time'
+                'file-clear file-clear file-clear file-address file-address file-address';
+            &-wrapper {
+                align-self: center;
+                align-items: center;
+                display: flex;
+                flex-direction: column;
+                padding: 2.4rem;
+            }
+            &-item {
+                border-radius: 0.4rem;
+                height: 10.3rem;
+                border: 1px solid var(--border-normal);
+                margin: 0.8rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            &-size {
+                grid-area: file-size;
+            }
+            &-format {
+                grid-area: file-format;
+            }
+            &-time {
+                grid-area: file-time;
+            }
+            &-clear {
+                grid-area: file-clear;
+            }
+            &-with-address {
+                grid-area: file-address;
+            }
+        }
         &-remove-btn {
             position: absolute;
-            width: 16px;
-            height: 16px;
-            top: 8px;
-            right: 8px;
+            width: 1.6rem;
+            height: 1.6rem;
+            top: 0.8rem;
+            right: 0.8rem;
             cursor: pointer;
             transition: transform 0.25s linear;
 
@@ -1196,9 +1142,18 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-bottom: 2em;
             align-items: center;
             justify-content: flex-start;
+            &-dashboard {
+                flex-direction: column;
+                margin-left: 1.6rem;
+                & span {
+                    display: list-item;
+                    list-style-type: disc;
+                    margin-bottom: 0.8rem;
+                }
+            }
         }
         &-item {
-            min-width: 238px;
+            min-width: 23.8rem;
             width: 100%;
             margin-left: 1em;
             font-size: var(--text-size-xxs);
@@ -1249,13 +1204,13 @@ $MIN_HEIGHT_FLOATING: calc(
 
     &__content {
         display: grid;
-        grid-template-columns: 32px auto;
+        grid-template-columns: 3.2rem auto;
         grid-gap: 8px;
 
         .inline-icon {
-            width: 32px;
-            height: 32px;
-            margin-right: 8px;
+            width: 3.2rem;
+            height: 3.2rem;
+            margin-right: 0.8rem;
         }
     }
 }
@@ -1268,12 +1223,7 @@ $MIN_HEIGHT_FLOATING: calc(
         padding-left: 8px;
         padding-right: 8px;
     }
-    &__wrapper {
-        max-width: 682px;
-        max-height: 560px;
-        height: 100%;
-        width: 100%;
-    }
+
     &__loading {
         height: calc(100vh - 240px);
     }
@@ -1301,6 +1251,24 @@ $MIN_HEIGHT_FLOATING: calc(
                     width: 100%;
                     overflow: hidden;
                 }
+            }
+        }
+    }
+    &__wrapper {
+        max-width: 682px;
+        max-height: 560px;
+        height: 100%;
+        width: 100%;
+        &--dashboard {
+            max-width: 80rem;
+            & .table__cell {
+                height: 3.8rem;
+            }
+            & .table__row {
+                grid-template-columns: 17rem 20rem 15.5rem 11rem;
+            }
+            & .data-list__item {
+                box-shadow: 0px 1.6rem #00000005, 0px 1.6rem #0000000d;
             }
         }
     }
@@ -1366,10 +1334,36 @@ $MIN_HEIGHT_FLOATING: calc(
                             line-height: 1.5;
                         }
                     }
+                    &--dashboard {
+                        max-width: 14.2rem;
+
+                        & .data-list__row-title {
+                            text-align: right;
+                            line-height: 1.5;
+                        }
+                        & .data-list__row-content {
+                            float: right;
+                        }
+                        @include mobile {
+                            display: grid;
+                        }
+                    }
                     .data-list__row-title {
                         line-height: 1.5;
                     }
                 }
+            }
+        }
+        &__wrapper--dashboard {
+            & .ReactVirtualized__Grid__innerScrollContainer {
+                box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05), 0px 16px 20px rgba(0, 0, 0, 0.05);
+                border-radius: 0.4rem;
+            }
+            & .data-list__col {
+                display: grid;
+            }
+            & .data-list__item {
+                background: unset;
             }
         }
         .name {
@@ -1438,13 +1432,19 @@ $MIN_HEIGHT_FLOATING: calc(
         display: grid;
         grid-gap: 2.4rem;
         grid-template-columns: 1fr 1fr 1fr;
-        margin-top: 4rem;
     }
 }
 
 /** @define onfido-container; weak */
 .onfido-container {
     margin-top: 24px;
+
+    &__message {
+        padding: 1rem;
+        margin: 0 auto 1.4rem;
+        width: 94vw; // same as onfido
+        max-width: 53rem;
+    }
     @include mobile {
         margin-top: 0;
 
@@ -1486,13 +1486,17 @@ $MIN_HEIGHT_FLOATING: calc(
                     &__confirmation {
                         margin-top: 24px;
                         margin-bottom: 32px;
-
                         button {
                             width: 85px;
                             height: 40px;
                         }
                         > :first-child {
                             margin-right: 16px;
+                        }
+                        &-dashboard {
+                            button {
+                                width: unset;
+                            }
                         }
                     }
                 }
@@ -1522,7 +1526,7 @@ $MIN_HEIGHT_FLOATING: calc(
         justify-content: center;
         margin-top: 2.4rem;
 
-        :first-child {
+        & .dc-btn {
             margin-right: 0.8rem;
         }
     }
@@ -1539,7 +1543,6 @@ $MIN_HEIGHT_FLOATING: calc(
             align-items: center;
 
             &-header {
-                @include typeface(--title-center-bold-prominent, none);
                 margin: 1.6rem 0 2.4rem;
             }
             &-image {
@@ -1563,77 +1566,6 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 }
 
-.dc-modal__container_self_exclusion__article-modal {
-    .self-exclusion {
-        &__article {
-            max-width: 440px;
-            max-height: 480px;
-            height: auto;
-            display: flex;
-            flex-direction: column;
-
-            &-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 1.6rem 2.4rem;
-                @include typeface(--title-center-bold-prominent, none);
-                border-bottom: 1px solid var(--border-normal);
-            }
-            &-icon {
-                cursor: pointer;
-            }
-            &-content {
-                padding: 2.4rem;
-            }
-        }
-    }
-}
-
-.dc-modal__container_self_exclusion__modal {
-    .self-exclusion {
-        &__popup {
-            display: flex;
-            width: 440px;
-            height: 392px;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-            padding: 2.4rem;
-
-            &-header {
-                @include typeface(--title-center-bold-prominent, none);
-                margin: 3.3rem 0 0.8rem;
-            }
-            &-desc {
-                @include typeface(--paragraph-center-normal-black, none);
-                margin-bottom: 2.4rem;
-            }
-            &-image {
-                width: 12.8rem;
-                height: 12.8rem;
-            }
-            &-buttons {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-
-                & > button:first-child {
-                    width: fit-content;
-                    margin-bottom: 1.6rem;
-                }
-            }
-            &-error {
-                margin-top: 1.6rem;
-                @include typeface(--paragraph-center-bold-red, none);
-            }
-            @include mobile {
-                width: 300px;
-                height: 272px;
-            }
-        }
-    }
-}
 /* stylelint-enable */
 
 /** @define proof-of-identity */
@@ -1649,6 +1581,7 @@ $MIN_HEIGHT_FLOATING: calc(
 /** @define deactivate-account; weak */
 .deactivate-account {
     max-width: 67.2rem;
+    padding-bottom: 1.6rem;
 
     &__information {
         @include typeface(--paragraph-left-normal-prominent, none);
@@ -1686,6 +1619,9 @@ $MIN_HEIGHT_FLOATING: calc(
         @include mobile {
             float: none;
             margin: 2.4rem auto 3.2rem;
+            &--dashboard {
+                width: 100%;
+            }
         }
     }
     .deactivate-account-reasons {
@@ -1694,16 +1630,29 @@ $MIN_HEIGHT_FLOATING: calc(
         line-height: 1.43;
         font-weight: bold;
 
+        &--dashboard {
+            & .dc-form-submit-button {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                flex: 1;
+                & .dc-btn__large {
+                    width: 100%;
+                }
+            }
+            & .deactivate-account-reasons__title {
+                margin: 1.6rem 0 0.8rem;
+            }
+            & form {
+                width: 100%;
+            }
+        }
         &__title {
             margin-bottom: 18px;
         }
         &__checkbox {
             margin-top: 10px;
             width: fit-content;
-
-            .dc-checkbox__label {
-                font-weight: normal;
-            }
         }
         &__input {
             margin: 16px 0 0;
@@ -1714,14 +1663,50 @@ $MIN_HEIGHT_FLOATING: calc(
                 min-height: 96px;
             }
         }
+
+        &__hint {
+            margin-top: 0.8rem;
+            &-wrapper {
+                @include mobile {
+                    margin-bottom: 5.6rem;
+                }
+            }
+        }
+        &__footer {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            & .dc-form-submit-button {
+                margin: 1.6rem 0;
+            }
+        }
     }
     @include mobile {
         width: calc(100% - 3rem);
         margin: 0 auto;
 
-        .dc-form-submit-button {
-            background-color: var(--general-main-1);
+        .deactivate-account-reasons {
+            &__footer {
+                display: flex;
+                flex-direction: column;
+
+                .dc-form-submit-button {
+                    margin: 0.8rem 0;
+                    background-color: var(--general-main-1);
+                    @include mobile {
+                        position: fixed;
+                        bottom: 0;
+                        left: 0;
+                        background: var(--general-main-1);
+                        width: 100vw;
+                        margin: unset;
+                        padding: 0.8rem 1.6rem;
+                    }
+                }
+            }
         }
+
         &:first-child {
             & > div {
                 display: flex;
@@ -1738,13 +1723,10 @@ $MIN_HEIGHT_FLOATING: calc(
     @include mobile {
         max-height: 70vh;
     }
-    .deactivate-account-error-scroll {
-        overflow-y: auto;
-    }
     .dc-modal-header {
         border: none;
-        min-width: 430px;
-        margin-bottom: 8px;
+        max-width: 43rem;
+        margin-bottom: 0.8rem;
     }
     .account-closure-warning-modal {
         display: flex;
@@ -1758,8 +1740,12 @@ $MIN_HEIGHT_FLOATING: calc(
         }
 
         .dc-form-submit-button {
-            justify-content: center;
-            padding: 2rem 0 0;
+            align-self: center;
+            padding: 1.6rem 0 0;
+
+            > button {
+                width: 10.3rem;
+            }
 
             @include mobile {
                 background: unset;
@@ -1776,32 +1762,37 @@ $MIN_HEIGHT_FLOATING: calc(
         }
         &__content-wrapper {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            margin-top: 4px;
+            margin-top: 0.8rem;
+
+            > :first-child {
+                margin-bottom: 0.4rem;
+            }
         }
     }
 
     .deactivate-account-error {
-        padding: 0 24px 24px 24px;
+        padding: 0 2.4rem;
         &__title {
-            margin-bottom: 5px;
+            margin-bottom: 0.5rem;
         }
         &__account-details {
             display: flex;
             align-items: center;
         }
         &__account {
-            margin-left: 8px;
+            margin-left: 0.8rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
         &__container {
             display: flex;
-            padding: 3px 3px 3px 16px;
+            padding: 0.3rem 0.3rem 0.3rem 1.6rem;
             justify-content: space-between;
             align-items: center;
-            max-width: 264px;
+            max-width: 26.4rem;
         }
         &__details {
             color: var(--text-prominent);
@@ -1809,11 +1800,16 @@ $MIN_HEIGHT_FLOATING: calc(
             line-height: 1.43;
         }
         &__button {
-            height: 40px;
-            width: 77px;
+            height: 4rem;
+            width: 7.7rem;
             float: right;
-            margin-right: 24px;
-            margin-bottom: 24px;
+            margin: 1.6rem 2.4rem;
+        }
+
+        @include mobile {
+            &__button {
+                margin: 1.6rem;
+            }
         }
     }
 }

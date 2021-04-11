@@ -32,11 +32,11 @@ BuySellFormReceiveAmount.propTypes = {
 
 const BuySellForm = observer(props => {
     const isMounted = useIsMounted();
-    const { buy_sell_store } = useStores();
-    const { setPageFooterParent } = props;
+    const { advertiser_page_store, buy_sell_store } = useStores();
 
     buy_sell_store.setFormProps(props);
 
+    const { setPageFooterParent } = props;
     const {
         advertiser_details,
         description,
@@ -45,7 +45,7 @@ const BuySellForm = observer(props => {
         min_order_amount_limit,
         min_order_amount_limit_display,
         price,
-    } = buy_sell_store?.advert;
+    } = buy_sell_store?.advert || {};
 
     React.useEffect(
         () => {
@@ -64,13 +64,16 @@ const BuySellForm = observer(props => {
                 }
             );
 
+            advertiser_page_store.setFormErrorMessage('');
             buy_sell_store.setInitialReceiveAmount();
 
             if (buy_sell_store.is_sell_advert) {
                 buy_sell_store.getAdvertiserInfo();
             }
 
-            return disposeReceiveAmountReaction;
+            return () => {
+                disposeReceiveAmountReaction();
+            };
         },
         [] // eslint-disable-line react-hooks/exhaustive-deps
     );

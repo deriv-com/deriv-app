@@ -13,7 +13,7 @@
             -webkit-appearance: none;
             -moz-appearance: none;
 
-            &:hover {
+            &:hover:not(:disabled) {
                 cursor: pointer;
                 border-color: var(--border-hover);
             }
@@ -38,7 +38,10 @@
     }
     .dc-icon {
         top: 25%;
-        cursor: pointer;
+
+        &:not(.dc-icon--disabled) {
+            cursor: pointer;
+        }
     }
     &__picker {
         position: absolute;
@@ -110,18 +113,11 @@
             width: 100%;
 
             &-text {
-                font-size: 1.4rem;
                 background-color: inherit;
                 padding-top: 0.2rem;
-                color: var(--text-prominent);
 
                 &--has-error {
                     padding-top: unset;
-                    color: var(--brand-red-coral);
-                }
-
-                &--disabled {
-                    color: var(--text-disabled);
                 }
             }
         }
@@ -148,11 +144,12 @@
             &--is-focused {
                 color: var(--brand-secondary);
             }
+            .dc-input--disabled & {
+                color: var(--text-disabled);
+            }
         }
         &__error {
             display: flex;
-            font-size: 1.2rem;
-            color: var(--brand-red-coral);
             position: absolute;
             top: 4.4rem;
             left: 1.2rem;

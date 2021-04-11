@@ -33,7 +33,7 @@ export default class UIStore extends BaseStore {
     @observable settings_extension = undefined;
     @observable notification_messages_ui = undefined;
 
-    @observable is_dark_mode_on = window.matchMedia('(prefers-color-scheme: dark)').matches && isMobile();
+    @observable is_dark_mode_on = window?.matchMedia?.('(prefers-color-scheme: dark)').matches && isMobile();
     @observable is_settings_modal_on = false;
     @observable is_accounts_switcher_on = false;
     @observable account_switcher_disabled_message = '';
@@ -129,6 +129,7 @@ export default class UIStore extends BaseStore {
 
     @observable is_mt5_page = false;
     @observable is_nativepicker_visible = false;
+    @observable is_landscape = false;
 
     @observable prompt_when = false;
     @observable promptFn = () => {};
@@ -410,6 +411,7 @@ export default class UIStore extends BaseStore {
     @action.bound
     closeRealAccountSignup() {
         this.is_real_acc_signup_on = false;
+        this.real_account_signup_target = '';
         setTimeout(() => {
             this.resetRealAccountSignupParams();
             this.setRealAccountSignupEnd(true);
@@ -511,20 +513,22 @@ export default class UIStore extends BaseStore {
             // Remove notification messages if it was already closed by user and exists in LocalStore
             const active_loginid = LocalStore.get('active_loginid');
             const messages = LocalStore.getObject('notification_messages');
+
             if (active_loginid) {
                 // Check if is existing message to remove already closed messages stored in LocalStore
                 const is_existing_message = Array.isArray(messages[active_loginid])
                     ? messages[active_loginid].includes(notification.key)
                     : false;
+
                 if (is_existing_message) {
                     this.markNotificationMessage({ key: notification.key });
-                } else {
-                    this.notification_messages = [...this.notification_messages, notification].sort(
-                        isMobile() ? sortNotificationsMobile : sortNotifications
-                    );
-                    if (!excluded_notifications.includes(notification.key)) {
-                        this.updateNotifications(this.notification_messages);
-                    }
+                }
+
+                const sortFn = isMobile() ? sortNotificationsMobile : sortNotifications;
+                this.notification_messages = [...this.notification_messages, notification].sort(sortFn);
+
+                if (!excluded_notifications.includes(notification.key)) {
+                    this.updateNotifications(this.notification_messages);
                 }
             }
         }
@@ -647,7 +651,11 @@ export default class UIStore extends BaseStore {
             success_message: '',
             error_message: '',
         };
-        this.real_account_signup_target = '';
+    }
+
+    @action.bound
+    onOrientationChange({ is_landscape_orientation }) {
+        this.is_landscape = is_landscape_orientation;
     }
 
     @action.bound

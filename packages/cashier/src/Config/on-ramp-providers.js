@@ -90,103 +90,6 @@ const createChangellyProvider = store => ({
     should_show_deposit_address: true,
 });
 
-const createWyreProvider = store => ({
-    icon: { dark: 'IcCashierWyreDark', light: 'IcCashierWyreLight' },
-    name: 'Wyre',
-    getDescription: () =>
-        localize(
-            'A secure and compliant bridge between fiat currencies and cryptocurrencies. Supports BTC, ETH, WETH, and DAI. Exchange crypto safely and securely with Wyre.'
-        ),
-    getAllowedResidencies: () => [
-        // https://docs.sendwyre.com/docs/getting-started-wyre-checkout#supported-states-and-countries
-        'ar',
-        'at',
-        'au',
-        'be',
-        'bo',
-        'br',
-        'by',
-        'ca',
-        'ch',
-        'cl',
-        'co',
-        'cr',
-        'cy',
-        'cz',
-        'de',
-        'dk',
-        'do',
-        'dz',
-        'ee',
-        'es',
-        'fi',
-        'fr',
-        'fr',
-        'gb',
-        'gr',
-        'hk',
-        'id',
-        'ie',
-        'il',
-        'in',
-        'is',
-        'it',
-        'jp',
-        'kr',
-        'lt',
-        'lu',
-        'lv',
-        'mx',
-        'my',
-        'nl',
-        'no',
-        'np',
-        'nz',
-        'pe',
-        'ph',
-        'pl',
-        'pt',
-        'py',
-        'se',
-        'sg',
-        'si',
-        'sk',
-        'th',
-        'tr',
-        'tz',
-        'vn',
-        'za',
-    ],
-    getPaymentIcons: () => [
-        { dark: 'IcCashierVisaDark', light: 'IcCashierVisaLight' },
-        { dark: 'IcCashierMastercardDark', light: 'IcCashierMastercardLight' },
-    ],
-    getScriptDependencies: () => [],
-    getDefaultFromCurrency: () => 'usd',
-    getFromCurrencies: () => ['eur', 'aud', 'usd', 'brl', 'cad', 'gbp', 'mxn'],
-    getToCurrencies: () => ['btc', 'eth', 'husd', 'weth', 'usdt', 'usdc', 'busd', 'dai', 'gusd', 'pax'],
-    getWidgetHtml: () => {
-        return new Promise((resolve, reject) => {
-            store.WS.serviceToken({ service_token: 1, service: 'wyre' }).then(response => {
-                if (response.error) {
-                    reject(response.error.message);
-                } else {
-                    const { url } = response.service_token.wyre;
-
-                    if (url) {
-                        window.open(url);
-                    }
-
-                    // Resolving empty will/should redirect user.
-                    resolve();
-                }
-            });
-        });
-    },
-    onMountWidgetContainer: () => {},
-    should_show_deposit_address: false,
-});
-
 const createXanPoolProvider = store => ({
     icon: { dark: 'IcCashierXanpoolDark', light: 'IcCashierXanpoolLight' },
     name: 'XanPool',
@@ -232,6 +135,5 @@ const createXanPoolProvider = store => ({
 export default {
     createBanxaProvider,
     createChangellyProvider,
-    createWyreProvider,
     createXanPoolProvider,
 };

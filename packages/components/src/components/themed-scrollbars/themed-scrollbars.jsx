@@ -3,18 +3,19 @@ import React from 'react';
 import { useHover } from '../../hooks/use-hover';
 
 const ThemedScrollbars = ({
+    autohide = true,
     children,
     className,
+    has_horizontal,
     height,
-    width,
-    autohide = true,
-    style = {},
     is_bypassed,
     is_only_horizontal,
     is_only_horizontal_overlay,
-    has_horizontal,
+    is_scrollbar_hidden,
     onScroll,
     refSetter,
+    style = {},
+    width,
 }) => {
     const [hoverRef, isHovered] = useHover(refSetter);
 
@@ -28,6 +29,7 @@ const ThemedScrollbars = ({
                 'dc-themed-scrollbars--has-horizontal': has_horizontal,
                 'dc-themed-scrollbars--only-horizontal': is_only_horizontal,
                 'dc-themed-scrollbars--only-horizontal-overlay': is_only_horizontal_overlay,
+                'dc-themed-scrollbars--hidden-scrollbar': is_scrollbar_hidden,
             })}
             style={{
                 maxHeight: height || '100%',

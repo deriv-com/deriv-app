@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, ThemedScrollbars } from '@deriv/components';
-import { getFormattedText } from '@deriv/shared';
+import { getFormattedText, isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import Chat from 'Components/orders/chat/chat.jsx';
@@ -66,6 +66,9 @@ const OrderDetails = observer(({ onPageReturn }) => {
         (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad)
             ? localize('Buy {{offered_currency}} order', { offered_currency: account_currency })
             : localize('Sell {{offered_currency}} order', { offered_currency: account_currency });
+    if (sendbird_store.should_show_chat_on_orders) {
+        return <Chat />;
+    }
 
     return (
         <OrderDetailsWrapper page_title={page_title} onPageReturn={onPageReturn}>
@@ -153,7 +156,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                         <OrderInfoBlock label={labels.contact_details} value={contact_info || '-'} />
                         <OrderInfoBlock label={labels.instructions} value={advert_details.description || '-'} />
                     </ThemedScrollbars>
-                    {should_show_order_footer && (
+                    {should_show_order_footer && isDesktop() && (
                         <OrderDetailsFooter order_information={order_store.order_information} />
                     )}
                 </div>

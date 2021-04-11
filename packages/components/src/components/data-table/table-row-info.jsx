@@ -19,7 +19,7 @@ const TableRowInfo = ({ replace, is_footer, cells, className }) => {
         >
             {show_details ? (
                 <ThemedScrollbars height='80px'>
-                    <div>{replace?.component ?? <p className='statement__row--detail-text'>{replace.message}</p>}</div>
+                    <div>{replace?.component}</div>
                 </ThemedScrollbars>
             ) : (
                 cells

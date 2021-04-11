@@ -40,6 +40,7 @@ export default class CommonStore extends BaseStore {
     @observable app_routing_history = [];
     @observable app_router = { history: null };
 
+    @action.bound
     setInitialRouteHistoryItem(location) {
         if (window.location.href.indexOf('?ext_platform_url=') !== -1) {
             const ext_url = decodeURI(new URL(window.location.href).searchParams.get('ext_platform_url'));
@@ -212,7 +213,7 @@ export default class CommonStore extends BaseStore {
                 // remove once p2p is ready
                 const ui_store = this.root_store.ui;
                 if (route_to_item.pathname === routes.cashier_p2p && ui_store.is_mobile)
-                    history.push(`${route_to_item.pathname}#verification`);
+                    history.push(`${route_to_item.pathname}/verification`);
                 else history.push(route_to_item.pathname);
                 return;
             }

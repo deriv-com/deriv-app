@@ -76,7 +76,6 @@ const OrderDetailsComplainModal = ({
                     />
                 }
                 page_footer_className='order-details-complain-modal__footer'
-                should_wrap_body
             >
                 <OrderDetailsComplainModalRadioGroup
                     is_buy_order_for_user={is_buy_order_for_user}
@@ -100,16 +99,15 @@ const OrderDetailsComplainModal = ({
                 </Text>
             )}
             width='440px'
+            height='500px'
         >
-            <Modal.Body>
-                <div className='order-details-complain-modal__body'>
-                    <OrderDetailsComplainModalRadioGroup
-                        is_buy_order_for_user={is_buy_order_for_user}
-                        dispute_reason={dispute_reason}
-                        onCheckboxChange={onCheckboxChange}
-                    />
-                    <ComplainExplanation />
-                </div>
+            <Modal.Body className='order-details-complain-modal__body'>
+                <OrderDetailsComplainModalRadioGroup
+                    is_buy_order_for_user={is_buy_order_for_user}
+                    dispute_reason={dispute_reason}
+                    onCheckboxChange={onCheckboxChange}
+                />
+                <ComplainExplanation />
             </Modal.Body>
             <Modal.Footer>
                 <div className='order-details-complain-modal__footer'>

@@ -2,31 +2,44 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { when } from 'mobx';
 import { MobileWrapper } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isMobile, routes } from '@deriv/shared';
 import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggle-positions-mobile.jsx';
 import { connect, MobxContentProvider } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 
-class TradeHeaderExtensions extends React.Component {
-    populateHeader = () => {
+const TradeHeaderExtensions = props => {
+    const {
+        disableApp,
+        enableApp,
+        onMountCashier,
+        onMountPositions,
+        onPositionsCancel,
+        onPositionsRemove,
+        onPositionsSell,
+        onUnmountPositions,
+        populateHeaderExtensions,
+        setAccountSwitchListener,
+        store,
+    } = props;
+
+    const props_ref = React.useRef();
+    props_ref.current = props;
+
+    const show_positions_toggle = location.pathname !== routes.mt5;
+
+    const populateHeader = React.useCallback(() => {
         const {
-            active_positions_count,
-            disableApp,
-            enableApp,
             is_logged_in,
             is_positions_empty,
-            onPositionsRemove,
-            onPositionsSell,
-            onPositionsCancel,
+            active_positions_count,
             positions,
             positions_currency,
             positions_error,
-            populateHeaderExtensions,
-        } = this.props;
+        } = props_ref.current;
 
-        const header_items = is_logged_in && (
+        const header_items = is_logged_in && show_positions_toggle && (
             <MobileWrapper>
-                <MobxContentProvider store={this.props.store}>
+                <MobxContentProvider store={store}>
                     <TogglePositionsMobile
                         active_positions_count={active_positions_count}
                         all_positions={positions}
@@ -44,38 +57,57 @@ class TradeHeaderExtensions extends React.Component {
         );
 
         populateHeaderExtensions(header_items);
-    };
+    }, [
+        disableApp,
+        enableApp,
+        onPositionsCancel,
+        onPositionsRemove,
+        onPositionsSell,
+        populateHeaderExtensions,
+        store,
+        show_positions_toggle,
+    ]);
 
-    async componentDidMount() {
-        if (isMobile()) {
-            const { client } = this.props.store;
-            // Waits for login to complete
-            await when(() => !client.is_populating_account_list);
-            if (this.props.is_logged_in) {
-                await WS.wait('authorize');
-                this.props.onMountPositions();
-                this.props.onMountCashier(true);
-                this.props.setAccountSwitchListener();
+    React.useEffect(() => {
+        const waitForLogin = async () => {
+            if (isMobile() && show_positions_toggle) {
+                const { client } = store;
+                // Waits for login to complete
+                await when(() => !client.is_populating_account_list);
+                if (props_ref.current.is_logged_in) {
+                    await WS.wait('authorize');
+                    onMountPositions();
+                    onMountCashier(true);
+                    setAccountSwitchListener();
+                }
             }
-        }
 
-        this.populateHeader();
-    }
+            populateHeader();
+        };
 
-    componentDidUpdate() {
-        this.populateHeader();
-    }
+        waitForLogin();
 
-    componentWillUnmount() {
-        if (isMobile()) this.props.onUnmountPositions();
-        this.props.populateHeaderExtensions(null);
-    }
+        return () => {
+            if (isMobile()) onUnmountPositions();
+            populateHeaderExtensions(null);
+        };
+    }, [
+        onMountCashier,
+        onMountPositions,
+        onUnmountPositions,
+        populateHeader,
+        populateHeaderExtensions,
+        setAccountSwitchListener,
+        store,
+        show_positions_toggle,
+    ]);
 
-    // eslint-disable-next-line class-methods-use-this
-    render() {
-        return null;
-    }
-}
+    React.useEffect(() => {
+        populateHeader();
+    });
+
+    return null;
+};
 
 TradeHeaderExtensions.propTypes = {
     is_logged_in: PropTypes.bool,

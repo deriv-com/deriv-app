@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Loadable from 'react-loadable-hooks';
+import Loadable from 'react-loadable';
 import { Icon, Modal, Popover, VerticalTab, UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import 'Sass/app/modules/settings.scss';
@@ -47,11 +47,11 @@ const ToggleSettings = ({ enableApp, is_settings_visible, disableApp, toggleSett
     });
     return (
         <React.Fragment>
-            <Popover alignment='top' message={localize('Platform settings')} className='footer__link'>
-                <a id='dt_settings_toggle' onClick={toggleSettings} className={toggle_settings_class}>
+            <a id='dt_settings_toggle' onClick={toggleSettings} className={`${toggle_settings_class} footer__link`}>
+                <Popover alignment='top' message={localize('Platform settings')}>
                     <Icon icon='IcGear' className='footer__icon ic-settings__icon' />
-                </a>
-            </Popover>
+                </Popover>
+            </a>
             <Modal
                 id='dt_settings_modal'
                 className='modal-settings'

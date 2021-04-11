@@ -47,11 +47,14 @@ const AccountTransfer = ({
         };
     }, []);
 
-    const hideNotes = () => {
-        if (typeof setSideNotes === 'function') {
+    React.useEffect(() => {
+        if (
+            typeof setSideNotes === 'function' &&
+            (is_transfer_confirm || is_transfer_successful || has_no_accounts_balance)
+        ) {
             setSideNotes(null);
         }
-    };
+    }, [setSideNotes, is_transfer_confirm, is_transfer_successful, has_no_accounts_balance]);
 
     if (is_virtual) {
         return <Virtual />;
@@ -74,15 +77,12 @@ const AccountTransfer = ({
         return <AccountTransferNoAccount />;
     }
     if (has_no_accounts_balance) {
-        hideNotes();
         return <NoBalance />;
     }
     if (is_transfer_confirm) {
-        hideNotes();
         return <AccountTransferConfirm />;
     }
     if (is_transfer_successful) {
-        hideNotes();
         return <AccountTransferReceipt />;
     }
 

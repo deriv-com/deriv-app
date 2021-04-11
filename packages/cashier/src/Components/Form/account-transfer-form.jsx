@@ -20,7 +20,13 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import FormError from '../Error/form-error.jsx';
 
-const AccountOption = ({ account, idx }) => {
+const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
+    let server;
+
+    if (account.is_mt) {
+        server = mt5_login_list.find(mt5_account => mt5_account.login === account.value);
+    }
+
     return (
         <React.Fragment key={idx}>
             {(account.currency || account.mt_icon) && (
@@ -45,6 +51,13 @@ const AccountOption = ({ account, idx }) => {
                 </Text>
             </div>
 
+            {server?.market_type === 'gaming' && (
+                <Text color={is_dark_mode_on ? 'general' : 'colored-background'} size='xxs' className='badge-server'>
+                    {server.server_info.geolocation.region}&nbsp;
+                    {server.server_info.geolocation.sequence !== 1 ? server.server_info.geolocation.sequence : ''}
+                </Text>
+            )}
+
             <span className='account-transfer__balance'>
                 <Money
                     amount={account.balance}
@@ -67,9 +80,9 @@ const AccountTransferBullet = ({ children }) => (
 const AccountTransferNote = ({ currency, transfer_fee, minimum_fee }) => (
     <div className='account-transfer__notes'>
         <DesktopWrapper>
-            <div className='cashier__header account-transfer__notes-header'>
+            <Text as='h2' color='prominent' weight='bold' className='cashier__header account-transfer__notes-header'>
                 <Localize i18n_default_text='Notes' />
-            </div>
+            </Text>
         </DesktopWrapper>
         <AccountTransferBullet>
             <Localize
@@ -105,7 +118,9 @@ const AccountTransferForm = ({
     setAccountTransferAmount,
     setSideNotes,
     transfer_fee,
+    is_dark_mode_on,
     minimum_fee,
+    mt5_login_list,
     onChangeTransferFrom,
     onChangeTransferTo,
     setErrorMessage,
@@ -142,14 +157,32 @@ const AccountTransferForm = ({
         mt_accounts_to = [];
 
         accounts_list.forEach((account, idx) => {
-            const text = <AccountOption idx={idx} account={account} />;
+            const text = (
+                <AccountOption
+                    mt5_login_list={mt5_login_list}
+                    idx={idx}
+                    account={account}
+                    is_dark_mode_on={is_dark_mode_on}
+                />
+            );
             const value = account.value;
+            const account_server = mt5_login_list.find(server => server.login === account.value);
+            let server_region = '';
+            if (account_server?.market_type === 'gaming') {
+                server_region = `[${account_server.server_info.geolocation.region}${
+                    account_server.server_info.geolocation.sequence !== 1
+                        ? account_server.server_info.geolocation.sequence
+                        : ''
+                }]`;
+            }
+
             (account.is_mt ? mt_accounts_from : accounts_from).push({
                 text,
                 value,
-                nativepicker_text: `${account.is_mt ? account.mt_icon : getCurrencyName(account.currency)} (${
-                    account.balance
-                } ${account.is_mt ? account.currency : account.text})`,
+                is_mt: account.is_mt,
+                nativepicker_text: `${
+                    account.is_mt ? account.mt_icon : getCurrencyName(account.currency)
+                } ${server_region} (${account.balance} ${account.is_mt ? account.currency : account.text})`,
             });
             const is_selected_from = account.value === selected_from.value;
             // account from and to cannot be the same
@@ -158,14 +191,17 @@ const AccountTransferForm = ({
                 const is_selected_from_crypto = selected_from.is_crypto && account.is_crypto;
                 // cannot transfer to MT account from MT
                 // cannot transfer to crypto account from crypto
+
                 const is_disabled = is_selected_from_mt || is_selected_from_crypto;
+
                 (account.is_mt ? mt_accounts_to : accounts_to).push({
                     text,
                     value,
+                    is_mt: account.is_mt,
                     disabled: is_disabled,
-                    nativepicker_text: `${account.is_mt ? account.mt_icon : getCurrencyName(account.currency)} (${
-                        account.balance
-                    } ${account.is_mt ? account.currency : account.text})`,
+                    nativepicker_text: `${
+                        account.is_mt ? account.mt_icon : getCurrencyName(account.currency)
+                    } ${server_region} (${account.balance} ${account.is_mt ? account.currency : account.text})`,
                 });
             }
         });
@@ -210,9 +246,15 @@ const AccountTransferForm = ({
 
     return (
         <div className='cashier__wrapper account-transfer__wrapper'>
-            <h2 className='cashier__header cashier__content-header'>
+            <Text
+                as='h2'
+                color='prominent'
+                weight='bold'
+                align='center'
+                className='cashier__header cashier__content-header'
+            >
                 {localize('Transfer between your accounts in Deriv')}
-            </h2>
+            </Text>
             <Formik
                 initialValues={{
                     amount: account_transfer_amount || '',
@@ -346,7 +388,7 @@ const AccountTransferForm = ({
                                             autoComplete='off'
                                             maxLength='30'
                                             hint={
-                                                transfer_limit.max && (
+                                                transfer_limit.max ? (
                                                     <Localize
                                                         i18n_default_text='Transfer limits: <0 /> - <1 />'
                                                         components={[
@@ -364,6 +406,8 @@ const AccountTransferForm = ({
                                                             />,
                                                         ]}
                                                     />
+                                                ) : (
+                                                    ''
                                                 )
                                             }
                                         />
@@ -419,12 +463,14 @@ AccountTransferForm.propTypes = {
     transfer_limit: PropTypes.object,
 };
 
-export default connect(({ client, modules }) => ({
+export default connect(({ client, modules, ui }) => ({
     account_limits: client.account_limits,
     account_transfer_amount: modules.cashier.config.account_transfer.account_transfer_amount,
     onMount: client.getLimits,
     accounts_list: modules.cashier.config.account_transfer.accounts_list,
+    is_dark_mode_on: ui.is_dark_mode_on,
     minimum_fee: modules.cashier.config.account_transfer.minimum_fee,
+    mt5_login_list: client.mt5_login_list,
     onChangeTransferFrom: modules.cashier.onChangeTransferFrom,
     onChangeTransferTo: modules.cashier.onChangeTransferTo,
     selected_from: modules.cashier.config.account_transfer.selected_from,

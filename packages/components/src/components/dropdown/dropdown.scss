@@ -23,7 +23,6 @@
         justify-content: center;
         background: var(--fill-normal);
         border: 1px solid var(--border-normal);
-
         &:hover {
             outline: 0;
             border-color: var(--border-hover);
@@ -36,8 +35,6 @@
         &-text {
             padding-left: 1em;
             padding-right: 2.5em;
-            @include typeface(--paragraph-center-normal-black);
-            color: var(--text-prominent);
             display: flex;
             white-space: nowrap;
 
@@ -53,6 +50,12 @@
                 height: 100%;
                 pointer-events: none;
             }
+        }
+        &--has-suffix-icon {
+            width: 21rem;
+            padding-left: 3rem;
+            padding-right: 0;
+            justify-content: start;
         }
         &--is-left-text {
             justify-content: flex-start;
@@ -82,9 +85,7 @@
             transform-origin: top left;
 
             &-text {
-                font-size: 1.4rem;
                 padding: 0 4px;
-                color: var(--color-grey);
                 background: var(--fill-normal);
             }
             &--is-left-text {
@@ -93,7 +94,8 @@
 
                 &.dc-dropdown__display-placeholder--is-title {
                     transform: translate(0, -1.7rem) scale(0.75);
-                    padding: 0 4px;
+                    padding: 0 2px;
+                    white-space: nowrap;
 
                     .dc-dropdown__display-placeholder-text {
                         color: var(--text-general) !important;
@@ -112,8 +114,6 @@
         position: relative;
     }
     &__hint {
-        color: var(--text-less-prominent);
-        font-size: var(--text-size-xxs);
         margin-left: 1.2rem;
     }
     &--no-margin .dc-dropdown__display {
@@ -157,6 +157,8 @@
         }
     }
     &--error {
+        margin-bottom: -1.8rem;
+
         & .dc-dropdown__display {
             border-color: var(--brand-red-coral) !important;
         }
@@ -260,27 +262,6 @@
         width: 100%;
 
         // keep <select /> element on top of .dc_dropdown__label
-        .dc-native-select {
-            position: absolute;
-            top: 0;
-            opacity: 0;
-
-            @supports not (-webkit-touch-callout: none) {
-                /* non-iOS devices hack
-    * because .focus() doesn't open <select /> in Android OS,
-    * here we make the <select /> element to fit the dropdown container
-    * so user clicks on the <select /> element itself
-    * [TODO]: find alternative solution to trigger open <select /> with JS
-    */
-                width: 100%;
-                height: 100%;
-
-                &__select {
-                    width: 100%;
-                    height: 100%;
-                }
-            }
-        }
     }
     &--has-placeholder {
         .dc-dropdown__display {
@@ -300,4 +281,14 @@
             right: 16px;
         }
     }
+    &--has-suffix-icon {
+        margin-left: 1rem;
+        margin-top: 0;
+        max-width: fit-content;
+    }
+}
+
+.suffix-icon {
+    position: absolute;
+    left: 20px;
 }

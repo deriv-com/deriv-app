@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { isDesktop } from '@deriv/shared';
+import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import Withdraw from '../Components/withdraw.jsx';
 import SendEmail from '../Components/Email/send-email.jsx';
@@ -31,8 +31,10 @@ const WithdrawalSideNote = () => {
         />,
         */
     ];
+    const side_note_title =
+        notes?.length > 1 ? <Localize i18n_default_text='Notes' /> : <Localize i18n_default_text='Note' />;
 
-    return <SideNote has_bullets notes={notes} title={<Localize i18n_default_text='Notes' />} />;
+    return <SideNote has_bullets notes={notes} title={side_note_title} />;
 };
 
 const Withdrawal = ({
@@ -40,6 +42,7 @@ const Withdrawal = ({
     container,
     currency,
     error,
+    verify_error,
     iframe_url,
     is_cashier_locked,
     is_virtual,
@@ -58,12 +61,16 @@ const Withdrawal = ({
 
     React.useEffect(() => {
         if ((iframe_url || verification_code) && isDesktop()) {
-            if (/^(UST|eUSDT)$/i.test(currency) && typeof setSideNotes === 'function') {
-                setSideNotes([<WithdrawalSideNote key={0} />, <USDTSideNote key={1} />]);
-            } else {
-                setSideNotes([<WithdrawalSideNote key={0} />]);
-            }
+            if (isCryptocurrency(currency) && typeof setSideNotes === 'function') {
+                const side_notes = [
+                    <WithdrawalSideNote key={0} />,
+                    ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
+                    ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
+                ];
+                setSideNotes(side_notes);
+            } else setSideNotes(null);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, iframe_url, verification_code]);
 
     if (verification_code || iframe_url) {
@@ -83,6 +90,9 @@ const Withdrawal = ({
     }
     if (error.message) {
         return <Error error={error} container='withdraw' />;
+    }
+    if (verify_error.message) {
+        return <Error error={verify_error} container='withdraw' />;
     }
     return <SendEmail />;
 };
@@ -106,6 +116,7 @@ export default connect(({ client, modules }) => ({
     verification_code: client.verification_code.payment_withdraw,
     container: modules.cashier.config.withdraw.container,
     error: modules.cashier.config.withdraw.error,
+    verify_error: modules.cashier.config.withdraw.verification.error,
     iframe_url: modules.cashier.config.withdraw.iframe_url,
     is_cashier_locked: modules.cashier.is_cashier_locked,
     is_withdrawal_locked: modules.cashier.is_withdrawal_locked,

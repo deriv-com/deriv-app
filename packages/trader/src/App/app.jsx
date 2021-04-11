@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Loadable from 'react-loadable-hooks';
+import Loadable from 'react-loadable';
 import Routes from 'App/Containers/Routes/routes.jsx';
 import TradeHeaderExtensions from 'App/Containers/trade-header-extensions.jsx';
 import TradeFooterExtensions from 'App/Containers/trade-footer-extensions.jsx';
@@ -15,34 +15,25 @@ const TradeModals = Loadable({
     loading: () => null,
 });
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        const {
-            passthrough: { WS, root_store },
-        } = props;
-        this.root_store = initStore(root_store, WS);
-    }
+const App = ({ passthrough }) => {
+    const [root_store] = React.useState(initStore(passthrough.root_store, passthrough.WS));
+    React.useEffect(() => {
+        return () => root_store.ui.setPromptHandler(false);
+    }, []);
 
-    componentWillUnmount() {
-        this.root_store.ui.setPromptHandler(false);
-    }
-
-    render() {
-        return (
-            <MobxContentProvider store={this.root_store}>
-                <React.Fragment>
-                    <Routes />
-                    <TradeModals />
-                    <NetworkStatusToastErrorPopup />
-                    <TradeHeaderExtensions store={this.root_store} />
-                    <TradeFooterExtensions />
-                    <TradeSettingsExtensions store={this.root_store} />
-                </React.Fragment>
-            </MobxContentProvider>
-        );
-    }
-}
+    return (
+        <MobxContentProvider store={root_store}>
+            <React.Fragment>
+                <Routes />
+                <TradeModals />
+                <NetworkStatusToastErrorPopup />
+                <TradeHeaderExtensions store={root_store} />
+                <TradeFooterExtensions />
+                <TradeSettingsExtensions store={root_store} />
+            </React.Fragment>
+        </MobxContentProvider>
+    );
+};
 
 App.propTypes = {
     passthrough: PropTypes.shape({

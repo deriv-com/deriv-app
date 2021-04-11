@@ -244,8 +244,6 @@
             }
         }
         h2 {
-            @include typeface(--title-center-bold-black);
-
             @include mobile {
                 font-size: 1.2rem;
                 text-align: left;
@@ -272,6 +270,9 @@
     &--disabled {
         position: relative;
 
+        .currency-list__items {
+            margin-top: 6rem;
+        }
         h2,
         p {
             color: var(--text-disabled);
@@ -302,6 +303,16 @@
                 line-height: 1.5;
                 width: 78%;
                 text-align: center;
+            }
+            p:first-child {
+                margin-top: 6rem;
+                background-color: var(--general-section-1);
+                font-size: 1.2rem;
+                height: 58px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: $BORDER_RADIUS;
             }
         }
     }
@@ -342,17 +353,9 @@
                 background: var(--general-section-2);
 
                 &-title {
-                    color: var(--brand-red-coral);
-                    font-size: 1.4rem;
-                    font-weight: bold;
-                    line-height: 20px;
                     padding: 0 1.6rem 0.8rem;
                 }
                 &-subtitle {
-                    color: var(--text-prominent);
-                    line-height: 18px;
-                    font-size: 1.2rem;
-                    font-weight: bold;
                     padding: 1.6rem 1.6rem 0;
                 }
             }
@@ -364,28 +367,26 @@
 .change-currency {
     height: 100%;
 
-    &__title,
-    &__sub-title {
-        @include typeface(--title-left-bold-black);
-        color: var(--text-prominent);
-        text-align: center;
-    }
     &__title {
         margin-top: 3rem;
     }
     &__sub-title {
-        font-size: var(--text-size-xxs);
-        font-weight: normal;
         margin-bottom: 1rem;
     }
     &__button {
         margin-top: 1.6rem;
+        width: 100%;
     }
-    @include tablet {
-        form {
-            display: grid;
-            grid-template-rows: repeat(2, 7rem) 1fr 7rem;
-            height: auto;
+
+    @include mobile {
+        .dc-form-submit-button {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding: 1.5rem;
+        }
+        & .dc-btn {
+            width: 100%;
         }
     }
 }
@@ -423,13 +424,9 @@
         margin-top: 1.6rem;
     }
     &__title {
-        color: var(--text-prominent);
         padding-right: 0.8rem;
     }
     &__subtitle {
-        font-size: 1rem;
-        color: var(--text-prominent);
-        font-weight: normal;
         align-self: baseline;
         padding-right: 0.8rem;
         margin-top: 0.2rem;

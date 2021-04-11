@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import { Loading, Table, Text, ThemedScrollbars } from '@deriv/components';
 import Bowser from 'bowser';
-import { convertDateFormat, isMobile } from '@deriv/shared';
+import { convertDateFormat, isMobile, isDesktop, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
@@ -21,7 +22,7 @@ const getFormattedData = login_history => {
         const time = environment_split[1].replace('GMT', '');
         const date_time = convertDateFormat(`${date} ${time}`, 'D-MMMM-YY hh:mm:ss', 'YYYY-MM-DD hh:mm:ss');
         data[i].date = `${date_time} GMT`;
-        data[i].action = login_history[i].action;
+        data[i].action = login_history[i].action === 'login' ? localize('Login') : localize('Logout');
         const user_agent = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
         const ua = Bowser.getParser(user_agent)?.getBrowser();
         data[i].browser = ua ? `${ua.name} v${ua.version}` : localize('Unknown');
@@ -41,8 +42,9 @@ const getFields = () => ({
 });
 
 const LoginHistoryContent = ({ data }) => {
+    const { is_dashboard } = React.useContext(PlatformContext);
     if (isMobile()) {
-        return renderList(getFields(), data);
+        return renderList(getFields(), data, is_dashboard);
     }
     return renderTable(getFields(), data);
 };
@@ -78,54 +80,87 @@ const renderTable = (fields, login_history) => (
     </Table>
 );
 
-const renderList = (fields, login_history) => (
-    <Table className='login-history__list'>
-        <Table.Body>
-            {login_history.map(item => (
-                <div className='login-history__list__wrapper' key={item.id}>
-                    <Table.Row className='login-history__list__row login-history__list__row--with-margin'>
-                        <Table.Cell className='login-history__list__row__cell'>
-                            <ListCell title={fields.date} text={item.date} />
-                        </Table.Cell>
-                    </Table.Row>
-                    <Table.Row className='login-history__list__row login-history__list__row--with-margin'>
-                        <Table.Cell className='login-history__list__row__cell'>
-                            <ListCell
-                                className='login-history__list__row__cell--browser'
-                                title={fields.browser}
-                                text={item.browser}
-                            />
-                        </Table.Cell>
-                        <Table.Cell className='login-history__list__row__cell'>
-                            <ListCell
-                                className='login-history__list__row__cell--action'
-                                title={fields.action}
-                                text={item.action}
-                            />
-                        </Table.Cell>
-                    </Table.Row>
-                    <Table.Row className='login-history__list__row'>
-                        <Table.Cell className='login-history__list__row__cell'>
-                            <ListCell
-                                className='login-history__list__row__cell--ip-value'
-                                title={fields.ip}
-                                text={item.ip}
-                            />
-                        </Table.Cell>
-                        <Table.Cell className='login-history__list__row__cell'>
-                            <ListCell title={fields.status} text={item.status} />
-                        </Table.Cell>
-                    </Table.Row>
-                </div>
-            ))}
-        </Table.Body>
-    </Table>
-);
+const renderList = (fields, login_history, is_dashboard) => {
+    return (
+        <Table className='login-history__list'>
+            <Table.Body>
+                {login_history.map(item => (
+                    <div
+                        className={classNames('login-history__list__wrapper', {
+                            'login-history__list__wrapper--dashboard': is_dashboard,
+                        })}
+                        key={item.id}
+                    >
+                        <Table.Row className='login-history__list__row login-history__list__row--with-margin'>
+                            <Table.Cell className='login-history__list__row__cell'>
+                                <ListCell title={fields.date} text={item.date} />
+                            </Table.Cell>
+                            {is_dashboard && isMobile() && (
+                                <Table.Cell className='login-history__list__row__cell'>
+                                    <ListCell
+                                        className='login-history__list__row__cell--action'
+                                        title={fields.action}
+                                        text={item.action}
+                                        right
+                                    />
+                                </Table.Cell>
+                            )}
+                        </Table.Row>
+                        <Table.Row className='login-history__list__row login-history__list__row--with-margin'>
+                            <Table.Cell className='login-history__list__row__cell'>
+                                <ListCell
+                                    className='login-history__list__row__cell--browser'
+                                    title={fields.browser}
+                                    text={item.browser}
+                                />
+                            </Table.Cell>
+                            {is_dashboard && isMobile() ? (
+                                <Table.Cell className='login-history__list__row__cell'>
+                                    <ListCell title={fields.status} text={item.status} right />
+                                </Table.Cell>
+                            ) : (
+                                <Table.Cell className='login-history__list__row__cell'>
+                                    <ListCell
+                                        className='login-history__list__row__cell--action'
+                                        title={fields.action}
+                                        text={item.action}
+                                    />
+                                </Table.Cell>
+                            )}
+                        </Table.Row>
+                        <Table.Row className='login-history__list__row'>
+                            <Table.Cell className='login-history__list__row__cell'>
+                                <ListCell
+                                    className='login-history__list__row__cell--ip-value'
+                                    title={fields.ip}
+                                    text={item.ip}
+                                />
+                            </Table.Cell>
+                            {!is_dashboard ||
+                                (isDesktop() && (
+                                    <Table.Cell className='login-history__list__row__cell'>
+                                        <ListCell title={fields.status} text={item.status} />
+                                    </Table.Cell>
+                                ))}
+                        </Table.Row>
+                    </div>
+                ))}
+            </Table.Body>
+        </Table>
+    );
+};
 
-const ListCell = ({ title, text, className }) => (
+const ListCell = ({ title, text, className, right }) => (
     <React.Fragment>
-        <h3 className='login-history__list__row__cell--title'>{title}</h3>
-        <Text className={className} line_height='xs' size='xs'>
+        <Text as='h3' align={right ? 'right' : 'left'} weight='bold' className='login-history__list__row__cell--title'>
+            {title}
+        </Text>
+        <Text
+            className={classNames(className, { 'login-history__list__row__cell--right': right })}
+            line_height='xs'
+            size='xs'
+            align={right ? 'right' : 'left'}
+        >
             {text}
         </Text>
     </React.Fragment>

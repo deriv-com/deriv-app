@@ -2,51 +2,96 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { DesktopWrapper, MobileWrapper, DataList, DataTable, Money } from '@deriv/components';
-import { extractInfoFromShortcode, urlFor, website_name } from '@deriv/shared';
+import { DesktopWrapper, MobileWrapper, DataList, DataTable, Text, Clipboard } from '@deriv/components';
+import { extractInfoFromShortcode, isForwardStarting, urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
-import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
 import { getContractPath } from 'App/Components/Routes/helpers';
 import { getSupportedContracts } from 'Constants';
 import { connect } from 'Stores/connect';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
+import AccountStatistics from '../Components/account-statistics.jsx';
+import FilterComponent from '../Components/filter-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
 
+const DetailsComponent = ({ message = '' }) => {
+    const blockchain_hash_match = /:\s([0-9a-zA-Z]+.{25,34})/gm.exec(message.split(/,\s/)[1]);
+    const blockchain_hash = blockchain_hash_match?.[1];
+
+    let messages = [message];
+
+    if (blockchain_hash) {
+        const lines = message.split(/,\s/);
+        messages = lines.map((text, index) => {
+            if (index !== lines.length - 1) {
+                return `${text}, `;
+            }
+            return text;
+        });
+    }
+
+    return (
+        <Text as='div' size='xs' className='statement__row--detail-text' align='center'>
+            {messages.map((text, index) => {
+                return (
+                    <div key={text}>
+                        {text}
+                        {blockchain_hash && index === messages.length - 1 && (
+                            <Clipboard text_copy={blockchain_hash} popoverAlignment='top' />
+                        )}
+                    </div>
+                );
+            })}
+        </Text>
+    );
+};
+
 const getRowAction = row_obj => {
     let action;
-
     if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
-        action = getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()]
-            ? getContractPath(row_obj.id)
-            : {
-                  component: (
-                      <Localize
-                          i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
-                          values={{
-                              website_name,
-                          }}
-                          components={[
-                              <a
-                                  key={0}
-                                  className='link link--orange'
-                                  rel='noopener noreferrer'
-                                  target='_blank'
-                                  href={urlFor('user/statementws', { legacy: true })}
-                              />,
-                          ]}
-                      />
-                  ),
-              };
-    } else if (
-        row_obj.desc &&
-        ['deposit', 'withdrawal', 'adjustment', 'hold', 'release'].includes(row_obj.action_type)
-    ) {
+        action =
+            getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()] &&
+            !isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time)
+                ? getContractPath(row_obj.id)
+                : {
+                      component: (
+                          <Localize
+                              i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
+                              values={{
+                                  website_name,
+                              }}
+                              components={[
+                                  <a
+                                      key={0}
+                                      className='link link--orange'
+                                      rel='noopener noreferrer'
+                                      target='_blank'
+                                      href={urlFor('user/statementws', { legacy: true })}
+                                  />,
+                              ]}
+                          />
+                      ),
+                  };
+    } else if (row_obj.action_type === 'withdrawal') {
+        if (row_obj.withdrawal_details && row_obj.longcode) {
+            action = {
+                message: `${row_obj.withdrawal_details} ${row_obj.longcode}`,
+            };
+        } else {
+            action = {
+                message: row_obj.desc,
+            };
+        }
+    } else if (row_obj.desc && ['deposit', 'transfer', 'adjustment', 'hold', 'release'].includes(row_obj.action_type)) {
         action = {
             message: row_obj.desc,
         };
+    }
+
+    if (action?.message) {
+        action.component = <DetailsComponent message={action.message} />;
     }
 
     return action;
@@ -54,6 +99,7 @@ const getRowAction = row_obj => {
 
 const Statement = ({
     account_statistics,
+    action_type,
     component_icon,
     currency,
     data,
@@ -62,12 +108,14 @@ const Statement = ({
     error,
     filtered_date_range,
     handleDateChange,
+    handleFilterChange,
     handleScroll,
     has_selected_date,
     is_empty,
     is_loading,
     is_mx_mlt,
     is_switching,
+    is_virtual,
     onMount,
     onUnmount,
 }) => {
@@ -79,56 +127,7 @@ const Statement = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const getAccountStatistics = () => (
-        <React.Fragment>
-            <div className='statement__account-statistics'>
-                <div className='statement__account-statistics-item'>
-                    <div className='statement__account-statistics--is-rectangle'>
-                        <span className='statement__account-statistics-title'>
-                            {localize('Total deposits')} {`(${currency})`}
-                        </span>
-                        <span className='statement__account-statistics-amount'>
-                            <Money amount={account_statistics.total_deposits} currency={currency} />
-                        </span>
-                    </div>
-                </div>
-                <div className='statement__account-statistics-item statement__account-statistics-total-withdrawal'>
-                    <div className='statement__account-statistics--is-rectangle'>
-                        <span className='statement__account-statistics-title'>
-                            {localize('Total withdrawals')} {`(${currency})`}
-                        </span>
-                        <span className='statement__account-statistics-amount'>
-                            <Money amount={account_statistics.total_withdrawals} currency={currency} />
-                        </span>
-                    </div>
-                </div>
-                <div className='statement__account-statistics-item'>
-                    <div className='statement__account-statistics--is-rectangle'>
-                        <span className='statement__account-statistics-title'>
-                            {localize('Net deposits')} {`(${currency})`}
-                        </span>
-                        <span className='statement__account-statistics-amount'>
-                            <Money
-                                amount={account_statistics.total_deposits - account_statistics.total_withdrawals}
-                                currency={currency}
-                            />
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </React.Fragment>
-    );
-
     if (error) return <p>{error}</p>;
-
-    const filter_component = (
-        <CompositeCalendar
-            input_date_range={filtered_date_range}
-            onChange={handleDateChange}
-            from={date_from}
-            to={date_to}
-        />
-    );
 
     const columns = getStatementTableColumnsTemplate(currency);
     const columns_map = columns.reduce((map, item) => {
@@ -136,11 +135,11 @@ const Statement = ({
         return map;
     }, {});
 
-    const mobileRowRenderer = ({ row }) => (
+    const mobileRowRenderer = ({ row, passthrough }) => (
         <React.Fragment>
             <div className='data-list__row'>
-                <DataList.Cell row={row} column={columns_map.icon} />
-                <DataList.Cell row={row} column={columns_map.action_type} />
+                <DataList.Cell row={row} column={columns_map.icon} passthrough={passthrough} />
+                <DataList.Cell row={row} column={columns_map.action_type} passthrough={passthrough} />
             </div>
             <div className='data-list__row'>
                 <DataList.Cell row={row} column={columns_map.refid} />
@@ -160,8 +159,21 @@ const Statement = ({
         <React.Fragment>
             <ReportsMeta
                 className={is_mx_mlt ? undefined : 'reports__meta--statement'}
-                filter_component={filter_component}
-                optional_component={!is_switching && is_mx_mlt && getAccountStatistics()}
+                filter_component={
+                    <FilterComponent
+                        action_type={action_type}
+                        date_from={date_from}
+                        date_to={date_to}
+                        handleDateChange={handleDateChange}
+                        handleFilterChange={handleFilterChange}
+                        filtered_date_range={filtered_date_range}
+                    />
+                }
+                is_statement
+                optional_component={
+                    !is_switching &&
+                    is_mx_mlt && <AccountStatistics account_statistics={account_statistics} currency={currency} />
+                }
             />
             {is_switching ? (
                 <PlaceholderComponent is_loading />
@@ -175,19 +187,24 @@ const Statement = ({
                             empty_message_component={EmptyTradeHistoryMessage}
                             component_icon={component_icon}
                             localized_message={localize('You have no transactions yet.')}
-                            localized_period_message={localize('You have no transactions for this period.')}
+                            localized_period_message={localize(
+                                "You've made no transactions of this type during this period."
+                            )}
                         />
                     ) : (
                         <div className='reports__content'>
                             <DesktopWrapper>
                                 <DataTable
                                     className='statement'
-                                    data_source={data}
                                     columns={columns}
-                                    onScroll={handleScroll}
+                                    content_loader={ReportsTableRowLoader}
+                                    data_source={data}
                                     getRowAction={row => getRowAction(row)}
                                     getRowSize={() => 63}
-                                    content_loader={ReportsTableRowLoader}
+                                    onScroll={handleScroll}
+                                    passthrough={{
+                                        isTopUp: item => is_virtual && item.action === 'Deposit',
+                                    }}
                                 >
                                     <PlaceholderComponent is_loading={is_loading} />
                                 </DataTable>
@@ -196,10 +213,13 @@ const Statement = ({
                                 <DataList
                                     className='statement'
                                     data_source={data}
-                                    rowRenderer={mobileRowRenderer}
                                     getRowAction={getRowAction}
                                     onScroll={handleScroll}
+                                    rowRenderer={mobileRowRenderer}
                                     row_gap={8}
+                                    passthrough={{
+                                        isTopUp: item => is_virtual && item.action === 'Deposit',
+                                    }}
                                 >
                                     <PlaceholderComponent is_loading={is_loading} />
                                 </DataList>
@@ -213,6 +233,7 @@ const Statement = ({
 };
 
 Statement.propTypes = {
+    action_type: PropTypes.string,
     account_statistics: PropTypes.object,
     component_icon: PropTypes.string,
     currency: PropTypes.string,
@@ -222,17 +243,20 @@ Statement.propTypes = {
     error: PropTypes.string,
     filtered_date_range: PropTypes.object,
     handleDateChange: PropTypes.func,
+    handleFilterChange: PropTypes.func,
     handleScroll: PropTypes.func,
     has_selected_date: PropTypes.bool,
     is_empty: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_mx_mlt: PropTypes.bool,
     is_switching: PropTypes.bool,
+    is_virtual: PropTypes.bool,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
 };
 
 export default connect(({ modules, client }) => ({
+    action_type: modules.statement.action_type,
     account_statistics: modules.statement.account_statistics,
     currency: client.currency,
     data: modules.statement.data,
@@ -241,12 +265,14 @@ export default connect(({ modules, client }) => ({
     error: modules.statement.error,
     filtered_date_range: modules.statement.filtered_date_range,
     handleDateChange: modules.statement.handleDateChange,
+    handleFilterChange: modules.statement.handleFilterChange,
     handleScroll: modules.statement.handleScroll,
     has_selected_date: modules.statement.has_selected_date,
     is_empty: modules.statement.is_empty,
     is_loading: modules.statement.is_loading,
     is_mx_mlt: client.standpoint.iom || client.standpoint.malta,
     is_switching: client.is_switching,
+    is_virtual: client.is_virtual,
     onMount: modules.statement.onMount,
     onUnmount: modules.statement.onUnmount,
 }))(withRouter(Statement));

@@ -97,10 +97,6 @@ $SQUARE_SIZE: 48px;
             background-color: var(--general-disabled) !important;
             pointer-events: none;
             touch-action: none;
-
-            .dc-btn__text {
-                color: var(--text-disabled) !important;
-            }
         }
         &--r3 {
             grid-row: 2 / 2;

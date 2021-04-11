@@ -37,6 +37,9 @@
             &--enter-done {
                 opacity: 1;
                 transform: translate3d(0, 0, 0);
+                @include mobile {
+                    max-width: 26rem;
+                }
             }
             &--enter {
                 opacity: 0;
@@ -59,11 +62,8 @@
             }
         }
         &__filename {
-            font-size: 12px;
             width: 100%;
             max-width: 240px;
-            color: var(--text-general);
-            font-weight: bold;
         }
         &--has-file {
             border-style: solid;

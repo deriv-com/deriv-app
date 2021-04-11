@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Checkbox } from '@deriv/components';
+import { Checkbox, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const AllowEquals = ({ onChange, is_allow_equal, className }) => {
+const AllowEquals = ({ onChange, is_allow_equal, has_equals_only, className }) => {
     const handleOnChange = e => {
         e.persist();
         const { name, checked } = e.target;
@@ -14,20 +14,28 @@ const AllowEquals = ({ onChange, is_allow_equal, className }) => {
 
     return (
         <div className={classNames('allow-equals', 'mobile-widget', className)}>
-            <Checkbox label={localize('Equals')} value={is_allow_equal} name='is_equal' onChange={handleOnChange} />
-            <p className='allow-equals__subtitle'>
+            <Checkbox
+                label={localize('Equals')}
+                value={is_allow_equal}
+                name='is_equal'
+                onChange={handleOnChange}
+                disabled={has_equals_only}
+            />
+            <Text as='p' size='xxxs'>
                 <Localize i18n_default_text='Win payout if exit spot is also equal to entry spot.' />
-            </p>
+            </Text>
         </div>
     );
 };
 
 AllowEquals.propTypes = {
     is_allow_equal: PropTypes.bool,
+    has_equals_only: PropTypes.bool,
     onChange: PropTypes.func,
 };
 
 export default connect(({ modules }) => ({
     is_allow_equal: !!modules.trade.is_equal,
+    has_equals_only: modules.trade.has_equals_only,
     onChange: modules.trade.onChange,
 }))(AllowEquals);

@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { toMoment } from '@deriv/shared';
 import Icon from '../icon';
+import Text from '../text';
 
 const Native = ({
     id,
@@ -48,13 +49,15 @@ const Native = ({
         >
             <div className='dc-datepicker__display'>
                 {value && (
-                    <span
+                    <Text
+                        size='xs'
+                        styles={{ color: 'inherit' }}
                         className={classNames('dc-datepicker__display-text', {
                             'dc-datepicker__display-text--disabled': disabled,
                         })}
                     >
                         {toMoment(value).format(display_format)}
-                    </span>
+                    </Text>
                 )}
             </div>
             <label
@@ -85,7 +88,11 @@ const Native = ({
                     onSelect(e.target.value);
                 }}
             />
-            {error && <span className='dc-datepicker__error'>{error}</span>}
+            {error && (
+                <Text size='xxs' styles={{ color: 'var(--brand-red-coral)' }} className='dc-datepicker__error'>
+                    {error}
+                </Text>
+            )}
         </div>
     );
 };

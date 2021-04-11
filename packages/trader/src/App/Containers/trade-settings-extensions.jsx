@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Loadable from 'react-loadable-hooks';
+import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect, MobxContentProvider } from 'Stores/connect';
@@ -19,19 +19,19 @@ const ChartSettingContainer = Loadable({
 //     loading: UILoader,
 // });
 
-class TradeSettingsExtensions extends React.Component {
-    populateSettings = () => {
-        const { populateSettingsExtensions } = this.props;
+const renderItemValue = (props, store) => (
+    <MobxContentProvider store={store}>
+        <ChartSettingContainer {...props} />
+    </MobxContentProvider>
+);
 
+const TradeSettingsExtensions = ({ populateSettingsExtensions, store }) => {
+    const populateSettings = () => {
         const menu_items = [
             {
                 icon: 'IcChart',
                 label: localize('Charts'),
-                value: ({ ...props }) => (
-                    <MobxContentProvider store={this.props.store}>
-                        <ChartSettingContainer {...props} />
-                    </MobxContentProvider>
-                ),
+                value: props => renderItemValue(props, store),
                 // uncomment below lines to bring back purchase lock and purchase confirmation}
                 // }, {
                 //     icon : IconPurchase,
@@ -43,26 +43,18 @@ class TradeSettingsExtensions extends React.Component {
         populateSettingsExtensions(menu_items);
     };
 
-    componentDidMount() {
-        this.populateSettings();
-    }
+    React.useEffect(() => {
+        return () => populateSettingsExtensions(null);
+    }, []);
 
-    componentDidUpdate() {
-        this.populateSettings();
-    }
+    React.useEffect(() => populateSettings());
 
-    componentWillUnmount() {
-        this.props.populateSettingsExtensions(null);
-    }
-
-    // eslint-disable-next-line class-methods-use-this
-    render() {
-        return null;
-    }
-}
+    return null;
+};
 
 TradeSettingsExtensions.propTypes = {
     populateSettingsExtensions: PropTypes.func,
+    store: PropTypes.object,
 };
 
 export default connect(({ ui }) => ({

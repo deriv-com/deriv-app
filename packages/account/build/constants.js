@@ -21,6 +21,7 @@ const ALIASES = {
     Components: path.resolve(__dirname, '../src/Components'),
     Containers: path.resolve(__dirname, '../src/Containers'),
     Constants: path.resolve(__dirname, '../src/Constants'),
+    Configs: path.resolve(__dirname, '../src/Configs'),
     Duplicated: path.resolve(__dirname, '../src/Duplicated'),
     Helpers: path.resolve(__dirname, '../src/Helpers'),
     Layout: path.resolve(__dirname, '../src/Layout'),
@@ -90,17 +91,15 @@ const MINIMIZERS = !IS_RELEASE
     ? []
     : [
           new TerserPlugin({
-              test: /\.js/,
-              exclude: /(smartcharts)/,
-              parallel: true,
-              sourceMap: true,
+              test: /\.js$/,
+              parallel: 2,
           }),
           new OptimizeCssAssetsPlugin(),
       ];
 
 const plugins = () => [
     new CleanWebpackPlugin(),
-    new IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
     new MiniCssExtractPlugin(cssConfig()),
 ];
 

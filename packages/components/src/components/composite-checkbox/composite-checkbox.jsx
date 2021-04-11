@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Checkbox from '../checkbox/checkbox.jsx';
+import Text from '../text';
 
 const CompositeCheckbox = ({ name, value, onChange, className, label, id, description, ...props }) => {
     const onClickContainer = e => {
@@ -22,7 +23,14 @@ const CompositeCheckbox = ({ name, value, onChange, className, label, id, descri
             onClick={onClickContainer}
         >
             <Checkbox id={id} label={label} name={name} value={value} onChange={onChange} {...props} />
-            <p className={classNames('composite-checkbox__description', `${className}__description`)}>{description}</p>
+            <Text
+                as='p'
+                size='xxxs'
+                line_height='s'
+                className={classNames('composite-checkbox__description', `${className}__description`)}
+            >
+                {description}
+            </Text>
         </div>
     );
 };

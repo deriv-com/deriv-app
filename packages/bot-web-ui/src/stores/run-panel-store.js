@@ -1,9 +1,9 @@
 import { observable, action, reaction, computed, runInAction } from 'mobx';
 import { localize } from '@deriv/translations';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
-import { contract_stages } from '../constants/contract-stage';
-import { journalError, switch_account_notification } from '../utils/bot-notifications';
-import { run_panel } from '../constants/run-panel';
+import { contract_stages } from 'Constants/contract-stage';
+import { run_panel } from 'Constants/run-panel';
+import { journalError, switch_account_notification } from 'Utils/bot-notifications';
 
 export default class RunPanelStore {
     constructor(root_store) {
@@ -426,14 +426,16 @@ export default class RunPanelStore {
 
     @action.bound
     onError(data) {
-        if (unrecoverable_errors.includes(data.name)) {
+        // data.error for API errors, data for code errors
+        const error = data.error || data;
+        if (unrecoverable_errors.includes(error.code)) {
             this.root_store.summary_card.clear();
             this.error_type = error_types.UNRECOVERABLE_ERRORS;
         } else {
             this.error_type = error_types.RECOVERABLE_ERRORS;
         }
 
-        const error_message = data?.error?.error?.message ?? data?.message;
+        const error_message = error?.message;
         this.showErrorMessage(error_message);
     }
 

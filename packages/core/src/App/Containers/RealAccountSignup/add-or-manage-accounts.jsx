@@ -26,6 +26,7 @@ const AddOrManageAccounts = props => {
         setCurrency,
         setLoading,
     } = props;
+
     const [active_index, setActiveIndex] = React.useState(
         has_fiat && available_crypto_currencies?.length === 0 ? 1 : 0
     );

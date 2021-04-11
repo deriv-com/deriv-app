@@ -119,6 +119,7 @@ ChangeAccountCurrency.propTypes = {
     current_fiat_currency: PropTypes.string,
     client_currency: PropTypes.string,
 };
+
 export default connect(({ client }) => ({
     legal_allowed_currencies: client.upgradeable_currencies,
     client_currency: client.currency,

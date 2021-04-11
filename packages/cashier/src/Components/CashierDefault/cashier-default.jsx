@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { isCryptocurrency, routes } from '@deriv/shared';
+import { getStaticUrl, isCryptocurrency, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { Loading, ThemedScrollbars, Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
@@ -94,10 +94,17 @@ const CashierDefault = ({
     return (
         <div className='cashier-default'>
             <div className='cashier-default-header'>
-                <Text size={is_mobile ? 's' : 'sm'}>
+                <Text size={is_mobile ? 's' : 'sm'} line_height='xxl'>
                     <Localize i18n_default_text='Choose a way to fund your account' />
                 </Text>
             </div>
+            {is_mobile && (
+                <div className='cashier-default-header' onClick={() => window.open(getStaticUrl('/payment-methods'))}>
+                    <Text size='xs' color='red'>
+                        <Localize i18n_default_text='Learn more about payment methods' />
+                    </Text>
+                </div>
+            )}
             <ThemedScrollbars className='cashier-default-content'>
                 <div className='cashier-default-content__description'>
                     {getDepositOptions()?.map((deposit, idx) => (

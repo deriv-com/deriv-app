@@ -17,6 +17,7 @@ const MarketSymbolIconRow = ({ icon, payload, show_description, should_show_mult
                         classNameBubble='market-symbol-icon__popover-bubble'
                         alignment='top'
                         message={getMarketName(info_from_shortcode.underlying)}
+                        is_bubble_hover_enabled
                         disable_target_icon
                     >
                         <Icon
@@ -37,6 +38,7 @@ const MarketSymbolIconRow = ({ icon, payload, show_description, should_show_mult
                         classNameBubble='category-type-icon__popover-bubble'
                         alignment='top'
                         message={getTradeTypeName(info_from_shortcode.category)}
+                        is_bubble_hover_enabled
                         disable_target_icon
                     >
                         <IconTradeTypes

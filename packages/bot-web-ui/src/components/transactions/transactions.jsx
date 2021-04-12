@@ -125,7 +125,7 @@ const Transactions = ({ contract_stage, elements, is_drawer_open, is_mobile, onM
                                                 weight='bold'
                                                 align='center'
                                                 color='less-prominent'
-                                                line_height='xs'
+                                                line_height='xxs'
                                                 className='transactions-empty__header'
                                             >
                                                 {localize('There are no transactions to display')}

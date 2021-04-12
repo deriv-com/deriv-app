@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Localize } from '@deriv/translations';
-import { isCryptocurrency, isDesktop } from '@deriv/shared';
+import { isCryptocurrency } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import Withdraw from '../Components/withdraw.jsx';
@@ -66,7 +66,7 @@ const Withdrawal = ({
     }, [container, setActiveTab, setErrorMessage]);
 
     React.useEffect(() => {
-        if ((iframe_url || verification_code) && isDesktop()) {
+        if (iframe_url || verification_code) {
             if (isCryptocurrency(currency) && typeof setSideNotes === 'function') {
                 const side_notes = [
                     <WithdrawalSideNote key={0} />,

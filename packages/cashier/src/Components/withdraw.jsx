@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'Stores/connect';
+// import { MobileWrapper } from '@deriv/components';
 import CashierContainer from './cashier-container.jsx';
 
 const Withdraw = ({ container, iframe_height, iframe_url, is_loading, onMount, setActiveTab, verification_code }) => {

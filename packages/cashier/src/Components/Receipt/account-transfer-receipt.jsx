@@ -44,7 +44,10 @@ const AccountTransferReceipt = ({
         // we should always show the statement of the account transferred to
         // unless if the account transferred to is your logged in account, or
         // the account transferred to is a DMT5 account that can't be switched to and from account is your logged in account
-        if (selected_to.value === loginid || (selected_to.is_mt && selected_from.value === loginid)) {
+        if (
+            selected_to.value === loginid ||
+            ((selected_to.is_mt || selected_to.is_dxtrade) && selected_from.value === loginid)
+        ) {
             openStatement();
         } else {
             // if the account transferred to is a DMT5 account that can't be switched to, switch to from account instead

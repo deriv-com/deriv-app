@@ -81,11 +81,11 @@ const CurrencySelector = ({
 
     const getHeightOffset = () => {
         if (is_dashboard) {
-            return '242px';
+            return '222px';
         } else if (!has_currency && has_real_account) {
-            return '109px';
+            return '89px';
         }
-        return '179px';
+        return '159px';
     };
 
     const getSubmitLabel = () => {

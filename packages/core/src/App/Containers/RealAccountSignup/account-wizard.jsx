@@ -14,7 +14,6 @@ import 'Sass/details-form.scss';
 
 const StepperHeader = ({ has_target, has_real_account, has_currency, items, getCurrentStep, getTotalSteps }) => {
     const step = getCurrentStep() - 1;
-    const active_title = items[step].header.active_title;
     const step_title = items[step].header.title;
     return (
         <React.Fragment>
@@ -25,18 +24,6 @@ const StepperHeader = ({ has_target, has_real_account, has_currency, items, getC
                     </DesktopWrapper>
                     <MobileWrapper>
                         <div className='account-wizard__header-steps'>
-                            {active_title && (
-                                <Text
-                                    as='h4'
-                                    size='xxs'
-                                    weight='bold'
-                                    color='prominent'
-                                    styles={{ lineHeight: '1.8rem' }}
-                                    className='account-wizard__header-steps-subtitle'
-                                >
-                                    {active_title}
-                                </Text>
-                            )}
                             <Text
                                 as='h4'
                                 styles={{ lineHeight: '20px', color: 'var(--brand-red-coral)' }}

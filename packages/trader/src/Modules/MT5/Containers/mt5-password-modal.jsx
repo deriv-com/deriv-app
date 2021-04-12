@@ -398,6 +398,36 @@ const MT5PasswordModal = ({
         }
     }, [has_mt5_error, is_mt5_success_dialog_enabled, is_password_error]);
 
+    const mt5_password_form = (
+        <MT5PasswordForm
+            is_bvi={is_bvi}
+            account_title={account_title}
+            closeModal={closeModal}
+            error_type={error_type}
+            error_message={error_message}
+            has_mt5_account={has_mt5_account}
+            form_error={form_error}
+            should_set_trading_password={should_set_trading_password}
+            is_real_financial_stp={is_real_financial_stp}
+            validatePassword={validatePassword}
+            should_show_server_form={should_show_server_form}
+            submitMt5Password={submitMt5Password}
+            values={{
+                password: '',
+            }}
+        />
+    );
+
+    const mt5_server_form = (
+        <MT5ServerForm
+            trading_servers={trading_servers}
+            mt5_login_list={mt5_login_list}
+            account_title={account_title}
+            closeModal={closeModal}
+            submitMt5Server={setServer}
+        />
+    );
+
     return (
         <React.Fragment>
             <DesktopWrapper>
@@ -420,33 +450,7 @@ const MT5PasswordModal = ({
                         has_mt5_account={has_mt5_account}
                         should_set_trading_password={should_set_trading_password}
                     >
-                        {should_show_server_form ? (
-                            <MT5ServerForm
-                                trading_servers={trading_servers}
-                                mt5_login_list={mt5_login_list}
-                                account_title={account_title}
-                                closeModal={closeModal}
-                                submitMt5Server={setServer}
-                            />
-                        ) : (
-                            <MT5PasswordForm
-                                is_bvi={is_bvi}
-                                account_title={account_title}
-                                closeModal={closeModal}
-                                error_type={error_type}
-                                error_message={error_message}
-                                has_mt5_account={has_mt5_account}
-                                form_error={form_error}
-                                should_set_trading_password={should_set_trading_password}
-                                is_real_financial_stp={is_real_financial_stp}
-                                validatePassword={validatePassword}
-                                should_show_server_form={should_show_server_form}
-                                submitMt5Password={submitMt5Password}
-                                values={{
-                                    password: '',
-                                }}
-                            />
-                        )}
+                        {should_show_server_form ? mt5_server_form : mt5_password_form}
                     </RequireTradingPasswordModal>
                 </Modal>
             </DesktopWrapper>
@@ -458,33 +462,7 @@ const MT5PasswordModal = ({
                     onClose={closeModal}
                     wrapper_classname='mt5-password-modal'
                 >
-                    {should_show_server_form ? (
-                        <MT5ServerForm
-                            trading_servers={trading_servers}
-                            mt5_login_list={mt5_login_list}
-                            account_title={account_title}
-                            closeModal={closeModal}
-                            submitMt5Server={setServer}
-                        />
-                    ) : (
-                        <MT5PasswordForm
-                            is_bvi={is_bvi}
-                            account_title={account_title}
-                            closeModal={closeModal}
-                            error_type={error_type}
-                            error_message={error_message}
-                            has_mt5_account={has_mt5_account}
-                            form_error={form_error}
-                            should_set_trading_password={should_set_trading_password}
-                            is_real_financial_stp={is_real_financial_stp}
-                            validatePassword={validatePassword}
-                            should_show_server_form={should_show_server_form}
-                            submitMt5Password={submitMt5Password}
-                            values={{
-                                password: '',
-                            }}
-                        />
-                    )}
+                    {should_show_server_form ? mt5_server_form : mt5_password_form}
                 </MobileDialog>
             </MobileWrapper>
             <SuccessDialog

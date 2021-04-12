@@ -2,10 +2,13 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    margin: 0 8rem 0.8rem;
 
     &__checkbox {
         margin-top: 1.6rem;
+
+        &:last-of-type {
+            margin-bottom: 5rem;
+        }
     }
     &__hr {
         height: 2px;
@@ -32,11 +35,6 @@
         display: none;
     }
     @include mobile {
-        overflow-x: hidden;
-        margin: 0;
-        padding: 0 2.4rem 8rem;
-        overflow-y: auto;
-
         & .dc-checkbox__box {
             width: 2.4rem;
             height: 2.4rem;

@@ -98,9 +98,9 @@ const Onfido = ({
                                           country: country_code,
                                       }
                                     : false,
-                                forceCrossDevice: true,
-                                useLiveDocumentCapture: true,
                             },
+                            forceCrossDevice: true,
+                            useLiveDocumentCapture: true,
                         },
                     },
                     {

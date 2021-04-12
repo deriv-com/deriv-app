@@ -18,6 +18,10 @@ const MT5POI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
         return errors;
     }, [poi_state, identity_status]);
 
+    const is_next_btn_disabled = !(
+        ['pending', 'verified'].includes(poi_state) || ['pending', 'verified'].includes(identity_status)
+    );
+
     return (
         <Formik
             initialValues={{
@@ -58,7 +62,7 @@ const MT5POI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                                     <FormSubmitButton
                                         has_cancel
                                         cancel_label={localize('Previous')}
-                                        is_disabled={!['pending', 'verified'].includes(poi_state)}
+                                        is_disabled={is_next_btn_disabled}
                                         is_absolute={isMobile()}
                                         label={localize('Next')}
                                         onCancel={onCancel}

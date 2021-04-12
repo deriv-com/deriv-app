@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Tabs, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isDesktop, isMobile, website_name } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
@@ -123,25 +123,12 @@ const AddOrManageAccounts = props => {
                                 'account-wizard--disabled': hasNoAvailableCrypto(),
                             })}
                         >
-                            {hasNoAvailableCrypto() && (
-                                <div className='account-wizard--disabled-message'>
-                                    <p>
-                                        {localize(
-                                            'You already have an account for each of the cryptocurrencies available on {{deriv}}.',
-                                            {
-                                                deriv: website_name,
-                                            }
-                                        )}
-                                    </p>
-                                </div>
-                            )}
                             <AddCryptoCurrency
                                 className='account-wizard__body'
                                 onSubmit={updateValue}
                                 value={form_value}
                                 form_error={form_error}
-                                should_show_crypto_only
-                                {...props}
+                                hasNoAvailableCrypto={hasNoAvailableCrypto}
                             />
                         </div>
                     </div>
@@ -155,7 +142,7 @@ const AddOrManageAccounts = props => {
                                 value={form_value}
                                 form_error={form_error}
                                 should_show_fiat_only={true}
-                                {...props}
+                                hasNoAvailableCrypto={hasNoAvailableCrypto}
                             />
                         )}
                     </div>

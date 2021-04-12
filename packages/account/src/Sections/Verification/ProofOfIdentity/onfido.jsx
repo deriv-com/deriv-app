@@ -98,10 +98,18 @@ const Onfido = ({
                                           country: country_code,
                                       }
                                     : false,
+                                forceCrossDevice: true,
+                                useLiveDocumentCapture: true,
                             },
                         },
                     },
-                    'face',
+                    {
+                        type: 'face',
+                        options: {
+                            forceCrossDevice: true,
+                            useLiveDocumentCapture: true,
+                        },
+                    },
                 ],
             });
             setOnfido(onfido);

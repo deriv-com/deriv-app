@@ -52,7 +52,7 @@ const TermsOfUse = ({
                             <ThemedScrollbars is_bypassed={isMobile()} height={height - 72}>
                                 <Div100vhContainer
                                     className='terms-of-use'
-                                    height_offset={is_dashboard ? '242px' : '110px'}
+                                    height_offset={is_dashboard ? '222px' : '90px'}
                                     is_disabled={isDesktop()}
                                 >
                                     <BrokerSpecificMessage target={real_account_signup_target} />

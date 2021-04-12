@@ -21,6 +21,9 @@
         color: var(--text-prominent);
         text-transform: none;
         margin-top: 1rem;
+        top: 2rem;
+        position: relative;
+        padding: 1.3rem;
     }
     &__body {
         flex-grow: 1;

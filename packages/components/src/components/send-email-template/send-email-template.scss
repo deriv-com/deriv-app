@@ -12,6 +12,9 @@
     &__icon {
         margin-top: 5.6rem;
         margin-bottom: 1.6rem;
+        @include mobile {
+            margin-top: 3.2rem;
+        }
     }
     &__sent,
     &__cta {

@@ -223,6 +223,14 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
         return;
     }
 
+    // Firefox fix for Blockly widthcache bug
+    if (navigator.userAgent.search('Firefox') > 0) {
+        setTimeout(() => {
+            this.workspace.getAllFields().forEach(field => field.forceRerender());
+        }, 0); /* Time duration must be 0. We need this function
+        asynchronous for proper rerender after block resizing. */
+    }
+
     const render_list = [];
     const COLLAPSED_INPUT_NAME = '_TEMP_COLLAPSED_INPUT';
 

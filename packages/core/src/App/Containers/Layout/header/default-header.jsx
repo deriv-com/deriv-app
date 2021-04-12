@@ -13,6 +13,7 @@ import { connect } from 'Stores/connect';
 import { clientNotifications } from 'Stores/Helpers/client-notifications';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
+import TempAppSettings from 'App/Containers/Layout/temp-app-settings.jsx';
 
 const DefaultHeader = ({
     acc_switcher_disabled_message,
@@ -163,6 +164,7 @@ const DefaultHeader = ({
             <RealAccountSignup />
             <SetAccountCurrencyModal />
             <NewVersionNotification onUpdate={addUpdateNotification} />
+            <TempAppSettings />
         </header>
     );
 };

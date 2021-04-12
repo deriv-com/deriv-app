@@ -69,6 +69,7 @@ const TaxResidenceSelect = ({ field, touched, errors, setFieldValue, values, is_
                 data-lpignore='true'
                 autoComplete='new-password' // prevent chrome autocomplete
                 type='text'
+                should_ignore_on_select='true'
                 label={localize('Tax residence*')}
                 error={touched.tax_residence && errors.tax_residence}
                 disabled={!is_changeable}
@@ -349,7 +350,7 @@ export class PersonalDetailsForm extends React.Component {
     initializeFormValues() {
         WS.wait('landing_company', 'get_account_status', 'get_settings').then(() => {
             const { is_dashboard } = this.context;
-            const { getChangeableFields, is_virtual, account_settings, is_mf } = this.props;
+            const { getChangeableFields, is_virtual, account_settings, is_mf, is_eu } = this.props;
 
             // Convert to boolean
             account_settings.email_consent = !!account_settings.email_consent;
@@ -364,7 +365,7 @@ export class PersonalDetailsForm extends React.Component {
                 'is_authenticated_payment_agent',
                 'user_hash',
                 'country',
-                !is_dashboard && 'salutation',
+                (!is_dashboard || !is_eu) && 'salutation',
                 'request_professional_status',
                 'immutable_fields',
             ];
@@ -701,6 +702,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                 onChange={e =>
                                                                     setFieldValue('citizen', e.target.value, true)
                                                                 }
+                                                                should_hide_disabled_options={false}
                                                             />
                                                         </MobileWrapper>
                                                     </MobileWrapper>

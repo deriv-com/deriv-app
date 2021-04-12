@@ -17,8 +17,9 @@ const RouteWithSubRoutes = route => {
         let result = null;
         const pathname = removeBranchName(location.pathname).replace(/\/$/, '');
         const is_valid_route = validateRoute(pathname);
+
+        // check if by re-rendering content should Platform app_id  change or not,
         if (is_valid_route) {
-            // check if by re-rendering content should Platform app_id  change or not,
             route.checkAppId();
         }
 

@@ -42,9 +42,7 @@ export const getAppId = () => {
     const config_app_id = window.localStorage.getItem('config.app_id');
 
     if (config_app_id) {
-        // Only for test on merge should revert
-        app_id = isBot() ? 19111 : 16929;
-        // app_id = config_app_id;
+        app_id = config_app_id;
     } else if (/desktop-app/i.test(window.location.href) || window.localStorage.getItem('config.is_desktop_app')) {
         window.localStorage.removeItem('config.default_app_id');
         window.localStorage.setItem('config.is_desktop_app', 1);

@@ -361,6 +361,7 @@ const PersonalDetails = ({
                                                                         data-lpignore='true'
                                                                         autoComplete='off' // prevent chrome autocomplete
                                                                         type='text'
+                                                                        should_ignore_on_select='true'
                                                                         label={localize('Tax residence')}
                                                                         error={
                                                                             touched.tax_residence &&

@@ -258,6 +258,7 @@ const MT5PersonalDetailsForm = ({
                                                             type='text'
                                                             autoComplete='off'
                                                             label={localize('Tax residence')}
+                                                            should_ignore_on_select='true'
                                                             error={touched.tax_residence && errors.tax_residence}
                                                             disabled={value.tax_residence && is_fully_authenticated}
                                                             list_items={residence_list}

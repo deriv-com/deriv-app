@@ -161,8 +161,13 @@ const MT5PasswordForm = props => {
 
     return (
         <Formik
-            initialValues={props.values}
+            initialValues={{
+                password: props.password,
+            }}
+            enableReinitialize
             validate={props.validatePassword}
+            validateOnMount
+            validateOnChange
             onSubmit={(values, { setSubmitting }) => props.submitMt5Password(values, setSubmitting)}
         >
             {({ errors, isSubmitting, handleBlur, handleChange, handleSubmit, setFieldTouched, touched, values }) => (
@@ -179,7 +184,10 @@ const MT5PasswordForm = props => {
                                         <PasswordInput
                                             autoComplete='new-password'
                                             label={localize('Trading password')}
-                                            error={(touched.password && errors.password) || props.error_message}
+                                            error={
+                                                (touched.password && errors.password) ||
+                                                (values.password.length === 0 ? props.error_message : '')
+                                            }
                                             hint={
                                                 !has_warning &&
                                                 props.should_set_trading_password &&
@@ -192,6 +200,7 @@ const MT5PasswordForm = props => {
                                             onBlur={handleBlur}
                                             onChange={e => {
                                                 setFieldTouched('password', true);
+                                                props.setPassword(e.target.value);
                                                 handleChange(e);
                                             }}
                                         />
@@ -327,6 +336,7 @@ const MT5PasswordModal = ({
     trading_servers,
 }) => {
     const [server, setServer] = React.useState('');
+    const [password, setPassword] = React.useState('');
 
     const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
     const has_mt5_account = Boolean(mt5_login_list?.length);
@@ -397,6 +407,11 @@ const MT5PasswordModal = ({
             setServer('');
         }
     }, [has_mt5_error, is_mt5_success_dialog_enabled, is_password_error]);
+    React.useEffect(() => {
+        if (is_password_error || is_password_reset) {
+            setPassword('');
+        }
+    }, [is_password_reset, is_password_error]);
 
     const mt5_password_form = (
         <MT5PasswordForm
@@ -412,9 +427,8 @@ const MT5PasswordModal = ({
             validatePassword={validatePassword}
             should_show_server_form={should_show_server_form}
             submitMt5Password={submitMt5Password}
-            values={{
-                password: '',
-            }}
+            password={password}
+            setPassword={setPassword}
         />
     );
 

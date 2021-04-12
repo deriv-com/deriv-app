@@ -264,6 +264,7 @@ export default class MT5Store extends BaseStore {
 
     @action.bound
     async submitMt5Password(values, setSubmitting) {
+        this.resetFormErrors();
         const response = await this.openAccount(values);
         if (!response.error) {
             WS.authorized.storage.mt5LoginList().then(this.root_store.client.responseMt5LoginList);

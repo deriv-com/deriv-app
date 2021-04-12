@@ -163,19 +163,9 @@ const MT5PasswordForm = props => {
         <Formik
             initialValues={props.values}
             validate={props.validatePassword}
-            enableReinitialize
             onSubmit={(values, { setSubmitting }) => props.submitMt5Password(values, setSubmitting)}
         >
-            {({
-                handleSubmit,
-                // setFieldValue,
-                setFieldTouched,
-                handleChange,
-                handleBlur,
-                errors,
-                values,
-                touched,
-            }) => (
+            {({ errors, isSubmitting, handleBlur, handleChange, handleSubmit, setFieldTouched, touched, values }) => (
                 <form onSubmit={handleSubmit}>
                     <div className='mt5-password-modal__content'>
                         <div className='dc-modal__container_mt5-password-modal__body'>
@@ -231,7 +221,7 @@ const MT5PasswordForm = props => {
                         cancel_label={cancel_button_label}
                         onCancel={handleCancel}
                         is_absolute={isMobile()}
-                        is_loading={props.is_submitting}
+                        is_loading={isSubmitting}
                         label={button_label}
                         form_error={props.form_error}
                     />
@@ -403,7 +393,7 @@ const MT5PasswordModal = ({
     }, [is_eu, is_eu_country, is_logged_in, is_real_synthetic, server, mt5_login_list]);
 
     React.useEffect(() => {
-        if (has_mt5_error || is_mt5_success_dialog_enabled || is_password_error) {
+        if ((!is_password_error && !is_password_reset && has_mt5_error) || is_mt5_success_dialog_enabled) {
             setServer('');
         }
     }, [has_mt5_error, is_mt5_success_dialog_enabled, is_password_error]);

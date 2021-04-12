@@ -148,7 +148,7 @@ const PersonalDetails = ({
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef, height }) => (
                         <form ref={setRef} onSubmit={handleSubmit} autoComplete='off' onClick={handleClickOutside}>
-                            <Div100vhContainer className='details-form' height_offset='110px' is_disabled={isDesktop()}>
+                            <Div100vhContainer className='details-form' height_offset='90px' is_disabled={isDesktop()}>
                                 <ThemedScrollbars height={height} onScroll={closeTooltipOnScroll}>
                                     {is_dashboard && (
                                         <div className='details-form__sub-header'>
@@ -163,7 +163,15 @@ const PersonalDetails = ({
                                         className='details-form__elements'
                                         style={{ paddingBottom: isDesktop() ? 'unset' : null }}
                                     >
-                                        {!is_dashboard && <FormSubHeader title={localize('Title and name')} />}
+                                        {!is_dashboard && (
+                                            <FormSubHeader
+                                                title={
+                                                    'salutation' in props.value
+                                                        ? localize('Title and name')
+                                                        : localize('Name')
+                                                }
+                                            />
+                                        )}
                                         {'salutation' in props.value && ( // TODO: [deriv-eu] Remove salutation once api is optional
                                             <RadioGroup
                                                 className='dc-radio__input'

@@ -151,7 +151,7 @@ const PaymentAgentTransferForm = ({
                                     className='payment-agent-transfer__input-area'
                                     type='textarea'
                                     label={localize('Description')}
-                                    error={touched.description && errors.description}
+                                    error={errors.description}
                                     required
                                     autoComplete='off'
                                     has_character_counter

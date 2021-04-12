@@ -192,6 +192,7 @@ const MT5PasswordForm = props => {
                                             error={(touched.password && errors.password) || props.error_message}
                                             hint={
                                                 !has_warning &&
+                                                props.should_set_trading_password &&
                                                 localize(
                                                     'Minimum of eight lower and uppercase English letters with numbers'
                                                 )

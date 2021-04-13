@@ -1076,7 +1076,7 @@
             &__description {
                 @include typeface(--xsmall-left-normal-black);
                 line-height: 1.5;
-                max-width: 300px;
+                max-width: min(100vw, 349px);
                 margin: -2.7rem 0 2.4rem;
                 color: var(--text-less-prominent);
             }

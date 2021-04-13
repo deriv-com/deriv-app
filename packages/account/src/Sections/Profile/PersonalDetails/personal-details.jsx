@@ -69,6 +69,7 @@ const TaxResidenceSelect = ({ field, touched, errors, setFieldValue, values, is_
                 data-lpignore='true'
                 autoComplete='new-password' // prevent chrome autocomplete
                 type='text'
+                should_ignore_on_select='true'
                 label={localize('Tax residence*')}
                 error={touched.tax_residence && errors.tax_residence}
                 disabled={!is_changeable}

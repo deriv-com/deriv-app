@@ -78,17 +78,18 @@
         &-hover {
             cursor: pointer;
         }
+        &--container {
+            display: flex;
+            flex-direction: column;
+            margin-left: 0.8rem;
+        }
     }
 
     &__name {
-        margin-left: 0.8rem;
-
-        &--allow-hover {
-            &:hover {
-                color: var(--brand-red-coral);
-                text-decoration: underline;
-                text-decoration-color: var(--brand-red-coral);
-            }
+        &:hover {
+            color: var(--brand-red-coral);
+            text-decoration: underline;
+            text-decoration-color: var(--brand-red-coral);
         }
     }
 

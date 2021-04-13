@@ -37,6 +37,14 @@ const FormError = ({ disableApp, enableApp, setErrorMessage, error = {} }) => {
                 onConfirm: () => history.push(routes.proof_of_identity),
                 message: error_message,
             });
+        } else if (error_code === 'TransferBetweenAccountsError') {
+            setDetails({
+                title: localize('Cashier Error'),
+                cancel_button_text: undefined,
+                confirm_button_text: localize('OK'),
+                onConfirm: () => history.push(routes.financial_assessment),
+                message: error_message,
+            });
         } else {
             setDetails({
                 title: localize('Cashier Error'),

@@ -295,6 +295,7 @@ export const icons = {
         'IcUndo',
         'IcUnknownOutline',
         'IcUnknown',
+        'IcUnlinkApple',
         'IcUnlinkFacebook',
         'IcUnlinkGoogle',
         'IcUnsavedChangesDashboard',

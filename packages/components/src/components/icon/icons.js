@@ -289,6 +289,7 @@ import './common/ic-transactions.svg';
 import './common/ic-undo.svg';
 import './common/ic-unknown-outline.svg';
 import './common/ic-unknown.svg';
+import './common/ic-unlink-apple.svg';
 import './common/ic-unlink-facebook.svg';
 import './common/ic-unlink-google.svg';
 import './common/ic-unsaved-changes-dashboard.svg';

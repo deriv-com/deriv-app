@@ -35,7 +35,15 @@ const ListItem = ({
 };
 
 const ListItems = React.forwardRef((props, ref) => {
-    const { active_index, list_items, is_object_list, onItemSelection, setActiveIndex, not_found_text } = props;
+    const {
+        active_index,
+        list_items,
+        is_object_list,
+        onItemSelection,
+        setActiveIndex,
+        not_found_text,
+        should_ignore_on_select,
+    } = props;
     const is_grouped_list = list_items.some(list_item => !!list_item.group);
 
     if (is_grouped_list) {
@@ -71,7 +79,7 @@ const ListItems = React.forwardRef((props, ref) => {
                                         onItemSelection={onItemSelection}
                                         setActiveIndex={setActiveIndex}
                                         is_object_list={is_object_list}
-                                        is_disabled={item.disabled === 'DISABLED'}
+                                        is_disabled={item?.disabled === 'DISABLED' && should_ignore_on_select}
                                         child_ref={item_idx === active_index ? ref : null}
                                     />
                                 );
@@ -96,6 +104,7 @@ const ListItems = React.forwardRef((props, ref) => {
                         onItemSelection={onItemSelection}
                         is_object_list={is_object_list}
                         setActiveIndex={setActiveIndex}
+                        is_disabled={item?.disabled === 'DISABLED' && should_ignore_on_select}
                         child_ref={item_idx === active_index ? ref : null}
                     />
                 ))
@@ -120,6 +129,7 @@ const DropdownList = React.forwardRef((props, ref) => {
         style,
         not_found_text,
         portal_id,
+        should_ignore_on_select,
     } = props;
 
     if (list_items.length && typeof list_items[0] !== 'string' && typeof list_items[0] !== 'object') {
@@ -163,6 +173,7 @@ const DropdownList = React.forwardRef((props, ref) => {
                             onItemSelection={onItemSelection}
                             is_object_list={!is_string_array}
                             setActiveIndex={setActiveIndex}
+                            should_ignore_on_select={should_ignore_on_select}
                         />
                     )}
                 </ThemedScrollbars>

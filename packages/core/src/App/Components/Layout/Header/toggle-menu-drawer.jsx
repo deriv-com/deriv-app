@@ -64,20 +64,21 @@ const ToggleMenuDrawer = React.forwardRef(
     (
         {
             account_status,
-            should_allow_authentication,
-            enableApp,
             disableApp,
-            needs_financial_assessment,
-            is_logged_in,
-            platform_switcher,
-            toggleTheme,
+            enableApp,
             is_dark_mode,
-            logoutClient,
-            is_payment_agent_visible,
-            is_payment_agent_transfer_visible,
-            is_p2p_enabled,
-            platform_header,
+            is_logged_in,
             is_onramp_tab_visible,
+            is_p2p_enabled,
+            is_payment_agent_transfer_visible,
+            is_payment_agent_visible,
+            logoutClient,
+            needs_financial_assessment,
+            platform_header,
+            platform_switcher,
+            should_allow_authentication,
+            title,
+            toggleTheme,
         },
         ref
     ) => {
@@ -91,8 +92,23 @@ const ToggleMenuDrawer = React.forwardRef(
         React.useEffect(() => {
             const processRoutes = () => {
                 const routes_config = getRoutesConfig({ is_dashboard });
-                const primary_routes = [routes.reports, routes.account, routes.cashier];
-                const secondary_routes = [];
+                let primary_routes = [];
+                let secondary_routes = [];
+
+                if (is_dashboard) {
+                    primary_routes = [
+                        routes.my_apps,
+                        routes.explore,
+                        routes.wallets,
+                        routes.platforms,
+                        routes.trade_types,
+                        routes.markets,
+                    ];
+                    secondary_routes = [];
+                } else {
+                    primary_routes = [routes.reports, routes.account, routes.cashier];
+                    secondary_routes = [];
+                }
 
                 setPrimaryRoutesConfig(getFilteredRoutesConfig(routes_config, primary_routes));
                 setSecondaryRoutesConfig(getFilteredRoutesConfig(routes_config, secondary_routes));
@@ -173,29 +189,42 @@ const ToggleMenuDrawer = React.forwardRef(
                             return undefined;
                         })}
                     {has_subroutes &&
-                        route_config.routes.map((route, index) => (
-                            <MobileDrawer.SubMenuSection
-                                key={index}
-                                section_icon={route.icon}
-                                section_title={route.getTitle()}
-                            >
-                                {route.subroutes.map((subroute, subindex) => (
+                        route_config.routes.map((route, index) => {
+                            return route.subroutes ? (
+                                <MobileDrawer.SubMenuSection
+                                    key={index}
+                                    section_icon={route.icon}
+                                    section_title={route.getTitle()}
+                                >
+                                    {route.subroutes.map((subroute, subindex) => (
+                                        <MenuLink
+                                            key={subindex}
+                                            is_disabled={
+                                                (!should_allow_authentication &&
+                                                    /proof-of-address/.test(subroute.path)) ||
+                                                (!should_allow_authentication &&
+                                                    /proof-of-identity/.test(subroute.path)) ||
+                                                (!needs_financial_assessment &&
+                                                    /financial-assessment/.test(subroute.path)) ||
+                                                subroute.is_disabled
+                                            }
+                                            link_to={subroute.path}
+                                            text={subroute.getTitle()}
+                                            onClickLink={toggleDrawer}
+                                        />
+                                    ))}
+                                </MobileDrawer.SubMenuSection>
+                            ) : (
+                                <MobileDrawer.Item key={index}>
                                     <MenuLink
-                                        key={subindex}
-                                        is_disabled={
-                                            (!should_allow_authentication && /proof-of-address/.test(subroute.path)) ||
-                                            (!should_allow_authentication && /proof-of-identity/.test(subroute.path)) ||
-                                            (!needs_financial_assessment &&
-                                                /financial-assessment/.test(subroute.path)) ||
-                                            subroute.is_disabled
-                                        }
-                                        link_to={subroute.path}
-                                        text={subroute.getTitle()}
+                                        link_to={route.path}
+                                        icon={route.icon_component}
+                                        text={route.getTitle()}
                                         onClickLink={toggleDrawer}
                                     />
-                                ))}
-                            </MobileDrawer.SubMenuSection>
-                        ))}
+                                </MobileDrawer.Item>
+                            );
+                        })}
                 </MobileDrawer.SubMenu>
             );
         };
@@ -228,86 +257,110 @@ const ToggleMenuDrawer = React.forwardRef(
         return (
             <React.Fragment>
                 <a id='dt_mobile_drawer_toggle' onClick={toggleDrawer} className='header__mobile-drawer-toggle'>
-                    <Icon icon='IcHamburger' width='16px' height='16px' className='header__mobile-drawer-icon' />
+                    <Icon
+                        icon={is_dashboard && !is_logged_in ? 'IcHamburgerWhite' : 'IcHamburger'}
+                        width='16px'
+                        height='16px'
+                        className='header__mobile-drawer-icon'
+                    />
                 </a>
                 <MobileDrawer
-                    alignment='left'
+                    alignment={is_dashboard ? 'right' : 'left'}
                     icon_class='header__menu-toggle'
                     is_open={is_open}
                     toggle={toggleDrawer}
                     id='dt_mobile_drawer'
                     enableApp={enableApp}
                     disableApp={disableApp}
-                    title={localize('Menu')}
-                    livechat={<LiveChat is_mobile_drawer />}
+                    title={title || title === '' ? title : localize('Menu')}
+                    livechat={is_dashboard ? null : <LiveChat is_mobile_drawer />}
                     height='100vh'
                     width='295px'
                 >
                     <Div100vhContainer height_offset='40px'>
                         <div className='header__menu-mobile-body-wrapper'>
-                            <MobileDrawer.SubHeader
-                                className={classNames({
-                                    'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
-                                })}
-                            >
-                                {platform_switcher}
-                            </MobileDrawer.SubHeader>
-                            <MobileDrawer.Body>
-                                <div className='header__menu-mobile-platform-switcher' id='mobile_platform_switcher' />
-                                <MobileDrawer.Item>
-                                    <MenuLink
-                                        link_to={routes.trade}
-                                        icon='IcTrade'
-                                        text={localize('Trade')}
-                                        onClickLink={toggleDrawer}
-                                    />
-                                </MobileDrawer.Item>
-                                {primary_routes_config.map((route_config, idx) =>
-                                    getRoutesWithSubMenu(route_config, idx)
-                                )}
-                                {getLanguageRoutes()}
-                                {platform_header !== 'DBot' && (
-                                    <MobileDrawer.Item
-                                        className='header__menu-mobile-theme'
-                                        onClick={e => {
-                                            e.preventDefault();
-                                            toggleTheme(!is_dark_mode);
-                                        }}
+                            {is_dashboard && (
+                                <MobileDrawer.Body>
+                                    {primary_routes_config.map((route_config, idx) =>
+                                        getRoutesWithSubMenu(route_config, idx)
+                                    )}
+                                </MobileDrawer.Body>
+                            )}
+                            {!is_dashboard && (
+                                <React.Fragment>
+                                    <MobileDrawer.SubHeader
+                                        className={classNames({
+                                            'dc-mobile-drawer__subheader--hidden': is_submenu_expanded,
+                                        })}
                                     >
+                                        {platform_switcher}
+                                    </MobileDrawer.SubHeader>
+                                    <MobileDrawer.Body>
                                         <div
-                                            className={classNames('header__menu-mobile-link', {
-                                                'header__menu-mobile-link--active': is_dark_mode,
-                                            })}
-                                        >
-                                            <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
-                                            <span className='header__menu-mobile-link-text'>
-                                                {localize('Dark theme')}
-                                            </span>
-                                            <ToggleSwitch
-                                                id='dt_mobile_drawer_theme_toggler'
-                                                classNameLabel='header__menu-mobile-link-toggler-label'
-                                                classNameButton={classNames('header__menu-mobile-link-toggler-button', {
-                                                    'header__menu-mobile-link-toggler-button--active': is_dark_mode,
-                                                })}
-                                                handleToggle={() => toggleTheme(!is_dark_mode)}
-                                                is_enabled={is_dark_mode}
+                                            className='header__menu-mobile-platform-switcher'
+                                            id='mobile_platform_switcher'
+                                        />
+                                        <MobileDrawer.Item>
+                                            <MenuLink
+                                                link_to={routes.trade}
+                                                icon='IcTrade'
+                                                text={localize('Trade')}
+                                                onClickLink={toggleDrawer}
                                             />
-                                        </div>
-                                    </MobileDrawer.Item>
-                                )}
+                                        </MobileDrawer.Item>
+                                        {primary_routes_config.map((route_config, idx) =>
+                                            getRoutesWithSubMenu(route_config, idx)
+                                        )}
+                                        {getLanguageRoutes()}
+                                        {platform_header !== 'DBot' && (
+                                            <MobileDrawer.Item
+                                                className='header__menu-mobile-theme'
+                                                onClick={e => {
+                                                    e.preventDefault();
+                                                    toggleTheme(!is_dark_mode);
+                                                }}
+                                            >
+                                                <div
+                                                    className={classNames('header__menu-mobile-link', {
+                                                        'header__menu-mobile-link--active': is_dark_mode,
+                                                    })}
+                                                >
+                                                    <Icon className='header__menu-mobile-link-icon' icon={'IcTheme'} />
+                                                    <span className='header__menu-mobile-link-text'>
+                                                        {localize('Dark theme')}
+                                                    </span>
+                                                    <ToggleSwitch
+                                                        id='dt_mobile_drawer_theme_toggler'
+                                                        classNameLabel='header__menu-mobile-link-toggler-label'
+                                                        classNameButton={classNames(
+                                                            'header__menu-mobile-link-toggler-button',
+                                                            {
+                                                                'header__menu-mobile-link-toggler-button--active': is_dark_mode,
+                                                            }
+                                                        )}
+                                                        handleToggle={() => toggleTheme(!is_dark_mode)}
+                                                        is_enabled={is_dark_mode}
+                                                    />
+                                                </div>
+                                            </MobileDrawer.Item>
+                                        )}
 
-                                {secondary_routes_config.map(route_config => getRoutesWithSubMenu(route_config))}
-                                {is_logged_in && (
-                                    <MobileDrawer.Item
-                                        onClick={() => {
-                                            logoutClient();
-                                            toggleDrawer();
-                                        }}
-                                    >
-                                        <MenuLink icon='IcLogout' text={localize('Log out')} />
-                                    </MobileDrawer.Item>
-                                )}
-                            </MobileDrawer.Body>
+                                        {secondary_routes_config.map(route_config =>
+                                            getRoutesWithSubMenu(route_config)
+                                        )}
+                                        {is_logged_in && (
+                                            <MobileDrawer.Item
+                                                onClick={() => {
+                                                    logoutClient();
+                                                    toggleDrawer();
+                                                }}
+                                            >
+                                                <MenuLink icon='IcLogout' text={localize('Log out')} />
+                                            </MobileDrawer.Item>
+                                        )}
+                                    </MobileDrawer.Body>
+                                </React.Fragment>
+                            )}
                         </div>
                         <MobileDrawer.Footer>
                             <ServerTime is_mobile />

@@ -271,7 +271,7 @@
         position: relative;
 
         .currency-list__items {
-            margin-top: 6rem;
+            margin-top: 2rem;
         }
         .currency-list__item {
             pointer-events: none;
@@ -290,7 +290,7 @@
 
             &-description {
                 width: 78%;
-                margin-top: 6rem;
+                margin-top: 2.5rem;
                 background-color: var(--general-section-1);
                 height: 5.8rem;
                 display: flex;

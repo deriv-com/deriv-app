@@ -32,8 +32,8 @@ const CFDDashboardContainer = ({ platform }) => (
                                 </React.Fragment>
                             )}
                         </div>
-                        <div>
-                            {platform === 'dxtrade' && (
+                        {platform === 'dxtrade' && (
+                            <div className='cfd-dashboard__download-center-options--desktop-download'>
                                 <a
                                     className='cfd-dashboard__dxtrade-download'
                                     href={getDXTradeWebTerminalLink()}
@@ -55,17 +55,10 @@ const CFDDashboardContainer = ({ platform }) => (
                                         >
                                             <Localize i18n_default_text='Web terminal' />
                                         </Text>
-                                        <Text
-                                            className='cfd-dashboard__dxtrade-download--subtitle'
-                                            color='colored-background'
-                                            size='xxs'
-                                        >
-                                            <Localize i18n_default_text='Demo/real account' />
-                                        </Text>
                                     </div>
                                 </a>
-                            )}
-                        </div>
+                            </div>
+                        )}
                     </div>
                     {platform === 'mt5' && (
                         <div className='cfd-dashboard__download-center-options--desktop-download'>

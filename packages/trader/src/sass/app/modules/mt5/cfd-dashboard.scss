@@ -12,13 +12,15 @@
     margin: 0 auto;
 
     &__dxtrade-download {
-        background: #313c86;
+        background: $color-black-7;
         border-radius: $BORDER_RADIUS;
         text-decoration: none;
         display: grid;
         grid-template-columns: 32px 1fr;
         grid-gap: 0.8rem;
-        margin-top: 2.4rem;
+        width: 12.7rem;
+        align-items: center;
+        height: 4rem;
 
         &-text {
             display: flex;
@@ -26,9 +28,7 @@
             padding: 0.4rem 0.8rem 0.4rem 0.2rem;
         }
         &--icon {
-            margin-top: 0.6rem !important;
             margin-left: 0.6rem;
-            margin-right: 0.6rem !important;
         }
     }
     &--hint {
@@ -176,6 +176,7 @@
                     display: grid;
                     grid-auto-flow: column;
                     grid-gap: 0.8rem;
+                    justify-content: center;
 
                     a {
                         margin-top: 0.4rem;

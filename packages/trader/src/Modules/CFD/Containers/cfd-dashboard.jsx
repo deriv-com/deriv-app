@@ -370,6 +370,7 @@ export default withRouter(
         beginRealSignupForMt5: modules.cfd.beginRealSignupForMt5,
         checkShouldOpenAccount: modules.cfd.checkShouldOpenAccount,
         country: client.account_settings.residence,
+        client_email: client.email_address,
         createCFDAccount: modules.cfd.createCFDAccount,
         current_list: modules.cfd.current_list,
         landing_companies: client.landing_companies,

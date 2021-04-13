@@ -122,7 +122,7 @@
         }
     }
     @include mobile {
-        grid-template-rows: 7rem minmax(10rem, 1fr);
+        grid-template-rows: 5rem minmax(10rem, 1fr);
         overflow: hidden;
 
         &--set-currency {
@@ -348,7 +348,7 @@
         }
         &__header {
             &-steps {
-                padding-bottom: 0.8rem;
+                padding: 1.6rem 0 0;
                 width: 100%;
                 background: var(--general-section-2);
 

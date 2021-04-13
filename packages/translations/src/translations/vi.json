@@ -2737,7 +2737,6 @@
     "-1556344549": "Bằng cách:",
     "-1061127827": "- Truy cập URL sau, đảm bảo thay thế <access_token> bằng mã thông báo API Telegram bạn đã tạo ở Bước 1: https://api.telegram.org/bot<access_token>/getUpdates",
     "-70949308": "4. Quay trở lại DBot và thêm khung Thông báo Telegram vào bảng điều khiển. Dán mã thông báo API Telegram và ID chat vào các \u001dtrường của khung tương ứng.",
-    "-1206289720": "Tìm hiểu thêm tại: https://gist.github.com/aaron-binary/e5bd33bc7c657a911499c06b50dd04e9",
     "-311389920": "Trong ví dụ, giá bắt đầu từ một danh sách nến được gán vào một biến gọi là\"cl\".",
     "-1634242212": "Được sử dụng trong một khung chức năng, khung này trả về một giá trị khi một điều kiện cụ thể là đúng.",
     "-1504783522": "Bạn có thể chọn để xem một trong những điều sau đây:",

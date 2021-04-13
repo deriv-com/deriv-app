@@ -2737,7 +2737,6 @@
     "-1556344549": "Caranya:",
     "-1061127827": "- Kunjungi URL berikut, pastikan untuk mengganti <access_token> dengan token API Telegram yang Anda buat pada Langkah 1: https://api.telegram.org/bot <access_token>/getUpdates",
     "-70949308": "4. Kembali ke DBot dan tambahkan blok Memberitahu Telegram ke ruang kerja. Tempelkan token API Telegram dan ID chat ke kolom blok yang sesuai.",
-    "-1206289720": "Pelajari lebih lanjut di sini: https://gist.github.com/aaron-binary/e5bd33bc7c657a911499c06b50dd04e9",
     "-311389920": "Dalam contoh ini, harga open dari daftar candle ditugaskan untuk variabel yang disebut \"cl\".",
     "-1634242212": "Digunakan dalam blok fungsi, blok ini mengembalikan nilai ketika kondisi tertentu adalah benar.",
     "-1504783522": "Anda dapat memilih untuk melihat salah satu dari hal berikut ini:",

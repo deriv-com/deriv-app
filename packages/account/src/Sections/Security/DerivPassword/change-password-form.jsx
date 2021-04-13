@@ -27,7 +27,6 @@ class ChangePasswordForm extends React.Component {
         const params = {
             action: 'redirect_to_login',
             header: 'password_changed',
-            is_redirecting: 'true',
         };
         const search_params = new URLSearchParams(params).toString();
 

@@ -1,0 +1,25 @@
+.dp2p-blocked {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin-top: 6.4rem;
+    max-width: 67.2rem;
+
+    &__title {
+        margin: 2.4rem 0 1rem;
+    }
+
+    &__checklist {
+        &-container {
+            margin-top: 2.4rem;
+        }
+
+        .dc-checklist__item {
+            width: 40rem;
+
+            @include mobile {
+                width: 100%;
+            }
+        }
+    }
+}

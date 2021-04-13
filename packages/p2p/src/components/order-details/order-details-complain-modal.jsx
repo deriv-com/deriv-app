@@ -67,14 +67,14 @@ const OrderDetailsComplainModal = ({
                 page_header_className='order-details-complain-modal__header'
                 page_header_text={localize('Complaint')}
                 pageHeaderReturnFn={hideComplainOrderModal}
-                page_footer_children={
+                renderPageFooterChildren={() => (
                     <ComplainFooter
                         dispute_reason={dispute_reason}
                         disputeOrderRequest={disputeOrderRequest}
                         error_message={error_message}
                         hideComplainOrderModal={hideComplainOrderModal}
                     />
-                }
+                )}
                 page_footer_className='order-details-complain-modal__footer'
             >
                 <OrderDetailsComplainModalRadioGroup

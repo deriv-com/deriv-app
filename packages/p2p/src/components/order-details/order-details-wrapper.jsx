@@ -17,15 +17,15 @@ const OrderDetailsWrapper = ({ children, onPageReturn, page_title }) => {
             is_modal_open
             pageHeaderReturnFn={onPageReturn}
             page_header_text={page_title}
-            page_header_trailing_icon={
+            renderPageHeaderTrailingIcon={() => (
                 <Icon
                     icon='IcChat'
                     height={15}
                     width={16}
                     onClick={() => sendbird_store.setShouldShowChatModal(true)}
                 />
-            }
-            page_footer_children={
+            )}
+            renderPageFooterChildren={() =>
                 order_store.order_information.should_show_order_footer && (
                     <OrderDetailsFooter order_information={order_store.order_information} />
                 )

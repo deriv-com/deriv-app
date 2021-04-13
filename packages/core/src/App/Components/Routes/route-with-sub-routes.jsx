@@ -28,8 +28,10 @@ const RouteWithSubRoutes = route => {
             }
             result = <Redirect to={to} />;
         } else if (is_valid_route && route.is_authenticated && !route.is_logged_in && !route.is_logging_in) {
-            const url_search_params = new URLSearchParams(window.location.search);
-            if (url_search_params.has('is_redirecting')) {
+            if (window.localStorage.getItem('is_redirecting') === 'true') {
+                window.localStorage.removeItem('is_redirecting');
+                redirectToLogin(route.is_logged_in, getLanguage(), true, 3000);
+            } else {
                 redirectToLogin(route.is_logged_in, getLanguage());
             }
         } else {

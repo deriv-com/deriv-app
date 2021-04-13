@@ -46,6 +46,7 @@ class ChangePasswordForm extends React.Component {
                 setStatus({ msg: data.error.message });
             } else {
                 this.setState({ is_submit_success: true });
+                window.localStorage.setItem('is_redirecting', 'true');
                 this.props.logout().then(this.handlePasswordChange);
             }
             setSubmitting(false);

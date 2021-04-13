@@ -23,10 +23,7 @@ const RedirectToLoginModal = ({ is_logged_in, logout, disableApp, enableApp, is_
     const url_params = new URLSearchParams(useLocation().search);
     const header = url_params.get('header');
 
-    const showModal = () => {
-        setVisible(true);
-        redirectToLogin(false, getLanguage(), false, 2000);
-    };
+    const showModal = () => setVisible(true);
 
     React.useEffect(() => {
         if (is_logged_in) {

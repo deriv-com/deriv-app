@@ -35,7 +35,6 @@
 #  (just to make this file easier to understand)
 # ================================================
 
-#  aaron-binary
 #  akmal-binary
 #  ali-fs
 #  amirghadimi-fs
@@ -50,7 +49,6 @@
 #  negarn
 #  nijil-binary
 #  reza-fs
-#  salar-fs
 #  sara-fs
 #  zaki-binary
 
@@ -81,7 +79,6 @@
 # ==============================================================
 #  Used for approving all relevant changes to Bot
 #
-#   - aaron-binary
 #   - bahar-fs
 #   - carol-binary
 #   - mehrzad-fs
@@ -93,7 +90,6 @@
 # ==============================================================
 #  Used for approving all relevant changes to Core
 #
-#   - aaron-binary
 #   - balakrishna-binary
 
 
@@ -102,7 +98,6 @@
 # ==============================================================
 #  Used for approving all relevant changes to P2P
 #
-#   - aaron-binary
 #   - mustofa-binary
 #   - negarn
 
@@ -117,7 +112,6 @@
 #   - amirghadimi-fs
 #   - balakrishna-binary
 #   - reza-fs
-#   - salar-fs
 #   - sara-fs
 #   - zaki-binary
 
@@ -134,7 +128,6 @@
 #   - mahdiaryayi-fs
 #   - negarn
 #   - reza-fs
-#   - salar-fs
 #   - zaki-binary
 
 # ==============================================================
@@ -143,7 +136,6 @@
 #  Used for approving all relevant changes to Publisher
 #
 #   - reza-fs
-#   - aaron-binary
 
 # ==============================================================
 #  binary-com/deriv-dashboard
@@ -151,7 +143,6 @@
 #  Used for approving all relevant changes to Dashboard
 #
 #   - mustofa-binary
-#   - aaron-binary
 
 
 ######################################################################################################

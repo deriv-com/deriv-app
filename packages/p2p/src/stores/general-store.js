@@ -199,14 +199,13 @@ export default class GeneralStore extends BaseStore {
                     'financial_assessment_not_complete',
                 ]);
 
-                if (is_fully_authed_but_needs_fa) {
-                    // Send user to Financial Assessment if they can submit it.
-                    this.setIsHighRiskFullyAuthedWithoutFa(true);
-                    this.setIsLoading(false);
-                    return;
-                } else if (is_cashier_locked || is_not_fully_authenticated || is_fully_authed_but_poi_expired) {
-                    // In all other cases, block P2P access.
+                if (is_cashier_locked || is_not_fully_authenticated || is_fully_authed_but_poi_expired) {
+                    // First priority: If user is blocked, don't bother getting them to send FA.
                     this.setIsBlocked(true);
+                    this.setIsLoading(false);
+                } else if (is_fully_authed_but_needs_fa) {
+                    // Second priority: Send user to Financial Assessment if they can submit it.
+                    this.setIsHighRiskFullyAuthedWithoutFa(true);
                     this.setIsLoading(false);
                     return;
                 }

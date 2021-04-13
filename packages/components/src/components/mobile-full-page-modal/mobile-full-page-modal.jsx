@@ -18,13 +18,13 @@ const MobileFullPageModal = ({
     is_popup,
     is_modal_open,
     onClickClose,
-    page_footer_children,
+    renderPageFooterChildren,
     page_footer_className,
     page_footer_parent,
     page_footer_parent_className,
     page_header_className,
     page_header_text,
-    page_header_trailing_icon,
+    renderPageHeaderTrailingIcon,
     pageHeaderReturnFn,
     renderPageHeader,
     renderPageHeaderText,
@@ -70,15 +70,15 @@ const MobileFullPageModal = ({
                                 </Text>
                             )}
                         </div>
-                        {page_header_trailing_icon && (
+                        {renderPageHeaderTrailingIcon && (
                             <div className='dc-mobile-full-page-modal__header-trailing-icon'>
-                                {page_header_trailing_icon}
+                                {renderPageHeaderTrailingIcon()}
                             </div>
                         )}
                     </div>
                 )}
                 <div className={classNames('dc-mobile-full-page-modal__body', body_className)}>{children}</div>
-                {page_footer_children && (
+                {renderPageFooterChildren && (
                     <React.Fragment>
                         {page_footer_parent && (
                             <div
@@ -91,7 +91,7 @@ const MobileFullPageModal = ({
                             </div>
                         )}
                         <div className={classNames('dc-mobile-full-page-modal__footer', page_footer_className)}>
-                            {page_footer_children}
+                            {renderPageFooterChildren()}
                         </div>
                     </React.Fragment>
                 )}
@@ -111,11 +111,11 @@ MobileFullPageModal.propTypes = {
     is_modal_open: PropTypes.bool,
     onClickClose: PropTypes.func,
     pageHeaderReturnFn: PropTypes.func,
-    page_footer_children: PropTypes.any,
+    renderPageFooterChildren: PropTypes.func,
     page_footer_className: PropTypes.string,
     page_header_className: PropTypes.string,
     page_header_text: PropTypes.string,
-    page_header_trailing_icon: PropTypes.any,
+    renderPageHeaderTrailingIcon: PropTypes.func,
     renderPageHeaderText: PropTypes.func,
     should_header_stick_body: PropTypes.bool,
     should_wrap_body: PropTypes.bool,

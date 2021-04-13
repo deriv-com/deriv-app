@@ -7,7 +7,7 @@ export const unrecoverable_errors = [
     'NotDefaultCurrency',
     'PleaseAuthenticate',
     'FinancialAssessmentRequired',
-    'PositiveNumberExpected',
+    'PositiveIntegerExpected',
     'OptionError',
     'IncorrectPayoutDecimals',
     'IncorrectStakeDecimals',

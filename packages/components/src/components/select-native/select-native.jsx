@@ -15,6 +15,16 @@ const getDisplayText = (list_items, value) => {
     return '';
 };
 
+const SelectNativeOptions = ({ list_items, should_hide_disabled_options, use_text }) => {
+    const options = should_hide_disabled_options ? list_items.filter(opt => !opt.disabled) : list_items;
+
+    return options.map(option => (
+        <option key={option.value} value={use_text ? option.text : option.value}>
+            {option.nativepicker_text || option.text}
+        </option>
+    ));
+};
+
 const SelectNative = ({
     className,
     classNameDisplay,
@@ -29,6 +39,7 @@ const SelectNative = ({
     suffix_icon,
     use_text,
     value,
+    should_hide_disabled_options,
     ...props
 }) => (
     <div
@@ -77,28 +88,29 @@ const SelectNative = ({
                             {/*
                              * Safari on ios allows to select a disabled option. So, we should avoid showing it
                              */}
-                            {list_items
-                                .filter(opt => !opt.disabled)
-                                .map((option, idx) => (
-                                    <option key={idx} value={use_text ? option.text : option.value}>
-                                        {option.nativepicker_text || option.text}
-                                    </option>
-                                ))}
+                            <SelectNativeOptions
+                                list_items={list_items}
+                                should_hide_disabled_options={should_hide_disabled_options}
+                                use_text={use_text}
+                            />
                         </React.Fragment>
                     ) : (
                         Object.keys(list_items).map(key => {
-                            const enabled_items = list_items[key].filter(opt => !opt.disabled);
-                            if (enabled_items.length > 0) {
+                            const items = should_hide_disabled_options
+                                ? list_items[key].filter(opt => !opt.disabled)
+                                : list_items[key];
+
+                            if (items.length > 0) {
                                 return (
                                     <optgroup key={key} label={key}>
                                         {/*
                                          * Safari on ios allows to select a disabled option. So, we should avoid showing it
                                          */}
-                                        {enabled_items.map((option, idx) => (
-                                            <option key={idx} value={use_text ? option.text : option.value}>
-                                                {option.nativepicker_text || option.text}
-                                            </option>
-                                        ))}
+                                        <SelectNativeOptions
+                                            list_items={list_items[key]}
+                                            should_hide_disabled_options={should_hide_disabled_options}
+                                            use_text={use_text}
+                                        />
                                     </optgroup>
                                 );
                             }
@@ -150,6 +162,11 @@ SelectNative.propTypes = {
     suffix_icon: PropTypes.string,
     use_text: PropTypes.bool,
     value: PropTypes.string,
+    should_hide_disabled_options: PropTypes.bool,
+};
+
+SelectNative.defaultProps = {
+    should_hide_disabled_options: true,
 };
 
 export default SelectNative;

@@ -338,6 +338,7 @@ class FinancialAssessment extends React.Component {
                         handleChange,
                         handleBlur,
                         handleSubmit,
+                        setFieldTouched,
                         isSubmitting,
                         dirty,
                     }) => (
@@ -391,6 +392,9 @@ class FinancialAssessment extends React.Component {
                                                         value={values.income_source}
                                                         error={touched.income_source && errors.income_source}
                                                         onChange={handleChange}
+                                                        onTouchEnd={e => {
+                                                            setFieldTouched(e.target.name, true);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -416,6 +420,9 @@ class FinancialAssessment extends React.Component {
                                                         value={values.employment_status}
                                                         error={touched.employment_status && errors.employment_status}
                                                         onChange={handleChange}
+                                                        onTouchEnd={e => {
+                                                            setFieldTouched(e.target.name, true);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -445,6 +452,9 @@ class FinancialAssessment extends React.Component {
                                                             touched.employment_industry && errors.employment_industry
                                                         }
                                                         onChange={handleChange}
+                                                        onTouchEnd={e => {
+                                                            setFieldTouched(e.target.name, true);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -471,6 +481,9 @@ class FinancialAssessment extends React.Component {
                                                         value={values.occupation}
                                                         error={touched.occupation && errors.occupation}
                                                         onChange={handleChange}
+                                                        onTouchEnd={e => {
+                                                            setFieldTouched(e.target.name, true);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -496,6 +509,9 @@ class FinancialAssessment extends React.Component {
                                                         value={values.source_of_wealth}
                                                         error={touched.source_of_wealth && errors.source_of_wealth}
                                                         onChange={handleChange}
+                                                        onTouchEnd={e => {
+                                                            setFieldTouched(e.target.name, true);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -521,6 +537,9 @@ class FinancialAssessment extends React.Component {
                                                         value={values.education_level}
                                                         error={touched.education_level && errors.education_level}
                                                         onChange={handleChange}
+                                                        onTouchEnd={e => {
+                                                            setFieldTouched(e.target.name, true);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -546,6 +565,9 @@ class FinancialAssessment extends React.Component {
                                                         value={values.net_income}
                                                         error={touched.net_income && errors.net_income}
                                                         onChange={handleChange}
+                                                        onTouchEnd={e => {
+                                                            setFieldTouched(e.target.name, true);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -572,6 +594,9 @@ class FinancialAssessment extends React.Component {
                                                         value={values.estimated_worth}
                                                         error={touched.estimated_worth && errors.estimated_worth}
                                                         onChange={handleChange}
+                                                        onTouchEnd={e => {
+                                                            setFieldTouched(e.target.name, true);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -598,6 +623,9 @@ class FinancialAssessment extends React.Component {
                                                         value={values.account_turnover}
                                                         error={touched.account_turnover && errors.account_turnover}
                                                         onChange={handleChange}
+                                                        onTouchEnd={e => {
+                                                            setFieldTouched(e.target.name, true);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -641,6 +669,9 @@ class FinancialAssessment extends React.Component {
                                                                     errors.forex_trading_experience
                                                                 }
                                                                 onChange={handleChange}
+                                                                onTouchEnd={e => {
+                                                                    setFieldTouched(e.target.name, true);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -672,6 +703,9 @@ class FinancialAssessment extends React.Component {
                                                                     errors.forex_trading_frequency
                                                                 }
                                                                 onChange={handleChange}
+                                                                onTouchEnd={e => {
+                                                                    setFieldTouched(e.target.name, true);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -705,6 +739,9 @@ class FinancialAssessment extends React.Component {
                                                                     errors.binary_options_trading_experience
                                                                 }
                                                                 onChange={handleChange}
+                                                                onTouchEnd={e => {
+                                                                    setFieldTouched(e.target.name, true);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -738,6 +775,9 @@ class FinancialAssessment extends React.Component {
                                                                     errors.binary_options_trading_frequency
                                                                 }
                                                                 onChange={handleChange}
+                                                                onTouchEnd={e => {
+                                                                    setFieldTouched(e.target.name, true);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -769,6 +809,9 @@ class FinancialAssessment extends React.Component {
                                                                     errors.cfd_trading_experience
                                                                 }
                                                                 onChange={handleChange}
+                                                                onTouchEnd={e => {
+                                                                    setFieldTouched(e.target.name, true);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -800,6 +843,9 @@ class FinancialAssessment extends React.Component {
                                                                     errors.cfd_trading_frequency
                                                                 }
                                                                 onChange={handleChange}
+                                                                onTouchEnd={e => {
+                                                                    setFieldTouched(e.target.name, true);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -833,6 +879,9 @@ class FinancialAssessment extends React.Component {
                                                                     errors.other_instruments_trading_experience
                                                                 }
                                                                 onChange={handleChange}
+                                                                onTouchEnd={e => {
+                                                                    setFieldTouched(e.target.name, true);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -867,6 +916,9 @@ class FinancialAssessment extends React.Component {
                                                                     errors.other_instruments_trading_frequency
                                                                 }
                                                                 onChange={handleChange}
+                                                                onTouchEnd={e => {
+                                                                    setFieldTouched(e.target.name, true);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>

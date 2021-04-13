@@ -334,22 +334,22 @@ const AccountSwitcher = props => {
 
     const total_assets_message_demo = () => {
         if (props.is_mt5_allowed && props.is_dxtrade_allowed) {
-            return localize('Total assets in your Deriv, DMT5 and DXTrade demo accounts.');
+            return localize('Total assets in your Deriv, DMT5 and Deriv X demo accounts.');
         } else if (props.is_mt5_allowed && !props.is_dxtrade_allowed) {
             return localize('Total assets in your Deriv and DMT5 demo accounts.');
         } else if (!props.is_mt5_allowed && props.is_dxtrade_allowed) {
-            return localize('Total assets in your Deriv and DXTrade demo accounts.');
+            return localize('Total assets in your Deriv and Deriv X demo accounts.');
         }
         return localize('Total assets in your Deriv demo accounts.');
     };
 
     const total_assets_message_real = () => {
         if (props.is_mt5_allowed && props.is_dxtrade_allowed) {
-            return localize('Total assets in your Deriv, DMT5 and DXTrade real accounts.');
+            return localize('Total assets in your Deriv, DMT5 and Deriv X real accounts.');
         } else if (props.is_mt5_allowed && !props.is_dxtrade_allowed) {
             return localize('Total assets in your Deriv and DMT5 real accounts.');
         } else if (!props.is_mt5_allowed && props.is_dxtrade_allowed) {
-            return localize('Total assets in your Deriv and DXTrade real accounts.');
+            return localize('Total assets in your Deriv and Deriv X real accounts.');
         }
         return localize('Total assets in your Deriv real accounts.');
     };
@@ -450,7 +450,7 @@ const AccountSwitcher = props => {
             )}
             {props.is_dxtrade_allowed && (
                 <AccountWrapper
-                    header={localize('DXTrade Accounts')}
+                    header={localize('Deriv X Accounts')}
                     is_visible={is_dxtrade_demo_visible}
                     toggleVisibility={() => {
                         toggleVisibility('demo_dxtrade');

@@ -942,12 +942,20 @@ $side-padding: 1.2em;
 
 /** @define empty-trade-history; weak*/
 .empty-trade-history {
-    width: 100%;
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    width: 50%;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
     justify-content: center;
     margin: auto;
+
+    @media only screen and (max-width: 769px) {
+        position: static;
+        width: 50%;
+    }
 
     &__icon {
         width: 96px;

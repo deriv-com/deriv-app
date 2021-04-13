@@ -1,7 +1,6 @@
 import { action, computed, observable } from 'mobx';
 import { buy_sell } from 'Constants/buy-sell';
 import { getShortNickname } from 'Utils/string';
-import { localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 import BaseStore from 'Stores/base_store';
 
@@ -50,15 +49,6 @@ export default class AdvertiserPageStore extends BaseStore {
     @computed
     get advertiser_full_name() {
         return `${this.advertiser_first_name} ${this.advertiser_last_name}`;
-    }
-
-    @computed
-    get modal_title() {
-        if (this.counterparty_type === buy_sell.BUY) {
-            return localize('Buy {{ currency }}', { currency: this.account_currency });
-        }
-
-        return localize('Sell {{ currency }}', { currency: this.account_currency });
     }
 
     @computed

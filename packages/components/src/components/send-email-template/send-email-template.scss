@@ -3,15 +3,11 @@
     padding: 0 16px;
 
     &__title,
-    &__icon {
-        margin-bottom: 2.4rem;
-    }
     &__subtitle {
         margin-bottom: 1.6rem;
     }
     &__icon {
-        margin-top: 5.6rem;
-        margin-bottom: 1.6rem;
+        margin-bottom: 2.4rem;
         @include mobile {
             margin-top: 3.2rem;
         }

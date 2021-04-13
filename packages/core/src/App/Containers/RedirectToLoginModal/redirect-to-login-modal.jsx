@@ -2,8 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { connect } from 'Stores/connect';
 import { Dialog, Text } from '@deriv/components';
-import { Localize, getLanguage } from '@deriv/translations';
-import { redirectToLogin } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
 
 const ModalHeader = ({ header }) => {
     switch (header) {

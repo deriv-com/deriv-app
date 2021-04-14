@@ -146,8 +146,10 @@ const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logge
                 attribute: <MT5AttributeDescriber name={localize('Trading instruments')} />,
                 synthetic: localize('Synthetics'),
                 financial: show_eu_related
-                    ? localize('FX-majors (standard), FX-minors, Commodities, Cryptocurrencies')
-                    : localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
+                    ? localize('FX-majors (standard), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices')
+                    : localize(
+                          'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices'
+                      ),
                 financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
             },
         ],

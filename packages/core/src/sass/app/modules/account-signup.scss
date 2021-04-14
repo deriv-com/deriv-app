@@ -2,6 +2,11 @@
 .account-signup {
     margin: 1.6rem 1.6rem 0;
 
+    & .my-signup-separator-container {
+        width: 100%;
+        border-bottom: 1px solid #f2f3f4;
+        margin: 24px 0 14px;
+    }
     &__error-wrapper {
         display: grid;
         grid-template-columns: 1fr 1fr;

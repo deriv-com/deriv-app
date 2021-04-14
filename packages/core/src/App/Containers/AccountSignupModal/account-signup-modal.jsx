@@ -18,7 +18,7 @@ import { connect } from 'Stores/connect';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import 'Sass/app/modules/account-signup.scss';
 
-const signupInitialValues = { password: '', residence: '' };
+const signupInitialValues = { password: '', residence: '', receive_updates_products: '' };
 
 const validateSignup = (values, residence_list) => {
     const errors = {};
@@ -54,7 +54,14 @@ const validateSignup = (values, residence_list) => {
     return errors;
 };
 
-const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, residence_list }) => {
+const AccountSignup = ({
+    enableApp,
+    isModalVisible,
+    clients_country,
+    onSignup,
+    residence_list,
+    receive_updates_products,
+}) => {
     const { is_dashboard } = React.useContext(PlatformContext);
     const [api_error, setApiError] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
@@ -98,9 +105,20 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
         const modded_values = {
             ...values,
             residence: residence_list[index_of_selection].value,
+            receive_updates_products: receive_updates_products,
         };
         onSignup(modded_values, onSignupComplete);
     };
+
+    // const onSignupPassthrough = values => {
+    //     const modded_values = {
+    //         ...values,
+    //         residence: residence_list[0].value,
+    //         receive_updates_products: receive_updates_products
+    //     }
+    //     console.log(modded_values);
+    //     console.log(values);
+    // }
 
     return (
         <div className='account-signup'>
@@ -183,13 +201,13 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                     <Checkbox
                                         name='receive_updates_products'
                                         className='receive_updates_products'
-                                        onChange={() =>
+                                        onChange={() => {
                                             setFieldValue(
                                                 'receive_updates_products',
                                                 !values.receive_updates_products,
                                                 true
-                                            )
-                                        }
+                                            );
+                                        }}
                                         value={values.receive_updates_products}
                                         label={localize(
                                             'I want to receive updates on Deriv products, services, and events.'
@@ -267,6 +285,7 @@ const AccountSignupModal = ({
     logout,
     onSignup,
     residence_list,
+    receive_updates_products,
     toggleAccountSignupModal,
 }) => {
     React.useEffect(() => {
@@ -289,6 +308,7 @@ const AccountSignupModal = ({
                 clients_country={clients_country}
                 onSignup={onSignup}
                 residence_list={residence_list}
+                receive_updates_products={receive_updates_products}
                 isModalVisible={toggleAccountSignupModal}
                 enableApp={enableApp}
             />
@@ -302,6 +322,7 @@ AccountSignupModal.propTypes = {
     enableApp: PropTypes.func,
     is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
+    receive_updates_products: PropTypes.bool,
     onSignup: PropTypes.func,
     residence_list: PropTypes.arrayOf(PropTypes.object),
 };
@@ -312,6 +333,7 @@ export default connect(({ ui, client }) => ({
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
     is_loading: ui.is_loading,
+    receive_updates_products: client.receive_updates_products,
     onSignup: client.onSignup,
     is_logged_in: client.is_logged_in,
     residence_list: client.residence_list,

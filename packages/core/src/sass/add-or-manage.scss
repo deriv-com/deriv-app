@@ -14,7 +14,6 @@
         &-message p:first-child {
             background-color: var(--general-section-1);
             font-size: 1.2rem;
-            height: 58px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -95,12 +94,12 @@
             &-message p:first-child {
                 width: 100%;
                 height: 75px;
-                margin-top: 8rem;
+                margin-top: 2.4rem;
                 padding-left: 1rem;
                 padding-right: 1rem;
             }
             .currency-list__items {
-                margin-top: 8rem;
+                margin-top: 2.4rem;
             }
         }
         & .dc-form-submit-button {

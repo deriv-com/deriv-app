@@ -214,7 +214,7 @@ const MT5PasswordForm = props => {
                             )}
                             {props.should_set_trading_password && (
                                 <Text size='xs' as='p'>
-                                    <Localize i18n_default_text='Use this to log in and trade on Deriv MT5 and Deriv X' />
+                                    <Localize i18n_default_text='Use this to log in and trade on Deriv MT5.' />
                                 </Text>
                             )}
                             {props.is_real_financial_stp && props.is_bvi && (

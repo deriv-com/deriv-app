@@ -61,7 +61,7 @@ const createCashProvider = onClick => {
     return {
         detail_click: onClick,
         detail_description: localize('Deposit cash via payment methods available in your country.'),
-        detail_header: localize('Deposit cash'),
+        detail_header: localize('Deposit via bank wire, credit card, and e-wallet'),
         detail_contents: cash_contents,
     };
 };
@@ -69,8 +69,8 @@ const createCashProvider = onClick => {
 const createCryptoProvider = onClick => {
     return {
         detail_click: onClick,
-        detail_description: localize('Receive crypto to a deposit address, or buy crypto with cash.'),
-        detail_header: localize('Deposit crypto'),
+        detail_description: localize('Deposit in cryptocurrencies or buy from our listed exchanges.'),
+        detail_header: localize('Deposit cryptocurrencies'),
         detail_contents: crypto_contents,
     };
 };

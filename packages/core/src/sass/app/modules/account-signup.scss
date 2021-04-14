@@ -13,6 +13,11 @@
             margin-left: unset;
         }
     }
+    &__receive-update-checkbox {
+        & .dc-checkbox__box {
+            align-self: flex-start;
+        }
+    }
     &__residence-selection,
     &__password-selection {
         display: flex;

@@ -7,7 +7,7 @@ import ProofOfAddressContainer from './proof-of-address-container.jsx';
 
 const ProofOfAddress = ({ is_virtual, is_mx_mlt, refreshNotifications }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
-    if (is_virtual) return <DemoMessage full_width={is_dashboard} />;
+    if (is_virtual) return <DemoMessage has_demo_icon={is_dashboard} has_button={true} />;
 
     return <ProofOfAddressContainer is_mx_mlt={is_mx_mlt} refreshNotifications={refreshNotifications} />;
 };

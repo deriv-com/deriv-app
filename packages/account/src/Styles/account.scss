@@ -694,6 +694,9 @@ $MIN_HEIGHT_FLOATING: calc(
 
             &__verify {
                 margin-left: 0.6rem;
+                &-button {
+                    margin-left: 0.8rem;
+                }
                 @include mobile {
                     margin-left: unset;
                 }
@@ -1013,9 +1016,13 @@ $MIN_HEIGHT_FLOATING: calc(
             flex-direction: column;
             width: 100%;
             height: auto;
-            @include desktop {
-                &--dashboard {
-                    width: calc(100vw - 33rem);
+            &-dashboard {
+                width: calc(100vw - 33rem);
+                @include mobile {
+                    width: 100%;
+                    button {
+                        width: 100%;
+                    }
                 }
             }
         }

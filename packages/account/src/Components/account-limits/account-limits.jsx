@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import classNames from 'classnames';
-import { Loading, ThemedScrollbars, Text, Button, ButtonLink } from '@deriv/components';
+import { Loading, ThemedScrollbars, Text, ButtonLink } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile, useIsMounted, PlatformContext } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
@@ -14,22 +14,6 @@ import AccountLimitsOverlay from './account-limits-overlay.jsx';
 import AccountLimitsTableCell from './account-limits-table-cell.jsx';
 import AccountLimitsTableHeader from './account-limits-table-header.jsx';
 import AccountLimitsTurnoverLimitRow from './account-limits-turnover-limit-row.jsx';
-
-const VirtualAccountButton = ({ toggleAccountsDialog }) => {
-    const { is_dashboard } = React.useContext(PlatformContext);
-    if (!is_dashboard) return '';
-    return (
-        <Button
-            primary
-            onClick={() => {
-                toggleAccountsDialog();
-            }}
-            className='account__demo-message-button'
-        >
-            {localize('Add a real account')}
-        </Button>
-    );
-};
 
 const AccountLimits = ({
     account_limits,
@@ -44,7 +28,6 @@ const AccountLimits = ({
     setIsOverlayShown: setIsPopupOverlayShown,
     should_bypass_scrollbars,
     should_show_article,
-    toggleAccountsDialog,
 }) => {
     const isMounted = useIsMounted();
     const [is_loading, setLoading] = React.useState(false);
@@ -84,10 +67,10 @@ const AccountLimits = ({
         return (
             <div
                 className={classNames('account__demo-message-wrapper', {
-                    'account__demo-message-dashboard': is_dashboard,
+                    'account__demo-message-wrapper-dashboard': is_dashboard,
                 })}
             >
-                <DemoMessage more_content={<VirtualAccountButton toggleAccountsDialog={toggleAccountsDialog} />} />;
+                <DemoMessage has_demo_icon={is_dashboard} has_button={true} />;
             </div>
         );
     }
@@ -274,6 +257,7 @@ const AccountLimits = ({
                                                                     <ButtonLink
                                                                         to='/account/proof-of-identity'
                                                                         size='small'
+                                                                        className='account-management-table__verify-button'
                                                                     >
                                                                         <Text
                                                                             weight='bold'

@@ -1,6 +1,13 @@
-import SelfExclusionComponent from 'Components/self-exclusion/self-exclusion.jsx';
+import React from 'react';
+import { PlatformContext } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
+import SelfExclusionComponent from 'Components/self-exclusion/self-exclusion.jsx';
+
+const SelfExclusion = props => {
+    const { is_dashboard } = React.useContext(PlatformContext);
+    return <SelfExclusionComponent is_dashboard={is_dashboard} {...props} />;
+};
 
 export default connect(({ client, ui }) => ({
     is_tablet: ui.is_tablet,
@@ -12,7 +19,8 @@ export default connect(({ client, ui }) => ({
     is_mlt: client.landing_company_shortcode === 'malta',
     is_mf: client.landing_company_shortcode === 'maltainvest',
     is_mx: client.landing_company_shortcode === 'iom',
+    is_uk: client.is_uk,
     is_wrapper_bypassed: false,
     logout: client.logout,
     ws: WS,
-}))(SelfExclusionComponent);
+}))(SelfExclusion);

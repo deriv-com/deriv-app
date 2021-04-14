@@ -18,7 +18,7 @@ import { connect } from 'Stores/connect';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import 'Sass/app/modules/account-signup.scss';
 
-const signupInitialValues = { password: '', residence: '', receive_updates_products: '' };
+const signupInitialValues = { password: '', residence: '', receive_updates_products: false };
 
 const validateSignup = (values, residence_list) => {
     const errors = {};
@@ -105,7 +105,7 @@ const AccountSignup = ({
         const modded_values = {
             ...values,
             residence: residence_list[index_of_selection].value,
-            receive_updates_products: receive_updates_products,
+            receive_updates_products,
         };
         onSignup(modded_values, onSignupComplete);
     };
@@ -114,7 +114,7 @@ const AccountSignup = ({
     //     const modded_values = {
     //         ...values,
     //         residence: residence_list[0].value,
-    //         receive_updates_products: receive_updates_products
+    //         receive_updates_products
     //     }
     //     console.log(modded_values);
     //     console.log(values);
@@ -197,28 +197,31 @@ const AccountSignup = ({
                                     <Text as='p' size='xxs' className='account-signup__subtext' align='center'>
                                         <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
                                     </Text>
-
-                                    <Checkbox
-                                        name='receive_updates_products'
-                                        className='receive_updates_products'
-                                        onChange={() => {
-                                            setFieldValue(
-                                                'receive_updates_products',
-                                                !values.receive_updates_products,
-                                                true
-                                            );
-                                        }}
-                                        value={values.receive_updates_products}
-                                        label={localize(
-                                            'I want to receive updates on Deriv products, services, and events.'
+                                    <Field name='receive_updates_products'>
+                                        {({ field }) => (
+                                            <Checkbox
+                                                {...field}
+                                                className='receive_updates_products'
+                                                onChange={() => {
+                                                    setFieldValue(
+                                                        'receive_updates_products',
+                                                        !values.receive_updates_products,
+                                                        true
+                                                    );
+                                                }}
+                                                value={values.receive_updates_products}
+                                                label={localize(
+                                                    'I want to receive updates on Deriv products, services, and events.'
+                                                )}
+                                                renderlabel={title => (
+                                                    <Text size='xs' line_height='s'>
+                                                        {title}
+                                                    </Text>
+                                                )}
+                                                withTabIndex='0'
+                                            />
                                         )}
-                                        renderlabel={title => (
-                                            <Text size='xs' line_height='s'>
-                                                {title}
-                                            </Text>
-                                        )}
-                                        withTabIndex='0'
-                                    />
+                                    </Field>
 
                                     {api_error ? (
                                         <React.Fragment>

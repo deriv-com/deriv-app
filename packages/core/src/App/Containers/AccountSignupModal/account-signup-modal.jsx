@@ -15,6 +15,7 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
+import MySignupSeparatorContainer from './signup-separator/my-signup-separator-container.jsx';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import 'Sass/app/modules/account-signup.scss';
 
@@ -201,7 +202,7 @@ const AccountSignup = ({
                                         {({ field }) => (
                                             <Checkbox
                                                 {...field}
-                                                className='receive_updates_products'
+                                                className='account-signup__receive-update-checkbox'
                                                 onChange={() => {
                                                     setFieldValue(
                                                         'receive_updates_products',
@@ -222,7 +223,7 @@ const AccountSignup = ({
                                             />
                                         )}
                                     </Field>
-
+                                    <MySignupSeparatorContainer />
                                     {api_error ? (
                                         <React.Fragment>
                                             <Text

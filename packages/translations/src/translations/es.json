@@ -2737,7 +2737,6 @@
     "-1556344549": "Así es cómo:",
     "-1061127827": "- Visite la siguiente URL, asegúrese de reemplazar <access_token> con el token API de Telegram que creó en el Paso 1: https://api.telegram.org/bot<access_token>/getUpdates",
     "-70949308": "4. Regrese a DBot y agregue el bloque Notificar Telegram al espacio de trabajo. Pegue el token API de Telegram y la ID de chat en los campos de bloque en consecuencia.",
-    "-1206289720": "Obtenga más información aquí: https://gist.github.com/aaron-binary/e5bd33bc7c657a911499c06b50dd04e9",
     "-311389920": "En este ejemplo, los precios abiertos de una lista de velas se asignan a una variable llamada \"cl\".",
     "-1634242212": "Utilizado dentro de un bloque de funciones, este bloque devuelve un valor cuando una condición específica es verdadera.",
     "-1504783522": "Puede elegir ver uno de los siguientes:",

@@ -193,6 +193,6 @@ export default connect(({ ui, client }) => ({
     enableApp: ui.enableApp,
     is_loading: ui.is_loading,
     is_visible: ui.is_reset_trading_password_modal_visible,
-    toggleResetTradingPasswordModal: ui.toggleResetTradingPasswordModal,
+    toggleResetTradingPasswordModal: ui.setResetTradingPasswordModalOpen,
     verification_code: client.verification_code.trading_platform_password_reset,
 }))(ResetTradingPasswordModal);

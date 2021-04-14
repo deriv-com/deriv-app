@@ -83,14 +83,13 @@ const getBackoffDelayInMs = (error, delay_index) => {
 
 export const updateErrorMessage = error => {
     if (error.error?.code === 'InputValidationFailed') {
-        if (error.error?.details?.duration) {
+        if (error.error.details?.duration) {
             error.error.message = localize('Duration must be a positive integer');
         }
-        if (error.error?.details?.amount) {
+        if (error.error.details?.amount) {
             error.error.message = localize('Amount must be a positive number.');
         }
     }
-    return error;
 };
 
 export const shouldThrowError = (error, errors_to_ignore = []) => {

@@ -36,14 +36,6 @@ export const expectInitArg = args => {
     return args;
 };
 
-export const expectTradeOptions = tradeOptions => {
-    const { duration } = tradeOptions;
-
-    expectPositiveInteger(duration, localize('Duration must be a positive integer'));
-
-    return tradeOptions;
-};
-
 const isCandle = candle =>
     candle instanceof Object &&
     ['open', 'high', 'low', 'close'].every(key => isPositiveNumber(candle[key])) &&

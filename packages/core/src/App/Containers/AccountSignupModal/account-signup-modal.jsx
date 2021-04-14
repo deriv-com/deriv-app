@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Dialog, Loading, PasswordInput, PasswordMeter, Text } from '@deriv/components';
+import { Button, Checkbox, Dialog, Loading, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import {
     validPassword,
     getLocation,
@@ -179,6 +179,28 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                     <Text as='p' size='xxs' className='account-signup__subtext' align='center'>
                                         <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
                                     </Text>
+
+                                    <Checkbox
+                                        name='receive_updates_products'
+                                        className='receive_updates_products'
+                                        onChange={() =>
+                                            setFieldValue(
+                                                'receive_updates_products',
+                                                !values.receive_updates_products,
+                                                true
+                                            )
+                                        }
+                                        value={values.receive_updates_products}
+                                        label={localize(
+                                            'I want to receive updates on Deriv products, services, and events.'
+                                        )}
+                                        renderlabel={title => (
+                                            <Text size='xs' line_height='s'>
+                                                {title}
+                                            </Text>
+                                        )}
+                                        withTabIndex='0'
+                                    />
 
                                     {api_error ? (
                                         <React.Fragment>

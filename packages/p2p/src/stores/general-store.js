@@ -198,8 +198,15 @@ export default class GeneralStore extends BaseStore {
                     'authenticated',
                     'financial_assessment_not_complete',
                 ]);
+                const is_blocked_because_qa_asked_for_it =
+                    is_not_fully_authenticated && hasStatuses(['financial_assessment_not_complete']);
 
-                if (is_cashier_locked || is_not_fully_authenticated || is_fully_authed_but_poi_expired) {
+                if (
+                    is_cashier_locked ||
+                    is_not_fully_authenticated ||
+                    is_fully_authed_but_poi_expired ||
+                    is_blocked_because_qa_asked_for_it
+                ) {
                     // First priority: If user is blocked, don't bother getting them to send FA.
                     this.setIsBlocked(true);
                     this.setIsLoading(false);

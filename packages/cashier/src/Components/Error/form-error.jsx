@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 
-const FormError = ({ disableApp, enableApp, setErrorMessage, error = {} }) => {
+const FormError = ({ disableApp, enableApp, setErrorMessage, error = {}, loginid, account_status }) => {
     const history = useHistory();
     const [is_visible, setIsVisible] = React.useState(false);
     const [details, setDetails] = React.useState({
@@ -28,6 +28,24 @@ const FormError = ({ disableApp, enableApp, setErrorMessage, error = {} }) => {
         setErrorVisibility(!!error.message);
     }, [error.message]);
 
+    const redirectToAllowDocumentUpload = () => {
+        const {
+            authentication: { needs_verification },
+            status,
+        } = account_status;
+
+        const needs_authentication = needs_verification.length || status?.includes('allow_document_upload');
+
+        const needs_poa = needs_authentication && needs_verification.includes('document');
+        const needs_poi = needs_authentication && needs_verification.includes('identity');
+
+        if (needs_poi) {
+            history.push(routes.proof_of_identity);
+        } else if (needs_poa) {
+            history.push(routes.proof_of_address);
+        }
+    };
+
     const mapErrorToDetails = (error_code, error_message) => {
         if (error_code === 'Fiat2CryptoTransferOverLimit') {
             setDetails({
@@ -35,6 +53,21 @@ const FormError = ({ disableApp, enableApp, setErrorMessage, error = {} }) => {
                 cancel_button_text: localize('Cancel'),
                 confirm_button_text: localize('Verify identity'),
                 onConfirm: () => history.push(routes.proof_of_identity),
+                message: error_message,
+            });
+        } else if (error_code === 'TransferBetweenAccountsError') {
+            setDetails({
+                title: localize('Cashier Error'),
+                cancel_button_text: undefined,
+                confirm_button_text: localize('OK'),
+                onConfirm: () => {
+                    // If the error message has loginid, then the account needs authentication
+                    if (new RegExp(loginid).test(error_message)) {
+                        redirectToAllowDocumentUpload();
+                    } else {
+                        history.push(routes.financial_assessment);
+                    }
+                },
                 message: error_message,
             });
         } else {
@@ -87,10 +120,14 @@ FormError.propTypes = {
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     setErrorMessage: PropTypes.func,
+    loginid: PropTypes.string,
+    account_status: PropTypes.object,
 };
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ modules, ui, client }) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     setErrorMessage: modules.cashier.setErrorMessage,
+    loginid: client.loginid,
+    account_status: client.account_status,
 }))(FormError);

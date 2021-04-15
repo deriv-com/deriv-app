@@ -2,7 +2,8 @@ import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { useHistory, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { SentEmailModal } from '@deriv/account';
 import {
     DesktopWrapper,
     FormSubmitButton,
@@ -19,6 +20,7 @@ import { isMobile, routes, validLength, validPassword, getErrorMessages } from '
 import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import 'Sass/app/modules/mt5/mt5.scss';
+import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 
 const RequireTradingPasswordModal = ({ should_set_trading_password, has_mt5_account, children }) => {
@@ -121,15 +123,16 @@ const MT5PasswordForm = props => {
     const has_cancel_button =
         props.should_show_server_form || !props.should_set_trading_password || props.error_type === 'PasswordReset';
     const cancel_button_label = getCancelButtonLabel(props);
-    const history = useHistory();
+
     const handleCancel = () => {
         if (!has_cancel_button) {
             return undefined;
         }
-        if (!props.should_set_trading_password) {
-            return history.push(routes.passwords);
+        if (props.should_set_trading_password) {
+            return props.onCancel();
         }
-        return props.onCancel();
+
+        return props.onForgotPassword();
     };
 
     if (props.error_type === 'PasswordReset') {
@@ -177,20 +180,13 @@ const MT5PasswordForm = props => {
                                 has_error={!!(touched.password && errors.password) || !!props.error_message}
                                 custom_feedback_messages={getErrorMessages().password_warnings}
                             >
-                                {({ has_warning }) => (
+                                {() => (
                                     <PasswordInput
                                         autoComplete='new-password'
                                         label={localize('Trading password')}
                                         error={
                                             (touched.password && errors.password) ||
                                             (values.password.length === 0 ? props.error_message : '')
-                                        }
-                                        hint={
-                                            !has_warning &&
-                                            props.should_set_trading_password &&
-                                            localize(
-                                                'Minimum of eight lower and uppercase English letters with numbers'
-                                            )
                                         }
                                         name='password'
                                         value={values.password}
@@ -338,6 +334,7 @@ const MT5PasswordModal = ({
         Array.isArray(account_status.status) && account_status.status.includes('trading_password_required');
     const is_password_error = error_type === 'PasswordError';
     const is_password_reset = error_type === 'PasswordReset';
+    const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
     const validatePassword = values => {
         const errors = {};
@@ -382,6 +379,12 @@ const MT5PasswordModal = ({
         }
     };
 
+    const handleForgotPassword = () => {
+        closeModal();
+        WS.verifyEmail(email, 'trading_platform_password_reset');
+        setIsSentEmailModalOpen(true);
+    };
+
     const IconType = () => getIconFromType(account_type.type);
     const should_show_password =
         is_mt5_password_modal_enabled &&
@@ -404,7 +407,7 @@ const MT5PasswordModal = ({
         if ((!is_password_error && !is_password_reset && has_mt5_error) || is_mt5_success_dialog_enabled) {
             setServer('');
         }
-    }, [has_mt5_error, is_mt5_success_dialog_enabled, is_password_error]);
+    }, [has_mt5_error, is_mt5_success_dialog_enabled, is_password_error, is_password_reset]);
 
     const mt5_password_form = (
         <MT5PasswordForm
@@ -419,6 +422,7 @@ const MT5PasswordModal = ({
             is_real_financial_stp={is_real_financial_stp}
             validatePassword={validatePassword}
             should_show_server_form={should_show_server_form}
+            onForgotPassword={handleForgotPassword}
             submitMt5Password={(values, actions) => {
                 submitMt5Password(
                     {
@@ -490,6 +494,12 @@ const MT5PasswordModal = ({
                 icon_size='xlarge'
                 text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('OK')}
                 has_cancel={account_type.category === 'real'}
+            />
+            <SentEmailModal
+                is_open={is_sent_email_modal_open}
+                identifier_title='trading_password'
+                onClose={() => setIsSentEmailModalOpen(false)}
+                onClickSendEmail={handleForgotPassword}
             />
         </React.Fragment>
     );

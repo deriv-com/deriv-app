@@ -4,10 +4,10 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 import FormSubHeader from 'Components/form-sub-header';
+import SentEmailModal from 'Components/sent-email-modal';
 import ChangePasswordForm from './change-password-form.jsx';
 import SetPasswordForm from './set-password-form.jsx';
 import PasswordsStatic from './passwords-static.jsx';
-import SentEmailModal from './sent-email-modal.jsx';
 
 const TradingPassword = ({ email, is_trading_password_required }) => {
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);

@@ -2,10 +2,26 @@
 .account-signup {
     margin: 1.6rem 1.6rem 0;
 
-    & .my-signup-separator-container {
-        width: 100%;
+    @include mobile {
+        width: calc(100% + 50px);
+        border-radius: 10px;
+        padding: 20px;
+        position: relative;
+        left: 50%;
+        transform: translate(-50%);
+        margin: 0;
+        background-color: #151717;
+        text-align: center;
+    }
+
+    & .signup-separator-container {
+        width: calc(100% + 80px);
         border-bottom: 1px solid #f2f3f4;
         margin: 24px 0 14px;
+
+        @include mobile {
+            display: none;
+        }
     }
     &__error-wrapper {
         display: grid;
@@ -21,6 +37,11 @@
     &__receive-update-checkbox {
         & .dc-checkbox__box {
             align-self: flex-start;
+        }
+        & .dc-checkbox__label {
+            @include mobile {
+                font-size: 12px;
+            }
         }
     }
     &__residence-selection,
@@ -44,7 +65,13 @@
     }
     &__password-selection {
         .account-signup__heading {
+            padding-top: 15px;
             margin-bottom: 3.3rem;
+
+            @include mobile {
+                padding-top: 0;
+                text-align: center;
+            }
         }
         & .dc-password-meter__container {
             max-height: 4rem;
@@ -74,6 +101,9 @@
     }
     &__subtext {
         margin: 1rem 0 2.4rem;
+        @include mobile {
+            margin-bottom: 3.4rem;
+        }
 
         &--error {
             @include mobile {
@@ -85,6 +115,7 @@
     &__btn {
         align-self: flex-end;
         margin: 0;
+        margin-top: -5px;
         background-color: var(--button-primary-default);
         font-weight: bold;
         color: var(--text-colored-background);
@@ -99,6 +130,7 @@
         @include mobile {
             width: 100%;
             height: 4rem;
+            margin-top: 16px;
         }
     }
     &__residence-field {

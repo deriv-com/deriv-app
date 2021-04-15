@@ -1439,6 +1439,11 @@ $MIN_HEIGHT_FLOATING: calc(
 .onfido-container {
     margin-top: 24px;
 
+    .ods-button {
+        height: 100%;
+        font-size: 16px;
+    }
+
     &__message {
         padding: 1rem;
         margin: 0 auto 1.4rem;

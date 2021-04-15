@@ -111,16 +111,6 @@ const AccountSignup = ({
         onSignup(modded_values, onSignupComplete);
     };
 
-    // const onSignupPassthrough = values => {
-    //     const modded_values = {
-    //         ...values,
-    //         residence: residence_list[0].value,
-    //         receive_updates_products
-    //     }
-    //     console.log(modded_values);
-    //     console.log(values);
-    // }
-
     return (
         <div className='account-signup'>
             {is_loading ? (

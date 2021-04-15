@@ -43,7 +43,7 @@ const AccountSwitcher = props => {
     const dmt5_ref = React.useRef(null);
 
     React.useEffect(() => {
-        if (props.account_list.length > 4) {
+        if (maxAcountsDisplayed()) {
             setDmt5RealVisible(false);
         }
     }, []);
@@ -52,7 +52,7 @@ const AccountSwitcher = props => {
         if (dmt5_ref.current && is_dmt5_real_visible) {
             dmt5_ref.current.scrollIntoView({
                 behavior: 'smooth',
-                block: 'end',
+                block: maxAcountsDisplayed() ? 'end' : 'start',
                 inline: 'nearest',
             });
         }
@@ -71,6 +71,10 @@ const AccountSwitcher = props => {
             default:
                 return false;
         }
+    };
+
+    const maxAcountsDisplayed = () => {
+        return props?.account_list?.length > 4;
     };
 
     const handleLogout = () => {

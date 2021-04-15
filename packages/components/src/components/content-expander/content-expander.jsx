@@ -20,27 +20,24 @@ const ContentExpander = ({
     onToggle,
     measure,
 }) => {
-    const [is_visible, toggleVisibility] = React.useState(is_expanded);
-
     const onClick = React.useCallback(() => {
-        toggleVisibility(!is_visible);
         if (typeof onToggle === 'function') {
-            onToggle(!is_visible);
+            onToggle();
         }
-    }, [is_visible, onToggle, toggleVisibility]);
+    }, [onToggle]);
 
     React.useEffect(() => {
         if (typeof measure === 'function') {
             measure();
         }
-    }, [is_visible]);
+    }, [is_expanded]);
 
     return (
         <div className={classNames('dc-content-expander__wrapper', wrapper_className)}>
             <div
                 className={classNames(
                     'dc-content-expander',
-                    { 'dc-content-expander--expanded': is_visible },
+                    { 'dc-content-expander--expanded': is_expanded },
                     className
                 )}
                 onClick={onClick}
@@ -77,7 +74,7 @@ const ContentExpander = ({
             </div>
             {has_fade_in ? (
                 <CSSTransition
-                    in={is_visible}
+                    in={is_expanded}
                     timeout={250}
                     classNames={{
                         enter: 'dc-content-expander__content--enter',
@@ -89,7 +86,7 @@ const ContentExpander = ({
                     <div className='dc-content-expander__content'>{children}</div>
                 </CSSTransition>
             ) : (
-                is_visible && <div className='dc-content-expander__content'>{children}</div>
+                is_expanded && <div className='dc-content-expander__content'>{children}</div>
             )}
         </div>
     );
@@ -101,7 +98,6 @@ ContentExpander.propTypes = {
     className: PropTypes.string,
     has_fade_in: PropTypes.bool,
     is_title_spaced: PropTypes.bool,
-    is_visible: PropTypes.bool,
     measure: PropTypes.func,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
     title_style: PropTypes.object,

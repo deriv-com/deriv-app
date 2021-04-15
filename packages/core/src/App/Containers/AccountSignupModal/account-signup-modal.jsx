@@ -15,7 +15,7 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
-import MySignupSeparatorContainer from './signup-separator/my-signup-separator-container.jsx';
+import SignupSeparatorContainer from './signup-separator/signup-separator-container.jsx';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import 'Sass/app/modules/account-signup.scss';
 
@@ -223,7 +223,7 @@ const AccountSignup = ({
                                             />
                                         )}
                                     </Field>
-                                    <MySignupSeparatorContainer />
+                                    <SignupSeparatorContainer />
                                     {api_error ? (
                                         <React.Fragment>
                                             <Text

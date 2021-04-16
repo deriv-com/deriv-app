@@ -39,10 +39,12 @@
             align-self: flex-start;
         }
         & .dc-checkbox__label {
-            @include mobile {
-                font-size: 12px;
-            }
+            font-size: 12px;
         }
+    }
+    &__hidden-checkbox {
+        visibility: hidden;
+        position: absolute;
     }
     &__residence-selection,
     &__password-selection {

@@ -1,4 +1,4 @@
-import { isCryptocurrency, getMT5AccountKey, getMT5Account, getMT5AccountDisplay } from '@deriv/shared';
+import { isCryptocurrency, getCFDAccountKey, getCFDAccount, getCFDAccountDisplay } from '@deriv/shared';
 
 export const getSortedAccountList = (account_list, accounts) => {
     // sort accounts as follows:
@@ -21,10 +21,9 @@ export const getSortedAccountList = (account_list, accounts) => {
     });
 };
 
-export const getSortedCFDList = (mt5_login_list, platform = 'mt5') => {
+export const getSortedCFDList = account_list => {
     // for DXTrade, MT5, synthetic, financial, financial stp
-    if (platform === 'dxtrade') return {};
-    return mt5_login_list.slice().sort((a, b) => {
+    return account_list.slice().sort((a, b) => {
         const a_is_demo = isDemo(a);
         const b_is_demo = isDemo(b);
 
@@ -34,11 +33,11 @@ export const getSortedCFDList = (mt5_login_list, platform = 'mt5') => {
         if (b_is_demo && !a_is_demo) {
             return -1;
         }
-        if (a.market_type === 'gaming') {
+        if (a.market_type === 'gaming' || a.market_type === 'synthetic') {
             return -1;
         }
         if (a.sub_account_type === 'financial') {
-            return b.market_type === 'gaming' ? 1 : -1;
+            return b.market_type === 'gaming' || b.market_type === 'synthetic' ? 1 : -1;
         }
         return 1;
     });
@@ -46,15 +45,20 @@ export const getSortedCFDList = (mt5_login_list, platform = 'mt5') => {
 
 export const isDemo = account => account.account_type === 'demo';
 
-export const getMtConfig = (market_type, landing_company, existing_mt5_accounts, trading_servers, platform) => {
-    const mt5_config = [];
+export const getCFDConfig = (market_type, landing_company, existing_cfd_accounts, trading_servers, platform) => {
+    const cfd_config = [];
     if (landing_company) {
         Object.keys(landing_company).forEach(company => {
-            if (company === 'financial_stp' && platform === 'dxtrade') return;
+            if (['gaming', 'synthetic', 'financial'].indexOf(company) === -1 && platform === 'dxtrade') {
+                return;
+            }
 
-            let has_account = existing_mt5_accounts.find(
-                account => account.sub_account_type === company && account.market_type === market_type
-            );
+            let has_account = existing_cfd_accounts.find(account => {
+                if (platform === 'dxtrade') {
+                    return account.market_type === market_type;
+                }
+                return account.sub_account_type === company && account.market_type === market_type;
+            });
             if (has_account) {
                 const number_market_type_available = trading_servers.filter(
                     s => s.supported_accounts.includes(market_type) && !s.disabled
@@ -65,16 +69,16 @@ export const getMtConfig = (market_type, landing_company, existing_mt5_accounts,
             }
 
             if (!has_account) {
-                const type = getMT5AccountKey(market_type, company);
+                const type = getCFDAccountKey({ market_type, sub_account_type: company, platform });
                 if (type) {
-                    mt5_config.push({
-                        icon: getMT5Account(market_type, company),
-                        title: getMT5AccountDisplay(market_type, company),
+                    cfd_config.push({
+                        icon: getCFDAccount({ market_type, sub_account_type: company, platform }),
+                        title: getCFDAccountDisplay({ market_type, sub_account_type: company, platform }),
                         type,
                     });
                 }
             }
         });
     }
-    return mt5_config;
+    return cfd_config;
 };

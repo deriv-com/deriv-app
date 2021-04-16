@@ -13,7 +13,7 @@ import {
     isTouchDevice,
     initFormErrorMessages,
     mobileOSDetect,
-    setSharedMT5Text,
+    setSharedCFDText,
 } from '@deriv/shared';
 import { initializeTranslations, getLanguage, useOnLoadTranslation } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
@@ -54,7 +54,7 @@ const App = ({ root_store }) => {
         // TODO: [translation-to-shared]: add translation implemnentation in shared
         setUrlLanguage(getLanguage());
         initFormErrorMessages(FORM_ERROR_MESSAGES);
-        setSharedMT5Text(CFD_TEXT);
+        setSharedCFDText(CFD_TEXT);
     }, []);
 
     const handleResize = React.useCallback(() => {

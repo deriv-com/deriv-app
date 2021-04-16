@@ -293,7 +293,7 @@ class CFDDashboard extends React.Component {
                                     <h1 className='cfd-dashboard__download-center--heading'>
                                         {platform === 'mt5' && <Localize i18n_default_text='Download the MT5 app' />}
                                         {platform === 'dxtrade' && (
-                                            <Localize i18n_default_text='Download the DXTrade app' />
+                                            <Localize i18n_default_text='Download the Deriv X app' />
                                         )}
                                     </h1>
                                     <div className='cfd-dashboard__download-center-options--mobile'>

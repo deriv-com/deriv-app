@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, Money, ThemedScrollbars, Text } from '@deriv/components';
-import { formatMoney, getMT5Account, getMT5AccountDisplay } from '@deriv/shared';
+import { formatMoney, getCFDAccount, getCFDAccountDisplay } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
 const getDerivAccount = (client_accounts, login_id) =>
@@ -127,9 +127,17 @@ const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_acco
                         {mt5_open_positions.map(account => (
                             <Content
                                 key={account.login}
-                                currency_icon={`IcMt5-${getMT5Account(account.market_type, account.sub_account_type)}`}
+                                currency_icon={`IcMt5-${getCFDAccount({
+                                    market_type: account.market_type,
+                                    sub_account_type: account.sub_account_type,
+                                    platform: 'mt5',
+                                })}`}
                                 loginid={account.display_login}
-                                title={getMT5AccountDisplay(account.market_type, account.sub_account_type)}
+                                title={getCFDAccountDisplay({
+                                    market_type: account.market_type,
+                                    sub_account_type: account.sub_account_type,
+                                    platform: 'mt5',
+                                })}
                                 value={
                                     <Localize
                                         i18n_default_text='{{number_of_positions}} position(s)'
@@ -145,9 +153,17 @@ const AccountHasBalanceOrOpenPositions = ({ details, mt5_login_list, client_acco
                         {mt5_balance.map(account => (
                             <Content
                                 key={account.login}
-                                currency_icon={`IcMt5-${getMT5Account(account.market_type, account.sub_account_type)}`}
+                                currency_icon={`IcMt5-${getCFDAccount({
+                                    market_type: account.market_type,
+                                    sub_account_type: account.sub_account_type,
+                                    platform: 'mt5',
+                                })}`}
                                 loginid={account.display_login}
-                                title={getMT5AccountDisplay(account.market_type, account.sub_account_type)}
+                                title={getCFDAccountDisplay({
+                                    market_type: account.market_type,
+                                    sub_account_type: account.sub_account_type,
+                                    platform: 'mt5',
+                                })}
                                 value={
                                     <Money
                                         currency={account.currency}

@@ -10,8 +10,8 @@ import {
     getCurrencyDisplayCode,
     isEmptyObject,
     getPropertyValue,
-    getMT5AccountDisplay,
-    getMT5Account,
+    getCFDAccountDisplay,
+    getCFDAccount,
     getDXTradeAccount,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -1133,11 +1133,11 @@ export default class CashierStore extends BaseStore {
             const a_is_fiat = !a_is_mt && !a_is_crypto;
             const b_is_fiat = !b_is_mt && !b_is_crypto;
             if (a_is_mt && b_is_mt) {
-                if (a.market_type === 'gaming') {
+                if (a.market_type === 'gaming' || a.market_type === 'synthetic') {
                     return -1;
                 }
                 if (a.sub_account_type === 'financial') {
-                    return b.market_type === 'gaming' ? 1 : -1;
+                    return b.market_type === 'gaming' || b.market_type === 'synthetic' ? 1 : -1;
                 }
                 return 1;
             } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
@@ -1154,7 +1154,11 @@ export default class CashierStore extends BaseStore {
             const obj_values = {
                 text:
                     account.account_type === 'mt5'
-                        ? `${localize('DMT5')} ${getMT5AccountDisplay(account.market_type, account.sub_account_type)}`
+                        ? `${localize('DMT5')} ${getCFDAccountDisplay({
+                              market_type: account.market_type,
+                              sub_account_type: account.sub_account_type,
+                              platform: 'mt5',
+                          })}`
                         : getCurrencyDisplayCode(
                               account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency
                           ),
@@ -1167,9 +1171,20 @@ export default class CashierStore extends BaseStore {
                 ...((account.account_type === 'mt5' || account.account_type === 'dxtrade') && {
                     platform_icon:
                         account.account_type === 'mt5'
-                            ? `IcMt5-${getMT5Account(account.market_type, account.sub_account_type)}`
-                            : `IcDxtrade-${getDXTradeAccount(account.market_type, account.sub_account_type)}`,
-                    market_type: getMT5Account(account.market_type, account.sub_account_type),
+                            ? `IcMt5-${getCFDAccount({
+                                  market_type: account.market_type,
+                                  sub_account_type: account.sub_account_type,
+                                  platform: 'mt5',
+                              })}`
+                            : `IcDxtrade-${getDXTradeAccount({
+                                  market_type: account.market_type,
+                                  platform: 'dxtrade',
+                              })}`,
+                    market_type: getCFDAccount({
+                        market_type: account.market_type,
+                        sub_account_type: account.sub_account_type,
+                        platform: account.account_type,
+                    }),
                 }),
             };
             // set current logged in client as the default transfer from account

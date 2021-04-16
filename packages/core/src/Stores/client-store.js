@@ -585,7 +585,11 @@ export default class ClientStore extends BaseStore {
     isDxtradeAllowed = () => {
         if (!this.website_status?.clients_country || !this.landing_companies) return false;
 
-        return this.is_svg || (!this.is_logged_in && !this.is_eu && !this.is_eu_country);
+        const is_svg =
+            this.landing_companies?.financial_company?.shortcode === 'svg' ||
+            this.landing_companies?.gaming_company?.shortcode === 'svg';
+
+        return is_svg || (!this.is_logged_in && !this.is_eu && !this.is_eu_country);
     };
 
     @computed

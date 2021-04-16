@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { localize, Localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
-import { getAccountTypeFields, getAccountListKey, getMT5AccountKey } from '@deriv/shared';
+import { getAccountTypeFields, getAccountListKey, getCFDAccountKey } from '@deriv/shared';
 import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card.jsx';
 
@@ -88,7 +88,11 @@ const CFDRealAccountDisplay = ({
     const onClickFundReal = account =>
         openAccountTransfer(current_list[getAccountListKey(account, platform)], {
             category: account.account_type,
-            type: getMT5AccountKey(account.market_type, account.sub_account_type),
+            type: getCFDAccountKey({
+                market_type: account.market_type,
+                sub_account_type: account.sub_account_type,
+                platform,
+            }),
         });
 
     const handleHoverCard = name => {

@@ -1,8 +1,8 @@
-let MT5_text_translated;
+let CFD_text_translated;
 
 // TODO: add swap_free to this file when ready
-const MT5_text = {
-    dxtrade: 'DXtrade',
+const CFD_text = {
+    dxtrade: 'Deriv X',
     mt5: 'MT5',
     synthetic: 'Synthetic',
     financial: 'Financial',
@@ -14,14 +14,14 @@ const MT5_text = {
 // sub_account_type: "financial" | "financial_stp" | "swap_free"
 // *
 // sub_account_type financial_stp only happens in "financial" market_type
-export const getMT5AccountKey = (market_type, sub_account_type) => {
-    if (market_type === 'gaming') {
-        if (sub_account_type === 'financial') {
+export const getCFDAccountKey = ({ market_type, sub_account_type, platform }) => {
+    if (market_type === 'gaming' || market_type === 'synthetic') {
+        if (platform === 'dxtrade' || sub_account_type === 'financial') {
             return 'synthetic';
         }
     }
     if (market_type === 'financial') {
-        if (sub_account_type === 'financial') {
+        if (platform === 'dxtrade' || sub_account_type === 'financial') {
             return 'financial';
         }
         if (sub_account_type === 'financial_stp') {
@@ -71,27 +71,28 @@ export const getAccountTypeFields = ({ category, type }) => {
     return map_mode[category][type];
 };
 
-export const getMT5AccountDisplay = (market_type, sub_account_type) => {
-    const mt5_account_key = getMT5AccountKey(market_type, sub_account_type);
-    if (!mt5_account_key) return undefined;
+export const getCFDAccountDisplay = ({ market_type, sub_account_type, platform }) => {
+    const cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform });
+    if (!cfd_account_key) return undefined;
 
-    return MT5_text_translated[mt5_account_key]();
+    return CFD_text_translated[cfd_account_key]();
 };
 
-export const getMT5Account = (market_type, sub_account_type) => {
-    const mt5_account_key = getMT5AccountKey(market_type, sub_account_type);
-    if (!mt5_account_key) return undefined;
+export const getCFDAccount = ({ market_type, sub_account_type, platform }) => {
+    const cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform });
+    if (!cfd_account_key) return undefined;
 
-    return MT5_text[mt5_account_key];
+    return CFD_text[cfd_account_key];
 };
 
-export const setSharedMT5Text = all_shared_mt5_text => {
-    MT5_text_translated = all_shared_mt5_text;
+export const setSharedCFDText = all_shared_CFD_text => {
+    CFD_text_translated = all_shared_CFD_text;
 };
 
 export const getAccountListKey = (account, platform) => {
-    return `${account.platform || platform}.${account.account_type}.${getMT5AccountKey(
-        account.market_type,
-        account.sub_account_type
-    )}@${platform === 'dxtrade' ? account.sub_account_type : account.server}`;
+    return `${account.platform || platform}.${account.account_type}.${getCFDAccountKey({
+        market_type: account.market_type,
+        sub_account_type: account.sub_account_type,
+        platform,
+    })}@${platform === 'dxtrade' ? account.market_type : account.server}`;
 };

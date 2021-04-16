@@ -55,7 +55,7 @@ const validateSignup = (values, residence_list) => {
     return errors;
 };
 
-const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, residence_list }) => {
+const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, residence_list, is_eu_country }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
     const [api_error, setApiError] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
@@ -112,6 +112,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                     initialValues={signupInitialValues}
                     validate={validateSignupPassthrough}
                     onSubmit={onSignupPassthrough}
+                    is_eu_country={is_eu_country}
                 >
                     {({
                         isSubmitting,
@@ -184,7 +185,11 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                         {({ field }) => (
                                             <Checkbox
                                                 {...field}
-                                                className='account-signup__receive-update-checkbox'
+                                                className={
+                                                    is_eu_country
+                                                        ? 'account-signup__receive-update-checkbox'
+                                                        : 'account-signup__hidden-checkbox'
+                                                }
                                                 onChange={() => {
                                                     setFieldValue('email_consent', !values.email_consent, true);
                                                 }}
@@ -259,6 +264,7 @@ const AccountSignupModal = ({
     is_loading,
     is_visible,
     is_logged_in,
+    is_eu_country,
     logout,
     onSignup,
     residence_list,
@@ -285,6 +291,7 @@ const AccountSignupModal = ({
                 onSignup={onSignup}
                 residence_list={residence_list}
                 isModalVisible={toggleAccountSignupModal}
+                is_eu_country={is_eu_country}
                 enableApp={enableApp}
             />
         </Dialog>
@@ -297,6 +304,7 @@ AccountSignupModal.propTypes = {
     enableApp: PropTypes.func,
     is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
+    is_eu_country: PropTypes.bool,
     onSignup: PropTypes.func,
     residence_list: PropTypes.arrayOf(PropTypes.object),
 };
@@ -308,6 +316,7 @@ export default connect(({ ui, client }) => ({
     disableApp: ui.disableApp,
     is_loading: ui.is_loading,
     onSignup: client.onSignup,
+    is_eu_country: client.is_eu_country,
     is_logged_in: client.is_logged_in,
     residence_list: client.residence_list,
     clients_country: client.clients_country,

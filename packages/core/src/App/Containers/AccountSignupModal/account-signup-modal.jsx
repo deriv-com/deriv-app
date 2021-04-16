@@ -19,7 +19,7 @@ import SignupSeparatorContainer from './signup-separator/signup-separator-contai
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import 'Sass/app/modules/account-signup.scss';
 
-const signupInitialValues = { password: '', residence: '', receive_updates_products: false };
+const signupInitialValues = { password: '', residence: '', email_consent: false };
 
 const validateSignup = (values, residence_list) => {
     const errors = {};
@@ -55,14 +55,7 @@ const validateSignup = (values, residence_list) => {
     return errors;
 };
 
-const AccountSignup = ({
-    enableApp,
-    isModalVisible,
-    clients_country,
-    onSignup,
-    residence_list,
-    receive_updates_products,
-}) => {
+const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, residence_list }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
     const [api_error, setApiError] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
@@ -106,7 +99,6 @@ const AccountSignup = ({
         const modded_values = {
             ...values,
             residence: residence_list[index_of_selection].value,
-            receive_updates_products,
         };
         onSignup(modded_values, onSignupComplete);
     };
@@ -188,26 +180,17 @@ const AccountSignup = ({
                                     <Text as='p' size='xxs' className='account-signup__subtext' align='center'>
                                         <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
                                     </Text>
-                                    <Field name='receive_updates_products'>
+                                    <Field name='email_consent'>
                                         {({ field }) => (
                                             <Checkbox
                                                 {...field}
                                                 className='account-signup__receive-update-checkbox'
                                                 onChange={() => {
-                                                    setFieldValue(
-                                                        'receive_updates_products',
-                                                        !values.receive_updates_products,
-                                                        true
-                                                    );
+                                                    setFieldValue('email_consent', !values.email_consent, true);
                                                 }}
-                                                value={values.receive_updates_products}
+                                                value={values.email_consent}
                                                 label={localize(
                                                     'I want to receive updates on Deriv products, services, and events.'
-                                                )}
-                                                renderlabel={title => (
-                                                    <Text size='xs' line_height='s'>
-                                                        {title}
-                                                    </Text>
                                                 )}
                                                 withTabIndex='0'
                                             />
@@ -279,7 +262,6 @@ const AccountSignupModal = ({
     logout,
     onSignup,
     residence_list,
-    receive_updates_products,
     toggleAccountSignupModal,
 }) => {
     React.useEffect(() => {
@@ -302,7 +284,6 @@ const AccountSignupModal = ({
                 clients_country={clients_country}
                 onSignup={onSignup}
                 residence_list={residence_list}
-                receive_updates_products={receive_updates_products}
                 isModalVisible={toggleAccountSignupModal}
                 enableApp={enableApp}
             />
@@ -316,7 +297,6 @@ AccountSignupModal.propTypes = {
     enableApp: PropTypes.func,
     is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
-    receive_updates_products: PropTypes.bool,
     onSignup: PropTypes.func,
     residence_list: PropTypes.arrayOf(PropTypes.object),
 };
@@ -327,7 +307,6 @@ export default connect(({ ui, client }) => ({
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
     is_loading: ui.is_loading,
-    receive_updates_products: client.receive_updates_products,
     onSignup: client.onSignup,
     is_logged_in: client.is_logged_in,
     residence_list: client.residence_list,

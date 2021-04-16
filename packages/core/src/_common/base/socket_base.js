@@ -180,14 +180,16 @@ const BinarySocketBase = (() => {
 
     const cashier = (action, parameters = {}) => deriv_api.send({ cashier: action, ...parameters });
 
-    const newAccountVirtual = (verification_code, client_password, residence, device_data) =>
+    const newAccountVirtual = (verification_code, client_password, residence, email_consent, device_data) => {
         deriv_api.send({
             new_account_virtual: 1,
             verification_code,
             client_password,
             residence,
+            email_consent,
             ...device_data,
         });
+    };
 
     const setAccountCurrency = (currency, passthrough) =>
         deriv_api.send({

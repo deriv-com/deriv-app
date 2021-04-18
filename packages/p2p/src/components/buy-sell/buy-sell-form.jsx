@@ -30,7 +30,7 @@ BuySellFormReceiveAmount.propTypes = {
     local_currency: PropTypes.string.isRequired,
 };
 
-const BuySellForm = observer(props => {
+const BuySellForm = props => {
     const isMounted = useIsMounted();
     const { advertiser_page_store, buy_sell_store } = useStores();
 
@@ -158,7 +158,11 @@ const BuySellForm = observer(props => {
                                                 data-lpignore='true'
                                                 type='number'
                                                 error={errors.amount}
-                                                label={localize('Amount')}
+                                                label={
+                                                    buy_sell_store.is_buy_advert
+                                                        ? localize('Buy amount')
+                                                        : localize('Sell amount')
+                                                }
                                                 hint={
                                                     <Localize
                                                         i18n_default_text='Limits: {{min}}–{{max}} {{currency}}'
@@ -257,7 +261,7 @@ const BuySellForm = observer(props => {
             }}
         </Formik>
     );
-});
+};
 
 BuySellForm.propTypes = {
     advert: PropTypes.object,
@@ -278,4 +282,4 @@ BuySellForm.propTypes = {
     validatePopup: PropTypes.func,
 };
 
-export default BuySellForm;
+export default observer(BuySellForm);

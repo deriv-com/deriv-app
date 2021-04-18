@@ -152,22 +152,22 @@ class Common {
         });
         if (await this.isMobile()) {
             await this.page.waitForSelector(
-                '.account-signup__residence-selection > .dc-select-native > .dc-select-native__wrapper > .dc-input > .dc-select-native__picker'
+                '#dt_components_select-native_select-tag'
             );
             await this.page.click(
-                '.account-signup__residence-selection > .dc-select-native > .dc-select-native__wrapper > .dc-input > .dc-select-native__picker'
+                '#dt_components_select-native_select-tag'
             );
 
             await this.page.selectOption(
-                '.account-signup__residence-selection > .dc-select-native > .dc-select-native__wrapper > .dc-input > .dc-select-native__picker',
+                '#dt_components_select-native_select-tag',
                 country
             );
 
             await this.page.waitForSelector(
-                '.account-signup__residence-selection > .dc-select-native > .dc-select-native__wrapper > .dc-input > .dc-select-native__picker'
+                '#dt_components_select-native_select-tag'
             );
             await this.page.click(
-                '.account-signup__residence-selection > .dc-select-native > .dc-select-native__wrapper > .dc-input > .dc-select-native__picker'
+                '#dt_components_select-native_select-tag'
             );
 
             await this.page.waitForSelector('text=Next');

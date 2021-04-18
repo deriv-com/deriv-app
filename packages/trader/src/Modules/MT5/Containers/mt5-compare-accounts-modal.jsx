@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     Button,
-    Popover,
     Modal,
     DesktopWrapper,
     MobileDialog,
@@ -9,10 +8,124 @@ import {
     Table,
     UILoader,
     Text,
+    ThemedScrollbars,
 } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+
+const accounts = [
+    {
+        attribute: localize('Account currency'),
+        synthetic: localize('USD'),
+        synthetic_eu: localize('EUR'),
+        financial: localize('USD'),
+        financial_eu: localize('EUR/GBP'),
+        financial_stp: localize('USD'),
+        footnote: null,
+    },
+    {
+        attribute: localize('Maximum leverage'),
+        synthetic: localize('Up to 1:1000'),
+        synthetic_eu: localize('Up to 1:1000'),
+        financial: localize('Up to 1:1000'),
+        financial_eu: localize('Up to 1:30'),
+        financial_stp: localize('Up to 1:100'),
+        footnote: localize(
+            'Leverage gives you the ability to trade a larger position using your existing capital. Leverage varies across different symbols.'
+        ),
+    },
+    {
+        attribute: localize('Order execution'),
+        synthetic: localize('Market'),
+        synthetic_eu: localize('Market'),
+        financial: localize('Market'),
+        financial_eu: localize('Market'),
+        financial_stp: localize('Market'),
+        footnote: localize(
+            "All 3 account types use market execution. This means you agree with the broker's price in advance and will place orders at the broker's price."
+        ),
+    },
+    {
+        attribute: localize('Spread'),
+        synthetic: localize('Fixed/Variable'),
+        synthetic_eu: localize('Fixed/Variable'),
+        financial: localize('Variable'),
+        financial_eu: localize('Variable'),
+        financial_stp: localize('Variable'),
+        footnote: localize(
+            "The spread is the difference between the buy price and sell price. A variable spread means that the spread is constantly changing, depending on market conditions. A fixed spread remains constant but is subject to alteration, at the Broker's absolute discretion."
+        ),
+    },
+    {
+        attribute: localize('Commission'),
+        synthetic: localize('No'),
+        synthetic_eu: localize('No'),
+        financial: localize('No'),
+        financial_eu: localize('No'),
+        financial_stp: localize('No'),
+        footnote: localize('Deriv charges no commission across all account types.'),
+    },
+    {
+        attribute: localize('Minimum deposit'),
+        synthetic: localize('No'),
+        synthetic_eu: localize('No'),
+        financial: localize('No'),
+        financial_eu: localize('No'),
+        financial_stp: localize('No'),
+        footnote: null,
+    },
+    {
+        attribute: localize('Margin call'),
+        synthetic: localize('100%'),
+        synthetic_eu: localize('100%'),
+        financial: localize('150%'),
+        financial_eu: localize('100%'),
+        financial_stp: localize('150%'),
+        footnote: localize(
+            'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
+        ),
+    },
+    {
+        attribute: localize('Stop out level'),
+        synthetic: localize('50%'),
+        synthetic_eu: localize('50%'),
+        financial: localize('75%'),
+        financial_eu: localize('50%'),
+        financial_stp: localize('75%'),
+        footnote: localize(
+            'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
+        ),
+    },
+    {
+        attribute: localize('Number of assets'),
+        synthetic: localize('10+'),
+        synthetic_eu: localize('10+'),
+        financial: localize('50+'),
+        financial_eu: localize('50+'),
+        financial_stp: localize('50+'),
+        footnote: null,
+    },
+    {
+        attribute: localize('Cryptocurrency trading'),
+        synthetic: localize('N/A'),
+        synthetic_eu: localize('N/A'),
+        financial: localize('24/7'),
+        financial_eu: localize('24/7'),
+        financial_stp: localize('24/7'),
+        footnote: localize('Indicates the availability of cryptocurrency trading on a particular account.'),
+    },
+    {
+        attribute: localize('Trading instruments'),
+        synthetic: localize('Synthetics'),
+        synthetic_eu: localize('Synthetics'),
+        financial: localize(
+            'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices'
+        ),
+        financial_eu: localize('FX-majors (standard), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices'),
+        financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
+        footnote: null,
+    },
+];
 
 const MT5AttributeDescriberModal = ({ is_visible, toggleModal, message }) => (
     <Modal is_open={is_visible} small toggleModal={toggleModal}>
@@ -23,11 +136,11 @@ const MT5AttributeDescriberModal = ({ is_visible, toggleModal, message }) => (
     </Modal>
 );
 
-const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
+const MT5AttributeDescriber = ({ name, counter }) => {
     const [is_visible, setIsVisible] = React.useState(false);
     const toggleModal = () => setIsVisible(!is_visible);
 
-    return tooltip ? (
+    return counter ? (
         <React.Fragment>
             <Text
                 as='p'
@@ -38,18 +151,10 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
                 onClick={toggleModal}
             >
                 {name}
-                <MobileWrapper>
-                    <Text weight='bold' line_height='x' size='xxxs' className='counter'>
-                        {counter}
-                    </Text>
-                </MobileWrapper>
+                <Text weight='bold' as='span' line_height='x' size='xxxs' className='counter'>
+                    {counter}
+                </Text>
             </Text>
-            <DesktopWrapper>
-                <Popover alignment='right' icon='counter' counter={counter} message={tooltip} zIndex={9998} />
-            </DesktopWrapper>
-            <MobileWrapper>
-                <MT5AttributeDescriberModal toggleModal={toggleModal} is_visible={is_visible} message={tooltip} />
-            </MobileWrapper>
         </React.Fragment>
     ) : (
         <Text as='p' weight='bold' size='xs' line_height='s' className='mt5-attribute-describer'>
@@ -58,20 +163,23 @@ const MT5AttributeDescriber = ({ name, tooltip, counter }) => {
     );
 };
 
-const filterAvailableAccounts = (landing_companies, table, is_logged_in) => {
-    return table.map(({ attribute, synthetic, financial_stp, financial }) => {
+const filterAvailableAccounts = (landing_companies, table, is_logged_in, show_eu_related) => {
+    let footnote_number = 0;
+    return table.map(({ attribute, synthetic, synthetic_eu, financial_stp, financial, financial_eu, footnote }) => {
+        const synthetic_object = { synthetic: show_eu_related ? synthetic_eu : synthetic };
+        const financial_object = { financial: show_eu_related ? financial_eu : financial };
         if (is_logged_in) {
             return {
-                attribute,
-                ...(landing_companies?.mt_gaming_company?.financial ? { synthetic } : {}),
-                ...(landing_companies?.mt_financial_company?.financial ? { financial } : {}),
+                attribute: <MT5AttributeDescriber name={attribute} counter={footnote ? ++footnote_number : null} />,
+                ...(landing_companies?.mt_gaming_company?.financial ? synthetic_object : {}),
+                ...(landing_companies?.mt_financial_company?.financial ? financial_object : {}),
                 ...(landing_companies?.mt_financial_company?.financial_stp ? { financial_stp } : {}),
             };
         }
         return {
-            attribute,
-            ...{ synthetic },
-            ...{ financial },
+            attribute: <MT5AttributeDescriber name={attribute} counter={footnote ? ++footnote_number : null} />,
+            ...synthetic_object,
+            ...financial_object,
             ...{ financial_stp },
         };
     });
@@ -79,82 +187,7 @@ const filterAvailableAccounts = (landing_companies, table, is_logged_in) => {
 
 const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logged_in }) => {
     const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
-    return filterAvailableAccounts(
-        landing_companies,
-        [
-            {
-                attribute: <MT5AttributeDescriber name={localize('Account currency')} />,
-                synthetic: show_eu_related ? localize('EUR') : localize('USD'),
-                financial: show_eu_related ? localize('EUR/GBP') : localize('USD'),
-                financial_stp: localize('USD'),
-            },
-            {
-                attribute: <MT5AttributeDescriber name={localize('Maximum leverage')} />,
-                synthetic: localize('Up to 1:1000'),
-                financial: show_eu_related ? localize('Up to 1:30') : localize('Up to 1:1000'),
-                financial_stp: localize('Up to 1:100'),
-            },
-            {
-                attribute: <MT5AttributeDescriber name={localize('Order execution')} />,
-                synthetic: localize('Market'),
-                financial: localize('Market'),
-                financial_stp: localize('Market'),
-            },
-            {
-                attribute: <MT5AttributeDescriber name={localize('Spread')} />,
-                synthetic: localize('Fixed/Variable'),
-                financial: localize('Variable'),
-                financial_stp: localize('Variable'),
-            },
-            {
-                attribute: <MT5AttributeDescriber name={localize('Commission')} />,
-                synthetic: localize('No'),
-                financial: localize('No'),
-                financial_stp: localize('No'),
-            },
-            {
-                attribute: <MT5AttributeDescriber name={localize('Minimum deposit')} />,
-                synthetic: localize('No'),
-                financial: localize('No'),
-                financial_stp: localize('No'),
-            },
-            {
-                attribute: <MT5AttributeDescriber name={localize('Margin call')} />,
-                synthetic: localize('100%'),
-                financial: show_eu_related ? localize('100%') : localize('150%'),
-                financial_stp: localize('150%'),
-            },
-            {
-                attribute: <MT5AttributeDescriber name={localize('Stop out level')} />,
-                synthetic: localize('50%'),
-                financial: show_eu_related ? localize('50%') : localize('75%'),
-                financial_stp: localize('75%'),
-            },
-            {
-                attribute: <MT5AttributeDescriber name={localize('Number of assets')} />,
-                synthetic: localize('10+'),
-                financial: localize('50+'),
-                financial_stp: localize('50+'),
-            },
-            {
-                attribute: <MT5AttributeDescriber name={localize('Cryptocurrency trading')} />,
-                synthetic: localize('N/A'),
-                financial: localize('24/7'),
-                financial_stp: localize('24/7'),
-            },
-            {
-                attribute: <MT5AttributeDescriber name={localize('Trading instruments')} />,
-                synthetic: localize('Synthetics'),
-                financial: show_eu_related
-                    ? localize('FX-majors (standard), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices')
-                    : localize(
-                          'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices'
-                      ),
-                financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
-            },
-        ],
-        is_logged_in
-    );
+    return filterAvailableAccounts(landing_companies, accounts, is_logged_in, show_eu_related);
 };
 
 const MT5CompareAccountHint = () => (
@@ -162,6 +195,10 @@ const MT5CompareAccountHint = () => (
         <div className='mt5-compare-accounts__bullet-wrapper'>
             <span className='mt5-compare-accounts__bullet mt5-compare-accounts__bullet--circle' />
             <Localize i18n_default_text='At bank rollover, liquidity in the forex markets is reduced and may increase the spread and processing time for client orders. This happens around 21:00 GMT during daylight saving time, and 22:00 GMT non-daylight saving time.' />
+        </div>
+        <div className='mt5-compare-accounts__bullet-wrapper'>
+            <span className='mt5-compare-accounts__bullet mt5-compare-accounts__bullet--circle' />
+            <Localize i18n_default_text='Margin call and stop out level will change from time to time based on market condition.' />
         </div>
         <div className='mt5-compare-accounts__bullet-wrapper'>
             <Text
@@ -174,6 +211,30 @@ const MT5CompareAccountHint = () => (
             </Text>
             <Localize i18n_default_text='To protect your portfolio from adverse market movements due to the market opening gap, we reserve the right to decrease leverage on all offered symbols for financial accounts before market close and increase it again after market open. Please make sure that you have enough funds available in your MT5 account to support your positions at all times.' />
         </div>
+        {accounts
+            .filter(item => !!item.footnote)
+            .map((account, index) => {
+                return (
+                    <div key={index} className='mt5-compare-accounts__bullet-wrapper'>
+                        <Text
+                            size='xs'
+                            line_height='x'
+                            weight='bold'
+                            className='mt5-compare-accounts__bullet mt5-compare-accounts__bullet--star mt5-compare-accounts__star'
+                        >
+                            {index + 1}
+                        </Text>
+                        <div>
+                            <Text as='p' size='xs' weight='bold' color='prominent'>
+                                {account.attribute}
+                            </Text>
+                            <Text size='xs' color='less-prominent'>
+                                {account.footnote}
+                            </Text>
+                        </div>
+                    </div>
+                );
+            })}
     </div>
 );
 
@@ -201,13 +262,13 @@ const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in })
     ]);
 
     return (
-        <div
+        <ThemedScrollbars
             className='mt5-compare-accounts'
             style={{
                 '--mt5-compare-accounts-template-columns': template_columns,
             }}
         >
-            <Table fixed scroll_height={isMobile() ? '100%' : 'calc(100% - 130px)'}>
+            <Table>
                 <Table.Header>
                     <Table.Row className='mt5-compare-accounts__table-row'>
                         <Table.Head fixed />
@@ -256,18 +317,14 @@ const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in })
                     {cols.map((row, i) => (
                         <Table.Row key={i} className='mt5-compare-accounts__table-row'>
                             {Object.keys(row).map((col, j) => (
-                                <Table.Cell key={j} fixed={j === 0}>
-                                    {row[col]}
-                                </Table.Cell>
+                                <Table.Cell key={j}>{row[col]}</Table.Cell>
                             ))}
                         </Table.Row>
                     ))}
                 </Table.Body>
             </Table>
-            <DesktopWrapper>
-                <MT5CompareAccountHint />
-            </DesktopWrapper>
-        </div>
+            <MT5CompareAccountHint />
+        </ThemedScrollbars>
     );
 };
 
@@ -319,7 +376,6 @@ const CompareAccountsModal = ({
                     wrapper_classname='mt5-dashboard__compare-accounts'
                     visible={is_compare_accounts_visible}
                     onClose={toggleCompareAccounts}
-                    footer={<MT5CompareAccountHint />}
                 >
                     <ModalContent
                         is_logged_in={is_logged_in}

@@ -275,14 +275,12 @@
 
     .dc-table {
         padding: 0 30px;
-        @include desktop {
-            position: absolute;
-            height: 100%;
-        }
 
         &__header {
             border-bottom: none;
             height: 50px;
+            position: sticky;
+            top: 0;
         }
         &__cell,
         &__head {
@@ -357,10 +355,6 @@
     @include mobile {
         padding: 1.6rem;
         border-top: 2px solid var(--border-disabled);
-    }
-    @include desktop {
-        position: absolute;
-        bottom: 0;
     }
 }
 

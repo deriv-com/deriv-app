@@ -132,6 +132,7 @@ const DefaultHeader = ({
                 >
                     {is_logging_in && (
                         <div
+                            id='dt_core_header_acc-info-preloader'
                             className={classNames('acc-info__preloader', {
                                 'acc-info__preloader--no-currency': !currency,
                                 'acc-info__preloader--is-crypto': getDecimalPlaces(currency) > 2,

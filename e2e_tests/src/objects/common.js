@@ -37,21 +37,17 @@ class Common {
     async switchVirtualAccount() {
         await this.waitForAccountInfoDropdown();
         await this.clickOnAccountInfoDropdown();
-        await this.page.click('#demo_account_tab');
+        await this.page.click('#dt_core_account-switcher_demo-tab');
         await this.page.click('.acc-switcher__accounts');
     }
 
     async waitForAccountInfoDropdown() {
-        await this.page.waitForSelector('.acc-info__preloader', { state: 'hidden' });
-        await this.page.waitForSelector(
-            '.header__menu-items > .header__menu-right > .acc-info__container > .acc-info__wrapper > .acc-info'
-        );
+        await this.page.waitForSelector('#dt_core_header_acc-info-preloader', { state: 'hidden' });
+        await this.page.waitForSelector(`#dt_core_account-info_acc-info`);
     }
 
     async clickOnAccountInfoDropdown() {
-        await this.page.click(
-            '.header__menu-items > .header__menu-right > .acc-info__container > .acc-info__wrapper > .acc-info'
-        );
+        await this.page.click('#dt_core_account-info_acc-info');
     }
 
     /**
@@ -192,18 +188,10 @@ class Common {
             await this.page.click('text=Start trading');
             await this.waitForAccountDropdown();
         } else {
-            await this.page.waitForSelector(
-                '#signup_residence_select'
-            );
-            await this.page.fill(
-                '#signup_residence_select',
-                country
-            );
+            await this.page.waitForSelector('#signup_residence_select');
+            await this.page.fill('#signup_residence_select', country);
             await this.page.press('#signup_residence_select', 'ArrowDown');
-            await this.page.press(
-                '#signup_residence_select',
-                'Enter'
-            );
+            await this.page.press('#signup_residence_select', 'Enter');
             await this.page.click('text=Next');
 
             await this.page.waitForSelector('input[type=password]');
@@ -239,12 +227,8 @@ class Common {
             );
         }
 
-        await this.page.waitForSelector(
-            '.header__menu-items > .header__menu-right > .acc-info__container > .acc-info__wrapper > .acc-info'
-        );
-        await this.page.click(
-            '.header__menu-items > .header__menu-right > .acc-info__container > .acc-info__wrapper > .acc-info'
-        );
+        await this.page.waitForSelector('#dt_core_account-info_acc-info');
+        await this.page.click('#dt_core_account-info_acc-info');
 
         await this.page.waitForSelector('#real_account_tab');
         await this.page.click('#real_account_tab');

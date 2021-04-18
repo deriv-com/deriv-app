@@ -140,7 +140,7 @@ class Common {
     }
 
     async waitForAccountDropdown() {
-        await this.page.waitForSelector('.acc-info__container');
+        await this.page.waitForSelector('#dt_core_header_acc-info-container');
     }
 
     async setResidenceAndPassword(signup_url, country = 'Indonesia', password) {

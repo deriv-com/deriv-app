@@ -141,7 +141,7 @@ const DefaultHeader = ({
                             <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={isMobile()} speed={3} />
                         </div>
                     )}
-                    <div className='acc-info__container'>
+                    <div id={'dt_core_header_acc-info-container'} className='acc-info__container'>
                         <AccountActions
                             acc_switcher_disabled_message={acc_switcher_disabled_message}
                             balance={balance}

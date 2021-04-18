@@ -25,8 +25,8 @@ class Common {
      * @returns {Promise<void>}
      */
     async acceptCookies() {
-        await this.page.waitForSelector('.cookie-banner__btn-accept');
-        await this.page.click('.cookie-banner__btn-accept');
+        await this.page.waitForSelector('#dt_core_cookie-banner_accept-btn');
+        await this.page.click('#dt_core_cookie-banner_accept-btn');
     }
 
     /**

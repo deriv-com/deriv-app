@@ -23,13 +23,7 @@ const IconWithMessage = ({ icon, message, has_button, toggleAccountsDialog }) =>
                 {message}
             </Text>
             {has_button && (
-                <Button
-                    primary
-                    onClick={() => {
-                        toggleAccountsDialog();
-                    }}
-                    className='account__demo-message-button'
-                >
+                <Button primary onClick={toggleAccountsDialog} className='account__demo-message-button'>
                     {localize('Add a real account')}
                 </Button>
             )}

@@ -138,6 +138,15 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         @include desktop {
+            & .da-self-exclusion__wrapper {
+                width: calc(100vw - 33rem);
+            }
+            & .da-icon-with-message {
+                margin-top: 1.6rem;
+            }
+        }
+
+        @include desktop {
             grid-template-rows: 5.2rem calc(100vh - 4.8rem - 3.6rem - 5.2rem);
             overflow: hidden;
         }
@@ -1029,6 +1038,9 @@ $MIN_HEIGHT_FLOATING: calc(
         &-button {
             margin-top: 2.4rem;
             align-self: center;
+            @include mobile {
+                width: 100%;
+            }
         }
     }
 }

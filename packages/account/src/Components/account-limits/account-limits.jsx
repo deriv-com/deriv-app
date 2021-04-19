@@ -70,7 +70,7 @@ const AccountLimits = ({
                     'account__demo-message-wrapper-dashboard': is_dashboard,
                 })}
             >
-                <DemoMessage has_demo_icon={is_dashboard} has_button={true} />;
+                <DemoMessage has_demo_icon={is_dashboard} has_button={is_dashboard} />;
             </div>
         );
     }

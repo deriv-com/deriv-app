@@ -213,6 +213,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                                 'account-signup__btn--disabled':
                                                     !values.password || errors.password || isSubmitting,
                                             })}
+                                            id='dt_core_account-signup-modal_submit-btn'
                                             type='submit'
                                             is_disabled={!values.password || !!errors.password || isSubmitting}
                                             text={localize('Start trading')}

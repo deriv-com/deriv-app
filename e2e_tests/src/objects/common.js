@@ -181,12 +181,8 @@ class Common {
             await this.page.click('input[type=password]');
             await this.page.fill('input[type=password]', password);
 
-            await this.page.waitForSelector(
-                '.dc-dialog__content > .account-signup > form > .account-signup__password-selection > .dc-btn'
-            );
-            await this.page.click(
-                '.dc-dialog__content > .account-signup > form > .account-signup__password-selection > .dc-btn'
-            );
+            await this.page.waitForSelector('#dt_core_account-signup-modal_submit-btn');
+            await this.page.click('#dt_core_account-signup-modal_submit-btn');
         }
     }
 

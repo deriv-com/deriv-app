@@ -170,10 +170,11 @@ class Common {
             await this.page.click('text=Start trading');
             await this.waitForAccountDropdown();
         } else {
-            await this.page.waitForSelector('#signup_residence_select');
-            await this.page.fill('#signup_residence_select', country);
-            await this.page.press('#signup_residence_select', 'ArrowDown');
-            await this.page.press('#signup_residence_select', 'Enter');
+            const SIGNUP_RESIDENCE_SELECT_INPUT_ID = '#dt_core_set-residence-form_signup-residence-select';
+            await this.page.waitForSelector(SIGNUP_RESIDENCE_SELECT_INPUT_ID);
+            await this.page.fill(SIGNUP_RESIDENCE_SELECT_INPUT_ID, country);
+            await this.page.press(SIGNUP_RESIDENCE_SELECT_INPUT_ID, 'ArrowDown');
+            await this.page.press(SIGNUP_RESIDENCE_SELECT_INPUT_ID, 'Enter');
             await this.page.click('text=Next');
 
             await this.page.waitForSelector('input[type=password]');

@@ -127,15 +127,6 @@ const accounts = [
     },
 ];
 
-const MT5AttributeDescriberModal = ({ is_visible, toggleModal, message }) => (
-    <Modal is_open={is_visible} small toggleModal={toggleModal}>
-        <Modal.Body>{message}</Modal.Body>
-        <Modal.Footer>
-            <Button has_effect text={localize('OK')} onClick={toggleModal} primary />
-        </Modal.Footer>
-    </Modal>
-);
-
 const MT5AttributeDescriber = ({ name, counter }) => {
     const [is_visible, setIsVisible] = React.useState(false);
     const toggleModal = () => setIsVisible(!is_visible);

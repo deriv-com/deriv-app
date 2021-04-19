@@ -780,38 +780,3 @@ const account_switcher = withRouter(
 );
 
 export { account_switcher as AccountSwitcher };
-
-// {
-//     available_crypto_currencies,
-//     account_list,
-//     account_loginid,
-//     accounts,
-//     can_change_fiat_currency,
-//     can_upgrade_to,
-//     has_fiat,
-//     has_any_real_account,
-//     has_active_real_account,
-//     is_eu,
-//     is_fully_authenticated,
-//     is_loading_mt5,
-//     is_logged_in,
-//     is_mt5_allowed,
-//     is_pending_authentication,
-//     is_positions_drawer_on,
-//     is_uk,
-//     is_virtual,
-//     is_visible,
-//     landing_company_shortcode,
-//     logoutClient,
-//     mt5_disabled_signup_types,
-//     mt5_login_list,
-//     obj_total_balance,
-//     openRealAccountSignup,
-//     switchAccount,
-//     resetVirtualBalance,
-//     toggleAccountsDialog,
-//     toggleAccountTypesModal,
-//     togglePositionsDrawer,
-//     toggleSetCurrencyModal,
-//     updateMt5LoginList,
-// }

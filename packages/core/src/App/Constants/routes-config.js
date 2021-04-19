@@ -420,7 +420,7 @@ const getModules = ({ is_dashboard }) => {
                           {
                               path: routes.dxtrade,
                               component: Trader,
-                              getTitle: () => localize('DXTrade'),
+                              getTitle: () => localize('Deriv X'),
                               is_authenticated: false,
                           },
                           {

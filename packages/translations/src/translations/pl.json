@@ -2737,7 +2737,6 @@
     "-1556344549": "Oto jak:",
     "-1061127827": "- Odwiedź ten adres URL, w miejsce <access_token> wprowadź token Telegram API utworzony w kroku 1: https://api.telegram.org/bot<access_token>/getUpdates",
     "-70949308": "4. Wróć do DBot i dodaj blok Powiadom Telegram do obszaru roboczego. Wklej token Telegram API oraz ID czatu w odpowiednie pola bloku.",
-    "-1206289720": "Dowiedz się więcej tutaj: https://gist.github.com/aaron-binary/e5bd33bc7c657a911499c06b50dd04e9",
     "-311389920": "W tym przykładzie ceny otwarcia z listy świec są przypisane do zmiennej o nazwie „cl”.",
     "-1634242212": "Ten blok, stosowany w ramach bloku funkcji, zwraca wartość, gdy określony warunek jest prawdziwy.",
     "-1504783522": "Możesz wybrać, aby zobaczyć jedne z poniższych:",

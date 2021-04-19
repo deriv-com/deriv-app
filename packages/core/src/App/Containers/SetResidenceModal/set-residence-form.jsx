@@ -38,7 +38,7 @@ const SetResidenceForm = ({
                             <Autocomplete
                                 {...field}
                                 autoComplete='off'
-                                id='signup_residence_select'
+                                input_id='signup_residence_select'
                                 className={`${class_prefix}__residence-field`}
                                 type='text'
                                 label={localize('Choose country')}

@@ -41,6 +41,7 @@ const Autocomplete = React.memo(props => {
         list_portal_id,
         is_alignment_top,
         should_filter_by_char,
+        input_id,
         ...other_props
     } = props;
 
@@ -242,6 +243,7 @@ const Autocomplete = React.memo(props => {
                     autoComplete={autoComplete}
                     onKeyDown={onKeyPressed}
                     onInput={filterList}
+                    input_id={input_id}
                     onClick={() => {
                         if (should_show_list) hideDropdownList();
                         else showDropdownList();

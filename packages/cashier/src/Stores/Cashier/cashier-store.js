@@ -12,7 +12,6 @@ import {
     getPropertyValue,
     getCFDAccountDisplay,
     getCFDAccount,
-    getDXTradeAccount,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import OnRampStore from './on-ramp-store';
@@ -1176,7 +1175,7 @@ export default class CashierStore extends BaseStore {
                                   sub_account_type: account.sub_account_type,
                                   platform: 'mt5',
                               })}`
-                            : `IcDxtrade-${getDXTradeAccount({
+                            : `IcDxtrade-${getCFDAccount({
                                   market_type: account.market_type,
                                   platform: 'dxtrade',
                               })}`,

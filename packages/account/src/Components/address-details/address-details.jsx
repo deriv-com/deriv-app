@@ -113,13 +113,13 @@ const AddressDetails = ({
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({ handleSubmit, errors, values, setFieldValue }) => (
+            {({ handleSubmit, errors, values, setFieldValue, handleChange, setFieldTouched }) => (
                 <AutoHeightWrapper default_height={350} height_offset={isDesktop() ? 80 : null}>
                     {({ setRef, height }) => (
                         <form ref={setRef} onSubmit={handleSubmit}>
                             <Div100vhContainer
                                 className='details-form'
-                                height_offset={is_dashboard ? '242px' : '110px'}
+                                height_offset={is_dashboard ? '222px' : '90px'}
                                 is_disabled={isDesktop()}
                             >
                                 {!is_dashboard && (
@@ -245,6 +245,10 @@ const AddressDetails = ({
                                                     : localize('Postal/ZIP Code')
                                             }
                                             placeholder={localize('Postal/ZIP Code')}
+                                            onChange={e => {
+                                                setFieldTouched('address_postcode', true);
+                                                handleChange(e);
+                                            }}
                                         />
                                     </div>
                                 </ThemedScrollbars>

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Button, Modal, Icon } from '@deriv/components';
+import { Button, Modal, Icon, Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, getCurrencyName, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -56,9 +56,9 @@ const AccountTransferReceipt = ({
 
     return (
         <div className='cashier__wrapper account-transfer__receipt'>
-            <h2 className='cashier__header'>
+            <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header'>
                 <Localize i18n_default_text='Your funds have been transferred' />
-            </h2>
+            </Text>
             <div className='cashier__transferred-amount cashier__text--bold'>
                 {formatMoney(selected_from.currency, receipt.amount_transferred, true)}
                 <span className='symbols'>{getCurrencyDisplayCode(selected_from.currency)}</span>

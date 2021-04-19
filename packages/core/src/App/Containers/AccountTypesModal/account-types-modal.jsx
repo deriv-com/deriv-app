@@ -6,7 +6,6 @@ import {
     MobileCarousel,
     DesktopWrapper,
     Div100vhContainer,
-    Icon,
     Modal,
     ThemedScrollbars,
     Text,
@@ -27,11 +26,18 @@ const getTargetLoginid = (accounts, target_landing_company_shortcode) =>
         return acc;
     }, '');
 
-const Box = ({ title, description, footer_text, icons, cards }) => {
+const Box = ({ title, description, footer_text, cards }) => {
     return (
         <div className='account-types__box'>
             <div className='account-types__box-left'>
-                <h2 className='account-types__box-title'>{title}</h2>
+                <Text
+                    as='h2'
+                    styles={{ color: 'var(--brand-red-coral)' }}
+                    weight='bold'
+                    className='account-types__box-title'
+                >
+                    {title}
+                </Text>
                 <Text as='p' size='xs' line_height='s' className='account-types__box-description'>
                     {description}
                 </Text>
@@ -40,11 +46,6 @@ const Box = ({ title, description, footer_text, icons, cards }) => {
                         {footer_text}
                     </Text>
                 )}
-                <div className='account-types__box-icons'>
-                    {icons.map((icon, index) => {
-                        return <Icon className='account-types__box-icon' icon={icon} key={index} />;
-                    })}
-                </div>
             </div>
             <MobileWrapper>
                 <MobileCarousel>{cards}</MobileCarousel>
@@ -83,7 +84,7 @@ const FinancialBox = ({ derivOnClick, is_dashboard, mt5OnClick, has_maltainvest_
                         [localize('Stop loss')]: localize('Flexible'),
                         [localize('Take profit')]: localize('Flexible'),
                         [localize('Cancel trade')]: localize('Allowed'),
-                        [localize('Currency')]: localize('USD/GBP/EUR'),
+                        [localize('Currency')]: localize('USD, GBP, EUR'),
                     }}
                     platforms={[
                         {
@@ -122,7 +123,7 @@ const FinancialBox = ({ derivOnClick, is_dashboard, mt5OnClick, has_maltainvest_
                         [localize('Leverage')]: localize('Up to 1:30'),
                         [localize('Margin call')]: localize('100%'),
                         [localize('Stop out level')]: localize('50%'),
-                        [localize('Currency')]: localize('EUR/GBP'),
+                        [localize('Currency')]: localize('EUR, GBP'),
                     }}
                     platforms={[
                         {
@@ -152,7 +153,7 @@ const SyntheticBox = ({ derivOnClick, add_account_label, is_dashboard }) => {
         <Box
             title={localize('Synthetic')}
             description={localize(
-                'Trade synthetic indices that are available 24/7, have constant volatility, and are free of market and liquidity risks.'
+                'Trade synthetic indices that are available 24/7, have constant volatility, and are free of market liquidity risks.'
             )}
             icons={[
                 'IcUnderlying1HZ10V',
@@ -179,11 +180,10 @@ const SyntheticBox = ({ derivOnClick, add_account_label, is_dashboard }) => {
                     button_text={add_account_label}
                     buttonOnClick={derivOnClick}
                     items={{
-                        [localize('Trade type')]: localize('10+'),
                         [localize('Min duration')]: localize('1 tick'),
                         [localize('Max duration')]: localize('365 days'),
                         [localize('Availability')]: localize('24/7'),
-                        [localize('Currency')]: localize('USD/GBP'),
+                        [localize('Currency')]: localize('USD, GBP'),
                     }}
                     platforms={[
                         {

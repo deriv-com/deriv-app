@@ -2,7 +2,7 @@
     @include mobile {
         border-bottom: 1px solid var(--general-section-1);
         padding: 1.6rem;
-        height: 148px;
+        height: 150px;
         display: flex;
         flex-direction: column;
     }
@@ -14,8 +14,11 @@
         margin-bottom: 1.6rem;
 
         &-name {
+            display: flex;
+            flex-direction: column;
             margin-left: 0.8rem;
         }
+
         &-arrow {
             margin-left: auto;
         }
@@ -35,6 +38,14 @@
         > :last-child {
             margin-top: 0.8rem;
         }
+    }
+
+    &__no-match {
+        align-items: center;
+        border-bottom: 1px solid var(--general-section-1);
+        display: flex;
+        height: 5.6rem;
+        justify-content: center;
     }
 
     &__table-cell {

@@ -64,7 +64,7 @@ const ALIASES = {
     ...HOISTED_PACKAGES,
 };
 
-const rules = (is_test_env = false, is_mocha_only = false) => [
+const rules = (is_test_env = false) => [
     {
         // https://github.com/webpack/webpack/issues/11467
         test: /\.m?js/,
@@ -140,7 +140,7 @@ const plugins = ({ base, is_test_env, env }) => {
         }),
         new CleanWebpackPlugin(),
         new CopyPlugin(copyConfig(base)),
-        new HtmlWebPackPlugin(htmlOutputConfig()),
+        new HtmlWebPackPlugin(htmlOutputConfig(IS_RELEASE)),
         new HtmlWebpackTagsPlugin(htmlInjectConfig()),
         new PreloadWebpackPlugin(htmlPreloadConfig()),
         new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
@@ -152,7 +152,7 @@ const plugins = ({ base, is_test_env, env }) => {
         ...(is_test_env && !env.mocha_only
             ? [new StylelintPlugin(stylelintConfig())]
             : [
-                  new GenerateSW(generateSWConfig()),
+                  new GenerateSW(generateSWConfig(IS_RELEASE)),
                   // ...(!IS_RELEASE ? [new BundleAnalyzerPlugin({ analyzerMode: 'static' })] : []),
               ]),
     ];

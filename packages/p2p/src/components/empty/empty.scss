@@ -12,10 +12,6 @@
         margin-bottom: 2.4rem;
     }
     &-title {
-        color: var(--text-general);
-        font-size: var(--text-size-s);
-        font-weight: bold;
-        line-height: 1.5;
         margin: 0.8rem;
     }
     &-text {
@@ -29,5 +25,9 @@
     &__button {
         text-decoration: none;
         margin-top: 1.6rem;
+
+        @include mobile {
+            width: calc(100vw - 3.2rem);
+        }
     }
 }

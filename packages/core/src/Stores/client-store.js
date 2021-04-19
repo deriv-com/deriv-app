@@ -910,6 +910,11 @@ export default class ClientStore extends BaseStore {
         return this.website_status && !BinarySocket.getAvailability().is_down;
     }
 
+    isEuCountryNoIp = country => {
+        if (country) return isEuCountry(country);
+        return false;
+    };
+
     isAccountOfType = type => {
         const client_account_type = getClientAccountType(this.loginid);
 

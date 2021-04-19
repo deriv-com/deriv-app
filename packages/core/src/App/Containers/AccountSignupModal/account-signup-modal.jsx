@@ -171,6 +171,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                                         if (input) updatePassword(input.value);
                                                         handleChange(e);
                                                     }}
+                                                    input_id='dt_core_account-signup-modal_account-signup-password-field'
                                                 />
                                             </PasswordMeter>
                                         )}

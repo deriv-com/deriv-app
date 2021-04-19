@@ -151,38 +151,20 @@ class Common {
             },
         });
         if (await this.isMobile()) {
-            await this.page.waitForSelector(
-                '#dt_components_select-native_select-tag'
-            );
-            await this.page.click(
-                '#dt_components_select-native_select-tag'
-            );
+            await this.page.waitForSelector('#dt_components_select-native_select-tag');
+            await this.page.click('#dt_components_select-native_select-tag');
 
-            await this.page.selectOption(
-                '#dt_components_select-native_select-tag',
-                country
-            );
+            await this.page.selectOption('#dt_components_select-native_select-tag', country);
 
-            await this.page.waitForSelector(
-                '#dt_components_select-native_select-tag'
-            );
-            await this.page.click(
-                '#dt_components_select-native_select-tag'
-            );
+            await this.page.waitForSelector('#dt_components_select-native_select-tag');
+            await this.page.click('#dt_components_select-native_select-tag');
 
             await this.page.waitForSelector('text=Next');
             await this.page.click('text=Next');
-
-            await this.page.waitForSelector(
-                '.account-signup__password-selection > .dc-password-meter__container > .dc-password-input > .dc-input > .dc-input__field'
-            );
-            await this.page.click(
-                '.account-signup__password-selection > .dc-password-meter__container > .dc-password-input > .dc-input > .dc-input__field'
-            );
-            await this.page.fill(
-                '.account-signup__password-selection > .dc-password-meter__container > .dc-password-input > .dc-input > .dc-input__field',
-                password
-            );
+            const ACCOUNT_SIGNUP_PASSWORD_FIELD_ID = '#dt_core_account-signup-modal_account-signup-password-field';
+            await this.page.waitForSelector(ACCOUNT_SIGNUP_PASSWORD_FIELD_ID);
+            await this.page.click(ACCOUNT_SIGNUP_PASSWORD_FIELD_ID);
+            await this.page.fill(ACCOUNT_SIGNUP_PASSWORD_FIELD_ID, password);
 
             await this.page.waitForSelector('text=Start trading');
             await this.page.click('text=Start trading');

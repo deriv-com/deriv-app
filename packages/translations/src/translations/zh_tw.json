@@ -2737,7 +2737,6 @@
     "-1556344549": "方法如下:",
     "-1061127827": "- 存取以下網址，確保將<access_token>替換為您在步驟1中建立的Telegram API權杖： https://api.telegram.org/bot<access_token>/getUpdates",
     "-70949308": "4. 回到 DBot，並將Notify Telegram區塊新增到工作區中。將Telegram API權杖和聊天ID相應地粘貼到區塊欄位中。",
-    "-1206289720": "在這裡了解詳細資訊: https://gist.github.com/aaron-binary/e5bd33bc7c657a911499c06b50dd04e9",
     "-311389920": "此例中，燭線清單中的開盤價被分配予稱為\"cl\"的變數。",
     "-1634242212": "在功能塊中使用，當指定條件為真時，此區塊返回一個值。",
     "-1504783522": "您可選擇查看以下內容之一：",

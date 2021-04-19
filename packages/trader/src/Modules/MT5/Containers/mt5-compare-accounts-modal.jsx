@@ -215,11 +215,17 @@ const MT5CompareAccountHint = () => (
                         >
                             {index + 1}
                         </Text>
-                        <div>
-                            <Text as='p' size='xs' weight='bold' color='prominent'>
+                        <div className='mt5-compare-accounts__footnote'>
+                            <Text
+                                as='p'
+                                size='xs'
+                                weight='bold'
+                                color='prominent'
+                                className='mt5-compare-accounts__footnote-title'
+                            >
                                 {account.attribute}
                             </Text>
-                            <Text size='xs' color='less-prominent'>
+                            <Text size='xs' color='prominent'>
                                 {account.footnote}
                             </Text>
                         </div>
@@ -259,10 +265,10 @@ const ModalContent = ({ is_eu, landing_companies, is_eu_country, is_logged_in })
                 '--mt5-compare-accounts-template-columns': template_columns,
             }}
         >
-            <Table>
+            <Table className='mt5-compare-accounts__table'>
                 <Table.Header>
                     <Table.Row className='mt5-compare-accounts__table-row'>
-                        <Table.Head fixed />
+                        <Table.Head />
                         {is_logged_in ? (
                             <React.Fragment>
                                 {landing_companies?.mt_gaming_company?.financial && (

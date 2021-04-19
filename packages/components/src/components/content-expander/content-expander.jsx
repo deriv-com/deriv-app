@@ -20,16 +20,22 @@ const ContentExpander = ({
     onToggle,
     measure,
 }) => {
+    const [is_visible, toggleVisibility] = React.useState(is_expanded);
+
     const onClick = React.useCallback(() => {
         if (typeof onToggle === 'function') {
             onToggle();
-        }
-    }, [onToggle]);
+        } else toggleVisibility(!is_visible);
+    }, [is_visible, onToggle, toggleVisibility]);
 
     React.useEffect(() => {
         if (typeof measure === 'function') {
             measure();
         }
+    }, [is_visible]);
+
+    React.useEffect(() => {
+        toggleVisibility(is_expanded);
     }, [is_expanded]);
 
     return (
@@ -37,7 +43,7 @@ const ContentExpander = ({
             <div
                 className={classNames(
                     'dc-content-expander',
-                    { 'dc-content-expander--expanded': is_expanded },
+                    { 'dc-content-expander--expanded': is_visible },
                     className
                 )}
                 onClick={onClick}
@@ -74,7 +80,7 @@ const ContentExpander = ({
             </div>
             {has_fade_in ? (
                 <CSSTransition
-                    in={is_expanded}
+                    in={is_visible}
                     timeout={250}
                     classNames={{
                         enter: 'dc-content-expander__content--enter',
@@ -86,7 +92,7 @@ const ContentExpander = ({
                     <div className='dc-content-expander__content'>{children}</div>
                 </CSSTransition>
             ) : (
-                is_expanded && <div className='dc-content-expander__content'>{children}</div>
+                is_visible && <div className='dc-content-expander__content'>{children}</div>
             )}
         </div>
     );

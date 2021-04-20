@@ -1062,10 +1062,20 @@ export default class CashierStore extends BaseStore {
         const is_dxtrade_transfer =
             this.config.account_transfer.selected_from.is_dxtrade ||
             this.config.account_transfer.selected_to.is_dxtrade;
+
+        let limits_key;
+        if (is_mt_transfer) {
+            limits_key = 'limits_mt5';
+        } else if (is_dxtrade_transfer) {
+            limits_key = 'limits_dxtrade';
+        } else {
+            limits_key = 'limits';
+        }
+
         const transfer_limit = getPropertyValue(getCurrencies(), [
             this.config.account_transfer.selected_from.currency,
             'transfer_between_accounts',
-            is_mt_transfer || is_dxtrade_transfer ? 'limits_mt5' : 'limits',
+            limits_key,
         ]);
         const balance = this.config.account_transfer.selected_from.balance;
         const decimal_places = getDecimalPlaces(this.config.account_transfer.selected_from.currency);

@@ -28,6 +28,14 @@ In order to improve the clarity, quality and development time it is worth consid
 const field_name = '...';
 ```
 
+<a id="naming-conventions-constant-contents"></a>
+**[Constant(Static) contents:](#naming-conventions-constant-contents)** Constant(Static) contents(numbers or strings) should be UPPER_SNAKE_CASE. UPPER CASE and separated by `_`.
+
+```JavaScript
+const MY_STATIC_CONTENT = '...';
+```
+
+
 <a id="naming-conventions-functions"></a>
 **[Functions:](#naming-conventions-functions)** Functions should be camelCase. This is to easily distinguish between variables and functions.
     

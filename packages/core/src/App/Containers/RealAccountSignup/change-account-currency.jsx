@@ -2,7 +2,7 @@ import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { FormSubmitButton, Text } from '@deriv/components';
-import { isMobile, reorderCurrencies } from '@deriv/shared';
+import { isMobile, reorderCurrencies, getCurrencyDisplayCode } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
@@ -10,7 +10,15 @@ import './currency-selector.scss';
 
 const FIAT_CURRENCY_TYPE = 'fiat';
 
-const ChangeAccountCurrency = ({ legal_allowed_currencies, value, onSubmit, form_error, ...props }) => {
+const ChangeAccountCurrency = ({
+    legal_allowed_currencies,
+    value,
+    onSubmit,
+    form_error,
+    can_change_fiat_currency,
+    current_currency_type,
+    ...props
+}) => {
     const getReorderedCurrencies = () =>
         reorderCurrencies(legal_allowed_currencies.filter(currency => currency.type === FIAT_CURRENCY_TYPE));
 
@@ -36,6 +44,28 @@ const ChangeAccountCurrency = ({ legal_allowed_currencies, value, onSubmit, form
                     <Text as='h3' size='xxs' align='center' className='change-currency__sub-title'>
                         <Localize i18n_default_text='Choose the currency you would like to trade with.' />
                     </Text>
+                    {!can_change_fiat_currency && (
+                        <div className='account-wizard--disabled-message'>
+                            <p>
+                                {current_currency_type === 'fiat' ? (
+                                    <Localize
+                                        i18n_default_text='Currency change is not available because either you have deposited money into your {{currency}} account or you have created a real MetaTrader 5 (MT5) account.'
+                                        values={{
+                                            currency: getCurrencyDisplayCode(props.currency),
+                                        }}
+                                    />
+                                ) : (
+                                    <Localize
+                                        i18n_default_text='Please switch to your {{fiat_currency}} account to change currencies.'
+                                        values={{
+                                            // eslint-disable-next-line
+                                            fiat_currency: props.current_fiat_currency.toUpperCase(),
+                                        }}
+                                    />
+                                )}
+                            </p>
+                        </div>
+                    )}
                     <CurrencyRadioButtonGroup
                         id='fiat'
                         label={localize('Cryptocurrencies')}

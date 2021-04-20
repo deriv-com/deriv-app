@@ -188,9 +188,9 @@ class Common {
 
     async realAccountSignup(options) {
         if (await this.isMobile()) {
-            await this.page.waitForSelector('#modal_root');
+            await this.page.waitForSelector('#dt_components_carousel-nav_nav-tag > ul > li:nth-child(2)');
             await this.page.waitForSelector(
-                '#modal_root > div > div > div > div.welcome__body > div > div > nav.dc-carousel__nav.dc-carousel__nav--lower > ul > li:nth-child(2)'
+                '#dt_components_carousel-nav_nav-tag > ul > li:nth-child(2)'
             );
             await this.page.mouse.move(180, 220);
             await this.page.mouse.down();
@@ -198,12 +198,8 @@ class Common {
             await this.page.mouse.up();
             await this.page.click('text=Start here');
         } else {
-            await this.page.waitForSelector(
-                '.dc-themed-scrollbars > .welcome__body > .welcome-column--right > .welcome-column__footer > .dc-btn'
-            );
-            await this.page.click(
-                '.dc-themed-scrollbars > .welcome__body > .welcome-column--right > .welcome-column__footer > .dc-btn'
-            );
+            await this.page.waitForSelector('#dt_core_welcome-modal_start-btn');
+            await this.page.click('#dt_core_welcome-modal_start-btn');
         }
 
         await this.page.waitForSelector('#dt_core_account-info_acc-info');
@@ -213,10 +209,10 @@ class Common {
         await this.page.click('#real_account_tab');
 
         await this.page.waitForSelector(
-            '.acc-switcher__list-wrapper > .dc-content-expander__wrapper:nth-child(1) > .dc-content-expander__content > .acc-switcher__new-account > .dc-btn'
+            '#dt_core_account-switcher_add-new-account'
         );
         await this.page.click(
-            '.acc-switcher__list-wrapper > .dc-content-expander__wrapper:nth-child(1) > .dc-content-expander__content > .acc-switcher__new-account > .dc-btn'
+            '#dt_core_account-switcher_add-new-account'
         );
         await this.page.waitForSelector(`text=${options.currency}`);
         await this.page.click(`text=${options.currency}`);

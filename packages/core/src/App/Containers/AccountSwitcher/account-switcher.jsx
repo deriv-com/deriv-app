@@ -502,6 +502,7 @@ const AccountSwitcher = props => {
                                 })}
                             </Text>
                             <Button
+                                id='dt_core_account-switcher_add-new-account'
                                 onClick={() => {
                                     props.openRealAccountSignup(account);
                                 }}

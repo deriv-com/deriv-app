@@ -83,15 +83,6 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
         });
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const onSignupComplete = error => {
-        if (error) {
-            setApiError(error);
-        } else {
-            isModalVisible(false);
-            enableApp();
-        }
-    };
-
     React.useEffect(() => {
         if (has_valid_residence) {
             const index_of_selection = residence_list.findIndex(
@@ -108,12 +99,27 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
         }
     }, [selectedResidence]);
 
+    const onSignupComplete = error => {
+        if (error) {
+            setApiError(error);
+        } else {
+            isModalVisible(false);
+            enableApp();
+        }
+    };
+
     const validateSignupPassthrough = values => validateSignup(values, residence_list);
 
     const onSignupPassthrough = values => {
         const index_of_selection = residence_list.findIndex(
             item => item.text.toLowerCase() === values.residence.toLowerCase()
         );
+
+        if (isEuResident === false) {
+            values.email_consent = true;
+        }
+
+        values.email_consent = values.email_consent ? 1 : 0;
 
         const modded_values = {
             ...values,

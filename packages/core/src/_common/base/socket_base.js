@@ -316,11 +316,17 @@ const BinarySocketBase = (() => {
             platform,
         });
 
-    const tradingPlatformNewAccount = values =>
-        deriv_api.send({
+    const tradingPlatformNewAccount = values => {
+        // Todo: remove this block when BE accepts `synthetic` as `market_type`.
+        if (values.market_type === 'synthetic') {
+            values.market_type = 'gaming';
+        }
+
+        return deriv_api.send({
             trading_platform_new_account: 1,
             ...values,
         });
+    };
 
     const triggerMt5DryRun = ({ email }) =>
         deriv_api.send({

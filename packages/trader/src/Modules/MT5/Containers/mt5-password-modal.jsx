@@ -478,6 +478,15 @@ const MT5PasswordModal = ({
                     visible={should_show_password}
                     onClose={closeModal}
                     wrapper_classname='mt5-password-modal'
+                    renderTitle={() => (
+                        <PasswordModalHeader
+                            should_show_server_form={should_show_server_form}
+                            should_set_trading_password={should_set_trading_password}
+                            account_title={account_title}
+                            has_mt5_account={has_mt5_account}
+                            is_password_reset_error={is_password_reset}
+                        />
+                    )}
                 >
                     {should_show_server_form ? mt5_server_form : mt5_password_form}
                 </MobileDialog>

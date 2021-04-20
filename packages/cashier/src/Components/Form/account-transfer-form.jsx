@@ -258,16 +258,26 @@ const AccountTransferForm = ({
     React.useEffect(() => {
         const { daily_transfers } = account_limits;
         const mt5_remaining_transfers = daily_transfers?.mt5?.available;
+        const dxtrade_remaining_transfers = daily_transfers?.dxtrade?.available;
         const internal_remaining_transfers = daily_transfers?.internal?.available;
 
         const is_mt_transfer = selected_to.is_mt || selected_from.is_mt;
         const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
 
+        const getRemainingTransfers = () => {
+            if (is_mt_transfer) {
+                return mt5_remaining_transfers;
+            } else if (is_dxtrade_transfer) {
+                return dxtrade_remaining_transfers;
+            }
+            return internal_remaining_transfers;
+        };
+
         if (is_dxtrade_transfer) {
             remaining_transfers = undefined;
             transfer_to_hint = '';
         } else {
-            remaining_transfers = is_mt_transfer ? mt5_remaining_transfers : internal_remaining_transfers;
+            remaining_transfers = getRemainingTransfers();
 
             transfer_to_hint =
                 +remaining_transfers === 1

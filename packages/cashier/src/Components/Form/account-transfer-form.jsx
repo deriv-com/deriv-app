@@ -223,7 +223,7 @@ const AccountTransferForm = ({
                     is_dxtrade: account.is_dxtrade,
                     disabled: is_disabled,
                     nativepicker_text: `${
-                        is_cfd_account ? account.account_type : getCurrencyName(account.currency)
+                        is_cfd_account ? account.market_type : getCurrencyName(account.currency)
                     } ${server_region} (${account.balance} ${is_cfd_account ? account.currency : account.text})`,
                 });
             }

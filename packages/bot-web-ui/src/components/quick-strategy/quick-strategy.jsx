@@ -17,6 +17,7 @@ import {
 import classNames from 'classnames';
 
 import { localize } from '@deriv/translations';
+import { isSafari } from '@deriv/shared';
 import { Formik, Form, Field } from 'formik';
 import { config } from '@deriv/bot-skeleton';
 import { popover_zindex } from 'Constants/z-indexes';
@@ -68,6 +69,7 @@ const QuickStrategyForm = ({
                         <div
                             className={classNames('quick-strategy__form-content', {
                                 'quick-strategy__form-content--active-keyboard': is_onscreen_keyboard_active,
+                                'quick-strategy__form-content--safari-fix': isSafari(),
                             })}
                         >
                             <div className='quick-strategy__description'>{description}</div>

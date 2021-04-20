@@ -273,17 +273,12 @@ const AccountTransferForm = ({
             return internal_remaining_transfers;
         };
 
-        if (is_dxtrade_transfer) {
-            remaining_transfers = undefined;
-            transfer_to_hint = '';
-        } else {
-            remaining_transfers = getRemainingTransfers();
+        remaining_transfers = getRemainingTransfers();
 
-            transfer_to_hint =
-                +remaining_transfers === 1
-                    ? localize('You have {{number}} transfer remaining for today.', { number: remaining_transfers })
-                    : localize('You have {{number}} transfers remaining for today.', { number: remaining_transfers });
-        }
+        transfer_to_hint =
+            +remaining_transfers === 1
+                ? localize('You have {{number}} transfer remaining for today.', { number: remaining_transfers })
+                : localize('You have {{number}} transfers remaining for today.', { number: remaining_transfers });
     }, [selected_to, selected_from, account_limits]);
 
     const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;

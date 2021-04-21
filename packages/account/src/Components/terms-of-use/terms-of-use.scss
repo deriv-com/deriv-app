@@ -2,6 +2,8 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    margin: 0 8rem !important;
+    width: 84% !important;
 
     &__checkbox {
         margin-top: 1.6rem;

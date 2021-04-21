@@ -253,9 +253,17 @@ const Journal = ({
                         ) : (
                             <div className='journal-empty'>
                                 <Icon icon='IcBox' className='journal-empty__icon' size={64} color='secondary' />
-                                <h4 className='journal-empty__header'>
+                                <Text
+                                    as='h4'
+                                    size='xs'
+                                    weight='bold'
+                                    align='center'
+                                    color='less-prominent'
+                                    line_height='xxs'
+                                    className='journal-empty__header'
+                                >
                                     {localize('There are no messages to display')}
-                                </h4>
+                                </Text>
                                 <div className='journal-empty__message'>
                                     <Text size='xxs' color='less-prominent'>
                                         {localize('Here are the possible reasons:')}

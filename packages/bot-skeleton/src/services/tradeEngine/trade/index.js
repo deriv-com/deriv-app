@@ -12,7 +12,7 @@ import rootReducer from './state/reducers';
 import Ticks from './Ticks';
 import Total from './Total';
 import { doUntilDone } from '../utils/helpers';
-import { expectInitArg, expectTradeOptions } from '../utils/sanitize';
+import { expectInitArg } from '../utils/sanitize';
 import { createError } from '../../../utils/error';
 import { observer as globalObserver } from '../../../utils/observer';
 
@@ -94,7 +94,7 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
         globalObserver.emit('bot.running');
 
-        this.tradeOptions = expectTradeOptions(tradeOptions);
+        this.tradeOptions = tradeOptions;
 
         this.store.dispatch(start());
         this.checkLimits(tradeOptions);

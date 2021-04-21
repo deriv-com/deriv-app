@@ -12,13 +12,6 @@ export const expectPositiveInteger = (num, msg) => {
     return num;
 };
 
-export const expectPositiveNumber = (num, msg) => {
-    if (!isPositiveNumber(num)) {
-        throw createError('PositiveNumberExpected', msg);
-    }
-    return num;
-};
-
 const expectOptions = options => {
     const { symbol, contractTypes } = options;
 
@@ -41,16 +34,6 @@ export const expectInitArg = args => {
     expectOptions(options);
 
     return args;
-};
-
-export const expectTradeOptions = tradeOptions => {
-    const { amount, duration } = tradeOptions;
-
-    expectPositiveInteger(duration, localize('Duration must be a positive integer'));
-
-    expectPositiveNumber(amount, localize('Amount must be a positive number'));
-
-    return tradeOptions;
 };
 
 const isCandle = candle =>

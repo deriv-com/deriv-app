@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     Button,
-    Popover,
     Modal,
     DesktopWrapper,
     MobileDialog,
@@ -9,25 +8,250 @@ import {
     Table,
     UILoader,
     Text,
+    ThemedScrollbars,
 } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const CFDAttributeDescriberModal = ({ is_visible, toggleModal, message }) => (
-    <Modal is_open={is_visible} small toggleModal={toggleModal}>
-        <Modal.Body>{message}</Modal.Body>
-        <Modal.Footer>
-            <Button has_effect text={localize('OK')} onClick={toggleModal} primary />
-        </Modal.Footer>
-    </Modal>
-);
+const accounts = [
+    {
+        attribute: localize('Account currency'),
+        mt5: {
+            synthetic: localize('USD'),
+            synthetic_eu: localize('EUR'),
+            financial: localize('USD'),
+            financial_eu: localize('EUR/GBP'),
+            financial_stp: localize('USD'),
+            footnote: null,
+        },
+        dxtrade: {
+            synthetic: localize('USD'),
+            synthetic_eu: localize('EUR'),
+            financial: localize('USD'),
+            financial_eu: localize('EUR/GBP'),
+            footnote: null,
+        },
+    },
+    {
+        attribute: localize('Maximum leverage'),
+        mt5: {
+            synthetic: localize('Up to 1:1000'),
+            synthetic_eu: localize('Up to 1:1000'),
+            financial: localize('Up to 1:1000'),
+            financial_eu: localize('Up to 1:30'),
+            financial_stp: localize('Up to 1:100'),
+            footnote: localize(
+                'Leverage gives you the ability to trade a larger position using your existing capital. Leverage varies across different symbols.'
+            ),
+        },
+        dxtrade: {
+            synthetic: localize('Up to 1:1000'),
+            synthetic_eu: localize('Up to 1:1000'),
+            financial: localize('Up to 1:1000'),
+            financial_eu: localize('Up to 1:30'),
+            footnote: localize(
+                'Leverage gives you the ability to trade a larger position using your existing capital. Leverage varies across different symbols.'
+            ),
+        },
+    },
+    {
+        attribute: localize('Order execution'),
+        mt5: {
+            synthetic: localize('Market'),
+            synthetic_eu: localize('Market'),
+            financial: localize('Market'),
+            financial_eu: localize('Market'),
+            financial_stp: localize('Market'),
+            footnote: localize(
+                "All 3 account types use market execution. This means you agree with the broker's price in advance and will place orders at the broker's price."
+            ),
+        },
+        dxtrade: {
+            synthetic: localize('Market'),
+            synthetic_eu: localize('Market'),
+            financial: localize('Market'),
+            financial_eu: localize('Market'),
+            footnote: localize(
+                "All 3 account types use market execution. This means you agree with the broker's price in advance and will place orders at the broker's price."
+            ),
+        },
+    },
+    {
+        attribute: localize('Spread'),
+        mt5: {
+            synthetic: localize('Fixed/Variable'),
+            synthetic_eu: localize('Fixed/Variable'),
+            financial: localize('Variable'),
+            financial_eu: localize('Variable'),
+            financial_stp: localize('Variable'),
+            footnote: localize(
+                "The spread is the difference between the buy price and sell price. A variable spread means that the spread is constantly changing, depending on market conditions. A fixed spread remains constant but is subject to alteration, at the Broker's absolute discretion."
+            ),
+        },
+        dxtrade: {
+            synthetic: localize('Fixed/Variable'),
+            synthetic_eu: localize('Fixed/Variable'),
+            financial: localize('Variable'),
+            financial_eu: localize('Variable'),
+            footnote: localize(
+                "The spread is the difference between the buy price and sell price. A variable spread means that the spread is constantly changing, depending on market conditions. A fixed spread remains constant but is subject to alteration, at the Broker's absolute discretion."
+            ),
+        },
+    },
+    {
+        attribute: localize('Commission'),
+        mt5: {
+            synthetic: localize('No'),
+            synthetic_eu: localize('No'),
+            financial: localize('No'),
+            financial_eu: localize('No'),
+            financial_stp: localize('No'),
+            footnote: localize('Deriv charges no commission across all account types.'),
+        },
+        dxtrade: {
+            synthetic: localize('No'),
+            synthetic_eu: localize('No'),
+            financial: localize('No'),
+            financial_eu: localize('No'),
+            footnote: localize('Deriv charges no commission across all account types.'),
+        },
+    },
+    {
+        attribute: localize('Minimum deposit'),
+        mt5: {
+            synthetic: localize('No'),
+            synthetic_eu: localize('No'),
+            financial: localize('No'),
+            financial_eu: localize('No'),
+            financial_stp: localize('No'),
+            footnote: null,
+        },
+        dxtrade: {
+            synthetic: localize('No'),
+            synthetic_eu: localize('No'),
+            financial: localize('No'),
+            financial_eu: localize('No'),
+            footnote: null,
+        },
+    },
+    {
+        attribute: localize('Margin call'),
+        mt5: {
+            synthetic: localize('100%'),
+            synthetic_eu: localize('100%'),
+            financial: localize('150%'),
+            financial_eu: localize('100%'),
+            financial_stp: localize('150%'),
+            footnote: localize(
+                'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
+            ),
+        },
+        dxtrade: {
+            synthetic: localize('100%'),
+            synthetic_eu: localize('100%'),
+            financial: localize('100%'),
+            financial_eu: localize('100%'),
+            footnote: localize(
+                'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
+            ),
+        },
+    },
+    {
+        attribute: localize('Stop out level'),
+        mt5: {
+            synthetic: localize('50%'),
+            synthetic_eu: localize('50%'),
+            financial: localize('75%'),
+            financial_eu: localize('50%'),
+            financial_stp: localize('75%'),
+            footnote: localize(
+                'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
+            ),
+        },
+        dxtrade: {
+            synthetic: localize('50%'),
+            synthetic_eu: localize('50%'),
+            financial: localize('50%'),
+            financial_eu: localize('50%'),
+            footnote: localize(
+                'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
+            ),
+        },
+    },
+    {
+        attribute: localize('Negative Balance Protection'),
+        dxtrade: {
+            synthetic: localize('Available'),
+            synthetic_eu: localize('Available'),
+            financial: localize('N/A'),
+            financial_eu: localize('Required'),
+        },
+    },
+    {
+        attribute: localize('Number of assets'),
+        mt5: {
+            synthetic: localize('10+'),
+            synthetic_eu: localize('10+'),
+            financial: localize('50+'),
+            financial_eu: localize('50+'),
+            financial_stp: localize('50+'),
+            footnote: null,
+        },
+        dxtrade: {
+            synthetic: localize('20+'),
+            synthetic_eu: localize('50+'),
+            financial: localize('20+'),
+            financial_eu: localize('1000+'),
+            footnote: null,
+        },
+    },
+    {
+        attribute: localize('Cryptocurrency trading'),
+        mt5: {
+            synthetic: localize('N/A'),
+            synthetic_eu: localize('N/A'),
+            financial: localize('24/7'),
+            financial_eu: localize('24/7'),
+            financial_stp: localize('24/7'),
+            footnote: localize('Indicates the availability of cryptocurrency trading on a particular account.'),
+        },
+        dxtrade: {
+            synthetic: localize('N/A'),
+            synthetic_eu: localize('N/A'),
+            financial: localize('24/7'),
+            financial_eu: localize('24/7'),
+            footnote: localize('Indicates the availability of cryptocurrency trading on a particular account.'),
+        },
+    },
+    {
+        attribute: localize('Trading instruments'),
+        mt5: {
+            synthetic: localize('Synthetics'),
+            synthetic_eu: localize('Synthetics'),
+            financial: localize(
+                'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices'
+            ),
+            financial_eu: localize('FX-majors (standard), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices'),
+            financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
+            footnote: null,
+        },
+        dxtrade: {
+            synthetic: localize('Synthetics'),
+            synthetic_eu: localize('Synthetics'),
+            financial: localize('FX-majors (standard/micro lots), FX-minors, Smart-FX, Commodities, Cryptocurrencies'),
+            financial_eu: localize(
+                'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies (except UK)'
+            ),
+            footnote: null,
+        },
+    },
+];
 
-const CFDAttributeDescriber = ({ name, tooltip, counter }) => {
+const CFDAttributeDescriber = ({ name, counter }) => {
     const [is_visible, setIsVisible] = React.useState(false);
     const toggleModal = () => setIsVisible(!is_visible);
 
-    return tooltip ? (
+    return counter ? (
         <React.Fragment>
             <Text
                 as='p'
@@ -38,18 +262,10 @@ const CFDAttributeDescriber = ({ name, tooltip, counter }) => {
                 onClick={toggleModal}
             >
                 {name}
-                <MobileWrapper>
-                    <Text weight='bold' line_height='x' size='xxxs' className='counter'>
-                        {counter}
-                    </Text>
-                </MobileWrapper>
+                <Text weight='bold' as='span' line_height='x' size='xxxs' className='counter'>
+                    {counter}
+                </Text>
             </Text>
-            <DesktopWrapper>
-                <Popover alignment='right' icon='counter' counter={counter} message={tooltip} zIndex={9998} />
-            </DesktopWrapper>
-            <MobileWrapper>
-                <CFDAttributeDescriberModal toggleModal={toggleModal} is_visible={is_visible} message={tooltip} />
-            </MobileWrapper>
         </React.Fragment>
     ) : (
         <Text as='p' weight='bold' size='xs' line_height='s' className='cfd-attribute-describer'>
@@ -58,179 +274,45 @@ const CFDAttributeDescriber = ({ name, tooltip, counter }) => {
     );
 };
 
-const filterAvailableAccounts = (landing_companies, table, is_logged_in, platform) => {
-    return table.map(({ attribute, mt5, dxtrade }) => {
-        const { synthetic, financial_stp, financial } = platform === 'mt5' ? mt5 : dxtrade;
-        if (is_logged_in) {
+const filterAvailableAccounts = (landing_companies, table, is_logged_in, show_eu_related, platform) => {
+    let footnote_number = 0;
+    return table
+        .filter(row => row[platform])
+        .map(({ attribute, mt5 = {}, dxtrade = {} }) => {
+            const { synthetic, synthetic_eu, financial_stp, financial, financial_eu, footnote } =
+                platform === 'mt5' ? mt5 : dxtrade;
+            const synthetic_object = { synthetic: show_eu_related ? synthetic_eu : synthetic };
+            const financial_object = { financial: show_eu_related ? financial_eu : financial };
+
+            if (is_logged_in) {
+                return {
+                    attribute: <CFDAttributeDescriber name={attribute} counter={footnote ? ++footnote_number : null} />,
+                    ...(landing_companies?.mt_gaming_company?.financial ? synthetic_object : {}),
+                    ...(landing_companies?.mt_financial_company?.financial ? financial_object : {}),
+                    ...(landing_companies?.mt_financial_company?.financial_stp && platform === 'mt5'
+                        ? { financial_stp }
+                        : {}),
+                };
+            }
+            if (platform === 'dxtrade') {
+                return {
+                    attribute: <CFDAttributeDescriber name={attribute} counter={footnote ? ++footnote_number : null} />,
+                    ...{ synthetic_object },
+                    ...{ financial_object },
+                };
+            }
             return {
-                attribute,
-                ...(landing_companies?.mt_gaming_company?.financial ? { synthetic } : {}),
-                ...(landing_companies?.mt_financial_company?.financial ? { financial } : {}),
-                ...(landing_companies?.mt_financial_company?.financial_stp && platform === 'mt5'
-                    ? { financial_stp }
-                    : {}),
+                attribute: <CFDAttributeDescriber name={attribute} counter={footnote ? ++footnote_number : null} />,
+                ...{ synthetic_object },
+                ...{ financial_object },
+                ...{ financial_stp },
             };
-        }
-        if (platform === 'dxtrade') {
-            return {
-                attribute,
-                ...{ synthetic },
-                ...{ financial },
-            };
-        }
-        return {
-            attribute,
-            ...{ synthetic },
-            ...{ financial },
-            ...{ financial_stp },
-        };
-    });
+        });
 };
 
-const compareAccountsData = ({ landing_companies, is_logged_in, platform, show_eu_related }) => {
-    return filterAvailableAccounts(
-        landing_companies,
-        [
-            {
-                attribute: <CFDAttributeDescriber name={localize('Account currency')} />,
-                mt5: {
-                    synthetic: show_eu_related ? localize('EUR') : localize('USD'),
-                    financial: show_eu_related ? localize('EUR/GBP') : localize('USD'),
-                    financial_stp: localize('USD'),
-                },
-                dxtrade: {
-                    synthetic: show_eu_related ? localize('EUR') : localize('USD'),
-                    financial: show_eu_related ? localize('EUR/GBP') : localize('USD'),
-                },
-            },
-            {
-                attribute: <CFDAttributeDescriber name={localize('Maximum leverage')} />,
-                mt5: {
-                    synthetic: localize('Up to 1:1000'),
-                    financial: show_eu_related ? localize('Up to 1:30') : localize('Up to 1:1000'),
-                    financial_stp: localize('Up to 1:100'),
-                },
-                dxtrade: {
-                    synthetic: localize('Up to 1:1000'),
-                    financial: show_eu_related ? localize('Up to 1:30') : localize('Up to 1:1000'),
-                },
-            },
-            {
-                attribute: <CFDAttributeDescriber name={localize('Order execution')} />,
-                mt5: {
-                    synthetic: localize('Market'),
-                    financial: localize('Market'),
-                    financial_stp: localize('Market'),
-                },
-                dxtrade: {
-                    synthetic: localize('Market'),
-                    financial: localize('Market'),
-                },
-            },
-            {
-                attribute: <CFDAttributeDescriber name={localize('Spread')} />,
-                mt5: {
-                    synthetic: localize('Fixed/Variable'),
-                    financial: localize('Variable'),
-                    financial_stp: localize('Variable'),
-                },
-                dxtrade: {
-                    synthetic: localize('Fixed/Variable'),
-                    financial: localize('Variable'),
-                },
-            },
-            {
-                attribute: <CFDAttributeDescriber name={localize('Commission')} />,
-                mt5: {
-                    synthetic: localize('No'),
-                    financial: localize('No'),
-                    financial_stp: localize('No'),
-                },
-                dxtrade: {
-                    synthetic: localize('No'),
-                    financial: localize('No'),
-                },
-            },
-            {
-                attribute: <CFDAttributeDescriber name={localize('Minimum deposit')} />,
-                mt5: {
-                    synthetic: localize('No'),
-                    financial: localize('No'),
-                    financial_stp: localize('No'),
-                },
-                dxtrade: {
-                    synthetic: localize('No'),
-                    financial: localize('No'),
-                },
-            },
-            {
-                attribute: <CFDAttributeDescriber name={localize('Margin call')} />,
-                mt5: {
-                    synthetic: localize('100%'),
-                    financial: show_eu_related ? localize('100%') : localize('150%'),
-                    financial_stp: localize('150%'),
-                },
-                dxtrade: {
-                    synthetic: localize('100%'),
-                    financial: localize('100%'),
-                },
-            },
-            {
-                attribute: <CFDAttributeDescriber name={localize('Stop out level')} />,
-                mt5: {
-                    synthetic: localize('50%'),
-                    financial: show_eu_related ? localize('50%') : localize('75%'),
-                    financial_stp: localize('75%'),
-                },
-                dxtrade: {
-                    synthetic: localize('50%'),
-                    financial: localize('50%'),
-                },
-            },
-            platform === 'dxtrade' && {
-                attribute: <CFDAttributeDescriber name={localize('Negative Balance Protection')} />,
-                dxtrade: {
-                    synthetic: localize('Available'),
-                    financial: show_eu_related ? localize('Required') : localize('N/A'),
-                },
-            },
-            {
-                attribute: <CFDAttributeDescriber name={localize('Number of assets')} />,
-                mt5: { synthetic: localize('10+'), financial: localize('50+'), financial_stp: localize('50+') },
-                dxtrade: {
-                    synthetic: localize('20+'),
-                    financial: show_eu_related ? localize('100+') : localize('50+'),
-                },
-            },
-            {
-                attribute: <CFDAttributeDescriber name={localize('Cryptocurrency trading')} />,
-                mt5: { synthetic: localize('N/A'), financial: localize('24/7'), financial_stp: localize('24/7') },
-                dxtrade: { synthetic: localize('N/A'), financial: localize('24/7') },
-            },
-            {
-                attribute: <CFDAttributeDescriber name={localize('Trading instruments')} />,
-                mt5: {
-                    synthetic: localize('Synthetics'),
-                    financial: show_eu_related
-                        ? localize('FX-majors (standard), FX-minors, Commodities, Cryptocurrencies')
-                        : localize('FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies'),
-                    financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
-                },
-                dxtrade: {
-                    synthetic: localize('Synthetics'),
-                    financial: show_eu_related
-                        ? localize(
-                              'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies(except UK)'
-                          )
-                        : localize(
-                              'FX-majors (standard/micro lots), FX-minors, Smart-FX, Commodities, Cryptocurrencies'
-                          ),
-                },
-            },
-        ].filter(row => row),
-        is_logged_in,
-        platform
-    );
+const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logged_in, platform }) => {
+    const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
+    return filterAvailableAccounts(landing_companies, accounts, is_logged_in, show_eu_related, platform);
 };
 
 const CFDCompareAccountHint = ({ platform, show_risk_message }) => {
@@ -241,23 +323,59 @@ const CFDCompareAccountHint = ({ platform, show_risk_message }) => {
                 <Localize i18n_default_text='At bank rollover, liquidity in the forex markets is reduced and may increase the spread and processing time for client orders. This happens around 21:00 GMT during daylight saving time, and 22:00 GMT non-daylight saving time.' />
             </div>
             {show_risk_message && (
-                <div className='cfd-compare-accounts__bullet-wrapper'>
-                    <Text
-                        size='xs'
-                        line_height='x'
-                        weight='bold'
-                        className='cfd-compare-accounts__bullet cfd-compare-accounts__bullet--star cfd-compare-accounts__star'
-                    >
-                        *
-                    </Text>
-                    <Localize
-                        i18n_default_text='To protect your portfolio from adverse market movements due to the market opening gap, we reserve the right to decrease leverage on all offered symbols for financial accounts before market close and increase it again after market open. Please make sure that you have enough funds available in your {{platform}} account to support your positions at all times.'
-                        values={{
-                            platform: platform === 'mt5' ? localize('MT5') : localize('Deriv X'),
-                        }}
-                    />
-                </div>
+                <React.Fragment>
+                    <div className='cfd-compare-accounts__bullet-wrapper'>
+                        <span className='cfd-compare-accounts__bullet cfd-compare-accounts__bullet--circle' />
+                        <Localize i18n_default_text='Margin call and stop out level will change from time to time based on market condition.' />
+                    </div>
+                    <div className='cfd-compare-accounts__bullet-wrapper'>
+                        <Text
+                            size='xs'
+                            line_height='x'
+                            weight='bold'
+                            className='cfd-compare-accounts__bullet cfd-compare-accounts__bullet--star cfd-compare-accounts__star'
+                        >
+                            *
+                        </Text>
+                        <Localize
+                            i18n_default_text='To protect your portfolio from adverse market movements due to the market opening gap, we reserve the right to decrease leverage on all offered symbols for financial accounts before market close and increase it again after market open. Please make sure that you have enough funds available in your {{platform}} account to support your positions at all times.'
+                            values={{
+                                platform: platform === 'mt5' ? localize('MT5') : localize('Deriv X'),
+                            }}
+                        />
+                    </div>
+                </React.Fragment>
             )}
+            {accounts
+                .filter(item => !!item.footnote)
+                .map((account, index) => {
+                    return (
+                        <div key={index} className='mt5-compare-accounts__bullet-wrapper'>
+                            <Text
+                                size='xs'
+                                line_height='x'
+                                weight='bold'
+                                className='mt5-compare-accounts__bullet mt5-compare-accounts__bullet--star mt5-compare-accounts__star'
+                            >
+                                {index + 1}
+                            </Text>
+                            <div className='mt5-compare-accounts__footnote'>
+                                <Text
+                                    as='p'
+                                    size='xs'
+                                    weight='bold'
+                                    color='prominent'
+                                    className='mt5-compare-accounts__footnote-title'
+                                >
+                                    {account.attribute}
+                                </Text>
+                                <Text size='xs' color='prominent'>
+                                    {account.footnote}
+                                </Text>
+                            </div>
+                        </div>
+                    );
+                })}
         </div>
     );
 };
@@ -290,16 +408,16 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
     const show_risk_message = platform === 'mt5' || !show_eu_related;
 
     return (
-        <div
+        <ThemedScrollbars
             className='cfd-compare-accounts'
             style={{
                 '--cfd-compare-accounts-template-columns': template_columns,
             }}
         >
-            <Table fixed scroll_height={isMobile() ? '100%' : `calc(100% - ${show_risk_message ? '130px' : '50px'})`}>
+            <Table className='cfd-compare-accounts__table'>
                 <Table.Header>
                     <Table.Row className='cfd-compare-accounts__table-row'>
-                        <Table.Head fixed />
+                        <Table.Head />
                         {is_logged_in ? (
                             <React.Fragment>
                                 {landing_companies?.mt_gaming_company?.financial && (
@@ -355,10 +473,8 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
                     ))}
                 </Table.Body>
             </Table>
-            <DesktopWrapper>
-                <CFDCompareAccountHint platform={platform} show_risk_message={show_risk_message} />
-            </DesktopWrapper>
-        </div>
+            <CFDCompareAccountHint platform={platform} show_risk_message={show_risk_message} />
+        </ThemedScrollbars>
     );
 };
 
@@ -417,7 +533,6 @@ const CompareAccountsModal = ({
                         wrapper_classname='cfd-dashboard__compare-accounts'
                         visible={is_compare_accounts_visible}
                         onClose={toggleCompareAccounts}
-                        footer={<CFDCompareAccountHint platform={platform} show_eu_related={show_eu_related} />}
                     >
                         <ModalContent
                             is_logged_in={is_logged_in}

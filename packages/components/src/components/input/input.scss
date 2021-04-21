@@ -179,6 +179,7 @@
         }
     }
     &__label {
+        white-space: nowrap;
         color: var(--text-less-prominent);
         font-size: var(--text-size-xs);
         background-color: var(--fill-normal);

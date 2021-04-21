@@ -212,7 +212,7 @@ const CFDRealAccountDisplay = ({
                 onPasswordManager={openPasswordManager}
                 onClickFund={onClickFundReal}
                 descriptor={localize(
-                    'Trade major, minor, exotic currency pairs, and cryptocurrencies with Straight-Through Processing (STP) of your orders direct to the market.'
+                    'Trade popular currency pairs and cryptocurrencies with straight-through processing order (STP).'
                 )}
                 specs={specifications[platform].real_financial_stp_specs}
                 is_disabled={isMT5AccountCardDisabled('financial_stp')}
@@ -243,15 +243,9 @@ const CFDRealAccountDisplay = ({
             onPasswordManager={openPasswordManager}
             onClickFund={onClickFundReal}
             platform={platform}
-            descriptor={
-                is_eu || is_eu_country
-                    ? localize(
-                          'Trade commodities, cryptocurrencies, major (standard) and minor currency pairs with high leverage.'
-                      )
-                    : localize(
-                          'Trade commodities, cryptocurrencies, major (standard and micro-lots) and minor currency pairs with high leverage.'
-                      )
-            }
+            descriptor={localize(
+                'Trade CFDs on forex, stocks & indices, commodities, and cryptocurrencies with leverage.'
+            )}
             specs={
                 should_show_eu
                     ? specifications[platform].eu_real_financial_specs

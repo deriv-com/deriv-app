@@ -14,7 +14,7 @@ const MT5_text = {
 // *
 // sub_account_type financial_stp only happens in "financial" market_type
 export const getMT5AccountKey = (market_type, sub_account_type) => {
-    if (market_type === 'gaming') {
+    if (market_type === 'synthetic' || market_type === 'gaming') {
         if (sub_account_type === 'financial') {
             return 'synthetic';
         }

@@ -51,7 +51,7 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
                 </Text>
             </div>
 
-            {server?.market_type === 'gaming' && (
+            {(server?.market_type === 'gaming' || server?.market_type === 'synthetic') && (
                 <Text color={is_dark_mode_on ? 'general' : 'colored-background'} size='xxs' className='badge-server'>
                     {server.server_info.geolocation.region}&nbsp;
                     {server.server_info.geolocation.sequence !== 1 ? server.server_info.geolocation.sequence : ''}
@@ -168,7 +168,7 @@ const AccountTransferForm = ({
             const value = account.value;
             const account_server = mt5_login_list.find(server => server.login === account.value);
             let server_region = '';
-            if (account_server?.market_type === 'gaming') {
+            if (account_server?.market_type === 'gaming' || account_server?.market_type === 'synthetic') {
                 server_region = `[${account_server.server_info.geolocation.region}${
                     account_server.server_info.geolocation.sequence !== 1
                         ? account_server.server_info.geolocation.sequence

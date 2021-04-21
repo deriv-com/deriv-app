@@ -15,23 +15,19 @@ const ResetPasswordIntent = ({ current_list, children, ...props }) => {
     const has_intent =
         reset_password_intent && /(real|demo)\.(financial_stp|financial|synthetic)/.test(reset_password_intent);
 
-    let group, type, login, title, server;
+    let group, type, title, server;
     if (has_intent && current_list) {
         [server, group, type] = reset_password_intent.split('.');
-        login = current_list[`${group}.${type}@${server}`].login;
         title = getMtCompanies()[group][type].title;
     } else if (current_list) {
         [server, group, type] = Object.keys(current_list).pop().split('.');
-        login = current_list[`${group}.${type}@${server}`].login;
         title = getMtCompanies()[group][type].title;
     } else {
         // Set a default intent
-        login = '';
         title = '';
     }
 
     return children({
-        login,
         title,
         type: reset_password_type,
         ...props,
@@ -81,17 +77,16 @@ class MT5ResetPasswordModal extends React.Component {
         return errors;
     };
 
-    resetPassword = (values, password_type, login, actions) => {
+    resetPassword = (values, password_type, actions) => {
         const { setSubmitting } = actions;
         setSubmitting(true);
         const request = {
-            login,
             password_type,
             new_password: values.new_password,
             verification_code: localStorage.getItem('mt5_reset_password_code'),
         };
 
-        WS.mt5PasswordReset(request).then(response => {
+        WS.tradingPlatformInvestorPasswordReset(request).then(response => {
             if (response.error && response.error.code === 'InvalidToken') {
                 this.renderErrorBox(response.error);
             } else {
@@ -120,11 +115,11 @@ class MT5ResetPasswordModal extends React.Component {
                 {!this.is_list_fetched && !this.state.has_error && <Loading is_fullscreen={false} />}
                 {this.is_list_fetched && !this.state.has_error && !this.state.is_finished && (
                     <ResetPasswordIntent current_list={current_list}>
-                        {({ title, type, login }) => (
+                        {({ title, type }) => (
                             <Formik
                                 initialValues={{ new_password: '' }}
                                 validate={this.validatePassword}
-                                onSubmit={(values, actions) => this.resetPassword(values, type, login, actions)}
+                                onSubmit={(values, actions) => this.resetPassword(values, type, actions)}
                             >
                                 {({
                                     handleSubmit,

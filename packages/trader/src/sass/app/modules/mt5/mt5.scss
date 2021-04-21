@@ -205,7 +205,7 @@
 
     &__container {
         display: grid;
-        grid-template-rows: 6rem 1fr 7rem;
+        grid-template-rows: 6rem 12rem 7rem;
         height: 100%;
         width: 100%;
         justify-items: center;
@@ -233,6 +233,10 @@
         }
     }
     &__password-area {
+        @include desktop {
+            width: calc(min(33rem, 100vw));
+            padding: 2.4rem;
+        }
         @include mobile {
             width: 100%;
             max-width: calc(100% - 2.4rem);

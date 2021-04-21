@@ -15,19 +15,23 @@ const ResetPasswordIntent = ({ current_list, children, ...props }) => {
     const has_intent =
         reset_password_intent && /(real|demo)\.(financial_stp|financial|synthetic)/.test(reset_password_intent);
 
-    let group, type, title, server;
+    let group, type, login, title, server;
     if (has_intent && current_list) {
         [server, group, type] = reset_password_intent.split('.');
+        login = current_list[`${group}.${type}@${server}`].login;
         title = getMtCompanies()[group][type].title;
     } else if (current_list) {
         [server, group, type] = Object.keys(current_list).pop().split('.');
-        title = getMtCompanies()[group][type].title;
+        login = current_list[`${group}.${type}@${server}`]?.login ?? '';
+        title = getMtCompanies()?.[group]?.[type]?.title ?? '';
     } else {
         // Set a default intent
+        login = '';
         title = '';
     }
 
     return children({
+        login,
         title,
         type: reset_password_type,
         ...props,
@@ -77,11 +81,12 @@ class MT5ResetPasswordModal extends React.Component {
         return errors;
     };
 
-    resetPassword = (values, password_type, actions) => {
+    resetPassword = (values, password_type, login, actions) => {
         const { setSubmitting } = actions;
         setSubmitting(true);
         const request = {
-            password_type,
+            account_id: login,
+            platform: 'mt5',
             new_password: values.new_password,
             verification_code: localStorage.getItem('mt5_reset_password_code'),
         };
@@ -104,22 +109,21 @@ class MT5ResetPasswordModal extends React.Component {
     }
     render() {
         const { is_mt5_reset_password_modal_enabled, setMt5PasswordResetModal, current_list } = this.props;
-
         return (
             <Modal
                 className='mt5-reset-password-modal'
                 is_open={is_mt5_reset_password_modal_enabled}
                 toggleModal={() => setMt5PasswordResetModal(false)}
-                title={localize('Reset DMT5 password')}
+                title={localize('Reset DMT5 investor password')}
             >
                 {!this.is_list_fetched && !this.state.has_error && <Loading is_fullscreen={false} />}
                 {this.is_list_fetched && !this.state.has_error && !this.state.is_finished && (
                     <ResetPasswordIntent current_list={current_list}>
-                        {({ title, type }) => (
+                        {({ title, type, login }) => (
                             <Formik
                                 initialValues={{ new_password: '' }}
                                 validate={this.validatePassword}
-                                onSubmit={(values, actions) => this.resetPassword(values, type, actions)}
+                                onSubmit={(values, actions) => this.resetPassword(values, type, login, actions)}
                             >
                                 {({
                                     handleSubmit,
@@ -133,14 +137,6 @@ class MT5ResetPasswordModal extends React.Component {
                                     <form autoComplete='off' onSubmit={handleSubmit}>
                                         <div className='mt5-reset-password'>
                                             <div className='mt5-reset-password__container'>
-                                                <h2 className='mt5-reset-password__heading'>
-                                                    <Localize
-                                                        i18n_default_text='Reset DMT5 {{title}} password'
-                                                        values={{
-                                                            title,
-                                                        }}
-                                                    />
-                                                </h2>
                                                 <div className='mt5-reset-password__password-area'>
                                                     <PasswordMeter
                                                         input={values.new_password}

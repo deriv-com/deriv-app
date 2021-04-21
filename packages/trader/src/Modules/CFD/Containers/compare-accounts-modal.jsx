@@ -347,30 +347,30 @@ const CFDCompareAccountHint = ({ platform, show_risk_message }) => {
                 </React.Fragment>
             )}
             {accounts
-                .filter(item => !!item.footnote)
+                .filter(item => !!item[platform]?.footnote)
                 .map((account, index) => {
                     return (
-                        <div key={index} className='mt5-compare-accounts__bullet-wrapper'>
+                        <div key={index} className='cfd-compare-accounts__bullet-wrapper'>
                             <Text
                                 size='xs'
                                 line_height='x'
                                 weight='bold'
-                                className='mt5-compare-accounts__bullet mt5-compare-accounts__bullet--star mt5-compare-accounts__star'
+                                className='cfd-compare-accounts__bullet cfd-compare-accounts__bullet--star cfd-compare-accounts__star'
                             >
                                 {index + 1}
                             </Text>
-                            <div className='mt5-compare-accounts__footnote'>
+                            <div className='cfd-compare-accounts__footnote'>
                                 <Text
                                     as='p'
                                     size='xs'
                                     weight='bold'
                                     color='prominent'
-                                    className='mt5-compare-accounts__footnote-title'
+                                    className='cfd-compare-accounts__footnote-title'
                                 >
                                     {account.attribute}
                                 </Text>
                                 <Text size='xs' color='prominent'>
-                                    {account.footnote}
+                                    {account[platform].footnote}
                                 </Text>
                             </div>
                         </div>

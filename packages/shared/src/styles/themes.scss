@@ -14,6 +14,7 @@
     --text-size-xxl: 6.4rem;
 
     //Line Height
+    --text-lh-xxs: 1;
     --text-lh-xs: 1.25;
     --text-lh-s: 1.4;
     --text-lh-m: 1.5;
@@ -79,6 +80,7 @@
         --text-disabled: #{$color-grey-6};
         --text-profit-success: #{$color-green-1};
         --text-loss-danger: #{$color-red-1};
+        --text-red: #{$color-red};
         --text-blue: #{$color-blue-3};
         --text-colored-background: #{$color-white};
         --icon-light-background: #{$color-black-9};
@@ -183,6 +185,7 @@
         --text-disabled: #{$color-black-6};
         --text-profit-success: #{$color-green-3};
         --text-loss-danger: #{$color-red-2};
+        --text-red: #{$color-red};
         --text-colored-background: #{$color-white};
         --icon-light-background: #{$color-black-9};
         --icon-dark-background: #{$color-white};

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Tabs, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isMobile, website_name } from '@deriv/shared';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
@@ -21,15 +21,17 @@ const AddOrManageAccounts = props => {
         has_fiat,
         is_eu,
         is_loading,
+        manage_real_account_tab_index,
         onError,
         onSuccessSetAccountCurrency,
         setCurrency,
         setLoading,
     } = props;
 
-    const [active_index, setActiveIndex] = React.useState(
-        has_fiat && available_crypto_currencies?.length === 0 ? 1 : 0
-    );
+    const initial_active_index =
+        manage_real_account_tab_index ?? (has_fiat && available_crypto_currencies?.length === 0) ? 1 : 0;
+
+    const [active_index, setActiveIndex] = React.useState(initial_active_index);
     const [form_error] = React.useState('');
     const [form_value] = React.useState({ crypto: '', fiat: '' });
 
@@ -123,6 +125,18 @@ const AddOrManageAccounts = props => {
                                 'account-wizard--disabled': hasNoAvailableCrypto(),
                             })}
                         >
+                            {hasNoAvailableCrypto() && (
+                                <div className='account-wizard--disabled-message'>
+                                    <p>
+                                        {localize(
+                                            'You already have an account for each of the cryptocurrencies available on {{deriv}}.',
+                                            {
+                                                deriv: website_name,
+                                            }
+                                        )}
+                                    </p>
+                                </div>
+                            )}
                             <AddCryptoCurrency
                                 className='account-wizard__body'
                                 onSubmit={updateValue}
@@ -177,13 +191,14 @@ AddOrManageAccounts.propTypes = {
     setLoading: PropTypes.func,
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     can_change_fiat_currency: client.can_change_fiat_currency,
     current_currency_type: client.current_currency_type,
     current_fiat_currency: client.current_fiat_currency,
     has_fiat: client.has_fiat,
     is_eu: client.is_eu,
+    manage_real_account_tab_index: ui.manage_real_account_tab_index,
     setCurrency: client.setAccountCurrency,
     createCryptoAccount: client.createCryptoAccount,
 }))(AddOrManageAccounts);

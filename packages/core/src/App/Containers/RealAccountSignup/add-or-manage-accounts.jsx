@@ -125,18 +125,6 @@ const AddOrManageAccounts = props => {
                                 'account-wizard--disabled': hasNoAvailableCrypto(),
                             })}
                         >
-                            {hasNoAvailableCrypto() && (
-                                <div className='account-wizard--disabled-message'>
-                                    <p>
-                                        {localize(
-                                            'You already have an account for each of the cryptocurrencies available on {{deriv}}.',
-                                            {
-                                                deriv: website_name,
-                                            }
-                                        )}
-                                    </p>
-                                </div>
-                            )}
                             <AddCryptoCurrency
                                 className='account-wizard__body'
                                 onSubmit={updateValue}

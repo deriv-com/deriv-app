@@ -97,6 +97,10 @@
 
     <!-- Start RudderStack Script -->
     <script type="text/javascript">
+        const isProduction = () => {
+            return window.location.hostname === 'app.deriv.com' || window.location.hostname === 'app.deriv.me'
+        }
+
         rudderanalytics = window.rudderanalytics = [];
 
         var methods = [
@@ -120,8 +124,7 @@
                 };
             }(method);
         }
-
-        if (window.location.hostname === "app.deriv.com") {
+        if (isProduction()) {
             // Production key
             rudderanalytics.load('1oV5agvlcnCZ6IH94wCKM1oR8Pd', 'https://deriv-dataplane.rudderstack.com');
         } else {

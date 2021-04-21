@@ -89,7 +89,7 @@ export default class SummaryCardStore {
 
         return () => {
             if (typeof this.disposeSwitchAcountListener === 'function') {
-                this.disposeLogoutListener();
+                this.disposeSwitchAcountListener();
             }
         };
     }

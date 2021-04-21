@@ -24,7 +24,7 @@ const ResetPassword = ({ logoutClient, verification_code }) => {
         actions.setStatus({ reset_complete: true });
 
         logoutClient().then(() => {
-            redirectToLogin(false, getLanguage());
+            redirectToLogin(false, getLanguage(), false);
         });
     };
 

@@ -17,6 +17,7 @@ import {
 import classNames from 'classnames';
 
 import { localize } from '@deriv/translations';
+import { isSafari } from '@deriv/shared';
 import { Formik, Form, Field } from 'formik';
 import { config } from '@deriv/bot-skeleton';
 import { popover_zindex } from 'Constants/z-indexes';
@@ -68,6 +69,7 @@ const QuickStrategyForm = ({
                         <div
                             className={classNames('quick-strategy__form-content', {
                                 'quick-strategy__form-content--active-keyboard': is_onscreen_keyboard_active,
+                                'quick-strategy__form-content--safari-fix': isSafari(),
                             })}
                         >
                             <div className='quick-strategy__description'>{description}</div>
@@ -367,41 +369,41 @@ const QuickStrategyForm = ({
                                 </Field>
                             </div>
                         </div>
-                        <div
-                            className={classNames('quick-strategy__form-footer', {
-                                'quick-strategy__form-footer--active-keyboard': is_onscreen_keyboard_active,
-                            })}
-                        >
-                            <Button.Group>
-                                {!is_mobile && (
-                                    <Button
-                                        type='button'
-                                        id='db-quick-strategy__button-edit'
-                                        text={localize('Create and edit')}
-                                        is_disabled={!is_submit_enabled}
-                                        secondary
-                                        large
-                                        onClick={() => {
-                                            setFieldValue('button', 'edit');
-                                            submitForm();
-                                        }}
-                                    />
-                                )}
+                    </ThemedScrollbars>
+                    <div
+                        className={classNames('quick-strategy__form-footer', {
+                            'quick-strategy__form-footer--active-keyboard': is_onscreen_keyboard_active,
+                        })}
+                    >
+                        <Button.Group>
+                            {!is_mobile && (
                                 <Button
                                     type='button'
-                                    id='db-quick-strategy__button-run'
-                                    text={localize('Run')}
-                                    is_disabled={!is_submit_enabled || is_stop_button_visible}
-                                    primary
+                                    id='db-quick-strategy__button-edit'
+                                    text={localize('Create and edit')}
+                                    is_disabled={!is_submit_enabled}
+                                    secondary
                                     large
                                     onClick={() => {
-                                        setFieldValue('button', 'run');
+                                        setFieldValue('button', 'edit');
                                         submitForm();
                                     }}
                                 />
-                            </Button.Group>
-                        </div>
-                    </ThemedScrollbars>
+                            )}
+                            <Button
+                                type='button'
+                                id='db-quick-strategy__button-run'
+                                text={localize('Run')}
+                                is_disabled={!is_submit_enabled || is_stop_button_visible}
+                                primary
+                                large
+                                onClick={() => {
+                                    setFieldValue('button', 'run');
+                                    submitForm();
+                                }}
+                            />
+                        </Button.Group>
+                    </div>
                 </Form>
             );
         }}

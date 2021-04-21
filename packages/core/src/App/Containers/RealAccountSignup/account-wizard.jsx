@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import fromEntries from 'object.fromentries';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, FormProgress, Wizard } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, FormProgress, Wizard, Text } from '@deriv/components';
 import { toMoment, getLocation, makeCancellablePromise } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -14,7 +14,6 @@ import 'Sass/details-form.scss';
 
 const StepperHeader = ({ has_target, has_real_account, has_currency, items, getCurrentStep, getTotalSteps }) => {
     const step = getCurrentStep() - 1;
-    const active_title = items[step].header.active_title;
     const step_title = items[step].header.title;
     return (
         <React.Fragment>
@@ -25,8 +24,13 @@ const StepperHeader = ({ has_target, has_real_account, has_currency, items, getC
                     </DesktopWrapper>
                     <MobileWrapper>
                         <div className='account-wizard__header-steps'>
-                            {active_title && <h4 className='account-wizard__header-steps-subtitle'>{active_title}</h4>}
-                            <h4 className='account-wizard__header-steps-title'>
+                            <Text
+                                as='h4'
+                                styles={{ lineHeight: '20px', color: 'var(--brand-red-coral)' }}
+                                size='xs'
+                                weight='bold'
+                                className='account-wizard__header-steps-title'
+                            >
                                 <Localize
                                     i18n_default_text='Step {{step}}: {{step_title}} ({{step}} of {{steps}})'
                                     values={{
@@ -35,7 +39,7 @@ const StepperHeader = ({ has_target, has_real_account, has_currency, items, getC
                                         step_title,
                                     }}
                                 />
-                            </h4>
+                            </Text>
                         </div>
                     </MobileWrapper>
                 </React.Fragment>
@@ -48,9 +52,9 @@ const StepperHeader = ({ has_target, has_real_account, has_currency, items, getC
                                 <Localize i18n_default_text='You have an account that do not have currency assigned. Please choose a currency to trade with this account.' />
                             </p>
                         )}
-                        <h2>
+                        <Text as='h2' weight='bold' align='center'>
                             <Localize i18n_default_text='Please choose your currency' />
-                        </h2>
+                        </Text>
                     </div>
                 )}
             </DesktopWrapper>

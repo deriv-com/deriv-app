@@ -161,6 +161,8 @@ export default class CashierStore extends BaseStore {
     @observable p2p_notification_count = 0;
     @observable cashier_route_tab_index = 0;
     @observable is_10k_withdrawal_limit_reached = undefined;
+    @observable is_deposit = false;
+    @observable is_cashier_default = true;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -208,6 +210,16 @@ export default class CashierStore extends BaseStore {
     @computed
     get is_p2p_enabled() {
         return this.is_p2p_visible && !this.root_store.client.is_eu;
+    }
+
+    @action.bound
+    setIsDeposit(is_deposit) {
+        this.is_deposit = is_deposit;
+    }
+
+    @action.bound
+    setIsCashierDefault(is_cashier_default) {
+        this.is_cashier_default = is_cashier_default;
     }
 
     @action.bound
@@ -456,7 +468,12 @@ export default class CashierStore extends BaseStore {
                 this.setLoading(false);
                 // set the height of the container after content loads so that the
                 // loading bar stays vertically centered until the end
-                this.setContainerHeight(+e.data || '1200');
+                // As cashier.deriv.com is not supported the dark theme for the deposit, when we switch to the dark theme the IFrame height (with white background)is too small so we've added the condition to update height
+                if (this.active_container === 'deposit' && e.data < 540) {
+                    this.setContainerHeight('540');
+                } else {
+                    this.setContainerHeight(+e.data || '1200');
+                }
                 // do not remove the listener
                 // on every iframe screen change we need to update the height to more/less to match the new content
             }
@@ -1090,8 +1107,7 @@ export default class CashierStore extends BaseStore {
     async sortAccountsTransfer(response_accounts) {
         const transfer_between_accounts = response_accounts || (await this.WS.authorized.transferBetweenAccounts());
         if (!this.config.account_transfer.accounts_list.length) {
-            // should have more than one account
-            if (transfer_between_accounts.error || transfer_between_accounts.accounts.length <= 1) {
+            if (transfer_between_accounts.error) {
                 return;
             }
         }
@@ -1114,28 +1130,32 @@ export default class CashierStore extends BaseStore {
         // sort accounts as follows:
         // for MT5, synthetic, financial, financial stp
         // for non-MT5, fiat, crypto (alphabetically by currency)
-        accounts.sort((a, b) => {
-            const a_is_mt = a.account_type === 'mt5';
-            const b_is_mt = b.account_type === 'mt5';
-            const a_is_crypto = !a_is_mt && isCryptocurrency(a.currency);
-            const b_is_crypto = !b_is_mt && isCryptocurrency(b.currency);
-            const a_is_fiat = !a_is_mt && !a_is_crypto;
-            const b_is_fiat = !b_is_mt && !b_is_crypto;
-            if (a_is_mt && b_is_mt) {
-                if (a.market_type === 'gaming') {
+        // should have more than one account
+        if (transfer_between_accounts.accounts.length > 1) {
+            accounts.sort((a, b) => {
+                const a_is_mt = a.account_type === 'mt5';
+                const b_is_mt = b.account_type === 'mt5';
+                const a_is_crypto = !a_is_mt && isCryptocurrency(a.currency);
+                const b_is_crypto = !b_is_mt && isCryptocurrency(b.currency);
+                const a_is_fiat = !a_is_mt && !a_is_crypto;
+                const b_is_fiat = !b_is_mt && !b_is_crypto;
+                if (a_is_mt && b_is_mt) {
+                    if (a.market_type === 'gaming') {
+                        return -1;
+                    }
+                    if (a.sub_account_type === 'financial') {
+                        return b.market_type === 'gaming' ? 1 : -1;
+                    }
+                    return 1;
+                } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
+                    return a.currency < b.currency ? -1 : 1;
+                } else if ((a_is_crypto && b_is_mt) || (a_is_fiat && b_is_crypto) || (a_is_fiat && b_is_mt)) {
                     return -1;
                 }
-                if (a.sub_account_type === 'financial') {
-                    return b.market_type === 'gaming' ? 1 : -1;
-                }
-                return 1;
-            } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
-                return a.currency < b.currency ? -1 : 1;
-            } else if ((a_is_crypto && b_is_mt) || (a_is_fiat && b_is_crypto) || (a_is_fiat && b_is_mt)) {
-                return -1;
-            }
-            return a_is_mt ? -1 : 1;
-        });
+                return a_is_mt ? -1 : 1;
+            });
+        }
+
         const arr_accounts = [];
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
 

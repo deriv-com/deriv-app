@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, ThemedScrollbars } from '@deriv/components';
-import { getFormattedText } from '@deriv/shared';
+import { getFormattedText, isDesktop } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import Chat from 'Components/orders/chat/chat.jsx';
@@ -154,9 +154,9 @@ const OrderDetails = observer(({ onPageReturn }) => {
                         </div>
                         <OrderInfoBlock label={labels.payment_details} value={payment_info || '-'} />
                         <OrderInfoBlock label={labels.contact_details} value={contact_info || '-'} />
-                        <OrderInfoBlock label={labels.instructions} value={advert_details.description || '-'} />
+                        <OrderInfoBlock label={labels.instructions} value={advert_details.description.trim() || '-'} />
                     </ThemedScrollbars>
-                    {should_show_order_footer && (
+                    {should_show_order_footer && isDesktop() && (
                         <OrderDetailsFooter order_information={order_store.order_information} />
                     )}
                 </div>

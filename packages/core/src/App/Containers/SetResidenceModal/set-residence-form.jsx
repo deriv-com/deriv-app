@@ -24,7 +24,7 @@ const SetResidenceForm = ({
     return (
         <div className={`${class_prefix}__residence-selection`}>
             {!!header_text && (
-                <Text as='p' weight='bold' className={`${class_prefix}__heading`}>
+                <Text as='p' align='center' weight='bold' className={`${class_prefix}__heading`}>
                     {header_text}
                 </Text>
             )}
@@ -38,6 +38,7 @@ const SetResidenceForm = ({
                             <Autocomplete
                                 {...field}
                                 autoComplete='off'
+                                id='signup_residence_select'
                                 className={`${class_prefix}__residence-field`}
                                 type='text'
                                 label={localize('Choose country')}
@@ -47,7 +48,6 @@ const SetResidenceForm = ({
                                 onItemSelection={({ value, text }) =>
                                     setFieldValue('residence', value ? text : '', true)
                                 }
-                                should_filter_by_char
                             />
                         </DesktopWrapper>
                         <MobileWrapper>

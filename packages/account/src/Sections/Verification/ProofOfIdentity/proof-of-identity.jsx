@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { AutoHeightWrapper, Button } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getPlatformRedirect } from '@deriv/shared';
+import { getPlatformRedirect, PlatformContext } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 import DemoMessage from 'Components/demo-message';
@@ -10,9 +10,19 @@ import MissingPersonalDetails from 'Components/poi-missing-personal-details';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
 
 class ProofOfIdentity extends React.Component {
+    static contextType = PlatformContext;
     routeBackTo = redirect_route => {
         this.props.routeBackInApp(this.props.history, [redirect_route]);
     };
+
+    componentDidMount() {
+        WS.wait('get_account_status').then(() => {
+            if (!this.props.should_allow_authentication) {
+                const from_platform = getPlatformRedirect(this.props.app_routing_history);
+                this.props.routeBackInApp(this.props.history, [from_platform]);
+            }
+        });
+    }
 
     render() {
         const from_platform = getPlatformRedirect(this.props.app_routing_history);
@@ -50,6 +60,7 @@ class ProofOfIdentity extends React.Component {
                                     </Button>
                                 )
                             }
+                            is_description_enabled
                         />
                     </div>
                 )}
@@ -69,4 +80,5 @@ export default connect(({ client, ui, common }) => ({
     removeNotificationMessage: ui.removeNotificationMessage,
     routeBackInApp: common.routeBackInApp,
     app_routing_history: common.app_routing_history,
+    should_allow_authentication: client.should_allow_authentication,
 }))(withRouter(ProofOfIdentity));

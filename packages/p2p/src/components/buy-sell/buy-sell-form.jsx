@@ -32,7 +32,7 @@ BuySellFormReceiveAmount.propTypes = {
 
 const BuySellForm = observer(props => {
     const isMounted = useIsMounted();
-    const { buy_sell_store } = useStores();
+    const { advertiser_page_store, buy_sell_store } = useStores();
 
     buy_sell_store.setFormProps(props);
 
@@ -64,6 +64,7 @@ const BuySellForm = observer(props => {
                 }
             );
 
+            advertiser_page_store.setFormErrorMessage('');
             buy_sell_store.setInitialReceiveAmount();
 
             if (buy_sell_store.is_sell_advert) {
@@ -138,11 +139,15 @@ const BuySellForm = observer(props => {
                                                 <Localize i18n_default_text="Buyer's instructions" />
                                             )}
                                         </Text>
-                                        {description.split('\n').map((text, idx) => (
-                                            <Text key={idx} as='p' color='general' line_height='m' size='xs'>
-                                                {text || '-'}
-                                            </Text>
-                                        ))}
+                                        {description
+                                            .trim()
+                                            .replace(/([\r\n]){2,}/g, '\n\n')
+                                            .split('\n')
+                                            .map((text, idx) => (
+                                                <Text key={idx} as='p' color='general' line_height='m' size='xs'>
+                                                    {text || '-'}
+                                                </Text>
+                                            ))}
                                     </div>
                                 </div>
                                 <div

@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { localize, Localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
 import { getAccountTypeFields, getMT5AccountListKey, getMT5AccountKey } from '@deriv/shared';
@@ -45,11 +46,9 @@ const MT5RealAccountDisplay = ({
     is_logged_in,
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
-    trading_servers,
     can_have_more_real_synthetic_mt5,
 }) => {
-    const should_show_trade_servers =
-        (is_logged_in ? !is_eu && has_real_account : !is_eu_country) && can_have_more_real_synthetic_mt5;
+    const should_show_trade_servers = is_logged_in && !is_eu && has_real_account && can_have_more_real_synthetic_mt5;
     const [active_hover, setActiveHover] = React.useState(0);
 
     const has_required_credentials =
@@ -144,7 +143,6 @@ const MT5RealAccountDisplay = ({
                               }}
                               is_logged_in={is_logged_in}
                               should_show_trade_servers={should_show_trade_servers}
-                              is_trade_server_button_visible={should_show_trade_servers}
                               existing_data={acc}
                               commission_message={localize('No commission')}
                               onSelectAccount={onSelectRealSynthetic}
@@ -154,7 +152,6 @@ const MT5RealAccountDisplay = ({
                                   'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
                               )}
                               specs={real_synthetic_specs}
-                              trading_servers={trading_servers}
                               onHover={handleHoverCard}
                           />
                       );
@@ -171,7 +168,6 @@ const MT5RealAccountDisplay = ({
                       }}
                       is_logged_in={is_logged_in}
                       should_show_trade_servers={should_show_trade_servers}
-                      is_trade_server_button_visible={should_show_trade_servers}
                       existing_data={undefined}
                       commission_message={localize('No commission')}
                       onSelectAccount={onSelectRealSynthetic}
@@ -181,7 +177,6 @@ const MT5RealAccountDisplay = ({
                           'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
                       )}
                       specs={real_synthetic_specs}
-                      trading_servers={trading_servers}
                       onHover={handleHoverCard}
                   />,
               ]);
@@ -204,7 +199,7 @@ const MT5RealAccountDisplay = ({
             onPasswordManager={openPasswordManager}
             onClickFund={onClickFundReal}
             descriptor={localize(
-                'Trade major, minor, exotic currency pairs, and cryptocurrencies with Straight-Through Processing (STP) of your orders direct to the market.'
+                'Trade popular currency pairs and cryptocurrencies with straight-through processing order (STP).'
             )}
             specs={real_financial_stp_specs}
             is_disabled={isMT5AccountCardDisabled('financial_stp')}
@@ -213,7 +208,6 @@ const MT5RealAccountDisplay = ({
             toggleAccountsDialog={toggleAccountsDialog}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
             is_accounts_switcher_on={is_accounts_switcher_on}
-            is_trade_server_button_visible={should_show_trade_servers}
         />
     );
 
@@ -232,25 +226,23 @@ const MT5RealAccountDisplay = ({
             onSelectAccount={onSelectRealFinancial}
             onPasswordManager={openPasswordManager}
             onClickFund={onClickFundReal}
-            descriptor={
-                is_eu || is_eu_country
-                    ? localize(
-                          'Trade commodities, cryptocurrencies, major (standard) and minor currency pairs with high leverage.'
-                      )
-                    : localize(
-                          'Trade commodities, cryptocurrencies, major (standard and micro-lots) and minor currency pairs with high leverage.'
-                      )
-            }
+            descriptor={localize(
+                'Trade CFDs on forex, stocks & indices, commodities, and cryptocurrencies with leverage.'
+            )}
             specs={should_show_eu ? eu_real_financial_specs : real_financial_specs}
             is_logged_in={is_logged_in}
-            is_trade_server_button_visible={should_show_trade_servers}
         />
     );
 
     const items = [...(synthetic_account_items || []), financial_account, financial_stp_account].filter(Boolean);
 
     return (
-        <div className='mt5-real-accounts-display'>
+        <div
+            className={classNames('mt5-real-accounts-display', {
+                'mt5-real-accounts-display--has-trade-servers': should_show_trade_servers,
+            })}
+            style={{ justifyContent: items.length < 3 ? 'center' : 'space-between' }}
+        >
             <DesktopWrapper>
                 <Carousel
                     list={items}
@@ -258,7 +250,7 @@ const MT5RealAccountDisplay = ({
                     nav_position='middle'
                     show_bullet={false}
                     item_per_window={3}
-                    className='mt5-real-accounts-display__carousel'
+                    is_mt5={true}
                 />
             </DesktopWrapper>
             <MobileWrapper>

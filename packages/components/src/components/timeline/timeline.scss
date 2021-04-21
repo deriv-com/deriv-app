@@ -14,7 +14,6 @@
     }
     &__title {
         max-width: 500px;
-        @include typeface(--paragraph-left-normal-prominent);
     }
     &__oval {
         width: 24px;
@@ -31,5 +30,9 @@
     &__content {
         margin: 16px 0;
         color: var(--text-prominent);
+
+        &:last-of-type {
+            margin-bottom: 0;
+        }
     }
 }

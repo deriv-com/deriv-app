@@ -15,6 +15,14 @@ const RouteWithSubRoutes = route => {
 
     const renderFactory = props => {
         let result = null;
+        const pathname = removeBranchName(location.pathname).replace(/\/$/, '');
+        const is_valid_route = validateRoute(pathname);
+
+        // check if by re-rendering content should Platform app_id  change or not,
+        if (is_valid_route) {
+            route.checkAppId();
+        }
+
         if (route.component === Redirect) {
             let to = route.to;
 
@@ -24,13 +32,11 @@ const RouteWithSubRoutes = route => {
                 to = location.pathname.toLowerCase().replace(route.path, '');
             }
             result = <Redirect to={to} />;
-        } else if (route.is_authenticated && !route.is_logged_in && !route.is_logging_in) {
+        } else if (is_valid_route && route.is_authenticated && !route.is_logged_in && !route.is_logging_in) {
             redirectToLogin(route.is_logged_in, getLanguage());
         } else {
             const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
             const has_default_subroute = !isEmptyObject(default_subroute);
-            const pathname = removeBranchName(location.pathname).replace(/\/$/, '');
-            const is_valid_route = validateRoute(pathname);
 
             result = (
                 <React.Fragment>
@@ -54,6 +60,7 @@ const RouteWithSubRoutes = route => {
 
 export { RouteWithSubRoutes as RouteWithSubRoutesRender }; // For tests
 
-export default connect(({ gtm }) => ({
+export default connect(({ gtm, common }) => ({
     pushDataLayer: gtm.pushDataLayer,
+    checkAppId: common.checkAppId,
 }))(RouteWithSubRoutes);

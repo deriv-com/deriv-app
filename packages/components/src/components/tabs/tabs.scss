@@ -45,9 +45,18 @@
         }
         &--header-fit-content {
             width: fit-content;
+
+            @include mobile {
+                display: flex;
+                justify-content: space-evenly;
+            }
         }
         &:not(&--header-fit-content) {
             justify-content: center;
+        }
+
+        &--full-width {
+            width: 100vw;
         }
     }
     &__item {

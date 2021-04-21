@@ -225,6 +225,7 @@ const Journal = ({
     is_drawer_open,
     is_mobile,
     is_stop_button_visible,
+    unfiltered_messages,
     ...props
 }) => {
     return (
@@ -246,14 +247,23 @@ const Journal = ({
                     <>
                         {contract_stage >= contract_stages.STARTING &&
                         !!props.checked_filters.length &&
+                        !unfiltered_messages.length &&
                         is_stop_button_visible ? (
                             <JournalLoader is_mobile={is_mobile} />
                         ) : (
                             <div className='journal-empty'>
                                 <Icon icon='IcBox' className='journal-empty__icon' size={64} color='secondary' />
-                                <h4 className='journal-empty__header'>
+                                <Text
+                                    as='h4'
+                                    size='xs'
+                                    weight='bold'
+                                    align='center'
+                                    color='less-prominent'
+                                    line_height='xxs'
+                                    className='journal-empty__header'
+                                >
                                     {localize('There are no messages to display')}
-                                </h4>
+                                </Text>
                                 <div className='journal-empty__message'>
                                     <Text size='xxs' color='less-prominent'>
                                         {localize('Here are the possible reasons:')}
@@ -295,6 +305,7 @@ Journal.propTypes = {
     is_stop_button_visible: PropTypes.bool,
     is_filter_dialog_visible: PropTypes.bool,
     toggleFilterDialog: PropTypes.func,
+    unfiltered_messages: PropTypes.array,
 };
 
 export default connect(({ journal, run_panel, ui }) => ({
@@ -307,4 +318,5 @@ export default connect(({ journal, run_panel, ui }) => ({
     is_filter_dialog_visible: journal.is_filter_dialog_visible,
     is_stop_button_visible: run_panel.is_stop_button_visible,
     toggleFilterDialog: journal.toggleFilterDialog,
+    unfiltered_messages: journal.unfiltered_messages,
 }))(Journal);

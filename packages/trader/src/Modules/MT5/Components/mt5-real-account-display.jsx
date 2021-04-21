@@ -47,17 +47,27 @@ const MT5RealAccountDisplay = ({
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
     can_have_more_real_synthetic_mt5,
+    residence_list,
 }) => {
     const should_show_trade_servers = is_logged_in && !is_eu && has_real_account && can_have_more_real_synthetic_mt5;
     const [active_hover, setActiveHover] = React.useState(0);
 
-    const has_required_credentials =
-        account_settings.citizen && account_settings.tax_identification_number && account_settings.tax_residence;
+    const has_required_credentials = () => {
+        const { citizen, tax_identification_number, tax_residence } = account_settings;
+
+        if (citizen && tax_identification_number && tax_residence) return true;
+
+        if (citizen && tax_residence) {
+            return !residence_list.filter(item => item.value === tax_residence && item.tin_format).length;
+        }
+
+        return false;
+    };
 
     const button_label = getRealFinancialStpBtnLbl(
         is_fully_authenticated,
         is_pending_authentication,
-        has_required_credentials
+        has_required_credentials()
     );
 
     const is_real_financial_stp_disabled = !has_real_account || is_pending_authentication;
@@ -81,9 +91,9 @@ const MT5RealAccountDisplay = ({
             category: 'real',
             type: 'financial_stp',
         };
-        if (is_fully_authenticated && has_required_credentials) {
+        if (is_fully_authenticated && has_required_credentials()) {
             openPasswordModal(account_type);
-        } else if ((!is_fully_authenticated && !is_real_financial_stp_disabled) || !has_required_credentials) {
+        } else if ((!is_fully_authenticated && !is_real_financial_stp_disabled) || !has_required_credentials()) {
             onSelectAccount(account_type);
         }
     };

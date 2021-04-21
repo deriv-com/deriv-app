@@ -119,9 +119,17 @@ const Transactions = ({ contract_stage, elements, is_drawer_open, is_mobile, onM
                                                     color='secondary'
                                                 />
                                             </div>
-                                            <h4 className='transactions-empty__header'>
+                                            <Text
+                                                as='h4'
+                                                size='xs'
+                                                weight='bold'
+                                                align='center'
+                                                color='less-prominent'
+                                                line_height='xxs'
+                                                className='transactions-empty__header'
+                                            >
                                                 {localize('There are no transactions to display')}
-                                            </h4>
+                                            </Text>
                                             <div className='transactions-empty__message'>
                                                 <Text size='xxs' color='less-prominent'>
                                                     {localize('Here are the possible reasons:')}

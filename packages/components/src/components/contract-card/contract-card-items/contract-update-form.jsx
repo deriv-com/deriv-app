@@ -18,8 +18,8 @@ import InputWithCheckbox from '../../input-wth-checkbox';
 
 const ContractUpdateForm = props => {
     const {
-        contract,
         addToast,
+        contract,
         current_focus,
         getCardLabels,
         onMouseLeave,
@@ -98,7 +98,7 @@ const ContractUpdateForm = props => {
             addToast={addToast}
             removeToast={removeToast}
             current_focus={current_focus}
-            classNameInlinePrefix='trade-container__currency'
+            classNameInlinePrefix='dc-contract-card-dialog__input--currency'
             currency={currency}
             error_messages={error_messages.take_profit}
             is_single_currency={true}
@@ -119,7 +119,7 @@ const ContractUpdateForm = props => {
             addToast={addToast}
             removeToast={removeToast}
             current_focus={current_focus}
-            classNameInlinePrefix='trade-container__currency'
+            classNameInlinePrefix='dc-contract-card-dialog__input--currency'
             currency={currency}
             defaultChecked={has_contract_update_stop_loss}
             error_messages={error_messages.stop_loss}

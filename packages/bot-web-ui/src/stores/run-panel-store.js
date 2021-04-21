@@ -244,6 +244,17 @@ export default class RunPanelStore {
         this.is_dialog_open = true;
     }
 
+    @action.bound
+    showContractUpdateErrorDialog(message) {
+        this.onOkButtonClick = this.onCloseDialog;
+        this.onCancelButtonClick = undefined;
+        this.dialog_options = {
+            title: localize('Contract Update Error'),
+            message: localize(message),
+        };
+        this.is_dialog_open = true;
+    }
+
     registerBotListeners() {
         const { summary_card, transactions } = this.root_store;
 
@@ -321,7 +332,7 @@ export default class RunPanelStore {
 
     @action.bound
     onBotStopEvent() {
-        const { self_exclusion } = this.root_store;
+        const { self_exclusion, summary_card } = this.root_store;
         const { ui } = this.root_store.core;
         const indicateBotStopped = () => {
             this.error_type = undefined;
@@ -360,6 +371,8 @@ export default class RunPanelStore {
         }
 
         this.setHasOpenContract(false);
+
+        summary_card.clearContractUpdateConfigValues();
 
         // listen for new version update
         const listen_new_version = new Event('ListenPWAUpdate');

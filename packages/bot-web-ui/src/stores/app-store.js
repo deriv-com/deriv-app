@@ -145,18 +145,22 @@ export default class AppStore {
             quick_strategy,
             load_modal,
             blockly_store,
+            summary_card,
         } = this.root_store;
         const { handleFileChange } = load_modal;
         const { toggleStrategyModal } = quick_strategy;
         const { startLoading, endLoading } = blockly_store;
+        const { populateConfig, setContractUpdateConfig } = summary_card;
 
         this.dbot_store = {
             is_mobile: false,
             client,
             flyout,
+            populateConfig,
             toolbar,
             save_modal,
             startLoading,
+            setContractUpdateConfig,
             endLoading,
             toggleStrategyModal,
             handleFileChange,

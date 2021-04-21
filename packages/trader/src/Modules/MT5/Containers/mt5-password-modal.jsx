@@ -56,8 +56,16 @@ const PasswordModalHeader = ({
         return null;
     }
 
+    const element = isMobile() ? 'p' : 'span';
+    const alignment = isMobile() ? 'center' : 'left';
+    const style = isMobile()
+        ? {
+              paddingTop: '2rem',
+          }
+        : {};
+
     return (
-        <Text as='span' line_height='24' weight='bold' size='xs'>
+        <Text styles={style} as={element} line_height='24' weight='bold' size='xs' align={alignment}>
             {!should_show_server_form && should_set_trading_password && !is_password_reset_error && (
                 <Localize i18n_default_text='Set a trading password' />
             )}
@@ -478,16 +486,14 @@ const MT5PasswordModal = ({
                     visible={should_show_password}
                     onClose={closeModal}
                     wrapper_classname='mt5-password-modal'
-                    renderTitle={() => (
-                        <PasswordModalHeader
-                            should_show_server_form={should_show_server_form}
-                            should_set_trading_password={should_set_trading_password}
-                            account_title={account_title}
-                            has_mt5_account={has_mt5_account}
-                            is_password_reset_error={is_password_reset}
-                        />
-                    )}
                 >
+                    <PasswordModalHeader
+                        should_show_server_form={should_show_server_form}
+                        should_set_trading_password={should_set_trading_password}
+                        account_title={account_title}
+                        has_mt5_account={has_mt5_account}
+                        is_password_reset_error={is_password_reset}
+                    />
                     {should_show_server_form ? mt5_server_form : mt5_password_form}
                 </MobileDialog>
             </MobileWrapper>

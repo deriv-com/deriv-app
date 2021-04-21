@@ -263,25 +263,28 @@ export default class MT5Store extends BaseStore {
     }
 
     @action.bound
-    async submitMt5Password(values, setSubmitting) {
+    async submitMt5Password(values, actions) {
         this.resetFormErrors();
         const response = await this.openAccount(values);
         if (!response.error) {
             WS.authorized.storage.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
+            actions.setStatus({ success: true });
+            actions.setSubmitting(false);
+            this.setError(false);
+            this.setMt5SuccessDialog(true);
             WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
-            runInAction(() => {
-                this.setMt5Account(response.mt5_new_account);
-                this.is_mt5_password_modal_enabled = false;
-                this.has_mt5_error = false;
-            });
             this.root_store.client.responseTradingServers(await WS.tradingServers());
             const { get_account_status } = await WS.getAccountStatus();
             this.root_store.client.setAccountStatus(get_account_status);
-            setTimeout(() => this.setMt5SuccessDialog(true), 300);
+            runInAction(() => {
+                this.setMt5Account(response.mt5_new_account);
+            });
         } else {
             this.setError(true, response.error);
+            actions.resetForm({});
+            actions.setSubmitting(false);
+            actions.setStatus({ success: false });
         }
-        setSubmitting(false);
     }
 
     @action.bound

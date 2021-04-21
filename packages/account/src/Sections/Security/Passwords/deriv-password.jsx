@@ -6,9 +6,9 @@ import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 import FormSubHeader from 'Components/form-sub-header';
+import SentEmailModal from 'Components/sent-email-modal';
 import ChangePasswordForm from './change-password-form.jsx';
 import PasswordsStatic from './passwords-static.jsx';
-import SentEmailModal from './sent-email-modal.jsx';
 
 const DerivPassword = ({ email, is_social_signup, social_identity_provider }) => {
     const [is_unlink_modal_open, setIsUnlinkModalOpen] = React.useState(false);

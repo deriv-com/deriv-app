@@ -224,7 +224,12 @@ export default class TradeStore extends BaseStore {
                 }
             }
         );
-
+        reaction(
+            () => this.root_store.client.landing_company_shortcode,
+            () => {
+                this.should_refresh_active_symbols = true;
+            }
+        );
         reaction(
             () => [this.contract_type],
             () => {

@@ -83,6 +83,7 @@ export default class ClientStore extends BaseStore {
         reset_password: '',
         payment_withdraw: '',
         payment_agent_withdraw: '',
+        trading_platform_password_reset: '',
     };
     @observable account_limits = {};
 
@@ -407,6 +408,16 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_social_signup() {
+        return this.account_status?.status?.includes('social_signup');
+    }
+
+    @computed
+    get is_trading_password_required() {
+        return this.account_status?.status?.includes('trading_password_required');
+    }
+
+    @computed
     get is_financial_information_incomplete() {
         return this.account_status?.status?.some(status => status === 'financial_information_not_complete');
     }
@@ -428,6 +439,11 @@ export default class ClientStore extends BaseStore {
         const document_status = this.account_status?.authentication?.document?.status;
         const identity_status = this.account_status?.authentication?.identity?.status;
         return { document_status, identity_status };
+    }
+
+    @computed
+    get social_identity_provider() {
+        return this.account_status?.social_identity_provider;
     }
 
     @computed

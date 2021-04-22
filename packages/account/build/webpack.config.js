@@ -49,6 +49,7 @@ module.exports = function (env, argv) {
             'proof-of-address-container': 'Sections/Verification/ProofOfAddress/proof-of-address-container.jsx',
             'self-exclusion': 'Components/self-exclusion',
             'scrollbars-container': 'Components/scrollbars-container',
+            'sent-email-modal': 'Components/sent-email-modal',
             'text-container': 'Components/text-container',
             'terms-of-use': 'Components/terms-of-use',
             'terms-of-use-config': 'Configs/terms-of-use-config',

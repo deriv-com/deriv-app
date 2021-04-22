@@ -9,10 +9,12 @@ const CFDServerErrorDialog = ({
     disableApp,
     enableApp,
     error_message,
+    error_type,
     has_cfd_error,
     is_cfd_success_dialog_enabled,
 }) => {
-    const should_show_error = has_cfd_error && !is_cfd_success_dialog_enabled;
+    const should_show_error =
+        has_cfd_error && !is_cfd_success_dialog_enabled && !['PasswordReset', 'PasswordError'].includes(error_type);
     return (
         <Dialog
             title={localize('Something’s not right')}
@@ -41,6 +43,7 @@ export default connect(({ ui, modules }) => ({
     disableApp: ui.disableApp,
     enableApp: ui.enableApp,
     error_message: modules.cfd.error_message,
+    error_type: modules.cfd.error_type,
     has_cfd_error: modules.cfd.has_cfd_error,
     is_cfd_success_dialog_enabled: modules.cfd.is_cfd_success_dialog_enabled,
 }))(CFDServerErrorDialog);

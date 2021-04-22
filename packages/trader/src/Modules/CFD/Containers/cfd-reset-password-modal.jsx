@@ -22,8 +22,8 @@ const ResetPasswordIntent = ({ current_list, children, ...props }) => {
         title = getMtCompanies()[group][type].title;
     } else if (current_list) {
         [server, group, type] = Object.keys(current_list).pop().split('.');
-        login = current_list[`${group}.${type}@${server}`].login;
-        title = getMtCompanies()[group][type].title;
+        login = current_list[`${group}.${type}@${server}`]?.login ?? '';
+        title = getMtCompanies()?.[group]?.[type]?.title ?? '';
     } else {
         // Set a default intent
         login = '';
@@ -85,13 +85,13 @@ class CFDResetPasswordModal extends React.Component {
         const { setSubmitting } = actions;
         setSubmitting(true);
         const request = {
-            login,
-            password_type,
+            account_id: login,
+            platform: 'mt5',
             new_password: values.new_password,
             verification_code: localStorage.getItem('cfd_reset_password_code'),
         };
 
-        WS.mt5PasswordReset(request).then(response => {
+        WS.tradingPlatformInvestorPasswordReset(request).then(response => {
             if (response.error && response.error.code === 'InvalidToken') {
                 this.renderErrorBox(response.error);
             } else {
@@ -115,12 +115,16 @@ class CFDResetPasswordModal extends React.Component {
                 className='cfd-reset-password-modal'
                 is_open={is_cfd_reset_password_modal_enabled}
                 toggleModal={() => setCFDPasswordResetModal(false)}
-                title={platform === 'dxtrade' ? localize('Reset Deriv X password') : localize('Reset DMT5 password')}
+                title={
+                    platform === 'dxtrade'
+                        ? localize('Reset Deriv X investor password')
+                        : localize('Reset DMT5 investor password')
+                }
             >
                 {!this.is_list_fetched && !this.state.has_error && <Loading is_fullscreen={false} />}
                 {this.is_list_fetched && !this.state.has_error && !this.state.is_finished && (
                     <ResetPasswordIntent current_list={current_list}>
-                        {({ title, type, login }) => (
+                        {({ type, login }) => (
                             <Formik
                                 initialValues={{ new_password: '' }}
                                 validate={this.validatePassword}
@@ -138,14 +142,6 @@ class CFDResetPasswordModal extends React.Component {
                                     <form autoComplete='off' onSubmit={handleSubmit}>
                                         <div className='cfd-reset-password'>
                                             <div className='cfd-reset-password__container'>
-                                                <h2 className='cfd-reset-password__heading'>
-                                                    <Localize
-                                                        i18n_default_text='Reset DMT5 {{title}} password'
-                                                        values={{
-                                                            title,
-                                                        }}
-                                                    />
-                                                </h2>
                                                 <div className='cfd-reset-password__password-area'>
                                                     <PasswordMeter
                                                         input={values.new_password}

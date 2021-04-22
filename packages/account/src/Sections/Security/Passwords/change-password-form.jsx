@@ -32,13 +32,13 @@ const ChangePasswordForm = ({ email, is_trading_password, logout, onClickSendEma
     const onSubmit = (values, { setSubmitting, setStatus, resetForm }) => {
         setStatus({ msg: '' });
         setIsBtnLoading(true);
+        setSubmitting(true);
         if (is_trading_password) {
             WS.tradingPlatformPasswordChange(values).then(data => {
                 if (isMounted()) {
                     setIsBtnLoading(false);
                     if (data.error) {
                         setStatus({ msg: data.error.message });
-                        setSubmitting(false);
                         setTimeout(() => {
                             if (isMounted()) {
                                 setStatus({ msg: '' });
@@ -50,10 +50,10 @@ const ChangePasswordForm = ({ email, is_trading_password, logout, onClickSendEma
                         setTimeout(() => {
                             if (isMounted()) {
                                 setIsSubmitSuccess(false);
-                                setSubmitting(false);
                             }
                         }, 3000);
                     }
+                    setSubmitting(false);
                 }
             });
         } else {

@@ -90,7 +90,7 @@ const GeneralErrorContent = ({ message, onClick }) => (
     </React.Fragment>
 );
 
-const character_limit_no = 250;
+const character_limit_no = 255;
 
 const allowed_keys = new Set([
     'Alt',
@@ -126,6 +126,7 @@ class DeactivateAccountReason extends React.Component {
     validateFields = values => {
         const error = {};
         const selected_reason_count = selectedReasons(values).length;
+
         if (!selected_reason_count) {
             error.empty_reason = localize('Please select at least one reason');
         }
@@ -133,18 +134,18 @@ class DeactivateAccountReason extends React.Component {
             const max_characters = character_limit_no;
             const final_value = preparingReason(values);
 
-            const remaining_characters = max_characters - final_value.length;
-            if (remaining_characters >= 0) {
-                this.setState({ remaining_characters });
-            } else {
-                this.setState({ remaining_characters: 0 });
-            }
+            const text_inputs_length = values.otherTradingPlatforms.length + values.doToImprove.length;
+            let remaining_characters = max_characters - text_inputs_length;
+
+            remaining_characters = remaining_characters >= 0 ? remaining_characters : 0;
+
+            this.setState({ remaining_characters });
 
             if (!/^[0-9A-z .,'-]*$/.test(final_value)) {
                 error.characters_limits = localize("Must be numbers, letters, and special characters . , ' -");
             }
 
-            if (final_value.length > max_characters) {
+            if (remaining_characters.length > max_characters) {
                 error.characters_count_exceed = 'Please enter no more than 255 characters for both fields.';
             }
         } else {
@@ -378,12 +379,14 @@ class DeactivateAccountReason extends React.Component {
                                         )}
                                         name='otherTradingPlatforms'
                                         value={values.otherTradingPlatforms}
+                                        max_characters={character_limit_no}
                                         onChange={handleChange}
                                         onKeyDown={this.handleInputKeyDown}
                                         onPaste={this.handleInputPaste}
                                     />
                                 )}
                             </Field>
+
                             <Field name='doToImprove'>
                                 {({ field }) => (
                                     <Input
@@ -395,6 +398,7 @@ class DeactivateAccountReason extends React.Component {
                                         placeholder={localize('What could we do to improve?')}
                                         name='doToImprove'
                                         value={values.doToImprove}
+                                        max_characters={character_limit_no}
                                         onChange={handleChange}
                                         onKeyDown={this.handleInputKeyDown}
                                         onPaste={this.handleInputPaste}

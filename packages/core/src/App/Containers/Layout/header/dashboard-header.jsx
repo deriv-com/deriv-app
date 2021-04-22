@@ -11,9 +11,8 @@ import DerivLogoDarkMobile from 'Assets/SvgComponents/header/deriv-logo-dark-mob
 import DerivLogoLight from 'Assets/SvgComponents/header/deriv-logo-light.svg';
 import DerivLogoLightMobile from 'Assets/SvgComponents/header/deriv-logo-light-mobile.svg';
 import DerivLogoText from 'Assets/SvgComponents/header/deriv-logo-text.svg';
-import HeaderDropdown from './dashboard-header-dropdown.jsx';
-import DerivText from 'Assets/SvgComponents/header/deriv-text.svg';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
+import HeaderDropdown from './dashboard-header-dropdown.jsx';
 import HeaderItemsLoader from '../../../Components/Layout/Header/Components/Preloader/header-items.jsx';
 
 const getDerivLogo = is_dark_mode => {
@@ -66,12 +65,12 @@ const LoggedOutHeader = () => {
 
     const handleOutsideClick = React.useCallback(
         e => {
-            if (nav_dropdown_ref.current && !nav_dropdown_ref.current.contains(e.target)) {
-                if (active_dropdown_ref.current && active_dropdown_ref.current.contains(e.target)) return;
+            if (nav_dropdown_ref?.current && !nav_dropdown_ref.current.contains(e.target)) {
+                if (active_dropdown_ref?.current && active_dropdown_ref.current.contains(e.target)) return;
                 setCurrentDropdown('');
             }
         },
-        [active_dropdown_ref?.current]
+        [active_dropdown_ref]
     );
 
     const setDropdown = new_ref => setActiveDropdownRef(new_ref);
@@ -81,7 +80,7 @@ const LoggedOutHeader = () => {
         return () => {
             document.removeEventListener('click', handleOutsideClick);
         };
-    }, [active_dropdown_ref?.current]);
+    }, [handleOutsideClick]);
 
     return (
         <React.Fragment>

@@ -18,37 +18,37 @@ const getNavigationItems = type => {
     if (type === 'about') {
         return [
             {
-                name: <Localize i18n_default_text='Our story' />,
+                name: 'Our story',
                 to: `${deriv_url}/about/#story`,
                 icon: <OurStory />,
             },
             {
-                name: <Localize i18n_default_text='Our leadership' />,
+                name: 'Our leadership',
                 to: `${deriv_url}/about/#leadership`,
                 icon: <OurLeadership />,
             },
             {
-                name: <Localize i18n_default_text='Regulatory information' />,
+                name: 'Regulatory information',
                 to: `${deriv_url}/regulatory/`,
                 icon: <RegulatoryInfo />,
             },
             {
-                name: <Localize i18n_default_text='Why choose us?' />,
+                name: 'Why choose us?',
                 to: `${deriv_url}/why-choose-us/`,
                 icon: <WhyChooseUs />,
             },
             {
-                name: <Localize i18n_default_text='Partnership programmes' />,
+                name: 'Partnership programmes',
                 to: `${deriv_url}/partners/`,
                 icon: <PartnershipProgrammes />,
             },
             {
-                name: <Localize i18n_default_text='Contact us' />,
+                name: 'Contact us',
                 to: `${deriv_url}/contact_us/`,
                 icon: <ContactUs />,
             },
             {
-                name: <Localize i18n_default_text='Careers' />,
+                name: 'Careers',
                 to: `${deriv_url}/careers/`,
                 icon: <Career />,
             },
@@ -57,22 +57,22 @@ const getNavigationItems = type => {
     if (type === 'resources') {
         return [
             {
-                name: <Localize i18n_default_text='Help centre' />,
+                name: 'Help centre',
                 to: `${deriv_url}/help-centre/`,
                 icon: <HelpCentre />,
             },
             {
-                name: <Localize i18n_default_text='Community' />,
+                name: 'Community',
                 to: `${deriv_url}/help-centre/`,
                 icon: <Community />,
             },
             {
-                name: <Localize i18n_default_text='Payment methods' />,
+                name: 'Payment methods',
                 to: `${deriv_url}/payment-methods/`,
                 icon: <PaymentMethods />,
             },
             {
-                name: <Localize i18n_default_text='Blog' />,
+                name: 'Blog',
                 to: `${deriv_url}/help-centre/`,
                 icon: <Blog />,
             },
@@ -85,7 +85,9 @@ const HeaderDropdownItem = ({ icon, name, to }) => {
     return (
         <a href={to} className='dashboard-header-dropdown__card-link'>
             <div className='dashboard-header-dropdown__card-link__icon'>{icon}</div>
-            <Text size='s'>{name}</Text>
+            <Text size='s'>
+                <Localize i18n_default_text={name} />
+            </Text>
         </a>
     );
 };
@@ -108,7 +110,7 @@ const HeaderDropdown = ({ current_ref, onClickHandler, parent, setRef }) => {
         return () => {
             window.removeEventListener('resize', updateOffsets);
         };
-    }, [current_ref]);
+    }, [setRef, updateOffsets]);
 
     return (
         <div ref={setRef} className='dashboard-header-dropdown' style={{ left: left_offset }}>

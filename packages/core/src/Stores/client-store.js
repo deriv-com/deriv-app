@@ -1086,13 +1086,13 @@ export default class ClientStore extends BaseStore {
                 })
             );
             const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
+
+            await this.fetchResidenceList();
+
             if (account_settings && !account_settings.residence) {
-                await this.fetchResidenceList();
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
-            if (account_settings.residence && !account_settings.tax_identification_number) {
-                await this.fetchResidenceList();
-            }
+
             await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             if (!this.is_virtual) await this.getLimits();
 

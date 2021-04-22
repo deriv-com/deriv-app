@@ -53,6 +53,11 @@ class TransitionBlocker extends React.Component {
         this.unblock = this.props.history.block(next_location => {
             if (this.props.dirty) {
                 if (this.props.onDirty) this.props.onDirty(false);
+
+                if (this.state.show) {
+                    this.leave();
+                }
+
                 this.setState({
                     show: true,
                     next_location,

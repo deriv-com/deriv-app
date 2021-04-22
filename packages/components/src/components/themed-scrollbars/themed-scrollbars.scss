@@ -37,6 +37,8 @@
     &-wrapper {
         display: flex;
         justify-content: space-between;
+        margin-bottom: -3rem;
+        padding-bottom: 3rem;
         white-space: nowrap;
 
         & li {

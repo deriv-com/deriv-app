@@ -58,11 +58,13 @@ const MT5RealAccountDisplay = ({
         if (citizen && tax_identification_number && tax_residence) return true;
 
         if (citizen && tax_residence) {
-            return !residence_list.filter(item => item.value === tax_residence && item.tin_format).length;
+            const is_tin_required = landing_companies?.config?.tax_details_required ?? false;
+
+            return is_tin_required || !residence_list.filter(v => v.value === tax_residence && v.tin_format).length;
         }
 
         return false;
-    }, [account_settings, residence_list]);
+    }, [account_settings, residence_list, landing_companies]);
 
     const button_label = getRealFinancialStpBtnLbl(
         is_fully_authenticated,

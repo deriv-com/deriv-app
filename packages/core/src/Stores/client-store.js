@@ -74,6 +74,7 @@ export default class ClientStore extends BaseStore {
     @observable obj_total_balance = {
         amount_real: undefined,
         amount_mt5: undefined,
+        amount_dxtrade: undefined,
         currency: '',
     };
 
@@ -1420,11 +1421,14 @@ export default class ClientStore extends BaseStore {
         if (obj_balance.total) {
             const total_real = getPropertyValue(obj_balance, ['total', 'deriv']);
             const total_mt5 = getPropertyValue(obj_balance, ['total', 'mt5']);
+            const total_dxtrade = getPropertyValue(obj_balance, ['total', 'dxtrade']);
             // in API streaming responses MT5 balance is not re-sent, so we need to reuse the first mt5 total sent
             const has_mt5 = !isEmptyObject(total_mt5);
+            const has_dxtrade = !isEmptyObject(total_dxtrade);
             this.obj_total_balance = {
                 amount_real: +total_real.amount,
                 amount_mt5: has_mt5 ? +total_mt5.amount : this.obj_total_balance.amount_mt5,
+                amount_dxtrade: has_dxtrade ? +total_dxtrade.amount : this.obj_total_balance.amount_dxtrade,
                 currency: total_real.currency,
             };
         }

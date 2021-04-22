@@ -270,11 +270,9 @@ const AccountSwitcher = props => {
         return !!(props.is_virtual && props.can_upgrade_to);
     };
 
-    const getTotalDemoAssets = () => {
-        const vrtc_loginid = props.account_list.find(account => account.is_virtual).loginid;
-        const vrtc_balance = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].balance : 0;
-        const mt5_demo_total = props.mt5_login_list
-            .filter(account => isDemo(account))
+    const getTotalBalance = (accounts, is_demo = true) => {
+        return accounts
+            .filter(account => (is_demo ? isDemo(account) : !isDemo(account)))
             .reduce(
                 (total, account) => {
                     total.balance += account.balance;
@@ -282,26 +280,40 @@ const AccountSwitcher = props => {
                 },
                 { balance: 0 }
             );
-        return Array.isArray(props.mt5_login_list) ? mt5_demo_total.balance + vrtc_balance : vrtc_balance;
+    };
+
+    const getTotalDemoAssets = () => {
+        const vrtc_loginid = props.account_list.find(account => account.is_virtual).loginid;
+        const vrtc_balance = props.accounts[vrtc_loginid] ? props.accounts[vrtc_loginid].balance : 0;
+        const mt5_demo_total = getTotalBalance(props.mt5_login_list);
+        const dxtrade_demo_total = getTotalBalance(props.dxtrade_accounts_list);
+
+        let total = vrtc_balance;
+
+        if (Array.isArray(props.mt5_login_list)) {
+            total += mt5_demo_total.balance;
+        }
+        if (Array.isArray(props.dxtrade_accounts_list)) {
+            total += dxtrade_demo_total.balance;
+        }
+
+        return total;
     };
 
     const getTotalRealAssets = () => {
         // props.obj_total_balance.amount_mt5 is returning 0 regarding performance issues so we have to calculate
         // the total MT5 accounts balance from props.mt5_login_list.
         // You can remove this part if WS sends obj_total_balance.amount_mt5 correctly.
-        const mt5_total = props.mt5_login_list
-            .filter(account => !isDemo(account))
-            .reduce(
-                (total, account) => {
-                    total.balance += account.balance;
-                    return total;
-                },
-                { balance: 0 }
-            );
-        return (
-            props.obj_total_balance.amount_real +
-            (props.obj_total_balance.amount_mt5 > 0 ? props.obj_total_balance.amount_mt5 : mt5_total.balance)
-        );
+        const mt5_total = getTotalBalance(props.mt5_login_list, false);
+        const dxtrade_total = getTotalBalance(props.dxtrade_accounts_list, false);
+
+        let total = props.obj_total_balance.amount_real;
+
+        total += props.obj_total_balance.amount_mt5 > 0 ? props.obj_total_balance.amount_mt5 : mt5_total.balance;
+        total +=
+            props.obj_total_balance.amount_dxtrade > 0 ? props.obj_total_balance.amount_dxtrade : dxtrade_total.balance;
+
+        return total;
     };
 
     const isRealMT5AddDisabled = sub_account_type => {

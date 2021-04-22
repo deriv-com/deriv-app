@@ -136,6 +136,7 @@ export default class TradeStore extends BaseStore {
 
     initial_barriers;
     is_initial_barrier_applied = false;
+    forget_all_proposal_promise;
 
     @observable should_skip_prepost_lifecycle = false;
 
@@ -814,7 +815,7 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
-    requestProposal() {
+    async requestProposal() {
         const requests = createProposalRequests(this);
 
         if (Object.values(this.validation_errors).some(e => e.length)) {
@@ -822,6 +823,10 @@ export default class TradeStore extends BaseStore {
             this.purchase_info = {};
             this.forgetAllProposal();
             return;
+        }
+
+        if (this.forget_all_proposal_promise) {
+            await this.forget_all_proposal_promise;
         }
 
         if (!isEmptyObject(requests)) {
@@ -838,7 +843,9 @@ export default class TradeStore extends BaseStore {
     @action.bound
     forgetAllProposal() {
         const length = Object.keys(this.proposal_requests).length;
-        if (length > 0) WS.forgetAll('proposal');
+        if (length > 0) {
+            this.forget_all_proposal_promise = WS.forgetAll('proposal');
+        }
     }
 
     @action.bound

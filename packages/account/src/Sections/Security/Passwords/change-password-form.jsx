@@ -39,6 +39,11 @@ const ChangePasswordForm = ({ email, is_trading_password, logout, onClickSendEma
                     if (data.error) {
                         setStatus({ msg: data.error.message });
                         setSubmitting(false);
+                        setTimeout(() => {
+                            if (isMounted()) {
+                                setStatus({ msg: '' });
+                            }
+                        }, 3000);
                     } else {
                         setIsSubmitSuccess(true);
                         resetForm({ new_password: '' });
@@ -57,6 +62,11 @@ const ChangePasswordForm = ({ email, is_trading_password, logout, onClickSendEma
                     setIsBtnLoading(false);
                     if (data.error) {
                         setStatus({ msg: data.error.message });
+                        setTimeout(() => {
+                            if (isMounted()) {
+                                setStatus({ msg: '' });
+                            }
+                        }, 3000);
                     } else {
                         setIsSubmitSuccess(true);
                         logout().then(handlePasswordChange);

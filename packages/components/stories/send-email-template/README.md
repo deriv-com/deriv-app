@@ -8,7 +8,11 @@ Renders a `SendEmailTemplate` component.
 import { SendEmailTemplate } from 'deriv-components';
 
 const DummyComponent = props => (
-    <SendEmailTemplate lbl_no_receive={`Didn't receive the email?`} txt_resend='Resend email' />
+    <SendEmailTemplate
+        lbl_no_receive={`Didn't receive the email?`}
+        txt_resend='Resend email'
+        txt_resend_in='Resend email in'
+    />
 );
 ```
 
@@ -21,6 +25,7 @@ const DummyComponent = props => (
 | subtitle         | {string}   | null    | Short description about the email                     |
 | lbl_no_receive   | {string}   | null    | Text for send button                                  |
 | txt_resend       | {string}   | null    | Text for resend button                                |
+| txt_resend_in    | {string}   | null    | Text for resend button with timer                     |
 
 ## Full example:
 
@@ -34,6 +39,7 @@ const DummyComponent = props => (
         subtitle='Please click on the link in the email to reset your password.'
         lbl_no_receive={`Didn't receive the email?`}
         txt_resend='Resend email'
+        txt_resend_in='Resend email in'
     >
         <div className='send-email-storybook-error'>
             We can’t deliver the email to this address (Usually because of firewalls or filtering).

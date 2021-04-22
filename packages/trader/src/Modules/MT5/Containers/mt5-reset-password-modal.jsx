@@ -119,7 +119,7 @@ class MT5ResetPasswordModal extends React.Component {
                 {!this.is_list_fetched && !this.state.has_error && <Loading is_fullscreen={false} />}
                 {this.is_list_fetched && !this.state.has_error && !this.state.is_finished && (
                     <ResetPasswordIntent current_list={current_list}>
-                        {({ title, type, login }) => (
+                        {({ type, login }) => (
                             <Formik
                                 initialValues={{ new_password: '' }}
                                 validate={this.validatePassword}

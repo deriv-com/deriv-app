@@ -82,7 +82,7 @@ const ResetTradingPassword = ({ toggleResetTradingPasswordModal, verification_co
                                         <Localize i18n_default_text='Success' />
                                     </Text>
                                     <Text align='center' as='p' size='xs' className='reset-trading-password__subtext'>
-                                        {localize('You have a new trading password. Use this to log in to Deriv MT5.')}
+                                        {localize('You have a new trading password. Use this to log in to DMT5.')}
                                     </Text>
                                     <Button
                                         type='button'

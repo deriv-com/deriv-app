@@ -27,6 +27,11 @@ const SetPasswordForm = ({ email }) => {
                 if (data.error) {
                     setStatus({ msg: data.error.message });
                     setSubmitting(false);
+                    setTimeout(() => {
+                        if (isMounted()) {
+                            setStatus({ msg: '' });
+                        }
+                    }, 3000);
                 } else {
                     setIsSubmitSuccess(true);
                     setTimeout(() => {

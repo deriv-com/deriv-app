@@ -17,6 +17,7 @@ const ForgotYourPassword = ({ onClickSendEmail }) => (
                 subtitle={localize('Please click on the link in the email to reset your password.')}
                 lbl_no_receive={localize("Didn't receive the email?")}
                 txt_resend={localize('Resend email')}
+                txt_resend_in={localize('Resend email in')}
                 onClickSendEmail={onClickSendEmail}
             >
                 <div className='forgot-password__content'>

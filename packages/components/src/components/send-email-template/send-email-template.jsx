@@ -15,6 +15,7 @@ const SendEmailTemplate = ({
     subtitle,
     title,
     txt_resend,
+    txt_resend_in,
 }) => {
     const [is_email_not_received_clicked, setIsEmailNotReceivedClicked] = React.useState(false);
     const [is_resend_btn_disabled, setIsResendBtnDisabled] = React.useState(false);
@@ -47,7 +48,7 @@ const SendEmailTemplate = ({
         setIsResendBtnDisabled(true);
         resend_interval = setInterval(() => {
             if (--timeout) {
-                setResendEmailBtnText(`${resend_email_btn_text} ${timeout}`);
+                setResendEmailBtnText(`${txt_resend_in} ${timeout}`);
             } else {
                 setIsResendBtnDisabled(false);
                 setResendEmailBtnText(txt_resend);
@@ -110,6 +111,7 @@ SendEmailTemplate.propTypes = {
     onClickSendEmail: PropTypes.func,
     subtitle: PropTypes.string,
     txt_resend: PropTypes.string,
+    txt_resend_in: PropTypes.string,
     title: PropTypes.string,
 };
 

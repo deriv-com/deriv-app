@@ -99,7 +99,8 @@ const SentEmailModal = ({ identifier_title, is_open, is_unlink_modal, onClose, o
                             title={localize('We’ve sent you an email')}
                             subtitle={getSubtitle()}
                             lbl_no_receive={localize("Didn't receive the email?")}
-                            txt_resend={localize('Resend email in')}
+                            txt_resend={localize('Resend email')}
+                            txt_resend_in={localize('Resend email in')}
                             onClickSendEmail={onClickSendEmail}
                         >
                             {getNoEmailContentStrings().map(item => (

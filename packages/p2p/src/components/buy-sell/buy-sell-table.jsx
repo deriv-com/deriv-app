@@ -82,7 +82,7 @@ const BuySellTable = ({ onScroll }) => {
         );
     }
 
-    return <Empty className='buy-sell__empty' has_tabs icon='IcCashierNoAds' title={localize('No ads found')} />;
+    return <Empty className='buy-sell__empty' has_tabs icon='IcCashierNoAds' title={localize('There are no ads.')} />;
 };
 
 BuySellTable.displayName = 'BuySellTable';

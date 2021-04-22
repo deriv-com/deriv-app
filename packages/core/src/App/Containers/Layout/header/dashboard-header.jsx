@@ -12,6 +12,8 @@ import DerivLogoLight from 'Assets/SvgComponents/header/deriv-logo-light.svg';
 import DerivLogoLightMobile from 'Assets/SvgComponents/header/deriv-logo-light-mobile.svg';
 import DerivLogoText from 'Assets/SvgComponents/header/deriv-logo-text.svg';
 import HeaderDropdown from './dashboard-header-dropdown.jsx';
+import DerivText from 'Assets/SvgComponents/header/deriv-text.svg';
+import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import HeaderItemsLoader from '../../../Components/Layout/Header/Components/Preloader/header-items.jsx';
 
 const getDerivLogo = is_dark_mode => {
@@ -39,7 +41,7 @@ const LoggedInHeader = ({ is_dark_mode }) => {
                     <React.Fragment>
                         <Icon icon={'IcNotificationClear'} height={20} width={17} />
                         <div className='dashboard-header__right--logged-in-separator' />
-                        <Icon icon={'IcHamburger'} className='dashboard-header__right-hamburger' size={16} />
+                        <ToggleMenuDrawer alignment={'right'} is_logged_in should_allow_authentication title={''} />
                     </React.Fragment>
                 )}
             </div>
@@ -122,12 +124,7 @@ const LoggedOutHeader = () => {
                     {isMobile() && (
                         <React.Fragment>
                             <div className='dashboard-header__right--logged-out-separator' />
-                            <Icon
-                                icon={'IcHamburgerWhite'}
-                                className='dashboard-header__right-hamburger'
-                                width={12}
-                                height={10}
-                            />
+                            <ToggleMenuDrawer alignment={'right'} should_allow_authentication title={''} />
                         </React.Fragment>
                     )}
                 </div>

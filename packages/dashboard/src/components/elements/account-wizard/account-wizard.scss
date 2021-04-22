@@ -6,9 +6,7 @@
     background-color: var(--fill-normal);
 
     @include mobile {
-        margin: unset;
         padding: 0 1.6rem;
-        width: unset;
     }
 
     &__header {

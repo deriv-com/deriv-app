@@ -154,7 +154,7 @@ const OrderDetails = observer(({ onPageReturn }) => {
                         </div>
                         <OrderInfoBlock label={labels.payment_details} value={payment_info || '-'} />
                         <OrderInfoBlock label={labels.contact_details} value={contact_info || '-'} />
-                        <OrderInfoBlock label={labels.instructions} value={advert_details.description || '-'} />
+                        <OrderInfoBlock label={labels.instructions} value={advert_details.description.trim() || '-'} />
                     </ThemedScrollbars>
                     {should_show_order_footer && isDesktop() && (
                         <OrderDetailsFooter order_information={order_store.order_information} />

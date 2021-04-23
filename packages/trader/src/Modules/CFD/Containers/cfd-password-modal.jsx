@@ -19,15 +19,18 @@ import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import 'Sass/app/modules/mt5/cfd.scss';
 import { connect } from 'Stores/connect';
 
-const getSubmitText = (account_title, category) => {
+const getSubmitText = (account_title, category, platform) => {
     if (category === 'real') {
         return localize(
-            'You have created a DMT5 {{account_title}} account. To start trading, transfer funds from your Deriv account into this account.',
-            { account_title }
+            'You have created a {{platform}} {{account_title}} account. To start trading, transfer funds from your Deriv account into this account.',
+            { account_title, platform: platform === 'dxtrade' ? 'Deriv X' : 'DMT5' }
         );
     }
 
-    return localize('You have created a DMT5 {{account_title}} account.', { account_title });
+    return localize('You have created a {{platform}} {{account_title}} account.', {
+        account_title,
+        platform: platform === 'dxtrade' ? 'Deriv X' : 'DMT5',
+    });
 };
 
 const getIconFromType = type => {
@@ -397,7 +400,7 @@ const CFDPasswordModal = ({
                 onCancel={closeModal}
                 onSubmit={closeOpenSuccess}
                 classNameMessage='cfd-password-modal__message'
-                message={getSubmitText(account_title, account_type.category)}
+                message={getSubmitText(account_title, account_type.category, platform)}
                 // message={error_message}
                 icon={<IconType />}
                 icon_size='xlarge'

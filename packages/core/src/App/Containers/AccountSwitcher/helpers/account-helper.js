@@ -59,7 +59,7 @@ export const getCFDConfig = (market_type, landing_company, existing_cfd_accounts
                 }
                 return account.sub_account_type === company && account.market_type === market_type;
             });
-            if (has_account) {
+            if (has_account && platform === 'mt5') {
                 const number_market_type_available = trading_servers.filter(
                     s => s.supported_accounts.includes(market_type) && !s.disabled
                 ).length;

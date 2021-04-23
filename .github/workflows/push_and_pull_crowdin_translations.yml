@@ -54,7 +54,7 @@ jobs:
           echo "- [crowdin]: message.json hash is $crowdin_messages_json_hash"
           rm messages.json 
 
-          echo "Running the translation script (extract-translations.js) for p2p"
+          echo "Running the translation script (extract-translations.js) in p2p"
           cd $(git rev-parse --show-toplevel)/packages/p2p/scripts
           node extract-translations.js
           new_p2p_messages_json_hash="$(git hash-object $(git rev-parse --show-toplevel)/packages/p2p/crowdin/messages.json)"

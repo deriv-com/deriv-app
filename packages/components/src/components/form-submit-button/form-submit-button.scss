@@ -40,7 +40,6 @@
     }
     @include mobile {
         &--absolute {
-            background-color: var(--general-section-2);
             top: unset;
             bottom: 0;
             left: 0;

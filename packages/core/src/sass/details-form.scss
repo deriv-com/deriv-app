@@ -49,11 +49,6 @@
             }
             label {
                 top: 0.9rem;
-                background-color: var(--general-main-2);
-
-                @include mobile {
-                    background-color: var(--general-section-2);
-                }
             }
             @include desktop {
                 /* To get rid of ugly chrome autofill shadow dom-applied background color */

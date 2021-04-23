@@ -18,6 +18,11 @@ const RouteWithSubRoutes = route => {
         const pathname = removeBranchName(location.pathname).replace(/\/$/, '');
         const is_valid_route = validateRoute(pathname);
 
+        // check if by re-rendering content should Platform app_id  change or not,
+        if (is_valid_route) {
+            route.checkAppId();
+        }
+
         if (route.component === Redirect) {
             let to = route.to;
 
@@ -60,6 +65,7 @@ const RouteWithSubRoutes = route => {
 
 export { RouteWithSubRoutes as RouteWithSubRoutesRender }; // For tests
 
-export default connect(({ gtm }) => ({
+export default connect(({ gtm, common }) => ({
     pushDataLayer: gtm.pushDataLayer,
+    checkAppId: common.checkAppId,
 }))(RouteWithSubRoutes);

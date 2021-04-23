@@ -240,6 +240,12 @@
     height: 100%;
     position: relative;
 
+    &__table {
+        @include mobile {
+            overflow-x: auto;
+        }
+    }
+
     &__table-row {
         grid-template-columns: var(--mt5-compare-accounts-template-columns);
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);
@@ -272,17 +278,20 @@
             line-height: 1.5;
         }
     }
+    &__footnote {
+        &-title {
+            padding-bottom: 0.8rem;
+        }
+    }
 
     .dc-table {
         padding: 0 30px;
-        @include desktop {
-            position: absolute;
-            height: 100%;
-        }
 
         &__header {
             border-bottom: none;
             height: 50px;
+            position: sticky;
+            top: 0;
         }
         &__cell,
         &__head {
@@ -318,7 +327,7 @@
         }
     }
     @include mobile {
-        background: var(--general-section-1);
+        background: var(--general-main-1);
         height: 100%;
         font-size: 1.2rem;
 
@@ -335,7 +344,7 @@
             &__head {
                 font-size: 1.2rem;
                 border-bottom: 2px solid var(--border-disabled);
-                background-color: var(--general-section-2);
+                background-color: var(--general-main-1);
                 margin-top: -1px;
             }
             &__header,
@@ -357,10 +366,6 @@
     @include mobile {
         padding: 1.6rem;
         border-top: 2px solid var(--border-disabled);
-    }
-    @include desktop {
-        position: absolute;
-        bottom: 0;
     }
 }
 

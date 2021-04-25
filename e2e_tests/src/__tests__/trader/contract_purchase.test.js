@@ -3,6 +3,7 @@ const Trader = require('@root/objects/trader');
 const { replaceWebsocket } = require('@root/_utils/websocket');
 
 let p;
+jest.setTimeout(120000);
 describe('Contract test', () => {
     async function setUpTest() {
         await context.addInitScript(replaceWebsocket);

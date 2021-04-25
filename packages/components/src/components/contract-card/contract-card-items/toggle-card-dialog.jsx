@@ -46,14 +46,14 @@ const ToggleCardDialog = ({
             const target_bound = dialog_ref.current.getBoundingClientRect();
             const body_bound = document.body.getBoundingClientRect();
 
-            let { top: icon_bound_top, right: icon_bound_right } = icon_bound;
+            let { top: icon_bound_top } = icon_bound;
             const { right } = icon_bound;
 
             if (icon_bound_top + target_bound?.height > body_bound.height) {
                 icon_bound_top -= target_bound?.height - icon_bound.height;
             }
 
-            if (icon_bound_right + target_bound?.width > body_bound.width) {
+            if (right + target_bound?.width > body_bound.width) {
                 setLeft(right - target_bound?.width - 16);
             } else {
                 setLeft(right - 16);

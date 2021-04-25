@@ -143,8 +143,8 @@ export default class SummaryCardStore {
 
     @action.bound
     setContractUpdateConfig(contract_update_take_profit, contract_update_stop_loss) {
-        this.has_contract_update_take_profit = contract_update_take_profit === '' ? false : true;
-        this.has_contract_update_stop_loss = contract_update_stop_loss === '' ? false : true;
+        this.has_contract_update_take_profit = !!contract_update_take_profit;
+        this.has_contract_update_stop_loss = !!contract_update_stop_loss;
         this.contract_update_take_profit = this.has_contract_update_take_profit ? +contract_update_take_profit : null;
         this.contract_update_stop_loss = this.has_contract_update_stop_loss ? +contract_update_stop_loss : null;
     }

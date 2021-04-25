@@ -307,8 +307,8 @@ export const addDomAsBlock = (el_block, parent_block = null) => {
 export const hasAllRequiredBlocks = workspace => {
     const blocks_in_workspace = workspace.getAllBlocks();
     const { mandatoryMainBlocks } = config;
-    //TODO - Add proper logic for mandatory blocks
-    const mandatory_tradeoptions_block = 'trade_definition_tradeoptions';
+    // TODO - Add proper logic for mandatory blocks
+    // const mandatory_tradeoptions_block = 'trade_definition_tradeoptions';
     // const required_block_types = [mandatory_tradeoptions_block, ...mandatoryMainBlocks];
     const required_block_types = [...mandatoryMainBlocks];
     const all_block_types = blocks_in_workspace.map(block => block.type);

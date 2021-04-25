@@ -66,17 +66,27 @@ const PaymentAgentList = ({
                     </Text>
                     <div className='payment-agent__instructions'>
                         <div className='payment-agent__instructions-section'>
-                            <h2 className='cashier__header payment-agent__header'>
+                            <Text
+                                as='h2'
+                                weight='bold'
+                                color='prominent'
+                                className='cashier__header payment-agent__header'
+                            >
                                 <Localize i18n_default_text='Deposit' />
-                            </h2>
+                            </Text>
                             <Text as='p' size='xs' line_height='s' className='cashier__paragraph'>
                                 <Localize i18n_default_text='Choose a payment agent and contact them for instructions.' />
                             </Text>
                         </div>
                         <div className='payment-agent__instructions-section'>
-                            <h2 className='cashier__header payment-agent__header'>
+                            <Text
+                                as='h2'
+                                weight='bold'
+                                color='prominent'
+                                className='cashier__header payment-agent__header'
+                            >
                                 <Localize i18n_default_text='Withdrawal' />
-                            </h2>
+                            </Text>
                             <Button
                                 className='payment-agent__instructions-button'
                                 has_effect
@@ -87,9 +97,14 @@ const PaymentAgentList = ({
                             />
                         </div>
                     </div>
-                    <h2 className='cashier__header payment-agent__list-header'>
+                    <Text
+                        as='h2'
+                        weight='bold'
+                        color='prominent'
+                        className='cashier__header payment-agent__list-header'
+                    >
                         <Localize i18n_default_text='Payment agents' />
-                    </h2>
+                    </Text>
                     <div className='payment-agent__list-line' />
                     {is_loading ? (
                         <Loading className='payment-agent__loader' />

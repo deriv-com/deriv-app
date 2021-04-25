@@ -41,7 +41,7 @@ const PasswordInput = ({
 PasswordInput.propTypes = {
     className: PropTypes.string,
     autoComplete: PropTypes.string.isRequired,
-    inputId: PropTypes.string,
+    input_id: PropTypes.string,
 };
 
 export default PasswordInput;

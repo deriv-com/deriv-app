@@ -71,6 +71,7 @@ const Native = ({
                 {label || (!value && placeholder)}
             </label>
             <Icon icon='IcCalendar' className='dc-datepicker__calendar-icon' color={disabled && 'disabled'} />
+            { JSON.stringify(max_date && toMoment(max_date).format('YYYY-MM-DD'))}
             <input
                 ref={input_ref}
                 id={id}

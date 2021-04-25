@@ -180,6 +180,7 @@ const DatePicker = React.memo(props => {
     return (
         <React.Fragment>
             <MobileWrapper>
+                { JSON.stringify(max_date)}
                 <Native
                     id={id}
                     name={name}

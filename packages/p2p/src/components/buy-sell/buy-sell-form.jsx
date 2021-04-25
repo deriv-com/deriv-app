@@ -139,11 +139,15 @@ const BuySellForm = props => {
                                                 <Localize i18n_default_text="Buyer's instructions" />
                                             )}
                                         </Text>
-                                        {description.split('\n').map((text, idx) => (
-                                            <Text key={idx} as='p' color='general' line_height='m' size='xs'>
-                                                {text || '-'}
-                                            </Text>
-                                        ))}
+                                        {description
+                                            .trim()
+                                            .replace(/([\r\n]){2,}/g, '\n\n')
+                                            .split('\n')
+                                            .map((text, idx) => (
+                                                <Text key={idx} as='p' color='general' line_height='m' size='xs'>
+                                                    {text || '-'}
+                                                </Text>
+                                            ))}
                                     </div>
                                 </div>
                                 <div

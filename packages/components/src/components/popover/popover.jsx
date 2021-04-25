@@ -64,7 +64,7 @@ const Popover = ({
                     position={alignment}
                     transitionDuration={0.25}
                     padding={margin + 8}
-                    containerClassName={classNames({
+                    containerClassName={classNames('dc-popover__box', {
                         'react-tiny-popover-container--disabled-pointer-event': should_disable_pointer_events,
                     })}
                     windowBorderPadding={window_border}

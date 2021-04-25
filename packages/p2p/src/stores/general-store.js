@@ -209,17 +209,16 @@ export default class GeneralStore extends BaseStore {
                 ) {
                     // First priority: If user is blocked, don't bother getting them to send FA.
                     this.setIsBlocked(true);
-                    this.setIsLoading(false);
                 } else if (is_fully_authed_but_needs_fa) {
                     // Second priority: Send user to Financial Assessment if they can submit it.
                     this.setIsHighRiskFullyAuthedWithoutFa(true);
-                    this.setIsLoading(false);
                     return;
                 }
+            } else if (error) {
+                this.setIsHighRiskFullyAuthedWithoutFa(false);
+                this.setIsBlocked(false);
             }
 
-            this.setIsHighRiskFullyAuthedWithoutFa(false);
-            this.setIsBlocked(false);
             this.setIsLoading(false);
 
             const { sendbird_store } = this.root_store;

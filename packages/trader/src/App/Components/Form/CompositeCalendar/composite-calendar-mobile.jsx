@@ -198,6 +198,8 @@ const CompositeCalendarMobile = React.memo(
                                 selected_value={selected_date_range.value}
                                 onChange={onDateRangeChange}
                             />
+
+                            {JSON.stringify('Work inprogress')}
                             <div className='composite-calendar-modal__custom-date-range'>
                                 <DatePicker
                                     className='composite-calendar-modal__custom-date-range-start-date'

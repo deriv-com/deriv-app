@@ -10,13 +10,13 @@
         left: 50%;
         transform: translate(-50%);
         margin: 0;
-        background-color: #151717;
+        background-color: var(--color-black-3);
         text-align: center;
     }
 
     & .signup-separator-container {
         width: calc(100% + 80px);
-        border-bottom: 1px solid #f2f3f4;
+        border-bottom: 1px solid var(--color-grey-2);
         margin: 24px 0 14px;
 
         @include mobile {
@@ -39,12 +39,11 @@
             align-self: flex-start;
         }
         & .dc-checkbox__label {
-            font-size: 12px;
+            font-size: 1.2rem;
         }
     }
     &__hidden-checkbox {
         visibility: hidden;
-        position: absolute;
     }
     &__residence-selection,
     &__password-selection {
@@ -67,7 +66,7 @@
     }
     &__password-selection {
         .account-signup__heading {
-            padding-top: 15px;
+            padding-top: 1.5rem;
             margin-bottom: 3.3rem;
 
             @include mobile {

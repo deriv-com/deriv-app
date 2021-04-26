@@ -5,18 +5,18 @@
     @include mobile {
         width: calc(100% + 50px);
         border-radius: 10px;
-        padding: 20px;
+        padding: 0;
         position: relative;
         left: 50%;
         transform: translate(-50%);
         margin: 0;
-        background-color: var(--color-black-3);
+        background-color: var(--general-main-2);
         text-align: center;
     }
 
     & .signup-separator-container {
-        width: calc(100% + 80px);
-        border-bottom: 1px solid var(--color-grey-2);
+        width: calc(100% + 40px);
+        border-bottom: 1px solid var(--general-section-1);
         margin: 24px 0 14px;
 
         @include mobile {
@@ -27,7 +27,7 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-gap: 0.8rem;
-        margin-left: auto;
+        margin: 0;
 
         @include mobile {
             justify-items: center;
@@ -51,6 +51,13 @@
         justify-content: center;
         align-items: center;
         flex-flow: nowrap column;
+        background-color: var(--general-main-2);
+        width: calc(100% + 80px);
+        padding: 20px;
+        border-radius: 10px;
+        position: relative;
+        left: 50%;
+        transform: translate(-50%);
 
         @include mobile {
             width: 100%;

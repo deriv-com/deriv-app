@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon, Modal, Popover, StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { deriv_urls } from '@deriv/shared';
 import MGALogo from 'Assets/SvgComponents/footer/mga.svg';
 
 const MLTRegulatoryInformation = () => (
@@ -24,7 +25,7 @@ const MLTRegulatoryInformation = () => (
                         className='footer-regulatory-information__link'
                     />,
                     <a
-                        href='https://deriv.com/regulatory/DEL_Remote_Bookmarker_License.pdf'
+                        href={`https://${deriv_urls.DERIV_HOST_NAME}/regulatory/DEL_Remote_Bookmarker_License.pdf`}
                         target='_blank'
                         rel='nofollow noreferrer'
                         key={2}
@@ -50,7 +51,7 @@ const MXRegulatoryInformation = () => (
                         className='footer-regulatory-information__link'
                     />,
                     <a
-                        href='https://deriv.com/regulatory/Deriv_(MX)_Ltd.pdf'
+                        href={`https://${deriv_urls.DERIV_HOST_NAME}/regulatory/Deriv_(MX)_Ltd.pdf`}
                         target='_blank'
                         rel='nofollow noreferrer'
                         key={1}
@@ -69,7 +70,7 @@ const MFRegulatoryInformation = () => (
                 i18n_default_text='Financial products in the EU are offered by Deriv Investments (Europe) Limited, licensed as a Category 3 Investment Services provider by the Malta Financial Services Authority (<0>licence no. IS/70156</0>).'
                 components={[
                     <a
-                        href='https://deriv.com/regulatory/Deriv_Investments_(Europe)_Limited.pdf'
+                        href={`https://${deriv_urls.DERIV_HOST_NAME}/regulatory/Deriv_Investments_(Europe)_Limited.pdf`}
                         target='_blank'
                         rel='nofollow noreferrer'
                         key={0}

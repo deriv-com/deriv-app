@@ -135,7 +135,7 @@ const FinancialBox = ({ derivOnClick, is_dashboard, mt5OnClick, has_maltainvest_
                 >
                     <p className='account-card__description-text'>
                         {localize(
-                            'Margin trading is a method of trading assets using funds provided by Deriv.com. It allow you to access greater sums of capital to leverage your positions and realize larger profits on successful trades.'
+                            'Margin trading is a method of trading assets using funds provided by Deriv. It allow you to access greater sums of capital to leverage your positions and realize larger profits on successful trades.'
                         )}
                     </p>
                     <p className='account-card__description-text--small'>{localize('Supported platform:')} </p>

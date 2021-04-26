@@ -664,7 +664,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setCookieAccount() {
-        const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
+        const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'deriv.me';
         const { loginid, email, landing_company_shortcode, currency, residence, account_settings } = this;
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {

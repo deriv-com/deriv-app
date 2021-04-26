@@ -1,12 +1,17 @@
-import { observable, action, computed } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { getIndicativePrice, isEqualObject, isMultiplierContract } from '@deriv/shared';
 import { contract_stages } from 'Constants/contract-stage';
-import { getContractUpdateConfig } from 'Utils/logic';
+import { getValidationRules } from 'Constants/contract';
+import { getContractUpdateConfig } from 'Utils/multiplier';
+import Validator from 'Utils/validator';
 
 export default class SummaryCardStore {
     @observable contract_info = null;
     @observable indicative_movement = '';
     @observable profit_movement = '';
+
+    @observable validation_errors = {};
+    @observable validation_rules = getValidationRules();
 
     // Multiplier contract update config
     @observable contract_update_take_profit = '';
@@ -14,10 +19,6 @@ export default class SummaryCardStore {
     @observable has_contract_update_take_profit = false;
     @observable has_contract_update_stop_loss = false;
     contract_update_config = {};
-    count = 0;
-
-    @observable
-    validation_errors = {};
 
     contract_id = null;
     profit = 0;
@@ -114,6 +115,7 @@ export default class SummaryCardStore {
     @action.bound
     onChange({ name, value }) {
         this[name] = value;
+        this.validateProperty(name, this[name]);
     }
 
     @action.bound
@@ -161,6 +163,51 @@ export default class SummaryCardStore {
 
             // Update contract store
             this.populateContractUpdateConfig(response);
+        });
+    }
+
+    /**
+     * Sets validation error messages for an observable property of the store
+     *
+     * @param {String} propertyName - The observable property's name
+     * @param [{String}] messages - An array of strings that contains validation error messages for the particular property.
+     *
+     */
+    @action
+    setValidationErrorMessages(propertyName, messages) {
+        const is_different = () =>
+            !!this.validation_errors[propertyName]
+                .filter(x => !messages.includes(x))
+                .concat(messages.filter(x => !this.validation_errors[propertyName].includes(x))).length;
+        if (!this.validation_errors[propertyName] || is_different()) {
+            this.validation_errors[propertyName] = messages;
+        }
+    }
+
+    /**
+     * Validates a particular property of the store
+     *
+     * @param {String} property - The name of the property in the store
+     * @param {object} value    - The value of the property, it can be undefined.
+     *
+     */
+    @action
+    validateProperty(property, value) {
+        const trigger = this.validation_rules[property].trigger;
+        const inputs = { [property]: value !== undefined ? value : this[property] };
+        const validation_rules = { [property]: this.validation_rules[property].rules || [] };
+
+        if (!!trigger && Object.hasOwnProperty.call(this, trigger)) {
+            inputs[trigger] = this[trigger];
+            validation_rules[trigger] = this.validation_rules[trigger].rules || [];
+        }
+
+        const validator = new Validator(inputs, validation_rules, this);
+
+        validator.isPassed();
+
+        Object.keys(inputs).forEach(key => {
+            this.setValidationErrorMessages(key, validator.errors.get(key));
         });
     }
 }

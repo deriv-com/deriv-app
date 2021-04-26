@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { getTotalProfit } from '@deriv/shared';
-import { getBuyPrice } from 'Utils/logic';
+import { getBuyPrice } from 'Utils/multiplier';
 
 export const getCardLabels = () => ({
     APPLY: localize('Apply'),

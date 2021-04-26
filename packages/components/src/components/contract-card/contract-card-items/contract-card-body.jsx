@@ -30,6 +30,7 @@ const MultiplierCardBody = ({
     connectWithContractUpdate,
     currency,
     current_focus,
+    error_message_alignment,
     getCardLabels,
     getContractById,
     is_mobile,
@@ -105,6 +106,7 @@ const MultiplierCardBody = ({
                             connectWithContractUpdate={connectWithContractUpdate}
                             contract_id={contract_info.contract_id}
                             current_focus={current_focus}
+                            error_message_alignment={error_message_alignment}
                             getCardLabels={getCardLabels}
                             getContractById={getContractById}
                             is_valid_to_cancel={is_valid_to_cancel}
@@ -146,6 +148,7 @@ const ContractCardBody = ({
     contract_update,
     currency,
     current_focus,
+    error_message_alignment,
     getCardLabels,
     getContractById,
     is_mobile,
@@ -171,6 +174,7 @@ const ContractCardBody = ({
             contract_update={contract_update}
             currency={currency}
             current_focus={current_focus}
+            error_message_alignment={error_message_alignment}
             getCardLabels={getCardLabels}
             getContractById={getContractById}
             is_mobile={is_mobile}

@@ -21,6 +21,7 @@ const ContractUpdateForm = props => {
         addToast,
         contract,
         current_focus,
+        error_message_alignment,
         getCardLabels,
         onMouseLeave,
         removeToast,
@@ -107,7 +108,7 @@ const ContractUpdateForm = props => {
             label={getCardLabels().TAKE_PROFIT}
             name='contract_update_take_profit'
             onChange={onChange}
-            error_message_alignment='right'
+            error_message_alignment={error_message_alignment || 'right'}
             value={contract_update_take_profit}
             is_disabled={!!is_valid_to_cancel}
             setCurrentFocus={setCurrentFocus}
@@ -129,7 +130,7 @@ const ContractUpdateForm = props => {
             max_value={buy_price - cancellation_price}
             name='contract_update_stop_loss'
             onChange={onChange}
-            error_message_alignment='right'
+            error_message_alignment={error_message_alignment || 'right'}
             value={contract_update_stop_loss}
             is_disabled={!!is_valid_to_cancel}
             setCurrentFocus={setCurrentFocus}

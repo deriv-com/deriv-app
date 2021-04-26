@@ -7,6 +7,7 @@ import { isMultiplierContract } from '@deriv/shared';
 import ContractCardLoader from 'Components/contract-card-loading';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { connect } from 'Stores/connect';
+import { connectWithContractUpdate } from 'Utils/multiplier';
 
 const SummaryCard = ({
     addToast,
@@ -40,9 +41,11 @@ const SummaryCard = ({
     const card_body = (
         <ContractCard.Body
             addToast={addToast}
+            connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
             currency={contract_info && contract_info.currency}
             current_focus={current_focus}
+            error_message_alignment='left'
             getCardLabels={getCardLabels}
             getContractById={() => contract_store}
             is_mobile={is_mobile}

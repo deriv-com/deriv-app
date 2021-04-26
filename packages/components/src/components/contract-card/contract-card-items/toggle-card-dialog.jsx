@@ -19,6 +19,7 @@ const ToggleCardDialog = ({
     contract_id,
     connectWithContractUpdate,
     current_focus,
+    error_message_alignment,
     getCardLabels,
     getContractById,
     is_valid_to_cancel,
@@ -145,6 +146,7 @@ const ToggleCardDialog = ({
                             addToast={addToast}
                             contract={contract}
                             current_focus={current_focus}
+                            error_message_alignment={error_message_alignment}
                             getCardLabels={getCardLabels}
                             getContractById={getContractById}
                             onMouseLeave={onMouseLeave}
@@ -169,6 +171,7 @@ const ToggleCardDialog = ({
                         addToast={addToast}
                         contract={contract}
                         current_focus={current_focus}
+                        error_message_alignment={error_message_alignment}
                         getCardLabels={getCardLabels}
                         getContractById={getContractById}
                         onMouseLeave={onMouseLeave}

@@ -4,7 +4,7 @@ import React from 'react';
 import { FormSubmitButton, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { isMobile, reorderCurrencies } from '@deriv/shared';
+import { isMobile, reorderCurrencies, website_name } from '@deriv/shared';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
 import './currency-selector.scss';
 
@@ -38,6 +38,7 @@ const AddCryptoCurrency = ({
     should_show_crypto_only,
     should_show_fiat_only,
     value,
+    hasNoAvailableCrypto,
 }) => {
     const getReorderedFiatCurrencies = () =>
         reorderCurrencies(legal_allowed_currencies.filter(currency => currency.type === FIAT_CURRENCY_TYPE));
@@ -94,6 +95,23 @@ const AddCryptoCurrency = ({
                         <Text as='p' color='prominent' size='xxs' className='currency-selector__deposit-warn'>
                             <Localize i18n_default_text='You’ll not be able to change currency once you have made a deposit.' />
                         </Text>
+                    )}
+                    {hasNoAvailableCrypto() && (
+                        <div className='account-wizard--disabled-message'>
+                            <Text
+                                as='p'
+                                align='center'
+                                size='xxs'
+                                className='account-wizard--disabled-message-description'
+                            >
+                                {localize(
+                                    'You already have an account for each of the cryptocurrencies available on {{deriv}}.',
+                                    {
+                                        deriv: website_name,
+                                    }
+                                )}
+                            </Text>
+                        </div>
                     )}
                     {!should_show_fiat_only &&
                         (available_crypto_currencies.length !== 0 ? (
@@ -155,7 +173,17 @@ AddCryptoCurrency.propTypes = {
     available_crypto_currencies: PropTypes.array,
     legal_allowed_currencies: PropTypes.array,
     has_fiat: PropTypes.bool,
+    hasNoAvailableCrypto: PropTypes.func,
+    form_error: PropTypes.string,
+    onSubmit: PropTypes.func,
+    should_show_crypto_only: PropTypes.bool,
+    should_show_fiat_only: PropTypes.bool,
+    value: PropTypes.shape({
+        crypto: PropTypes.string,
+        fiat: PropTypes.string,
+    }),
 };
+
 export default connect(({ client }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     legal_allowed_currencies: client.upgradeable_currencies,

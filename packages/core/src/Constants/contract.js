@@ -64,6 +64,22 @@ export const getMarketNamesMap = () => ({
     WLDUSD: localize('USD Index'),
     '1HZ10V': localize('Volatility 10 (1s) Index'),
     '1HZ100V': localize('Volatility 100 (1s) Index'),
+    cryBNBUSD: localize('BNB/USD'),
+    cryBTCLTC: localize('BTC/LTC'),
+    cryIOTUSD: localize('IOT/USD'),
+    cryNEOUSD: localize('NEO/USD'),
+    cryOMGUSD: localize('OMG/USD'),
+    cryTRXUSD: localize('TRX/USD'),
+    cryBTCETH: localize('BTC/ETH'),
+    cryZECUSD: localize('ZEC/USD'),
+    cryXMRUSD: localize('ZMR/USD'),
+    cryXMLUSD: localize('XLM/USD'),
+    cryXRPUSD: localize('XRP/USD'),
+    cryBTCUSD: localize('BTC/USD'),
+    cryDSHUSD: localize('DSH/USD'),
+    cryETHUSD: localize('ETH/USD'),
+    cryEOSUSD: localize('EOS/USD'),
+    cryLTCUSD: localize('LTC/USD'),
 });
 
 export const getUnsupportedContracts = () => ({

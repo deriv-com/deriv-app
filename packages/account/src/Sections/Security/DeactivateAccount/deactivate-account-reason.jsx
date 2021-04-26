@@ -141,7 +141,7 @@ class DeactivateAccountReason extends React.Component {
 
             this.setState({ remaining_characters });
 
-            if (!/^[0-9A-z .,'-’,\r\n]*$/.test(final_value)) {
+            if (!/^[0-9A-z .,'-’]*$/.test(final_value)) {
                 error.characters_limits = localize("Must be numbers, letters, and special characters . , ' -");
             }
 

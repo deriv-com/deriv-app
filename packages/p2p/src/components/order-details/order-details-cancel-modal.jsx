@@ -7,9 +7,16 @@ import { requestWS } from 'Utils/websocket';
 import FormError from 'Components/form/error.jsx';
 import 'Components/order-details/order-details-confirm-modal.scss';
 
-const OrderDetailsCancelModal = ({ hideCancelOrderModal, order_id, should_show_cancel_modal }) => {
+const OrderDetailsCancelModal = ({
+    cancel_error_message,
+    cancels_remaining,
+    hideCancelOrderModal,
+    order_id,
+    should_show_cancel_modal,
+}) => {
     const isMounted = useIsMounted();
-    const [error_message, setErrorMessage] = React.useState('');
+
+    const [error_message, setErrorMessage] = React.useState(cancel_error_message);
 
     const cancelOrderRequest = () => {
         requestWS({
@@ -40,16 +47,30 @@ const OrderDetailsCancelModal = ({ hideCancelOrderModal, order_id, should_show_c
             width='440px'
         >
             <Modal.Body>
-                <Localize i18n_default_text='Do NOT cancel if you have made payment.' />
+                {cancels_remaining > 1 ? (
+                    <Text color='prominent' size='xs'>
+                        <Localize
+                            i18n_default_text='If you cancel your order 3 times in 24 hours, you will be blocked from using DP2P for a day. <br /> ({{cancels_remaining}} cancellations remaining.)'
+                            values={{ cancels_remaining }}
+                        />
+                    </Text>
+                ) : (
+                    <Text color='prominent' size='xs'>
+                        <Localize i18n_default_text='If you cancel this order, you’ll be blocked from using DP2P for 24 hours.' />
+                    </Text>
+                )}
+                <Text color='loss-danger' size='xs'>
+                    <Localize i18n_default_text='Please do not cancel if you have already made payment.' />
+                </Text>
             </Modal.Body>
             <Modal.Footer>
                 {error_message && <FormError message={error_message} />}
                 <Button.Group>
-                    <Button secondary type='button' onClick={hideCancelOrderModal} large>
-                        <Localize i18n_default_text='Do not cancel' />
-                    </Button>
-                    <Button primary large onClick={cancelOrderRequest}>
+                    <Button secondary large onClick={cancelOrderRequest}>
                         <Localize i18n_default_text='Cancel this order' />
+                    </Button>
+                    <Button primary type='button' onClick={hideCancelOrderModal} large>
+                        <Localize i18n_default_text='Do not cancel' />
                     </Button>
                 </Button.Group>
             </Modal.Footer>

@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@deriv/components';
+import { useIsMounted } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import { requestWS } from 'Utils/websocket';
 import OrderDetailsCancelModal from './order-details-cancel-modal.jsx';
 import OrderDetailsComplainModal from './order-details-complain-modal.jsx';
 import OrderDetailsConfirmModal from './order-details-confirm-modal.jsx';
 
 const OrderDetailsFooter = observer(() => {
+    const isMounted = useIsMounted();
     const { order_store } = useStores();
     const {
         is_buy_order,
@@ -22,12 +25,26 @@ const OrderDetailsFooter = observer(() => {
 
     const is_buy_order_for_user = (is_buy_order && !is_my_ad) || (is_sell_order && is_my_ad);
 
+    const [cancel_error_message, setErrorMessage] = React.useState('');
+    const [cancels_remaining, setCancelsRemaining] = React.useState(null);
     const [should_show_cancel_modal, setShouldShowCancelModal] = React.useState(false);
     const [should_show_complain_modal, setShouldShowComplainModal] = React.useState(false);
     const [should_show_confirm_modal, setShouldShowConfirmModal] = React.useState(false);
 
     const hideCancelOrderModal = () => setShouldShowCancelModal(false);
-    const showCancelOrderModal = () => setShouldShowCancelModal(true);
+    const showCancelOrderModal = () => {
+        requestWS({ p2p_advertiser_info: 1 }).then(response => {
+            if (isMounted()) {
+                if (!response.error) {
+                    setCancelsRemaining(response.p2p_advertiser_info.cancels_remaining);
+                    setShouldShowCancelModal(true);
+                } else {
+                    setErrorMessage(response.error.message);
+                    setShouldShowCancelModal(true);
+                }
+            }
+        });
+    };
 
     const hideComplainOrderModal = () => setShouldShowComplainModal(false);
     const showComplainOrderModal = () => setShouldShowComplainModal(true);
@@ -51,14 +68,16 @@ const OrderDetailsFooter = observer(() => {
                     </div>
                 </div>
                 <OrderDetailsCancelModal
-                    order_id={order_store.order_information.id}
+                    cancels_remaining={cancels_remaining}
+                    cancel_error_message={cancel_error_message}
                     hideCancelOrderModal={hideCancelOrderModal}
+                    order_id={order_store.order_information.id}
                     should_show_cancel_modal={should_show_cancel_modal}
                 />
                 <OrderDetailsConfirmModal
-                    order_information={order_store.order_information}
-                    is_buy_order_for_user={is_buy_order_for_user}
                     hideConfirmOrderModal={hideConfirmOrderModal}
+                    is_buy_order_for_user={is_buy_order_for_user}
+                    order_information={order_store.order_information}
                     should_show_confirm_modal={should_show_confirm_modal}
                 />
             </React.Fragment>

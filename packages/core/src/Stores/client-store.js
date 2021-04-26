@@ -910,8 +910,8 @@ export default class ClientStore extends BaseStore {
         return this.website_status && !BinarySocket.getAvailability().is_down;
     }
 
-    isEuCountryNoIp = country => {
-        if (country) return isEuCountry(country);
+    isEuCountrySelected = selected_country => {
+        if (selected_country) return isEuCountry(selected_country);
         return false;
     };
 
@@ -1701,6 +1701,7 @@ export default class ClientStore extends BaseStore {
     onSignup({ password, residence, email_consent }, cb) {
         if (!this.verification_code.signup || !password || !residence) return;
         if (email_consent === undefined) return;
+        email_consent = email_consent ? 1 : 0;
         // Currently the code doesn't reach here and the console log is needed for debugging.
         // TODO: remove console log when AccountSignup component and validation are ready
         WS.newAccountVirtual(

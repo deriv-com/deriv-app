@@ -55,15 +55,22 @@ const validateSignup = (values, residence_list) => {
     return errors;
 };
 
-const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, residence_list, isEuCountryNoIp }) => {
+const AccountSignup = ({
+    enableApp,
+    isModalVisible,
+    clients_country,
+    onSignup,
+    residence_list,
+    isEuCountrySelected,
+}) => {
     const { is_dashboard } = React.useContext(PlatformContext);
     const [api_error, setApiError] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
     const [country, setCountry] = React.useState('');
     const [pw_input, setPWInput] = React.useState('');
     const [has_valid_residence, setHasValidResidence] = React.useState(false);
-    const [selectedResidence, setSelectedResidence] = React.useState('');
-    const [isEuResident, setIsEuResident] = React.useState(false);
+    const [selected_residence, setSelectedResidence] = React.useState('');
+    const [is_eu_resident, setIsEuResident] = React.useState(false);
 
     const updatePassword = new_password => {
         setPWInput(new_password);
@@ -86,10 +93,10 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
     React.useEffect(() => {
         if (has_valid_residence) {
             const index_of_selection = residence_list.findIndex(
-                item => item.text.toLowerCase() === selectedResidence.toLowerCase()
+                item => item.text.toLowerCase() === selected_residence.toLowerCase()
             );
-            const getCountry = residence_list[index_of_selection].value;
-            if (isEuCountryNoIp(getCountry)) {
+            const selected_country = residence_list[index_of_selection].value;
+            if (isEuCountrySelected(selected_country)) {
                 setIsEuResident(true);
             } else {
                 setIsEuResident(false);
@@ -97,7 +104,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
         } else {
             setIsEuResident(false);
         }
-    }, [selectedResidence]);
+    }, [selected_residence]);
 
     const onSignupComplete = error => {
         if (error) {
@@ -115,11 +122,9 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
             item => item.text.toLowerCase() === values.residence.toLowerCase()
         );
 
-        if (isEuResident === false) {
+        if (!is_eu_resident) {
             values.email_consent = true;
         }
-
-        values.email_consent = values.email_consent ? 1 : 0;
 
         const modded_values = {
             ...values,
@@ -137,7 +142,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                     initialValues={signupInitialValues}
                     validate={validateSignupPassthrough}
                     onSubmit={onSignupPassthrough}
-                    isEuResident={isEuResident}
+                    is_eu_resident={is_eu_resident}
                     residence_list={residence_list}
                 >
                     {({
@@ -215,7 +220,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                             <Checkbox
                                                 {...field}
                                                 className={
-                                                    isEuResident
+                                                    is_eu_resident
                                                         ? 'account-signup__receive-update-checkbox'
                                                         : 'account-signup__hidden-checkbox'
                                                 }
@@ -293,7 +298,7 @@ const AccountSignupModal = ({
     is_loading,
     is_visible,
     is_logged_in,
-    isEuCountryNoIp,
+    isEuCountrySelected,
     logout,
     onSignup,
     residence_list,
@@ -320,7 +325,7 @@ const AccountSignupModal = ({
                 onSignup={onSignup}
                 residence_list={residence_list}
                 isModalVisible={toggleAccountSignupModal}
-                isEuCountryNoIp={isEuCountryNoIp}
+                isEuCountrySelected={isEuCountrySelected}
                 enableApp={enableApp}
             />
         </Dialog>
@@ -347,6 +352,6 @@ export default connect(({ ui, client }) => ({
     is_logged_in: client.is_logged_in,
     residence_list: client.residence_list,
     clients_country: client.clients_country,
-    isEuCountryNoIp: client.isEuCountryNoIp,
+    isEuCountrySelected: client.isEuCountrySelected,
     logout: client.logout,
 }))(AccountSignupModal);

@@ -382,6 +382,7 @@ const MT5PasswordManagerTabContent = ({
                                 error_message_main={error_message_main}
                                 setPasswordType={setPasswordType}
                                 multi_step_ref={multi_step_ref}
+                                status={account_status.status}
                             />
                         </Div100vhContainer>
                     </MobileWrapper>

@@ -141,7 +141,7 @@ export const CookieStorage = function (cookie_name, cookie_domain) {
     this.domain =
         cookie_domain ||
         /* eslint-disable no-nested-ternary */
-        (hostname.includes('binary.sx') ? 'binary.sx' : 'deriv.com');
+        (hostname.includes('binary.sx') ? 'binary.sx' : hostname);
     /* eslint-enable no-nested-ternary */
     this.path = '/';
     this.expires = new Date('Thu, 1 Jan 2037 12:00:00 GMT');

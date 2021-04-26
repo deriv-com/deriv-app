@@ -3,21 +3,46 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Input } from '@deriv/components';
-import { routes, validNumber } from '@deriv/shared';
+import { getDecimalPlaces, routes, validNumber } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import BriefModal from './brief-modal.jsx';
 import SummaryModal from './summary-modal.jsx';
 
-const IntervalField = ({ values, touched, errors, handleChange, handleBlur }) => (
+const SpendingLimitIntervalField = ({ values, disabled, touched, errors, handleChange, handleBlur }) => (
     <div className='reality-check__fieldset'>
         <Field name='interval'>
             {({ field }) => (
                 <Input
                     {...field}
+                    name='max_30day_turnover'
                     data-lpignore='true'
                     type='text'
-                    label={localize('…. minutes from now')}
+                    label={localize('My spending limit (EUR)')}
+                    value={values.max_30day_turnover}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled={disabled}
+                    required
+                    error={touched.max_30day_turnover && errors.max_30day_turnover}
+                    autoComplete='off'
+                    maxLength='13'
+                />
+            )}
+        </Field>
+    </div>
+);
+
+const TradingViewIntervalField = ({ values, touched, errors, handleChange, handleBlur }) => (
+    <div className='reality-check__fieldset'>
+        <Field name='interval'>
+            {({ field }) => (
+                <Input
+                    {...field}
+                    name='interval'
+                    data-lpignore='true'
+                    type='text'
+                    label={localize('After … minutes of trading')}
                     value={values.interval}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -35,6 +60,7 @@ const IntervalField = ({ values, touched, errors, handleChange, handleBlur }) =>
 const RealityCheckModal = ({
     disableApp,
     enableApp,
+    currency,
     logoutClient,
     is_visible,
     reality_check_dismissed,
@@ -43,6 +69,7 @@ const RealityCheckModal = ({
     setRealityCheckDuration,
     setReportsTabIndex,
     setVisibilityRealityCheck,
+    setSpendingLimitTradingStatistics,
 }) => {
     const history = useHistory();
 
@@ -61,16 +88,28 @@ const RealityCheckModal = ({
     };
 
     const validateForm = values => {
-        const error = {};
+        const errors = {};
+        const min_number = 1;
 
-        if (!values.interval) {
-            error.interval = localize('This field is required.');
-        } else {
-            const { is_ok, message } = validNumber(values.interval, { type: 'number', min: 10, max: 60 });
-            if (!is_ok) error.interval = message;
+        if (values.spending_limit === '1' && !values.max_30day_turnover) {
+            errors.max_30day_turnover = localize('This field is required.');
+        } else if (values.spending_limit === '1') {
+            const { is_ok, message } = validNumber(values.max_30day_turnover, {
+                type: 'float',
+                decimals: getDecimalPlaces(currency),
+                min: min_number,
+            });
+            if (!is_ok) errors.max_30day_turnover = message;
         }
 
-        return error;
+        if (!values.interval) {
+            errors.interval = localize('This field is required.');
+        } else if (values.interval) {
+            const { is_ok, message } = validNumber(values.interval, { type: 'number', min: 10, max: 60 });
+            if (!is_ok) errors.interval = message;
+        }
+
+        return errors;
     };
 
     const onSubmit = values => {
@@ -94,7 +133,7 @@ const RealityCheckModal = ({
                 logout={logoutClient}
                 reality_check_duration={reality_check_duration}
                 server_time={server_time}
-                IntervalField={IntervalField}
+                IntervalField={TradingViewIntervalField}
             />
         );
     }
@@ -106,9 +145,10 @@ const RealityCheckModal = ({
             is_visible={is_visible}
             openStatement={openStatement}
             validateForm={validateForm}
-            onSubmit={onSubmit}
+            onSubmit={setSpendingLimitTradingStatistics}
             logout={logoutClient}
-            IntervalField={IntervalField}
+            IntervalField={TradingViewIntervalField}
+            SpendingLimitIntervalField={SpendingLimitIntervalField}
         />
     );
 };
@@ -127,6 +167,7 @@ RealityCheckModal.propTypes = {
 };
 
 export default connect(({ client, common, ui }) => ({
+    currency: client.currency,
     logoutClient: client.logout,
     is_visible: client.is_reality_check_visible,
     reality_check_dismissed: client.reality_check_dismissed,
@@ -137,4 +178,5 @@ export default connect(({ client, common, ui }) => ({
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
     setReportsTabIndex: ui.setReportsTabIndex,
+    setSpendingLimitTradingStatistics: client.setSpendingLimitTradingStatistics,
 }))(RealityCheckModal);

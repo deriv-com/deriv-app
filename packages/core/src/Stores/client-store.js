@@ -1957,6 +1957,44 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    setSpendingLimitTradingStatistics(values, form_props) {
+        if (!values.interval) return;
+
+        if (!!values.max_30day_turnover) {
+            WS.send({ set_self_exclusion: 1, max_30day_turnover: values.max_30day_turnover }).then(response => {
+                if (response.error) {
+                    form_props?.setStatus(response.error);
+                    setTimeout(() => {
+                        this.setSpendingLimit(values.interval);
+                    }, 200);
+                } else {
+                    if (this.root_store.modules.cashier) {
+                        this.root_store.modules.cashier.setErrorConfig('is_self_exclusion_max_turnover_set', false);
+                    }
+                    if (this.root_store.ui) {
+                        this.root_store.ui.removeNotificationByKey({ key: 'max_turnover_limit_not_set' });
+                        this.root_store.ui.removeNotificationMessageByKey({ key: 'max_turnover_limit_not_set' });
+                    }
+                }
+                form_props?.setSubmitting(false);
+                setTimeout(() => {
+                    this.setSpendingLimit(values.interval);
+                }, 200);
+            });
+        } else {
+            setTimeout(() => {
+                this.setSpendingLimit(values.interval);
+            }, 200);
+        }
+    }
+
+    @action.bound
+    setSpendingLimit(interval) {
+        this.setVisibilityRealityCheck(0);
+        this.setRealityCheckDuration(interval);
+    }
+
+    @action.bound
     setVisibilityRealityCheck(is_visible) {
         // if reality check timeout has been set, don't make it visible until it runs out
         if (is_visible && typeof this.reality_check_timeout === 'number') {

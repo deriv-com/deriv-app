@@ -131,11 +131,10 @@ class DeactivateAccountReason extends React.Component {
             error.empty_reason = localize('Please select at least one reason');
         }
         if ((values.otherTradingPlatforms + values.doToImprove).length > 0 || selected_reason_count) {
-            const max_characters = character_limit_no;
             const final_value = preparingReason(values);
 
             const text_inputs_length = values.otherTradingPlatforms.length + values.doToImprove.length;
-            let remaining_characters = max_characters - text_inputs_length;
+            let remaining_characters = character_limit_no - text_inputs_length;
 
             remaining_characters = remaining_characters >= 0 ? remaining_characters : 0;
 
@@ -475,3 +474,5 @@ export default connect(({ client }) => ({
     client_accounts: client.account_list,
     mt5_login_list: client.mt5_login_list,
 }))(DeactivateAccountReason);
+
+

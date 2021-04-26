@@ -8,6 +8,7 @@ const domain_url =
     isBrowser() && supported_domains.includes(window.location.hostname) ? window.location.hostname : deriv_com_url;
 
 export const deriv_urls = Object.freeze({
+    DERIV_HOST_NAME: domain_url,
     DERIV_COM_PRODUCTION: `https://${domain_url}`,
     DERIV_COM_STAGING: 'https://staging.deriv.com',
     DERIV_DASHBOARD_PRODUCTION: `https://myapps.${domain_url}`,

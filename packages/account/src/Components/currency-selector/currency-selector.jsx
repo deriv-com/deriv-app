@@ -22,6 +22,7 @@ const CurrencySelector = ({
     onCancel,
     goToPreviousStep,
     real_account_signup,
+    real_account_signup_target,
     resetRealAccountSignupParams,
     set_currency,
     validate,
@@ -204,6 +205,7 @@ CurrencySelector.propTypes = {
     onSubmit: PropTypes.func,
     value: PropTypes.any,
     is_dashboard: PropTypes.bool,
+    real_account_signup_target: PropTypes.string,
 };
 
 export default CurrencySelector;

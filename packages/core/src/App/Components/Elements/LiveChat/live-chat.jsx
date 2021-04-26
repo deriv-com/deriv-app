@@ -47,7 +47,7 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
             window.LiveChatWidget.on('ready', () => {
                 let client_first_name = '';
                 let client_last_name = '';
-                const domain = window.location.hostname.includes('deriv') ? window.location.hostname : 'binary.sx';
+                const domain = window.location.hostname.includes('deriv') ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
                 const client_information = Cookies.getJSON('client_information', {
                     domain,
                 });

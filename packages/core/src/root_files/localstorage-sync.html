@@ -17,7 +17,6 @@
                 `https://smarttrader.${domain_url}`,
                 'https://smarttrader-staging.deriv.com',
             ];
-
             if (allowed_origins.includes(message.origin)) {
                 switch (message.data.key) {
                     case 'active_loginid':

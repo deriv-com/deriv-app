@@ -235,7 +235,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     init() {
         when(
-            () => this.root_store.client.is_logged_in && !this.root_store.client.is_virtual,
+            () => this.root_store.client.is_logged_in,
             async () => {
                 await this.checkP2pStatus();
             }
@@ -247,11 +247,12 @@ export default class CashierStore extends BaseStore {
                 this.root_store.client.currency,
             ],
             async () => {
-                // wait for get_settings so is_virtual gets populated in client-store
+                // wait for client settings to be populated in client-store
                 await this.WS.wait('get_settings');
 
-                if (this.root_store.client.is_logged_in && !this.root_store.client.is_virtual) {
+                if (this.root_store.client.is_logged_in) {
                     await this.checkP2pStatus();
+                    await this.filterPaymentAgentList();
                 }
             }
         );
@@ -262,7 +263,7 @@ export default class CashierStore extends BaseStore {
         const advertiser_info = await this.WS.authorized.p2pAdvertiserInfo();
         const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
         const is_p2p_restricted = advertiser_error === 'RestrictedCountry' || advertiser_error === 'RestrictedCurrency';
-        this.setIsP2pVisible(!is_p2p_restricted);
+        this.setIsP2pVisible(!(is_p2p_restricted || this.root_store.client.is_virtual));
     }
 
     @action.bound
@@ -302,28 +303,11 @@ export default class CashierStore extends BaseStore {
     setCashierTabIndex(index) {
         this.cashier_route_tab_index = index;
     }
-    @action.bound
-    setNotificationCount(notification_count) {
-        this.p2p_notification_count = notification_count;
-    }
 
     @action.bound
-    setIsP2pVisible(is_p2p_visible) {
-        this.is_p2p_visible = is_p2p_visible;
-        if (!is_p2p_visible && window.location.pathname.endsWith(routes.cashier_p2p)) {
-            this.root_store.common.routeTo(routes.cashier_deposit);
-        }
-    }
-
-    @action.bound
-    async onMount(verification_code) {
+    async onMountDeposit(verification_code) {
         const current_container = this.active_container;
-        this.onRemount = this.onMount;
-        await this.onMountCommon();
 
-        if (this.containers.indexOf(this.active_container) === -1 && !this.root_store.client.is_switching) {
-            throw new Error('Cashier Store onMount requires a valid container name.');
-        }
         this.setErrorMessage('');
         this.setContainerHeight(0);
         this.setLoading(true);
@@ -371,6 +355,30 @@ export default class CashierStore extends BaseStore {
             this.setSessionTimeout(false);
             this.setTimeoutCashierUrl();
         }
+    }
+
+    @action.bound
+    setNotificationCount(notification_count) {
+        this.p2p_notification_count = notification_count;
+    }
+
+    @action.bound
+    setIsP2pVisible(is_p2p_visible) {
+        this.is_p2p_visible = is_p2p_visible;
+        if (!is_p2p_visible && window.location.pathname.endsWith(routes.cashier_p2p)) {
+            this.root_store.common.routeTo(routes.cashier_deposit);
+        }
+    }
+
+    @action.bound
+    async onMount(verification_code) {
+        this.onRemount = this.onMount;
+        await this.onMountCommon();
+
+        if (this.containers.indexOf(this.active_container) === -1 && !this.root_store.client.is_switching) {
+            throw new Error('Cashier Store onMount requires a valid container name.');
+        }
+        this.onMountDeposit(verification_code);
     }
 
     @computed

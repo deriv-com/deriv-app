@@ -39,13 +39,15 @@ const IconMessageList = ({ className, icon, message, message_list, onContinue })
                         {icon}
                     </div>
                 )}
-                <div
+                <Text
+                    as='div'
+                    weight='bold'
                     className={classNames('account-management__message', {
                         [`${className}__message`]: className,
                     })}
                 >
                     {message}
-                </div>
+                </Text>
                 {message_list && (
                     <div className='account-management__list-container'>
                         {has_maximum_list ? (

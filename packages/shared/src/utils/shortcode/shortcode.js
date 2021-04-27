@@ -9,7 +9,6 @@ const multipliers_regex = new RegExp(`${base_pattern}_(\\d+)_(\\d+)`);
 const options_regex = new RegExp(`${base_pattern}_([A-Z\\d]+)_([A-Z\\d]+)_?([A-Z\\d]+)?`);
 
 export const extractInfoFromShortcode = shortcode => {
-    console.log(shortcode);
     const info_from_shortcode = {
         category: '',
         underlying: '',
@@ -17,7 +16,6 @@ export const extractInfoFromShortcode = shortcode => {
     };
 
     const is_multipliers = /^MULT/i.test(shortcode);
-    console.log(is_multipliers, info_from_shortcode);
     // First group of regex pattern captures the trade category, second group captures the market's underlying
     const pattern = is_multipliers ? multipliers_regex : options_regex;
     const extracted = pattern.exec(shortcode);

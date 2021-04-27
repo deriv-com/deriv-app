@@ -48,6 +48,8 @@ const AppContent = () => {
             className='p2p-cashier__tabs'
             header_fit_content={!isMobile()}
             is_100vw={isMobile()}
+            is_scrollable
+            is_overflow_hidden
             onTabItemClick={general_store.handleTabClick}
             top
         >

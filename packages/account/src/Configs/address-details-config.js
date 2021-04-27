@@ -12,7 +12,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
             default_value: account_settings.address_line_1 ?? '',
             rules: [
                 ['req', localize('First line of address is required')],
-                ['address', localize('Address is not in a proper format')],
+                ['address', localize('Letters, numbers, spaces, periods, hyphens, apostrophes, commas only')],
                 ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
                 ['po_box', getErrorMessages().po_box()],
             ].filter(x => (is_svg ? x.indexOf('po_box') !== 0 : x)),
@@ -21,7 +21,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.address_line_2 ?? '',
             rules: [
-                ['address', localize('Address is not in a proper format')],
+                ['address', localize('Letters, numbers, spaces, periods, hyphens, apostrophes, commas only')],
                 ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
                 ['po_box', getErrorMessages().po_box()],
             ].filter(x => (is_svg ? x.indexOf('po_box') !== 0 : x)),
@@ -33,7 +33,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                 ['req', localize('City is required')],
                 [
                     'regular',
-                    localize('City field is not in a proper format'),
+                    localize('Letters, numbers, spaces, periods, hyphens, apostrophes only'),
                     {
                         regex: /^[A-Za-z0-9\s'.-]{1,35}$/,
                     },

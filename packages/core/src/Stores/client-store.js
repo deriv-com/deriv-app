@@ -17,7 +17,7 @@ import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
-import { isEuCountry, isSyntheticsUnavailable } from '_common/utility';
+import { isEuCountry, isOptionsBlocked, isSyntheticsUnavailable } from '_common/utility';
 import BaseStore from './base-store';
 import { getClientAccountType, getAccountTitle } from './Helpers/client';
 import { setDeviceDataCookie } from './Helpers/device';
@@ -592,6 +592,11 @@ export default class ClientStore extends BaseStore {
             : isSyntheticsUnavailable(this.website_status.clients_country);
     }
 
+    @computed
+    get is_options_blocked() {
+        return isOptionsBlocked(this.residence);
+    }
+
     /**
      * Store Values relevant to the loginid to local storage.
      *
@@ -1088,10 +1093,13 @@ export default class ClientStore extends BaseStore {
                 })
             );
             const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
+
+            await this.fetchResidenceList();
+
             if (account_settings && !account_settings.residence) {
-                await this.fetchResidenceList();
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
+
             await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             if (!this.is_virtual) await this.getLimits();
 

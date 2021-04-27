@@ -137,11 +137,14 @@ const ProofOfIdentityContainer = ({
     React.useEffect(() => {
         getAccountStatus().then(response => {
             const { get_account_status } = response;
-            getOnfidoServiceToken().then(token => {
-                // TODO: handle error for onfido_service_token.error.code === 'MissingPersonalDetails'
-                createVerificationConfig(get_account_status, token);
-            });
-            setIsLoading(false);
+            getOnfidoServiceToken()
+                .then(token => {
+                    // TODO: handle error for onfido_service_token.error.code === 'MissingPersonalDetails'
+                    createVerificationConfig(get_account_status, token);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
         });
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 

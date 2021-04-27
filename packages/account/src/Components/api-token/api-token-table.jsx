@@ -64,7 +64,7 @@ const ApiTokenTable = () => {
                                 <Clipboard
                                     className='da-api-token__clipboard'
                                     popover_props={{ relative_render: false, zIndex: 9999 }}
-                                    token={token.token}
+                                    text_copy={token.token}
                                 />
                             </div>
                         </div>

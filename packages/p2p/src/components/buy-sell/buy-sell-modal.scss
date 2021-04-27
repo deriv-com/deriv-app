@@ -9,6 +9,10 @@
         margin-right: 0.7rem;
         flex: 1;
 
+        @include mobile {
+            margin: 0.8rem 0;
+        }
+
         &-wrapper {
             $gap: 2.4rem;
             display: flex;
@@ -16,6 +20,14 @@
 
             & > * {
                 margin: $gap 0 0 $gap;
+
+            @include mobile {
+                flex-direction: column;
+
+                .dc-input__wrapper {
+                    margin-top: 2.5rem;
+                    width: 90vw;
+                }
             }
 
             > .dc-input {

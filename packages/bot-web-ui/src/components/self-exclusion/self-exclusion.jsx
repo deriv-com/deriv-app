@@ -204,7 +204,8 @@ const SelfExclusion = props => {
                 <Modal
                     is_open={is_restricted}
                     has_close_icon
-                    width='500px'
+                    width='440px'
+                    height='374px'
                     toggleModal={resetSelfExclusion}
                     className='db-self-exclusion__modal'
                     title={localize('Limits')}

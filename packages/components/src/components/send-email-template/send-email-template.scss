@@ -2,16 +2,12 @@
 .send-email-template {
     padding: 0 16px;
 
-    &__title {
-        margin-bottom: 0.8rem;
-        line-height: 1.5;
-    }
+    &__title,
     &__subtitle {
         margin-bottom: 1.6rem;
     }
     &__icon {
-        margin-top: 5.6rem;
-        margin-bottom: 1.6rem;
+        margin-bottom: 2.4rem;
         @include mobile {
             margin-top: 3.2rem;
         }

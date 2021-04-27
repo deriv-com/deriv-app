@@ -48,7 +48,7 @@ const SendEmailTemplate = ({
         setIsResendBtnDisabled(true);
         resend_interval = setInterval(() => {
             if (--timeout) {
-                setResendEmailBtnText(txt_resend_in.replace('{{seconds}}', timeout));
+                setResendEmailBtnText(`${txt_resend_in} ${timeout}`);
             } else {
                 setIsResendBtnDisabled(false);
                 setResendEmailBtnText(txt_resend);
@@ -65,7 +65,7 @@ const SendEmailTemplate = ({
                     className='send-email-template__icon'
                     size={128}
                 />
-                <Text as='h1' color='prominent' weight='bold' align='center' className='send-email-template__title'>
+                <Text as='h1' align='center' className='send-email-template__title' color='prominent' weight='bold'>
                     {title}
                 </Text>
                 <Text

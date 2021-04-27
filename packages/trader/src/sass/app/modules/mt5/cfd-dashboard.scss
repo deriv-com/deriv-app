@@ -897,7 +897,13 @@
     &--error-message {
         margin-bottom: 1em;
     }
-    &__main-form,
+    &__trading-password-wrapper {
+        display: grid;
+        grid-auto-rows: auto;
+        justify-items: center;
+        grid-gap: 1rem;
+        margin-top: 3.2rem;
+    }
     &__investor-wrapper {
         margin: 3.2rem 0.5rem 0;
 
@@ -1077,7 +1083,7 @@
             &__description {
                 @include typeface(--xsmall-left-normal-black);
                 line-height: 1.5;
-                max-width: 300px;
+                max-width: calc(min(100vw, 349px));
                 margin: -2.7rem 0 2.4rem;
                 color: var(--text-less-prominent);
             }

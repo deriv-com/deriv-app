@@ -14,11 +14,11 @@ const offsetTop = (extra_offset, is_floating, ref, selected) => {
     );
     let selected_el = null;
 
-    if (selected.path) {
-        selected_el = [...headers].find(header => header.id === selected.path);
-    } else {
-        selected_el = [...headers].find(header => header.innerText === selected.label);
-    }
+    selected_el = [...headers].find(header =>
+        typeof selected.getTitle === 'function'
+            ? header.innerText === selected.getTitle()
+            : header.innerText === selected.label
+    );
 
     if (selected_el) {
         item_offset = is_floating ? extra_offset || 18 : 10;
@@ -72,6 +72,7 @@ const VerticalTabHeaders = ({
                           }
                           items={items}
                           is_collapsible={is_collapsible}
+                          is_routed={is_routed}
                           group={group}
                           key={idx}
                       >

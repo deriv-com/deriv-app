@@ -65,11 +65,11 @@ module.exports = function () {
                         'style-loader',
                         ...(is_publishing
                             ? [
-                                {
-                                    loader: MiniCssExtractPlugin.loader,
-                                },
-                                '@deriv/publisher/utils/css-unit-loader.js',
-                            ]
+                                  {
+                                      loader: MiniCssExtractPlugin.loader,
+                                  },
+                                  '@deriv/publisher/utils/css-unit-loader.js',
+                              ]
                             : []),
                         'css-loader',
                         {
@@ -122,12 +122,12 @@ module.exports = function () {
             minimize: is_release,
             minimizer: is_release
                 ? [
-                    new TerserPlugin({
-                        test: /\.js$/,
-                        parallel: 2,
-                    }),
-                    new OptimizeCssAssetsPlugin(),
-                ]
+                      new TerserPlugin({
+                          test: /\.js$/,
+                          parallel: 2,
+                      }),
+                      new OptimizeCssAssetsPlugin(),
+                  ]
                 : [],
         },
         devtool: is_release ? undefined : 'eval-cheap-module-source-map',
@@ -136,9 +136,9 @@ module.exports = function () {
                 react: 'react',
                 'react-dom': 'react-dom',
                 'prop-types': 'prop-types',
-                ...(is_publishing ? {} : { formik: 'formik' }),
+                ...(is_publishing ? {} : { 'lodash.debounce': 'lodash.debounce', formik: 'formik' }),
                 ...publisher_utils.getLocalDerivPackageExternals(__dirname, is_publishing),
             },
         ],
-    }
+    };
 };

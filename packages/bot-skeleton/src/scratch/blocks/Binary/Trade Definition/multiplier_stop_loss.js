@@ -36,8 +36,10 @@ Blockly.Blocks.multiplier_stop_loss = {
     },
     meta() {
         return {
-            display_name: localize('Change variable'),
-            description: localize('This block adds the given number to the selected variable.'),
+            display_name: localize('Stop loss'),
+            description: localize(
+                'Your contract is closed automatically when your loss is more than or equals to this amount.'
+            ),
         };
     },
     onchange(event) {

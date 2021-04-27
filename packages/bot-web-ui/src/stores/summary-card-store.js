@@ -1,4 +1,4 @@
-import { action, computed, observable } from 'mobx';
+import { action, computed, observable, reaction } from 'mobx';
 import { getIndicativePrice, isEqualObject, isMultiplierContract } from '@deriv/shared';
 import { contract_stages } from 'Constants/contract-stage';
 import { getValidationRules } from 'Constants/contract';
@@ -26,6 +26,7 @@ export default class SummaryCardStore {
 
     constructor(root_store) {
         this.root_store = root_store;
+        this.disposeReactionsFn = this.registerReactions();
     }
 
     @computed
@@ -209,5 +210,19 @@ export default class SummaryCardStore {
         Object.keys(inputs).forEach(key => {
             this.setValidationErrorMessages(key, validator.errors.get(key));
         });
+    }
+
+    registerReactions() {
+        const { client } = this.root_store.core;
+        this.disposeSwitchAcountListener = reaction(
+            () => client.loginid,
+            () => this.clear()
+        );
+
+        return () => {
+            if (typeof this.disposeSwitchAcountListener === 'function') {
+                this.disposeSwitchAcountListener();
+            }
+        };
     }
 }

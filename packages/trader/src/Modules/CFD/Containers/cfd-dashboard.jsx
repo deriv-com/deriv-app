@@ -397,7 +397,7 @@ export default withRouter(
         is_loading: client.is_populating_mt5_account_list,
         residence: client.residence,
         residence_list: client.residence_list,
-        has_cfd_account: modules.mt5.has_cfd_account,
+        has_cfd_account: modules.cfd.has_cfd_account,
         has_mt5_account_error: client.has_account_error_in_mt5_list,
         has_real_account: client.has_active_real_account,
         setAccountType: modules.cfd.setAccountType,

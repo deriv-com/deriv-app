@@ -286,6 +286,13 @@ export default class RunPanelStore {
             () => registerIsSocketOpenedListener()
         );
 
+        this.disposeStopBotListener = reaction(
+            () => !this.is_running,
+            () => {
+                if (!this.is_running) this.setContractStage(contract_stages.NOT_RUNNING);
+            }
+        );
+
         return () => {
             if (typeof this.disposeIsSocketOpenedListener === 'function') {
                 this.disposeIsSocketOpenedListener();
@@ -293,6 +300,10 @@ export default class RunPanelStore {
 
             if (typeof this.disposeLogoutListener === 'function') {
                 this.disposeLogoutListener();
+            }
+
+            if (typeof this.disposeStopBotListener === 'function') {
+                this.disposeStopBotListener();
             }
         };
     }
@@ -497,11 +508,12 @@ export default class RunPanelStore {
 
     @action.bound
     onUnmount() {
-        const { journal, transactions } = this.root_store;
+        const { journal, summary_card, transactions } = this.root_store;
 
         this.unregisterBotListeners();
         this.disposeReactionsFn();
         journal.disposeReactionsFn();
+        summary_card.disposeReactionsFn();
         transactions.disposeReactionsFn();
 
         observer.unregisterAll('ui.log.error');

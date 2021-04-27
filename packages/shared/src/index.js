@@ -1,3 +1,4 @@
+export * from './utils/browser';
 export * from './utils/config';
 export * from './utils/contract';
 export * from './utils/currency';

@@ -18,6 +18,11 @@ const RouteWithSubRoutes = route => {
         const pathname = removeBranchName(location.pathname).replace(/\/$/, '');
         const is_valid_route = validateRoute(pathname);
 
+        // check if by re-rendering content should Platform app_id  change or not,
+        if (is_valid_route) {
+            route.checkAppId();
+        }
+
         if (route.component === Redirect) {
             let to = route.to;
 
@@ -28,7 +33,12 @@ const RouteWithSubRoutes = route => {
             }
             result = <Redirect to={to} />;
         } else if (is_valid_route && route.is_authenticated && !route.is_logged_in && !route.is_logging_in) {
-            redirectToLogin(route.is_logged_in, getLanguage());
+            if (window.localStorage.getItem('is_redirecting') === 'true') {
+                window.localStorage.removeItem('is_redirecting');
+                redirectToLogin(route.is_logged_in, getLanguage(), true, 3000);
+            } else {
+                redirectToLogin(route.is_logged_in, getLanguage());
+            }
         } else {
             const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
             const has_default_subroute = !isEmptyObject(default_subroute);
@@ -55,6 +65,7 @@ const RouteWithSubRoutes = route => {
 
 export { RouteWithSubRoutes as RouteWithSubRoutesRender }; // For tests
 
-export default connect(({ gtm }) => ({
+export default connect(({ gtm, common }) => ({
     pushDataLayer: gtm.pushDataLayer,
+    checkAppId: common.checkAppId,
 }))(RouteWithSubRoutes);

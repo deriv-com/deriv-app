@@ -280,6 +280,7 @@ const PersonalDetails = ({
                                                                 {...field}
                                                                 list_portal_id='modal_root'
                                                                 required
+                                                                should_hide_disabled_options={false}
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>

@@ -34,6 +34,26 @@
             overflow-x: overlay;
         }
     }
+    &-wrapper {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: -3rem;
+        padding-bottom: 3rem;
+        white-space: nowrap;
+
+        & li {
+            display: inline-block;
+            box-sizing: border-box;
+            padding: 0 3rem;
+            vertical-align: middle;
+            width: unset;
+            height: 40px;
+
+            @include mobile {
+                padding: 0 1.1rem;
+            }
+        }
+    }
     &::-webkit-scrollbar {
         width: 5px;
         height: 5px;

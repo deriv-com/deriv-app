@@ -119,10 +119,6 @@
                 &--has-error {
                     padding-top: unset;
                 }
-
-                &--disabled {
-                    color: var(--text-disabled) !important;
-                }
             }
         }
         &__calendar-icon {

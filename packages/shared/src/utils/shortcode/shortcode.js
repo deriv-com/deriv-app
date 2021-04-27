@@ -1,6 +1,6 @@
 // category_underlying_amount
 const base_pattern =
-    '^([A-Z]+)_((?:1HZ[0-9-V]+)|(?:(?:CRASH|BOOM)[0-9\\d]+)|(?:OTC_[A-Z0-9]+)|R_[\\d]{2,3}|[A-Z]+)_([\\d.]+)';
+    '^([A-Z]+)_((?:1HZ[0-9-V]+)|(?:(?:CRASH|BOOM)[0-9\\d]+)|(?:cry_[A-Z]+)|(?:OTC_[A-Z0-9]+)|R_[\\d]{2,3}|[A-Z]+)_([\\d.]+)';
 
 // category_underlying_amount_multiplier_starttime
 const multipliers_regex = new RegExp(`${base_pattern}_(\\d+)_(\\d+)`);
@@ -9,6 +9,7 @@ const multipliers_regex = new RegExp(`${base_pattern}_(\\d+)_(\\d+)`);
 const options_regex = new RegExp(`${base_pattern}_([A-Z\\d]+)_([A-Z\\d]+)_?([A-Z\\d]+)?`);
 
 export const extractInfoFromShortcode = shortcode => {
+    console.log(shortcode);
     const info_from_shortcode = {
         category: '',
         underlying: '',
@@ -16,6 +17,7 @@ export const extractInfoFromShortcode = shortcode => {
     };
 
     const is_multipliers = /^MULT/i.test(shortcode);
+    console.log(is_multipliers, info_from_shortcode);
     // First group of regex pattern captures the trade category, second group captures the market's underlying
     const pattern = is_multipliers ? multipliers_regex : options_regex;
     const extracted = pattern.exec(shortcode);

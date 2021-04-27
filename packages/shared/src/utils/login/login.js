@@ -3,14 +3,14 @@ import { CookieStorage, isStorageSupported, LocalStore } from '../storage/storag
 import { getAppId, domain_app_ids } from '../config/config';
 import { getStaticUrl, urlForCurrentDomain } from '../url';
 
-export const redirectToLogin = (is_logged_in, language, has_params = true) => {
+export const redirectToLogin = (is_logged_in, language, has_params = true, redirect_delay = 0) => {
     if (!is_logged_in && isStorageSupported(sessionStorage)) {
         const l = window.location;
         const redirect_url = has_params ? window.location.href : `${l.protocol}//${l.host}${l.pathname}`;
         sessionStorage.setItem('redirect_url', redirect_url);
-        window.location.href = loginUrl({
-            language,
-        });
+        setTimeout(() => {
+            window.location.href = loginUrl({ language });
+        }, redirect_delay);
     }
 };
 

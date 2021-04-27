@@ -17,7 +17,7 @@ import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
-import { isEuCountry, isSyntheticsUnavailable } from '_common/utility';
+import { isEuCountry, isOptionsBlocked, isSyntheticsUnavailable } from '_common/utility';
 import BaseStore from './base-store';
 import { getClientAccountType, getAccountTitle } from './Helpers/client';
 import { setDeviceDataCookie } from './Helpers/device';
@@ -588,6 +588,11 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_synthetics_unavailable() {
         return isSyntheticsUnavailable(this.residence);
+    }
+
+    @computed
+    get is_options_blocked() {
+        return isOptionsBlocked(this.residence);
     }
 
     /**

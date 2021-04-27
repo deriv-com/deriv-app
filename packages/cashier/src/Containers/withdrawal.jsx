@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -42,8 +43,10 @@ const Withdrawal = ({
     container,
     currency,
     error,
+    check10kLimit,
     verify_error,
     iframe_url,
+    is_10k_withdrawal_limit_reached,
     is_cashier_locked,
     is_virtual,
     is_withdrawal_locked,
@@ -60,6 +63,10 @@ const Withdrawal = ({
     }, [container, setActiveTab, setErrorMessage]);
 
     React.useEffect(() => {
+        check10kLimit();
+    }, [check10kLimit]);
+
+    React.useEffect(() => {
         if ((iframe_url || verification_code) && isDesktop()) {
             if (isCryptocurrency(currency) && typeof setSideNotes === 'function') {
                 const side_notes = [
@@ -73,6 +80,12 @@ const Withdrawal = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, iframe_url, verification_code]);
 
+    if (is_10k_withdrawal_limit_reached === undefined) {
+        return <Loading is_fullscreen />;
+    }
+    if (is_10k_withdrawal_limit_reached) {
+        return <WithdrawalLocked is_10K_limit />;
+    }
     if (verification_code || iframe_url) {
         return <Withdraw />;
     }
@@ -111,15 +124,17 @@ Withdrawal.propTypes = {
 
 export default connect(({ client, modules }) => ({
     balance: client.balance,
-    currency: client.currency,
-    is_virtual: client.is_virtual,
-    verification_code: client.verification_code.payment_withdraw,
+    check10kLimit: modules.cashier.check10kLimit,
     container: modules.cashier.config.withdraw.container,
+    currency: client.currency,
     error: modules.cashier.config.withdraw.error,
-    verify_error: modules.cashier.config.withdraw.verification.error,
     iframe_url: modules.cashier.config.withdraw.iframe_url,
+    is_10k_withdrawal_limit_reached: modules.cashier.is_10k_withdrawal_limit_reached,
     is_cashier_locked: modules.cashier.is_cashier_locked,
+    is_virtual: client.is_virtual,
     is_withdrawal_locked: modules.cashier.is_withdrawal_locked,
+    verification_code: client.verification_code.payment_withdraw,
+    verify_error: modules.cashier.config.withdraw.verification.error,
     setActiveTab: modules.cashier.setActiveTab,
     setErrorMessage: modules.cashier.setErrorMessage,
 }))(Withdrawal);

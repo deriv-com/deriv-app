@@ -161,7 +161,11 @@ const MainPasswordManager = ({
         <Formik initialValues={initial_values} validate={validatePassword} onSubmit={onSubmit}>
             {({ isSubmitting, errors, setFieldTouched, values, touched }) => (
                 <Form className='mt5-password-manager__main-form' noValidate>
-                    {error_message_main && <p className='mt5-password-manager--error-message'>{error_message_main}</p>}
+                    {error_message_main && (
+                        <Text as='p' color='loss-danger' size='xs' className='mt5-password-manager--error-message'>
+                            {error_message_main}
+                        </Text>
+                    )}
                     <Field name='old_password'>
                         {({ field }) => (
                             <PasswordInput

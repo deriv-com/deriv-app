@@ -413,7 +413,7 @@ const CFDPasswordModal = ({
         !is_cfd_success_dialog_enabled &&
         (!has_cfd_error || is_password_error || is_password_reset);
 
-    const should_show_success = !has_cfd_error && is_cfd_success_dialog_enabled;
+    const should_show_success = !has_cfd_error && is_cfd_success_dialog_enabled && is_cfd_password_modal_enabled;
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
     const is_real_synthetic = [account_type.category, account_type.type].join('_') === 'real_synthetic';
     const should_show_server_form = React.useMemo(() => {

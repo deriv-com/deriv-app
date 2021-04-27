@@ -81,8 +81,11 @@ const AccountTransferNote = ({ currency, transfer_fee, minimum_fee }) => (
             </Text>
         </DesktopWrapper>
         <AccountTransferBullet>
+            <Localize i18n_default_text='Transfer limits may vary depending on changes in exchange rates.' />
+        </AccountTransferBullet>
+        <AccountTransferBullet>
             <Localize
-                i18n_default_text='We’ll charge a {{transfer_fee}}% transfer fee, or {{minimum_fee}} {{currency}}, whichever is higher.'
+                i18n_default_text='Transfers are subject to a {{transfer_fee}}% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher.'
                 values={{
                     transfer_fee,
                     minimum_fee,
@@ -91,7 +94,10 @@ const AccountTransferNote = ({ currency, transfer_fee, minimum_fee }) => (
             />
         </AccountTransferBullet>
         <AccountTransferBullet>
-            <Localize i18n_default_text='Transfers may be unavailable when the exchange markets are closed, when there is high volatility, or when there are technical issues.' />
+            <Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts, your Deriv account and Deriv MT5 (DMT5) account, or your Deriv account and Deriv X account.' />
+        </AccountTransferBullet>
+        <AccountTransferBullet>
+            <Localize i18n_default_text='Transfers may be unavailable when the market is closed (weekends or holidays), periods of high volatility, or when there are technical issues.' />
         </AccountTransferBullet>
     </div>
 );

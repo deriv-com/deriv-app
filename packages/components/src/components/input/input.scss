@@ -53,7 +53,7 @@
             outline: none;
 
             & ~ label {
-                transform: translate(0, -1.8rem) scale(0.875);
+                transform: translate(0, -1.8rem) scale(0.75);
                 padding: 0 4px;
             }
         }
@@ -181,7 +181,7 @@
     &__label {
         white-space: nowrap;
         color: var(--text-less-prominent);
-        font-size: var(--text-size-xxs);
+        font-size: var(--text-size-xs);
         background-color: var(--fill-normal);
         position: absolute;
         pointer-events: none;
@@ -223,6 +223,9 @@
     }
     &--error {
         border-color: var(--brand-red-coral) !important;
+        @media (max-width: 992px) {
+            margin-bottom: 4.2rem;
+        }
 
         label {
             color: var(--brand-red-coral) !important;

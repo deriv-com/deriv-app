@@ -18,6 +18,22 @@
     }
 }
 
+.dc-input .dc-input {
+    &__field {
+        &:focus,
+        &:disabled,
+        &:not(:focus):not([value='']) {
+            outline: none;
+
+            & ~ label {
+                transform: translate(0, -1.8rem) scale(0.875);
+            }
+        }
+    }
+    &__label {
+        font-size: var(--text-size-xxs);
+    }
+}
 .quick-strategy {
     $quick-strategy: &;
 

@@ -79,6 +79,6 @@ export default class ToolbarStore {
 
     @action.bound
     setHasRedoStack() {
-        this.has_redo_stack = Blockly.derivWorkspace.hasRedoStack();
+        this.has_redo_stack = Blockly.derivWorkspace?.hasRedoStack();
     }
 }

@@ -1,4 +1,4 @@
-import { deriv_urls } from '@deriv/shared';
+import { deriv_urls } from '../url/constants';
 import { website_name } from '../config/app-config';
 import { CookieStorage, isStorageSupported, LocalStore } from '../storage/storage';
 import { getAppId, domain_app_ids } from '../config/config';

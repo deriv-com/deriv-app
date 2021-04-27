@@ -14,10 +14,13 @@
         }
 
         &-wrapper {
-            gap: 2.4rem;
+            $gap: 2.4rem;
             display: flex;
-            margin-bottom: 1.6rem;
-            align-items: flex-start;
+            margin: -#{$gap} 0 1.6rem -#{$gap};
+
+            & > * {
+                margin: $gap 0 0 $gap;
+            }
 
             @include mobile {
                 flex-direction: column;
@@ -30,10 +33,6 @@
 
             > .dc-input {
                 margin-top: 1rem; // Compensate for label.
-            }
-
-            &--no-flex {
-                display: block;
             }
         }
     }

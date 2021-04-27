@@ -69,6 +69,13 @@ const DatePicker = React.memo(props => {
         if (value) setDate(toMoment(value).format(display_format));
     }, [value, display_format, setDate]);
 
+    React.useEffect(() => {
+        if (duration !== value) {
+            setDuration(daysFromTodayTo(value));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value]);
+
     const handleVisibility = () => {
         setIsDatepickerVisible(!is_datepicker_visible);
     };

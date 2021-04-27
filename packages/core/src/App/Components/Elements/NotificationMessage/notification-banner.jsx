@@ -1,40 +1,54 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon, StaticUrl, Text } from '@deriv/components';
-import { getUrlBase } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
+import { Button, Icon, Text } from '@deriv/components';
 
-const NotificationBanner = ({ onClick, header, message, button_text, img_src, img_alt, redirect_link }) => (
+const NotificationBanner = ({ header, message, primary_btn, secondary_btn, img_src, img_alt, onClose }) => (
     <div className='notification-banner'>
         <div className='notification-banner--left'>
-            <Text as='h4' weight='bold' className='notification-banner__title'>
-                <Localize i18n_default_text={header} />
+            <Text as='h4' size={isMobile() ? 'xs' : 's'} weight='bold' className='notification-banner__title'>
+                {header}
             </Text>
-            <p className='notification-banner__description'>
-                <Localize i18n_default_text={message} />
-            </p>
-            <StaticUrl href={redirect_link}>
-                <Button className='notification-banner__btn' secondary onClick={onClick}>
-                    {localize(button_text)}
-                </Button>
-            </StaticUrl>
+            <Text as='p' size={isMobile() ? 'xxs' : 'xs'} className='notification-banner__description' line_height='xs'>
+                {message}
+            </Text>
+            {(!!primary_btn || !!secondary_btn) && (
+                <div className='notification-banner__btn-wrapper'>
+                    {!!primary_btn && (
+                        <Button className='notification-banner__btn' primary small onClick={primary_btn.onClick}>
+                            {primary_btn.text}
+                        </Button>
+                    )}
+                    {!!secondary_btn && (
+                        <Button className='notification-banner__btn' tertiary small onClick={secondary_btn.onClick}>
+                            {secondary_btn.text}
+                        </Button>
+                    )}
+                </div>
+            )}
         </div>
         <div className='notification-banner--right'>
             <div className='notification-banner__bg' />
-            <img className='notification-banner__img' src={getUrlBase(img_src)} alt={img_alt} />
-            <Icon className='notification-banner__icon' icon='IcCloseLight' onClick={onClick} />
+            <img className='notification-banner__img' src={img_src} alt={img_alt} />
+            <Icon className='notification-banner__close-icon' icon='IcCloseLight' onClick={onClose} />
         </div>
     </div>
 );
 
 NotificationBanner.propTypes = {
-    button_text: PropTypes.string,
     header: PropTypes.string,
     img_alt: PropTypes.string,
     img_src: PropTypes.string,
     message: PropTypes.string,
-    onClick: PropTypes.func,
-    redirect_link: PropTypes.string,
+    onClose: PropTypes.func,
+    primary_btn: PropTypes.shape({
+        text: PropTypes.string,
+        onClick: PropTypes.func,
+    }),
+    secondary_btn: PropTypes.shape({
+        text: PropTypes.string,
+        onClick: PropTypes.func,
+    }),
 };
 
 export default NotificationBanner;

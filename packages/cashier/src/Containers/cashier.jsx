@@ -32,8 +32,8 @@ const Cashier = ({
     location,
     onMount,
     p2p_notification_count,
-    routes: routes_config,
     routeBackInApp,
+    routes: routes_config,
     setAccountSwitchListener,
     setTabIndex,
     tab_index,
@@ -56,7 +56,6 @@ const Cashier = ({
     const onClickClose = () => routeBackInApp(history);
     const getMenuOptions = () => {
         const options = [];
-
         routes_config.forEach(route => {
             if (
                 !route.is_invisible &&
@@ -171,8 +170,8 @@ Cashier.propTypes = {
     location: PropTypes.object,
     onMount: PropTypes.func,
     p2p_notification_count: PropTypes.number,
-    routes: PropTypes.arrayOf(PropTypes.object),
     routeBackInApp: PropTypes.func,
+    routes: PropTypes.arrayOf(PropTypes.object),
     setAccountSwitchListener: PropTypes.func,
     setTabIndex: PropTypes.func,
     tab_index: PropTypes.number,

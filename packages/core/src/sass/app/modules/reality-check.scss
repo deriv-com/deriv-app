@@ -125,26 +125,61 @@
         &__wrapper {
             overflow-y: auto;
             overflow-x: hidden;
-            padding: 2.4rem;
+            padding: 0;
+        }
+        &__section {
+            padding: 1.6rem;
+        }
+        .radio-group--spending_limit {
+            .dc-text {
+                font-weight: normal;
+                font-size: 12px;
+                line-height: 18px;
+            }
         }
     }
 }
 
 .dc-modal__container_reality-check {
     max-width: 588px;
-    & .dc-modal {
+    .dc-modal-header {
+        border-bottom: 1px solid var(--general-section-1);
+        @include mobile {
+            justify-content: center;
+        }
+        &__title--reality-check {
+            @include mobile {
+                padding: 0.8rem 1.6rem;
+            }
+        }
+    }
+    &.dc-modal {
         &-header {
             &__title--reality-check {
                 @include mobile {
                     margin: auto;
                     text-align: center;
                     line-height: 1.43;
+                    padding: 0.8rem;
+                    text-align: center;
                 }
             }
         }
         &-body {
             @include mobile {
                 padding: 0;
+            }
+        }
+    }
+    .dc-input {
+        @include mobile {
+            margin-bottom: 0px;
+        }
+    }
+    .dc-radio-group {
+        .dc-radio-group__label {
+            @include mobile {
+                font-size: 12px;
             }
         }
     }

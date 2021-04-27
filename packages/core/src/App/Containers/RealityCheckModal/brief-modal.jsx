@@ -30,7 +30,11 @@ const BriefModal = ({
             is_open={is_visible}
             disableApp={disableApp}
             has_close_icon={false}
-            title={localize('Spending limit and trading statistics')}
+            title={
+                isDesktop()
+                    ? localize('Spending limit and trading statistics')
+                    : localize('Set spend limit and trading status’ duration')
+            }
             portalId='modal_root_absolute'
             width='588px'
         >
@@ -56,7 +60,7 @@ const BriefModal = ({
                                         <div className='reality-check__section'>
                                             <Text
                                                 as='strong'
-                                                size='xs'
+                                                size={isDesktop() ? 'xs' : 'xxs'}
                                                 line_height='m'
                                                 weight='bold'
                                                 className='reality-check__text reality-check__text--title'
@@ -65,15 +69,23 @@ const BriefModal = ({
                                             </Text>
                                             <Text
                                                 as='p'
-                                                size='xs'
+                                                size={isDesktop() ? 'xs' : 'xxs'}
                                                 line_height='m'
                                                 className='reality-check__text reality-check__text--description'
                                             >
-                                                <Localize i18n_default_text='You can limit the total amount you spend in 30 days, trading on DTrader, DBot, and SmartTrader. This limit will get renewed automatically every 30 days. If you wish to remove the limit or increase your spending amount, please contact our Client Support team via live chat on our website.' />
+                                                {isDesktop() ? (
+                                                    <Localize i18n_default_text='You can limit the total amount you spend in 30 days, trading on DTrader, DBot, and SmartTrader. This limit will get renewed automatically every 30 days. If you wish to remove the limit or increase your spending amount, please contact our Client Support team via live chat on our website.' />
+                                                ) : (
+                                                    <Localize
+                                                        i18n_default_text='You can limits your total spend for every 30 days across all Deriv platforms. To remove or weaken limit, please contact our Customer Support by calling <0>+447723580049.</0>'
+                                                        components={[<span className='link link--orange' />]}
+                                                    />
+                                                )}
                                             </Text>
-                                            <div style={{ display: 'flex', marginBottom: 25 }}>
+                                            <div style={{ display: 'flex', marginBottom: isDesktop() ? 25 : 4 }}>
                                                 <RadioGroup
                                                     name='spending_limit'
+                                                    className='radio-group--spending_limit'
                                                     selected={values.spending_limit}
                                                     onToggle={e => {
                                                         e.persist();
@@ -105,20 +117,22 @@ const BriefModal = ({
                                                 handleBlur={handleBlur}
                                                 disabled={values.spending_limit === '0'}
                                             />
-                                            <Text
-                                                as='p'
-                                                size='xs'
-                                                line_height='m'
-                                                className='reality-check__text reality-check__text--description'
-                                            >
-                                                <Localize i18n_default_text='If you decide to set a spending limit later, you can always do so by going to “Self-exclusion” in your account settings.' />
-                                            </Text>
+                                            {isDesktop() && (
+                                                <Text
+                                                    as='p'
+                                                    size='xs'
+                                                    line_height='m'
+                                                    className='reality-check__text reality-check__text--description'
+                                                >
+                                                    <Localize i18n_default_text='If you decide to set a spending limit later, you can always do so by going to “Self-exclusion” in your account settings.' />
+                                                </Text>
+                                            )}
                                         </div>
                                         <div className='reality-check__separator' />
                                         <div className='reality-check__section'>
                                             <Text
                                                 as='strong'
-                                                size='xs'
+                                                size={isDesktop() ? 'xs' : 'xxs'}
                                                 line_height='m'
                                                 weight='bold'
                                                 className='reality-check__text reality-check__text--title'
@@ -127,7 +141,7 @@ const BriefModal = ({
                                             </Text>
                                             <Text
                                                 as='p'
-                                                size='xs'
+                                                size={isDesktop() ? 'xs' : 'xxs'}
                                                 line_height='m'
                                                 className='reality-check__text reality-check__text--description'
                                             >
@@ -135,7 +149,7 @@ const BriefModal = ({
                                             </Text>
                                             <Text
                                                 as='p'
-                                                size='xs'
+                                                size={isDesktop() ? 'xs' : 'xxs'}
                                                 line_height='m'
                                                 align='center'
                                                 className='reality-check__text reality-check__text--description'

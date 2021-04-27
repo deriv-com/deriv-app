@@ -152,6 +152,7 @@ class CFDDashboard extends React.Component {
             NotificationMessages,
             platform,
             openAccountNeededModal,
+            residence_list,
             standpoint,
             toggleAccountsDialog,
             toggleShouldShowRealAccountsList,
@@ -246,6 +247,7 @@ class CFDDashboard extends React.Component {
                                                 toggleAccountsDialog={toggleAccountsDialog}
                                                 toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
                                                 can_have_more_real_synthetic_mt5={can_have_more_real_synthetic_mt5}
+                                                residence_list={residence_list}
                                             />
                                         </React.Fragment>
                                     </div>
@@ -394,7 +396,8 @@ export default withRouter(
         openAccountNeededModal: ui.openAccountNeededModal,
         is_loading: client.is_populating_mt5_account_list,
         residence: client.residence,
-        has_cfd_account: modules.cfd.has_cfd_account,
+        residence_list: client.residence_list,
+        has_cfd_account: modules.mt5.has_cfd_account,
         has_mt5_account_error: client.has_account_error_in_mt5_list,
         has_real_account: client.has_active_real_account,
         setAccountType: modules.cfd.setAccountType,

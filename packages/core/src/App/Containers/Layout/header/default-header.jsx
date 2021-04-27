@@ -49,6 +49,7 @@ const DefaultHeader = ({
     needs_financial_assessment,
     notifications_count,
     openRealAccountSignup,
+    is_options_blocked,
     removeNotificationMessage,
     setDarkMode,
     toggleAccountsDialog,
@@ -75,7 +76,7 @@ const DefaultHeader = ({
             if (config.link_to === routes.dxtrade) {
                 return is_dxtrade_allowed;
             }
-            if (is_mf && config.href === routes.smarttrader) {
+            if ((is_mf || is_options_blocked) && config.href === routes.smarttrader) {
                 return false;
             }
             return true;
@@ -242,6 +243,7 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     needs_financial_assessment: client.needs_financial_assessment,
     notifications_count: ui.filtered_notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
+    is_options_blocked: client.is_options_blocked,
     removeNotificationMessage: ui.removeNotificationMessage,
     setDarkMode: ui.setDarkMode,
     toggleAccountsDialog: ui.toggleAccountsDialog,

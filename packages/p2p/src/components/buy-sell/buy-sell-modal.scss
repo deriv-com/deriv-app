@@ -9,11 +9,24 @@
         margin-right: 0.7rem;
         flex: 1;
 
+        @include mobile {
+            margin: 0.8rem 0;
+        }
+
         &-wrapper {
             gap: 2.4rem;
             display: flex;
             margin-bottom: 1.6rem;
             align-items: flex-start;
+
+            @include mobile {
+                flex-direction: column;
+
+                .dc-input__wrapper {
+                    margin-top: 2.5rem;
+                    width: 90vw;
+                }
+            }
 
             > .dc-input {
                 margin-top: 1rem; // Compensate for label.

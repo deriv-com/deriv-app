@@ -78,7 +78,7 @@ const BriefModal = ({
                                                 ) : (
                                                     <Localize
                                                         i18n_default_text='You can limits your total spend for every 30 days across all Deriv platforms. To remove or weaken limit, please contact our Customer Support by calling <0>+447723580049.</0>'
-                                                        components={[<span className='link link--orange' />]}
+                                                        components={[<span key='0' className='link link--orange' />]}
                                                     />
                                                 )}
                                             </Text>

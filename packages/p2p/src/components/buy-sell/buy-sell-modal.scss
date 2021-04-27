@@ -20,6 +20,7 @@
 
             & > * {
                 margin: $gap 0 0 $gap;
+            }
 
             @include mobile {
                 flex-direction: column;

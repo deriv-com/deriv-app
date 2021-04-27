@@ -22,6 +22,7 @@ export const getContractUpdateConfig = ({ contract_update, limit_order }) => {
     };
 };
 
+// eslint-disable-next-line no-empty-pattern
 export const connectWithContractUpdate = connect(({}, { contract = {} }) => {
     return {
         validation_errors: contract.validation_errors,

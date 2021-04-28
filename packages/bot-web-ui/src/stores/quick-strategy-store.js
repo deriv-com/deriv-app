@@ -28,9 +28,11 @@ export default class QuickStrategyStore {
     @computed
     get initial_values() {
         const init = {
-            'quick-strategy__symbol': this.selected_symbol?.text || '',
-            'quick-strategy__trade-type': this.selected_trade_type?.text || '',
-            'quick-strategy__duration-unit': this.selected_duration_unit?.text || '',
+            'quick-strategy__symbol': this.getFieldValue(this.symbol_dropdown, this.selected_symbol.value) || '',
+            'quick-strategy__trade-type':
+                this.getFieldValue(this.trade_type_dropdown, this.selected_trade_type.value) || '',
+            'quick-strategy__duration-unit':
+                this.getFieldValue(this.duration_unit_dropdown, this.selected_duration_unit.value) || '',
             'quick-strategy__duration-value': this.input_duration_value || '',
             'quick-strategy__stake': this.input_stake,
             'quick-strategy__size': this.input_size,
@@ -507,5 +509,14 @@ export default class QuickStrategyStore {
             },
         };
         return field_mapping[type];
+    };
+
+    getFieldValue = (list_items, value) => {
+        const dropdown_items = Array.isArray(list_items) ? list_items : [].concat(...Object.values(list_items));
+        const list_obj = dropdown_items.find(item =>
+            typeof item.value !== 'string' ? item.value === value : item.value?.toLowerCase() === value?.toLowerCase()
+        );
+
+        return list_obj?.text || '';
     };
 }

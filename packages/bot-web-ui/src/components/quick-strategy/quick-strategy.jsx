@@ -23,15 +23,6 @@ import { config } from '@deriv/bot-skeleton';
 import { popover_zindex } from 'Constants/z-indexes';
 import { connect } from 'Stores/connect';
 
-const getFieldValue = (list_items, value) => {
-    const dropdown_items = Array.isArray(list_items) ? list_items : [].concat(...Object.values(list_items));
-    const list_obj = dropdown_items.find(item =>
-        typeof item.value !== 'string' ? item.value === value : item.value?.toLowerCase() === value?.toLowerCase()
-    );
-
-    return list_obj?.text || '';
-};
-
 const QuickStrategyForm = ({
     active_index,
     createStrategy,
@@ -472,17 +463,6 @@ const ContentRenderer = props => {
         ...trade_type,
     }));
 
-    const form_initial_values = {
-        'quick-strategy__symbol': getFieldValue(symbol_dropdown, selected_symbol.value),
-        'quick-strategy__trade-type': getFieldValue(trade_type_dropdown, selected_trade_type.value),
-        'quick-strategy__duration-unit': getFieldValue(duration_unit_dropdown, selected_duration_unit.value),
-        'quick-strategy__duration-value': initial_values['quick-strategy__duration-value'],
-        'quick-strategy__stake': initial_values['quick-strategy__stake'],
-        'quick-strategy__size': initial_values['quick-strategy__size'],
-        'quick-strategy__loss': initial_values['quick-strategy__loss'],
-        'quick-strategy__profit': initial_values['quick-strategy__profit'],
-    };
-
     return (
         <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
             {Object.keys(strategies).map(key => {
@@ -496,7 +476,7 @@ const ContentRenderer = props => {
                             getSizeDesc={getSizeDesc}
                             getSizeText={getSizeText}
                             initial_errors={initial_errors}
-                            initial_values={form_initial_values}
+                            initial_values={initial_values}
                             is_onscreen_keyboard_active={is_onscreen_keyboard_active}
                             is_stop_button_visible={is_stop_button_visible}
                             onChangeDropdownItem={onChangeDropdownItem}

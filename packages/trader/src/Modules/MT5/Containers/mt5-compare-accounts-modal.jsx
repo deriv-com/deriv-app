@@ -335,56 +335,60 @@ const CompareAccountsModal = ({
     is_eu,
     is_eu_country,
     toggleCompareAccounts,
-}) => (
-    <div className='mt5-compare-accounts-modal__wrapper'>
-        <Button
-            className='mt5-dashboard__welcome-message--button'
-            has_effect
-            text={localize(is_eu ? 'Account Information' : 'Compare accounts')}
-            onClick={toggleCompareAccounts}
-            secondary
-            disabled={is_loading}
-        />
-        <React.Suspense fallback={<UILoader />}>
-            <DesktopWrapper>
-                <Modal
-                    className='mt5-dashboard__compare-accounts'
-                    disableApp={disableApp}
-                    enableApp={enableApp}
-                    is_open={is_compare_accounts_visible}
-                    title={localize('Compare accounts')}
-                    toggleModal={toggleCompareAccounts}
-                    type='button'
-                    height='696px'
-                    width='903px'
-                >
-                    <ModalContent
-                        is_logged_in={is_logged_in}
-                        is_eu={is_eu}
-                        is_eu_country={is_eu_country}
-                        landing_companies={landing_companies}
-                    />
-                </Modal>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <MobileDialog
-                    portal_element_id='deriv_app'
-                    title={localize('Compare accounts')}
-                    wrapper_classname='mt5-dashboard__compare-accounts'
-                    visible={is_compare_accounts_visible}
-                    onClose={toggleCompareAccounts}
-                >
-                    <ModalContent
-                        is_logged_in={is_logged_in}
-                        is_eu={is_eu}
-                        is_eu_country={is_eu_country}
-                        landing_companies={landing_companies}
-                    />
-                </MobileDialog>
-            </MobileWrapper>
-        </React.Suspense>
-    </div>
-);
+}) => {
+    const mt5AccountButtonLabel = is_eu ? 'Account Information' : 'Compare accounts';
+
+    return (
+        <div className='mt5-compare-accounts-modal__wrapper'>
+            <Button
+                className='mt5-dashboard__welcome-message--button'
+                has_effect
+                text={localize(mt5AccountButtonLabel)}
+                onClick={toggleCompareAccounts}
+                secondary
+                disabled={is_loading}
+            />
+            <React.Suspense fallback={<UILoader />}>
+                <DesktopWrapper>
+                    <Modal
+                        className='mt5-dashboard__compare-accounts'
+                        disableApp={disableApp}
+                        enableApp={enableApp}
+                        is_open={is_compare_accounts_visible}
+                        title={localize('Compare accounts')}
+                        toggleModal={toggleCompareAccounts}
+                        type='button'
+                        height='696px'
+                        width='903px'
+                    >
+                        <ModalContent
+                            is_logged_in={is_logged_in}
+                            is_eu={is_eu}
+                            is_eu_country={is_eu_country}
+                            landing_companies={landing_companies}
+                        />
+                    </Modal>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <MobileDialog
+                        portal_element_id='deriv_app'
+                        title={localize('Compare accounts')}
+                        wrapper_classname='mt5-dashboard__compare-accounts'
+                        visible={is_compare_accounts_visible}
+                        onClose={toggleCompareAccounts}
+                    >
+                        <ModalContent
+                            is_logged_in={is_logged_in}
+                            is_eu={is_eu}
+                            is_eu_country={is_eu_country}
+                            landing_companies={landing_companies}
+                        />
+                    </MobileDialog>
+                </MobileWrapper>
+            </React.Suspense>
+        </div>
+    );
+};
 
 export default connect(({ modules, ui, client }) => ({
     disableApp: ui.disableApp,

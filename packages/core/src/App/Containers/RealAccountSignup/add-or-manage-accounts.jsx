@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Tabs, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isDesktop, isMobile, website_name } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
@@ -17,6 +17,7 @@ const AddOrManageAccounts = props => {
         available_crypto_currencies,
         can_change_fiat_currency,
         createCryptoAccount,
+        current_currency_type,
         has_fiat,
         is_eu,
         is_loading,
@@ -100,7 +101,8 @@ const AddOrManageAccounts = props => {
                 onSubmit={updateValue}
                 value={form_value}
                 form_error={form_error}
-                {...props}
+                can_change_fiat_currency={can_change_fiat_currency}
+                current_currency_type={current_currency_type}
             />
         </div>
     );
@@ -123,25 +125,12 @@ const AddOrManageAccounts = props => {
                                 'account-wizard--disabled': hasNoAvailableCrypto(),
                             })}
                         >
-                            {hasNoAvailableCrypto() && (
-                                <div className='account-wizard--disabled-message'>
-                                    <p>
-                                        {localize(
-                                            'You already have an account for each of the cryptocurrencies available on {{deriv}}.',
-                                            {
-                                                deriv: website_name,
-                                            }
-                                        )}
-                                    </p>
-                                </div>
-                            )}
                             <AddCryptoCurrency
                                 className='account-wizard__body'
                                 onSubmit={updateValue}
                                 value={form_value}
                                 form_error={form_error}
-                                should_show_crypto_only
-                                {...props}
+                                hasNoAvailableCrypto={hasNoAvailableCrypto}
                             />
                         </div>
                     </div>
@@ -155,7 +144,7 @@ const AddOrManageAccounts = props => {
                                 value={form_value}
                                 form_error={form_error}
                                 should_show_fiat_only={true}
-                                {...props}
+                                hasNoAvailableCrypto={hasNoAvailableCrypto}
                             />
                         )}
                     </div>
@@ -166,16 +155,33 @@ const AddOrManageAccounts = props => {
 };
 
 AddOrManageAccounts.propTypes = {
-    active_tab_index: PropTypes.number,
+    available_crypto_currencies: PropTypes.arrayOf({
+        fractional_digits: PropTypes.number,
+        is_deposit_suspended: PropTypes.number,
+        is_suspended: PropTypes.number,
+        is_withdrawal_suspended: PropTypes.number,
+        name: PropTypes.string,
+        stake_default: PropTypes.number,
+        transfer_between_accounts: PropTypes.object,
+        type: PropTypes.string,
+        value: PropTypes.string,
+    }),
     onError: PropTypes.func,
     onLoading: PropTypes.func,
     onSuccessSetAccountCurrency: PropTypes.func,
+    is_eu: PropTypes.bool,
+    setCurrency: PropTypes.func,
+    createCryptoAccount: PropTypes.func,
+    has_fiat: PropTypes.bool,
+    can_change_fiat_currency: PropTypes.bool,
+    current_currency_type: PropTypes.string,
+    is_loading: PropTypes.bool,
+    setLoading: PropTypes.func,
 };
 
 export default connect(({ client, ui }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     can_change_fiat_currency: client.can_change_fiat_currency,
-    currency: client.currency,
     current_currency_type: client.current_currency_type,
     current_fiat_currency: client.current_fiat_currency,
     has_fiat: client.has_fiat,

@@ -137,49 +137,37 @@ const StatisticsInfoModal = ({ is_mobile, is_statistics_info_modal_open, toggleS
                         <Text as='p' weight='bold' className='statistics__modal-body--content no-margin'>
                             {localize('Total stake')}
                         </Text>
-                        <Text as='p'>
-                            {localize(
-                                'Total stake since you last cleared your stats. Refreshing the page will also clear your stats.'
-                            )}
-                        </Text>
+                        <Text as='p'>{localize('Total stake since you last cleared your stats.')}</Text>
                         <Text as='p' weight='bold' className='statistics__modal-body--content'>
                             {localize('Total payout')}
                         </Text>
-                        <Text as='p'>
-                            {localize(
-                                'Total payout since you last cleared your stats. Refreshing the page will also clear your stats.'
-                            )}
-                        </Text>
+                        <Text as='p'>{localize('Total payout since you last cleared your stats.')}</Text>
                         <Text as='p' weight='bold' className='statistics__modal-body--content'>
                             {localize('No. of runs')}
                         </Text>
                         <Text as='p'>
                             {localize(
-                                'The number of times your bot has run since you last cleared your stats. Each run includes the execution of all the root blocks. Refreshing the page will also clear your stats.'
+                                'The number of times your bot has run since you last cleared your stats. Each run includes the execution of all the root blocks.'
                             )}
                         </Text>
                         <Text as='p' weight='bold' className='statistics__modal-body--content'>
                             {localize('Contracts lost')}
                         </Text>
                         <Text as='p'>
-                            {localize(
-                                'The number of contracts you have lost since you last cleared your stats. Refreshing the page will also clear your stats.'
-                            )}
+                            {localize('The number of contracts you have lost since you last cleared your stats.')}
                         </Text>
                         <Text as='p' weight='bold' className='statistics__modal-body--content'>
                             {localize('Contracts won')}
                         </Text>
                         <Text as='p'>
-                            {localize(
-                                'The number of contracts you have won since you last cleared your stats. Refreshing the page will also clear your stats.'
-                            )}
+                            {localize('The number of contracts you have won since you last cleared your stats.')}
                         </Text>
                         <Text as='p' weight='bold' className='statistics__modal-body--content'>
                             {localize('Profit/loss')}
                         </Text>
                         <Text as='p'>
                             {localize(
-                                'Your total profit/loss since you last cleared your stats. It is the difference between your total payout and your total stake. Refreshing the page will also clear your stats.'
+                                'Your total profit/loss since you last cleared your stats. It is the difference between your total payout and your total stake.'
                             )}
                         </Text>
                     </ThemedScrollbars>

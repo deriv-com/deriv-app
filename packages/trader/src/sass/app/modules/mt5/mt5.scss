@@ -44,9 +44,9 @@
     .dc-input {
         &__label {
             top: 1.2rem;
-
             @include mobile {
                 top: 0.9rem;
+                background-color: var(--fill-normal);
             }
         }
     }

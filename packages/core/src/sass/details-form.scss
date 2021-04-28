@@ -49,17 +49,21 @@
             }
             label {
                 top: 0.9rem;
+                background-color: var(--general-main-2);
+                @include mobile {
+                    background-color: var(--fill-normal);
+                }
             }
             @include desktop {
                 /* To get rid of ugly chrome autofill shadow dom-applied background color */
                 &__field {
                     &:-webkit-autofill {
-                        -webkit-box-shadow: 0 0 0 30px var(--general-main-2) inset !important;
+                        -webkit-box-shadow: 0 0 0 30px var(--fill-normal) inset !important;
 
                         &:hover,
                         &:focus,
                         &:active {
-                            -webkit-box-shadow: 0 0 0 30px var(--general-main-2) inset !important;
+                            -webkit-box-shadow: 0 0 0 30px var(--fill-normal) inset !important;
                         }
                     }
                 }
@@ -67,7 +71,7 @@
         }
         .dc-datepicker__input {
             .dc-input__field {
-                background-color: var(--general-main-2);
+                background-color: var(--fill-normal);
             }
         }
         .dc-select-native {

@@ -136,7 +136,7 @@ const App = observer(props => {
                         />
                     </div>
                 ) : (
-                    <Modal is_open={general_store.show_popup} className='p2p-nickname__dialog'>
+                    <Modal is_open={general_store.show_popup} width={440} className='p2p-nickname__dialog'>
                         <NicknameForm
                             handleClose={general_store.onNicknamePopupClose}
                             handleConfirm={general_store.toggleNicknamePopup}

@@ -45,7 +45,7 @@ const BuySellModal = observer(({ table_type, selected_ad, should_show_popup, set
     const [page_footer_parent, setPageFooterParent] = React.useState(
         <BuySellFormReceiveAmount
             is_sell_advert={buy_sell_store.is_sell_advert}
-            local_currency={local_currency || ''}
+            local_currency={local_currency}
             receive_amount={buy_sell_store.receive_amount}
         />
     );

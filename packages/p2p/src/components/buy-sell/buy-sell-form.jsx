@@ -7,7 +7,7 @@ import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import BuySellFormReceiveAmount from './buy-sell-form-recieve-amount.jsx';
+import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();

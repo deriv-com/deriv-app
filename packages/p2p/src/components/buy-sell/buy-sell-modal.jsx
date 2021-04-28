@@ -8,6 +8,7 @@ import { localize } from 'Components/i18next';
 import FormError from 'Components/form/error.jsx';
 import { useStores } from 'Stores';
 import BuySellForm from './buy-sell-form.jsx';
+import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import NicknameForm from '../nickname/nickname-form.jsx';
 import 'Components/buy-sell/buy-sell-modal.scss';
 
@@ -36,12 +37,18 @@ BuySellModalFooter.propTypes = {
 
 const BuySellModal = observer(({ table_type, selected_ad, should_show_popup, setShouldShowPopup }) => {
     const isMounted = useIsMounted();
-    const { general_store, order_store } = useStores();
+    const { buy_sell_store, general_store, order_store } = useStores();
+    const { local_currency } = buy_sell_store?.advert || {};
     const submitForm = React.useRef(() => {});
     const [error_message, setErrorMessage] = React.useState(null);
     const [is_submit_disabled, setIsSubmitDisabled] = React.useState(true);
-    const [page_footer_parent, setPageFooterParent] = React.useState(null);
-
+    const [page_footer_parent, setPageFooterParent] = React.useState(
+        <BuySellFormReceiveAmount
+            is_sell_advert={buy_sell_store.is_sell_advert}
+            local_currency={local_currency || ''}
+            receive_amount={buy_sell_store.receive_amount}
+        />
+    );
     // Some state is managed externally, ensure our host component is mounted
     // when those external components try to update it.
     const stateUpdateFnWrapper = updateFn => (...args) => {

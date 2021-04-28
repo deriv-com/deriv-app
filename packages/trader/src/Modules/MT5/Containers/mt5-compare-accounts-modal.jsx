@@ -340,7 +340,7 @@ const CompareAccountsModal = ({
         <Button
             className='mt5-dashboard__welcome-message--button'
             has_effect
-            text={localize('Compare accounts')}
+            text={localize(is_eu ? 'Account Information' : 'Compare accounts')}
             onClick={toggleCompareAccounts}
             secondary
             disabled={is_loading}

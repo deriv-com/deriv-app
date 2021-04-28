@@ -192,9 +192,10 @@ export default class GeneralStore extends BaseStore {
                 const hasStatuses = statuses => statuses.every(status => get_account_status.status.includes(status));
 
                 const is_cashier_locked = hasStatuses(['cashier_locked']);
-                const is_not_fully_authenticated = !hasStatuses(['authenticated']);
+                const is_not_fully_authenticated = !hasStatuses(['age_verification', 'authenticated']);
                 const is_fully_authed_but_poi_expired = hasStatuses(['authenticated', 'document_expired']);
                 const is_fully_authed_but_needs_fa = hasStatuses([
+                    'age_verification',
                     'authenticated',
                     'financial_assessment_not_complete',
                 ]);

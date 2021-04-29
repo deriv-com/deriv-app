@@ -214,6 +214,7 @@ const QuickStrategyForm = ({
                                         <Input
                                             {...field}
                                             className='quick-strategy__input'
+                                            label_className='quick-strategy__label'
                                             type='text'
                                             error={
                                                 initial_errors[field.name] ||
@@ -246,6 +247,7 @@ const QuickStrategyForm = ({
                                         <Input
                                             {...field}
                                             className='quick-strategy__input'
+                                            label_className='quick-strategy__label'
                                             type='text'
                                             error={
                                                 initial_errors[field.name] ||
@@ -276,6 +278,7 @@ const QuickStrategyForm = ({
                                         <Input
                                             {...field}
                                             className='quick-strategy__input'
+                                            label_className='quick-strategy__label'
                                             type='text'
                                             error={
                                                 initial_errors[field.name] ||
@@ -310,6 +313,7 @@ const QuickStrategyForm = ({
                                         <Input
                                             {...field}
                                             className='quick-strategy__input'
+                                            label_className='quick-strategy__label'
                                             type='text'
                                             error={
                                                 initial_errors[field.name] ||
@@ -340,6 +344,7 @@ const QuickStrategyForm = ({
                                         <Input
                                             {...field}
                                             className='quick-strategy__input'
+                                            label_className='quick-strategy__label'
                                             type='text'
                                             error={
                                                 initial_errors[field.name] ||

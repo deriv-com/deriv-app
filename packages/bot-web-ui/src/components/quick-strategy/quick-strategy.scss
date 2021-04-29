@@ -18,20 +18,15 @@
     }
 }
 
-.dc-input .dc-input {
-    &__field {
-        &:focus,
-        &:disabled,
-        &:not(:focus):not([value='']) {
-            outline: none;
+.dc-input .dc-input__field {
+    &:focus,
+    &:disabled,
+    &:not(:focus):not([value='']) {
+        outline: none;
 
-            & ~ label {
-                transform: translate(0, -1.8rem) scale(0.875);
-            }
+        & ~ label {
+            transform: translate(0, -1.8rem) scale(0.875);
         }
-    }
-    &__label {
-        font-size: var(--text-size-xxs);
     }
 }
 .quick-strategy {
@@ -47,6 +42,9 @@
     &__tab-content {
         height: calc(100vh - 330px);
         overflow: auto;
+    }
+    &__label {
+        font-size: var(--text-size-xxs) !important;
     }
     &__form {
         @include mobile {

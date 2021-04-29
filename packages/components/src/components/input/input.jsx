@@ -20,6 +20,7 @@ const Input = React.forwardRef(
             is_relative_hint,
             initial_character_count,
             label,
+            label_className,
             leading_icon,
             max_characters,
             trailing_icon,
@@ -88,7 +89,7 @@ const Input = React.forwardRef(
                             className: classNames('dc-input__trailing-icon', trailing_icon.props.className),
                         })}
                     {label && (
-                        <label className='dc-input__label' htmlFor={props.id}>
+                        <label className={classNames('dc-input__label', label_className)} htmlFor={props.id}>
                             {label}
                         </label>
                     )}

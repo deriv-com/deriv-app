@@ -19,17 +19,21 @@ const ResetOrUnlinkPasswordModal = ({ is_logged_in }) => {
         }
     );
 
-    React.useEffect(async () => {
-        if (is_logged_in) {
-            const data = await WS.wait('get_account_status');
-            if (data?.get_account_status?.social_identity_provider) {
-                dispatch({ is_unlinking: true, is_loading: false });
+    React.useEffect(() => {
+        async function waitForAccountStatus() {
+            if (is_logged_in) {
+                const data = await WS.wait('get_account_status');
+                if (data?.get_account_status?.social_identity_provider) {
+                    dispatch({ is_unlinking: true, is_loading: false });
+                } else {
+                    dispatch({ is_unlinking: false, is_loading: false });
+                }
             } else {
                 dispatch({ is_unlinking: false, is_loading: false });
             }
-        } else {
-            dispatch({ is_unlinking: false, is_loading: false });
         }
+
+        waitForAccountStatus();
     }, [is_logged_in]);
 
     if (state.is_loading) {

@@ -31,11 +31,11 @@ const Notification = ({ data, removeNotificationMessage }) => {
                 <NotificationBanner
                     header={data.header}
                     message={data.message}
-                    button_text={data.button_text}
+                    primary_btn={data.primary_btn}
+                    secondary_btn={{ ...data.secondary_btn, ...{ onClick: destroy } }}
                     img_src={data.img_src}
                     img_alt={data.img_alt}
-                    redirect_link={data.redirect_link}
-                    onClick={destroy}
+                    onClose={destroy}
                 />
             );
         default:

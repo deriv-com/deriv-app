@@ -205,18 +205,22 @@ export default class GeneralStore extends BaseStore {
                 const is_blocked_because_qa_asked_for_it =
                     is_not_fully_authenticated && hasStatuses(['financial_assessment_not_complete']);
 
-                if (is_fully_authed_but_needs_fa) {
-                    // First priority: Send user to Financial Assessment if they have to submit it.
+                if (is_cashier_locked) {
+                    // First priority: Block DP2P if cashier is locked
+                    this.setIsBlocked(true);
+                    this.setIsLoading(false);
+                    return;
+                } else if (is_fully_authed_but_needs_fa) {
+                    // Second priority: Send user to Financial Assessment if they have to submit it.
                     this.setIsHighRiskFullyAuthedWithoutFa(true);
                     this.setIsLoading(false);
                     return;
                 } else if (
-                    is_cashier_locked ||
                     is_not_fully_authenticated ||
                     is_fully_authed_but_poi_expired ||
                     is_blocked_because_qa_asked_for_it
                 ) {
-                    // Second priority: If user is blocked, don't bother asking them to submit FA.
+                    // Third priority: If user is blocked, don't bother asking them to submit FA.
                     this.setIsBlocked(true);
                     this.setIsLoading(false);
                 } else if (is_fully_authed_and_does_not_need_fa) {

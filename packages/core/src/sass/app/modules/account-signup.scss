@@ -37,9 +37,6 @@
         & .dc-checkbox__box {
             align-self: flex-start;
             margin: 0.1rem 0.8rem 0;
-            @include mobile {
-                margin: 0 0.8rem;
-            }
         }
         & .dc-checkbox__label {
             font-size: 1.2rem;

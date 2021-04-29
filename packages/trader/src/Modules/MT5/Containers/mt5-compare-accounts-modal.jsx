@@ -336,7 +336,14 @@ const CompareAccountsModal = ({
     is_eu_country,
     toggleCompareAccounts,
 }) => {
-    const mt5AccountButtonLabel = is_eu ? 'Account Information' : 'Compare accounts';
+    const mt5Accounts = [
+        landing_companies?.mt_gaming_company?.financial,
+        landing_companies?.mt_financial_company?.financial,
+        landing_companies?.mt_financial_company?.financial_stp,
+    ];
+
+    const mt5AccountButtonLabel =
+        mt5Accounts.filter(e => e != undefined).length == 1 ? 'Account Information' : 'Compare accounts';
 
     return (
         <div className='mt5-compare-accounts-modal__wrapper'>

@@ -38,10 +38,7 @@ const MT5DemoAccountDisplay = ({
             <Loading />
         </div>
     ) : (
-        <div
-            className='mt5-demo-accounts-display'
-            style={{ justifyContent: should_center_cards ? 'center' : 'space-between' }}
-        >
+        <div className='mt5-demo-accounts-display'>
             {(landing_companies?.mt_gaming_company?.financial || !is_logged_in) && (
                 <MT5AccountCard
                     has_mt5_account={has_mt5_account}

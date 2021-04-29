@@ -345,6 +345,7 @@ export default class QuickStrategyStore {
 
         if (this.selected_trade_type && trade_type_options.some(e => e.value === this.selected_trade_type.value)) {
             first_trade_type = this.selected_trade_type;
+            first_trade_type.text = this.getFieldValue(this.trade_type_dropdown, this.selected_trade_type.value);
         } else {
             delete this.qs_cache.selected_trade_type;
         }

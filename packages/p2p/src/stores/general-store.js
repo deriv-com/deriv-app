@@ -172,6 +172,7 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     onMount() {
         this.setIsLoading(true);
+        this.setIsHighRiskFullyAuthedWithoutFa(false);
 
         this.disposeUserBarredReaction = reaction(
             () => this.user_blocked_until,
@@ -191,7 +192,7 @@ export default class GeneralStore extends BaseStore {
             if (!error && get_account_status.risk_classification === 'high') {
                 const hasStatuses = statuses => statuses.every(status => get_account_status.status.includes(status));
 
-                const is_cashier_locked = hasStatuses(['cashier_locked']);
+                const is_cashier_locked = !!hasStatuses(['cashier_locked']);
 
                 const is_fully_authenticated = hasStatuses(['age_verification', 'authenticated']);
                 const is_not_fully_authenticated = !hasStatuses(['age_verification', 'authenticated']);
@@ -209,7 +210,6 @@ export default class GeneralStore extends BaseStore {
                     // First priority: Block DP2P if cashier is locked
                     this.setIsBlocked(true);
                     this.setIsLoading(false);
-                    return;
                 } else if (is_fully_authed_but_needs_fa) {
                     // Second priority: Send user to Financial Assessment if they have to submit it.
                     this.setIsHighRiskFullyAuthedWithoutFa(true);

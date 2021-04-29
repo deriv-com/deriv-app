@@ -28,7 +28,12 @@ const DateOfBirthField = props => (
         {({ field: { value }, form: { setFieldValue, errors, touched, setTouched } }) => (
             <DateOfBirthPicker
                 error={touched.date_of_birth && errors.date_of_birth}
-                onBlur={() => setTouched({ date_of_birth: true })}
+                onBlur={() =>
+                    setTouched({
+                        ...touched,
+                        date_of_birth: true,
+                    })
+                }
                 onChange={({ target }) =>
                     setFieldValue(
                         'date_of_birth',

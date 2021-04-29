@@ -25,7 +25,9 @@ const RedirectToLoginModal = ({ is_logged_in, logout, disableApp, enableApp, is_
 
     const showModal = () => {
         setVisible(true);
-        redirectToLogin(false, getLanguage(), false);
+        if (window.localStorage.getItem('is_redirecting') !== 'true') {
+            redirectToLogin(false, getLanguage(), false, 3000);
+        }
     };
 
     React.useEffect(() => {

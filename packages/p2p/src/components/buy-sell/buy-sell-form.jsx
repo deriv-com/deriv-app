@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
@@ -150,11 +149,7 @@ const BuySellForm = props => {
                                             ))}
                                     </div>
                                 </div>
-                                <div
-                                    className={classNames('buy-sell__modal-field-wrapper', {
-                                        'buy-sell__modal-field-wrapper--no-flex': isMobile(),
-                                    })}
-                                >
+                                <div className='buy-sell__modal-field-wrapper'>
                                     <Field name='amount'>
                                         {({ field }) => (
                                             <Input

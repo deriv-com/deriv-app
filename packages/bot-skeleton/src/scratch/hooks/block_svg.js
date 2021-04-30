@@ -243,8 +243,6 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
             .filter(icon => !(icon instanceof Blockly.ScratchBlockComment))
             .forEach(icon => icon.setVisible(false));
 
-        const text = this.toString(Blockly.COLLAPSE_CHARS);
-
         // Ensure class persists through collapse. Falls back to first
         // field that has a class. Doesn't work when multiple
         // field_labels on a block have different classes. So far we
@@ -264,7 +262,6 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
         const dropdown_path =
             this.workspace.options.pathToMedia +
             (isDarkRgbColour(this.getColour()) ? 'dropdown-arrow.svg' : 'dropdown-arrow-dark.svg');
-        const field_label = new Blockly.FieldLabel(text, field_class);
         const field_expand_icon = new Blockly.FieldImage(dropdown_path, 16, 16, localize('Expand'), () =>
             this.setCollapsed(false)
         );
@@ -280,6 +277,9 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
                 .appendField(field_expand_icon)
                 .init();
         } else {
+            const text = this.toString(Blockly.COLLAPSE_CHARS);
+            const field_label = new Blockly.FieldLabel(text, field_class);
+
             this.appendDummyInput(COLLAPSED_INPUT_NAME).appendField(field_label).appendField(field_expand_icon).init();
         }
     } else {

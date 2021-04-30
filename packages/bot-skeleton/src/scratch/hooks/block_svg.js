@@ -267,12 +267,11 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
         );
 
         if (this.type === 'procedures_defreturn' || this.type === 'procedures_defnoreturn') {
-            const funcLocale = this.getInput('').fieldRow[0].text_;
             const funcName = this.getFieldValue('NAME');
             const args = ` (${this.arguments.join(', ')})`;
 
             this.appendDummyInput(COLLAPSED_INPUT_NAME)
-                .appendField(new Blockly.FieldLabel(funcLocale, field_class))
+                .appendField(new Blockly.FieldLabel(localize('function'), field_class))
                 .appendField(new Blockly.FieldLabel(funcName + args, 'header__title'))
                 .appendField(field_expand_icon)
                 .init();

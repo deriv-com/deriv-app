@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Loading, Button, InfiniteDataList, Div100vhContainer } from '@deriv/components';
+import { Loading, Button, Text, InfiniteDataList, Div100vhContainer } from '@deriv/components';
 import { reaction } from 'mobx';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
@@ -68,7 +68,10 @@ const OrderTableContent = () => {
     }
 
     return (
-        <Empty has_tabs icon='IcNoOrder' title={localize('You have no orders.')}>
+        <Empty has_tabs icon='IcNoOrder'>
+            <Text size='s' weight='bold'>
+                <Localize i18n_default_text='You have no orders.' />
+            </Text>
             {general_store.is_active_tab && (
                 <Button primary large className='p2p-empty__button' onClick={() => general_store.handleTabClick(0)}>
                     <Localize i18n_default_text='Buy/Sell' />

@@ -23,6 +23,10 @@ const getBuySellFilters = () => [
     },
 ];
 
+const preparedLocalize = text => {
+    return localize(text);
+};
+
 const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
     const { buy_sell_store } = useStores();
     const [is_no_match_tooltip_open, setIsNoMatchTooltipOpen] = React.useState(false);
@@ -69,7 +73,7 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
             </div>
             <div className='buy-sell__header-match-ads'>
                 <Checkbox
-                    label={localize('Show the matching ads')}
+                    label={preparedLocalize('Show the matching ads')}
                     onChange={() => buy_sell_store.setShouldUseClientLimits(!buy_sell_store.should_use_client_limits)}
                     value={buy_sell_store.should_use_client_limits}
                 />

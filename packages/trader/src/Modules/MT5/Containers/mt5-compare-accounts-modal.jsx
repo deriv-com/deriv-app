@@ -342,8 +342,7 @@ const CompareAccountsModal = ({
         landing_companies?.mt_financial_company?.financial_stp,
     ];
 
-    const mt5AccountButtonLabel =
-        mt5Accounts.filter(Boolean).length == 1 ? 'Account Information' : 'Compare accounts';
+    const mt5AccountButtonLabel = mt5Accounts.filter().length === 1 ? 'Account Information' : 'Compare accounts';
 
     return (
         <div className='mt5-compare-accounts-modal__wrapper'>

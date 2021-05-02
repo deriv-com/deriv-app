@@ -343,7 +343,7 @@ const CompareAccountsModal = ({
     ];
 
     const mt5AccountButtonLabel =
-        mt5Accounts.filter(e => e != undefined).length == 1 ? 'Account Information' : 'Compare accounts';
+        mt5Accounts.filter(Boolean).length == 1 ? 'Account Information' : 'Compare accounts';
 
     return (
         <div className='mt5-compare-accounts-modal__wrapper'>

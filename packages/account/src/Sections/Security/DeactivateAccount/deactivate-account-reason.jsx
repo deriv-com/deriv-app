@@ -19,28 +19,28 @@ const initial_form = {
     'The platforms lack key features or functionality': false,
     'Customer service was unsatisfactory': false,
     "I'm deactivating my account for other reasons": false,
-    otherTradingPlatforms: '',
-    doToImprove: '',
+    other_trading_platforms: '',
+    do_to_improve: '',
 };
 
 const preparingReason = values => {
     let selected_reasons = selectedReasons(values)
         .map(val => val[0])
         .toString();
-    const is_other_trading_platform__has_value = !!values.otherTradingPlatforms.length;
-    const is_to_do_improve_has_value = !!values.doToImprove.length;
+    const is_other_trading_platform__has_value = !!values.other_trading_platforms.length;
+    const is_to_do_improve_has_value = !!values.do_to_improve.length;
     if (is_other_trading_platform__has_value) {
-        selected_reasons = `${selected_reasons}, ${values.otherTradingPlatforms}`;
+        selected_reasons = `${selected_reasons}, ${values.other_trading_platforms}`;
     }
     if (is_to_do_improve_has_value) {
-        selected_reasons = `${selected_reasons}, ${values.doToImprove}`;
+        selected_reasons = `${selected_reasons}, ${values.do_to_improve}`;
     }
     return selected_reasons;
 };
 
 const selectedReasons = values => {
     return Object.entries(values).filter(
-        ([key, value]) => !['otherTradingPlatforms', 'doToImprove'].includes(key) && value
+        ([key, value]) => !['other_trading_platforms', 'do_to_improve'].includes(key) && value
     );
 };
 
@@ -130,10 +130,10 @@ class DeactivateAccountReason extends React.Component {
         if (!selected_reason_count) {
             error.empty_reason = localize('Please select at least one reason');
         }
-        if ((values.otherTradingPlatforms + values.doToImprove).length > 0 || selected_reason_count) {
+        if ((values.other_trading_platforms + values.do_to_improve).length > 0 || selected_reason_count) {
             const final_value = preparingReason(values);
 
-            const text_inputs_length = values.otherTradingPlatforms.length + values.doToImprove.length;
+            const text_inputs_length = values.other_trading_platforms.length + values.do_to_improve.length;
             let remaining_characters = character_limit_no - text_inputs_length;
 
             remaining_characters = remaining_characters >= 0 ? remaining_characters : 0;
@@ -365,7 +365,7 @@ class DeactivateAccountReason extends React.Component {
                                     />
                                 )}
                             </Field>
-                            <Field name='otherTradingPlatforms'>
+                            <Field name='other_trading_platforms'>
                                 {({ field }) => (
                                     <Input
                                         {...field}
@@ -376,8 +376,8 @@ class DeactivateAccountReason extends React.Component {
                                         placeholder={localize(
                                             'If you don’t mind sharing, which other trading platforms do you use?'
                                         )}
-                                        name='otherTradingPlatforms'
-                                        value={values.otherTradingPlatforms}
+                                        name='other_trading_platforms'
+                                        value={values.other_trading_platforms}
                                         max_characters={character_limit_no}
                                         onChange={handleChange}
                                         onKeyDown={this.handleInputKeyDown}
@@ -386,7 +386,7 @@ class DeactivateAccountReason extends React.Component {
                                 )}
                             </Field>
 
-                            <Field name='doToImprove'>
+                            <Field name='do_to_improve'>
                                 {({ field }) => (
                                     <Input
                                         {...field}
@@ -395,8 +395,8 @@ class DeactivateAccountReason extends React.Component {
                                         autoComplete='off' // prevent chrome autocomplete
                                         type='textarea'
                                         placeholder={localize('What could we do to improve?')}
-                                        name='doToImprove'
-                                        value={values.doToImprove}
+                                        name='do_to_improve'
+                                        value={values.do_to_improve}
                                         max_characters={character_limit_no}
                                         onChange={handleChange}
                                         onKeyDown={this.handleInputKeyDown}

@@ -377,6 +377,7 @@ export default class QuickStrategyStore {
         let first_duration_unit = duration_options[0];
         if (this.selected_duration_unit && duration_options.some(e => e.value === this.selected_duration_unit.value)) {
             first_duration_unit = this.selected_duration_unit;
+            first_duration_unit.text = this.getFieldValue(duration_options, this.selected_duration_unit.value);
         } else {
             delete this.qs_cache.selected_duration_unit;
         }

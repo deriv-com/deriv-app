@@ -1148,15 +1148,8 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    async setIsLandingCompanyLoaded() {
-        WS.wait('landing_company').then(() => {
-            this.is_landing_company_loaded = true;
-        });
-    }
-
-    @action.bound
     responseLandingCompany(response) {
-        this.setIsLandingCompanyLoaded();
+        this.is_landing_company_loaded = true;
         this.landing_companies = response.landing_company;
         this.setRealityCheck();
     }

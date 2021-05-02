@@ -89,7 +89,7 @@ const Cashier = ({
 
     const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: location.pathname }).default;
 
-    if (!is_logged_in && is_logging_in && is_landing_company_loaded) {
+    if (!is_logged_in && is_logging_in && !is_landing_company_loaded) {
         <Loading is_fullscreen />;
     }
     return (

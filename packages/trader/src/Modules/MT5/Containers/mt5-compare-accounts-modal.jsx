@@ -343,14 +343,14 @@ const CompareAccountsModal = ({
     ];
 
     const mt5_account_button_label =
-        mt5_accounts.filter(Boolean).length === 1 ? 'Account Information' : 'Compare accounts';
+        mt5_accounts.filter(Boolean).length === 1 ? localize('Account Information') : localize('Compare accounts');
 
     return (
         <div className='mt5-compare-accounts-modal__wrapper'>
             <Button
                 className='mt5-dashboard__welcome-message--button'
                 has_effect
-                text={localize(mt5_account_button_label)}
+                text={mt5_account_button_label}
                 onClick={toggleCompareAccounts}
                 secondary
                 disabled={is_loading}
@@ -362,7 +362,7 @@ const CompareAccountsModal = ({
                         disableApp={disableApp}
                         enableApp={enableApp}
                         is_open={is_compare_accounts_visible}
-                        title={localize('Compare accounts')}
+                        title={mt5_account_button_label}
                         toggleModal={toggleCompareAccounts}
                         type='button'
                         height='696px'
@@ -379,7 +379,7 @@ const CompareAccountsModal = ({
                 <MobileWrapper>
                     <MobileDialog
                         portal_element_id='deriv_app'
-                        title={localize('Compare accounts')}
+                        title={mt5_account_button_label}
                         wrapper_classname='mt5-dashboard__compare-accounts'
                         visible={is_compare_accounts_visible}
                         onClose={toggleCompareAccounts}

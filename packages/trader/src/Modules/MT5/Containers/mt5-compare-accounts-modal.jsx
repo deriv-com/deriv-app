@@ -336,20 +336,20 @@ const CompareAccountsModal = ({
     is_eu_country,
     toggleCompareAccounts,
 }) => {
-    const mt5Accounts = [
+    const mt5_accounts = [
         landing_companies?.mt_gaming_company?.financial,
         landing_companies?.mt_financial_company?.financial,
         landing_companies?.mt_financial_company?.financial_stp,
     ];
 
-    const mt5AccountButtonLabel = mt5Accounts.filter().length === 1 ? 'Account Information' : 'Compare accounts';
+    const mt5_account_button_label = mt5_accounts.filter(Boolean).length === 1 ? 'Account Information' : 'Compare accounts';
 
     return (
         <div className='mt5-compare-accounts-modal__wrapper'>
             <Button
                 className='mt5-dashboard__welcome-message--button'
                 has_effect
-                text={localize(mt5AccountButtonLabel)}
+                text={localize(mt5_account_button_label)}
                 onClick={toggleCompareAccounts}
                 secondary
                 disabled={is_loading}

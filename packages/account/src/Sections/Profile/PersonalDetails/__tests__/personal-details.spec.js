@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { jest, test } from '@jest/globals';
 import React from 'react';
 import { cleanup, render, waitForElementToBeRemoved, waitFor } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
@@ -52,3 +52,11 @@ describe('<PersonalDetailsForm />', () => {
         );
     });
 });
+
+test.todo('SVG landing company (Desktop View)');
+
+test.todo('IOM landing company (Desktop View)');
+
+test.todo('MaltaInvest landing company (Desktop View)');
+
+test.todo('SignUp flow (Desktop View)');

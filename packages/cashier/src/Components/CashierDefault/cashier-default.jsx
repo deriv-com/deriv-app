@@ -90,7 +90,7 @@ const CashierDefault = ({
         return options;
     };
 
-    if ((is_switching || accounts_list.length === 0) && !is_landing_company_loaded)
+    if (is_switching || accounts_list.length === 0 || !is_landing_company_loaded)
         return <Loading className='cashier-default__loader' />;
 
     return (

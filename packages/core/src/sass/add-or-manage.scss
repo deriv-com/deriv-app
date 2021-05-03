@@ -1,8 +1,8 @@
 .add-or-manage {
-    flex-direction: row; /* fix for Safari */
+    flex-direction: row;
+    /* fix for Safari */
     flex-wrap: wrap;
     height: 100%;
-
     .dc-tabs__content {
         display: flex;
         flex-direction: column;
@@ -40,6 +40,7 @@
             padding: 10px;
             background-color: var(--general-section-1);
             border-radius: $BORDER_RADIUS;
+            text-align: center;
         }
     }
     &__with-margin--is-header {
@@ -66,10 +67,8 @@
             right: 0;
         }
     }
-
     @include mobile {
         flex-wrap: unset;
-
         & .account-wizard__btn-area {
             & .dc-btn,
             & .dc-btn:last-child {
@@ -109,7 +108,6 @@
             width: 100%;
             background-color: var(--fill-normal);
             border: 2px solid var(--general-section-1);
-
             button {
                 width: 100%;
             }
@@ -125,25 +123,21 @@
     position: relative;
     flex-grow: 1;
     padding: 2.4rem;
-
     &__close {
         position: absolute;
         cursor: pointer;
         top: 1.8rem;
         right: 1.8rem;
-
         @include mobile {
             // margin: 0.8rem;
         }
     }
-
     &__header {
         display: flex;
         align-items: center;
         width: auto;
         justify-content: center;
         position: relative;
-
         .bottom-right-overlay {
             position: absolute;
             bottom: 2rem;
@@ -157,13 +151,11 @@
         }
         svg {
             display: block;
-
             &.dc-icon {
                 &--red {
                     margin: 0 1rem;
                 }
             }
-
             @include mobile {
                 max-width: 96px;
                 height: auto;
@@ -173,19 +165,16 @@
         &--large {
             width: auto;
             flex-grow: 1;
-
             .bottom-right-overlay {
                 width: 4.8rem;
                 height: 4.8rem;
                 right: -1rem;
                 bottom: -1rem;
-
                 @include mobile {
                     max-width: 3.6rem;
                     height: auto;
                 }
             }
-
             @include mobile {
                 flex-grow: 0;
             }
@@ -218,7 +207,6 @@
     }
     &__body {
         flex-grow: 1;
-
         &--no-grow {
             flex-grow: 0;
             margin-bottom: 3.2rem;
@@ -227,7 +215,6 @@
     &__message {
         &-header {
             margin: 1rem 0 0.8rem;
-
             @include mobile {
                 line-height: 24px;
                 margin-top: 1.6rem;
@@ -235,7 +222,6 @@
         }
         &-text {
             padding: 0.2rem 0;
-
             @include mobile {
                 padding: 0 1rem;
                 line-height: 2rem;
@@ -247,7 +233,6 @@
             margin: 0 0.4rem;
             height: 4rem;
             border-width: 2px;
-
             @include mobile {
                 margin: 0 0.8rem;
                 width: 15.6rem;
@@ -258,7 +243,6 @@
             align-items: center;
         }
     }
-
     @include desktop {
         width: 38.4rem;
         height: 35.2rem;

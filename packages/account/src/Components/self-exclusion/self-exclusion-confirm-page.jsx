@@ -12,9 +12,9 @@ const SelfExclusionConfirmPage = () => {
     );
     const { isSubmitting, values } = useFormikContext();
 
-    if (state.show_confirm) {
-        return <SelfExclusionConfirmLimits />;
-    }
+    // if (state.show_confirm) {
+    //     return <SelfExclusionConfirmLimits />;
+    // }
 
     return (
         <React.Fragment>

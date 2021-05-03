@@ -24,10 +24,18 @@ export const getAllowedLanguages = () => {
 export const getURL = lang => urlForLanguage(lang);
 
 export const changeLanguage = key => {
+    const request = {
+        set_settings: 1,
+        preferred_language: key,
+    };
     SocketCache.clear();
     if (key === 'EN') {
         window.localStorage.setItem('i18n_language', key);
     }
-    WS.authorized;
+    WS.authorized.setSettings(request).then(response => {
+        if (response.error) {
+            console.log(error); //eslint-disable-line
+        }
+    });
     window.location.replace(getURL(key));
 };

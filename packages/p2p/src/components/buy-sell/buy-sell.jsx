@@ -1,5 +1,5 @@
 import React from 'react';
-import { useIsMounted } from '@deriv/shared';
+import { useSafeState } from '@deriv/components';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -14,9 +14,8 @@ import BuySellTable from './buy-sell-table.jsx';
 import './buy-sell.scss';
 
 const BuySell = () => {
-    const isMounted = useIsMounted();
     const { buy_sell_store } = useStores();
-    const [is_toggle_visible, setIsToggleVisible] = React.useState(true);
+    const [is_toggle_visible, setIsToggleVisible] = useSafeState(true);
     const previous_scroll_top = React.useRef(0);
 
     React.useEffect(() => {
@@ -27,11 +26,12 @@ const BuySell = () => {
             disposeIsListedReaction();
             disposeAdvertIntervalReaction();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onScroll = event => {
         if (!buy_sell_store.show_advertiser_page) {
-            if (isMounted() && event.target.scrollTop !== previous_scroll_top.current) {
+            if (event.target.scrollTop !== previous_scroll_top.current) {
                 const is_scrolling_down = event.target.scrollTop > previous_scroll_top.current;
                 setIsToggleVisible(!is_scrolling_down);
             }

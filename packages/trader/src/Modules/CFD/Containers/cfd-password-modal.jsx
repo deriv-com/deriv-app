@@ -217,7 +217,12 @@ const CFDPasswordForm = props => {
                         )}
                         {props.should_set_trading_password && (
                             <Text size='xs' as='p'>
-                                <Localize i18n_default_text='Use this to log in and trade on DMT5.' />
+                                <Localize
+                                    i18n_default_text='Use this to log in and trade on {{platform}}.'
+                                    values={{
+                                        platform: props.platform === 'mt5' ? localize('DMT5') : localize('Deriv X'),
+                                    }}
+                                />
                             </Text>
                         )}
                         {props.is_real_financial_stp && props.is_bvi && (
@@ -447,6 +452,7 @@ const CFDPasswordModal = ({
             should_show_server_form={should_show_server_form}
             onForgotPassword={handleForgotPassword}
             submitPassword={submitPassword}
+            platform={platform}
         />
     );
 

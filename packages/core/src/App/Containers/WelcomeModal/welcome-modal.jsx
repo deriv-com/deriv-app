@@ -55,7 +55,9 @@ const WelcomeColumn = ({
                                     size='xxs'
                                     align='left'
                                     className='welcome-column__platform__description'
-                                />
+                                >
+                                    {platform.description}
+                                </Text>
                             </div>
                             <div
                                 className={classNames('welcome-column__platform-footer', {

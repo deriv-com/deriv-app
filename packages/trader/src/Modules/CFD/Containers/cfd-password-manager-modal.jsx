@@ -139,11 +139,11 @@ const CFDPasswordSuccessMessage = ({ toggleModal, is_investor }) => (
     </div>
 );
 
-const MT5PasswordManagerTabContentWrapper = ({ multi_step_ref, steps }) => (
+const CFDPasswordManagerTabContentWrapper = ({ multi_step_ref, steps }) => (
     <MultiStep ref={multi_step_ref} steps={steps} className='cfd-password-manager' lbl_previous={localize('Back')} />
 );
 
-const TradingPasswordManager = ({ status }) => {
+const TradingPasswordManager = ({ status, platform }) => {
     const is_existing_user = status?.includes('trading_password_required');
     return (
         <div className='cfd-password-manager__trading-password-wrapper'>
@@ -160,7 +160,12 @@ const TradingPasswordManager = ({ status }) => {
                     />
                 )}
                 {is_existing_user && (
-                    <Localize i18n_default_text='You can now create one secure password to log into all your DMT5 accounts.' />
+                    <Localize
+                        i18n_default_text='You can now create one secure password to log into all your {{platform}} accounts.'
+                        values={{
+                            platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
+                        }}
+                    />
                 )}
             </Text>
             <NavLink
@@ -281,13 +286,14 @@ const InvestorPasswordManager = ({
     );
 };
 
-const MT5PasswordManagerTabContent = ({
+const CFDPasswordManagerTabContent = ({
     toggleModal,
     selected_login,
     email,
     setPasswordType,
     multi_step_ref,
     account_status,
+    platform,
 }) => {
     const [active_tab_index, setActiveTabIndex] = React.useState(0);
     const [error_message_main, setErrorMessageMain] = React.useState('');
@@ -369,7 +375,7 @@ const MT5PasswordManagerTabContent = ({
                 <div label={localize('Trading password')}>
                     <DesktopWrapper>
                         <ThemedScrollbars height={password_container_height} is_bypassed={isMobile()} autohide={false}>
-                            <TradingPasswordManager status={account_status.status} />
+                            <TradingPasswordManager status={account_status.status} platform={platform} />
                         </ThemedScrollbars>
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -382,6 +388,7 @@ const MT5PasswordManagerTabContent = ({
                                 error_message_main={error_message_main}
                                 setPasswordType={setPasswordType}
                                 multi_step_ref={multi_step_ref}
+                                platform={platform}
                             />
                         </Div100vhContainer>
                     </MobileWrapper>
@@ -419,7 +426,7 @@ const MT5PasswordManagerTabContent = ({
     );
 };
 
-const MT5PasswordManagerModal = ({
+const CFDPasswordManagerModal = ({
     account_status,
     enableApp,
     email,
@@ -443,7 +450,7 @@ const MT5PasswordManagerModal = ({
     const steps = [
         {
             component: (
-                <MT5PasswordManagerTabContent
+                <CFDPasswordManagerTabContent
                     account_status={account_status}
                     email={email}
                     selected_login={selected_login}
@@ -451,6 +458,7 @@ const MT5PasswordManagerModal = ({
                     password_type={password_type}
                     setPasswordType={setPasswordType}
                     multi_step_ref={multi_step_ref}
+                    platform={platform}
                 />
             ),
         },
@@ -490,7 +498,7 @@ const MT5PasswordManagerModal = ({
                     height='688px'
                     width='904px'
                 >
-                    <MT5PasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
+                    <CFDPasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
@@ -500,20 +508,21 @@ const MT5PasswordManagerModal = ({
                     header={localize('Manage password')}
                     onClickClose={toggleModal}
                 >
-                    <MT5PasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
+                    <CFDPasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
                 </PageOverlay>
             </MobileWrapper>
         </React.Suspense>
     );
 };
 
-MT5PasswordManagerModal.propTypes = {
+CFDPasswordManagerModal.propTypes = {
     email: PropTypes.string,
     is_visible: PropTypes.bool,
     selected_account: PropTypes.string,
     selected_server: PropTypes.string,
     selected_login: PropTypes.string,
     toggleModal: PropTypes.func,
+    platform: PropTypes.string,
 };
 
 export default connect(({ modules: { cfd }, client, ui }) => ({
@@ -522,4 +531,4 @@ export default connect(({ modules: { cfd }, client, ui }) => ({
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
     sendVerifyEmail: cfd.sendVerifyEmail,
-}))(MT5PasswordManagerModal);
+}))(CFDPasswordManagerModal);

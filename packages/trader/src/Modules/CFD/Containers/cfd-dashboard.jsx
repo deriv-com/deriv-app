@@ -18,7 +18,7 @@ import { general_messages } from '../Constants/cfd-shared-strings';
 import CFDFinancialStpPendingDialog from '../Components/cfd-financial-stp-pending-dialog.jsx';
 import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display.jsx';
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display.jsx';
-import { getPlatformMt5DownloadLink } from '../Helpers/constants';
+import { getPlatformMt5DownloadLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
 import 'Sass/app/modules/mt5/cfd-dashboard.scss';
 
 const LoadTab = ({ children, is_loading, loading_component, ...props }) => {
@@ -315,14 +315,22 @@ class CFDDashboard extends React.Component {
                                         </div>
                                         <div className='cfd-dashboard__download-center-options--mobile-links'>
                                             <a
-                                                href={getPlatformMt5DownloadLink('android')}
+                                                href={
+                                                    platform === 'mt5'
+                                                        ? getPlatformMt5DownloadLink('android')
+                                                        : getPlatformDXTradeDownloadLink('android')
+                                                }
                                                 target='_blank'
                                                 rel='noopener noreferrer'
                                             >
                                                 <Icon icon='IcInstallationGoogle' width={135} height={40} />
                                             </a>
                                             <a
-                                                href={getPlatformMt5DownloadLink('ios')}
+                                                href={
+                                                    platform === 'mt5'
+                                                        ? getPlatformMt5DownloadLink('ios')
+                                                        : getPlatformDXTradeDownloadLink('ios')
+                                                }
                                                 target='_blank'
                                                 rel='noopener noreferrer'
                                             >

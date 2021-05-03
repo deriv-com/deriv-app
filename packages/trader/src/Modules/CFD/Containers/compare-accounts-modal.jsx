@@ -9,6 +9,7 @@ import {
     UILoader,
     Text,
     ThemedScrollbars,
+    Div100vhContainer,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -408,73 +409,77 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
     const show_risk_message = platform === 'mt5' || !show_eu_related;
 
     return (
-        <ThemedScrollbars
-            className='cfd-compare-accounts'
-            style={{
-                '--cfd-compare-accounts-template-columns': template_columns,
-            }}
-        >
-            <Table className='cfd-compare-accounts__table'>
-                <Table.Header>
-                    <Table.Row className='cfd-compare-accounts__table-row'>
-                        <Table.Head />
-                        {is_logged_in ? (
-                            <React.Fragment>
-                                {landing_companies?.mt_gaming_company?.financial && (
-                                    <Table.Head>{localize('Synthetic')}</Table.Head>
+        <Div100vhContainer height_offset='40px'>
+            <ThemedScrollbars
+                className='cfd-compare-accounts'
+                style={{
+                    '--cfd-compare-accounts-template-columns': template_columns,
+                }}
+            >
+                <div className='cfd-compare-accounts__table-wrapper'>
+                    <Table className='cfd-compare-accounts__table'>
+                        <Table.Header>
+                            <Table.Row className='cfd-compare-accounts__table-row'>
+                                <Table.Head />
+                                {is_logged_in ? (
+                                    <React.Fragment>
+                                        {landing_companies?.mt_gaming_company?.financial && (
+                                            <Table.Head>{localize('Synthetic')}</Table.Head>
+                                        )}
+                                        {landing_companies?.mt_financial_company?.financial && (
+                                            <Table.Head>
+                                                {localize('Financial')}
+                                                <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
+                                                    *
+                                                </Text>
+                                            </Table.Head>
+                                        )}
+                                        {landing_companies?.mt_financial_company?.financial_stp && platform === 'mt5' && (
+                                            <Table.Head>
+                                                {localize('Financial STP')}
+                                                <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
+                                                    *
+                                                </Text>
+                                            </Table.Head>
+                                        )}
+                                    </React.Fragment>
+                                ) : (
+                                    <React.Fragment>
+                                        <Table.Head>{localize('Synthetic')}</Table.Head>
+                                        <Table.Head>
+                                            {localize('Financial')}
+                                            <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
+                                                *
+                                            </Text>
+                                        </Table.Head>
+                                        {platform === 'mt5' && (
+                                            <Table.Head>
+                                                {localize('Financial STP')}
+                                                <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
+                                                    *
+                                                </Text>
+                                            </Table.Head>
+                                        )}
+                                    </React.Fragment>
                                 )}
-                                {landing_companies?.mt_financial_company?.financial && (
-                                    <Table.Head>
-                                        {localize('Financial')}
-                                        <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
-                                            *
-                                        </Text>
-                                    </Table.Head>
-                                )}
-                                {landing_companies?.mt_financial_company?.financial_stp && platform === 'mt5' && (
-                                    <Table.Head>
-                                        {localize('Financial STP')}
-                                        <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
-                                            *
-                                        </Text>
-                                    </Table.Head>
-                                )}
-                            </React.Fragment>
-                        ) : (
-                            <React.Fragment>
-                                <Table.Head>{localize('Synthetic')}</Table.Head>
-                                <Table.Head>
-                                    {localize('Financial')}
-                                    <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
-                                        *
-                                    </Text>
-                                </Table.Head>
-                                {platform === 'mt5' && (
-                                    <Table.Head>
-                                        {localize('Financial STP')}
-                                        <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
-                                            *
-                                        </Text>
-                                    </Table.Head>
-                                )}
-                            </React.Fragment>
-                        )}
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                    {cols.map((row, i) => (
-                        <Table.Row key={i} className='cfd-compare-accounts__table-row'>
-                            {Object.keys(row).map((col, j) => (
-                                <Table.Cell key={j} fixed={j === 0}>
-                                    {row[col]}
-                                </Table.Cell>
+                            </Table.Row>
+                        </Table.Header>
+                        <Table.Body>
+                            {cols.map((row, i) => (
+                                <Table.Row key={i} className='cfd-compare-accounts__table-row'>
+                                    {Object.keys(row).map((col, j) => (
+                                        <Table.Cell key={j} fixed={j === 0}>
+                                            {row[col]}
+                                        </Table.Cell>
+                                    ))}
+                                </Table.Row>
                             ))}
-                        </Table.Row>
-                    ))}
-                </Table.Body>
-            </Table>
-            <CFDCompareAccountHint platform={platform} show_risk_message={show_risk_message} />
-        </ThemedScrollbars>
+                        </Table.Body>
+                    </Table>
+                </div>
+                <CFDCompareAccountHint platform={platform} show_risk_message={show_risk_message} />
+            </ThemedScrollbars>
+        </Div100vhContainer>
     );
 };
 

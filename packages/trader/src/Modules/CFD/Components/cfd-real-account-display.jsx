@@ -277,18 +277,14 @@ const CFDRealAccountDisplay = ({
             style={{ justifyContent: items.length < 3 ? 'center' : 'space-between' }}
         >
             <DesktopWrapper>
-                {items.length < 4 ? (
-                    items
-                ) : (
-                    <Carousel
-                        list={items}
-                        width={328}
-                        nav_position='middle'
-                        show_bullet={false}
-                        item_per_window={3}
-                        is_mt5={true}
-                    />
-                )}
+                <Carousel
+                    list={items}
+                    width={328}
+                    nav_position='middle'
+                    show_bullet={false}
+                    item_per_window={3}
+                    is_mt5={true}
+                />
             </DesktopWrapper>
             <MobileWrapper>
                 {items.map(item => {

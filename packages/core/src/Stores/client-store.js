@@ -31,6 +31,7 @@ const eu_excluded_regex = new RegExp('^mt$');
 
 export default class ClientStore extends BaseStore {
     @observable loginid;
+    @observable preferred_language;
     @observable upgrade_info;
     @observable email;
     @observable accounts = {};
@@ -108,6 +109,7 @@ export default class ClientStore extends BaseStore {
                 this.currency,
                 this.residence,
                 this.account_settings,
+                this.preferred_language,
             ],
             () => {
                 this.setCookieAccount();
@@ -670,9 +672,23 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    setPreferredLanguage(lang) {
+        this.preferred_language = lang;
+    }
+
+    @action.bound
     setCookieAccount() {
         const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
-        const { loginid, email, landing_company_shortcode, currency, residence, account_settings } = this;
+        // eslint-disable-next-line max-len
+        const {
+            loginid,
+            email,
+            landing_company_shortcode,
+            currency,
+            residence,
+            account_settings,
+            preferred_language,
+        } = this;
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
             const client_information = {
@@ -684,6 +700,7 @@ export default class ClientStore extends BaseStore {
                 first_name,
                 last_name,
                 name,
+                preferred_language,
             };
             Cookies.set('client_information', client_information, { domain });
             this.has_cookie_account = true;

@@ -23,9 +23,10 @@ const ContentExpander = ({
     const [is_visible, toggleVisibility] = React.useState(is_expanded);
 
     const onClick = React.useCallback(() => {
+        toggleVisibility(!is_visible);
         if (typeof onToggle === 'function') {
             onToggle();
-        } else toggleVisibility(!is_visible);
+        }
     }, [is_visible, onToggle, toggleVisibility]);
 
     React.useEffect(() => {
@@ -34,6 +35,8 @@ const ContentExpander = ({
         }
     }, [is_visible]);
 
+    // is_visible value should come from parent bcause the parent keeps track
+    // of whether we need to expand or not
     React.useEffect(() => {
         toggleVisibility(is_expanded);
     }, [is_expanded]);

@@ -11,13 +11,14 @@ import {
     setCurrencies,
     State,
     toMoment,
+    deriv_urls,
 } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
-import { isEuCountry, isSyntheticsUnavailable } from '_common/utility';
+import { isEuCountry, isOptionsBlocked, isSyntheticsUnavailable } from '_common/utility';
 import BaseStore from './base-store';
 import { getClientAccountType, getAccountTitle } from './Helpers/client';
 import { setDeviceDataCookie } from './Helpers/device';
@@ -603,7 +604,14 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_synthetics_unavailable() {
-        return isSyntheticsUnavailable(this.residence);
+        return this.is_logged_in
+            ? isSyntheticsUnavailable(this.residence)
+            : isSyntheticsUnavailable(this.website_status.clients_country);
+    }
+
+    @computed
+    get is_options_blocked() {
+        return isOptionsBlocked(this.residence);
     }
 
     /**
@@ -680,7 +688,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setCookieAccount() {
-        const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
+        const domain = window.location.hostname.includes('deriv') ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
         const { loginid, email, landing_company_shortcode, currency, residence, account_settings } = this;
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
@@ -1102,10 +1110,13 @@ export default class ClientStore extends BaseStore {
                 })
             );
             const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
+
+            await this.fetchResidenceList();
+
             if (account_settings && !account_settings.residence) {
-                await this.fetchResidenceList();
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
+
             await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             if (!this.is_virtual) await this.getLimits();
 

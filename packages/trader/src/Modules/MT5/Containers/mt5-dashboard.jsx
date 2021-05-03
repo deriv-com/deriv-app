@@ -153,6 +153,7 @@ class MT5Dashboard extends React.Component {
             has_real_account,
             NotificationMessages,
             openAccountNeededModal,
+            residence_list,
             standpoint,
             toggleAccountsDialog,
             toggleShouldShowRealAccountsList,
@@ -247,6 +248,7 @@ class MT5Dashboard extends React.Component {
                                                 toggleAccountsDialog={toggleAccountsDialog}
                                                 toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
                                                 can_have_more_real_synthetic_mt5={can_have_more_real_synthetic_mt5}
+                                                residence_list={residence_list}
                                             />
                                         </React.Fragment>
                                     </div>
@@ -440,6 +442,7 @@ export default withRouter(
         openAccountNeededModal: ui.openAccountNeededModal,
         is_loading: client.is_populating_mt5_account_list,
         residence: client.residence,
+        residence_list: client.residence_list,
         has_mt5_account: modules.mt5.has_mt5_account,
         has_mt5_real_account_error: client.has_account_error_in_mt5_real_list,
         has_mt5_demo_account_error: client.has_account_error_in_mt5_demo_list,

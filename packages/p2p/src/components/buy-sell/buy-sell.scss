@@ -1,5 +1,5 @@
 .buy-sell {
-    $mobile_tabs_height: 172px;
+    $mobile_tabs_height: 17.2rem;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -25,7 +25,9 @@
     }
 
     &__empty {
-        margin-top: calc(#{$mobile_tabs_height} + 2.6rem); // Header + Margin
+        @include mobile {
+            margin-top: calc(#{$mobile_tabs_height} + 2.6rem); // Header + Margin
+        }
     }
 
     &__table {

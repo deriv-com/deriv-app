@@ -80,9 +80,9 @@
         cursor: pointer;
         z-index: 2;
 
-        &:active {
-            outline: none;
-        }
+        // &:active {
+        //     outline: none;
+        // }
         &:after {
             content: '\0000D7';
             font-size: 30px;

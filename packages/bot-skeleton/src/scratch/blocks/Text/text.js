@@ -3,6 +3,9 @@ import { localize } from '@deriv/translations';
 Blockly.Blocks.text = {
     init() {
         this.jsonInit(this.definition());
+
+        const fieldInput = this.getField('TEXT');
+        fieldInput.maxDisplayLength = 17;
     },
     definition() {
         return {

@@ -3,6 +3,9 @@ import { localize } from '@deriv/translations';
 Blockly.Blocks.controls_repeat = {
     init() {
         this.jsonInit(this.definition());
+
+        const fieldInput = this.getField('TIMES');
+        fieldInput.maxDisplayLength = 17;
     },
     definition() {
         return {

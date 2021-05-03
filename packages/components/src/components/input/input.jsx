@@ -15,6 +15,7 @@ const Input = React.forwardRef(
             classNameWarn,
             disabled,
             error,
+            field_className,
             has_character_counter,
             hint,
             is_relative_hint,
@@ -75,7 +76,7 @@ const Input = React.forwardRef(
                         <input
                             ref={ref}
                             {...props}
-                            className={classNames('dc-input__field', {
+                            className={classNames('dc-input__field', field_className, {
                                 'dc-input__field--placeholder-visible': !label && props.placeholder,
                             })}
                             onFocus={props.onFocus}

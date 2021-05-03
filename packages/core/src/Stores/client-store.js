@@ -11,6 +11,7 @@ import {
     setCurrencies,
     State,
     toMoment,
+    deriv_urls,
 } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import { requestLogout, WS } from 'Services';
@@ -678,7 +679,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setCookieAccount() {
-        const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
+        const domain = window.location.hostname.includes('deriv') ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
         // eslint-disable-next-line max-len
         const {
             loginid,

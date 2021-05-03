@@ -180,6 +180,7 @@ const BinarySocketGeneral = (() => {
                     [
                         'cashier',
                         'paymentagent_withdraw',
+                        'trading_platform_password_reset',
                         'trading_platform_investor_password_reset',
                         'new_account_virtual',
                         'p2p_advertiser_info',

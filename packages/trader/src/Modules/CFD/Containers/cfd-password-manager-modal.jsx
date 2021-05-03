@@ -389,6 +389,7 @@ const CFDPasswordManagerTabContent = ({
                                 setPasswordType={setPasswordType}
                                 multi_step_ref={multi_step_ref}
                                 platform={platform}
+                                status={account_status.status}
                             />
                         </Div100vhContainer>
                     </MobileWrapper>

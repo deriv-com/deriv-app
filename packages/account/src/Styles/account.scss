@@ -497,7 +497,6 @@ $MIN_HEIGHT_FLOATING: calc(
         flex-direction: column;
         &-wrapper {
             display: flex;
-            flex-wrap: wrap;
             justify-content: space-between;
             margin: 0.8rem 0 4rem;
 
@@ -508,6 +507,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
 
             @include mobile {
+                flex-wrap: wrap;
                 margin-bottom: 2.4rem;
             }
         }

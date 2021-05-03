@@ -109,7 +109,6 @@ class CFDResetPasswordModal extends React.Component {
     }
     render() {
         const { is_cfd_reset_password_modal_enabled, setCFDPasswordResetModal, current_list, platform } = this.props;
-
         return (
             <Modal
                 className='cfd-reset-password-modal'

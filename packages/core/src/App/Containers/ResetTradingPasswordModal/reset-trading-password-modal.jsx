@@ -8,22 +8,9 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
 
-const ResetTradingPassword = ({ toggleResetTradingPasswordModal, verification_code }) => {
-    const onResetComplete = (error_msg, actions) => {
-        actions.setSubmitting(false);
-        actions.resetForm({ password: '' });
-        // Error would be returned on invalid token (and the like) cases.
-        // TODO: Proper error handling (currently we have no place to put the message)
-        if (error_msg) {
-            // eslint-disable-next-line no-console
-            console.error(error_msg);
-            actions.setStatus({ error_msg });
-            return;
-        }
-        actions.setStatus({ reset_complete: true });
-    };
-
+const ResetTradingPassword = ({ setDialogTitleFunc, toggleResetTradingPasswordModal, verification_code }) => {
     const handleSubmit = (values, actions) => {
+        actions.setSubmitting(true);
         const params = {
             new_password: values.password,
             verification_code,
@@ -31,10 +18,15 @@ const ResetTradingPassword = ({ toggleResetTradingPasswordModal, verification_co
 
         WS.tradingPlatformPasswordReset(params).then(async response => {
             if (response.error) {
-                onResetComplete(response.error.message, actions);
+                // eslint-disable-next-line no-console
+                console.error(response.error.message);
+                actions.setStatus({ error_msg: response.error.message });
+                setDialogTitleFunc(true);
             } else {
-                onResetComplete(null, actions);
+                actions.resetForm({ password: '' });
+                actions.setStatus({ reset_complete: true });
             }
+            actions.setSubmitting(false);
         });
     };
 
@@ -71,7 +63,33 @@ const ResetTradingPassword = ({ toggleResetTradingPasswordModal, verification_co
                 {({ handleBlur, errors, values, touched, isSubmitting, handleChange, status }) => (
                     <Form>
                         <React.Fragment>
-                            {status.reset_complete ? (
+                            {status.error_msg && (
+                                <div className='reset-trading-password__error'>
+                                    <Icon icon='IcMt5Expired' size={128} />
+                                    <Text
+                                        as='p'
+                                        size='xs'
+                                        weight='bold'
+                                        align='center'
+                                        className='reset-trading-password__lead'
+                                    >
+                                        {status.error_msg}
+                                    </Text>
+                                    <Text
+                                        as='p'
+                                        color='prominent'
+                                        size='xs'
+                                        align='center'
+                                        className='reset-trading-password__description--is-centered'
+                                    >
+                                        <Localize i18n_default_text='Please request a new password and check your email for the new token.' />
+                                    </Text>
+                                    <Button primary large onClick={() => toggleResetTradingPasswordModal(false)}>
+                                        <Localize i18n_default_text='Ok' />
+                                    </Button>
+                                </div>
+                            )}
+                            {status.reset_complete && (
                                 <div className='reset-trading-password__password-success'>
                                     <Icon
                                         className='reset-trading-password__icon'
@@ -93,7 +111,8 @@ const ResetTradingPassword = ({ toggleResetTradingPasswordModal, verification_co
                                         <Localize i18n_default_text='Done' />
                                     </Button>
                                 </div>
-                            ) : (
+                            )}
+                            {!status.error_msg && !status.reset_complete && (
                                 <div className='reset-trading-password__set-password'>
                                     <Text as='p' weight='bold' className='reset-trading-password__heading'>
                                         <Localize i18n_default_text='Set new trading password' />
@@ -151,6 +170,7 @@ const ResetTradingPassword = ({ toggleResetTradingPasswordModal, verification_co
 };
 
 ResetTradingPassword.propTypes = {
+    setDialogTitleFunc: PropTypes.func,
     toggleResetTradingPasswordModal: PropTypes.func,
     verification_code: PropTypes.string,
 };
@@ -163,17 +183,25 @@ const ResetTradingPasswordModal = ({
     toggleResetTradingPasswordModal,
     verification_code,
 }) => {
+    const [dialog_title, setDialogTitle] = React.useState('');
+    const setDialogTitleFunc = is_invalid_token => {
+        setDialogTitle(is_invalid_token ? localize('Reset trading password') : '');
+    };
     return (
         <Dialog
             className='reset-trading-password__dialog'
-            is_visible={is_visible}
             disableApp={disableApp}
             enableApp={enableApp}
+            has_close_icon={!!dialog_title}
             is_loading={is_loading}
+            is_visible={is_visible}
+            onConfirm={() => toggleResetTradingPasswordModal(false)}
+            title={dialog_title}
         >
             <ResetTradingPassword
                 toggleResetTradingPasswordModal={toggleResetTradingPasswordModal}
                 verification_code={verification_code}
+                setDialogTitleFunc={setDialogTitleFunc}
             />
         </Dialog>
     );

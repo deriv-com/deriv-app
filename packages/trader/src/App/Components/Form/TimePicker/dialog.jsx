@@ -4,15 +4,20 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
 
-const Dialog = ({ preClass, selected_time, end_time, start_time, onChange, className }) => {
-    const start_time_moment = start_time ? toMoment(start_time) : toMoment();
-    const end_time_moment = end_time
-        ? toMoment(end_time)
-        : toMoment()
-              .hour('23')
-              .minute('59')
-              .seconds('59')
-              .milliseconds('999');
+function isBetween(to_compare_moment, start_times_moment, end_times_moment, duration) {
+    for (let i = 0; i < start_times_moment.length; i++) {
+        if (to_compare_moment.isBetween(start_times_moment[i], end_times_moment[i], duration)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+const Dialog = ({ preClass, selected_time, end_times, start_times, onChange, className }) => {
+    const start_times_moment = start_times ? start_times.map(start_time => toMoment(start_time)) : [toMoment()];
+    const end_times_moment = end_times
+        ? end_times.map(end_time => toMoment(end_time))
+        : [toMoment().hour('23').minute('59').seconds('59').milliseconds('999')];
     const to_compare_moment = toMoment();
     const [hour, minute] = selected_time.split(':');
     const hours = [...Array(24).keys()].map(a => `0${a}`.slice(-2));
@@ -37,14 +42,18 @@ const Dialog = ({ preClass, selected_time, end_time, start_time, onChange, class
                     <div>
                         {hours.map((h, key) => {
                             to_compare_moment.hour(h);
-                            const start_time_reset_minute = start_time_moment.clone().minute(0);
-                            const is_hour_enabled = to_compare_moment.isBetween(
-                                start_time_reset_minute,
-                                end_time_moment
+                            const start_times_reset_minute = start_times_moment.map(start_time =>
+                                start_time.clone().minute(0)
                             );
-                            const is_minute_enabled = to_compare_moment.isBetween(
-                                start_time_moment,
-                                end_time_moment,
+                            const is_hour_enabled = isBetween(
+                                to_compare_moment,
+                                start_times_reset_minute,
+                                end_times_moment
+                            );
+                            const is_minute_enabled = isBetween(
+                                to_compare_moment,
+                                start_times_moment,
+                                end_times_moment,
                                 'minute'
                             );
                             // The minute number after which the last block/interval of `Minutes` selection will be disabled
@@ -78,9 +87,10 @@ const Dialog = ({ preClass, selected_time, end_time, start_time, onChange, class
                     <div>
                         {minutes.map((mm, key) => {
                             to_compare_moment.hour(hour).minute(mm);
-                            const is_enabled = to_compare_moment.isBetween(
-                                start_time_moment,
-                                end_time_moment,
+                            const is_enabled = isBetween(
+                                to_compare_moment,
+                                start_times_moment,
+                                end_times_moment,
                                 'minute'
                             );
                             return (

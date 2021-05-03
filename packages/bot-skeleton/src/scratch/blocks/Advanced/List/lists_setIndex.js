@@ -14,9 +14,7 @@ Blockly.Blocks.lists_setIndex = {
             [localize('random'), 'RANDOM'],
         ];
 
-        this.appendValueInput('LIST')
-            .setCheck('Array')
-            .appendField(localize('in list'));
+        this.appendValueInput('LIST').setCheck('Array').appendField(localize('in list'));
         this.appendDummyInput().appendField(new Blockly.FieldDropdown(this.MODE_OPTIONS), 'MODE');
         this.appendDummyInput('AT');
         this.appendValueInput('TO').appendField(localize('as'));

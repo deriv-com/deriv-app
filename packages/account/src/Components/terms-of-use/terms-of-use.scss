@@ -1,0 +1,55 @@
+.terms-of-use {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin: 0 8rem !important;
+    width: 84% !important;
+
+    @include mobile {
+        margin: unset !important;
+        width: unset !important;
+    }
+
+    &__checkbox {
+        margin-top: 1.6rem;
+
+        &:last-of-type {
+            margin-bottom: 5rem;
+        }
+    }
+    &__hr {
+        height: 2px;
+        margin: 1.6rem 0 0;
+        width: 100%;
+        border-top: 1px solid var(--general-section-1);
+
+        @include mobile {
+            border-top-width: 2px;
+            border-color: var(--border-disabled);
+            width: 100%;
+        }
+    }
+    h4 {
+        margin: 1rem 0;
+        text-transform: none;
+    }
+    p {
+        @include typeface(--paragraph-left-normal-black);
+        text-transform: none;
+        color: var(--text-general);
+    }
+    input {
+        display: none;
+    }
+    @include mobile {
+        & .dc-checkbox__box {
+            width: 2.4rem;
+            height: 2.4rem;
+
+            .dc-icon {
+                width: 2.4rem;
+                height: 2.4rem;
+            }
+        }
+    }
+}

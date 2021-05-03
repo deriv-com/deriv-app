@@ -31,8 +31,8 @@ export default class PortfolioStore extends BaseStore {
     @observable.shallow active_positions = [];
 
     @action.bound
-    initializePortfolio = async () => {
-        if (this.is_subscribed_to_poc) {
+    initializePortfolio = async should_clear_table => {
+        if (this.has_subscribed_to_poc_and_transaction || should_clear_table) {
             this.clearTable();
         }
         this.is_loading = true;
@@ -40,7 +40,7 @@ export default class PortfolioStore extends BaseStore {
         WS.portfolio().then(this.portfolioHandler);
         WS.subscribeProposalOpenContract(null, this.proposalOpenContractQueueHandler);
         WS.subscribeTransaction(this.transactionHandler);
-        this.is_subscribed_to_poc = true;
+        this.has_subscribed_to_poc_and_transaction = true;
     };
 
     @action.bound
@@ -50,8 +50,10 @@ export default class PortfolioStore extends BaseStore {
         this.is_loading = false;
         this.error = '';
         this.updatePositions();
-        WS.forgetAll('proposal_open_contract', 'transaction');
-        this.is_subscribed_to_poc = false;
+        if (this.has_subscribed_to_poc_and_transaction) {
+            WS.forgetAll('proposal_open_contract', 'transaction');
+        }
+        this.has_subscribed_to_poc_and_transaction = false;
     }
 
     @action.bound
@@ -222,6 +224,8 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     onClickCancel(contract_id) {
         const i = this.getPositionIndexById(contract_id);
+        if (this.positions[i].is_sell_requested) return;
+
         this.positions[i].is_sell_requested = true;
         if (contract_id) {
             WS.cancelContract(contract_id).then(response => {
@@ -240,6 +244,8 @@ export default class PortfolioStore extends BaseStore {
     @action.bound
     onClickSell(contract_id) {
         const i = this.getPositionIndexById(contract_id);
+        if (this.positions[i].is_sell_requested) return;
+
         const { bid_price } = this.positions[i].contract_info;
         this.positions[i].is_sell_requested = true;
         if (contract_id && typeof bid_price === 'number') {
@@ -262,8 +268,6 @@ export default class PortfolioStore extends BaseStore {
                 });
             }
         } else if (!response.error && response.sell) {
-            const i = this.getPositionIndexById(response.sell.contract_id);
-            this.positions[i].is_sell_requested = false;
             // update contract store sell info after sell
             this.root_store.modules.contract_trade.sell_info = {
                 sell_price: response.sell.sold_for,
@@ -337,7 +341,7 @@ export default class PortfolioStore extends BaseStore {
     }
 
     async accountSwitcherListener() {
-        await this.initializePortfolio();
+        await this.initializePortfolio(true);
         return Promise.resolve();
     }
 
@@ -379,7 +383,7 @@ export default class PortfolioStore extends BaseStore {
         this.onSwitchAccount(this.accountSwitcherListener);
         this.onNetworkStatusChange(this.networkStatusChangeListener);
         this.onLogout(this.logoutListener);
-        if (this.positions.length === 0) {
+        if (this.positions.length === 0 && !this.has_subscribed_to_poc_and_transaction) {
             // TODO: Optimise the way is_logged_in changes are detected for "logging in" and "already logged on" states
             if (this.root_store.client.is_logged_in) {
                 this.initializePortfolio();

@@ -96,7 +96,7 @@ const createProposalRequestForContract = (store, type_of_contract) => {
         obj_expiry.date_expiry = convertToUnix(expiry_date.unix(), store.expiry_time);
     }
 
-    if (store.is_multiplier) {
+    if (store.contract_type === 'multiplier') {
         setProposalMultiplier(store, obj_multiplier);
     }
 

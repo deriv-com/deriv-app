@@ -3,7 +3,7 @@ import { config } from '../../constants/config';
 // Structure is { '<outerHtml />': { height: 1, width: 1 } }
 Blockly.Block.Dimensions = {};
 
-Blockly.Block.prototype.getDisplayName = function() {
+Blockly.Block.prototype.getDisplayName = function () {
     if (this.meta) {
         const block_meta = this.meta();
         return block_meta && block_meta.display_name;
@@ -11,7 +11,7 @@ Blockly.Block.prototype.getDisplayName = function() {
     return this.type;
 };
 
-Blockly.Block.prototype.getSiblings = function() {
+Blockly.Block.prototype.getSiblings = function () {
     const siblings = [this];
     ['getPreviousBlock', 'getNextBlock'].forEach(functionName => {
         let block = this[functionName]();
@@ -28,11 +28,11 @@ Blockly.Block.prototype.getSiblings = function() {
     return siblings;
 };
 
-Blockly.Block.prototype.getChildByType = function(type) {
+Blockly.Block.prototype.getChildByType = function (type) {
     return this.getDescendants().find(child => child.type === type);
 };
 
-Blockly.Block.prototype.getChildFieldValue = function(childType, childField) {
+Blockly.Block.prototype.getChildFieldValue = function (childType, childField) {
     const childBlock = this.getChildByType(childType);
     if (childBlock) {
         const value = childBlock.getFieldValue(childField);
@@ -41,12 +41,12 @@ Blockly.Block.prototype.getChildFieldValue = function(childType, childField) {
     return null;
 };
 
-Blockly.Block.prototype.childValueToCode = function(childType, childField) {
+Blockly.Block.prototype.childValueToCode = function (childType, childField) {
     const childBlock = this.getChildByType(childType);
     return childBlock && Blockly.JavaScript.valueToCode(childBlock, childField, Blockly.JavaScript.ORDER_ATOMIC);
 };
 
-Blockly.Block.prototype.getBlocksInStatement = function(statementInputName) {
+Blockly.Block.prototype.getBlocksInStatement = function (statementInputName) {
     const blocksInStatement = [];
     const firstBlock = this.getInputTargetBlock(statementInputName);
 
@@ -56,7 +56,7 @@ Blockly.Block.prototype.getBlocksInStatement = function(statementInputName) {
     return blocksInStatement;
 };
 
-Blockly.Block.prototype.getLastConnectionInStatement = function(statement_input_name) {
+Blockly.Block.prototype.getLastConnectionInStatement = function (statement_input_name) {
     const first_block_in_stack = this.getInputTargetBlock(statement_input_name);
 
     if (first_block_in_stack) {
@@ -71,11 +71,11 @@ Blockly.Block.prototype.getLastConnectionInStatement = function(statement_input_
  * Get whether this block is enabled or not.
  * @return {boolean} True if enabled.
  */
-Blockly.Block.prototype.isEnabled = function() {
+Blockly.Block.prototype.isEnabled = function () {
     return !this.disabled;
 };
 
-Blockly.Block.prototype.isDescendantOf = function(type) {
+Blockly.Block.prototype.isDescendantOf = function (type) {
     let parentBlock = this.getParent();
     while (parentBlock !== null) {
         if (parentBlock.type === type) {
@@ -86,7 +86,7 @@ Blockly.Block.prototype.isDescendantOf = function(type) {
     return false;
 };
 
-Blockly.Block.prototype.getTopParent = function() {
+Blockly.Block.prototype.getTopParent = function () {
     let parent = this.getParent();
     while (parent !== null) {
         const nextParent = parent.getParent();
@@ -98,7 +98,7 @@ Blockly.Block.prototype.getTopParent = function() {
     return null;
 };
 
-Blockly.Block.getDimensions = function(block_node) {
+Blockly.Block.getDimensions = function (block_node) {
     // Attempt to retrieve dimensions from memory rather than recalculating.
     const existing_dimensions_key = Object.keys(Blockly.Block.Dimensions).find(
         outer_html => block_node.outerHTML === outer_html
@@ -122,11 +122,11 @@ Blockly.Block.getDimensions = function(block_node) {
     return block_hw;
 };
 
-Blockly.Block.prototype.isMainBlock = function() {
+Blockly.Block.prototype.isMainBlock = function () {
     return config.mainBlocks.includes(this.type);
 };
 
-Blockly.Block.prototype.isIndependentBlock = function() {
+Blockly.Block.prototype.isIndependentBlock = function () {
     return config.INDEPEDENT_BLOCKS.includes(this.type);
 };
 
@@ -134,7 +134,7 @@ Blockly.Block.prototype.isIndependentBlock = function() {
  * Return the parent block or null if this block is at the top level.
  * @return {Blockly.Block} The block that holds the current block.
  */
-Blockly.Block.prototype.getRootInputTargetBlock = function() {
+Blockly.Block.prototype.getRootInputTargetBlock = function () {
     let input_name;
     let current_block = this.getParent();
 
@@ -155,7 +155,7 @@ Blockly.Block.prototype.getRootInputTargetBlock = function() {
 /**
  * Returns whether the block has an error highlighted descendant.
  */
-Blockly.Block.prototype.hasErrorHighlightedDescendant = function() {
+Blockly.Block.prototype.hasErrorHighlightedDescendant = function () {
     const hasHighlightedDescendant = child_blocks =>
         child_blocks.some(child_block => {
             const is_self_highlighted = child_block.is_error_highlighted;
@@ -167,6 +167,6 @@ Blockly.Block.prototype.hasErrorHighlightedDescendant = function() {
     return hasHighlightedDescendant(this.getChildren());
 };
 
-Blockly.Block.isDynamic = function(block_type) {
+Blockly.Block.isDynamic = function (block_type) {
     return /^((procedures_)|(variables_)|(math_change$))/.test(block_type);
 };

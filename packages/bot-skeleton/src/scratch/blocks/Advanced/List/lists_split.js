@@ -10,9 +10,7 @@ Blockly.Blocks.lists_split = {
             newMode => this.updateType(newMode)
         );
 
-        this.appendValueInput('INPUT')
-            .setCheck('String')
-            .appendField(dropdown, 'MODE');
+        this.appendValueInput('INPUT').setCheck('String').appendField(dropdown, 'MODE');
         this.appendValueInput('DELIM')
             .setCheck('String')
             .appendField('', 'SPACE1')

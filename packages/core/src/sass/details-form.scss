@@ -9,6 +9,15 @@
         overflow-y: auto;
     }
 
+    &__sub-header {
+        @include desktop {
+            margin: 0 4rem 4rem;
+        }
+        @include mobile {
+            margin-bottom: 0.8rem;
+        }
+    }
+
     &__elements {
         flex-grow: 1;
         margin: 1.2rem auto;
@@ -68,6 +77,9 @@
         }
         .dc-select-native {
             margin-bottom: 3.2rem;
+            &__placeholder {
+                background-color: var(--general-section-2);
+            }
         }
         .dc-dropdown__display {
             background-color: var(--general-main-2);
@@ -82,8 +94,8 @@
         @include mobile {
             width: 100%;
             margin: 0;
-            padding: 1rem 1.6rem 0;
-            overflow-y: scroll;
+            padding: 1rem 1.6rem 6rem;
+            overflow-y: auto;
         }
     }
     &__loader {
@@ -122,20 +134,13 @@
         .dc-checkbox__box {
             align-self: baseline;
         }
-        .dc-checkbox__label {
-            line-height: 1.43;
-        }
     }
     .dc-page-error__container {
         height: 100%;
     }
     &__description {
-        text-align: left;
-        font-size: var(--text-size-xxs);
-        line-height: 1.8rem;
         margin: 1.6rem auto;
         width: 45%;
-        color: var(--text-general);
         @include desktop {
             display: flex;
             flex-direction: column;

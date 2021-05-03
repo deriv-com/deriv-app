@@ -19,6 +19,7 @@ class DBotStore extends DBotStoreInterface {
         this.client = store.client;
         this.flyout = store.flyout;
         this.toolbar = store.toolbar;
+        this.toolbox = store.toolbox;
         this.save_modal = store.save_modal;
         this.toggleStrategyModal = store.toggleStrategyModal;
         this.handleFileChange = store.handleFileChange;
@@ -27,10 +28,7 @@ class DBotStore extends DBotStoreInterface {
     }
 
     static setInstance(store) {
-        if (!this.singleton) {
-            this.singleton = new DBotStore(store);
-        }
-
+        this.singleton = new DBotStore(store);
         return this.instance;
     }
 

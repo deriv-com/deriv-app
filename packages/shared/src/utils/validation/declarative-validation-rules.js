@@ -13,8 +13,7 @@ const validRequired = (value /* , options, field */) => {
 export const validAddress = value => !/[`~!$%^&*_=+[}{\]\\"?><|]+/.test(value);
 export const validPostCode = value => value === '' || /^[A-Za-z0-9][A-Za-z0-9\s-]*$/.test(value);
 export const validTaxID = value => /^[a-zA-Z0-9]*[\w-]*$/.test(value);
-export const validPhone = value => /^\+((-|\s)*[0-9])*$/.test(value);
-export const validCountryCode = (list, value) => list.some(item => value.startsWith(`+${item.phone_idd}`));
+export const validPhone = value => /^\+?((-|\s)*[0-9])*$/.test(value);
 export const validLetterSymbol = value => !/[`~!@#$%^&*)(_=+[}{\]\\/";:?><,|\d]+/.test(value);
 export const validLength = (value, options) =>
     (options.min ? value.length >= options.min : true) && (options.max ? value.length <= options.max : true);
@@ -60,7 +59,12 @@ export const validNumber = (value, opts) => {
     } else if ('min' in options && 'max' in options && +options.min === +options.max && +value !== +options.min) {
         is_ok = false;
         message = form_error_messages.value(addComma(options.min));
-    } else if ('min' in options && 'max' in options && (+value < +options.min || isMoreThanMax(value, options))) {
+    } else if (
+        'min' in options &&
+        'max' in options &&
+        options.min > 0 &&
+        (+value < +options.min || isMoreThanMax(value, options))
+    ) {
         is_ok = false;
         const min_value = addComma(options.min);
         const max_value = addComma(options.max);

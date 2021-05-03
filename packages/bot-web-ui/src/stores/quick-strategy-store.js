@@ -2,8 +2,8 @@ import { computed, observable, action } from 'mobx';
 import { localize } from '@deriv/translations';
 import { ApiHelpers, config, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
-import GTM from '../utils/gtm';
-import { storeSetting, getSetting } from '../utils/settings';
+import GTM from 'Utils/gtm';
+import { storeSetting, getSetting } from 'Utils/settings';
 
 export default class QuickStrategyStore {
     constructor(root_store) {

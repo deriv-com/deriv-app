@@ -38,17 +38,19 @@
             align-items: center;
             justify-content: center;
             padding: 0.8rem;
-            margin-bottom: 0.6rem;
 
             .mobile-widget__item-label {
                 margin-right: 0.4rem;
             }
         }
         &-options {
-            flex: 1 !important;
+            flex: none;
             flex-direction: column;
             padding: 0.6rem 0.8rem;
             margin-bottom: 0.6rem;
+            margin-left: 0.8rem;
+            justify-content: center;
+            min-width: 5.2rem;
 
             .mobile-widget__item-label {
                 color: var(--text-general);
@@ -76,6 +78,23 @@
             .mobile-widget__item-value {
                 font-size: 1.4rem;
                 line-height: 1.8rem;
+            }
+        }
+        &-trade-info {
+            display: flex;
+            justify-content: space-evenly;
+            background: var(--general-main-1);
+            flex: 2;
+
+            &--no-stop-out {
+                justify-content: flex-end;
+                margin-right: 1.6rem;
+            }
+            &-tooltip-text {
+                display: flex;
+                flex-direction: column;
+                font-size: 1rem;
+                justify-content: center;
             }
         }
     }

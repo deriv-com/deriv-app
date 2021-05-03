@@ -11,7 +11,7 @@
     transition: opacity 0.2s;
     opacity: 0;
     pointer-events: none;
-    background: var(--general-section-2);
+    background: var(--fill-normal);
     // transform here would break fixed header
 
     &--enter,
@@ -49,7 +49,7 @@
         position: relative;
         padding-top: 3.6rem;
         z-index: 1;
-        background: var(--general-section-2);
+        background: var(--fill-normal);
         transition: all 0.2s ease-out;
 
         &--is-full-height {
@@ -71,7 +71,7 @@
         padding: 1rem;
         height: $MOBILE_HEADER_HEIGHT;
         z-index: 4;
-        background: var(--general-section-2);
+        background: var(--fill-normal);
         transition: all 0.2s ease-out;
         transition-delay: 0.2s;
         border-bottom: 1px solid var(--border-disabled);
@@ -84,9 +84,6 @@
     }
     &__title {
         padding: 1.2rem 1.2rem 1.2rem 0.4rem;
-        font-size: 1.4rem;
-        font-weight: bold;
-        color: var(--text-prominent);
         margin: 0;
     }
     &__close-btn-icon {

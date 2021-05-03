@@ -1,15 +1,15 @@
-Element.prototype.hide = function() {
+Element.prototype.hide = function () {
     this.style.display = 'none';
     return this;
 };
 
-Element.prototype.show = function() {
+Element.prototype.show = function () {
     this.style.display = '';
     return this;
 };
 
 if (!('remove' in Element.prototype)) {
-    Element.prototype.remove = function() {
+    Element.prototype.remove = function () {
         if (this.parentNode) {
             this.parentNode.removeChild(this);
         }
@@ -17,7 +17,7 @@ if (!('remove' in Element.prototype)) {
     };
 }
 
-Element.prototype.toggleClass = function(class_name, should_add) {
+Element.prototype.toggleClass = function (class_name, should_add) {
     if (typeof should_add === 'undefined') {
         // toggle
         should_add = !this.classList.contains(class_name);
@@ -26,12 +26,12 @@ Element.prototype.toggleClass = function(class_name, should_add) {
     return this;
 };
 
-Element.prototype.setVisibility = function(make_visible) {
+Element.prototype.setVisibility = function (make_visible) {
     this.toggleClass('invisible', !make_visible);
     return this;
 };
 
-Element.prototype.html = function(content) {
+Element.prototype.html = function (content) {
     if (typeof content === 'object') {
         this.innerHTML = '';
         this.appendChild(content);

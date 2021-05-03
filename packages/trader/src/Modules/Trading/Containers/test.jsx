@@ -63,7 +63,7 @@ class Test extends React.Component {
         const { is_visible, store: selected_store } = this.state;
 
         return (
-            <code id='state_info' style={Object.assign({}, container, { display: is_visible ? 'block' : 'none' })}>
+            <code id='state_info' style={{ ...container, display: is_visible ? 'block' : 'none' }}>
                 <div style={tabs}>
                     {Object.keys(this.props).map(store => (
                         <p

@@ -8,7 +8,7 @@ import DBotStore from '../dbot-store';
  * @param {!Event} e Mouse down event.
  * @private
  */
-Blockly.WorkspaceSvg.prototype.onMouseDown_ = function(e) {
+Blockly.WorkspaceSvg.prototype.onMouseDown_ = function (e) {
     // Bubble mousedown event up for some Core elements to react correctly.
     if (e instanceof MouseEvent) {
         Blockly.derivWorkspace.cachedParentSvg_.dispatchEvent(new e.constructor(e.type, e));
@@ -24,7 +24,7 @@ Blockly.WorkspaceSvg.prototype.onMouseDown_ = function(e) {
  * @param {?string} id ID of block center on.
  * @public
  */
-Blockly.WorkspaceSvg.prototype.centerOnBlock = function(id, hideChaff = true) {
+Blockly.WorkspaceSvg.prototype.centerOnBlock = function (id, hideChaff = true) {
     if (!this.scrollbar) {
         // eslint-disable-next-line no-console
         console.warn('Tried to scroll a non-scrollable workspace.');
@@ -86,12 +86,11 @@ Blockly.WorkspaceSvg.prototype.centerOnBlock = function(id, hideChaff = true) {
  * @param {Element} block_node
  * @public
  */
-Blockly.WorkspaceSvg.prototype.addBlockNode = function(block_node) {
-    const toolbox = this.getToolbox();
-    const flyout = toolbox.flyout_;
-    const block = Blockly.Xml.domToBlock(block_node, flyout.workspace_);
+Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
+    const { flyout } = DBotStore.instance;
+    const block = Blockly.Xml.domToBlock(block_node, flyout.getFlyout().workspace_);
     const top_blocks = this.getTopBlocks(true);
-    const new_block = flyout.createBlock(false, block);
+    const new_block = flyout.getFlyout().createBlock(false, block);
 
     if (top_blocks.length) {
         const last_block = top_blocks[top_blocks.length - 1];
@@ -99,10 +98,6 @@ Blockly.WorkspaceSvg.prototype.addBlockNode = function(block_node) {
         const extra_spacing = last_block.startHat_ ? Blockly.BlockSvg.START_HAT_HEIGHT : 0;
         const y = last_block_xy.y + last_block.getHeightWidth().height + extra_spacing + 30;
         new_block.moveBy(last_block_xy.x, y);
-    }
-
-    if (/^procedures_/.test(block_node.getAttribute('type'))) {
-        toolbox.refreshCategory();
     }
 
     // Call svgResize to avoid glitching workspace.
@@ -115,7 +110,7 @@ Blockly.WorkspaceSvg.prototype.addBlockNode = function(block_node) {
  * root-blocks are sorted in columns first, then all other blocks are positioned below
  * the lowest hanging root-block.
  */
-Blockly.WorkspaceSvg.prototype.cleanUp = function(x = 0, y = 0, blocks_to_clean = []) {
+Blockly.WorkspaceSvg.prototype.cleanUp = function (x = 0, y = 0, blocks_to_clean = []) {
     this.setResizesEnabled(false);
     Blockly.Events.setGroup(Blockly.Events.getGroup() || true);
 
@@ -221,7 +216,7 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function(x = 0, y = 0, blocks_to_clean 
  * @private
  * @this Blockly.WorkspaceSvg
  */
-Blockly.WorkspaceSvg.getTopLevelWorkspaceMetrics_ = function() {
+Blockly.WorkspaceSvg.getTopLevelWorkspaceMetrics_ = function () {
     const toolbox_dimensions = Blockly.WorkspaceSvg.getDimensionsPx_(this.toolbox_);
     const flyout_dimensions = Blockly.WorkspaceSvg.getDimensionsPx_(this.flyout_);
 
@@ -280,7 +275,7 @@ Blockly.WorkspaceSvg.getTopLevelWorkspaceMetrics_ = function() {
  * Paste the provided block onto the workspace.
  * @param {!Element} xml_block XML block element.
  */
-Blockly.WorkspaceSvg.prototype.paste = function(xml_block) {
+Blockly.WorkspaceSvg.prototype.paste = function (xml_block) {
     if (!this.rendered) {
         return;
     }
@@ -302,7 +297,7 @@ Blockly.WorkspaceSvg.prototype.paste = function(xml_block) {
  * @param {!Event} e Mouse event.
  * @private
  */
-Blockly.WorkspaceSvg.prototype.showContextMenu_ = function(e) {
+Blockly.WorkspaceSvg.prototype.showContextMenu_ = function (e) {
     if (this.options.readOnly || this.isFlyout) {
         return;
     }
@@ -341,7 +336,7 @@ Blockly.WorkspaceSvg.prototype.showContextMenu_ = function(e) {
  * Dispose of this workspace.
  * Unlink from all DOM elements to prevent memory leaks.
  */
-Blockly.WorkspaceSvg.prototype.dispose = function(should_show_loading = false) {
+Blockly.WorkspaceSvg.prototype.dispose = function (should_show_loading = false) {
     const disposeFn = () => {
         // Stop rerendering.
         this.rendered = false;
@@ -419,7 +414,7 @@ Blockly.WorkspaceSvg.prototype.dispose = function(should_show_loading = false) {
 /**
  * Dispose of all blocks in workspace, with an optimization to prevent resizes.
  */
-Blockly.WorkspaceSvg.prototype.asyncClear = function() {
+Blockly.WorkspaceSvg.prototype.asyncClear = function () {
     const { startLoading, endLoading } = DBotStore.instance;
     startLoading();
 

@@ -15,12 +15,9 @@ export default class StatementStore extends BaseStore {
     @observable is_loading = false;
     @observable has_loaded_all = false;
     @observable date_from = null;
-    @observable date_to = toMoment()
-        .startOf('day')
-        .add(1, 'd')
-        .subtract(1, 's')
-        .unix();
+    @observable date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     @observable error = '';
+    @observable action_type = 'all';
     @observable filtered_date_range;
 
     // `client_loginid` is only used to detect if this is in sync with the client-store, don't rely on
@@ -49,21 +46,13 @@ export default class StatementStore extends BaseStore {
     @action.bound
     clearDateFilter() {
         this.date_from = null;
-        this.date_to = toMoment()
-            .startOf('day')
-            .add(1, 'd')
-            .subtract(1, 's')
-            .unix();
+        this.date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
         this.partial_fetch_time = 0;
     }
 
     shouldFetchNextBatch(should_load_partially) {
         if (!should_load_partially && (this.has_loaded_all || this.is_loading)) return false;
-        const today = toMoment()
-            .startOf('day')
-            .add(1, 'd')
-            .subtract(1, 's')
-            .unix();
+        const today = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
         if (this.date_to < today) return !should_load_partially && this.partial_fetch_time;
         return true;
     }
@@ -73,10 +62,21 @@ export default class StatementStore extends BaseStore {
         if (!this.shouldFetchNextBatch(should_load_partially)) return;
         this.is_loading = true;
 
+        const optional_arguments = getDateBoundaries(
+            this.date_from,
+            this.date_to,
+            this.partial_fetch_time,
+            should_load_partially
+        );
+
+        if (this.action_type !== 'all') {
+            optional_arguments.action_type = this.action_type;
+        }
+
         const response = await WS.statement(
             batch_size,
             !should_load_partially ? this.data.length : undefined,
-            getDateBoundaries(this.date_from, this.date_to, this.partial_fetch_time, should_load_partially)
+            optional_arguments
         );
         this.statementHandler(response, should_load_partially);
     }
@@ -117,8 +117,15 @@ export default class StatementStore extends BaseStore {
         this.fetchNextBatch();
     }
 
+    @action.bound
+    handleFilterChange(filterValue = {}) {
+        this.action_type = filterValue;
+        this.clearTable();
+        this.fetchNextBatch();
+    }
+
     fetchOnScroll = debounce(left => {
-        if (left < 2000) {
+        if (left < 1500) {
             this.fetchNextBatch();
         }
     }, delay_on_scroll_time);
@@ -180,10 +187,10 @@ export default class StatementStore extends BaseStore {
         this.loadAccountStatistics();
     }
 
+    /* DO NOT call clearDateFilter() upon unmounting the component, date filters should stay 
+    as we change tab or click on any contract for later references as discussed with UI/UX and QA */
     @action.bound
     onUnmount() {
-        this.clearTable();
-        this.clearDateFilter();
         this.disposeSwitchAccount();
         WS.forgetAll('proposal');
     }

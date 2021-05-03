@@ -4,7 +4,7 @@ import { extractInfoFromShortcode, isHighLow } from '@deriv/shared';
 import { Icon, Popover, IconTradeTypes } from '@deriv/components';
 import { getMarketName, getTradeTypeName } from '../Helpers/market-underlying';
 
-const MarketSymbolIconRow = ({ payload, show_description, should_show_multiplier = true }) => {
+const MarketSymbolIconRow = ({ icon, payload, show_description, should_show_multiplier = true }) => {
     const should_show_category_icon = typeof payload.shortcode === 'string';
     const info_from_shortcode = extractInfoFromShortcode(payload.shortcode);
 
@@ -17,6 +17,7 @@ const MarketSymbolIconRow = ({ payload, show_description, should_show_multiplier
                         classNameBubble='market-symbol-icon__popover-bubble'
                         alignment='top'
                         message={getMarketName(info_from_shortcode.underlying)}
+                        is_bubble_hover_enabled
                         disable_target_icon
                     >
                         <Icon
@@ -37,6 +38,7 @@ const MarketSymbolIconRow = ({ payload, show_description, should_show_multiplier
                         classNameBubble='category-type-icon__popover-bubble'
                         alignment='top'
                         message={getTradeTypeName(info_from_shortcode.category)}
+                        is_bubble_hover_enabled
                         disable_target_icon
                     >
                         <IconTradeTypes
@@ -55,11 +57,12 @@ const MarketSymbolIconRow = ({ payload, show_description, should_show_multiplier
                 )}
             </div>
         );
-    } else if (['deposit', 'hold', 'release', 'withdrawal'].includes(payload.action_type)) {
+    } else if (['deposit', 'hold', 'release', 'withdrawal', 'transfer'].includes(payload.action_type)) {
         return (
             <div className='market-symbol-icon'>
-                {payload.action_type === 'deposit' && <Icon icon='IcCashierDeposit' size={32} />}
+                {payload.action_type === 'deposit' && <Icon icon={icon || 'IcCashierDeposit'} size={32} />}
                 {payload.action_type === 'withdrawal' && <Icon icon='IcCashierWithdrawal' size={32} />}
+                {payload.action_type === 'transfer' && <Icon icon='IcAccountTransferColored' size={32} />}
                 {(payload.action_type === 'hold' || payload.action_type === 'release') && (
                     <Icon icon='IcCashierDp2p' size={32} />
                 )}

@@ -8,7 +8,7 @@ import { runInvisibleEvents } from '../utils';
  * - should_pretend_empty: Trigger event, pretend oldValue was empty to force triggering event. Blockly
  *                         filters out and stops events from firing where the oldValue and newValue are the same.
  */
-Blockly.FieldDropdown.prototype.updateOptions = function(dropdown_options, options = {}) {
+Blockly.FieldDropdown.prototype.updateOptions = function (dropdown_options, options = {}) {
     if (Blockly.DropDownDiv.isVisible()) {
         Blockly.DropDownDiv.hideWithoutAnimation();
     }
@@ -61,7 +61,7 @@ Blockly.FieldDropdown.prototype.updateOptions = function(dropdown_options, optio
  *      'rx': Blockly.BlockSvg.CORNER_RADIUS * 4,
  *      'ry': Blockly.BlockSvg.CORNER_RADIUS * 4,
  */
-Blockly.FieldDropdown.prototype.init = function() {
+Blockly.FieldDropdown.prototype.init = function () {
     if (this.fieldGroup_) {
         // Dropdown has already been initialized once.
         return;
@@ -84,6 +84,8 @@ Blockly.FieldDropdown.prototype.init = function() {
         `${Blockly.mainWorkspace.options.pathToMedia}dropdown-arrow-dark.svg`
     );
     this.className_ += ' blocklyDropdownText';
+    // @deriv/bot: stop the drop-down from changing its fill colour to colourTertiary on click
+    this.disableColourChange_ = true;
 
     Blockly.FieldDropdown.superClass_.init.call(this);
     // If not in a shadow block, draw a box.
@@ -98,7 +100,8 @@ Blockly.FieldDropdown.prototype.init = function() {
                 width: this.size_.width,
                 height: this.size_.height,
                 stroke: this.sourceBlock_.getColourTertiary(),
-                fill: this.sourceBlock_.getColourTertiary(),
+                'stroke-width': '0.3px',
+                fill: this.sourceBlock_.getColourSecondary(),
                 'fill-opacity': 1,
             },
             null
@@ -112,21 +115,8 @@ Blockly.FieldDropdown.prototype.init = function() {
 };
 
 /**
- * This one is hooked to prevent the dropddown field background color from changing on item select
- */
-Blockly.FieldDropdown.prototype.onHide = function() {
-    this.dropDownOpen_ = false;
-    // Update colour to look selected.
-    if (!this.disableColourChange_ && this.sourceBlock_) {
-        if (this.sourceBlock_.isShadow()) {
-            this.sourceBlock_.clearShadowColour();
-        }
-    }
-};
-
-/**
  * Returns whether a dropdown is empty or not.
  */
-Blockly.FieldDropdown.prototype.isEmpty = function() {
+Blockly.FieldDropdown.prototype.isEmpty = function () {
     return this.menuGenerator_.length === 0 || !this.menuGenerator_[0][1];
 };

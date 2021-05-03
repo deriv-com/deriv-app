@@ -7,14 +7,16 @@ import ComplaintsPolicyContent from './complaints-policy-content.jsx';
 import 'Sass/app/modules/complaints-policy.scss';
 
 const ComplaintsPolicy = ({
-    routeBackInApp,
-    history,
-    landing_companies,
     accounts,
-    loginid,
+    history,
+    is_logged_in,
+    is_logging_in,
     is_populating_mt5_account_list,
+    landing_companies,
+    loginid,
+    routeBackInApp,
 }) => {
-    if (is_populating_mt5_account_list) return <Loading is_fullscreen={true} />;
+    if (is_populating_mt5_account_list || (!is_logged_in && is_logging_in)) return <Loading is_fullscreen={true} />;
 
     const onClickClose = () => routeBackInApp(history);
 
@@ -36,9 +38,11 @@ const ComplaintsPolicy = ({
 };
 
 export default connect(({ common, client }) => ({
-    routeBackInApp: common.routeBackInApp,
-    landing_companies: client.landing_companies,
     accounts: client.accounts,
-    loginid: client.loginid,
+    is_logged_in: client.is_logged_in,
+    is_logging_in: client.is_logging_in,
     is_populating_mt5_account_list: client.is_populating_mt5_account_list,
+    landing_companies: client.landing_companies,
+    loginid: client.loginid,
+    routeBackInApp: common.routeBackInApp,
 }))(withRouter(ComplaintsPolicy));

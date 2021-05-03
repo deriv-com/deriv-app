@@ -307,7 +307,8 @@ export const getCurrencyDisplayCode = (currency = '') => {
     return getPropertyValue(CryptoConfig.get(), [currency, 'display_code']) || currency;
 };
 
-export const getCurrencyName = (currency = '') => getPropertyValue(currencies_config, [currency, 'name']) || '';
+export const getCurrencyName = (currency = '') =>
+    currency === 'USDT' ? 'Tether Omni' : getPropertyValue(currencies_config, [currency, 'name']) || '';
 
 export const getMinPayout = currency => {
     return getPropertyValue(currencies_config, [currency, 'stake_default']);

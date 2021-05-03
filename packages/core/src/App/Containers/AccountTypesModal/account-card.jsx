@@ -1,15 +1,19 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import 'Sass/app/modules/account-types.scss';
 
 const MainCard = ({ button_text, buttonOnClick, platforms, is_button_disabled, items, subtitle, title }) => {
     return (
         <div className='account-card__main'>
-            <h3 className='account-card__main-title'>{title}</h3>
-            <h4 className='account-card__main-subtitle'>{subtitle}</h4>
+            <Text as='h3' weight='bold' className='account-card__main-title'>
+                {title}
+            </Text>
+            <Text as='h4' size='xxs' weight='bold' className='account-card__main-subtitle'>
+                {subtitle}
+            </Text>
             {Object.keys(items).length && (
                 <div className='account-card__main-table-container'>
                     <table className='account-card__main-items'>
@@ -28,7 +32,9 @@ const MainCard = ({ button_text, buttonOnClick, platforms, is_button_disabled, i
             )}
             {platforms && (
                 <div className='account-card__platforms'>
-                    <p className='account-card__platforms-title'>{localize('Available on')}</p>
+                    <Text as='p' color='less-prominent' size='xxs' className='account-card__platforms-title'>
+                        {localize('Available on')}
+                    </Text>
                     <div className='account-card__platforms-icons'>
                         {platforms.map((platform, index) => {
                             return (
@@ -37,7 +43,9 @@ const MainCard = ({ button_text, buttonOnClick, platforms, is_button_disabled, i
                                         <Icon icon={platform.icon} size={24} />
                                     </a>
 
-                                    <p className='account-card__platforms-name'>{platform.name}</p>
+                                    <Text as='p' size='xxxs' className='account-card__platforms-name'>
+                                        {platform.name}
+                                    </Text>
                                 </div>
                             );
                         })}

@@ -2,9 +2,8 @@ import classNames from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Dropdown, ButtonToggle } from '@deriv/components';
+import { Dropdown, ButtonToggle, InputField } from '@deriv/components';
 import { toMoment } from '@deriv/shared';
-import InputField from 'App/Components/Form/InputField';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import { connect } from 'Stores/connect';
 import { hasIntradayDurationUnit } from 'Stores/Modules/Trading/Helpers/duration';
@@ -18,6 +17,7 @@ const AdvancedDuration = ({
     duration_t,
     contract_expiry_type,
     changeDurationUnit,
+    current_focus,
     getDurationFromUnit,
     expiry_date,
     expiry_list,
@@ -26,6 +26,7 @@ const AdvancedDuration = ({
     onChange,
     onChangeUiStore,
     server_time,
+    setCurrentFocus,
     shared_input_props,
     start_date,
     validation_errors,
@@ -93,9 +94,11 @@ const AdvancedDuration = ({
                             <InputField
                                 id='dt_advanced_duration_input'
                                 classNameInput='trade-container__input'
+                                current_focus={current_focus}
                                 error_messages={validation_errors.duration}
                                 label={duration_units_list.length === 1 ? duration_units_list[0].text : null}
                                 name='duration'
+                                setCurrentFocus={setCurrentFocus}
                                 value={getDurationFromUnit(advanced_duration_unit)}
                                 {...number_input_props}
                                 {...shared_input_props}
@@ -112,8 +115,9 @@ const AdvancedDuration = ({
                             is_24_hours_contract={is_24_hours_contract}
                             value={expiry_date}
                         />
-                        {is_24_hours_contract && <TradingTimePicker />
-                        // validation_errors={validation_errors.end_time} TODO: add validation_errors for end time
+                        {
+                            is_24_hours_contract && <TradingTimePicker />
+                            // validation_errors={validation_errors.end_time} TODO: add validation_errors for end time
                         }
                     </div>
                 </>
@@ -127,6 +131,7 @@ AdvancedDuration.propTypes = {
     advanced_expiry_type: PropTypes.string,
     changeDurationUnit: PropTypes.func,
     contract_expiry_type: PropTypes.string,
+    current_focus: PropTypes.string,
     duration_t: PropTypes.number,
     duration_units_list: MobxPropTypes.arrayOrObservableArray,
     expiry_date: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -137,12 +142,15 @@ AdvancedDuration.propTypes = {
     onChange: PropTypes.func,
     onChangeUiStore: PropTypes.func,
     server_time: PropTypes.object,
+    setCurrentFocus: PropTypes.func,
     shared_input_props: PropTypes.object,
     start_date: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ modules }) => ({
+export default connect(({ modules, ui }) => ({
     contract_expiry_type: modules.trade.contract_expiry_type,
+    current_focus: ui.current_focus,
+    setCurrentFocus: ui.setCurrentFocus,
     validation_errors: modules.trade.validation_errors,
 }))(AdvancedDuration);

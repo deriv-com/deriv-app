@@ -61,10 +61,6 @@
         &--no-resale {
             color: var(--text-general);
         }
-        &__no-resale-msg {
-            font-size: 1em;
-            font-weight: 400;
-        }
     }
 }
 
@@ -87,10 +83,6 @@
         height: 4.8em;
         width: 4.8em;
         margin-bottom: 1.6em;
-    }
-    &__text {
-        font-size: 1.4em;
-        color: var(--text-disabled);
     }
 }
 

@@ -11,15 +11,8 @@ const js_loaders = [
     {
         loader: 'babel-loader',
         options: {
-            presets: ['@babel/preset-env', '@babel/preset-react'],
-            plugins: [
-                ['@babel/plugin-proposal-decorators', { legacy: true }],
-                ['@babel/plugin-proposal-class-properties', { loose: true }],
-                '@babel/plugin-proposal-export-default-from',
-                '@babel/plugin-proposal-object-rest-spread',
-                '@babel/plugin-proposal-export-namespace-from',
-                '@babel/plugin-syntax-dynamic-import',
-            ],
+            cacheDirectory: true,
+            rootMode: 'upward',
         },
     },
 ];
@@ -49,7 +42,13 @@ const svg_file_loaders = [
 ];
 
 const svg_loaders = [
-    'babel-loader',
+    {
+        loader: 'babel-loader',
+        options: {
+            cacheDirectory: true,
+            rootMode: 'upward',
+        },
+    },
     {
         loader: 'react-svg-loader',
         options: {
@@ -69,9 +68,6 @@ const svg_loaders = [
 const css_loaders = [
     {
         loader: MiniCssExtractPlugin.loader,
-        options: {
-            sourceMap: true,
-        },
     },
     {
         loader: 'css-loader',
@@ -83,8 +79,8 @@ const css_loaders = [
         loader: 'postcss-loader',
         options: {
             sourceMap: true,
-            config: {
-                path: path.resolve(__dirname),
+            postcssOptions: {
+                config: path.resolve(__dirname),
             },
         },
     },

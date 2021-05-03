@@ -1,7 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Icon } from '@deriv/components';
-import { connect } from '../../stores/connect';
+import { connect } from 'Stores/connect';
 
 const WorkspaceControl = ({ onZoomInOutClick }) => (
     <div className='load-strategy__preview-workspace-controls'>

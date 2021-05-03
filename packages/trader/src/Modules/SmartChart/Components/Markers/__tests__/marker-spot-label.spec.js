@@ -1,6 +1,6 @@
 import React from 'react';
 import { expect } from 'chai';
-import { configure, shallow } from 'enzyme';
+import { configure, shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import MarkerSpotLabel from '../marker-spot-label.jsx';
 
@@ -24,19 +24,21 @@ describe('MarkerSpotLabel', () => {
         expect(wrapper.find('.chart-spot-label__time-value-container--top').exists()).to.be.true;
         expect(wrapper.find('.chart-spot-label__time-value-container--bottom').exists()).to.be.false;
     });
-    it('should toggle label on hover if has_hover_toggle is passed in props', () => {
-        const wrapper = shallow(<MarkerSpotLabel has_hover_toggle={true} />);
-        expect(wrapper.state('show_label')).to.be.false;
+    it('should toggle label on hover if has_hover_toggle is passed in props', async () => {
+        const wrapper = mount(<MarkerSpotLabel has_hover_toggle={true} />);
+        expect(wrapper.find('.chart-spot-label__info-container').exists()).to.be.false;
 
         wrapper.find('.marker-hover-container').simulate('mouseenter');
-        expect(wrapper.state('show_label')).to.be.true;
+        wrapper.update();
+        expect(wrapper.find('.chart-spot-label__info-container').exists()).to.be.true;
 
         wrapper.find('.marker-hover-container').simulate('mouseleave');
-        expect(wrapper.state('show_label')).to.be.false;
+        wrapper.update();
+        expect(wrapper.find('.chart-spot-label__info-container').exists()).to.be.false;
     });
     it('should not toggle label on hover if has_label_toggle is not passed in props', () => {
         const wrapper = shallow(<MarkerSpotLabel />);
-        expect(wrapper.state('show_label')).to.be.true;
+        expect(wrapper.find('.chart-spot-label__info-container').exists()).to.be.true;
         expect(wrapper.find('.marker-hover-container').exists()).to.equal(false);
     });
     it('should have class .chart-spot-label__value-container--won if status won is passed in props', () => {

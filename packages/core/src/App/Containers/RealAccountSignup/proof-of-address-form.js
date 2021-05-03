@@ -1,6 +1,6 @@
 import { localize } from '@deriv/translations';
 import { ProofOfAddressContainer } from '@deriv/account';
-import { generateValidationFunction, getDefaultFields } from './form-validations';
+import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
 
 const proof_of_address_config = {
     poi_state: {

@@ -74,9 +74,7 @@ const SocketCache = (() => {
             return;
         }
 
-        const expires = moment()
-            .add(config[msg_type].expire, 'm')
-            .valueOf();
+        const expires = moment().add(config[msg_type].expire, 'm').valueOf();
 
         if (!data_obj.static_hash) {
             data_obj.static_hash = getStaticHash();

@@ -4,21 +4,14 @@ import React from 'react';
 import { Calendar } from '@deriv/components';
 import { addMonths, diffInMonths, epochToMoment, subMonths, toMoment } from '@deriv/shared';
 
-class TwoMonthPicker extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        this.state = {
-            left_pane_date: subMonths(props.value, 1).unix(),
-            right_pane_date: props.value,
-        };
-    }
+const TwoMonthPicker = React.memo(({ onChange, isPeriodDisabled, value }) => {
+    const [left_pane_date, setLeftPaneDate] = React.useState(subMonths(value, 1).unix());
+    const [right_pane_date, setRightPaneDate] = React.useState(value);
 
-    navigateFrom(e) {
-        this.setState({
-            left_pane_date: e.unix(),
-            right_pane_date: addMonths(e, 1).unix(),
-        });
-    }
+    const navigateFrom = e => {
+        setLeftPaneDate(e.unix());
+        setRightPaneDate(addMonths(e, 1).unix());
+    };
 
     /**
      * Only allow previous months to be available to navigate. Disable other periods
@@ -27,16 +20,16 @@ class TwoMonthPicker extends React.PureComponent {
      * @param range
      * @returns {boolean}
      */
-    validateFromArrows(date, range) {
-        return range === 'year' || diffInMonths(epochToMoment(this.state.left_pane_date), date) !== -1;
-    }
+    const validateFromArrows = (date, range) => {
+        return range === 'year' || diffInMonths(epochToMoment(left_pane_date), date) !== -1;
+    };
 
     /**
      * Validate values to be date_from < date_to
      */
-    shouldDisableDate(date) {
-        return this.props.isPeriodDisabled(date.unix());
-    }
+    const shouldDisableDate = date => {
+        return isPeriodDisabled(date.unix());
+    };
 
     /**
      * Only allow next month to be available to navigate (unless next month is in the future).
@@ -46,89 +39,74 @@ class TwoMonthPicker extends React.PureComponent {
      * @param range
      * @returns {boolean}
      */
-    validateToArrows(date, range) {
+    const validateToArrows = (date, range) => {
         if (range === 'year') return true; // disallow year arrows
-        const r_date = epochToMoment(this.state.right_pane_date).startOf('month');
+        const r_date = epochToMoment(right_pane_date).startOf('month');
         if (diffInMonths(toMoment().startOf('month'), r_date) === 0) return true; // future months are disallowed
         return diffInMonths(r_date, date) !== 1;
-    }
+    };
 
-    jumpToCurrentMonth() {
-        const current_month = toMoment()
-            .endOf('month')
-            .unix();
-        this.setState({
-            left_pane_date: epochToMoment(current_month)
-                .endOf('month')
-                .subtract(1, 'month')
-                .unix(),
-            right_pane_date: current_month,
-        });
-    }
+    const jumpToCurrentMonth = () => {
+        const current_month = toMoment().endOf('month').unix();
+        setLeftPaneDate(epochToMoment(current_month).endOf('month').subtract(1, 'month').unix());
+        setRightPaneDate(current_month);
+    };
 
-    navigateTo(e) {
-        this.setState({
-            left_pane_date: subMonths(e, 1).unix(),
-            right_pane_date: toMoment(e).unix(),
-        });
-    }
+    const navigateTo = e => {
+        setLeftPaneDate(subMonths(e, 1).unix());
+        setRightPaneDate(toMoment(e).unix());
+    };
 
-    updateSelectedDate(e) {
-        this.props.onChange(moment.utc(e.currentTarget.dataset.date, 'YYYY-MM-DD').unix());
-    }
+    const updateSelectedDate = e => {
+        onChange(moment.utc(e.currentTarget.dataset.date, 'YYYY-MM-DD').unix());
+    };
 
-    render() {
-        const { right_pane_date, left_pane_date } = this.state;
+    return (
+        <React.Fragment>
+            <div className='first-month'>
+                <Calendar.Header
+                    calendar_date={left_pane_date}
+                    calendar_view='date'
+                    navigateTo={navigateFrom}
+                    isPeriodDisabled={validateFromArrows}
+                    hide_disabled_periods={true}
+                    switchView={() => ({})}
+                />
+                <Calendar.Body
+                    calendar_view='date'
+                    calendar_date={left_pane_date}
+                    selected_date={value}
+                    date_format='YYYY-MM-DD'
+                    isPeriodDisabled={shouldDisableDate}
+                    hide_others={true}
+                    updateSelected={updateSelectedDate}
+                />
+            </div>
+            <div className='second-month'>
+                <Calendar.Header
+                    calendar_date={right_pane_date}
+                    calendar_view='date'
+                    isPeriodDisabled={validateToArrows}
+                    navigateTo={navigateTo}
+                    hide_disabled_periods
+                    switchView={() => ({})}
+                />
+                <Calendar.Body
+                    calendar_view='date'
+                    calendar_date={right_pane_date}
+                    selected_date={value}
+                    date_format='YYYY-MM-DD'
+                    isPeriodDisabled={shouldDisableDate}
+                    hide_others
+                    updateSelected={updateSelectedDate}
+                />
+                <Calendar.Footer use_icon='IcCalendarForwardToday' has_today_btn={true} onClick={jumpToCurrentMonth} />
+            </div>
+        </React.Fragment>
+    );
+});
 
-        return (
-            <React.Fragment>
-                <div className='first-month'>
-                    <Calendar.Header
-                        calendar_date={left_pane_date}
-                        calendar_view='date'
-                        navigateTo={this.navigateFrom.bind(this)}
-                        isPeriodDisabled={this.validateFromArrows.bind(this)}
-                        hide_disabled_periods={true}
-                        switchView={() => ({})}
-                    />
-                    <Calendar.Body
-                        calendar_view='date'
-                        calendar_date={left_pane_date}
-                        selected_date={this.props.value}
-                        date_format='YYYY-MM-DD'
-                        isPeriodDisabled={this.shouldDisableDate.bind(this)}
-                        hide_others={true}
-                        updateSelected={this.updateSelectedDate.bind(this)}
-                    />
-                </div>
-                <div className='second-month'>
-                    <Calendar.Header
-                        calendar_date={right_pane_date}
-                        calendar_view='date'
-                        isPeriodDisabled={this.validateToArrows.bind(this)}
-                        navigateTo={this.navigateTo.bind(this)}
-                        hide_disabled_periods={true}
-                        switchView={() => ({})}
-                    />
-                    <Calendar.Body
-                        calendar_view='date'
-                        calendar_date={right_pane_date}
-                        selected_date={this.props.value}
-                        date_format='YYYY-MM-DD'
-                        isPeriodDisabled={this.shouldDisableDate.bind(this)}
-                        hide_others={true}
-                        updateSelected={this.updateSelectedDate.bind(this)}
-                    />
-                    <Calendar.Footer
-                        use_icon='IcCalendarForwardToday'
-                        has_today_btn={true}
-                        onClick={this.jumpToCurrentMonth.bind(this)}
-                    />
-                </div>
-            </React.Fragment>
-        );
-    }
-}
+TwoMonthPicker.displayName = 'TwoMonthPicker';
 
 TwoMonthPicker.propTypes = {
     isPeriodDisabled: PropTypes.func,

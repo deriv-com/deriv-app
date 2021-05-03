@@ -1,16 +1,21 @@
 import React from 'react';
-import { getUrlSmartTrader } from '@deriv/shared';
+import { deriv_urls, getPlatformFromUrl } from '@deriv/shared';
 
 const SmartTraderIFrame = () => {
-    const url = getUrlSmartTrader();
-    if (!url) {
-        return null;
+    const { is_staging_deriv_app } = getPlatformFromUrl();
+
+    let base_link = '';
+
+    if (is_staging_deriv_app) {
+        base_link = deriv_urls.SMARTTRADER_STAGING;
+    } else {
+        base_link = deriv_urls.SMARTTRADER_PRODUCTION;
     }
 
     return (
         <iframe
             id='localstorage-sync'
-            src={`${url}/localstorage-sync.html`}
+            src={`${base_link}/localstorage-sync.html`}
             style={{ display: 'none', visibility: 'hidden' }}
             sandbox='allow-same-origin allow-scripts'
         />

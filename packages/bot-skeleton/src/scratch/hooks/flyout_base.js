@@ -1,4 +1,5 @@
 import { config } from '../../constants/config';
+import DBotStore from '../dbot-store';
 
 /**
  * Create a copy of this block on the workspace.
@@ -7,7 +8,7 @@ import { config } from '../../constants/config';
  *     went wrong with deserialization.
  * @package
  */
-Blockly.Flyout.prototype.createBlock = function(event, original_block) {
+Blockly.Flyout.prototype.createBlock = function (event, original_block) {
     Blockly.Events.disable();
 
     const main_workspace = this.targetWorkspace_;
@@ -53,8 +54,12 @@ Blockly.Flyout.prototype.createBlock = function(event, original_block) {
         this.hide();
     }
 
-    main_workspace.getToolbox().clearSelection();
+    const { flyout } = DBotStore.instance;
+    flyout.setIsSearchFlyout(false);
+    flyout.setVisibility(false);
+
     new_block.isInFlyout = false;
+
     return new_block;
 };
 
@@ -65,7 +70,7 @@ Blockly.Flyout.prototype.createBlock = function(event, original_block) {
  * @return {!Blockly.Block} The new block in the main workspace.
  * @private
  */
-Blockly.Flyout.prototype.placeNewBlock_ = function(event, old_block) {
+Blockly.Flyout.prototype.placeNewBlock_ = function (event, old_block) {
     const main_workspace = this.targetWorkspace_;
     const svg_root_old = old_block.getSvgRoot();
 

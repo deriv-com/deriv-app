@@ -1,9 +1,8 @@
 import * as Cookies from 'js-cookie';
 import { action, computed } from 'mobx';
-import { getAppId, toMoment, epochToMoment, getMT5AccountType } from '@deriv/shared';
+import { getAppId, toMoment, epochToMoment } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
-import { isLoginPages } from '_common/base/login';
 import BaseStore from './base-store';
 
 export default class GTMStore extends BaseStore {
@@ -54,6 +53,7 @@ export default class GTMStore extends BaseStore {
                 visitorId: this.visitorId,
                 currency: this.root_store.client.currency,
                 userId: this.root_store.client.user_id,
+                email: this.root_store.client.email,
             }),
             loggedIn: this.root_store.client.is_logged_in,
             theme: this.root_store.ui.is_dark_mode_on ? 'dark' : 'light',
@@ -63,7 +63,7 @@ export default class GTMStore extends BaseStore {
 
     @action.bound
     accountSwitcherListener() {
-        return new Promise(async resolve => resolve(this.pushDataLayer({ event: 'account switch' })));
+        return new Promise(resolve => resolve(this.pushDataLayer({ event: 'account switch' })));
     }
 
     /**
@@ -73,7 +73,7 @@ export default class GTMStore extends BaseStore {
      */
     @action.bound
     async pushDataLayer(data) {
-        if (this.is_gtm_applicable && !isLoginPages()) {
+        if (this.is_gtm_applicable) {
             BinarySocket.wait('authorize').then(() => {
                 const gtm_object = { ...this.common_variables, ...data };
                 if (!gtm_object.event) return;
@@ -142,7 +142,7 @@ export default class GTMStore extends BaseStore {
 
         const affiliate_token = Cookies.getJSON('affiliate_tracking');
         if (affiliate_token) {
-            this.pushDataLayer({ affiliate_token: affiliate_token.t });
+            this.pushDataLayer({ affiliate_token });
         }
 
         // Get current time (moment, set by server), else fallback to client time
@@ -165,21 +165,8 @@ export default class GTMStore extends BaseStore {
 
         if (login_event) {
             data.event = login_event;
-            BinarySocket.wait('mt5_login_list').then(response => {
-                (response.mt5_login_list || []).forEach(obj => {
-                    const acc_type = (getMT5AccountType(obj.group) || '')
-                        .replace('real_vanuatu', 'financial')
-                        .replace('vanuatu_', '')
-                        .replace(/svg/, 'gaming'); // i.e. financial_cent, demo_cent, demo_gaming, real_gaming
-                    if (acc_type) {
-                        data[`mt5_${acc_type}_id`] = obj.login;
-                    }
-                });
-                this.pushDataLayer(data);
-            });
-        } else {
-            this.pushDataLayer(data);
         }
+        this.pushDataLayer(data);
     }
 
     @action.bound

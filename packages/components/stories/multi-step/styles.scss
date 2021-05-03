@@ -1,0 +1,14 @@
+.multi-step-storybook {
+    font-size: 18px;
+    position: relative;
+
+    .multi-step__header {
+        margin: 0;
+        position: absolute;
+        top: 15px;
+        left: 15px;
+    }
+    .multi-step__component {
+        padding: 25px 0;
+    }
+}

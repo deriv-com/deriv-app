@@ -1,6 +1,6 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action, computed, reaction } from 'mobx';
 import { getIndicativePrice } from '@deriv/shared';
-import { contract_stages } from '../constants/contract-stage';
+import { contract_stages } from 'Constants/contract-stage';
 
 export default class SummaryCardStore {
     @observable contract = null;
@@ -13,6 +13,7 @@ export default class SummaryCardStore {
 
     constructor(root_store) {
         this.root_store = root_store;
+        this.disposeReactionsFn = this.registerReactions();
     }
 
     @computed
@@ -77,5 +78,19 @@ export default class SummaryCardStore {
         this.indicative = 0;
         this.indicative_movement = '';
         this.profit_movement = '';
+    }
+
+    registerReactions() {
+        const { client } = this.root_store.core;
+        this.disposeSwitchAcountListener = reaction(
+            () => client.loginid,
+            () => this.clear()
+        );
+
+        return () => {
+            if (typeof this.disposeSwitchAcountListener === 'function') {
+                this.disposeSwitchAcountListener();
+            }
+        };
     }
 }

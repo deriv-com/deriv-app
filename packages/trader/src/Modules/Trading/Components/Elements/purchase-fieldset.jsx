@@ -50,6 +50,7 @@ class PurchaseFieldset extends React.PureComponent {
                     currency={currency}
                     info={info}
                     index={index}
+                    has_deal_cancellation={is_multiplier && has_cancellation}
                     is_disabled={is_disabled}
                     is_high_low={is_high_low}
                     is_loading={is_loading}

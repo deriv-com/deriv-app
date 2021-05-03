@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import { config } from '@deriv/bot-skeleton';
-import GTM from '../utils/gtm';
+import GTM from 'Utils/gtm';
 
 export default class FlyoutStore {
     block_listeners = [];
@@ -22,69 +22,50 @@ export default class FlyoutStore {
     @observable is_search_flyout = false;
     @observable is_loading = false;
     @observable search_term = '';
-    @observable selected_category = '';
+    @observable selected_category = null;
 
     constructor(root_store) {
         this.root_store = root_store;
     }
 
-    /**
-     * Parses XML contents passed by Blockly.Toolbox. Supports all default
-     * Blockly.Flyout elements i.e. <block>, <label>, <button> in their
-     * original format, e.g. <label text="Hello World" />
-     * @param {Element[]} xml_list list of XML nodes
-     * @memberof FlyoutStore
-     */
-    @action.bound setContents(xml_list, search_term = '') {
-        const text_limit = 20;
-        const processed_xml = xml_list;
-        this.block_listeners.forEach(listener => Blockly.unbindEvent_(listener));
-        this.block_workspaces.forEach(workspace => workspace.dispose());
-        this.block_listeners = [];
-        this.block_workspaces = [];
-        this.is_help_content = false;
-        this.search_term = search_term.length > text_limit ? `${search_term.substring(0, text_limit)}...` : search_term;
-
-        // const xml_list_group = this.groupBy(xml_list);
-
-        this.flyout_content = observable(xml_list);
-        this.setFlyoutWidth(processed_xml);
-        this.setVisibility(true);
-
-        // apparently setFlyoutWidth doesn't calculate blocks dimentions until they're visible
-        // using setTimeout is a workaround to solve this issue
-        // TODO: Find a proper solution
-        const self = this;
-        setTimeout(function() {
-            self.setFlyoutWidth(processed_xml);
-        }, 50);
+    @action.bound
+    onMount() {
+        this.initFlyout();
+        window.addEventListener('click', this.onClickOutsideFlyout);
     }
 
-    /**
-     * Sets whether the flyout is visible or not.
-     * @param {boolean} is_visible
-     * @memberof FlyoutStore
-     */
-    @action.bound setVisibility(is_visible) {
-        if (this.is_visible === is_visible) {
-            return;
-        }
-
-        this.is_visible = is_visible;
-
-        if (!is_visible) {
-            this.flyout_content = observable([]);
-        }
+    @action.bound
+    onUnmount() {
+        window.removeEventListener('click', this.onClickOutsideFlyout);
     }
 
-    /**
-     * Sets whether the flyout is search or not.
-     * @param {boolean} is_search
-     * @memberof FlyoutStore
-     */
-    @action.bound setIsSearchFlyout(is_search) {
-        this.selected_category = '';
-        this.is_search_flyout = is_search;
+    @action.bound
+    initFlyout() {
+        const workspace = Blockly.derivWorkspace;
+        const options = {
+            parentWorkspace: workspace,
+            RTL: workspace.RTL,
+            horizontalLayout: workspace.horizontalLayout,
+        };
+
+        if (workspace.horizontalLayout) {
+            this.flyout = new Blockly.HorizontalFlyout(options);
+        } else {
+            this.flyout = new Blockly.VerticalFlyout(options);
+        }
+
+        this.flyout.targetWorkspace_ = workspace;
+        this.flyout.workspace_.targetWorkspace = workspace;
+
+        // A flyout connected to a workspace doesn't have its own current gesture.
+        this.flyout.workspace_.getGesture = this.flyout.targetWorkspace_.getGesture.bind(this.flyout.targetWorkspace_);
+
+        // Get variables from the main workspace rather than the target workspace.
+        workspace.variableMap_ = this.flyout.targetWorkspace_.getVariableMap();
+
+        this.flyout.workspace_.createPotentialVariableMap();
+
+        workspace.flyout_ = this.flyout;
     }
 
     /**
@@ -93,7 +74,8 @@ export default class FlyoutStore {
      * @param {Element} block_node DOM of a Blockly.Block
      * @memberof FlyoutStore
      */
-    @action.bound initBlockWorkspace(el_block_workspace, block_node) {
+    @action.bound
+    initBlockWorkspace(el_block_workspace, block_node) {
         const workspace = Blockly.inject(el_block_workspace, this.options);
 
         workspace.isFlyout = true;
@@ -112,7 +94,6 @@ export default class FlyoutStore {
         block.moveBy(1, 1);
 
         // Use original Blockly flyout functionality to create block on drag.
-        const blockly_flyout = Blockly.derivWorkspace.getToolbox().flyout_;
         const block_svg_root = block.getSvgRoot();
 
         this.block_listeners.push(
@@ -121,7 +102,7 @@ export default class FlyoutStore {
                     event: 'dbot_drag_block',
                     block_type: block.type,
                 });
-                blockly_flyout.blockMouseDown_(block)(event);
+                this.flyout.blockMouseDown_(block)(event);
             }),
             Blockly.bindEvent_(block_svg_root, 'mouseout', block, block.removeSelect),
             Blockly.bindEvent_(block_svg_root, 'mouseover', block, block.addSelect)
@@ -131,13 +112,48 @@ export default class FlyoutStore {
         Blockly.svgResize(workspace);
     }
 
+    @action.bound
+    getFlyout() {
+        return this.flyout;
+    }
+
+    /**
+     * Parses XML contents passed by Blockly.Toolbox. Supports all default
+     * Blockly.Flyout elements i.e. <block>, <label>, <button> in their
+     * original format, e.g. <label text="Hello World" />
+     * @param {Element[]} xml_list list of XML nodes
+     * @memberof FlyoutStore
+     */
+    @action.bound
+    setContents(xml_list, search_term = '') {
+        const text_limit = 20;
+        const processed_xml = xml_list;
+
+        this.block_listeners.forEach(listener => Blockly.unbindEvent_(listener));
+        this.block_workspaces.forEach(workspace => workspace.dispose());
+        this.block_listeners = [];
+        this.block_workspaces = [];
+
+        this.is_help_content = false;
+        this.search_term = search_term.length > text_limit ? `${search_term.substring(0, text_limit)}...` : search_term;
+        this.flyout_content = xml_list;
+
+        this.setFlyoutWidth(processed_xml);
+        this.setVisibility(true);
+
+        // apparently setFlyoutWidth doesn't calculate blocks dimentions until they're visible
+        // using setTimeout is a workaround to solve this issue
+        setTimeout(() => this.setFlyoutWidth(processed_xml), 50);
+    }
+
     /**
      * Walks through xmlList and finds width of the longest block while setting
      * height and width (in workspace pixels) attributes on each of the block nodes.
      * @param {Element[]} xmlList
      * @memberof FlyoutStore
      */
-    @action.bound setFlyoutWidth(xmlList) {
+    @action.bound
+    setFlyoutWidth(xmlList) {
         let longest_block_width = 0;
 
         xmlList.forEach(node => {
@@ -159,26 +175,28 @@ export default class FlyoutStore {
     }
 
     /**
-     * Close the flyout on click outside itself or parent toolbox.
+     * Sets whether the flyout is visible or not.
+     * @param {boolean} is_visible
+     * @memberof FlyoutStore
      */
     @action.bound
-    onClickOutsideFlyout(event) {
-        const workspace = Blockly.derivWorkspace;
+    setVisibility(is_visible) {
+        this.is_visible = is_visible;
 
-        if (!this.is_visible || !workspace) {
-            return;
+        if (!is_visible) {
+            this.setSelectedCategory(null);
+            this.flyout_content = [];
         }
+    }
 
-        const toolbox = workspace.getToolbox();
-        const path = event.path || (event.composedPath && event.composedPath());
-        const is_flyout_click = path.some(el => el.classList && el.classList.contains('flyout'));
-        const is_search_focus = this.root_store.toolbar.is_search_focus;
-        const isToolboxClick = () => toolbox.HtmlDiv.contains(event.target);
-
-        if (!is_flyout_click && !isToolboxClick() && !is_search_focus) {
-            toolbox.clearSelection();
-            this.setSelectedCategory('');
-        }
+    /**
+     * Sets whether the flyout is search or not.
+     * @param {boolean} is_search
+     * @memberof FlyoutStore
+     */
+    @action.bound
+    setIsSearchFlyout(is_search) {
+        this.is_search_flyout = is_search;
     }
 
     @action.bound
@@ -187,12 +205,46 @@ export default class FlyoutStore {
     }
 
     @action.bound
-    onMount() {
-        window.addEventListener('click', this.onClickOutsideFlyout);
+    getSelectedCategory() {
+        return this.selected_category;
+    }
+
+    /**
+     * Close the flyout on click outside itself or parent toolbox.
+     */
+    @action.bound
+    onClickOutsideFlyout(event) {
+        if (!this.is_visible || !Blockly.derivWorkspace) {
+            return;
+        }
+
+        const toolbox = document.getElementById('gtm-toolbox');
+        const path = event.path || (event.composedPath && event.composedPath());
+        const is_flyout_click = path.some(el => el.classList && el.classList.contains('flyout'));
+        const is_search_focus = this.root_store.toolbox.is_search_focus;
+        const isToolboxClick = () => toolbox.contains(event.target);
+
+        if (!is_flyout_click && !isToolboxClick() && !is_search_focus) {
+            this.setVisibility(false);
+            this.setSelectedCategory(null);
+        }
     }
 
     @action.bound
-    onUnmount() {
-        window.removeEventListener('click', this.onClickOutsideFlyout);
+    refreshCategory() {
+        const category = this.getSelectedCategory();
+        const { toolbox } = this.root_store;
+        const flyout_content = toolbox.getCategoryContents(category);
+        this.setContents(flyout_content);
+    }
+
+    @computed
+    get variables_blocks_count() {
+        return this.flyout_content.filter(block => block.getAttribute('type') === 'variables_get').length;
+    }
+
+    @computed
+    get first_get_variable_block_index() {
+        return this.flyout_content.length - this.variables_blocks_count;
     }
 }

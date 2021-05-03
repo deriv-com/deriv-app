@@ -5,8 +5,6 @@
     width: 100%;
 
     &__input {
-        border: 1px solid var(--border-normal);
-
         .dc-input__field {
             width: 100%;
             border-radius: $BORDER_RADIUS;
@@ -15,7 +13,7 @@
             -webkit-appearance: none;
             -moz-appearance: none;
 
-            &:hover {
+            &:hover:not(:disabled) {
                 cursor: pointer;
                 border-color: var(--border-hover);
             }
@@ -40,11 +38,13 @@
     }
     .dc-icon {
         top: 25%;
-        cursor: pointer;
+
+        &:not(.dc-icon--disabled) {
+            cursor: pointer;
+        }
     }
     &__picker {
         position: absolute;
-        top: 0;
         z-index: 2;
         transform: translate3d(0, 0, 0);
         opacity: 1;
@@ -64,6 +64,21 @@
                 transition: transform 0.25s ease, opacity 0.25s linear;
             }
         }
+        &--top {
+            &-enter,
+            &-exit {
+                transform: translate3d(0, 0, 0);
+                opacity: 0;
+            }
+            &-enter-done {
+                transform: translate3d(0, -40px, 0);
+                opacity: 1;
+            }
+            &-enter-done,
+            &-exit {
+                transition: transform 0.25s ease, opacity 0.25s linear;
+            }
+        }
         &--bottom {
             &-enter,
             &-exit {
@@ -71,7 +86,7 @@
                 opacity: 0;
             }
             &-enter-done {
-                transform: translate3d(0, 48px, 0);
+                transform: translate3d(0, 40px, 0);
                 opacity: 1;
             }
             &-enter-done,
@@ -98,14 +113,11 @@
             width: 100%;
 
             &-text {
-                font-size: 1.4rem;
-                color: var(--text-prominent);
                 background-color: inherit;
                 padding-top: 0.2rem;
 
                 &--has-error {
                     padding-top: unset;
-                    color: var(--brand-red-coral);
                 }
             }
         }
@@ -132,11 +144,12 @@
             &--is-focused {
                 color: var(--brand-secondary);
             }
+            .dc-input--disabled & {
+                color: var(--text-disabled);
+            }
         }
         &__error {
             display: flex;
-            font-size: 1.2rem;
-            color: var(--brand-red-coral);
             position: absolute;
             top: 4.4rem;
             left: 1.2rem;

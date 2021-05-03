@@ -8,17 +8,18 @@ import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 
 const BinaryRoutes = props => {
     const location = useLocation();
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     React.useEffect(() => {
         props.pushDataLayer({ event: 'page_load' });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location]);
 
     return (
         <React.Suspense fallback={<Loading />}>
             <Prompt when={props.prompt_when} message={props.promptFn} />
             <Switch>
-                {getRoutesConfig({ is_deriv_crypto }).map((route, idx) => (
+                {getRoutesConfig({ is_dashboard }).map((route, idx) => (
                     <RouteWithSubRoutes key={idx} {...route} {...props} />
                 ))}
             </Switch>

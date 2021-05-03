@@ -1,0 +1,95 @@
+.da-account-limits {
+    $this: &;
+    display: flex;
+
+    @include mobile {
+        flex-direction: column;
+    }
+
+    &__table {
+        width: calc(100% - 2.4rem);
+
+        @include mobile {
+            width: 100%;
+        }
+
+        tr {
+            border-bottom: 1px solid var(--general-section-2);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        & + & {
+            margin-top: 1.2rem;
+        }
+
+        &-header,
+        &-cell {
+            padding: 0.8rem 0;
+            display: inline-flex;
+
+            @include mobile {
+                flex-direction: column;
+            }
+
+            > .dc-text {
+                align-items: center;
+
+                & + div {
+                    display: flex;
+                    align-items: center;
+
+                    .dc-popover__target__icon {
+                        display: flex;
+                        align-items: center;
+                    }
+                }
+            }
+
+            &--left {
+                text-align: left;
+            }
+            &--right {
+                text-align: right;
+            }
+        }
+
+        &-wrapper {
+            flex: 1;
+
+            @include desktop {
+                margin-right: 1rem;
+            }
+
+            @include mobile {
+                margin: 0 2rem 2rem;
+            }
+        }
+    }
+
+    &__text-container {
+        margin: 1.2rem 0;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    &__popover {
+        margin-left: 0.8rem;
+    }
+
+    &--app-settings {
+        @include tablet-up {
+            padding: 2.4rem;
+        }
+
+        @include mobile {
+            padding: 1.6rem 0 0;
+        }
+
+        #{$this}__table {
+            width: 100%;
+        }
+    }
+}

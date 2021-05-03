@@ -18,10 +18,11 @@
         }
     }
     &--absolute {
-        bottom: 0;
         position: absolute;
-        left: 0;
-        padding: 2.4rem;
+        right: 0;
+        bottom: 0;
+        padding: 1.6rem;
+        width: 100%;
         background-color: var(--general-main-1);
         border-top: 1px solid var(--general-section-1);
     }
@@ -35,17 +36,15 @@
         }
     }
     &--error {
-        @include typeface(--paragraph-left-normal-black);
         text-transform: none;
-        color: var(--brand-red-coral) !important;
     }
     @include mobile {
         &--absolute {
             background-color: var(--general-section-2);
             top: unset;
-            bottom: -0.4rem;
+            bottom: 0;
             left: 0;
-            position: absolute;
+            position: fixed;
             padding: 1.6rem;
             border-top: 2px solid var(--general-disabled);
             max-height: 70px;

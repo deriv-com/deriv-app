@@ -1,3 +1,3 @@
-import { Unsupported } from './unsupported.jsx';
+import Unsupported from './unsupported.jsx';
 
 export default Unsupported;

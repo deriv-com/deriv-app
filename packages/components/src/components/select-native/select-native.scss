@@ -2,6 +2,14 @@
     width: 100%;
     position: relative;
 
+    &--hide-selected-value {
+        margin-left: 10px;
+        width: 40px;
+
+        .dc-select-native__wrapper {
+            width: 40px;
+        }
+    }
     &__wrapper {
         height: 38px;
 
@@ -45,7 +53,7 @@
         padding: 0 0.4rem;
         font-size: 1.4rem;
         transform: none;
-        background-color: var(--general-section-2);
+        background-color: var(--fill-normal);
         color: var(--text-less-prominent);
         transform-origin: top left;
         line-height: 1.43;
@@ -88,9 +96,10 @@
         }
     }
     &__hint {
-        color: var(--text-less-prominent);
-        font-size: 1.2rem;
         margin-left: 1.2rem;
-        line-height: 1.8rem;
+    }
+    &__suffix-icon {
+        position: absolute;
+        left: 11px;
     }
 }

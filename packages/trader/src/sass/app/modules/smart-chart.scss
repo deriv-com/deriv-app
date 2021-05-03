@@ -116,10 +116,6 @@
             }
         }
     }
-    &__time {
-        color: var(--text-prominent);
-        font-size: 10px;
-    }
     &__time-icon {
         margin-right: 2px;
     }
@@ -168,6 +164,16 @@
         padding-left: 0.5em;
         height: 100%;
         border-color: var(--text-less-prominent);
+
+        &:after {
+            background: linear-gradient(to bottom, var(--general-main-1) 3%, transparent 10%);
+            position: absolute;
+            content: ' ';
+            top: 0px;
+            left: -1px;
+            height: 100%;
+            width: 3px;
+        }
     }
     &__icon {
         position: absolute;
@@ -234,5 +240,8 @@
     }
     .sc-categorical-display {
         height: calc(100% - 38px) !important;
+    }
+    .cq-menu-dropdown .title .title-text {
+        display: inline;
     }
 }

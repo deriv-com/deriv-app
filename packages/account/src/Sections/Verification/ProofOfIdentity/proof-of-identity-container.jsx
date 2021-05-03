@@ -1,32 +1,57 @@
 import * as Cookies from 'js-cookie';
 import React from 'react';
-import { Loading } from '@deriv/components';
+import { PropTypes } from 'prop-types';
+import { Loading, usePrevious, useStateCallback } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import Limited from 'Components/poi-limited';
 import Unverified from 'Components/poi-unverified';
+import NotRequired from 'Components/poi-not-required';
+import RejectedReasons from 'Components/poi-rejected-reasons';
 import ErrorMessage from 'Components/error-component';
 import Onfido from './onfido.jsx';
-import { getIdentityStatus } from './proof-of-identity';
+import { getIdentityStatus, onfido_status_codes } from './proof-of-identity';
+import { populateVerificationStatus } from '../Helpers/verification';
 
-class ProofOfIdentityContainer extends React.Component {
-    is_mounted = false;
-    state = {
-        is_loading: true,
-        api_error: false,
-        status: '',
-    };
+const ProofOfIdentityContainer = ({
+    account_status,
+    addNotificationByKey,
+    getAccountStatus,
+    serviceToken,
+    notificationEvent,
+    removeNotificationByKey,
+    refreshNotifications,
+    removeNotificationMessage,
+    onStateChange,
+    is_message_enabled = true,
+    is_description_enabled = true,
+    is_mx_mlt,
+    height,
+    redirect_button,
+}) => {
+    const [is_loading, setIsLoading] = React.useState(true);
+    const [api_error, setAPIError] = React.useState(false);
+    const [status, setStatus] = React.useState('');
+    const [documents_supported, setDocumentsSupported] = React.useState(null);
+    const [country_code_key, setCountryCode] = React.useState(null);
+    const [onfido_service_token, setOnfidoServiceToken] = React.useState(null);
+    const [verification_status, setVerificationStatus] = useStateCallback({});
+    const [submissions_left_key, setSubmissionsLeft] = React.useState(null);
+    const [rejected_reasons_key, setRejectedReasons] = React.useState([]);
+    const [is_continue_uploading, setContinueUploading] = React.useState(false);
+    const [identity_status_key, setIdentityStatus] = React.useState(false);
+    const previous_account_status = usePrevious(account_status);
 
-    getOnfidoServiceToken = () =>
-        new Promise((resolve) => {
-            const onfido_cookie_name = 'onfido_token';
-            const onfido_cookie = Cookies.get(onfido_cookie_name);
+    const getOnfidoServiceToken = React.useCallback(
+        () =>
+            new Promise(resolve => {
+                const onfido_cookie_name = 'onfido_token';
+                const onfido_cookie = Cookies.get(onfido_cookie_name);
 
-            if (!onfido_cookie) {
-                this.props
-                    .serviceToken({
+                if (!onfido_cookie) {
+                    serviceToken({
                         service_token: 1,
                         service: 'onfido',
-                    })
-                    .then((response) => {
+                    }).then(response => {
                         if (response.error) {
                             resolve({ error: response.error });
                             return;
@@ -41,109 +66,145 @@ class ProofOfIdentityContainer extends React.Component {
                         });
                         resolve(token);
                     });
-            } else {
-                resolve(onfido_cookie);
+                } else {
+                    resolve(onfido_cookie);
+                }
+            }),
+        [serviceToken]
+    );
+
+    const createVerificationConfig = React.useCallback(
+        (account_status_obj, onfido_token) => {
+            const {
+                allow_document_upload,
+                allow_poi_resubmission,
+                has_poa,
+                needs_poa,
+                is_unwelcome,
+                onfido_supported_docs,
+                country_code,
+                rejected_reasons,
+                submissions_left,
+            } = populateVerificationStatus(account_status_obj);
+
+            const { identity, needs_verification } = account_status_obj.authentication;
+
+            const identity_status = getIdentityStatus(identity, needs_verification, is_mx_mlt, allow_poi_resubmission);
+
+            const has_no_rejections = !rejected_reasons?.length;
+
+            setVerificationStatus({ allow_document_upload, has_poa, needs_poa, is_unwelcome }, () => {
+                setStatus(identity_status);
+                setIdentityStatus(identity?.status);
+                if (onfido_token) {
+                    setOnfidoServiceToken(onfido_token);
+                }
+                setDocumentsSupported(onfido_supported_docs);
+                setCountryCode(country_code);
+                setSubmissionsLeft(submissions_left);
+                setRejectedReasons(rejected_reasons);
+                setContinueUploading(has_no_rejections);
+                refreshNotifications();
+                if (onStateChange) onStateChange({ status });
+            });
+        },
+        [is_mx_mlt, onStateChange, refreshNotifications, setVerificationStatus, status]
+    );
+
+    const handleComplete = () => {
+        notificationEvent({
+            notification_event: 1,
+            category: 'authentication',
+            event: 'poi_documents_uploaded',
+        }).then(response => {
+            if (response.error) {
+                setAPIError(true);
+                return;
             }
+            setStatus('pending');
+            // TODO: clean all of this up by simplifying the manually toggled notifications functions
+            removeNotificationMessage({ key: 'authenticate' });
+            removeNotificationByKey({ key: 'authenticate' });
+            removeNotificationMessage({ key: 'needs_poi' });
+            removeNotificationByKey({ key: 'needs_poi' });
+            removeNotificationMessage({ key: 'poi_expired' });
+            removeNotificationByKey({ key: 'poi_expired' });
+            if (verification_status?.needs_poa) addNotificationByKey('needs_poa');
+            if (onStateChange) onStateChange({ status: 'pending' });
         });
-
-    handleComplete = () => {
-        this.props
-            .notificationEvent({
-                notification_event: 1,
-                category: 'authentication',
-                event: 'poi_documents_uploaded',
-            })
-            .then((response) => {
-                if (response.error) {
-                    this.setState({ api_error: true });
-                    return;
-                }
-                this.setState({ status: 'pending' });
-                // TODO: clean all of this up by simplifying the manually toggled notifications functions
-                this.props.removeNotificationMessage({ key: 'authenticate' });
-                this.props.removeNotificationByKey({ key: 'authenticate' });
-                this.props.removeNotificationMessage({ key: 'needs_poi' });
-                this.props.removeNotificationByKey({ key: 'needs_poi' });
-                this.props.removeNotificationMessage({ key: 'poi_expired' });
-                this.props.removeNotificationByKey({ key: 'poi_expired' });
-                if (this.state.needs_poa) this.props.addNotificationByKey('needs_poa');
-                if (this.props.onStateChange) this.props.onStateChange({ status: 'pending' });
-            });
     };
-
-    componentDidMount() {
-        // TODO: Find a better solution for handling no-op instead of using is_mounted flags
-        this.is_mounted = true;
-        this.props.getAccountStatus().then((response) => {
+    // component didMount hook
+    React.useEffect(() => {
+        getAccountStatus().then(response => {
             const { get_account_status } = response;
-            this.getOnfidoServiceToken().then((onfido_service_token) => {
-                // TODO: handle error for onfido_service_token.error.code === 'MissingPersonalDetails'
-
-                const { document, identity, needs_verification } = get_account_status.authentication;
-                const has_poa = !(document && document.status === 'none');
-                const needs_poa = needs_verification.length && needs_verification.includes('document');
-                const onfido_unsupported = !identity.services.onfido.is_country_supported;
-                const status = getIdentityStatus(identity, onfido_unsupported);
-                const unwelcome = get_account_status.status.some((account_status) => account_status === 'unwelcome');
-                const allow_document_upload = get_account_status.status.some(
-                    (account_status) => account_status === 'allow_document_upload'
-                );
-                const documents_supported = identity.services.onfido.documents_supported;
-                if (this.is_mounted) {
-                    this.setState({
-                        is_loading: false,
-                        has_poa,
-                        needs_poa,
-                        status,
-                        onfido_service_token,
-                        unwelcome,
-                        documents_supported,
-                        allow_document_upload,
-                    });
-                    this.props.refreshNotifications();
-                    if (this.props.onStateChange) this.props.onStateChange({ status });
-                }
-            });
+            getOnfidoServiceToken()
+                .then(token => {
+                    // TODO: handle error for onfido_service_token.error.code === 'MissingPersonalDetails'
+                    createVerificationConfig(get_account_status, token);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
         });
-    }
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    componentWillUnmount() {
-        this.is_mounted = false;
-    }
+    // component didUpdate hook, checks previous account_status and current account_status to handle account switching
+    React.useEffect(() => {
+        if (account_status && previous_account_status) {
+            if (previous_account_status !== account_status) {
+                createVerificationConfig(account_status);
+            }
+        }
+    }, [createVerificationConfig, previous_account_status, account_status]);
 
-    render() {
-        const {
-            documents_supported,
-            is_loading,
-            status,
-            onfido_service_token,
-            has_poa,
-            api_error,
-            unwelcome,
-            allow_document_upload,
-        } = this.state;
+    const { needs_poa, is_unwelcome, allow_document_upload } = verification_status;
+    const rejectionStatus = [onfido_status_codes.rejected, onfido_status_codes.suspected];
+    const is_rejected = rejectionStatus
+        .map(status_code => onfido_status_codes[status_code])
+        .includes(identity_status_key);
+    const has_rejected_reasons = !!rejected_reasons_key.length && is_rejected;
 
-        if (api_error)
-            return (
-                <ErrorMessage
-                    error_message={localize('Sorry, there was a connection error. Please try again later.')}
-                />
-            );
-        if (is_loading) return <Loading is_fullscreen={false} className='account___intial-loader' />;
-        if (unwelcome && !allow_document_upload) return <Unverified />; // CS manually mark the account as unwelcome / suspends the account
-
+    if (api_error)
         return (
-            <Onfido
-                documents_supported={documents_supported}
-                status={status}
-                onfido_service_token={onfido_service_token}
-                has_poa={has_poa}
-                height={this.props.height ?? null}
-                handleComplete={this.handleComplete}
-                redirect_button={this.props.redirect_button}
-            />
+            <ErrorMessage error_message={localize('Sorry, there was a connection error. Please try again later.')} />
         );
-    }
-}
+    if (is_loading || status.length === 0) return <Loading is_fullscreen={false} className='account__initial-loader' />;
+    if (is_unwelcome && !allow_document_upload) return <Unverified is_description_enabled={is_description_enabled} />;
+    if (status === onfido_status_codes.not_required) return <NotRequired />;
+    if (!submissions_left_key && is_rejected) return <Limited />;
+    if (has_rejected_reasons && !is_continue_uploading)
+        return <RejectedReasons rejected_reasons={rejected_reasons_key} setContinueUploading={setContinueUploading} />;
+
+    return (
+        <Onfido
+            country_code={country_code_key}
+            documents_supported={documents_supported}
+            status={status}
+            onfido_service_token={onfido_service_token}
+            needs_poa={needs_poa}
+            height={height ?? null}
+            handleComplete={handleComplete}
+            is_message_enabled={is_message_enabled}
+            is_description_enabled={is_description_enabled}
+            redirect_button={redirect_button}
+        />
+    );
+};
+
+ProofOfIdentityContainer.propTypes = {
+    account_status: PropTypes.object,
+    addNotificationByKey: PropTypes.func,
+    getAccountStatus: PropTypes.func,
+    is_description_enabled: PropTypes.bool,
+    serviceToken: PropTypes.func,
+    notificationEvent: PropTypes.func,
+    removeNotificationByKey: PropTypes.func,
+    refreshNotifications: PropTypes.func,
+    removeNotificationMessage: PropTypes.func,
+    onStateChange: PropTypes.func,
+    is_mx_mlt: PropTypes.bool,
+    height: PropTypes.number,
+    redirect_button: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+};
 
 export default ProofOfIdentityContainer;

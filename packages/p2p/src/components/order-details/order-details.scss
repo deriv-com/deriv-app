@@ -1,0 +1,187 @@
+/** @define order-details; weak */
+$card-height: 512px;
+$card-width: 456px;
+
+.order-details {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+
+    @include tablet-up {
+        min-height: $card-height;
+        max-height: $card-height;
+    }
+}
+
+.order-details-card {
+    background-color: var(--general-main-1);
+    display: flex;
+    flex-direction: column;
+
+    @include tablet-up {
+        border-radius: 4px;
+        border: 8px solid var(--general-section-1);
+        width: $card-width;
+    }
+
+    @include mobile {
+        height: 100%;
+        width: 100%;
+    }
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        color: var(--text-general);
+        position: relative;
+        border-bottom: 1px solid var(--general-section-1);
+
+        @include tablet-up {
+            padding: 1.6rem 2.4rem;
+        }
+
+        @include mobile {
+            padding: 1.6rem;
+        }
+
+        &--left {
+            align-self: flex-start;
+        }
+        &--right {
+            @include mobile {
+                align-items: center;
+                display: flex;
+            }
+        }
+        &-id {
+            color: var(--text-less-prominent);
+            font-size: var(--text-size-xxs);
+            line-height: 1.8rem;
+            margin-top: 0.4rem;
+        }
+        &-status {
+            font-size: var(--text-size-s);
+            line-height: 2.4rem;
+            font-weight: bold;
+
+            &--info {
+                color: var(--text-less-prominent);
+            }
+            &--success {
+                color: var(--status-success);
+            }
+            &--danger {
+                color: var(--status-danger);
+            }
+            &--alert {
+                color: var(--status-warning);
+            }
+        }
+        &-amount {
+            line-height: 1.5;
+            font-size: 2.4rem;
+        }
+        &-method {
+            font-size: 1.2rem;
+            border: 1px solid var(--border-normal);
+            width: fit-content;
+            border-radius: 1.6rem;
+            padding: 0.4rem 1rem;
+            margin-top: 0.8rem;
+        }
+        &-timer {
+            font-size: 1.2rem;
+            line-height: 1.5;
+            text-align: center;
+
+            &-counter {
+                margin-top: 0.4rem;
+                border: 1px solid var(--border-normal);
+                border-radius: 16px;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+        &-payment-info {
+            margin-top: 0.8rem;
+            font-size: 1.4rem;
+            line-height: 1.4;
+            color: var(--text-general);
+            word-break: break-word;
+        }
+    }
+    &__info {
+        @include tablet-up {
+            padding: 1.6rem 2.4rem;
+        }
+
+        @include mobile {
+            flex: 1;
+            min-height: 0;
+            padding: 1.6rem;
+        }
+
+        &-block {
+            margin-bottom: 1.6rem;
+
+            &-value {
+                display: flex;
+                flex-direction: column;
+                font-size: 1.4rem;
+                line-height: 1.43;
+                color: var(--text-general);
+                word-break: break-word;
+            }
+        }
+        &-columns {
+            display: flex;
+            flex-flow: row nowrap;
+        }
+        &--right,
+        &--left {
+            display: flex;
+            flex-flow: column nowrap;
+            flex: 1;
+        }
+    }
+    &__footer {
+        border-top: 1px solid var(--general-section-1);
+        margin-top: auto;
+        font-size: 1.4rem;
+        line-height: 1.43;
+        color: var(--text-general);
+        padding: 1.6rem 2.4rem;
+        display: flex;
+        height: 72px;
+
+        @include mobile {
+            border-top: unset;
+            height: 100%;
+            padding: unset;
+        }
+
+        &--left {
+            margin-right: auto;
+        }
+        &--right {
+            margin-left: auto;
+        }
+    }
+    &__message {
+        font-size: var(--text-size-xs);
+        line-height: 2rem;
+        color: var(--text-general);
+    }
+    &__modal-checkbox {
+        margin: 2.4rem -0.7rem;
+    }
+}
+
+.dc-modal__container_orders__popup {
+    .dc-checkbox {
+        margin-top: 2.4rem;
+
+        &__box {
+            margin-left: 0;
+        }
+    }
+}

@@ -108,8 +108,8 @@ Purchase.propTypes = {
     validation_errors: PropTypes.object,
 };
 
-export default connect(({ client, modules, ui }) => ({
-    currency: client.currency,
+export default connect(({ modules, ui }) => ({
+    currency: modules.trade.currency,
     basis: modules.trade.basis,
     contract_type: modules.trade.contract_type,
     has_cancellation: modules.trade.has_cancellation,

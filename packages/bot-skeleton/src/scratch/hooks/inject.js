@@ -10,7 +10,7 @@
  * @return {!Blockly.Workspace} Newly created main workspace.
  * @private
  */
-Blockly.createVirtualWorkspace_ = function(fragment, options, blockDragSurface, workspaceDragSurface) {
+Blockly.createVirtualWorkspace_ = function (fragment, options, blockDragSurface, workspaceDragSurface) {
     options.parentWorkspace = null;
     const mainWorkspace = new Blockly.WorkspaceSvg(options, blockDragSurface, workspaceDragSurface);
     mainWorkspace.scale = options.zoomOptions.startScale;

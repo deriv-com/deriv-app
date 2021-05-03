@@ -64,10 +64,7 @@
             border-bottom: 1px solid var(--border-normal);
 
             &-text {
-                font-weight: bold;
-                font-size: 1.6rem;
                 margin: 1rem 0;
-                color: var(--text-prominent);
             }
             @include mobile {
                 display: none;
@@ -130,17 +127,7 @@
             }
         }
         &__header {
-            font-size: 1.4rem;
-            font-weight: bold;
-            text-align: center;
-            color: var(--text-less-prominent);
             padding: 8px;
-        }
-        &__message {
-            line-height: 1.5;
-            font-size: 1.2rem;
-            text-align: center;
-            color: var(--text-less-prominent);
         }
     }
     /** @define notifications-item; weak */
@@ -150,7 +137,7 @@
         margin-right: 0.8rem;
         position: relative;
 
-        &:after {
+        &:not(:last-child):after {
             position: absolute;
             content: '';
             bottom: 0;
@@ -160,24 +147,22 @@
             background: var(--border-disabled);
         }
         &__cta-button {
-            margin: 8px 0 0 auto;
-            height: 24px !important;
+            padding: 0.3rem 0.8rem;
+            margin: 0.8rem 0 0.8rem auto;
+            height: 2.4rem;
             width: auto;
 
-            .dc-btn__text {
-                font-size: 1.2rem;
-            }
             @include mobile {
-                margin: 8px 0 16px auto;
+                margin: 0.8rem 0 1.6rem auto;
             }
         }
+        &__link-wrapper {
+            display: flex;
+            justify-content: flex-end;
+        }
         &__title {
-            font-size: 1.4rem;
-            font-weight: bold;
             margin-bottom: 4px;
-            color: var(--text-prominent);
             position: relative;
-            line-height: 1.5;
 
             &-icon {
                 position: absolute;

@@ -16,12 +16,6 @@
     & svg:last-child {
         margin: 0 0.8rem;
     }
-    &__header {
-        font-size: 1.6rem;
-        line-height: 2.4rem;
-        font-weight: bold;
-        color: var(--text-general);
-    }
     &__arrow {
         transition: transform 0.3s ease;
         transform: rotate(0deg);

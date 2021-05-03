@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, DesktopWrapper, Money, MobileWrapper, Popover } from '@deriv/components';
+import { Icon, DesktopWrapper, Money, MobileWrapper, Popover, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
@@ -78,9 +78,9 @@ const ContractInfo = ({
                         <MobileWrapper>
                             <div className='trade-container__price-info-wrapper'>
                                 <div className='btn-purchase__text_wrapper'>
-                                    <span className='btn-purchase__text'>
+                                    <Text size='xs' weight='bold' color='colored-background'>
                                         <Money amount={stake} currency={currency} show_currency />
-                                    </span>
+                                    </Text>
                                 </div>
                             </div>
                         </MobileWrapper>
@@ -117,6 +117,7 @@ const ContractInfo = ({
                     alignment='left'
                     icon='info'
                     id={`dt_purchase_${type.toLowerCase()}_info`}
+                    is_bubble_hover_enabled
                     margin={210}
                     message={has_error_or_not_loaded ? '' : message}
                     relative_render

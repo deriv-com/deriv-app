@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { MobileDialog, Button, Div100vhContainer } from '@deriv/components';
 import { isDeepEqual, pick } from '@deriv/shared';
@@ -16,6 +17,7 @@ const RiskManagementDialog = ({
     has_stop_loss,
     has_cancellation,
     cancellation_duration,
+    cancellation_range_list,
     onChangeMultiple,
     toggleDialog,
 }) => {
@@ -30,6 +32,8 @@ const RiskManagementDialog = ({
     const [state, setState] = React.useState(applied_risk_management_state);
 
     const [validation_errors, setValidationErrors] = React.useState({});
+
+    const should_show_deal_cancellation = cancellation_range_list?.length > 0;
 
     const getStateToCompare = _state => {
         const props_to_pick = [
@@ -87,7 +91,12 @@ const RiskManagementDialog = ({
     return (
         <React.Fragment>
             <MobileDialog portal_element_id='modal_root' visible={is_open} has_content_scroll onClose={resetAndClose}>
-                <Div100vhContainer className='trade-params__multiplier-risk-management-dialog' height_offset='60px'>
+                <Div100vhContainer
+                    className={classNames('trade-params__multiplier-risk-management-dialog', {
+                        'trade-params__multiplier-risk-management-dialog--no-cancel': !should_show_deal_cancellation,
+                    })}
+                    height_offset='60px'
+                >
                     <TakeProfit
                         take_profit={state.take_profit}
                         has_take_profit={state.has_take_profit}
@@ -102,13 +111,15 @@ const RiskManagementDialog = ({
                         onChangeMultiple={onChangeMultipleLocal}
                         validation_errors={validation_errors}
                     />
-                    <CancelDeal
-                        has_take_profit={state.has_take_profit}
-                        has_stop_loss={state.has_stop_loss}
-                        has_cancellation={state.has_cancellation}
-                        cancellation_duration={state.cancellation_duration}
-                        onChangeMultiple={onChangeMultipleLocal}
-                    />
+                    {should_show_deal_cancellation && (
+                        <CancelDeal
+                            has_take_profit={state.has_take_profit}
+                            has_stop_loss={state.has_stop_loss}
+                            has_cancellation={state.has_cancellation}
+                            cancellation_duration={state.cancellation_duration}
+                            onChangeMultiple={onChangeMultipleLocal}
+                        />
+                    )}
                     <div className='trade-params__multiplier-risk-management-dialog-apply-button'>
                         <Button
                             text={localize('Apply')}
@@ -133,6 +144,7 @@ export default connect(({ modules }) => ({
     stop_loss: modules.trade.stop_loss,
     has_stop_loss: modules.trade.has_stop_loss,
     has_cancellation: modules.trade.has_cancellation,
+    cancellation_range_list: modules.trade.cancellation_range_list,
     cancellation_duration: modules.trade.cancellation_duration,
     onChangeMultiple: modules.trade.onChangeMultiple,
 }))(RiskManagementDialog);

@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
  * @param {!Blockly.Workspace} workspace The workspace containing procedures.
  * @return {!Array.<!Element>} Array of XML block elements.
  */
-Blockly.Procedures.flyoutCategory = function(workspace) {
+Blockly.Procedures.flyoutCategory = function (workspace) {
     let xmlList = [];
 
     if (Blockly.Blocks.procedures_defnoreturn) {
@@ -59,7 +59,7 @@ Blockly.Procedures.flyoutCategory = function(workspace) {
     return xmlList;
 };
 
-Blockly.Procedures.populateDynamicProcedures = function(tuple) {
+Blockly.Procedures.populateDynamicProcedures = function (tuple) {
     let xmlList = [];
 
     const populateProcedures = (procedureList, templateName) => {
@@ -110,7 +110,7 @@ Blockly.Procedures.populateDynamicProcedures = function(tuple) {
  * @param {!Blockly.Workspace} workspace The workspace to search.
  * @return {Blockly.Block} The procedure definition block, or null not found.
  */
-Blockly.Procedures.getDefinition = function(name, workspace) {
+Blockly.Procedures.getDefinition = function (name, workspace) {
     // Assume that a procedure definition is a top block.
     const blocks = workspace.getTopBlocks(false);
     for (let i = 0; i < blocks.length; i++) {
@@ -126,7 +126,7 @@ Blockly.Procedures.getDefinition = function(name, workspace) {
 
 // Scratch has a broken version where they return `false` if Blockly.Names.equals(procName[0], name).
 // https://github.com/LLK/scratch-blocks/pull/1930
-Blockly.Procedures.isNameUsed = function(name, workspace, optExclude) {
+Blockly.Procedures.isNameUsed = function (name, workspace, optExclude) {
     const blocks = workspace.getAllBlocks(false);
     // Iterate through every block and check the name.
     return blocks.some(block => {
@@ -144,7 +144,7 @@ Blockly.Procedures.isNameUsed = function(name, workspace, optExclude) {
  *     moved from the position at the start of the drag, in pixel coordinates.
  * @package
  */
-Blockly.WorkspaceDragger.prototype.drag = function(currentDragDeltaXY) {
+Blockly.WorkspaceDragger.prototype.drag = function (currentDragDeltaXY) {
     if (this.workspace_.isFlyout) {
         return;
     }

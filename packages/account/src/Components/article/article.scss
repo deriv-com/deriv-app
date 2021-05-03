@@ -1,0 +1,47 @@
+.da-article {
+    background-color: var(--general-section-1);
+    width: 25.6rem;
+    padding: 1.6rem 2.4rem;
+    height: fit-content;
+    border-radius: 8px;
+
+    @include mobile {
+        width: calc(100% - 3.2rem);
+        margin: 1.6rem;
+    }
+
+    @include tablet-up {
+        margin-left: 1.2rem;
+    }
+
+    &__header {
+        margin-bottom: 0.8rem;
+    }
+
+    &__list {
+        list-style-type: disc;
+        padding-left: 1.6rem;
+        s li::marker {
+            font-size: var(--text-size-xs);
+        }
+
+        li + li {
+            margin-top: 0.8rem;
+        }
+    }
+
+    &__learn-more {
+        cursor: pointer;
+        margin-top: 1.6rem;
+        display: flex;
+        align-items: center;
+
+        &:hover {
+            text-decoration: underline var(--brand-red-coral);
+        }
+
+        &-icon {
+            margin-left: 0.4rem;
+        }
+    }
+}

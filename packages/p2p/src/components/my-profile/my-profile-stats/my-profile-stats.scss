@@ -1,0 +1,44 @@
+.my-profile-stats {
+    border-bottom: none;
+    display: flex;
+    margin: 2.4rem 0;
+    overflow: auto;
+
+    &__cell {
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid var(--general-section-2);
+        white-space: nowrap;
+        align-items: flex-start;
+
+        & + & {
+            padding: 0 4rem;
+
+            @include mobile {
+                padding: 0.4rem 1.6rem;
+            }
+        }
+
+        &:first-child {
+            padding-right: 4rem;
+
+            @include mobile {
+                padding-right: 1.6rem;
+                padding-top: 0.4rem;
+                padding-bottom: 0.4rem;
+            }
+        }
+
+        @include mobile {
+            &:nth-child(3) {
+                border-right: none;
+            }
+        }
+    }
+
+    &__popover {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+    }
+}

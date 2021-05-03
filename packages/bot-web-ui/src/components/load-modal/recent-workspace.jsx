@@ -4,7 +4,7 @@ import { PropTypes } from 'prop-types';
 import { Icon } from '@deriv/components';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
-import { connect } from '../../stores/connect';
+import { connect } from 'Stores/connect';
 
 const RecentWorkspace = ({
     getRecentFileIcon,

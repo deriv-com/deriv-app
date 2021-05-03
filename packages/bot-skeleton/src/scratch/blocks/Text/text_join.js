@@ -46,7 +46,7 @@ Blockly.Blocks.text_join = {
         };
     },
     onIconClick() {
-        if (!this.workspace || this.isInFlyout) {
+        if (this.workspace.options.readOnly || this.isInFlyout) {
             return;
         }
 

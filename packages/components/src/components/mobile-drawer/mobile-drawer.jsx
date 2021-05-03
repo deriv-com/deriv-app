@@ -9,6 +9,7 @@ import Item from './mobile-drawer-item.jsx';
 import SubMenu from './mobile-drawer-submenu.jsx';
 import SubMenuSection from './mobile-drawer-submenu-section.jsx';
 import Icon from '../icon/icon.jsx';
+import Text from '../text/text.jsx';
 
 const MobileDrawer = ({
     className,
@@ -50,13 +51,16 @@ const MobileDrawer = ({
                 </div>
                 <div className='dc-mobile-drawer__header-wrapper'>
                     {title && (
-                        <h3
+                        <Text
+                            as='h3'
+                            color='prominent'
+                            weight='bold'
                             className={classNames('dc-mobile-drawer__header-title', {
                                 [`dc-mobile-drawer-header__title--${className}`]: className,
                             })}
                         >
                             {title}
-                        </h3>
+                        </Text>
                     )}
                     {LiveChat}
                 </div>

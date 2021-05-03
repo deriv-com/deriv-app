@@ -3,7 +3,6 @@ $HEIGHT: calc(100vh - 34em);
 
 .contract-audit {
     &__wrapper {
-        margin-top: 1em;
         border-radius: $BORDER_RADIUS;
         opacity: 1;
         flex: 1;
@@ -11,6 +10,7 @@ $HEIGHT: calc(100vh - 34em);
         background-color: var(--general-main-1);
         color: var(--text-prominent);
         display: flex;
+        margin-bottom: 0.8rem;
 
         /* postcss-bem-linter: ignore */
         .dc-tabs {
@@ -22,7 +22,15 @@ $HEIGHT: calc(100vh - 34em);
             &__content {
                 display: flex;
                 height: calc(100% - 4rem);
+                /* postcss-bem-linter: ignore */
+                .dc-themed-scrollbars {
+                    flex: 1;
+                }
             }
+        }
+        /* postcss-bem-linter: ignore */
+        .dc-themed-scrollbars {
+            width: 100%;
         }
     }
     &__grid {
@@ -44,10 +52,8 @@ $HEIGHT: calc(100vh - 34em);
         margin: 0 4px;
     }
     &__label {
-        font-size: 1em;
         white-space: nowrap;
         max-width: 90px;
-        color: var(--text-general);
     }
     &__value-wrapper {
         display: flex;
@@ -56,19 +62,13 @@ $HEIGHT: calc(100vh - 34em);
     &__value,
     &__value2 {
         padding-top: 2px;
-        line-height: 1.5;
-        font-size: 1.2em;
-        font-weight: bold;
-        color: var(--text-prominent);
     }
     &__timestamp {
         align-self: center;
         margin-left: auto;
-        text-align: right;
 
         &-value {
             display: block;
-            line-height: 1.2;
         }
     }
     &__empty {
@@ -86,12 +86,6 @@ $HEIGHT: calc(100vh - 34em);
             text-align: center;
             color: var(--text-less-prominent);
             padding: 8px;
-        }
-        &-message {
-            color: var(--text-less-prominent);
-            font-size: 1.2rem;
-            text-align: center;
-            line-height: 1.4;
         }
     }
     &__tabs {

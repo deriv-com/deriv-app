@@ -11,7 +11,7 @@ const ticksCallback = response => {
     cb(data);
 };
 
-export const getTicks = function({ symbol }, callback) {
+export const getTicks = function ({ symbol }, callback) {
     cb = callback;
     WS.forgetAll('ticks').then(() => {
         WS.subscribeTicks(symbol, ticksCallback);

@@ -1,0 +1,11 @@
+.page-error-storybook {
+    & .dc-page-error__container {
+        @media only screen and (max-width: 800px) {
+            flex-wrap: wrap;
+        }
+    }
+    &-image {
+        width: 400px;
+        height: auto;
+    }
+}

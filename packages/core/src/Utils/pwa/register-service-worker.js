@@ -1,7 +1,6 @@
 import { getUrlBase } from '@deriv/shared';
 
 const EVERY_HOUR = 3600000; // 1000 * 60 * 60
-const AUTO_REFRESH_THRESHOLD = 10000; // 10 Seconds
 
 let interval_id;
 
@@ -36,20 +35,18 @@ export default function register() {
                         const installingWorker = registration.installing;
                         installingWorker.onstatechange = () => {
                             if (installingWorker.state === 'installed') {
-                                if (navigator.serviceWorker.controller && AUTO_REFRESH_THRESHOLD < performance.now()) {
+                                if (navigator.serviceWorker.controller && performance.now() > EVERY_HOUR) {
                                     // User's first visit:
                                     // At this point, the old content will have been purged and
                                     // the fresh content will have been added to the cache.
                                     // It's the perfect time to display a "New content is
                                     // available; please refresh." message in your web app.
-                                    console.log('New content is available; please refresh.'); // eslint-disable-line no-console
                                     const new_version_received = new Event('UpdateAvailable');
                                     document.dispatchEvent(new_version_received);
                                 } else {
                                     // At this point, everything has been precached.
                                     // It's the perfect time to display a
                                     // "Content is cached for offline use." message.
-                                    console.log('Content is cached for offline use.'); // eslint-disable-line no-console
                                 }
                             }
                         };
@@ -58,14 +55,6 @@ export default function register() {
                 .catch(error => {
                     console.error('Error during service worker registration:', error); // eslint-disable-line no-console
                 });
-        });
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-            // This fires when the service worker controlling this page
-            // changes, eg a new worker has skipped waiting and become
-            // the new active worker.
-            if (AUTO_REFRESH_THRESHOLD > performance.now()) {
-                window.location.reload();
-            }
         });
     }
 }

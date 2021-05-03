@@ -1,9 +1,9 @@
 import React from 'react';
 import { expect } from 'chai';
 import * as Helpers from '../helpers';
-import routes from '../../../../Constants/routes';
+import { routes } from '@deriv/shared';
 import getRoutesConfig from '../../../Constants/routes-config';
-import Redirect from 'App/Containers/Redirect/redirect.jsx';
+import Redirect from '../../../Containers/Redirect/redirect';
 
 describe('Helpers', () => {
     describe('normalizePath', () => {
@@ -20,24 +20,13 @@ describe('Helpers', () => {
 
     describe('findRouteByPath', () => {
         it('should return undefined when path is not in routes_config', () => {
-            expect(Helpers.findRouteByPath('invalidRoute', getRoutesConfig())).to.be.undefined;
+            expect(Helpers.findRouteByPath('invalidRoute', getRoutesConfig({}))).to.be.undefined;
         });
         it('should return route_info when path is in routes_config and is not nested', () => {
-            expect(Helpers.findRouteByPath(routes.redirect, getRoutesConfig())).to.eql({
-                path: routes.redirect,
-                component: Redirect,
-                title: 'Redirect',
-            });
+            const comp = Helpers.findRouteByPath(routes.redirect, getRoutesConfig({}));
+            expect(comp.path).to.eql(routes.redirect);
+            expect(comp.component).to.eql(Redirect);
         });
-        // TODO: search tag: test-route-parent-info -> Enable test for getting route parent info when there are nested routes
-        // it('should return route_info of parent route when path is in routes_config child level and is nested', () => {
-        //     const reports_routes_length = getRoutesConfig().find(r => r.path === routes.reports).routes.length;
-        //     expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig())).to.have.all.keys('path', 'component', 'is_authenticated', 'routes', 'title');
-        //     expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig()).routes).to.be.instanceof(Array);
-        //     expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig()).routes).to.have.length(reports_routes_length);
-        //     expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig()).is_authenticated).to.be.equal(true);
-        //     expect(Helpers.findRouteByPath(routes.profit, getRoutesConfig()).path).to.be.equal(routes.reports);
-        // });
     });
 
     describe('isRouteVisible', () => {

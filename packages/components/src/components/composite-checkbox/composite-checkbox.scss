@@ -6,8 +6,6 @@
     cursor: pointer;
 
     &__description {
-        @include typeface(--xsmall-left-normal-black);
-        color: var(--text-general);
         margin: 1.2rem 0 0;
     }
     &:hover:not(.composite-checkbox--active) {

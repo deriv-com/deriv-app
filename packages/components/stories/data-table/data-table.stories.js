@@ -75,13 +75,7 @@ stories
                     height: '360px',
                 }}
             >
-                <DataTable
-                    className='container'
-                    columns={mock_columns}
-                    data_source={mock_data}
-                    getRowSize={() => 30}
-                    custom_width={`${number('Width', 70)}%`}
-                />
+                <DataTable className='container' columns={mock_columns} data_source={mock_data} getRowSize={() => 30} />
             </div>
         </Theme>
     ))

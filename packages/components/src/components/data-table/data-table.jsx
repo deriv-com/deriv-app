@@ -1,7 +1,8 @@
 import classNames from 'classnames';
-import { VariableSizeList as List } from 'react-window';
+import { List } from 'react-virtualized/dist/es/List';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { AutoSizer } from 'react-virtualized/dist/es/AutoSizer';
 import TableRow from './table-row.jsx';
 import ThemedScrollbars from '../themed-scrollbars';
 
@@ -10,60 +11,59 @@ import ThemedScrollbars from '../themed-scrollbars';
       2. implement filtering per column
 */
 
-const ThemedScrollbarsWrapper = React.forwardRef((props, ref) => (
-    <ThemedScrollbars {...props} forwardedRef={ref}>
-        {props.children}
-    </ThemedScrollbars>
-));
-// Display name is required by Developer Tools to give a name to the components we use.
-// If a component doesn't have a displayName is will be shown as <Unknown />. Hence, name is set.
-ThemedScrollbarsWrapper.displayName = 'ThemedScrollbars';
-
 class DataTable extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        this.state = {
-            height: 200,
-            width: 200,
-            window_width: 1024,
-        };
-    }
+    state = {
+        scrollTop: 0,
+    };
 
-    componentDidMount() {
-        this.setState({
-            height: this.props.custom_height || this.el_table_body.clientHeight,
-            width: this.props.custom_width || this.el_table_body.clientWidth,
-            window_width: window.innerWidth,
-        });
-    }
+    handleScroll = ev => {
+        const { scrollTop } = ev.target;
+        this.setState({ scrollTop });
+        if (typeof this.props.onScroll === 'function') {
+            this.props.onScroll(ev);
+        }
+    };
 
-    rowRenderer = ({
-        data,
-        index, // Index of row
-        style, // Style object to be applied to row (to position it);
-    }) => {
-        const { className, getRowAction, columns, preloaderCheck, id, getActionColumns, content_loader } = this.props;
-        const item = data[index];
+    rowRenderer = ({ style, index, key }) => {
+        const {
+            className,
+            columns,
+            content_loader,
+            data_source,
+            getActionColumns,
+            getRowAction,
+            id,
+            keyMapper,
+            passthrough,
+            preloaderCheck,
+        } = this.props;
+        const item = data_source[index];
         const action = getRowAction && getRowAction(item);
-        const contract_id = data[index].contract_id || data[index].id;
+        const contract_id = data_source[index].contract_id || data_source[index].id;
+        const row_key = keyMapper?.(item) || key;
 
         // If row content is complex, consider rendering a light-weight placeholder while scrolling.
         const content = (
             <TableRow
                 className={className}
-                row_obj={item}
                 columns={columns}
+                content_loader={content_loader}
+                getActionColumns={getActionColumns}
                 id={contract_id}
                 key={id}
-                to={typeof action === 'string' ? action : undefined}
-                show_preloader={typeof preloaderCheck === 'function' ? preloaderCheck(item) : null}
+                passthrough={passthrough}
                 replace={typeof action === 'object' ? action : undefined}
-                getActionColumns={getActionColumns}
-                content_loader={content_loader}
+                row_obj={item}
+                show_preloader={typeof preloaderCheck === 'function' ? preloaderCheck(item) : null}
+                to={typeof action === 'string' ? action : undefined}
             />
         );
 
-        return <div style={style}>{content}</div>;
+        return (
+            <div key={row_key} style={style}>
+                {content}
+            </div>
+        );
     };
 
     render() {
@@ -71,28 +71,43 @@ class DataTable extends React.PureComponent {
             children,
             className,
             columns,
+            content_loader,
             data_source,
             footer,
             getActionColumns,
             getRowSize,
-            onScroll,
-            content_loader,
         } = this.props;
 
         const TableData = (
             <React.Fragment>
-                <List
-                    className={className}
-                    height={this.state.height}
-                    itemCount={data_source.length}
-                    itemData={data_source}
-                    itemSize={getRowSize}
-                    width={this.state.width}
-                    outerElementType={ThemedScrollbarsWrapper}
-                >
-                    {this.rowRenderer}
-                </List>
-                {children}
+                <AutoSizer>
+                    {({ width, height }) => (
+                        <div
+                            className='dc-data-table'
+                            style={{
+                                height,
+                                width,
+                            }}
+                        >
+                            <ThemedScrollbars autoHide onScroll={this.handleScroll}>
+                                <List
+                                    autoHeight
+                                    className={className}
+                                    height={height}
+                                    overscanRowCount={1}
+                                    ref={ref => (this.list_ref = ref)}
+                                    rowCount={data_source.length}
+                                    rowHeight={getRowSize}
+                                    rowRenderer={this.rowRenderer}
+                                    scrollingResetTimeInterval={0}
+                                    scrollTop={this.state.scrollTop}
+                                    width={width}
+                                />
+                            </ThemedScrollbars>
+                            {children}
+                        </div>
+                    )}
+                </AutoSizer>
             </React.Fragment>
         );
 
@@ -113,9 +128,9 @@ class DataTable extends React.PureComponent {
                     <TableRow
                         className={className}
                         columns={columns}
-                        is_header
-                        getActionColumns={getActionColumns}
                         content_loader={content_loader}
+                        getActionColumns={getActionColumns}
+                        is_header
                     />
                 </div>
                 <div
@@ -123,7 +138,6 @@ class DataTable extends React.PureComponent {
                     ref={el => {
                         this.el_table_body = el;
                     }}
-                    onScroll={onScroll}
                 >
                     {TableData}
                 </div>
@@ -132,11 +146,11 @@ class DataTable extends React.PureComponent {
                     <div className='table__foot'>
                         <TableRow
                             className={className}
-                            row_obj={footer}
                             columns={columns}
-                            is_footer
-                            getActionColumns={getActionColumns}
                             content_loader={content_loader}
+                            getActionColumns={getActionColumns}
+                            is_footer
+                            row_obj={footer}
                         />
                     </div>
                 )}
@@ -154,6 +168,7 @@ DataTable.propTypes = {
     getRowAction: PropTypes.func,
     getRowSize: PropTypes.func,
     onScroll: PropTypes.func,
+    passthrough: PropTypes.object,
 };
 
 export default DataTable;

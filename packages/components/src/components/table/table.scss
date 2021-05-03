@@ -55,4 +55,11 @@
             z-index: 3;
         }
     }
+    &--scrollbar {
+        display: block;
+        // Only Safari: to ensure that table header sticks to the top
+        @supports (-webkit-hyphens: none) {
+            display: unset;
+        }
+    }
 }

@@ -44,7 +44,7 @@ export const ApiCallProxyHandler = {
         try {
             const target_value = Reflect.get(target, prop_key, receiver);
             if (typeof target_value === 'function') {
-                return function(...args) {
+                return function (...args) {
                     const result = target_value.apply(this, args);
                     if (result instanceof Promise) {
                         return new Promise(resolve => {

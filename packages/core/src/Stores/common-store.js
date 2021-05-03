@@ -1,5 +1,6 @@
 import { action, observable, reaction } from 'mobx';
-import { routes, toMoment, getUrlSmartTrader, isMobile } from '@deriv/shared';
+import { routes, toMoment, getUrlSmartTrader, isMobile, getAppId } from '@deriv/shared';
+import BinarySocket from '_common/base/socket_base';
 import ServerTime from '_common/base/server_time';
 import { currentLanguage, getAllowedLanguages } from 'Utils/Language/index';
 import BaseStore from './base-store';
@@ -39,7 +40,17 @@ export default class CommonStore extends BaseStore {
 
     @observable app_routing_history = [];
     @observable app_router = { history: null };
+    @observable app_id = undefined;
 
+    @action.bound
+    checkAppId() {
+        if (this.app_id && this.app_id !== getAppId()) {
+            BinarySocket.closeAndOpenNewConnection();
+        }
+        this.app_id = getAppId();
+    }
+
+    @action.bound
     setInitialRouteHistoryItem(location) {
         if (window.location.href.indexOf('?ext_platform_url=') !== -1) {
             const ext_url = decodeURI(new URL(window.location.href).searchParams.get('ext_platform_url'));
@@ -212,7 +223,7 @@ export default class CommonStore extends BaseStore {
                 // remove once p2p is ready
                 const ui_store = this.root_store.ui;
                 if (route_to_item.pathname === routes.cashier_p2p && ui_store.is_mobile)
-                    history.push(`${route_to_item.pathname}#verification`);
+                    history.push(`${route_to_item.pathname}/verification`);
                 else history.push(route_to_item.pathname);
                 return;
             }

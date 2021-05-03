@@ -14,20 +14,36 @@ const TradingTimePicker = ({
     server_time,
 }) => {
     const moment_expiry_date = toMoment(expiry_date);
-    const market_open_datetime = setTime(moment_expiry_date.clone(), market_open_times.slice(-1)[0]);
-    const market_close_datetime = setTime(moment_expiry_date.clone(), market_close_times.slice(-1)[0]);
+    const market_open_datetimes = market_open_times.map(open_time => setTime(moment_expiry_date.clone(), open_time));
+    const market_close_datetimes = market_close_times.map(close_time =>
+        setTime(moment_expiry_date.clone(), close_time)
+    );
     const expiry_datetime = setTime(moment_expiry_date.clone(), expiry_time);
     const server_datetime = toMoment(server_time);
 
-    const boundaries = getBoundaries(server_datetime.clone(), market_open_datetime.clone(), market_close_datetime);
-    const selected_time = getSelectedTime(server_datetime.clone(), expiry_datetime, market_open_datetime);
+    const boundaries = getBoundaries(server_datetime.clone(), market_open_datetimes, market_close_datetimes);
+    const selected_time = getSelectedTime(
+        server_datetime.clone(),
+        expiry_datetime,
+        market_open_datetimes,
+        market_close_datetimes
+    );
+
+    React.useEffect(() => {
+        if (expiry_time !== selected_time) {
+            onChange({
+                target: { name: 'expiry_time', value: selected_time },
+            });
+        }
+    }, [expiry_time, selected_time, onChange]);
+
     return (
         <TimePicker
-            end_time={boundaries.end}
+            end_times={boundaries.end}
             onChange={onChange}
             name='expiry_time'
             placeholder='12:00'
-            start_time={boundaries.start}
+            start_times={boundaries.start}
             selected_time={selected_time}
         />
     );

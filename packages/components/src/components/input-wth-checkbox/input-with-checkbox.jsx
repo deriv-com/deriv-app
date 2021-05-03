@@ -7,26 +7,26 @@ import Popover from '../popover';
 
 const InputWithCheckbox = ({
     addToast,
-    removeToast,
+    checkbox_tooltip_label,
     classNameInlinePrefix,
     classNameInput,
     className,
     currency,
     current_focus,
     defaultChecked,
+    error_message_alignment,
     error_messages,
     is_disabled,
     is_single_currency,
     is_negative_disabled,
     is_input_hidden,
     label,
-    name,
     max_value,
+    name,
     onChange,
-    checkbox_tooltip_label,
-    tooltip_alignment,
-    error_message_alignment,
+    removeToast,
     setCurrentFocus,
+    tooltip_alignment,
     tooltip_label,
     value,
 }) => {
@@ -43,13 +43,31 @@ const InputWithCheckbox = ({
 
     // eslint-disable-next-line consistent-return
     React.useEffect(() => {
-        if (isMobile() && error_messages?.length > 0) {
-            showErrorToast(error_messages[0]);
-            return () => {
-                removeErrorToast();
+        if (isMobile()) {
+            const showErrorToast = () => {
+                if (typeof addToast === 'function') {
+                    addToast({
+                        key: `${name}__error`,
+                        content: error_messages,
+                        type: 'error',
+                    });
+                }
             };
+
+            const removeErrorToast = () => {
+                if (typeof removeToast === 'function') {
+                    removeToast(`${name}__error`);
+                }
+            };
+
+            if (error_messages?.length > 0) {
+                showErrorToast(error_messages[0]);
+                return () => {
+                    removeErrorToast();
+                };
+            }
         }
-    }, [error_messages]);
+    }, [error_messages, addToast, removeToast, name]);
 
     const focusInput = () => {
         setTimeout(() => {
@@ -88,7 +106,7 @@ const InputWithCheckbox = ({
             id={`dc_${name}_input`}
             inline_prefix={is_single_currency ? currency : null}
             is_autocomplete_disabled
-            is_float
+            is_float={getDecimalPlaces(currency) > 0}
             is_hj_whitelisted
             is_incrementable
             is_negative_disabled={is_negative_disabled}
@@ -118,22 +136,6 @@ const InputWithCheckbox = ({
         />
     );
 
-    const showErrorToast = () => {
-        if (typeof addToast === 'function') {
-            addToast({
-                key: `${name}__error`,
-                content: error_messages,
-                type: 'error',
-            });
-        }
-    };
-
-    const removeErrorToast = () => {
-        if (typeof removeToast === 'function') {
-            removeToast(`${name}__error`);
-        }
-    };
-
     return (
         <React.Fragment>
             <div ref={input_wrapper_ref} className='dc-input-wrapper--inline'>
@@ -156,6 +158,7 @@ const InputWithCheckbox = ({
                         alignment={tooltip_alignment || 'left'}
                         icon='info'
                         id={`dc_${name}-checkbox__tooltip`}
+                        is_bubble_hover_enabled
                         message={tooltip_label}
                         margin={isMobile() ? 0 : 210}
                         zIndex={9999}

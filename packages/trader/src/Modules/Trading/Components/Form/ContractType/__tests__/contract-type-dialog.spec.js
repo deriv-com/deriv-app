@@ -17,12 +17,4 @@ describe('ContractTypeDialog', () => {
         const wrapper = shallow(<ContractTypeDialog>{child_div}</ContractTypeDialog>);
         expect(wrapper.contains(child_div)).to.equal(true);
     });
-    it('should render MobileDialog component when is_mobile is true', () => {
-        const wrapper = shallow(<ContractTypeDialog is_mobile={true} />);
-        expect(wrapper.find(MobileDialog).exists()).to.be.true;
-    });
-    it('should not render MobileDialog component when is_mobile is false', () => {
-        const wrapper = shallow(<ContractTypeDialog is_mobile={false} />);
-        expect(wrapper.find(MobileDialog).exists()).to.be.false;
-    });
 });

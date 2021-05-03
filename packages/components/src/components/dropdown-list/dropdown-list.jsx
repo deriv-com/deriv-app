@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars.jsx';
@@ -118,7 +119,9 @@ const DropdownList = React.forwardRef((props, ref) => {
         setActiveIndex,
         style,
         not_found_text,
+        portal_id,
     } = props;
+
     if (list_items.length && typeof list_items[0] !== 'string' && typeof list_items[0] !== 'object') {
         throw Error('Dropdown received wrong data structure');
     }
@@ -126,7 +129,7 @@ const DropdownList = React.forwardRef((props, ref) => {
     const is_object = !Array.isArray(list_items) && typeof list_items === 'object';
     const is_string_array = list_items.length && typeof list_items[0] === 'string';
 
-    return (
+    const el_dropdown_list = (
         <CSSTransition
             in={is_visible}
             timeout={100}
@@ -166,6 +169,11 @@ const DropdownList = React.forwardRef((props, ref) => {
             </div>
         </CSSTransition>
     );
+
+    if (portal_id) {
+        return ReactDOM.createPortal(el_dropdown_list, document.getElementById(portal_id));
+    }
+    return el_dropdown_list;
 });
 DropdownList.displayName = 'DropdownList';
 
@@ -190,4 +198,5 @@ DropdownList.propTypes = {
     not_found_text: PropTypes.string,
     onItemSelection: PropTypes.func,
     style: PropTypes.object,
+    portal_id: PropTypes.string,
 };

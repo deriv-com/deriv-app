@@ -1,5 +1,6 @@
 import { localize } from '@deriv/translations';
-import { getBuyPrice, getProfit } from 'Stores/Modules/Contract/Helpers/logic';
+import { getTotalProfit } from '@deriv/shared';
+import { getBuyPrice } from 'Stores/Modules/Contract/Helpers/logic';
 
 const getValidationRules = () => ({
     has_contract_update_stop_loss: {
@@ -18,7 +19,7 @@ const getValidationRules = () => ({
                 'custom',
                 {
                     func: (value, options, contract_store) => {
-                        const profit = getProfit(contract_store);
+                        const profit = getTotalProfit(contract_store.contract_info);
                         return !(profit < 0 && -value > profit);
                     },
                     message: localize("Please enter a stop loss amount that's higher than the current potential loss."),
@@ -52,7 +53,7 @@ const getValidationRules = () => ({
                 'custom',
                 {
                     func: (value, options, contract_store) => {
-                        const profit = getProfit(contract_store);
+                        const profit = getTotalProfit(contract_store.contract_info);
                         return !(profit > 0 && +value < profit);
                     },
                     message: localize(

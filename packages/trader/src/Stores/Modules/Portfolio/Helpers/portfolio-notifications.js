@@ -8,7 +8,7 @@ export const contractSold = (currency, sold_for) => ({
     message: (
         <Localize
             i18n_default_text='Contract was sold for <0 />.'
-            components={[<Money key={sold_for} amount={sold_for} currency={currency} />]}
+            components={[<Money key={sold_for} amount={sold_for} currency={currency} show_currency />]}
         />
     ),
     type: 'contract_sold',

@@ -7,7 +7,7 @@ export const unrecoverable_errors = [
     'NotDefaultCurrency',
     'PleaseAuthenticate',
     'FinancialAssessmentRequired',
-    'PositiveNumberExpected',
+    'PositiveIntegerExpected',
     'OptionError',
     'IncorrectPayoutDecimals',
     'IncorrectStakeDecimals',
@@ -15,6 +15,7 @@ export const unrecoverable_errors = [
     'AuthorizationRequired',
     'InvalidToken',
     'DailyLossLimitExceeded',
+    'InputValidationFailed',
 ];
 
 export const message_types = Object.freeze({
@@ -35,4 +36,5 @@ export const log_types = Object.freeze({
     NOT_OFFERED: 'not_offered',
     PROFIT: 'profit',
     LOST: 'lost',
+    WELCOME_BACK: 'welcome_back',
 });

@@ -1,0 +1,109 @@
+.dc-mobile-full-page-modal {
+    height: calc(100% - #{$MOBILE_HEADER_HEIGHT} - #{$MOBILE_WRAPPER_HEADER_HEIGHT});
+    position: fixed;
+    z-index: 6;
+    width: 100%;
+    left: 0px;
+    top: calc(#{$MOBILE_HEADER_HEIGHT} + #{$MOBILE_WRAPPER_HEADER_HEIGHT});
+    background: var(--general-main-1);
+    max-height: 100%;
+    overflow-y: scroll;
+
+    &--flex {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    &--popup {
+        height: calc(100% - #{$MOBILE_HEADER_HEIGHT} - 1px);
+        top: calc(#{$MOBILE_HEADER_HEIGHT} - 1px);
+    }
+
+    &__header {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        padding: 1.6rem;
+        flex: 0;
+
+        &--border-bottom {
+            border-bottom: 2px solid var(--general-section-2);
+        }
+
+        &-return {
+            display: flex;
+            align-items: center;
+            margin-right: 1.6rem;
+        }
+        &-text {
+            display: flex;
+            flex-direction: row;
+        }
+        &-trailing-icon {
+            align-items: center;
+            display: flex;
+            margin-left: auto;
+        }
+    }
+
+    &__body {
+        display: flex;
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+    }
+
+    &__footer {
+        &-parent {
+            border-top: 1px solid var(--general-section-2);
+            padding: 0.8rem 1.6rem;
+            background-color: var(--general-main-1);
+        }
+
+        border-top: 2px solid var(--general-section-1);
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        margin-top: auto;
+        padding: 1.6rem;
+    }
+
+    form {
+        height: 100%;
+    }
+
+    & .dc {
+        &-page-overlay {
+            &__content {
+                position: fixed;
+                top: calc(#{$MOBILE_HEADER_HEIGHT} + #{$MOBILE_WRAPPER_HEADER_HEIGHT});
+                width: 100%;
+                height: 100%;
+            }
+            &__header {
+                position: fixed;
+                top: #{$MOBILE_HEADER_HEIGHT};
+                width: 100%;
+                height: #{$MOBILE_WRAPPER_HEADER_HEIGHT};
+            }
+        }
+        &-tabs {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+
+            &__list {
+                width: 100%;
+                height: 4rem;
+            }
+            &__item {
+                width: 50%;
+            }
+            &__content {
+                height: calc(100% - 40px);
+                z-index: 5;
+            }
+        }
+    }
+}

@@ -1,0 +1,7 @@
+.table-storybook-row {
+    grid-template-columns: 25% 25% 25% 25%;
+
+    .dc-table--scroll & {
+        min-width: 600px;
+    }
+}

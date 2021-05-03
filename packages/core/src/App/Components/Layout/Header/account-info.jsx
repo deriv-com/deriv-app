@@ -65,8 +65,11 @@ const AccountInfo = ({
                                 'acc-info__balance--no-currency': !currency && !is_virtual,
                             })}
                         >
-                            {!currency && <Localize i18n_default_text='No currency assigned' />}
-                            {balance} {getCurrencyDisplayCode(currency)}
+                            {!currency ? (
+                                <Localize i18n_default_text='No currency assigned' />
+                            ) : (
+                                `${balance} ${getCurrencyDisplayCode(currency)}`
+                            )}
                         </p>
                     )}
                     {is_disabled ? (

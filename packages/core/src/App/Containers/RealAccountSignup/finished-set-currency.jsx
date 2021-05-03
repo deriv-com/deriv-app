@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Button, Icon, Div100vhContainer } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { Button, Div100vhContainer, Icon, Text } from '@deriv/components';
+import { getCurrencyDisplayCode, isDesktop, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
 const SuccessMessage = ({ prev, current }) =>
@@ -11,9 +11,18 @@ const SuccessMessage = ({ prev, current }) =>
                 '<0>You have successfully changed your currency to {{currency}}.</0><0>Make a deposit now to start trading.</0>'
             }
             values={{
-                currency: current,
+                currency: getCurrencyDisplayCode(current),
             }}
-            components={[<p key={current} />]}
+            components={[
+                <Text
+                    as='p'
+                    align='center'
+                    className='status-dialog__message-text'
+                    color='general'
+                    size='xs'
+                    key={current}
+                />,
+            ]}
         />
     ) : (
         <Localize
@@ -21,9 +30,18 @@ const SuccessMessage = ({ prev, current }) =>
                 '<0>You have added a {{currency}} account.</0><0> Make a deposit now to start trading.</0>'
             }
             values={{
-                currency: current,
+                currency: getCurrencyDisplayCode(current),
             }}
-            components={[<p key={current} />]}
+            components={[
+                <Text
+                    as='p'
+                    align='center'
+                    className='status-dialog__message-text'
+                    color='general'
+                    size='xs'
+                    key={current}
+                />,
+            ]}
         />
     );
 
@@ -38,9 +56,9 @@ const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
     return (
         <Div100vhContainer className='status-dialog' is_disabled={isDesktop()} height_offset='40px'>
             <div
-                className={classNames('status-dialog__icon-area', {
-                    'status-dialog__icon-area--center': isMobile(),
-                    'set-currency': !prev,
+                className={classNames('status-dialog__header', {
+                    'status-dialog__header--center': isMobile(),
+                    'status-dialog__header--set-currency': prev,
                 })}
             >
                 <IconPrevCurrency />
@@ -48,15 +66,13 @@ const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
                 <IconNextCurrency />
                 <IconWon className='bottom-right-overlay' />
             </div>
-            <div
-                className={classNames('status-dialog__body-area', { 'status-dialog__body-area--no-grow': isMobile() })}
-            >
-                <h2>
+            <div className={classNames('status-dialog__body', { 'status-dialog__body--no-grow': isMobile() })}>
+                <Text as='h2' align='center' className='status-dialog__message-header' weight='bold'>
                     <Localize i18n_default_text='Success!' />
-                </h2>
+                </Text>
                 <SuccessMessage prev={prev} current={current} />
             </div>
-            <div className='status-dialog__btn-area'>
+            <div className='status-dialog__footer'>
                 <Button onClick={onCancel} text={localize('Maybe later')} secondary />
                 <Button onClick={onSubmit} text={localize('Deposit now')} primary />
             </div>

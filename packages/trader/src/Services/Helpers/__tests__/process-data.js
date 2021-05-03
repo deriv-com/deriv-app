@@ -24,8 +24,8 @@ describe('getOauthAppsObject', () => {
 
     it('Expects correct value when arguments passed', () => {
         expect(getOauthAppsObject(oauth_response)).to.eql({
-            '1': 'Binary.com',
-            '2': 'Binary.com Autoexpiry',
+            1: 'Binary.com',
+            2: 'Binary.com Autoexpiry',
         });
     });
 });

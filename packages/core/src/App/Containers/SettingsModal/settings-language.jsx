@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Icon } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getAllowedLanguages, changeLanguage, currentLanguage } from 'Utils/Language';
 
@@ -38,9 +38,9 @@ const LanguageLink = ({ lang }) => (
 const LanguageSettings = () => (
     <div className='settings-language'>
         <div className='settings-language__language-header'>
-            <span>
+            <Text size='xs' color='prominent' weight='bold'>
                 <Localize i18n_default_text='Select language' />
-            </span>
+            </Text>
         </div>
         <div className='settings-language__language-container'>
             {Object.keys(getAllowedLanguages()).map(key =>

@@ -1,0 +1,18 @@
+.dc-horizontal-swipe {
+    display: flex;
+
+    &--left {
+        left: 0;
+        position: absolute;
+    }
+    &--main {
+        background: var(--general-main-1);
+        transition: 0.5s ease-in-out;
+        width: 100vw;
+        z-index: 1000;
+    }
+    &--right {
+        position: absolute;
+        right: 0;
+    }
+}

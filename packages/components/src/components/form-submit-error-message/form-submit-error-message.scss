@@ -3,13 +3,10 @@
     display: flex;
     align-items: center;
     margin-right: auto;
-    font-size: var(--text-size-xxs);
-    font-weight: bold;
     flex: 1;
-    color: var(--text-prominent);
 
     p {
-        padding-left: 16px;
+        padding-left: 0.8rem;
 
         @include mobile {
             line-height: 20px;

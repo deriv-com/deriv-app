@@ -1,7 +1,6 @@
 /** @define contract-type-list; */
 .contract-type-list {
     padding: 1.6rem;
-    border-bottom: 4px solid var(--general-section-1);
 
     &__label {
         @include typeface(--paragraph-left-bold-black);
@@ -41,8 +40,6 @@
         }
     }
     &__title {
-        @include typeface(--paragraph-left-normal-black);
-        color: var(--text-general);
         padding-left: 1.6rem;
     }
     &__icon {
@@ -59,9 +56,6 @@
                 pointer-events: none;
             }
         }
-    }
-    &--invisible {
-        display: none;
     }
     &--selected {
         background: var(--state-active);

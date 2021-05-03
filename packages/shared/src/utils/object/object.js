@@ -1,5 +1,17 @@
 const extend = require('extend');
 
+export const removeObjProperties = (property_arr, { ...obj }) => {
+    property_arr.forEach(property => delete obj[property]);
+    return obj;
+};
+
+export const filterObjProperties = ({ ...obj }, property_arr) =>
+    Object.fromEntries(
+        Object.entries(obj)
+            // eslint-disable-next-line no-unused-vars
+            .filter(([key, _]) => property_arr.includes(key))
+    );
+
 export const isEmptyObject = obj => {
     let is_empty = true;
     if (obj && obj instanceof Object) {

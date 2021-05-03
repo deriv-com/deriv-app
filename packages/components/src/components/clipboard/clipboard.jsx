@@ -1,11 +1,21 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { useIsMounted } from '@deriv/shared';
 import Popover from '../popover';
 import Icon from '../icon';
 
-const Clipboard = ({ text_copy, info_message, success_message, className, popoverClassName }) => {
+const Clipboard = ({
+    text_copy,
+    info_message,
+    success_message,
+    className,
+    popoverClassName,
+    popover_props = {},
+    popoverAlignment = 'bottom',
+}) => {
     const [is_copied, setIsCopied] = React.useState(false);
+    const isMounted = useIsMounted();
     let timeout_clipboard = null;
 
     const copyToClipboard = text => {
@@ -17,12 +27,15 @@ const Clipboard = ({ text_copy, info_message, success_message, className, popove
         textField.remove();
     };
 
-    const onClick = () => {
+    const onClick = event => {
         copyToClipboard(text_copy);
         setIsCopied(true);
         timeout_clipboard = setTimeout(() => {
-            setIsCopied(false);
+            if (isMounted()) {
+                setIsCopied(false);
+            }
         }, 2000);
+        event.stopPropagation();
     };
 
     React.useEffect(() => {
@@ -31,34 +44,29 @@ const Clipboard = ({ text_copy, info_message, success_message, className, popove
 
     return (
         <>
-            {!is_copied && (
-                <Popover
-                    alignment='bottom'
-                    classNameBubble={classNames('dc-clipboard__popover', popoverClassName)}
-                    message={info_message}
-                >
+            <Popover
+                alignment={popoverAlignment}
+                classNameBubble={classNames('dc-clipboard__popover', popoverClassName)}
+                message={is_copied ? success_message : info_message}
+                relative_render
+                {...popover_props}
+            >
+                {is_copied && (
+                    <Icon
+                        icon='IcCheckmarkCircle'
+                        custom_color='var(--status-success)'
+                        className={classNames('dc-clipboard', className)}
+                    />
+                )}
+                {!is_copied && (
                     <Icon
                         icon='IcClipboard'
                         custom_color='var(--text-less-prominent)'
                         className={classNames('dc-clipboard', className)}
                         onClick={onClick}
                     />
-                </Popover>
-            )}
-            {is_copied && (
-                <Popover
-                    alignment='bottom'
-                    classNameBubble={classNames('dc-clipboard__popover', popoverClassName)}
-                    message={success_message}
-                    relative_render
-                >
-                    <Icon
-                        icon='IcCheckmarkCircle'
-                        custom_color='var(--status-success)'
-                        className={classNames('dc-clipboard', className)}
-                    />
-                </Popover>
-            )}
+                )}
+            </Popover>
         </>
     );
 };
@@ -68,5 +76,6 @@ Clipboard.propTypes = {
     success_message: PropTypes.string,
     className: PropTypes.string,
     popoverClassName: PropTypes.string,
+    popoverAlignment: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
 };
 export default Clipboard;

@@ -7,7 +7,7 @@ const NativeSelect = React.forwardRef(({ name, list, value, onChange }, ref) => 
             {Array.isArray(list)
                 ? list.map((item, idx) => (
                       <option key={idx} value={item.value} disabled={item.disabled}>
-                          {item.nativepicker_text}
+                          {item.nativepicker_text || item.text}
                       </option>
                   ))
                 : Object.keys(list).map(key => (
@@ -15,7 +15,7 @@ const NativeSelect = React.forwardRef(({ name, list, value, onChange }, ref) => 
                           <optgroup label={key}>
                               {list[key].map((item, idx) => (
                                   <option key={idx} value={item.value} disabled={item.disabled}>
-                                      {item.nativepicker_text}
+                                      {item.nativepicker_text || item.text}
                                   </option>
                               ))}
                           </optgroup>

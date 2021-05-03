@@ -1,0 +1,27 @@
+.grid-container {
+    display: grid;
+    margin: 3rem 5rem;
+    grid-auto-rows: auto;
+    grid-auto-columns: max-content;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    column-gap: 5rem;
+    row-gap: 2rem;
+}
+.box {
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px 0 var(--shadow-menu), 0 1px 2px 0 var(--shadow-menu);
+    background-color: var(--general-main-1);
+
+    &__title {
+        font-size: small;
+        color: var(--text-general);
+        text-align: center;
+    }
+    &__icon {
+        width: 100%;
+        margin-top: 1rem;
+    }
+}

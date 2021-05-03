@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { FormProgress, DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/components';
 import { getPropertyValue, isDesktop } from '@deriv/shared';
-
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
@@ -52,6 +51,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
                     },
                     props: [
                         'addNotificationByKey',
+                        'authentication_status',
                         'refreshNotifications',
                         'removeNotificationMessage',
                         'removeNotificationByKey',
@@ -125,6 +125,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
             }
             this.initiatePersonalDetails(setSubmitting);
         }
+        if (index === 0) await WS.triggerMt5DryRun({ email: this.props.client_email });
         this.saveFormData(index, value);
         this.nextStep(setSubmitting);
     };
@@ -218,6 +219,7 @@ class MT5FinancialStpRealAccountSignup extends React.Component {
             return Object.assign(arr, { [item]: this.props[item] });
         }, {});
         const height = this.getCurrent('height') || 'auto';
+
         return (
             <Div100vhContainer
                 className='mt5-financial-stp-modal'
@@ -278,7 +280,9 @@ MT5FinancialStpRealAccountSignup.propTypes = {
 
 export default connect(({ client, modules: { mt5 }, ui }) => ({
     addNotificationByKey: ui.addNotificationMessageByKey,
+    authentication_status: client.authentication_status,
     get_settings: client.account_settings,
+    client_email: client.email,
     is_fully_authenticated: client.is_fully_authenticated,
     landing_company: client.landing_company,
     openPendingDialog: mt5.openPendingDialog,

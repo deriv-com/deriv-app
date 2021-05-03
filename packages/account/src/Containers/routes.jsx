@@ -6,12 +6,18 @@ import BinaryRoutes from 'Components/Routes';
 import { connect } from 'Stores/connect';
 import ErrorComponent from 'Components/error-component';
 
-const Routes = (props) => {
+const Routes = props => {
     if (props.has_error) {
         return <ErrorComponent {...props.error} />;
     }
 
-    return <BinaryRoutes is_logged_in={props.is_logged_in} passthrough={props.passthrough} />;
+    return (
+        <BinaryRoutes
+            is_logged_in={props.is_logged_in}
+            is_logging_in={props.is_logging_in}
+            passthrough={props.passthrough}
+        />
+    );
 };
 
 Routes.propTypes = {
@@ -26,6 +32,7 @@ Routes.propTypes = {
 export default withRouter(
     connect(({ client, common }) => ({
         is_logged_in: client.is_logged_in,
+        is_logging_in: client.is_logging_in,
         error: common.error,
         has_error: common.has_error,
     }))(Routes)

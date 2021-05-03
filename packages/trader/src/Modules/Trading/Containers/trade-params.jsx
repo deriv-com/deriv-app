@@ -11,27 +11,23 @@ import StopLoss from 'Modules/Trading/Components/Form/TradeParams/Multiplier/sto
 import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit.jsx';
 import { connect } from 'Stores/connect';
 
-class TradeParams extends React.Component {
-    isVisible(component_key) {
-        return this.props.form_components.includes(component_key);
-    }
-
-    render() {
-        const { is_minimized } = this.props;
-        return (
-            <React.Fragment>
-                {this.isVisible('duration') && <Duration key={'duration'} is_minimized={is_minimized} />}
-                {this.isVisible('barrier') && <Barrier key={'barrier'} is_minimized={is_minimized} />}
-                {this.isVisible('last_digit') && <LastDigit key={'last_digit'} is_minimized={is_minimized} />}
-                {this.isVisible('amount') && <Amount key={'amount'} is_minimized={is_minimized} />}
-                {this.isVisible('multiplier') && <Multiplier key={'multiplier'} />}
-                {this.isVisible('take_profit') && <TakeProfit key={'take_profit'} />}
-                {this.isVisible('stop_loss') && <StopLoss key={'stop_loss'} />}
-                {this.isVisible('cancellation') && <CancelDeal key={'cancellation'} />}
-            </React.Fragment>
-        );
-    }
-}
+const TradeParams = ({ form_components, is_minimized }) => {
+    const isVisible = component_key => {
+        return form_components.includes(component_key);
+    };
+    return (
+        <React.Fragment>
+            {isVisible('duration') && <Duration key={'duration'} is_minimized={is_minimized} />}
+            {isVisible('barrier') && <Barrier key={'barrier'} is_minimized={is_minimized} />}
+            {isVisible('last_digit') && <LastDigit key={'last_digit'} is_minimized={is_minimized} />}
+            {isVisible('amount') && <Amount key={'amount'} is_minimized={is_minimized} />}
+            {isVisible('multiplier') && <Multiplier key={'multiplier'} />}
+            {isVisible('take_profit') && <TakeProfit key={'take_profit'} />}
+            {isVisible('stop_loss') && <StopLoss key={'stop_loss'} />}
+            {isVisible('cancellation') && <CancelDeal key={'cancellation'} />}
+        </React.Fragment>
+    );
+};
 TradeParams.propTypes = {
     form_components: MobxPropTypes.arrayOrObservableArray,
     is_minimized: PropTypes.bool,

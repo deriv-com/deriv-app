@@ -15,6 +15,7 @@ import {
 import { CommonPropTypes } from './types';
 import Popover from '../../popover';
 import { getDaysOfTheWeek, week_headers_abbr } from '../helpers';
+import Text from '../../text';
 
 const getDays = ({
     calendar_date,
@@ -30,6 +31,7 @@ const getDays = ({
     disabled_days,
     onMouseOver,
     onMouseLeave,
+    should_show_today = true,
 }) => {
     // adjust Calendar week by 1 day so that Calendar week starts on Monday
     // change to zero to set Calendar week to start on Sunday
@@ -48,9 +50,7 @@ const getDays = ({
             : toMoment(selected_date).startOf('day');
 
     // populate previous months' dates
-    const end_of_prev_month = subMonths(moment_cur_date, 1)
-        .endOf('month')
-        .day();
+    const end_of_prev_month = subMonths(moment_cur_date, 1).endOf('month').day();
     for (let i = end_of_prev_month; i > 0; i--) {
         dates.push(subDays(moment_month_start, i).format(date_format));
     }
@@ -59,9 +59,7 @@ const getDays = ({
         dates.push(moment_cur_date.clone().format(date_format.replace('DD', padLeft(idx, 2, '0'))));
     }
     // populate next months' dates
-    const start_of_next_month = addMonths(moment_cur_date, 1)
-        .startOf('month')
-        .day();
+    const start_of_next_month = addMonths(moment_cur_date, 1).startOf('month').day();
     if (start_of_next_month - day_offset > 0 || dates.length <= 28) {
         // if start_of_next_month doesn't falls on Monday, append rest of the week
         for (let i = 1; i <= 7 - start_of_next_month + day_offset; i++) {
@@ -109,7 +107,7 @@ const getDays = ({
                 key={date}
                 className={classNames('dc-calendar__cell', {
                     'dc-calendar__cell--active': is_active,
-                    'dc-calendar__cell--today': is_today,
+                    'dc-calendar__cell--today': should_show_today && is_today,
                     'dc-calendar__cell--active-duration': is_active && has_range_selection && !is_today,
                     'dc-calendar__cell--today-duration': is_today && has_range_selection,
                     'dc-calendar__cell--disabled': is_disabled,
@@ -147,9 +145,9 @@ const Days = props => {
     return (
         <div className='dc-calendar__body dc-calendar__body--date'>
             {Object.keys(week_headers_abbr).map((item, idx) => (
-                <span key={idx} className='dc-calendar__text dc-calendar__text--bold'>
+                <Text size='xxs' align='center' weight='bold' key={idx}>
                     {week_headers_abbr[item]}
-                </span>
+                </Text>
             ))}
             {days}
         </div>

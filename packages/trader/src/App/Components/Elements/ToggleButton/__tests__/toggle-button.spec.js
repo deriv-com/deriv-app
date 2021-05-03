@@ -1,9 +1,13 @@
 import { expect } from 'chai';
-import { shallow } from 'enzyme';
+import { configure, shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
 import { fake } from 'sinon';
-import Button from '@deriv/components/lib/button';
+import { Button } from '@deriv/components';
 import ToggleButton from '../toggle-button.jsx';
+import { beforeEach } from '@jest/globals';
+
+configure({ adapter: new Adapter() });
 
 describe('<ToggleButton />', () => {
     it('should render a <Button /> element', () => {
@@ -23,7 +27,7 @@ describe('<ToggleButton />', () => {
     describe('prop: onClick', () => {
         let event;
 
-        before(() => {
+        beforeEach(() => {
             event = {
                 preventDefault: () => {},
                 isDefaultPrevented: () => true,
@@ -57,7 +61,7 @@ describe('<ToggleButton />', () => {
         let event;
         let defaultPreventd = false;
 
-        before(() => {
+        beforeEach(() => {
             event = {
                 preventDefault: () => {
                     defaultPreventd = true;

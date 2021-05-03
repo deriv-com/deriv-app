@@ -19,9 +19,15 @@ const BinarySocketBase = (() => {
 
     let config = {};
     let wrong_app_id = 0;
-    let is_available = true;
     let is_disconnect_called = false;
     let is_connected_before = false;
+    let is_switching_socket = false;
+
+    const availability = {
+        is_up: true,
+        is_updating: false,
+        is_down: false,
+    };
 
     const getSocketUrl = () =>
         `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${getLanguage()}&brand=${website_name.toLowerCase()}`;
@@ -36,7 +42,8 @@ const BinarySocketBase = (() => {
 
     const closeAndOpenNewConnection = () => {
         close();
-        openNewConnection(true);
+        is_switching_socket = true;
+        openNewConnection();
     };
 
     const hasReadyState = (...states) => binary_socket && states.some(s => binary_socket.readyState === s);
@@ -48,7 +55,7 @@ const BinarySocketBase = (() => {
         client_store = client;
     };
 
-    const openNewConnection = is_switching_socket => {
+    const openNewConnection = () => {
         if (wrong_app_id === getAppId()) return;
 
         if (!is_switching_socket) config.wsEvent('init');
@@ -104,6 +111,8 @@ const BinarySocketBase = (() => {
         deriv_api.onClose().subscribe(() => {
             if (!is_switching_socket) {
                 config.wsEvent('close');
+            } else {
+                is_switching_socket = false;
             }
 
             if (wrong_app_id !== getAppId() && typeof config.onDisconnect === 'function' && !is_disconnect_called) {
@@ -113,11 +122,18 @@ const BinarySocketBase = (() => {
         });
     };
 
-    const availability = status => {
-        if (typeof status !== 'undefined') {
-            is_available = !!status;
-        }
-        return is_available;
+    const isSiteUp = status => /^up$/i.test(status);
+
+    const isSiteUpdating = status => /^updating$/i.test(status);
+
+    const isSiteDown = status => /^down$/i.test(status);
+
+    // if status is up or updating, consider site available
+    // if status is down, consider site unavailable
+    const setAvailability = status => {
+        availability.is_up = isSiteUp(status);
+        availability.is_updating = isSiteUpdating(status);
+        availability.is_down = isSiteDown(status);
     };
 
     const excludeAuthorize = type => !(type === 'authorize' && !client_store.is_logged_in);
@@ -216,8 +232,8 @@ const BinarySocketBase = (() => {
     const profitTable = (limit, offset, date_boundaries) =>
         deriv_api.send({ profit_table: 1, description: 1, limit, offset, ...date_boundaries });
 
-    const statement = (limit, offset, date_boundaries) =>
-        deriv_api.send({ statement: 1, description: 1, limit, offset, ...date_boundaries });
+    const statement = (limit, offset, other_properties) =>
+        deriv_api.send({ statement: 1, description: 1, limit, offset, ...other_properties });
 
     const verifyEmail = (email, type) => deriv_api.send({ verify_email: email, type });
 
@@ -279,7 +295,7 @@ const BinarySocketBase = (() => {
 
     const p2pAdvertiserInfo = () => deriv_api.send({ p2p_advertiser_info: 1 });
 
-    const loginHistory = limit =>
+    const fetchLoginHistory = limit =>
         deriv_api.send({
             login_history: 1,
             limit,
@@ -292,6 +308,20 @@ const BinarySocketBase = (() => {
 
     const realityCheck = () => deriv_api.send({ reality_check: 1 });
 
+    const tradingServers = () => deriv_api.send({ platform: 'mt5', trading_servers: 1 });
+
+    const triggerMt5DryRun = ({ email }) =>
+        deriv_api.send({
+            account_type: 'financial',
+            dry_run: 1,
+            email,
+            leverage: 100,
+            mainPassword: 'Test1234',
+            mt5_account_type: 'financial_stp',
+            mt5_new_account: 1,
+            name: 'test real labuan financial stp',
+        });
+
     return {
         init,
         openNewConnection,
@@ -299,10 +329,13 @@ const BinarySocketBase = (() => {
         wait,
         availability,
         hasReadyState,
+        isSiteDown,
+        isSiteUpdating,
         clear: () => {},
         sendBuffered: () => {},
         getSocket: () => binary_socket,
         get: () => deriv_api,
+        getAvailability: () => availability,
         setOnDisconnect: onDisconnect => {
             config.onDisconnect = onDisconnect;
         },
@@ -343,6 +376,7 @@ const BinarySocketBase = (() => {
         paymentAgentTransfer,
         setAccountCurrency,
         balanceAll,
+        setAvailability,
         subscribeBalanceAll,
         subscribeBalanceActiveAccount,
         subscribeProposal,
@@ -353,10 +387,12 @@ const BinarySocketBase = (() => {
         subscribeWebsiteStatus,
         tncApproval,
         transferBetweenAccounts,
-        loginHistory,
+        fetchLoginHistory,
         closeAndOpenNewConnection,
         accountStatistics,
         realityCheck,
+        tradingServers,
+        triggerMt5DryRun,
     };
 })();
 

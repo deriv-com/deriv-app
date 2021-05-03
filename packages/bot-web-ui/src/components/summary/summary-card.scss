@@ -1,0 +1,55 @@
+.db-summary-card {
+    $contract-card: &;
+
+    border: 1px solid var(--border-disabled);
+    border-radius: $BORDER_RADIUS;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    &--inactive {
+        background-color: var(--general-section-1);
+        border: 1px solid var(--general-main-1);
+        font-size: 14px;
+        justify-content: center;
+        margin: auto;
+        text-align: center;
+        height: 157px;
+    }
+    &--is-loading {
+        background-color: inherit;
+        border: 1px solid var(--general-main-1);
+    }
+    &--completed {
+        border: 1px solid var(--general-main-1);
+
+        &:hover {
+            border: 1px solid var(--border-disabled);
+        }
+        &-mobile {
+            border: 1px solid var(--border-normal);
+        }
+    }
+    .dc-contract-card {
+        padding: 1.6rem;
+    }
+    .dc-contract-card__grid-underlying-trade {
+        grid-template-columns: 1.5fr 1fr;
+    }
+    .dc-contract-card-items-wrapper {
+        grid-template-columns: 1.5fr 1fr;
+        margin-top: 0.8rem;
+    }
+    &--mobile {
+        .dc-contract-card {
+            padding: 1.6rem 0.8rem 0.8rem;
+        }
+        .dc-contract-card__grid-underlying-trade--mobile {
+            grid-template-columns: 1fr 1.25fr;
+        }
+        .dc-contract-card-items-wrapper {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+}

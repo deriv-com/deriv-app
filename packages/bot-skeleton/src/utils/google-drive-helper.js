@@ -20,7 +20,7 @@ class GoogleDrive {
         const prior = document.getElementsByTagName('script')[0];
 
         script.async = 1;
-        script.onload = script.onreadystatechange = function(_, isAbort) {
+        script.onload = script.onreadystatechange = function (_, isAbort) {
             if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState)) {
                 script.onload = null;
                 script.onreadystatechange = null;

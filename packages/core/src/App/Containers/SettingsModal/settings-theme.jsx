@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { isBot } from '@deriv/shared';
+import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import DarkModeIcon from 'Assets/SvgComponents/settings/img-theme-dark.svg';
 import LightModeIcon from 'Assets/SvgComponents/settings/img-theme-light.svg';
@@ -22,9 +23,9 @@ const ThemeSelectSettings = ({ is_dark_mode, setDarkMode }) => {
     return (
         <React.Fragment>
             <div className='theme-select-settings'>
-                <h4 className='theme-select-settings__title'>
+                <Text as='h4' weight='bold' size='xs' className='theme-select-settings__title'>
                     <Localize i18n_default_text='Select theme' />
-                </h4>
+                </Text>
                 <div className='theme-select-settings__content'>
                     <div id='dt_settings_dark_button' className='theme-select-settings__option'>
                         <DarkModeIcon

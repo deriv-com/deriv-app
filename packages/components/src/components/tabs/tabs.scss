@@ -2,12 +2,11 @@
     position: relative;
     display: grid;
 
-    //TODO send the tab count from outside
-    @for $i from 1 through 5 {
-        /* prettier-ignore */
-        .dc-tabs__item:nth-child(#{$i}).dc-tabs__active:not(.dc-tabs__item--header-fit-content) ~ .dc-tabs__active-line {
-            left: calc(var(--tab-width) * #{$i} - var(--tab-width));
-        }
+    &--top {
+        grid-template-rows: auto 1fr;
+    }
+    &--100vw {
+        width: 100vw;
     }
 
     &__list {
@@ -19,9 +18,17 @@
             justify-content: center;
         }
 
+        &--overflow-hidden {
+            overflow-y: hidden;
+            display: block;
+        }
+
+        &--border-bottom {
+            border-bottom: 2px solid var(--general-section-1);
+        }
+
         &--top {
             order: 0;
-            border-bottom: 2px solid var(--general-section-1);
         }
         &--bottom {
             order: 1;
@@ -43,9 +50,17 @@
         }
         &--header-fit-content {
             width: fit-content;
+
+            @include mobile {
+                display: flex;
+                justify-content: space-evenly;
+            }
         }
         &:not(&--header-fit-content) {
             justify-content: center;
+        }
+        &--full-width {
+            width: 100vw;
         }
     }
     &__item {
@@ -61,11 +76,31 @@
             margin-top: -2rem;
             vertical-align: middle;
         }
+        &__icon {
+            padding-right: 0.7rem;
+
+            @include mobile {
+                padding-right: 0;
+                padding-top: 0.5rem;
+            }
+        }
         &--header-fit-content {
             padding: 0px 29px;
         }
         &--is-hidden {
             display: none;
+        }
+        &--is-scrollable-and-active {
+            position: relative;
+
+            &:after {
+                border-bottom: 2px solid var(--brand-red-coral);
+                content: '';
+                position: absolute;
+                left: 0;
+                display: block;
+                width: 100%;
+            }
         }
         &:not(.dc-tabs__active) {
             cursor: pointer;
@@ -79,6 +114,7 @@
         font-weight: 700;
         color: var(--text-prominent);
     }
+
     &__active-line {
         display: block;
         position: absolute;

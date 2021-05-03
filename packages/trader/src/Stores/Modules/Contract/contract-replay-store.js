@@ -1,5 +1,5 @@
 import { action, observable } from 'mobx';
-import { routes, isEmptyObject } from '@deriv/shared';
+import { routes, isEmptyObject, isForwardStarting } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import ContractStore from './contract-store';
@@ -7,13 +7,17 @@ import { contractCancelled, contractSold } from '../Portfolio/Helpers/portfolio-
 import BaseStore from '../../base-store';
 
 export default class ContractReplayStore extends BaseStore {
-    @observable is_chart_ready = false;
+    @observable chart_state = '';
     @observable contract_store = { contract_info: {} };
     // --- Observable properties ---
+    @observable is_market_closed = false;
     @observable is_sell_requested = false;
     @observable has_error = false;
     @observable error_message = '';
+    @observable error_code = '';
     @observable is_chart_loading = true;
+    @observable is_chart_scaling = false;
+    @observable is_forward_starting = false;
     // ---- chart props
     @observable margin;
 
@@ -50,11 +54,7 @@ export default class ContractReplayStore extends BaseStore {
             this.should_forget_first = false;
         }
 
-        // If the contract replay is opened from trade page, it should already have an ongoing subscription
-        // Subscription is created only when the contract replay page is opened directly
-        if (!this.root_store.modules.contract_trade.contracts_map[contract_id]) {
-            this.subscriber = WS.subscribeProposalOpenContract(contract_id, cb);
-        }
+        this.subscriber = WS.subscribeProposalOpenContract(contract_id, cb);
     };
 
     subscribeProposalOpenContract = () => {
@@ -88,9 +88,7 @@ export default class ContractReplayStore extends BaseStore {
         this.contract_info = {};
         this.indicative_status = null;
         this.prev_indicative = 0;
-        // @shayan: for forcing chart to call scale 1:1 each time,
-        // we should let SmartChart notify when its ready
-        this.is_chart_ready = false;
+        this.chart_state = '';
         this.root_store.ui.toggleHistoryTab(false);
         WS.removeOnReconnect();
     }
@@ -100,8 +98,11 @@ export default class ContractReplayStore extends BaseStore {
         if (!this.switch_account_listener) return;
 
         if ('error' in response) {
+            const { code, message } = response.error;
             this.has_error = true;
             this.is_chart_loading = false;
+            this.error_message = message;
+            this.error_code = code;
             return;
         }
         if (isEmptyObject(response.proposal_open_contract)) {
@@ -130,6 +131,12 @@ export default class ContractReplayStore extends BaseStore {
         }
         this.prev_indicative = new_indicative;
 
+        const is_forward_starting =
+            !!this.contract_info.is_forward_starting ||
+            isForwardStarting(this.contract_info.shortcode, this.contract_info.purchase_time);
+
+        this.is_forward_starting = is_forward_starting;
+
         // update the contract_store here passing contract_info
         this.contract_store.populateConfig(this.contract_info);
 
@@ -151,8 +158,6 @@ export default class ContractReplayStore extends BaseStore {
         if (this.contract_info.is_sold) {
             this.contract_store.cacheProposalOpenContractResponse(response);
         }
-
-        this.is_chart_loading = false;
     }
 
     @action.bound
@@ -163,15 +168,45 @@ export default class ContractReplayStore extends BaseStore {
     }
 
     @action.bound
-    setIsChartReady(v) {
-        // SmartChart has a bug with scroll_to_epoch
-        // @morteza: It ignores the scroll_to_epoch if feed is not ready
-        setTimeout(
-            action(() => {
-                this.is_chart_ready = v;
-            }),
-            200
-        );
+    chartStateChange(state, option) {
+        this.chart_state = state;
+        const market_close_prop = 'isClosed';
+
+        // SmartChart has a weird interaction for getting scale 1:1,
+        // the process of loading an expired contract should follow this,
+        // show loading, first load the chart, then add the endEpoch then request for
+        // scale 1:1 and then wait till chart perform the scale 1:1 then
+        // hide the loading.
+        switch (state) {
+            case 'INITIAL':
+                this.is_chart_scaling = false;
+                // this is for deriv resizing from desktop to mobile,
+                // that show the loading till the chart reflect complete
+                if (!this.is_chart_loading) this.is_chart_loading = true;
+                break;
+            case 'READY':
+                setTimeout(
+                    action(() => (this.is_chart_scaling = true)),
+                    10
+                );
+                break;
+            case 'SCROLL_TO_LEFT':
+                // this Delay is for when the chart try to sacle 1:1 and we want to hide
+                // scale 1:1 jumping from the user
+                setTimeout(
+                    action(() => {
+                        this.is_chart_loading = false;
+                    }),
+                    20
+                );
+                break;
+            case 'MARKET_STATE_CHANGE':
+                if (option && market_close_prop in option) {
+                    this.is_market_closed = option[market_close_prop];
+                }
+                break;
+            default:
+        }
     }
 
     @action.bound

@@ -6,6 +6,7 @@
         top: $HEADER_HEIGHT;
         transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
         background-color: var(--general-main-2);
+        opacity: 0;
 
         @include mobile {
             top: $MOBILE_HEADER_HEIGHT;

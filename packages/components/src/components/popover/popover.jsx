@@ -3,88 +3,56 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import TinyPopover, { ArrowContainer } from 'react-tiny-popover';
 import Icon from '../icon';
+import Text from '../text';
+import { useHover, useHoverCallback } from '../../hooks/use-hover';
 
-const Popover = ({ ...props }) => {
+const Popover = ({
+    alignment,
+    children,
+    className,
+    classNameBubble,
+    classNameTarget,
+    classNameTargetIcon,
+    counter,
+    disable_message_icon,
+    disable_target_icon,
+    has_error,
+    icon,
+    id,
+    is_open,
+    is_bubble_hover_enabled,
+    margin,
+    message,
+    onBubbleClose,
+    onBubbleOpen,
+    relative_render,
+    should_disable_pointer_events,
+    window_border,
+    zIndex,
+}) => {
     const ref = React.useRef();
-
-    const [is_popover_open, setIsPopoverOpen] = React.useState(false);
-    const [is_bubble_open, setIsBubbleOpen] = React.useState(false);
     const [popover_ref, setPopoverRef] = React.useState(undefined);
-    const bubble_ref = React.useRef(is_bubble_open);
-
-    const has_external_open_state = props.is_open !== undefined;
-
-    React.useEffect(() => {
-        bubble_ref.current = is_bubble_open;
-    }, [is_bubble_open]);
+    const [hover_ref, is_hovered] = useHover(null, true);
+    const [bubble_hover_ref, is_bubble_hovered] = useHoverCallback();
 
     React.useEffect(() => {
         if (ref.current) {
             setPopoverRef(ref.current);
         }
-        setIsPopoverOpen(!!props.has_error);
-    }, [ref.current, props.has_error]);
+    }, [has_error]);
 
-    const onClick = React.useCallback(() => {
-        setIsBubbleOpen(!is_bubble_open);
-    }, [is_bubble_open]);
+    const onMouseEnter = () => {
+        if (onBubbleOpen) onBubbleOpen();
+    };
 
-    const toggleOpen = React.useCallback(() => {
-        if (props.onOpen) props.onOpen();
-        if (has_external_open_state) return;
-        setIsPopoverOpen(Boolean(props.message));
-    }, [props.message, props.onOpen]);
-
-    const toggleClose = React.useCallback(() => {
-        if (props.onClose) props.onClose();
-        if (has_external_open_state) return;
-        if (props.is_bubble_hover_enabled) {
-            setTimeout(() => {
-                // add delay to check if mouse is hovered on popover bubble
-                // because of JS closures, there is no guaranty that the state used inside a setTimeout is updated. so we use bubble_ref.
-                setIsPopoverOpen(bubble_ref.current);
-            }, 50);
-        } else {
-            setIsPopoverOpen(false);
-        }
-    }, [props.is_bubble_hover_enabled, props.onClose]);
-
-    const onMouseEnter = React.useCallback(() => {
-        setIsBubbleOpen(true);
-        if (props.onBubbleOpen) props.onBubbleOpen();
-    }, [props.onBubbleOpen]);
-
-    const onMouseLeave = React.useCallback(() => {
-        setIsPopoverOpen(false);
-        setIsBubbleOpen(false);
-        if (props.onBubbleClose) props.onBubbleClose();
-    }, [props.onBubbleClose]);
-
-    const {
-        alignment,
-        children,
-        className,
-        classNameBubble,
-        classNameTarget,
-        classNameTargetIcon,
-        counter,
-        disable_message_icon,
-        disable_target_icon,
-        has_error,
-        icon,
-        id,
-        is_open,
-        margin,
-        message,
-        zIndex,
-        relative_render,
-        should_disable_pointer_events,
-    } = props;
+    const onMouseLeave = () => {
+        if (onBubbleClose) onBubbleClose();
+    };
 
     const icon_class_name = classNames(classNameTargetIcon, icon);
 
     return (
-        <div className={classNames({ 'dc-popover__wrapper': relative_render })}>
+        <div ref={hover_ref} className={classNames({ 'dc-popover__wrapper': relative_render })}>
             {relative_render && (
                 <div className='dc-popover__container' style={{ zIndex: zIndex || 1 }}>
                     <div ref={ref} className='dc-popover__container-relative' />
@@ -92,16 +60,17 @@ const Popover = ({ ...props }) => {
             )}
             {(popover_ref || !relative_render) && (
                 <TinyPopover
-                    isOpen={is_open ?? is_popover_open}
+                    isOpen={is_open ?? ((is_hovered && message) || (is_bubble_hover_enabled && is_bubble_hovered))}
                     position={alignment}
                     transitionDuration={0.25}
                     padding={margin + 8}
-                    contentDestination={relative_render ? popover_ref : document.body}
                     containerClassName={classNames({
                         'react-tiny-popover-container--disabled-pointer-event': should_disable_pointer_events,
                     })}
+                    windowBorderPadding={window_border}
                     {...(relative_render
                         ? {
+                              contentDestination: popover_ref,
                               contentLocation: ({ targetRect, popoverRect, nudgedLeft }) => {
                                   const screen_width = document.body.clientWidth;
                                   const total_width = targetRect.right + (popoverRect.width - targetRect.width / 2);
@@ -169,34 +138,31 @@ const Popover = ({ ...props }) => {
                                     id={id}
                                     onMouseEnter={onMouseEnter}
                                     onMouseLeave={onMouseLeave}
-                                    onClick={onClick}
                                     className={classNames(classNameBubble, 'dc-popover__bubble', {
                                         'dc-popover__bubble--error': has_error,
                                     })}
+                                    ref={bubble_hover_ref}
                                 >
                                     {!disable_message_icon && icon === 'info' && (
                                         <i className='dc-popover__bubble__icon'>
                                             <Icon icon='IcInfoBlue' />
                                         </i>
                                     )}
-                                    <span
-                                        className={classNames('dc-popover__bubble__text', {
-                                            'dc-popover__bubble__text--error': has_error,
-                                        })}
-                                    >
-                                        {message}
-                                    </span>
+                                    {(has_error && (
+                                        <Text size='xxs' color='colored-background'>
+                                            {message}
+                                        </Text>
+                                    )) || (
+                                        <Text line_height='m' size='xxs' className='dc-popover__bubble__text'>
+                                            {message}
+                                        </Text>
+                                    )}
                                 </div>
                             </ArrowContainer>
                         );
                     }}
                 >
-                    <div
-                        className={classNames('dc-popover', className)}
-                        id={id}
-                        onMouseEnter={toggleOpen}
-                        onMouseLeave={toggleClose}
-                    >
+                    <div className={classNames('dc-popover', className)} id={id}>
                         <div className={classNames(classNameTarget, 'dc-popover__target')}>
                             {!disable_target_icon && (
                                 <i
@@ -244,8 +210,6 @@ Popover.propTypes = {
     relative_render: PropTypes.bool,
     margin: PropTypes.number,
     message: PropTypes.oneOfType([PropTypes.node, PropTypes.object, PropTypes.string]),
-    onOpen: PropTypes.func,
-    onClose: PropTypes.func,
     onBubbleOpen: PropTypes.func,
     onBubbleClose: PropTypes.func,
     zIndex: PropTypes.number,

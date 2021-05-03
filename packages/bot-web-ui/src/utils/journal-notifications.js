@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { messageWithButton, arrayAsMessage } from '../components/notify-item.jsx';
+import { messageWithButton, arrayAsMessage } from 'Components';
 
 const showErrorMessageWithButton = (message, block_id, showErrorMessage, centerAndHighlightBlock) => {
     showErrorMessage(
@@ -41,7 +41,12 @@ export const isCustomJournalMessage = (
     }
     // notify NaN variable block
     if (Object.is(message, NaN)) {
-        pushMessage(message.toString());
+        showErrorMessageWithButton(
+            localize('Tried to perform an invalid operation.'),
+            block_id,
+            showErrorMessage,
+            centerAndHighlightBlock
+        );
         return true;
     }
     // notify list block

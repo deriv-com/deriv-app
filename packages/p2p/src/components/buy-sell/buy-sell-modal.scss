@@ -1,0 +1,45 @@
+.buy-sell__modal {
+    &-body {
+        padding: 1.6rem;
+        position: relative;
+    }
+
+    &-field {
+        margin-bottom: 0 !important;
+        margin-right: 0.7rem;
+        flex: 1;
+
+        @include mobile {
+            margin: 0.8rem 0;
+        }
+
+        &-wrapper {
+            $gap: 2.4rem;
+            display: flex;
+            margin: -#{$gap} 0 1.6rem -#{$gap};
+
+            & > * {
+                margin: $gap 0 0 $gap;
+            }
+
+            @include mobile {
+                flex-direction: column;
+
+                .dc-input__wrapper {
+                    margin-top: 2.5rem;
+                    width: 90vw;
+                }
+            }
+
+            > .dc-input {
+                margin-top: 1rem; // Compensate for label.
+            }
+        }
+    }
+}
+
+.buy-sell__modal-content {
+    .dc-input {
+        margin-bottom: unset;
+    }
+}

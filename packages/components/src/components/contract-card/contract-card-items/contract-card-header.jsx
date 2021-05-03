@@ -6,12 +6,14 @@ import { isHighLow, getCurrentTick, isBot } from '@deriv/shared';
 import ContractTypeCell from './contract-type-cell.jsx';
 import Button from '../../button';
 import Icon from '../../icon';
+import Text from '../../text';
 import ProgressSlider from '../../progress-slider';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileWrapper from '../../mobile-wrapper';
 
 const ContractCardHeader = ({
     contract_info,
+    display_name,
     getCardLabels,
     has_progress_slider,
     id,
@@ -25,7 +27,6 @@ const ContractCardHeader = ({
     const current_tick = contract_info.tick_count ? getCurrentTick(contract_info) : null;
     const {
         underlying,
-        display_name,
         multiplier,
         contract_type,
         shortcode,
@@ -45,7 +46,9 @@ const ContractCardHeader = ({
             >
                 <div id='dc-contract_card_underlying_label' className='dc-contract-card__underlying-name'>
                     <Icon icon={underlying ? `IcUnderlying${underlying}` : 'IcUnknown'} width={40} size={32} />
-                    <span className='dc-contract-card__symbol'>{display_name}</span>
+                    <Text size='xxs' className='dc-contract-card__symbol' weight='bold'>
+                        {display_name || contract_info.display_name}
+                    </Text>
                 </div>
                 <div id='dc-contract_card_type_label' className='dc-contract-card__type'>
                     <ContractTypeCell

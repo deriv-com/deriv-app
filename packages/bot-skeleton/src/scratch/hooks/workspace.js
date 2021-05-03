@@ -7,7 +7,7 @@ Blockly.Workspace.prototype.wait_events = [];
  * Clear the undo/redo stacks.
  * deriv-bot: Sync undo/redo stack with our toolbar store.
  */
-Blockly.Workspace.prototype.clearUndo = function() {
+Blockly.Workspace.prototype.clearUndo = function () {
     this.undoStack_.length = 0;
     this.redoStack_.length = 0;
 
@@ -25,7 +25,7 @@ Blockly.Workspace.prototype.clearUndo = function() {
  * deriv-bot: Sync undo/redo stack with our toolbar store.
  * @param {!Blockly.Events.Abstract} event Event to fire.
  */
-Blockly.Workspace.prototype.fireChangeListener = function(event) {
+Blockly.Workspace.prototype.fireChangeListener = function (event) {
     if (event.recordUndo) {
         this.undoStack_.push(event);
         this.redoStack_.length = 0;
@@ -52,11 +52,11 @@ Blockly.Workspace.prototype.fireChangeListener = function(event) {
      */
 };
 
-Blockly.Workspace.prototype.getTradeDefinitionBlock = function() {
+Blockly.Workspace.prototype.getTradeDefinitionBlock = function () {
     return this.getAllBlocks(true).find(b => b.type === 'trade_definition');
 };
 
-Blockly.Workspace.prototype.waitForBlockEvent = function(block_id, opt_event_type = null) {
+Blockly.Workspace.prototype.waitForBlockEvent = function (block_id, opt_event_type = null) {
     const event_promise = new PendingPromise();
 
     if (!this.wait_events.some(event => event.blockId === block_id && event.type === opt_event_type)) {
@@ -70,7 +70,7 @@ Blockly.Workspace.prototype.waitForBlockEvent = function(block_id, opt_event_typ
     return event_promise;
 };
 
-Blockly.Workspace.prototype.waitForBlockEvent = function(options) {
+Blockly.Workspace.prototype.waitForBlockEvent = function (options) {
     const { block_type, event_type, timeout } = options;
     const promise = new PendingPromise();
 
@@ -87,7 +87,7 @@ Blockly.Workspace.prototype.waitForBlockEvent = function(options) {
     return promise;
 };
 
-Blockly.Workspace.prototype.dispatchBlockEventEffects = function(event) {
+Blockly.Workspace.prototype.dispatchBlockEventEffects = function (event) {
     this.wait_events.forEach((wait_event, idx) => {
         if (!event.blockId) {
             return;
@@ -109,7 +109,7 @@ Blockly.Workspace.prototype.dispatchBlockEventEffects = function(event) {
     });
 };
 
-Blockly.Workspace.prototype.getAllFields = function(is_ordered) {
+Blockly.Workspace.prototype.getAllFields = function (is_ordered) {
     return this.getAllBlocks(is_ordered).reduce((fields, block) => {
         block.inputList.forEach(input => fields.push(...input.fieldRow));
         return fields;

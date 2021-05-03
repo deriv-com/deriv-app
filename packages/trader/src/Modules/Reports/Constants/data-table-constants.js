@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Label, Money, ContractCard } from '@deriv/components';
-import { isMobile, getCurrencyDisplayCode } from '@deriv/shared';
+import { isMobile, getCurrencyDisplayCode, getTotalProfit, shouldShowCancellation } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ProgressSliderStream from 'App/Containers/ProgressSliderStream';
 import { getCardLabels } from 'Constants/contract';
@@ -20,6 +20,7 @@ const getModeFromValue = key => {
         withdrawal: 'info',
         default: 'default',
         adjustment: 'adjustment',
+        transfer: 'transfer',
     };
 
     if (Object.keys(map).find(x => x === key)) {
@@ -35,9 +36,12 @@ export const getStatementTableColumnsTemplate = currency => [
         key: 'icon',
         title: isMobile() ? '' : localize('Type'),
         col_index: 'icon',
-        renderCellContent: ({ cell_value, row_obj }) => (
-            <MarketSymbolIconRow action={cell_value} key={row_obj.transaction_id} payload={row_obj} />
-        ),
+        renderCellContent: ({ cell_value, passthrough, row_obj }) => {
+            const icon = passthrough.isTopUp(row_obj) ? 'icCashierTopUp' : null;
+            return (
+                <MarketSymbolIconRow action={cell_value} icon={icon} key={row_obj.transaction_id} payload={row_obj} />
+            );
+        },
     },
     {
         title: localize('Ref. ID'),
@@ -52,19 +56,17 @@ export const getStatementTableColumnsTemplate = currency => [
         title: localize('Transaction time'),
         col_index: 'date',
         renderCellContent: ({ cell_value }) => {
-            return (
-                <span>
-                    {cell_value} {localize('GMT')}
-                </span>
-            );
+            return <span>{cell_value} GMT</span>;
         },
     },
     {
         key: 'mode',
         title: localize('Transaction'),
         col_index: 'action_type',
-        renderCellContent: ({ cell_value, row_obj }) => (
-            <Label mode={getModeFromValue(cell_value)}>{row_obj.action}</Label>
+        renderCellContent: ({ cell_value, passthrough, row_obj }) => (
+            <Label mode={getModeFromValue(cell_value)}>
+                {(passthrough.isTopUp(row_obj) && localize('Top up')) || row_obj.action}
+            </Label>
         ),
     },
     {
@@ -108,11 +110,7 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
         col_index: 'purchase_time',
         renderCellContent: ({ cell_value, is_footer }) => {
             if (is_footer) return '';
-            return (
-                <span>
-                    {cell_value} {localize('GMT')}
-                </span>
-            );
+            return <span>{cell_value} GMT</span>;
         },
     },
     {
@@ -130,11 +128,7 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
         renderHeader: ({ title }) => <span>{title}</span>,
         renderCellContent: ({ cell_value, is_footer }) => {
             if (is_footer) return '';
-            return (
-                <span>
-                    {cell_value} {localize('GMT')}
-                </span>
-            );
+            return <span>{cell_value} GMT</span>;
         },
     },
     {
@@ -147,7 +141,7 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
         },
     },
     {
-        title: localize('Profit/Loss'),
+        title: localize('Profit / Loss'),
         col_index: 'profit_loss',
         renderCellContent: ({ cell_value }) => (
             <ProfitLossCell value={cell_value}>
@@ -211,11 +205,13 @@ export const getOpenPositionsColumnsTemplate = currency => [
     {
         title: localize('Indicative price'),
         col_index: 'indicative',
-        renderCellContent: ({ cell_value, row_obj }) => (
+        renderCellContent: ({ cell_value, row_obj, is_footer }) => (
             <IndicativeCell
                 amount={+cell_value}
                 currency={currency}
-                status={row_obj.contract_info && !row_obj.is_valid_to_sell ? 'no-resale' : ''}
+                contract_info={row_obj.contract_info}
+                is_sell_requested={row_obj.is_sell_requested}
+                is_footer={is_footer}
             />
         ),
     },
@@ -275,7 +271,11 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
         title: localize('Deal cancel. fee'),
         col_index: 'cancellation',
         renderCellContent: ({ row_obj }) => {
-            if (row_obj.contract_info && row_obj.contract_info.cancellation) {
+            if (!row_obj.contract_info || !row_obj.contract_info.underlying) return '-';
+
+            if (!shouldShowCancellation(row_obj.contract_info.underlying)) return localize('N/A');
+
+            if (row_obj.contract_info.cancellation) {
                 return <Money amount={row_obj.contract_info.cancellation.ask_price} currency={currency} />;
             }
             return '-';
@@ -329,7 +329,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
 
             if (!row_obj.contract_info || !row_obj.contract_info.bid_price) return '-';
 
-            const total_profit = row_obj.contract_info.bid_price - row_obj.contract_info.buy_price;
+            const total_profit = getTotalProfit(row_obj.contract_info);
             return (
                 <div
                     className={classNames('open-positions__bid_price', {
@@ -351,7 +351,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
         col_index: 'profit',
         renderCellContent: ({ row_obj }) => {
             if (!row_obj.contract_info || !row_obj.contract_info.profit) return null;
-            const total_profit = row_obj.contract_info.bid_price - row_obj.contract_info.buy_price;
+            const total_profit = getTotalProfit(row_obj.contract_info);
             // eslint-disable-next-line consistent-return
             return (
                 <div

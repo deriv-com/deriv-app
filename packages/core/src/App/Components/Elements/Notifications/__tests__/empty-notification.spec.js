@@ -14,6 +14,8 @@ describe('Notifications', () => {
     });
     it("should render Icon icon='IcBell'", () => {
         const wrapper = shallow(<EmptyNotification />);
-        expect(wrapper.contains(<Icon icon='IcBell' className='drawer__bell-icon' />)).to.be.true;
+        expect(
+            wrapper.contains(<Icon icon='IcBox' className='notifications-empty__icon' size={64} color='secondary' />)
+        ).to.be.true;
     });
 });

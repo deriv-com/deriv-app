@@ -1,5 +1,5 @@
 import ContractType from '../Helpers/contract-type';
-import { getExpiryType } from '../Helpers/duration';
+import { getExpiryType, getDurationMinMaxValues } from '../Helpers/duration';
 
 export const onChangeExpiry = store => {
     const contract_expiry_type = getExpiryType(store);
@@ -13,4 +13,28 @@ export const onChangeExpiry = store => {
         contract_expiry_type,
         ...obj_barriers,
     };
+};
+
+export const onChangeContractType = store => {
+    const contract_expiry_type = getExpiryType(store);
+
+    const { duration, duration_min_max, duration_unit } = store;
+
+    const obj_duration = assertDuration({ contract_expiry_type, duration, duration_min_max, duration_unit });
+
+    return {
+        ...obj_duration,
+    };
+};
+
+const assertDuration = ({ contract_expiry_type, duration, duration_min_max, duration_unit } = {}) => {
+    const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
+
+    if (duration < min) {
+        return { duration: min };
+    }
+    if (duration > max) {
+        return { duration: max };
+    }
+    return {};
 };

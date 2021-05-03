@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Formik, Form } from 'formik';
-import { Div100vhContainer, Modal, FormSubmitButton } from '@deriv/components';
+import { Div100vhContainer, Modal, FormSubmitButton, Text } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
@@ -41,21 +41,37 @@ const BriefModal = ({
                                 max_autoheight_offset='204px'
                                 is_disabled={isDesktop()}
                             >
-                                <p className='reality-check__text reality-check__text--description'>
+                                <Text
+                                    as='p'
+                                    size='xs'
+                                    line_height='m'
+                                    className='reality-check__text reality-check__text--description'
+                                >
                                     <Localize i18n_default_text='Options trading can become a real addiction, as can any other activity pushed to its limits. To avoid the danger of such an addiction, we provide a reality-check that gives you a summary of your trades and accounts on a regular basis.' />
-                                </p>
-                                <p className='reality-check__text reality-check__text--description'>
+                                </Text>
+                                <Text
+                                    as='p'
+                                    size='xs'
+                                    line_height='m'
+                                    className='reality-check__text reality-check__text--description'
+                                >
                                     <Localize
                                         i18n_default_text='Would like to check your statement first? <0>Check Statement</0>'
                                         components={[<a key={0} className='link' onClick={openStatement} />]}
                                     />
-                                </p>
+                                </Text>
 
                                 <div className='reality-check__separator reality-check__separator--large' />
 
-                                <p className='reality-check__text reality-check__text--center'>
+                                <Text
+                                    as='p'
+                                    size='xs'
+                                    line_height='m'
+                                    align='center'
+                                    className='reality-check__text reality-check__text--center'
+                                >
                                     <Localize i18n_default_text='Please specify your preferred interval reality check in minutes:' />
-                                </p>
+                                </Text>
 
                                 <IntervalField
                                     values={values}

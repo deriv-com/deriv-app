@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import * as PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal } from '@deriv/components';
+import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
 import { routes, validLength, validPassword, getErrorMessages } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -15,16 +15,14 @@ const ResetPasswordIntent = ({ current_list, children, ...props }) => {
     const has_intent =
         reset_password_intent && /(real|demo)\.(financial_stp|financial|synthetic)/.test(reset_password_intent);
 
-    let group, type, login, title;
+    let group, type, login, title, server;
     if (has_intent && current_list) {
-        [group, type] = reset_password_intent.split('.');
-        login = current_list[`${group}.${type}`].login;
+        [server, group, type] = reset_password_intent.split('.');
+        login = current_list[`${group}.${type}@${server}`].login;
         title = getMtCompanies()[group][type].title;
     } else if (current_list) {
-        [group, type] = Object.keys(current_list)
-            .pop()
-            .split('.');
-        login = current_list[`${group}.${type}`].login;
+        [server, group, type] = Object.keys(current_list).pop().split('.');
+        login = current_list[`${group}.${type}@${server}`].login;
         title = getMtCompanies()[group][type].title;
     } else {
         // Set a default intent
@@ -56,6 +54,7 @@ class MT5ResetPasswordModal extends React.Component {
     clearAddressBar = () => {
         localStorage.removeItem('mt5_reset_password_intent');
         localStorage.removeItem('mt5_reset_password_type');
+        localStorage.removeItem('mt5_reset_password_code');
         this.props.history.push(`${routes.mt5}`);
     };
 
@@ -84,13 +83,12 @@ class MT5ResetPasswordModal extends React.Component {
 
     resetPassword = (values, password_type, login, actions) => {
         const { setSubmitting } = actions;
-        const url_params = new URLSearchParams(window.location.search);
         setSubmitting(true);
         const request = {
             login,
             password_type,
             new_password: values.new_password,
-            verification_code: url_params.get('code'),
+            verification_code: localStorage.getItem('mt5_reset_password_code'),
         };
 
         WS.mt5PasswordReset(request).then(response => {
@@ -152,9 +150,11 @@ class MT5ResetPasswordModal extends React.Component {
                                                     <PasswordMeter
                                                         input={values.new_password}
                                                         has_error={!!(touched.new_password && errors.new_password)}
+                                                        custom_feedback_messages={getErrorMessages().password_warnings}
                                                     >
                                                         {({ has_warning }) => (
                                                             <PasswordInput
+                                                                autoComplete='new-password'
                                                                 className='mt5-reset-password__password-field'
                                                                 name='new_password'
                                                                 label={localize('New {{type}} password', { type })}
@@ -199,10 +199,18 @@ class MT5ResetPasswordModal extends React.Component {
                 {this.state.has_error && (
                     <div className='mt5-reset-password__error'>
                         <Icon icon='IcMt5Expired' size={128} />
-                        <p className='mt5-reset-password__heading'>{this.state.error_message}</p>
-                        <p className='mt5-reset-password__description mt5-reset-password__description--is-centered'>
+                        <Text as='p' size='xs' weight='bold' align='center' className='mt5-reset-password__heading'>
+                            {this.state.error_message}
+                        </Text>
+                        <Text
+                            as='p'
+                            color='prominent'
+                            size='xs'
+                            align='center'
+                            className='mt5-reset-password__description--is-centered'
+                        >
                             <Localize i18n_default_text='Please request a new password and check your email for the new token.' />
-                        </p>
+                        </Text>
                         <Button
                             primary
                             large

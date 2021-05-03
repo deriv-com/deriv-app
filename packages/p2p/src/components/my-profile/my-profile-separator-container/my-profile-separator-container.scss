@@ -1,0 +1,21 @@
+.my-profile-separator-container {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    &__line {
+        background-color: var(--general-section-1);
+        flex: 1;
+        height: 1px;
+        margin: 0 1.6rem;
+
+        &--invisible {
+            background-color: inherit;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}

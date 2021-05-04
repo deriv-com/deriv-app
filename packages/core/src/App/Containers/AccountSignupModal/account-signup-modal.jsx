@@ -171,7 +171,6 @@ const AccountSignup = ({
                                         is_disabled={!values.residence || !!errors.residence}
                                         onClick={() => {
                                             onResidenceSelection(values.residence);
-                                            //setSelectedResidence(values.residence);
                                         }}
                                         primary
                                         text={localize('Next')}

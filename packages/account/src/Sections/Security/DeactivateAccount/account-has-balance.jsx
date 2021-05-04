@@ -149,7 +149,7 @@ const AccountHasPendingConditions = ({ details, mt5_login_list, client_accounts,
                                 title={account.title}
                                 value={
                                     <Localize
-                                        i18n_default_text='{{pending_withdrawals}}'
+                                        i18n_default_text='{{pending_withdrawals}} pending withdrawal(s)'
                                         values={{ pending_withdrawals: account.withdrawals }}
                                     />
                                 }
@@ -157,8 +157,6 @@ const AccountHasPendingConditions = ({ details, mt5_login_list, client_accounts,
                         ))}
                     </Wrapper>
                 )}
-                {/* {!!deriv_balance.length && ( */}
-                {/* )} */}
                 {!!mt5_open_positions.length && (
                     <Wrapper title={localize('You have open positions in these DMT5 accounts:')}>
                         {mt5_open_positions.map(account => (

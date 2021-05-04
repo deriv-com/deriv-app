@@ -89,8 +89,8 @@ const SelfExclusionConfirmPage = () => {
                         />
                     ) : (
                         <Localize
-                            i18n_default_text='We’ll update your limits. Click <0>Agree and accept</0> to acknowledge that you are fully responsible for your actions, and we are not liable for any addiction or loss.'
-                            components={[<Text key={0} color='loss-danger' size='xs' weight='bold' />]}
+                            i18n_default_text='We’ll update your limits. Click <0>Accept</0> to acknowledge that you are fully responsible for your actions, and we are not liable for any addiction or loss.'
+                            components={[<Text key={0} size='xs' weight='bold' />]}
                         />
                     )}
                 </Text>

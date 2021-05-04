@@ -44,6 +44,7 @@ const Deposit = ({
     is_cashier_default,
     is_deposit,
     is_deposit_locked,
+    is_eu,
     is_virtual,
     error,
     iframe_height,
@@ -79,7 +80,7 @@ const Deposit = ({
     if (is_virtual) {
         return <Virtual />;
     }
-    if (is_deposit) {
+    if (is_deposit || is_eu) {
         if (error.is_ask_uk_funds_protection) {
             return <FundsProtection />;
         }
@@ -108,6 +109,7 @@ Deposit.propTypes = {
     is_cashier_locked: PropTypes.bool,
     is_deposit: PropTypes.bool,
     is_deposit_locked: PropTypes.bool,
+    is_eu: PropTypes.bool,
     iframe_height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     iframe_url: PropTypes.string,
     is_loading: PropTypes.bool,
@@ -124,6 +126,7 @@ export default connect(({ client, modules }) => ({
     is_cashier_locked: modules.cashier.is_cashier_locked,
     is_deposit: modules.cashier.is_deposit,
     is_deposit_locked: modules.cashier.is_deposit_locked,
+    is_eu: client.is_eu,
     is_virtual: client.is_virtual,
     container: modules.cashier.config.deposit.container,
     currency: client.currency,

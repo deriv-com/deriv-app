@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Formik } from 'formik';
-import { withRouter } from 'react-router';
+import { useHistory, useLocation, withRouter } from 'react-router';
 import {
     FormSubmitErrorMessage,
     Loading,
@@ -117,30 +117,41 @@ const ConfirmationPage = ({ toggleModal, onSubmit }) => (
     </div>
 );
 
-const SubmittedPage = withRouter(({ history }) => {
-    const redirectToPOA = () => {
-        history.push(routes.proof_of_address);
+const SubmittedPage = () => {
+    const history = useHistory();
+    const location = useLocation();
+
+    // Passing "custtom_button_options" object in "location.state" allows
+    // another app/route to determine which button the user will see after
+    // submitting their financial assessment.
+    const { custom_button_options } = location.state;
+    const button_text = custom_button_options ? custom_button_options.button_text : localize('Continue');
+    const icon_text = custom_button_options
+        ? custom_button_options.icon_text
+        : localize('Let’s continue with providing proofs of address and identity.');
+    const route_to_path = custom_button_options ? custom_button_options.route_to_path : routes.proof_of_address;
+
+    const onClickButton = () => {
+        if (custom_button_options.is_hard_redirect) {
+            window.location.href = window.location.origin + route_to_path;
+        } else {
+            history.push(route_to_path);
+        }
     };
+
     return (
         <IconMessageContent
             className='submit-success'
             message={localize('Financial assessment submitted successfully')}
-            text={localize('Let’s continue with providing proofs of address and identity.')}
+            text={icon_text}
             icon={<Icon icon='IcSuccess' width={96} height={90} />}
         >
             <div className='account-management-flex-wrapper account-management-submit-success'>
-                <Button
-                    type='button'
-                    has_effect
-                    text={localize('Continue')}
-                    onClick={() => redirectToPOA()}
-                    primary
-                    large
-                />
+                <Button type='button' has_effect text={button_text} onClick={onClickButton} primary large />
             </div>
         </IconMessageContent>
     );
-});
+};
 
 class FinancialAssessment extends React.Component {
     static contextType = PlatformContext;
@@ -227,7 +238,10 @@ class FinancialAssessment extends React.Component {
                         ...res_data.get_financial_assessment,
                         is_submit_success: true,
                     });
-                    setTimeout(() => this.setState({ is_submit_success: false }), 3000);
+
+                    if (isDesktop()) {
+                        setTimeout(() => this.setState({ is_submit_success: false }), 3000);
+                    }
 
                     this.props.removeNotificationMessage({ key: 'risk' });
                     this.props.removeNotificationByKey({ key: 'risk' });

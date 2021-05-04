@@ -202,6 +202,7 @@ const AccountSignup = ({
                                                         if (input) updatePassword(input.value);
                                                         handleChange(e);
                                                     }}
+                                                    input_id='dt_core_account-signup-modal_account-signup-password-field'
                                                 />
                                             </PasswordMeter>
                                         )}
@@ -263,6 +264,7 @@ const AccountSignup = ({
                                                 'account-signup__btn--disabled':
                                                     !values.password || errors.password || isSubmitting,
                                             })}
+                                            id='dt_core_account-signup-modal_submit-btn'
                                             type='submit'
                                             is_disabled={!values.password || !!errors.password || isSubmitting}
                                             text={localize('Start trading')}

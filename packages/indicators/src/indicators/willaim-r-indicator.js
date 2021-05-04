@@ -35,19 +35,19 @@ export const williamRIndicator = (data, config) => {
  */
 export const williamRIndicatorArray = (data, config) => {
     const { period = 14, pipSize = 2 } = config;
-    const high_list = data.map((item) => {
+    const high_list = data.map(item => {
         if (isNaN(item)) {
             return item.high ? item.high : NaN;
         }
         return item;
     });
-    const low_list = data.map((item) => {
+    const low_list = data.map(item => {
         if (isNaN(item)) {
             return item.low ? item.low : NaN;
         }
         return item;
     });
-    const close_list = data.map((item) => {
+    const close_list = data.map(item => {
         if (isNaN(item)) {
             return item.close ? item.close : NaN;
         }

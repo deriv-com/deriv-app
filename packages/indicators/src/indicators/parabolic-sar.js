@@ -19,13 +19,13 @@ export const parabolicSAR = (data, config) => {
  */
 export const parabolicSARArray = (data, config) => {
     const { pipSize = 2 } = config;
-    const high_list = data.map((item) => {
+    const high_list = data.map(item => {
         if (isNaN(item)) {
             return item.high ? item.high : NaN;
         }
         return item;
     });
-    const low_list = data.map((item) => {
+    const low_list = data.map(item => {
         if (isNaN(item)) {
             return item.low ? item.low : NaN;
         }
@@ -146,7 +146,7 @@ export const parabolicSARArray = (data, config) => {
         sar_list[i] = sar;
         i++;
     }
-    return sar_list.slice(1, sar_list.length).map((sar_list_item) => {
+    return sar_list.slice(1, sar_list.length).map(sar_list_item => {
         return typeof sar_list_item === 'number' ? +sar_list_item.toFixed(pipSize) : sar_list_item;
     });
 };

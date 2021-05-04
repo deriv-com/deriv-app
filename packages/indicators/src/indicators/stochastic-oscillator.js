@@ -69,19 +69,19 @@ export const stochasticOscillator = (data, config) => {
  */
 export const stochasticOscillatorArray = (data, config) => {
     const { k_period = 14, k_slowing_period = 14, d_period = 14, type = 0, pipSize = 2 } = config;
-    const high_list = data.map((item) => {
+    const high_list = data.map(item => {
         if (isNaN(item)) {
             return item.high ? item.high : NaN;
         }
         return item;
     });
-    const low_list = data.map((item) => {
+    const low_list = data.map(item => {
         if (isNaN(item)) {
             return item.low ? item.low : NaN;
         }
         return item;
     });
-    const close_list = data.map((item) => {
+    const close_list = data.map(item => {
         if (isNaN(item)) {
             return item.close ? item.close : NaN;
         }

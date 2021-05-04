@@ -3,7 +3,7 @@ import { sequence } from '@deriv/shared';
 const calcPriceChannel = (data, field, periods, pipSize) => {
     let result = null;
     if (field) {
-        const high_list = data.map((item) => {
+        const high_list = data.map(item => {
             if (isNaN(item)) {
                 return item.high ? item.high : NaN;
             }
@@ -11,7 +11,7 @@ const calcPriceChannel = (data, field, periods, pipSize) => {
         });
         result = Math.max(...high_list.slice(high_list.length - periods, high_list.length));
     } else {
-        const low_list = data.map((item) => {
+        const low_list = data.map(item => {
             if (isNaN(item)) {
                 return item.low ? item.low : NaN;
             }

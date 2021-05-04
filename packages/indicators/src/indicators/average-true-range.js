@@ -23,19 +23,19 @@ export const averageTrueRange = (data, config) => {
  * }
  */
 export const averageTrueRangeArray = (data, config) => {
-    const high_list = data.map((item) => {
+    const high_list = data.map(item => {
         if (isNaN(item)) {
             return item.high ? item.high : NaN;
         }
         return item;
     });
-    const low_list = data.map((item) => {
+    const low_list = data.map(item => {
         if (isNaN(item)) {
             return item.low ? item.low : NaN;
         }
         return item;
     });
-    const close_list = data.map((item) => {
+    const close_list = data.map(item => {
         if (isNaN(item)) {
             return item.close ? item.close : NaN;
         }

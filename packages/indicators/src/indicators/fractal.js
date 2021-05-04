@@ -5,7 +5,7 @@ const calcFractal = (data, field, pipSize) => {
     let result = null;
 
     if (field) {
-        const high_list = data.map((item) => {
+        const high_list = data.map(item => {
             if (isNaN(item)) {
                 return item.high ? item.high : NaN;
             }
@@ -23,7 +23,7 @@ const calcFractal = (data, field, pipSize) => {
             result = null;
         }
     } else {
-        const low_list = data.map((item) => {
+        const low_list = data.map(item => {
             if (isNaN(item)) {
                 return item.low ? item.low : NaN;
             }

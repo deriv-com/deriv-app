@@ -40,8 +40,8 @@ const getPlatformMt5DownloadLink = (platform = undefined) => {
     }
 };
 
-const getDXTradeWebTerminalLink = () => {
-    return 'https://dx-demo.deriv.com/';
+const getDXTradeWebTerminalLink = category => {
+    return category === 'real' ? 'https://dx.deriv.com' : 'https://dx-demo.deriv.com/';
 };
 
 const getMT5WebTerminalLink = ({ category, loginid, server_name = 'Deriv-Server' }) => {

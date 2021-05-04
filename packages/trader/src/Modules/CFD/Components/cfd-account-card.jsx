@@ -447,7 +447,7 @@ const CFDAccountCard = ({
                                 type='button'
                                 href={
                                     platform === 'dxtrade'
-                                        ? getDXTradeWebTerminalLink()
+                                        ? getDXTradeWebTerminalLink(type.category)
                                         : getMT5WebTerminalLink({
                                               category: type.category,
                                               loginid: existing_data.display_login,

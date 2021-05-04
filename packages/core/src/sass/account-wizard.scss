@@ -116,6 +116,9 @@
                 margin-bottom: 9rem;
             }
         }
+        .dc-input__label {
+            background-color: var(--fill-normal) !important;
+        }
         .dc-modal-footer {
             background-color: var(--general-main-1);
             z-index: 1;
@@ -271,11 +274,7 @@
         position: relative;
 
         .currency-list__items {
-            margin-top: 0.8rem;
-        }
-        h2,
-        p {
-            color: var(--text-disabled);
+            margin-top: 2.4rem;
         }
         .currency-list__item {
             pointer-events: none;
@@ -290,19 +289,12 @@
         &-message {
             display: flex;
             justify-content: center;
-            margin-top: 2.4rem;
 
-            p {
-                color: var(--text-general);
-                font-size: var(--text-size-s);
-                line-height: 1.5;
+            &-description {
+                margin-top: 2.4rem;
                 width: 78%;
-                text-align: center;
-            }
-            p:first-child {
                 background-color: var(--general-section-1);
-                font-size: 1.2rem;
-                height: 58px;
+                padding: 0.8rem 0;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -344,7 +336,6 @@
             &-steps {
                 padding: 1.6rem 0 0;
                 width: 100%;
-                background: var(--general-section-2);
 
                 &-title {
                     padding: 0 1.6rem 0.8rem;

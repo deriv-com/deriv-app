@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, MobileFullPageModal, Modal, ThemedScrollbars } from '@deriv/components';
-import { isMobile, useIsMounted } from '@deriv/shared';
+import { Button, MobileFullPageModal, Modal, ThemedScrollbars, useSafeState } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize } from 'Components/i18next';
 import FormError from 'Components/form/error.jsx';
 import { useStores } from 'Stores';
 import BuySellForm from './buy-sell-form.jsx';
-import NicknameForm from '../nickname/nickname-form.jsx';
+import NicknameForm from '../nickname-form';
 import 'Components/buy-sell/buy-sell-modal.scss';
 
 const BuySellModalFooter = ({ onCancel, error_message, is_submit_disabled, onSubmit }) => {
@@ -34,27 +34,14 @@ BuySellModalFooter.propTypes = {
     onSubmit: PropTypes.func.isRequired,
 };
 
-const BuySellModal = observer(({ table_type, selected_ad, should_show_popup, setShouldShowPopup }) => {
-    const isMounted = useIsMounted();
+const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldShowPopup }) => {
     const { general_store, order_store } = useStores();
     const submitForm = React.useRef(() => {});
-    const [error_message, setErrorMessage] = React.useState(null);
-    const [is_submit_disabled, setIsSubmitDisabled] = React.useState(true);
-    const [page_footer_parent, setPageFooterParent] = React.useState(null);
+    const [error_message, setErrorMessage] = useSafeState(null);
+    const [is_submit_disabled, setIsSubmitDisabled] = useSafeState(true);
+    const [page_footer_parent, setPageFooterParent] = useSafeState(null);
 
-    // Some state is managed externally, ensure our host component is mounted
-    // when those external components try to update it.
-    const stateUpdateFnWrapper = updateFn => (...args) => {
-        if (isMounted()) {
-            updateFn(...args);
-        }
-    };
-
-    const onCancel = () => {
-        if (isMounted()) {
-            setShouldShowPopup(false);
-        }
-    };
+    const onCancel = () => setShouldShowPopup(false);
 
     const onConfirmClick = order_info => {
         order_store.setOrderId(order_info.id);
@@ -65,10 +52,11 @@ const BuySellModal = observer(({ table_type, selected_ad, should_show_popup, set
     const setSubmitForm = submitFormFn => (submitForm.current = submitFormFn);
 
     React.useEffect(() => {
-        if (isMounted() && !should_show_popup) {
+        if (!should_show_popup) {
             setErrorMessage(null);
         }
-    }, [isMounted, should_show_popup]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [should_show_popup]);
 
     const Form = general_store.nickname ? BuySellForm : NicknameForm;
     const modal_title =
@@ -88,22 +76,22 @@ const BuySellModal = observer(({ table_type, selected_ad, should_show_popup, set
                 page_header_text={modal_title}
                 pageHeaderReturnFn={onCancel}
                 page_footer_parent={page_footer_parent}
-                page_footer_children={
+                renderPageFooterChildren={() => (
                     <BuySellModalFooter
                         error_message={error_message}
                         is_submit_disabled={is_submit_disabled}
                         onCancel={onCancel}
                         onSubmit={submitForm.current}
                     />
-                }
+                )}
                 page_footer_className='buy-sell__modal-footer'
             >
                 <Form
                     advert={selected_ad}
                     handleClose={onCancel}
                     handleConfirm={onConfirmClick}
-                    setIsSubmitDisabled={stateUpdateFnWrapper(setIsSubmitDisabled)}
-                    setErrorMessage={stateUpdateFnWrapper(setErrorMessage)}
+                    setIsSubmitDisabled={setIsSubmitDisabled}
+                    setErrorMessage={setErrorMessage}
                     setSubmitForm={setSubmitForm}
                     setPageFooterParent={setPageFooterParent}
                 />
@@ -128,8 +116,8 @@ const BuySellModal = observer(({ table_type, selected_ad, should_show_popup, set
                         advert={selected_ad}
                         handleClose={onCancel}
                         handleConfirm={onConfirmClick}
-                        setIsSubmitDisabled={stateUpdateFnWrapper(setIsSubmitDisabled)}
-                        setErrorMessage={stateUpdateFnWrapper(setErrorMessage)}
+                        setIsSubmitDisabled={setIsSubmitDisabled}
+                        setErrorMessage={setErrorMessage}
                         setSubmitForm={setSubmitForm}
                     />
                 </Modal.Body>
@@ -144,7 +132,7 @@ const BuySellModal = observer(({ table_type, selected_ad, should_show_popup, set
             </Modal.Footer>
         </Modal>
     );
-});
+};
 
 BuySellModal.propTypes = {
     table_type: PropTypes.string,
@@ -153,4 +141,4 @@ BuySellModal.propTypes = {
     setShouldShowPopup: PropTypes.func,
 };
 
-export default BuySellModal;
+export default observer(BuySellModal);

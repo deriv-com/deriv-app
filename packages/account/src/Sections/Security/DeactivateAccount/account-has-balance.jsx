@@ -42,7 +42,7 @@ const Content = ({ currency_icon, loginid, title, value }) => (
     </div>
 );
 
-const ActionRequired = ({ details, mt5_login_list, client_accounts, onBackClick }) => {
+const AccountHasPendingConditions = ({ details, mt5_login_list, client_accounts, onBackClick }) => {
     const deriv_open_positions = [];
     const deriv_balance = [];
     const mt5_open_positions = [];
@@ -206,4 +206,4 @@ const ActionRequired = ({ details, mt5_login_list, client_accounts, onBackClick 
     );
 };
 
-export default ActionRequired;
+export default AccountHasPendingConditions;

@@ -18,22 +18,6 @@
     }
 }
 
-// .dc-input {
-//     .dc-input__field {
-//         &:focus,
-//         &:disabled,
-//         &:not(:focus):not([value='']) {
-//             outline: none;
-
-//             & ~ label {
-//                 transform: translate(0, -1.8rem) scale(0.875);
-//             }
-//         }
-//     }
-//     .quick-strategy__label {
-//         font-size: var(--text-size-xxs);
-//     }
-// }
 .quick-strategy {
     $quick-strategy: &;
 

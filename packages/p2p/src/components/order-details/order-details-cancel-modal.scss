@@ -1,3 +1,9 @@
+.cancel-modal {
+    &__warning {
+        padding-top: 0.8rem;
+    }
+}
+
 .dc-modal__container_cancel-modal {
     .dc-modal-header {
         border-bottom: none;

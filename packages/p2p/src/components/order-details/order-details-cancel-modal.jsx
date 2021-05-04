@@ -4,19 +4,13 @@ import { Button, Modal, Text } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
+import { useStores } from 'Stores';
 import FormError from 'Components/form/error.jsx';
-import 'Components/order-details/order-details-confirm-modal.scss';
+import 'Components/order-details/order-details-cancel-modal.scss';
 
-const OrderDetailsCancelModal = ({
-    cancel_error_message,
-    cancels_remaining,
-    hideCancelOrderModal,
-    order_id,
-    should_show_cancel_modal,
-}) => {
+const OrderDetailsCancelModal = ({ hideCancelOrderModal, order_id, should_show_cancel_modal }) => {
+    const { order_store } = useStores();
     const isMounted = useIsMounted();
-
-    const [error_message, setErrorMessage] = React.useState(cancel_error_message);
 
     const cancelOrderRequest = () => {
         requestWS({
@@ -25,7 +19,7 @@ const OrderDetailsCancelModal = ({
         }).then(response => {
             if (isMounted()) {
                 if (response.error) {
-                    setErrorMessage(response.error.message);
+                    order_store.setErrorMessage(response.error.message);
                 }
 
                 hideCancelOrderModal();
@@ -47,24 +41,36 @@ const OrderDetailsCancelModal = ({
             width='440px'
         >
             <Modal.Body>
-                {cancels_remaining > 1 ? (
+                {order_store.cancels_remaining > 1 ? (
                     <Text color='prominent' size='xs'>
                         <Localize
-                            i18n_default_text='If you cancel your order 3 times in 24 hours, you will be blocked from using DP2P for a day. <br /> ({{cancels_remaining}} cancellations remaining.)'
-                            values={{ cancels_remaining }}
+                            i18n_default_text='If you cancel your order {{cancellation_limit}} times in {{cancellation_period}} hours, you will be blocked from using DP2P for {{block_duration}} hours. <br /> ({{number_of_cancels_remaining}} cancellations remaining.)'
+                            values={{
+                                block_duration: order_store.cancellation_block_duration,
+                                cancellation_limit: order_store.cancellation_limit,
+                                cancellation_period: order_store.cancellation_count_period,
+                                number_of_cancels_remaining: order_store.cancels_remaining,
+                            }}
                         />
                     </Text>
                 ) : (
                     <Text color='prominent' size='xs'>
-                        <Localize i18n_default_text='If you cancel this order, you’ll be blocked from using DP2P for 24 hours.' />
+                        <Localize
+                            i18n_default_text='If you cancel this order, you’ll be blocked from using DP2P for {{block_duration}} hours.'
+                            values={{
+                                block_duration: order_store.cancellation_block_duration,
+                            }}
+                        />
                     </Text>
                 )}
-                <Text color='loss-danger' size='xs'>
-                    <Localize i18n_default_text='Please do not cancel if you have already made payment.' />
-                </Text>
+                <div className='cancel-modal__warning'>
+                    <Text color='loss-danger' size='xs'>
+                        <Localize i18n_default_text='Please do not cancel if you have already made payment.' />
+                    </Text>
+                </div>
             </Modal.Body>
             <Modal.Footer>
-                {error_message && <FormError message={error_message} />}
+                {order_store.error_message && <FormError message={order_store.error_message} />}
                 <Button.Group>
                     <Button secondary large onClick={cancelOrderRequest}>
                         <Localize i18n_default_text='Cancel this order' />

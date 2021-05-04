@@ -56,9 +56,6 @@
         flex-grow: 1;
         margin: auto;
 
-        .dc-password-input__field {
-            margin-bottom: 5rem;
-        }
         @include mobile {
             width: calc(100vw - 4.8rem);
             max-width: 30rem;

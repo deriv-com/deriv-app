@@ -58,6 +58,7 @@ const PasswordModalHeader = ({
 
     const element = isMobile() ? 'p' : 'span';
     const alignment = isMobile() ? 'center' : 'left';
+    const font_size = isMobile() ? 'xs' : 's';
     const style = isMobile()
         ? {
               paddingTop: '2rem',
@@ -65,7 +66,7 @@ const PasswordModalHeader = ({
         : {};
 
     return (
-        <Text styles={style} as={element} line_height='24' weight='bold' size='xs' align={alignment}>
+        <Text styles={style} as={element} line_height='24' weight='bold' size={font_size} align={alignment}>
             {!should_show_server_form && should_set_trading_password && !is_password_reset_error && (
                 <Localize i18n_default_text='Set a trading password' />
             )}
@@ -75,7 +76,7 @@ const PasswordModalHeader = ({
             {!should_show_server_form && is_password_reset_error && <Localize i18n_default_text='Too many attempts' />}
             {should_show_server_form && (
                 <Localize
-                    i18n_default_text='Choose a server for your DMT5 {{ account_type }} account'
+                    i18n_default_text='Choose a region for your DMT5 {{ account_type }} account'
                     values={{
                         account_type: account_title,
                     }}
@@ -111,7 +112,7 @@ const getCancelButtonLabel = ({ should_set_trading_password, error_type, should_
         return null;
     }
     if (should_show_server_form) {
-        return localize('Cancel');
+        return localize('Back');
     }
 
     return localize('Forgot password?');
@@ -458,6 +459,7 @@ const MT5PasswordModal = ({
             <DesktopWrapper>
                 <Modal
                     className='mt5-password-modal'
+                    has_close_icon={!should_show_server_form}
                     is_open={should_show_password}
                     toggleModal={closeModal}
                     should_header_stick_body

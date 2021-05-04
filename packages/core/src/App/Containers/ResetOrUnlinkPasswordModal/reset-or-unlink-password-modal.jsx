@@ -1,10 +1,11 @@
 import React from 'react';
+import { connect } from 'Stores/connect';
 import { Loading } from '@deriv/components';
 import { WS } from 'Services';
 import UnlinkPasswordModal from '../UnlinkPasswordModal';
 import ResetPasswordModal from '../ResetPasswordModal';
 
-const ResetOrUnlinkPasswordModal = () => {
+const ResetOrUnlinkPasswordModal = ({ is_logged_in }) => {
     const [state, dispatch] = React.useReducer(
         (old_state, updated_state) => {
             return {
@@ -19,14 +20,21 @@ const ResetOrUnlinkPasswordModal = () => {
     );
 
     React.useEffect(() => {
-        WS.wait('get_account_status').then(data => {
-            if (data?.get_account_status?.social_identity_provider) {
-                dispatch({ is_unlinking: true, is_loading: false });
+        async function waitForAccountStatus() {
+            if (is_logged_in) {
+                const data = await WS.wait('get_account_status');
+                if (data?.get_account_status?.social_identity_provider) {
+                    dispatch({ is_unlinking: true, is_loading: false });
+                } else {
+                    dispatch({ is_unlinking: false, is_loading: false });
+                }
             } else {
                 dispatch({ is_unlinking: false, is_loading: false });
             }
-        });
-    }, []);
+        }
+
+        waitForAccountStatus();
+    }, [is_logged_in]);
 
     if (state.is_loading) {
         return <Loading is_fullscreen={false} />;
@@ -39,4 +47,6 @@ const ResetOrUnlinkPasswordModal = () => {
     return <ResetPasswordModal />;
 };
 
-export default ResetOrUnlinkPasswordModal;
+export default connect(({ ui }) => ({
+    is_logged_in: ui.is_logged_in,
+}))(ResetOrUnlinkPasswordModal);

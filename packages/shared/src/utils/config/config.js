@@ -18,6 +18,7 @@ export const domain_app_ids = {
     'deriv.app': 16929, // TODO: [app-link-refactor] - Remove backwards compatibility for `deriv.app`
     'app.deriv.com': 16929,
     'myapps.deriv.com': 1411, // TODO: we need to create a new one
+    'app.deriv.me': 1411,
     'binary.com': 1,
 };
 

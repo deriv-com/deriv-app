@@ -1,6 +1,6 @@
 import React from 'react';
 import { action, computed, observable, reaction } from 'mobx';
-import { isEmptyObject, isMobile, routes, toMoment } from '@deriv/shared';
+import { isEmptyObject, isMobile, toMoment } from '@deriv/shared';
 import BaseStore from 'Stores/base_store';
 import { localize, Localize } from 'Components/i18next';
 import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
@@ -25,11 +25,12 @@ export default class GeneralStore extends BaseStore {
     @observable orders = [];
     @observable parameters = null;
     @observable poi_status = null;
+    @observable.ref props = {};
     @observable should_show_real_name = false;
-    @observable show_popup = false;
+    @observable should_show_popup = false;
     @observable user_blocked_until = null;
+    @observable is_high_risk_fully_authed_without_fa = false;
 
-    custom_string = this.props?.custom_string;
     list_item_limit = isMobile() ? 10 : 50;
     path = {
         buy_sell: 0,
@@ -37,7 +38,6 @@ export default class GeneralStore extends BaseStore {
         my_ads: 2,
         my_profile: 3,
     };
-    props = {};
     ws_subscriptions = {};
     service_token_timeout;
 
@@ -64,6 +64,17 @@ export default class GeneralStore extends BaseStore {
     @computed
     get is_my_profile_tab_visible() {
         return this.is_advertiser && !this.root_store.my_profile_store.should_hide_my_profile_tab;
+    }
+
+    @computed
+    get is_unsupported_account() {
+        const allowed_currency = 'USD';
+        return this.client?.is_virtual || this.client?.currency !== allowed_currency;
+    }
+
+    @computed
+    get should_show_dp2p_blocked() {
+        return this.is_blocked || this.is_high_risk_fully_authed_without_fa;
     }
 
     @action.bound
@@ -159,26 +170,9 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    getVerificationChecklist = () => [
-        {
-            content: this.nickname || <Localize i18n_default_text='Choose your nickname' />,
-            status: this.nickname ? 'done' : 'action',
-            onClick: this.nickname ? () => {} : this.toggleNicknamePopup,
-        },
-        {
-            content: this.poiStatusText(this.poi_status),
-            status: this.poi_status === 'verified' ? 'done' : 'action',
-            onClick:
-                this.poi_status === 'verified'
-                    ? () => {}
-                    : () => (window.location.href = `${this.props.poi_url}?ext_platform_url=${routes.cashier_p2p}`),
-            is_disabled: this.poi_status !== 'verified' && !this.nickname,
-        },
-    ];
-
-    @action.bound
     onMount() {
         this.setIsLoading(true);
+        this.setIsHighRiskFullyAuthedWithoutFa(false);
 
         this.disposeUserBarredReaction = reaction(
             () => this.user_blocked_until,
@@ -196,26 +190,44 @@ export default class GeneralStore extends BaseStore {
 
         requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
             if (!error && get_account_status.risk_classification === 'high') {
-                const { status } = get_account_status;
-                const is_cashier_locked = status.includes('cashier_locked');
-                const is_not_fully_authenticated = !status.includes('authenticated');
-                const is_fully_authenticated_but_poi_expired =
-                    status.includes('authenticated') && status.includes('document_expired');
-                const is_fully_authenticated_but_needs_financial_assessment =
-                    status.includes('authenticated') && status.includes('financial_assessment_not_complete');
+                const hasStatuses = statuses => statuses.every(status => get_account_status.status.includes(status));
 
-                if (
+                const is_cashier_locked = hasStatuses(['cashier_locked']);
+
+                const is_fully_authenticated = hasStatuses(['age_verification', 'authenticated']);
+                const is_not_fully_authenticated = !hasStatuses(['age_verification', 'authenticated']);
+
+                const is_fully_authed_but_poi_expired = hasStatuses(['authenticated', 'document_expired']);
+                const is_fully_authed_but_needs_fa =
+                    is_fully_authenticated && hasStatuses(['financial_assessment_not_complete']);
+                const is_fully_authed_and_does_not_need_fa =
+                    is_fully_authenticated && !hasStatuses(['financial_assessment_not_complete']);
+
+                const is_not_fully_authenticated_and_fa_not_completed =
+                    is_not_fully_authenticated && hasStatuses(['financial_assessment_not_complete']);
+
+                if (is_fully_authed_but_needs_fa) {
+                    // First priority: Send user to Financial Assessment if they have to submit it.
+                    this.setIsHighRiskFullyAuthedWithoutFa(true);
+                    this.setIsLoading(false);
+                    return;
+                } else if (
                     is_cashier_locked ||
                     is_not_fully_authenticated ||
-                    is_fully_authenticated_but_poi_expired ||
-                    is_fully_authenticated_but_needs_financial_assessment
+                    is_fully_authed_but_poi_expired ||
+                    is_not_fully_authenticated_and_fa_not_completed
                 ) {
+                    // Second priority: If user is blocked, don't bother asking them to submit FA.
                     this.setIsBlocked(true);
-                    return;
+                    this.setIsLoading(false);
+                } else if (is_fully_authed_and_does_not_need_fa) {
+                    this.setIsLoading(false);
                 }
+            } else if (error) {
+                this.setIsHighRiskFullyAuthedWithoutFa(false);
+                this.setIsBlocked(false);
+                this.setIsLoading(false);
             }
-
-            this.setIsBlocked(false);
 
             const { sendbird_store } = this.root_store;
 
@@ -254,7 +266,7 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     onNicknamePopupClose() {
-        this.setShowPopup(false);
+        this.setShouldShowPopup(false);
     }
 
     poiStatusText = status => {
@@ -298,6 +310,7 @@ export default class GeneralStore extends BaseStore {
         this.advertiser_id = advertiser_id;
     }
 
+    @action.bound
     setAppProps(props) {
         this.props = props;
     }
@@ -315,6 +328,11 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     setIsBlocked(is_blocked) {
         this.is_blocked = is_blocked;
+    }
+
+    @action.bound
+    setIsHighRiskFullyAuthedWithoutFa(is_high_risk_fully_authed_without_fa) {
+        this.is_high_risk_fully_authed_without_fa = is_high_risk_fully_authed_without_fa;
     }
 
     @action.bound
@@ -403,8 +421,8 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    setShowPopup(show_popup) {
-        this.show_popup = show_popup;
+    setShouldShowPopup(should_show_popup) {
+        this.should_show_popup = should_show_popup;
     }
 
     @action.bound
@@ -419,7 +437,7 @@ export default class GeneralStore extends BaseStore {
 
     @action.bound
     toggleNicknamePopup() {
-        this.setShowPopup(!this.show_popup);
+        this.setShouldShowPopup(!this.should_show_popup);
         this.resetNicknameErrorState();
     }
 
@@ -443,6 +461,8 @@ export default class GeneralStore extends BaseStore {
                 this.setIsAdvertiser(false);
             } else if (response.error.code === 'PermissionDenied') {
                 this.setIsBlocked(true);
+                this.setIsLoading(false);
+                return;
             }
         }
 

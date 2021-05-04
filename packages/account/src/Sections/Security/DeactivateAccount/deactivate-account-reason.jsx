@@ -193,7 +193,7 @@ class DeactivateAccountReason extends React.Component {
             const { code, message, details } = account_closure_response.error;
             const getModalToRender = () => {
                 if (code === 'AccountHasPendingConditions') {
-                    return 'action_required_modal';
+                    return 'AccountHasPendingConditions';
                 }
                 if (code === 'MT5AccountInaccessible') {
                     return 'inaccessible_modal';
@@ -450,7 +450,7 @@ class DeactivateAccountReason extends React.Component {
                     {this.state.which_modal_should_render === 'warning_modal' && (
                         <WarningModal closeModal={this.closeModal} startDeactivating={this.startDeactivating} />
                     )}
-                    {this.state.which_modal_should_render === 'action_required_modal' && (
+                    {this.state.which_modal_should_render === 'AccountHasPendingConditions' && (
                         <AccountHasPendingConditions
                             details={this.state.details}
                             mt5_login_list={this.props.mt5_login_list}

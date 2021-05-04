@@ -15,7 +15,7 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
-import SignupSeparatorContainer from './signup-separator/signup-separator-container.jsx';
+import SignupSeparatorContainer from './signup-separator-container.jsx';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import 'Sass/app/modules/account-signup.scss';
 
@@ -68,7 +68,6 @@ const AccountSignup = ({
     const [is_loading, setIsLoading] = React.useState(true);
     const [country, setCountry] = React.useState('');
     const [pw_input, setPWInput] = React.useState('');
-    const [has_valid_residence, setHasValidResidence] = React.useState(false);
     const [selected_residence, setSelectedResidence] = React.useState('');
     const [is_eu_resident, setIsEuResident] = React.useState(false);
 
@@ -76,8 +75,8 @@ const AccountSignup = ({
         setPWInput(new_password);
     };
 
-    const onResidenceSelection = () => {
-        setHasValidResidence(true);
+    const onResidenceSelection = values => {
+        setSelectedResidence(values);
     };
 
     // didMount lifecycle hook
@@ -91,18 +90,15 @@ const AccountSignup = ({
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     React.useEffect(() => {
-        if (has_valid_residence) {
-            const index_of_selection = residence_list.findIndex(
+        if (selected_residence) {
+            const selected_country = residence_list.find(
                 item => item.text.toLowerCase() === selected_residence.toLowerCase()
-            );
-            const selected_country = residence_list[index_of_selection].value;
+            ).value;
             if (isEuCountrySelected(selected_country)) {
                 setIsEuResident(true);
             } else {
                 setIsEuResident(false);
             }
-        } else {
-            setIsEuResident(false);
         }
     }, [selected_residence]);
 
@@ -156,7 +152,7 @@ const AccountSignup = ({
                         touched,
                     }) => (
                         <Form>
-                            {!has_valid_residence ? (
+                            {!selected_residence ? (
                                 <ResidenceForm
                                     header_text={localize('Thanks for verifying your email')}
                                     class_prefix='account-signup'
@@ -174,8 +170,8 @@ const AccountSignup = ({
                                         type='button'
                                         is_disabled={!values.residence || !!errors.residence}
                                         onClick={() => {
-                                            onResidenceSelection();
-                                            setSelectedResidence(values.residence);
+                                            onResidenceSelection(values.residence);
+                                            //setSelectedResidence(values.residence);
                                         }}
                                         primary
                                         text={localize('Next')}

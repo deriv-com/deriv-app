@@ -128,6 +128,15 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         @include desktop {
+            & .da-self-exclusion__wrapper {
+                width: calc(100vw - 33rem);
+            }
+            & .da-icon-with-message {
+                margin-top: 0rem;
+            }
+        }
+
+        @include desktop {
             grid-template-rows: 5.2rem calc(100vh - 4.8rem - 3.6rem - 5.2rem);
             overflow: hidden;
         }
@@ -781,6 +790,9 @@ $MIN_HEIGHT_FLOATING: calc(
 
             &__verify {
                 margin-left: 0.6rem;
+                &-button {
+                    margin-left: 0.8rem;
+                }
                 @include mobile {
                     margin-left: unset;
                 }
@@ -1100,15 +1112,22 @@ $MIN_HEIGHT_FLOATING: calc(
             flex-direction: column;
             width: 100%;
             height: auto;
-            @include desktop {
-                &--dashboard {
-                    width: calc(100vw - 33rem);
+            &-dashboard {
+                width: calc(100vw - 33rem);
+                @include mobile {
+                    width: 100%;
+                    button {
+                        width: 100%;
+                    }
                 }
             }
         }
         &-button {
             margin-top: 2.4rem;
             align-self: center;
+            @include mobile {
+                width: 100%;
+            }
         }
     }
 }

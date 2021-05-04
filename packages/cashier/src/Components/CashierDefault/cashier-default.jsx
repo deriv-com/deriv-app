@@ -13,6 +13,7 @@ const CashierDefault = ({
     currency,
     is_dark_mode_on,
     is_eu,
+    is_landing_company_loaded,
     is_mobile,
     is_p2p_enabled,
     is_payment_agent_visible,
@@ -89,7 +90,8 @@ const CashierDefault = ({
         return options;
     };
 
-    if (is_switching || accounts_list.length === 0) return <Loading className='cashier-default__loader' />;
+    if (is_switching || accounts_list.length === 0 || !is_landing_company_loaded)
+        return <Loading className='cashier-default__loader' />;
 
     return (
         <div className='cashier-default'>
@@ -129,6 +131,7 @@ CashierDefault.propTypes = {
     currency: PropTypes.string,
     is_dark_mode_on: PropTypes.bool,
     is_eu: PropTypes.bool,
+    is_landing_company_loaded: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_p2p_enabled: PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
@@ -145,6 +148,7 @@ export default connect(({ client, modules, ui }) => ({
     currency: client.currency,
     is_dark_mode_on: ui.is_dark_mode_on,
     is_eu: client.is_eu,
+    is_landing_company_loaded: client.is_landing_company_loaded,
     is_mobile: ui.is_mobile,
     is_p2p_enabled: modules.cashier.is_p2p_enabled,
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,

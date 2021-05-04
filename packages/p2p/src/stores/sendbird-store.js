@@ -177,6 +177,7 @@ export default class SendbirdStore extends BaseStore {
     }
 
     handleP2pAdvertiserInfo(response) {
+        if (response.error) return;
         if (this.service_token_timeout) {
             // Function keeps being called by subscription in GeneralStore (onMount). If we
             // already have a running timeout void this call.

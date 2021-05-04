@@ -1,3 +1,4 @@
+import { deriv_urls } from '../url/constants';
 import { website_name } from '../config/app-config';
 import { CookieStorage, isStorageSupported, LocalStore } from '../storage/storage';
 import { getAppId, domain_app_ids } from '../config/config';
@@ -27,16 +28,18 @@ export const loginUrl = ({ language }) => {
     const marketing_queries = `${signup_device ? `&signup_device=${signup_device}` : ''}${
         date_first_contact ? `&date_first_contact=${date_first_contact}` : ''
     }`;
-    const getOAuthUrl = domain => {
-        return `https://oauth.${domain}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
+    const getOAuthUrl = () => {
+        return `https://oauth.${
+            deriv_urls.DERIV_HOST_NAME
+        }/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
     };
 
     if (server_url && /qa/.test(server_url)) {
         return `https://${server_url}/oauth2/authorize?app_id=${getAppId()}&l=${language}${marketing_queries}&brand=${website_name.toLowerCase()}`;
     }
 
-    if (getAppId() === domain_app_ids['app.deriv.com'] && /^app\.deriv\.com$/.test(window.location.hostname)) {
-        return getOAuthUrl('deriv.com');
+    if (getAppId() === domain_app_ids[window.location.hostname]) {
+        return getOAuthUrl();
     }
-    return urlForCurrentDomain(getOAuthUrl('deriv.com'));
+    return urlForCurrentDomain(getOAuthUrl());
 };

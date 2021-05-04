@@ -87,6 +87,7 @@ const Cashier = ({
     //         location.pathname.startsWith(routes.cashier_withdrawal));
 
     const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: location.pathname }).default;
+
     if (!is_logged_in && is_logging_in) {
         return <Loading is_fullscreen />;
     }

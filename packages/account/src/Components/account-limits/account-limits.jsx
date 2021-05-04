@@ -248,7 +248,15 @@ const AccountLimits = ({
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {!is_fully_authenticated && (
+                                            {is_fully_authenticated ? (
+                                                <React.Fragment>
+                                                    <Text size='xxs' color='prominent'>
+                                                        {localize(
+                                                            'Your account is fully authenticated and your withdrawal limits have been lifted.'
+                                                        )}
+                                                    </Text>
+                                                </React.Fragment>
+                                            ) : (
                                                 <React.Fragment>
                                                     <tr>
                                                         <AccountLimitsTableCell>

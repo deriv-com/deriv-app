@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
-import { Button, Checkbox, Modal, Text } from '@deriv/components';
+import { Button, Checkbox, Modal, Text, useSafeState } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { localize } from '../i18next';
@@ -113,12 +113,13 @@ const FormWithoutConfirmation = observer(
         title,
         width,
     }) => {
-        const [should_disable_confirm, setShouldDisableConfirm] = React.useState(true);
-        const [api_error_message, setApiErrorMessage] = React.useState(null);
+        const [should_disable_confirm, setShouldDisableConfirm] = useSafeState(true);
+        const [api_error_message, setApiErrorMessage] = useSafeState(null);
         const { general_store } = useStores();
 
         React.useEffect(() => {
             setApiErrorMessage(null);
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [should_show_popup]);
 
         return (

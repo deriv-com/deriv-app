@@ -42,9 +42,9 @@
         &--absolute {
             background-color: var(--general-section-2);
             top: unset;
-            bottom: -0.4rem;
+            bottom: 0;
             left: 0;
-            position: absolute;
+            position: fixed;
             padding: 1.6rem;
             border-top: 2px solid var(--general-disabled);
             max-height: 70px;

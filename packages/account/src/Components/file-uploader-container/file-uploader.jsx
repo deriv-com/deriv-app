@@ -5,6 +5,8 @@ import DocumentUploader from '@binary-com/binary-document-uploader';
 import { FileDropzone, Icon, useStateCallback } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import {
+    isMobile,
+    PlatformContext,
     compressImageFiles,
     readFiles,
     getSupportedFiles,
@@ -12,15 +14,19 @@ import {
     supported_filetypes,
 } from '@deriv/shared';
 
-const UploadMessage = (
-    <React.Fragment>
-        <Icon icon='IcCloudUpload' className='dc-file-dropzone__message-icon' size={50} />
-        <div className='dc-file-dropzone__message-subtitle'>
-            {localize('Drop file (JPEG  JPG  PNG  PDF  GIF) or click here to upload')}
-        </div>
-    </React.Fragment>
-);
-
+const UploadMessage = () => {
+    const { is_dashboard } = React.useContext(PlatformContext);
+    return (
+        <React.Fragment>
+            <Icon icon='IcCloudUpload' className='dc-file-dropzone__message-icon' size={50} />
+            <div className='dc-file-dropzone__message-subtitle'>
+                {is_dashboard && isMobile()
+                    ? localize('Tap here to upload (JPEG  JPG  PNG  PDF  GIF)')
+                    : localize('Drop file (JPEG  JPG  PNG  PDF  GIF) or click here to upload')}
+            </div>
+        </React.Fragment>
+    );
+};
 const fileReadErrorMessage = filename => {
     return localize('Unable to read file {{name}}', { name: filename });
 };
@@ -94,7 +100,7 @@ const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
                 filename_limit={32}
                 hover_message={localize('Drop files here..')}
                 max_size={max_document_size}
-                message={UploadMessage}
+                message={<UploadMessage />}
                 multiple={false}
                 onDropAccepted={handleAcceptedFiles}
                 onDropRejected={handleRejectedFiles}

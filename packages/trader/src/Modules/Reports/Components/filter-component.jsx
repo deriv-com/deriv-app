@@ -1,13 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Dropdown, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
+import { FilterDropdown } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar/composite-calendar.jsx';
 
-const TransactionFilter = ({ action_type, handleFilterChange }) => {
-    const [default_filter, setDefaultFilter] = React.useState(action_type);
-
+const FilterComponent = ({
+    action_type,
+    date_from,
+    date_to,
+    handleFilterChange,
+    handleDateChange,
+    filtered_date_range,
+}) => {
     const filter_list = [
         {
             text: localize('All transactions'),
@@ -37,55 +42,18 @@ const TransactionFilter = ({ action_type, handleFilterChange }) => {
 
     return (
         <React.Fragment>
-            <DesktopWrapper>
-                <Dropdown
-                    list={filter_list}
-                    value={default_filter}
-                    name='transaction-filter-dropdown'
-                    className='dropdown-statement-filter'
-                    classNameDisplay='dc-dropdown__display--has-suffix-icon'
-                    has_symbol={false}
-                    suffix_icon={'IcFilter'}
-                    onChange={e => {
-                        setDefaultFilter(e.target.value);
-                        handleFilterChange(e.target.value);
-                    }}
-                />
-            </DesktopWrapper>
-            <MobileWrapper>
-                <SelectNative
-                    list_items={filter_list}
-                    value={default_filter}
-                    hide_selected_value={true}
-                    suffix_icon={'IcFilter'}
-                    should_show_empty_option={false}
-                    onChange={e => {
-                        setDefaultFilter(e.target.value);
-                        handleFilterChange(e.target.value);
-                    }}
-                />
-            </MobileWrapper>
-        </React.Fragment>
-    );
-};
-
-const FilterComponent = ({
-    action_type,
-    date_from,
-    date_to,
-    handleFilterChange,
-    handleDateChange,
-    filtered_date_range,
-}) => {
-    return (
-        <React.Fragment>
             <CompositeCalendar
                 input_date_range={filtered_date_range}
                 onChange={handleDateChange}
                 from={date_from}
                 to={date_to}
             />
-            <TransactionFilter action_type={action_type} handleFilterChange={handleFilterChange} />
+            <FilterDropdown
+                dropdown_display_className='dc-dropdown__display--has-suffix-icon'
+                filter_list={filter_list}
+                handleFilterChange={handleFilterChange}
+                initial_selected_filter={action_type}
+            />
         </React.Fragment>
     );
 };

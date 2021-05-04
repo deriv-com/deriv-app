@@ -1,0 +1,136 @@
+.da-api-token {
+    max-height: 100%;
+    width: 100%;
+
+    @include tablet-up {
+        &--app-settings {
+            padding: 2.4rem;
+        }
+    }
+
+    & .dc-timeline__container {
+        width: 100%;
+    }
+    & .dc-table__cell {
+        padding: 1.8rem 0;
+    }
+    & .dc-popover__target {
+        display: flex;
+    }
+    & .dc-dialog__content {
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+    }
+    &__wrapper {
+        display: flex;
+        width: 100%;
+        height: 100%;
+
+        @include mobile {
+            flex-direction: column;
+        }
+    }
+    &__input-group {
+        display: flex;
+        margin-top: 2.7rem;
+    }
+    &__input {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-right: 0;
+    }
+    &__button {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        margin-left: -1px;
+    }
+    &__checkbox-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        grid-gap: 1.6rem;
+
+        @include mobile {
+            grid-template-columns: 1fr;
+        }
+    }
+    &__clipboard {
+        &-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        margin-left: 0.8rem;
+    }
+    &__table {
+        width: 100%;
+
+        &-header {
+            &-row {
+                border-bottom: 2px solid var(--general-section-1);
+            }
+
+            padding: 2.4rem 0;
+            text-align: left;
+        }
+        &-cell {
+            &-row {
+                border-bottom: 1px solid var(--general-section-1);
+            }
+
+            padding: 2.4rem 0;
+
+            &--name {
+                > .dc-text {
+                    word-break: break-all;
+                }
+            }
+        }
+    }
+    &__timeline {
+        padding: 0 1.4rem 1.6rem;
+
+        @include mobile {
+            margin-left: 1.2rem;
+
+            & .dc-timeline {
+                &__flex {
+                    margin-top: 2.4rem;
+                }
+            }
+        }
+    }
+    &__portal-footer {
+        padding: 0 2.4rem;
+    }
+    &__scope {
+        background-color: var(--general-section-1);
+        padding: 0.8rem;
+        margin-bottom: 1.6rem;
+
+        &-item {
+            margin-bottom: 0.8rem;
+            display: grid;
+            grid-template-columns: 1.6fr 0.4fr;
+
+            &--name {
+                word-break: break-all;
+            }
+
+            > div {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+    &__scrollbars {
+        height: 100%;
+        width: 100%;
+    }
+}

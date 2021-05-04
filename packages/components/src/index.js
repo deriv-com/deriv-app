@@ -11,6 +11,7 @@
 
 export { default as Accordion } from './components/accordion';
 export { default as AppCard } from './components/app-card';
+export { default as AppSettings } from './components/app-settings';
 export { default as AutoHeightWrapper } from './components/auto-height-wrapper';
 export { default as Autocomplete } from './components/autocomplete';
 export { default as AutoSizer } from './components/autosizer';
@@ -43,6 +44,7 @@ export { default as ExpansionPanel } from './components/expansion-panel';
 export { default as FadeWrapper } from './components/fade-wrapper';
 export { default as Field } from './components/field';
 export { default as FileDropzone } from './components/file-dropzone';
+export { default as FilterDropdown } from './components/filter-dropdown';
 export { default as FormProgress } from './components/form-progress';
 export { default as FormSubmitButton } from './components/form-submit-button';
 export { default as FormSubmitErrorMessage } from './components/form-submit-error-message';

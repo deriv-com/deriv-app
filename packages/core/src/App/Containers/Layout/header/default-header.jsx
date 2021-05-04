@@ -13,6 +13,7 @@ import { connect } from 'Stores/connect';
 import { clientNotifications } from 'Stores/Helpers/client-notifications';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
+import TempAppSettings from 'App/Containers/Layout/temp-app-settings.jsx';
 
 const DefaultHeader = ({
     acc_switcher_disabled_message,
@@ -47,6 +48,7 @@ const DefaultHeader = ({
     needs_financial_assessment,
     notifications_count,
     openRealAccountSignup,
+    is_options_blocked,
     removeNotificationMessage,
     setDarkMode,
     toggleAccountsDialog,
@@ -70,7 +72,7 @@ const DefaultHeader = ({
             if (config.link_to === routes.mt5) {
                 return !is_logged_in || is_mt5_allowed;
             }
-            if (is_mf && config.href === routes.smarttrader) {
+            if ((is_mf || is_options_blocked) && config.href === routes.smarttrader) {
                 return false;
             }
             return true;
@@ -163,6 +165,7 @@ const DefaultHeader = ({
             <RealAccountSignup />
             <SetAccountCurrencyModal />
             <NewVersionNotification onUpdate={addUpdateNotification} />
+            <TempAppSettings />
         </header>
     );
 };
@@ -234,6 +237,7 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     needs_financial_assessment: client.needs_financial_assessment,
     notifications_count: ui.filtered_notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
+    is_options_blocked: client.is_options_blocked,
     removeNotificationMessage: ui.removeNotificationMessage,
     setDarkMode: ui.setDarkMode,
     toggleAccountsDialog: ui.toggleAccountsDialog,

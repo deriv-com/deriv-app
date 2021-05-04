@@ -1,4 +1,5 @@
 import React from 'react';
+import { PlatformContext } from '@deriv/shared';
 import { ButtonLink, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
@@ -12,6 +13,7 @@ const GoToPersonalDetailsButton = ({ anchor, from, text }) => (
 );
 
 export const MissingPersonalDetails = ({ has_invalid_postal_code, from }) => {
+    const { is_dashboard } = React.useContext(PlatformContext);
     if (has_invalid_postal_code)
         return (
             <IconMessageContent
@@ -30,7 +32,9 @@ export const MissingPersonalDetails = ({ has_invalid_postal_code, from }) => {
         <IconMessageContent
             message={localize('Your personal details are missing')}
             text={localize('Please complete your personal details before you verify your identity.')}
-            icon={<Icon icon='IcAccountMissingDetails' size={128} />}
+            icon={
+                <Icon icon={is_dashboard ? 'IcAccountMissingDetailsDashboard' : 'IcAccountMissingDetails'} size={128} />
+            }
         >
             <GoToPersonalDetailsButton />
         </IconMessageContent>

@@ -314,6 +314,14 @@ export const hasAllRequiredBlocks = workspace => {
     return has_all_required_blocks;
 };
 
+export const isAllRequiredBlocksEnabled = workspace => {
+    const disabled_blocks = workspace.getAllBlocks().filter(block => block.disabled);
+    const { mandatoryMainBlocks } = config;
+    const required_block_types = ['trade_definition_tradeoptions', ...mandatoryMainBlocks];
+    const disabled_block_types = disabled_blocks.map(block => block.type);
+    return !disabled_block_types.some(block => required_block_types.includes(block));
+};
+
 export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chronological) => {
     const ws_metrics = workspace.getMetrics();
 

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import * as React from 'react';
 import classNames from 'classnames';
 import Div100vhContainer from '../div100vh-container';
 import FadeWrapper from '../fade-wrapper';
@@ -15,19 +15,22 @@ const MobileFullPageModal = ({
     header_backgound_color,
     height_offset = '0px',
     is_flex,
+    is_popup,
     is_modal_open,
     onClickClose,
-    page_footer_children,
+    renderPageFooterChildren,
     page_footer_className,
     page_footer_parent,
     page_footer_parent_className,
     page_header_className,
     page_header_text,
-    page_header_trailing_icon,
+    renderPageHeaderTrailingIcon,
     pageHeaderReturnFn,
+    renderPageHeader,
     renderPageHeaderText,
     // opt-in for backward compatibility.
     children,
+    container_children,
 }) => (
     <FadeWrapper
         is_visible={is_modal_open}
@@ -38,14 +41,15 @@ const MobileFullPageModal = ({
             <Div100vhContainer
                 className={classNames('dc-mobile-full-page-modal', {
                     'dc-mobile-full-page-modal--flex': is_flex,
+                    'dc-mobile-full-page-modal--popup': is_popup,
                 })}
                 height_offset={height_offset}
             >
-                {(page_header_text || renderPageHeaderText) && (
+                {(renderPageHeader || page_header_text || renderPageHeaderText) && (
                     <div
                         className={classNames('dc-mobile-full-page-modal__header', {
                             'dc-mobile-full-page-modal__header--border-bottom': !should_header_stick_body,
-                            page_header_className,
+                            [page_header_className]: !!page_header_className,
                         })}
                         style={{
                             background: header_backgound_color,
@@ -56,6 +60,7 @@ const MobileFullPageModal = ({
                                 <Icon icon='IcArrowLeftBold' onClick={pageHeaderReturnFn} size={16} />
                             </div>
                         )}
+                        {renderPageHeader && renderPageHeader()}
                         <div className='dc-mobile-full-page-modal__header-text'>
                             {renderPageHeaderText ? (
                                 renderPageHeaderText()
@@ -65,15 +70,15 @@ const MobileFullPageModal = ({
                                 </Text>
                             )}
                         </div>
-                        {page_header_trailing_icon && (
+                        {renderPageHeaderTrailingIcon && (
                             <div className='dc-mobile-full-page-modal__header-trailing-icon'>
-                                {page_header_trailing_icon}
+                                {renderPageHeaderTrailingIcon()}
                             </div>
                         )}
                     </div>
                 )}
                 <div className={classNames('dc-mobile-full-page-modal__body', body_className)}>{children}</div>
-                {page_footer_children && (
+                {renderPageFooterChildren && (
                     <React.Fragment>
                         {page_footer_parent && (
                             <div
@@ -86,10 +91,11 @@ const MobileFullPageModal = ({
                             </div>
                         )}
                         <div className={classNames('dc-mobile-full-page-modal__footer', page_footer_className)}>
-                            {page_footer_children}
+                            {renderPageFooterChildren()}
                         </div>
                     </React.Fragment>
                 )}
+                {container_children}
             </Div100vhContainer>
         </PageOverlay>
     </FadeWrapper>
@@ -97,20 +103,22 @@ const MobileFullPageModal = ({
 
 MobileFullPageModal.propTypes = {
     className: PropTypes.string,
-    should_header_stick_body: PropTypes.bool,
+    container_children: PropTypes.any,
     header: PropTypes.string,
     header_backgound_color: PropTypes.string,
     height_offset: PropTypes.string,
     is_flex: PropTypes.bool,
     is_modal_open: PropTypes.bool,
     onClickClose: PropTypes.func,
-    page_footer_children: PropTypes.any,
+    pageHeaderReturnFn: PropTypes.func,
+    renderPageFooterChildren: PropTypes.func,
     page_footer_className: PropTypes.string,
     page_header_className: PropTypes.string,
     page_header_text: PropTypes.string,
-    page_header_trailing_icon: PropTypes.any,
-    pageHeaderReturnFn: PropTypes.func,
+    renderPageHeaderTrailingIcon: PropTypes.func,
     renderPageHeaderText: PropTypes.func,
+    should_header_stick_body: PropTypes.bool,
+    should_wrap_body: PropTypes.bool,
 };
 
 export default MobileFullPageModal;

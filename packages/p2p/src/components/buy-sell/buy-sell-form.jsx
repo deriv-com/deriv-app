@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
@@ -30,9 +29,9 @@ BuySellFormReceiveAmount.propTypes = {
     local_currency: PropTypes.string.isRequired,
 };
 
-const BuySellForm = observer(props => {
+const BuySellForm = props => {
     const isMounted = useIsMounted();
-    const { buy_sell_store } = useStores();
+    const { advertiser_page_store, buy_sell_store } = useStores();
 
     buy_sell_store.setFormProps(props);
 
@@ -64,6 +63,7 @@ const BuySellForm = observer(props => {
                 }
             );
 
+            advertiser_page_store.setFormErrorMessage('');
             buy_sell_store.setInitialReceiveAmount();
 
             if (buy_sell_store.is_sell_advert) {
@@ -138,18 +138,18 @@ const BuySellForm = observer(props => {
                                                 <Localize i18n_default_text="Buyer's instructions" />
                                             )}
                                         </Text>
-                                        {description.split('\n').map((text, idx) => (
-                                            <Text key={idx} as='p' color='general' line_height='m' size='xs'>
-                                                {text || '-'}
-                                            </Text>
-                                        ))}
+                                        {description
+                                            .trim()
+                                            .replace(/([\r\n]){2,}/g, '\n\n')
+                                            .split('\n')
+                                            .map((text, idx) => (
+                                                <Text key={idx} as='p' color='general' line_height='m' size='xs'>
+                                                    {text || '-'}
+                                                </Text>
+                                            ))}
                                     </div>
                                 </div>
-                                <div
-                                    className={classNames('buy-sell__modal-field-wrapper', {
-                                        'buy-sell__modal-field-wrapper--no-flex': isMobile(),
-                                    })}
-                                >
+                                <div className='buy-sell__modal-field-wrapper'>
                                     <Field name='amount'>
                                         {({ field }) => (
                                             <Input
@@ -157,7 +157,11 @@ const BuySellForm = observer(props => {
                                                 data-lpignore='true'
                                                 type='number'
                                                 error={errors.amount}
-                                                label={localize('Amount')}
+                                                label={
+                                                    buy_sell_store.is_buy_advert
+                                                        ? localize('Buy amount')
+                                                        : localize('Sell amount')
+                                                }
                                                 hint={
                                                     <Localize
                                                         i18n_default_text='Limits: {{min}}–{{max}} {{currency}}'
@@ -256,7 +260,7 @@ const BuySellForm = observer(props => {
             }}
         </Formik>
     );
-});
+};
 
 BuySellForm.propTypes = {
     advert: PropTypes.object,
@@ -277,4 +281,4 @@ BuySellForm.propTypes = {
     validatePopup: PropTypes.func,
 };
 
-export default BuySellForm;
+export default observer(BuySellForm);

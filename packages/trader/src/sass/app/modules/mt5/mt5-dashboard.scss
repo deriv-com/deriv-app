@@ -240,6 +240,12 @@
     height: 100%;
     position: relative;
 
+    &__table {
+        @include mobile {
+            overflow-x: auto;
+        }
+    }
+
     &__table-row {
         grid-template-columns: var(--mt5-compare-accounts-template-columns);
         box-shadow: inset 0 -1px 0 0 var(--general-section-1);
@@ -272,17 +278,20 @@
             line-height: 1.5;
         }
     }
+    &__footnote {
+        &-title {
+            padding-bottom: 0.8rem;
+        }
+    }
 
     .dc-table {
         padding: 0 30px;
-        @include desktop {
-            position: absolute;
-            height: 100%;
-        }
 
         &__header {
             border-bottom: none;
             height: 50px;
+            position: sticky;
+            top: 0;
         }
         &__cell,
         &__head {
@@ -318,7 +327,7 @@
         }
     }
     @include mobile {
-        background: var(--general-section-1);
+        background: var(--general-main-1);
         height: 100%;
         font-size: 1.2rem;
 
@@ -335,7 +344,7 @@
             &__head {
                 font-size: 1.2rem;
                 border-bottom: 2px solid var(--border-disabled);
-                background-color: var(--general-section-2);
+                background-color: var(--general-main-1);
                 margin-top: -1px;
             }
             &__header,
@@ -357,10 +366,6 @@
     @include mobile {
         padding: 1.6rem;
         border-top: 2px solid var(--border-disabled);
-    }
-    @include desktop {
-        position: absolute;
-        bottom: 0;
     }
 }
 
@@ -410,7 +415,7 @@
     grid-auto-flow: column;
     grid-gap: 2.4rem;
     justify-content: center;
-    margin-top: 2.4em;
+    padding-top: 2.4em;
     height: 100%;
 
     @include mobile {
@@ -431,55 +436,16 @@
 .mt5-real-accounts-display {
     transition: margin-bottom 0.3s ease-in-out;
     margin-bottom: var(--mt5-real-acc-margin-bottom);
-    &__carousel {
-        margin-bottom: -4rem;
 
-        &--logged {
-            margin-bottom: calc(-4rem - 2.4rem);
-        }
+    .dc-carousel__card,
+    .dc-carousel__wrapper {
+        padding: 0;
     }
-    &__add-trading-server {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        cursor: pointer;
-        transition: all 0.3s ease-in-out;
-        height: 4rem;
-        position: relative;
-        margin-top: -4rem;
-        margin-left: 2rem;
 
-        &-text {
-            margin-left: 1rem;
-        }
-        &-icon {
-            color: var(--status-colored-background);
-            background-color: var(--brand-red-coral);
-            border-radius: 50%;
-            width: 2.4rem;
-            height: 2.4rem;
-            font-size: 1.8rem;
-            display: block;
-            text-align: center;
-            padding: 0.2rem;
-        }
-        &-exit,
-        &-enter-done {
-            transition: all 0.3s ease-in-out;
-            opacity: 1;
-        }
-        &-enter,
-        &-exit-done {
-            transition: all 0.3s ease-in-out;
-            opacity: 0;
-        }
-        &-wrapper {
-            @include mobile {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-top: 2rem;
+    &--has-trade-servers {
+        .mt5-account-card__wrapper {
+            @include desktop {
+                grid-template-rows: 1fr 4rem;
             }
         }
     }
@@ -499,7 +465,7 @@
 
     &__wrapper {
         display: grid;
-        grid-template-rows: 1fr 4rem;
+        grid-template-rows: 1fr;
         height: 100%;
         justify-content: center;
 
@@ -510,10 +476,6 @@
         }
         @include desktop {
             height: 100%;
-        }
-
-        &:not(:last-child) {
-            margin-right: 2.4rem;
         }
     }
 

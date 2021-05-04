@@ -29,7 +29,10 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
         return <Localize i18n_default_text='Set a currency for your real account' />;
     }
 
-    if (real_account_signup_target === 'malta' && is_belgium_residence) {
+    if (
+        (real_account_signup_target === 'malta' && is_belgium_residence) ||
+        real_account_signup_target === 'deposit_cash'
+    ) {
         return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
     }
 
@@ -40,7 +43,7 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
     switch (real_account_signup_target) {
         case 'malta':
         case 'iom':
-            return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
+            return <Localize i18n_default_text='Add a Deriv Synthetic Indices account' />;
         case 'maltainvest':
             return <Localize i18n_default_text='Add a Deriv Financial account' />;
         case 'samoa':

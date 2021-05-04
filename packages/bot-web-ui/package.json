@@ -64,7 +64,7 @@
   "dependencies": {
     "@deriv/bot-skeleton": "^1.0.0",
     "@deriv/components": "^1.0.0",
-    "@deriv/deriv-charts": "0.3.15",
+    "@deriv/deriv-charts": "0.3.16",
     "@deriv/shared": "^1.0.0",
     "@deriv/translations": "^1.0.0",
     "classnames": "^2.2.6",

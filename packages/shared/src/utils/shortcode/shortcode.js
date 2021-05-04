@@ -6,7 +6,7 @@ const base_pattern =
 const multipliers_regex = new RegExp(`${base_pattern}_(\\d+)_(\\d+)`);
 
 // category_underlying_amount_starttime_endtime_barrier
-const options_regex = new RegExp(`${base_pattern}_(\\d+)_([A-Z\\d]+)_?([A-Z\\d]+)?`);
+const options_regex = new RegExp(`${base_pattern}_([A-Z\\d]+)_([A-Z\\d]+)_?([A-Z\\d]+)?`);
 
 export const extractInfoFromShortcode = shortcode => {
     const info_from_shortcode = {

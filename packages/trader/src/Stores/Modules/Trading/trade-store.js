@@ -253,10 +253,6 @@ export default class TradeStore extends BaseStore {
         if (!!should_skip !== !!this.should_skip_prepost_lifecycle) {
             // to skip assignment if no change is made
             this.should_skip_prepost_lifecycle = should_skip;
-
-            if (!should_skip) {
-                this.onUnmount();
-            }
         }
     }
 

@@ -62,7 +62,7 @@ const DMT5Synthetic: React.FC = () => {
             />
             <Description
                 description={localize(
-                    'Trade synthetic indices with leverage on MT5. Our synthetic indices are based on a cryptographically secure random number generator audited for fairness by an independent third party. These indices are engineered to simulate real-world market movement and are unaffected by natural events and disruptions. Synthetic indices are available 24/7, have constant volatility, fixed generation intervals, and are free of market and liquidity risks.'
+                    'Trade synthetic indices with leverage on MT5. Our synthetic indices are based on a cryptographically secure random number generator audited for fairness by an independent third party. These indices are engineered to simulate real-world market movement and are unaffected by natural events and disruptions. Synthetic indices are available 24/7, have constant volatility, fixed generation intervals, and are free of market liquidity risks.'
                 )}
                 advantages={[
                     {

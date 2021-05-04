@@ -1,12 +1,21 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
+import { PlatformContext } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import DemoMessage from 'Components/demo-message';
 import ProofOfAddressContainer from './proof-of-address-container.jsx';
 
 const ProofOfAddress = ({ is_virtual, is_mx_mlt, refreshNotifications }) => {
-    if (is_virtual) return <DemoMessage />;
+    const { is_dashboard } = React.useContext(PlatformContext);
+    if (is_virtual) return <DemoMessage full_width={is_dashboard} />;
 
     return <ProofOfAddressContainer is_mx_mlt={is_mx_mlt} refreshNotifications={refreshNotifications} />;
+};
+
+ProofOfAddress.propTypes = {
+    is_mx_mlt: PropTypes.bool,
+    is_virtual: PropTypes.bool,
+    refreshNotifications: PropTypes.func,
 };
 
 export default connect(({ client }) => ({

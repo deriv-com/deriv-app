@@ -243,6 +243,7 @@ const MT5PersonalDetailsForm = ({
                                                     use_text={true}
                                                     onChange={e => setFieldValue('citizen', e.target.value, true)}
                                                     required
+                                                    should_hide_disabled_options={false}
                                                 />
                                             </MobileWrapper>
                                         </fieldset>

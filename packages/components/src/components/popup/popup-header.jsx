@@ -1,100 +1,107 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import { isDesktop, isMobile } from '@deriv/shared';
+import PopupContext from './popup-context';
 import Button from '../button';
-import DesktopWrapper from '../desktop-wrapper';
 import Icon from '../icon';
-import MobileWrapper from '../mobile-wrapper';
 import Text from '../text';
+import Money from '../money';
 
-const Header = ({
-    balance,
-    banner_text,
-    button_text,
-    close_icon_color,
-    header_icon,
-    onButtonClick,
-    text_color,
-    title,
-    togglePopupModal,
-}) => {
+const PopupHeader = () => {
+    const {
+        balance,
+        close_icon_color,
+        currency,
+        header_big_text,
+        header_banner_text,
+        header_button_text,
+        header_content_color,
+        header_icon,
+        onHeaderButtonClick,
+        title,
+        togglePopupModal,
+    } = React.useContext(PopupContext);
+
     return (
-        <React.Fragment>
-            <DesktopWrapper>
-                <div className='dc-popup-header'>
-                    <Text size='s' as='p' styles={{ color: text_color }}>
-                        {title}
-                    </Text>
-                    <div className='dc-popup-header__content'>
-                        <Text size='m' weight='bold' styles={{ color: text_color }}>
-                            {balance}
-                        </Text>
-                        {button_text && (
-                            <Button
-                                rounded
-                                primary
-                                className='dc-popup-header__button'
-                                icon={<Icon icon='IcPlay' size={10} color='active' />}
-                                text={button_text}
-                                onClick={onButtonClick}
-                            />
-                        )}
-                        {header_icon && <Icon icon={header_icon} size={120} className='dc-popup-header__icon' />}
-                    </div>
-                    {banner_text && (
-                        <div className='dc-popup-header__banner'>
-                            <Text size='xxxs' weight='bold' color='--text-prominent'>
-                                {banner_text}
+        <div className='dc-popup__header'>
+            <div className='dc-popup__header-content'>
+                <div className='dc-popup__header-container'>
+                    <div className='dc-popup__header-container-left'>
+                        <div className='dc-popup__header-title-container'>
+                            <div className='dc-popup__header-title'>
+                                <Text
+                                    size='s'
+                                    styles={{ color: header_content_color, display: 'flex', alignItems: 'center' }}
+                                >
+                                    {title}
+                                </Text>
+                            </div>
+                            {header_banner_text && isMobile() && (
+                                <div className='dc-popup__header-banner'>
+                                    <Text size='xxxxs' line_height='m' color='prominent'>
+                                        {header_banner_text}
+                                    </Text>
+                                </div>
+                            )}
+                        </div>
+                        <div className='dc-popup__header-balance'>
+                            <Text size='m' weight='bold' styles={{ color: header_content_color }}>
+                                <Money amount={balance} currency={currency} show_currency />
                             </Text>
+                            {header_button_text && (
+                                <Button
+                                    primary
+                                    is_circle={isMobile()}
+                                    is_circular={isDesktop()}
+                                    className='dc-popup__header-button'
+                                    icon={<Icon icon='IcPlay' size={10} color='active' />}
+                                    onClick={onHeaderButtonClick}
+                                    text={isDesktop() && header_button_text}
+                                />
+                            )}
+                        </div>
+                    </div>
+                    {header_icon && (
+                        <div className='dc-popup__header-container-right'>
+                            <Icon icon={header_icon} size={40} className='dc-popup__header-icon' />
                         </div>
                     )}
                 </div>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <div className='dc-popup-header'>
-                    <div className='dc-popup-header__title'>
-                        <Text size='xs' styles={{ color: text_color, display: 'flex', alignItems: 'center' }}>
-                            {title}
-                            {banner_text && (
-                                <div className='dc-popup-header__banner'>
-                                    <Text size='xxxxs'>{banner_text}</Text>
-                                </div>
-                            )}
-                            {header_icon && <Icon icon={header_icon} size={90} className='dc-popup-header__icon' />}
-                        </Text>
-                        <div onClick={togglePopupModal} className='dc-popup-header__close-icon'>
-                            <Icon icon='IcCross' color={close_icon_color} />
+                {header_banner_text && isDesktop() && (
+                    <div className='dc-popup__header-container'>
+                        <div className='dc-popup__header-banner'>
+                            <Text size='xxxs' line_height='s' weight='bold' color='prominent'>
+                                {header_banner_text}
+                            </Text>
                         </div>
                     </div>
-                    <div className='dc-popup-header__content'>
-                        <Text size='xsm' weight='bold' styles={{ color: text_color }}>
-                            {balance}
-                        </Text>
-                        {button_text && (
-                            <Button
-                                primary
-                                is_circle
-                                className='dc-popup-header__button'
-                                icon={<Icon icon='IcPlay' size={10} color='active' />}
-                                onClick={onButtonClick}
-                            />
-                        )}
+                )}
+                {header_big_text && (
+                    <div className='dc-popup__header-container'>
+                        <div className='dc-popup__header-container-left'>
+                            <Text
+                                as='h3'
+                                className='dc-popup__header-big-text'
+                                color='prominent'
+                                size='l'
+                                line_height='xs'
+                                weight='bold'
+                            >
+                                {header_big_text}
+                            </Text>
+                        </div>
                     </div>
-                </div>
-            </MobileWrapper>
-        </React.Fragment>
+                )}
+            </div>
+            <div className='dc-popup__header-close'>
+                <Icon
+                    icon='IcCross'
+                    className='dc-popup__header-close-icon'
+                    color={close_icon_color}
+                    onClick={togglePopupModal}
+                />
+            </div>
+        </div>
     );
 };
 
-Header.propTypes = {
-    balance: PropTypes.string,
-    banner_text: PropTypes.string,
-    button_text: PropTypes.string,
-    close_icon_color: PropTypes.string,
-    header_icon: PropTypes.string,
-    onButtonClick: PropTypes.func,
-    text_color: PropTypes.string,
-    title: PropTypes.string,
-    togglePopupModal: PropTypes.func,
-};
-
-export default Header;
+export default PopupHeader;

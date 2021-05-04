@@ -1,18 +1,24 @@
-import React from 'react';
+import * as React from 'react';
+import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
-import Body from './popup-body.jsx';
-import Header from './popup-header.jsx';
-import DesktopWrapper from '../desktop-wrapper';
+import { isMobile } from '@deriv/shared';
+import PopupBody from './popup-body.jsx';
+import PopupContext from './popup-context';
+import PopupHeader from './popup-header.jsx';
+import PopupOverlay from './popup-overlay.jsx';
+import PopupOverlayContainer from './popup-overlay-container.jsx';
 import MobileFullPageModal from '../mobile-full-page-modal';
-import MobileWrapper from '../mobile-wrapper';
 import Modal from '../modal';
 
 const Popup = ({
+    Component,
     active_tab_icon_color,
     balance,
     close_icon_color,
+    currency,
     header_backgound_color,
     header_banner_text,
+    header_big_text,
     header_button_text,
     header_contents_color,
     header_icon,
@@ -23,76 +29,91 @@ const Popup = ({
     title,
     togglePopupModal,
 }) => {
-    const header = () => {
-        return (
-            <Header
-                balance={balance}
-                banner_text={header_banner_text}
-                button_text={header_button_text}
-                close_icon_color={close_icon_color}
-                header_icon={header_icon}
-                onButtonClick={onHeaderButtonClick}
-                title={title}
-                text_color={header_contents_color}
-                togglePopupModal={togglePopupModal}
-            />
-        );
+    const [overlay_ref, setOverlayRef] = React.useState(null);
+    const [is_overlay_shown, setIsOverlayShown] = React.useState(false);
+    const context_value = {
+        Component,
+        active_tab_icon_color,
+        balance,
+        close_icon_color,
+        currency,
+        header_backgound_color,
+        header_banner_text,
+        header_big_text,
+        header_button_text,
+        header_contents_color,
+        header_icon,
+        is_overlay_shown,
+        onHeaderButtonClick,
+        overlay_ref,
+        setIsOverlayShown,
+        tab_icon_color,
+        tabs_detail,
+        title,
+        togglePopupModal,
     };
 
+    if (isMobile()) {
+        return createPortal(
+            <PopupContext.Provider value={context_value}>
+                <div className='dc-popup'>
+                    <MobileFullPageModal
+                        container_children={<PopupOverlayContainer refSetter={ref => setOverlayRef(ref)} />}
+                        header_backgound_color={header_backgound_color}
+                        height_offset='39px'
+                        is_flex
+                        is_popup
+                        is_modal_open={should_show_popup}
+                        onClickClose={togglePopupModal}
+                        page_header_className='dc-popup__mobile-full-page-modal-header'
+                        page_overlay
+                        renderPageHeader={PopupHeader}
+                        should_header_stick_body
+                    >
+                        <Modal.Body className='dc-popup__body'>
+                            <PopupBody />
+                        </Modal.Body>
+                    </MobileFullPageModal>
+                </div>
+            </PopupContext.Provider>,
+            document.getElementById('popup_root')
+        );
+    }
+
     return (
-        <>
-            <MobileWrapper>
-                <MobileFullPageModal
-                    is_modal_open={should_show_popup}
-                    renderPageHeaderText={() => header()}
-                    onClickClose={togglePopupModal}
-                    height_offset='80px'
-                    page_overlay
-                    header_backgound_color={header_backgound_color}
-                    should_header_stick_body
-                >
-                    <Modal.Body className='dc-popup-body'>
-                        <Body
-                            active_tab_icon_color={active_tab_icon_color}
-                            background_color={header_backgound_color}
-                            tab_icon_color={tab_icon_color}
-                            tabs_detail={tabs_detail}
-                        />
-                    </Modal.Body>
-                </MobileFullPageModal>
-            </MobileWrapper>
-            <DesktopWrapper>
+        <PopupContext.Provider value={context_value}>
+            <div className='dc-popup'>
                 <Modal
                     className='popup'
-                    close_icon_color={close_icon_color}
-                    should_header_stick_body
+                    has_close_icon={false}
+                    header={<PopupHeader />}
                     header_backgound_color={header_backgound_color}
+                    header_icon={close_icon_color}
                     height='636px'
                     is_open={should_show_popup}
-                    renderTitle={() => header()}
+                    should_header_stick_body
                     toggleModal={togglePopupModal}
                     width='776px'
                 >
-                    <Modal.Body className='dc-popup-body'>
-                        <Body
-                            active_tab_icon_color={active_tab_icon_color}
-                            background_color={header_backgound_color}
-                            tab_icon_color={tab_icon_color}
-                            tabs_detail={tabs_detail}
-                        />
+                    <Modal.Body className='dc-popup__body'>
+                        <PopupBody />
                     </Modal.Body>
+                    <PopupOverlayContainer refSetter={ref => setOverlayRef(ref)} />
                 </Modal>
-            </DesktopWrapper>
-        </>
+            </div>
+        </PopupContext.Provider>
     );
 };
 
+Popup.Overlay = PopupOverlay;
+
 Popup.propTypes = {
     active_tab_icon_color: PropTypes.string,
-    balance: PropTypes.string,
+    balance: PropTypes.number,
     close_icon_color: PropTypes.string,
     header_backgound_color: PropTypes.string,
     header_banner_text: PropTypes.string,
+    header_big_text: PropTypes.string,
     header_button_text: PropTypes.string,
     header_contents_color: PropTypes.string,
     header_icon: PropTypes.string,
@@ -108,7 +129,7 @@ Popup.propTypes = {
             id: PropTypes.number,
             title: PropTypes.string,
         })
-    ).isRequired,
+    ),
     title: PropTypes.string,
     togglePopupModal: PropTypes.func,
 };

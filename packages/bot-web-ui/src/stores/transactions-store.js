@@ -163,8 +163,12 @@ export default class TransactionsStore {
     recoverPendingContracts() {
         const reported_transactions = [];
 
+        const { contract } = this.root_store.summary_card;
+
         this.transactions.forEach(({ data: trx }) => {
             if (trx.is_completed) return;
+
+            if (trx.contract_id === contract?.contract_id) return;
 
             const { ws } = this.root_store;
 

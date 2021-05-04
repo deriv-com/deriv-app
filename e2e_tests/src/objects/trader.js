@@ -1,5 +1,5 @@
 const assert = require('assert').strict;
-const {waitForWSSubset} = require('@root/_utils/websocket');
+const { waitForWSSubset } = require('@root/_utils/websocket');
 const Common = require('./common');
 
 const RECENT_POSITION_DRAWER_SELECTOR = '#dt_positions_toggle';
@@ -13,8 +13,8 @@ class Trader extends Common {
     }
 
     async waitForChart() {
-        await this.page.waitForSelector('.chart-container__loader', {state: 'hidden', timeout: 600000});
-        await this.page.waitForSelector('.ciq-menu.ciq-enabled', {timeout: 120000});
+        await this.page.waitForSelector('.chart-container__loader', { state: 'hidden', timeout: 600000 });
+        await this.page.waitForSelector('.ciq-menu.ciq-enabled', { timeout: 120000 });
     }
 
     async chooseUnderlying(submarket, name) {
@@ -27,14 +27,14 @@ class Trader extends Common {
     async openRecentPositionsDrawer() {
         await this.page.waitForSelector(RECENT_POSITION_DRAWER_SELECTOR);
         await this.page.click(RECENT_POSITION_DRAWER_SELECTOR);
-        await this.page.waitForSelector('positions-toggle--has-count', {state: 'hidden'});
+        await this.page.waitForSelector('positions-toggle--has-count', { state: 'hidden' });
     }
 
     async verifyContractResult() {
         if (await this.isMobile()) {
             await this.assertContractDetails();
         } else {
-            await this.page.waitForSelector('.portfolio-empty__wrapper', {state: 'hidden'});
+            await this.page.waitForSelector('.portfolio-empty__wrapper', { state: 'hidden' });
             await this.page.waitForSelector('.dc-result__close-btn');
             await this.page.waitForSelector('.dc-contract-card__wrapper');
         }
@@ -43,19 +43,21 @@ class Trader extends Common {
     async unsetAllowEquals() {
         if (await this.isMobile()) {
             try {
-                const is_allow_equal_selected = await this.page.$eval('.dc-checkbox__box', el => el.classList.contains('dc-checkbox__box--active'));
+                const is_allow_equal_selected = await this.page.$eval('.dc-checkbox__box', el =>
+                    el.classList.contains('dc-checkbox__box--active')
+                );
                 const toggleAllowEqual = async () => {
-                    await this.page.waitForSelector('text=Equals');
-                    await this.page.click('text=Equals');
+                    await this.page.waitForSelector('.dc-checkbox');
+
+                    await this.page.click('.dc-checkbox');
                 };
                 if (is_allow_equal_selected) {
                     await toggleAllowEqual();
                 }
-            } catch (e) {
-            }
+            } catch (e) {}
         } else {
             try {
-                await this.page.waitForSelector('.dc-checkbox__box--active', { timeout: 300});
+                await this.page.waitForSelector('.dc-checkbox__box--active', { timeout: 300 });
                 await this.page.click('.dc-checkbox__box--active', { timeout: 300 });
             } catch (e) {
                 // No need to take action here. we can continue the pipeline.
@@ -65,11 +67,15 @@ class Trader extends Common {
 
     async clearTradeUIArtifacts() {
         if (await this.isMobile()) {
-            await this.page.waitForSelector('.dc-collapsible__button');
-            await this.page.click('.dc-collapsible__button');
-            await this.page.waitForSelector('.dc-page-overlay__header-close');
-            await this.page.click('.dc-page-overlay__header-close');
-            await this.unsetAllowEquals();
+            try {
+                await this.page.waitForSelector('.dc-collapsible__button', { timeout: 2000 });
+                await this.page.click('.dc-collapsible__button');
+                await this.page.waitForSelector('.dc-page-overlay__header-close', { timeout: 2000 });
+                await this.page.click('.dc-page-overlay__header-close');
+                await this.unsetAllowEquals();
+            } catch {
+                await this.unsetAllowEquals();
+            }
         } else {
             await this.page.waitForSelector('.dc-result__close-btn', { timeout: 300 });
             await this.page.click('.dc-result__close-btn', { timeout: 300 });
@@ -120,19 +126,19 @@ class Trader extends Common {
 
     async allowEquals(should) {
         if (await this.isMobile()) {
-            const is_allow_equal_selected = await this.page.$eval('.dc-checkbox__box', el => el.classList.contains('dc-checkbox__box--active'));
+            const is_allow_equal_selected = await this.page.$eval('.dc-checkbox__box', el =>
+                el.classList.contains('dc-checkbox__box--active')
+            );
             const toggleAllowEqual = async () => {
-                await this.page.waitForSelector('text=Equals');
-                await this.page.click('text=Equals');
+                if (!is_allow_equal_selected) {
+                    await this.page.waitForSelector('.dc-checkbox');
+                    await this.page.click('.dc-checkbox');
+                }
             };
-
-            if (!should && is_allow_equal_selected) {
-                await toggleAllowEqual();
-            }
 
             if (should) {
                 try {
-                    await this.page.$eval('.dc-collapsible__icon--is-open', el => !!el)
+                    await this.page.$eval('.dc-collapsible__icon--is-open', el => !!el);
                 } catch (e) {
                     await this.page.click('.dc-collapsible__icon');
                 }
@@ -168,7 +174,9 @@ class Trader extends Common {
 
     async waitForPurchaseBtnEnabled(purchase_type, allow_equal = false) {
         const allow_equal_suffix = this.should_set_allow_equal && allow_equal ? 'e' : '';
-        await this.page.waitForSelector(`#dt_purchase_${purchase_type}${allow_equal_suffix}_button:enabled`, {timeout: 120000});
+        await this.page.waitForSelector(`#dt_purchase_${purchase_type}${allow_equal_suffix}_button:enabled`, {
+            timeout: 120000,
+        });
     }
 
     async clickOnPurchaseButton(type, allow_equal = false) {
@@ -176,7 +184,6 @@ class Trader extends Common {
         const button = type + is_equal;
         await this.page.click(`#dt_purchase_${button}_button`);
     }
-
 
     async assertPurchase(duration, amount, purchase_type) {
         this.duration = duration;
@@ -195,7 +202,7 @@ class Trader extends Common {
         const message = await waitForWSSubset(this.page, expected_response);
         assert.ok(message, 'No proper proposal was found');
         assert.ok(
-            message.echo_req.duration === duration,
+            message?.echo_req?.duration === duration,
             `Duration was not set properly, expected ${duration}, received: ${message.echo_req.duration}`
         );
         const buy_response = await waitForWSSubset(this.page, {
@@ -208,7 +215,6 @@ class Trader extends Common {
 
     async changeDuration(target) {
         if (await this.isMobile()) {
-
             const increment = async () => {
                 // eslint-disable-next-line no-await-in-loop
                 await this.page.waitForSelector(
@@ -217,7 +223,7 @@ class Trader extends Common {
                 await this.page.click(
                     '.dc-tabs__content > .trade-params__duration-tickpicker > .dc-tick-picker > .dc-tick-picker__calculation > .dc-btn:nth-child(3)'
                 );
-            }
+            };
             const decrement = async () => {
                 // eslint-disable-next-line no-await-in-loop
                 await this.page.waitForSelector(
@@ -239,13 +245,17 @@ class Trader extends Common {
                 if (current > t) {
                     await decrement();
                 }
-                const updated_duration = await this.page.$eval('.dc-tick-picker__holder > span:nth-child(1)', el => Number(el.textContent));
+                const updated_duration = await this.page.$eval('.dc-tick-picker__holder > span:nth-child(1)', el =>
+                    Number(el.textContent)
+                );
                 return await reachTarget(t, updated_duration);
             };
 
             await this.page.waitForSelector('.mobile-widget__amount');
             await this.page.click('.mobile-widget__amount');
-            const current_duration = await this.page.$eval('.dc-tick-picker__holder > span:nth-child(1)', el => Number(el.textContent));
+            const current_duration = await this.page.$eval('.dc-tick-picker__holder > span:nth-child(1)', el =>
+                Number(el.textContent)
+            );
             await reachTarget(target, current_duration);
 
             await this.page.waitForSelector(
@@ -274,7 +284,6 @@ class Trader extends Common {
     }
 
     async prepareAuditDetails() {
-        const should_check_entry_spot = ['']
         if (await this.isMobile()) {
             await this.page.waitForSelector('#dt_positions_toggle');
             await this.page.click('#dt_positions_toggle');
@@ -284,7 +293,7 @@ class Trader extends Common {
                 },
             });
 
-            await this.waitForSelector('.dc-tick-progress', {state: 'hidden'});
+            await this.waitForSelector('.dc-tick-progress', { state: 'hidden' });
             const contract_id = buy_response.buy.contract_id;
             await this.page.waitForSelector(`#dt_drawer_card_${contract_id}`);
             await this.page.click(`#dt_drawer_card_${contract_id}`);
@@ -297,9 +306,9 @@ class Trader extends Common {
                 },
             });
             const contract_id = buy_response.buy.contract_id;
-            await this.page.waitForSelector(`#dc_contract_card_${contract_id}_result`, {timeout: 6000});
+            await this.page.waitForSelector(`#dc_contract_card_${contract_id}_result`, { timeout: 6000 });
             await this.page.hover(`#dc_contract_card_${contract_id}_result`);
-            await this.page.click(`#dc_contract_card_${contract_id}_result`)
+            await this.page.click(`#dc_contract_card_${contract_id}_result`);
         }
     }
 
@@ -313,11 +322,9 @@ class Trader extends Common {
 
         if (!['over_under', 'even_odd', 'match_diff'].includes(this.contract)) {
             // Entry Spot check
-            const entry_spot_tick = last_proposal_open_contract_message
-                .proposal_open_contract
-                .audit_details
-                .all_ticks
-                .find(t => t.name === 'Entry Spot');
+            const entry_spot_tick = last_proposal_open_contract_message.proposal_open_contract.audit_details.all_ticks.find(
+                t => t.name === 'Entry Spot'
+            );
             const entry_spot_displayed = await this.page.$eval(
                 '#dt_entry_spot_label > div.contract-audit__item > div > span.contract-audit__value',
                 el => parseFloat(el.textContent.replace(/,/, ''))

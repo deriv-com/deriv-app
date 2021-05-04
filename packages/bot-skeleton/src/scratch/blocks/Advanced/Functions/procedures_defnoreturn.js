@@ -11,7 +11,6 @@ Blockly.Blocks.procedures_defnoreturn = {
         // Enforce unique procedure names
         const nameField = this.getField('NAME');
         nameField.setValidator(Blockly.Procedures.rename);
-        nameField.maxDisplayLength = 17;
 
         // Render a ➕-icon for adding parameters
         const fieldImage = new Blockly.FieldImage(plusIconLight, 24, 24, '+', () => this.onAddClick());

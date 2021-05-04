@@ -62,10 +62,37 @@ export default connect(({ client, ui }) => ({
         has_router: true,
         routes: {
             home: routes.dashboard,
+            my_apps: routes.my_apps,
             about_us: routes.about_us,
             explore: routes.explore,
             resources: routes.resources,
+
+            market_commodities: routes.market_commodities,
+            market_forex: routes.market_forex,
+            market_stock: routes.market_stock,
+            market_synthetic: routes.market_synthetic,
+            markets: routes.markets,
+
+            platform_binary_bot: routes.platform_binary_bot,
+            platform_dbot: routes.platform_dbot,
+            platform_dmt5: routes.platform_dmt5,
+            platform_dmt5_financial: routes.platform_dmt5_financial,
+            platform_dmt5_financial_stp: routes.platform_dmt5_financial_stp,
             platform_dmt5_synthetic: routes.platform_dmt5_synthetic,
+            platform_dtrader: routes.platform_dtrader,
+            platform_smarttrader: routes.platform_smarttrader,
+            platforms: routes.platforms,
+
+            trade_type_cfds: routes.trade_type_cfds,
+            trade_type_multipliers: routes.trade_type_multipliers,
+            trade_type_options: routes.trade_type_options,
+            trade_types: routes.trade_types,
+
+            wallet_bank_wire: routes.wallet_bank_wire,
+            wallet_cards: routes.wallet_cards,
+            wallet_crypto: routes.wallet_crypto,
+            wallet_ewallet: routes.wallet_ewallet,
+            wallets: routes.wallets,
         },
     },
     ui: {

@@ -9,10 +9,6 @@
         justify-content: center;
 
         &__header {
-            font-size: 1.4rem;
-            font-weight: bold;
-            text-align: center;
-            color: var(--text-less-prominent);
             padding: 0.8rem;
         }
         &__icon {
@@ -62,6 +58,7 @@
                 justify-content: flex-end;
                 align-items: center;
                 cursor: pointer;
+                flex: 1;
 
                 &--label {
                     margin-right: 0.8rem;

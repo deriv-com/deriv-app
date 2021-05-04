@@ -142,6 +142,8 @@ export default class UIStore extends BaseStore {
         target_dmt5_label: '',
     };
 
+    @observable manage_real_account_tab_index = 0;
+
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
     constructor(root_store) {
@@ -406,6 +408,11 @@ export default class UIStore extends BaseStore {
         this.is_real_acc_signup_on = true;
         this.real_account_signup_target = target;
         this.is_accounts_switcher_on = false;
+    }
+
+    @action.bound
+    setManageRealAccountActiveTabIndex(index) {
+        this.manage_real_account_tab_index = index;
     }
 
     @action.bound

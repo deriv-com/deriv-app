@@ -22,7 +22,5 @@ export default {
         localize(
             '4. Come back to DBot and add the Notify Telegram block to the workspace. Paste the Telegram API token and chat ID into the block fields accordingly.'
         ),
-        localize('Learn more here: https://gist.github.com/aaron-binary/e5bd33bc7c657a911499c06b50dd04e9'),
-        localize('Example:'),
     ],
 };

@@ -109,15 +109,9 @@ const MT5DemoAccountDisplay = ({
                             }
                         )
                     }
-                    descriptor={
-                        is_eu || is_eu_country
-                            ? localize(
-                                  'Trade commodities, cryptocurrencies, major (standard) and minor currency pairs with high leverage.'
-                              )
-                            : localize(
-                                  'Trade commodities, cryptocurrencies, major (standard and micro-lots) and minor currency pairs with high leverage.'
-                              )
-                    }
+                    descriptor={localize(
+                        'Trade CFDs on forex, stocks & indices, commodities, and cryptocurrencies with leverage.'
+                    )}
                     specs={
                         is_eu || is_eu_country
                             ? eu_real_financial_specs
@@ -161,7 +155,7 @@ const MT5DemoAccountDisplay = ({
                         )
                     }
                     descriptor={localize(
-                        'Trade major, minor, exotic currency pairs, and cryptocurrencies with Straight-Through Processing (STP) of your orders direct to the market.'
+                        'Trade popular currency pairs and cryptocurrencies with straight-through processing order (STP).'
                     )}
                     specs={{
                         [localize('Leverage')]: localize('Up to 1:100'),

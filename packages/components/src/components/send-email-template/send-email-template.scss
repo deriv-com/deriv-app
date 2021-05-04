@@ -26,7 +26,11 @@
     &__btn {
         margin: 0 auto;
     }
+    &-dashboard {
+        width: calc(100vw - 33rem);
+    }
     @include mobile {
         margin-bottom: 1.6rem;
+        width: 100%;
     }
 }

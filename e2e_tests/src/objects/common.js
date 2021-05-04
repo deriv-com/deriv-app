@@ -25,8 +25,8 @@ class Common {
      * @returns {Promise<void>}
      */
     async acceptCookies() {
-        await this.page.waitForSelector('.cookie-banner__btn-accept');
-        await this.page.click('.cookie-banner__btn-accept');
+        await this.page.waitForSelector('#dt_core_cookie-banner_accept-btn');
+        await this.page.click('#dt_core_cookie-banner_accept-btn');
     }
 
     /**
@@ -37,21 +37,17 @@ class Common {
     async switchVirtualAccount() {
         await this.waitForAccountInfoDropdown();
         await this.clickOnAccountInfoDropdown();
-        await this.page.click('#demo_account_tab');
+        await this.page.click('#dt_core_account-switcher_demo-tab');
         await this.page.click('.acc-switcher__accounts');
     }
 
     async waitForAccountInfoDropdown() {
-        await this.page.waitForSelector('.acc-info__preloader', { state: 'hidden' });
-        await this.page.waitForSelector(
-            '.header__menu-items > .header__menu-right > .acc-info__container > .acc-info__wrapper > .acc-info'
-        );
+        await this.page.waitForSelector('#dt_core_header_acc-info-preloader', { state: 'hidden' });
+        await this.page.waitForSelector(`#dt_core_account-info_acc-info`);
     }
 
     async clickOnAccountInfoDropdown() {
-        await this.page.click(
-            '.header__menu-items > .header__menu-right > .acc-info__container > .acc-info__wrapper > .acc-info'
-        );
+        await this.page.click('#dt_core_account-info_acc-info');
     }
 
     /**
@@ -144,7 +140,7 @@ class Common {
     }
 
     async waitForAccountDropdown() {
-        await this.page.waitForSelector('.acc-info__container');
+        await this.page.waitForSelector('#dt_core_header_acc-info-container');
     }
 
     async setResidenceAndPassword(signup_url, country = 'Indonesia', password) {
@@ -155,75 +151,46 @@ class Common {
             },
         });
         if (await this.isMobile()) {
-            await this.page.waitForSelector(
-                '.account-signup__residence-selection > .dc-select-native > .dc-select-native__wrapper > .dc-input > .dc-select-native__picker'
-            );
-            await this.page.click(
-                '.account-signup__residence-selection > .dc-select-native > .dc-select-native__wrapper > .dc-input > .dc-select-native__picker'
-            );
+            await this.page.waitForSelector('#dt_components_select-native_select-tag');
+            await this.page.click('#dt_components_select-native_select-tag');
 
-            await this.page.selectOption(
-                '.account-signup__residence-selection > .dc-select-native > .dc-select-native__wrapper > .dc-input > .dc-select-native__picker',
-                country
-            );
+            await this.page.selectOption('#dt_components_select-native_select-tag', country);
 
-            await this.page.waitForSelector(
-                '.account-signup__residence-selection > .dc-select-native > .dc-select-native__wrapper > .dc-input > .dc-select-native__picker'
-            );
-            await this.page.click(
-                '.account-signup__residence-selection > .dc-select-native > .dc-select-native__wrapper > .dc-input > .dc-select-native__picker'
-            );
+            await this.page.waitForSelector('#dt_components_select-native_select-tag');
+            await this.page.click('#dt_components_select-native_select-tag');
 
             await this.page.waitForSelector('text=Next');
             await this.page.click('text=Next');
-
-            await this.page.waitForSelector(
-                '.account-signup__password-selection > .dc-password-meter__container > .dc-password-input > .dc-input > .dc-input__field'
-            );
-            await this.page.click(
-                '.account-signup__password-selection > .dc-password-meter__container > .dc-password-input > .dc-input > .dc-input__field'
-            );
-            await this.page.fill(
-                '.account-signup__password-selection > .dc-password-meter__container > .dc-password-input > .dc-input > .dc-input__field',
-                password
-            );
+            const ACCOUNT_SIGNUP_PASSWORD_FIELD_ID = '#dt_core_account-signup-modal_account-signup-password-field';
+            await this.page.waitForSelector(ACCOUNT_SIGNUP_PASSWORD_FIELD_ID);
+            await this.page.click(ACCOUNT_SIGNUP_PASSWORD_FIELD_ID);
+            await this.page.fill(ACCOUNT_SIGNUP_PASSWORD_FIELD_ID, password);
 
             await this.page.waitForSelector('text=Start trading');
             await this.page.click('text=Start trading');
             await this.waitForAccountDropdown();
         } else {
-            await this.page.waitForSelector(
-                '#signup_residence_select'
-            );
-            await this.page.fill(
-                '#signup_residence_select',
-                country
-            );
-            await this.page.press('#signup_residence_select', 'ArrowDown');
-            await this.page.press(
-                '#signup_residence_select',
-                'Enter'
-            );
+            const SIGNUP_RESIDENCE_SELECT_INPUT_ID = '#dt_core_set-residence-form_signup-residence-select';
+            await this.page.waitForSelector(SIGNUP_RESIDENCE_SELECT_INPUT_ID);
+            await this.page.fill(SIGNUP_RESIDENCE_SELECT_INPUT_ID, country);
+            await this.page.press(SIGNUP_RESIDENCE_SELECT_INPUT_ID, 'ArrowDown');
+            await this.page.press(SIGNUP_RESIDENCE_SELECT_INPUT_ID, 'Enter');
             await this.page.click('text=Next');
 
             await this.page.waitForSelector('input[type=password]');
             await this.page.click('input[type=password]');
             await this.page.fill('input[type=password]', password);
 
-            await this.page.waitForSelector(
-                '.dc-dialog__content > .account-signup > form > .account-signup__password-selection > .dc-btn'
-            );
-            await this.page.click(
-                '.dc-dialog__content > .account-signup > form > .account-signup__password-selection > .dc-btn'
-            );
+            await this.page.waitForSelector('#dt_core_account-signup-modal_submit-btn');
+            await this.page.click('#dt_core_account-signup-modal_submit-btn');
         }
     }
 
     async realAccountSignup(options) {
         if (await this.isMobile()) {
-            await this.page.waitForSelector('#modal_root');
+            await this.page.waitForSelector('#dt_components_carousel-nav_nav-tag > ul > li:nth-child(2)');
             await this.page.waitForSelector(
-                '#modal_root > div > div > div > div.welcome__body > div > div > nav.dc-carousel__nav.dc-carousel__nav--lower > ul > li:nth-child(2)'
+                '#dt_components_carousel-nav_nav-tag > ul > li:nth-child(2)'
             );
             await this.page.mouse.move(180, 220);
             await this.page.mouse.down();
@@ -231,29 +198,21 @@ class Common {
             await this.page.mouse.up();
             await this.page.click('text=Start here');
         } else {
-            await this.page.waitForSelector(
-                '.dc-themed-scrollbars > .welcome__body > .welcome-column--right > .welcome-column__footer > .dc-btn'
-            );
-            await this.page.click(
-                '.dc-themed-scrollbars > .welcome__body > .welcome-column--right > .welcome-column__footer > .dc-btn'
-            );
+            await this.page.waitForSelector('#dt_core_welcome-modal_start-btn');
+            await this.page.click('#dt_core_welcome-modal_start-btn');
         }
 
-        await this.page.waitForSelector(
-            '.header__menu-items > .header__menu-right > .acc-info__container > .acc-info__wrapper > .acc-info'
-        );
-        await this.page.click(
-            '.header__menu-items > .header__menu-right > .acc-info__container > .acc-info__wrapper > .acc-info'
-        );
+        await this.page.waitForSelector('#dt_core_account-info_acc-info');
+        await this.page.click('#dt_core_account-info_acc-info');
 
         await this.page.waitForSelector('#real_account_tab');
         await this.page.click('#real_account_tab');
 
         await this.page.waitForSelector(
-            '.acc-switcher__list-wrapper > .dc-content-expander__wrapper:nth-child(1) > .dc-content-expander__content > .acc-switcher__new-account > .dc-btn'
+            '#dt_core_account-switcher_add-new-account'
         );
         await this.page.click(
-            '.acc-switcher__list-wrapper > .dc-content-expander__wrapper:nth-child(1) > .dc-content-expander__content > .acc-switcher__new-account > .dc-btn'
+            '#dt_core_account-switcher_add-new-account'
         );
         await this.page.waitForSelector(`text=${options.currency}`);
         await this.page.click(`text=${options.currency}`);

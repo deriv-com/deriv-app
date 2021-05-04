@@ -9,7 +9,11 @@ Blockly.Blocks.pc_statement = {
     },
     definition() {
         return {
-            message0: localize('set %1 to Price Channel %2 %3'),
+            message0: localize('set {{ variable }} to Price Channel {{ list }} {{ dummy }}', {
+                variable: '%1',
+                list: '%2',
+                dummy: '%3',
+            }),
             message1: '%1',
             args0: [
                 {

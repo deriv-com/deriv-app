@@ -8,7 +8,10 @@ Blockly.Blocks.psara_statement = {
     },
     definition() {
         return {
-            message0: localize('set %1 to Parabolic SAR Array %2'),
+            message0: localize('set {{ variable }} to Parabolic SAR Array {{ dummy }}', {
+                variable: '%1',
+                dummy: '%2',
+            }),
             message1: '%1',
             args0: [
                 {

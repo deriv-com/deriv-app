@@ -9,7 +9,11 @@ Blockly.Blocks.fra_statement = {
     },
     definition() {
         return {
-            message0: localize('set %1 to Fractal Array %2 %3'),
+            message0: localize('set {{ variable }} to Fractal Array {{ list }} {{ dummy }}', {
+                variable: '%1',
+                list: '%2',
+                dummy: '%3',
+            }),
             message1: '%1',
             args0: [
                 {

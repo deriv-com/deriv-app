@@ -8,7 +8,10 @@ Blockly.Blocks.atr_statement = {
     },
     definition() {
         return {
-            message0: localize('set %1 to Average True Range %2'),
+            message0: localize('set {{ variable }} to Average True Range {{ dummy }}', {
+                variable: '%1',
+                dummy: '%2',
+            }),
             message1: '%1',
             args0: [
                 {

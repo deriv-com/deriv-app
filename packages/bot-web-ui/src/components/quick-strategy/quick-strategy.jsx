@@ -462,6 +462,7 @@ const ContentRenderer = props => {
         component: <TradeTypeOption trade_type={trade_type} />,
         ...trade_type,
     }));
+
     return (
         <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
             {Object.keys(strategies).map(key => {

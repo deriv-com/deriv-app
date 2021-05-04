@@ -71,6 +71,7 @@ const WelcomeColumn = ({
                     large
                     primary={is_hovered || isMobile()}
                     secondary={!(is_hovered || isMobile())}
+                    id='dt_core_welcome-modal_start-btn'
                 >
                     {button_text}
                 </Button>

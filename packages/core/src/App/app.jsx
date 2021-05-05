@@ -75,13 +75,13 @@ const App = ({ root_store }) => {
     }, [root_store.ui]);
 
     React.useEffect(() => {
-        // window.addEventListener('resize', handleResize);
-        const debouncedHandleResize = debounce(handleResize, 400);
-        window.addEventListener('resize', debouncedHandleResize);
+        window.addEventListener('resize', handleResize);
+        // const debouncedHandleResize = debounce(handleResize, 400);
+        // window.addEventListener('resize', debouncedHandleResize);
 
-        return () => {
-            window.removeEventListener('resize', debouncedHandleResize);
-        };
+        // return () => {
+        //     window.removeEventListener('resize', debouncedHandleResize);
+        // };
     }, [handleResize]);
 
     const platform_passthrough = {

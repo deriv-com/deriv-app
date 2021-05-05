@@ -124,15 +124,25 @@ const SubmittedPage = () => {
     // Passing "custtom_button_options" object in "location.state" allows
     // another app/route to determine which button the user will see after
     // submitting their financial assessment.
-    const { custom_button_options } = location.state;
-    const button_text = custom_button_options ? custom_button_options.button_text : localize('Continue');
-    const icon_text = custom_button_options
-        ? custom_button_options.icon_text
-        : localize('Let’s continue with providing proofs of address and identity.');
-    const route_to_path = custom_button_options ? custom_button_options.route_to_path : routes.proof_of_address;
+    const button_text =
+        location.state && location.state.custom_button_options
+            ? location.state.custom_button_options.button_text
+            : localize('Continue');
+    const icon_text =
+        location.state && location.state.custom_button_options
+            ? location.state.custom_button_options.icon_text
+            : localize('Let’s continue with providing proofs of address and identity.');
+    const route_to_path =
+        location.state && location.state.custom_button_options
+            ? location.state.custom_button_options.route_to_path
+            : routes.proof_of_address;
 
     const onClickButton = () => {
-        if (custom_button_options.is_hard_redirect) {
+        if (
+            location.state &&
+            location.state.custom_button_options &&
+            location.state.custom_button_options.is_hard_redirect
+        ) {
             window.location.href = window.location.origin + route_to_path;
         } else {
             history.push(route_to_path);
@@ -311,6 +321,7 @@ class FinancialAssessment extends React.Component {
             has_trading_experience,
         } = this.state;
         const { is_dashboard } = this.context;
+
         if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (this.props.is_virtual) return <DemoMessage has_demo_icon={is_dashboard} has_button={is_dashboard} />;

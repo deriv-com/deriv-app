@@ -74,7 +74,6 @@
                 .cashier__wrapper {
                     width: calc(100% - 3.2rem);
                     margin: 0 1.6rem;
-                    height: 60%;
 
                     &-error {
                         display: flex;
@@ -1102,13 +1101,6 @@
         &-wrapper {
             display: flex;
         }
-    }
-    @include mobile {
-        color: var(--text-general);
-        padding: 1.6rem;
-        font-size: var(--text-size-xxs);
-        line-height: 1.5;
-        z-index: 10;
     }
 }
 

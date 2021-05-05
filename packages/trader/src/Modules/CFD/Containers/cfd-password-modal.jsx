@@ -217,12 +217,7 @@ const CFDPasswordForm = props => {
                         )}
                         {props.should_set_trading_password && (
                             <Text size='xs' as='p'>
-                                <Localize
-                                    i18n_default_text='Use this to log in and trade on {{platform}}.'
-                                    values={{
-                                        platform: props.platform === 'mt5' ? localize('DMT5') : localize('Deriv X'),
-                                    }}
-                                />
+                                <Localize i18n_default_text='Use this to log in and trade on Deriv MT5 and Deriv X.' />
                             </Text>
                         )}
                         {props.is_real_financial_stp && props.is_bvi && (
@@ -425,7 +420,10 @@ const CFDPasswordModal = ({
         return (
             (is_logged_in ? !is_eu : !is_eu_country) &&
             is_real_synthetic &&
-            mt5_login_list.some(item => item.account_type === 'real' && item.market_type === 'gaming') &&
+            mt5_login_list.some(
+                item =>
+                    item.account_type === 'real' && (item.market_type === 'gaming' || item.market_type === 'synthetic')
+            ) &&
             !server &&
             platform === 'mt5'
         );

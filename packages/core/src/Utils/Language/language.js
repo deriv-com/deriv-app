@@ -1,4 +1,4 @@
-import { WS } from 'Services/ws-methods';
+import WS from 'Services/ws-methods';
 import { isProduction, urlForLanguage } from '@deriv/shared';
 import { getLanguage, getAllLanguages } from '@deriv/translations';
 import * as SocketCache from '_common/base/socket_cache';
@@ -32,10 +32,8 @@ export const changeLanguage = key => {
     if (key === 'EN') {
         window.localStorage.setItem('i18n_language', key);
     }
-    WS.authorized.setSettings(request).then(response => {
-        if (response.error) {
-            console.log(error); //eslint-disable-line
-        }
+
+    WS.setSettings(request).then(() => {
+        window.location.replace(getURL(key));
     });
-    window.location.replace(getURL(key));
 };

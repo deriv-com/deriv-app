@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getAllowedLanguages, changeLanguage, currentLanguage } from 'Utils/Language';
-import { MobxContent } from 'Stores/connect';
 
 const isCurrentLanguage = lang => lang === currentLanguage;
 
@@ -37,8 +36,6 @@ const LanguageLink = ({ lang }) => (
 );
 
 const LanguageSettings = () => {
-    const { client: setPreferredLanguage } = React.useContext(MobxContent);
-
     return (
         <div className='settings-language'>
             <div className='settings-language__language-header'>
@@ -58,7 +55,6 @@ const LanguageSettings = () => {
                             key={key}
                             onClick={() => {
                                 changeLanguage(key);
-                                setPreferredLanguage(key);
                             }}
                             className={classNames('settings-language__language-link', {
                                 'settings-language__language-link--active': isCurrentLanguage(key),

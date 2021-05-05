@@ -12,6 +12,7 @@ import {
     State,
     toMoment,
     deriv_urls,
+    urlForLanguage,
 } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import { requestLogout, WS } from 'Services';
@@ -25,6 +26,7 @@ import { setDeviceDataCookie } from './Helpers/device';
 import { handleClientNotifications, clientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
+const LANGUAGE_KEY = 'i18n_language';
 const storage_key = 'client.accounts';
 const store_name = 'client_store';
 const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
@@ -673,9 +675,10 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    setPreferredLanguage(lang) {
+    setPreferredLanguage = lang => {
         this.preferred_language = lang;
-    }
+        LocalStore.setObject(LANGUAGE_KEY, lang);
+    };
 
     @action.bound
     setCookieAccount() {
@@ -1031,7 +1034,6 @@ export default class ClientStore extends BaseStore {
     async init(login_new_user) {
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
-
         this.setDeviceData();
 
         // On case of invalid token, no need to continue with additional api calls.
@@ -1052,7 +1054,6 @@ export default class ClientStore extends BaseStore {
 
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
-
         this.setSwitched('');
         let client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login
@@ -1074,6 +1075,10 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 this.is_populating_account_list = false;
             });
+            const language = authorize_response.authorize.preferred_language;
+            if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
+                window.location.replace(urlForLanguage(authorize_response.authorize.preferred_language));
+            }
         }
 
         /**
@@ -1111,7 +1116,7 @@ export default class ClientStore extends BaseStore {
                 })
             );
             const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
-
+            this.setPreferredLanguage(account_settings.preferred_language);
             await this.fetchResidenceList();
 
             if (account_settings && !account_settings.residence) {

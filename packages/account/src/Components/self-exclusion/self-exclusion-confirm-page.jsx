@@ -103,7 +103,7 @@ const SelfExclusionConfirmPage = () => {
                     </Button>
                 ) : (
                     <Button is_loading={isSubmitting} is_disabled={isSubmitting} primary large type='submit'>
-                        <Localize i18n_default_text='Agree and accept' />
+                        <Localize i18n_default_text='Accept' />
                     </Button>
                 )}
             </div>

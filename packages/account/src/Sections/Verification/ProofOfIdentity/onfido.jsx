@@ -99,14 +99,12 @@ const Onfido = ({
                                       }
                                     : false,
                             },
-                            forceCrossDevice: true,
                             useLiveDocumentCapture: true,
                         },
                     },
                     {
                         type: 'face',
                         options: {
-                            forceCrossDevice: true,
                             useLiveDocumentCapture: true,
                         },
                     },

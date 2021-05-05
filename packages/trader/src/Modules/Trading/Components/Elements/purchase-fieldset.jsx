@@ -86,17 +86,18 @@ class PurchaseFieldset extends React.PureComponent {
                             'trade-container__fieldset-wrapper--disabled': is_proposal_error || is_disabled,
                         })}
                     >
-                        <ContractInfo
-                            basis={basis}
-                            currency={currency}
-                            proposal_info={info}
-                            has_cancellation={has_cancellation}
-                            has_increased={info.has_increased}
-                            is_loading={is_loading}
-                            is_multiplier={is_multiplier}
-                            should_fade={this.state.should_fade}
-                            type={type}
-                        />
+                        {(has_cancellation || !is_multiplier) && (
+                            <ContractInfo
+                                basis={basis}
+                                currency={currency}
+                                proposal_info={info}
+                                has_increased={info.has_increased}
+                                is_loading={is_loading}
+                                is_multiplier={is_multiplier}
+                                should_fade={this.state.should_fade}
+                                type={type}
+                            />
+                        )}
                         <div
                             className={classNames('btn-purchase__shadow-wrapper', {
                                 'btn-purchase__shadow-wrapper--disabled': is_proposal_error || is_disabled,
@@ -125,7 +126,15 @@ class PurchaseFieldset extends React.PureComponent {
                                     {purchase_button}
                                 </Popover>
                             ) : (
-                                purchase_button
+                                <Popover
+                                    alignment='left'
+                                    is_bubble_hover_enabled
+                                    margin={8}
+                                    message={info.message}
+                                    relative_render
+                                >
+                                    {purchase_button}
+                                </Popover>
                             )}
                             {
                                 // is_purchase_confirm_on ?

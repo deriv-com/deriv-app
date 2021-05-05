@@ -857,6 +857,8 @@ export default class TradeStore extends BaseStore {
             [contract_type]: getProposalInfo(this, response, obj_prev_contract_basis),
         };
 
+        console.log(this.proposal_info);
+
         if (this.is_multiplier && this.proposal_info && this.proposal_info.MULTUP) {
             const { commission, cancellation, limit_order } = this.proposal_info.MULTUP;
             // commission and cancellation.ask_price is the same for MULTUP/MULTDOWN

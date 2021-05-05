@@ -9,6 +9,7 @@ import { connect } from 'Stores/connect';
 import { Localize, localize } from '@deriv/translations';
 import AllowEquals from './allow-equals.jsx';
 import MultipliersInfo from './Multiplier/info.jsx';
+import Multiplier from './Multiplier/multiplier.jsx';
 
 const Input = ({
     amount,
@@ -164,11 +165,14 @@ const Amount = ({
                 has_equals_only={has_equals_only}
             />
             {is_multiplier && (
-                <MultipliersInfo
-                    className='trade-container__multipliers-trade-info'
-                    should_show_tooltip
-                    is_tooltip_relative
-                />
+                <React.Fragment>
+                    <Multiplier />
+                    <MultipliersInfo
+                        className='trade-container__multipliers-trade-info'
+                        should_show_tooltip
+                        is_tooltip_relative
+                    />
+                </React.Fragment>
             )}
         </Fieldset>
     );

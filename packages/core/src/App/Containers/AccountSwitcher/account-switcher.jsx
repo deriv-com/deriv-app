@@ -249,11 +249,11 @@ const AccountSwitcher = props => {
             if (b_is_demo && !a_is_demo) {
                 return -1;
             }
-            if (a.market_type === 'gaming') {
+            if (a.market_type === 'gaming' || a.market_type === 'synthetic') {
                 return -1;
             }
             if (a.sub_account_type === 'financial') {
-                return b.market_type === 'gaming' ? 1 : -1;
+                return b.market_type === 'gaming' || b.market_type === 'synthetic' ? 1 : -1;
             }
             return 1;
         });

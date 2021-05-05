@@ -9,16 +9,17 @@ import Text from '../text/text.jsx';
 import './popover-mobile.scss';
 
 const PopoverMobile = ({
-    className,
-    is_open,
-    setIsOpen,
-    children,
-    message,
-    renderMessage,
-    title,
-    popover_props,
-    modal_props,
     button_text,
+    children,
+    className,
+    desktop_alignment,
+    is_open,
+    message,
+    modal_props,
+    popover_props,
+    renderMessage,
+    setIsOpen,
+    title,
 }) => {
     if (isMobile()) {
         return (
@@ -54,7 +55,7 @@ const PopoverMobile = ({
 
     return (
         <div className={classNames('dc-popover-mobile', className)}>
-            <Popover message={message} {...popover_props}>
+            <Popover message={message} alignment={desktop_alignment} {...popover_props}>
                 {children}
             </Popover>
         </div>
@@ -62,14 +63,17 @@ const PopoverMobile = ({
 };
 
 PopoverMobile.propTypes = {
-    className: PropTypes.string,
-    is_open: PropTypes.bool.isRequired,
-    setIsOpen: PropTypes.func.isRequired,
+    button_text: PropTypes.string,
     children: PropTypes.any.isRequired,
+    className: PropTypes.string,
+    desktop_alignment: PropTypes.string,
+    is_open: PropTypes.bool.isRequired,
     message: PropTypes.string.isRequired,
-    title: PropTypes.string,
-    popover_props: PropTypes.object,
     modal_props: PropTypes.object,
+    popover_props: PropTypes.object,
+    renderMessage: PropTypes.object,
+    setIsOpen: PropTypes.func.isRequired,
+    title: PropTypes.string,
 };
 
 export default PopoverMobile;

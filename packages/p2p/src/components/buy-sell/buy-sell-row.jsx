@@ -17,7 +17,18 @@ const BuySellRow = ({ row: advert }) => {
         // This allows for the sliding animation on the Buy/Sell toggle as it pushes
         // an empty item with an item that holds the same height of the toggle container.
         // Also see: buy-sell-table.jsx
-        return <div style={{ height: '77px' }} />;
+        return <div style={{ height: '177px' }} />;
+    }
+
+    if (advert.id === 'NO_MATCH_ROW') {
+        // Empty row when there is a search_term but no search_results
+        return (
+            <div className='buy-sell-row__no-match'>
+                <Text color='prominent' size='xs'>
+                    <Localize i18n_default_text='There are no matching ads.' />
+                </Text>
+            </div>
+        );
     }
 
     const {
@@ -42,6 +53,14 @@ const BuySellRow = ({ row: advert }) => {
                         <Text size='xs' line_height='m' color='general' weight='bold'>
                             {advertiser_name}
                         </Text>
+                        {advert.advertiser_details.total_completion_rate ? (
+                            <Text color='less-prominent' size='xxs'>
+                                <Localize
+                                    i18n_default_text='Completion rate: {{total_completion_rate}}%'
+                                    values={{ total_completion_rate: advert.advertiser_details.total_completion_rate }}
+                                />
+                            </Text>
+                        ) : null}
                     </div>
                     <Icon className='buy-sell-row__advertiser-arrow' icon='IcChevronRightBold' size={16} />
                 </div>
@@ -89,12 +108,22 @@ const BuySellRow = ({ row: advert }) => {
                     onClick={() => (general_store.is_barred ? undefined : buy_sell_store.showAdvertiserPage(advert))}
                 >
                     <UserAvatar nickname={advertiser_name} size={24} text_size='xxs' />
-                    <div
-                        className={classNames('buy-sell__name', {
-                            'buy-sell__name--allow-hover': !general_store.is_barred,
-                        })}
-                    >
-                        {advertiser_name}
+                    <div className='buy-sell__cell--container'>
+                        <div
+                            className={classNames({
+                                'buy-sell__name': !general_store.is_barred,
+                            })}
+                        >
+                            {advertiser_name}
+                        </div>
+                        {!!advert.advertiser_details.total_completion_rate && (
+                            <Text color='less-prominent' size='xxs'>
+                                <Localize
+                                    i18n_default_text='Completion rate: {{total_completion_rate}}%'
+                                    values={{ total_completion_rate: advert.advertiser_details.total_completion_rate }}
+                                />
+                            </Text>
+                        )}
                     </div>
                 </div>
             </Table.Cell>

@@ -16,7 +16,7 @@ const BinaryLink = ({ active_class, to, children, href, has_error, setError, ...
     const path = normalizePath(to);
     const route = findRouteByPath(path, getRoutesConfig({ is_dashboard }));
 
-    if (!route) {
+    if (!route && to) {
         throw new Error(`Route not found: ${to}`);
     }
 

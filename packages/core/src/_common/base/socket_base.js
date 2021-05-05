@@ -310,6 +310,18 @@ const BinarySocketBase = (() => {
 
     const tradingServers = () => deriv_api.send({ platform: 'mt5', trading_servers: 1 });
 
+    const triggerMt5DryRun = ({ email }) =>
+        deriv_api.send({
+            account_type: 'financial',
+            dry_run: 1,
+            email,
+            leverage: 100,
+            mainPassword: 'Test1234',
+            mt5_account_type: 'financial_stp',
+            mt5_new_account: 1,
+            name: 'test real labuan financial stp',
+        });
+
     return {
         init,
         openNewConnection,
@@ -380,6 +392,7 @@ const BinarySocketBase = (() => {
         accountStatistics,
         realityCheck,
         tradingServers,
+        triggerMt5DryRun,
     };
 })();
 

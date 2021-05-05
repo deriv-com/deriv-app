@@ -22,6 +22,7 @@ const CurrencySelector = ({
     onCancel,
     goToPreviousStep,
     real_account_signup,
+    real_account_signup_target,
     resetRealAccountSignupParams,
     set_currency,
     validate,
@@ -81,11 +82,11 @@ const CurrencySelector = ({
 
     const getHeightOffset = () => {
         if (is_dashboard) {
-            return '242px';
+            return '222px';
         } else if (!has_currency && has_real_account) {
-            return '109px';
+            return '89px';
         }
-        return '179px';
+        return '159px';
     };
 
     const getSubmitLabel = () => {
@@ -204,6 +205,7 @@ CurrencySelector.propTypes = {
     onSubmit: PropTypes.func,
     value: PropTypes.any,
     is_dashboard: PropTypes.bool,
+    real_account_signup_target: PropTypes.string,
 };
 
 export default CurrencySelector;

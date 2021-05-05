@@ -249,11 +249,11 @@ const AccountSwitcher = props => {
             if (b_is_demo && !a_is_demo) {
                 return -1;
             }
-            if (a.market_type === 'gaming') {
+            if (a.market_type === 'gaming' || a.market_type === 'synthetic') {
                 return -1;
             }
             if (a.sub_account_type === 'financial') {
-                return b.market_type === 'gaming' ? 1 : -1;
+                return b.market_type === 'gaming' || b.market_type === 'synthetic' ? 1 : -1;
             }
             return 1;
         });
@@ -502,6 +502,7 @@ const AccountSwitcher = props => {
                                 })}
                             </Text>
                             <Button
+                                id='dt_core_account-switcher_add-new-account'
                                 onClick={() => {
                                     props.openRealAccountSignup(account);
                                 }}
@@ -624,7 +625,7 @@ const AccountSwitcher = props => {
                         </Div100vhContainer>
                     </MobileWrapper>
                 </div>
-                <div label={localize('Demo')} id='demo_account_tab'>
+                <div label={localize('Demo')} id='dt_core_account-switcher_demo-tab'>
                     <DesktopWrapper>
                         <ThemedScrollbars height='354px'>{demo_accounts}</ThemedScrollbars>
                     </DesktopWrapper>

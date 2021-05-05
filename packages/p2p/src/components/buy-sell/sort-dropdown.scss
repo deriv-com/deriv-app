@@ -1,0 +1,43 @@
+.sort-dropdown {
+    height: 4.4rem;
+    margin: 2.4rem 0;
+    width: 24rem;
+
+    .dc-dropdown__display {
+        height: 4.2rem;
+    }
+
+    @include mobile {
+        height: 4rem;
+        margin: 0.8rem 1.6rem 1rem 0;
+        width: 16rem;
+
+        .dc-dropdown__display {
+            height: 4rem;
+
+            &-text {
+                display: block;
+                overflow: hidden;
+                padding-left: 0.8rem;
+                padding-right: unset;
+                text-overflow: ellipsis;
+                width: 80%;
+            }
+        }
+
+        .dc-dropdown__list {
+            left: unset;
+            right: 0;
+            width: calc(100vw - 3.2rem);
+        }
+
+        .dc-list__item-text {
+            padding: 1rem 1.6rem;
+        }
+
+        @media (max-width: 350px) {
+            min-width: unset;
+            width: 14rem;
+        }
+    }
+}

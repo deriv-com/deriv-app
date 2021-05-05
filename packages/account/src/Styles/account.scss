@@ -1774,7 +1774,9 @@ $MIN_HEIGHT_FLOATING: calc(
 
     .deactivate-account-error {
         padding: 0 2.4rem;
-        &__title {
+        margin-bottom: 2.4rem;
+        &__title,
+        &__description {
             margin-bottom: 0.5rem;
         }
         &__account-details {
@@ -1792,7 +1794,6 @@ $MIN_HEIGHT_FLOATING: calc(
             padding: 0.3rem 0.3rem 0.3rem 1.6rem;
             justify-content: space-between;
             align-items: center;
-            max-width: 26.4rem;
         }
         &__details {
             color: var(--text-prominent);

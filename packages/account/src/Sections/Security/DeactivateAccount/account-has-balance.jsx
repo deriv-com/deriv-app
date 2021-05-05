@@ -96,7 +96,7 @@ const AccountHasPendingConditions = ({ details, mt5_login_list, client_accounts,
 
     return (
         <React.Fragment>
-            <ThemedScrollbars autohide={false}>
+            <ThemedScrollbars autohide={false} width='43rem'>
                 {!!deriv_open_positions.length && (
                     <Wrapper title={localize('You have open positions in these Deriv accounts:')}>
                         {deriv_open_positions.map(account => (
@@ -136,10 +136,11 @@ const AccountHasPendingConditions = ({ details, mt5_login_list, client_accounts,
                 )}
                 {!!account_pending_withdrawals.length && (
                     <Wrapper title={localize('Pending withdrawal request:')}>
-                        <Text as='p'>
-                            {localize(
-                                'We are still processing your withdrawal request.\nPlease wait for the transaction to be completed before deactivating your account.'
-                            )}
+                        <Text as='p' size='xxs' className='deactivate-account-error__description'>
+                            <Localize
+                                i18n_default_text='We are still processing your withdrawal request.<0 />Please wait for the transaction to be completed before deactivating your account.'
+                                components={[<br key={0} />]}
+                            />
                         </Text>
                         {account_pending_withdrawals.map(account => (
                             <Content

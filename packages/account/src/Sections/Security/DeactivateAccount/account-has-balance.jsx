@@ -9,7 +9,7 @@ const getDerivAccount = (client_accounts, login_id) =>
 const getCurrMT5Account = (mt5_login_list, login_id) =>
     mt5_login_list.find(account_obj => account_obj.login === login_id);
 
-const Wrapper = ({ children, title }) => (
+const Wrapper = ({ children, title, desc }) => (
     <div className='deactivate-account-error'>
         <Text
             as='p'
@@ -21,7 +21,12 @@ const Wrapper = ({ children, title }) => (
         >
             {title}
         </Text>
-        {children}
+        {desc && (
+            <Text as='p' size='xxs' className='deactivate-account-error__description'>
+                {desc}
+            </Text>
+        )}
+        <div className='deactivate-account-error__wrapper'>{children}</div>
     </div>
 );
 
@@ -98,7 +103,7 @@ const AccountHasPendingConditions = ({ details, mt5_login_list, client_accounts,
         <React.Fragment>
             <ThemedScrollbars autohide={false} width='43rem'>
                 {!!deriv_open_positions.length && (
-                    <Wrapper title={localize('You have open positions in these Deriv accounts:')}>
+                    <Wrapper title={localize('Please close your positions in the following Deriv account(s):')}>
                         {deriv_open_positions.map(account => (
                             <Content
                                 key={account.loginid}
@@ -116,7 +121,7 @@ const AccountHasPendingConditions = ({ details, mt5_login_list, client_accounts,
                     </Wrapper>
                 )}
                 {!!deriv_balance.length && (
-                    <Wrapper title={localize('You have funds in these Deriv accounts:')}>
+                    <Wrapper title={localize('Please withdraw your funds from the following Deriv account(s):')}>
                         {deriv_balance.map(account => (
                             <Content
                                 key={account.loginid}
@@ -134,32 +139,8 @@ const AccountHasPendingConditions = ({ details, mt5_login_list, client_accounts,
                         ))}
                     </Wrapper>
                 )}
-                {!!account_pending_withdrawals.length && (
-                    <Wrapper title={localize('Pending withdrawal request:')}>
-                        <Text as='p' size='xxs' className='deactivate-account-error__description'>
-                            <Localize
-                                i18n_default_text='We are still processing your withdrawal request.<0 />Please wait for the transaction to be completed before deactivating your account.'
-                                components={[<br key={0} />]}
-                            />
-                        </Text>
-                        {account_pending_withdrawals.map(account => (
-                            <Content
-                                key={account.loginid}
-                                currency_icon={`IcCurrency-${account.icon}`}
-                                loginid={account.loginid}
-                                title={account.title}
-                                value={
-                                    <Localize
-                                        i18n_default_text='{{pending_withdrawals}} pending withdrawal(s)'
-                                        values={{ pending_withdrawals: account.withdrawals }}
-                                    />
-                                }
-                            />
-                        ))}
-                    </Wrapper>
-                )}
                 {!!mt5_open_positions.length && (
-                    <Wrapper title={localize('You have open positions in these DMT5 accounts:')}>
+                    <Wrapper title={localize('Please close your positions in the following Deriv MT5 account(s):')}>
                         {mt5_open_positions.map(account => (
                             <Content
                                 key={account.login}
@@ -177,7 +158,7 @@ const AccountHasPendingConditions = ({ details, mt5_login_list, client_accounts,
                     </Wrapper>
                 )}
                 {!!mt5_balance.length && (
-                    <Wrapper title={localize('You have funds in these DMT5 accounts:')}>
+                    <Wrapper title={localize('Please withdraw your funds from the following Deriv MT5 account(s):')}>
                         {mt5_balance.map(account => (
                             <Content
                                 key={account.login}
@@ -189,6 +170,32 @@ const AccountHasPendingConditions = ({ details, mt5_login_list, client_accounts,
                                         currency={account.currency}
                                         amount={formatMoney(account.currency, account.balance, true)}
                                         should_format={false}
+                                    />
+                                }
+                            />
+                        ))}
+                    </Wrapper>
+                )}
+                {!!account_pending_withdrawals.length && (
+                    <Wrapper
+                        title={localize('Pending withdrawal request:')}
+                        desc={
+                            <Localize
+                                i18n_default_text='We are still processing your withdrawal request.<0 />Please wait for the transaction to be completed before deactivating your account.'
+                                components={[<br key={0} />]}
+                            />
+                        }
+                    >
+                        {account_pending_withdrawals.map(account => (
+                            <Content
+                                key={account.loginid}
+                                currency_icon={`IcCurrency-${account.icon}`}
+                                loginid={account.loginid}
+                                title={account.title}
+                                value={
+                                    <Localize
+                                        i18n_default_text='{{pending_withdrawals}} pending withdrawal(s)'
+                                        values={{ pending_withdrawals: account.withdrawals }}
                                     />
                                 }
                             />

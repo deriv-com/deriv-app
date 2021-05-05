@@ -128,7 +128,6 @@
     &__btn {
         align-self: flex-end;
         margin: 0;
-        margin-top: -0.5rem;
         background-color: var(--button-primary-default);
         font-weight: bold;
         color: var(--text-colored-background);
@@ -147,7 +146,7 @@
         }
     }
     &__residence-field {
-        margin-bottom: 3.2rem;
+        margin-bottom: 2.7rem;
 
         @include desktop {
             min-width: 30rem;

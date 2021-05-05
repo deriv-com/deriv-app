@@ -76,7 +76,17 @@ const AccountSignup = ({
     };
 
     const onResidenceSelection = values => {
-        setSelectedResidence(values);
+        const residence = values;
+        setSelectedResidence(residence);
+        if (residence) {
+            const selected_country = residence_list.find(item => item.text.toLowerCase() === residence.toLowerCase())
+                .value;
+            if (isEuCountrySelected(selected_country)) {
+                setIsEuResident(true);
+            } else {
+                setIsEuResident(false);
+            }
+        }
     };
 
     // didMount lifecycle hook
@@ -88,19 +98,6 @@ const AccountSignup = ({
             setIsLoading(false);
         });
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-    React.useEffect(() => {
-        if (selected_residence) {
-            const selected_country = residence_list.find(
-                item => item.text.toLowerCase() === selected_residence.toLowerCase()
-            ).value;
-            if (isEuCountrySelected(selected_country)) {
-                setIsEuResident(true);
-            } else {
-                setIsEuResident(false);
-            }
-        }
-    }, [selected_residence]);
 
     const onSignupComplete = error => {
         if (error) {

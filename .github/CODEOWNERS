@@ -51,6 +51,9 @@
 #  reza-fs
 #  sara-fs
 #  zaki-binary
+#  matin-binary
+#  sean-binary
+#  yashim-binary
 
 
 
@@ -73,6 +76,7 @@
 #
 #   - reza-fs
 #   - zaki-binary
+#   - yashim-binary
 
 # ==============================================================
 #  binary-com/deriv-bot
@@ -91,6 +95,8 @@
 #  Used for approving all relevant changes to Core
 #
 #   - balakrishna-binary
+#   - matin-binary
+#   - mustofa-binary
 
 
 # ==============================================================
@@ -98,9 +104,7 @@
 # ==============================================================
 #  Used for approving all relevant changes to P2P
 #
-#   - mustofa-binary
-#   - negarn
-
+#   - carol-binary
 
 # ==============================================================
 #  binary-com/deriv-shared
@@ -114,6 +118,7 @@
 #   - reza-fs
 #   - sara-fs
 #   - zaki-binary
+#   - mustofa-binary
 
 
 # ==============================================================
@@ -142,7 +147,8 @@
 # ==============================================================
 #  Used for approving all relevant changes to Dashboard
 #
-#   - mustofa-binary
+#   - matin-binary
+#   - sean-binary
 
 
 ######################################################################################################

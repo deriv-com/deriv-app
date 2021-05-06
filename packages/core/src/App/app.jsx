@@ -65,7 +65,6 @@ const App = ({ root_store }) => {
     }, []);
 
     const handleResize = React.useCallback(() => {
-        console.log('resize');
         if (isTouchDevice() && isMobile()) {
             const is_android_device = mobileOSDetect() === 'Android';
             const view_width = is_android_device ? screen.availWidth : window.innerWidth;

@@ -142,16 +142,18 @@ const Onfido = ({
         case onfido_status_codes.expired:
             return <Expired {...props} />;
         case onfido_status_codes.suspected:
-            return <OnfidoFailed {...props} />;
+            return <OnfidoFailed suspected={onfido_status_codes.suspected} {...props} />;
         default:
             return null;
     }
 };
 
 Onfido.propTypes = {
+    country_code: PropTypes.string,
     documents_supported: PropTypes.array,
     handleComplete: PropTypes.func,
     has_poa: PropTypes.bool,
+    height: PropTypes.number,
     is_message_enabled: PropTypes.bool,
     onfido_service_token: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
     status: PropTypes.oneOf(Object.keys(onfido_status_codes)),

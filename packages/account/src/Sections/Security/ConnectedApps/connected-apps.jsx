@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import {
     DesktopWrapper,
     MobileWrapper,
@@ -10,12 +11,14 @@ import {
     Loading,
     Text,
 } from '@deriv/components';
+import { PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ErrorComponent from 'Components/error-component';
 import { WS } from 'Services/ws-methods';
 import GetConnectedAppsColumnsTemplate from './data-table-template.jsx';
 
 class ConnectedApps extends React.Component {
+    static contextType = PlatformContext;
     state = {
         is_loading: true,
         is_modal_open: false,
@@ -67,22 +70,29 @@ class ConnectedApps extends React.Component {
     };
 
     mobileRowRenderer = ({ row }) => {
+        const { is_dashboard } = this.context;
+
         return (
             <div className='data-list__row'>
                 <div className='data-list__col'>
                     <DataList.Cell row={row} column={this.columns_map.name} />
                     <DataList.Cell row={row} column={this.columns_map.scopes} />
                 </div>
-                <div className='data-list__col--small'>
+                <div className={is_dashboard ? 'data-list__col--dashboard' : 'data-list__col--small'}>
                     <DataList.Cell row={row} column={this.columns_map.last_used} />
-                    <DataList.Cell row={row} column={this.columns_map.app_id} is_footer={true} />
+                    <DataList.Cell row={row} column={this.columns_map.app_id} is_footer={!is_dashboard} />
                 </div>
             </div>
         );
     };
     render() {
+        const { is_dashboard } = this.context;
         return (
-            <section className='connected-apps__wrapper'>
+            <section
+                className={classNames('connected-apps__wrapper', {
+                    'connected-apps__wrapper--dashboard': is_dashboard,
+                })}
+            >
                 <Text color='prominent' weight='bold' as='p' className='connected-apps__title'>
                     {localize('Authorised applications')}
                 </Text>
@@ -96,14 +106,14 @@ class ConnectedApps extends React.Component {
                                 className='connected-apps'
                                 data_source={this.state.connected_apps}
                                 columns={GetConnectedAppsColumnsTemplate(this.handleToggleModal)}
-                                getRowSize={() => 56}
+                                getRowSize={is_dashboard ? 38 : 56}
                             />
                         </DesktopWrapper>
                         <MobileWrapper>
                             <DataList
                                 className='connected-apps'
                                 data_source={this.state.connected_apps}
-                                row_gap={10}
+                                row_gap={is_dashboard ? 16 : 10}
                                 rowRenderer={this.mobileRowRenderer}
                             />
                         </MobileWrapper>
@@ -116,11 +126,19 @@ class ConnectedApps extends React.Component {
                 >
                     <Modal.Body>
                         <div className='connected-app-modal'>
-                            <Icon icon='IcAccountTrashCan' size={128} className='connected-app-modal__icon' />
+                            <Icon
+                                icon={is_dashboard ? 'IcAccountTrashCanDashboard' : 'IcAccountTrashCan'}
+                                size={128}
+                                className='connected-app-modal__icon'
+                            />
                             <Text as='p' color='prominent' weight='bold'>
                                 {localize('Confirm revoke access?')}
                             </Text>
-                            <div className='connected-app-modal__confirmation'>
+                            <div
+                                className={classNames('connected-app-modal__confirmation', {
+                                    'connected-app-modal__confirmation-dashboard': is_dashboard,
+                                })}
+                            >
                                 <Button secondary onClick={this.handleToggleModal}>
                                     {localize('Back')}
                                 </Button>

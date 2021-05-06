@@ -6,24 +6,22 @@ import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import BinaryRoutes from 'App/Components/Routes';
+import getRoutesConfig from 'App/Constants/routes-config';
 import { connect } from 'Stores/connect';
 
-const tradePageMountingMiddleware = (route_to, action, current_pathname, cb) => {
-    if (action === 'PUSH' || action === 'POP') {
-        // We use matchPath here because on contract route, there will be an ID
-        // parameter which matchPath takes into account.
-        const is_routing_to_contract = matchPath(route_to.pathname, { path: routes.contract, exact: true });
-        const is_routing_from_contract = matchPath(current_pathname, {
-            path: routes.contract,
-            exact: true,
-        });
+const checkRoutingMatch = (route_list, path) => {
+    return route_list.some(route => !!matchPath(path, { path: route, exact: true }));
+};
 
-        cb(
-            !!(
-                (current_pathname === routes.trade && is_routing_to_contract) ||
-                (route_to.pathname === routes.trade && is_routing_from_contract)
-            )
+const tradePageMountingMiddleware = ({ path_from, path_to, action, match_patterns, callback }) => {
+    if (action === 'PUSH' || action === 'POP') {
+        // We use matchPath here because on route, there will be extra
+        // parameters which matchPath takes into account.
+        const has_match = match_patterns.some(
+            pattern => checkRoutingMatch(pattern.from, path_from) && checkRoutingMatch(pattern.to, path_to)
         );
+
+        callback(has_match);
     }
 
     return true;
@@ -39,6 +37,7 @@ const Error = Loadable({
 });
 
 const Routes = ({
+    clearPortfolio,
     error,
     has_error,
     history,
@@ -50,12 +49,54 @@ const Routes = ({
 }) => {
     React.useEffect(() => {
         if (setPromptHandler) {
-            setPromptHandler(true, (route_to, action) =>
-                tradePageMountingMiddleware(route_to, action, history.location.pathname, setTradeMountingPolicy)
-            );
+            setPromptHandler(true, (route_to, action) => {
+                // clears portfolio when we navigate to mt5 dashboard
+                tradePageMountingMiddleware({
+                    path_from: history.location.pathname,
+                    path_to: route_to.pathname,
+                    match_patterns: [
+                        {
+                            from: getRoutesConfig()
+                                .flatMap(route => {
+                                    if (route.routes) {
+                                        return route.routes.map(subroute => subroute.path);
+                                    }
+                                    return [route.path];
+                                })
+                                .filter(path => path && path !== routes.mt5),
+                            to: [routes.mt5],
+                        },
+                    ],
+                    action,
+                    callback: has_match => {
+                        if (has_match) {
+                            clearPortfolio();
+                        }
+                    },
+                });
+
+                return tradePageMountingMiddleware({
+                    path_from: history.location.pathname,
+                    path_to: route_to.pathname,
+                    match_patterns: [
+                        { from: [routes.contract], to: [routes.trade] },
+                        { from: [routes.trade], to: [routes.contract] },
+                    ],
+                    action,
+                    callback: setTradeMountingPolicy,
+                });
+            });
         }
+
+        return () => {
+            setPromptHandler?.(false);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        return () => clearPortfolio();
+    }, [clearPortfolio]);
 
     if (has_error) return <Error {...error} />;
 
@@ -77,6 +118,7 @@ Routes.propTypes = {
 // to prevent updates on <BinaryRoutes /> from being blocked
 export default withRouter(
     connect(({ client, common, modules, ui }) => ({
+        clearPortfolio: modules.portfolio.clearTable,
         error: common.error,
         has_error: common.has_error,
         is_logged_in: client.is_logged_in,

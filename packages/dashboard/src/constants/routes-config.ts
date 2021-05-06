@@ -5,40 +5,182 @@ import Home from 'Components/pages/home';
 import Explore from 'Components/pages/explore';
 import Resources from 'Components/pages/resources';
 import DMT5Synthetic from 'Components/pages/platforms/dmt5_synthetic';
+import TempMyApps from 'Components/pages/temp-my-apps';
 import { TRoutesProps, TRoute } from 'Types';
 
-// 1. Order matters! Put more specific routes at the top.
+// 1. Order matters! Put more specific consumer_routes at the top.
 // 2. Don't use `Localize` component since native html tag like `option` cannot render them
 const initRoutesConfig = ({ consumer_routes }: TRoutesConfig): TRoute[] => [
     {
-        component: DMT5Synthetic,
-        getTitle: () => localize('DMT5 Synthetic'),
-        is_authenticated: false,
-        path: consumer_routes.platform_dmt5_synthetic,
-    },
-    {
-        component: Explore,
-        getTitle: () => localize('Explore'),
-        is_authenticated: false,
-        path: consumer_routes.explore,
-    },
-    {
-        component: AboutUs,
-        getTitle: () => localize('About us'),
-        is_authenticated: false,
-        path: consumer_routes.about_us,
-    },
-    {
-        component: Resources,
-        getTitle: () => localize('Resources'),
-        is_authenticated: false,
-        path: consumer_routes.resources,
-    },
-    {
-        component: Home,
-        getTitle: () => localize('Dashboard'),
-        is_authenticated: false,
         path: consumer_routes.home,
+        component: Home,
+        is_modal: true,
+        getTitle: () => localize('Dashboard'),
+        routes: [
+            {
+                component: TempMyApps,
+                getTitle: () => localize('My Apps'),
+                icon: 'IcUserOutline',
+                is_authenticated: false,
+                is_routed: true,
+                path: consumer_routes.my_apps,
+            },
+            {
+                getTitle: () => '',
+                path: '-',
+                subroutes: [],
+            },
+            {
+                component: DMT5Synthetic,
+                getTitle: () => localize('DMT5 Synthetic'),
+                is_authenticated: false,
+                path: consumer_routes.platform_dmt5_synthetic,
+            },
+            {
+                default: true,
+                component: Explore,
+                getTitle: () => localize('Discover'),
+                icon: 'IcWalletExplore',
+                is_authenticated: false,
+                is_routed: true,
+                path: consumer_routes.explore,
+            },
+            {
+                component: AboutUs,
+                getTitle: () => localize('About us'),
+                is_authenticated: false,
+                path: consumer_routes.about_us,
+            },
+            {
+                component: Resources,
+                getTitle: () => localize('Resources'),
+                is_authenticated: false,
+                path: consumer_routes.resources,
+            },
+            {
+                icon: 'IcWalletWallets',
+                getTitle: () => localize('Wallets'),
+                path: consumer_routes.wallets,
+                subroutes: [
+                    {
+                        getTitle: () => localize('Credit/Debit Cards'),
+                        component: Explore,
+                        path: consumer_routes.explore,
+                    },
+                    {
+                        getTitle: () => localize('E-wallet'),
+                        component: Explore,
+                        path: consumer_routes.explore,
+                    },
+                    {
+                        getTitle: () => localize('Cryptocurrency'),
+                        component: Explore,
+                        path: consumer_routes.explore,
+                    },
+                    {
+                        getTitle: () => localize('Bank Wire'),
+                        component: Explore,
+                        path: consumer_routes.explore,
+                    },
+                ],
+            },
+            {
+                icon: 'IcWalletPlatforms',
+                getTitle: () => localize('Platforms'),
+                path: consumer_routes.platforms,
+                subroutes: [
+                    {
+                        getTitle: () => localize('DMT5'),
+                        component: DMT5Synthetic,
+                        path: consumer_routes.platform_dmt5_synthetic,
+                    },
+                    {
+                        getTitle: () => localize('DMT5 Financial'),
+                        component: DMT5Synthetic,
+                        path: consumer_routes.platform_dmt5_synthetic,
+                    },
+                    {
+                        getTitle: () => localize('DMT5 Financial STP'),
+                        component: DMT5Synthetic,
+                        path: consumer_routes.platform_dmt5_synthetic,
+                    },
+                    {
+                        getTitle: () => localize('DMT5 Synthetic'),
+                        component: DMT5Synthetic,
+                        path: consumer_routes.platform_dmt5_synthetic,
+                    },
+                    {
+                        getTitle: () => localize('DTrader'),
+                        component: Explore,
+                        path: consumer_routes.explore,
+                    },
+                    {
+                        getTitle: () => localize('DBot'),
+                        component: Explore,
+                        path: consumer_routes.explore,
+                    },
+                    {
+                        getTitle: () => localize('SmartTrader'),
+                        component: Explore,
+                        path: consumer_routes.explore,
+                    },
+                    {
+                        getTitle: () => localize('Binary Bot'),
+                        component: Explore,
+                        path: consumer_routes.explore,
+                    },
+                ],
+            },
+            {
+                icon: 'IcWalletTradeTypes',
+                getTitle: () => localize('Trade Types'),
+                path: consumer_routes.trade_types,
+                subroutes: [
+                    {
+                        getTitle: () => localize('CFDs'),
+                        component: Explore,
+                        path: consumer_routes.explore,
+                    },
+                    {
+                        getTitle: () => localize('Multipliers'),
+                        component: Explore,
+                        path: consumer_routes.explore,
+                    },
+                    {
+                        getTitle: () => localize('Options'),
+                        component: Explore,
+                        path: consumer_routes.explore,
+                    },
+                ],
+            },
+            {
+                icon: 'IcWalletMarkets',
+                getTitle: () => localize('Markets'),
+                path: consumer_routes.markets,
+                subroutes: [
+                    {
+                        getTitle: () => localize('Forex'),
+                        component: Explore,
+                        path: consumer_routes.explore,
+                    },
+                    {
+                        getTitle: () => localize('Synthetic Indices'),
+                        component: Explore,
+                        path: consumer_routes.explore,
+                    },
+                    {
+                        getTitle: () => localize('Stock Indices'),
+                        component: Explore,
+                        path: consumer_routes.explore,
+                    },
+                    {
+                        getTitle: () => localize('Commodities'),
+                        component: Explore,
+                        path: consumer_routes.explore,
+                    },
+                ],
+            },
+        ],
     },
 ];
 

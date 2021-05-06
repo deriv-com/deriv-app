@@ -1,3 +1,3 @@
-import { OnfidoFailed } from './onfido-failed.jsx';
+import OnfidoFailed from './onfido-failed.jsx';
 
 export default OnfidoFailed;

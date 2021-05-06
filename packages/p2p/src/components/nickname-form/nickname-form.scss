@@ -1,4 +1,4 @@
-.nickname__form {
+.dp2p-nickname__form {
     &-header {
         border-bottom: 1px solid var(--general-section-2);
 
@@ -37,9 +37,6 @@
             padding: 0 4rem;
         }
         &--title {
-            color: var(--text-general);
-            font-size: var(--text-size-s);
-            font-weight: bold;
             margin: 1.4rem 0;
         }
         &--text {
@@ -141,7 +138,6 @@
         cursor: pointer;
         fill: var(--text-general);
     }
-
     &-wrapper {
         @include mobile {
             height: 100%;

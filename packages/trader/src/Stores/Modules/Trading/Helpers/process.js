@@ -25,4 +25,7 @@ const getMethodsList = (store, new_state) => [
         : []),
     StartDate.onChangeStartDate,
     Duration.onChangeExpiry, // it should be always after StartDate.onChangeStartDate
+    ...(/\b(symbol|contract_type)\b/.test(Object.keys(new_state)) || !store.contract_type // symbol/contract_type changed or contract_type not set yet
+        ? [Duration.onChangeContractType]
+        : []),
 ];

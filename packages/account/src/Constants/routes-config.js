@@ -22,7 +22,7 @@ import {
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
 // Order matters
-const initRoutesConfig = () => [
+const initRoutesConfig = ({ is_dashboard }) => [
     {
         path: routes.account_deactivated,
         component: AccountDeactivated,
@@ -82,23 +82,27 @@ const initRoutesConfig = () => [
                     {
                         path: routes.self_exclusion,
                         component: SelfExclusion,
-                        getTitle: () => localize('Self exclusion'),
+                        getTitle: () => (is_dashboard ? localize('Self-exclusion') : localize('Self exclusion')),
                     },
                     {
                         path: routes.account_limits,
                         component: AccountLimits,
-                        getTitle: () => localize('Account limits'),
+                        getTitle: () => (is_dashboard ? localize('Withdrawal limits') : localize('Account limits')),
                     },
                     {
                         path: routes.login_history,
                         component: LoginHistory,
                         getTitle: () => localize('Login history'),
                     },
-                    {
-                        path: routes.api_token,
-                        component: ApiToken,
-                        getTitle: () => localize('API token'),
-                    },
+                    ...(is_dashboard
+                        ? []
+                        : [
+                              {
+                                  path: routes.api_token,
+                                  component: ApiToken,
+                                  getTitle: () => localize('API token'),
+                              },
+                          ]),
                     {
                         path: routes.connected_apps,
                         component: ConnectedApps,

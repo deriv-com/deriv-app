@@ -1,29 +1,37 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Deriv</title>
-        <meta charset="utf-8" />
-        <meta name="referrer" content="origin" />
-        <script>
-            window.addEventListener('message', function(message) {
-                var allowed_origins = [
-                    'https://smarttrader.deriv.com',
-                    'https://smarttrader-staging.deriv.com',
-                ];
 
-                if (allowed_origins.includes(message.origin)) {
-                    switch (message.data.key) {
-                        case 'active_loginid':
-                        case 'client.accounts': {
-                            if (localStorage.getItem(message.data.key) !== message.data.value) {
-                                localStorage.setItem(message.data.key, message.data.value);
-                            }
-                            break;
+<head>
+    <title>Deriv</title>
+    <meta charset="utf-8" />
+    <meta name="referrer" content="origin" />
+    <script>
+        window.addEventListener('message', function (message) {
+            let domain_url = ''
+            if (window.location.hostname.indexOf('deriv.com') > -1) {
+                domain_url = 'deriv.com'
+            } else {
+                domain_url = 'deriv.me'
+            }
+            var allowed_origins = [
+                `https://smarttrader.${domain_url}`,
+                'https://smarttrader-staging.deriv.com',
+            ];
+            if (allowed_origins.includes(message.origin)) {
+                switch (message.data.key) {
+                    case 'active_loginid':
+                    case 'client.accounts': {
+                        if (localStorage.getItem(message.data.key) !== message.data.value) {
+                            localStorage.setItem(message.data.key, message.data.value);
                         }
+                        break;
                     }
                 }
-            });
-        </script>
-    </head>
-    <body></body>
+            }
+        });
+    </script>
+</head>
+
+<body></body>
+
 </html>

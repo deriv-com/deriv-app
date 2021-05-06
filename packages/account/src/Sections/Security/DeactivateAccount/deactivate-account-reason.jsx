@@ -223,7 +223,10 @@ class DeactivateAccountReason extends React.Component {
     };
 
     handleInputPaste = e => {
-        if (this.state.remaining_characters <= 0) {
+        const clipboardData = (e.clipboardData || window.clipboardData).getData('text');
+        const remaining_chars = this.state.remaining_characters;
+
+        if (this.state.remaining_characters <= 0 || clipboardData.length > remaining_chars) {
             e.preventDefault();
         }
     };

@@ -125,11 +125,7 @@
 .currency-selector {
     &__radio-group--with-margin {
         &--is-header {
-            font-size: 1.6rem;
             margin: 0.4rem 0 0;
-            font-weight: bold;
-            color: var(--text-prominent);
-            text-align: center;
         }
 
         @include desktop {

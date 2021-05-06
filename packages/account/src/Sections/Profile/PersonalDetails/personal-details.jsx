@@ -914,7 +914,6 @@ export class PersonalDetailsForm extends React.Component {
                                                                 disabled={!this.isChangeableField('address_line_2')}
                                                             />
                                                         </fieldset>
-                                                        let me check it out
                                                         <fieldset className='account-form__fieldset'>
                                                             <Input
                                                                 data-lpignore='true'

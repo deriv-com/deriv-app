@@ -121,28 +121,21 @@ const SubmittedPage = () => {
     const history = useHistory();
     const location = useLocation();
 
-    // Passing "custtom_button_options" object in "location.state" allows
+    // Passing "custom_button_options" object in "location.state" allows
     // another app/route to determine which button the user will see after
     // submitting their financial assessment.
-    const button_text =
-        location.state && location.state.custom_button_options
-            ? location.state.custom_button_options.button_text
-            : localize('Continue');
-    const icon_text =
-        location.state && location.state.custom_button_options
-            ? location.state.custom_button_options.icon_text
-            : localize('Let’s continue with providing proofs of address and identity.');
-    const route_to_path =
-        location.state && location.state.custom_button_options
-            ? location.state.custom_button_options.route_to_path
-            : routes.proof_of_address;
+    const button_text = location.state?.custom_button_options
+        ? location.state.custom_button_options.button_text
+        : localize('Continue');
+    const icon_text = location.state?.custom_button_options
+        ? location.state.custom_button_options.icon_text
+        : localize('Let’s continue with providing proofs of address and identity.');
+    const route_to_path = location.state?.custom_button_options
+        ? location.state.custom_button_options.route_to_path
+        : routes.proof_of_address;
 
     const onClickButton = () => {
-        if (
-            location.state &&
-            location.state.custom_button_options &&
-            location.state.custom_button_options.is_hard_redirect
-        ) {
+        if (location.state?.custom_button_options?.is_hard_redirect) {
             window.location.href = window.location.origin + route_to_path;
         } else {
             history.push(route_to_path);

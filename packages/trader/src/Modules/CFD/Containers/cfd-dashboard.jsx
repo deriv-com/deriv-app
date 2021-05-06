@@ -186,7 +186,12 @@ class CFDDashboard extends React.Component {
                                         weight='normal'
                                         align='center'
                                     >
-                                        <Localize i18n_default_text='Due to an issue on our server, some of your MT5 accounts are unavailable at the moment. Please bear with us and thank you for your patience.' />
+                                        <Localize
+                                            i18n_default_text='Due to an issue on our server, some of your {{platform}} accounts are unavailable at the moment. Please bear with us and thank you for your patience.'
+                                            values={{
+                                                platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
+                                            }}
+                                        />
                                     </Text>
                                 </div>
                             )}

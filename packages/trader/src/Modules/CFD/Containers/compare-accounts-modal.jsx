@@ -13,240 +13,259 @@ import {
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { isDesktop } from '@deriv/shared';
 
-const accounts = [
-    {
-        attribute: localize('Account currency'),
-        mt5: {
-            synthetic: localize('USD'),
-            synthetic_eu: localize('EUR'),
-            financial: localize('USD'),
-            financial_eu: localize('EUR/GBP'),
-            financial_stp: localize('USD'),
-            footnote: null,
+const getAccounts = ({ landing_companies, platform }) => {
+    const account_types_count = [
+        landing_companies?.mt_gaming_company?.financial,
+        landing_companies?.mt_financial_company?.financial,
+        landing_companies?.mt_financial_company?.financial_stp && platform === 'mt5',
+    ].filter(Boolean).length;
+
+    return [
+        {
+            attribute: localize('Account currency'),
+            mt5: {
+                synthetic: localize('USD'),
+                synthetic_eu: localize('EUR'),
+                financial: localize('USD'),
+                financial_eu: localize('EUR/GBP'),
+                financial_stp: localize('USD'),
+                footnote: null,
+            },
+            dxtrade: {
+                synthetic: localize('USD'),
+                synthetic_eu: localize('EUR'),
+                financial: localize('USD'),
+                financial_eu: localize('EUR/GBP'),
+                footnote: null,
+            },
         },
-        dxtrade: {
-            synthetic: localize('USD'),
-            synthetic_eu: localize('EUR'),
-            financial: localize('USD'),
-            financial_eu: localize('EUR/GBP'),
-            footnote: null,
+        {
+            attribute: localize('Maximum leverage'),
+            mt5: {
+                synthetic: localize('Up to 1:1000'),
+                synthetic_eu: localize('Up to 1:1000'),
+                financial: localize('Up to 1:1000'),
+                financial_eu: localize('Up to 1:30'),
+                financial_stp: localize('Up to 1:100'),
+                footnote: localize(
+                    'Leverage gives you the ability to trade a larger position using your existing capital. Leverage varies across different symbols.'
+                ),
+            },
+            dxtrade: {
+                synthetic: localize('Up to 1:1000'),
+                synthetic_eu: localize('Up to 1:1000'),
+                financial: localize('Up to 1:1000'),
+                financial_eu: localize('Up to 1:30'),
+                footnote: localize(
+                    'Leverage gives you the ability to trade a larger position using your existing capital. Leverage varies across different symbols.'
+                ),
+            },
         },
-    },
-    {
-        attribute: localize('Maximum leverage'),
-        mt5: {
-            synthetic: localize('Up to 1:1000'),
-            synthetic_eu: localize('Up to 1:1000'),
-            financial: localize('Up to 1:1000'),
-            financial_eu: localize('Up to 1:30'),
-            financial_stp: localize('Up to 1:100'),
-            footnote: localize(
-                'Leverage gives you the ability to trade a larger position using your existing capital. Leverage varies across different symbols.'
-            ),
+        {
+            attribute: localize('Order execution'),
+            mt5: {
+                synthetic: localize('Market'),
+                synthetic_eu: localize('Market'),
+                financial: localize('Market'),
+                financial_eu: localize('Market'),
+                financial_stp: localize('Market'),
+                footnote: localize(
+                    "All {{count}} account types use market execution. This means you agree with the broker's price in advance and will place orders at the broker's price.",
+                    {
+                        count: account_types_count,
+                    }
+                ),
+            },
+            dxtrade: {
+                synthetic: localize('Market'),
+                synthetic_eu: localize('Market'),
+                financial: localize('Market'),
+                financial_eu: localize('Market'),
+                footnote: localize(
+                    "All {{count}} account types use market execution. This means you agree with the broker's price in advance and will place orders at the broker's price.",
+                    {
+                        count: account_types_count,
+                    }
+                ),
+            },
         },
-        dxtrade: {
-            synthetic: localize('Up to 1:1000'),
-            synthetic_eu: localize('Up to 1:1000'),
-            financial: localize('Up to 1:1000'),
-            financial_eu: localize('Up to 1:30'),
-            footnote: localize(
-                'Leverage gives you the ability to trade a larger position using your existing capital. Leverage varies across different symbols.'
-            ),
+        {
+            attribute: localize('Spread'),
+            mt5: {
+                synthetic: localize('Fixed/Variable'),
+                synthetic_eu: localize('Fixed/Variable'),
+                financial: localize('Variable'),
+                financial_eu: localize('Variable'),
+                financial_stp: localize('Variable'),
+                footnote: localize(
+                    "The spread is the difference between the buy price and sell price. A variable spread means that the spread is constantly changing, depending on market conditions. A fixed spread remains constant but is subject to alteration, at the Broker's absolute discretion."
+                ),
+            },
+            dxtrade: {
+                synthetic: localize('Fixed/Variable'),
+                synthetic_eu: localize('Fixed/Variable'),
+                financial: localize('Variable'),
+                financial_eu: localize('Variable'),
+                footnote: localize(
+                    "The spread is the difference between the buy price and sell price. A variable spread means that the spread is constantly changing, depending on market conditions. A fixed spread remains constant but is subject to alteration, at the Broker's absolute discretion."
+                ),
+            },
         },
-    },
-    {
-        attribute: localize('Order execution'),
-        mt5: {
-            synthetic: localize('Market'),
-            synthetic_eu: localize('Market'),
-            financial: localize('Market'),
-            financial_eu: localize('Market'),
-            financial_stp: localize('Market'),
-            footnote: localize(
-                "All 3 account types use market execution. This means you agree with the broker's price in advance and will place orders at the broker's price."
-            ),
+        {
+            attribute: localize('Commission'),
+            mt5: {
+                synthetic: localize('No'),
+                synthetic_eu: localize('No'),
+                financial: localize('No'),
+                financial_eu: localize('No'),
+                financial_stp: localize('No'),
+                footnote: localize('Deriv charges no commission across all account types.'),
+            },
+            dxtrade: {
+                synthetic: localize('No'),
+                synthetic_eu: localize('No'),
+                financial: localize('No'),
+                financial_eu: localize('No'),
+                footnote: localize('Deriv charges no commission across all account types.'),
+            },
         },
-        dxtrade: {
-            synthetic: localize('Market'),
-            synthetic_eu: localize('Market'),
-            financial: localize('Market'),
-            financial_eu: localize('Market'),
-            footnote: localize(
-                "All 3 account types use market execution. This means you agree with the broker's price in advance and will place orders at the broker's price."
-            ),
+        {
+            attribute: localize('Minimum deposit'),
+            mt5: {
+                synthetic: localize('No'),
+                synthetic_eu: localize('No'),
+                financial: localize('No'),
+                financial_eu: localize('No'),
+                financial_stp: localize('No'),
+                footnote: null,
+            },
+            dxtrade: {
+                synthetic: localize('No'),
+                synthetic_eu: localize('No'),
+                financial: localize('No'),
+                financial_eu: localize('No'),
+                footnote: null,
+            },
         },
-    },
-    {
-        attribute: localize('Spread'),
-        mt5: {
-            synthetic: localize('Fixed/Variable'),
-            synthetic_eu: localize('Fixed/Variable'),
-            financial: localize('Variable'),
-            financial_eu: localize('Variable'),
-            financial_stp: localize('Variable'),
-            footnote: localize(
-                "The spread is the difference between the buy price and sell price. A variable spread means that the spread is constantly changing, depending on market conditions. A fixed spread remains constant but is subject to alteration, at the Broker's absolute discretion."
-            ),
+        {
+            attribute: localize('Margin call'),
+            mt5: {
+                synthetic: localize('100%'),
+                synthetic_eu: localize('100%'),
+                financial: localize('150%'),
+                financial_eu: localize('100%'),
+                financial_stp: localize('150%'),
+                footnote: localize(
+                    'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
+                ),
+            },
+            dxtrade: {
+                synthetic: localize('100%'),
+                synthetic_eu: localize('100%'),
+                financial: localize('100%'),
+                financial_eu: localize('100%'),
+                footnote: localize(
+                    'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
+                ),
+            },
         },
-        dxtrade: {
-            synthetic: localize('Fixed/Variable'),
-            synthetic_eu: localize('Fixed/Variable'),
-            financial: localize('Variable'),
-            financial_eu: localize('Variable'),
-            footnote: localize(
-                "The spread is the difference between the buy price and sell price. A variable spread means that the spread is constantly changing, depending on market conditions. A fixed spread remains constant but is subject to alteration, at the Broker's absolute discretion."
-            ),
+        {
+            attribute: localize('Stop out level'),
+            mt5: {
+                synthetic: localize('50%'),
+                synthetic_eu: localize('50%'),
+                financial: localize('75%'),
+                financial_eu: localize('50%'),
+                financial_stp: localize('75%'),
+                footnote: localize(
+                    'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
+                ),
+            },
+            dxtrade: {
+                synthetic: localize('50%'),
+                synthetic_eu: localize('50%'),
+                financial: localize('50%'),
+                financial_eu: localize('50%'),
+                footnote: localize(
+                    'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
+                ),
+            },
         },
-    },
-    {
-        attribute: localize('Commission'),
-        mt5: {
-            synthetic: localize('No'),
-            synthetic_eu: localize('No'),
-            financial: localize('No'),
-            financial_eu: localize('No'),
-            financial_stp: localize('No'),
-            footnote: localize('Deriv charges no commission across all account types.'),
+        {
+            attribute: localize('Negative Balance Protection'),
+            dxtrade: {
+                synthetic: localize('Available'),
+                synthetic_eu: localize('Available'),
+                financial: localize('N/A'),
+                financial_eu: localize('Required'),
+            },
         },
-        dxtrade: {
-            synthetic: localize('No'),
-            synthetic_eu: localize('No'),
-            financial: localize('No'),
-            financial_eu: localize('No'),
-            footnote: localize('Deriv charges no commission across all account types.'),
+        {
+            attribute: localize('Number of assets'),
+            mt5: {
+                synthetic: localize('10+'),
+                synthetic_eu: localize('10+'),
+                financial: localize('50+'),
+                financial_eu: localize('50+'),
+                financial_stp: localize('50+'),
+                footnote: null,
+            },
+            dxtrade: {
+                synthetic: localize('20+'),
+                synthetic_eu: localize('50+'),
+                financial: localize('20+'),
+                financial_eu: localize('1000+'),
+                footnote: null,
+            },
         },
-    },
-    {
-        attribute: localize('Minimum deposit'),
-        mt5: {
-            synthetic: localize('No'),
-            synthetic_eu: localize('No'),
-            financial: localize('No'),
-            financial_eu: localize('No'),
-            financial_stp: localize('No'),
-            footnote: null,
+        {
+            attribute: localize('Cryptocurrency trading'),
+            mt5: {
+                synthetic: localize('N/A'),
+                synthetic_eu: localize('N/A'),
+                financial: localize('24/7'),
+                financial_eu: localize('24/7'),
+                financial_stp: localize('24/7'),
+                footnote: localize('Indicates the availability of cryptocurrency trading on a particular account.'),
+            },
+            dxtrade: {
+                synthetic: localize('N/A'),
+                synthetic_eu: localize('N/A'),
+                financial: localize('24/7'),
+                financial_eu: localize('24/7'),
+                footnote: localize('Indicates the availability of cryptocurrency trading on a particular account.'),
+            },
         },
-        dxtrade: {
-            synthetic: localize('No'),
-            synthetic_eu: localize('No'),
-            financial: localize('No'),
-            financial_eu: localize('No'),
-            footnote: null,
+        {
+            attribute: localize('Trading instruments'),
+            mt5: {
+                synthetic: localize('Synthetics'),
+                synthetic_eu: localize('Synthetics'),
+                financial: localize(
+                    'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices'
+                ),
+                financial_eu: localize(
+                    'FX-majors (standard), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices'
+                ),
+                financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
+                footnote: null,
+            },
+            dxtrade: {
+                synthetic: localize('Synthetics'),
+                synthetic_eu: localize('Synthetics'),
+                financial: localize(
+                    'FX-majors (standard/micro lots), FX-minors, Smart-FX, Commodities, Cryptocurrencies'
+                ),
+                financial_eu: localize(
+                    'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies (except UK)'
+                ),
+                footnote: null,
+            },
         },
-    },
-    {
-        attribute: localize('Margin call'),
-        mt5: {
-            synthetic: localize('100%'),
-            synthetic_eu: localize('100%'),
-            financial: localize('150%'),
-            financial_eu: localize('100%'),
-            financial_stp: localize('150%'),
-            footnote: localize(
-                'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
-            ),
-        },
-        dxtrade: {
-            synthetic: localize('100%'),
-            synthetic_eu: localize('100%'),
-            financial: localize('100%'),
-            financial_eu: localize('100%'),
-            footnote: localize(
-                'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
-            ),
-        },
-    },
-    {
-        attribute: localize('Stop out level'),
-        mt5: {
-            synthetic: localize('50%'),
-            synthetic_eu: localize('50%'),
-            financial: localize('75%'),
-            financial_eu: localize('50%'),
-            financial_stp: localize('75%'),
-            footnote: localize(
-                'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
-            ),
-        },
-        dxtrade: {
-            synthetic: localize('50%'),
-            synthetic_eu: localize('50%'),
-            financial: localize('50%'),
-            financial_eu: localize('50%'),
-            footnote: localize(
-                'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
-            ),
-        },
-    },
-    {
-        attribute: localize('Negative Balance Protection'),
-        dxtrade: {
-            synthetic: localize('Available'),
-            synthetic_eu: localize('Available'),
-            financial: localize('N/A'),
-            financial_eu: localize('Required'),
-        },
-    },
-    {
-        attribute: localize('Number of assets'),
-        mt5: {
-            synthetic: localize('10+'),
-            synthetic_eu: localize('10+'),
-            financial: localize('50+'),
-            financial_eu: localize('50+'),
-            financial_stp: localize('50+'),
-            footnote: null,
-        },
-        dxtrade: {
-            synthetic: localize('20+'),
-            synthetic_eu: localize('50+'),
-            financial: localize('20+'),
-            financial_eu: localize('1000+'),
-            footnote: null,
-        },
-    },
-    {
-        attribute: localize('Cryptocurrency trading'),
-        mt5: {
-            synthetic: localize('N/A'),
-            synthetic_eu: localize('N/A'),
-            financial: localize('24/7'),
-            financial_eu: localize('24/7'),
-            financial_stp: localize('24/7'),
-            footnote: localize('Indicates the availability of cryptocurrency trading on a particular account.'),
-        },
-        dxtrade: {
-            synthetic: localize('N/A'),
-            synthetic_eu: localize('N/A'),
-            financial: localize('24/7'),
-            financial_eu: localize('24/7'),
-            footnote: localize('Indicates the availability of cryptocurrency trading on a particular account.'),
-        },
-    },
-    {
-        attribute: localize('Trading instruments'),
-        mt5: {
-            synthetic: localize('Synthetics'),
-            synthetic_eu: localize('Synthetics'),
-            financial: localize(
-                'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices'
-            ),
-            financial_eu: localize('FX-majors (standard), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices'),
-            financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
-            footnote: null,
-        },
-        dxtrade: {
-            synthetic: localize('Synthetics'),
-            synthetic_eu: localize('Synthetics'),
-            financial: localize('FX-majors (standard/micro lots), FX-minors, Smart-FX, Commodities, Cryptocurrencies'),
-            financial_eu: localize(
-                'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies (except UK)'
-            ),
-            footnote: null,
-        },
-    },
-];
+    ];
+};
 
 const CFDAttributeDescriber = ({ name, counter }) => {
     const [is_visible, setIsVisible] = React.useState(false);
@@ -313,10 +332,16 @@ const filterAvailableAccounts = (landing_companies, table, is_logged_in, show_eu
 
 const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logged_in, platform }) => {
     const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
-    return filterAvailableAccounts(landing_companies, accounts, is_logged_in, show_eu_related, platform);
+    return filterAvailableAccounts(
+        landing_companies,
+        getAccounts({ landing_companies, platform }),
+        is_logged_in,
+        show_eu_related,
+        platform
+    );
 };
 
-const CFDCompareAccountHint = ({ platform, show_risk_message }) => {
+const CFDCompareAccountHint = ({ platform, show_risk_message, landing_companies }) => {
     return (
         <div className='cfd-compare-account--hint'>
             <div className='cfd-compare-accounts__bullet-wrapper'>
@@ -347,7 +372,7 @@ const CFDCompareAccountHint = ({ platform, show_risk_message }) => {
                     </div>
                 </React.Fragment>
             )}
-            {accounts
+            {getAccounts({ landing_companies, platform })
                 .filter(item => !!item[platform]?.footnote)
                 .map((account, index) => {
                     return (
@@ -409,7 +434,7 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
     const show_risk_message = platform === 'mt5' || !show_eu_related;
 
     return (
-        <Div100vhContainer height_offset='40px'>
+        <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()}>
             <ThemedScrollbars
                 className='cfd-compare-accounts'
                 style={{
@@ -477,7 +502,11 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
                         </Table.Body>
                     </Table>
                 </div>
-                <CFDCompareAccountHint platform={platform} show_risk_message={show_risk_message} />
+                <CFDCompareAccountHint
+                    platform={platform}
+                    show_risk_message={show_risk_message}
+                    landing_companies={landing_companies}
+                />
             </ThemedScrollbars>
         </Div100vhContainer>
     );

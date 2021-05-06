@@ -102,7 +102,7 @@ const AccountTransferNote = ({ currency, transfer_fee, minimum_fee }) => (
     </div>
 );
 
-let remaining_transfers, transfer_to_hint;
+let remaining_transfers;
 
 let accounts_from = [];
 let mt_accounts_from = [];
@@ -133,6 +133,7 @@ const AccountTransferForm = ({
 }) => {
     const [from_accounts, setFromAccounts] = React.useState({});
     const [to_accounts, setToAccounts] = React.useState({});
+    const [transfer_to_hint, setTransferToHint] = React.useState();
 
     const validateAmount = amount => {
         if (!amount) return localize('This field is required.');
@@ -281,10 +282,11 @@ const AccountTransferForm = ({
 
         remaining_transfers = getRemainingTransfers();
 
-        transfer_to_hint =
+        const hint =
             +remaining_transfers === 1
                 ? localize('You have {{number}} transfer remaining for today.', { number: remaining_transfers })
                 : localize('You have {{number}} transfers remaining for today.', { number: remaining_transfers });
+        setTransferToHint(hint);
     }, [selected_to, selected_from, account_limits]);
 
     const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;

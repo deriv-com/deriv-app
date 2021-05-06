@@ -55,6 +55,9 @@ const PasswordsStatic = ({ is_dark_mode_on, is_deriv_password, is_trading_passwo
                             <Popover alignment='bottom' message='DMT5'>
                                 <Icon icon='IcBrandDmt5' size={32} />
                             </Popover>
+                            <Popover alignment='bottom' message='DMT5'>
+                                <Icon icon='IcBrandDxtrade' size={32} />
+                            </Popover>
                         </div>
                     </React.Fragment>
                 )}

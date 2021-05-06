@@ -155,8 +155,11 @@ const TradingPasswordManager = ({ status, platform }) => {
             <Text as='p' align='center' size='xs'>
                 {!is_existing_user && (
                     <Localize
-                        i18n_default_text='Your DMT5 password is now same as your trading password. To reset, please go to <0>Settings</0> to change your trading password. '
+                        i18n_default_text='Your {{platform}} password is now same as your trading password. To reset, please go to <0>Settings</0> to change your trading password. '
                         components={[<Text weight='bold' key={0} />]}
+                        values={{
+                            platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
+                        }}
                     />
                 )}
                 {is_existing_user && (
@@ -369,61 +372,56 @@ const CFDPasswordManagerTabContent = ({
         setErrorMessageInvestor('');
         setSubmitSuccessInvestor(false);
     };
+
+    const trading_password_manager = (
+        <React.Fragment>
+            <DesktopWrapper>
+                <ThemedScrollbars height={password_container_height} is_bypassed={isMobile()} autohide={false}>
+                    <TradingPasswordManager status={account_status.status} platform={platform} />
+                </ThemedScrollbars>
+            </DesktopWrapper>
+            <MobileWrapper>
+                <Div100vhContainer className='cfd-password-manager__scroll-wrapper' height_offset='120px'>
+                    <TradingPasswordManager status={account_status.status} platform={platform} />
+                </Div100vhContainer>
+            </MobileWrapper>
+        </React.Fragment>
+    );
+
+    if (platform === 'dxtrade') return trading_password_manager;
+
     return (
-        <>
-            <Tabs active_index={active_tab_index} onTabItemClick={updateAccountTabIndex} top>
-                <div label={localize('Trading password')}>
-                    <DesktopWrapper>
-                        <ThemedScrollbars height={password_container_height} is_bypassed={isMobile()} autohide={false}>
-                            <TradingPasswordManager status={account_status.status} platform={platform} />
-                        </ThemedScrollbars>
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <Div100vhContainer className='cfd-password-manager__scroll-wrapper' height_offset='120px'>
-                            <TradingPasswordManager
-                                is_submit_success_main={is_submit_success_main}
-                                toggleModal={toggleModal}
-                                onSubmit={onSubmit}
-                                validatePassword={validatePassword}
-                                error_message_main={error_message_main}
-                                setPasswordType={setPasswordType}
-                                multi_step_ref={multi_step_ref}
-                                platform={platform}
-                                status={account_status.status}
-                            />
-                        </Div100vhContainer>
-                    </MobileWrapper>
-                </div>
-                <div label={localize('Investor password')}>
-                    <DesktopWrapper>
-                        <ThemedScrollbars height={password_container_height}>
-                            <InvestorPasswordManager
-                                is_submit_success_investor={is_submit_success_investor}
-                                toggleModal={toggleModal}
-                                error_message_investor={error_message_investor}
-                                validatePassword={validatePassword}
-                                onSubmit={onSubmit}
-                                setPasswordType={setPasswordType}
-                                multi_step_ref={multi_step_ref}
-                            />
-                        </ThemedScrollbars>
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <Div100vhContainer className='cfd-password-manager__scroll-wrapper' height_offset='120px'>
-                            <InvestorPasswordManager
-                                is_submit_success_investor={is_submit_success_investor}
-                                toggleModal={toggleModal}
-                                error_message_investor={error_message_investor}
-                                validatePassword={validatePassword}
-                                onSubmit={onSubmit}
-                                setPasswordType={setPasswordType}
-                                multi_step_ref={multi_step_ref}
-                            />
-                        </Div100vhContainer>
-                    </MobileWrapper>
-                </div>
-            </Tabs>
-        </>
+        <Tabs active_index={active_tab_index} onTabItemClick={updateAccountTabIndex} top>
+            <div label={localize('Trading password')}>{trading_password_manager}</div>
+            <div label={localize('Investor password')}>
+                <DesktopWrapper>
+                    <ThemedScrollbars height={password_container_height}>
+                        <InvestorPasswordManager
+                            is_submit_success_investor={is_submit_success_investor}
+                            toggleModal={toggleModal}
+                            error_message_investor={error_message_investor}
+                            validatePassword={validatePassword}
+                            onSubmit={onSubmit}
+                            setPasswordType={setPasswordType}
+                            multi_step_ref={multi_step_ref}
+                        />
+                    </ThemedScrollbars>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <Div100vhContainer className='cfd-password-manager__scroll-wrapper' height_offset='120px'>
+                        <InvestorPasswordManager
+                            is_submit_success_investor={is_submit_success_investor}
+                            toggleModal={toggleModal}
+                            error_message_investor={error_message_investor}
+                            validatePassword={validatePassword}
+                            onSubmit={onSubmit}
+                            setPasswordType={setPasswordType}
+                            multi_step_ref={multi_step_ref}
+                        />
+                    </Div100vhContainer>
+                </MobileWrapper>
+            </div>
+        </Tabs>
     );
 };
 

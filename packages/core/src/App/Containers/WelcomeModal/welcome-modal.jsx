@@ -31,7 +31,14 @@ const WelcomeColumn = ({
             <div className='welcome-column__title'>{title}</div>
             <div className='welcome-column__description'>{description}</div>
             <div className='welcome-column__platforms'>
-                <Text as='p' color='prominent' weight='bold' size='xs' className='welcome-column__platforms__title'>
+                <Text
+                    as='p'
+                    color='prominent'
+                    weight='bold'
+                    size='xs'
+                    className='welcome-column__platforms__title'
+                    align={isMobile() ? 'center' : ''}
+                >
                     {localize('Platforms')}
                 </Text>
                 <div className='welcome-column__platforms__container'>

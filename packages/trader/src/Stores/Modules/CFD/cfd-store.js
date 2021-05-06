@@ -321,6 +321,8 @@ export default class CFDStore extends BaseStore {
             this.setError(false);
             this.setCFDSuccessDialog(true);
             WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
+            const { get_account_status } = await WS.getAccountStatus();
+            this.root_store.client.setAccountStatus(get_account_status);
             runInAction(() => {
                 this.setCFDNewAccount(response.trading_platform_new_account);
             });

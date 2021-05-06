@@ -313,7 +313,7 @@ class FinancialAssessment extends React.Component {
         const { is_dashboard } = this.context;
         if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
-        if (this.props.is_virtual) return <DemoMessage />;
+        if (this.props.is_virtual) return <DemoMessage has_demo_icon={is_dashboard} has_button={is_dashboard} />;
         if (isMobile() && is_submit_success) return <SubmittedPage />;
 
         return (

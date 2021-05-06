@@ -104,7 +104,7 @@ WelcomeColumn.propTypes = {
     title: PropTypes.string,
 };
 
-const WelcomeModal = ({ toggleWelcomeModal, history }) => {
+const WelcomeModal = ({ toggleWelcomeModal, history, is_dxtrade_allowed }) => {
     const [hovered, setHovered] = React.useState(null);
     const [column_width, setColumnWidth] = React.useState(320);
     const carouselRef = React.useRef(null);
@@ -120,6 +120,31 @@ const WelcomeModal = ({ toggleWelcomeModal, history }) => {
         setColumnWidth(carouselRef.current.offsetWidth);
     }, [carouselRef]);
 
+    const getLeftPlatforms = () => {
+        const platforms = [
+            {
+                icon: 'IcBrandDmt5',
+                title: localize('Deriv MT5'),
+                description: localize(
+                    'Trade on Deriv MetaTrader 5 (DMT5), the all-in-one FX and CFD trading platform.'
+                ),
+                onButtonClick: () => switchPlatform(routes.mt5),
+                button_text: localize('Trade on MT5'),
+            },
+        ];
+
+        if (is_dxtrade_allowed) {
+            platforms.push({
+                icon: 'IcBrandDxtrade',
+                title: localize('Deriv X'),
+                description: localize('Trade CFDs on a customisable, easy-to-use trading platform.'),
+                onButtonClick: () => switchPlatform(routes.dxtrade),
+                button_text: localize('Trade on Deriv X'),
+            });
+        }
+        return platforms;
+    };
+
     const Cards = [
         <WelcomeColumn
             key={0}
@@ -127,22 +152,7 @@ const WelcomeModal = ({ toggleWelcomeModal, history }) => {
             description={localize('Trade with leverage and low spreads for better returns on successful trades.')}
             icons={['IcPercentSolid']}
             is_hovered={hovered === 'left'}
-            platforms={[
-                {
-                    icon: 'IcBrandDmt5',
-                    title: localize('Deriv MT5'),
-                    description: localize('Trade CFDs on the platform of choice for professional traders worldwide.'),
-                    onButtonClick: () => switchPlatform(routes.mt5),
-                    button_text: localize('Trade on MT5'),
-                },
-                {
-                    icon: 'IcBrandDxtrade',
-                    title: localize('Deriv X'),
-                    description: localize('Trade CFDs on a customisable, easy-to-use trading platform.'),
-                    onButtonClick: () => switchPlatform(routes.dxtrade),
-                    button_text: localize('Trade on Deriv X'),
-                },
-            ]}
+            platforms={getLeftPlatforms()}
             title={localize('CFDs')}
             onMouseEnter={() => {
                 setHovered('left');
@@ -242,7 +252,8 @@ const WelcomeModal = ({ toggleWelcomeModal, history }) => {
 };
 
 export default withRouter(
-    connect(({ ui }) => ({
+    connect(({ ui, client }) => ({
         toggleWelcomeModal: ui.toggleWelcomeModal,
+        is_dxtrade_allowed: client.is_dxtrade_allowed,
     }))(WelcomeModal)
 );

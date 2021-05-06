@@ -27,7 +27,6 @@ const Row = ({ label, value }) => (
 const RowInfo = ({ label, value }) => (
     <Text as='p' size='xs' className='reality-check__text'>
         <span>{label}</span>
-        <br />
         <strong>{value}</strong>
     </Text>
 );
@@ -86,7 +85,7 @@ const SummaryModal = ({
 
     return (
         <Modal
-            className='reality-check'
+            className='reality-check reality-check--summary'
             enableApp={enableApp}
             is_open={is_visible}
             disableApp={disableApp}
@@ -107,7 +106,7 @@ const SummaryModal = ({
                     </MobileWrapper>
                 </React.Fragment>
             }
-            width={isMobile() ? '304px' : '720px'}
+            width={isMobile() ? '304px' : '792px'}
         >
             <Formik
                 initialValues={{
@@ -205,8 +204,8 @@ const SummaryModal = ({
                                             as='p'
                                             size='xs'
                                             line_height='m'
-                                            align='center'
-                                            className='reality-check__text reality-check__text--center'
+                                            align='left'
+                                            className='reality-check__text'
                                         >
                                             <Localize i18n_default_text='Your preferred time interval between each report:' />
                                         </Text>

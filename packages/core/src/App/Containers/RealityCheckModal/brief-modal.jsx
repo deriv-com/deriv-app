@@ -30,11 +30,7 @@ const BriefModal = ({
             is_open={is_visible}
             disableApp={disableApp}
             has_close_icon={false}
-            title={
-                isDesktop()
-                    ? localize('Spending limit and trading statistics')
-                    : localize('Set spend limit and trading status’ duration')
-            }
+            title={localize('Spending limit and trading statistics')}
             portalId='modal_root_absolute'
             width='588px'
         >
@@ -73,14 +69,7 @@ const BriefModal = ({
                                                 line_height='m'
                                                 className='reality-check__text reality-check__text--description'
                                             >
-                                                {isDesktop() ? (
-                                                    <Localize i18n_default_text='You can limit the total amount you spend in 30 days, trading on DTrader, DBot, and SmartTrader. This limit will get renewed automatically every 30 days. If you wish to remove the limit or increase your spending amount, please contact our Client Support team via live chat on our website.' />
-                                                ) : (
-                                                    <Localize
-                                                        i18n_default_text='You can limits your total spend for every 30 days across all Deriv platforms. To remove or weaken limit, please contact our Customer Support by calling <0>+447723580049.</0>'
-                                                        components={[<span key='0' className='link link--orange' />]}
-                                                    />
-                                                )}
+                                                <Localize i18n_default_text='You can limit the total amount you spend in 30 days, trading on DTrader, DBot, and SmartTrader. This limit will get renewed automatically every 30 days. If you wish to remove the limit or increase your spending amount, please contact our Client Support team via live chat on our website.' />
                                             </Text>
                                             <div style={{ display: 'flex', marginBottom: isDesktop() ? 25 : 4 }}>
                                                 <RadioGroup

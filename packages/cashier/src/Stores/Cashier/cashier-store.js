@@ -1197,35 +1197,37 @@ export default class CashierStore extends BaseStore {
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
 
         accounts.forEach(account => {
+            const cfd_platforms = {
+                mt5: { name: 'DMT5', icon: 'IcMt5' },
+                dxtrade: { name: 'Deriv X', icon: 'IcDxtrade' },
+            };
+            const is_cfd = Object.keys(cfd_platforms).includes(account.account_type);
+            const cfd_text_display = cfd_platforms[account.account_type]?.name;
+            const cfd_icon_display = `${cfd_platforms[account.account_type]?.icon}-${getCFDAccount({
+                market_type: account.market_type,
+                sub_account_type: account.sub_account_type,
+                platform: account.account_type,
+            })}`;
+            const account_text_display = is_cfd
+                ? `${cfd_text_display} ${getCFDAccountDisplay({
+                      market_type: account.market_type,
+                      sub_account_type: account.sub_account_type,
+                      platform: account.account_type,
+                  })}`
+                : getCurrencyDisplayCode(
+                      account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency
+                  );
+
             const obj_values = {
-                text:
-                    account.account_type === 'mt5'
-                        ? `${localize('DMT5')} ${getCFDAccountDisplay({
-                              market_type: account.market_type,
-                              sub_account_type: account.sub_account_type,
-                              platform: 'mt5',
-                          })}`
-                        : getCurrencyDisplayCode(
-                              account.currency !== 'eUSDT' ? account.currency.toUpperCase() : account.currency
-                          ),
+                text: account_text_display,
                 value: account.loginid,
                 balance: account.balance,
                 currency: account.currency,
                 is_crypto: isCryptocurrency(account.currency),
                 is_mt: account.account_type === 'mt5',
                 is_dxtrade: account.account_type === 'dxtrade',
-                ...((account.account_type === 'mt5' || account.account_type === 'dxtrade') && {
-                    platform_icon:
-                        account.account_type === 'mt5'
-                            ? `IcMt5-${getCFDAccount({
-                                  market_type: account.market_type,
-                                  sub_account_type: account.sub_account_type,
-                                  platform: 'mt5',
-                              })}`
-                            : `IcDxtrade-${getCFDAccount({
-                                  market_type: account.market_type,
-                                  platform: 'dxtrade',
-                              })}`,
+                ...(is_cfd && {
+                    platform_icon: cfd_icon_display,
                     market_type: getCFDAccount({
                         market_type: account.market_type,
                         sub_account_type: account.sub_account_type,

@@ -30,7 +30,6 @@ const Row = ({ item_key, label, value }) => (
 
 const Confirm = ({ data, error, header, onClickBack, onClickConfirm }) => (
     <div className='cashier__wrapper cashier__wrapper--confirm'>
-        {console.log(data)}
         <Icon icon='IcConfirmDetails' width='128' height='128' />
         <Text
             as='h2'

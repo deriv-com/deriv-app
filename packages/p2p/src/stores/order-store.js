@@ -52,6 +52,8 @@ export default class OrderStore {
 
     @action.bound
     loadMoreOrders({ startIndex }) {
+        this.setApiErrorMessage('');
+
         return new Promise(resolve => {
             const { general_store } = this.root_store;
             const active = general_store.is_active_tab ? 1 : 0;
@@ -84,10 +86,9 @@ export default class OrderStore {
 
                         this.setOrders([...old_list, ...new_list]);
                     }
+                } else if (response.error.code === 'PermissionDenied') {
+                    this.root_store.general_store.setIsBlocked(true);
                 } else {
-                    if (response.error.code === 'PermissionDenied') {
-                        this.root_store.general_store.setIsBlocked(true);
-                    }
                     this.setApiErrorMessage(response.error.message);
                 }
 

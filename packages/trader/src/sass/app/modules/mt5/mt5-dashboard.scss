@@ -953,7 +953,7 @@
         text-align: center;
     }
     @include desktop {
-        max-width: calc(400px + 1rem); // needs extra padding for the scrollbar, otherwise it will cover the words
+        max-width: calc(450px + 1rem); // needs extra padding for the scrollbar, otherwise it will cover the words
     }
     @include mobile {
         padding: 0 1.6rem;

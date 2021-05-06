@@ -290,8 +290,6 @@ const AccountTransferForm = ({
         setTransferToHint(hint);
     }, [selected_to, selected_from, account_limits]);
 
-    const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
-
     return (
         <div className='cashier__wrapper account-transfer__wrapper'>
             <Text

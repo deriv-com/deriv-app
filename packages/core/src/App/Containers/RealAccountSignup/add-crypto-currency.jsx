@@ -115,30 +115,31 @@ const AddCryptoCurrency = ({
                     )}
                     {!should_show_fiat_only &&
                         (available_crypto_currencies.length !== 0 ? (
-                            <Text as='div' align='center' size='s' weight='bold' color='prominent'>
-                                <CurrencyRadioButtonGroup
-                                    id='crypto_currency'
-                                    className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                                    label={localize('Cryptocurrencies')}
-                                    value={values.currency}
-                                    error={errors.currency}
-                                    touched={touched.currency}
-                                    is_title_enabled={canAddFiat()}
-                                    item_count={getReorderedCryptoCurrencies().length}
-                                >
-                                    {getReorderedCryptoCurrencies().map(currency => (
-                                        <Field
-                                            key={currency.value}
-                                            component={CurrencyRadioButton}
-                                            name='currency'
-                                            id={currency.value}
-                                            label={currency.name}
-                                            selected={canAddCrypto(currency)}
-                                        />
-                                    ))}
-                                </CurrencyRadioButtonGroup>
-                                //{' '}
-                            </Text>
+                            <CurrencyRadioButtonGroup
+                                id='crypto_currency'
+                                className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                                label={
+                                    <Text as='h2' align='center' size='s' weight='bold' color='prominent'>
+                                        {localize('Cryptocurrencies')}
+                                    </Text>
+                                }
+                                value={values.currency}
+                                error={errors.currency}
+                                touched={touched.currency}
+                                is_title_enabled={canAddFiat()}
+                                item_count={getReorderedCryptoCurrencies().length}
+                            >
+                                {getReorderedCryptoCurrencies().map(currency => (
+                                    <Field
+                                        key={currency.value}
+                                        component={CurrencyRadioButton}
+                                        name='currency'
+                                        id={currency.value}
+                                        label={currency.name}
+                                        selected={canAddCrypto(currency)}
+                                    />
+                                ))}
+                            </CurrencyRadioButtonGroup>
                         ) : (
                             <CurrencyRadioButtonGroup
                                 id='crypto_currency'

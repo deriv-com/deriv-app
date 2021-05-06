@@ -322,7 +322,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                     <Field name='PRICECHANNEL_RESULT'>0</Field>
                     <Statement name='STATEMENT'>
                         <Block type='candle_list' deletable='false' movable='false'>
-                            <Value name='CANDLE_LIST'></Value>
+                            <Value name='CANDLE_LIST' />
                             <Next>
                                 <Block type='period' deletable='false' movable='false'>
                                     <Value name='PERIOD'>
@@ -338,7 +338,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 <Block type='pca_statement'>
                     <Statement name='STATEMENT'>
                         <Block type='candle_list' deletable='false' movable='false'>
-                            <Value name='CANDLE_LIST'></Value>
+                            <Value name='CANDLE_LIST' />
                             <Next>
                                 <Block type='period' deletable='false' movable='false'>
                                     <Value name='PERIOD'>
@@ -354,14 +354,14 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 <Block type='psar_statement'>
                     <Statement name='STATEMENT'>
                         <Block type='candle_list' deletable='false' movable='false'>
-                            <Value name='CANDLE_LIST'></Value>
+                            <Value name='CANDLE_LIST' />
                         </Block>
                     </Statement>
                 </Block>
                 <Block type='psara_statement'>
                     <Statement name='STATEMENT'>
                         <Block type='candle_list' deletable='false' movable='false'>
-                            <Value name='CANDLE_LIST'></Value>
+                            <Value name='CANDLE_LIST' />
                         </Block>
                     </Statement>
                 </Block>
@@ -369,7 +369,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                     <Field name='FRACTAL_RESULT'>0</Field>
                     <Statement name='STATEMENT'>
                         <Block type='candle_list' deletable='false' movable='false'>
-                            <Value name='CANDLE_LIST'></Value>
+                            <Value name='CANDLE_LIST' />
                         </Block>
                     </Statement>
                 </Block>
@@ -377,14 +377,14 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                     <Field name='FRACTAL_RESULT'>0</Field>
                     <Statement name='STATEMENT'>
                         <Block type='candle_list' deletable='false' movable='false'>
-                            <Value name='CANDLE_LIST'></Value>
+                            <Value name='CANDLE_LIST' />
                         </Block>
                     </Statement>
                 </Block>
                 <Block type='atr_statement'>
                     <Statement name='STATEMENT'>
                         <Block type='candle_list' deletable='false' movable='false'>
-                            <Value name='CANDLE_LIST'></Value>
+                            <Value name='CANDLE_LIST' />
                             <Next>
                                 <Block type='period' deletable='false' movable='false'>
                                     <Value name='PERIOD'>
@@ -400,7 +400,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 <Block type='atra_statement'>
                     <Statement name='STATEMENT'>
                         <Block type='candle_list' deletable='false' movable='false'>
-                            <Value name='CANDLE_LIST'></Value>
+                            <Value name='CANDLE_LIST' />
                             <Next>
                                 <Block type='period' deletable='false' movable='false'>
                                     <Value name='PERIOD'>
@@ -417,7 +417,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                     <Field name='STOCHASTIC_OSCILLATOR_PERIOD'>0</Field>
                     <Statement name='STATEMENT'>
                         <Block type='candle_list' deletable='false' movable='false'>
-                            <Value name='CANDLE_LIST'></Value>
+                            <Value name='CANDLE_LIST' />
                             <Next>
                                 <Block type='k_period' deletable='false' movable='false'>
                                     <Value name='K_PERIOD'>
@@ -452,7 +452,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                     <Field name='STOCHASTIC_OSCILLATOR_PERIOD'>0</Field>
                     <Statement name='STATEMENT'>
                         <Block type='candle_list' deletable='false' movable='false'>
-                            <Value name='CANDLE_LIST'></Value>
+                            <Value name='CANDLE_LIST' />
                             <Next>
                                 <Block type='k_period' deletable='false' movable='false'>
                                     <Value name='K_PERIOD'>
@@ -486,7 +486,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 <Block type='wr_statement'>
                     <Statement name='STATEMENT'>
                         <Block type='candle_list' deletable='false' movable='false'>
-                            <Value name='CANDLE_LIST'></Value>
+                            <Value name='CANDLE_LIST' />
                             <Next>
                                 <Block type='period' deletable='false' movable='false'>
                                     <Value name='PERIOD'>
@@ -502,7 +502,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                 <Block type='wra_statement'>
                     <Statement name='STATEMENT'>
                         <Block type='candle_list' deletable='false' movable='false'>
-                            <Value name='CANDLE_LIST'></Value>
+                            <Value name='CANDLE_LIST' />
                             <Next>
                                 <Block type='period' deletable='false' movable='false'>
                                     <Value name='PERIOD'>

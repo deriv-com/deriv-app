@@ -61,6 +61,174 @@ const getModules = ({ is_dashboard }) => {
             getTitle: () => localize('Bot'),
         },
         {
+            path: routes.dashboard,
+            component: Dashboard,
+            is_modal: true,
+            getTitle: () => localize('Dashboard'),
+            routes: [
+                {
+                    path: routes.home,
+                    component: Dashboard,
+                    icon_component: 'IcUserOutline',
+                    getTitle: () => localize('Home'),
+                },
+                {
+                    path: routes.my_apps,
+                    component: Dashboard,
+                    is_modal: true,
+                    icon_component: 'IcUserOutline',
+                    getTitle: () => localize('My Apps'),
+                },
+                {
+                    path: routes.explore,
+                    component: Dashboard,
+                    icon_component: 'IcWalletExplore',
+                    getTitle: () => localize('Explore'),
+                },
+                {
+                    path: routes.about_us,
+                    component: Dashboard,
+                    getTitle: () => localize('About Us'),
+                },
+                {
+                    path: routes.resources,
+                    component: Dashboard,
+                    getTitle: () => localize('Resources'),
+                },
+            ],
+        },
+        {
+            path: routes.wallets,
+            component: Dashboard,
+            is_modal: true,
+            icon_component: 'IcWalletWallets',
+            getTitle: () => localize('Wallets'),
+            routes: [
+                {
+                    getTitle: () => localize('Credit/Debit Cards'),
+                    // path: routes.wallets_cards,
+                    path: routes.explore,
+                },
+                {
+                    getTitle: () => localize('E-wallet'),
+                    // path: routes.wallets_ewallet,
+                    path: routes.explore,
+                },
+                {
+                    getTitle: () => localize('Cryptocurrency'),
+                    // path: routes.wallets_crypto,
+                    path: routes.explore,
+                },
+                {
+                    getTitle: () => localize('Bank Wire'),
+                    // path: routes.wallets_bank,
+                    path: routes.explore,
+                },
+            ],
+        },
+        {
+            path: routes.platforms,
+            component: Dashboard,
+            is_modal: true,
+            icon_component: 'IcWalletPlatforms',
+            getTitle: () => localize('Platforms'),
+            routes: [
+                {
+                    default: true,
+                    getTitle: () => localize('DMT5'),
+                    path: routes.platform_dmt5,
+                },
+                {
+                    default: true,
+                    getTitle: () => localize('DMT5 Financial STP'),
+                    path: routes.platform_dmt5_financial_stp,
+                },
+                {
+                    default: true,
+                    getTitle: () => localize('DMT5 Financial'),
+                    path: routes.platform_dmt5_financial,
+                },
+                {
+                    default: true,
+                    getTitle: () => localize('DMT5 Synthetic'),
+                    path: routes.platform_dmt5_synthetic,
+                },
+                {
+                    getTitle: () => localize('DTrader'),
+                    // path: routes.platform_dtrader,
+                    path: routes.explore,
+                },
+                {
+                    getTitle: () => localize('DBot'),
+                    // path: routes.platform_dbot,
+                    path: routes.explore,
+                },
+                {
+                    getTitle: () => localize('SmartTrader'),
+                    // path: routes.platform_smarttrader,
+                    path: routes.explore,
+                },
+                {
+                    getTitle: () => localize('Binary Bot'),
+                    // path: routes.platform_binarybot,
+                    path: routes.explore,
+                },
+            ],
+        },
+        {
+            path: routes.trade_types,
+            component: Dashboard,
+            is_modal: true,
+            icon_component: 'IcWalletTradeTypes',
+            getTitle: () => localize('Trade Types'),
+            routes: [
+                {
+                    getTitle: () => localize('CFDs'),
+                    // path: routes.trade_types_cfds,
+                    path: routes.explore,
+                },
+                {
+                    getTitle: () => localize('Multipliers'),
+                    // path: routes.trade_types_multipliers,
+                    path: routes.explore,
+                },
+                {
+                    getTitle: () => localize('Options'),
+                    // path: routes.trade_types_options,
+                    path: routes.explore,
+                },
+            ],
+        },
+        {
+            path: routes.markets,
+            component: Dashboard,
+            is_modal: true,
+            icon_component: 'IcWalletMarkets',
+            getTitle: () => localize('Markets'),
+            routes: [
+                {
+                    getTitle: () => localize('Forex'),
+                    // path: routes.markets_forex,
+                    path: routes.explore,
+                },
+                {
+                    getTitle: () => localize('Synthetic Indices'),
+                    // path: routes.markets_synthetic,
+                    path: routes.explore,
+                },
+                {
+                    getTitle: () => localize('Stock Indices'),
+                    // path: routes.markets_stock,
+                    path: routes.explore,
+                },
+                {
+                    getTitle: () => localize('Commodities'),
+                    // path: routes.markets_commodities,
+                    path: routes.explore,
+                },
+            ],
+        },
+        {
             path: routes.account_deactivated,
             component: Account,
             getTitle: () => localize('Account deactivated'),

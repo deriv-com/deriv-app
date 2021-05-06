@@ -14,7 +14,9 @@ export default class DataCollectionStore {
             );
             reaction(
                 () => this.root_store.transactions.transactions,
-                transactions => this.trackTransaction(transactions)
+                transactions => {
+                    if (this.run_id) this.trackTransaction(transactions);
+                }
             );
         }
     }

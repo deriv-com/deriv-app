@@ -145,9 +145,12 @@ class DeactivateAccountReason extends React.Component {
             }
 
             if (remaining_characters.length > character_limit_no) {
-                error.characters_count_exceed = localize('Please enter no more than  {{ char_limit }} characters for both fields.',{
-                    char_limit: character_limit_no
-                });
+                error.characters_count_exceed = localize(
+                    'Please enter no more than  {{ char_limit }} characters for both fields.',
+                    {
+                        char_limit: character_limit_no,
+                    }
+                );
             }
         } else {
             this.setState({ remaining_characters: character_limit_no });
@@ -380,7 +383,7 @@ class DeactivateAccountReason extends React.Component {
                                         )}
                                         name='other_trading_platforms'
                                         value={values.other_trading_platforms}
-                                        max_characters={this.state.remaining_characters}
+                                        max_characters={character_limit_no}
                                         onChange={handleChange}
                                         onKeyDown={this.handleInputKeyDown}
                                         onPaste={this.handleInputPaste}
@@ -399,7 +402,7 @@ class DeactivateAccountReason extends React.Component {
                                         placeholder={localize('What could we do to improve?')}
                                         name='do_to_improve'
                                         value={values.do_to_improve}
-                                        max_characters={this.state.remaining_characters}
+                                        max_characters={character_limit_no}
                                         onChange={handleChange}
                                         onKeyDown={this.handleInputKeyDown}
                                         onPaste={this.handleInputPaste}
@@ -476,5 +479,3 @@ export default connect(({ client }) => ({
     client_accounts: client.account_list,
     mt5_login_list: client.mt5_login_list,
 }))(DeactivateAccountReason);
-
-

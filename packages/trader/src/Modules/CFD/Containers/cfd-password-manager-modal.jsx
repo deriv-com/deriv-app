@@ -299,6 +299,8 @@ const CFDPasswordManagerTabContent = ({
     platform,
 }) => {
     const [active_tab_index, setActiveTabIndex] = React.useState(0);
+    const [error_message_main, setErrorMessageMain] = React.useState('');
+    const [is_submit_success_main, setSubmitSuccessMain] = React.useState(false);
     const [error_message_investor, setErrorMessageInvestor] = React.useState('');
     const [is_submit_success_investor, setSubmitSuccessInvestor] = React.useState(false);
 
@@ -380,7 +382,17 @@ const CFDPasswordManagerTabContent = ({
             </DesktopWrapper>
             <MobileWrapper>
                 <Div100vhContainer className='cfd-password-manager__scroll-wrapper' height_offset='120px'>
-                    <TradingPasswordManager status={account_status.status} platform={platform} />
+                    <TradingPasswordManager
+                        is_submit_success_main={is_submit_success_main}
+                        toggleModal={toggleModal}
+                        onSubmit={onSubmit}
+                        validatePassword={validatePassword}
+                        error_message_main={error_message_main}
+                        setPasswordType={setPasswordType}
+                        multi_step_ref={multi_step_ref}
+                        status={account_status.status}
+                        platform={platform}
+                    />
                 </Div100vhContainer>
             </MobileWrapper>
         </React.Fragment>

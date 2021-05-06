@@ -19,6 +19,7 @@ import { getDecimalPlaces, getCurrencyDisplayCode, getCurrencyName, validNumber 
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import FormError from '../Error/form-error.jsx';
+import { getAccountText } from '../../_common/utility';
 
 const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
     let server;
@@ -40,7 +41,7 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
 
             <div className='account-transfer__currency-wrapper'>
                 <Text size='xxs' line_height='xs' styles={{ color: 'inherit', fontWeight: 'inherit' }}>
-                    {account.is_mt || account.is_dxtrade ? account.market_type : getCurrencyName(account.text)}
+                    {getAccountText(account)}
                 </Text>
                 <Text size='xxxs' align='left' color='less-prominent'>
                     {account.value}

@@ -5,6 +5,7 @@ import { Button, Modal, Icon, Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode, getCurrencyName, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { getAccountText } from '../../_common/utility';
 
 const AccountTransferReceipt = ({
     disableApp,
@@ -86,9 +87,7 @@ const AccountTransferReceipt = ({
                         size={32}
                     />
                     <div className='cashier__transferred-details'>
-                        <div className='cashier__text--bold'>
-                            {selected_to.is_mt ? selected_to.text : getCurrencyName(selected_to.text)}
-                        </div>
+                        <div className='cashier__text--bold'>{getAccountText(selected_to)}</div>
                         <div className='cashier__text--faint'>{selected_to.value}</div>
                     </div>
                 </span>

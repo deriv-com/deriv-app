@@ -149,18 +149,17 @@ const TradingPasswordManager = ({ status }) => {
         <div className='mt5-password-manager__trading-password-wrapper'>
             <Icon icon='IcMt5OnePassword' size='128' />
             <Text as='p' align='center' size='s' weight='bold'>
-                {is_existing_user && <Localize i18n_default_text='Set your trading password' />}
-                {!is_existing_user && <Localize i18n_default_text='All you’ll need from now is trading password' />}
+                <Localize i18n_default_text='One password is all you need' />
             </Text>
-            <Text as='p' align='center' size='xs'>
+            <Text as='p' align='center' className='mt5-password-manager__trading-password-text' size='xs'>
                 {!is_existing_user && (
                     <Localize
-                        i18n_default_text='Your DMT5 password is now same as your trading password. To reset, please go to <0>Settings</0> to change your trading password. '
+                        i18n_default_text='Your DMT5 password is now known as your trading password, which is a single password for all your DMT5 accounts. To manage your trading password, hit the button below.'
                         components={[<Text weight='bold' key={0} />]}
                     />
                 )}
                 {is_existing_user && (
-                    <Localize i18n_default_text='You can now create one secure password to log into all your DMT5 accounts.' />
+                    <Localize i18n_default_text='Your DMT5 password is now known as your trading password, which is a single password for all your DMT5 accounts. To set your trading password, hit the button below.' />
                 )}
             </Text>
             <NavLink
@@ -168,8 +167,8 @@ const TradingPasswordManager = ({ status }) => {
                 className='dc-btn dc-btn--primary dc-btn__large dc-modal__container_mt5-reset-password-modal__button'
             >
                 <Text size='xs' weight='bold' color='colored-background'>
-                    {is_existing_user && <Localize i18n_default_text='Trading password' />}
-                    {!is_existing_user && <Localize i18n_default_text='Go to settings' />}
+                    {is_existing_user && <Localize i18n_default_text='Set trading password' />}
+                    {!is_existing_user && <Localize i18n_default_text='Manage trading password' />}
                 </Text>
             </NavLink>
         </div>

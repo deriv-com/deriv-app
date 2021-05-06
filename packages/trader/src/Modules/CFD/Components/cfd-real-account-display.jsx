@@ -23,7 +23,7 @@ const CFDRealAccountDisplay = ({
     is_eu_country,
     has_malta_account,
     has_maltainvest_account,
-    has_mt5_account_error,
+    has_cfd_account_error,
     is_fully_authenticated,
     is_pending_authentication,
     is_virtual,
@@ -115,7 +115,7 @@ const CFDRealAccountDisplay = ({
     };
 
     const isMT5AccountCardDisabled = sub_account_type => {
-        if (has_mt5_account_error) return true;
+        if (has_cfd_account_error) return true;
 
         if (is_eu) {
             const account = getAccountTypeFields({ category: 'real', type: sub_account_type });
@@ -148,7 +148,7 @@ const CFDRealAccountDisplay = ({
                           <CFDAccountCard
                               key={index}
                               has_cfd_account={has_cfd_account}
-                              has_mt5_account_error={has_mt5_account_error}
+                              has_cfd_account_error={has_cfd_account_error}
                               title={localize('Synthetic')}
                               is_hovered={index === active_hover}
                               is_disabled={isMT5AccountCardDisabled('synthetic')}

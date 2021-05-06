@@ -8,7 +8,7 @@ const CFDDemoAccountDisplay = ({
     is_eu,
     is_eu_country,
     has_maltainvest_account,
-    has_mt5_account_error,
+    has_cfd_account_error,
     openAccountNeededModal,
     standpoint,
     is_loading,
@@ -52,7 +52,7 @@ const CFDDemoAccountDisplay = ({
                         type: 'synthetic',
                         platform,
                     }}
-                    is_disabled={has_mt5_account_error}
+                    is_disabled={has_cfd_account_error}
                     is_logged_in={is_logged_in}
                     existing_data={
                         current_list[
@@ -96,7 +96,7 @@ const CFDDemoAccountDisplay = ({
                 <CFDAccountCard
                     has_cfd_account={has_cfd_account}
                     title={localize('Financial')}
-                    is_disabled={has_mt5_account_error}
+                    is_disabled={has_cfd_account_error}
                     is_logged_in={is_logged_in}
                     type={{
                         category: 'demo',
@@ -148,7 +148,7 @@ const CFDDemoAccountDisplay = ({
                         type: 'financial_stp',
                         platform,
                     }}
-                    is_disabled={has_mt5_account_error}
+                    is_disabled={has_cfd_account_error}
                     is_logged_in={is_logged_in}
                     existing_data={
                         current_list[

@@ -468,7 +468,7 @@ const AccountTransferForm = ({
                                         is_disabled={
                                             !isValid ||
                                             isSubmitting ||
-                                            (is_dxtrade_transfer ? false : !+remaining_transfers) ||
+                                            !+remaining_transfers ||
                                             !!selected_from.error ||
                                             !!selected_to.error
                                         }

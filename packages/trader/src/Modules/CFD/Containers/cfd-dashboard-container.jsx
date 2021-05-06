@@ -8,7 +8,7 @@ import {
     getPlatformMt5DownloadLink,
 } from '../Helpers/constants';
 
-const CFDDashboardContainer = ({ platform }) => (
+const CFDDashboardContainer = ({ platform, active_index }) => (
     <div className='cfd-dashboard__download-center'>
         <h1 className='cfd-dashboard__download-center--heading'>{general_messages.getDownloadHeader(platform)}</h1>
         <div
@@ -36,7 +36,7 @@ const CFDDashboardContainer = ({ platform }) => (
                             <div className='cfd-dashboard__download-center-options--desktop-download'>
                                 <a
                                     className='cfd-dashboard__dxtrade-download'
-                                    href={getDXTradeWebTerminalLink()}
+                                    href={getDXTradeWebTerminalLink(active_index === 0 ? 'real' : 'demo')}
                                     target='_blank'
                                     rel='noopener noreferrer'
                                 >

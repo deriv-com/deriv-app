@@ -136,7 +136,7 @@ const CFDAccountCard = ({
     existing_data,
     has_banner,
     has_cfd_account,
-    has_mt5_account_error,
+    has_cfd_account_error,
     has_real_account,
     is_accounts_switcher_on,
     is_button_primary,
@@ -481,7 +481,7 @@ const CFDAccountCard = ({
                             <AddTradeServerButton
                                 ref={button_ref}
                                 onSelectAccount={onSelectAccount}
-                                is_disabled={has_mt5_account_error}
+                                is_disabled={has_cfd_account_error}
                             />
                         </MobileWrapper>
                     )}
@@ -497,7 +497,7 @@ const CFDAccountCard = ({
                     <AddTradeServerButton
                         ref={button_ref}
                         onSelectAccount={onSelectAccount}
-                        is_disabled={has_mt5_account_error}
+                        is_disabled={has_cfd_account_error}
                     />
                 </CSSTransition>
             </DesktopWrapper>

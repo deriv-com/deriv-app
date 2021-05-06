@@ -85,6 +85,9 @@ export default class OrderStore {
                         this.setOrders([...old_list, ...new_list]);
                     }
                 } else {
+                    if (response.error.code === 'PermissionDenied') {
+                        this.root_store.general_store.setIsBlocked(true);
+                    }
                     this.setApiErrorMessage(response.error.message);
                 }
 

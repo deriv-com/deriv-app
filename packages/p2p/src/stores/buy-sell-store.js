@@ -216,6 +216,9 @@ export default class BuySellStore extends BaseStore {
                         }
                     }
                 } else {
+                    if (response.error.code === 'PermissionDenied') {
+                        this.root_store.general_store.setIsBlocked(true);
+                    }
                     this.setApiErrorMessage(response.error.message);
                 }
 

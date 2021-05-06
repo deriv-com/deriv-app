@@ -156,6 +156,9 @@ export default class MyAdsStore extends BaseStore {
                     this.setHasMoreItemsToLoad(list.length >= list_item_limit);
                     this.setAdverts(this.adverts.concat(list));
                 } else {
+                    if (response.error.code === 'PermissionDenied') {
+                        this.root_store.general_store.setIsBlocked(true);
+                    }
                     this.setApiErrorMessage(response.error.message);
                 }
 

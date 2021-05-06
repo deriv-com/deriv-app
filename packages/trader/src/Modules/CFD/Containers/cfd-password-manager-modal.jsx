@@ -299,8 +299,6 @@ const CFDPasswordManagerTabContent = ({
     platform,
 }) => {
     const [active_tab_index, setActiveTabIndex] = React.useState(0);
-    const [error_message_main, setErrorMessageMain] = React.useState('');
-    const [is_submit_success_main, setSubmitSuccessMain] = React.useState(false);
     const [error_message_investor, setErrorMessageInvestor] = React.useState('');
     const [is_submit_success_investor, setSubmitSuccessInvestor] = React.useState(false);
 

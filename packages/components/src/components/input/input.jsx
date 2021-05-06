@@ -24,6 +24,7 @@ const Input = React.forwardRef(
             max_characters,
             trailing_icon,
             warn,
+            input_id,
             ...props
         },
         ref
@@ -69,6 +70,7 @@ const Input = React.forwardRef(
                             })}
                             onChange={changeHandler}
                             disabled={disabled}
+                            id={input_id}
                         />
                     ) : (
                         <input
@@ -81,6 +83,7 @@ const Input = React.forwardRef(
                             onBlur={props.onBlur}
                             disabled={disabled}
                             data-lpignore={props.type === 'password' ? undefined : true}
+                            id={input_id}
                         />
                     )}
                     {trailing_icon &&
@@ -151,6 +154,7 @@ Input.propTypes = {
     max_characters: PropTypes.number,
     trailing_icon: PropTypes.any,
     warn: PropTypes.string,
+    input_id: PropTypes.string,
 };
 
 export default Input;

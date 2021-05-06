@@ -459,7 +459,7 @@ const MT5PasswordModal = ({
             <DesktopWrapper>
                 <Modal
                     className='mt5-password-modal'
-                    has_close_icon={!should_show_server_form}
+                    has_close_icon={!should_show_server_form || should_set_trading_password}
                     is_open={should_show_password}
                     toggleModal={closeModal}
                     should_header_stick_body

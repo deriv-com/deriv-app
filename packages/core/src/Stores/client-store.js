@@ -11,13 +11,14 @@ import {
     setCurrencies,
     State,
     toMoment,
+    deriv_urls,
 } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
-import { isEuCountry, isSyntheticsUnavailable } from '_common/utility';
+import { isEuCountry, isOptionsBlocked, isSyntheticsUnavailable } from '_common/utility';
 import BaseStore from './base-store';
 import { getClientAccountType, getAccountTitle } from './Helpers/client';
 import { setDeviceDataCookie } from './Helpers/device';
@@ -55,6 +56,7 @@ export default class ClientStore extends BaseStore {
     @observable device_data = {};
     @observable is_logging_in = false;
     @observable has_logged_out = false;
+    @observable is_landing_company_loaded = false;
     // this will store the landing_company API response, including
     // financial_company: {}
     // gaming_company: {}
@@ -369,7 +371,8 @@ export default class ClientStore extends BaseStore {
     @computed
     get can_have_more_real_synthetic_mt5() {
         const number_of_current_added_synthetics = this.mt5_login_list.reduce((acc, cur) => {
-            const is_included = cur.account_type === 'real' && cur.market_type === 'gaming';
+            const is_included =
+                cur.account_type === 'real' && (cur.market_type === 'synthetic' || cur.market_type === 'gaming');
             return is_included ? acc + 1 : acc;
         }, 0);
         const number_of_available_synthetic = this.trading_servers.reduce(
@@ -627,7 +630,14 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_synthetics_unavailable() {
-        return isSyntheticsUnavailable(this.residence);
+        return this.is_logged_in
+            ? isSyntheticsUnavailable(this.residence)
+            : isSyntheticsUnavailable(this.website_status.clients_country);
+    }
+
+    @computed
+    get is_options_blocked() {
+        return isOptionsBlocked(this.residence);
     }
 
     /**
@@ -704,7 +714,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setCookieAccount() {
-        const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
+        const domain = window.location.hostname.includes('deriv') ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
         const { loginid, email, landing_company_shortcode, currency, residence, account_settings } = this;
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
@@ -1126,10 +1136,13 @@ export default class ClientStore extends BaseStore {
                 })
             );
             const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
+
+            await this.fetchResidenceList();
+
             if (account_settings && !account_settings.residence) {
-                await this.fetchResidenceList();
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
+
             await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             if (!this.is_virtual) await this.getLimits();
 
@@ -1177,6 +1190,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     responseLandingCompany(response) {
+        this.is_landing_company_loaded = true;
         this.landing_companies = response.landing_company;
         this.setRealityCheck();
     }

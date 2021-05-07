@@ -1,7 +1,7 @@
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import {
     Icon,
     Modal,
@@ -143,8 +143,13 @@ const CFDPasswordManagerTabContentWrapper = ({ multi_step_ref, steps }) => (
     <MultiStep ref={multi_step_ref} steps={steps} className='cfd-password-manager' lbl_previous={localize('Back')} />
 );
 
-const TradingPasswordManager = ({ status, platform }) => {
+const TradingPasswordManager = withRouter(({ status, platform, history }) => {
     const is_existing_user = status?.includes('trading_password_required');
+
+    const navigateToSettings = () => {
+        history.push(routes.passwords);
+    };
+
     return (
         <div className='cfd-password-manager__trading-password-wrapper'>
             <Icon icon='IcMt5OnePassword' size='128' />
@@ -156,7 +161,7 @@ const TradingPasswordManager = ({ status, platform }) => {
                 {!is_existing_user && (
                     <Localize
                         i18n_default_text='Your {{platform}} password is now same as your trading password. To reset, please go to <0>Settings</0> to change your trading password. '
-                        components={[<Text weight='bold' key={0} />]}
+                        components={[<Text weight='bold' key={0} onClick={navigateToSettings} />]}
                         values={{
                             platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
                         }}
@@ -182,7 +187,7 @@ const TradingPasswordManager = ({ status, platform }) => {
             </NavLink>
         </div>
     );
-};
+});
 
 const InvestorPasswordManager = ({
     error_message_investor,

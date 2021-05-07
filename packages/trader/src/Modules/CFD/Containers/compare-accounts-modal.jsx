@@ -15,12 +15,15 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { isDesktop } from '@deriv/shared';
 
-const getAccounts = ({ landing_companies, platform }) => {
-    const account_types_count = [
-        landing_companies?.mt_gaming_company?.financial,
-        landing_companies?.mt_financial_company?.financial,
-        landing_companies?.mt_financial_company?.financial_stp && platform === 'mt5',
-    ].filter(Boolean).length;
+const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
+    const logged_out_types_count = platform === 'mt5' ? 3 : 2;
+    const account_types_count = is_logged_in
+        ? [
+              landing_companies?.mt_gaming_company?.financial,
+              landing_companies?.mt_financial_company?.financial,
+              landing_companies?.mt_financial_company?.financial_stp && platform === 'mt5',
+          ].filter(Boolean).length
+        : logged_out_types_count;
 
     return [
         {
@@ -317,14 +320,14 @@ const filterAvailableAccounts = (landing_companies, table, is_logged_in, show_eu
             if (platform === 'dxtrade') {
                 return {
                     attribute: <CFDAttributeDescriber name={attribute} counter={footnote ? ++footnote_number : null} />,
-                    ...{ synthetic_object },
-                    ...{ financial_object },
+                    ...synthetic_object,
+                    ...financial_object,
                 };
             }
             return {
                 attribute: <CFDAttributeDescriber name={attribute} counter={footnote ? ++footnote_number : null} />,
-                ...{ synthetic_object },
-                ...{ financial_object },
+                ...synthetic_object,
+                ...financial_object,
                 ...{ financial_stp },
             };
         });
@@ -334,14 +337,14 @@ const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logge
     const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
     return filterAvailableAccounts(
         landing_companies,
-        getAccounts({ landing_companies, platform }),
+        getAccounts({ landing_companies, platform, is_logged_in }),
         is_logged_in,
         show_eu_related,
         platform
     );
 };
 
-const CFDCompareAccountHint = ({ platform, show_risk_message, landing_companies }) => {
+const CFDCompareAccountHint = ({ platform, show_risk_message, landing_companies, is_logged_in }) => {
     return (
         <div className='cfd-compare-account--hint'>
             <div className='cfd-compare-accounts__bullet-wrapper'>
@@ -372,7 +375,7 @@ const CFDCompareAccountHint = ({ platform, show_risk_message, landing_companies 
                     </div>
                 </React.Fragment>
             )}
-            {getAccounts({ landing_companies, platform })
+            {getAccounts({ landing_companies, platform, is_logged_in })
                 .filter(item => !!item[platform]?.footnote)
                 .map((account, index) => {
                     return (
@@ -506,6 +509,7 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
                     platform={platform}
                     show_risk_message={show_risk_message}
                     landing_companies={landing_companies}
+                    is_logged_in={is_logged_in}
                 />
             </ThemedScrollbars>
         </Div100vhContainer>

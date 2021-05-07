@@ -98,7 +98,15 @@ const getSubmitText = (account_title, category, platform) => {
     });
 };
 
-const getIconFromType = type => {
+const IconType = React.memo(({ platform, type }) => {
+    if (platform === 'dxtrade') {
+        if (type === 'synthetic') {
+            return <Icon icon='IcDxtradeSyntheticPlatform' size={128} />;
+        } else if (type === 'financial') {
+            return <Icon icon='IcDxtradeFinancialPlatform' size={128} />;
+        }
+    }
+
     switch (type) {
         case 'synthetic':
             return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
@@ -107,7 +115,8 @@ const getIconFromType = type => {
         default:
             return <Icon icon='IcMt5FinancialStpPlatform' size={128} />;
     }
-};
+});
+IconType.displayName = 'IconType';
 
 const getCancelButtonLabel = ({ should_set_trading_password, error_type, should_show_server_form }) => {
     if (should_set_trading_password && error_type !== 'PasswordReset') {
@@ -407,7 +416,6 @@ const CFDPasswordModal = ({
         }
     };
 
-    const IconType = () => getIconFromType(account_type.type);
     const should_show_password =
         is_cfd_password_modal_enabled &&
         !is_cfd_success_dialog_enabled &&
@@ -516,7 +524,7 @@ const CFDPasswordModal = ({
                 classNameMessage='cfd-password-modal__message'
                 message={getSubmitText(account_title, account_type.category, platform)}
                 // message={error_message}
-                icon={<IconType />}
+                icon={<IconType platform={platform} type={account_type.type} />}
                 icon_size='xlarge'
                 text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('OK')}
                 has_cancel={account_type.category === 'real'}

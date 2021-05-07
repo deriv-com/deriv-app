@@ -564,20 +564,20 @@ $side-padding: 1.2em;
                 }
                 /* postcss-bem-linter: ignore */
                 & .dc-contract-card {
-                    background-color: unset;
+                    background-color: var(--general-main-2);
                     /* postcss-bem-linter: ignore */
                     &__wrapper {
-                        background-color: var(--general-section-1);
+                        background-color: var(--general-main-2);
                         max-width: unset;
                         margin: 0;
                     }
                     /* postcss-bem-linter: ignore */
                     &-item__footer {
-                        background-color: var(--general-section-1);
+                        background-color: var(--general-main-2);
                     }
                     /* postcss-bem-linter: ignore */
                     &__grid-underlying-trade {
-                        border-bottom: 1px solid var(--general-main-1);
+                        border-bottom: 1px solid var(--border-disabled);
                         margin-bottom: 5px;
                     }
                     /* postcss-bem-linter: ignore */
@@ -588,13 +588,13 @@ $side-padding: 1.2em;
                     }
                     /* postcss-bem-linter: ignore */
                     &__sell-button {
-                        border-top: 1px solid var(--general-main-1);
+                        border-top: 1px solid var(--border-disabled);
                     }
                     /* postcss-bem-linter: ignore */
                     &-item {
                         /* postcss-bem-linter: ignore */
                         &__total-profit-loss {
-                            border-color: var(--general-main-1);
+                            border-color: var(--border-disabled);
                         }
                         /* postcss-bem-linter: ignore */
                         &:nth-child(1) {
@@ -613,7 +613,7 @@ $side-padding: 1.2em;
                 }
                 /* postcss-bem-linter: ignore */
                 & .dc-contract-card-dialog-toggle {
-                    border-color: var(--border-hover);
+                    border-color: var(--border-disabled);
                 }
             }
             /* postcss-bem-linter: ignore */
@@ -650,6 +650,7 @@ $side-padding: 1.2em;
 
             .dc-progress-bar__container {
                 max-width: 120px;
+                align-self: center;
             }
         }
         &__data-list-footer {

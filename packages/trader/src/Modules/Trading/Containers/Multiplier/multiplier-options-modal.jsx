@@ -15,6 +15,7 @@ const MultiplierOptionsModal = ({ is_open, enableApp, disableApp, toggleModal })
                 enableApp={enableApp}
                 is_open={is_open}
                 is_title_centered
+                should_header_stick_body={false}
                 disableApp={disableApp}
                 toggleModal={toggleModal}
                 height='auto'
@@ -53,9 +54,9 @@ const MultiplierOptions = ({ multiplier, multiplier_range_list, onChange, toggle
 
     return (
         <React.Fragment>
-            <div className='trade-params__multiplier-icinfo-wrapper'>
+            <div className='trade-params__multiplier-ic-info-wrapper'>
                 <Popover
-                    alignment='top'
+                    alignment='right'
                     icon='info'
                     id='dt_multiplier-stake__tooltip'
                     is_bubble_hover_enabled

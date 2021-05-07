@@ -5,8 +5,8 @@ import { Popover, Money, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const commission_tooltip_margin = 35;
-const stop_out_tooltip_margin = 135;
+const commission_tooltip_margin = 48;
+const stop_out_tooltip_margin = 143;
 
 const MultipliersInfo = ({
     amount = 0,

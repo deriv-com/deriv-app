@@ -356,10 +356,13 @@
                     padding: 1.6rem 0rem;
                 }
             }
-            &-icinfo-wrapper {
+            &-ic-info-wrapper {
                 display: flex;
-                justify-content: flex-end;
-                padding: 0.6rem 2rem 0rem;
+                justify-content: flex-start;
+                position: absolute;
+                top: 0.6rem;
+                left: 0.2rem;
+                z-index: 2;
 
                 .dc-popover {
                     padding: 0.5rem 1rem;
@@ -370,7 +373,7 @@
                     margin-top: 2.6rem;
 
                     .dc-checkbox__box {
-                        margin-left: 0rem;
+                        margin-left: 0;
                     }
                 }
             }

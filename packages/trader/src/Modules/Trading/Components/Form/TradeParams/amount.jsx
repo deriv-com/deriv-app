@@ -99,10 +99,7 @@ const Amount = ({
             header={is_multiplier ? localize('Stake') : undefined}
             header_tooltip={
                 is_multiplier ? (
-                    <Localize
-                        i18n_default_text='To ensure your loss does not exceed your stake, your contract will be closed automatically when your loss equals to <0/>.'
-                        components={[<Money key={0} amount={stop_out} currency={currency} show_currency />]}
-                    />
+                    <Localize i18n_default_text='Your gross profit is the percentage change in market price times your stake and the multiplier chosen here.' />
                 ) : undefined
             }
         >
@@ -136,7 +133,7 @@ const Amount = ({
                         is_nativepicker={false}
                         list={currencies_list}
                         name='currency'
-                        initial_offset={250}
+                        initial_offset={256}
                         no_border={true}
                         value={currency}
                         onChange={onChange}

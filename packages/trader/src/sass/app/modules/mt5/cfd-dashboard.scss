@@ -761,17 +761,25 @@
             border-spacing: 0 0.8rem;
 
             &-attribute {
-                width: 30%;
+                width: 35%;
                 vertical-align: middle;
                 .cfd-account-card--paragraph {
                     color: var(--text-general);
+                    padding-left: 0.8rem;
                 }
             }
             &-data {
-                width: 70%;
+                width: 65%;
+                vertical-align: middle;
                 .cfd-account-card--paragraph {
                     @include typeface(--paragraph-left-normal-black, none);
                     line-height: 1.45;
+                }
+            }
+            &-row {
+                &--account-id {
+                    background: var(--general-section-1);
+                    height: 3.6rem;
                 }
             }
         }

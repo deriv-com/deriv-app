@@ -36,9 +36,11 @@ const AddTradeServerButton = React.forwardRef(({ onSelectAccount, is_disabled },
 
 AddTradeServerButton.displayName = 'AddTradeServerButton';
 
-const SpecBox = ({ value }) => (
+const SpecBox = ({ value, is_bold }) => (
     <div className='cfd-account-card__spec-box'>
-        <span className='cfd-account-card__spec-text'>{value}</span>
+        <Text size='xs' weight={is_bold ? 'bold' : ''} className='cfd-account-card__spec-text'>
+            {value}
+        </Text>
         <CFDAccountCopy text={value} className='cfd-account-card__spec-copy' />
     </div>
 );
@@ -347,19 +349,21 @@ const CFDAccountCard = ({
                                                         </td>
                                                         <td className='cfd-account-card__login-specs-table-data'>
                                                             <div className='cfd-account-card--paragraph'>
-                                                                <SpecBox value={existing_data.login} />
+                                                                <SpecBox value={existing_data.login} is_bold />
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                    <tr className='cfd-account-card__login-specs-table-row'>
+                                                    <tr className='cfd-account-card__login-specs-table-row cfd-account-card__login-specs-table-row--account-id'>
                                                         <td className='cfd-account-card__login-specs-table-attribute'>
                                                             <div className='cfd-account-card--paragraph'>
-                                                                {localize('Account ID')}
+                                                                {localize('Account ID:')}
                                                             </div>
                                                         </td>
                                                         <td className='cfd-account-card__login-specs-table-data'>
                                                             <div className='cfd-account-card--paragraph'>
-                                                                <SpecBox value={existing_data.display_login} />
+                                                                <Text size='xxs' weight='bold'>
+                                                                    {existing_data.display_login}
+                                                                </Text>
                                                             </div>
                                                         </td>
                                                     </tr>

@@ -54,7 +54,7 @@ const PositionsDrawerCard = ({
             display_name={display_name}
             getCardLabels={getCardLabels}
             getContractTypeDisplay={getContractTypeDisplay}
-            has_progress_slider={has_progress_slider}
+            has_progress_slider={!is_mobile && has_progress_slider}
             is_mobile={is_mobile}
             is_positions={true}
             is_sell_requested={is_sell_requested}
@@ -78,6 +78,7 @@ const PositionsDrawerCard = ({
             }}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
+            has_progress_slider={is_mobile && has_progress_slider}
             removeToast={removeToast}
             server_time={server_time}
             setCurrentFocus={setCurrentFocus}

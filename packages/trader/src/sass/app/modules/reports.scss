@@ -556,6 +556,7 @@ $side-padding: 1.2em;
             & .data-list__item {
                 background-color: var(--general-section-1);
                 border-radius: $BORDER_RADIUS;
+                border: 1px solid var(--border-disabled);
                 padding: 0;
 
                 /* postcss-bem-linter: ignore */
@@ -574,6 +575,7 @@ $side-padding: 1.2em;
                     /* postcss-bem-linter: ignore */
                     &-item__footer {
                         background-color: var(--general-main-2);
+                        border-radius: $BORDER_RADIUS;
                     }
                     /* postcss-bem-linter: ignore */
                     &__grid-underlying-trade {

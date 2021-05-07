@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ButtonToggle, Dropdown, InputField, Money } from '@deriv/components';
+import { ButtonToggle, Dropdown, InputField } from '@deriv/components';
 import { AMOUNT_MAX_LENGTH, getDecimalPlaces, addComma } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
@@ -67,7 +67,6 @@ const Amount = ({
     has_equals_only,
     onChange,
     setCurrentFocus,
-    stop_out,
     validation_errors,
 }) => {
     if (is_minimized) {

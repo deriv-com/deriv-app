@@ -275,6 +275,13 @@
                 'stake current-stake date-expiry'
                 'deal-cancel-fee buy-price date-expiry'
                 'limit-order-info limit-order-info date-expiry';
+
+            .dc-contract-card__limit-order-info {
+                grid-template-columns: 1fr 1fr;
+            }
+            .dc-contract-card__stop-loss {
+                order: unset !important;
+            }
         }
     }
     &__profit-loss {
@@ -325,6 +332,9 @@
 
             &--is-crypto {
                 margin-left: -6px;
+            }
+            @include mobile {
+                padding-left: 0.4rem;
             }
         }
         &__body--loss {

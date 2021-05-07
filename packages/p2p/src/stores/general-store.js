@@ -172,6 +172,7 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     onMount() {
         this.setIsLoading(true);
+        this.setIsBlocked(false);
         this.setIsHighRiskFullyAuthedWithoutFa(false);
 
         this.disposeUserBarredReaction = reaction(

@@ -188,6 +188,7 @@ const Tabs = ({
                 })}
             >
                 {React.Children.map(children, (child, index) => {
+                    if (!child) return null;
                     if (index !== active_tab_index) {
                         return undefined;
                     }

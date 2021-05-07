@@ -1914,7 +1914,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     responseTradingPlatformAccountsList(response) {
-        const { platform } = response.echo_req;
+        const { platform } = response.echo_req || {};
 
         this[`is_populating_${platform}_account_list`] = false;
 

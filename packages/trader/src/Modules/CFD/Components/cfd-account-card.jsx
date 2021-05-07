@@ -2,10 +2,10 @@ import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isMobile, mobileOSDetect } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { CFDAccountCopy } from './cfd-account-copy.jsx';
-import { getDXTradeWebTerminalLink, getMT5WebTerminalLink } from '../Helpers/constants';
+import { getDXTradeWebTerminalLink, getMT5WebTerminalLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
 
 const account_icons = {
     mt5: {
@@ -203,6 +203,14 @@ const CFDAccountCard = ({
     const handleClickSwitchAccount = () => {
         toggleShouldShowRealAccountsList(true);
         toggleAccountsDialog(true);
+    };
+
+    const getDxtradeDownloadLink = () => {
+        const os = mobileOSDetect();
+        if (os === 'iOS') {
+            return getPlatformDXTradeDownloadLink('ios');
+        }
+        return getPlatformDXTradeDownloadLink('android');
     };
 
     const is_web_terminal_unsupported = isMobile() && platform === 'dxtrade';
@@ -458,6 +466,17 @@ const CFDAccountCard = ({
                                 rel='noopener noreferrer'
                             >
                                 <Localize i18n_default_text='Trade on web terminal' />
+                            </a>
+                        )}
+                        {existing_data && is_logged_in && is_web_terminal_unsupported && (
+                            <a
+                                className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
+                                type='button'
+                                href={getDxtradeDownloadLink()}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                            >
+                                <Localize i18n_default_text='Download the app' />
                             </a>
                         )}
                         {!existing_data && !has_cfd_account && is_logged_in && (

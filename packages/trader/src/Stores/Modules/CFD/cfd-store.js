@@ -345,11 +345,30 @@ export default class CFDStore extends BaseStore {
     }
 
     @action.bound
-    async topUpVirtual() {
+    async topUpVirtual(platform) {
         this.root_store.ui.setTopUpInProgress(true);
-        const response = await WS.authorized.mt5Deposit({
-            to_mt5: this.current_account.login,
-        });
+        let response;
+
+        switch (platform) {
+            case 'dxtrade': {
+                response = await WS.authorized.send({
+                    dxtrade_deposit: 1,
+                    to_dxtrade: this.current_account.login,
+                });
+                break;
+            }
+            case 'mt5': {
+                response = await WS.authorized.mt5Deposit({
+                    to_mt5: this.current_account.login,
+                });
+                break;
+            }
+            default: {
+                response.error = 'Invalid platform';
+                break;
+            }
+        }
+
         if (!response.error) {
             await WS.authorized.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
             const new_balance = this.root_store.client.mt5_login_list.find(

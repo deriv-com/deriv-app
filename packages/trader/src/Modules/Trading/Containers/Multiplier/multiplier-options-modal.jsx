@@ -1,7 +1,11 @@
 import React from 'react';
 import { Div100vhContainer, Modal, RadioGroup, Popover, usePreventIOSZoom } from '@deriv/components';
+import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info.jsx';
+import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
+import { WS } from 'Services/ws-methods';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { useIsMounted } from '@deriv/shared';
 
 const MultiplierOptionsModal = ({ is_open, enableApp, disableApp, toggleModal }) => {
     // Fix to prevent iOS from zooming in erratically on quick taps
@@ -41,7 +45,32 @@ export default connect(({ client, modules, ui }) => ({
     disableApp: ui.disableApp,
 }))(MultiplierOptionsModal);
 
-const MultiplierOptions = ({ multiplier, multiplier_range_list, onChange, toggleModal }) => {
+const MultiplierOptions = ({ amount, multiplier, multiplier_range_list, onChange, toggleModal, trade_store }) => {
+    const [commission, setCommission] = React.useState(null);
+    const [stop_out, setStopOut] = React.useState(null);
+    const isMounted = useIsMounted();
+
+    React.useEffect(() => {
+        if (!amount) return undefined;
+
+        const onProposalResponse = response => {
+            const { proposal, echo_req, subscription } = response;
+            if (isMounted() && proposal && echo_req.contract_type === 'MULTUP' && Number(echo_req.amount) === amount) {
+                setCommission(proposal.commission);
+                setStopOut(proposal.limit_order?.stop_out?.order_amount);
+            } else if (subscription?.id) {
+                WS.forget(subscription.id);
+            }
+        };
+        const dispose = requestPreviewProposal(trade_store, { amount }, onProposalResponse);
+
+        return () => {
+            dispose?.();
+        };
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [amount]);
+
     const onChangeMultiplier = e => {
         onChange({
             target: {
@@ -76,13 +105,23 @@ const MultiplierOptions = ({ multiplier, multiplier_range_list, onChange, toggle
                     <RadioGroup.Item key={value} id={text} label={text} value={value.toString()} />
                 ))}
             </RadioGroup>
+            <MultipliersInfo
+                className='trade-params__multiplier-trade-info'
+                should_show_tooltip
+                commission={commission}
+                stop_out={stop_out}
+                amount={amount}
+            />
         </React.Fragment>
     );
 };
 
 const MultiplierOptionsWrapper = connect(({ ui, modules }) => ({
+    amount: modules.trade.amount,
+    currency: modules.trade.currency,
     multiplier: modules.trade.multiplier,
     multiplier_range_list: modules.trade.multiplier_range_list,
     onChange: modules.trade.onChange,
+    trade_store: modules.trade,
     addToast: ui.addToast,
 }))(MultiplierOptions);

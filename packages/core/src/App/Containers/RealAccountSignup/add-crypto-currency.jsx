@@ -92,7 +92,13 @@ const AddCryptoCurrency = ({
                         </React.Fragment>
                     )}
                     {canAddFiat() && (
-                        <Text as='p' color='prominent' size='xxs' className='currency-selector__deposit-warn'>
+                        <Text
+                            as='p'
+                            color='prominent'
+                            size='xxs'
+                            align='center'
+                            className='currency-selector__deposit-warn'
+                        >
                             <Localize i18n_default_text='You’ll not be able to change currency once you have made a deposit.' />
                         </Text>
                     )}

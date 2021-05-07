@@ -312,6 +312,44 @@ class CFDDashboard extends React.Component {
                             </DesktopWrapper>
                             <MobileWrapper>
                                 <div className='cfd-dashboard__download-center'>
+                                    If you have the app, launch it
+                                    {platform === 'dxtrade' && (
+                                        <React.Fragment>
+                                            <div className='cfd-dashboard__download-center-options--mobile'>
+                                                <Icon icon='IcDxtradeDeviceDesktop' width={128} height={83} />
+                                                <Icon icon='IcDxtradeDeviceLaptop' width={81} height={54} />
+                                            </div>
+                                            <div className='cfd-dashboard__download-center-options--mobile'>
+                                                <a
+                                                    className='cfd-dashboard__dxtrade-download'
+                                                    href={getDXTradeWebTerminalLink(
+                                                        active_index === 0 ? 'real' : 'demo'
+                                                    )}
+                                                    target='_blank'
+                                                    rel='noopener noreferrer'
+                                                >
+                                                    <Icon
+                                                        className='cfd-dashboard__dxtrade-download--icon'
+                                                        icon='IcBrandDxtrade'
+                                                        width={32}
+                                                        height={32}
+                                                    />
+                                                    <div className='cfd-dashboard__dxtrade-download-text'>
+                                                        <Text
+                                                            className='cfd-dashboard__dxtrade-download--title'
+                                                            color='colored-background'
+                                                            size='xxs'
+                                                            weight='bold'
+                                                        >
+                                                            <Localize i18n_default_text='Web terminal' />
+                                                        </Text>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </React.Fragment>
+                                    )}
+                                </div>
+                                <div className='cfd-dashboard__download-center'>
                                     <h1 className='cfd-dashboard__download-center--heading'>
                                         {platform === 'mt5' && <Localize i18n_default_text='Download the MT5 app' />}
                                         {platform === 'dxtrade' && (

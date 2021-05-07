@@ -78,7 +78,7 @@ const CFDTopUpDemoModal = ({
                             is_disabled={current_account.balance > 1000 || is_top_up_virtual_in_progress}
                             type='button'
                             is_loading={is_top_up_virtual_in_progress}
-                            onClick={topUpVirtual}
+                            onClick={() => topUpVirtual(platform)}
                             primary
                             large
                         >

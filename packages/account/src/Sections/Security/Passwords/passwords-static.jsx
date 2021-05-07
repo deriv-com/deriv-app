@@ -44,7 +44,9 @@ const PasswordsStatic = ({ is_dark_mode_on, is_deriv_password, is_trading_passwo
         ) : (
             <div className='account__passwords-item-left'>
                 <Text className='passwords-static__text' color='less-prominent' size='xs' weight='lighter'>
-                    {localize('Use this to log in and trade with DMT5 and Deriv X.')}
+                    {is_dxtrade_allowed
+                        ? localize('Use this to log in and trade with DMT5 and Deriv X.')
+                        : localize('Use this to log in and trade with DMT5.')}
                 </Text>
                 {!is_trading_password_required && (
                     <React.Fragment>

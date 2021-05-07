@@ -135,11 +135,13 @@ const AccountSwitcher = props => {
         redirectToMt5Demo();
     };
 
-    const openDXTradeDemoAccount = () => {
+    const openDXTradeDemoAccount = account_type => {
+        sessionStorage.setItem('open_cfd_account_type', `demo.${account_type}`);
         redirectToDXTradeDemo();
     };
 
-    const openDXTradeRealAccount = () => {
+    const openDXTradeRealAccount = account_type => {
+        sessionStorage.setItem('open_cfd_account_type', `real.${account_type}`);
         redirectToDXTradeReal();
     };
 
@@ -495,7 +497,9 @@ const AccountSwitcher = props => {
                                     className='acc-switcher__new-account-btn'
                                     secondary
                                     small
-                                    is_disabled={props.dxtrade_disabled_signup_types.demo}
+                                    is_disabled={
+                                        props.dxtrade_disabled_signup_types.demo || !!props.dxtrade_accounts_list_error
+                                    }
                                 >
                                     {localize('Add')}
                                 </Button>
@@ -695,7 +699,7 @@ const AccountSwitcher = props => {
                                     <div
                                         key={account.title}
                                         className={classNames('acc-switcher__new-account', {
-                                            'acc-switcher__new-account--disabled': props.dxtrade_login_list_error,
+                                            'acc-switcher__new-account--disabled': props.dxtrade_accounts_list_error,
                                         })}
                                     >
                                         <Icon icon={`IcDxtrade-${account.icon}`} size={24} />
@@ -709,7 +713,8 @@ const AccountSwitcher = props => {
                                             small
                                             is_disabled={
                                                 props.dxtrade_disabled_signup_types.real ||
-                                                isRealDXTradeAddDisabled(account.type)
+                                                isRealDXTradeAddDisabled(account.type) ||
+                                                !!props.dxtrade_accounts_list_error
                                             }
                                         >
                                             {localize('Add')}

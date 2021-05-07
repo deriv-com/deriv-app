@@ -74,7 +74,7 @@ const AccountTransferBullet = ({ children }) => (
     </div>
 );
 
-const AccountTransferNote = ({ currency, transfer_fee, minimum_fee }) => (
+const AccountTransferNote = ({ currency, transfer_fee, minimum_fee, is_dxtrade_allowed }) => (
     <div className='account-transfer__notes'>
         <DesktopWrapper>
             <Text as='h2' color='prominent' weight='bold' className='cashier__header account-transfer__notes-header'>
@@ -95,7 +95,11 @@ const AccountTransferNote = ({ currency, transfer_fee, minimum_fee }) => (
             />
         </AccountTransferBullet>
         <AccountTransferBullet>
-            <Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts, your Deriv account and Deriv MT5 (DMT5) account, or your Deriv account and Deriv X account.' />
+            {is_dxtrade_allowed ? (
+                <Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts, your Deriv account and Deriv MT5 (DMT5) account, or your Deriv account and Deriv X account.' />
+            ) : (
+                <Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts, your Deriv account and Deriv MT5 (DMT5) account, or your Deriv account.' />
+            )}
         </AccountTransferBullet>
         <AccountTransferBullet>
             <Localize i18n_default_text='Transfers may be unavailable when the market is closed (weekends or holidays), periods of high volatility, or when there are technical issues.' />
@@ -123,6 +127,7 @@ const AccountTransferForm = ({
     setAccountTransferAmount,
     setSideNotes,
     transfer_fee,
+    is_dxtrade_allowed,
     is_dark_mode_on,
     minimum_fee,
     mt5_login_list,
@@ -258,10 +263,11 @@ const AccountTransferForm = ({
                     currency={selected_from.currency}
                     minimum_fee={minimum_fee}
                     key={0}
+                    is_dxtrade_allowed={is_dxtrade_allowed}
                 />,
             ]);
         }
-    }, [transfer_fee, selected_from, minimum_fee, from_accounts]);
+    }, [transfer_fee, selected_from, minimum_fee, from_accounts, is_dxtrade_allowed]);
 
     React.useEffect(() => {
         const { daily_transfers } = account_limits;
@@ -289,8 +295,6 @@ const AccountTransferForm = ({
                 : localize('You have {{number}} transfers remaining for today.', { number: remaining_transfers });
         setTransferToHint(hint);
     }, [selected_to, selected_from, account_limits]);
-
-    const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
 
     return (
         <div className='cashier__wrapper account-transfer__wrapper'>
@@ -468,7 +472,7 @@ const AccountTransferForm = ({
                                         is_disabled={
                                             !isValid ||
                                             isSubmitting ||
-                                            (is_dxtrade_transfer ? false : !+remaining_transfers) ||
+                                            !+remaining_transfers ||
                                             !!selected_from.error ||
                                             !!selected_to.error
                                         }
@@ -517,6 +521,7 @@ export default connect(({ client, modules, ui }) => ({
     onMount: client.getLimits,
     accounts_list: modules.cashier.config.account_transfer.accounts_list,
     is_dark_mode_on: ui.is_dark_mode_on,
+    is_dxtrade_allowed: client.is_dxtrade_allowed,
     minimum_fee: modules.cashier.config.account_transfer.minimum_fee,
     mt5_login_list: client.mt5_login_list,
     onChangeTransferFrom: modules.cashier.onChangeTransferFrom,

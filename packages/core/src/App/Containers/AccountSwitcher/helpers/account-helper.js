@@ -54,11 +54,13 @@ export const getCFDConfig = (market_type, landing_company, existing_cfd_accounts
             }
 
             let has_account = existing_cfd_accounts.find(account => {
+                const account_market_type = account.market_type === 'synthetic' ? 'gaming' : account.market_type;
                 if (platform === 'dxtrade') {
-                    return account.market_type === market_type;
+                    return account_market_type === market_type;
                 }
-                return account.sub_account_type === company && account.market_type === market_type;
+                return account.sub_account_type === company && account_market_type === market_type;
             });
+
             if (has_account && platform === 'mt5') {
                 const number_market_type_available = trading_servers.filter(
                     s => s.supported_accounts.includes(market_type) && !s.disabled

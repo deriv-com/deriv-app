@@ -335,6 +335,12 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get has_account_error_in_dxtrade_list() {
+        if (!this.is_logged_in) return false;
+        return this.dxtrade_accounts_list?.some(account => !!account.has_error);
+    }
+
+    @computed
     get can_have_more_real_synthetic_mt5() {
         const number_of_current_added_synthetics = this.mt5_login_list.reduce((acc, cur) => {
             const is_included =
@@ -684,6 +690,14 @@ export default class ClientStore extends BaseStore {
     setMT5DisabledSignupTypes(disabled_types_obj) {
         const current_list = this.mt5_disabled_signup_types;
         this.mt5_disabled_signup_types = { current_list, ...disabled_types_obj };
+    }
+
+    @action.bound
+    setCFDDisabledSignupTypes(platform, disabled_types_obj) {
+        if (platform === 'dxtrade') {
+            const current_list = this.dxtrade_disabled_signup_types;
+            this.dxtrade_disabled_signup_types = { current_list, ...disabled_types_obj };
+        }
     }
 
     @action.bound
@@ -1909,8 +1923,8 @@ export default class ClientStore extends BaseStore {
                 const display_login = account.error ? account.error.details.account_id : account.account_id;
                 if (account.error) {
                     const { account_type, server } = account.error.details;
-                    if (platform === 'mt5') {
-                        this.setMT5DisabledSignupTypes({
+                    if (platform === 'dxtrade') {
+                        this.setCFDDisabledSignupTypes(platform, {
                             real: account_type === 'real',
                             demo: account_type === 'demo',
                         });

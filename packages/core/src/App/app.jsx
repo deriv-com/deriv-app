@@ -56,12 +56,6 @@ const App = ({ root_store }) => {
         initFormErrorMessages(FORM_ERROR_MESSAGES);
         setSharedMT5Text(MT5_TEXT);
         handleResize();
-        const debouncedHandleResize = debounce(handleResize, 400);
-        window.addEventListener('resize', debouncedHandleResize);
-
-        return () => {
-            window.removeEventListener('resize', debouncedHandleResize);
-        };
     }, []);
 
     const handleResize = React.useCallback(() => {
@@ -80,15 +74,15 @@ const App = ({ root_store }) => {
         }
     }, [root_store.ui]);
 
-    // React.useEffect(() => {
-    //     // window.addEventListener('resize', handleResize);
-    //     const debouncedHandleResize = debounce(handleResize, 400);
-    //     window.addEventListener('resize', debouncedHandleResize);
+    React.useEffect(() => {
+        // window.addEventListener('resize', handleResize);
+        const debouncedHandleResize = debounce(handleResize, 400);
+        window.addEventListener('resize', debouncedHandleResize);
 
-    //     return () => {
-    //         window.removeEventListener('resize', debouncedHandleResize);
-    //     };
-    // }, [handleResize]);
+        return () => {
+            window.removeEventListener('resize', debouncedHandleResize);
+        };
+    }, [handleResize]);
 
     const platform_passthrough = {
         root_store,

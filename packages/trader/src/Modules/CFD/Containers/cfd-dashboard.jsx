@@ -311,7 +311,7 @@ class CFDDashboard extends React.Component {
                                 <CFDDashboardContainer platform={platform} active_index={this.state.active_index} />
                             </DesktopWrapper>
                             <MobileWrapper>
-                                <div className='cfd-dashboard__download-center'>
+                                {/* <div className='cfd-dashboard__download-center'>
                                     If you have the app, launch it
                                     {platform === 'dxtrade' && (
                                         <React.Fragment>
@@ -323,7 +323,7 @@ class CFDDashboard extends React.Component {
                                                 <a
                                                     className='cfd-dashboard__dxtrade-download'
                                                     href={getDXTradeWebTerminalLink(
-                                                        active_index === 0 ? 'real' : 'demo'
+                                                        this.state.active_index === 0 ? 'real' : 'demo'
                                                     )}
                                                     target='_blank'
                                                     rel='noopener noreferrer'
@@ -348,7 +348,7 @@ class CFDDashboard extends React.Component {
                                             </div>
                                         </React.Fragment>
                                     )}
-                                </div>
+                                </div> */}
                                 <div className='cfd-dashboard__download-center'>
                                     <h1 className='cfd-dashboard__download-center--heading'>
                                         {platform === 'mt5' && <Localize i18n_default_text='Download the MT5 app' />}

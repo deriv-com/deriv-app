@@ -56,6 +56,7 @@ export default class ClientStore extends BaseStore {
     @observable device_data = {};
     @observable is_logging_in = false;
     @observable has_logged_out = false;
+    @observable is_landing_company_loaded = false;
     // this will store the landing_company API response, including
     // financial_company: {}
     // gaming_company: {}
@@ -330,7 +331,8 @@ export default class ClientStore extends BaseStore {
     @computed
     get can_have_more_real_synthetic_mt5() {
         const number_of_current_added_synthetics = this.mt5_login_list.reduce((acc, cur) => {
-            const is_included = cur.account_type === 'real' && cur.market_type === 'gaming';
+            const is_included =
+                cur.account_type === 'real' && (cur.market_type === 'synthetic' || cur.market_type === 'gaming');
             return is_included ? acc + 1 : acc;
         }, 0);
         const number_of_available_synthetic = this.trading_servers.reduce(
@@ -1148,6 +1150,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     responseLandingCompany(response) {
+        this.is_landing_company_loaded = true;
         this.landing_companies = response.landing_company;
         this.setRealityCheck();
     }

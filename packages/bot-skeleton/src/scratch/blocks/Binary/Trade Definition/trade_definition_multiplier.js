@@ -8,6 +8,9 @@ import ApiHelpers from '../../../../services/api/api-helpers';
 Blockly.Blocks.trade_definition_multiplier = {
     init() {
         this.jsonInit(this.definition());
+
+        // Ensure one of this type per statement-stack
+        this.setNextStatement(false);
     },
     definition() {
         return {
@@ -144,7 +147,7 @@ Blockly.Blocks.trade_definition_multiplier = {
                     });
                 }
             });
-        } else {
+        } else if (this.parentBlock_?.type === 'trade_definition') {
             runIrreversibleEvents(() => {
                 runGroupedEvents(false, () => {
                     const duration_block = this.workspace.newBlock('trade_definition_tradeoptions');

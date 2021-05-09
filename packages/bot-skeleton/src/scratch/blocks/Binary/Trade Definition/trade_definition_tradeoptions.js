@@ -204,7 +204,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     updateDurationInput(should_use_default_unit, should_update_value) {
         const { contracts_for } = ApiHelpers.instance;
 
-        if (this.selected_trade_type === 'multiplier') {
+        if (this.selected_trade_type === 'multiplier' && this.parentBlock_?.type === 'trade_definition') {
             runIrreversibleEvents(() => {
                 runGroupedEvents(false, () => {
                     const multiplier_block = this.workspace.newBlock('trade_definition_multiplier');

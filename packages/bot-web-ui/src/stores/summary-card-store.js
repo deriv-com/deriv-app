@@ -76,7 +76,7 @@ export default class SummaryCardStore {
     getLimitOrder = () => {
         const limit_order = {};
 
-        // send positive take_profit to update or null cancel
+        // send positive take_profit to update or null to cancel
         limit_order.take_profit = this.has_contract_update_take_profit ? +this.contract_update_take_profit : null;
 
         // send positive stop_loss to update or null to cancel

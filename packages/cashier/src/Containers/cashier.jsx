@@ -19,6 +19,7 @@ import 'Sass/cashier.scss';
 const Cashier = ({
     history,
     is_account_transfer_visible,
+    is_client_tnc_status_loaded,
     is_logged_in,
     is_logging_in,
     is_onramp_tab_visible,
@@ -86,7 +87,7 @@ const Cashier = ({
 
     const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: location.pathname }).default;
 
-    if (!is_logged_in && is_logging_in) {
+    if ((!is_logged_in && is_logging_in) || !is_client_tnc_status_loaded) {
         return <Loading is_fullscreen />;
     }
     return (
@@ -159,6 +160,7 @@ const Cashier = ({
 Cashier.propTypes = {
     history: PropTypes.object,
     is_account_transfer_visible: PropTypes.bool,
+    is_client_tnc_status_loaded: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_onramp_tab_visible: PropTypes.bool,
@@ -180,6 +182,7 @@ Cashier.propTypes = {
 
 export default connect(({ client, common, modules, ui }) => ({
     is_account_transfer_visible: modules.cashier.is_account_transfer_visible,
+    is_client_tnc_status_loaded: client.is_client_tnc_status_loaded,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,

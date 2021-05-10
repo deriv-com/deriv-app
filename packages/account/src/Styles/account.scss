@@ -1458,9 +1458,29 @@ $MIN_HEIGHT_FLOATING: calc(
 .onfido-container {
     margin-top: 24px;
 
-    .ods-button {
-        height: 100%;
-        font-size: 16px;
+    .ods-button.onfido-sdk-ui-Uploader-crossDeviceButton {
+        background-color: inherit;
+        border: 1px solid transparent;
+        border-radius: unset;
+        border-bottom-color: #353ff4;
+        color: rgb(43, 45, 51);
+        outline: none;
+        font-size: 0.875em;
+        width: fit-content;
+
+        &:hover {
+            color: rgb(247, 249, 250);
+            background-color: #5c6cff;
+        }
+    }
+
+    .onfido-sdk-ui-Theme-link {
+        background-color: rgb(54, 64, 245);
+        color: rgb(247, 249, 250);
+        padding: 11px 23px;
+        line-height: 15px;
+        border-radius: 2px;
+        font-size: 0.875em;
     }
 
     &__message {

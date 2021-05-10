@@ -23,7 +23,7 @@ import 'Sass/app/modules/mt5/cfd.scss';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 
-const RequireTradingPasswordModal = ({ should_set_trading_password, has_mt5_account, children }) => {
+const RequireTradingPasswordModal = ({ should_set_trading_password, has_mt5_account, children, platform }) => {
     if (should_set_trading_password && has_mt5_account) {
         return (
             <div className='mt5-trading-password-required'>
@@ -32,7 +32,12 @@ const RequireTradingPasswordModal = ({ should_set_trading_password, has_mt5_acco
                     <Localize i18n_default_text='Set your trading password' />
                 </Text>
                 <Text as='p' size='xs' align='center'>
-                    <Localize i18n_default_text='You can now create one secure password to log into all your DMT5 accounts.' />
+                    <Localize
+                        i18n_default_text='You can now create one secure password to log into all your {{platform}} accounts.'
+                        values={{
+                            platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
+                        }}
+                    />
                 </Text>
                 <NavLink to={routes.passwords} className='dc-btn dc-btn--primary dc-btn__large'>
                     <Text color='colored-background' weight='bold' size='xs'>
@@ -493,6 +498,7 @@ const CFDPasswordModal = ({
                     <RequireTradingPasswordModal
                         has_mt5_account={has_mt5_account}
                         should_set_trading_password={should_set_trading_password}
+                        platform={platform}
                     >
                         {should_show_server_form ? cfd_server_form : cfd_password_form}
                     </RequireTradingPasswordModal>

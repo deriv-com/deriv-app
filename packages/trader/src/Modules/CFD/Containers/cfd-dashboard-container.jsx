@@ -8,7 +8,7 @@ import {
     getPlatformMt5DownloadLink,
 } from '../Helpers/constants';
 
-const CFDDashboardContainer = ({ platform, active_index }) => (
+const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }) => (
     <div className='cfd-dashboard__download-center'>
         <h1 className='cfd-dashboard__download-center--heading'>{general_messages.getDownloadHeader(platform)}</h1>
         <div
@@ -27,8 +27,18 @@ const CFDDashboardContainer = ({ platform, active_index }) => (
                             )}
                             {platform === 'dxtrade' && (
                                 <React.Fragment>
-                                    <Icon icon='IcDxtradeDeviceDesktop' width={128} height={83} />
-                                    <Icon icon='IcDxtradeDeviceLaptop' width={81} height={54} />
+                                    <Icon
+                                        icon={
+                                            is_dark_mode_on ? 'IcDxtradeDeviceDesktopLight' : 'IcDxtradeDeviceDesktop'
+                                        }
+                                        width={128}
+                                        height={83}
+                                    />
+                                    <Icon
+                                        icon={is_dark_mode_on ? 'IcDxtradeDeviceLaptopLight' : 'IcDxtradeDeviceLaptop'}
+                                        width={81}
+                                        height={54}
+                                    />
                                 </React.Fragment>
                             )}
                         </div>
@@ -90,8 +100,16 @@ const CFDDashboardContainer = ({ platform, active_index }) => (
                     )}
                     {platform === 'dxtrade' && (
                         <React.Fragment>
-                            <Icon icon='IcDxtradeDeviceTablet' width={133} height={106} />
-                            <Icon icon='IcDxtradeDevicePhone' width={48} height={74} />
+                            <Icon
+                                icon={is_dark_mode_on ? 'IcDxtradeDeviceTabletLight' : 'IcDxtradeDeviceTablet'}
+                                width={133}
+                                height={106}
+                            />
+                            <Icon
+                                icon={is_dark_mode_on ? 'IcDxtradeDevicePhone' : 'IcDxtradeDevicePhone'}
+                                width={48}
+                                height={74}
+                            />
                         </React.Fragment>
                     )}
                 </div>

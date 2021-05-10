@@ -409,9 +409,13 @@ export const icons = {
         'IcDashboardWallet',
     ],
     dxtrade: [
+        'IcDxtradeDeviceDesktopLight',
         'IcDxtradeDeviceDesktop',
+        'IcDxtradeDeviceLaptopLight',
         'IcDxtradeDeviceLaptop',
+        'IcDxtradeDevicePhoneLight',
         'IcDxtradeDevicePhone',
+        'IcDxtradeDeviceTabletLight',
         'IcDxtradeDeviceTablet',
         'IcDxtradeFinancialPlatform',
         'IcDxtradeFinancial',

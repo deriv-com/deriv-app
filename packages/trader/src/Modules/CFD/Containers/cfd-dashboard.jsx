@@ -134,6 +134,7 @@ class CFDDashboard extends React.Component {
             dxtrade_accounts_list_error,
             isAccountOfTypeDisabled,
             is_accounts_switcher_on,
+            is_dark_mode_on,
             is_eu,
             is_eu_country,
             is_fully_authenticated,
@@ -308,7 +309,11 @@ class CFDDashboard extends React.Component {
                                 </div>
                             </div>
                             <DesktopWrapper>
-                                <CFDDashboardContainer platform={platform} active_index={this.state.active_index} />
+                                <CFDDashboardContainer
+                                    platform={platform}
+                                    active_index={this.state.active_index}
+                                    is_dark_mode_on={is_dark_mode_on}
+                                />
                             </DesktopWrapper>
                             <MobileWrapper>
                                 {/* <div className='cfd-dashboard__download-center'>
@@ -483,5 +488,6 @@ export default withRouter(
         toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
         can_have_more_real_synthetic_mt5: client.can_have_more_real_synthetic_mt5,
         upgradeable_landing_companies: client.upgradeable_landing_companies,
+        is_dark_mode_on: ui.is_dark_mode_on,
     }))(CFDDashboard)
 );

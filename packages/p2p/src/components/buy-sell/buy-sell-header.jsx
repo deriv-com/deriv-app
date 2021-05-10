@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { reaction } from 'mobx';
-import { ButtonToggle, Checkbox, Icon, PopoverMobile, Text } from '@deriv/components';
+import { ButtonToggle, Checkbox, Icon, PopoverMobile } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
@@ -69,12 +69,10 @@ const BuySellHeader = ({ is_visible, table_type, setTableType }) => {
             </div>
             <div className='buy-sell__header-match-ads'>
                 <Checkbox
+                    label={<Localize i18n_default_text='Show the matching ads' />}
                     onChange={() => buy_sell_store.setShouldUseClientLimits(!buy_sell_store.should_use_client_limits)}
                     value={buy_sell_store.should_use_client_limits}
                 />
-                <Text size='xs'>
-                    <Localize i18n_default_text='Show the matching ads' />
-                </Text>
                 <PopoverMobile
                     desktop_alignment='right'
                     button_text={localize('Got it')}

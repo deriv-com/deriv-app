@@ -160,9 +160,9 @@ const TradingPasswordManager = ({ status, platform }) => {
             <Text as='p' align='center' className='mt5-password-manager__trading-password-text' size='xs'>
                 {!is_existing_user && (
                     <Localize
-                        i18n_default_text='Your {{platform}} password is now known as your trading password, which is a single password for all your {{platform}} accounts. To manage your trading password, hit the button below.'
+                        i18n_default_text='You have set a trading password to log into {{platform}} on your mobile and other devices.'
                         values={{
-                            platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
+                            platform: platform === 'mt5' ? 'MT5' : 'Deriv X',
                         }}
                         components={[<Text weight='bold' key={0} />]}
                     />

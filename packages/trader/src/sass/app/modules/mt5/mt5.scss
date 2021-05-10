@@ -25,6 +25,9 @@
         position: relative;
         padding: 1.3rem;
     }
+    &__hint {
+        max-width: 40rem;
+    }
     &__body {
         flex-grow: 1;
         display: flex;

@@ -223,6 +223,11 @@ const MT5PasswordForm = props => {
                                 <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (BVI) Ltd. All trading in this account is subject to the regulations and guidelines of the British Virgin Islands Financial Services Commission (BVIFSC). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the British Virgin Islands Financial Services Commission (BVIFSC).' />
                             </div>
                         )}
+                        {props.error_type === 'PasswordError' && (
+                            <Text size='xs' as='p' className='dc-modal__container_mt5-password-modal__hint'>
+                                <Localize i18n_default_text='Hint: You may have chosen a different trading password from your Deriv log in password' />
+                            </Text>
+                        )}
                     </div>
                     <FormSubmitButton
                         is_disabled={!values.password || Object.keys(errors).length > 0}

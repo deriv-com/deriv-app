@@ -203,9 +203,9 @@ const PaymentAgentWithdrawForm = ({
 
     return (
         <div className='cashier__wrapper--align-left payment-agent__withdrawal'>
-            <h2 className='cashier__header'>
+            <Text as='h2' weight='bold' color='prominent' className='cashier__header'>
                 <Localize i18n_default_text='Payment agent withdrawal' />
-            </h2>
+            </Text>
             <Formik
                 initialValues={{
                     // in case coming back from confirmation screen, populate the recent data to be edited

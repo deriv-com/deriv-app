@@ -75,6 +75,10 @@
             align-self: flex-end;
             margin-left: 0.4rem;
         }
+
+        .dc-checkbox + span {
+            margin-bottom: -0.25rem;
+        }
     }
 
     &-row {

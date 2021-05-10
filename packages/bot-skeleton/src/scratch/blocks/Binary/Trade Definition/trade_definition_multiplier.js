@@ -137,8 +137,8 @@ Blockly.Blocks.trade_definition_multiplier = {
             contracts_for.getMultiplierRange(this.selected_symbol, this.selected_trade_type).then(multiplier_range => {
                 if (multiplier_range.length > 0) {
                     const multiplier_list_dropdown = this.getField('MULTIPLIERTYPE_LIST');
-                    const multiplier_options = multiplier_range.map(o => {
-                        const option = o.toString();
+                    const multiplier_options = multiplier_range.map(value => {
+                        const option = value.toString();
                         return [option, option];
                     });
 

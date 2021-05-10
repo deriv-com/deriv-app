@@ -55,8 +55,8 @@ Blockly.Blocks.multiplier_stop_loss = {
     },
     setCurrency: Blockly.Blocks.trade_definition_tradeoptions.setCurrency,
     getRequiredValueInputs() {
-        const fieldInput = this.getInput('AMOUNT');
-        if (fieldInput.connection.targetBlock()) {
+        const field_input = this.getInput('AMOUNT');
+        if (field_input.connection.targetBlock()) {
             return {
                 AMOUNT: input => {
                     const input_number = Number(input);

@@ -261,7 +261,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     const target_block = duration_input.connection.targetBlock();
 
                     if (target_block && target_block.isShadow()) {
-                        const min_duration = durations.find(d => d.unit === this.selected_duration);
+                        const min_duration = durations.find(duration => duration.unit === this.selected_duration);
 
                         if (min_duration) {
                             runIrreversibleEvents(() => {

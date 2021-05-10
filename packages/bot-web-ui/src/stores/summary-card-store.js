@@ -32,8 +32,7 @@ export default class SummaryCardStore {
     @computed
     get is_contract_completed() {
         return (
-            !!this.contract_info &&
-            !!this.contract_info.is_sold &&
+            !!this.contract_info?.is_sold &&
             this.root_store.run_panel.contract_stage !== contract_stages.PURCHASE_RECEIVED
         );
     }
@@ -73,7 +72,7 @@ export default class SummaryCardStore {
     }
 
     @action.bound
-    getLimitOrder = () => {
+    getLimitOrder() {
         const limit_order = {};
 
         // send positive take_profit to update or null to cancel
@@ -83,7 +82,7 @@ export default class SummaryCardStore {
         limit_order.stop_loss = this.has_contract_update_stop_loss ? +this.contract_update_stop_loss : null;
 
         return limit_order;
-    };
+    }
 
     @action.bound
     onBotContractEvent(contract) {

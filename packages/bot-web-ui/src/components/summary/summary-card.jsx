@@ -114,12 +114,19 @@ const SummaryCard = ({
 };
 
 SummaryCard.propTypes = {
+    addToast: PropTypes.func,
     contract_info: PropTypes.object,
+    contract_store: PropTypes.object,
+    current_focus: PropTypes.object,
     is_contract_completed: PropTypes.bool,
     is_contract_inactive: PropTypes.bool,
     is_contract_loading: PropTypes.bool,
     is_mobile: PropTypes.bool,
+    onClickSell: PropTypes.func,
+    is_sell_requested: PropTypes.bool,
+    removeToast: PropTypes.func,
     server_time: PropTypes.object,
+    setCurrentFocus: PropTypes.func,
 };
 
 export default connect(({ summary_card, common, run_panel, ui }) => ({

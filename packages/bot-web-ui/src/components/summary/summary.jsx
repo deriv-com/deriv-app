@@ -20,6 +20,7 @@ const Summary = ({ is_mobile, is_drawer_open }) => (
 
 Summary.propTypes = {
     is_mobile: PropTypes.bool,
+    is_drawer_open: PropTypes.bool,
 };
 
 export default connect(({ ui }) => ({

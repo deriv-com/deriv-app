@@ -16,8 +16,8 @@ let ContractUpdateFormWrapper;
 
 const ToggleCardDialog = ({
     addToast,
-    contract_id,
     connectWithContractUpdate,
+    contract_id,
     current_focus,
     error_message_alignment,
     getCardLabels,
@@ -190,8 +190,10 @@ ToggleCardDialog.displayName = 'ToggleCardDialog';
 
 ToggleCardDialog.propTypes = {
     addToast: PropTypes.func,
+    connectWithContractUpdate: PropTypes.func,
     contract_id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     current_focus: PropTypes.string,
+    error_message_alignment: PropTypes.string,
     getCardLabels: PropTypes.func,
     getContractById: PropTypes.func,
     is_valid_to_cancel: PropTypes.bool,
@@ -201,7 +203,6 @@ ToggleCardDialog.propTypes = {
     should_show_cancellation_warning: PropTypes.bool,
     status: PropTypes.string,
     toggleCancellationWarning: PropTypes.func,
-    connectWithContractUpdate: PropTypes.func,
 };
 
 export default React.memo(ToggleCardDialog);

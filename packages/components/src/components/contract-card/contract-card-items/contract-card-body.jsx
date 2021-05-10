@@ -155,11 +155,11 @@ const ContractCardBody = ({
     is_multiplier,
     is_sold,
     onMouseLeave,
-    status,
-    server_time,
     removeToast,
+    server_time,
     setCurrentFocus,
     should_show_cancellation_warning,
+    status,
     toggleCancellationWarning,
 }) => {
     const indicative = getIndicativePrice(contract_info);
@@ -268,8 +268,12 @@ const ContractCardBody = ({
 
 ContractCardBody.propTypes = {
     addToast: PropTypes.func,
+    connectWithContractUpdate: PropTypes.func,
     contract_info: PropTypes.object,
+    contract_update: PropTypes.object,
     currency: PropTypes.string,
+    current_focus: PropTypes.string,
+    error_message_alignment: PropTypes.string,
     getCardLabels: PropTypes.func,
     getContractById: PropTypes.func,
     is_mobile: PropTypes.bool,
@@ -279,6 +283,7 @@ ContractCardBody.propTypes = {
     removeToast: PropTypes.func,
     server_time: PropTypes.object,
     setCurrentFocus: PropTypes.func,
+    should_show_cancellation_warning: PropTypes.bool,
     status: PropTypes.string,
     toggleCancellationWarning: PropTypes.func,
 };

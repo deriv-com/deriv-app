@@ -16,7 +16,7 @@ import {
     RadioGroup,
     Text,
 } from '@deriv/components';
-import { isMobile, routes, validLength, validPassword, getErrorMessages } from '@deriv/shared';
+import { isMobile, routes, validLength, validPassword, getErrorMessages, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import 'Sass/app/modules/mt5/cfd.scss';
@@ -126,7 +126,7 @@ IconType.displayName = 'IconType';
 
 const getCancelButtonLabel = ({ should_set_trading_password, error_type, should_show_server_form }) => {
     if (should_set_trading_password && error_type !== 'PasswordReset') {
-        return null;
+        return isDesktop() ? null : localize('Cancel');
     }
     if (should_show_server_form) {
         return localize('Back');
@@ -147,7 +147,9 @@ const CFDPasswordForm = props => {
         return localize('Add account');
     }, [props.should_show_server_form, props.should_set_trading_password, props.error_type]);
     const has_cancel_button =
-        props.should_show_server_form || !props.should_set_trading_password || props.error_type === 'PasswordReset';
+        props.should_show_server_form ||
+        (isDesktop() ? !props.should_set_trading_password : props.should_set_trading_password) ||
+        props.error_type === 'PasswordReset';
     const cancel_button_label = getCancelButtonLabel(props);
 
     const handleCancel = () => {
@@ -242,7 +244,10 @@ const CFDPasswordForm = props => {
                         )}
                         {props.error_type === 'PasswordError' && (
                             <Text size='xs' as='p' className='dc-modal__container_mt5-password-modal__hint'>
-                                <Localize i18n_default_text='Hint: You may have chosen a different trading password from your Deriv log in password.' />
+                                <Localize
+                                    i18n_default_text='Hint: You may have chosen a different trading password from<0/> your Deriv log in password.'
+                                    components={[<br key={0} />]}
+                                />
                             </Text>
                         )}
                     </div>
@@ -470,6 +475,7 @@ const CFDPasswordModal = ({
             onForgotPassword={handleForgotPassword}
             submitPassword={submitPassword}
             platform={platform}
+            onCancel={closeModal}
         />
     );
 

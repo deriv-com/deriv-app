@@ -25,6 +25,9 @@
         position: relative;
         padding: 1.3rem;
     }
+    &__hint {
+        max-width: 40rem;
+    }
     &__body {
         flex-grow: 1;
         display: flex;
@@ -56,9 +59,6 @@
         flex-grow: 1;
         margin: auto;
 
-        .dc-password-input__field {
-            margin-bottom: 5rem;
-        }
         @include mobile {
             width: calc(100vw - 4.8rem);
             max-width: 30rem;
@@ -285,6 +285,7 @@
     grid-auto-rows: auto;
     grid-gap: 1.2rem;
     justify-items: center;
+    margin: 2.4rem;
     @include tablet-up {
         max-width: 364px;
         margin: 0 3.2rem 3.2rem;

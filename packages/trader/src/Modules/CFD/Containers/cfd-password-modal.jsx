@@ -63,6 +63,7 @@ const PasswordModalHeader = ({
 
     const element = isMobile() ? 'p' : 'span';
     const alignment = isMobile() ? 'center' : 'left';
+    const font_size = isMobile() ? 'xs' : 's';
     const style = isMobile()
         ? {
               paddingTop: '2rem',
@@ -70,7 +71,7 @@ const PasswordModalHeader = ({
         : {};
 
     return (
-        <Text styles={style} as={element} line_height='24' weight='bold' size='xs' align={alignment}>
+        <Text styles={style} as={element} line_height='24' weight='bold' size={font_size} align={alignment}>
             {!should_show_server_form && should_set_trading_password && !is_password_reset_error && (
                 <Localize i18n_default_text='Set a trading password' />
             )}
@@ -80,7 +81,7 @@ const PasswordModalHeader = ({
             {!should_show_server_form && is_password_reset_error && <Localize i18n_default_text='Too many attempts' />}
             {should_show_server_form && (
                 <Localize
-                    i18n_default_text='Choose a server for your DMT5 {{ account_type }} account'
+                    i18n_default_text='Choose a region for your DMT5 {{ account_type }} account'
                     values={{
                         account_type: account_title,
                     }}
@@ -128,7 +129,7 @@ const getCancelButtonLabel = ({ should_set_trading_password, error_type, should_
         return null;
     }
     if (should_show_server_form) {
-        return localize('Cancel');
+        return localize('Back');
     }
 
     return localize('Forgot password?');
@@ -238,6 +239,11 @@ const CFDPasswordForm = props => {
                             <div className='dc-modal__container_cfd-password-modal__description'>
                                 <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (BVI) Ltd. All trading in this account is subject to the regulations and guidelines of the British Virgin Islands Financial Services Commission (BVIFSC). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the British Virgin Islands Financial Services Commission (BVIFSC).' />
                             </div>
+                        )}
+                        {props.error_type === 'PasswordError' && (
+                            <Text size='xs' as='p' className='dc-modal__container_mt5-password-modal__hint'>
+                                <Localize i18n_default_text='Hint: You may have chosen a different trading password from your Deriv log in password' />
+                            </Text>
                         )}
                     </div>
                     <FormSubmitButton
@@ -482,6 +488,7 @@ const CFDPasswordModal = ({
             <DesktopWrapper>
                 <Modal
                     className='cfd-password-modal'
+                    has_close_icon={!should_show_server_form || should_set_trading_password}
                     is_open={should_show_password}
                     toggleModal={closeModal}
                     should_header_stick_body

@@ -143,33 +143,33 @@ const CFDPasswordManagerTabContentWrapper = ({ multi_step_ref, steps }) => (
     <MultiStep ref={multi_step_ref} steps={steps} className='cfd-password-manager' lbl_previous={localize('Back')} />
 );
 
-const TradingPasswordManager = withRouter(({ status, platform, history }) => {
+const TradingPasswordManager = ({ status, platform }) => {
     const is_existing_user = status?.includes('trading_password_required');
-
-    const navigateToSettings = () => {
-        history.push(routes.passwords);
-    };
 
     return (
         <div className='cfd-password-manager__trading-password-wrapper'>
             <Icon icon='IcMt5OnePassword' size='128' />
             <Text as='p' align='center' size='s' weight='bold'>
-                {is_existing_user && <Localize i18n_default_text='Set your trading password' />}
-                {!is_existing_user && <Localize i18n_default_text='All you’ll need from now is trading password' />}
+                <Localize
+                    i18n_default_text='Trading password for {{platform}} accounts'
+                    values={{
+                        platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
+                    }}
+                />
             </Text>
-            <Text as='p' align='center' size='xs'>
+            <Text as='p' align='center' className='mt5-password-manager__trading-password-text' size='xs'>
                 {!is_existing_user && (
                     <Localize
-                        i18n_default_text='Your {{platform}} password is now same as your trading password. To reset, please go to <0>Settings</0> to change your trading password. '
-                        components={[<Text weight='bold' key={0} onClick={navigateToSettings} />]}
+                        i18n_default_text='Your {{platform}} password is now known as your trading password, which is a single password for all your {{platform}} accounts. To manage your trading password, hit the button below.'
                         values={{
                             platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
                         }}
+                        components={[<Text weight='bold' key={0} />]}
                     />
                 )}
                 {is_existing_user && (
                     <Localize
-                        i18n_default_text='You can now create one secure password to log into all your {{platform}} accounts.'
+                        i18n_default_text='Set a new trading password to use with all your {{platform}} accounts. Use this password to log into {{platform}} on your mobile and other devices.'
                         values={{
                             platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
                         }}
@@ -181,13 +181,13 @@ const TradingPasswordManager = withRouter(({ status, platform, history }) => {
                 className='dc-btn dc-btn--primary dc-btn__large dc-modal__container_cfd-reset-password-modal__button'
             >
                 <Text size='xs' weight='bold' color='colored-background'>
-                    {is_existing_user && <Localize i18n_default_text='Trading password' />}
-                    {!is_existing_user && <Localize i18n_default_text='Go to settings' />}
+                    {is_existing_user && <Localize i18n_default_text='Set trading password' />}
+                    {!is_existing_user && <Localize i18n_default_text='Manage trading password' />}
                 </Text>
             </NavLink>
         </div>
     );
-});
+};
 
 const InvestorPasswordManager = ({
     error_message_investor,

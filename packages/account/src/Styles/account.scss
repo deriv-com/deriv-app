@@ -1459,7 +1459,7 @@ $MIN_HEIGHT_FLOATING: calc(
     margin-top: 24px;
 
     .onfido-sdk-ui-crossDevice-CrossDeviceLink-inputContainer {
-        .ods-button.onfido-sdk-ui-Uploader-crossDeviceButton {
+        .ods-button.-action--primary {
             height: 100%;
             font-size: 0.875em;
         }

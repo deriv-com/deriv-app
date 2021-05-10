@@ -1458,6 +1458,21 @@ $MIN_HEIGHT_FLOATING: calc(
 .onfido-container {
     margin-top: 24px;
 
+    .onfido-sdk-ui-crossDevice-CrossDeviceLink-inputContainer {
+        .ods-button.onfido-sdk-ui-Uploader-crossDeviceButton {
+            height: 100%;
+            font-size: 0.875em;
+        }
+    }
+
+    .onfido-sdk-ui-crossDevice-CrossDeviceLink-viewOptionsGroup {
+        .onfido-sdk-ui-Theme-link {
+            background-color: inherit;
+            border-bottom-color: rgb(53, 63, 244);
+            color: rgb(43, 45, 51);
+        }
+    }
+
     .ods-button.onfido-sdk-ui-Uploader-crossDeviceButton {
         background-color: inherit;
         border: 1px solid transparent;

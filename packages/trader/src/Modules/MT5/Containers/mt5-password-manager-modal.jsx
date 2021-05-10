@@ -154,7 +154,7 @@ const TradingPasswordManager = ({ status }) => {
             <Text as='p' align='center' className='mt5-password-manager__trading-password-text' size='xs'>
                 {!is_existing_user && (
                     <Localize
-                        i18n_default_text='Your DMT5 password is now known as your trading password, which is a single password for all your DMT5 accounts. To manage your trading password, hit the button below.'
+                        i18n_default_text='You have set a trading password to log into MT5 on your mobile and other devices.'
                         components={[<Text weight='bold' key={0} />]}
                     />
                 )}

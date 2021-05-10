@@ -225,7 +225,7 @@ const MT5PasswordForm = props => {
                         )}
                         {props.error_type === 'PasswordError' && (
                             <Text size='xs' as='p' className='dc-modal__container_mt5-password-modal__hint'>
-                                <Localize i18n_default_text='Hint: You may have chosen a different trading password from your Deriv log in password' />
+                                <Localize i18n_default_text='Hint: You may have chosen a different trading password from your Deriv log in password.' />
                             </Text>
                         )}
                     </div>

@@ -175,9 +175,10 @@ const AccountSwitcher = props => {
         const mt5_config = [];
         if (landing_company) {
             Object.keys(landing_company).forEach(company => {
-                let has_account = existing_mt5_accounts.find(
-                    account => account.sub_account_type === company && account.market_type === market_type
-                );
+                let has_account = existing_mt5_accounts.find(account => {
+                    const account_market_type = account.market_type === 'synthetic' ? 'gaming' : account.market_type;
+                    return account.sub_account_type === company && account_market_type === market_type;
+                });
                 if (has_account) {
                     const number_market_type_available = trading_servers.filter(
                         s => s.supported_accounts.includes(market_type) && !s.disabled

@@ -1,7 +1,7 @@
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {
     Icon,
     Modal,

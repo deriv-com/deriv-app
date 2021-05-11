@@ -126,9 +126,10 @@ const AccountSwitcher = props => {
         redirectToMt5('real');
     };
 
-    const redirectToDXTradeReal = () => {
-        redirectToDXTrade('real');
-    };
+    // TODO: Uncomment when real account is launched
+    // const redirectToDXTradeReal = () => {
+    //     redirectToDXTrade('real');
+    // };
 
     const openMt5DemoAccount = account_type => {
         sessionStorage.setItem('open_cfd_account_type', `demo.${account_type}`);
@@ -140,10 +141,11 @@ const AccountSwitcher = props => {
         redirectToDXTradeDemo();
     };
 
-    const openDXTradeRealAccount = account_type => {
-        sessionStorage.setItem('open_cfd_account_type', `real.${account_type}`);
-        redirectToDXTradeReal();
-    };
+    // TODO: Uncomment when real account is launched
+    // const openDXTradeRealAccount = account_type => {
+    //     sessionStorage.setItem('open_cfd_account_type', `real.${account_type}`);
+    //     redirectToDXTradeReal();
+    // };
 
     const redirectToMt5Demo = () => {
         redirectToMt5('demo');
@@ -227,9 +229,10 @@ const AccountSwitcher = props => {
         return getSortedCFDList(props.mt5_login_list).filter(account => !isDemo(account));
     };
 
-    const getRealDXTrade = () => {
-        return getSortedCFDList(props.dxtrade_accounts_list).filter(account => !isDemo(account));
-    };
+    // TODO: Uncomment when real account is launched
+    // const getRealDXTrade = () => {
+    //     return getSortedCFDList(props.dxtrade_accounts_list).filter(account => !isDemo(account));
+    // };
 
     const findServerForAccount = acc => {
         const server_name = acc.error ? acc.error.details.server : acc.server;
@@ -242,9 +245,10 @@ const AccountSwitcher = props => {
         return getRemainingAccounts(getRealMT5(), 'mt5');
     };
 
-    const getRemainingRealDXTrade = () => {
-        return getRemainingAccounts(getRealDXTrade(), 'dxtrade');
-    };
+    // TODO: Uncomment when real account is launched
+    // const getRemainingRealDXTrade = () => {
+    //     return getRemainingAccounts(getRealDXTrade(), 'dxtrade');
+    // };
 
     const canOpenMulti = () => {
         if (props.available_crypto_currencies.length < 1 && !props.has_fiat) return true;
@@ -327,14 +331,15 @@ const AccountSwitcher = props => {
         return !props.has_active_real_account;
     };
 
-    const isRealDXTradeAddDisabled = sub_account_type => {
-        if (props.is_eu) {
-            const account = getAccountTypeFields({ category: 'real', type: sub_account_type });
-            return props.isAccountOfTypeDisabled(account?.account_type);
-        }
+    // TODO: Uncomment when real account is launched
+    // const isRealDXTradeAddDisabled = sub_account_type => {
+    //     if (props.is_eu) {
+    //         const account = getAccountTypeFields({ category: 'real', type: sub_account_type });
+    //         return props.isAccountOfTypeDisabled(account?.account_type);
+    //     }
 
-        return !props.has_active_real_account;
-    };
+    //     return !props.has_active_real_account;
+    // };
 
     if (!props.is_logged_in) return false;
 
@@ -657,7 +662,7 @@ const AccountSwitcher = props => {
                     </AccountWrapper>
                 </React.Fragment>
             )}
-            {/* Hide real accounts for initial launch */}
+            {/* TODO: Uncomment when real account is launched */}
             {/* {props.is_dxtrade_allowed && (
                 <React.Fragment>
                     <div className='acc-switcher__separator acc-switcher__separator--no-padding' />

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Dialog, Loading, PasswordInput, PasswordMeter, Text } from '@deriv/components';
+import { Button, Checkbox, Dialog, Loading, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import {
     validPassword,
     getLocation,
@@ -15,10 +15,11 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
+import SignupSeparatorContainer from './signup-separator-container.jsx';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import 'Sass/app/modules/account-signup.scss';
 
-const signupInitialValues = { password: '', residence: '' };
+const signupInitialValues = { password: '', residence: '', email_consent: false };
 
 const validateSignup = (values, residence_list) => {
     const errors = {};
@@ -54,20 +55,38 @@ const validateSignup = (values, residence_list) => {
     return errors;
 };
 
-const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, residence_list }) => {
+const AccountSignup = ({
+    enableApp,
+    isModalVisible,
+    clients_country,
+    onSignup,
+    residence_list,
+    isEuCountrySelected,
+}) => {
     const { is_dashboard } = React.useContext(PlatformContext);
     const [api_error, setApiError] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
     const [country, setCountry] = React.useState('');
     const [pw_input, setPWInput] = React.useState('');
-    const [has_valid_residence, setHasValidResidence] = React.useState(false);
+    const [selected_residence, setSelectedResidence] = React.useState('');
+    const [is_eu_resident, setIsEuResident] = React.useState(false);
 
     const updatePassword = new_password => {
         setPWInput(new_password);
     };
 
-    const onResidenceSelection = () => {
-        setHasValidResidence(true);
+    const onResidenceSelection = values => {
+        const residence = values;
+        setSelectedResidence(residence);
+        if (residence) {
+            const selected_country = residence_list.find(item => item.text.toLowerCase() === residence.toLowerCase())
+                .value;
+            if (isEuCountrySelected(selected_country)) {
+                setIsEuResident(true);
+            } else {
+                setIsEuResident(false);
+            }
+        }
     };
 
     // didMount lifecycle hook
@@ -90,10 +109,15 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
     };
 
     const validateSignupPassthrough = values => validateSignup(values, residence_list);
+
     const onSignupPassthrough = values => {
         const index_of_selection = residence_list.findIndex(
             item => item.text.toLowerCase() === values.residence.toLowerCase()
         );
+
+        if (!is_eu_resident) {
+            values.email_consent = true;
+        }
 
         const modded_values = {
             ...values,
@@ -111,6 +135,8 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                     initialValues={signupInitialValues}
                     validate={validateSignupPassthrough}
                     onSubmit={onSignupPassthrough}
+                    is_eu_resident={is_eu_resident}
+                    residence_list={residence_list}
                 >
                     {({
                         isSubmitting,
@@ -123,7 +149,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                         touched,
                     }) => (
                         <Form>
-                            {!has_valid_residence ? (
+                            {!selected_residence ? (
                                 <ResidenceForm
                                     header_text={localize('Thanks for verifying your email')}
                                     class_prefix='account-signup'
@@ -140,7 +166,9 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                         })}
                                         type='button'
                                         is_disabled={!values.residence || !!errors.residence}
-                                        onClick={onResidenceSelection}
+                                        onClick={() => {
+                                            onResidenceSelection(values.residence);
+                                        }}
                                         primary
                                         text={localize('Next')}
                                     />
@@ -180,7 +208,27 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                     <Text as='p' size='xxs' className='account-signup__subtext' align='center'>
                                         <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
                                     </Text>
-
+                                    <Field name='email_consent'>
+                                        {({ field }) => (
+                                            <Checkbox
+                                                {...field}
+                                                className={
+                                                    is_eu_resident
+                                                        ? 'account-signup__receive-update-checkbox'
+                                                        : 'account-signup__hidden-checkbox'
+                                                }
+                                                onChange={() => {
+                                                    setFieldValue('email_consent', !values.email_consent);
+                                                }}
+                                                value={values.email_consent}
+                                                label={localize(
+                                                    'I want to receive updates on Deriv products, services, and events.'
+                                                )}
+                                                withTabIndex='0'
+                                            />
+                                        )}
+                                    </Field>
+                                    <SignupSeparatorContainer />
                                     {api_error ? (
                                         <React.Fragment>
                                             <Text
@@ -244,6 +292,7 @@ const AccountSignupModal = ({
     is_loading,
     is_visible,
     is_logged_in,
+    isEuCountrySelected,
     logout,
     onSignup,
     residence_list,
@@ -270,6 +319,7 @@ const AccountSignupModal = ({
                 onSignup={onSignup}
                 residence_list={residence_list}
                 isModalVisible={toggleAccountSignupModal}
+                isEuCountrySelected={isEuCountrySelected}
                 enableApp={enableApp}
             />
         </Dialog>
@@ -296,5 +346,6 @@ export default connect(({ ui, client }) => ({
     is_logged_in: client.is_logged_in,
     residence_list: client.residence_list,
     clients_country: client.clients_country,
+    isEuCountrySelected: client.isEuCountrySelected,
     logout: client.logout,
 }))(AccountSignupModal);

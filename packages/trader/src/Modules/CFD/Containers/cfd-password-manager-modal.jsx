@@ -169,9 +169,10 @@ const TradingPasswordManager = ({ status, platform }) => {
                 )}
                 {is_existing_user && (
                     <Localize
-                        i18n_default_text='Set a new trading password to use with all your {{platform}} accounts. Use this password to log into {{platform}} on your mobile and other devices.'
+                        i18n_default_text='Set a new trading password to use with all your {{platform1}} (and {{platform2}}) accounts. Use this password to log into {{platform1}} on your mobile and other devices.'
                         values={{
-                            platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
+                            platform1: platform === 'mt5' ? 'DMT5' : 'Deriv X',
+                            platform2: platform === 'mt5' ? 'Deriv X' : 'DMT5',
                         }}
                     />
                 )}

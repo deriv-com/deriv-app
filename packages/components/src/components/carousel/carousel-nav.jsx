@@ -19,7 +19,7 @@ const Nav = ({
     if (!show_bullet && !show_nav) return null;
 
     return (
-        <nav className={classNames('dc-carousel__nav', className)}>
+        <nav id='dt_components_carousel-nav_nav-tag' className={classNames('dc-carousel__nav', className)}>
             {show_nav && (
                 <span id='dt_contract_info_left_nav' className='dc-carousel__icon' onClick={handlePrevClick}>
                     <Icon icon='IcChevronLeft' />

@@ -294,7 +294,9 @@ const CFDAccountCard = ({
                                 </div>
                                 <div className='cfd-account-card__login-specs'>
                                     <Text as='p' color='less-prominent' size='xxxs' align='left'>
-                                        {localize('Use below credential to login')}
+                                        {platform === 'mt5'
+                                            ? localize('Use below credential to login')
+                                            : localize('Log in with this username and your trading password.')}
                                     </Text>
                                     <table className='cfd-account-card__login-specs-table'>
                                         <tbody>

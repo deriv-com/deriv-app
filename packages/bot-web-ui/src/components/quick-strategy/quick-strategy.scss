@@ -54,6 +54,20 @@
                 justify-content: center;
             }
             #{$quick-strategy}__input {
+                &-field {
+                    &:focus,
+                    &:disabled,
+                    &:not(:focus):not([value='']) {
+                        outline: none;
+
+                        & ~ label {
+                            transform: translate(0, -1.8rem) scale(0.875);
+                        }
+                    }
+                }
+                &-label {
+                    font-size: var(--text-size-xxs);
+                }
                 .dc-field-error {
                     left: 0;
                     padding-top: 0.4rem;

@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
@@ -8,27 +7,7 @@ import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-
-const BuySellFormReceiveAmount = ({ is_sell_advert, receive_amount, local_currency }) => (
-    <React.Fragment>
-        <Text as='p' color='less-prominent' line_height='m' size='xxs'>
-            {is_sell_advert ? (
-                <Localize i18n_default_text='You receive' />
-            ) : (
-                <Localize i18n_default_text="You'll send" />
-            )}
-        </Text>
-        <Text as='p' color='general' line_height='m' size='xs' weight='bold'>
-            {getFormattedText(receive_amount, local_currency)}
-        </Text>
-    </React.Fragment>
-);
-
-BuySellFormReceiveAmount.propTypes = {
-    is_sell_advert: PropTypes.bool.isRequired,
-    receive_amount: PropTypes.number.isRequired,
-    local_currency: PropTypes.string.isRequired,
-};
+import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
@@ -150,11 +129,7 @@ const BuySellForm = props => {
                                             ))}
                                     </div>
                                 </div>
-                                <div
-                                    className={classNames('buy-sell__modal-field-wrapper', {
-                                        'buy-sell__modal-field-wrapper--no-flex': isMobile(),
-                                    })}
-                                >
+                                <div className='buy-sell__modal-field-wrapper'>
                                     <Field name='amount'>
                                         {({ field }) => (
                                             <Input

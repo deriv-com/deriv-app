@@ -73,8 +73,8 @@ const FinishedSetCurrency = ({ current, onCancel, onSubmit, prev }) => {
                 <SuccessMessage prev={prev} current={current} />
             </div>
             <div className='status-dialog__footer'>
-                <Button onClick={onCancel} text={localize('Maybe later')} secondary />
                 <Button onClick={onSubmit} text={localize('Deposit now')} primary />
+                <Button onClick={onCancel} text={localize('Maybe later')} secondary />
             </div>
         </Div100vhContainer>
     );

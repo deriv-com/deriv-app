@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import { deriv_urls } from '@deriv/shared';
 
 export const GoToDeriv = () => {
-    const message = localize(`Go to ${deriv_urls.DERIV_HOST_NAME}`);
+    const message = localize('Go to {{hostname}}', { hostname: deriv_urls.DERIV_HOST_NAME });
 
     return (
         <StaticUrl href='/' className='footer__link'>

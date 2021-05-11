@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, RadioGroup, Dialog, Popover } from '@deriv/components';
+import { Checkbox, RadioGroup, Dialog, Popover, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { onToggleCancellation, onChangeCancellationDuration } from 'Stores/Modules/Contract/Helpers/multiplier';
@@ -27,7 +27,9 @@ const DealCancellationWarning = ({
         enableApp={enableApp}
         portal_element_id='modal_root'
     >
-        <Localize i18n_default_text='Take profit and/or stop loss are not available while deal cancellation is active.' />
+        <Text size='xxxs' color='general'>
+            <Localize i18n_default_text='Take profit and/or stop loss are not available while deal cancellation is active.' />
+        </Text>
         <Checkbox
             defaultChecked={!should_show_cancellation_warning}
             onChange={() => toggleCancellationWarning()}

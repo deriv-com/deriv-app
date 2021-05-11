@@ -300,7 +300,10 @@ const MT5PasswordModal = ({
         return (
             (is_logged_in ? !is_eu : !is_eu_country) &&
             is_real_synthetic &&
-            mt5_login_list.some(item => item.account_type === 'real' && item.market_type === 'gaming') &&
+            mt5_login_list.some(
+                item =>
+                    item.account_type === 'real' && (item.market_type === 'gaming' || item.market_type === 'synthetic')
+            ) &&
             !server
         );
     }, [is_eu, is_eu_country, is_logged_in, is_real_synthetic, server, mt5_login_list]);

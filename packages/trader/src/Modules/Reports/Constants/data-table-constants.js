@@ -9,6 +9,7 @@ import { getProfitOrLoss } from 'Modules/Reports/Helpers/profit-loss';
 import IndicativeCell from '../Components/indicative-cell.jsx';
 import MarketSymbolIconRow from '../Components/market-symbol-icon-row.jsx';
 import ProfitLossCell from '../Components/profit_loss_cell.jsx';
+import CurrencyWrapper from '../Components/currency-wrapper.jsx';
 
 const getModeFromValue = key => {
     const map = {
@@ -50,7 +51,7 @@ export const getStatementTableColumnsTemplate = currency => [
     {
         title: localize('Currency'),
         col_index: 'currency',
-        renderCellContent: () => getCurrencyDisplayCode(currency),
+        renderCellContent: () => <CurrencyWrapper currency={getCurrencyDisplayCode(currency)} />,
     },
     {
         title: localize('Transaction time'),
@@ -254,7 +255,9 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
     {
         title: localize('Currency'),
         col_index: 'currency',
-        renderCellContent: ({ row_obj }) => getCurrencyDisplayCode(row_obj.contract_info?.currency),
+        renderCellContent: ({ row_obj }) => (
+            <CurrencyWrapper currency={getCurrencyDisplayCode(row_obj.contract_info?.currency)} />
+        ),
     },
     {
         title: localize('Stake'),

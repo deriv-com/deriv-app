@@ -87,7 +87,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
         &--floating {
             min-width: 256px;
-            padding: 0.8rem 0.8rem 0;
+            padding: 0.8rem;
             border-radius: #{$BORDER_RADIUS * 2};
 
             .dc-vertical-tab__header--highlight {

@@ -327,19 +327,24 @@
                 &--no-cancel {
                     grid-template-rows: auto auto 1fr;
                 }
+                &-bottom-separator {
+                    border-bottom: 1px solid var(--border-disabled);
+                    height: calc(100% - 1.6rem);
+                }
                 &-apply-button {
                     display: flex;
                     align-items: flex-end;
-                    margin: 0rem 1.6rem;
+                    margin: 0 1.6rem;
 
                     .dc-btn {
                         flex: 1;
+                        height: 4rem;
                     }
                 }
                 .trade-container__fieldset {
                     padding: 1rem 1.6rem;
-                    margin-bottom: 0rem;
-                    border-bottom: 1px solid var(--general-main-1);
+                    margin-bottom: 0;
+                    border-bottom: 1px solid var(--border-disabled);
                     border-radius: 0;
 
                     .dc-input-field {

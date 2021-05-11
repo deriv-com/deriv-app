@@ -97,7 +97,6 @@
             background: var(--general-main-1);
             flex: 2;
             margin-left: 0.8rem;
-            gap: 0.8rem;
 
             &--no-stop-out {
                 justify-content: flex-end;
@@ -111,6 +110,9 @@
 
                 span:before {
                     content: ': ';
+                }
+                &:first-child {
+                    margin-right: 0.8rem;
                 }
                 @media only screen and (max-width: 340px) {
                     font-size: 0.8rem;

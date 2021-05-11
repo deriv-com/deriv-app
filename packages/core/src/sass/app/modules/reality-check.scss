@@ -191,7 +191,7 @@
     }
     .dc-input {
         @include mobile {
-            margin-bottom: 0px;
+            margin-bottom: 0rem;
         }
     }
     .dc-radio-group {
@@ -199,6 +199,21 @@
             @include mobile {
                 font-size: 12px;
             }
+        }
+    }
+    .reality-check__separator {
+        @include mobile {
+            margin: 0rem;
+        }
+    }
+    .reality-check__fieldset--spending-limit {
+        @include mobile {
+            margin-bottom: 2.8rem;
+        }
+    }
+    .reality-check__fieldset--interval {
+        @include mobile {
+            padding-top: 0rem;
         }
     }
 }

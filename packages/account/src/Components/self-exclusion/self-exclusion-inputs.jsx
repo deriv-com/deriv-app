@@ -27,7 +27,7 @@ const StakeLossAndLimitsInputs = () => {
     const { errors, handleBlur, handleChange, values } = useFormikContext();
     return (
         <React.Fragment>
-            <SectionTitle title={<Localize i18n_default_text='Your stake and loss limits' />} />
+            <SectionTitle title={<Localize i18n_default_text='Your spending and loss limits' />} />
             <div className='da-self-exclusion__item-wrapper'>
                 <div className='da-self-exclusion__item'>
                     <h3 className='da-self-exclusion__item-title'>

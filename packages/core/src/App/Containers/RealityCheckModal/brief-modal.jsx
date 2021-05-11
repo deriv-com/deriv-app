@@ -106,16 +106,14 @@ const BriefModal = ({
                                                 handleBlur={handleBlur}
                                                 disabled={values.spending_limit === '0'}
                                             />
-                                            {isDesktop() && (
-                                                <Text
-                                                    as='p'
-                                                    size='xs'
-                                                    line_height='m'
-                                                    className='reality-check__text reality-check__text--description'
-                                                >
-                                                    <Localize i18n_default_text='If you decide to set a spending limit later, you can always do so by going to “Self-exclusion” in your account settings.' />
-                                                </Text>
-                                            )}
+                                            <Text
+                                                as='p'
+                                                size='xs'
+                                                line_height='m'
+                                                className='reality-check__text reality-check__text--description'
+                                            >
+                                                <Localize i18n_default_text='If you decide to set a spending limit later, you can always do so by going to “Self-exclusion” in your account settings.' />
+                                            </Text>
                                         </div>
                                         <div className='reality-check__separator' />
                                         <div className='reality-check__section'>

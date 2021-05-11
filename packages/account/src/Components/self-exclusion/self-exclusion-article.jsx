@@ -19,7 +19,7 @@ const SelfExclusionArticle = () => {
                     : [
                           is_eu ? (
                               <Localize
-                                  i18n_default_text='These trading limits and self-exclusion help you control the amount of money and time you spend on Deriv.com and exercise <0>responsible trading</0>.'
+                                  i18n_default_text='Spending limit and self-exclusion help you control the amount of money and time you spend trading on DTrader, DBot, and SmartTrader. The limits you set here will help you exercise <0>responsible trading</0>.'
                                   components={[<StaticUrl key={0} className='link' href='/responsible' />]}
                               />
                           ) : (

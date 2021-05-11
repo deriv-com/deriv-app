@@ -10,7 +10,7 @@ import BriefModal from './brief-modal.jsx';
 import SummaryModal from './summary-modal.jsx';
 
 const SpendingLimitIntervalField = ({ values, disabled, touched, errors, handleChange, handleBlur }) => (
-    <div className='reality-check__fieldset'>
+    <div className='reality-check__fieldset reality-check__fieldset--spending-limit'>
         <Field name='interval'>
             {({ field }) => (
                 <Input
@@ -34,7 +34,7 @@ const SpendingLimitIntervalField = ({ values, disabled, touched, errors, handleC
 );
 
 const TradingViewIntervalField = ({ values, touched, errors, handleChange, handleBlur }) => (
-    <div className='reality-check__fieldset'>
+    <div className='reality-check__fieldset reality-check__fieldset--interval'>
         <Field name='interval'>
             {({ field }) => (
                 <Input

@@ -276,11 +276,13 @@
                 'deal-cancel-fee buy-price date-expiry'
                 'limit-order-info limit-order-info date-expiry';
 
-            .dc-contract-card__limit-order-info {
-                grid-template-columns: 1fr 1fr;
-            }
-            .dc-contract-card__stop-loss {
-                order: unset !important;
+            .dc-contract-card {
+                &__limit-order-info {
+                    grid-template-columns: 1fr 1fr;
+                }
+                &__stop-loss {
+                    order: unset !important;
+                }
             }
         }
     }

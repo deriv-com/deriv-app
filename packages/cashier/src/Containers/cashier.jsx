@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import {
-    Button,
     DesktopWrapper,
     Div100vhContainer,
     FadeWrapper,
@@ -12,7 +11,7 @@ import {
     Loading,
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getSelectedRoute, getStaticUrl, isMobile, routes } from '@deriv/shared';
+import { getSelectedRoute, isMobile, routes } from '@deriv/shared';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import 'Sass/cashier.scss';
@@ -20,7 +19,7 @@ import 'Sass/cashier.scss';
 const Cashier = ({
     history,
     is_account_transfer_visible,
-    is_cashier_default,
+    is_client_tnc_status_loaded,
     is_logged_in,
     is_logging_in,
     is_onramp_tab_visible,
@@ -32,8 +31,8 @@ const Cashier = ({
     location,
     onMount,
     p2p_notification_count,
-    routes: routes_config,
     routeBackInApp,
+    routes: routes_config,
     setAccountSwitchListener,
     setTabIndex,
     tab_index,
@@ -56,7 +55,6 @@ const Cashier = ({
     const onClickClose = () => routeBackInApp(history);
     const getMenuOptions = () => {
         const options = [];
-
         routes_config.forEach(route => {
             if (
                 !route.is_invisible &&
@@ -88,14 +86,15 @@ const Cashier = ({
     //         location.pathname.startsWith(routes.cashier_withdrawal));
 
     const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: location.pathname }).default;
-    if (!is_logged_in && is_logging_in) {
+
+    if ((!is_logged_in && is_logging_in) || !is_client_tnc_status_loaded) {
         return <Loading is_fullscreen />;
     }
     return (
         <FadeWrapper is_visible={is_visible} className='cashier-page-wrapper' keyname='cashier-page-wrapper'>
             <div className='cashier'>
                 <PageOverlay
-                    header={isMobile() && !is_cashier_default ? selected_route.getTitle() : localize('Cashier')}
+                    header={isMobile() ? selected_route.getTitle() : localize('Cashier')}
                     onClickClose={onClickClose}
                 >
                     <DesktopWrapper>
@@ -110,15 +109,16 @@ const Cashier = ({
                             is_full_width
                             is_routed
                             list={getMenuOptions()}
-                            tab_headers_note={
-                                <Button
-                                    id='cashier_learn_more'
-                                    className='cashier-page-wrapper__button'
-                                    text={localize('Learn more about payment methods')}
-                                    onClick={() => window.open(getStaticUrl('/payment-methods'))}
-                                    secondary
-                                />
-                            }
+                            // TODO: Uncomment when design for responsive screen is available
+                            // tab_headers_note={
+                            //     <Button
+                            //         id='cashier_learn_more'
+                            //         className='cashier-page-wrapper__button'
+                            //         text={localize('Learn more about payment methods')}
+                            //         onClick={() => window.open(getStaticUrl('/payment-methods'))}
+                            //         secondary
+                            //     />
+                            // }
                             // TODO: Uncomment when Ewallet.Exchange is available
                             // tab_headers_note={
                             //     should_show_tab_headers_note ? (
@@ -160,6 +160,7 @@ const Cashier = ({
 Cashier.propTypes = {
     history: PropTypes.object,
     is_account_transfer_visible: PropTypes.bool,
+    is_client_tnc_status_loaded: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_onramp_tab_visible: PropTypes.bool,
@@ -171,8 +172,8 @@ Cashier.propTypes = {
     location: PropTypes.object,
     onMount: PropTypes.func,
     p2p_notification_count: PropTypes.number,
-    routes: PropTypes.arrayOf(PropTypes.object),
     routeBackInApp: PropTypes.func,
+    routes: PropTypes.arrayOf(PropTypes.object),
     setAccountSwitchListener: PropTypes.func,
     setTabIndex: PropTypes.func,
     tab_index: PropTypes.number,
@@ -181,7 +182,7 @@ Cashier.propTypes = {
 
 export default connect(({ client, common, modules, ui }) => ({
     is_account_transfer_visible: modules.cashier.is_account_transfer_visible,
-    is_cashier_default: modules.cashier.is_cashier_default,
+    is_client_tnc_status_loaded: client.is_client_tnc_status_loaded,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,

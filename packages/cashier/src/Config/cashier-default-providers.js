@@ -18,7 +18,7 @@ const cash_contents = [
             { light: 'IcCashierHelpToPayLight', dark: 'IcCashierHelpToPayDark' },
             { light: 'ic-cashier-dragon-phoenix', dark: 'ic-cashier-dragon-phoenix' },
             { light: 'ic-cashier-online-naira-light', dark: 'ic-cashier-online-naira-dark' },
-            { light: 'ic-cashier-directa-light', dark: 'ic-cashier-directa-dark' },
+            // { light: 'ic-cashier-directa-light', dark: 'ic-cashier-directa-dark' },
         ],
     },
     {
@@ -60,7 +60,7 @@ const crypto_contents = [
 const createCashProvider = onClick => {
     return {
         detail_click: onClick,
-        detail_description: localize('Deposit cash via payment methods available in your country.'),
+        detail_description: localize('Deposit via payment methods available in your country.'),
         detail_header: localize('Deposit via bank wire, credit card, and e-wallet'),
         detail_contents: cash_contents,
     };

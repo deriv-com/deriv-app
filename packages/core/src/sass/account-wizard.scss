@@ -116,6 +116,9 @@
                 margin-bottom: 9rem;
             }
         }
+        .dc-input__label {
+            background-color: var(--fill-normal) !important;
+        }
         .dc-modal-footer {
             background-color: var(--general-main-1);
             z-index: 1;
@@ -333,7 +336,6 @@
             &-steps {
                 padding: 1.6rem 0 0;
                 width: 100%;
-                background: var(--general-section-2);
 
                 &-title {
                     padding: 0 1.6rem 0.8rem;

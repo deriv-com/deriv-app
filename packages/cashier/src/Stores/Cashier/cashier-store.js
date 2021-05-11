@@ -1148,11 +1148,11 @@ export default class CashierStore extends BaseStore {
                 const a_is_fiat = !a_is_mt && !a_is_crypto;
                 const b_is_fiat = !b_is_mt && !b_is_crypto;
                 if (a_is_mt && b_is_mt) {
-                    if (a.market_type === 'gaming') {
+                    if (a.market_type === 'gaming' || a.market_type === 'synthetic') {
                         return -1;
                     }
                     if (a.sub_account_type === 'financial') {
-                        return b.market_type === 'gaming' ? 1 : -1;
+                        return b.market_type === 'gaming' || b.market_type === 'synthetic' ? 1 : -1;
                     }
                     return 1;
                 } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {

@@ -37,16 +37,22 @@ const AccountSwitcher = props => {
     const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
     const [is_deriv_real_visible, setDerivRealVisible] = React.useState(true);
     const [is_dmt5_demo_visible, setDmt5DemoVisible] = React.useState(true);
-    const [is_dmt5_real_visible, setDmt5RealVisible] = React.useState(false);
+    const [is_dmt5_real_visible, setDmt5RealVisible] = React.useState(true);
 
     const wrapper_ref = React.useRef();
     const dmt5_ref = React.useRef(null);
 
     React.useEffect(() => {
+        if (getMaxAccountsDisplayed()) {
+            setDmt5RealVisible(false);
+        }
+    }, []);
+
+    React.useEffect(() => {
         if (dmt5_ref.current && is_dmt5_real_visible) {
             dmt5_ref.current.scrollIntoView({
                 behavior: 'smooth',
-                block: 'end',
+                block: getMaxAccountsDisplayed() ? 'end' : 'start',
                 inline: 'nearest',
             });
         }
@@ -65,6 +71,10 @@ const AccountSwitcher = props => {
             default:
                 return false;
         }
+    };
+
+    const getMaxAccountsDisplayed = () => {
+        return props?.account_list?.length > 4;
     };
 
     const handleLogout = () => {
@@ -175,9 +185,10 @@ const AccountSwitcher = props => {
         const mt5_config = [];
         if (landing_company) {
             Object.keys(landing_company).forEach(company => {
-                let has_account = existing_mt5_accounts.find(
-                    account => account.sub_account_type === company && account.market_type === market_type
-                );
+                let has_account = existing_mt5_accounts.find(account => {
+                    const account_market_type = account.market_type === 'synthetic' ? 'gaming' : account.market_type;
+                    return account.sub_account_type === company && account_market_type === market_type;
+                });
                 if (has_account) {
                     const number_market_type_available = trading_servers.filter(
                         s => s.supported_accounts.includes(market_type) && !s.disabled
@@ -249,11 +260,11 @@ const AccountSwitcher = props => {
             if (b_is_demo && !a_is_demo) {
                 return -1;
             }
-            if (a.market_type === 'gaming') {
+            if (a.market_type === 'gaming' || a.market_type === 'synthetic') {
                 return -1;
             }
             if (a.sub_account_type === 'financial') {
-                return b.market_type === 'gaming' ? 1 : -1;
+                return b.market_type === 'gaming' || b.market_type === 'synthetic' ? 1 : -1;
             }
             return 1;
         });

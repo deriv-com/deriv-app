@@ -657,7 +657,8 @@ const AccountSwitcher = props => {
                     </AccountWrapper>
                 </React.Fragment>
             )}
-            {props.is_dxtrade_allowed && (
+            {/* Hide real accounts for initial launch */}
+            {/* {props.is_dxtrade_allowed && (
                 <React.Fragment>
                     <div className='acc-switcher__separator acc-switcher__separator--no-padding' />
                     <AccountWrapper
@@ -725,7 +726,7 @@ const AccountSwitcher = props => {
                         )}
                     </AccountWrapper>
                 </React.Fragment>
-            )}
+            )} */}
         </div>
     );
 

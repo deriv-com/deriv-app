@@ -404,6 +404,14 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_client_tnc_status_loaded() {
+        const { client_tnc_status } = this.account_settings;
+        if (this.is_virtual || (!this.is_virtual && client_tnc_status !== '')) return true;
+
+        return false;
+    }
+
+    @computed
     get is_financial_information_incomplete() {
         return this.account_status?.status?.some(status => status === 'financial_information_not_complete');
     }

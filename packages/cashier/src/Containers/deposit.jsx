@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -60,8 +61,8 @@ const Deposit = ({
     }, []);
 
     React.useEffect(() => {
-        if (iframe_height && isDesktop() && !is_switching) {
-            if (isCryptocurrency(currency) && typeof setSideNotes === 'function') {
+        if (iframe_height && isDesktop()) {
+            if (isCryptocurrency(currency) && typeof setSideNotes === 'function' && !is_switching) {
                 const side_notes = [
                     <DepositeSideNote key={0} />,
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
@@ -72,10 +73,13 @@ const Deposit = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, iframe_height, is_switching]);
+
+    if (is_switching) {
+        return <Loading is_fullscreen />;
+    }
     if (is_virtual) {
         return <Virtual />;
     }
-
     if (error.is_ask_uk_funds_protection) {
         return <FundsProtection />;
     }

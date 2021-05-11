@@ -104,7 +104,8 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
     {
         title: localize('Currency'),
         col_index: 'currency',
-        renderCellContent: ({ is_footer }) => (is_footer ? '' : getCurrencyDisplayCode(currency)),
+        renderCellContent: ({ is_footer }) =>
+            is_footer ? '' : <CurrencyWrapper currency={getCurrencyDisplayCode(currency)} />,
     },
     {
         title: localize('Buy time'),
@@ -168,7 +169,9 @@ export const getOpenPositionsColumnsTemplate = currency => [
     {
         title: localize('Currency'),
         col_index: 'currency',
-        renderCellContent: ({ row_obj }) => getCurrencyDisplayCode(row_obj.contract_info?.currency),
+        renderCellContent: ({ row_obj }) => (
+            <CurrencyWrapper currency={getCurrencyDisplayCode(row_obj.contract_info?.currency)} />
+        ),
     },
     {
         title: localize('Buy price'),

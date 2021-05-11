@@ -9,6 +9,10 @@ module.exports = {
     setupFiles: [
         "<rootDir>/jest.setup.js",
     ],
+    setupFilesAfterEnv:[
+        "./setupTests.js",
+    ],
+
     testRegex: [
         '__tests__',
         '.*.spec.js',

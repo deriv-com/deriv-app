@@ -160,9 +160,10 @@ const TradingPasswordManager = ({ status, platform }) => {
             <Text as='p' align='center' className='mt5-password-manager__trading-password-text' size='xs'>
                 {!is_existing_user && (
                     <Localize
-                        i18n_default_text='You have set a trading password to log into {{platform}} on your mobile and other devices.'
+                        i18n_default_text='You have set a trading password to log into {{platform1}} (and {{platform2}}) on your mobile and other devices.'
                         values={{
-                            platform: platform === 'mt5' ? 'MT5' : 'Deriv X',
+                            platform1: platform === 'mt5' ? 'MT5' : 'Deriv X',
+                            platform2: platform === 'mt5' ? 'Deriv X' : 'MT5',
                         }}
                         components={[<Text weight='bold' key={0} />]}
                     />

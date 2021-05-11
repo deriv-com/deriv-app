@@ -42,6 +42,7 @@ const AccountInfo = ({
             <div className='acc-info__separator' />
             <AccountInfoWrapper is_disabled={is_disabled} disabled_message={acc_switcher_disabled_message}>
                 <div
+                    id='dt_core_account-info_acc-info'
                     className={classNames('acc-info', {
                         'acc-info--show': is_dialog_on,
                         'acc-info--is-virtual': is_virtual,

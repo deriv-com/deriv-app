@@ -1,4 +1,4 @@
-.p2p-verification {
+.dp2p-verification {
     width: 100%;
     max-width: 67.2rem;
     display: flex;
@@ -50,6 +50,14 @@
         }
         @include mobile {
             width: 100%;
+        }
+    }
+
+    &__wrapper {
+        padding-top: 3.5rem;
+
+        &--mobile {
+            padding: 3.5rem 2.5rem 0;
         }
     }
 }

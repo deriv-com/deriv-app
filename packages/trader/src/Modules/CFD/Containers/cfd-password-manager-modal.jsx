@@ -415,6 +415,7 @@ const CFDPasswordManagerTabContent = ({
                         multi_step_ref={multi_step_ref}
                         status={account_status.status}
                         platform={platform}
+                        is_dxtrade_allowed={is_dxtrade_allowed}
                     />
                 </Div100vhContainer>
             </MobileWrapper>

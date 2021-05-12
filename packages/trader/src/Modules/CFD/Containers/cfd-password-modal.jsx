@@ -57,7 +57,7 @@ const PasswordModalHeader = ({
     is_password_reset_error,
     has_mt5_account,
 }) => {
-    if (should_set_trading_password && has_mt5_account && !should_show_server_form) {
+    if (should_set_trading_password && has_mt5_account) {
         return null;
     }
 
@@ -535,7 +535,13 @@ const CFDPasswordModal = ({
                         has_mt5_account={has_mt5_account}
                         is_password_reset_error={is_password_reset}
                     />
-                    {should_show_server_form ? cfd_server_form : cfd_password_form}
+                    <RequireTradingPasswordModal
+                        has_mt5_account={has_mt5_account}
+                        should_set_trading_password={should_set_trading_password}
+                        platform={platform}
+                    >
+                        {should_show_server_form ? cfd_server_form : cfd_password_form}
+                    </RequireTradingPasswordModal>
                 </MobileDialog>
             </MobileWrapper>
             <SuccessDialog

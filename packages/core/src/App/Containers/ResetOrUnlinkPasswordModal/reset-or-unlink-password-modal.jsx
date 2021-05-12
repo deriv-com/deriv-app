@@ -47,6 +47,6 @@ const ResetOrUnlinkPasswordModal = ({ is_logged_in }) => {
     return <ResetPasswordModal />;
 };
 
-export default connect(({ ui }) => ({
-    is_logged_in: ui.is_logged_in,
+export default connect(({ client }) => ({
+    is_logged_in: client.is_logged_in,
 }))(ResetOrUnlinkPasswordModal);

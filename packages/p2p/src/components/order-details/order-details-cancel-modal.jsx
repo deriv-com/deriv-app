@@ -69,7 +69,7 @@ const OrderDetailsCancelModal = ({ hideCancelOrderModal, order_id, should_show_c
                     </Text>
                 </div>
             </Modal.Body>
-            <Modal.Footer>
+            <Modal.Footer className='cancel-modal__footer'>
                 {order_store.error_message && <FormError message={order_store.error_message} />}
                 <Button.Group>
                     <Button secondary large onClick={cancelOrderRequest}>

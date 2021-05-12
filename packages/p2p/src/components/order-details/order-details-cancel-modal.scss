@@ -1,4 +1,19 @@
 .cancel-modal {
+    &__footer {
+        @include mobile {
+            .dc-btn__group {
+                align-items: center;
+                display: flex;
+                flex-direction: column;
+
+                .dc-btn {
+                    margin-top: 0.8rem;
+                    width: 80vw;
+                }
+            }
+        }
+    }
+
     &__warning {
         padding-top: 0.8rem;
     }
@@ -15,5 +30,6 @@
 
     .dc-modal-footer {
         border-top: none;
+        padding: 0 1.6rem 1.6rem;
     }
 }

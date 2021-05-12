@@ -8,7 +8,7 @@ import MultipliersExpirationModal from 'Modules/Trading/Components/Form/TradePar
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info.jsx';
 import { localize } from '@deriv/translations';
 
-const AmountWidget = ({ amount, currency, is_crypto_multiplier }) => {
+const AmountWidget = ({ amount, currency, expiration, is_crypto_multiplier }) => {
     const [is_open, setIsOpen] = React.useState(false);
     const [is_expiration_modal_open, setIsExpirationModalOpen] = React.useState(false);
 
@@ -38,7 +38,7 @@ const AmountWidget = ({ amount, currency, is_crypto_multiplier }) => {
                 />
             </div>
             {is_crypto_multiplier && (
-                <div className='mobile-widget' onClick={toggleExpirationModal}>
+                <div className='mobile-widget' onClick={expiration ? toggleExpirationModal : null}>
                     <div className='mobile-widget__multiplier-expiration'>
                         <Text size='xxs'>{localize('Expires in')}</Text>
                         <MultipliersExpiration is_text_only text_size='xxs' />
@@ -55,6 +55,7 @@ const AmountWidget = ({ amount, currency, is_crypto_multiplier }) => {
 
 export const MultiplierAmountWidget = connect(({ modules }) => ({
     amount: modules.trade.amount,
+    expiration: modules.trade.expiration,
     currency: modules.trade.currency,
     is_crypto_multiplier: modules.trade.is_crypto_multiplier,
     multiplier: modules.trade.multiplier,

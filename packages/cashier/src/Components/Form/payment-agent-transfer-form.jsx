@@ -20,7 +20,7 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
         decimals: getDecimalPlaces(currency),
         ...(transfer_limit.min && {
             min: transfer_limit.min,
-            max: balance >= transfer_limit.min && balance < transfer_limit.max ? balance : transfer_limit.max,
+            max: +balance >= transfer_limit.min && +balance < transfer_limit.max ? balance : transfer_limit.max,
         }),
     });
 

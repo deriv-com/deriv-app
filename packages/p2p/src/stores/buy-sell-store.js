@@ -162,6 +162,7 @@ export default class BuySellStore extends BaseStore {
     loadMoreItems({ startIndex }) {
         const { general_store } = this.root_store;
         const counterparty_type = this.is_buy ? buy_sell.BUY : buy_sell.SELL;
+        this.setApiErrorMessage('');
 
         return new Promise(resolve => {
             requestWS({
@@ -215,6 +216,8 @@ export default class BuySellStore extends BaseStore {
                             this.setSearchResults([]);
                         }
                     }
+                } else if (response.error.code === 'PermissionDenied') {
+                    this.root_store.general_store.setIsBlocked(true);
                 } else {
                     this.setApiErrorMessage(response.error.message);
                 }

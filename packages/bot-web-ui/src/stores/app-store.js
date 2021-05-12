@@ -122,7 +122,7 @@ export default class AppStore {
         this.disposeLandingCompanyChangeReaction = reaction(
             () => client.landing_company_shortcode,
             landing_company_shortcode => {
-                if (landing_company_shortcode === 'maltainvest') {
+                if (landing_company_shortcode === 'maltainvest' || client.is_options_blocked) {
                     showDigitalOptionsUnavailableError(common.showError, {
                         text: localize(
                             'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'
@@ -178,7 +178,7 @@ export default class AppStore {
     };
 
     showDigitalOptionsMaltainvestError = (client, common) => {
-        if (client.landing_company_shortcode === 'maltainvest') {
+        if (client.landing_company_shortcode === 'maltainvest' || client.is_options_blocked) {
             showDigitalOptionsUnavailableError(common.showError, {
                 text: localize(
                     'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a DMT5 Financial.'

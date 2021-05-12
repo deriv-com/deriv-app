@@ -11,13 +11,13 @@ const PasswordsStatic = ({ is_dark_mode_on, is_deriv_password, is_trading_passwo
     <React.Fragment>
         {is_deriv_password ? (
             <div className='account__passwords-item-left'>
-                <Text className='passwords-static__text' color='less-prominent' size='xs' weight='lighter'>
+                <Text className='passwords-static__text' color='prominent' size='xs' weight='lighter'>
                     <Localize
                         i18n_default_text='Use this to log in to Deriv.com, Deriv Go, DTrader,<0 /> SmartTrader, and DBot.'
                         components={[<br key={0} />]}
                     />
                 </Text>
-                <Text className='passwords-static__text' color='less-prominent' size='xs' weight='lighter'>
+                <Text className='passwords-static__text' color='prominent' size='xs' weight='lighter'>
                     {localize('Apps you have linked to this password:')}
                 </Text>
                 <div className='passwords-static__logo-container'>
@@ -43,14 +43,14 @@ const PasswordsStatic = ({ is_dark_mode_on, is_deriv_password, is_trading_passwo
             </div>
         ) : (
             <div className='account__passwords-item-left'>
-                <Text className='passwords-static__text' color='less-prominent' size='xs' weight='lighter'>
+                <Text className='passwords-static__text' color='prominent' size='xs' weight='lighter'>
                     {is_dxtrade_allowed
                         ? localize('Use this to log in and trade with DMT5 and Deriv X.')
                         : localize('Use this to log in and trade with DMT5.')}
                 </Text>
                 {!is_trading_password_required && (
                     <React.Fragment>
-                        <Text className='passwords-static__text' color='less-prominent' size='xs' weight='lighter'>
+                        <Text className='passwords-static__text' color='prominent' size='xs' weight='lighter'>
                             {localize('Apps you have linked to this password:')}
                         </Text>
                         <div className='passwords-static__icons'>

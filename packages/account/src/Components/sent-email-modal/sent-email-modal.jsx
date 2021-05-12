@@ -91,7 +91,7 @@ const SentEmailModal = ({ identifier_title, is_open, is_unlink_modal, onClose, o
                     height_offset='80px'
                 >
                     <Modal.Body>
-                        <div onClick={onClose} className='sent-email__modal-close'>
+                        <div onClick={onClose} className='send-email-template__close'>
                             <Icon icon='IcCross' />
                         </div>
                         <SendEmailTemplate

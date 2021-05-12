@@ -30,18 +30,24 @@ const AccountSwitcher = props => {
     const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
     const [is_deriv_real_visible, setDerivRealVisible] = React.useState(true);
     const [is_dmt5_demo_visible, setDmt5DemoVisible] = React.useState(true);
-    const [is_dmt5_real_visible, setDmt5RealVisible] = React.useState(false);
+    const [is_dmt5_real_visible, setDmt5RealVisible] = React.useState(true);
     const [is_dxtrade_demo_visible, setDxtradeDemoVisible] = React.useState(true);
-    const [is_dxtrade_real_visible, setDxtradeRealVisible] = React.useState(false);
+    const [is_dxtrade_real_visible, setDxtradeRealVisible] = React.useState(true);
 
     const wrapper_ref = React.useRef();
     const scroll_ref = React.useRef(null);
 
     React.useEffect(() => {
+        if (getMaxAccountsDisplayed()) {
+            setDmt5RealVisible(false);
+        }
+    }, []);
+
+    React.useEffect(() => {
         if (scroll_ref.current && (is_dmt5_real_visible || is_dxtrade_real_visible)) {
             scroll_ref.current.scrollIntoView({
                 behavior: 'smooth',
-                block: 'end',
+                block: getMaxAccountsDisplayed() ? 'end' : 'start',
                 inline: 'nearest',
             });
         }
@@ -64,6 +70,10 @@ const AccountSwitcher = props => {
             default:
                 return false;
         }
+    };
+
+    const getMaxAccountsDisplayed = () => {
+        return props?.account_list?.length > 4;
     };
 
     const handleLogout = () => {

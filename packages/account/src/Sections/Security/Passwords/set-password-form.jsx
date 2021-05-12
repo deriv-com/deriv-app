@@ -34,13 +34,12 @@ const SetPasswordForm = ({ email }) => {
                     }, 3000);
                 } else {
                     setIsSubmitSuccess(true);
-                    setTimeout(() => {
+                    WS.getAccountStatus().then(() => {
                         if (isMounted()) {
-                            WS.getAccountStatus();
                             setIsSubmitSuccess(false);
                             setSubmitting(false);
                         }
-                    }, 3000);
+                    });
                 }
             }
         });

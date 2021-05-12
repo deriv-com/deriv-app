@@ -143,50 +143,48 @@ const CFDPasswordManagerTabContentWrapper = ({ multi_step_ref, steps }) => (
     <MultiStep ref={multi_step_ref} steps={steps} className='cfd-password-manager' lbl_previous={localize('Back')} />
 );
 
-const TradingPasswordManager = ({ status, platform, is_dxtrade_allowed }) => {
+const TradingPasswordManager = ({ status, platform }) => {
     const is_existing_user = status?.includes('trading_password_required');
 
     return (
         <div className='cfd-password-manager__trading-password-wrapper'>
             <Icon icon='IcMt5OnePassword' size='128' />
             <Text as='p' align='center' size='s' weight='bold'>
-                <Localize
-                    i18n_default_text='Trading password for {{platform}} accounts'
-                    values={{
-                        platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
-                    }}
-                />
+                {is_existing_user ? (
+                    <Localize
+                        i18n_default_text='Trading password - a new, easy way to sign in to your {{platform}} accounts'
+                        values={{
+                            platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
+                        }}
+                    />
+                ) : (
+                    <Localize
+                        i18n_default_text='You have a trading password for {{platform}}'
+                        values={{
+                            platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
+                        }}
+                    />
+                )}
             </Text>
             <Text as='p' align='center' className='mt5-password-manager__trading-password-text' size='xs'>
                 {!is_existing_user && (
-                    <React.Fragment>
-                        {is_dxtrade_allowed ? (
-                            <Localize
-                                i18n_default_text='You have set a trading password to log into {{platform1}} (and {{platform2}}) on your mobile and other devices.'
-                                values={{
-                                    platform1: platform === 'mt5' ? 'MT5' : 'Deriv X',
-                                    platform2: platform === 'mt5' ? 'Deriv X' : 'MT5',
-                                }}
-                            />
-                        ) : (
-                            <Localize i18n_default_text='You have set a trading password to log into MT5 on your mobile and other devices.' />
-                        )}
-                    </React.Fragment>
+                    <Localize
+                        i18n_default_text='Use trading password to sign into any of your {{platform}} accounts when using {{app_name}} apps on your mobile or other devices.'
+                        components={[<Text weight='bold' key={0} />]}
+                        values={{
+                            platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
+                            app_name: platform === 'mt5' ? 'MT5' : 'Deriv X',
+                        }}
+                    />
                 )}
                 {is_existing_user && (
-                    <React.Fragment>
-                        {is_dxtrade_allowed ? (
-                            <Localize
-                                i18n_default_text='Set a new trading password to use with all your {{platform1}} (and {{platform2}}) accounts. Use this password to log into {{platform1}} on your mobile and other devices.'
-                                values={{
-                                    platform1: platform === 'mt5' ? 'DMT5' : 'Deriv X',
-                                    platform2: platform === 'mt5' ? 'Deriv X' : 'DMT5',
-                                }}
-                            />
-                        ) : (
-                            <Localize i18n_default_text='Set a new trading password to use with all your DMT5 accounts. Use this password to log into DMT5 on your mobile and other devices.' />
-                        )}
-                    </React.Fragment>
+                    <Localize
+                        i18n_default_text='A trading password is used to sign into any of your {{platform}} accounts when using {{app_name}} apps on your mobile or other devices.'
+                        values={{
+                            platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
+                            app_name: platform === 'mt5' ? 'MT5' : 'Deriv X',
+                        }}
+                    />
                 )}
             </Text>
             <NavLink
@@ -315,7 +313,6 @@ const CFDPasswordManagerTabContent = ({
     multi_step_ref,
     account_status,
     platform,
-    is_dxtrade_allowed,
 }) => {
     const [active_tab_index, setActiveTabIndex] = React.useState(0);
     const [error_message_main, setErrorMessageMain] = React.useState('');
@@ -396,11 +393,7 @@ const CFDPasswordManagerTabContent = ({
         <React.Fragment>
             <DesktopWrapper>
                 <ThemedScrollbars height={password_container_height} is_bypassed={isMobile()} autohide={false}>
-                    <TradingPasswordManager
-                        status={account_status.status}
-                        platform={platform}
-                        is_dxtrade_allowed={is_dxtrade_allowed}
-                    />
+                    <TradingPasswordManager status={account_status.status} platform={platform} />
                 </ThemedScrollbars>
             </DesktopWrapper>
             <MobileWrapper>
@@ -415,7 +408,6 @@ const CFDPasswordManagerTabContent = ({
                         multi_step_ref={multi_step_ref}
                         status={account_status.status}
                         platform={platform}
-                        is_dxtrade_allowed={is_dxtrade_allowed}
                     />
                 </Div100vhContainer>
             </MobileWrapper>
@@ -465,7 +457,6 @@ const CFDPasswordManagerModal = ({
     email,
     disableApp,
     is_visible,
-    is_dxtrade_allowed,
     platform,
     selected_login,
     selected_account,
@@ -493,7 +484,6 @@ const CFDPasswordManagerModal = ({
                     setPasswordType={setPasswordType}
                     multi_step_ref={multi_step_ref}
                     platform={platform}
-                    is_dxtrade_allowed={is_dxtrade_allowed}
                 />
             ),
         },
@@ -558,7 +548,6 @@ CFDPasswordManagerModal.propTypes = {
     selected_login: PropTypes.string,
     toggleModal: PropTypes.func,
     platform: PropTypes.string,
-    is_dxtrade_allowed: PropTypes.bool,
 };
 
 export default connect(({ modules: { cfd }, client, ui }) => ({
@@ -567,5 +556,4 @@ export default connect(({ modules: { cfd }, client, ui }) => ({
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
     sendVerifyEmail: cfd.sendVerifyEmail,
-    is_dxtrade_allowed: client.is_dxtrade_allowed,
 }))(CFDPasswordManagerModal);

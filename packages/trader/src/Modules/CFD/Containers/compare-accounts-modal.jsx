@@ -530,6 +530,15 @@ const CompareAccountsModal = ({
 }) => {
     const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
+    const mt5_accounts = [
+        landing_companies?.mt_gaming_company?.financial,
+        landing_companies?.mt_financial_company?.financial,
+        landing_companies?.mt_financial_company?.financial_stp,
+    ];
+
+    const cfd_account_button_label =
+        mt5_accounts.filter(Boolean).length === 1 ? localize('Account Information') : localize('Compare accounts');
+
     return (
         <div
             className='cfd-compare-accounts-modal__wrapper'
@@ -538,7 +547,7 @@ const CompareAccountsModal = ({
             <Button
                 className='cfd-dashboard__welcome-message--button'
                 has_effect
-                text={localize('Compare accounts')}
+                text={cfd_account_button_label}
                 onClick={toggleCompareAccounts}
                 secondary
                 disabled={is_loading}
@@ -550,7 +559,7 @@ const CompareAccountsModal = ({
                         disableApp={disableApp}
                         enableApp={enableApp}
                         is_open={is_compare_accounts_visible}
-                        title={localize('Compare accounts')}
+                        title={cfd_account_button_label}
                         toggleModal={toggleCompareAccounts}
                         type='button'
                         height='696px'

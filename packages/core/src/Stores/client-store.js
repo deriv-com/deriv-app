@@ -215,8 +215,9 @@ export default class ClientStore extends BaseStore {
     @computed
     get can_change_fiat_currency() {
         const has_no_mt5 = !this.has_mt5_login;
+        const has_no_dxtrade = !this.has_dxtrade_login;
         const has_no_transaction = this.statement.count === 0 && this.statement.transactions.length === 0;
-        const has_account_criteria = has_no_transaction && has_no_mt5;
+        const has_account_criteria = has_no_transaction && has_no_mt5 && has_no_dxtrade;
         return !this.is_virtual && has_account_criteria && this.current_currency_type === 'fiat';
     }
 
@@ -326,6 +327,11 @@ export default class ClientStore extends BaseStore {
     @computed
     get has_mt5_login() {
         return this.mt5_login_list.length > 0;
+    }
+
+    @computed
+    get has_dxtrade_login() {
+        return this.dxtrade_accounts_list.length > 0;
     }
 
     @computed

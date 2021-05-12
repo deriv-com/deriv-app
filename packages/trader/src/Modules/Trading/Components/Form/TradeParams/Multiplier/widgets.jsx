@@ -31,7 +31,11 @@ const AmountWidget = ({ amount, currency, is_crypto_multiplier }) => {
                         </Text>
                     </div>
                 </div>
-                <MultipliersInfo className='mobile-widget__multiplier-trade-info' />
+                <MultipliersInfo
+                    className='mobile-widget__multiplier-trade-info'
+                    commission_text_size='xxxxs'
+                    stop_out_text_size='xxxxs'
+                />
             </div>
             {is_crypto_multiplier && (
                 <div className='mobile-widget' onClick={toggleExpirationModal}>

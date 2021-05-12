@@ -149,17 +149,21 @@ const TradingPasswordManager = ({ status }) => {
         <div className='mt5-password-manager__trading-password-wrapper'>
             <Icon icon='IcMt5OnePassword' size='128' />
             <Text as='p' align='center' size='s' weight='bold'>
-                <Localize i18n_default_text='Trading password for DMT5 accounts' />
+                {is_existing_user ? (
+                    <Localize i18n_default_text='Trading password - a new, easy way to sign in to your DMT5 accounts' />
+                ) : (
+                    <Localize i18n_default_text='You have a trading password for DMT5' />
+                )}
             </Text>
             <Text as='p' align='center' className='mt5-password-manager__trading-password-text' size='xs'>
                 {!is_existing_user && (
                     <Localize
-                        i18n_default_text='You have set a trading password to log into MT5 on your mobile and other devices.'
+                        i18n_default_text='Use trading password to sign into any of your DMT5 accounts when using MT5 apps on your mobile or other devices.'
                         components={[<Text weight='bold' key={0} />]}
                     />
                 )}
                 {is_existing_user && (
-                    <Localize i18n_default_text='Set a new trading password to use with all your DMT5 accounts. Use this password to log into MT5 on your mobile and other devices.' />
+                    <Localize i18n_default_text='A trading password is used to sign into any of your DMT5 accounts when using MT5 apps on your mobile or other devices.' />
                 )}
             </Text>
             <NavLink

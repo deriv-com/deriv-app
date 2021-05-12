@@ -352,8 +352,9 @@ export default class CFDStore extends BaseStore {
         switch (platform) {
             case 'dxtrade': {
                 response = await WS.authorized.send({
-                    dxtrade_deposit: 1,
-                    to_dxtrade: this.current_account.login,
+                    trading_platform_deposit: 1,
+                    platform: 'dxtrade',
+                    to_account: this.current_account.login,
                 });
                 break;
             }

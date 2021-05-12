@@ -147,7 +147,7 @@
 .cfd-success-topup {
     &__heading {
         @include typeface(--paragraph-center-bold-black);
-        margin: 1.6rem;
+        margin: 1.6rem 1.8rem;
     }
     &__description {
         p {

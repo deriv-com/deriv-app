@@ -76,6 +76,8 @@
     "react-swipeable": "^5.5.1",
     "react-tiny-popover": "^5.1.0",
     "react-transition-group": "^4.3.0",
-    "react-virtualized": "^9.22.2"
+    "react-virtualized": "^9.22.2",
+    "@akmaldju/reactour": "^1.0.1",
+    "styled-components": "^5.2.3"
   }
 }

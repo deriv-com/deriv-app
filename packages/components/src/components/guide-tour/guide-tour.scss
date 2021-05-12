@@ -1,0 +1,54 @@
+.dc-guide-tour {
+    &__tooltip {
+        background-color: var(--general-main-1);
+        font-size: 1.4rem;
+        width: 36rem;
+        padding: 2.4rem;
+        text-align: left;
+        line-height: 1.4;
+        border-radius: 0.5rem;
+
+        p {
+            padding: 0.8rem 0 0;
+        }
+
+        &__buttons {
+            align-items: center;
+            display: flex;
+            justify-content: flex-end;
+
+            .dc-btn {
+                font-size: 1.2rem;
+                font-weight: bold;
+                margin-left: 0.5rem;
+            }
+
+            &--hidden {
+                display: none;
+            }
+        }
+
+        &__footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+        &__progress {
+            display: flex;
+            margin: auto 0;
+        }
+
+        &__circle {
+            width: 0.8rem;
+            height: 0.8rem;
+            border-radius: 50%;
+            background-color: var(--general-section-1);
+            margin-right: 0.8rem;
+
+            &--active {
+                background-color: var(--brand-red-coral);
+            }
+        }
+    }
+}

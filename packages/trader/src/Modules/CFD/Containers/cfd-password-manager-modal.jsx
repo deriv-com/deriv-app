@@ -169,7 +169,7 @@ const TradingPasswordManager = ({ status, platform }) => {
             <Text as='p' align='center' className='mt5-password-manager__trading-password-text' size='xs'>
                 {!is_existing_user && (
                     <Localize
-                        i18n_default_text='Use trading password to sign into any of your {{platform}} accounts when using {{app_name}} apps on your mobile or other devices.'
+                        i18n_default_text='Use trading password to sign in to any of your {{platform}} accounts when using {{app_name}} apps on your mobile or other devices.'
                         components={[<Text weight='bold' key={0} />]}
                         values={{
                             platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
@@ -179,7 +179,7 @@ const TradingPasswordManager = ({ status, platform }) => {
                 )}
                 {is_existing_user && (
                     <Localize
-                        i18n_default_text='A trading password is used to sign into any of your {{platform}} accounts when using {{app_name}} apps on your mobile or other devices.'
+                        i18n_default_text='A trading password is used to sign in to any of your {{platform}} accounts when using {{app_name}} apps on your mobile or other devices.'
                         values={{
                             platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
                             app_name: platform === 'mt5' ? 'MT5' : 'Deriv X',

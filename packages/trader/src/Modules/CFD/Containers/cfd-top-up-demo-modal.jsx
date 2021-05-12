@@ -27,6 +27,8 @@ const CFDTopUpDemoModal = ({
         closeSuccessTopUpModal();
     };
 
+    const platform_title = platform === 'dxtrade' ? 'Deriv X' : 'DMT5';
+
     if ((!mt5_companies && !dxtrade_companies) || !current_account) return null;
 
     const { currency, minimum_amount, additional_amount } = getTopUpConfig();
@@ -60,7 +62,7 @@ const CFDTopUpDemoModal = ({
                         <Localize
                             i18n_default_text='{{ platform }} {{ account_title }} account'
                             values={{
-                                platform: platform === 'dxtrade' ? 'Deriv X' : 'DMT5',
+                                platform: platform_title,
                                 account_title: getAccountTitle(),
                             }}
                         />
@@ -103,8 +105,8 @@ const CFDTopUpDemoModal = ({
                 heading={
                     <h3 className='cfd-success-topup__heading'>
                         <Localize
-                            i18n_default_text='<0></0> has been credited into your DMT5 {{title}} account.'
-                            values={{ title: getAccountTitle() }}
+                            i18n_default_text='<0></0> has been credited into your {{platform}} {{title}} account.'
+                            values={{ platform: platform_title, title: getAccountTitle() }}
                             components={[
                                 <Money key={0} amount={additional_amount} currency={currency} show_currency />,
                             ]}

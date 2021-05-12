@@ -31,7 +31,7 @@ const RadioButtonGroup = ({ label, className, children, is_title_enabled, is_fia
             </div>
             {is_fiat && is_currency_selected && (
                 <p className='currency-selector__description'>
-                    <Localize i18n_default_text='You are limited to one fiat account. You can change the currency of your fiat account anytime before you make a first-time deposit or create an MT5 account.' />
+                    <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a DMT5 or Deriv X account.' />
                 </p>
             )}
         </div>

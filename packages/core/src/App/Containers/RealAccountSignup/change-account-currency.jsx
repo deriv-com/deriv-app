@@ -27,14 +27,14 @@ const ChangeAccountCurrency = ({
     const is_fiat = current_currency_type === 'fiat';
     const fiat_message = is_dxtrade_allowed ? (
         <Localize
-            i18n_default_text="We can't change your account currency as you've either made a deposit into your {{currency}} account or created a real account on Deriv MT5 or Deriv X."
+            i18n_default_text="We can't change your account currency as you've made a deposit into your {{currency}} account or created a DMT5 or Deriv X account."
             values={{
                 currency: getCurrencyDisplayCode(client_currency),
             }}
         />
     ) : (
         <Localize
-            i18n_default_text="We can't change your account currency as you've either made a deposit into your {{currency}} account or created a real account on Deriv MT5"
+            i18n_default_text="We can't change your account currency as you've made a deposit into your {{currency}} account or created a DMT5 account."
             values={{
                 currency: getCurrencyDisplayCode(client_currency),
             }}

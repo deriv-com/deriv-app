@@ -352,8 +352,9 @@ export default class CFDStore extends BaseStore {
         switch (platform) {
             case 'dxtrade': {
                 response = await WS.authorized.send({
-                    dxtrade_deposit: 1,
-                    to_dxtrade: this.current_account.login,
+                    trading_platform_deposit: 1,
+                    platform: 'dxtrade',
+                    to_account: this.current_account.account_id,
                 });
                 break;
             }
@@ -370,10 +371,30 @@ export default class CFDStore extends BaseStore {
         }
 
         if (!response.error) {
-            await WS.authorized.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
-            const new_balance = this.root_store.client.mt5_login_list.find(
-                item => item.login === this.current_account.login
-            ).balance;
+            let new_balance;
+            switch (platform) {
+                case 'dxtrade': {
+                    await WS.authorized
+                        .tradingPlatformAccountsList('dxtrade')
+                        .then(this.root_store.client.responseTradingPlatformAccountsList);
+
+                    new_balance = this.root_store.client[`${platform}_accounts_list`].find(
+                        item => item.login === this.current_account.login
+                    )?.balance;
+                    break;
+                }
+                case 'mt5': {
+                    await WS.authorized.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
+
+                    new_balance = this.root_store.client.mt5_login_list.find(
+                        item => item.login === this.current_account.login
+                    )?.balance;
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
             runInAction(() => {
                 // Get new current account
                 this.root_store.ui.is_top_up_virtual_open = false;

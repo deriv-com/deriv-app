@@ -150,7 +150,7 @@ const TradingPasswordManager = ({ status }) => {
             <Icon icon='IcMt5OnePassword' size='128' />
             <Text as='p' align='center' size='s' weight='bold'>
                 {is_existing_user ? (
-                    <Localize i18n_default_text='Trading password - a new, easy way to sign in to your DMT5 accounts' />
+                    <Localize i18n_default_text='Trading password — a new, easy way to sign in to your DMT5 accounts' />
                 ) : (
                     <Localize i18n_default_text='You have a trading password for DMT5' />
                 )}

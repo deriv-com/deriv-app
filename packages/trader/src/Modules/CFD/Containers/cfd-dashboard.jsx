@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
+import { Redirect } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Tabs, PageError, Loading, Text } from '@deriv/components';
 import { isEmptyObject, isMobile, routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
@@ -142,6 +143,7 @@ class CFDDashboard extends React.Component {
             is_logged_in,
             is_logging_in,
             is_mt5_allowed,
+            is_dxtrade_allowed,
             is_pending_authentication,
             is_virtual,
             landing_companies,
@@ -168,6 +170,9 @@ class CFDDashboard extends React.Component {
             !is_eu && is_logged_in && !has_real_account && upgradeable_landing_companies?.length > 0;
         if ((!country && is_logged_in) || is_logging_in) return <Loading />; // Wait for country name to be loaded before rendering
 
+        if (is_logged_in && !landing_companies) return <Loading />;
+
+        if (platform === 'dxtrade' && !is_dxtrade_allowed) return <Redirect to={routes.mt5} />;
         return (
             <React.Fragment>
                 {is_mt5_allowed || platform === 'dxtrade' || !is_logged_in ? (
@@ -456,6 +461,7 @@ export default withRouter(
         is_eu_country: client.is_eu_country,
         is_virtual: client.is_virtual,
         is_mt5_allowed: client.is_mt5_allowed,
+        is_dxtrade_allowed: client.is_dxtrade_allowed,
         mt5_disabled_signup_types: client.mt5_disabled_signup_types,
         dxtrade_disabled_signup_types: client.dxtrade_disabled_signup_types,
         has_maltainvest_account: client.has_maltainvest_account,

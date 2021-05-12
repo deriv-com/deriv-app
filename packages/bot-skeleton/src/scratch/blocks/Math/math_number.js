@@ -6,7 +6,6 @@ Blockly.Blocks.math_number = {
 
         const fieldInput = this.getField('NUM');
         fieldInput.setValidator(input => this.numberValidator(input));
-        fieldInput.maxDisplayLength = 17;
     },
     definition() {
         return {

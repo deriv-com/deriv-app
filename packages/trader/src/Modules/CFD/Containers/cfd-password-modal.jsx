@@ -148,7 +148,7 @@ const CFDPasswordForm = props => {
     }, [props.should_show_server_form, props.should_set_trading_password, props.error_type]);
     const has_cancel_button =
         props.should_show_server_form ||
-        (isDesktop() ? !props.should_set_trading_password : props.should_set_trading_password) ||
+        (isDesktop() ? !props.should_set_trading_password : true) ||
         props.error_type === 'PasswordReset';
     const cancel_button_label = getCancelButtonLabel(props);
 
@@ -234,7 +234,11 @@ const CFDPasswordForm = props => {
                         )}
                         {props.should_set_trading_password && (
                             <Text size='xs' as='p'>
-                                <Localize i18n_default_text='Use this to log in and trade on DMT5 and Deriv X.' />
+                                {props.is_dxtrade_allowed ? (
+                                    <Localize i18n_default_text='Use this to log in and trade on DMT5 and Deriv X.' />
+                                ) : (
+                                    <Localize i18n_default_text='Use this to log in and trade on DMT5.' />
+                                )}
                             </Text>
                         )}
                         {props.is_real_financial_stp && props.is_bvi && (
@@ -244,10 +248,7 @@ const CFDPasswordForm = props => {
                         )}
                         {props.error_type === 'PasswordError' && (
                             <Text size='xs' as='p' className='dc-modal__container_mt5-password-modal__hint'>
-                                <Localize
-                                    i18n_default_text='Hint: You may have chosen a different trading password from<0/> your Deriv log in password.'
-                                    components={[<br key={0} />]}
-                                />
+                                <Localize i18n_default_text='Hint: You may have chosen a different trading password from your Deriv log in password.' />
                             </Text>
                         )}
                     </div>
@@ -353,6 +354,7 @@ const CFDPasswordModal = ({
     is_logged_in,
     is_cfd_password_modal_enabled,
     is_cfd_success_dialog_enabled,
+    is_dxtrade_allowed,
     platform,
     has_cfd_error,
     landing_companies,
@@ -475,6 +477,7 @@ const CFDPasswordModal = ({
             onForgotPassword={handleForgotPassword}
             submitPassword={submitPassword}
             platform={platform}
+            is_dxtrade_allowed={is_dxtrade_allowed}
             onCancel={closeModal}
         />
     );
@@ -570,6 +573,7 @@ CFDPasswordModal.propTypes = {
     is_logged_in: PropTypes.bool,
     is_cfd_password_modal_enabled: PropTypes.bool,
     is_cfd_success_dialog_enabled: PropTypes.bool,
+    is_dxtrade_allowed: PropTypes.bool,
     platform: PropTypes.string,
     setMt5Error: PropTypes.func,
     setCFDSuccessDialog: PropTypes.func,
@@ -594,6 +598,7 @@ export default connect(({ client, modules }) => ({
     is_logged_in: client.is_logged_in,
     is_cfd_success_dialog_enabled: modules.cfd.is_cfd_success_dialog_enabled,
     is_cfd_password_modal_enabled: modules.cfd.is_cfd_password_modal_enabled,
+    is_dxtrade_allowed: client.is_dxtrade_allowed,
     setMt5Error: modules.cfd.setError,
     setCFDSuccessDialog: modules.cfd.setCFDSuccessDialog,
     submitMt5Password: modules.cfd.submitMt5Password,

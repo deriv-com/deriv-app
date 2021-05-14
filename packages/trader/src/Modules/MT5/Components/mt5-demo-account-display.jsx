@@ -31,8 +31,6 @@ const MT5DemoAccountDisplay = ({
         }
     };
 
-    const should_center_cards = !landing_companies?.mt_financial_company?.financial_stp;
-
     return is_loading ? (
         <div className='mt5-demo-accounts-display'>
             <Loading />

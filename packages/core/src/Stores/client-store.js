@@ -11,6 +11,7 @@ import {
     setCurrencies,
     State,
     toMoment,
+    deriv_urls,
 } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import { requestLogout, WS } from 'Services';
@@ -55,6 +56,7 @@ export default class ClientStore extends BaseStore {
     @observable device_data = {};
     @observable is_logging_in = false;
     @observable has_logged_out = false;
+    @observable is_landing_company_loaded = false;
     // this will store the landing_company API response, including
     // financial_company: {}
     // gaming_company: {}
@@ -329,7 +331,8 @@ export default class ClientStore extends BaseStore {
     @computed
     get can_have_more_real_synthetic_mt5() {
         const number_of_current_added_synthetics = this.mt5_login_list.reduce((acc, cur) => {
-            const is_included = cur.account_type === 'real' && cur.market_type === 'gaming';
+            const is_included =
+                cur.account_type === 'real' && (cur.market_type === 'synthetic' || cur.market_type === 'gaming');
             return is_included ? acc + 1 : acc;
         }, 0);
         const number_of_available_synthetic = this.trading_servers.reduce(
@@ -398,6 +401,14 @@ export default class ClientStore extends BaseStore {
         const { terms_conditions_version } = this.website_status;
 
         return typeof client_tnc_status !== 'undefined' && client_tnc_status !== terms_conditions_version;
+    }
+
+    @computed
+    get is_client_tnc_status_loaded() {
+        const { client_tnc_status } = this.account_settings;
+        if (this.is_virtual || (!this.is_virtual && client_tnc_status !== '')) return true;
+
+        return false;
     }
 
     @computed
@@ -671,7 +682,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setCookieAccount() {
-        const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
+        const domain = window.location.hostname.includes('deriv') ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
         const { loginid, email, landing_company_shortcode, currency, residence, account_settings } = this;
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
@@ -917,6 +928,11 @@ export default class ClientStore extends BaseStore {
         return this.website_status && !BinarySocket.getAvailability().is_down;
     }
 
+    isEuCountrySelected = selected_country => {
+        if (selected_country) return isEuCountry(selected_country);
+        return false;
+    };
+
     isAccountOfType = type => {
         const client_account_type = getClientAccountType(this.loginid);
 
@@ -1147,6 +1163,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     responseLandingCompany(response) {
+        this.is_landing_company_loaded = true;
         this.landing_companies = response.landing_company;
         this.setRealityCheck();
     }
@@ -1703,34 +1720,39 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    onSignup({ password, residence }, cb) {
+    onSignup({ password, residence, email_consent }, cb) {
         if (!this.verification_code.signup || !password || !residence) return;
-
+        if (email_consent === undefined) return;
+        email_consent = email_consent ? 1 : 0;
         // Currently the code doesn't reach here and the console log is needed for debugging.
         // TODO: remove console log when AccountSignup component and validation are ready
-        WS.newAccountVirtual(this.verification_code.signup, password, residence, this.getSignupParams()).then(
-            async response => {
-                if (response.error) {
-                    cb(response.error.message);
-                } else {
-                    cb();
-                    // Initialize client store with new user login
-                    const { client_id, currency, oauth_token } = response.new_account_virtual;
-                    await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
+        WS.newAccountVirtual(
+            this.verification_code.signup,
+            password,
+            residence,
+            email_consent,
+            this.getSignupParams()
+        ).then(async response => {
+            if (response.error) {
+                cb(response.error.message);
+            } else {
+                cb();
+                // Initialize client store with new user login
+                const { client_id, currency, oauth_token } = response.new_account_virtual;
+                await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
 
-                    // GTM Signup event
-                    this.root_store.gtm.pushDataLayer({
-                        event: 'virtual_signup',
-                    });
+                // GTM Signup event
+                this.root_store.gtm.pushDataLayer({
+                    event: 'virtual_signup',
+                });
 
-                    this.root_store.ui.showAccountTypesModalForEuropean();
+                this.root_store.ui.showAccountTypesModalForEuropean();
 
-                    if (this.is_mt5_allowed) {
-                        this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
-                    }
+                if (this.is_mt5_allowed) {
+                    this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
                 }
             }
-        );
+        });
     }
 
     async switchToNewlyCreatedAccount(client_id, oauth_token, currency) {

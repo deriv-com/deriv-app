@@ -76,7 +76,13 @@ const SelectNative = ({
                 ) : (
                     <Icon className='dc-select-native__suffix-icon' icon={suffix_icon} size={16} fill />
                 )}
-                <select className='dc-select-native__picker' value={value} disabled={disabled} {...props}>
+                <select
+                    id='dt_components_select-native_select-tag'
+                    className='dc-select-native__picker'
+                    value={value}
+                    disabled={disabled}
+                    {...props}
+                >
                     {Array.isArray(list_items) ? (
                         <React.Fragment>
                             {/*

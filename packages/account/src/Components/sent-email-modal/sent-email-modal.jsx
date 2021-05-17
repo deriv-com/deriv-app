@@ -2,8 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { localize, Localize } from '@deriv/translations';
-import { Button, Div100vhContainer, Icon, Modal, SendEmailTemplate, Text } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
+import { Button, Div100vhContainer, Icon, MobileDialog, Modal, SendEmailTemplate, Text } from '@deriv/components';
+import { isMobile, isDesktop } from '@deriv/shared';
 
 const getNoEmailContentStrings = () => {
     return [
@@ -50,6 +50,40 @@ const SentEmailModal = ({ identifier_title, is_open, is_unlink_modal, onClose, o
         return subtitle;
     };
 
+    const sent_email_template = (
+        <SendEmailTemplate
+            className='sent-email'
+            subtitle={getSubtitle()}
+            lbl_no_receive={localize("Didn't receive the email?")}
+            txt_resend={localize('Resend email')}
+            txt_resend_in={localize('Resend email in')}
+            onClickSendEmail={onClickSendEmail}
+        >
+            {getNoEmailContentStrings().map(item => (
+                <div className='sent-email__content' key={item.key}>
+                    <Icon icon={item.icon} size={32} />
+                    <Text size='xxs' as='p'>
+                        {item.content}
+                    </Text>
+                </div>
+            ))}
+        </SendEmailTemplate>
+    );
+
+    if (isMobile()) {
+        return (
+            <MobileDialog
+                portal_element_id='modal_root'
+                title={localize('We’ve sent you an email')}
+                wrapper_classname='mt5-email-sent'
+                visible={is_open}
+                onClose={onClose}
+            >
+                {sent_email_template}
+            </MobileDialog>
+        );
+    }
+
     return (
         <Modal
             className={classNames({ 'sent-email__modal': !is_unlink_modal })}
@@ -94,24 +128,7 @@ const SentEmailModal = ({ identifier_title, is_open, is_unlink_modal, onClose, o
                         <div onClick={onClose} className='sent-email__modal-close'>
                             <Icon icon='IcCross' />
                         </div>
-                        <SendEmailTemplate
-                            className='sent-email'
-                            title={localize('We’ve sent you an email')}
-                            subtitle={getSubtitle()}
-                            lbl_no_receive={localize("Didn't receive the email?")}
-                            txt_resend={localize('Resend email')}
-                            txt_resend_in={localize('Resend email in')}
-                            onClickSendEmail={onClickSendEmail}
-                        >
-                            {getNoEmailContentStrings().map(item => (
-                                <div className='sent-email__content' key={item.key}>
-                                    <Icon icon={item.icon} size={32} />
-                                    <Text size='xxs' as='p'>
-                                        {item.content}
-                                    </Text>
-                                </div>
-                            ))}
-                        </SendEmailTemplate>
+                        {sent_email_template}
                     </Modal.Body>
                 </Div100vhContainer>
             )}

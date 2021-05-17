@@ -21,6 +21,7 @@ export default class MyProfileStore extends BaseStore {
     @action.bound
     getAdvertiserInfo() {
         this.setIsLoading(true);
+        this.setErrorMessage('');
 
         requestWS({
             p2p_advertiser_info: 1,
@@ -33,11 +34,10 @@ export default class MyProfileStore extends BaseStore {
                 this.setContactInfo(p2p_advertiser_info.contact_info);
                 this.setDefaultAdvertDescription(p2p_advertiser_info.default_advert_description);
                 this.setPaymentInfo(p2p_advertiser_info.payment_info);
+            } else if (response.error.code === 'PermissionDenied') {
+                this.root_store.general_store.setIsBlocked(true);
             } else {
-                if (response.error.code === 'PermissionDenied') {
-                    this.root_store.general_store.setIsBlocked(true);
-                }
-                this.setErrorMessage(response.error);
+                this.setErrorMessage(response.error.message);
             }
             this.setIsLoading(false);
         });

@@ -13,6 +13,8 @@ Blockly.FieldTextInput.prototype.init = function () {
         this.className_ += ' blocklyEditableLabel';
     }
 
+    this.maxDisplayLength = 17;
+
     Blockly.FieldTextInput.superClass_.init.call(this);
 
     // If not in a shadow block, draw a box.

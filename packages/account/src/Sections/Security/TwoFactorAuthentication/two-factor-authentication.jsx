@@ -160,8 +160,8 @@ const TwoFactorAuthentication = ({ email_address, is_switching }) => {
                                             <Text size='xs'>{secret_key}</Text>
                                             <Clipboard
                                                 text_copy={secret_key}
-                                                info_message='Click here to copy key'
-                                                success_message='Key copied!'
+                                                info_message={localize('Click here to copy key')}
+                                                success_message={localize('Key copied!')}
                                                 className='two-factor__qr--clipboard'
                                             />
                                         </div>

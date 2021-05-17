@@ -214,6 +214,8 @@ const QuickStrategyForm = ({
                                         <Input
                                             {...field}
                                             className='quick-strategy__input'
+                                            label_className='quick-strategy__input-label'
+                                            field_className='quick-strategy__input-field'
                                             type='text'
                                             error={
                                                 initial_errors[field.name] ||
@@ -246,6 +248,8 @@ const QuickStrategyForm = ({
                                         <Input
                                             {...field}
                                             className='quick-strategy__input'
+                                            label_className='quick-strategy__input-label'
+                                            field_className='quick-strategy__input-field'
                                             type='text'
                                             error={
                                                 initial_errors[field.name] ||
@@ -276,6 +280,8 @@ const QuickStrategyForm = ({
                                         <Input
                                             {...field}
                                             className='quick-strategy__input'
+                                            label_className='quick-strategy__input-label'
+                                            field_className='quick-strategy__input-field'
                                             type='text'
                                             error={
                                                 initial_errors[field.name] ||
@@ -310,6 +316,8 @@ const QuickStrategyForm = ({
                                         <Input
                                             {...field}
                                             className='quick-strategy__input'
+                                            label_className='quick-strategy__input-label'
+                                            field_className='quick-strategy__input-field'
                                             type='text'
                                             error={
                                                 initial_errors[field.name] ||
@@ -340,6 +348,8 @@ const QuickStrategyForm = ({
                                         <Input
                                             {...field}
                                             className='quick-strategy__input'
+                                            label_className='quick-strategy__input-label'
+                                            field_className='quick-strategy__input-field'
                                             type='text'
                                             error={
                                                 initial_errors[field.name] ||
@@ -462,6 +472,7 @@ const ContentRenderer = props => {
         component: <TradeTypeOption trade_type={trade_type} />,
         ...trade_type,
     }));
+
     return (
         <Tabs active_index={active_index} onTabItemClick={setActiveTabIndex} top>
             {Object.keys(strategies).map(key => {

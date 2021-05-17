@@ -118,7 +118,7 @@ const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_d
                 <Text color='disabled' size='xs'>
                     <Localize i18n_default_text='Unavailable' />
                 </Text>
-                {server?.server_info?.geolocation && market_type === 'gaming' && (
+                {server?.server_info?.geolocation && (market_type === 'gaming' || market_type === 'synthetic') && (
                     <Text color='less-prominent' size='xxs' className='badge-server badge-server--disabled'>
                         {server.server_info.geolocation.region}&nbsp;
                         {server.server_info.geolocation.sequence !== 1 ? server.server_info.geolocation.sequence : ''}
@@ -129,7 +129,7 @@ const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_d
     return (
         <div>
             {getMT5AccountDisplay(market_type, sub_account_type)}
-            {server?.server_info?.geolocation && market_type === 'gaming' && (
+            {server?.server_info?.geolocation && (market_type === 'gaming' || market_type === 'synthetic') && (
                 <Text
                     color={is_dark_mode_on ? 'general' : 'colored-background'}
                     size='xxs'

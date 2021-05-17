@@ -30,9 +30,9 @@ const OrderDetailsCancelModal = ({ hideCancelOrderModal, order_id, should_show_c
     return (
         <Modal
             className='cancel-modal'
+            has_close_icon={false}
             is_open={should_show_cancel_modal}
             toggleModal={hideCancelOrderModal}
-            has_close_icon
             renderTitle={() => (
                 <Text color='prominent' line-height='m' size='s' weight='bold'>
                     <Localize i18n_default_text='Do you want to cancel this order?' />

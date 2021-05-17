@@ -43,7 +43,9 @@ const Content = ({ currency_icon, loginid, title, value }) => (
                 </Text>
             </div>
         </div>
-        <div className='deactivate-account-error__details'>{value}</div>
+        <Text className='deactivate-account-error__details' color='prominent' size='xs' line_height='s' align='right'>
+            {value}
+        </Text>
     </div>
 );
 

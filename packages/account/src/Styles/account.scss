@@ -1804,10 +1804,6 @@ $MIN_HEIGHT_FLOATING: calc(
             border-bottom: 1px solid var(--general-section-1);
         }
         &__details {
-            color: var(--text-prominent);
-            font-size: var(--text-size-xs);
-            line-height: 1.43;
-            text-align: right;
             margin-left: 2rem;
         }
         &__button {

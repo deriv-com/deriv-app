@@ -217,9 +217,9 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
             },
             dxtrade: {
                 synthetic: localize('20+'),
-                synthetic_eu: localize('50+'),
-                financial: localize('20+'),
-                financial_eu: localize('1000+'),
+                synthetic_eu: localize('20+'),
+                financial: localize('100+'),
+                financial_eu: localize('100+'),
                 footnote: null,
             },
         },

@@ -82,12 +82,7 @@ const CFDDemoAccountDisplay = ({
                     descriptor={localize(
                         'Trade CFDs on our Synthetic Indices that simulate real-world market movement.'
                     )}
-                    specs={{
-                        [localize('Leverage')]: localize('Up to 1:1000'),
-                        [localize('Margin call')]: localize('100%'),
-                        [localize('Stop out level')]: localize('50%'),
-                        [localize('Number of assets')]: localize('10+'),
-                    }}
+                    specs={specifications[platform].real_synthetic_specs}
                     has_banner
                 />
             )}
@@ -129,12 +124,7 @@ const CFDDemoAccountDisplay = ({
                     specs={
                         is_eu || is_eu_country
                             ? specifications[platform].eu_real_financial_specs
-                            : {
-                                  [localize('Leverage')]: localize('Up to 1:1000'),
-                                  [localize('Margin call')]: localize('150%'),
-                                  [localize('Stop out level')]: localize('75%'),
-                                  [localize('Number of assets')]: localize('50+'),
-                              }
+                            : specifications[platform].real_financial_specs
                     }
                     has_banner
                 />

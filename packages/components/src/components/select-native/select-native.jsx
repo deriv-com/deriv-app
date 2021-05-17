@@ -129,13 +129,7 @@ const SelectNative = ({
             </div>
         </div>
         {!error && hint && (
-            <Text
-                as='p'
-                color='less-prominent'
-                size='xxs'
-                styles={{ lineHeight: '1.8' }}
-                className='dc-select-native__hint'
-            >
+            <Text as='p' color='general' size='xxs' styles={{ lineHeight: '1.8' }} className='dc-select-native__hint'>
                 {hint}
             </Text>
         )}

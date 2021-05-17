@@ -106,7 +106,7 @@ const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }) => (
                                 height={106}
                             />
                             <Icon
-                                icon={is_dark_mode_on ? 'IcDxtradeDevicePhone' : 'IcDxtradeDevicePhone'}
+                                icon={is_dark_mode_on ? 'IcDxtradeDevicePhoneLight' : 'IcDxtradeDevicePhone'}
                                 width={48}
                                 height={74}
                             />

@@ -435,7 +435,7 @@ const Dropdown = ({
                     />
                 </div>
                 {!error && hint && (
-                    <Text as='p' color='less-prominent' size='xxs' className='dc-dropdown__hint'>
+                    <Text as='p' color='general' size='xxs' className='dc-dropdown__hint'>
                         {hint}
                     </Text>
                 )}

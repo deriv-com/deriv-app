@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 import { Button, Text } from '@deriv/components';
 import { PlatformContext } from '@deriv/shared';
 import classNames from 'classnames';
+import { connect } from 'Stores/connect';
 
-const DeactivateAccountSteps = ({ redirectToReasons }) => {
+const DeactivateAccountSteps = ({ redirectToReasons, is_dxtrade_allowed }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
 
     return (
@@ -29,7 +30,11 @@ const DeactivateAccountSteps = ({ redirectToReasons }) => {
                     />
                 </Text>
                 <Text size='xs' as='p'>
-                    <Localize i18n_default_text='If you have a DMT5 real account, log into it to close any open positions.' />
+                    {is_dxtrade_allowed ? (
+                        <Localize i18n_default_text='If you have a Deriv MT5 or Deriv X real account, log in to close any open positions.' />
+                    ) : (
+                        <Localize i18n_default_text='If you have a Deriv MT5 real account, log in to close any open positions.' />
+                    )}
                 </Text>
             </div>
             <div className='deactivate-account__steps'>
@@ -43,10 +48,20 @@ const DeactivateAccountSteps = ({ redirectToReasons }) => {
                     />
                 </Text>
                 <Text size='xs' as='p'>
-                    <Localize
-                        i18n_default_text='If you have a DMT5 real account, go to <0>DMT5 Dashboard</0> to withdraw your funds.'
-                        components={[<Link to='/mt5' key={0} className='deactivate-account__link' />]}
-                    />
+                    {is_dxtrade_allowed ? (
+                        <Localize
+                            i18n_default_text='If you have a Deriv MT5 or Deriv X real account, go to your <0>Deriv MT5</0> or <1>Deriv X</1> dashboard to withdraw your funds'
+                            components={[
+                                <Link to='/mt5' key={0} className='deactivate-account__link' />,
+                                <Link to='/derivx' key={1} className='deactivate-account__link' />,
+                            ]}
+                        />
+                    ) : (
+                        <Localize
+                            i18n_default_text='If you have a Deriv MT5 real account, go to your <0>Deriv MT5</0> dashboard to withdraw your funds'
+                            components={[<Link to='/mt5' key={0} className='deactivate-account__link' />]}
+                        />
+                    )}
                 </Text>
             </div>
             <Button
@@ -62,4 +77,4 @@ const DeactivateAccountSteps = ({ redirectToReasons }) => {
         </div>
     );
 };
-export default DeactivateAccountSteps;
+export default connect(({ client }) => ({ is_dxtrade_allowed: client.is_dxtrade_allowed }))(DeactivateAccountSteps);

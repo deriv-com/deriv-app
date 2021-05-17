@@ -33,6 +33,7 @@ const LoadTab = ({ children, is_loading, loading_component, ...props }) => {
 
 class CFDDashboard extends React.Component {
     state = {
+        is_real_enabled: this.props.platform === 'mt5',
         active_index: this.props.platform === 'mt5' ? 0 : 1,
         is_account_needed_modal_open: false,
         is_demo_tab: true,
@@ -71,6 +72,11 @@ class CFDDashboard extends React.Component {
     };
 
     getIndexToSet = () => {
+        // TODO: remove this when real accounts are enabled for Deriv X
+        if (!this.state.is_real_enabled) {
+            return 1;
+        }
+
         const hash = this.props.location.hash;
         if (hash) {
             return /demo/.test(this.props.location.hash) ? 1 : 0;

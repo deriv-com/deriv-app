@@ -427,7 +427,13 @@ const CFDPasswordModal = ({
 
     const submitPassword = (values, actions) => {
         if (platform === 'mt5') {
-            submitMt5Password(values, actions);
+            submitMt5Password(
+                {
+                    ...values,
+                    server,
+                },
+                actions
+            );
         } else {
             values.platform = platform;
             submitCFDPassword(values, actions);

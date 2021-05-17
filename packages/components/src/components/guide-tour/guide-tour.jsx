@@ -1,9 +1,7 @@
 import Tour from '@akmaldju/reactour';
-
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-
 import Text from '../text';
 
 const GuideTour = ({ steps, settings, is_open }) => {
@@ -17,19 +15,19 @@ const GuideTour = ({ steps, settings, is_open }) => {
 
     return (
         <Tour
-            steps={steps}
+            closeWithMask={settings.close_with_mask || false}
+            CustomHelper={({ ...props }) => <Tooltip {...props} settings={settings} />}
             isOpen={is_tour_open}
             onRequestClose={() => setIsTourOpen(false)}
-            CustomHelper={({ ...props }) => <Tooltip {...props} settings={settings} />}
-            closeWithMask={settings.close_with_mask || false}
+            steps={steps}
         />
     );
 };
 
-const Tooltip = ({ content, current, totalSteps, prevStep, nextStep, close, children, steps, settings, node }) => {
+const Tooltip = ({ content, current, totalSteps, prevStep, nextStep, close, steps, settings, node }) => {
     const sub_step = steps[current].substep;
-    const observe = steps[current].observe;
 
+    let observe = steps[current].observe;
     let hide_buttons = settings.hideButtons || steps[current].hideButtons;
     let hide_previous_step = settings.hidePreviousStep || steps[current].hidePreviousStep;
     let hide_next_step = settings.hideNextStep || steps[current].hideNextStep;
@@ -106,9 +104,9 @@ GuideTour.defaultProps = {
 };
 
 GuideTour.propTypes = {
-    steps: PropTypes.array,
-    settings: PropTypes.object,
     is_open: PropTypes.boolean,
+    settings: PropTypes.object,
+    steps: PropTypes.array,
 };
 
 export default GuideTour;

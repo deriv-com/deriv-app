@@ -152,6 +152,7 @@ class MT5Dashboard extends React.Component {
             has_real_account,
             NotificationMessages,
             openAccountNeededModal,
+            residence,
             residence_list,
             standpoint,
             toggleAccountsDialog,
@@ -245,6 +246,7 @@ class MT5Dashboard extends React.Component {
                                                 toggleAccountsDialog={toggleAccountsDialog}
                                                 toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
                                                 can_have_more_real_synthetic_mt5={can_have_more_real_synthetic_mt5}
+                                                residence={residence}
                                                 residence_list={residence_list}
                                             />
                                         </React.Fragment>

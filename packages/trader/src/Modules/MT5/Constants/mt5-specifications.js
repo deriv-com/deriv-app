@@ -13,6 +13,14 @@ export const real_financial_specs = {
     [localize('Number of assets')]: localize('50+'),
 };
 
+// Australian user specs
+export const au_real_financial_specs = {
+    [localize('Leverage')]: localize('Up to 1:30'),
+    [localize('Margin call')]: localize('150%'),
+    [localize('Stop out level')]: localize('75%'),
+    [localize('Number of assets')]: localize('50+'),
+};
+
 export const eu_real_financial_specs = {
     [localize('Leverage')]: localize('Up to 1:30'),
     [localize('Margin call')]: localize('100%'),

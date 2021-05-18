@@ -5,6 +5,7 @@ import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
 import { getAccountTypeFields, getMT5AccountListKey, getMT5AccountKey } from '@deriv/shared';
 import {
     eu_real_financial_specs,
+    au_real_financial_specs,
     real_financial_stp_specs,
     real_financial_specs,
     real_synthetic_specs,
@@ -47,6 +48,7 @@ const MT5RealAccountDisplay = ({
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
     can_have_more_real_synthetic_mt5,
+    residence,
     residence_list,
 }) => {
     const should_show_trade_servers = is_logged_in && !is_eu && has_real_account && can_have_more_real_synthetic_mt5;
@@ -73,6 +75,18 @@ const MT5RealAccountDisplay = ({
     );
 
     const is_real_financial_stp_disabled = !has_real_account || is_pending_authentication;
+
+    const financial_specs = React.useMemo(() => {
+        const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
+        const is_australian = residence === 'au';
+        if (is_australian) {
+            return au_real_financial_specs;
+        }
+        if (should_show_eu) {
+            return eu_real_financial_specs;
+        }
+        return real_financial_specs;
+    }, [residence, is_logged_in, is_eu, is_eu_country]);
 
     const onSelectRealSynthetic = () => {
         if (is_eu && standpoint.malta && !has_malta_account) {
@@ -130,7 +144,6 @@ const MT5RealAccountDisplay = ({
         }
     };
 
-    const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
     const synthetic_account_items =
         (landing_companies?.mt_gaming_company?.financial || !is_logged_in) &&
         (Object.keys(current_list).some(key => key.startsWith('real.synthetic'))
@@ -241,7 +254,7 @@ const MT5RealAccountDisplay = ({
             descriptor={localize(
                 'Trade CFDs on forex, stocks & indices, commodities, and cryptocurrencies with leverage.'
             )}
-            specs={should_show_eu ? eu_real_financial_specs : real_financial_specs}
+            specs={financial_specs}
             is_logged_in={is_logged_in}
         />
     );

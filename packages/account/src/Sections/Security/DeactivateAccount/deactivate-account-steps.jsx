@@ -16,7 +16,7 @@ const DeactivateAccountSteps = ({ redirectToReasons, is_dxtrade_allowed }) => {
                     <Localize i18n_default_text='Deactivate account' />
                 </Text>
                 <Text size='xs' as='p' line_height='s'>
-                    <Localize i18n_default_text='Before you deactivate your account, you need to do the following:' />
+                    <Localize i18n_default_text='Before you deactivate your account, you’ll need to:' />
                 </Text>
             </div>
             <div className='deactivate-account__steps'>
@@ -25,7 +25,7 @@ const DeactivateAccountSteps = ({ redirectToReasons, is_dxtrade_allowed }) => {
                 </Text>
                 <Text size='xs' as='p' line_height='s'>
                     <Localize
-                        i18n_default_text='If you have a Deriv real account, go to <0>Portfolio</0> to close any open positions.'
+                        i18n_default_text='If you have a Deriv real account, go to <0>Reports</0> to close or sell any open positions.'
                         components={[<Link to='/reports/positions' key={0} className='deactivate-account__link' />]}
                     />
                 </Text>

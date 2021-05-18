@@ -1,9 +1,8 @@
 import React from 'react';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { localize, Localize } from '@deriv/translations';
-import { Button, Div100vhContainer, Icon, Modal, SendEmailTemplate, Text } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { Div100vhContainer, Icon, MobileDialog, Modal, SendEmailTemplate, Text } from '@deriv/components';
+import { isMobile, isDesktop } from '@deriv/shared';
 
 const getNoEmailContentStrings = () => {
     return [
@@ -29,7 +28,7 @@ const getNoEmailContentStrings = () => {
     ];
 };
 
-const SentEmailModal = ({ identifier_title, is_open, is_unlink_modal, onClose, onClickSendEmail }) => {
+const SentEmailModal = ({ identifier_title, is_open, onClose, onClickSendEmail }) => {
     const getSubtitle = () => {
         let subtitle = '';
         switch (identifier_title) {
@@ -50,71 +49,63 @@ const SentEmailModal = ({ identifier_title, is_open, is_unlink_modal, onClose, o
         return subtitle;
     };
 
+    const sent_email_template = (
+        <SendEmailTemplate
+            className='sent-email'
+            subtitle={getSubtitle()}
+            lbl_no_receive={localize("Didn't receive the email?")}
+            txt_resend={localize('Resend email')}
+            txt_resend_in={localize('Resend email in')}
+            onClickSendEmail={onClickSendEmail}
+        >
+            {getNoEmailContentStrings().map(item => (
+                <div className='sent-email__content' key={item.key}>
+                    <Icon icon={item.icon} size={32} />
+                    <Text size='xxs' as='p'>
+                        {item.content}
+                    </Text>
+                </div>
+            ))}
+        </SendEmailTemplate>
+    );
+
+    if (isMobile()) {
+        return (
+            <MobileDialog
+                portal_element_id='modal_root'
+                title={localize('We’ve sent you an email')}
+                wrapper_classname='mt5-email-sent'
+                visible={is_open}
+                onClose={onClose}
+                has_content_scroll
+            >
+                {sent_email_template}
+            </MobileDialog>
+        );
+    }
+
     return (
         <Modal
-            className={classNames({ 'sent-email__modal': !is_unlink_modal })}
+            className={'sent-email__modal'}
             is_open={is_open}
-            has_close_icon={!is_unlink_modal}
+            has_close_icon
             should_header_stick_body
-            title={
-                is_unlink_modal ? (
-                    <Localize
-                        i18n_default_text='Are you sure you want to unlink from {{identifier_title}}?'
-                        values={{ identifier_title }}
-                    />
-                ) : (
-                    ''
-                )
-            }
+            title=''
             toggleModal={onClose}
             width='440px'
         >
-            {is_unlink_modal ? (
-                <React.Fragment>
-                    <Text className='sent-email__modal-unlink-title' size='xs'>
-                        {localize('You will need to set a password to complete the process.')}
-                    </Text>
-                    <Modal.Footer>
-                        <Button onClick={onClose} has_effect text={localize('Cancel')} secondary large />
-                        <Button has_effect onClick={onClickSendEmail} primary large>
-                            <Localize
-                                i18n_default_text='Unlink from {{identifier_title}}'
-                                values={{ identifier_title }}
-                            />
-                        </Button>
-                    </Modal.Footer>
-                </React.Fragment>
-            ) : (
-                <Div100vhContainer
-                    className='account__scrollbars_container-wrapper'
-                    is_disabled={isDesktop()}
-                    height_offset='80px'
-                >
-                    <Modal.Body>
-                        <div onClick={onClose} className='send-email-template__close'>
-                            <Icon icon='IcCross' />
-                        </div>
-                        <SendEmailTemplate
-                            className='sent-email'
-                            title={localize('We’ve sent you an email')}
-                            subtitle={getSubtitle()}
-                            lbl_no_receive={localize("Didn't receive the email?")}
-                            txt_resend={localize('Resend email')}
-                            txt_resend_in={localize('Resend email in')}
-                            onClickSendEmail={onClickSendEmail}
-                        >
-                            {getNoEmailContentStrings().map(item => (
-                                <div className='sent-email__content' key={item.key}>
-                                    <Icon icon={item.icon} size={32} />
-                                    <Text size='xxs' as='p'>
-                                        {item.content}
-                                    </Text>
-                                </div>
-                            ))}
-                        </SendEmailTemplate>
-                    </Modal.Body>
-                </Div100vhContainer>
-            )}
+            <Div100vhContainer
+                className='account__scrollbars_container-wrapper'
+                is_disabled={isDesktop()}
+                height_offset='80px'
+            >
+                <Modal.Body>
+                    <div onClick={onClose} className='send-email__modal-close'>
+                        <Icon icon='IcCross' />
+                    </div>
+                    {sent_email_template}
+                </Modal.Body>
+            </Div100vhContainer>
         </Modal>
     );
 };

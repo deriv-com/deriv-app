@@ -557,7 +557,6 @@ const CFDPasswordModal = ({
                 onSubmit={closeOpenSuccess}
                 classNameMessage='cfd-password-modal__message'
                 message={getSubmitText(account_title, account_type.category, platform)}
-                // message={error_message}
                 icon={<IconType platform={platform} type={account_type.type} />}
                 icon_size='xlarge'
                 text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('OK')}

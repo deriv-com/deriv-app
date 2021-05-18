@@ -72,6 +72,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             event.type === Blockly.Events.END_DRAG
         ) {
             this.setCurrency();
+            this.setAmountLimits();
         }
 
         const trade_definition_block = this.workspace
@@ -141,6 +142,16 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.enforceSingleBarrierType(true);
                 this.updateDurationInput(true, true);
                 this.updatePredictionInput(true);
+            }
+            if (this.getInputTargetBlock('AMOUNT')?.id === event.blockId && this.amount_limits) {
+                const input_number = Number(event.newValue);
+                if (input_number < this.amount_limits.min_stake || input_number > this.amount_limits.max_payout) {
+                    const amount_input = this.getInput('AMOUNT');
+                    if (amount_input && amount_input.connection) {
+                        const target_block = amount_input.connection.targetBlock();
+                        target_block.setFieldValue(event.oldValue, 'NUM');
+                    }
+                }
             }
         } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.id) {
             // Ensure this block is populated after initial drag from flyout.
@@ -363,12 +374,26 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         const { currency } = DBotStore.instance.client;
         currency_field.setText(getCurrencyDisplayCode(currency));
     },
+    async setAmountLimits() {
+        const { account_limits } = ApiHelpers.instance;
+        const { currency, landing_company_shortcode } = DBotStore.instance.client;
+        this.amount_limits = await account_limits.getStakePayoutLimits(currency, landing_company_shortcode);
+    },
     restricted_parents: ['trade_definition'],
     getRequiredValueInputs() {
         return {
             AMOUNT: input => {
                 const input_number = Number(input);
                 this.error_message = localize('Amount must be a positive number.');
+                const max_payout = this.amount_limits?.max_payout;
+                const min_stake = this.amount_limits?.min_stake;
+                if (max_payout && min_stake) {
+                    this.error_message = localize('Minimum stake {{min_stake}} and maximum payout of {{max_payout}}.', {
+                        min_stake,
+                        max_payout,
+                    });
+                    return input_number < min_stake || input_number > max_payout;
+                }
                 return !isNaN(input_number) && input_number <= 0;
             },
             DURATION: input => {

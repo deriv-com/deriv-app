@@ -74,12 +74,13 @@
         --general-hover: #{$color-grey-4};
         --general-active: #{$color-grey-5};
         // Icons and Texts
-        --text-prominent: #{$color-black-1};
         --text-general: #{$color-black-1};
         --text-less-prominent: #{$color-grey-1};
+        --text-prominent: #{$color-black-1};
         --text-disabled: #{$color-grey-6};
-        --text-profit-success: #{$color-green-1};
         --text-loss-danger: #{$color-red-1};
+        --text-profit-success: #{$color-green-1};
+        --text-warning: #{$color-yellow};
         --text-red: #{$color-red};
         --text-blue: #{$color-blue-3};
         --text-colored-background: #{$color-white};

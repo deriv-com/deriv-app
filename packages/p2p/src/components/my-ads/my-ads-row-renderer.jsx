@@ -16,6 +16,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         account_currency,
         amount,
         amount_display,
+        days_until_archive,
         id,
         is_active,
         local_currency,
@@ -27,11 +28,15 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         type,
     } = advert;
 
-    // Use separate is_advert_active state to ensure activated/deactivated
+    // Use separate is_advert_active state to ensure ad is activated/deactivated
     const [is_advert_active, setIsAdvertActive] = React.useState(is_active);
     const [is_popover_actions_visible, setIsPopoverActionsVisible] = React.useState(false);
     const amount_dealt = getRoundedNumber(amount - remaining_amount, account_currency);
 
+    const onClickActivateDeactivate = () => {
+        my_ads_store.onClickActivateDeactivate(id, is_advert_active, setIsAdvertActive);
+    };
+    const onClickDelete = () => !general_store.is_barred && my_ads_store.onClickDelete(id);
     const onMouseEnter = () => setIsPopoverActionsVisible(true);
     const onMouseLeave = () => setIsPopoverActionsVisible(false);
 
@@ -47,9 +52,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                                     icon='IcUnarchive'
                                     custom_color='var(--general-main-1)'
                                     size={14}
-                                    onClick={() => {
-                                        my_ads_store.onClickArchiveUnarchive(id, is_advert_active, setIsAdvertActive);
-                                    }}
+                                    onClick={onClickActivateDeactivate}
                                 />
                             </div>
                         ) : (
@@ -58,9 +61,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                                     icon='IcArchive'
                                     custom_color='var(--general-main-1)'
                                     size={14}
-                                    onClick={() => {
-                                        my_ads_store.onClickArchiveUnarchive(id, is_advert_active, setIsAdvertActive);
-                                    }}
+                                    onClick={onClickActivateDeactivate}
                                 />
                             </div>
                         )}
@@ -69,7 +70,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                                 icon='IcDelete'
                                 custom_color='var(--general-main-1)'
                                 size={16}
-                                onClick={() => my_ads_store.onClickDelete(advert.id)}
+                                onClick={onClickDelete}
                             />
                         </div>
                     </React.Fragment>
@@ -98,7 +99,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                                     />
                                 )}
                             </Text>
-                            <AdStatus days_until_archive={40} is_active={is_advert_active} />
+                            <AdStatus days_until_archive={days_until_archive} is_active={is_advert_active} />
                         </div>
                         <div className='p2p-my-ads__table-row-details'>
                             <Text color='profit-success' line_height='m' size='xxs'>
@@ -171,17 +172,13 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                 </Table.Cell>
                 <Table.Cell>
                     <div className='p2p-my-ads__table-status'>
-                        <AdStatus days_until_archive={40} is_active={is_advert_active} />
+                        <AdStatus days_until_archive={days_until_archive} is_active={is_advert_active} />
                     </div>
                 </Table.Cell>
                 {is_popover_actions_visible && (
                     <div className='p2p-my-ads__table-popovers'>
                         {is_advert_active ? (
-                            <div
-                                onClick={() => {
-                                    my_ads_store.onClickArchiveUnarchive(id, is_advert_active, setIsAdvertActive);
-                                }}
-                            >
+                            <div onClick={onClickActivateDeactivate}>
                                 <Popover
                                     alignment='bottom'
                                     className='p2p-my-ads__table-popovers__archive'
@@ -191,11 +188,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                                 </Popover>
                             </div>
                         ) : (
-                            <div
-                                onClick={() => {
-                                    my_ads_store.onClickArchiveUnarchive(id, is_advert_active, setIsAdvertActive);
-                                }}
-                            >
+                            <div onClick={onClickActivateDeactivate}>
                                 <Popover
                                     alignment='bottom'
                                     className='p2p-my-ads__table-popovers__unarchive'
@@ -205,7 +198,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                                 </Popover>
                             </div>
                         )}
-                        <div onClick={() => !general_store.is_barred && my_ads_store.onClickDelete(id)}>
+                        <div onClick={onClickDelete}>
                             <Popover
                                 alignment='bottom'
                                 className='p2p-my-ads__table-popovers__delete'

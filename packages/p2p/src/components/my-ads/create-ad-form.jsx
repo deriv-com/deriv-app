@@ -42,6 +42,15 @@ const CreateAdForm = () => {
     const onCheckboxChange = () =>
         (should_not_show_auto_archive_message_again.current = !should_not_show_auto_archive_message_again.current);
 
+    const onClickOkCreatedAd = () => {
+        localStorage.setItem(
+            'should_not_show_auto_archive_message',
+            JSON.stringify(should_not_show_auto_archive_message_again.current)
+        );
+        my_ads_store.setIsAdCreatedModalVisible(false);
+        my_ads_store.setShowAdForm(false);
+    };
+
     React.useEffect(() => {
         const disposeApiErrorReaction = reaction(
             () => my_ads_store.api_error_message,
@@ -97,7 +106,6 @@ const CreateAdForm = () => {
                                                     onToggle={event => setAdvertType(event.target.value)}
                                                     selected={advert_type}
                                                     required
-                                                    //  should_wrap_items={isMobile()}
                                                 >
                                                     <RadioGroup.Item
                                                         value={buy_sell.BUY}
@@ -356,6 +364,7 @@ const CreateAdForm = () => {
                     />
                 </Modal.Footer>
             </Modal>
+
             <Modal
                 className='p2p-my-ads__ad-created'
                 has_close_icon={false}
@@ -376,22 +385,8 @@ const CreateAdForm = () => {
                         value={should_not_show_auto_archive_message_again.current}
                     />
                 </Modal.Body>
-
                 <Modal.Footer>
-                    <Button
-                        has_effect
-                        text={localize('Ok')}
-                        onClick={() => {
-                            localStorage.setItem(
-                                'should_not_show_auto_archive_message',
-                                JSON.stringify(should_not_show_auto_archive_message_again.current)
-                            );
-                            my_ads_store.setIsAdCreatedModalVisible(false);
-                            my_ads_store.setShowAdForm(false);
-                        }}
-                        primary
-                        large
-                    />
+                    <Button has_effect text={localize('Ok')} onClick={onClickOkCreatedAd} primary large />
                 </Modal.Footer>
             </Modal>
         </React.Fragment>

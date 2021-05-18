@@ -12,14 +12,7 @@
     }
 
     &--days_until_archive {
-        border: 1px solid var(--border-normal);
-        border-radius: 2.7rem;
-        padding: 0.3rem 0.8rem;
         text-align: center;
-
-        @include mobile {
-            margin-bottom: 0.8rem;
-        }
     }
 
     &--inactive {

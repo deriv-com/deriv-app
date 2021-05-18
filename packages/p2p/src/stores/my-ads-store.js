@@ -76,9 +76,8 @@ export default class MyAdsStore extends BaseStore {
     handleSubmit(values, { setSubmitting }) {
         this.setApiErrorMessage('');
 
-        const should_not_show_auto_archive_message = localStorage.getItem('should_not_show_auto_archive_message');
-
         const is_sell_ad = values.type === buy_sell.SELL;
+        const should_not_show_auto_archive_message = localStorage.getItem('should_not_show_auto_archive_message');
 
         const create_advert = {
             p2p_advert_create: 1,
@@ -131,7 +130,7 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    onClickArchiveUnarchive(id, is_ad_active, setIsAdvertActive) {
+    onClickActivateDeactivate(id, is_ad_active, setIsAdvertActive) {
         requestWS({ p2p_advert_update: 1, id, is_active: is_ad_active ? 0 : 1 }).then(response => {
             if (response.error) {
                 this.setActivateDeactivateErrorMessage(response.error.message);

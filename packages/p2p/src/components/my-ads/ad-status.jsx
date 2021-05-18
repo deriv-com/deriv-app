@@ -15,12 +15,26 @@ const AdStatus = ({ days_until_archive, is_active }) => {
             </div>
         );
     }
-    if (is_active && days_until_archive <= 10) {
+
+    if (is_active && days_until_archive === 1) {
         return (
             <div className='ad-status--days_until_archive'>
-                <Text color='prominent' line_height='m' size='xxs'>
+                <Text color='warning' line_height='m' size='xs' weight='bold'>
                     <Localize
-                        i18n_default_text='Deactivating in: {{days_until_archive}} days'
+                        i18n_default_text='Deactivating in: <br/> {{days_until_archive}} day'
+                        values={{ days_until_archive }}
+                    />
+                </Text>
+            </div>
+        );
+    }
+
+    if (is_active && days_until_archive > 1 && days_until_archive <= 10) {
+        return (
+            <div className='ad-status--days_until_archive'>
+                <Text color='warning' line_height='m' size='xs' weight='bold'>
+                    <Localize
+                        i18n_default_text='Deactivating in: <br/> {{days_until_archive}} days'
                         values={{ days_until_archive }}
                     />
                 </Text>

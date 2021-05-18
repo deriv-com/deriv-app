@@ -519,7 +519,6 @@ const MT5PasswordModal = ({
                 onSubmit={closeOpenSuccess}
                 classNameMessage='mt5-password-modal__message'
                 message={getSubmitText(account_title, account_type.category)}
-                // message={error_message}
                 icon={<IconType />}
                 icon_size='xlarge'
                 text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('OK')}

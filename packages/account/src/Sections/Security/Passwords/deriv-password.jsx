@@ -9,6 +9,7 @@ import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
 import ChangePasswordForm from './change-password-form.jsx';
 import PasswordsStatic from './passwords-static.jsx';
+import { UnlinkModal } from '../../../Components/unlink-modal/unlink-modal';
 
 const DerivPassword = ({ email, is_social_signup, social_identity_provider }) => {
     const [is_unlink_modal_open, setIsUnlinkModalOpen] = React.useState(false);
@@ -65,9 +66,14 @@ const DerivPassword = ({ email, is_social_signup, social_identity_provider }) =>
                         }}
                     />
                 )}
+                <UnlinkModal
+                    is_open={is_unlink_modal_open}
+                    onClose={() => setIsUnlinkModalOpen(false)}
+                    identifier_title={capitalized_identifier}
+                    onClickSendEmail={onClickSendEmail}
+                />
                 <SentEmailModal
-                    is_unlink_modal={is_unlink_modal_open}
-                    is_open={is_sent_email_modal_open}
+                    is_open={is_sent_email_modal_open && !is_unlink_modal_open}
                     onClose={() => setIsSentEmailModalOpen(false)}
                     identifier_title={capitalized_identifier}
                     onClickSendEmail={onClickSendEmail}

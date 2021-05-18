@@ -78,6 +78,7 @@ const SentEmailModal = ({ identifier_title, is_open, is_unlink_modal, onClose, o
                 wrapper_classname='mt5-email-sent'
                 visible={is_open}
                 onClose={onClose}
+                has_content_scroll
             >
                 {sent_email_template}
             </MobileDialog>

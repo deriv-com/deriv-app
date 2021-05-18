@@ -112,7 +112,7 @@ const CompositeCalendarMobile = React.memo(
             }
 
             if (key === 'to') {
-                // Handling future date input for IOS devices
+                // Handling future dates input for IOS devices
                 let value = e.target?.value ? toMoment(e.target.value).format('DD MMM YYYY') : '';
 
                 if (value) {
@@ -120,6 +120,10 @@ const CompositeCalendarMobile = React.memo(
 
                     if (!isNaN(upcoming_days)) {
                         value = toMoment().format('DD MMM YYYY');
+
+                        setTimeout(() => {
+                            setTo(value);
+                        },1000);
                     }
                 }
 

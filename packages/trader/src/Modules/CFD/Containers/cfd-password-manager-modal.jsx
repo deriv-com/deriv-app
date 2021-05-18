@@ -152,7 +152,7 @@ const TradingPasswordManager = ({ status, platform }) => {
             <Text as='p' align='center' size='s' weight='bold'>
                 {is_existing_user ? (
                     <Localize
-                        i18n_default_text='Trading password - a new, easy way to sign in to your {{platform}} accounts'
+                        i18n_default_text='Trading password — a new, easy way to sign in to your {{platform}} accounts'
                         values={{
                             platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
                         }}

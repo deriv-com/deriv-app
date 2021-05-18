@@ -69,6 +69,7 @@ const ChangePasswordForm = ({ email, is_trading_password, logout, onClickSendEma
                         }, 3000);
                     } else {
                         setIsSubmitSuccess(true);
+                        window.localStorage.setItem('is_redirecting', 'true');
                         logout().then(handlePasswordChange);
                     }
                     setSubmitting(false);

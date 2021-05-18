@@ -143,15 +143,6 @@ class DeactivateAccountReason extends React.Component {
             if (!/^[0-9A-z .,'-’]*$/.test(final_value)) {
                 error.characters_limits = localize("Must be numbers, letters, and special characters . , ' -");
             }
-
-            if (remaining_characters.length > character_limit_no) {
-                error.characters_count_exceed = localize(
-                    'Please enter no more than  {{ char_limit }} characters for both fields.',
-                    {
-                        char_limit: character_limit_no,
-                    }
-                );
-            }
         } else {
             this.setState({ remaining_characters: character_limit_no });
         }

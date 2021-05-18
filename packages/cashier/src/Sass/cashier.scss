@@ -21,6 +21,9 @@
         top: 0.4rem;
         right: -1.5rem;
     }
+    &__hint {
+        color: white;
+    }
     &__content {
         width: 100%;
         background: var(--status-default);
@@ -165,6 +168,9 @@
             .dc-select-native__placeholder {
                 background-color: var(--general-main-1);
             }
+        }
+        .dc-select-cashier__hint {
+            color: white;
         }
         &-display {
             justify-content: left;

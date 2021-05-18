@@ -182,6 +182,7 @@ const Dropdown = ({
     handleBlur,
     has_symbol,
     hint,
+    classNamehint,
     initial_offset = 0,
     is_alignment_top,
     is_alignment_left,
@@ -435,7 +436,12 @@ const Dropdown = ({
                     />
                 </div>
                 {!error && hint && (
-                    <Text as='p' color='general' size='xxs' className='dc-dropdown__hint'>
+                    <Text
+                        as='p'
+                        color='less-prominent'
+                        size='xxs'
+                        className={classNames('dc-dropdown__hint', classNamehint)}
+                    >
                         {hint}
                     </Text>
                 )}
@@ -449,6 +455,7 @@ Dropdown.propTypes = {
     classNameDisplay: PropTypes.string,
     classNameItems: PropTypes.string,
     classNameLabel: PropTypes.string,
+    classNamehint: PropTypes.string,
     disabled: PropTypes.bool,
     list_portal_id: PropTypes.string,
     has_symbol: PropTypes.bool,

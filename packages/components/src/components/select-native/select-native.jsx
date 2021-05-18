@@ -31,6 +31,7 @@ const SelectNative = ({
     disabled,
     error,
     hint,
+    classNameHint,
     hide_selected_value,
     label,
     list_items,
@@ -129,7 +130,13 @@ const SelectNative = ({
             </div>
         </div>
         {!error && hint && (
-            <Text as='p' color='general' size='xxs' line_height='l' className='dc-select-native__hint'>
+            <Text
+                as='p'
+                color='less-prominent'
+                size='xxs'
+                line_height='l'
+                className={classNames('dc-select-native__hint', classNameHint)}
+            >
                 {hint}
             </Text>
         )}
@@ -152,6 +159,7 @@ const list_items_shape = PropTypes.oneOfType([
 SelectNative.propTypes = {
     className: PropTypes.string,
     classNameDisplay: PropTypes.string,
+    classNameHint: PropTypes.string,
     disabled: PropTypes.bool,
     error: PropTypes.string,
     hint: PropTypes.string,

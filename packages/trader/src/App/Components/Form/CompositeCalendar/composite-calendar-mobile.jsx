@@ -118,6 +118,8 @@ const CompositeCalendarMobile = React.memo(
                 if(value){
                     const upcoming_days = parseInt(daysFromTodayTo(value));
 
+                    alert(upcoming_days);
+                    
                     if(!isNaN(upcoming_days)){
                         value = toMoment().format('DD MMM YYYY');
                     }

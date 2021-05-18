@@ -177,3 +177,29 @@ Blockly.ContextMenu.blockCommentOption = function (block) {
 
     return comment_option;
 };
+
+/**
+ * Make a context menu option for detaching the current block.
+ * deriv-bot: Use Blockly's implementation.
+ * @param {!Blockly.BlockSvg} block The block where the right-click originated.
+ * @return {!Object} A menu option, containing text, enabled, and a callback.
+ * @package
+ */
+Blockly.ContextMenu.blockDetachOption = function (block) {
+    const enabled = block
+        .getConnections_()
+        .find(connection => connection.isConnected() && !connection.targetConnection.sourceBlock_.isShadow_);
+    const detach_option = {
+        callback() {
+            block.unplug(true);
+            block.moveBy(250, 0);
+            block.getChildren().forEach(child => {
+                if (child.type !== 'math_number_positive') child.unplug(true);
+            });
+            block.moveBy(250, 50);
+        },
+        enabled,
+        text: localize('Detach Block'),
+    };
+    return detach_option;
+};

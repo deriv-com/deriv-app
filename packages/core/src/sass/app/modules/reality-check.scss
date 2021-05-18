@@ -200,6 +200,16 @@
                 font-size: 12px;
             }
         }
+        .dc-radio-group__item:not(:last-child) {
+            @include mobile {
+                margin-right: 8px;
+            }
+        }
+        .dc-radio-group__circle {
+            @include mobile {
+                margin-right: 4px;
+            }
+        }
     }
     .reality-check__separator {
         @include mobile {

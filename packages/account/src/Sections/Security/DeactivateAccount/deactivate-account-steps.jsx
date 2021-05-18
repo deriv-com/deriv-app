@@ -21,7 +21,7 @@ const DeactivateAccountSteps = ({ redirectToReasons, is_dxtrade_allowed }) => {
             </div>
             <div className='deactivate-account__steps'>
                 <Text size='xs' as='p' weight='bold' className='deactivate-account__title'>
-                    <Localize i18n_default_text='1. Close all open positions' />
+                    <Localize i18n_default_text='1. Ensure to close all your positions' />
                 </Text>
                 <Text size='xs' as='p' line_height='s'>
                     <Localize

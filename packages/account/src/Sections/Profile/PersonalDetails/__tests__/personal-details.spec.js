@@ -53,4 +53,7 @@ describe('<PersonalDetailsForm />', () => {
         test.todo('Personal details component tests for different landing companies');
         test.todo('Personal detail update Profile');
     });
+
+    test.todo('Personal details component tests for different landing companies');
+    test.todo('Personal detail update Profile');
 });

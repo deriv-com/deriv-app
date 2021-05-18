@@ -113,21 +113,22 @@ const CompositeCalendarMobile = React.memo(
 
             if (key === 'to') {
                 // Handling future dates input for IOS devices
-                let value = e.target?.value ? toMoment(e.target.value).format('DD MMM YYYY') : '';
+                const value = e.target?.value ? toMoment(e.target.value).format('DD MMM YYYY') : '';
+
+                setTo(value);
 
                 if (value) {
                     const upcoming_days = parseInt(daysFromTodayTo(value));
-
                     if (!isNaN(upcoming_days)) {
-                        value = toMoment().format('DD MMM YYYY');
+                        setTo('');
+
+                        const today = toMoment().format('DD MMM YYYY');
 
                         setTimeout(() => {
-                            setTo(value);
-                        },1000);
+                            setTo(today);
+                        }, 100);
                     }
                 }
-
-                setTo(value);
             }
         };
 
@@ -228,7 +229,7 @@ const CompositeCalendarMobile = React.memo(
                                     is_nativepicker={true}
                                     placeholder={localize('End date')}
                                     value={to}
-                                    max_date={today}
+                                    // max_date={today}
                                     min_date={min_date}
                                     onChange={e => selectDate(e, 'to')}
                                 />

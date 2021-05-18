@@ -120,11 +120,9 @@ const CompositeCalendarMobile = React.memo(
 
                     if (!isNaN(upcoming_days)) {
                         value = toMoment().format('DD MMM YYYY');
-                        alert(value);
                     }
                 }
 
-                console.log(value);
                 setTo(value);
             }
         };
@@ -221,15 +219,6 @@ const CompositeCalendarMobile = React.memo(
                                     max_date={max_date}
                                     onChange={e => selectDate(e, 'from')}
                                 />
-
-                                <button
-                                    onClick={() => {
-                                        setTo('29 May 2021');
-                                    }}
-                                >
-                                    Qwerty
-                                </button>
-
                                 <DatePicker
                                     className='composite-calendar-modal__custom-date-range-end-date'
                                     is_nativepicker={true}

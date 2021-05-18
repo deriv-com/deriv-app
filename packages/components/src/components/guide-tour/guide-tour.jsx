@@ -1,17 +1,17 @@
-import Tour from '@akmaldju/reactour';
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import Text from '../text';
+import Tour from '@deriv/deriv-onboarding';
 
 const GuideTour = ({ steps, settings, is_open }) => {
     const [is_tour_open, setIsTourOpen] = React.useState(is_open || true);
 
-    for (const step in steps) {
-        if (steps.hasOwnProperty(step)) {
+    Object.keys(steps).forEach(step => {
+        if (Object.prototype.hasOwnProperty.call(steps, step)) {
             steps[step].content = getFormattedContent(steps[step].title, steps[step].content);
         }
-    }
+    });
 
     return (
         <Tour
@@ -26,25 +26,26 @@ const GuideTour = ({ steps, settings, is_open }) => {
 
 const Tooltip = ({ content, current, totalSteps, prevStep, nextStep, close, steps, settings, node }) => {
     const sub_step = steps[current].substep;
+    const observe = steps[current].observe;
 
-    let observe = steps[current].observe;
+    let formatted_content;
     let hide_buttons = settings.hideButtons || steps[current].hideButtons;
-    let hide_previous_step = settings.hidePreviousStep || steps[current].hidePreviousStep;
     let hide_next_step = settings.hideNextStep || steps[current].hideNextStep;
+    let hide_previous_step = settings.hidePreviousStep || steps[current].hidePreviousStep;
     let localized_labels = settings.text_labels;
 
     if (sub_step && node?.className === sub_step.selector) {
-        content = sub_step.content ? getFormattedContent(sub_step.title, sub_step.content) : content;
+        formatted_content = sub_step.content ? getFormattedContent(sub_step.title, sub_step.content) : content;
         hide_buttons = typeof sub_step.hideButtons === 'boolean' ? sub_step.hideButtons : hide_buttons;
-        hide_previous_step = sub_step.hidePreviousStep || hide_previous_step;
         hide_next_step = sub_step.hideNextStep || hide_next_step;
+        hide_previous_step = sub_step.hidePreviousStep || hide_previous_step;
         localized_labels = sub_step.text_labels || localized_labels;
-        observe = sub_step.observe || observe;
+        steps[current].observe = sub_step.observe || observe;
     }
 
     return (
         <div className='dc-guide-tour__tooltip'>
-            {content}
+            {formatted_content || content}
             <div className='dc-guide-tour__tooltip__footer'>
                 <div className='dc-guide-tour__tooltip__progress'>{getStepsProgress(current, totalSteps)}</div>
                 {!hide_buttons && (
@@ -85,12 +86,12 @@ const getFormattedContent = (title, content) => (
 );
 
 const getStepsProgress = (index, size) => {
-    let steps = [];
+    const steps = [];
     for (let i = 0; i < size; i++) {
         steps.push(
             <div
                 className={classNames('dc-guide-tour__tooltip__circle', {
-                    ['dc-guide-tour__tooltip__circle--active']: index == i,
+                    'dc-guide-tour__tooltip__circle--active': index === i,
                 })}
             />
         );
@@ -104,7 +105,7 @@ GuideTour.defaultProps = {
 };
 
 GuideTour.propTypes = {
-    is_open: PropTypes.boolean,
+    is_open: PropTypes.bool,
     settings: PropTypes.object,
     steps: PropTypes.array,
 };

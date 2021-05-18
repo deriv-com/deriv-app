@@ -59,6 +59,7 @@
   },
   "dependencies": {
     "@contentpass/zxcvbn": "^4.4.3",
+    "@deriv/deriv-onboarding": "^1.0.0",
     "@deriv/shared": "^1.0.0",
     "@storybook/addon-knobs": "^5.2.4",
     "@wapps/storybook-addon-state": "0.0.4",
@@ -76,8 +77,6 @@
     "react-swipeable": "^5.5.1",
     "react-tiny-popover": "^5.1.0",
     "react-transition-group": "^4.3.0",
-    "react-virtualized": "^9.22.2",
-    "@akmaldju/reactour": "^1.0.1",
-    "styled-components": "^5.2.3"
+    "react-virtualized": "^9.22.2"
   }
 }

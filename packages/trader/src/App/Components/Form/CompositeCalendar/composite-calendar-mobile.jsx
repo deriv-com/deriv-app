@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, DatePicker, Icon, InputField, MobileDialog, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { toMoment,daysFromTodayTo } from '@deriv/shared';
+import { toMoment, daysFromTodayTo } from '@deriv/shared';
 
 export const RadioButton = ({ id, className, selected_value, value, label, onChange }) => {
     return (
@@ -113,17 +113,18 @@ const CompositeCalendarMobile = React.memo(
 
             if (key === 'to') {
                 // Handling future date input for IOS devices
-                 let value = (e.target?.value) ? toMoment(e.target.value).format('DD MMM YYYY') : '';
+                let value = e.target?.value ? toMoment(e.target.value).format('DD MMM YYYY') : '';
 
-                if(value){
+                if (value) {
                     const upcoming_days = parseInt(daysFromTodayTo(value));
 
-                    if(!isNaN(upcoming_days)){
+                    if (!isNaN(upcoming_days)) {
                         value = toMoment().format('DD MMM YYYY');
                         alert(value);
                     }
                 }
 
+                console.log(value);
                 setTo(value);
             }
         };
@@ -220,6 +221,14 @@ const CompositeCalendarMobile = React.memo(
                                     max_date={max_date}
                                     onChange={e => selectDate(e, 'from')}
                                 />
+
+                                <button
+                                    onClick={() => {
+                                        setTo('29 May 2021');
+                                    }}
+                                >
+                                    Qwerty
+                                </button>
 
                                 <DatePicker
                                     className='composite-calendar-modal__custom-date-range-end-date'

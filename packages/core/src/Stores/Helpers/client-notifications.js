@@ -2,6 +2,7 @@ import React from 'react';
 import {
     formatDate,
     getStaticUrl,
+    getUrlBase,
     isEmptyObject,
     isMobile,
     LocalStore,
@@ -23,10 +24,15 @@ export const clientNotifications = (ui = {}, client = {}) => {
             key: 'dp2p',
             header: localize('Payment problems?'),
             message: localize('There’s an app for that'),
-            button_text: localize('Learn more'),
-            img_src: '/public/images/common/dp2p_banner.png',
+            primary_btn: {
+                text: localize('Learn more'),
+                onClick: () => {
+                    window.open(getStaticUrl('/p2p/v1'), '_blank');
+                },
+            },
+            secondary_btn: { text: localize('Skip') },
+            img_src: getUrlBase('/public/images/common/dp2p_banner.png'),
             img_alt: 'DP2P',
-            redirect_link: '/p2p/v1',
             type: 'news',
         },
         currency: {

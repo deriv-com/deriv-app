@@ -27,18 +27,6 @@
         }
     }
 
-    &__blocked {
-        align-items: center;
-        display: flex;
-        flex-direction: column;
-        margin-top: 6.4rem;
-        max-width: 67.2rem;
-
-        &--text {
-            margin: 2.4rem 0 0.8rem;
-        }
-    }
-
     &__content {
         padding: 0 1.6rem;
     }
@@ -84,14 +72,6 @@
         width: 100%;
         border-top: 1px solid var(--general-section-1);
     }
-    &__verification {
-        padding-top: 3.5rem;
-
-        &--mobile {
-            padding: 3.5rem 2.5rem 0;
-        }
-    }
-
     &__advertiser-tab {
         @include mobile {
             .dc-tabs {
@@ -112,22 +92,6 @@
             }
         }
     }
-}
-
-.p2p-not-allowed {
-    display: flex;
-    flex-grow: 1;
-    justify-content: center;
-    align-items: center;
-}
-
-.p2p-blocked-user {
-    display: flex;
-    align-content: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    color: var(--text-general);
-    margin: 2.4rem;
 }
 
 .sendbird-fileviewer__header-delete {

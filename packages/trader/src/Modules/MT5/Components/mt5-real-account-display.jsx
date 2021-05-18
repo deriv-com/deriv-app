@@ -47,12 +47,24 @@ const MT5RealAccountDisplay = ({
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
     can_have_more_real_synthetic_mt5,
+    residence_list,
 }) => {
     const should_show_trade_servers = is_logged_in && !is_eu && has_real_account && can_have_more_real_synthetic_mt5;
     const [active_hover, setActiveHover] = React.useState(0);
 
-    const has_required_credentials =
-        account_settings.citizen && account_settings.tax_identification_number && account_settings.tax_residence;
+    const has_required_credentials = React.useMemo(() => {
+        const { citizen, tax_identification_number, tax_residence } = account_settings;
+
+        if (citizen && tax_identification_number && tax_residence) return true;
+
+        if (citizen && tax_residence) {
+            const is_tin_required = landing_companies?.config?.tax_details_required ?? false;
+
+            return is_tin_required || !residence_list.filter(v => v.value === tax_residence && v.tin_format).length;
+        }
+
+        return false;
+    }, [account_settings, residence_list, landing_companies]);
 
     const button_label = getRealFinancialStpBtnLbl(
         is_fully_authenticated,

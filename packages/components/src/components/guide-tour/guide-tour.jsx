@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import Text from '../text';
 import Tour from '@deriv/deriv-onboarding';
+import Text from '../text';
 
 const GuideTour = ({ steps, settings, is_open }) => {
     const [is_tour_open, setIsTourOpen] = React.useState(is_open || true);

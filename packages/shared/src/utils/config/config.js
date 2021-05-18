@@ -53,7 +53,7 @@ export const getAppId = () => {
     } else {
         window.localStorage.removeItem('config.default_app_id');
         const current_domain = getCurrentProductionDomain();
-        app_id = domain_app_ids[current_domain] || (isBot() ? 19111 : 16929);
+        app_id = (isBot() ? 19111 : domain_app_ids[current_domain]) || 16929;
     }
     return app_id;
 };

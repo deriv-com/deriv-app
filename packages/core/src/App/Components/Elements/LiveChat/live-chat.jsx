@@ -51,16 +51,12 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                 const client_information = Cookies.getJSON('client_information', {
                     domain,
                 });
-                console.log(domain);
-                console.log({ ...client_information });
                 const utm_data = Cookies.getJSON('utm_data', { domain });
 
                 const { utm_source, utm_medium, utm_campaign } = utm_data || {};
 
                 const { loginid, email, landing_company_shortcode, currency, residence, first_name, last_name } =
                     client_information || {};
-
-                // debugger;
 
                 client_first_name = first_name ?? ' ';
                 client_last_name = last_name ?? ' ';

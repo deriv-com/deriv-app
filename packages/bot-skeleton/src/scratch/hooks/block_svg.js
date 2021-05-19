@@ -71,7 +71,6 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
     if (this.isDeletable() && this.isMovable() && !block.isInFlyout) {
         menu_options.push(Blockly.ContextMenu.blockDuplicateOption(block, e));
         menu_options.push(Blockly.ContextMenu.blockDetachOption(block, e));
-
         if (this.isEditable() && this.workspace.options.comments) {
             menu_options.push(Blockly.ContextMenu.blockCommentOption(block));
         }

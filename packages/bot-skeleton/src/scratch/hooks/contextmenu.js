@@ -188,13 +188,13 @@ Blockly.ContextMenu.blockCommentOption = function (block) {
 Blockly.ContextMenu.blockDetachOption = function (block) {
     const enabled = block
         .getConnections_()
-        .find(connection => connection.isConnected() && !connection.targetConnection.sourceBlock_.isShadow_);
+        .find(connection => connection.isConnected() && !connection.targetConnection?.sourceBlock_.isShadow_);
     const detach_option = {
         callback() {
             block.unplug(true);
             block.moveBy(250, 0);
             block.getChildren().forEach(child => {
-                if (child.type !== 'math_number_positive') child.unplug(true);
+                if (child.type !== 'math_number_positive' && child.type !== 'text') child.unplug();
             });
             block.moveBy(250, 50);
         },

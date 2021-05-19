@@ -122,6 +122,7 @@ class DeactivateAccountReason extends React.Component {
         is_checkbox_disabled: false,
         total_checkbox_checked: 0,
         remaining_characters: character_limit_no,
+        total_accumulated_characters: 0,
     };
     validateFields = values => {
         const error = {};
@@ -138,7 +139,10 @@ class DeactivateAccountReason extends React.Component {
 
             remaining_characters = remaining_characters >= 0 ? remaining_characters : 0;
 
-            this.setState({ remaining_characters });
+            this.setState({ 
+                total_accumulated_characters: text_inputs_length,
+                remaining_characters 
+            });
 
             if (!/^[0-9A-z .,'-’]*$/.test(final_value)) {
                 error.characters_limits = localize("Must be numbers, letters, and special characters . , ' -");
@@ -211,7 +215,7 @@ class DeactivateAccountReason extends React.Component {
         const value = e.target.value;
         const remaining_characters = this.state.remaining_characters;
        
-        if (remaining_characters <= 0 && value.length >= character_limit_no) {
+        if (remaining_characters <= 0 || value.length >= this.state.total_accumulated_characters) {
             e.preventDefault();
         } else {
             onChange(e);

@@ -17,6 +17,7 @@ const AccountLimitsExtraInfo = ({ message, ...props }) => {
             alignment='right'
             className='da-account-limits__popover'
             icon='info'
+            is_bubble_hover_enabled
             message={message}
             zIndex={9999}
             {...props}

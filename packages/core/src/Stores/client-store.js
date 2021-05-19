@@ -404,6 +404,14 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_client_tnc_status_loaded() {
+        const { client_tnc_status } = this.account_settings;
+        if (this.is_virtual || (!this.is_virtual && client_tnc_status !== '')) return true;
+
+        return false;
+    }
+
+    @computed
     get is_financial_information_incomplete() {
         return this.account_status?.status?.some(status => status === 'financial_information_not_complete');
     }
@@ -919,6 +927,11 @@ export default class ClientStore extends BaseStore {
     get is_website_status_ready() {
         return this.website_status && !BinarySocket.getAvailability().is_down;
     }
+
+    isEuCountrySelected = selected_country => {
+        if (selected_country) return isEuCountry(selected_country);
+        return false;
+    };
 
     isAccountOfType = type => {
         const client_account_type = getClientAccountType(this.loginid);
@@ -1707,34 +1720,39 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    onSignup({ password, residence }, cb) {
+    onSignup({ password, residence, email_consent }, cb) {
         if (!this.verification_code.signup || !password || !residence) return;
-
+        if (email_consent === undefined) return;
+        email_consent = email_consent ? 1 : 0;
         // Currently the code doesn't reach here and the console log is needed for debugging.
         // TODO: remove console log when AccountSignup component and validation are ready
-        WS.newAccountVirtual(this.verification_code.signup, password, residence, this.getSignupParams()).then(
-            async response => {
-                if (response.error) {
-                    cb(response.error.message);
-                } else {
-                    cb();
-                    // Initialize client store with new user login
-                    const { client_id, currency, oauth_token } = response.new_account_virtual;
-                    await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
+        WS.newAccountVirtual(
+            this.verification_code.signup,
+            password,
+            residence,
+            email_consent,
+            this.getSignupParams()
+        ).then(async response => {
+            if (response.error) {
+                cb(response.error.message);
+            } else {
+                cb();
+                // Initialize client store with new user login
+                const { client_id, currency, oauth_token } = response.new_account_virtual;
+                await this.switchToNewlyCreatedAccount(client_id, oauth_token, currency);
 
-                    // GTM Signup event
-                    this.root_store.gtm.pushDataLayer({
-                        event: 'virtual_signup',
-                    });
+                // GTM Signup event
+                this.root_store.gtm.pushDataLayer({
+                    event: 'virtual_signup',
+                });
 
-                    this.root_store.ui.showAccountTypesModalForEuropean();
+                this.root_store.ui.showAccountTypesModalForEuropean();
 
-                    if (this.is_mt5_allowed) {
-                        this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
-                    }
+                if (this.is_mt5_allowed) {
+                    this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
                 }
             }
-        );
+        });
     }
 
     async switchToNewlyCreatedAccount(client_id, oauth_token, currency) {

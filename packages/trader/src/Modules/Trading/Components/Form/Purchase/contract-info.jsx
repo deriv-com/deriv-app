@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, DesktopWrapper, Money, MobileWrapper, Text } from '@deriv/components';
+import { Icon, DesktopWrapper, Money, MobileWrapper, Popover, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { getLocalizedBasis } from 'Stores/Modules/Trading/Constants/contract';
@@ -58,7 +58,7 @@ const ContractInfo = ({
         ? stakeOrPayout()
         : localize('{{value}}', { value: proposal_info.obj_contract_basis.text });
 
-    const { obj_contract_basis, stake } = proposal_info;
+    const { message, obj_contract_basis, stake } = proposal_info;
 
     return (
         <div className='trade-container__price'>
@@ -112,6 +112,19 @@ const ContractInfo = ({
                     )
                 )}
             </div>
+            {!is_multiplier && (
+                <DesktopWrapper>
+                    <Popover
+                        alignment='left'
+                        icon='info'
+                        id={`dt_purchase_${type.toLowerCase()}_info`}
+                        is_bubble_hover_enabled
+                        margin={216}
+                        message={has_error_or_not_loaded ? '' : message}
+                        relative_render
+                    />
+                </DesktopWrapper>
+            )}
         </div>
     );
 };

@@ -126,15 +126,21 @@ class PurchaseFieldset extends React.PureComponent {
                                     {purchase_button}
                                 </Popover>
                             ) : (
-                                <Popover
-                                    alignment='left'
-                                    is_bubble_hover_enabled
-                                    margin={8}
-                                    message={info.message}
-                                    relative_render
-                                >
-                                    {purchase_button}
-                                </Popover>
+                                <React.Fragment>
+                                    {is_multiplier ? (
+                                        <Popover
+                                            alignment='left'
+                                            is_bubble_hover_enabled
+                                            margin={8}
+                                            message={info.message}
+                                            relative_render
+                                        >
+                                            {purchase_button}
+                                        </Popover>
+                                    ) : (
+                                        purchase_button
+                                    )}
+                                </React.Fragment>
                             )}
                             {
                                 // is_purchase_confirm_on ?

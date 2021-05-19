@@ -60,10 +60,10 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                 const { loginid, email, landing_company_shortcode, currency, residence, first_name, last_name } =
                     client_information || {};
 
-                debugger;
+                // debugger;
 
-                client_first_name = first_name ?? '';
-                client_last_name = last_name ?? '';
+                client_first_name = first_name ?? ' ';
+                client_last_name = last_name ?? ' ';
 
                 /* the session variables are sent to CS team dashboard to notify user has logged in
                 and also acts as custom variables to trigger targeted engagement */

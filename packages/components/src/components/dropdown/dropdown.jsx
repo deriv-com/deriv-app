@@ -175,6 +175,7 @@ DropdownList.displayName = 'DropdownList';
 const Dropdown = ({
     className,
     classNameDisplay,
+    classNameHint,
     classNameItems,
     classNameLabel,
     disabled,
@@ -182,7 +183,6 @@ const Dropdown = ({
     handleBlur,
     has_symbol,
     hint,
-    classNameHint,
     initial_offset = 0,
     is_alignment_top,
     is_alignment_left,

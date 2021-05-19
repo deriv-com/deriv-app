@@ -209,10 +209,10 @@ class DeactivateAccountReason extends React.Component {
     };
 
     handleInputKeyDown = e => {
-        this.state.debug = 'checking...';
+        this.setState({debug: 'checking...'});
 
         if (this.state.remaining_characters <= 0 && !allowed_keys.has(e.key)) {
-            this.state.debug = 'disallowing user input';
+            this.setState({debug: 'disallowing user input'});
             e.preventDefault();
         }
 

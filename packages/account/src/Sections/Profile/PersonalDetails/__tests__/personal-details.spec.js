@@ -50,8 +50,6 @@ describe('<PersonalDetailsForm />', () => {
         await waitFor(() =>
             screen.getByText(/Please make sure your information is correct or it may affect your trading experience./i)
         );
-        test.todo('Personal details component tests for different landing companies');
-        test.todo('Personal detail update Profile');
     });
 
     test.todo('Personal details component tests for different landing companies');

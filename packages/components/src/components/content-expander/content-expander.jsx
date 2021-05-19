@@ -25,7 +25,7 @@ const ContentExpander = ({
     const onClick = React.useCallback(() => {
         toggleVisibility(!is_visible);
         if (typeof onToggle === 'function') {
-            onToggle(!is_visible);
+            onToggle();
         }
     }, [is_visible, onToggle, toggleVisibility]);
 
@@ -34,6 +34,12 @@ const ContentExpander = ({
             measure();
         }
     }, [is_visible]);
+
+    // is_visible value should come from parent bcause the parent keeps track
+    // of whether we need to expand or not
+    React.useEffect(() => {
+        toggleVisibility(is_expanded);
+    }, [is_expanded]);
 
     return (
         <div className={classNames('dc-content-expander__wrapper', wrapper_className)}>
@@ -101,7 +107,6 @@ ContentExpander.propTypes = {
     className: PropTypes.string,
     has_fade_in: PropTypes.bool,
     is_title_spaced: PropTypes.bool,
-    is_visible: PropTypes.bool,
     measure: PropTypes.func,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
     title_style: PropTypes.object,

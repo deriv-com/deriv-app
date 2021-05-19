@@ -15,15 +15,18 @@ const Input = React.forwardRef(
             classNameWarn,
             disabled,
             error,
+            field_className,
             has_character_counter,
             hint,
             is_relative_hint,
             initial_character_count,
             label,
+            label_className,
             leading_icon,
             max_characters,
             trailing_icon,
             warn,
+            input_id,
             ...props
         },
         ref
@@ -69,18 +72,20 @@ const Input = React.forwardRef(
                             })}
                             onChange={changeHandler}
                             disabled={disabled}
+                            id={input_id}
                         />
                     ) : (
                         <input
                             ref={ref}
                             {...props}
-                            className={classNames('dc-input__field', {
+                            className={classNames('dc-input__field', field_className, {
                                 'dc-input__field--placeholder-visible': !label && props.placeholder,
                             })}
                             onFocus={props.onFocus}
                             onBlur={props.onBlur}
                             disabled={disabled}
                             data-lpignore={props.type === 'password' ? undefined : true}
+                            id={input_id}
                         />
                     )}
                     {trailing_icon &&
@@ -88,7 +93,7 @@ const Input = React.forwardRef(
                             className: classNames('dc-input__trailing-icon', trailing_icon.props.className),
                         })}
                     {label && (
-                        <label className='dc-input__label' htmlFor={props.id}>
+                        <label className={classNames('dc-input__label', label_className)} htmlFor={props.id}>
                             {label}
                         </label>
                     )}
@@ -151,6 +156,7 @@ Input.propTypes = {
     max_characters: PropTypes.number,
     trailing_icon: PropTypes.any,
     warn: PropTypes.string,
+    input_id: PropTypes.string,
 };
 
 export default Input;

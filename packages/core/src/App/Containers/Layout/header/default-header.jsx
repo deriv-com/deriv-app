@@ -133,6 +133,7 @@ const DefaultHeader = ({
                 >
                     {is_logging_in && (
                         <div
+                            id='dt_core_header_acc-info-preloader'
                             className={classNames('acc-info__preloader', {
                                 'acc-info__preloader--no-currency': !currency,
                                 'acc-info__preloader--is-crypto': getDecimalPlaces(currency) > 2,
@@ -141,7 +142,7 @@ const DefaultHeader = ({
                             <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={isMobile()} speed={3} />
                         </div>
                     )}
-                    <div className='acc-info__container'>
+                    <div id={'dt_core_header_acc-info-container'} className='acc-info__container'>
                         <AccountActions
                             acc_switcher_disabled_message={acc_switcher_disabled_message}
                             balance={balance}

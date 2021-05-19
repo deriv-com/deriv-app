@@ -167,7 +167,7 @@ const MT5AttributeDescriber = ({ name, counter }) => {
 };
 
 const filterAvailableAccounts = (landing_companies, table, is_logged_in, show_eu_related, is_australian) => {
-    const getFinancialObject = () => {
+    const getFinancialObject = (financial, financial_au, financial_eu) => {
         if (is_australian) {
             return financial_au;
         }
@@ -180,7 +180,7 @@ const filterAvailableAccounts = (landing_companies, table, is_logged_in, show_eu
     return table.map(
         ({ attribute, synthetic, synthetic_eu, financial_stp, financial, financial_au, financial_eu, footnote }) => {
             const synthetic_object = { synthetic: show_eu_related ? synthetic_eu : synthetic };
-            const financial_object = { financial: getFinancialObject() };
+            const financial_object = { financial: getFinancialObject(financial, financial_au, financial_eu) };
             if (is_logged_in) {
                 return {
                     attribute: <MT5AttributeDescriber name={attribute} counter={footnote ? ++footnote_number : null} />,

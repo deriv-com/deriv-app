@@ -122,7 +122,6 @@ class DeactivateAccountReason extends React.Component {
         is_checkbox_disabled: false,
         total_checkbox_checked: 0,
         remaining_characters: character_limit_no,
-        debug: null,
     };
     validateFields = values => {
         const error = {};
@@ -208,15 +207,19 @@ class DeactivateAccountReason extends React.Component {
         }
     };
 
-    handleInputKeyDown = e => {
-        this.setState({debug: 'checking...'});
-
-        if (this.state.remaining_characters <= 0 && !allowed_keys.has(e.key)) {
-            this.setState({debug: 'disallowing user input'});
+    handleChange = (e, onChange) => {
+        if (this.state.remaining_characters <= 0) {
             e.preventDefault();
+            return false;
         }
 
-       
+        onChange(e);
+    };
+
+    handleInputKeyDown = e => {
+        if (this.state.remaining_characters <= 0 && !allowed_keys.has(e.key)) {
+            e.preventDefault();
+        }
     };
 
     handleInputPaste = e => {
@@ -384,14 +387,13 @@ class DeactivateAccountReason extends React.Component {
                                         name='other_trading_platforms'
                                         value={values.other_trading_platforms}
                                         max_characters={character_limit_no}
-                                        onChange={handleChange}
+                                        onChange={e => this.handleChange(e, handleChange)}
                                         onKeyDown={this.handleInputKeyDown}
                                         onPaste={this.handleInputPaste}
                                     />
                                 )}
                             </Field>
 
-                            {JSON.stringify(this.state.debug)}
                             <Field name='do_to_improve'>
                                 {({ field }) => (
                                     <Input
@@ -404,7 +406,7 @@ class DeactivateAccountReason extends React.Component {
                                         name='do_to_improve'
                                         value={values.do_to_improve}
                                         max_characters={character_limit_no}
-                                        onChange={handleChange}
+                                        onChange={e => this.handleChange(e, handleChange)}
                                         onKeyDown={this.handleInputKeyDown}
                                         onPaste={this.handleInputPaste}
                                     />

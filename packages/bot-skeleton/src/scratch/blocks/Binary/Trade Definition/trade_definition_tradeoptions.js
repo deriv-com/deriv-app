@@ -72,7 +72,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             event.type === Blockly.Events.END_DRAG
         ) {
             this.setCurrency();
-            this.setAmountLimits();
         }
 
         const trade_definition_block = this.workspace
@@ -106,6 +105,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.updateBarrierInputs(false, false);
                 this.updateDurationInput(false, false);
                 this.updatePredictionInput(false);
+                this.updateAmountLimits();
             } else {
                 this.updateBarrierInputs(true, true);
                 this.enforceSingleBarrierType('BARRIEROFFSETTYPE_LIST', true);
@@ -209,6 +209,17 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             // Remove any extra inputs (quietly) if not required
             for (let i = input_names.length; i > barriers.values.length; i--) {
                 this.removeInput(input_names[i - 1], true);
+            }
+        });
+    },
+    updateAmountLimits() {
+        const { account_limits } = ApiHelpers.instance;
+        const { currency, landing_company_shortcode } = DBotStore.instance.client;
+        account_limits.getStakePayoutLimits(currency, landing_company_shortcode).then(limits => {
+            this.amount_limits = limits;
+            const { max_payout, min_stake } = limits;
+            if (max_payout && min_stake && !this.getInput('AMOUNT_LIMITS')) {
+                this.appendDummyInput('AMOUNT_LIMITS').appendField(`( ${min_stake} - ${max_payout} )`).init();
             }
         });
     },
@@ -373,11 +384,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         const currency_field = this.getField('CURRENCY_LIST');
         const { currency } = DBotStore.instance.client;
         currency_field.setText(getCurrencyDisplayCode(currency));
-    },
-    async setAmountLimits() {
-        const { account_limits } = ApiHelpers.instance;
-        const { currency, landing_company_shortcode } = DBotStore.instance.client;
-        this.amount_limits = await account_limits.getStakePayoutLimits(currency, landing_company_shortcode);
     },
     restricted_parents: ['trade_definition'],
     getRequiredValueInputs() {

@@ -47,7 +47,10 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
             window.LiveChatWidget.on('ready', () => {
                 let client_first_name = '';
                 let client_last_name = '';
-                const domain = window.location.hostname.includes('deriv') ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
+                // const domain = window.location.hostname.includes('deriv') ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
+                const domain = /^(.)*deriv\.(com|me)$/gi.test(window.location.hostname)
+                    ? deriv_urls.DERIV_HOST_NAME
+                    : 'binary.sx';
                 const client_information = Cookies.getJSON('client_information', {
                     domain,
                 });
@@ -58,8 +61,8 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                 const { loginid, email, landing_company_shortcode, currency, residence, first_name, last_name } =
                     client_information || {};
 
-                client_first_name = first_name ?? ' ';
-                client_last_name = last_name ?? ' ';
+                client_first_name = first_name ?? '';
+                client_last_name = last_name ?? '';
 
                 /* the session variables are sent to CS team dashboard to notify user has logged in
                 and also acts as custom variables to trigger targeted engagement */

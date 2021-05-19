@@ -145,7 +145,7 @@ class DeactivateAccountReason extends React.Component {
             }
 
             if (final_value.length > max_characters) {
-                error.characters_count_exceed = 'Please enter no more than 255 characters for both fields.';
+                error.characters_count_exceed = 'Please enter no more than 250 characters for both fields.';
             }
         } else {
             this.setState({ remaining_characters: character_limit_no });

@@ -72,6 +72,7 @@ const TaxResidenceSelect = ({ field, touched, errors, setFieldValue, values, is_
                 label={localize('Tax residence*')}
                 error={touched.tax_residence && errors.tax_residence}
                 disabled={!is_changeable}
+                id='tax_residence'
                 list_items={residence_list}
                 onItemSelection={({ value, text }) => setFieldValue('tax_residence', value ? text : '', true)}
                 required
@@ -83,6 +84,7 @@ const TaxResidenceSelect = ({ field, touched, errors, setFieldValue, values, is_
                 label={localize('Tax residence*')}
                 value={values.tax_residence}
                 list_items={residence_list}
+                id={'tax_residence_mobile'}
                 error={touched.tax_residence && errors.tax_residence}
                 disabled={!is_changeable}
                 use_text={true}
@@ -505,6 +507,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                                 true
                                                                             )
                                                                         }
+                                                                        id={'salutation'}
                                                                         disabled={!this.isChangeableField('salutation')}
                                                                     />
                                                                 )}
@@ -522,6 +525,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                     setFieldValue('salutation', e.target.value, true)
                                                                 }
                                                                 disabled={!this.isChangeableField('salutation')}
+                                                                id={'salutation_mobile'}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -539,8 +543,10 @@ export class PersonalDetailsForm extends React.Component {
                                                             required
                                                             disabled={!this.isChangeableField('first_name')}
                                                             error={touched.first_name && errors.first_name}
+                                                            id={'first_name'}
                                                         />
                                                         <Input
+                                                            id={'last_name'}
                                                             data-lpignore='true'
                                                             type='text'
                                                             name='last_name'
@@ -560,6 +566,7 @@ export class PersonalDetailsForm extends React.Component {
                                                             data-lpignore='true'
                                                             type='text'
                                                             name='first_name'
+                                                            id='first_name_mobile'
                                                             label={localize('First name*')}
                                                             value={values.first_name}
                                                             onChange={handleChange}
@@ -574,6 +581,7 @@ export class PersonalDetailsForm extends React.Component {
                                                             data-lpignore='true'
                                                             type='text'
                                                             name='last_name'
+                                                            id='last_name_mobile'
                                                             label={localize('Last name*')}
                                                             value={values.last_name}
                                                             onChange={handleChange}
@@ -601,6 +609,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                     error={
                                                                         touched.place_of_birth && errors.place_of_birth
                                                                     }
+                                                                    id='birth_place'
                                                                     required={!is_svg}
                                                                     disabled={!this.isChangeableField('place_of_birth')}
                                                                     list_items={residence_list}
@@ -632,6 +641,7 @@ export class PersonalDetailsForm extends React.Component {
                                                             onChange={e =>
                                                                 setFieldValue('place_of_birth', e.target.value, true)
                                                             }
+                                                            id='birth_place_mobile'
                                                             should_hide_disabled_options={false}
                                                         />
                                                     </MobileWrapper>
@@ -651,6 +661,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                 true
                                                             )
                                                         }
+                                                        id={'birth_day'}
                                                         disabled={!this.isChangeableField('date_of_birth')}
                                                         value={values.date_of_birth}
                                                     />
@@ -679,6 +690,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                             true
                                                                         )
                                                                     }
+                                                                    id={'password'}
                                                                     required={is_eu}
                                                                 />
                                                             )}
@@ -693,6 +705,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                         ? localize('Citizenship*')
                                                                         : localize('Citizenship')
                                                                 }
+                                                                id={'citizen_ship'}
                                                                 required={is_eu}
                                                                 disabled={!this.isChangeableField('citizen')}
                                                                 value={values.citizen}
@@ -716,6 +729,7 @@ export class PersonalDetailsForm extends React.Component {
                                                 data-lpignore='true'
                                                 type='text'
                                                 name='residence'
+                                                id={'residence'}
                                                 label={localize('Country of residence*')}
                                                 value={values.residence}
                                                 required
@@ -729,6 +743,7 @@ export class PersonalDetailsForm extends React.Component {
                                                 data-lpignore='true'
                                                 type='text'
                                                 name='email'
+                                                id={'email'}
                                                 label={localize('Email address*')}
                                                 value={values.email}
                                                 required
@@ -746,6 +761,7 @@ export class PersonalDetailsForm extends React.Component {
                                                         data-lpignore='true'
                                                         type='text'
                                                         name='phone'
+                                                        id={'phone'}
                                                         label={localize('Phone number*')}
                                                         value={values.phone}
                                                         onChange={handleChange}
@@ -804,6 +820,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                             <fieldset className='account-form__fieldset'>
                                                                                 <Input
                                                                                     type='text'
+                                                                                    id={'tax_residence_disabled'}
                                                                                     name='tax_residence'
                                                                                     label={localize('Tax residence*')}
                                                                                     value={values.tax_residence.join(
@@ -818,6 +835,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                                     'tax_residence'
                                                                                 )}
                                                                                 field={field}
+                                                                                id={'tax_residence'}
                                                                                 touched={touched}
                                                                                 errors={errors}
                                                                                 setFieldValue={setFieldValue}
@@ -837,6 +855,7 @@ export class PersonalDetailsForm extends React.Component {
                                                             <Input
                                                                 data-lpignore='true'
                                                                 type='text'
+                                                                id={'tax_identification_number'}
                                                                 name='tax_identification_number'
                                                                 label={localize('Tax identification number*')}
                                                                 value={values.tax_identification_number}
@@ -868,6 +887,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                 type='text'
                                                                 maxLength={70}
                                                                 name='address_line_1'
+                                                                id='address_line_1'
                                                                 label={localize('First line of address*')}
                                                                 value={values.address_line_1}
                                                                 onChange={handleChange}
@@ -884,6 +904,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                 type='text'
                                                                 maxLength={70}
                                                                 name='address_line_2'
+                                                                id='address_line_2'
                                                                 label={localize('Second line of address (optional)')}
                                                                 value={values.address_line_2}
                                                                 error={touched.address_line_2 && errors.address_line_2}
@@ -899,6 +920,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                 autoComplete='off' // prevent chrome autocomplete
                                                                 type='text'
                                                                 name='address_city'
+                                                                id='address_city'
                                                                 label={localize('Town/City*')}
                                                                 value={values.address_city}
                                                                 error={touched.address_city && errors.address_city}
@@ -922,6 +944,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                                     label={localize(
                                                                                         'State/Province (optional)'
                                                                                     )}
+                                                                                    id={'state_province'}
                                                                                     error={
                                                                                         touched.address_state &&
                                                                                         errors.address_state
@@ -954,6 +977,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                             )}
                                                                             value={values.address_state}
                                                                             list_items={states_list}
+                                                                            id={'state_province_mobile'}
                                                                             error={
                                                                                 touched.address_state &&
                                                                                 errors.address_state
@@ -978,6 +1002,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                     autoComplete='off' // prevent chrome autocomplete
                                                                     type='text'
                                                                     name='address_state'
+                                                                    id='address_state'
                                                                     label={localize('State/Province (optional)')}
                                                                     value={values.address_state}
                                                                     error={
@@ -995,6 +1020,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                 autoComplete='off' // prevent chrome autocomplete
                                                                 type='text'
                                                                 name='address_postcode'
+                                                                id='address_postcode'
                                                                 label={localize('Postal/ZIP code')}
                                                                 value={values.address_postcode}
                                                                 error={
@@ -1026,6 +1052,7 @@ export class PersonalDetailsForm extends React.Component {
                                                 label={localize(
                                                     'Get updates about Deriv products, services and events.'
                                                 )}
+                                                id='email_consent'
                                                 defaultChecked={!!values.email_consent}
                                                 disabled={!this.isChangeableField('email_consent') && !is_virtual}
                                                 className={is_dashboard && 'dc-checkbox-blue'}

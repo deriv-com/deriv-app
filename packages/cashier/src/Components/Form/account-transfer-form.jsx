@@ -331,7 +331,7 @@ const AccountTransferForm = ({
                                             classNameDisplaySpan='cashier__drop-down-display-span'
                                             classNameItems='cashier__drop-down-items'
                                             classNameLabel='cashier__drop-down-label'
-                                            classNamehint='cashier__hint'
+                                            classNameHint='cashier__hint'
                                             is_large
                                             label={localize('To')}
                                             list={to_accounts}
@@ -370,7 +370,7 @@ const AccountTransferForm = ({
                                                 setFieldTouched('amount', true, false);
                                             }}
                                             className='cashier__input dc-input--no-placeholder account-transfer__input'
-                                            classNameHintColor='cashier__hint'
+                                            classNameHint='cashier__hint'
                                             type='text'
                                             label={localize('Amount')}
                                             error={touched.amount && errors.amount ? errors.amount : ''}

@@ -22,7 +22,7 @@
         right: -1.5rem;
     }
     &__hint {
-        color: #ffffff;
+        color: var(--text-general);
     }
     &__content {
         width: 100%;
@@ -170,7 +170,7 @@
             }
         }
         .dc-select-cashier__hint {
-            color: #ffffff;
+            color: var(--text-general);
         }
         &-display {
             justify-content: left;

@@ -13,7 +13,7 @@ const Input = React.forwardRef(
             className,
             classNameError,
             classNameWarn,
-            classNameHintColor,
+            classNameHint,
             disabled,
             error,
             field_className,
@@ -108,7 +108,7 @@ const Input = React.forwardRef(
                                         as='p'
                                         color='less-prominent'
                                         size='xxs'
-                                        className={classNames(classNameHintColor)}
+                                        className={classNames(classNameHint)}
                                     >
                                         {hint}
                                     </Text>
@@ -151,7 +151,7 @@ Input.propTypes = {
     className: PropTypes.string,
     classNameError: PropTypes.string,
     classNameWarn: PropTypes.string,
-    classNameHintColor: PropTypes.string,
+    classNameHint: PropTypes.string,
     disabled: PropTypes.bool,
     error: PropTypes.string,
     has_character_counter: PropTypes.bool,

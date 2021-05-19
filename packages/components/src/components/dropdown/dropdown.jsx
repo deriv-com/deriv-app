@@ -182,7 +182,7 @@ const Dropdown = ({
     handleBlur,
     has_symbol,
     hint,
-    classNamehint,
+    classNameHint,
     initial_offset = 0,
     is_alignment_top,
     is_alignment_left,
@@ -440,7 +440,7 @@ const Dropdown = ({
                         as='p'
                         color='less-prominent'
                         size='xxs'
-                        className={classNames('dc-dropdown__hint', classNamehint)}
+                        className={classNames('dc-dropdown__hint', classNameHint)}
                     >
                         {hint}
                     </Text>
@@ -455,7 +455,7 @@ Dropdown.propTypes = {
     classNameDisplay: PropTypes.string,
     classNameItems: PropTypes.string,
     classNameLabel: PropTypes.string,
-    classNamehint: PropTypes.string,
+    classNameHint: PropTypes.string,
     disabled: PropTypes.bool,
     list_portal_id: PropTypes.string,
     has_symbol: PropTypes.bool,

@@ -122,6 +122,7 @@ class DeactivateAccountReason extends React.Component {
         is_checkbox_disabled: false,
         total_checkbox_checked: 0,
         remaining_characters: character_limit_no,
+        debug: null,
     };
     validateFields = values => {
         const error = {};
@@ -208,9 +209,14 @@ class DeactivateAccountReason extends React.Component {
     };
 
     handleInputKeyDown = e => {
+        this.state.debug = 'checking...';
+
         if (this.state.remaining_characters <= 0 && !allowed_keys.has(e.key)) {
+            this.state.debug = 'disallowing user input';
             e.preventDefault();
         }
+
+       
     };
 
     handleInputPaste = e => {
@@ -385,6 +391,7 @@ class DeactivateAccountReason extends React.Component {
                                 )}
                             </Field>
 
+                            {JSON.stringify(this.state.debug)}
                             <Field name='do_to_improve'>
                                 {({ field }) => (
                                     <Input

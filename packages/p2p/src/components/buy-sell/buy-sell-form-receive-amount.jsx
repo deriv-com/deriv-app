@@ -8,7 +8,7 @@ const BuySellFormReceiveAmount = ({ is_sell_advert, receive_amount, local_curren
     <React.Fragment>
         <Text as='p' color='less-prominent' line_height='m' size='xxs'>
             {is_sell_advert ? (
-                <Localize i18n_default_text='You receive' />
+                <Localize i18n_default_text="You'll receive" />
             ) : (
                 <Localize i18n_default_text="You'll send" />
             )}

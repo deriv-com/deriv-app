@@ -122,9 +122,6 @@ const MT5PasswordReset = ({ sendVerifyEmail, account_type, account_group, server
 const MT5PasswordSuccessMessage = ({ toggleModal, is_investor }) => (
     <div className='mt5-password-manager__success'>
         <Icon icon='IcPasswordUpdated' size={128} />
-        <h1 className='mt5-password-manager__success-header'>
-            <Localize i18n_default_text='Password changed' />
-        </h1>
         <Text as='p' size='xxs' align='center'>
             {is_investor ? (
                 <Localize i18n_default_text='Your investor password has been changed.' />

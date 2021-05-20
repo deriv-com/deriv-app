@@ -226,9 +226,6 @@ class MT5ResetPasswordModal extends React.Component {
                 {this.state.is_finished && (
                     <div className='mt5-reset-password__success'>
                         <Icon icon='IcMt5PasswordUpdated' size={128} />
-                        <div className='mt5-reset-password__heading'>
-                            <Localize i18n_default_text='Password saved' />
-                        </div>
                         <div className='mt5-reset-password__description'>
                             <Localize
                                 i18n_default_text='Your {{account_type}} password has been changed.'

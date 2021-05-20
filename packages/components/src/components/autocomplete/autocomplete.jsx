@@ -36,12 +36,12 @@ const Autocomplete = React.memo(props => {
         value,
         list_items,
         autoComplete,
-        should_ignore_on_select,
         onHideDropdownList,
         onScrollStop,
         list_portal_id,
         is_alignment_top,
         should_filter_by_char,
+        input_id,
         ...other_props
     } = props;
 
@@ -207,8 +207,6 @@ const Autocomplete = React.memo(props => {
     const onSelectItem = item => {
         if (!item) return;
 
-        if (item?.disabled && should_ignore_on_select) return;
-
         setInputValue(item.text ? item.text : item);
 
         if (typeof props.onItemSelection === 'function') {
@@ -245,6 +243,7 @@ const Autocomplete = React.memo(props => {
                     autoComplete={autoComplete}
                     onKeyDown={onKeyPressed}
                     onInput={filterList}
+                    input_id={input_id}
                     onClick={() => {
                         if (should_show_list) hideDropdownList();
                         else showDropdownList();
@@ -284,7 +283,6 @@ const Autocomplete = React.memo(props => {
                 }}
                 is_visible={should_show_list}
                 list_items={filtered_items}
-                should_ignore_on_select={should_ignore_on_select}
                 list_height={props.list_height}
                 // Autocomplete must use the `text` property and not the `value`, however DropdownList provides access to both
                 onItemSelection={onSelectItem}

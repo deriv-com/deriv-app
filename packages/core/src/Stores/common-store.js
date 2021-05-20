@@ -1,5 +1,6 @@
 import { action, observable, reaction } from 'mobx';
-import { routes, toMoment, getUrlSmartTrader, isMobile } from '@deriv/shared';
+import { routes, toMoment, getUrlSmartTrader, isMobile, getAppId } from '@deriv/shared';
+import BinarySocket from '_common/base/socket_base';
 import ServerTime from '_common/base/server_time';
 import { currentLanguage, getAllowedLanguages } from 'Utils/Language/index';
 import BaseStore from './base-store';
@@ -39,6 +40,15 @@ export default class CommonStore extends BaseStore {
 
     @observable app_routing_history = [];
     @observable app_router = { history: null };
+    @observable app_id = undefined;
+
+    @action.bound
+    checkAppId() {
+        if (this.app_id && this.app_id !== getAppId()) {
+            BinarySocket.closeAndOpenNewConnection();
+        }
+        this.app_id = getAppId();
+    }
 
     @action.bound
     setInitialRouteHistoryItem(location) {

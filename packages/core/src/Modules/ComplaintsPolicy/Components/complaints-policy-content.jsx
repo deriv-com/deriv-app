@@ -163,7 +163,7 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
                                 className='link link--orange'
                                 rel='noopener noreferrer'
                                 target='_blank'
-                                href='https://financialcommission.org/'
+                                href='https://www.financialarbiter.org.mt/'
                             />,
                         ]}
                     />

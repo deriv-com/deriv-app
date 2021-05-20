@@ -29,7 +29,10 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
         return <Localize i18n_default_text='Set a currency for your real account' />;
     }
 
-    if (real_account_signup_target === 'malta' && is_belgium_residence) {
+    if (
+        (real_account_signup_target === 'malta' && is_belgium_residence) ||
+        real_account_signup_target === 'deposit_cash'
+    ) {
         return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
     }
 
@@ -94,7 +97,7 @@ const RealAccountSignup = ({
                     onError={showErrorModal}
                 />
             ),
-            title: is_requlated => (is_requlated ? localize('Manage account') : localize('Add or manage account')),
+            title: () => localize('Add or manage account'),
         },
         {
             body: local_props => (

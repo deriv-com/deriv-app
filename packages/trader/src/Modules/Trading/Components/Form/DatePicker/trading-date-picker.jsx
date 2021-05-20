@@ -36,6 +36,13 @@ const TradingDatePicker = ({
         onChangeCalendarMonth();
     }, []);
 
+    React.useEffect(() => {
+        if (duration !== current_duration) {
+            setDuration(current_duration);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [current_duration]);
+
     const getMinDuration = () => {
         return hasIntradayDurationUnit(duration_units_list)
             ? toMoment(server_time).clone()

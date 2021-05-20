@@ -141,7 +141,7 @@ class DeactivateAccountReason extends React.Component {
 
             this.setState({ 
                 total_accumulated_characters: text_inputs_length,
-                remaining_characters 
+                remaining_characters,
             });
 
             if (!/^[0-9A-z .,'-’]*$/.test(final_value)) {

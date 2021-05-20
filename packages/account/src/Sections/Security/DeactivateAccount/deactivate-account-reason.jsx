@@ -222,6 +222,7 @@ class DeactivateAccountReason extends React.Component {
         ) {
             e.preventDefault();
         } else {
+            this.setState({ debug: `Text:   ${value} ` });
             onChange(e);
         }
     };

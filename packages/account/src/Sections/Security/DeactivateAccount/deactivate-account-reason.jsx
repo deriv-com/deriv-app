@@ -218,7 +218,7 @@ class DeactivateAccountReason extends React.Component {
 
         let debug = '';
         if (remaining_characters <= 0 || value.length >= this.state.total_accumulated_characters) {
-            debug = `remaining_characters: ${remaining_characters} and total_accumulated_characters: ${total_accumulated_characters}`;
+            debug = `remaining_characters: ${remaining_characters} and total_accumulated_characters: ${this.state.total_accumulated_characters}`;
             e.preventDefault();
         } else {
             debug = `adding character: ${e.target.value}`;

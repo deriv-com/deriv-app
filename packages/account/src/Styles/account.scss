@@ -723,10 +723,9 @@ $MIN_HEIGHT_FLOATING: calc(
         &__text-container {
             margin-top: 1rem;
             max-width: 67.2rem;
-            margin-bottom: 2em;
         }
         &__button.dc-btn {
-            margin-top: 0.8rem;
+            margin-top: 3.2rem;
         }
         &-flex-wrapper {
             display: flex;
@@ -1556,6 +1555,13 @@ $MIN_HEIGHT_FLOATING: calc(
 /** @define onfido-container; weak */
 .onfido-container {
     margin-top: 24px;
+
+    .onfido-sdk-ui-crossDevice-CrossDeviceLink-numberInputSection {
+        .ods-button.-action--primary {
+            height: 100%;
+            font-size: 0.875em;
+        }
+    }
 
     &__message {
         padding: 1rem;

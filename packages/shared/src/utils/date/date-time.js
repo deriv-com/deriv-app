@@ -33,6 +33,7 @@ export const toMoment = value => {
     return moment.utc(value);
 };
 
+export const toLocalFormat = time => moment.utc(time).local().format('YYYY-MM-DD HH:mm:ss Z');
 /**
  * Set specified time on moment object
  * @param  {moment} moment_obj  the moment to set the time on

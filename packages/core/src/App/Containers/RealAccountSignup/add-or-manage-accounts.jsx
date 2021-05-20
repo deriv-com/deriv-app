@@ -130,6 +130,7 @@ const AddOrManageAccounts = props => {
                                 onSubmit={updateValue}
                                 value={form_value}
                                 form_error={form_error}
+                                should_show_crypto_only={true}
                                 hasNoAvailableCrypto={hasNoAvailableCrypto}
                             />
                         </div>

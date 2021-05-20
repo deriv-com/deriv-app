@@ -224,7 +224,7 @@
     }
     .dc-input {
         @include mobile {
-            margin-bottom: 0rem;
+            margin-bottom: 0;
         }
     }
     .dc-radio-group {
@@ -235,12 +235,12 @@
         }
         .dc-radio-group__item:not(:last-child) {
             @include mobile {
-                margin-right: 8px;
+                margin-right: 0.8rem;
             }
         }
         .dc-radio-group__circle {
             @include mobile {
-                margin-right: 4px;
+                margin-right: 0.4rem;
             }
         }
     }
@@ -256,7 +256,7 @@
     }
     .reality-check__fieldset--interval {
         @include mobile {
-            padding-top: 0rem;
+            padding-top: 0;
         }
     }
 }

@@ -194,7 +194,9 @@ Blockly.ContextMenu.blockDetachOption = function (block) {
             block.unplug(true);
             block.moveBy(250, 0);
             block.getChildren().forEach(child => {
-                if (child.type !== 'math_number_positive' && child.type !== 'text') child.unplug();
+                setTimeout(() => {
+                    if (child.type !== 'math_number_positive' && child.type !== 'text') child.unplug();
+                }, 0); // we need timeout for proper index detection
             });
             block.moveBy(250, 50);
         },

@@ -222,18 +222,27 @@ class DeactivateAccountReason extends React.Component {
         }
     };
 
+    handleInputKeyUp = e => {
+        const key = e.key;
+        const input_action = (e.key || e.keyCode || e);
+
+        this.setState({
+            input_action,
+        });
+    };
+
     handleInputKeyDown = e => {
         const key = e.key;
-        let input_action = (e.key || e.keyCode || e);
+        // let input_action = (e.key || e.keyCode || e);
 
         if (this.state.remaining_characters <= 0 && !allowed_keys.has(key)) {
             input_action = null;
             e.preventDefault();
         }
 
-        this.setState({
-            input_action,
-        });
+        // this.setState({
+        //     input_action,
+        // });
     };
 
     handleInputPaste = e => {
@@ -403,6 +412,7 @@ class DeactivateAccountReason extends React.Component {
                                         // max_characters={character_limit_no}
                                         onChange={e => this.handleChange(e, handleChange)}
                                         onKeyDown={this.handleInputKeyDown}
+                                        onKeyUp={this.handleInputKeyUp}
                                         onPaste={this.handleInputPaste}
                                     />
                                 )}
@@ -422,6 +432,7 @@ class DeactivateAccountReason extends React.Component {
                                         // max_characters={character_limit_no}
                                         onChange={e => this.handleChange(e, handleChange)}
                                         onKeyDown={this.handleInputKeyDown}
+                                        onKeyUp={this.handleInputKeyUp}
                                         onPaste={this.handleInputPaste}
                                     />
                                 )}

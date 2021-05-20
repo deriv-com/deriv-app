@@ -8,4 +8,3 @@ module.exports = {
     testRegex: ['__tests__', '.*.spec.js'],
     transformIgnorePatterns: ['/node_modules/(?!react-virtualized).+\\.js$'],
 };
-

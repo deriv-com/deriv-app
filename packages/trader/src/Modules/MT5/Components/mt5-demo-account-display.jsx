@@ -35,11 +35,11 @@ const MT5DemoAccountDisplay = ({
     const should_center_cards = !landing_companies?.mt_financial_company?.financial_stp;
 
     const financial_specs = React.useMemo(() => {
-        if (is_eu || is_eu_country) {
-            return eu_real_financial_specs;
-        }
         if (residence === 'au') {
             return au_real_financial_specs;
+        }
+        if (is_eu || is_eu_country) {
+            return eu_real_financial_specs;
         }
         return {
             [localize('Leverage')]: localize('Up to 1:1000'),

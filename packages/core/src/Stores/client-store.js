@@ -1152,6 +1152,8 @@ export default class ClientStore extends BaseStore {
 
             await this.fetchResidenceList();
 
+            await this.getSelfExclusion();
+
             if (account_settings && !account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }

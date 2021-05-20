@@ -70,6 +70,7 @@ const RealityCheckModal = ({
     setReportsTabIndex,
     setVisibilityRealityCheck,
     setSpendingLimitTradingStatistics,
+    self_exclusion,
 }) => {
     const history = useHistory();
 
@@ -87,13 +88,15 @@ const RealityCheckModal = ({
         setVisibilityRealityCheck(0);
     };
 
+    const enableMax30dayTurnover = !self_exclusion.max_30day_turnover;
+
     const validateForm = values => {
         const errors = {};
         const min_number = 1;
 
-        if (values.spending_limit === '1' && !values.max_30day_turnover) {
+        if (enableMax30dayTurnover && values.spending_limit === '1' && !values.max_30day_turnover) {
             errors.max_30day_turnover = localize('This field is required.');
-        } else if (values.spending_limit === '1') {
+        } else if (enableMax30dayTurnover && values.spending_limit === '1') {
             const { is_ok, message } = validNumber(values.max_30day_turnover, {
                 type: 'float',
                 decimals: getDecimalPlaces(currency),
@@ -147,6 +150,7 @@ const RealityCheckModal = ({
             validateForm={validateForm}
             onSubmit={setSpendingLimitTradingStatistics}
             logout={logoutClient}
+            enableMax30dayTurnover={enableMax30dayTurnover}
             IntervalField={TradingViewIntervalField}
             SpendingLimitIntervalField={SpendingLimitIntervalField}
         />
@@ -179,4 +183,5 @@ export default connect(({ client, common, ui }) => ({
     disableApp: ui.disableApp,
     setReportsTabIndex: ui.setReportsTabIndex,
     setSpendingLimitTradingStatistics: client.setSpendingLimitTradingStatistics,
+    self_exclusion: client.self_exclusion,
 }))(RealityCheckModal);

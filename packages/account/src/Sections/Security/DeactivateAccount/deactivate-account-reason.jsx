@@ -223,7 +223,6 @@ class DeactivateAccountReason extends React.Component {
     };
 
     handleInputKeyUp = e => {
-        const key = e.key;
         const input_action = (e.key || e.keyCode || e);
 
         this.setState({
@@ -233,7 +232,7 @@ class DeactivateAccountReason extends React.Component {
 
     handleInputKeyDown = e => {
         const key = e.key;
-        // let input_action = (e.key || e.keyCode || e);
+        let input_action = (e.key || e.keyCode || e);
 
         if (this.state.remaining_characters <= 0 && !allowed_keys.has(key)) {
             input_action = null;

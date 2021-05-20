@@ -219,7 +219,6 @@ class DeactivateAccountReason extends React.Component {
             (remaining_characters <= 0 || total_accumulated_characters >= character_limit_no) &&
             value.length >= character_limit_no
         ) {
-            alert('Limit!');
             e.preventDefault();
         } else {
             onChange(e);

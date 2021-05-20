@@ -226,7 +226,12 @@ class DeactivateAccountReason extends React.Component {
     };
 
     handleInputKeyDown = e => {
-        if (this.state.remaining_characters <= 0 && !allowed_keys.has(e.key)) {
+        const { total_accumulated_characters } = this.state;
+
+        if (
+            (this.state.remaining_characters <= 0 && !allowed_keys.has(e.key)) ||
+            total_accumulated_characters >= character_limit_no
+        ) {
             e.preventDefault();
         }
     };

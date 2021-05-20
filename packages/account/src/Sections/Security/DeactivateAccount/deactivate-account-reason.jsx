@@ -235,6 +235,7 @@ class DeactivateAccountReason extends React.Component {
             (this.state.remaining_characters <= 0 && !allowed_keys.has(e.key)) ||
             total_accumulated_characters >= character_limit_no
         ) {
+            this.setState({ debug: `Not Allowing:   ${new Date().getTime()} ` });
             e.preventDefault();
         }
     };

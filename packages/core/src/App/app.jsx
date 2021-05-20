@@ -55,6 +55,7 @@ const App = ({ root_store }) => {
         setUrlLanguage(getLanguage());
         initFormErrorMessages(FORM_ERROR_MESSAGES);
         setSharedCFDText(CFD_TEXT);
+        handleResize();
     }, []);
 
     const handleResize = React.useCallback(() => {

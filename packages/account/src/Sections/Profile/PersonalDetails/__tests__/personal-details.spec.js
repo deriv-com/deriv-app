@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { jest, test } from '@jest/globals';
 import React from 'react';
 import { cleanup, render, waitForElementToBeRemoved, waitFor } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
@@ -51,4 +51,7 @@ describe('<PersonalDetailsForm />', () => {
             screen.getByText(/Please make sure your information is correct or it may affect your trading experience./i)
         );
     });
+
+    test.todo('Personal details component tests for different landing companies');
+    test.todo('Personal detail update Profile');
 });

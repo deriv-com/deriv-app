@@ -274,7 +274,6 @@ const CFDRealAccountDisplay = ({
             className={classNames('cfd-real-accounts-display', {
                 'cfd-real-accounts-display--has-trade-servers': should_show_trade_servers,
             })}
-            style={{ justifyContent: items.length < 3 ? 'center' : 'space-between' }}
         >
             <DesktopWrapper>
                 <Carousel

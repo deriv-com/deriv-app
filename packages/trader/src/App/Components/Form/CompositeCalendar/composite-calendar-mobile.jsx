@@ -229,7 +229,7 @@ const CompositeCalendarMobile = React.memo(
                                     is_nativepicker={true}
                                     placeholder={localize('End date')}
                                     value={to}
-                                    // max_date={today}
+                                    max_date={today}
                                     min_date={min_date}
                                     onChange={e => selectDate(e, 'to')}
                                 />

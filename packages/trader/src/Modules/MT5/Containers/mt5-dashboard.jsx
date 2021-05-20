@@ -266,6 +266,7 @@ class MT5Dashboard extends React.Component {
                                             landing_companies={landing_companies}
                                             openAccountTransfer={this.openAccountTransfer}
                                             openPasswordManager={this.togglePasswordManagerModal}
+                                            residence={residence}
                                         />
                                     </div>
                                 </LoadTab>

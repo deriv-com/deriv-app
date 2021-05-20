@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { eu_real_financial_specs } from 'Modules/MT5/Constants/mt5-specifications';
+import { eu_real_financial_specs, au_real_financial_specs } from 'Modules/MT5/Constants/mt5-specifications';
 import { MT5AccountCard } from './mt5-account-card.jsx';
 import Loading from '../../../templates/_common/components/loading.jsx';
 
@@ -19,6 +19,7 @@ const MT5DemoAccountDisplay = ({
     current_list,
     has_mt5_account,
     openPasswordManager,
+    residence,
 }) => {
     const openMt5Account = () => {
         if (is_eu && !has_maltainvest_account && standpoint.iom) {
@@ -32,6 +33,21 @@ const MT5DemoAccountDisplay = ({
     };
 
     const should_center_cards = !landing_companies?.mt_financial_company?.financial_stp;
+
+    const financial_specs = React.useMemo(() => {
+        if (is_eu || is_eu_country) {
+            return eu_real_financial_specs;
+        }
+        if (residence === 'au') {
+            return au_real_financial_specs;
+        }
+        return {
+            [localize('Leverage')]: localize('Up to 1:1000'),
+            [localize('Margin call')]: localize('150%'),
+            [localize('Stop out level')]: localize('75%'),
+            [localize('Number of assets')]: localize('50+'),
+        };
+    }, [is_eu, is_eu_country, residence]);
 
     return is_loading ? (
         <div className='mt5-demo-accounts-display'>
@@ -112,16 +128,7 @@ const MT5DemoAccountDisplay = ({
                     descriptor={localize(
                         'Trade CFDs on forex, stocks & indices, commodities, and cryptocurrencies with leverage.'
                     )}
-                    specs={
-                        is_eu || is_eu_country
-                            ? eu_real_financial_specs
-                            : {
-                                  [localize('Leverage')]: localize('Up to 1:1000'),
-                                  [localize('Margin call')]: localize('150%'),
-                                  [localize('Stop out level')]: localize('75%'),
-                                  [localize('Number of assets')]: localize('50+'),
-                              }
-                    }
+                    specs={financial_specs}
                 />
             )}
             {(landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && (

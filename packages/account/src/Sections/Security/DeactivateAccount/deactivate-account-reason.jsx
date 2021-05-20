@@ -407,6 +407,7 @@ class DeactivateAccountReason extends React.Component {
                                     />
                                 )}
                             </Field>
+                            {JSON.stringify(this.state.input_action)}
                             <Field name='do_to_improve'>
                                 {({ field }) => (
                                     <Input

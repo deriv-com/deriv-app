@@ -229,7 +229,7 @@ class DeactivateAccountReason extends React.Component {
     handleInputKeyDown = e => {
         const { total_accumulated_characters } = this.state;
 
-        this.setState({ debug: 'Updated after KeyDown: ' + new Date().getTime() });
+        this.setState({ debug: `Updated after KeyDown:   ${new Date().getTime()} ` });
 
         if (
             (this.state.remaining_characters <= 0 && !allowed_keys.has(e.key)) ||
@@ -410,7 +410,8 @@ class DeactivateAccountReason extends React.Component {
                                     />
                                 )}
                             </Field>
-                            {JSON.stringify(this.state.total_accumulated_characters)}<br/>
+                            {JSON.stringify(this.state.total_accumulated_characters)}
+                            <br />
                             {JSON.stringify(this.state.debug)}
                             <Field name='do_to_improve'>
                                 {({ field }) => (

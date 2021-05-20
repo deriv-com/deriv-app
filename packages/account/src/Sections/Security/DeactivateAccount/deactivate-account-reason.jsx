@@ -404,7 +404,7 @@ class DeactivateAccountReason extends React.Component {
                                         )}
                                         name='other_trading_platforms'
                                         value={values.other_trading_platforms}
-                                        max_characters={character_limit_no}
+                                        // max_characters={character_limit_no}
                                         onChange={e => this.handleChange(e, handleChange)}
                                         onKeyDown={this.handleInputKeyDown}
                                         onPaste={this.handleInputPaste}
@@ -425,7 +425,7 @@ class DeactivateAccountReason extends React.Component {
                                         placeholder={localize('What could we do to improve?')}
                                         name='do_to_improve'
                                         value={values.do_to_improve}
-                                        max_characters={character_limit_no}
+                                        // max_characters={character_limit_no}
                                         onChange={e => this.handleChange(e, handleChange)}
                                         onKeyDown={this.handleInputKeyDown}
                                         onPaste={this.handleInputPaste}

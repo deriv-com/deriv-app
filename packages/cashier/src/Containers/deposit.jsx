@@ -74,7 +74,7 @@ const Deposit = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, iframe_height, is_switching]);
 
-    if (is_switching) {
+    if (is_switching || is_loading) {
         return <Loading is_fullscreen />;
     }
     if (is_virtual) {

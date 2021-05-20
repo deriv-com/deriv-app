@@ -16,6 +16,11 @@ export default class OrderStore {
     }
 
     @observable api_error_message = '';
+    @observable cancellation_block_duration = 0;
+    @observable cancellation_count_period = 0;
+    @observable cancellation_limit = 0;
+    @observable cancels_remaining = null;
+    @observable error_message = '';
     @observable has_more_items_to_load = false;
     @observable is_loading = false;
     @observable orders = [];
@@ -39,6 +44,35 @@ export default class OrderStore {
     @computed
     get nav() {
         return this.root_store.general_store.parameters?.nav;
+    }
+
+    @action.bound
+    getAdvertiserInfo(setShouldShowCancelModal) {
+        requestWS({ p2p_advertiser_info: 1 }).then(response => {
+            if (response.error) {
+                this.setErrorMessage(response.error.message);
+            } else {
+                this.setCancelsRemaining(response.p2p_advertiser_info.cancels_remaining);
+            }
+        });
+
+        this.getWebsiteStatus(setShouldShowCancelModal);
+    }
+
+    @action.bound
+    getWebsiteStatus(setShouldShowCancelModal) {
+        requestWS({ website_status: 1 }).then(response => {
+            if (response.error) {
+                this.setErrorMessage(response.error.message);
+            } else {
+                const { p2p_config } = response.website_status;
+                this.setCancellationBlockDuration(p2p_config.cancellation_block_duration);
+                this.setCancellationCountPeriod(p2p_config.cancellation_count_period);
+                this.setCancellationLimit(p2p_config.cancellation_limit);
+            }
+
+            setShouldShowCancelModal(true);
+        });
     }
 
     @action.bound
@@ -132,6 +166,31 @@ export default class OrderStore {
     @action.bound
     setApiErrorMessage(api_error_message) {
         this.api_error_message = api_error_message;
+    }
+
+    @action.bound
+    setCancellationBlockDuration(cancellation_block_duration) {
+        this.cancellation_block_duration = cancellation_block_duration;
+    }
+
+    @action.bound
+    setCancellationCountPeriod(cancellation_count_period) {
+        this.cancellation_count_period = cancellation_count_period;
+    }
+
+    @action.bound
+    setCancellationLimit(cancellation_limit) {
+        this.cancellation_limit = cancellation_limit;
+    }
+
+    @action.bound
+    setCancelsRemaining(cancels_remaining) {
+        this.cancels_remaining = cancels_remaining;
+    }
+
+    @action.bound
+    setErrorMessage(error_message) {
+        this.error_message = error_message;
     }
 
     @action.bound

@@ -830,8 +830,10 @@ export default class TradeStore extends BaseStore {
         }
 
         if (!isEmptyObject(requests)) {
-            this.proposal_requests = requests;
-            this.purchase_info = {};
+            runInAction(() => {
+                this.proposal_requests = requests;
+                this.purchase_info = {};
+            });
 
             Object.keys(this.proposal_requests).forEach(type => {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);

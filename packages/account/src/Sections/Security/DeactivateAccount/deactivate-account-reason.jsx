@@ -123,6 +123,7 @@ class DeactivateAccountReason extends React.Component {
         total_checkbox_checked: 0,
         remaining_characters: character_limit_no,
         total_accumulated_characters: 0,
+        debug: '',
     };
     validateFields = values => {
         const error = {};
@@ -139,7 +140,7 @@ class DeactivateAccountReason extends React.Component {
 
             remaining_characters = remaining_characters >= 0 ? remaining_characters : 0;
 
-            this.setState({ 
+            this.setState({
                 total_accumulated_characters: text_inputs_length,
                 remaining_characters,
             });
@@ -214,12 +215,19 @@ class DeactivateAccountReason extends React.Component {
     handleChange = (e, onChange) => {
         const value = e.target.value;
         const remaining_characters = this.state.remaining_characters;
-       
+
+        let debug = '';
         if (remaining_characters <= 0 || value.length >= this.state.total_accumulated_characters) {
+            debug = `remaining_characters: ${remaining_characters} and total_accumulated_characters: ${total_accumulated_characters}`;
             e.preventDefault();
         } else {
+            debug = `adding character: ${e.target.value}`;
             onChange(e);
         }
+
+        this.setState({
+            debug,
+        });
     };
 
     handleInputKeyDown = e => {

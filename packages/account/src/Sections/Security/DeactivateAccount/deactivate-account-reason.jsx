@@ -213,7 +213,7 @@ class DeactivateAccountReason extends React.Component {
     };
 
     handleChange = (e, onChange) => {
-        const { remaining_characters, total_accumulated_characters,input_action } = this.state;
+        const { remaining_characters, total_accumulated_characters, input_action } = this.state;
 
         if ((remaining_characters <= 0 || total_accumulated_characters >= character_limit_no) && !input_action) {
             e.preventDefault();
@@ -224,7 +224,7 @@ class DeactivateAccountReason extends React.Component {
 
     handleInputKeyDown = e => {
         const key = e.key;
-        let input_action = key;
+        let input_action = (e.key || e.keyCode || e);
 
         if (this.state.remaining_characters <= 0 && !allowed_keys.has(key)) {
             input_action = null;
@@ -407,7 +407,7 @@ class DeactivateAccountReason extends React.Component {
                                     />
                                 )}
                             </Field>
-                            {JSON.stringify(this.state.input_action)}
+                            <pre>{JSON.stringify(this.state.input_action)}</pre>
                             <Field name='do_to_improve'>
                                 {({ field }) => (
                                     <Input

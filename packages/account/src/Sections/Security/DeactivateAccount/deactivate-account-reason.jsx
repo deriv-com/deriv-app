@@ -232,7 +232,7 @@ class DeactivateAccountReason extends React.Component {
         }
 
         this.setState({
-            input_action
+            input_action,
         });
     };
 

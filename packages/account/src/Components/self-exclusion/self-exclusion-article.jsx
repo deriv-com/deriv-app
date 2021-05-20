@@ -12,7 +12,7 @@ const SelfExclusionArticle = () => {
     const { is_dashboard } = React.useContext(PlatformContext);
     return (
         <AccountArticle
-            title={localize('Trading limits and self-exclusion')}
+            title={localize('Spending limits and self-exclusion')}
             descriptions={
                 is_dashboard && isDesktop()
                     ? selfExclusionArticleItems({ is_eu, is_uk, is_deriv_crypto, is_app_settings })

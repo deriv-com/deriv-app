@@ -31,7 +31,11 @@ const BriefModal = ({
             is_open={is_visible}
             disableApp={disableApp}
             has_close_icon={false}
-            title={localize('Spending limit and trading statistics')}
+            title={
+                enableMax30dayTurnover
+                    ? localize('Spending limit and trading statistics')
+                    : localize('Trading statistics')
+            }
             portalId='modal_root_absolute'
             width='588px'
         >

@@ -194,8 +194,8 @@ Blockly.ContextMenu.blockDetachOption = function (block) {
 
     const detach_option = {
         callback() {
-            let clipboardXml = Blockly.clipboardXml_,
-                clipboardSource = Blockly.clipboardSource_;
+            const clipboardXml = Blockly.clipboardXml_;
+            const clipboardSource = Blockly.clipboardSource_;
             block.unplug(true);
             Blockly.copy_(block);
             block.workspace.paste(Blockly.clipboardXml_);

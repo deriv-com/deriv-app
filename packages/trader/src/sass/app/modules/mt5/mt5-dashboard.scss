@@ -1026,8 +1026,9 @@
             flex-direction: column;
             justify-content: space-around;
             align-items: center;
-            height: 24rem;
+            height: auto;
             padding: 0 3rem;
+            overflow-y: scroll;
         }
         &__message {
             @include typeface(--title-center-bold-black);

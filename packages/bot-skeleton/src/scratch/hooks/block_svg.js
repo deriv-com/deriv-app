@@ -1,6 +1,7 @@
 import { localize } from '@deriv/translations';
 import DBotStore from '../dbot-store';
 import { save, isDarkRgbColour } from '../utils';
+import { config } from '../../constants/config';
 
 /**
  * Select this block.  Highlight it visually.
@@ -67,10 +68,12 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
     // Save the current block in a variable for use in closures.
     const block = this;
     const menu_options = [];
+    if (!config.mainBlocks.includes(block.type) && this.isDeletable() && this.isMovable() && !block.isInFlyout) {
+        menu_options.push(Blockly.ContextMenu.blockDetachOption(block, e));
+    }
 
     if (this.isDeletable() && this.isMovable() && !block.isInFlyout) {
         menu_options.push(Blockly.ContextMenu.blockDuplicateOption(block, e));
-        menu_options.push(Blockly.ContextMenu.blockDetachOption(block, e));
         if (this.isEditable() && this.workspace.options.comments) {
             menu_options.push(Blockly.ContextMenu.blockCommentOption(block));
         }

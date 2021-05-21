@@ -186,19 +186,24 @@ Blockly.ContextMenu.blockCommentOption = function (block) {
  * @package
  */
 Blockly.ContextMenu.blockDetachOption = function (block) {
-    const enabled = block
+    const canDisconnect = block
         .getConnections_()
         .find(connection => connection.isConnected() && !connection.targetConnection?.sourceBlock_.isShadow_);
+
+    const enabled = block.parentBlock_ && canDisconnect;
+
     const detach_option = {
         callback() {
+            let clipboardXml = Blockly.clipboardXml_,
+                clipboardSource = Blockly.clipboardSource_;
             block.unplug(true);
-            block.moveBy(250, 0);
-            block.getChildren().forEach(child => {
-                setTimeout(() => {
-                    if (child.type !== 'math_number_positive' && child.type !== 'text') child.unplug();
-                }, 0); // we need timeout for proper index detection
-            });
-            block.moveBy(250, 50);
+            Blockly.copy_(block);
+            block.workspace.paste(Blockly.clipboardXml_);
+            block.dispose();
+            Blockly.clipboardXml_ = clipboardXml;
+            Blockly.clipboardSource_ = clipboardSource;
+            // block.unplug(true);
+            // block.moveBy(250, 50);
         },
         enabled,
         text: localize('Detach Block'),

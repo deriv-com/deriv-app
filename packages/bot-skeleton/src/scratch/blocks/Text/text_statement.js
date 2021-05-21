@@ -1,5 +1,6 @@
 import { localize } from '@deriv/translations';
 import { minusIconDark } from '../images';
+import { runIrreversibleEvents } from '../../utils';
 
 Blockly.Blocks.text_statement = {
     required_parent_type: 'text_join',
@@ -32,8 +33,43 @@ Blockly.Blocks.text_statement = {
             description: '',
         };
     },
+    onchange(event) {
+        if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+            return;
+        }
+
+        const stack_blocks = Blockly.getMainWorkspace().getBlockById(event.blockId);
+
+        if (event.type === Blockly.Events.END_DRAG) {
+            const surround_parent = this.getSurroundParent();
+            if (!surround_parent && !this.required_parent_id) {
+                return;
+            }
+            if (!this.required_parent_id && surround_parent?.type === this.required_parent_type) {
+                this.required_parent_id = surround_parent.id;
+            }
+            if (this.required_parent_id && (!surround_parent || surround_parent.id !== this.required_parent_id)) {
+                const all_blocks = this.workspace.getAllBlocks();
+                const original_parent = all_blocks.find(block => block.id === this.required_parent_id);
+
+                if (original_parent) {
+                    const first_block_in_stack = original_parent.getInputTargetBlock('STACK');
+
+                    if (first_block_in_stack) {
+                        const last_connection = original_parent.getLastConnectionInStatement('STACK');
+                        runIrreversibleEvents(() => {
+                            last_connection.connect(this.previousConnection);
+                        });
+                    } else {
+                        runIrreversibleEvents(() => {
+                            original_parent.getInput('STACK').connection.connect(stack_blocks.previousConnection);
+                        });
+                    }
+                }
+            }
+        }
+    },
     onIconClick: Blockly.Blocks.lists_statement.onIconClick,
-    onchange: Blockly.Blocks.lists_statement.onchange,
 };
 
 Blockly.JavaScript.text_statement = block => {

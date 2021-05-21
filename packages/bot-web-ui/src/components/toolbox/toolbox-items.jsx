@@ -547,7 +547,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                         text
                     </Field>
                     <Statement name='STACK'>
-                        <Block type='text_statement' movable='false'>
+                        <Block type='text_statement' movable='true'>
                             <Value name='TEXT'>
                                 <Shadow type='text'>
                                     <Field name='TEXT'>abc</Field>

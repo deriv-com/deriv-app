@@ -57,7 +57,7 @@
         flex-flow: nowrap column;
         background-color: var(--general-main-2);
         width: calc(100% + 8rem);
-        padding: 2rem;
+        padding: 2rem 4rem;
         border-radius: 1rem;
         position: relative;
         left: 50%;
@@ -65,6 +65,7 @@
 
         @include mobile {
             width: calc(100% + 1rem);
+            padding: 2rem;
             max-width: 35rem;
             background-color: var(--general-main-2);
         }

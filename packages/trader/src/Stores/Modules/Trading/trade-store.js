@@ -906,7 +906,7 @@ export default class TradeStore extends BaseStore {
                 }
             }
 
-            if (response.error?.code === 'AlreadySubscribed') {
+            if (response.error.code === 'AlreadySubscribed') {
                 this.refresh();
                 this.debouncedProposal();
                 return;

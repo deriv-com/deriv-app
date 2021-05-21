@@ -825,15 +825,13 @@ export default class TradeStore extends BaseStore {
             return;
         }
 
-        if (this.forget_all_proposal_promise) {
-            await this.forget_all_proposal_promise;
-        }
-
         if (!isEmptyObject(requests)) {
-            runInAction(() => {
-                this.proposal_requests = requests;
-                this.purchase_info = {};
-            });
+            this.proposal_requests = requests;
+            this.purchase_info = {};
+
+            if (this.forget_all_proposal_promise) {
+                await this.forget_all_proposal_promise;
+            }
 
             Object.keys(this.proposal_requests).forEach(type => {
                 WS.subscribeProposal(this.proposal_requests[type], this.onProposalResponse);
@@ -906,6 +904,12 @@ export default class TradeStore extends BaseStore {
                 if (details?.field === 'stop_loss' && commission_match?.[1]) {
                     this.commission = commission_match[1];
                 }
+            }
+
+            if (response.error?.code === 'AlreadySubscribed') {
+                this.refresh();
+                this.debouncedProposal();
+                return;
             }
         } else {
             this.validateAllProperties();

@@ -8,6 +8,7 @@ import { localize } from 'Components/i18next';
 import FormError from 'Components/form/error.jsx';
 import { useStores } from 'Stores';
 import BuySellForm from './buy-sell-form.jsx';
+import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 import NicknameForm from '../nickname-form';
 import 'Components/buy-sell/buy-sell-modal.scss';
 
@@ -35,11 +36,17 @@ BuySellModalFooter.propTypes = {
 };
 
 const BuySellModal = ({ table_type, selected_ad, should_show_popup, setShouldShowPopup }) => {
-    const { general_store, order_store } = useStores();
+    const { buy_sell_store, general_store, order_store } = useStores();
     const submitForm = React.useRef(() => {});
     const [error_message, setErrorMessage] = useSafeState(null);
     const [is_submit_disabled, setIsSubmitDisabled] = useSafeState(true);
-    const [page_footer_parent, setPageFooterParent] = useSafeState(null);
+    const [page_footer_parent, setPageFooterParent] = useSafeState(
+        <BuySellFormReceiveAmount
+            is_sell_advert={buy_sell_store.is_sell_advert}
+            local_currency={buy_sell_store?.advert && buy_sell_store.advert.local_currency}
+            receive_amount={buy_sell_store.receive_amount}
+        />
+    );
 
     const onCancel = () => setShouldShowPopup(false);
 

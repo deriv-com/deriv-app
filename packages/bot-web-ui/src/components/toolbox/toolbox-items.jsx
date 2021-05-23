@@ -307,23 +307,23 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                             <Next>
                                 <Block type='fast_ema_period' deletable='false' movable='false'>
                                     <Value name='FAST_EMA_PERIOD'>
-                                        <Block type='math_number'>
+                                        <Shadow type='math_number'>
                                             <Field name='NUM'>12</Field>
-                                        </Block>
+                                        </Shadow>
                                     </Value>
                                     <Next>
                                         <Block type='slow_ema_period' deletable='false' movable='false'>
                                             <Value name='SLOW_EMA_PERIOD'>
-                                                <Block type='math_number'>
+                                                <Shadow type='math_number'>
                                                     <Field name='NUM'>26</Field>
-                                                </Block>
+                                                </Shadow>
                                             </Value>
                                             <Next>
                                                 <Block type='signal_ema_period' deletable='false' movable='false'>
                                                     <Value name='SIGNAL_EMA_PERIOD'>
-                                                        <Block type='math_number'>
+                                                        <Shadow type='math_number'>
                                                             <Field name='NUM'>9</Field>
-                                                        </Block>
+                                                        </Shadow>
                                                     </Value>
                                                 </Block>
                                             </Next>

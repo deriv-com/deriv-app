@@ -106,6 +106,7 @@ const allowed_keys = new Set([
     'Delete',
     'End',
     'Home',
+    'Meta',
     'Shift',
 ]);
 
@@ -215,10 +216,10 @@ class DeactivateAccountReason extends React.Component {
     handleChange = (e, onChange) => {
         const { remaining_characters, total_accumulated_characters, input_action } = this.state;
 
-        if ((remaining_characters <= 0 || total_accumulated_characters >= character_limit_no) && !input_action) {
-            e.preventDefault();
-        } else {
+        if (input_action) {
             onChange(e);
+        } else if (remaining_characters <= 0 || total_accumulated_characters >= character_limit_no) {
+            e.preventDefault();
         }
     };
 

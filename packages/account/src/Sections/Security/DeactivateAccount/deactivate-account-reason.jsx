@@ -223,10 +223,9 @@ class DeactivateAccountReason extends React.Component {
     };
 
     handleInputKeyUp = e => {
-        // const input_action = e.key || e.keyCode || e;
-
+        const input_action = e.charCode || e.keyCode || 0;
         this.setState({
-            input_action: e,
+            input_action,
         });
     };
 

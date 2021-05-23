@@ -533,7 +533,6 @@ const PersonalDetails = ({
                                                                     label={localize('Account opening reason')}
                                                                     list_items={account_opening_reason_list}
                                                                     value={values.account_opening_reason}
-                                                                    use_text={true}
                                                                     error={
                                                                         touched.account_opening_reason &&
                                                                         errors.account_opening_reason

@@ -33,6 +33,9 @@ const PasswordMeter = ({ children, has_error, input, custom_feedback_messages })
                 });
                 setScore(updated_score);
                 setFeedback(updated_feedback);
+            } else {
+                setScore(0);
+                setFeedback('');
             }
         }
     }, [custom_feedback_messages, has_error, input]);

@@ -212,6 +212,11 @@ class DeactivateAccountReason extends React.Component {
         }
     };
 
+    handleTextInput = e => {
+        console.log('Here');
+        console.log(z);
+    };
+
     handleChange = (e, onChange) => {
         const { remaining_characters, total_accumulated_characters, input_action } = this.state;
 
@@ -224,7 +229,8 @@ class DeactivateAccountReason extends React.Component {
 
     handleInputKeyDown = e => {
         const key = e.key;
-        let input_action = e.key || e.charCode || e.keyCode || e;
+        let input_action = e.which;
+        // e.key || e.charCode || e.keyCode || e;
 
         if (this.state.remaining_characters <= 0 && !allowed_keys.has(key)) {
             input_action = null;
@@ -400,7 +406,8 @@ class DeactivateAccountReason extends React.Component {
                                         )}
                                         name='other_trading_platforms'
                                         value={values.other_trading_platforms}
-                                        // max_characters={character_limit_no}
+                                        max_characters={character_limit_no}
+                                        textInput={this.handleTextInput}
                                         onChange={e => this.handleChange(e, handleChange)}
                                         onKeyDown={this.handleInputKeyDown}
                                         onPaste={this.handleInputPaste}
@@ -419,7 +426,8 @@ class DeactivateAccountReason extends React.Component {
                                         placeholder={localize('What could we do to improve?')}
                                         name='do_to_improve'
                                         value={values.do_to_improve}
-                                        // max_characters={character_limit_no}
+                                        max_characters={character_limit_no}
+                                        textInput={this.handleTextInput}
                                         onChange={e => this.handleChange(e, handleChange)}
                                         onKeyDown={this.handleInputKeyDown}
                                         onPaste={this.handleInputPaste}

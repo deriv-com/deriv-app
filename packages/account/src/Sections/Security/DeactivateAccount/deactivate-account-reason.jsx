@@ -212,11 +212,6 @@ class DeactivateAccountReason extends React.Component {
         }
     };
 
-    handleTextInput = e => {
-        console.log('Here');
-        console.log(z);
-    };
-
     handleChange = (e, onChange) => {
         const { remaining_characters, total_accumulated_characters, input_action } = this.state;
 
@@ -407,7 +402,6 @@ class DeactivateAccountReason extends React.Component {
                                         name='other_trading_platforms'
                                         value={values.other_trading_platforms}
                                         max_characters={character_limit_no}
-                                        textInput={this.handleTextInput}
                                         onChange={e => this.handleChange(e, handleChange)}
                                         onKeyDown={this.handleInputKeyDown}
                                         onPaste={this.handleInputPaste}
@@ -427,7 +421,6 @@ class DeactivateAccountReason extends React.Component {
                                         name='do_to_improve'
                                         value={values.do_to_improve}
                                         max_characters={character_limit_no}
-                                        textInput={this.handleTextInput}
                                         onChange={e => this.handleChange(e, handleChange)}
                                         onKeyDown={this.handleInputKeyDown}
                                         onPaste={this.handleInputPaste}

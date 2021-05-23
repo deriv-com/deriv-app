@@ -224,8 +224,7 @@ class DeactivateAccountReason extends React.Component {
 
     handleInputKeyDown = e => {
         const key = e.key;
-        let input_action = e.which;
-        // e.key || e.charCode || e.keyCode || e;
+        let input_action = key;
 
         if (this.state.remaining_characters <= 0 && !allowed_keys.has(key)) {
             input_action = null;

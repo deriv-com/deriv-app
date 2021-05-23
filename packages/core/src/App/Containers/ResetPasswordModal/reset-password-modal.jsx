@@ -11,10 +11,10 @@ import { WS } from 'Services/index';
 const ResetPassword = ({ logoutClient, verification_code }) => {
     const onResetComplete = (error_msg, actions) => {
         actions.setSubmitting(false);
-        actions.resetForm({ password: '' });
         // Error would be returned on invalid token (and the like) cases.
         // TODO: Proper error handling (currently we have no place to put the message)
         if (error_msg) {
+            actions.resetForm({ password: '' });
             // eslint-disable-next-line no-console
             console.error(error_msg);
             actions.setStatus({ error_msg });
@@ -94,7 +94,7 @@ const ResetPassword = ({ logoutClient, verification_code }) => {
                                     <fieldset className='reset-password__fieldset'>
                                         <PasswordMeter
                                             input={values.password}
-                                            has_error={!!(touched.password && errors.password)}
+                                            has_error={!!(touched.password && errors.password) || status.error_msg}
                                             custom_feedback_messages={getErrorMessages().password_warnings}
                                         >
                                             <PasswordInput
@@ -104,7 +104,7 @@ const ResetPassword = ({ logoutClient, verification_code }) => {
                                                 label={localize('Create a password')}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
-                                                error={touched.password && errors.password}
+                                                error={(touched.password && errors.password) || status.error_msg}
                                                 value={values.password}
                                                 data-lpignore='true'
                                                 required

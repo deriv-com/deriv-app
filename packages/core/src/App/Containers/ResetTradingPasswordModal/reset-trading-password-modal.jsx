@@ -86,7 +86,12 @@ const ResetTradingPassword = ({ setDialogTitleFunc, toggleResetTradingPasswordMo
                                             <Localize i18n_default_text='Please request a new password and check your email for the new token.' />
                                         </Text>
                                     )}
-                                    <Button primary large onClick={() => toggleResetTradingPasswordModal(false)}>
+                                    <Button
+                                        className='reset-trading-password__confirm-button'
+                                        primary
+                                        large
+                                        onClick={() => toggleResetTradingPasswordModal(false)}
+                                    >
                                         <Localize i18n_default_text='Ok' />
                                     </Button>
                                 </div>

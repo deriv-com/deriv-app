@@ -209,6 +209,7 @@ class MT5ResetPasswordModal extends React.Component {
                         <Button
                             primary
                             large
+                            className='mt5-reset-password__confirm-button'
                             onClick={() => {
                                 this.clearAddressBar();
                                 setMt5PasswordResetModal(false);

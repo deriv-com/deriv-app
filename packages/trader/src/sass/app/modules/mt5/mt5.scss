@@ -247,11 +247,11 @@
     &__error {
         display: flex;
         width: 38.4rem;
-        height: 28.4rem;
+        min-height: 28.4rem;
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
-        padding: 2rem 0;
+        padding-top: 2rem;
     }
     &__description {
         @include typeface(--paragraph-left-normal-black);

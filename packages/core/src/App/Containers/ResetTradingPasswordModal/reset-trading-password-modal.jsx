@@ -20,7 +20,7 @@ const ResetTradingPassword = ({ setDialogTitleFunc, toggleResetTradingPasswordMo
             if (response.error) {
                 // eslint-disable-next-line no-console
                 console.error(response.error.message);
-                actions.setStatus({ error_msg: response.error.message });
+                actions.setStatus({ error_msg: response.error.message, error_code: response.error.code });
                 setDialogTitleFunc(true);
             } else {
                 actions.resetForm({ password: '' });
@@ -56,7 +56,7 @@ const ResetTradingPassword = ({ setDialogTitleFunc, toggleResetTradingPasswordMo
         <div className='reset-trading-password'>
             <Formik
                 initialValues={reset_initial_values}
-                initialStatus={{ reset_complete: false, error_msg: '' }}
+                initialStatus={{ reset_complete: false, error_msg: '', error_code: '' }}
                 validate={validateReset}
                 onSubmit={handleSubmit}
             >
@@ -75,15 +75,17 @@ const ResetTradingPassword = ({ setDialogTitleFunc, toggleResetTradingPasswordMo
                                     >
                                         {status.error_msg}
                                     </Text>
-                                    <Text
-                                        as='p'
-                                        color='prominent'
-                                        size='xs'
-                                        align='center'
-                                        className='reset-trading-password__description--is-centered'
-                                    >
-                                        <Localize i18n_default_text='Please request a new password and check your email for the new token.' />
-                                    </Text>
+                                    {status.error_code === 'InvalidToken' && (
+                                        <Text
+                                            as='p'
+                                            color='prominent'
+                                            size='xs'
+                                            align='center'
+                                            className='reset-trading-password__description--is-centered'
+                                        >
+                                            <Localize i18n_default_text='Please request a new password and check your email for the new token.' />
+                                        </Text>
+                                    )}
                                     <Button primary large onClick={() => toggleResetTradingPasswordModal(false)}>
                                         <Localize i18n_default_text='Ok' />
                                     </Button>

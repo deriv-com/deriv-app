@@ -14,8 +14,7 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
-import { routes, isMobile, isDesktop, PlatformContext } from '@deriv/shared';
-
+import { getPlatformRedirect, isMobile, isDesktop, PlatformContext, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
@@ -117,25 +116,36 @@ const ConfirmationPage = ({ toggleModal, onSubmit }) => (
     </div>
 );
 
-const SubmittedPage = () => {
+const SubmittedPage = ({ app_routing_history, routeBackInApp }) => {
     const history = useHistory();
     const location = useLocation();
+    const from_platform = getPlatformRedirect(app_routing_history);
+    const should_show_redirect_to_p2p_btn = from_platform?.name === 'P2P';
 
     // Passing "custom_button_options" object in "location.state" allows
     // another app/route to determine which button the user will see after
     // submitting their financial assessment.
-    const button_text = location.state?.custom_button_options
-        ? location.state.custom_button_options.button_text
-        : localize('Continue');
-    const icon_text = location.state?.custom_button_options
+    const icon_text = location.state?.custom_button_options?.icon_text
         ? location.state.custom_button_options.icon_text
         : localize('Let’s continue with providing proofs of address and identity.');
-    const route_to_path = location.state?.custom_button_options
+    const route_to_path = location.state?.custom_button_options?.route_to_path
         ? location.state.custom_button_options.route_to_path
         : routes.proof_of_address;
 
+    const getButtonText = () => {
+        if (should_show_redirect_to_p2p_btn) {
+            return localize('Back to DP2P');
+        } else if (location.state?.custom_button_options?.button_text) {
+            return location.state.custom_button_options.button_text;
+        }
+
+        return localize('Continue');
+    };
+
     const onClickButton = () => {
-        if (location.state?.custom_button_options?.is_hard_redirect) {
+        if (from_platform?.route) {
+            routeBackInApp(history, [from_platform?.route]);
+        } else if (location.state?.custom_button_options?.is_hard_redirect) {
             window.location.href = window.location.origin + route_to_path;
         } else {
             history.push(route_to_path);
@@ -150,7 +160,7 @@ const SubmittedPage = () => {
             icon={<Icon icon='IcSuccess' width={96} height={90} />}
         >
             <div className='account-management-flex-wrapper account-management-submit-success'>
-                <Button type='button' has_effect text={button_text} onClick={onClickButton} primary large />
+                <Button type='button' has_effect text={getButtonText()} onClick={onClickButton} primary large />
             </div>
         </IconMessageContent>
     );
@@ -318,7 +328,13 @@ class FinancialAssessment extends React.Component {
         if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (this.props.is_virtual) return <DemoMessage has_demo_icon={is_dashboard} has_button={is_dashboard} />;
-        if (isMobile() && is_submit_success) return <SubmittedPage />;
+        if (isMobile() && is_submit_success)
+            return (
+                <SubmittedPage
+                    app_routing_history={this.props.app_routing_history}
+                    routeBackInApp={this.props.routeBackInApp}
+                />
+            );
 
         return (
             <React.Fragment>
@@ -929,8 +945,9 @@ class FinancialAssessment extends React.Component {
 }
 
 // FinancialAssessment.propTypes = {};
-export default connect(({ client, ui }) => ({
+export default connect(({ client, common, ui }) => ({
     account_status: client.account_status,
+    app_routing_history: common.app_routing_history,
     is_virtual: client.is_virtual,
     is_high_risk: client.is_high_risk,
     is_financial_account: client.is_financial_account,
@@ -939,4 +956,5 @@ export default connect(({ client, ui }) => ({
     is_svg: client.is_svg,
     removeNotificationMessage: ui.removeNotificationMessage,
     removeNotificationByKey: ui.removeNotificationByKey,
+    routeBackInApp: common.routeBackInApp,
 }))(withRouter(FinancialAssessment));

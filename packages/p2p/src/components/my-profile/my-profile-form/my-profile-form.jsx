@@ -39,7 +39,7 @@ const MyProfileForm = () => {
                                         type='textarea'
                                         label={
                                             <Text color='less-prominent' size='xs'>
-                                                <Localize i18n_default_text='Payment details' />{' '}
+                                                <Localize i18n_default_text='Payment details' />
                                             </Text>
                                         }
                                         error={errors.payment_info}
@@ -77,7 +77,7 @@ const MyProfileForm = () => {
                                         type='textarea'
                                         label={
                                             <Text color='less-prominent' size='xs'>
-                                                <Localize i18n_default_text='Instructions' />{' '}
+                                                <Localize i18n_default_text='Instructions' />
                                             </Text>
                                         }
                                         error={errors.default_advert_description}

@@ -253,7 +253,6 @@ const MT5RealAccountDisplay = ({
             className={classNames('mt5-real-accounts-display', {
                 'mt5-real-accounts-display--has-trade-servers': should_show_trade_servers,
             })}
-            style={{ justifyContent: items.length < 3 ? 'center' : 'space-between' }}
         >
             <DesktopWrapper>
                 <Carousel

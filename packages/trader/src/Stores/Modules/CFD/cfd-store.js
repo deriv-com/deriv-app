@@ -377,9 +377,8 @@ export default class CFDStore extends BaseStore {
                     await WS.authorized
                         .tradingPlatformAccountsList('dxtrade')
                         .then(this.root_store.client.responseTradingPlatformAccountsList);
-
                     new_balance = this.root_store.client.dxtrade_accounts_list.find(
-                        item => item.login === this.current_account.login
+                        item => item.account_id === this.current_account.account_id
                     )?.balance;
                     break;
                 }

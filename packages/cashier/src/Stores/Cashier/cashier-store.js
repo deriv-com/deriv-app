@@ -351,6 +351,7 @@ export default class CashierStore extends BaseStore {
             // so no need to set timeouts to keep the session alive
         } else {
             await this.checkIframeLoaded();
+            this.setLoading(false);
             this.setIframeUrl(response_cashier.cashier);
             this.setSessionTimeout(false);
             this.setTimeoutCashierUrl();

@@ -779,6 +779,7 @@
         &--primary {
             background-color: var(--brand-red-coral);
             color: var(--text-colored-background);
+            margin-top: 1rem;
         }
         &--secondary {
             background-color: transparent;
@@ -1029,18 +1030,22 @@
             height: auto;
             padding: 0 3rem;
             overflow-y: scroll;
+            padding-bottom: 7rem;
         }
         &__message {
             @include typeface(--title-center-bold-black);
             color: var(--text-prominent);
+            margin-bottom: 1rem;
         }
         &__text {
             @include typeface(--paragraph-center-normal-black);
             color: var(--text-prominent);
         }
         &__list {
+            &-message {
+                display: flex;
+            }
             &-icon {
-                display: inline-block;
                 margin-right: 1.2rem;
             }
         }
@@ -1339,7 +1344,6 @@
 
             & .dc-btn {
                 width: 100%;
-
                 &:only-child {
                     max-width: 14rem;
                     width: auto;

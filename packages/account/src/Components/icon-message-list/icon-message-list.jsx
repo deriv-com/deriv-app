@@ -9,10 +9,11 @@ const ListItem = ({ text }) => (
         <div className='account-management__list-icon'>
             <Icon icon='IcCloseCircle' color='red' />
         </div>
-
-        <Text size='xs' className='account-management__list-text'>
-            {text}
-        </Text>
+        <div className='account-management__list-text-container'>
+            <Text size='xs' className='account-management__list-text'>
+                {text}
+            </Text>
+        </div>
     </div>
 );
 

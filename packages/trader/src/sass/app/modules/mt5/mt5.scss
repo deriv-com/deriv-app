@@ -246,7 +246,7 @@
     }
     &__error {
         display: flex;
-        width: 38.4rem;
+        max-width: 38.4rem;
         min-height: 28.4rem;
         flex-direction: column;
         align-items: center;

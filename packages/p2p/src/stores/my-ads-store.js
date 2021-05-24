@@ -141,6 +141,7 @@ export default class MyAdsStore extends BaseStore {
     loadMoreAds({ startIndex }, is_initial_load = false) {
         if (is_initial_load) {
             this.setIsTableLoading(true);
+            this.setApiErrorMessage('');
         }
 
         const { list_item_limit } = this.root_store.general_store;
@@ -155,6 +156,8 @@ export default class MyAdsStore extends BaseStore {
                     const { list } = response.p2p_advertiser_adverts;
                     this.setHasMoreItemsToLoad(list.length >= list_item_limit);
                     this.setAdverts(this.adverts.concat(list));
+                } else if (response.error.code === 'PermissionDenied') {
+                    this.root_store.general_store.setIsBlocked(true);
                 } else {
                     this.setApiErrorMessage(response.error.message);
                 }

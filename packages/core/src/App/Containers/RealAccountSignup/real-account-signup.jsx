@@ -97,7 +97,7 @@ const RealAccountSignup = ({
                     onError={showErrorModal}
                 />
             ),
-            title: is_requlated => (is_requlated ? localize('Manage account') : localize('Add or manage account')),
+            title: () => localize('Add or manage account'),
         },
         {
             body: local_props => (

@@ -8,4 +8,10 @@
     &__text {
         margin-top: 1rem;
     }
+    &-full-width {
+        width: calc(100vw - 33rem);
+    }
+    @include mobile {
+        width: 100vw;
+    }
 }

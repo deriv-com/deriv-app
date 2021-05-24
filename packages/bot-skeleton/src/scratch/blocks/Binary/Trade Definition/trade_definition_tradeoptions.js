@@ -143,16 +143,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.updateDurationInput(true, true);
                 this.updatePredictionInput(true);
             }
-            if (this.getInputTargetBlock('AMOUNT')?.id === event.blockId && this.amount_limits) {
-                const input_number = Number(event.newValue);
-                if (input_number < this.amount_limits.min_stake || input_number > this.amount_limits.max_payout) {
-                    const amount_input = this.getInput('AMOUNT');
-                    if (amount_input && amount_input.connection) {
-                        const target_block = amount_input.connection.targetBlock();
-                        target_block.setFieldValue(event.oldValue, 'NUM');
-                    }
-                }
-            }
         } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.id) {
             // Ensure this block is populated after initial drag from flyout.
             if (!this.selected_duration) {
@@ -219,7 +209,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             this.amount_limits = limits;
             const { max_payout, min_stake } = limits;
             if (max_payout && min_stake && !this.getInput('AMOUNT_LIMITS')) {
-                this.appendDummyInput('AMOUNT_LIMITS').appendField(`( ${min_stake} - ${max_payout} )`).init();
+                this.appendDummyInput('AMOUNT_LIMITS').appendField(`( min: ${min_stake} - max: ${max_payout} )`).init();
             }
         });
     },

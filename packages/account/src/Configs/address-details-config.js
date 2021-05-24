@@ -16,7 +16,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                     'address',
                     localize('Letters, numbers, spaces, periods, hyphens, apostrophes, commas only'),
                     {
-                        regex: /^[A-Za-z0-9\s'.,-]{1,35}$/,
+                        regex: /^[\p{L}\p{Nd}\s'.,:;()\x{b0}@#/-]{1,70}$/,
                     },
                 ],
                 ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
@@ -31,7 +31,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                     'address',
                     localize('Letters, numbers, spaces, periods, hyphens, apostrophes, commas only'),
                     {
-                        regex: /^[A-Za-z0-9\s'.,-]{1,35}$/,
+                        regex: /^[\p{L}\p{Nd}\s'.,:;()\x{b0}@#/-]{0,70}$/,
                     },
                 ],
                 ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],

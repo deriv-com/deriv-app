@@ -183,15 +183,14 @@ const TradingPasswordManager = ({ status, platform, is_dxtrade_allowed }) => {
                     <React.Fragment>
                         {is_dxtrade_allowed ? (
                             <Localize
-                                i18n_default_text='A trading password is used to sign in to any of your {{platform1}} (and {{platform2}}) accounts when using {{app_name}} apps on your mobile or other devices.'
+                                i18n_default_text='A trading password is used to sign in to any of your {{platform1}} (and {{platform2}}) accounts.'
                                 values={{
                                     platform1: platform === 'mt5' ? 'DMT5' : 'Deriv X',
                                     platform2: platform === 'mt5' ? 'Deriv X' : 'DMT5',
-                                    app_name: platform === 'mt5' ? 'MT5' : 'Deriv X',
                                 }}
                             />
                         ) : (
-                            <Localize i18n_default_text='A trading password is used to sign in to any of your DMT5 accounts when using MT5 apps on your mobile or other devices.' />
+                            <Localize i18n_default_text='A trading password is used to sign in to any of your DMT5 accounts.' />
                         )}
                     </React.Fragment>
                 )}

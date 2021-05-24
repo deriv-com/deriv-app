@@ -96,7 +96,7 @@ const Deposit = ({
         return <Error error={error} />;
     }
 
-    return <CashierContainer iframe_height={iframe_height} iframe_url={iframe_url} is_loading={is_loading} />;
+    return <CashierContainer iframe_height={iframe_height} iframe_url={iframe_url} />;
 };
 
 Deposit.propTypes = {

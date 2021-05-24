@@ -29,6 +29,7 @@ const storage_key = 'client.accounts';
 const store_name = 'client_store';
 const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
 const eu_excluded_regex = new RegExp('^mt$');
+const NO_SPENDING_LIMIT_TURNOVER = 99999999999999;
 
 export default class ClientStore extends BaseStore {
     @observable loginid;
@@ -1994,32 +1995,28 @@ export default class ClientStore extends BaseStore {
     setSpendingLimitTradingStatistics(values, form_props) {
         if (!values.interval) return;
 
-        if (!!values.max_30day_turnover) {
-            WS.send({ set_self_exclusion: 1, max_30day_turnover: values.max_30day_turnover }).then(response => {
-                if (response.error) {
-                    form_props?.setStatus(response.error);
-                    setTimeout(() => {
-                        this.setSpendingLimit(values.interval);
-                    }, 200);
-                } else {
-                    if (this.root_store.modules.cashier) {
-                        this.root_store.modules.cashier.setErrorConfig('is_self_exclusion_max_turnover_set', false);
-                    }
-                    if (this.root_store.ui) {
-                        this.root_store.ui.removeNotificationByKey({ key: 'max_turnover_limit_not_set' });
-                        this.root_store.ui.removeNotificationMessageByKey({ key: 'max_turnover_limit_not_set' });
-                    }
-                }
-                form_props?.setSubmitting(false);
+        // when there is no spending limit set, system set it as 9999999xx by default
+        const max_30day_turnover = !!values.max_30day_turnover ? values.max_30day_turnover : NO_SPENDING_LIMIT_TURNOVER;
+        WS.send({ set_self_exclusion: 1, max_30day_turnover: max_30day_turnover }).then(response => {
+            if (response.error) {
+                form_props?.setStatus(response.error);
                 setTimeout(() => {
                     this.setSpendingLimit(values.interval);
                 }, 200);
-            });
-        } else {
+            } else {
+                if (this.root_store.modules.cashier) {
+                    this.root_store.modules.cashier.setErrorConfig('is_self_exclusion_max_turnover_set', false);
+                }
+                if (this.root_store.ui) {
+                    this.root_store.ui.removeNotificationByKey({ key: 'max_turnover_limit_not_set' });
+                    this.root_store.ui.removeNotificationMessageByKey({ key: 'max_turnover_limit_not_set' });
+                }
+            }
+            form_props?.setSubmitting(false);
             setTimeout(() => {
                 this.setSpendingLimit(values.interval);
             }, 200);
-        }
+        });
     }
 
     @action.bound

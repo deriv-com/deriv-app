@@ -319,7 +319,7 @@ const SelfExclusion = ({
 
             if (isMounted()) {
                 const self_exclusion_value = { ...exclusion_data.current, ...response_to_string };
-                const max_30day_turnover = parseInt(self_exclusion_value.max_30day_turnover);
+                const max_30day_turnover = Number(self_exclusion_value.max_30day_turnover);
                 if (max_30day_turnover === NO_SPENDING_LIMIT_TURNOVER) {
                     self_exclusion_value.max_30day_turnover = '';
                 }

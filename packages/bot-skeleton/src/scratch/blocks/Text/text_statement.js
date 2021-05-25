@@ -38,19 +38,20 @@ Blockly.Blocks.text_statement = {
             return;
         }
 
-        const stack_blocks = Blockly.getMainWorkspace().getBlockById(event.blockId);
+        const surround_parent = this.getSurroundParent();
 
-        if (event.type === Blockly.Events.END_DRAG) {
-            const surround_parent = this.getSurroundParent();
-            if (!surround_parent && !this.required_parent_id) {
-                return;
-            }
+        if (event.type === Blockly.Events.BLOCK_CREATE) {
+            this.setMovable(true);
             if (!this.required_parent_id && surround_parent?.type === this.required_parent_type) {
                 this.required_parent_id = surround_parent.id;
             }
+        }
+
+        if (event.type === Blockly.Events.END_DRAG) {
+            const stack_blocks = Blockly.getMainWorkspace().getBlockById(event.blockId);
+
             if (this.required_parent_id && (!surround_parent || surround_parent.id !== this.required_parent_id)) {
-                const all_blocks = this.workspace.getAllBlocks();
-                const original_parent = all_blocks.find(block => block.id === this.required_parent_id);
+                const original_parent = Blockly.getMainWorkspace().getBlockById(this.required_parent_id);
 
                 if (original_parent) {
                     const first_block_in_stack = original_parent.getInputTargetBlock('STACK');

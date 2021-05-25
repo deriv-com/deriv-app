@@ -3,7 +3,7 @@ import { isCryptocurrency, getCFDAccountKey, getCFDAccount, getCFDAccountDisplay
 export const getSortedAccountList = (account_list, accounts) => {
     // sort accounts as follows:
     // top is fiat, then crypto (each alphabetically by currency), then demo
-    return account_list.slice().sort((a, b) => {
+    return [...account_list].sort((a, b) => {
         const a_currency = accounts[a.loginid].currency;
         const b_currency = accounts[b.loginid].currency;
         const a_is_crypto = isCryptocurrency(a_currency);
@@ -23,7 +23,7 @@ export const getSortedAccountList = (account_list, accounts) => {
 
 export const getSortedCFDList = account_list => {
     // for DXTrade, MT5, synthetic, financial, financial stp
-    return account_list.slice().sort((a, b) => {
+    return [...account_list].sort((a, b) => {
         const a_is_demo = isDemo(a);
         const b_is_demo = isDemo(b);
 

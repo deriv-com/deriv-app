@@ -257,6 +257,7 @@
     .reality-check__fieldset--interval {
         @include mobile {
             padding-top: 0;
+            margin-bottom: 1.6rem;
         }
     }
 }

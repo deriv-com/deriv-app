@@ -53,6 +53,7 @@ const BriefModal = ({
                         {({ setRef }) => (
                             <form ref={setRef} onSubmit={handleSubmit}>
                                 <Div100vhContainer
+                                    is_bypassed={!isDesktop()}
                                     className='reality-check__wrapper'
                                     height_offset='204px'
                                     is_disabled={isDesktop()}

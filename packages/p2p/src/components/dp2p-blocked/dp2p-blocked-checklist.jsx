@@ -17,6 +17,11 @@ const Dp2pBlockedChecklist = () => {
                 onClick: () =>
                     history.push({
                         pathname: routes.financial_assessment,
+                        state: {
+                            custom_button_options: {
+                                button_text: localize('Back to DP2P'),
+                            },
+                        },
                     }),
             },
         ];

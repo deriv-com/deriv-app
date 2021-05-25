@@ -120,27 +120,19 @@ const SubmittedPage = ({ app_routing_history, routeBackInApp }) => {
     const history = useHistory();
     const location = useLocation();
     const from_platform = getPlatformRedirect(app_routing_history);
-    const should_show_redirect_to_p2p_btn = from_platform?.name === 'P2P';
 
     // Passing "custom_button_options" object in "location.state" allows
     // another app/route to determine which button the user will see after
     // submitting their financial assessment.
+    const button_text = location.state?.custom_button_options
+        ? location.state.custom_button_options.button_text
+        : localize('Continue');
     const icon_text = location.state?.custom_button_options?.icon_text
         ? location.state.custom_button_options.icon_text
         : localize('Let’s continue with providing proofs of address and identity.');
     const route_to_path = location.state?.custom_button_options?.route_to_path
         ? location.state.custom_button_options.route_to_path
         : routes.proof_of_address;
-
-    const getButtonText = () => {
-        if (should_show_redirect_to_p2p_btn) {
-            return localize('Back to DP2P');
-        } else if (location.state?.custom_button_options?.button_text) {
-            return location.state.custom_button_options.button_text;
-        }
-
-        return localize('Continue');
-    };
 
     const onClickButton = () => {
         if (from_platform?.route) {
@@ -160,7 +152,7 @@ const SubmittedPage = ({ app_routing_history, routeBackInApp }) => {
             icon={<Icon icon='IcSuccess' width={96} height={90} />}
         >
             <div className='account-management-flex-wrapper account-management-submit-success'>
-                <Button type='button' has_effect text={getButtonText()} onClick={onClickButton} primary large />
+                <Button type='button' has_effect text={button_text} onClick={onClickButton} primary large />
             </div>
         </IconMessageContent>
     );

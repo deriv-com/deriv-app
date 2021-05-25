@@ -16,7 +16,7 @@ const AdStatus = ({ days_until_archive, is_active }) => {
         );
     }
 
-    if (is_active && days_until_archive === 1) {
+    if (days_until_archive === 1) {
         return (
             <div className='ad-status--days_until_archive'>
                 <Text color='warning' line_height='m' size='xs' weight='bold'>
@@ -29,7 +29,7 @@ const AdStatus = ({ days_until_archive, is_active }) => {
         );
     }
 
-    if (is_active && days_until_archive > 1 && days_until_archive <= 10) {
+    if (days_until_archive > 1 && days_until_archive <= 10) {
         return (
             <div className='ad-status--days_until_archive'>
                 <Text color='warning' line_height='m' size='xs' weight='bold'>

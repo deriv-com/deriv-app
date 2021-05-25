@@ -188,7 +188,7 @@ Blockly.ContextMenu.blockCommentOption = function (block) {
 Blockly.ContextMenu.blockDetachOption = function (block) {
     const canDisconnect = block
         .getConnections_()
-        .find(connection => connection.isConnected() && !connection.targetConnection?.sourceBlock_.isShadow_);
+        .some(connection => connection.isConnected() && !connection.targetConnection?.sourceBlock_.isShadow_);
 
     const enabled = block.parentBlock_ && canDisconnect;
 

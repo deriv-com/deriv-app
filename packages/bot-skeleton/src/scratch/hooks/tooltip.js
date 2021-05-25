@@ -37,7 +37,9 @@ Blockly.Tooltip.show_ = () => {
         const direction = Blockly.Tooltip.element_.RTL;
         const client_width = document.documentElement.clientWidth;
         const client_height = document.documentElement.clientHeight;
-        Blockly.Tooltip.DIV?.style.direction = direction ? 'rtl' : 'ltr';
+        if (Blockly.Tooltip.DIV) {
+            Blockly.Tooltip.DIV.style.direction = direction ? 'rtl' : 'ltr';
+        }
         Blockly.Tooltip.DIV.style.display = 'block';
         Blockly.Tooltip.visible = true;
         let last_x = Blockly.Tooltip.lastX_;
@@ -69,7 +71,7 @@ Blockly.Tooltip.hide = () => {
     }
 
     /// For hiding tooltip next to the platform name.
-    if (!Blockly.Tooltip.DIV.style.direction) {
+    if (!Blockly.Tooltip.DIV?.style.direction) {
         Blockly.Tooltip.visible = false;
         Blockly.Tooltip.DIV.style.display = 'none';
     }

@@ -37,7 +37,7 @@ Blockly.Tooltip.show_ = () => {
         const direction = Blockly.Tooltip.element_.RTL;
         const client_width = document.documentElement.clientWidth;
         const client_height = document.documentElement.clientHeight;
-        Blockly.Tooltip.DIV.style.direction = direction ? 'rtl' : 'ltr';
+        Blockly.Tooltip.DIV?.style.direction = direction ? 'rtl' : 'ltr';
         Blockly.Tooltip.DIV.style.display = 'block';
         Blockly.Tooltip.visible = true;
         let last_x = Blockly.Tooltip.lastX_;

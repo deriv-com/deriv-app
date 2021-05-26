@@ -26,7 +26,7 @@ const SelectNativeOptions = ({ label, list_items, should_hide_disabled_options, 
     if (label === 'Asset') {
         return keys.map((option, i) => {
             return (
-                <optgroup label={option}>
+                <optgroup key={option} label={option}>
                     {values[i].map(value => (
                         <option key={value.value} value={use_text ? value.text : value.value}>
                             {value.nativepicker_text || value.text}
@@ -35,13 +35,12 @@ const SelectNativeOptions = ({ label, list_items, should_hide_disabled_options, 
                 </optgroup>
             );
         });
-    } else {
-        return options.map(option => (
-            <option key={option.value} value={use_text ? option.text : option.value}>
-                {option.nativepicker_text || option.text}
-            </option>
-        ));
     }
+    return options.map(option => (
+        <option key={option.value} value={use_text ? option.text : option.value}>
+            {option.nativepicker_text || option.text}
+        </option>
+    ));
 };
 
 const SelectNative = ({

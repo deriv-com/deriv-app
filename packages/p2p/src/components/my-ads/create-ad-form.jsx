@@ -305,7 +305,7 @@ const CreateAdForm = () => {
                                                             <Localize i18n_default_text='Instructions (optional)' />
                                                         </Text>
                                                     }
-                                                    hint={localize('This information will be visible to everyone')}
+                                                    hint={localize('This information will be visible to everyone.')}
                                                     className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
                                                     initial_character_count={
                                                         my_ads_store.default_advert_description.length

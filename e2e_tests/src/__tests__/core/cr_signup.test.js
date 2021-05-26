@@ -29,10 +29,6 @@ describe('Signup', () => {
         await p.connectToQA();
         const nc = await browser.newContext({
             ...mobile_viewport,
-            httpCredentials: {
-                username: `${process.env.QABOX_USER_NAME}`,
-                password: `${process.env.QABOX_PASSWORD}`,
-            },
         });
         const dcom_page = new DerivCom(await nc.newPage());
         await dcom_page.navigate();

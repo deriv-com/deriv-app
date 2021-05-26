@@ -15,14 +15,33 @@ const getDisplayText = (list_items, value) => {
     return '';
 };
 
-const SelectNativeOptions = ({ list_items, should_hide_disabled_options, use_text }) => {
+const SelectNativeOptions = ({ label, list_items, should_hide_disabled_options, use_text }) => {
     const options = should_hide_disabled_options ? list_items.filter(opt => !opt.disabled) : list_items;
-
-    return options.map(option => (
-        <option key={option.value} value={use_text ? option.text : option.value}>
-            {option.nativepicker_text || option.text}
-        </option>
-    ));
+    const grouped = options.reduce((r, a) => {
+        r[a.group] = [...(r[a.group] || []), a];
+        return r;
+    }, {});
+    const keys = Object.keys(grouped);
+    const values = Object.values(grouped);
+    if (label === 'Asset') {
+        return keys.map((option, i) => {
+            return (
+                <optgroup label={option}>
+                    {values[i].map(value => (
+                        <option key={value.value} value={use_text ? value.text : value.value}>
+                            {value.nativepicker_text || value.text}
+                        </option>
+                    ))}
+                </optgroup>
+            );
+        });
+    } else {
+        return options.map(option => (
+            <option key={option.value} value={use_text ? option.text : option.value}>
+                {option.nativepicker_text || option.text}
+            </option>
+        ));
+    }
 };
 
 const SelectNative = ({
@@ -95,6 +114,7 @@ const SelectNative = ({
                              * Safari on ios allows to select a disabled option. So, we should avoid showing it
                              */}
                             <SelectNativeOptions
+                                label={label}
                                 list_items={list_items}
                                 should_hide_disabled_options={should_hide_disabled_options}
                                 use_text={use_text}
@@ -113,6 +133,7 @@ const SelectNative = ({
                                          * Safari on ios allows to select a disabled option. So, we should avoid showing it
                                          */}
                                         <SelectNativeOptions
+                                            label={label}
                                             list_items={list_items[key]}
                                             should_hide_disabled_options={should_hide_disabled_options}
                                             use_text={use_text}

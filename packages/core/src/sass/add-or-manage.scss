@@ -55,7 +55,7 @@
     }
     @include desktop {
         .currency-selector__radio-group--with-margin {
-            margin-bottom: 3rem;
+            margin-bottom: 7rem;
             margin-left: auto;
             margin-right: auto;
             width: 768px;
@@ -79,7 +79,7 @@
             }
         }
         .currency-selector__radio-group--with-margin {
-            margin-bottom: 3rem;
+            margin-bottom: 7rem;
         }
         & .change-currency {
             .currency-list__items {

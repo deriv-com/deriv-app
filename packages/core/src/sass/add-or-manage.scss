@@ -6,6 +6,8 @@
     .dc-tabs__content {
         display: flex;
         flex-direction: column;
+        height: 100%;
+        margin-bottom: 7rem;
     }
     .dc-tabs__list--header-fit-content {
         margin: 0 auto;
@@ -18,12 +20,6 @@
             justify-content: center;
             align-items: center;
             border-radius: $BORDER_RADIUS;
-        }
-    }
-    .add-crypto-currency {
-        form {
-            height: 100%;
-            margin-bottom: 7rem;
         }
     }
     .currency-selector {

@@ -6,7 +6,7 @@
     .dc-tabs__content {
         display: flex;
         flex-direction: column;
-        height: 100%;
+        height: 100vh;
         margin-bottom: 7rem;
     }
     .dc-tabs__list--header-fit-content {
@@ -56,7 +56,7 @@
     }
     @include desktop {
         .currency-selector__radio-group--with-margin {
-            margin-bottom: 6rem;
+            margin-bottom: 3rem;
             margin-left: auto;
             margin-right: auto;
             width: 768px;
@@ -80,7 +80,7 @@
             }
         }
         .currency-selector__radio-group--with-margin {
-            margin-bottom: 7rem;
+            margin-bottom: 3rem;
         }
         & .change-currency {
             .currency-list__items {

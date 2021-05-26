@@ -7,6 +7,7 @@
         display: flex;
         flex-direction: column;
         height: 100%;
+        padding-bottom: 7rem;
     }
     .dc-tabs__list--header-fit-content {
         margin: 0 auto;
@@ -20,9 +21,6 @@
             align-items: center;
             border-radius: $BORDER_RADIUS;
         }
-    }
-    form {
-        margin-bottom: 7rem;
     }
     .currency-selector {
         &__radio-group--is-header {

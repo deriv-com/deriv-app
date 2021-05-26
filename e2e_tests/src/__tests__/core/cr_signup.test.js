@@ -11,6 +11,10 @@ describe('Signup', () => {
     beforeEach(async () => {
         await jestPlaywright.resetContext({
             ...default_context_config,
+            httpCredentials: {
+                username: `${process.env.QABOX_USER_NAME}`,
+                password: `${process.env.QABOX_PASSWORD}`,
+            },
         });
         await context.addInitScript(replaceWebsocket);
         p = new Common(page);
@@ -25,6 +29,10 @@ describe('Signup', () => {
         await p.connectToQA();
         const nc = await browser.newContext({
             ...mobile_viewport,
+            httpCredentials: {
+                username: `${process.env.QABOX_USER_NAME}`,
+                password: `${process.env.QABOX_PASSWORD}`,
+            },
         });
         const dcom_page = new DerivCom(await nc.newPage());
         await dcom_page.navigate();
@@ -33,7 +41,9 @@ describe('Signup', () => {
         await dcom_page.signup(email);
         const qa_emails = new QAEmails(await context.newPage());
         await qa_emails.navigate();
+        console.log('email', email);
         const signup_url = await qa_emails.findActivationLink(context, email);
+        console.log('signup_url', signup_url);
         await dcom_page.close();
         await qa_emails.close();
         await p.setResidenceAndPassword(signup_url, 'Indonesia', 'Abcd1234');

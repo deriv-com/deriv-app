@@ -37,6 +37,7 @@ const NotificationsContent = ({ style, notifications, removeNotificationMessage 
 );
 
 const AppNotificationMessages = ({ marked_notifications, notification_messages, removeNotificationMessage }) => {
+    //    i think proplem is here somewhere
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
 

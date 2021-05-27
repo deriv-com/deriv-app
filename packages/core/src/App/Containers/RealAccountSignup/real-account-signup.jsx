@@ -112,7 +112,10 @@ const RealAccountSignup = ({
                     onSubmit={closeModalThenOpenCashier}
                 />
             ),
-            title: () => localize('Add or manage account'),
+            title: local_props =>
+                local_props.has_fiat && local_props.available_crypto_currencies?.length === 0
+                    ? localize('Manage account')
+                    : localize('Add or manage account'),
         },
         {
             body: local_props => (

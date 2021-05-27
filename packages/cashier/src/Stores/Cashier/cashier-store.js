@@ -323,6 +323,7 @@ export default class CashierStore extends BaseStore {
             (this.active_container === this.config.withdraw.container && !verification_code) ||
             this.root_store.client.is_virtual
         ) {
+            this.setLoading(false);
             // if virtual, clear everything and don't proceed further
             // if no verification code, we should request again
             return;
@@ -332,6 +333,7 @@ export default class CashierStore extends BaseStore {
 
         // if tab changed while waiting for response, ignore it
         if (current_container !== this.active_container) {
+            this.setLoading(false);
             return;
         }
         if (response_cashier.error) {
@@ -351,7 +353,6 @@ export default class CashierStore extends BaseStore {
             // so no need to set timeouts to keep the session alive
         } else {
             await this.checkIframeLoaded();
-            this.setLoading(false);
             this.setIframeUrl(response_cashier.cashier);
             this.setSessionTimeout(false);
             this.setTimeoutCashierUrl();

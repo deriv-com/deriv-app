@@ -6,18 +6,18 @@ import { Text, Icon, MobileWrapper, DesktopWrapper } from '@deriv/components';
 const Options = ({ options }) => (
     <footer className='welcome-item__options'>
         {options.map(option => (
-            <>
+            <React.Fragment key={option}>
                 <DesktopWrapper>
-                    <Text key={option} size='xxxs' color='less-prominent' className='welcome-item__option'>
+                    <Text size='xxxs' color='less-prominent' className='welcome-item__option'>
                         {option}
                     </Text>
                 </DesktopWrapper>
                 <MobileWrapper>
-                    <Text key={option} size='xxxxs' color='less-prominent' className='welcome-item__option'>
+                    <Text size='xxxxs' color='less-prominent' className='welcome-item__option'>
                         {option}
                     </Text>
                 </MobileWrapper>
-            </>
+            </React.Fragment>
         ))}
     </footer>
 );

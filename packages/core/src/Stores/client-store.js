@@ -57,6 +57,7 @@ export default class ClientStore extends BaseStore {
     @observable is_logging_in = false;
     @observable has_logged_out = false;
     @observable is_landing_company_loaded = false;
+    @observable is_account_setting_loaded = false;
     // this will store the landing_company API response, including
     // financial_company: {}
     // gaming_company: {}
@@ -402,14 +403,6 @@ export default class ClientStore extends BaseStore {
         const { terms_conditions_version } = this.website_status;
 
         return typeof client_tnc_status !== 'undefined' && client_tnc_status !== terms_conditions_version;
-    }
-
-    @computed
-    get is_client_tnc_status_loaded() {
-        const { client_tnc_status } = this.account_settings;
-        if (this.is_virtual || (!this.is_virtual && client_tnc_status !== '')) return true;
-
-        return false;
     }
 
     @computed
@@ -1471,6 +1464,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setAccountSettings(settings) {
         this.account_settings = settings;
+        this.is_account_setting_loaded = true;
     }
 
     @action.bound

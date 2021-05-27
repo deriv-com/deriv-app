@@ -906,9 +906,16 @@ export default class TradeStore extends BaseStore {
                 }
             }
 
+            // Sometimes when we navigate fast, `forget_all` proposal is called immediately after proposal subscription calls.
+            // But, in the BE, `forget_all` proposal call is processed before the proposal subscriptions are registered. In this case, `forget_all` proposal doesn't forget the new subcriptions.
+            // So when we send new proposal subscription requests, we get `AlreadySubscribed` error.
+            // If we get an error message with code `AlreadySubscribed`, `forget_all` proposal will be called and all the exisiting subscriptions will be marked as complete in `deriv-api` and will subscribe to new proposals
             if (response.error.code === 'AlreadySubscribed') {
                 this.refresh();
-                this.debouncedProposal();
+
+                if (this.is_trade_component_mounted) {
+                    this.debouncedProposal();
+                }
                 return;
             }
         } else {

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
-import { Div100vhContainer, Text, Button, Icon } from '@deriv/components';
+import { Div100vhContainer, Text, Button, Icon, ThemedScrollbars } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 
 const ListItem = ({ text }) => (
@@ -19,57 +19,59 @@ const ListItem = ({ text }) => (
 
 const IconMessageList = ({ className, icon, message, message_list, onContinue }) => {
     const has_maximum_list = message_list?.length > 3;
-
     return (
-        <Div100vhContainer
-            className='account-management__message-wrapper'
-            is_disabled={isDesktop()}
-            height_offset='110px'
-        >
-            <div
-                className={classNames('account-management__message-content', {
-                    [`${className}__message-content`]: className,
-                })}
+        <ThemedScrollbars>
+            <Div100vhContainer
+                className='account-management__message-wrapper'
+                is_disabled={isDesktop()}
+                height_offset='110px'
             >
-                {icon && (
-                    <div
-                        className={classNames('account-management__message-icon', {
-                            [`${className}__message-icon`]: className,
-                        })}
-                    >
-                        {icon}
-                    </div>
-                )}
-                <Text
-                    as='div'
-                    weight='bold'
-                    className={classNames('account-management__message', {
-                        [`${className}__message`]: className,
+                <div
+                    className={classNames('account-management__message-content', {
+                        [`${className}__message-content`]: className,
                     })}
                 >
-                    {message}
-                </Text>
-                {message_list && (
-                    <div className='account-management__list-container'>
-                        {has_maximum_list ? (
-                            <MaximumList message_list={message_list} />
-                        ) : (
-                            message_list.map((text, idx) => <ListItem key={idx} text={text} />)
-                        )}
-                    </div>
-                )}
-                {onContinue && (
-                    <Button
-                        type='button'
-                        className='account-management__continue'
-                        onClick={() => onContinue(true)}
-                        large
-                        text={localize('Upload Document')}
-                        primary
-                    />
-                )}
-            </div>
-        </Div100vhContainer>
+                    {icon && (
+                        <div
+                            className={classNames('account-management__message-icon', {
+                                [`${className}__message-icon`]: className,
+                            })}
+                        >
+                            {icon}
+                        </div>
+                    )}
+                    <Text
+                        as='div'
+                        weight='bold'
+                        className={classNames('account-management__message', {
+                            [`${className}__message`]: className,
+                        })}
+                    >
+                        {message}
+                    </Text>
+
+                    {message_list && (
+                        <div className='account-management__list-container'>
+                            {has_maximum_list ? (
+                                <MaximumList message_list={message_list} />
+                            ) : (
+                                message_list.map((text, idx) => <ListItem key={idx} text={text} />)
+                            )}
+                        </div>
+                    )}
+                    {onContinue && (
+                        <Button
+                            type='button'
+                            className='account-management__continue'
+                            onClick={() => onContinue(true)}
+                            large
+                            text={localize('Upload Document')}
+                            primary
+                        />
+                    )}
+                </div>
+            </Div100vhContainer>
+        </ThemedScrollbars>
     );
 };
 

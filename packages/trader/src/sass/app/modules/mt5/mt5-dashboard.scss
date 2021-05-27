@@ -1029,8 +1029,10 @@
             align-items: center;
             height: auto;
             padding: 0 3rem;
-            overflow-y: scroll;
             padding-bottom: 7rem;
+            @include mobile {
+                overflow-y: auto;
+            }
         }
         &__message {
             @include typeface(--title-center-bold-black);
@@ -1040,6 +1042,9 @@
         &__text {
             @include typeface(--paragraph-center-normal-black);
             color: var(--text-prominent);
+        }
+        &__continue {
+            margin-top: 3rem;
         }
         &__list {
             &-message {

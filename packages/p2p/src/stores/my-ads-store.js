@@ -73,6 +73,21 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
+    getWebsiteStatus(createAd, setSubmitting) {
+        requestWS({ website_status: 1 }).then(response => {
+            if (response.error) {
+                this.setApiErrorMessage(response.error.message);
+                setSubmitting(false);
+            } else {
+                const { p2p_config } = response.website_status;
+                this.setAdvertsArchivePeriod(p2p_config.adverts_archive_period);
+                this.setIsAdCreatedModalVisible(true);
+                createAd();
+            }
+        });
+    }
+
+    @action.bound
     handleSubmit(values, { setSubmitting }) {
         this.setApiErrorMessage('');
 
@@ -113,17 +128,7 @@ export default class MyAdsStore extends BaseStore {
             });
 
         if (should_not_show_auto_archive_message !== 'true') {
-            requestWS({ website_status: 1 }).then(response => {
-                if (response.error) {
-                    this.setApiErrorMessage(response.error.message);
-                    setSubmitting(false);
-                } else {
-                    const { p2p_config } = response.website_status;
-                    this.setAdvertsArchivePeriod(p2p_config.adverts_archive_period);
-                    this.setIsAdCreatedModalVisible(true);
-                    createAd();
-                }
-            });
+            this.getWebsiteStatus(createAd, setSubmitting);
         } else {
             createAd();
         }

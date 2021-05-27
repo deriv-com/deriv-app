@@ -64,6 +64,16 @@ const CreateAdForm = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    React.useEffect(() => {
+        const ad_website_status = setInterval(() => {
+            my_ads_store.getWebsiteStatus();
+        }, 10000);
+
+        return () => {
+            clearInterval(ad_website_status);
+        };
+    }, [my_ads_store.is_ad_created_modal_visible]);
+
     return (
         <React.Fragment>
             <Formik

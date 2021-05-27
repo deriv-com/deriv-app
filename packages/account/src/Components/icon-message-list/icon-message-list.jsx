@@ -20,7 +20,7 @@ const ListItem = ({ text }) => (
 const IconMessageList = ({ className, icon, message, message_list, onContinue }) => {
     const has_maximum_list = message_list?.length > 3;
     return (
-        <ThemedScrollbars>
+        <ThemedScrollbars is_bypassed={isMobile()}>
             <Div100vhContainer
                 className='account-management__message-wrapper'
                 is_disabled={isDesktop()}

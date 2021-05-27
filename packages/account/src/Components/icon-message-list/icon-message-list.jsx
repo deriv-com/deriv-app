@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { Div100vhContainer, Text, Button, Icon, ThemedScrollbars } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
 
 const ListItem = ({ text }) => (
     <div className='account-management__list-message'>

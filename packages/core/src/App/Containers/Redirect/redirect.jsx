@@ -31,6 +31,12 @@ const Redirect = ({
                     search: url_query_string,
                 });
                 redirected_to_route = true;
+            } else {
+                history.push({
+                    pathname: routes.onboarding,
+                    search: url_query_string,
+                });
+                redirected_to_route = true;
             }
             sessionStorage.removeItem('redirect_url');
             toggleAccountSignupModal(true);

@@ -4,6 +4,7 @@ import { getUrlBase, routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { makeLazyLoader } from '_common/lazy-load';
 import { Redirect } from 'App/Containers/Redirect';
+import { Onboarding } from 'App/Containers/Onboarding';
 import Endpoint from 'Modules/Endpoint';
 
 // Error Routes
@@ -476,6 +477,7 @@ const initRoutesConfig = ({ is_dashboard }) => [
     { path: routes.index, component: RouterRedirect, getTitle: () => '', to: routes.root },
     { path: routes.endpoint, component: Endpoint, getTitle: () => 'Endpoint' }, // doesn't need localization as it's for internal use
     { path: routes.redirect, component: Redirect, getTitle: () => localize('Redirect') },
+    { path: routes.onboarding, component: Onboarding, getTitle: () => localize('Onboarding') },
     {
         path: routes.complaints_policy,
         component: lazyLoadComplaintsPolicy(),

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard, useHover } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
+import { isCryptoContract, isDesktop } from '@deriv/shared';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import { connect } from 'Stores/connect';
@@ -44,13 +44,16 @@ const ContractDrawerCard = ({
     const is_sold = !!getEndTime(contract_info);
     const display_name = getSymbolDisplayName(active_symbols, getMarketInformation(contract_info.shortcode).underlying);
 
+    const is_crypto = isCryptoContract(contract_info.underlying);
+    const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);
+
     const card_header = (
         <ContractCard.Header
             contract_info={contract_info}
             display_name={display_name}
             getCardLabels={getCardLabels}
             getContractTypeDisplay={getContractTypeDisplay}
-            has_progress_slider={!is_multiplier}
+            has_progress_slider={isDesktop() && has_progress_slider}
             is_mobile={is_mobile}
             is_sell_requested={is_sell_requested}
             is_sold={is_sold}

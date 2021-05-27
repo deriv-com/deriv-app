@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router';
-import { Modal, ThemedScrollbars } from '@deriv/components';
 import { connect } from 'Stores/connect';
+import { Modal, ThemedScrollbars } from '@deriv/components';
 import Welcome from './welcome.jsx';
 
 const WelcomeModal = props => {

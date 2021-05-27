@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { Text, Icon, MobileWrapper, DesktopWrapper } from '@deriv/components';
 
 const Options = ({ options }) => (
@@ -21,9 +22,19 @@ const Options = ({ options }) => (
     </footer>
 );
 
-const WelcomeItem = ({ title, description, options, onClick, icon }) => (
-    <section className='welcome-item' onClick={onClick}>
-        <div className='welcome-item__icon'>{icon}</div>
+const WelcomeItem = ({ title, description, options, onClick, icon, mobileIcon, small }) => (
+    <section
+        className={classNames('welcome-item', {
+            'welcome-item-small': small,
+        })}
+        onClick={onClick}
+    >
+        <div className='welcome-item__icon'>
+            <>
+                <DesktopWrapper>{icon}</DesktopWrapper>
+                <MobileWrapper>{mobileIcon}</MobileWrapper>
+            </>
+        </div>
         <div className='welcome-item__body'>
             <div className='welcome-item__main-wrapper'>
                 <main className='welcome-item__main'>
@@ -56,9 +67,11 @@ const WelcomeItem = ({ title, description, options, onClick, icon }) => (
 WelcomeItem.propTypes = {
     description: PropTypes.element.isRequired,
     icon: PropTypes.element.isRequired,
+    mobileIcon: PropTypes.element.isRequired,
     onClick: PropTypes.func.isRequired,
-    title: PropTypes.string.isRequired,
     options: PropTypes.arrayOf(PropTypes.string),
+    small: PropTypes.bool,
+    title: PropTypes.string.isRequired,
 };
 
 export default WelcomeItem;

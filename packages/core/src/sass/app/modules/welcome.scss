@@ -51,13 +51,16 @@
 
         &__icon {
             width: 6.4rem;
-            height: 10.4rem;
-            position: relative;
-            left: -2px;
-            top: -2px;
 
             @media (min-width: 992px) {
-                height: 8.6rem;
+                // height: 8.6rem;
+                position: relative;
+                left: -2px;
+                top: -2px;
+            }
+
+            .mobile-icon {
+                border-radius: 8px;
             }
         }
 
@@ -110,5 +113,9 @@
                 padding: 0 0.8rem;
             }
         }
+    }
+
+    &-item-small {
+        height: 8.6rem;
     }
 }

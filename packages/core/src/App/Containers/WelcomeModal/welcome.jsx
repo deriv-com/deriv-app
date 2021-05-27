@@ -4,8 +4,11 @@ import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
 import CFDs from 'Assets/SvgComponents/onboarding/cfd.svg';
-import Multipliers from 'Assets/SvgComponents/onboarding/multipliers.svg';
+import CFDsMobile from 'Assets/SvgComponents/onboarding/cfds-mobile.svg';
 import DigitalOptions from 'Assets/SvgComponents/onboarding/digital-options.svg';
+import DigitalOptionsMobile from 'Assets/SvgComponents/onboarding/digital-options-mobile.svg';
+import Multipliers from 'Assets/SvgComponents/onboarding/multipliers.svg';
+import MultipliersMobile from 'Assets/SvgComponents/onboarding/multipliers-mobile.svg';
 import NotSure from 'Assets/SvgComponents/onboarding/not-sure.svg';
 import WelcomeItem from './welcome-item.jsx';
 
@@ -25,6 +28,7 @@ const Welcome = ({ switchPlatform }) => (
                 }
                 onClick={() => switchPlatform(routes.mt5)}
                 icon={<CFDs />}
+                mobileIcon={<CFDsMobile />}
                 options={['Forex', 'Synthetics', 'Stocks and indices', 'Cryptocurrencies', 'Commodities']}
             />
             <WelcomeItem
@@ -37,6 +41,7 @@ const Welcome = ({ switchPlatform }) => (
                 onClick={() => switchPlatform(routes.trade)}
                 title={localize('Multipliers')}
                 icon={<Multipliers />}
+                mobileIcon={<MultipliersMobile />}
                 options={['Forex', 'Synthetics']}
             />
             <WelcomeItem
@@ -49,6 +54,7 @@ const Welcome = ({ switchPlatform }) => (
                 onClick={() => switchPlatform(routes.trade)}
                 title={localize('Digital Options')}
                 icon={<DigitalOptions />}
+                mobileIcon={<DigitalOptionsMobile />}
                 options={['Forex', 'Synthetics', 'Stocks and indices', 'Commodities']}
             />
             <WelcomeItem
@@ -61,6 +67,8 @@ const Welcome = ({ switchPlatform }) => (
                 onClick={() => switchPlatform(routes.trade)}
                 title={localize('Not sure?')}
                 icon={<NotSure />}
+                mobileIcon={<NotSure />}
+                small
             />
         </div>
     </>
@@ -68,8 +76,6 @@ const Welcome = ({ switchPlatform }) => (
 
 Welcome.propTypes = {
     switchPlatform: PropTypes.func.isRequired,
-    toggleWelcomeModal: PropTypes.func.isRequired,
-    history: PropTypes.object.isRequired,
 };
 
 export default Welcome;

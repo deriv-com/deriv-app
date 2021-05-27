@@ -6,7 +6,6 @@
     .dc-tabs__content {
         display: flex;
         flex-direction: column;
-        height: 100vh;
         margin-bottom: 7rem;
     }
     .dc-tabs__list--header-fit-content {
@@ -271,6 +270,10 @@
         height: 100%;
         padding: 6rem 0 0;
     }
+}
+
+.dc-mobile-dialog {
+    height: 100%;
 }
 
 .dc-mobile-dialog--enter-done .dc-mobile-dialog__content {

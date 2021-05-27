@@ -1,5 +1,4 @@
-import { init } from '@livechat/customer-sdk';
-import { removeCookies, livechat_client_id, livechat_license_id, isTestLink } from '@deriv/shared';
+import { removeCookies } from '@deriv/shared';
 import SocketCache from '_common/base/socket_cache';
 import WS from './ws-methods';
 

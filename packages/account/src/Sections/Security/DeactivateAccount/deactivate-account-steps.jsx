@@ -31,9 +31,9 @@ const DeactivateAccountSteps = ({ redirectToReasons, is_dxtrade_allowed }) => {
                 </Text>
                 <Text size='xs' as='p'>
                     {is_dxtrade_allowed ? (
-                        <Localize i18n_default_text='If you have a Deriv MT5 or Deriv X real account, log in to close any open positions.' />
+                        <Localize i18n_default_text='If you have a DMT5 or Deriv X real account, log in to close any open positions.' />
                     ) : (
-                        <Localize i18n_default_text='If you have a Deriv MT5 real account, log in to close any open positions.' />
+                        <Localize i18n_default_text='If you have a DMT5 real account, log in to close any open positions.' />
                     )}
                 </Text>
             </div>
@@ -50,7 +50,7 @@ const DeactivateAccountSteps = ({ redirectToReasons, is_dxtrade_allowed }) => {
                 <Text size='xs' as='p'>
                     {is_dxtrade_allowed ? (
                         <Localize
-                            i18n_default_text='If you have a Deriv MT5 or Deriv X real account, go to your <0>Deriv MT5</0> or <1>Deriv X</1> dashboard to withdraw your funds'
+                            i18n_default_text='If you have a DMT5 or Deriv X real account, go to your <0>DMT5</0> or <1>Deriv X</1> dashboard to withdraw your funds'
                             components={[
                                 <Link to='/mt5' key={0} className='deactivate-account__link' />,
                                 <Link to='/derivx' key={1} className='deactivate-account__link' />,
@@ -58,7 +58,7 @@ const DeactivateAccountSteps = ({ redirectToReasons, is_dxtrade_allowed }) => {
                         />
                     ) : (
                         <Localize
-                            i18n_default_text='If you have a Deriv MT5 real account, go to your <0>Deriv MT5</0> dashboard to withdraw your funds'
+                            i18n_default_text='If you have a DMT5 real account, go to your <0>DMT5</0> dashboard to withdraw your funds'
                             components={[<Link to='/mt5' key={0} className='deactivate-account__link' />]}
                         />
                     )}

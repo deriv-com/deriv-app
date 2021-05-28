@@ -23,9 +23,9 @@ const SuccessDialog = ({ onClose, is_open, is_dxtrade_allowed }) => {
                         <Localize i18n_default_text='Success' />
                     </Text>
                     {is_dxtrade_allowed ? (
-                        <Localize i18n_default_text='You have successfully changed your trading password. Please use your new trading password to log in to your Deriv X and Deriv MT5 accounts.' />
+                        <Localize i18n_default_text='You have successfully changed your trading password. Please use your new trading password to log in to your Deriv X and DMT5 accounts.' />
                     ) : (
-                        <Localize i18n_default_text='You have successfully changed your trading password. Please use your new trading password to log in to your Deriv MT5 accounts.' />
+                        <Localize i18n_default_text='You have successfully changed your trading password. Please use your new trading password to log in to your DMT5 accounts.' />
                     )}
                 </div>
             </Modal.Body>

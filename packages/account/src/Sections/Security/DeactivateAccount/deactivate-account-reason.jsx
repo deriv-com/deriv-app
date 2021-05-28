@@ -35,7 +35,8 @@ const preparingReason = values => {
     if (is_to_do_improve_has_value) {
         selected_reasons = `${selected_reasons}, ${values.doToImprove}`;
     }
-    return selected_reasons;
+
+    return selected_reasons.replace(/(\r\n|\n|\r)/gm, ' ');
 };
 
 const selectedReasons = values => {

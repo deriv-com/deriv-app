@@ -14,7 +14,9 @@ const address_details_config = ({ account_settings, is_svg }) => {
                 ['req', localize('First line of address is required')],
                 [
                     'address',
-                    localize('Letters, numbers, spaces, periods, hyphens, apostrophes, commas only'),
+                    localize(
+                        'Only letters, numbers, spaces, and these special characters allowed: period, comma, colon, semicolon, brackets, at sign, hashtag, slash, hyphen.'
+                    ),
                     {
                         regex: /^[\p{L}\p{Nd}\s'.,:;()\x{b0}@#/-]{1,70}$/,
                     },
@@ -29,7 +31,9 @@ const address_details_config = ({ account_settings, is_svg }) => {
             rules: [
                 [
                     'address',
-                    localize('Letters, numbers, spaces, periods, hyphens, apostrophes, commas only'),
+                    localize(
+                        'Only letters, numbers, spaces, and these special characters allowed: period, comma, colon, semicolon, brackets, at sign, hashtag, slash, hyphen.'
+                    ),
                     {
                         regex: /^[\p{L}\p{Nd}\s'.,:;()\x{b0}@#/-]{0,70}$/,
                     },

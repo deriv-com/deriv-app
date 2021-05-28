@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Modal, Icon, Text } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode, getCurrencyName, routes } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getAccountText } from '../../_common/utility';
@@ -70,10 +70,8 @@ const AccountTransferReceipt = ({
             <div className='cashier__transferred-details-wrapper'>
                 <span className='account-transfer__transfer-details-from'>
                     <div className='cashier__transferred-details'>
-                        <div className='cashier__text--bold cashier__text--right'>
-                            {selected_from.is_mt ? selected_from.text : getCurrencyName(selected_from.text)}
-                        </div>
-                        <div className='cashier__text--faint'>{selected_from.value}</div>
+                        <div className='cashier__text--bold cashier__text--right'>{getAccountText(selected_from)}</div>
+                        <div className='cashier__text--faint cashier__text--right'>{selected_from.value}</div>
                     </div>
                     <Icon
                         icon={selected_from.platform_icon || `IcCurrency-${selected_from.currency?.toLowerCase()}`}

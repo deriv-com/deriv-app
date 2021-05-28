@@ -72,7 +72,11 @@ const CFDTopUpDemoModal = ({
                             <Localize i18n_default_text='Current balance' />
                         </Text>
                         <div className='dc-modal__container_top-up-virtual--balance'>
-                            <Money amount={current_account.display_balance} currency={current_account.currency} />
+                            <Money
+                                amount={current_account.display_balance}
+                                currency={current_account.currency}
+                                has_sign={current_account.balance < 0}
+                            />
                         </div>
                     </div>
                     <div className='dc-modal__container_top-up-virtual--button'>

@@ -93,7 +93,7 @@ const isEuCountry = country => eu_countries.includes(country);
 // check if mlt or dxtrade for account text
 const getAccountText = account => {
     let account_text = '';
-    if (account.is_mlt || account.is_dxtrade || account.is_mt) {
+    if (account.is_dxtrade || account.is_mt) {
         account_text = account.text;
     } else {
         account_text = getCurrencyName(account.text);

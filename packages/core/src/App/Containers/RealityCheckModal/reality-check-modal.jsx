@@ -161,6 +161,8 @@ const RealityCheckModal = ({
             />
         );
     }
+
+    return null;
 };
 
 RealityCheckModal.propTypes = {

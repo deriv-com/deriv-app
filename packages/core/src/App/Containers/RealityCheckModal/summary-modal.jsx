@@ -94,10 +94,17 @@ const SummaryModal = ({
             title={
                 <React.Fragment>
                     <DesktopWrapper>
-                        <Localize
-                            i18n_default_text='Your trading statistics since: {{date_time}}'
-                            values={{ date_time: computed_values.start_date_time_gmt }}
-                        />
+                        {!reality_check_duration ? (
+                            <Localize
+                                i18n_default_text='Your trading statistics'
+                                values={{ date_time: computed_values.start_date_time_gmt }}
+                            />
+                        ) : (
+                            <Localize
+                                i18n_default_text='Your trading statistics since: {{date_time}}'
+                                values={{ date_time: computed_values.start_date_time_gmt }}
+                            />
+                        )}
                     </DesktopWrapper>
                     <MobileWrapper>
                         <Localize i18n_default_text='Your trading statistics since:' />

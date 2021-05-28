@@ -110,7 +110,7 @@ const SummaryModal = ({
         >
             <Formik
                 initialValues={{
-                    interval: reality_check_duration,
+                    interval: reality_check_duration || '',
                 }}
                 validate={validateForm}
                 onSubmit={onSubmit}
@@ -183,10 +183,12 @@ const SummaryModal = ({
                                     </MobileWrapper>
 
                                     <div className='reality-check__column'>
-                                        <RowInfo
-                                            label={localize('Session duration:')}
-                                            value={computed_values.duration_string}
-                                        />
+                                        {!!reality_check_duration && (
+                                            <RowInfo
+                                                label={localize('Session duration:')}
+                                                value={computed_values.duration_string}
+                                            />
+                                        )}
                                         <RowInfo
                                             label={localize('Login time:')}
                                             value={computed_values.start_date_time_gmt}

@@ -123,7 +123,7 @@ const RealityCheckModal = ({
     // if user has seen the brief once and set
     // the initial reality check interval
     // we can show the summary from now on
-    if (!reality_check_dismissed && reality_check_duration) {
+    if ((!reality_check_dismissed && reality_check_duration) || (!reality_check_dismissed && !enableMax30dayTurnover)) {
         return (
             <SummaryModal
                 disableApp={disableApp}
@@ -134,27 +134,33 @@ const RealityCheckModal = ({
                 validateForm={validateForm}
                 onSubmit={onSubmit}
                 logout={logoutClient}
-                reality_check_duration={reality_check_duration}
+                reality_check_duration={reality_check_duration || 0}
                 server_time={server_time}
                 IntervalField={TradingViewIntervalField}
             />
         );
     }
 
-    return (
-        <BriefModal
-            disableApp={disableApp}
-            enableApp={enableApp}
-            is_visible={is_visible}
-            openStatement={openStatement}
-            validateForm={validateForm}
-            onSubmit={setSpendingLimitTradingStatistics}
-            logout={logoutClient}
-            enableMax30dayTurnover={enableMax30dayTurnover}
-            IntervalField={TradingViewIntervalField}
-            SpendingLimitIntervalField={SpendingLimitIntervalField}
-        />
-    );
+    // Regards card https://redmine.deriv.cloud/issues/24171
+    // we are going to show the BriefModal in a case that user
+    // did not fill it previously, but if user filled it previously
+    // we just show SummaryModal
+    if (enableMax30dayTurnover) {
+        return (
+            <BriefModal
+                disableApp={disableApp}
+                enableApp={enableApp}
+                is_visible={is_visible}
+                openStatement={openStatement}
+                validateForm={validateForm}
+                onSubmit={setSpendingLimitTradingStatistics}
+                logout={logoutClient}
+                enableMax30dayTurnover={enableMax30dayTurnover}
+                IntervalField={TradingViewIntervalField}
+                SpendingLimitIntervalField={SpendingLimitIntervalField}
+            />
+        );
+    }
 };
 
 RealityCheckModal.propTypes = {

@@ -32,7 +32,6 @@ export const routes = {
     reports: '/reports',
     root: '/',
     redirect: '/redirect',
-    onboarding: '/onboarding',
     settings: '/settings',
     statement: '/reports/statement',
     token: '/settings/token',

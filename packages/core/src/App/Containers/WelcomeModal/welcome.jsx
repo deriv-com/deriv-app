@@ -26,7 +26,7 @@ const Welcome = ({ switchPlatform }) => (
                         components={[<Text key={0} weight='bold' as='strong' color='prominent' />]}
                     />
                 }
-                onClick={() => switchPlatform(routes.mt5)}
+                onClick={() => switchPlatform({ route: routes.mt5 })}
                 icon={<CFDs />}
                 mobileIcon={<CFDsMobile />}
                 options={['Forex', 'Synthetics', 'Stocks and indices', 'Cryptocurrencies', 'Commodities']}
@@ -38,7 +38,7 @@ const Welcome = ({ switchPlatform }) => (
                         components={[<Text key={0} weight='bold' as='strong' color='prominent' />]}
                     />
                 }
-                onClick={() => switchPlatform(routes.trade)}
+                onClick={() => switchPlatform({ should_show_multiplier: true })}
                 title={localize('Multipliers')}
                 icon={<Multipliers />}
                 mobileIcon={<MultipliersMobile />}
@@ -51,7 +51,7 @@ const Welcome = ({ switchPlatform }) => (
                         components={[<Text key={0} weight='bold' as='strong' color='prominent' />]}
                     />
                 }
-                onClick={() => switchPlatform(routes.trade)}
+                onClick={() => switchPlatform()}
                 title={localize('Digital Options')}
                 icon={<DigitalOptions />}
                 mobileIcon={<DigitalOptionsMobile />}
@@ -64,7 +64,7 @@ const Welcome = ({ switchPlatform }) => (
                         components={[<Text key={0} weight='bold' as='strong' color='prominent' />]}
                     />
                 }
-                onClick={() => switchPlatform(routes.trade)}
+                onClick={() => switchPlatform()}
                 title={localize('Not sure?')}
                 icon={<NotSure />}
                 mobileIcon={<NotSure />}

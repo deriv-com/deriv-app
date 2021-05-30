@@ -345,6 +345,10 @@ export default class TradeStore extends BaseStore {
         });
 
         await this.setActiveSymbols();
+        runInAction(() => {
+            this.should_refresh_active_symbols = true;
+        });
+
         const r = await WS.storage.contractsFor(this.symbol);
         if (['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code)) {
             const symbol_to_update = await pickDefaultSymbol(this.active_symbols);
@@ -1168,10 +1172,12 @@ export default class TradeStore extends BaseStore {
         return this.contract_type === 'multiplier';
     }
 
+    @action.bound
     async getFirstOpenMarket(markets_to_search) {
         if (this.active_symbols?.length) {
             return findFirstOpenMarket(this.active_symbols, markets_to_search);
         }
+
         const { active_symbols, error } = this.should_refresh_active_symbols
             ? // if SmartCharts has requested active_symbols, we wait for the response
               await WS.wait('active_symbols')
@@ -1181,6 +1187,7 @@ export default class TradeStore extends BaseStore {
             this.root_store.common.showError({ message: localize('Trading is unavailable at this time.') });
             return undefined;
         }
+
         return findFirstOpenMarket(active_symbols, markets_to_search);
     }
 }

@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { toMoment, getDiffDuration } from '@deriv/shared';
+import { toMoment } from '@deriv/shared';
 import Icon from '../icon';
 import Text from '../text';
 
@@ -85,17 +85,17 @@ const Native = ({
                 onFocus={handleFocus}
                 disabled={disabled}
                 onChange={e => {
-                    let value = e.target.value;
+                    let newValue = e.target.value;
 
                     if (max_date) {
                         const moment_maxdate = toMoment(max_date);
-                        const moment_value = toMoment(value);
+                        const moment_value = toMoment(newValue);
                         const days_diff = moment_maxdate.diff(moment_value, 'days');
 
-                        value = days_diff < 0 ? moment_maxdate.format('YYYY-MM-DD') : value;
+                        newValue = days_diff < 0 ? moment_maxdate.format('YYYY-MM-DD') : newValue;
                     }
 
-                    onSelect(value);
+                    onSelect(newValue);
                 }}
             />
             {error && (

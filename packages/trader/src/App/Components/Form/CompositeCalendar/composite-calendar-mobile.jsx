@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, DatePicker, Icon, InputField, MobileDialog, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { toMoment, daysFromTodayTo } from '@deriv/shared';
+import { toMoment } from '@deriv/shared';
 
 export const RadioButton = ({ id, className, selected_value, value, label, onChange }) => {
     return (
@@ -107,28 +107,15 @@ const CompositeCalendarMobile = React.memo(
 
         const selectDate = (e, key) => {
             setSelectedDateRange({ value: CUSTOM_KEY });
+
+            const value = e.target?.value ? toMoment(e.target.value).format('DD MMM YYYY') : '';
+
             if (key === 'from') {
-                setFrom(e.target?.value ? toMoment(e.target.value).format('DD MMM YYYY') : '');
+                setFrom(value);
             }
 
             if (key === 'to') {
-                // Handling future dates input for IOS devices
-                const value = e.target?.value ? toMoment(e.target.value).format('DD MMM YYYY') : '';
-
-                if (value) {
-                    const upcoming_days = parseInt(daysFromTodayTo(value));
-                    setTo(value);
-
-                    if (!isNaN(upcoming_days)) {
-                        setTo('');
-
-                        const today = toMoment().format('DD MMM YYYY');
-
-                        setTimeout(() => {
-                            setTo(today);
-                        }, 100);
-                    }
-                }
+                setTo(value);
             }
         };
 

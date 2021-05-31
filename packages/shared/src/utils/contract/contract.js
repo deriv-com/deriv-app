@@ -33,6 +33,8 @@ export const hasContractEntered = contract_info => !!contract_info.entry_spot;
 
 export const isMultiplierContract = contract_type => /MULT/i.test(contract_type);
 
+export const isCryptoContract = underlying => /^cry/.test(underlying);
+
 export const getCurrentTick = contract_info => {
     const tick_stream = unique(contract_info.tick_stream, 'epoch');
     const current_tick = isDigitContract(contract_info.contract_type) ? tick_stream.length : tick_stream.length - 1;
@@ -124,4 +126,6 @@ export const getContractUpdateConfig = ({ contract_update, limit_order }) => {
     };
 };
 
-export const shouldShowCancellation = symbol => !/^(CRASH|BOOM|stpRNG)/.test(symbol);
+export const shouldShowExpiration = symbol => /^cry/.test(symbol);
+
+export const shouldShowCancellation = symbol => !/^(cry|CRASH|BOOM|stpRNG)/.test(symbol);

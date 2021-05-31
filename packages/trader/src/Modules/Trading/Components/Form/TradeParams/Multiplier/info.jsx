@@ -5,13 +5,15 @@ import { Popover, Money, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const commission_tooltip_margin = 35;
-const stop_out_tooltip_margin = 135;
+const commission_tooltip_margin = 30;
+const stop_out_tooltip_margin = 160;
 
 const MultipliersInfo = ({
     amount = 0,
     commission = 0,
     className,
+    commission_text_size,
+    stop_out_text_size,
     currency,
     multiplier = 0,
     has_stop_loss,
@@ -23,7 +25,7 @@ const MultipliersInfo = ({
         <Text
             as='p'
             line_height='s'
-            size='xxxs'
+            size={commission_text_size || 'xxxs'}
             className={classNames({
                 [`${className}-tooltip-text`]: className,
             })}
@@ -39,7 +41,7 @@ const MultipliersInfo = ({
         <Text
             as='p'
             line_height='s'
-            size='xxxs'
+            size={stop_out_text_size || 'xxxs'}
             className={classNames({
                 [`${className}-tooltip-text`]: className,
             })}
@@ -112,8 +114,10 @@ const MultipliersInfo = ({
 
 MultipliersInfo.propTypes = {
     className: PropTypes.string,
+    commission_text_size: PropTypes.string,
     is_tooltip_relative: PropTypes.bool,
     should_show_tooltip: PropTypes.bool,
+    stop_out_text_size: PropTypes.string,
 };
 
 export default connect(({ modules }, props) => ({

@@ -5,6 +5,7 @@ import { CSSTransition } from 'react-transition-group';
 import { ContractCard, CurrencyBadge, Icon, Money, ProgressSliderMobile, Text } from '@deriv/components';
 import {
     getContractPath,
+    isCryptoContract,
     isMultiplierContract,
     isHighLow,
     isCryptocurrency,
@@ -59,6 +60,8 @@ const PositionsModalCard = ({
         </div>
     );
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
+    const is_crypto = isCryptoContract(contract_info.underlying);
+    const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);
     const fallback_result = profit_loss >= 0 ? 'won' : 'lost';
 
     const should_show_sell = hasContractEntered(contract_info) && isOpen(contract_info);
@@ -206,7 +209,7 @@ const PositionsModalCard = ({
             display_name={display_name}
             getCardLabels={getCardLabels}
             getContractTypeDisplay={getContractTypeDisplay}
-            has_progress_slider={!is_multiplier}
+            has_progress_slider={!is_mobile && has_progress_slider}
             is_mobile={is_mobile}
             is_sell_requested={is_sell_requested}
             onClickSell={onClickSell}
@@ -226,6 +229,7 @@ const PositionsModalCard = ({
             getContractById={getContractById}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
+            has_progress_slider={is_mobile && has_progress_slider}
             removeToast={removeToast}
             server_time={server_time}
             setCurrentFocus={setCurrentFocus}

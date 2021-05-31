@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { shouldShowCancellation } from '@deriv/shared';
+import { shouldShowCancellation, shouldShowExpiration } from '@deriv/shared';
 
 export const getLocalizedBasis = () => ({
     payout: localize('Payout'),
@@ -108,10 +108,10 @@ export const getContractTypesConfig = symbol => ({
         trade_types: ['MULTUP', 'MULTDOWN'],
         basis: ['stake'],
         components: [
-            'multiplier',
             'take_profit',
             'stop_loss',
             ...(shouldShowCancellation(symbol) ? ['cancellation'] : []),
+            ...(shouldShowExpiration(symbol) ? ['expiration'] : []),
         ],
         config: { hide_duration: true },
     }, // hide Duration for Multiplier contracts for now

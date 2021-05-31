@@ -68,7 +68,10 @@ const DerivPassword = ({ email, is_social_signup, social_identity_provider }) =>
                 )}
                 <UnlinkModal
                     is_open={is_unlink_modal_open}
-                    onClose={() => setIsUnlinkModalOpen(false)}
+                    onClose={() => {
+                        setIsUnlinkModalOpen(false);
+                        setIsSentEmailModalOpen(false);
+                    }}
                     identifier_title={capitalized_identifier}
                     onClickSendEmail={onClickSendEmail}
                 />
@@ -91,6 +94,4 @@ DerivPassword.propTypes = {
 
 export default connect(({ client }) => ({
     email: client.email,
-    is_social_signup: client.is_social_signup,
-    social_identity_provider: client.social_identity_provider,
 }))(DerivPassword);

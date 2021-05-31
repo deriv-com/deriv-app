@@ -246,12 +246,12 @@
     }
     &__error {
         display: flex;
-        width: 38.4rem;
-        height: 28.4rem;
+        max-width: 38.4rem;
+        min-height: 28.4rem;
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
-        padding: 2rem 0;
+        padding-top: 2rem;
     }
     &__description {
         @include typeface(--paragraph-left-normal-black);
@@ -262,6 +262,9 @@
             margin-bottom: 2.4rem;
             max-width: 70%;
         }
+    }
+    &__confirm-button {
+        margin-top: 2.4rem;
     }
     &__success {
         width: 38.4rem;

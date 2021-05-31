@@ -94,7 +94,7 @@ export default class UIStore extends BaseStore {
     @observable is_account_types_modal_visible = false;
 
     // Welcome modal
-    @observable is_welcome_modal_visible = false;
+    @observable is_welcome_modal_visible = true;
 
     // set currency modal
     @observable is_set_currency_modal_visible = false;

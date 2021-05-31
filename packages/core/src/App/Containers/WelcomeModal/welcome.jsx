@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
-import CFDs from 'Assets/SvgComponents/onboarding/cfd.svg';
+import CFDs from 'Assets/SvgComponents/onboarding/cfds.svg';
 import CFDsMobile from 'Assets/SvgComponents/onboarding/cfds-mobile.svg';
 import DigitalOptions from 'Assets/SvgComponents/onboarding/digital-options.svg';
 import DigitalOptionsMobile from 'Assets/SvgComponents/onboarding/digital-options-mobile.svg';

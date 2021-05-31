@@ -133,6 +133,7 @@ const CFDDemoAccountDisplay = ({
                         'Trade CFDs on forex, stocks & indices, commodities, and cryptocurrencies with leverage.'
                     )}
                     specs={financial_specs}
+                    has_banner
                 />
             )}
             {(landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && platform === 'mt5' && (

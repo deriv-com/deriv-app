@@ -83,6 +83,5 @@ TradingPassword.propTypes = {
 
 export default connect(({ client }) => ({
     email: client.email,
-    is_trading_password_required: client.is_trading_password_required,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
 }))(TradingPassword);

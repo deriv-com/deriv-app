@@ -90,7 +90,7 @@ const ChangePasswordForm = ({ email, is_trading_password, logout, onClickSendEma
 
         if (values.new_password) {
             if (!validLength(values.new_password, { min: 8, max: 25 })) {
-                errors.new_password = localize('Password length should be between 8 to 25 characters.');
+                errors.new_password = localize('Your password should be between 8 and 25 characters.');
             }
             if (values.old_password === values.new_password) {
                 errors.new_password = localize('Current password and new password cannot be the same.');

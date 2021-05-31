@@ -100,9 +100,9 @@ const CurrencySelector = ({
     };
 
     const description = is_dxtrade_allowed ? (
-        <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a DMT5 or Deriv X account.' />
+        <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real DMT5 or Deriv X account.' />
     ) : (
-        <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a DMT5 account.' />
+        <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real DMT5 account.' />
     );
 
     return (

@@ -621,7 +621,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_options_blocked() {
-        return this.residence ? isOptionsBlocked(this.residence) : true;
+        return isOptionsBlocked(this.residence || this.website_status.clients_country);
     }
 
     /**

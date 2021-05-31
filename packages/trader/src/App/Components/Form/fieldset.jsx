@@ -24,7 +24,7 @@ const Fieldset = ({ children, className, header, header_tooltip, is_center, onMo
                             icon='info'
                             is_bubble_hover_enabled
                             message={header_tooltip}
-                            margin={210}
+                            margin={216}
                             relative_render
                         />
                     )}

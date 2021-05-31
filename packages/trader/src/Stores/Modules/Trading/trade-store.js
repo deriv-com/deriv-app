@@ -122,6 +122,7 @@ export default class TradeStore extends BaseStore {
     @observable commission;
     @observable cancellation_price;
     @observable stop_out;
+    @observable expiration;
     @observable hovered_contract_type;
     @observable cancellation_duration = '60m';
     @observable cancellation_range_list = [];
@@ -224,7 +225,12 @@ export default class TradeStore extends BaseStore {
                 }
             }
         );
-
+        reaction(
+            () => this.root_store.client.is_logged_in,
+            async () => {
+                await this.setSymbolsAfterLogin();
+            }
+        );
         reaction(
             () => [this.contract_type],
             () => {
@@ -280,6 +286,15 @@ export default class TradeStore extends BaseStore {
             const symbol = await pickDefaultSymbol(this.active_symbols);
             await this.processNewValuesAsync({ symbol });
         }
+    }
+
+    @action.bound
+    async setSymbolsAfterLogin() {
+        await this.setActiveSymbols();
+        runInAction(() => {
+            this.should_refresh_active_symbols = true;
+        });
+        await this.setDefaultSymbol();
     }
 
     @action.bound
@@ -852,6 +867,13 @@ export default class TradeStore extends BaseStore {
         const prev_proposal_info = getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
 
+        // add/update expiration or date_expiry for crypto indices from proposal
+        const date_expiry = response.proposal?.date_expiry;
+
+        if (!response.error && !!date_expiry && this.is_crypto_multiplier) {
+            this.expiration = date_expiry;
+        }
+
         this.proposal_info = {
             ...this.proposal_info,
             [contract_type]: getProposalInfo(this, response, obj_prev_contract_basis),
@@ -1083,6 +1105,10 @@ export default class TradeStore extends BaseStore {
             layout = this.prev_chart_layout;
         }
         return layout;
+    }
+
+    get is_crypto_multiplier() {
+        return this.contract_type === 'multiplier' && /^cry/.test(this.symbol);
     }
 
     @action.bound

@@ -13,6 +13,7 @@ const Input = React.forwardRef(
             className,
             classNameError,
             classNameWarn,
+            classNameHint,
             disabled,
             error,
             field_className,
@@ -103,7 +104,12 @@ const Input = React.forwardRef(
                             {warn && <Field className={classNameWarn} message={warn} type='warn' />}
                             {!error && hint && !is_relative_hint && (
                                 <div className='dc-input__hint'>
-                                    <Text as='p' color='less-prominent' size='xxs'>
+                                    <Text
+                                        as='p'
+                                        color='less-prominent'
+                                        size='xxs'
+                                        className={classNames(classNameHint)}
+                                    >
                                         {hint}
                                     </Text>
                                 </div>
@@ -145,6 +151,7 @@ Input.propTypes = {
     className: PropTypes.string,
     classNameError: PropTypes.string,
     classNameWarn: PropTypes.string,
+    classNameHint: PropTypes.string,
     disabled: PropTypes.bool,
     error: PropTypes.string,
     has_character_counter: PropTypes.bool,

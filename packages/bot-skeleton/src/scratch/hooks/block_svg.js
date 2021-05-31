@@ -70,7 +70,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
 
     if (this.isDeletable() && this.isMovable() && !block.isInFlyout) {
         menu_options.push(Blockly.ContextMenu.blockDuplicateOption(block, e));
-
+        menu_options.push(Blockly.ContextMenu.blockDetachOption(block, e));
         if (this.isEditable() && this.workspace.options.comments) {
             menu_options.push(Blockly.ContextMenu.blockCommentOption(block));
         }
@@ -243,8 +243,6 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
             .filter(icon => !(icon instanceof Blockly.ScratchBlockComment))
             .forEach(icon => icon.setVisible(false));
 
-        const text = this.toString(Blockly.COLLAPSE_CHARS);
-
         // Ensure class persists through collapse. Falls back to first
         // field that has a class. Doesn't work when multiple
         // field_labels on a block have different classes. So far we
@@ -264,12 +262,25 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
         const dropdown_path =
             this.workspace.options.pathToMedia +
             (isDarkRgbColour(this.getColour()) ? 'dropdown-arrow.svg' : 'dropdown-arrow-dark.svg');
-        const field_label = new Blockly.FieldLabel(text, field_class);
         const field_expand_icon = new Blockly.FieldImage(dropdown_path, 16, 16, localize('Expand'), () =>
             this.setCollapsed(false)
         );
 
-        this.appendDummyInput(COLLAPSED_INPUT_NAME).appendField(field_label).appendField(field_expand_icon).init();
+        if (this.type === 'procedures_defreturn' || this.type === 'procedures_defnoreturn') {
+            const function_name = this.getFieldValue('NAME');
+            const args = ` (${this.arguments.join(', ')})`;
+
+            this.appendDummyInput(COLLAPSED_INPUT_NAME)
+                .appendField(new Blockly.FieldLabel(localize('function'), field_class))
+                .appendField(new Blockly.FieldLabel(function_name + args, 'header__title'))
+                .appendField(field_expand_icon)
+                .init();
+        } else {
+            const text = this.toString(Blockly.COLLAPSE_CHARS);
+            const field_label = new Blockly.FieldLabel(text, field_class);
+
+            this.appendDummyInput(COLLAPSED_INPUT_NAME).appendField(field_label).appendField(field_expand_icon).init();
+        }
     } else {
         this.removeInput(COLLAPSED_INPUT_NAME);
         this.setWarningText(null); // Clear any warnings inherited from enclosed blocks.

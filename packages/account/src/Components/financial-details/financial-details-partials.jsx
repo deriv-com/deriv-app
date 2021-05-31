@@ -37,7 +37,6 @@ export const EmploymentStatus = ({
                         label={localize('Employment Status')}
                         list_items={employment_status_enum}
                         value={values.employment_status}
-                        use_text={true}
                         error={touched.employment_status && errors.employment_status}
                         onChange={e => {
                             handleChange(e);
@@ -86,7 +85,6 @@ export const IncomeSource = ({
                         label={localize('Source of income')}
                         list_items={income_source_enum}
                         value={values.income_source}
-                        use_text={true}
                         error={touched.income_source && errors.income_source}
                         onChange={e => {
                             handleChange(e);
@@ -135,7 +133,6 @@ export const EmploymentIndustry = ({
                         label={localize('Industry of employment')}
                         list_items={employment_industry_enum}
                         value={values.employment_industry}
-                        use_text={true}
                         error={touched.employment_industry && errors.employment_industry}
                         onChange={e => {
                             handleChange(e);
@@ -175,7 +172,6 @@ export const Occupation = ({ values, handleChange, handleBlur, touched, errors, 
                         label={localize('Occupation')}
                         list_items={occupation_enum}
                         value={values.occupation}
-                        use_text={true}
                         error={touched.occupation && errors.occupation}
                         onChange={e => {
                             handleChange(e);
@@ -224,7 +220,6 @@ export const SourceOfWealth = ({
                         label={localize('Source of wealth')}
                         list_items={source_of_wealth_enum}
                         value={values.source_of_wealth}
-                        use_text={true}
                         error={touched.source_of_wealth && errors.source_of_wealth}
                         onChange={e => {
                             handleChange(e);
@@ -273,7 +268,6 @@ export const EducationLevel = ({
                         label={localize('Level of education')}
                         list_items={education_level_enum}
                         value={values.education_level}
-                        use_text={true}
                         error={touched.education_level && errors.education_level}
                         onChange={e => {
                             handleChange(e);
@@ -314,7 +308,6 @@ export const NetIncome = ({ values, handleChange, handleBlur, touched, errors, s
                         label={localize('Net annual income')}
                         list_items={net_income_enum}
                         value={values.net_income}
-                        use_text={true}
                         error={touched.net_income && errors.net_income}
                         onChange={e => {
                             handleChange(e);
@@ -363,7 +356,6 @@ export const EstimatedWorth = ({
                         label={localize('Estimated net worth')}
                         list_items={estimated_worth_enum}
                         value={values.estimated_worth}
-                        use_text={true}
                         error={touched.estimated_worth && errors.estimated_worth}
                         onChange={e => {
                             handleChange(e);
@@ -412,7 +404,6 @@ export const AccountTurnover = ({
                         label={localize('Anticipated annual turnover')}
                         list_items={account_turnover_enum}
                         value={values.account_turnover}
-                        use_text={true}
                         error={touched.account_turnover && errors.account_turnover}
                         onChange={e => {
                             handleChange(e);
@@ -461,7 +452,6 @@ export const ForexTradingExperience = ({
                         label={localize('Forex trading experience')}
                         list_items={forex_trading_experience_enum}
                         value={values.forex_trading_experience}
-                        use_text={true}
                         error={touched.forex_trading_experience && errors.forex_trading_experience}
                         onChange={e => {
                             handleChange(e);
@@ -510,7 +500,6 @@ export const ForexTradingFrequency = ({
                         label={localize('Forex trading frequency')}
                         list_items={forex_trading_frequency_enum}
                         value={values.forex_trading_frequency}
-                        use_text={true}
                         error={touched.forex_trading_frequency && errors.forex_trading_frequency}
                         onChange={e => {
                             handleChange(e);
@@ -559,7 +548,6 @@ export const BinaryOptionsTradingExperience = ({
                         label={localize('Digital options trading experience')}
                         list_items={binary_options_trading_experience_enum}
                         value={values.binary_options_trading_experience}
-                        use_text={true}
                         error={touched.binary_options_trading_experience && errors.binary_options_trading_experience}
                         onChange={e => {
                             handleChange(e);
@@ -608,7 +596,6 @@ export const BinaryOptionsTradingFrequency = ({
                         label={localize('Digital options trading frequency')}
                         list_items={binary_options_trading_frequency_enum}
                         value={values.binary_options_trading_frequency}
-                        use_text={true}
                         error={touched.binary_options_trading_frequency && errors.binary_options_trading_frequency}
                         onChange={e => {
                             handleChange(e);
@@ -657,7 +644,6 @@ export const CFDTradingExperience = ({
                         label={localize('CFD trading experience')}
                         list_items={cfd_trading_experience_enum}
                         value={values.cfd_trading_experience}
-                        use_text={true}
                         error={touched.cfd_trading_experience && errors.cfd_trading_experience}
                         onChange={e => {
                             handleChange(e);
@@ -706,7 +692,6 @@ export const CFDTradingFrequency = ({
                         label={localize('CFD trading frequency')}
                         list_items={cfd_trading_frequency_enum}
                         value={values.cfd_trading_frequency}
-                        use_text={true}
                         error={touched.cfd_trading_frequency && errors.cfd_trading_frequency}
                         onChange={e => {
                             handleChange(e);
@@ -757,7 +742,6 @@ export const OtherInstrumentsTradingExperience = ({
                         label={localize('Experience with trading other financial instruments')}
                         list_items={other_instruments_trading_experience_enum}
                         value={values.other_instruments_trading_experience}
-                        use_text={true}
                         error={
                             touched.other_instruments_trading_experience && errors.other_instruments_trading_experience
                         }
@@ -810,7 +794,6 @@ export const OtherInstrumentsTradingFrequency = ({
                         label={localize('Trading frequency in other financial instruments')}
                         list_items={other_instruments_trading_frequency_enum}
                         value={values.other_instruments_trading_frequency}
-                        use_text={true}
                         error={
                             touched.other_instruments_trading_frequency && errors.other_instruments_trading_frequency
                         }

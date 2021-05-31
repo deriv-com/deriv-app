@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
-import { Button, Icon, Modal } from '@deriv/components';
+import { Button, Icon, Modal, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
 const SuccessDialog = ({
@@ -49,9 +49,9 @@ const SuccessDialog = ({
                     <Checkmark className='bottom-right-overlay' />
                 </div>
                 {!heading && (
-                    <h2 className='dc-modal-header__title'>
+                    <Text as='h2' weight='bold' size='s' className='dc-modal-header__title'>
                         <Localize i18n_default_text='Success!' />
-                    </h2>
+                    </Text>
                 )}
                 {heading && heading}
                 {React.isValidElement(message) && message}

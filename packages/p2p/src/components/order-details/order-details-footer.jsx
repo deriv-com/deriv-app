@@ -27,7 +27,9 @@ const OrderDetailsFooter = observer(() => {
     const [should_show_confirm_modal, setShouldShowConfirmModal] = React.useState(false);
 
     const hideCancelOrderModal = () => setShouldShowCancelModal(false);
-    const showCancelOrderModal = () => setShouldShowCancelModal(true);
+    const showCancelOrderModal = () => {
+        order_store.getAdvertiserInfo(setShouldShowCancelModal);
+    };
 
     const hideComplainOrderModal = () => setShouldShowComplainModal(false);
     const showComplainOrderModal = () => setShouldShowComplainModal(true);
@@ -51,14 +53,14 @@ const OrderDetailsFooter = observer(() => {
                     </div>
                 </div>
                 <OrderDetailsCancelModal
-                    order_id={order_store.order_information.id}
                     hideCancelOrderModal={hideCancelOrderModal}
+                    order_id={order_store.order_information.id}
                     should_show_cancel_modal={should_show_cancel_modal}
                 />
                 <OrderDetailsConfirmModal
-                    order_information={order_store.order_information}
-                    is_buy_order_for_user={is_buy_order_for_user}
                     hideConfirmOrderModal={hideConfirmOrderModal}
+                    is_buy_order_for_user={is_buy_order_for_user}
+                    order_information={order_store.order_information}
                     should_show_confirm_modal={should_show_confirm_modal}
                 />
             </React.Fragment>

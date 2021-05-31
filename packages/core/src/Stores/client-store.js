@@ -57,6 +57,7 @@ export default class ClientStore extends BaseStore {
     @observable is_logging_in = false;
     @observable has_logged_out = false;
     @observable is_landing_company_loaded = false;
+    @observable is_account_setting_loaded = false;
     // this will store the landing_company API response, including
     // financial_company: {}
     // gaming_company: {}
@@ -80,6 +81,7 @@ export default class ClientStore extends BaseStore {
         reset_password: '',
         payment_withdraw: '',
         payment_agent_withdraw: '',
+        trading_platform_password_reset: '',
     };
     @observable account_limits = {};
 
@@ -404,11 +406,13 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get is_client_tnc_status_loaded() {
-        const { client_tnc_status } = this.account_settings;
-        if (this.is_virtual || (!this.is_virtual && client_tnc_status !== '')) return true;
+    get is_social_signup() {
+        return this.account_status?.status?.includes('social_signup');
+    }
 
-        return false;
+    @computed
+    get is_trading_password_required() {
+        return this.account_status?.status?.includes('trading_password_required');
     }
 
     @computed
@@ -433,6 +437,11 @@ export default class ClientStore extends BaseStore {
         const document_status = this.account_status?.authentication?.document?.status;
         const identity_status = this.account_status?.authentication?.identity?.status;
         return { document_status, identity_status };
+    }
+
+    @computed
+    get social_identity_provider() {
+        return this.account_status?.social_identity_provider;
     }
 
     @computed
@@ -682,7 +691,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setCookieAccount() {
-        const domain = window.location.hostname.includes('deriv') ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
+        const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
         const { loginid, email, landing_company_shortcode, currency, residence, account_settings } = this;
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
@@ -1455,6 +1464,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setAccountSettings(settings) {
         this.account_settings = settings;
+        this.is_account_setting_loaded = true;
     }
 
     @action.bound

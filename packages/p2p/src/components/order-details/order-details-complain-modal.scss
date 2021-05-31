@@ -1,6 +1,10 @@
 .order-details-complain-modal {
     &__body {
         flex-grow: 1;
+
+        @include mobile {
+            flex-direction: column;
+        }
     }
 
     &__explanation {

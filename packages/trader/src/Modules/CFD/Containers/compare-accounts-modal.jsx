@@ -61,9 +61,9 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
             },
             dxtrade: {
                 synthetic: localize('Up to 1:1000'),
-                financial_au: localize('Up to 1:30'),
                 synthetic_eu: localize('Up to 1:1000'),
                 financial: localize('Up to 1:1000'),
+                financial_au: localize('Up to 1:30'),
                 financial_eu: localize('Up to 1:30'),
                 footnote: localize(
                     'Leverage gives you the ability to trade a larger position using your existing capital. Leverage varies across different symbols.'

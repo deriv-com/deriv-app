@@ -74,8 +74,8 @@ const Deposit = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, iframe_height, is_switching]);
 
-    if (is_switching || is_loading) {
-        return <Loading is_fullscreen />;
+    if (is_switching || (is_loading && !iframe_url)) {
+        return <Loading is_fullscreen={false} />;
     }
     if (is_virtual) {
         return <Virtual />;
@@ -96,7 +96,7 @@ const Deposit = ({
         return <Error error={error} />;
     }
 
-    return <CashierContainer iframe_height={iframe_height} iframe_url={iframe_url} />;
+    return <CashierContainer iframe_height={iframe_height} iframe_url={iframe_url} is_loading={is_loading} />;
 };
 
 Deposit.propTypes = {

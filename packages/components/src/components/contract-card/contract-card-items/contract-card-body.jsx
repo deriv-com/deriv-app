@@ -88,11 +88,9 @@ const MultiplierCardBody = ({
                 <ContractCardItem header={getCardLabels().BUY_PRICE} className='dc-contract-card__buy-price'>
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
-                {has_progress_slider &&
-                    is_mobile &&
-                    !is_sold(
-                        <ContractCardItem className='dc-contract-card__date-expiry'>{progress_slider}</ContractCardItem>
-                    )}
+                {has_progress_slider && is_mobile && !is_sold && (
+                    <ContractCardItem className='dc-contract-card__date-expiry'>{progress_slider}</ContractCardItem>
+                )}
                 <div className='dc-contract-card__limit-order-info'>
                     <ContractCardItem header={getCardLabels().TAKE_PROFIT} className='dc-contract-card__take-profit'>
                         {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}

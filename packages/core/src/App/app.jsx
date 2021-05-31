@@ -55,6 +55,7 @@ const App = ({ root_store }) => {
         setUrlLanguage(getLanguage());
         initFormErrorMessages(FORM_ERROR_MESSAGES);
         setSharedMT5Text(MT5_TEXT);
+        handleResize();
     }, []);
 
     const handleResize = React.useCallback(() => {

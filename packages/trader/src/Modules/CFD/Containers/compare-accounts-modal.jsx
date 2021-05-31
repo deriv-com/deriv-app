@@ -32,6 +32,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('USD'),
                 synthetic_eu: localize('EUR'),
                 financial: localize('USD'),
+                financial_au: localize('USD'),
                 financial_eu: localize('EUR/GBP'),
                 financial_stp: localize('USD'),
                 footnote: null,
@@ -40,6 +41,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('USD'),
                 synthetic_eu: localize('EUR'),
                 financial: localize('USD'),
+                financial_au: localize('USD'),
                 financial_eu: localize('EUR/GBP'),
                 footnote: null,
             },
@@ -50,6 +52,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('Up to 1:1000'),
                 synthetic_eu: localize('Up to 1:1000'),
                 financial: localize('Up to 1:1000'),
+                financial_au: localize('Up to 1:30'),
                 financial_eu: localize('Up to 1:30'),
                 financial_stp: localize('Up to 1:100'),
                 footnote: localize(
@@ -60,6 +63,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('Up to 1:1000'),
                 synthetic_eu: localize('Up to 1:1000'),
                 financial: localize('Up to 1:1000'),
+                financial_au: localize('Up to 1:30'),
                 financial_eu: localize('Up to 1:30'),
                 footnote: localize(
                     'Leverage gives you the ability to trade a larger position using your existing capital. Leverage varies across different symbols.'
@@ -72,6 +76,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('Market'),
                 synthetic_eu: localize('Market'),
                 financial: localize('Market'),
+                financial_au: localize('Market'),
                 financial_eu: localize('Market'),
                 financial_stp: localize('Market'),
                 footnote: localize(
@@ -85,6 +90,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('Market'),
                 synthetic_eu: localize('Market'),
                 financial: localize('Market'),
+                financial_au: localize('Market'),
                 financial_eu: localize('Market'),
                 footnote: localize(
                     "All {{count}} account types use market execution. This means you agree with the broker's price in advance and will place orders at the broker's price.",
@@ -100,6 +106,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('Fixed/Variable'),
                 synthetic_eu: localize('Fixed/Variable'),
                 financial: localize('Variable'),
+                financial_au: localize('Variable'),
                 financial_eu: localize('Variable'),
                 financial_stp: localize('Variable'),
                 footnote: localize(
@@ -110,6 +117,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('Fixed/Variable'),
                 synthetic_eu: localize('Fixed/Variable'),
                 financial: localize('Variable'),
+                financial_au: localize('Variable'),
                 financial_eu: localize('Variable'),
                 footnote: localize(
                     "The spread is the difference between the buy price and sell price. A variable spread means that the spread is constantly changing, depending on market conditions. A fixed spread remains constant but is subject to alteration, at the Broker's absolute discretion."
@@ -122,6 +130,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('No'),
                 synthetic_eu: localize('No'),
                 financial: localize('No'),
+                financial_au: localize('No'),
                 financial_eu: localize('No'),
                 financial_stp: localize('No'),
                 footnote: localize('Deriv charges no commission across all account types.'),
@@ -130,6 +139,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('No'),
                 synthetic_eu: localize('No'),
                 financial: localize('No'),
+                financial_au: localize('No'),
                 financial_eu: localize('No'),
                 footnote: localize('Deriv charges no commission across all account types.'),
             },
@@ -140,6 +150,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('No'),
                 synthetic_eu: localize('No'),
                 financial: localize('No'),
+                financial_au: localize('No'),
                 financial_eu: localize('No'),
                 financial_stp: localize('No'),
                 footnote: null,
@@ -148,6 +159,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('No'),
                 synthetic_eu: localize('No'),
                 financial: localize('No'),
+                financial_au: localize('No'),
                 financial_eu: localize('No'),
                 footnote: null,
             },
@@ -158,6 +170,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('100%'),
                 synthetic_eu: localize('100%'),
                 financial: localize('150%'),
+                financial_au: localize('100%'),
                 financial_eu: localize('100%'),
                 financial_stp: localize('150%'),
                 footnote: localize(
@@ -168,6 +181,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('100%'),
                 synthetic_eu: localize('100%'),
                 financial: localize('100%'),
+                financial_au: localize('100%'),
                 financial_eu: localize('100%'),
                 footnote: localize(
                     'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
@@ -180,6 +194,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('50%'),
                 synthetic_eu: localize('50%'),
                 financial: localize('75%'),
+                financial_au: localize('50%'),
                 financial_eu: localize('50%'),
                 financial_stp: localize('75%'),
                 footnote: localize(
@@ -190,6 +205,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('50%'),
                 synthetic_eu: localize('50%'),
                 financial: localize('50%'),
+                financial_au: localize('50%'),
                 financial_eu: localize('50%'),
                 footnote: localize(
                     'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
@@ -202,6 +218,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('Available'),
                 synthetic_eu: localize('Available'),
                 financial: localize('N/A'),
+                financial_au: localize('N/A'),
                 financial_eu: localize('Required'),
             },
         },
@@ -211,6 +228,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('10+'),
                 synthetic_eu: localize('10+'),
                 financial: localize('50+'),
+                financial_au: localize('100+'),
                 financial_eu: localize('50+'),
                 financial_stp: localize('50+'),
                 footnote: null,
@@ -219,6 +237,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('20+'),
                 synthetic_eu: localize('20+'),
                 financial: localize('100+'),
+                financial_au: localize('100+'),
                 financial_eu: localize('100+'),
                 footnote: null,
             },
@@ -229,6 +248,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('N/A'),
                 synthetic_eu: localize('N/A'),
                 financial: localize('24/7'),
+                financial_au: localize('24/7'),
                 financial_eu: localize('24/7'),
                 financial_stp: localize('24/7'),
                 footnote: localize('Indicates the availability of cryptocurrency trading on a particular account.'),
@@ -237,6 +257,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('N/A'),
                 synthetic_eu: localize('N/A'),
                 financial: localize('24/7'),
+                financial_au: localize('24/7'),
                 financial_eu: localize('24/7'),
                 footnote: localize('Indicates the availability of cryptocurrency trading on a particular account.'),
             },
@@ -249,6 +270,9 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 financial: localize(
                     'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices'
                 ),
+                financial_au: localize(
+                    'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices'
+                ),
                 financial_eu: localize(
                     'FX-majors (standard), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices'
                 ),
@@ -259,10 +283,13 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('Synthetics'),
                 synthetic_eu: localize('Synthetics'),
                 financial: localize(
-                    'FX-majors (standard/micro lots), FX-minors, Smart-FX, Commodities, Cryptocurrencies'
+                    'FX-majors (standard/micro lots), FX-minors, Smart-FX, Commodities, Cryptocurrencies, Stocks & Indices'
+                ),
+                financial_au: localize(
+                    'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices'
                 ),
                 financial_eu: localize(
-                    'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies (except UK)'
+                    'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies (except UK), Stocks & Indices'
                 ),
                 footnote: null,
             },
@@ -297,15 +324,25 @@ const CFDAttributeDescriber = ({ name, counter }) => {
     );
 };
 
-const filterAvailableAccounts = (landing_companies, table, is_logged_in, show_eu_related, platform) => {
+const filterAvailableAccounts = (landing_companies, table, is_logged_in, show_eu_related, platform, is_australian) => {
+    const getFinancialObject = (financial, financial_au, financial_eu) => {
+        if (is_australian) {
+            return financial_au;
+        }
+        if (show_eu_related) {
+            return financial_eu;
+        }
+        return financial;
+    };
+
     let footnote_number = 0;
     return table
         .filter(row => row[platform])
         .map(({ attribute, mt5 = {}, dxtrade = {} }) => {
-            const { synthetic, synthetic_eu, financial_stp, financial, financial_eu, footnote } =
+            const { synthetic, synthetic_eu, financial_stp, financial, financial_au, financial_eu, footnote } =
                 platform === 'mt5' ? mt5 : dxtrade;
             const synthetic_object = { synthetic: show_eu_related ? synthetic_eu : synthetic };
-            const financial_object = { financial: show_eu_related ? financial_eu : financial };
+            const financial_object = { financial: getFinancialObject(financial, financial_au, financial_eu) };
 
             if (is_logged_in) {
                 return {
@@ -333,14 +370,15 @@ const filterAvailableAccounts = (landing_companies, table, is_logged_in, show_eu
         });
 };
 
-const compareAccountsData = ({ landing_companies, is_eu, is_eu_country, is_logged_in, platform }) => {
-    const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
+const compareAccountsData = ({ landing_companies, is_logged_in, show_eu_related, platform, residence }) => {
+    const is_australian = residence === 'au';
     return filterAvailableAccounts(
         landing_companies,
         getAccounts({ landing_companies, platform, is_logged_in }),
         is_logged_in,
         show_eu_related,
-        platform
+        platform,
+        is_australian
     );
 };
 
@@ -409,14 +447,14 @@ const CFDCompareAccountHint = ({ platform, show_risk_message, landing_companies,
     );
 };
 
-const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_related }) => {
+const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_related, residence }) => {
     const [cols, setCols] = React.useState([]);
     const [template_columns, updateColumnsStyle] = React.useState(
         platform === 'dxtrade' ? '1.5fr 1fr 2fr' : '1.5fr 1fr 2fr 1fr'
     );
 
     React.useEffect(() => {
-        setCols(compareAccountsData({ landing_companies, is_logged_in, platform, show_eu_related }));
+        setCols(compareAccountsData({ landing_companies, is_logged_in, platform, show_eu_related, residence }));
 
         if (is_logged_in && platform === 'mt5') {
             updateColumnsStyle(
@@ -432,6 +470,7 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
         landing_companies,
         platform,
         show_eu_related,
+        residence,
     ]);
 
     const show_risk_message = platform === 'mt5' || !show_eu_related;
@@ -526,6 +565,7 @@ const CompareAccountsModal = ({
     is_eu,
     is_eu_country,
     platform,
+    residence,
     toggleCompareAccounts,
 }) => {
     const show_eu_related = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
@@ -570,6 +610,7 @@ const CompareAccountsModal = ({
                             landing_companies={landing_companies}
                             platform={platform}
                             show_eu_related={show_eu_related}
+                            residence={residence}
                         />
                     </Modal>
                 </DesktopWrapper>
@@ -586,6 +627,7 @@ const CompareAccountsModal = ({
                             landing_companies={landing_companies}
                             platform={platform}
                             show_eu_related={show_eu_related}
+                            residence={residence}
                         />
                     </MobileDialog>
                 </MobileWrapper>
@@ -603,5 +645,6 @@ export default connect(({ modules, ui, client }) => ({
     is_eu_country: client.is_eu_country,
     is_logged_in: client.is_logged_in,
     landing_companies: client.landing_companies,
+    residence: client.residence || client.clients_country,
     toggleCompareAccounts: modules.cfd.toggleCompareAccountsModal,
 }))(CompareAccountsModal);

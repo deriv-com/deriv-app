@@ -25,6 +25,12 @@ const mt5 = {
         [localize('Stop out level')]: localize('75%'),
         [localize('Number of assets')]: localize('50+'),
     },
+    au_real_financial_specs: {
+        [localize('Leverage')]: localize('Up to 1:30'),
+        [localize('Margin call')]: localize('100%'),
+        [localize('Stop out level')]: localize('50%'),
+        [localize('Number of assets')]: localize('100+'),
+    },
 };
 
 const dxtrade = {
@@ -41,6 +47,12 @@ const dxtrade = {
         [localize('Number of assets')]: localize('100+'),
     },
     eu_real_financial_specs: {
+        [localize('Leverage')]: localize('Up to 1:30'),
+        [localize('Margin call')]: localize('100%'),
+        [localize('Stop out level')]: localize('50%'),
+        [localize('Number of assets')]: localize('100+'),
+    },
+    au_real_financial_specs: {
         [localize('Leverage')]: localize('Up to 1:30'),
         [localize('Margin call')]: localize('100%'),
         [localize('Stop out level')]: localize('50%'),

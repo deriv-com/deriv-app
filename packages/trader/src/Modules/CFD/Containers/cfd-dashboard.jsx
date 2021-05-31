@@ -158,6 +158,7 @@ class CFDDashboard extends React.Component {
             NotificationMessages,
             platform,
             openAccountNeededModal,
+            residence,
             residence_list,
             standpoint,
             toggleAccountsDialog,
@@ -268,6 +269,7 @@ class CFDDashboard extends React.Component {
                                                 toggleAccountsDialog={toggleAccountsDialog}
                                                 toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
                                                 can_have_more_real_synthetic_mt5={can_have_more_real_synthetic_mt5}
+                                                residence={residence}
                                                 residence_list={residence_list}
                                             />
                                         </React.Fragment>
@@ -293,6 +295,7 @@ class CFDDashboard extends React.Component {
                                             openAccountTransfer={this.openAccountTransfer}
                                             openPasswordManager={this.togglePasswordManagerModal}
                                             platform={platform}
+                                            residence={residence}
                                         />
                                     </div>
                                 </LoadTab>

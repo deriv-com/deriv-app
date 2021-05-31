@@ -291,7 +291,21 @@
         .btn-purchase__effect-detail--arrow {
             left: 40px;
         }
-        &:not(.btn-purchase--swoosh) .btn-purchase__effect-detail {
+        &.btn-purchase--swoosh {
+            .btn-purchase {
+                &__effect-detail {
+                    transform: scale3d(5, 1, 1);
+
+                    &--arrow {
+                        transform: translate3d(160px, 0, 0) rotate(45deg);
+                    }
+                }
+                &__type-wrapper {
+                    transform: translate3d(70px, 0, 0);
+                }
+            }
+        }
+        .btn-purchase__effect-detail {
             width: 72px;
         }
         .btn-purchase__top {

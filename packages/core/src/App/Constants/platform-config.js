@@ -28,7 +28,7 @@ const platform_config = [
         icon: 'IcBrandDxtrade',
         title: () => localize('Deriv X'),
         name: 'Deriv X',
-        description: () => localize('Trade CFDs on a customisable, easy-to-use trading platform.'),
+        description: () => localize('Trade FX and CFDs on a customisable, easy-to-use trading platform.'),
         link_to: routes.dxtrade,
     },
     {

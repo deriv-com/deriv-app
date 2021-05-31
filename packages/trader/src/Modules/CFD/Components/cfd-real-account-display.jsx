@@ -43,6 +43,7 @@ const CFDRealAccountDisplay = ({
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
     can_have_more_real_synthetic_mt5,
+    residence,
     residence_list,
 }) => {
     const should_show_trade_servers =
@@ -70,6 +71,18 @@ const CFDRealAccountDisplay = ({
     );
 
     const is_real_financial_stp_disabled = !has_real_account || is_pending_authentication;
+
+    const financial_specs = React.useMemo(() => {
+        const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
+        const is_australian = residence === 'au';
+        if (is_australian) {
+            return specifications[platform].au_real_financial_specs;
+        }
+        if (should_show_eu) {
+            return specifications[platform].eu_real_financial_specs;
+        }
+        return specifications[platform].real_financial_specs;
+    }, [residence, is_logged_in, is_eu, is_eu_country, platform]);
 
     const onSelectRealSynthetic = () => {
         if (is_eu && standpoint.malta && !has_malta_account) {
@@ -133,7 +146,6 @@ const CFDRealAccountDisplay = ({
         }
     };
 
-    const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
     const synthetic_account_items =
         (landing_companies?.mt_gaming_company?.financial || !is_logged_in) &&
         (Object.keys(current_list).some(key => key.startsWith(`${platform}.real.synthetic`))
@@ -258,11 +270,7 @@ const CFDRealAccountDisplay = ({
             descriptor={localize(
                 'Trade CFDs on forex, stocks & indices, commodities, and cryptocurrencies with leverage.'
             )}
-            specs={
-                should_show_eu
-                    ? specifications[platform].eu_real_financial_specs
-                    : specifications[platform].real_financial_specs
-            }
+            specs={financial_specs}
             is_logged_in={is_logged_in}
         />
     );

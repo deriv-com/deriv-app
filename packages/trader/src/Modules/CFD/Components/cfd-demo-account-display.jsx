@@ -20,6 +20,7 @@ const CFDDemoAccountDisplay = ({
     current_list,
     has_cfd_account,
     openPasswordManager,
+    residence,
 }) => {
     const openCFDAccount = () => {
         if (is_eu && !has_maltainvest_account && standpoint.iom) {
@@ -31,6 +32,21 @@ const CFDDemoAccountDisplay = ({
             });
         }
     };
+
+    const financial_specs = React.useMemo(() => {
+        if (residence === 'au') {
+            return specifications[platform].au_real_financial_specs;
+        }
+        if (is_eu || is_eu_country) {
+            return specifications[platform].eu_real_financial_specs;
+        }
+        return {
+            [localize('Leverage')]: localize('Up to 1:1000'),
+            [localize('Margin call')]: localize('150%'),
+            [localize('Stop out level')]: localize('75%'),
+            [localize('Number of assets')]: localize('50+'),
+        };
+    }, [is_eu, is_eu_country, residence, platform]);
 
     return is_loading ? (
         <div className='cfd-demo-accounts-display'>
@@ -116,12 +132,7 @@ const CFDDemoAccountDisplay = ({
                     descriptor={localize(
                         'Trade CFDs on forex, stocks & indices, commodities, and cryptocurrencies with leverage.'
                     )}
-                    specs={
-                        is_eu || is_eu_country
-                            ? specifications[platform].eu_real_financial_specs
-                            : specifications[platform].real_financial_specs
-                    }
-                    has_banner
+                    specs={financial_specs}
                 />
             )}
             {(landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && platform === 'mt5' && (

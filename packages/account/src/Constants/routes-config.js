@@ -3,7 +3,7 @@ import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
     AccountLimits,
-    DerivPassword,
+    Passwords,
     PersonalDetails,
     FinancialAssessment,
     ProofOfIdentity,
@@ -75,9 +75,9 @@ const initRoutesConfig = ({ is_dashboard }) => [
                 icon: 'IcSecurity',
                 subroutes: [
                     {
-                        path: routes.deriv_password,
-                        component: DerivPassword,
-                        getTitle: () => localize('Deriv password'),
+                        path: routes.passwords,
+                        component: Passwords,
+                        getTitle: () => localize('Passwords'),
                     },
                     {
                         path: routes.self_exclusion,

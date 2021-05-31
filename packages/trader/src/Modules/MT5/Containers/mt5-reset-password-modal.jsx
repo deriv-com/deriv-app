@@ -22,8 +22,8 @@ const ResetPasswordIntent = ({ current_list, children, ...props }) => {
         title = getMtCompanies()[group][type].title;
     } else if (current_list) {
         [server, group, type] = Object.keys(current_list).pop().split('.');
-        login = current_list[`${group}.${type}@${server}`].login;
-        title = getMtCompanies()[group][type].title;
+        login = current_list[`${group}.${type}@${server}`]?.login ?? '';
+        title = getMtCompanies()?.[group]?.[type]?.title ?? '';
     } else {
         // Set a default intent
         login = '';
@@ -40,6 +40,7 @@ const ResetPasswordIntent = ({ current_list, children, ...props }) => {
 
 class MT5ResetPasswordModal extends React.Component {
     state = {
+        error_code: undefined,
         has_error: false,
         error_message: undefined,
         is_finished: false,
@@ -47,6 +48,7 @@ class MT5ResetPasswordModal extends React.Component {
     };
     renderErrorBox = error => {
         this.setState({
+            error_code: error.code,
             has_error: true,
             error_message: error.message,
         });
@@ -85,13 +87,13 @@ class MT5ResetPasswordModal extends React.Component {
         const { setSubmitting } = actions;
         setSubmitting(true);
         const request = {
-            login,
-            password_type,
+            account_id: login,
+            platform: 'mt5',
             new_password: values.new_password,
             verification_code: localStorage.getItem('mt5_reset_password_code'),
         };
 
-        WS.mt5PasswordReset(request).then(response => {
+        WS.tradingPlatformInvestorPasswordReset(request).then(response => {
             if (response.error && response.error.code === 'InvalidToken') {
                 this.renderErrorBox(response.error);
             } else {
@@ -109,18 +111,17 @@ class MT5ResetPasswordModal extends React.Component {
     }
     render() {
         const { is_mt5_reset_password_modal_enabled, setMt5PasswordResetModal, current_list } = this.props;
-
         return (
             <Modal
                 className='mt5-reset-password-modal'
                 is_open={is_mt5_reset_password_modal_enabled}
                 toggleModal={() => setMt5PasswordResetModal(false)}
-                title={localize('Reset DMT5 password')}
+                title={localize('Reset DMT5 investor password')}
             >
                 {!this.is_list_fetched && !this.state.has_error && <Loading is_fullscreen={false} />}
                 {this.is_list_fetched && !this.state.has_error && !this.state.is_finished && (
                     <ResetPasswordIntent current_list={current_list}>
-                        {({ title, type, login }) => (
+                        {({ type, login }) => (
                             <Formik
                                 initialValues={{ new_password: '' }}
                                 validate={this.validatePassword}
@@ -138,14 +139,6 @@ class MT5ResetPasswordModal extends React.Component {
                                     <form autoComplete='off' onSubmit={handleSubmit}>
                                         <div className='mt5-reset-password'>
                                             <div className='mt5-reset-password__container'>
-                                                <h2 className='mt5-reset-password__heading'>
-                                                    <Localize
-                                                        i18n_default_text='Reset DMT5 {{title}} password'
-                                                        values={{
-                                                            title,
-                                                        }}
-                                                    />
-                                                </h2>
                                                 <div className='mt5-reset-password__password-area'>
                                                     <PasswordMeter
                                                         input={values.new_password}
@@ -202,18 +195,21 @@ class MT5ResetPasswordModal extends React.Component {
                         <Text as='p' size='xs' weight='bold' align='center' className='mt5-reset-password__heading'>
                             {this.state.error_message}
                         </Text>
-                        <Text
-                            as='p'
-                            color='prominent'
-                            size='xs'
-                            align='center'
-                            className='mt5-reset-password__description--is-centered'
-                        >
-                            <Localize i18n_default_text='Please request a new password and check your email for the new token.' />
-                        </Text>
+                        {this.state.error_code === 'InvalidToken' && (
+                            <Text
+                                as='p'
+                                color='prominent'
+                                size='xs'
+                                align='center'
+                                className='mt5-reset-password__description--is-centered'
+                            >
+                                <Localize i18n_default_text='Please request a new password and check your email for the new token.' />
+                            </Text>
+                        )}
                         <Button
                             primary
                             large
+                            className='mt5-reset-password__confirm-button'
                             onClick={() => {
                                 this.clearAddressBar();
                                 setMt5PasswordResetModal(false);

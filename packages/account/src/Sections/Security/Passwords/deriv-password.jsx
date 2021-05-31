@@ -94,6 +94,4 @@ DerivPassword.propTypes = {
 
 export default connect(({ client }) => ({
     email: client.email,
-    is_social_signup: client.is_social_signup,
-    social_identity_provider: client.social_identity_provider,
 }))(DerivPassword);

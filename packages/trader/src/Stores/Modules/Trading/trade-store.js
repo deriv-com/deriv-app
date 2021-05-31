@@ -225,7 +225,12 @@ export default class TradeStore extends BaseStore {
                 }
             }
         );
-
+        reaction(
+            () => this.root_store.client.is_logged_in,
+            async () => {
+                await this.setSymbolsAfterLogin();
+            }
+        );
         reaction(
             () => [this.contract_type],
             () => {
@@ -281,6 +286,15 @@ export default class TradeStore extends BaseStore {
             const symbol = await pickDefaultSymbol(this.active_symbols);
             await this.processNewValuesAsync({ symbol });
         }
+    }
+
+    @action.bound
+    async setSymbolsAfterLogin() {
+        await this.setActiveSymbols();
+        runInAction(() => {
+            this.should_refresh_active_symbols = true;
+        });
+        await this.setDefaultSymbol();
     }
 
     @action.bound

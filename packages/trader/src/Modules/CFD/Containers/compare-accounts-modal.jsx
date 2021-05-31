@@ -465,6 +465,7 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
         landing_companies,
         platform,
         show_eu_related,
+        residence,
     ]);
 
     const show_risk_message = platform === 'mt5' || !show_eu_related;
@@ -639,6 +640,6 @@ export default connect(({ modules, ui, client }) => ({
     is_eu_country: client.is_eu_country,
     is_logged_in: client.is_logged_in,
     landing_companies: client.landing_companies,
-    residence: client.residence,
+    residence: client.residence || client.clients_country,
     toggleCompareAccounts: modules.cfd.toggleCompareAccountsModal,
 }))(CompareAccountsModal);

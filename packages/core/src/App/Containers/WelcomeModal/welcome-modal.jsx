@@ -137,7 +137,7 @@ const WelcomeModal = ({ toggleWelcomeModal, history, is_dxtrade_allowed }) => {
             platforms.push({
                 icon: 'IcBrandDxtrade',
                 title: localize('Deriv X'),
-                description: localize('Trade CFDs on a customisable, easy-to-use trading platform.'),
+                description: localize('Trade FX and CFDs on a customisable, easy-to-use trading platform.'),
                 onButtonClick: () => switchPlatform(routes.dxtrade),
                 button_text: localize('Trade on Deriv X'),
             });

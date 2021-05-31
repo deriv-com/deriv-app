@@ -106,6 +106,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('Fixed/Variable'),
                 synthetic_eu: localize('Fixed/Variable'),
                 financial: localize('Variable'),
+                financial_au: localize('Variable'),
                 financial_eu: localize('Variable'),
                 financial_stp: localize('Variable'),
                 footnote: localize(
@@ -116,6 +117,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('Fixed/Variable'),
                 synthetic_eu: localize('Fixed/Variable'),
                 financial: localize('Variable'),
+                financial_au: localize('Variable'),
                 financial_eu: localize('Variable'),
                 footnote: localize(
                     "The spread is the difference between the buy price and sell price. A variable spread means that the spread is constantly changing, depending on market conditions. A fixed spread remains constant but is subject to alteration, at the Broker's absolute discretion."
@@ -148,6 +150,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('No'),
                 synthetic_eu: localize('No'),
                 financial: localize('No'),
+                financial_au: localize('No'),
                 financial_eu: localize('No'),
                 financial_stp: localize('No'),
                 footnote: null,
@@ -156,6 +159,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('No'),
                 synthetic_eu: localize('No'),
                 financial: localize('No'),
+                financial_au: localize('No'),
                 financial_eu: localize('No'),
                 footnote: null,
             },
@@ -214,6 +218,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('Available'),
                 synthetic_eu: localize('Available'),
                 financial: localize('N/A'),
+                financial_au: localize('N/A'),
                 financial_eu: localize('Required'),
             },
         },

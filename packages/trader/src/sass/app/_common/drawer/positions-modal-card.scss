@@ -57,6 +57,7 @@
         transition: transform 0.25s ease, opacity 0.25s linear;
         position: relative;
         background: var(--general-main-1);
+        border: 1px solid var(--border-disabled);
     }
     &__grid {
         display: grid;

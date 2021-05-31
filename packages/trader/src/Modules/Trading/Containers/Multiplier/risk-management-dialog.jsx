@@ -95,7 +95,7 @@ const RiskManagementDialog = ({
                     className={classNames('trade-params__multiplier-risk-management-dialog', {
                         'trade-params__multiplier-risk-management-dialog--no-cancel': !should_show_deal_cancellation,
                     })}
-                    height_offset='60px'
+                    height_offset='54px'
                 >
                     <TakeProfit
                         take_profit={state.take_profit}
@@ -120,6 +120,7 @@ const RiskManagementDialog = ({
                             onChangeMultiple={onChangeMultipleLocal}
                         />
                     )}
+                    <div className='trade-params__multiplier-risk-management-dialog-bottom-separator' />
                     <div className='trade-params__multiplier-risk-management-dialog-apply-button'>
                         <Button
                             text={localize('Apply')}

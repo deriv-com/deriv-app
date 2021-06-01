@@ -26,7 +26,7 @@ const Passwords = ({ is_social_signup, is_trading_password_required, social_iden
                     social_identity_provider={social_identity_provider}
                 />
             )}
-            <TradingPassword is_trading_password_required />
+            <TradingPassword is_trading_password_required={is_trading_password_required} />
         </div>
     );
 };

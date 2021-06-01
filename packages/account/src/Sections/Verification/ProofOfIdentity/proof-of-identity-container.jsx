@@ -146,7 +146,7 @@ const ProofOfIdentityContainer = ({
                     setIsLoading(false);
                 });
         });
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [is_loading]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // component didUpdate hook, checks previous account_status and current account_status to handle account switching
     React.useEffect(() => {

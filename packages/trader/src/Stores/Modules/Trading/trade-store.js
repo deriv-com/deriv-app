@@ -567,6 +567,12 @@ export default class TradeStore extends BaseStore {
             const is_tick_contract = this.duration_unit === 't';
             processPurchase(proposal_id, price).then(
                 action(response => {
+                    if (!this.is_trade_component_mounted) {
+                        this.enablePurchase();
+                        this.is_purchasing_contract = false;
+                        return;
+                    }
+
                     const last_digit = +this.last_digit;
                     if (response.error) {
                         // using javascript to disable purchase-buttons manually to compensate for mobx lag

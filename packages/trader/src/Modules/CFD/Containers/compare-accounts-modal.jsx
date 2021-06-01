@@ -456,11 +456,11 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
     React.useEffect(() => {
         setCols(compareAccountsData({ landing_companies, is_logged_in, platform, show_eu_related, residence }));
 
-        if (is_logged_in && platform === 'mt5') {
+        if (is_logged_in) {
             updateColumnsStyle(
                 `1.5fr ${landing_companies?.mt_gaming_company?.financial ? '1fr' : ''} ${
                     landing_companies?.mt_financial_company?.financial ? '2fr' : ''
-                } ${landing_companies?.mt_financial_company?.financial_stp ? ' 1fr ' : ''}`
+                } ${landing_companies?.mt_financial_company?.financial_stp && platform === 'mt5' ? ' 1fr ' : ''}`
             );
         }
     }, [

@@ -16,7 +16,7 @@
             var allowed_origins = [
                 `https://smarttrader.${domain_url}`,
             
-                'https://staging-smarttrader.deriv.com',
+                `https://staging-smarttrader.${domain_url}`,
             ];
             if (allowed_origins.includes(message.origin)) {
                 switch (message.data.key) {

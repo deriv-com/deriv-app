@@ -7,6 +7,7 @@ import { getContractPath, isCryptoContract, isMultiplierContract } from '@deriv/
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { connect } from 'Stores/connect';
 import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
+import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 
 const PositionsDrawerCard = ({
     addToast,
@@ -41,7 +42,7 @@ const PositionsDrawerCard = ({
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
     const is_crypto = isCryptoContract(contract_info.underlying);
     const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);
-    const is_sold = contract_info?.is_sold;
+    const has_ended = !!getEndTime(contract_info);
 
     const loader_el = (
         <div className='dc-contract-card__content-loader'>
@@ -79,7 +80,7 @@ const PositionsDrawerCard = ({
             }}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
-            is_sold={is_sold}
+            is_sold={has_ended}
             has_progress_slider={is_mobile && has_progress_slider}
             removeToast={removeToast}
             server_time={server_time}

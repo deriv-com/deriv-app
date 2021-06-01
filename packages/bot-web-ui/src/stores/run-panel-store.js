@@ -87,17 +87,20 @@ export default class RunPanelStore {
 
     @action.bound
     async onRunButtonClick() {
+        this.setIsRunning(true);
         const { core, summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = core;
 
         this.dbot.unHighlightAllBlocks();
         if (!client.is_logged_in) {
             this.showLoginDialog();
+            this.setIsRunning(false);
             return;
         }
         await self_exclusion.checkRestriction();
         if (!self_exclusion.should_bot_run) {
             self_exclusion.setIsRestricted(true);
+            this.setIsRunning(false);
             return;
         }
         self_exclusion.setIsRestricted(false);
@@ -106,6 +109,7 @@ export default class RunPanelStore {
 
         if (!this.dbot.shouldRunBot()) {
             this.unregisterBotListeners();
+            this.setIsRunning(false);
             return;
         }
 

@@ -218,7 +218,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('Available'),
                 synthetic_eu: localize('Available'),
                 financial: localize('N/A'),
-                financial_au: localize('N/A'),
+                financial_au: localize('Required'),
                 financial_eu: localize('Required'),
             },
         },

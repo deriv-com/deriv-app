@@ -1877,7 +1877,7 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     .dc-modal-header {
         border: none;
-        max-width: 44rem;
+        max-width: 43rem;
         margin-bottom: 0.8rem;
     }
     .account-closure-warning-modal {
@@ -1926,9 +1926,8 @@ $MIN_HEIGHT_FLOATING: calc(
 
     .deactivate-account-error {
         padding: 0 2.4rem;
-        margin-bottom: 2.4rem;
-        &__description {
-            margin-top: 0.8rem;
+        &__title {
+            margin-bottom: 0.5rem;
         }
         &__account-details {
             display: flex;
@@ -1940,23 +1939,17 @@ $MIN_HEIGHT_FLOATING: calc(
             flex-direction: column;
             justify-content: space-between;
         }
-        &__wrapper {
-            padding: 0 2.4rem;
-            border: 1px solid var(--general-section-1);
-            border-radius: $BORDER_RADIUS;
-            margin-top: 1.6rem;
-        }
         &__container {
             display: flex;
-            padding: 1.1rem 0;
+            padding: 0.3rem 0.3rem 0.3rem 1.6rem;
             justify-content: space-between;
             align-items: center;
-        }
-        &__container:not(:last-child) {
-            border-bottom: 1px solid var(--general-section-1);
+            max-width: 26.4rem;
         }
         &__details {
-            margin-left: 2rem;
+            color: var(--text-prominent);
+            font-size: var(--text-size-xs);
+            line-height: 1.43;
         }
         &__button {
             height: 4rem;

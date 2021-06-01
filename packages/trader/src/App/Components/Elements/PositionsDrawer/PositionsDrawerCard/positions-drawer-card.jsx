@@ -41,6 +41,7 @@ const PositionsDrawerCard = ({
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
     const is_crypto = isCryptoContract(contract_info.underlying);
     const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);
+    const is_sold = contract_info?.is_sold;
 
     const loader_el = (
         <div className='dc-contract-card__content-loader'>
@@ -78,6 +79,7 @@ const PositionsDrawerCard = ({
             }}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
+            is_sold={is_sold}
             has_progress_slider={is_mobile && has_progress_slider}
             removeToast={removeToast}
             server_time={server_time}

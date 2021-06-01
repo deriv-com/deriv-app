@@ -15,7 +15,7 @@
             }
             var allowed_origins = [
                 `https://smarttrader.${domain_url}`,
-                'https://smarttrader-staging.deriv.com',
+                'https://smarttrader-staging.${domain_url}',
                 'https://staging-smarttrader.deriv.com',
             ];
             if (allowed_origins.includes(message.origin)) {

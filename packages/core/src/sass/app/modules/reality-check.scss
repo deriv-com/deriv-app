@@ -175,6 +175,7 @@
                     }
 
                     strong {
+                        padding-left: 5px;
                         @include mobile {
                             display: block;
                         }

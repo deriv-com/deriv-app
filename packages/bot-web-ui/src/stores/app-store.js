@@ -92,7 +92,6 @@ export default class AppStore {
             () => client.switch_broadcast,
             switch_broadcast => {
                 if (!switch_broadcast) return;
-
                 this.showDigitalOptionsMaltainvestError(client, common);
 
                 const { active_symbols, contracts_for } = ApiHelpers.instance;
@@ -184,7 +183,7 @@ export default class AppStore {
                 title: localize('DBot is not available for this account'),
                 link: localize('Go to DMT5 dashboard'),
             });
-        } else if (common.has_error) {
+        } else if (common.has_error === false) {
             common.setError(false, null);
         }
     };

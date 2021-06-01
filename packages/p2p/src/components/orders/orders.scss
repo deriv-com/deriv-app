@@ -128,14 +128,13 @@
             }
         }
         &-title {
-            margin-top: 0.4rem;
-            grid-area: title;
+            align-items: start;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: start;
-            justify-self: start;
+            grid-area: title;
             height: 4.9rem;
+            justify-content: space-around;
+            justify-self: start;
         }
 
         &-chat {

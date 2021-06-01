@@ -175,6 +175,7 @@ DropdownList.displayName = 'DropdownList';
 const Dropdown = ({
     className,
     classNameDisplay,
+    classNameHint,
     classNameItems,
     classNameLabel,
     disabled,
@@ -435,7 +436,12 @@ const Dropdown = ({
                     />
                 </div>
                 {!error && hint && (
-                    <Text as='p' color='less-prominent' size='xxs' className='dc-dropdown__hint'>
+                    <Text
+                        as='p'
+                        color='less-prominent'
+                        size='xxs'
+                        className={classNames('dc-dropdown__hint', classNameHint)}
+                    >
                         {hint}
                     </Text>
                 )}
@@ -449,6 +455,7 @@ Dropdown.propTypes = {
     classNameDisplay: PropTypes.string,
     classNameItems: PropTypes.string,
     classNameLabel: PropTypes.string,
+    classNameHint: PropTypes.string,
     disabled: PropTypes.bool,
     list_portal_id: PropTypes.string,
     has_symbol: PropTypes.bool,

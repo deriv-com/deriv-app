@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { ContractCard } from '@deriv/components';
-import { getContractPath, isMultiplierContract } from '@deriv/shared';
+import { getContractPath, isCryptoContract, isMultiplierContract } from '@deriv/shared';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { connect } from 'Stores/connect';
 import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
@@ -39,6 +39,8 @@ const PositionsDrawerCard = ({
     toggleUnsupportedContractModal,
 }) => {
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
+    const is_crypto = isCryptoContract(contract_info.underlying);
+    const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);
 
     const loader_el = (
         <div className='dc-contract-card__content-loader'>
@@ -52,7 +54,7 @@ const PositionsDrawerCard = ({
             display_name={display_name}
             getCardLabels={getCardLabels}
             getContractTypeDisplay={getContractTypeDisplay}
-            has_progress_slider={!is_multiplier}
+            has_progress_slider={!is_mobile && has_progress_slider}
             is_mobile={is_mobile}
             is_positions={true}
             is_sell_requested={is_sell_requested}
@@ -76,6 +78,7 @@ const PositionsDrawerCard = ({
             }}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
+            has_progress_slider={is_mobile && has_progress_slider}
             removeToast={removeToast}
             server_time={server_time}
             setCurrentFocus={setCurrentFocus}

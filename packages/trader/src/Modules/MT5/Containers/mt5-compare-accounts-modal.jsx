@@ -53,6 +53,7 @@ const accounts = [
         synthetic: localize('Fixed/Variable'),
         synthetic_eu: localize('Fixed/Variable'),
         financial: localize('Variable'),
+        financial_au: localize('Variable'),
         financial_eu: localize('Variable'),
         financial_stp: localize('Variable'),
         footnote: localize(

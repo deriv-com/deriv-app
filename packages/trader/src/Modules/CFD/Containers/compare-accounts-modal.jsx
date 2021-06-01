@@ -645,6 +645,6 @@ export default connect(({ modules, ui, client }) => ({
     is_eu_country: client.is_eu_country,
     is_logged_in: client.is_logged_in,
     landing_companies: client.landing_companies,
-    residence: client.residence || client.clients_country,
+    residence: client.residence,
     toggleCompareAccounts: modules.cfd.toggleCompareAccountsModal,
 }))(CompareAccountsModal);

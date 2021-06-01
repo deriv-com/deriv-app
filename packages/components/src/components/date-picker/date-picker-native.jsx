@@ -85,17 +85,17 @@ const Native = ({
                 onFocus={handleFocus}
                 disabled={disabled}
                 onChange={e => {
-                    let newValue = e.target.value;
+                    let new_value = e.target.value;
 
                     if (max_date) {
                         const moment_maxdate = toMoment(max_date);
-                        const moment_value = toMoment(newValue);
+                        const moment_value = toMoment(new_value);
                         const days_diff = moment_maxdate.diff(moment_value, 'days');
 
-                        newValue = days_diff < 0 ? moment_maxdate.format('YYYY-MM-DD') : newValue;
+                        new_value = days_diff < 0 ? moment_maxdate.format('YYYY-MM-DD') : new_value;
                     }
 
-                    onSelect(newValue);
+                    onSelect(new_value);
                 }}
             />
             {error && (

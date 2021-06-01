@@ -13,12 +13,12 @@ const address_details_config = ({ account_settings, is_svg }) => {
             rules: [
                 ['req', localize('First line of address is required')],
                 [
-                    'address',
+                    'regular',
                     localize(
                         'Only letters, numbers, spaces, and these special characters allowed: period, comma, colon, semicolon, brackets, at sign, hashtag, slash, hyphen.'
                     ),
                     {
-                        regex: /^[A-Za-z0-9\s'.,:;()@#/-]{1,70}$/,
+                        regex: /^[\p{L}\p{Nd}\s'.,:;()\x{b0}@#/-]{1,70}$/,
                     },
                 ],
                 ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
@@ -30,12 +30,12 @@ const address_details_config = ({ account_settings, is_svg }) => {
             default_value: account_settings.address_line_2 ?? '',
             rules: [
                 [
-                    'address',
+                    'regular',
                     localize(
                         'Only letters, numbers, spaces, and these special characters allowed: period, comma, colon, semicolon, brackets, at sign, hashtag, slash, hyphen.'
                     ),
                     {
-                        regex: /^[A-Za-z0-9\s'.,:;()@#/-]{0,70}$/,
+                        regex: /^[\p{L}\p{Nd}\s'.,:;()\x{b0}@#/-]{0,70}$/,
                     },
                 ],
                 ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],

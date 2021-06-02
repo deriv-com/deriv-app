@@ -225,13 +225,6 @@ class DeactivateAccountReason extends React.Component {
     };
 
     handleInputOnInput = e => {
-        const log2 = {
-            'e.key': e.key,
-            'e.keyCode': e.keyCode,
-            'e.charCode': e.charCode,
-            'e.which': e.which,
-        };
-
         console.log(e);
         console.log(e.nativeEvent.inputType);
 

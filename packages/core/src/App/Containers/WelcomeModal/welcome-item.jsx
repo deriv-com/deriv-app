@@ -29,7 +29,11 @@ const WelcomeItem = ({ title, description, options, onClick, icon, mobileIcon, s
         })}
         onClick={onClick}
     >
-        <div className='welcome-item__icon'>
+        <div
+            className={classNames('welcome-item__icon', {
+                'welcome-item-small__icon': small,
+            })}
+        >
             <>
                 <DesktopWrapper>{icon}</DesktopWrapper>
                 <MobileWrapper>{mobileIcon}</MobileWrapper>

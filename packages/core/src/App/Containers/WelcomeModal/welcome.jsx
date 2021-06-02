@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { Text } from '@deriv/components';
+import { Text, MobileWrapper, DesktopWrapper } from '@deriv/components';
 import CFDs from 'Assets/SvgComponents/onboarding/cfds.svg';
 import CFDsMobile from 'Assets/SvgComponents/onboarding/cfds-mobile.svg';
 import DigitalOptions from 'Assets/SvgComponents/onboarding/digital-options.svg';
@@ -14,9 +14,16 @@ import WelcomeItem from './welcome-item.jsx';
 
 const Welcome = ({ switchPlatform }) => (
     <>
-        <Text as='h2' weight='bold' align='center' color='prominent' className='welcome__title'>
-            {localize('Where would you like to start?')}
-        </Text>
+        <DesktopWrapper>
+            <Text as='h2' weight='bold' align='center' color='prominent' className='welcome__title' size='m'>
+                {localize('Where would you like to start?')}
+            </Text>
+        </DesktopWrapper>
+        <MobileWrapper>
+            <Text as='h2' weight='bold' align='center' color='prominent' className='welcome__title' size='xsm'>
+                {localize('Where would you like to start?')}
+            </Text>
+        </MobileWrapper>
         <div className='welcome__body'>
             <WelcomeItem
                 title={localize('CFDs')}

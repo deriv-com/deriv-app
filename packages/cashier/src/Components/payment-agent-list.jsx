@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {
     Accordion,
-    Button,
     DesktopWrapper,
     Dropdown,
     Loading,
@@ -18,7 +17,7 @@ import { connect } from 'Stores/connect';
 import PaymentAgentDetails from './payment-agent-details.jsx';
 import Error from './Error/error.jsx';
 import EmailSent from './Email/email-sent.jsx';
-import PaymentAgentWithdrawForm from '../Components/Form/payment-agent-withdraw-form.jsx';
+import PaymentAgentWithdrawForm from './Form/payment-agent-withdraw-form.jsx';
 
 const PaymentAgentList = ({
     error,
@@ -196,7 +195,7 @@ PaymentAgentList.propTypes = {
     is_payment_agent_withdraw: PropTypes.bool,
 };
 
-export default connect(({ client, modules }) => ({
+export default connect(({ modules }) => ({
     error: modules.cashier.config.payment_agent.verification.error,
     is_email_sent: modules.cashier.config.payment_agent.verification.is_email_sent,
     is_resend_clicked: modules.cashier.config.payment_agent.verification.is_resend_clicked,

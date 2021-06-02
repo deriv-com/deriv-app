@@ -3,7 +3,6 @@ import React from 'react';
 import { connect } from 'Stores/connect';
 import PaymentAgentList from '../Components/payment-agent-list.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
-import PaymentAgentWithdrawForm from '../Components/Form/payment-agent-withdraw-form.jsx';
 
 const PaymentAgent = ({ container, is_payment_agent_withdraw, is_virtual, setActiveTab, verification_code }) => {
     React.useEffect(() => {

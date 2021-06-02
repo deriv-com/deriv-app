@@ -18,11 +18,11 @@ const ResetPasswordIntent = ({ current_list, children, ...props }) => {
     let group, type, login, title, server;
     if (has_intent && current_list) {
         [server, group, type] = reset_password_intent.split('.');
-        login = current_list[`${group}.${type}@${server}`].login;
+        login = current_list[`mt5.${group}.${type}@${server}`].login;
         title = getMtCompanies()[group][type].title;
     } else if (current_list) {
         [server, group, type] = Object.keys(current_list).pop().split('.');
-        login = current_list[`${group}.${type}@${server}`]?.login ?? '';
+        login = current_list[`mt5.${group}.${type}@${server}`]?.login ?? '';
         title = getMtCompanies()?.[group]?.[type]?.title ?? '';
     } else {
         // Set a default intent

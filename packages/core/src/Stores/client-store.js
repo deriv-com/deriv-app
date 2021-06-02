@@ -626,6 +626,9 @@ export default class ClientStore extends BaseStore {
             this.landing_companies?.financial_company?.shortcode === 'svg' ||
             this.landing_companies?.gaming_company?.shortcode === 'svg';
 
+        const is_au = (this.residence || this.website_status.clients_country) === 'au';
+        if (is_au) return false;
+
         return is_svg || (!this.is_logged_in && !this.is_eu && !this.is_eu_country);
     };
 

@@ -237,7 +237,6 @@ const AccountTransferForm = ({
 
         const is_mt_transfer = selected_to.is_mt || selected_from.is_mt;
         remaining_transfers = is_mt_transfer ? mt5_remaining_transfers : internal_remaining_transfers;
-
         transfer_to_hint =
             +remaining_transfers === 1
                 ? localize('You have {{number}} transfer remaining for today.', { number: remaining_transfers })
@@ -332,6 +331,7 @@ const AccountTransferForm = ({
                                             classNameDisplaySpan='cashier__drop-down-display-span'
                                             classNameItems='cashier__drop-down-items'
                                             classNameLabel='cashier__drop-down-label'
+                                            classNameHint='cashier__hint'
                                             is_large
                                             label={localize('To')}
                                             list={to_accounts}
@@ -348,6 +348,7 @@ const AccountTransferForm = ({
                                             placeholder={localize('Please select')}
                                             className='account-transfer__transfer-to'
                                             classNameDisplay='cashier__drop-down-display'
+                                            classNameHint='cashier__hint'
                                             label={localize('To')}
                                             name='transfer_to'
                                             value={selected_to.value}
@@ -369,6 +370,7 @@ const AccountTransferForm = ({
                                                 setFieldTouched('amount', true, false);
                                             }}
                                             className='cashier__input dc-input--no-placeholder account-transfer__input'
+                                            classNameHint='cashier__hint'
                                             type='text'
                                             label={localize('Amount')}
                                             error={touched.amount && errors.amount ? errors.amount : ''}

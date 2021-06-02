@@ -118,7 +118,6 @@ export default class RunPanelStore {
 
         if (!this.dbot.shouldRunBot()) {
             this.unregisterBotListeners();
-            this.setIsRunning(false);
             return;
         }
 

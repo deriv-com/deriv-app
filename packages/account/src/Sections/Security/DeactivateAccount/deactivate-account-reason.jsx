@@ -400,7 +400,7 @@ class DeactivateAccountReason extends React.Component {
                                 )}
                             </Field>
 
-                            <pre style={{ 'white-space': 'pre-wrap' }}> {JSON.stringify(this.state.log)}</pre>
+                            <pre style={{ 'white-space': 'pre-wrap' }}> {JSON.stringify(this.state.log,undefined, 2)}</pre>
                             <Field name='other_trading_platforms'>
                                 {({ field }) => (
                                     <Input

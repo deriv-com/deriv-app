@@ -125,6 +125,7 @@ class DeactivateAccountReason extends React.Component {
         total_accumulated_characters: 0,
         input_action: null,
         log: null,
+        log2: null,
     };
     validateFields = values => {
         const error = {};
@@ -221,6 +222,19 @@ class DeactivateAccountReason extends React.Component {
         } else {
             onChange(e);
         }
+    };
+
+    handleInputKeyPress = e => {
+        const log2 = {
+            'e.key': e.key,
+            'e.keyCode': e.keyCode,
+            'e.charCode': e.charCode,
+            'e.which': e.which,
+        };
+
+        this.setState({
+            log2,
+        });
     };
 
     handleInputKeyDown = e => {
@@ -400,7 +414,14 @@ class DeactivateAccountReason extends React.Component {
                                 )}
                             </Field>
 
-                            <pre style={{ 'white-space': 'pre-wrap' }}> {JSON.stringify(this.state.log,undefined, 2)}</pre>
+                            <pre style={{ 'white-space': 'pre-wrap' }}>
+                                {' '}
+                                {JSON.stringify(this.state.log, undefined, 2)}
+                            </pre>
+                            <pre style={{ 'white-space': 'pre-wrap' }}>
+                                {' '}
+                                {JSON.stringify(this.state.log2, undefined, 2)}
+                            </pre>
                             <Field name='other_trading_platforms'>
                                 {({ field }) => (
                                     <Input
@@ -417,6 +438,7 @@ class DeactivateAccountReason extends React.Component {
                                         max_characters={character_limit_no}
                                         onChange={e => this.handleChange(e, handleChange)}
                                         onKeyDown={this.handleInputKeyDown}
+                                        onKeyPress={this.handleInputKeyPress}
                                         onPaste={this.handleInputPaste}
                                     />
                                 )}
@@ -435,6 +457,7 @@ class DeactivateAccountReason extends React.Component {
                                         max_characters={character_limit_no}
                                         onChange={e => this.handleChange(e, handleChange)}
                                         onKeyDown={this.handleInputKeyDown}
+                                        onKeyPress={this.handleInputKeyPress}
                                         onPaste={this.handleInputPaste}
                                     />
                                 )}

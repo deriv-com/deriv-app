@@ -47,10 +47,7 @@ export default class PushwooshStore extends BaseStore {
                             this.push_woosh.subscribe();
                         }
                     })
-                    .catch(e => {
-                        // eslint-disable-next-line no-console
-                        console.error(e);
-                    });
+                    .catch();
 
                 this.sendTags(api);
             },

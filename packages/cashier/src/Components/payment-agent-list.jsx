@@ -10,13 +10,15 @@ import {
     MobileWrapper,
     SelectNative,
     Text,
+    Tabs,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { website_name } from '@deriv/shared';
+import { website_name, isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import PaymentAgentDetails from './payment-agent-details.jsx';
 import Error from './Error/error.jsx';
 import EmailSent from './Email/email-sent.jsx';
+import PaymentAgentWithdrawForm from '../Components/Form/payment-agent-withdraw-form.jsx';
 
 const PaymentAgentList = ({
     error,
@@ -30,6 +32,8 @@ const PaymentAgentList = ({
     selected_bank,
     sendVerificationEmail,
     supported_banks,
+    verification_code,
+    is_payment_agent_withdraw,
 }) => {
     React.useEffect(() => {
         onMount();
@@ -52,6 +56,12 @@ const PaymentAgentList = ({
         ...supported_banks,
     ];
 
+    const onTabItemClick = index => {
+        if (index === 1) {
+            sendVerificationEmail();
+        }
+    };
+
     return (
         <div className='cashier__wrapper--align-left'>
             {error?.code ? (
@@ -65,112 +75,104 @@ const PaymentAgentList = ({
                         />
                     </Text>
                     <div className='payment-agent__instructions'>
-                        <div className='payment-agent__instructions-section'>
-                            <Text
-                                as='h2'
-                                weight='bold'
-                                color='prominent'
-                                className='cashier__header payment-agent__header'
-                            >
-                                <Localize i18n_default_text='Deposit' />
-                            </Text>
-                            <Text as='p' size='xs' line_height='s' className='cashier__paragraph'>
-                                <Localize i18n_default_text='Choose a payment agent and contact them for instructions.' />
-                            </Text>
-                        </div>
-                        <div className='payment-agent__instructions-section'>
-                            <Text
-                                as='h2'
-                                weight='bold'
-                                color='prominent'
-                                className='cashier__header payment-agent__header'
-                            >
-                                <Localize i18n_default_text='Withdrawal' />
-                            </Text>
-                            <Button
-                                className='payment-agent__instructions-button'
-                                has_effect
-                                text={localize('Request withdrawal form')}
-                                onClick={sendVerificationEmail}
-                                primary
-                                large
-                            />
-                        </div>
-                    </div>
-                    <Text
-                        as='h2'
-                        weight='bold'
-                        color='prominent'
-                        className='cashier__header payment-agent__list-header'
-                    >
-                        <Localize i18n_default_text='Payment agents' />
-                    </Text>
-                    <div className='payment-agent__list-line' />
-                    {is_loading ? (
-                        <Loading className='payment-agent__loader' />
-                    ) : (
-                        <React.Fragment>
-                            {supported_banks.length > 1 && (
-                                <div className='payment-agent__list-selector'>
-                                    <DesktopWrapper>
-                                        <Dropdown
-                                            id='payment_methods'
-                                            className='payment-agent__drop-down payment-agent__filter'
-                                            classNameDisplay='cashier__drop-down-display payment-agent__filter-display'
-                                            classNameDisplaySpan='cashier__drop-down-display-span'
-                                            classNameItems='cashier__drop-down-items'
-                                            list={list_with_default}
-                                            name='payment_methods'
-                                            value={selected_bank}
-                                            onChange={onChangePaymentMethod}
+                        <Tabs
+                            active_index={verification_code || is_payment_agent_withdraw ? 1 : 0}
+                            className='tabs--desktop'
+                            onTabItemClick={onTabItemClick}
+                            top
+                            header_fit_content={isDesktop()}
+                        >
+                            <div label={localize('Deposit')}>
+                                {is_loading ? (
+                                    <Loading className='payment-agent__loader' />
+                                ) : (
+                                    <React.Fragment>
+                                        <Text
+                                            as='p'
+                                            size='xs'
+                                            weight='bold'
+                                            color='prominent'
+                                            className='cashier__header payment-agent__list-header'
+                                        >
+                                            <Localize i18n_default_text='Payment agents' />
+                                        </Text>
+                                        <div className='payment-agent__list-line' />
+                                        <div className='payment-agent__list-selector'>
+                                            <Text as='p' size='xs' line_height='s' className='cashier__paragraph'>
+                                                <Localize i18n_default_text='Choose a payment agent and contact them for instructions.' />
+                                            </Text>
+                                            {supported_banks.length > 1 && (
+                                                <div>
+                                                    <DesktopWrapper>
+                                                        <Dropdown
+                                                            id='payment_methods'
+                                                            className='payment-agent__drop-down payment-agent__filter'
+                                                            classNameDisplay='cashier__drop-down-display payment-agent__filter-display'
+                                                            classNameDisplaySpan='cashier__drop-down-display-span'
+                                                            classNameItems='cashier__drop-down-items'
+                                                            list={list_with_default}
+                                                            name='payment_methods'
+                                                            value={selected_bank}
+                                                            onChange={onChangePaymentMethod}
+                                                        />
+                                                    </DesktopWrapper>
+                                                    <MobileWrapper>
+                                                        <SelectNative
+                                                            placeholder={localize('Please select')}
+                                                            name='payment_methods'
+                                                            list_items={supported_banks}
+                                                            value={selected_bank}
+                                                            label={
+                                                                selected_bank === 0
+                                                                    ? localize('All payment agents')
+                                                                    : localize('Type')
+                                                            }
+                                                            onChange={e =>
+                                                                onChangePaymentMethod({
+                                                                    target: {
+                                                                        name: 'payment_methods',
+                                                                        value: e.target.value.toLowerCase(),
+                                                                    },
+                                                                })
+                                                            }
+                                                            use_text={false}
+                                                        />
+                                                    </MobileWrapper>
+                                                </div>
+                                            )}
+                                        </div>
+                                        <Accordion
+                                            className='payment-agent__accordion'
+                                            list={payment_agent_list.map(payment_agent => ({
+                                                header: payment_agent.name,
+                                                content: (
+                                                    <PaymentAgentDetails
+                                                        payment_agent_email={payment_agent.email}
+                                                        payment_agent_phone={payment_agent.phone}
+                                                        payment_agent_url={payment_agent.url}
+                                                    />
+                                                ),
+                                            }))}
                                         />
-                                    </DesktopWrapper>
-                                    <MobileWrapper>
-                                        <SelectNative
-                                            placeholder={localize('Please select')}
-                                            name='payment_methods'
-                                            list_items={supported_banks}
-                                            value={selected_bank}
-                                            label={
-                                                selected_bank === 0 ? localize('All payment agents') : localize('Type')
-                                            }
-                                            onChange={e =>
-                                                onChangePaymentMethod({
-                                                    target: {
-                                                        name: 'payment_methods',
-                                                        value: e.target.value.toLowerCase(),
-                                                    },
-                                                })
-                                            }
-                                            use_text={false}
-                                        />
-                                    </MobileWrapper>
+                                    </React.Fragment>
+                                )}
+                                <div className='payment-agent__disclaimer'>
+                                    <Text size='xs' line_height='xs' weight='bold' className='cashier__text'>
+                                        <Localize i18n_default_text='DISCLAIMER' />
+                                    </Text>
+                                    :&nbsp;
+                                    <Localize
+                                        i18n_default_text='{{website_name}} is not affiliated with any Payment Agent. Customers deal with Payment Agents at their sole risk. Customers are advised to check the credentials of Payment Agents, and check the accuracy of any information about Payments Agents (on Deriv or elsewhere) before transferring funds.'
+                                        values={{ website_name }}
+                                    />
                                 </div>
-                            )}
-                            <Accordion
-                                className='payment-agent__accordion'
-                                list={payment_agent_list.map(payment_agent => ({
-                                    header: payment_agent.name,
-                                    content: (
-                                        <PaymentAgentDetails
-                                            payment_agent_email={payment_agent.email}
-                                            payment_agent_phone={payment_agent.phone}
-                                            payment_agent_url={payment_agent.url}
-                                        />
-                                    ),
-                                }))}
-                            />
-                        </React.Fragment>
-                    )}
-                    <div className='payment-agent__disclaimer'>
-                        <Text size='xs' line_height='xs' weight='bold' className='cashier__text'>
-                            <Localize i18n_default_text='DISCLAIMER' />
-                        </Text>
-                        :&nbsp;
-                        <Localize
-                            i18n_default_text='{{website_name}} is not affiliated with any Payment Agent. Customers deal with Payment Agents at their sole risk. Customers are advised to check the credentials of Payment Agents, and check the accuracy of any information about Payments Agents (on Deriv or elsewhere) before transferring funds.'
-                            values={{ website_name }}
-                        />
+                            </div>
+                            <div label={localize('Withdrawal')}>
+                                {(verification_code || is_payment_agent_withdraw) && (
+                                    <PaymentAgentWithdrawForm verification_code={verification_code} />
+                                )}
+                            </div>
+                        </Tabs>
                     </div>
                 </React.Fragment>
             )}
@@ -190,9 +192,11 @@ PaymentAgentList.propTypes = {
     selected_bank: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     sendVerificationEmail: PropTypes.func,
     supported_banks: MobxPropTypes.arrayOrObservableArray,
+    verification_code: PropTypes.string,
+    is_payment_agent_withdraw: PropTypes.bool,
 };
 
-export default connect(({ modules }) => ({
+export default connect(({ client, modules }) => ({
     error: modules.cashier.config.payment_agent.verification.error,
     is_email_sent: modules.cashier.config.payment_agent.verification.is_email_sent,
     is_resend_clicked: modules.cashier.config.payment_agent.verification.is_resend_clicked,

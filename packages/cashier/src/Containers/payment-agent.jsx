@@ -14,10 +14,9 @@ const PaymentAgent = ({ container, is_payment_agent_withdraw, is_virtual, setAct
     if (is_virtual) {
         return <Virtual />;
     }
-    if (verification_code || is_payment_agent_withdraw) {
-        return <PaymentAgentWithdrawForm verification_code={verification_code} />;
-    }
-    return <PaymentAgentList />;
+    return (
+        <PaymentAgentList verification_code={verification_code} is_payment_agent_withdraw={is_payment_agent_withdraw} />
+    );
 };
 
 PaymentAgent.propTypes = {

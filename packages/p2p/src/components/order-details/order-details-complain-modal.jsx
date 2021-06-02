@@ -60,6 +60,7 @@ const OrderDetailsComplainModal = ({
     if (isMobile()) {
         return (
             <MobileFullPageModal
+                body_className='order-details-complain-modal__body'
                 className='order-details-complain-modal'
                 height_offset='80px'
                 is_flex
@@ -125,8 +126,8 @@ const OrderDetailsComplainModal = ({
 
 OrderDetailsComplainModal.propTypes = {
     dispute_reason: PropTypes.string,
-    onCheckboxChange: PropTypes.func,
     is_buy_order_for_user: PropTypes.bool,
+    onCheckboxChange: PropTypes.func,
 };
 
 export default OrderDetailsComplainModal;

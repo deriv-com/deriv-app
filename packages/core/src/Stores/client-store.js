@@ -12,6 +12,7 @@ import {
     State,
     toMoment,
     deriv_urls,
+    urlForLanguage,
 } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import { requestLogout, WS } from 'Services';
@@ -25,6 +26,7 @@ import { setDeviceDataCookie } from './Helpers/device';
 import { handleClientNotifications, clientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
+const LANGUAGE_KEY = 'i18n_language';
 const storage_key = 'client.accounts';
 const store_name = 'client_store';
 const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
@@ -33,6 +35,7 @@ const NO_SPENDING_LIMIT_TURNOVER = 99999999999999;
 
 export default class ClientStore extends BaseStore {
     @observable loginid;
+    @observable preferred_language;
     @observable upgrade_info;
     @observable email;
     @observable accounts = {};
@@ -58,6 +61,7 @@ export default class ClientStore extends BaseStore {
     @observable is_logging_in = false;
     @observable has_logged_out = false;
     @observable is_landing_company_loaded = false;
+    @observable is_account_setting_loaded = false;
     // this will store the landing_company API response, including
     // financial_company: {}
     // gaming_company: {}
@@ -114,6 +118,7 @@ export default class ClientStore extends BaseStore {
                 this.currency,
                 this.residence,
                 this.account_settings,
+                this.preferred_language,
             ],
             () => {
                 this.setCookieAccount();
@@ -446,14 +451,6 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get is_client_tnc_status_loaded() {
-        const { client_tnc_status } = this.account_settings;
-        if (this.is_virtual || (!this.is_virtual && client_tnc_status !== '')) return true;
-
-        return false;
-    }
-
-    @computed
     get is_social_signup() {
         return this.account_status?.status?.includes('social_signup');
     }
@@ -738,9 +735,24 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    setPreferredLanguage = lang => {
+        this.preferred_language = lang;
+        LocalStore.setObject(LANGUAGE_KEY, lang);
+    };
+
+    @action.bound
     setCookieAccount() {
         const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
-        const { loginid, email, landing_company_shortcode, currency, residence, account_settings } = this;
+        // eslint-disable-next-line max-len
+        const {
+            loginid,
+            email,
+            landing_company_shortcode,
+            currency,
+            residence,
+            account_settings,
+            preferred_language,
+        } = this;
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
             const client_information = {
@@ -752,6 +764,7 @@ export default class ClientStore extends BaseStore {
                 first_name,
                 last_name,
                 name,
+                preferred_language,
             };
             Cookies.set('client_information', client_information, { domain });
             this.has_cookie_account = true;
@@ -1086,7 +1099,6 @@ export default class ClientStore extends BaseStore {
     async init(login_new_user) {
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
-
         this.setDeviceData();
 
         // On case of invalid token, no need to continue with additional api calls.
@@ -1107,7 +1119,6 @@ export default class ClientStore extends BaseStore {
 
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
-
         this.setSwitched('');
         let client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login
@@ -1129,6 +1140,10 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 this.is_populating_account_list = false;
             });
+            const language = authorize_response.authorize.preferred_language;
+            if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
+                window.location.replace(urlForLanguage(authorize_response.authorize.preferred_language));
+            }
         }
 
         /**
@@ -1166,7 +1181,7 @@ export default class ClientStore extends BaseStore {
                 })
             );
             const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
-
+            this.setPreferredLanguage(account_settings.preferred_language);
             await this.fetchResidenceList();
 
             await this.getSelfExclusion();
@@ -1514,6 +1529,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setAccountSettings(settings) {
         this.account_settings = settings;
+        this.is_account_setting_loaded = true;
     }
 
     @action.bound

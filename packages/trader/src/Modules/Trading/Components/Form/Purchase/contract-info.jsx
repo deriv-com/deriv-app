@@ -112,17 +112,19 @@ const ContractInfo = ({
                     )
                 )}
             </div>
-            <DesktopWrapper>
-                <Popover
-                    alignment='left'
-                    icon='info'
-                    id={`dt_purchase_${type.toLowerCase()}_info`}
-                    is_bubble_hover_enabled
-                    margin={210}
-                    message={has_error_or_not_loaded ? '' : message}
-                    relative_render
-                />
-            </DesktopWrapper>
+            {!is_multiplier && (
+                <DesktopWrapper>
+                    <Popover
+                        alignment='left'
+                        icon='info'
+                        id={`dt_purchase_${type.toLowerCase()}_info`}
+                        is_bubble_hover_enabled
+                        margin={216}
+                        message={has_error_or_not_loaded ? '' : message}
+                        relative_render
+                    />
+                </DesktopWrapper>
+            )}
         </div>
     );
 };
@@ -131,7 +133,6 @@ ContractInfo.propTypes = {
     basis: PropTypes.string,
     currency: PropTypes.string,
     has_increased: PropTypes.bool,
-    has_cancellation: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_loading: PropTypes.bool,
     proposal_info: PropTypes.object,

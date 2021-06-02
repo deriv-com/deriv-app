@@ -44,9 +44,8 @@ export default class PushwooshStore extends BaseStore {
                             this.push_woosh.subscribe();
                         }
                     });
-                } catch {
-                    // eslint-disable-next-line
-                }
+                    // eslint-disable-next-line no-empty
+                } catch {}
 
                 this.sendTags(api);
             },

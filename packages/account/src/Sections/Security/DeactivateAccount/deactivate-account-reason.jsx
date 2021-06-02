@@ -124,7 +124,6 @@ class DeactivateAccountReason extends React.Component {
         remaining_characters: character_limit_no,
         total_accumulated_characters: 0,
         input_action: null,
-        debug: null,
     };
     validateFields = values => {
         const error = {};
@@ -226,10 +225,6 @@ class DeactivateAccountReason extends React.Component {
     handleInputKeyDown = e => {
         const key = e.key;
         let input_action = key;
-
-        this.setState({
-            debug: key,
-        });
 
         if (this.state.remaining_characters <= 0 && !allowed_keys.has(key)) {
             input_action = null;
@@ -412,7 +407,6 @@ class DeactivateAccountReason extends React.Component {
                                     />
                                 )}
                             </Field>
-                            {JSON.stringify(this.state.debug)}
                             <Field name='do_to_improve'>
                                 {({ field }) => (
                                     <Input

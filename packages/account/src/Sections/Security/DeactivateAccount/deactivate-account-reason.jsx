@@ -225,9 +225,6 @@ class DeactivateAccountReason extends React.Component {
     };
 
     handleInputOnInput = e => {
-        console.log(e);
-        console.log(e.nativeEvent.inputType);
-
         this.setState({
             log2: e.nativeEvent.inputType,
         });

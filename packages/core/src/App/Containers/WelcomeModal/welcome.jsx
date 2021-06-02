@@ -47,7 +47,7 @@ const Welcome = ({ switchPlatform }) => (
             <WelcomeItem
                 description={
                     <Localize
-                        i18n_default_text='Earn <0>fixed returns </0> by <0>risking only <0/>what you put in.'
+                        i18n_default_text='Earn <0>fixed returns </0> by <0>risking only</0> what you put in.'
                         components={[<Text key={0} weight='bold' as='strong' color='prominent' />]}
                     />
                 }

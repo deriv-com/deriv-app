@@ -36,8 +36,8 @@ class MT5Dashboard extends React.Component {
         active_index: 0,
         is_account_needed_modal_open: false,
         is_demo_tab: true,
-        is_notification_loaded: false,
         required_account: {},
+        is_notification_loaded: false,
         password_manager: {
             is_visible: false,
             selected_login: '',
@@ -172,8 +172,9 @@ class MT5Dashboard extends React.Component {
                 {is_mt5_allowed || !is_logged_in ? (
                     <div className='mt5-dashboard__container'>
                         <NotificationMessages
-                            stopNotificationLoading={this.stopNotificationLoading}
+                            is_mt5
                             is_notification_loaded={this.state.is_notification_loaded}
+                            stopNotificationLoading={this.stopNotificationLoading}
                         />
                         <div className='mt5-dashboard'>
                             <div className='mt5-dashboard__welcome-message'>

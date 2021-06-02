@@ -37,17 +37,20 @@ const NotificationsContent = ({ is_notification_loaded, style, notifications, re
 );
 
 const AppNotificationMessages = ({
-    stopNotificationLoading,
     is_notification_loaded,
+    is_mt5,
     marked_notifications,
     notification_messages,
     removeNotificationMessage,
+    stopNotificationLoading,
 }) => {
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
 
     React.useEffect(() => {
-        stopNotificationLoading();
+        if (is_mt5) {
+            stopNotificationLoading();
+        }
         if (notifications_ref && isMobile()) {
             const bounds = notifications_ref.parentElement.getBoundingClientRect();
             setStyle({ top: bounds.top + 8 });

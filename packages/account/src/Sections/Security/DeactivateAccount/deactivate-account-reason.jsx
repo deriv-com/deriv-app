@@ -224,7 +224,7 @@ class DeactivateAccountReason extends React.Component {
         }
     };
 
-    handleInputKeyPress = e => {
+    handleInputKeyUp = e => {
         const log2 = {
             'e.key': e.key,
             'e.keyCode': e.keyCode,
@@ -414,11 +414,11 @@ class DeactivateAccountReason extends React.Component {
                                 )}
                             </Field>
 
-                            <pre style={{ 'white-space': 'pre-wrap' }}>
+                            <pre style={{ whiteSpace: 'pre-wrap' }}>
                                 {' '}
                                 {JSON.stringify(this.state.log, undefined, 2)}
                             </pre>
-                            <pre style={{ 'white-space': 'pre-wrap' }}>
+                            <pre style={{ whiteSpace: 'pre-wrap' }}>
                                 {' '}
                                 {JSON.stringify(this.state.log2, undefined, 2)}
                             </pre>
@@ -438,7 +438,7 @@ class DeactivateAccountReason extends React.Component {
                                         max_characters={character_limit_no}
                                         onChange={e => this.handleChange(e, handleChange)}
                                         onKeyDown={this.handleInputKeyDown}
-                                        onKeyPress={this.handleInputKeyPress}
+                                        onKeyUp={this.handleInputKeyUp}
                                         onPaste={this.handleInputPaste}
                                     />
                                 )}
@@ -457,7 +457,7 @@ class DeactivateAccountReason extends React.Component {
                                         max_characters={character_limit_no}
                                         onChange={e => this.handleChange(e, handleChange)}
                                         onKeyDown={this.handleInputKeyDown}
-                                        onKeyPress={this.handleInputKeyPress}
+                                        onKeyUp={this.handleInputKeyUp}
                                         onPaste={this.handleInputPaste}
                                     />
                                 )}

@@ -124,6 +124,7 @@ class DeactivateAccountReason extends React.Component {
         remaining_characters: character_limit_no,
         total_accumulated_characters: 0,
         input_action: null,
+        log: null,
     };
     validateFields = values => {
         const error = {};
@@ -225,6 +226,17 @@ class DeactivateAccountReason extends React.Component {
     handleInputKeyDown = e => {
         const key = e.key;
         let input_action = key;
+
+        const log = {
+            'e.key': e.key,
+            'e.keyCode': e.keyCode,
+            'e.charCode': e.charCode,
+            'e.which': e.which,
+        };
+
+        this.setState({
+            log,
+        });
 
         if (this.state.remaining_characters <= 0 && !allowed_keys.has(key)) {
             input_action = null;
@@ -387,6 +399,8 @@ class DeactivateAccountReason extends React.Component {
                                     />
                                 )}
                             </Field>
+
+                            <pre style={{ 'white-space': 'pre-wrap' }}> {JSON.stringify(this.state.log)}</pre>
                             <Field name='other_trading_platforms'>
                                 {({ field }) => (
                                     <Input

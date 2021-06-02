@@ -254,7 +254,6 @@
         align-self: center;
         @include mobile {
             font-size: var(--text-size-xxs);
-            color: $color-black-7;
         }
     }
     &__text {

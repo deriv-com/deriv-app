@@ -38,12 +38,16 @@ export default class PushwooshStore extends BaseStore {
         this.push_woosh.push([
             'onReady',
             api => {
-                this.push_woosh.isSubscribed().then(is_subscribed => {
-                    if (!is_subscribed) {
-                        this.push_woosh.subscribe();
-                    }
-                });
-                this.sendTags(api);
+                try {
+                    this.push_woosh.isSubscribed().then(is_subscribed => {
+                        if (!is_subscribed) {
+                            this.push_woosh.subscribe();
+                        }
+                    });
+                    this.sendTags(api);
+                } catch {
+                    // eslint-disable-next-line
+                }
             },
         ]);
     };

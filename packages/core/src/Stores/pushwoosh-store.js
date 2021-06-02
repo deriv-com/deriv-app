@@ -6,7 +6,9 @@ import BaseStore from './base-store';
 
 export default class PushwooshStore extends BaseStore {
     // only available on staging & production (bot and deriv)
-    is_applicable = /^(16929|19111|24091|16303)$/.test(getAppId());
+    // is_applicable = /^(16929|19111|24091|16303)$/.test(getAppId());
+    // testing
+    is_applicable = true;
     has_initialized = false;
     push_woosh = new Pushwoosh();
 
@@ -38,16 +40,19 @@ export default class PushwooshStore extends BaseStore {
         this.push_woosh.push([
             'onReady',
             api => {
-                try {
-                    this.push_woosh.isSubscribed().then(is_subscribed => {
+                this.push_woosh
+                    .isSubscribed()
+                    .then(is_subscribed => {
                         if (!is_subscribed) {
                             this.push_woosh.subscribe();
                         }
+                    })
+                    .catch(e => {
+                        // eslint-disable-next-line no-console
+                        console.error(e);
                     });
-                    this.sendTags(api);
-                } catch {
-                    // eslint-disable-next-line
-                }
+
+                this.sendTags(api);
             },
         ]);
     };

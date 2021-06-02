@@ -88,10 +88,12 @@ export default class AppStore {
 
     registerOnAccountSwitch() {
         const { client, common } = this.root_store.core;
+
         this.disposeSwitchAccountListener = reaction(
             () => client.switch_broadcast,
             switch_broadcast => {
                 if (!switch_broadcast) return;
+
                 this.showDigitalOptionsMaltainvestError(client, common);
 
                 const { active_symbols, contracts_for } = ApiHelpers.instance;
@@ -116,6 +118,7 @@ export default class AppStore {
 
     registerLandingCompanyChangeReaction() {
         const { client, common } = this.root_store.core;
+
         this.disposeLandingCompanyChangeReaction = reaction(
             () => client.landing_company_shortcode,
             landing_company_shortcode => {
@@ -176,6 +179,7 @@ export default class AppStore {
 
     showDigitalOptionsMaltainvestError = async (client, common) => {
         await this.root_store.ws.wait('landing_company', 'get_settings');
+
         if (client.landing_company_shortcode === 'maltainvest' || client.is_options_blocked) {
             showDigitalOptionsUnavailableError(common.showError, {
                 text: localize(

@@ -12,12 +12,12 @@ import 'Sass/app/_common/components/app-notification-message.scss';
 
 const Portal = ({ children }) =>
     isMobile() ? ReactDOM.createPortal(children, document.getElementById('deriv_app')) : children;
-const NotificationsContent = ({ style, notifications, removeNotificationMessage }) => (
+const NotificationsContent = ({ is_notification_loaded, style, notifications, removeNotificationMessage }) => (
     <div className='notification-messages' style={style}>
         <TransitionGroup component='div'>
             {notifications.map((notification, idx) => (
                 <CSSTransition
-                    appear
+                    appear={!is_notification_loaded}
                     key={idx}
                     in={!!notification.header}
                     timeout={150}
@@ -36,11 +36,18 @@ const NotificationsContent = ({ style, notifications, removeNotificationMessage 
     </div>
 );
 
-const AppNotificationMessages = ({ marked_notifications, notification_messages, removeNotificationMessage }) => {
+const AppNotificationMessages = ({
+    stopNotificationLoading,
+    is_notification_loaded,
+    marked_notifications,
+    notification_messages,
+    removeNotificationMessage,
+}) => {
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
 
     React.useEffect(() => {
+        stopNotificationLoading();
         if (notifications_ref && isMobile()) {
             const bounds = notifications_ref.parentElement.getBoundingClientRect();
             setStyle({ top: bounds.top + 8 });
@@ -63,6 +70,7 @@ const AppNotificationMessages = ({ marked_notifications, notification_messages, 
             <Portal>
                 <NotificationsContent
                     notifications={notifications_sublist}
+                    is_notification_loaded={is_notification_loaded}
                     style={style}
                     removeNotificationMessage={removeNotificationMessage}
                 />

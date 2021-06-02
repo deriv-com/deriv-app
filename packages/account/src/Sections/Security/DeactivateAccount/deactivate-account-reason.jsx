@@ -224,7 +224,7 @@ class DeactivateAccountReason extends React.Component {
         }
     };
 
-    handleInputKeyUp = e => {
+    handleInputOnInput = e => {
         const log2 = {
             'e.key': e.key,
             'e.keyCode': e.keyCode,
@@ -232,8 +232,11 @@ class DeactivateAccountReason extends React.Component {
             'e.which': e.which,
         };
 
+        console.log(e);
+        console.log(e.nativeEvent.inputType);
+
         this.setState({
-            log2,
+            log2: e.nativeEvent.inputType,
         });
     };
 
@@ -438,7 +441,7 @@ class DeactivateAccountReason extends React.Component {
                                         max_characters={character_limit_no}
                                         onChange={e => this.handleChange(e, handleChange)}
                                         onKeyDown={this.handleInputKeyDown}
-                                        onKeyUp={this.handleInputKeyUp}
+                                        onInput={this.handleInputOnInput}
                                         onPaste={this.handleInputPaste}
                                     />
                                 )}
@@ -457,7 +460,7 @@ class DeactivateAccountReason extends React.Component {
                                         max_characters={character_limit_no}
                                         onChange={e => this.handleChange(e, handleChange)}
                                         onKeyDown={this.handleInputKeyDown}
-                                        onKeyUp={this.handleInputKeyUp}
+                                        onInput={this.handleInputOnInput}
                                         onPaste={this.handleInputPaste}
                                     />
                                 )}

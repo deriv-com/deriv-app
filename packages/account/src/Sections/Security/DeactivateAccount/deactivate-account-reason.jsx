@@ -232,14 +232,17 @@ class DeactivateAccountReason extends React.Component {
                 total_accumulated_characters,
                 character_limit_no,
                 input_action,
+                is_delete_input: delete_inputs.includes(input_action),
+            },
+        });
+
+        this.setState({
+            log: {
+                last_event_handler: 'onchange',
             },
         });
 
         if ((remaining_characters <= 0 || total_accumulated_characters >= character_limit_no) && !input_action) {
-            this.setState({
-                log: 'Prevented Change',
-            });
-
             e.preventDefault();
         } else {
             onChange(e);
@@ -255,6 +258,12 @@ class DeactivateAccountReason extends React.Component {
         }
 
         this.setState({
+            log: {
+                last_event_handler: 'oninput',
+            },
+        });
+
+        this.setState({
             input_action,
         });
     };
@@ -262,6 +271,12 @@ class DeactivateAccountReason extends React.Component {
     handleInputKeyDown = e => {
         const key = e.key;
         let input_action = key;
+
+        this.setState({
+            log: {
+                last_event_handler: 'onkeydown',
+            },
+        });
 
         if (this.state.remaining_characters <= 0 && !allowed_keys.has(key)) {
             input_action = null;

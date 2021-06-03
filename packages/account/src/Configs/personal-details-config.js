@@ -29,18 +29,32 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.first_name ?? '',
             rules: [
+                [
+                    'regular',
+                    localize('Letters, spaces, periods, hyphens, apostrophes only'),
+                    {
+                        regex: /^[a-zA-Z\s'.-]{2,50}$/,
+                    },
+                ],
                 ['req', localize('First name is required')],
                 ['letter_symbol', getErrorMessages().letter_symbol()],
-                ['length', localize('First name should be between 2 and 30 characters.'), { min: 2, max: 30 }],
+                ['length', localize('First name should be between 2 and 50 characters.'), { min: 2, max: 50 }],
             ],
         },
         last_name: {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.last_name ?? '',
             rules: [
+                [
+                    'regular',
+                    localize('Letters, spaces, periods, hyphens, apostrophes only'),
+                    {
+                        regex: /^[a-zA-Z\s'.-]{2,50}$/,
+                    },
+                ],
                 ['req', localize('Last name is required')],
                 ['letter_symbol', getErrorMessages().letter_symbol()],
-                ['length', localize('Last name should be between 2 and 30 characters.'), { min: 2, max: 30 }],
+                ['length', localize('Last name should be between 2 and 50 characters.'), { min: 2, max: 50 }],
             ],
         },
         date_of_birth: {

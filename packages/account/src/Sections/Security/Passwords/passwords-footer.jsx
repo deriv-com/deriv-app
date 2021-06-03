@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { FormSubmitErrorMessage, Button } from '@deriv/components';
 import { isMobile } from '@deriv/shared';

@@ -219,9 +219,16 @@ class DeactivateAccountReason extends React.Component {
     handleChange = (e, onChange) => {
         const { remaining_characters, total_accumulated_characters, input_action } = this.state;
 
+        const delete_inputs = ['Delete', 'Backspace', 'deleteContentBackward'];
+
+        const final_accumulated_characters = delete_inputs.includes(input_action)
+            ? total_accumulated_characters - 1
+            : total_accumulated_characters;
+
         this.setState({
             log2: {
                 remaining_characters,
+                final_accumulated_characters,
                 total_accumulated_characters,
                 character_limit_no,
                 input_action,

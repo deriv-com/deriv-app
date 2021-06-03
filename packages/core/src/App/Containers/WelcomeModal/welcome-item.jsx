@@ -40,30 +40,28 @@ const WelcomeItem = ({ title, description, options, onClick, icon, mobileIcon, s
             </>
         </div>
         <div className='welcome-item__body'>
-            <div className='welcome-item__main-wrapper'>
-                <main className='welcome-item__main'>
-                    <DesktopWrapper>
-                        <Text as='h3' weight='bold' color='prominent' size='sm'>
-                            {title}
-                        </Text>
-                        <Text as='p' color='prominent'>
-                            {description}
-                        </Text>
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <Text as='h3' weight='bold' color='prominent' size='s'>
-                            {title}
-                        </Text>
-                        <Text as='p' color='prominent' size='xs'>
-                            {description}
-                        </Text>
-                    </MobileWrapper>
-                </main>
-                <div className='welcome-item__arrow'>
-                    <Icon icon='IcChevronRight' size={16} />
-                </div>
+            <main className='welcome-item__main'>
+                <DesktopWrapper>
+                    <Text as='h3' weight='bold' color='prominent' size='sm'>
+                        {title}
+                    </Text>
+                    <Text as='p' color='prominent'>
+                        {description}
+                    </Text>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <Text as='h3' weight='bold' color='prominent' size='s'>
+                        {title}
+                    </Text>
+                    <Text as='p' color='prominent' size='xs'>
+                        {description}
+                    </Text>
+                </MobileWrapper>
+                {options && options.length && <Options options={options} />}
+            </main>
+            <div className='welcome-item__arrow'>
+                <Icon icon='IcChevronRight' size={16} />
             </div>
-            {options && options.length && <Options options={options} />}
         </div>
     </section>
 );

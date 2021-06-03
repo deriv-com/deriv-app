@@ -126,6 +126,7 @@ class DeactivateAccountReason extends React.Component {
         remaining_characters: character_limit_no,
         total_accumulated_characters: 0,
         input_action: null,
+        log: null,
     };
     validateFields = values => {
         const error = {};
@@ -216,8 +217,15 @@ class DeactivateAccountReason extends React.Component {
 
     handleChange = (e, onChange) => {
         const { remaining_characters, total_accumulated_characters, input_action } = this.state;
+        
+        this.setState({
+            log: 'No Objection!',
+        });
 
         if ((remaining_characters <= 0 || total_accumulated_characters >= character_limit_no) && !input_action) {
+            this.setState({
+                log: 'Preventing Default!',
+            });
             e.preventDefault();
         } else {
             onChange(e);

@@ -1,5 +1,5 @@
 import { action, computed, observable, runInAction } from 'mobx';
-import { getAccountListKey, getAccountTypeFields } from '@deriv/shared';
+import { getAccountListKey, getAccountTypeFields, CFD_PLATFORMS } from '@deriv/shared';
 import { WS } from 'Services/ws-methods';
 import BaseStore from 'Stores/base-store';
 import { getDxCompanies, getMtCompanies } from './Helpers/cfd-config';
@@ -49,14 +49,14 @@ export default class CFDStore extends BaseStore {
 
         this.root_store.client.mt5_login_list.forEach(account => {
             // e.g. mt5.real.financial_stp
-            list[getAccountListKey(account, 'mt5')] = {
+            list[getAccountListKey(account, CFD_PLATFORMS.MT5)] = {
                 ...account,
             };
         });
 
         this.root_store.client.dxtrade_accounts_list.forEach(account => {
             // e.g. dxtrade.real.financial_stp
-            list[getAccountListKey(account, 'dxtrade')] = {
+            list[getAccountListKey(account, CFD_PLATFORMS.DXTRADE)] = {
                 ...account,
             };
         });
@@ -350,15 +350,15 @@ export default class CFDStore extends BaseStore {
         let response;
 
         switch (platform) {
-            case 'dxtrade': {
+            case CFD_PLATFORMS.DXTRADE: {
                 response = await WS.authorized.send({
                     trading_platform_deposit: 1,
-                    platform: 'dxtrade',
+                    platform: CFD_PLATFORMS.DXTRADE,
                     to_account: this.current_account.account_id,
                 });
                 break;
             }
-            case 'mt5': {
+            case CFD_PLATFORMS.MT5: {
                 response = await WS.authorized.mt5Deposit({
                     to_mt5: this.current_account.login,
                 });
@@ -373,16 +373,16 @@ export default class CFDStore extends BaseStore {
         if (!response.error) {
             let new_balance;
             switch (platform) {
-                case 'dxtrade': {
+                case CFD_PLATFORMS.DXTRADE: {
                     await WS.authorized
-                        .tradingPlatformAccountsList('dxtrade')
+                        .tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE)
                         .then(this.root_store.client.responseTradingPlatformAccountsList);
                     new_balance = this.root_store.client.dxtrade_accounts_list.find(
                         item => item.account_id === this.current_account.account_id
                     )?.balance;
                     break;
                 }
-                case 'mt5': {
+                case CFD_PLATFORMS.MT5: {
                     await WS.authorized.mt5LoginList().then(this.root_store.client.responseMt5LoginList);
 
                     new_balance = this.root_store.client.mt5_login_list.find(
@@ -444,14 +444,14 @@ export default class CFDStore extends BaseStore {
                 account_id: login,
                 old_password,
                 new_password,
-                platform: 'mt5',
+                platform: CFD_PLATFORMS.MT5,
             });
         } else {
             response = await WS.authorized.tradingPlatformPasswordChange({
                 account_id: login,
                 old_password,
                 new_password,
-                platform: 'mt5',
+                platform: CFD_PLATFORMS.MT5,
             });
         }
 

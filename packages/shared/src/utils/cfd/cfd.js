@@ -1,3 +1,5 @@
+import { CFD_PLATFORMS } from '../platform';
+
 let CFD_text_translated;
 
 // TODO: add swap_free to this file when ready
@@ -16,12 +18,12 @@ const CFD_text = {
 // sub_account_type financial_stp only happens in "financial" market_type
 export const getCFDAccountKey = ({ market_type, sub_account_type, platform }) => {
     if (market_type === 'gaming' || market_type === 'synthetic') {
-        if (platform === 'dxtrade' || sub_account_type === 'financial') {
+        if (platform === CFD_PLATFORMS.DXTRADE || sub_account_type === 'financial') {
             return 'synthetic';
         }
     }
     if (market_type === 'financial') {
-        if (platform === 'dxtrade' || sub_account_type === 'financial') {
+        if (platform === CFD_PLATFORMS.DXTRADE || sub_account_type === 'financial') {
             return 'financial';
         }
         if (sub_account_type === 'financial_stp') {
@@ -94,5 +96,5 @@ export const getAccountListKey = (account, platform) => {
         market_type: account.market_type,
         sub_account_type: account.sub_account_type,
         platform,
-    })}@${platform === 'dxtrade' ? account.market_type : account.server}`;
+    })}@${platform === CFD_PLATFORMS.DXTRADE ? account.market_type : account.server}`;
 };

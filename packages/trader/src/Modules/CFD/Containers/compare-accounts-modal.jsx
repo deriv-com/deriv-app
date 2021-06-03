@@ -13,15 +13,15 @@ import {
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { isDesktop } from '@deriv/shared';
+import { isDesktop, CFD_PLATFORMS } from '@deriv/shared';
 
 const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
-    const logged_out_types_count = platform === 'mt5' ? 3 : 2;
+    const logged_out_types_count = platform === CFD_PLATFORMS.MT5 ? 3 : 2;
     const account_types_count = is_logged_in
         ? [
               landing_companies?.mt_gaming_company?.financial,
               landing_companies?.mt_financial_company?.financial,
-              landing_companies?.mt_financial_company?.financial_stp && platform === 'mt5',
+              landing_companies?.mt_financial_company?.financial_stp && platform === CFD_PLATFORMS.MT5,
           ].filter(Boolean).length
         : logged_out_types_count;
 
@@ -338,7 +338,7 @@ const filterAvailableAccounts = (landing_companies, table, is_logged_in, show_eu
         .filter(row => row[platform])
         .map(({ attribute, mt5 = {}, dxtrade = {} }) => {
             const { synthetic, synthetic_eu, financial_stp, financial, financial_au, financial_eu, footnote } =
-                platform === 'mt5' ? mt5 : dxtrade;
+                platform === CFD_PLATFORMS.MT5 ? mt5 : dxtrade;
             const synthetic_object = { synthetic: show_eu_related ? synthetic_eu : synthetic };
             const financial_object = { financial: getFinancialObject(financial, financial_au, financial_eu) };
 
@@ -347,12 +347,12 @@ const filterAvailableAccounts = (landing_companies, table, is_logged_in, show_eu
                     attribute: <CFDAttributeDescriber name={attribute} counter={footnote ? ++footnote_number : null} />,
                     ...(landing_companies?.mt_gaming_company?.financial ? synthetic_object : {}),
                     ...(landing_companies?.mt_financial_company?.financial ? financial_object : {}),
-                    ...(landing_companies?.mt_financial_company?.financial_stp && platform === 'mt5'
+                    ...(landing_companies?.mt_financial_company?.financial_stp && platform === CFD_PLATFORMS.MT5
                         ? { financial_stp }
                         : {}),
                 };
             }
-            if (platform === 'dxtrade') {
+            if (platform === CFD_PLATFORMS.DXTRADE) {
                 return {
                     attribute: <CFDAttributeDescriber name={attribute} counter={footnote ? ++footnote_number : null} />,
                     ...synthetic_object,
@@ -405,7 +405,7 @@ const CFDCompareAccountHint = ({ platform, show_risk_message, landing_companies,
                         <Localize
                             i18n_default_text='To protect your portfolio from adverse market movements due to the market opening gap, we reserve the right to decrease leverage on all offered symbols for financial accounts before market close and increase it again after market open. Please make sure that you have enough funds available in your {{platform}} account to support your positions at all times.'
                             values={{
-                                platform: platform === 'mt5' ? localize('MT5') : localize('Deriv X'),
+                                platform: platform === CFD_PLATFORMS.MT5 ? localize('MT5') : localize('Deriv X'),
                             }}
                         />
                     </div>
@@ -448,7 +448,7 @@ const CFDCompareAccountHint = ({ platform, show_risk_message, landing_companies,
 const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_related, residence }) => {
     const [cols, setCols] = React.useState([]);
     const [template_columns, updateColumnsStyle] = React.useState(
-        platform === 'dxtrade' ? '1.5fr 1fr 2fr' : '1.5fr 1fr 2fr 1fr'
+        platform === CFD_PLATFORMS.DXTRADE ? '1.5fr 1fr 2fr' : '1.5fr 1fr 2fr 1fr'
     );
 
     React.useEffect(() => {
@@ -458,7 +458,11 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
             updateColumnsStyle(
                 `1.5fr ${landing_companies?.mt_gaming_company?.financial ? '1fr' : ''} ${
                     landing_companies?.mt_financial_company?.financial ? '2fr' : ''
-                } ${landing_companies?.mt_financial_company?.financial_stp && platform === 'mt5' ? ' 1fr ' : ''}`
+                } ${
+                    landing_companies?.mt_financial_company?.financial_stp && platform === CFD_PLATFORMS.MT5
+                        ? ' 1fr '
+                        : ''
+                }`
             );
         }
     }, [
@@ -471,7 +475,7 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
         residence,
     ]);
 
-    const show_risk_message = platform === 'mt5' || !show_eu_related;
+    const show_risk_message = platform === CFD_PLATFORMS.MT5 || !show_eu_related;
 
     return (
         <Div100vhContainer height_offset='40px' is_bypassed={isDesktop()}>
@@ -499,14 +503,15 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
                                                 </Text>
                                             </Table.Head>
                                         )}
-                                        {landing_companies?.mt_financial_company?.financial_stp && platform === 'mt5' && (
-                                            <Table.Head>
-                                                {localize('Financial STP')}
-                                                <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
-                                                    *
-                                                </Text>
-                                            </Table.Head>
-                                        )}
+                                        {landing_companies?.mt_financial_company?.financial_stp &&
+                                            platform === CFD_PLATFORMS.MT5 && (
+                                                <Table.Head>
+                                                    {localize('Financial STP')}
+                                                    <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
+                                                        *
+                                                    </Text>
+                                                </Table.Head>
+                                            )}
                                     </React.Fragment>
                                 ) : (
                                     <React.Fragment>
@@ -517,7 +522,7 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
                                                 *
                                             </Text>
                                         </Table.Head>
-                                        {platform === 'mt5' && (
+                                        {platform === CFD_PLATFORMS.MT5 && (
                                             <Table.Head>
                                                 {localize('Financial STP')}
                                                 <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
@@ -580,7 +585,7 @@ const CompareAccountsModal = ({
     return (
         <div
             className='cfd-compare-accounts-modal__wrapper'
-            style={{ marginTop: platform === 'dxtrade' ? '5rem' : '2.4rem' }}
+            style={{ marginTop: platform === CFD_PLATFORMS.DXTRADE ? '5rem' : '2.4rem' }}
         >
             <Button
                 className='cfd-dashboard__welcome-message--button'

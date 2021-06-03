@@ -16,7 +16,15 @@ import {
     RadioGroup,
     Text,
 } from '@deriv/components';
-import { isMobile, routes, validLength, validPassword, getErrorMessages, isDesktop } from '@deriv/shared';
+import {
+    isMobile,
+    routes,
+    validLength,
+    validPassword,
+    getErrorMessages,
+    isDesktop,
+    CFD_PLATFORMS,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import 'Sass/app/modules/mt5/cfd.scss';
@@ -42,8 +50,8 @@ const RequireTradingPasswordModal = ({
                         <Localize
                             i18n_default_text='A trading password can be used to sign into any of your {{platform1}} (and {{platform2}}) accounts. '
                             values={{
-                                platform1: platform === 'mt5' ? 'DMT5' : 'Deriv X',
-                                platform2: platform === 'mt5' ? 'Deriv X' : 'DMT5',
+                                platform1: platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
+                                platform2: platform === CFD_PLATFORMS.MT5 ? 'Deriv X' : 'DMT5',
                             }}
                         />
                     ) : (
@@ -105,18 +113,18 @@ const getSubmitText = (account_title, category, platform) => {
     if (category === 'real') {
         return localize(
             'You have created a {{platform}} {{account_title}} account. To start trading, transfer funds from your Deriv account into this account.',
-            { account_title, platform: platform === 'dxtrade' ? 'Deriv X' : 'DMT5' }
+            { account_title, platform: platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5' }
         );
     }
 
     return localize('You have created a {{platform}} {{account_title}} account.', {
         account_title,
-        platform: platform === 'dxtrade' ? 'Deriv X' : 'DMT5',
+        platform: platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
     });
 };
 
 const IconType = React.memo(({ platform, type }) => {
-    if (platform === 'dxtrade') {
+    if (platform === CFD_PLATFORMS.DXTRADE) {
         if (type === 'synthetic') {
             return <Icon icon='IcDxtradeSyntheticPlatform' size={128} />;
         } else if (type === 'financial') {
@@ -437,7 +445,7 @@ const CFDPasswordModal = ({
     };
 
     const submitPassword = (values, actions) => {
-        if (platform === 'mt5') {
+        if (platform === CFD_PLATFORMS.MT5) {
             submitMt5Password(
                 {
                     ...values,
@@ -468,7 +476,7 @@ const CFDPasswordModal = ({
                     item.account_type === 'real' && (item.market_type === 'gaming' || item.market_type === 'synthetic')
             ) &&
             !server &&
-            platform === 'mt5'
+            platform === CFD_PLATFORMS.MT5
         );
     }, [is_eu, is_eu_country, is_logged_in, is_real_synthetic, server, mt5_login_list, platform]);
 

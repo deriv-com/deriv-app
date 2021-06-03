@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { CFD_PLATFORMS } from '@deriv/shared';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import {
     getDXTradeWebTerminalLink,
@@ -13,19 +14,19 @@ const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }) => (
         <h1 className='cfd-dashboard__download-center--heading'>{general_messages.getDownloadHeader(platform)}</h1>
         <div
             className='cfd-dashboard__download-center-options'
-            style={{ justifyContent: platform === 'dxtrade' ? 'space-evenly' : null }}
+            style={{ justifyContent: platform === CFD_PLATFORMS.DXTRADE ? 'space-evenly' : null }}
         >
             <div className='cfd-dashboard__download-center-options--desktop'>
                 <div className='cfd-dashboard__download-center-options--desktop-links'>
                     <div>
                         <div className='cfd-dashboard__download-center-options--desktop-row'>
-                            {platform === 'mt5' && (
+                            {platform === CFD_PLATFORMS.MT5 && (
                                 <React.Fragment>
                                     <Icon icon='IcMt5DeviceDesktop' width={118} height={85} />
                                     <Icon icon='IcMt5DeviceLaptop' width={75} height={51} />
                                 </React.Fragment>
                             )}
-                            {platform === 'dxtrade' && (
+                            {platform === CFD_PLATFORMS.DXTRADE && (
                                 <React.Fragment>
                                     <Icon
                                         icon={
@@ -42,7 +43,7 @@ const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }) => (
                                 </React.Fragment>
                             )}
                         </div>
-                        {platform === 'dxtrade' && (
+                        {platform === CFD_PLATFORMS.DXTRADE && (
                             <div className='cfd-dashboard__download-center-options--desktop-download'>
                                 <a
                                     className='cfd-dashboard__dxtrade-download'
@@ -70,7 +71,7 @@ const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }) => (
                             </div>
                         )}
                     </div>
-                    {platform === 'mt5' && (
+                    {platform === CFD_PLATFORMS.MT5 && (
                         <div className='cfd-dashboard__download-center-options--desktop-download'>
                             <a href={getPlatformMt5DownloadLink('windows')} target='_blank' rel='noopener noreferrer'>
                                 <Icon icon='IcInstallationWindows' width={138} height={40} />
@@ -84,7 +85,7 @@ const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }) => (
                         </div>
                     )}
                 </div>
-                {platform === 'mt5' && (
+                {platform === CFD_PLATFORMS.MT5 && (
                     <Text as='p' align='center' size='xxxs' className='cfd-dashboard__download-center--hint'>
                         <Localize i18n_default_text='The MT5 desktop app is not supported by Windows XP, Windows 2003, and Windows Vista.' />
                     </Text>
@@ -92,13 +93,13 @@ const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }) => (
             </div>
             <div className='cfd-dashboard__download-center-options--mobile'>
                 <div className='cfd-dashboard__download-center-options--mobile-devices'>
-                    {platform === 'mt5' && (
+                    {platform === CFD_PLATFORMS.MT5 && (
                         <React.Fragment>
                             <Icon icon='IcMt5DeviceTablet' width={133} height={106} />
                             <Icon icon='IcMt5DevicePhone' width={48} height={74} />
                         </React.Fragment>
                     )}
-                    {platform === 'dxtrade' && (
+                    {platform === CFD_PLATFORMS.DXTRADE && (
                         <React.Fragment>
                             <Icon
                                 icon={is_dark_mode_on ? 'IcDxtradeDeviceTabletLight' : 'IcDxtradeDeviceTablet'}
@@ -117,7 +118,7 @@ const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }) => (
                     <a
                         className='cfd-dashboard__download-center-options--mobile-link'
                         href={
-                            platform === 'dxtrade'
+                            platform === CFD_PLATFORMS.DXTRADE
                                 ? getPlatformDXTradeDownloadLink('android')
                                 : getPlatformMt5DownloadLink('android')
                         }
@@ -129,7 +130,7 @@ const CFDDashboardContainer = ({ platform, active_index, is_dark_mode_on }) => (
                     <a
                         className='cfd-dashboard__download-center-options--mobile-link'
                         href={
-                            platform === 'dxtrade'
+                            platform === CFD_PLATFORMS.DXTRADE
                                 ? getPlatformDXTradeDownloadLink('ios')
                                 : getPlatformMt5DownloadLink('ios')
                         }

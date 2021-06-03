@@ -19,7 +19,7 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { routes, isMobile, validLength, validPassword, getErrorMessages } from '@deriv/shared';
+import { routes, isMobile, validLength, validPassword, getErrorMessages, CFD_PLATFORMS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CFDStore from 'Stores/Modules/CFD/cfd-store';
 
@@ -151,14 +151,14 @@ const TradingPasswordManager = ({ status, platform, is_dxtrade_allowed }) => {
                     <Localize
                         i18n_default_text='Trading password — a new, easy way to sign in to your {{platform}} accounts'
                         values={{
-                            platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
+                            platform: platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
                         }}
                     />
                 ) : (
                     <Localize
                         i18n_default_text='You have a trading password for {{platform}}'
                         values={{
-                            platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
+                            platform: platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
                         }}
                     />
                 )}
@@ -170,8 +170,8 @@ const TradingPasswordManager = ({ status, platform, is_dxtrade_allowed }) => {
                             <Localize
                                 i18n_default_text='Use your trading password to sign in to any of your {{platform1}} (and {{platform2}}) accounts.'
                                 values={{
-                                    platform1: platform === 'mt5' ? 'DMT5' : 'Deriv X',
-                                    platform2: platform === 'mt5' ? 'Deriv X' : 'DMT5',
+                                    platform1: platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
+                                    platform2: platform === CFD_PLATFORMS.MT5 ? 'Deriv X' : 'DMT5',
                                 }}
                             />
                         ) : (
@@ -185,8 +185,8 @@ const TradingPasswordManager = ({ status, platform, is_dxtrade_allowed }) => {
                             <Localize
                                 i18n_default_text='A trading password is used to sign in to any of your {{platform1}} (and {{platform2}}) accounts.'
                                 values={{
-                                    platform1: platform === 'mt5' ? 'DMT5' : 'Deriv X',
-                                    platform2: platform === 'mt5' ? 'Deriv X' : 'DMT5',
+                                    platform1: platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
+                                    platform2: platform === CFD_PLATFORMS.MT5 ? 'Deriv X' : 'DMT5',
                                 }}
                             />
                         ) : (
@@ -428,7 +428,7 @@ const CFDPasswordManagerTabContent = ({
         </React.Fragment>
     );
 
-    if (platform === 'dxtrade') return trading_password_manager;
+    if (platform === CFD_PLATFORMS.DXTRADE) return trading_password_manager;
 
     return (
         <Tabs active_index={active_tab_index} onTabItemClick={updateAccountTabIndex} top>
@@ -527,11 +527,11 @@ const CFDPasswordManagerModal = ({
                     title={
                         selected_account_group === 'real'
                             ? localize('Manage {{platform}} Real {{account_title}} account password', {
-                                  platform: platform === 'dxtrade' ? 'Deriv X' : 'DMT5',
+                                  platform: platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
                                   account_title: selected_account,
                               })
                             : localize('Manage {{platform}} Demo {{account_title}} account password', {
-                                  platform: platform === 'dxtrade' ? 'Deriv X' : 'DMT5',
+                                  platform: platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
                                   account_title: selected_account,
                               })
                     }

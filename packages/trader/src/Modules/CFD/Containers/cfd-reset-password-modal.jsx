@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
-import { routes, validLength, validPassword, getErrorMessages } from '@deriv/shared';
+import { routes, validLength, validPassword, getErrorMessages, CFD_PLATFORMS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
@@ -88,7 +88,7 @@ class CFDResetPasswordModal extends React.Component {
         setSubmitting(true);
         const request = {
             account_id: login,
-            platform: 'mt5',
+            platform: CFD_PLATFORMS.MT5,
             new_password: values.new_password,
             verification_code: localStorage.getItem('cfd_reset_password_code'),
         };
@@ -117,7 +117,7 @@ class CFDResetPasswordModal extends React.Component {
                 is_open={is_cfd_reset_password_modal_enabled}
                 toggleModal={() => setCFDPasswordResetModal(false)}
                 title={
-                    platform === 'dxtrade'
+                    platform === CFD_PLATFORMS.DXTRADE
                         ? localize('Reset Deriv X investor password')
                         : localize('Reset DMT5 investor password')
                 }

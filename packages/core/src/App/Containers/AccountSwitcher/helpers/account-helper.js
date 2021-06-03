@@ -1,4 +1,4 @@
-import { isCryptocurrency, getCFDAccountKey, getCFDAccount, getCFDAccountDisplay } from '@deriv/shared';
+import { isCryptocurrency, getCFDAccountKey, getCFDAccount, getCFDAccountDisplay, CFD_PLATFORMS } from '@deriv/shared';
 
 export const getSortedAccountList = (account_list, accounts) => {
     // sort accounts as follows:
@@ -49,19 +49,19 @@ export const getCFDConfig = (market_type, landing_company, existing_cfd_accounts
     const cfd_config = [];
     if (landing_company) {
         Object.keys(landing_company).forEach(company => {
-            if (['gaming', 'synthetic', 'financial'].indexOf(company) === -1 && platform === 'dxtrade') {
+            if (['gaming', 'synthetic', 'financial'].indexOf(company) === -1 && platform === CFD_PLATFORMS.DXTRADE) {
                 return;
             }
 
             let has_account = existing_cfd_accounts.find(account => {
                 const account_market_type = account.market_type === 'synthetic' ? 'gaming' : account.market_type;
-                if (platform === 'dxtrade') {
+                if (platform === CFD_PLATFORMS.DXTRADE) {
                     return account_market_type === market_type;
                 }
                 return account.sub_account_type === company && account_market_type === market_type;
             });
 
-            if (has_account && platform === 'mt5') {
+            if (has_account && platform === CFD_PLATFORMS.MT5) {
                 const number_market_type_available = trading_servers.filter(
                     s => s.supported_accounts.includes(market_type) && !s.disabled
                 ).length;

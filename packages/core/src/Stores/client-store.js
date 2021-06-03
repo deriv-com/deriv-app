@@ -13,6 +13,7 @@ import {
     toMoment,
     deriv_urls,
     urlForLanguage,
+    CFD_PLATFORMS,
 } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import { requestLogout, WS } from 'Services';
@@ -708,7 +709,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setCFDDisabledSignupTypes(platform, disabled_types_obj) {
-        if (platform === 'dxtrade') {
+        if (platform === CFD_PLATFORMS.DXTRADE) {
             const current_list = this.dxtrade_disabled_signup_types;
             this.dxtrade_disabled_signup_types = { current_list, ...disabled_types_obj };
         }
@@ -1177,7 +1178,7 @@ export default class ClientStore extends BaseStore {
         if (this.is_logged_in) {
             WS.storage.mt5LoginList().then(this.responseMt5LoginList);
             WS.tradingServers().then(this.responseTradingServers);
-            WS.tradingPlatformAccountsList('dxtrade').then(this.responseTradingPlatformAccountsList);
+            WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
             this.responseStatement(
                 await BinarySocket.send({
                     statement: 1,
@@ -1500,8 +1501,8 @@ export default class ClientStore extends BaseStore {
 
         if (obj_balance.total) {
             const total_real = getPropertyValue(obj_balance, ['total', 'deriv']);
-            const total_mt5 = getPropertyValue(obj_balance, ['total', 'mt5']);
-            const total_dxtrade = getPropertyValue(obj_balance, ['total', 'dxtrade']);
+            const total_mt5 = getPropertyValue(obj_balance, ['total', CFD_PLATFORMS.MT5]);
+            const total_dxtrade = getPropertyValue(obj_balance, ['total', CFD_PLATFORMS.DXTRADE]);
             // in API streaming responses MT5 balance is not re-sent, so we need to reuse the first mt5 total sent
             const has_mt5 = !isEmptyObject(total_mt5);
             const has_dxtrade = !isEmptyObject(total_dxtrade);
@@ -1966,7 +1967,7 @@ export default class ClientStore extends BaseStore {
                 const display_login = account.error ? account.error.details.account_id : account.account_id;
                 if (account.error) {
                     const { account_type, server } = account.error.details;
-                    if (platform === 'dxtrade') {
+                    if (platform === CFD_PLATFORMS.DXTRADE) {
                         this.setCFDDisabledSignupTypes(platform, {
                             real: account_type === 'real',
                             demo: account_type === 'demo',

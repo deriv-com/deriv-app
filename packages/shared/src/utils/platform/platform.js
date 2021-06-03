@@ -12,13 +12,18 @@ export const platform_name = Object.freeze({
     SmartTrader: 'SmartTrader',
 });
 
+export const CFD_PLATFORMS = Object.freeze({
+    MT5: 'mt5',
+    DXTRADE: 'dxtrade',
+});
+
 export const isBot = () =>
     /^\/bot/.test(window.location.pathname) ||
     (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'bot');
 
 export const isMT5 = () =>
     /^\/mt5/.test(window.location.pathname) ||
-    (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === 'mt5');
+    (/^\/(br_)/.test(window.location.pathname) && window.location.pathname.split('/')[2] === CFD_PLATFORMS.MT5);
 
 export const isDXtrade = () =>
     /^\/derivx/.test(window.location.pathname) ||

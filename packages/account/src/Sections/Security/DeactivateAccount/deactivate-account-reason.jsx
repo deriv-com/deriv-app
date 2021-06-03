@@ -234,12 +234,10 @@ class DeactivateAccountReason extends React.Component {
                 input_action,
                 is_delete_input: delete_inputs.includes(input_action),
             },
-        });
-
-        this.setState({
             log: {
                 last_event_handler: 'onchange',
             },
+            input_action,
         });
 
         if ((remaining_characters <= 0 || total_accumulated_characters >= character_limit_no) && !input_action) {

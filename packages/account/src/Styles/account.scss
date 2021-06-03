@@ -423,6 +423,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__error-message {
+            padding: 1rem 0;
             position: unset;
         }
         &__personal-details {

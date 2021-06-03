@@ -123,13 +123,10 @@ const ProofOfIdentityContainer = ({
                 return;
             }
             setStatus('pending');
-            // TODO: clean all of this up by simplifying the manually toggled notifications functions
-            removeNotificationMessage({ key: 'authenticate' });
-            removeNotificationByKey({ key: 'authenticate' });
-            removeNotificationMessage({ key: 'needs_poi' });
-            removeNotificationByKey({ key: 'needs_poi' });
-            removeNotificationMessage({ key: 'poi_expired' });
-            removeNotificationByKey({ key: 'poi_expired' });
+            ['authenticate', 'needs_poi', 'poi_expired'].map(k => {
+                removeNotificationMessage({ key: k });
+                removeNotificationByKey({ key: k });
+            });
             if (verification_status?.needs_poa) addNotificationByKey('needs_poa');
             if (onStateChange) onStateChange({ status: 'pending' });
         });
@@ -152,10 +149,8 @@ const ProofOfIdentityContainer = ({
 
     // component didUpdate hook, checks previous account_status and current account_status to handle account switching
     React.useEffect(() => {
-        if (current_account_status && previous_account_status) {
-            if (previous_account_status !== current_account_status) {
-                createVerificationConfig(current_account_status);
-            }
+        if (current_account_status && previous_account_status && previous_account_status !== current_account_status) {
+            createVerificationConfig(current_account_status);
         }
     }, [createVerificationConfig, previous_account_status, account_status]);
 

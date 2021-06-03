@@ -1770,8 +1770,11 @@ export default class ClientStore extends BaseStore {
                 });
 
                 this.root_store.ui.showAccountTypesModalForEuropean();
+                const shortcode =
+                    this.landing_companies?.financial_company?.shortcode ||
+                    this.landing_companies?.gaming_company?.shortcode;
 
-                if (this.landing_companies?.gaming_company?.shortcode === 'svg') {
+                if (shortcode === 'svg') {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
                 }
             }

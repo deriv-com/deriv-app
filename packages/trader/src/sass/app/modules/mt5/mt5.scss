@@ -1,25 +1,16 @@
 .dc-modal__container_mt5-password-modal,
 .dc-mobile-dialog__mt5-password-modal {
-    max-width: 424px;
-    min-height: 300px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
 
-    h2 {
-        @include typeface(--title-center-bold-black);
-        color: var(--text-prominent);
-        text-transform: none;
-        margin: 0.4rem 2.2rem 2.4rem;
-        max-width: 30rem;
-    }
     form {
         flex-grow: 1;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
         justify-content: space-between;
-        padding: 2rem;
+        padding: 0 2.4rem 1.2rem;
 
         @include mobile {
             padding: 0;
@@ -30,16 +21,19 @@
         color: var(--text-prominent);
         text-transform: none;
         margin-top: 1rem;
+        top: 2rem;
+        position: relative;
+        padding: 1.3rem;
+    }
+    &__hint {
+        max-width: 40rem;
     }
     &__body {
         flex-grow: 1;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        align-items: center;
-    }
-    .dc-modal-header {
-        display: none;
+        align-items: flex-start;
     }
     .dc-input {
         &__label {
@@ -62,13 +56,9 @@
         margin-top: 3em;
     }
     & .dc-password-meter__container {
-        flex-grow: 0;
-        width: 30rem;
+        flex-grow: 1;
         margin: auto;
 
-        .dc-password-input__field {
-            margin-bottom: 9.7rem;
-        }
         @include mobile {
             width: calc(100vw - 4.8rem);
             max-width: 30rem;
@@ -90,6 +80,22 @@
             padding: 2rem;
         }
     }
+    @include tablet-up {
+        .mt5-password-modal__content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 35rem;
+            margin-bottom: 2rem;
+
+            &--password-reset {
+                padding: 0 2.5rem;
+            }
+        }
+    }
+}
+.dc-mobile-dialog__mt5-email-sent {
+    padding-bottom: 1rem;
 }
 
 .mt5-password-modal {
@@ -201,7 +207,7 @@
 
     &__container {
         display: grid;
-        grid-template-rows: 6rem 1fr 7rem;
+        grid-template-rows: 12rem 7rem;
         height: 100%;
         width: 100%;
         justify-items: center;
@@ -230,8 +236,8 @@
     }
     &__password-area {
         @include desktop {
-            width: 30rem;
-            height: 12rem;
+            width: calc(min(33rem, 100vw));
+            padding: 2.4rem;
         }
         @include mobile {
             width: 100%;
@@ -240,12 +246,12 @@
     }
     &__error {
         display: flex;
-        width: 38.4rem;
-        height: 28.4rem;
+        max-width: 38.4rem;
+        min-height: 28.4rem;
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
-        padding: 2rem 0;
+        padding-top: 2rem;
     }
     &__description {
         @include typeface(--paragraph-left-normal-black);
@@ -256,6 +262,9 @@
             margin-bottom: 2.4rem;
             max-width: 70%;
         }
+    }
+    &__confirm-button {
+        margin-top: 2.4rem;
     }
     &__success {
         width: 38.4rem;
@@ -273,11 +282,20 @@
     }
     @include mobile {
         & .dc-form-submit-button {
-            position: relative;
-            background-color: unset;
-            border: none;
-            bottom: unset;
+            all: unset;
         }
+    }
+}
+
+.mt5-trading-password-required {
+    display: grid;
+    grid-auto-rows: auto;
+    grid-gap: 1.2rem;
+    justify-items: center;
+    margin: 2.4rem;
+    @include tablet-up {
+        max-width: 364px;
+        margin: 0 3.2rem 3.2rem;
     }
 }
 
@@ -326,5 +344,16 @@
         grid-gap: 2.4rem;
         grid-template-columns: 1fr 1fr 1fr;
         margin-top: 4rem;
+    }
+}
+
+.sent-email {
+    &__modal {
+        &-close {
+            display: flex;
+            justify-content: flex-end;
+            padding: 1rem 1rem 3.4rem;
+            cursor: pointer;
+        }
     }
 }

@@ -463,7 +463,8 @@
     }
     &__multipliers-trade-info {
         display: flex;
-        justify-content: space-evenly;
+        justify-content: space-around;
+        gap: 2.8rem;
 
         &-tooltip-text {
             display: flex;

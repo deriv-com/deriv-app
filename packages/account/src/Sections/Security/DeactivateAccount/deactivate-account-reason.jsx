@@ -109,6 +109,8 @@ const allowed_keys = new Set([
     'Shift',
 ]);
 
+const allowed_native_input = new Set(['deleteContentBackward']);
+
 class DeactivateAccountReason extends React.Component {
     static contextType = PlatformContext;
     state = {
@@ -124,8 +126,6 @@ class DeactivateAccountReason extends React.Component {
         remaining_characters: character_limit_no,
         total_accumulated_characters: 0,
         input_action: null,
-        log: null,
-        log2: null,
     };
     validateFields = values => {
         const error = {};
@@ -225,25 +225,21 @@ class DeactivateAccountReason extends React.Component {
     };
 
     handleInputOnInput = e => {
+        let input_action = e.nativeEvent.inputType;
+
+        if (this.state.remaining_characters <= 0 && !allowed_native_input.has(input_action)) {
+            input_action = null;
+            e.preventDefault();
+        }
+
         this.setState({
-            log2: e.nativeEvent.inputType,
+            input_action,
         });
     };
 
     handleInputKeyDown = e => {
         const key = e.key;
         let input_action = key;
-
-        const log = {
-            'e.key': e.key,
-            'e.keyCode': e.keyCode,
-            'e.charCode': e.charCode,
-            'e.which': e.which,
-        };
-
-        this.setState({
-            log,
-        });
 
         if (this.state.remaining_characters <= 0 && !allowed_keys.has(key)) {
             input_action = null;
@@ -408,13 +404,9 @@ class DeactivateAccountReason extends React.Component {
                             </Field>
 
                             <pre style={{ whiteSpace: 'pre-wrap' }}>
-                                {' '}
-                                {JSON.stringify(this.state.log, undefined, 2)}
+                                {JSON.stringify(this.state.input_action, undefined, 2)}
                             </pre>
-                            <pre style={{ whiteSpace: 'pre-wrap' }}>
-                                {' '}
-                                {JSON.stringify(this.state.log2, undefined, 2)}
-                            </pre>
+
                             <Field name='other_trading_platforms'>
                                 {({ field }) => (
                                     <Input

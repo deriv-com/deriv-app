@@ -113,6 +113,7 @@ const allowed_native_input = new Set(['deleteContentBackward']);
 
 class DeactivateAccountReason extends React.Component {
     static contextType = PlatformContext;
+
     state = {
         api_error_message: '',
         is_loading: false,
@@ -217,34 +218,36 @@ class DeactivateAccountReason extends React.Component {
     };
 
     handleChange = (e, onChange) => {
-        const { remaining_characters, total_accumulated_characters, input_action } = this.state;
+        setTimeout(() => {
+            const { remaining_characters, total_accumulated_characters, input_action } = this.state;
 
-        const delete_inputs = ['Delete', 'Backspace', 'deleteContentBackward'];
+            const delete_inputs = ['Delete', 'Backspace', 'deleteContentBackward'];
 
-        const final_accumulated_characters = delete_inputs.includes(input_action)
-            ? total_accumulated_characters - 1
-            : total_accumulated_characters;
+            const final_accumulated_characters = delete_inputs.includes(input_action)
+                ? total_accumulated_characters - 1
+                : total_accumulated_characters;
 
-        this.setState({
-            log2: {
-                remaining_characters,
-                final_accumulated_characters,
-                total_accumulated_characters,
-                character_limit_no,
+            this.setState({
+                log2: {
+                    remaining_characters,
+                    final_accumulated_characters,
+                    total_accumulated_characters,
+                    character_limit_no,
+                    input_action,
+                    is_delete_input: delete_inputs.includes(input_action),
+                },
+                log: {
+                    last_event_handler: 'onchange',
+                },
                 input_action,
-                is_delete_input: delete_inputs.includes(input_action),
-            },
-            log: {
-                last_event_handler: 'onchange',
-            },
-            input_action,
-        });
+            });
 
-        if ((remaining_characters <= 0 || total_accumulated_characters >= character_limit_no) && !input_action) {
-            e.preventDefault();
-        } else {
-            onChange(e);
-        }
+            if ((remaining_characters <= 0 || total_accumulated_characters >= character_limit_no) && !input_action) {
+                e.preventDefault();
+            } else {
+                onChange(e);
+            }
+        }, 500);
     };
 
     handleInputOnInput = e => {

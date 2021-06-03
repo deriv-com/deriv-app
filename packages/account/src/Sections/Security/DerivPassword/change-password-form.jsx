@@ -45,6 +45,7 @@ class ChangePasswordForm extends React.Component {
                 setStatus({ msg: data.error.message });
             } else {
                 this.setState({ is_submit_success: true });
+                window.localStorage.setItem('is_redirecting', 'true');
                 this.props.logout().then(this.handlePasswordChange);
             }
             setSubmitting(false);
@@ -62,7 +63,7 @@ class ChangePasswordForm extends React.Component {
 
         if (values.new_password) {
             if (!validLength(values.new_password, { min: 8, max: 25 })) {
-                errors.new_password = localize('0% Weak; The password is too short');
+                errors.new_password = localize('Your password should be between 8 and 25 characters.');
             }
             if (values.old_password === values.new_password) {
                 errors.new_password = localize('Current password and new password cannot be the same.');

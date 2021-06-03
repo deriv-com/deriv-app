@@ -19,6 +19,7 @@ import 'Sass/cashier.scss';
 const Cashier = ({
     history,
     is_account_transfer_visible,
+    is_account_setting_loaded,
     is_logged_in,
     is_logging_in,
     is_onramp_tab_visible,
@@ -30,8 +31,8 @@ const Cashier = ({
     location,
     onMount,
     p2p_notification_count,
-    routes: routes_config,
     routeBackInApp,
+    routes: routes_config,
     setAccountSwitchListener,
     setTabIndex,
     tab_index,
@@ -54,7 +55,6 @@ const Cashier = ({
     const onClickClose = () => routeBackInApp(history);
     const getMenuOptions = () => {
         const options = [];
-
         routes_config.forEach(route => {
             if (
                 !route.is_invisible &&
@@ -86,7 +86,9 @@ const Cashier = ({
     //         location.pathname.startsWith(routes.cashier_withdrawal));
 
     const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: location.pathname }).default;
-    if (!is_logged_in && is_logging_in) {
+
+    // '|| !is_account_setting_loaded' condition added to make sure client_tnc_status loaded
+    if ((!is_logged_in && is_logging_in) || !is_account_setting_loaded) {
         return <Loading is_fullscreen />;
     }
     return (
@@ -108,6 +110,16 @@ const Cashier = ({
                             is_full_width
                             is_routed
                             list={getMenuOptions()}
+                            // TODO: Uncomment when design for responsive screen is available
+                            // tab_headers_note={
+                            //     <Button
+                            //         id='cashier_learn_more'
+                            //         className='cashier-page-wrapper__button'
+                            //         text={localize('Learn more about payment methods')}
+                            //         onClick={() => window.open(getStaticUrl('/payment-methods'))}
+                            //         secondary
+                            //     />
+                            // }
                             // TODO: Uncomment when Ewallet.Exchange is available
                             // tab_headers_note={
                             //     should_show_tab_headers_note ? (
@@ -149,6 +161,7 @@ const Cashier = ({
 Cashier.propTypes = {
     history: PropTypes.object,
     is_account_transfer_visible: PropTypes.bool,
+    is_account_setting_loaded: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_onramp_tab_visible: PropTypes.bool,
@@ -160,8 +173,8 @@ Cashier.propTypes = {
     location: PropTypes.object,
     onMount: PropTypes.func,
     p2p_notification_count: PropTypes.number,
-    routes: PropTypes.arrayOf(PropTypes.object),
     routeBackInApp: PropTypes.func,
+    routes: PropTypes.arrayOf(PropTypes.object),
     setAccountSwitchListener: PropTypes.func,
     setTabIndex: PropTypes.func,
     tab_index: PropTypes.number,
@@ -170,6 +183,7 @@ Cashier.propTypes = {
 
 export default connect(({ client, common, modules, ui }) => ({
     is_account_transfer_visible: modules.cashier.is_account_transfer_visible,
+    is_account_setting_loaded: client.is_account_setting_loaded,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,

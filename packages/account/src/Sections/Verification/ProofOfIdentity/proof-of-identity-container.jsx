@@ -40,6 +40,7 @@ const ProofOfIdentityContainer = ({
     const [is_continue_uploading, setContinueUploading] = React.useState(false);
     const [identity_status_key, setIdentityStatus] = React.useState(false);
     const previous_account_status = usePrevious(account_status);
+    const [current_account_status, setCurrentAccountStatus] = React.useState();
 
     const getOnfidoServiceToken = React.useCallback(
         () =>
@@ -137,19 +138,23 @@ const ProofOfIdentityContainer = ({
     React.useEffect(() => {
         getAccountStatus().then(response => {
             const { get_account_status } = response;
-            getOnfidoServiceToken().then(token => {
-                // TODO: handle error for onfido_service_token.error.code === 'MissingPersonalDetails'
-                createVerificationConfig(get_account_status, token);
-            });
-            setIsLoading(false);
+            getOnfidoServiceToken()
+                .then(token => {
+                    // TODO: handle error for onfido_service_token.error.code === 'MissingPersonalDetails'
+                    createVerificationConfig(get_account_status, token);
+                    setCurrentAccountStatus(get_account_status);
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
         });
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     // component didUpdate hook, checks previous account_status and current account_status to handle account switching
     React.useEffect(() => {
-        if (account_status && previous_account_status) {
-            if (previous_account_status !== account_status) {
-                createVerificationConfig(account_status);
+        if (current_account_status && previous_account_status) {
+            if (previous_account_status !== current_account_status) {
+                createVerificationConfig(current_account_status);
             }
         }
     }, [createVerificationConfig, previous_account_status, account_status]);

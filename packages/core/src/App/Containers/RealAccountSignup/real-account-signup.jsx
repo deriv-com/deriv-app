@@ -29,14 +29,16 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
         return <Localize i18n_default_text='Set a currency for your real account' />;
     }
 
-    if (real_account_signup_target === 'malta' && is_belgium_residence) {
+    if (
+        (real_account_signup_target === 'malta' && is_belgium_residence) ||
+        real_account_signup_target === 'deposit_cash'
+    ) {
         return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
     }
 
     if (real_account_signup_target === 'iom' && is_isle_of_man_residence) {
         return <Localize i18n_default_text='Add a Deriv account' />;
     }
-
     switch (real_account_signup_target) {
         case 'malta':
         case 'iom':
@@ -65,6 +67,8 @@ const RealAccountSignup = ({
     state_index,
     state_value,
     toggleWelcomeModal,
+    has_fiat,
+    available_crypto_currencies,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -94,7 +98,10 @@ const RealAccountSignup = ({
                     onError={showErrorModal}
                 />
             ),
-            title: is_requlated => (is_requlated ? localize('Manage account') : localize('Add or manage account')),
+            title: local_props =>
+                local_props.has_fiat && local_props.available_crypto_currencies?.length === 0
+                    ? localize('Manage account')
+                    : localize('Add or manage account'),
         },
         {
             body: local_props => (
@@ -105,7 +112,10 @@ const RealAccountSignup = ({
                     onSubmit={closeModalThenOpenCashier}
                 />
             ),
-            title: () => localize('Add or manage account'),
+            title: local_props =>
+                local_props.has_fiat && local_props.available_crypto_currencies?.length === 0
+                    ? localize('Manage account')
+                    : localize('Add or manage account'),
         },
         {
             body: local_props => (
@@ -308,9 +318,12 @@ const RealAccountSignup = ({
                                     is_isle_of_man_residence={is_isle_of_man_residence}
                                     is_belgium_residence={is_belgium_residence}
                                     is_eu={is_eu}
+                                    has_fiat={has_fiat}
+                                    available_crypto_currencies={available_crypto_currencies}
                                 />
                             );
                         }
+
                         return null;
                     }}
                     toggleModal={closeModal}
@@ -365,4 +378,6 @@ export default connect(({ ui, client, common }) => ({
     is_belgium_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
     state_value: ui.real_account_signup,
     routing_history: common.app_routing_history,
+    has_fiat: client.has_fiat,
+    available_crypto_currencies: client.available_crypto_currencies,
 }))(withRouter(RealAccountSignup));

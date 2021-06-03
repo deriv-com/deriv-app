@@ -152,6 +152,8 @@ class MT5Dashboard extends React.Component {
             has_real_account,
             NotificationMessages,
             openAccountNeededModal,
+            residence,
+            residence_list,
             standpoint,
             toggleAccountsDialog,
             toggleShouldShowRealAccountsList,
@@ -170,11 +172,7 @@ class MT5Dashboard extends React.Component {
                         <div className='mt5-dashboard'>
                             <div className='mt5-dashboard__welcome-message'>
                                 <h1 className='mt5-dashboard__welcome-message--heading'>
-                                    {is_logged_in ? (
-                                        <Localize i18n_default_text='Welcome to your MetaTrader 5 (DMT5 account dashboard)' />
-                                    ) : (
-                                        <Localize i18n_default_text='Welcome to MetaTrader 5 (DMT5 account dashboard)' />
-                                    )}
+                                    <Localize i18n_default_text='Welcome to Deriv MT5 (DMT5) dashboard' />
                                 </h1>
                             </div>
                             {has_mt5_account_error && (
@@ -244,6 +242,8 @@ class MT5Dashboard extends React.Component {
                                                 toggleAccountsDialog={toggleAccountsDialog}
                                                 toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
                                                 can_have_more_real_synthetic_mt5={can_have_more_real_synthetic_mt5}
+                                                residence={residence}
+                                                residence_list={residence_list}
                                             />
                                         </React.Fragment>
                                     </div>
@@ -262,6 +262,7 @@ class MT5Dashboard extends React.Component {
                                             landing_companies={landing_companies}
                                             openAccountTransfer={this.openAccountTransfer}
                                             openPasswordManager={this.togglePasswordManagerModal}
+                                            residence={residence}
                                         />
                                     </div>
                                 </LoadTab>
@@ -437,6 +438,7 @@ export default withRouter(
         openAccountNeededModal: ui.openAccountNeededModal,
         is_loading: client.is_populating_mt5_account_list,
         residence: client.residence,
+        residence_list: client.residence_list,
         has_mt5_account: modules.mt5.has_mt5_account,
         has_mt5_account_error: client.has_account_error_in_mt5_list,
         has_real_account: client.has_active_real_account,

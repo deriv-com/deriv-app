@@ -22,6 +22,7 @@
     &__input {
         .dc-input-wrapper__input {
             border: 1px solid var(--border-normal);
+            appearance: none;
         }
     }
     &__button {
@@ -50,7 +51,7 @@
     &__total-profit {
         height: 5.2rem;
         padding: 1.6rem;
-        background: var(--general-section-2);
+        background: var(--general-main-2);
         color: var(--text-general);
         display: flex;
         align-items: center;

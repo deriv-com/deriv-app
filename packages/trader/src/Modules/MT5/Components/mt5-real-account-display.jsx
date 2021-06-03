@@ -5,6 +5,7 @@ import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
 import { getAccountTypeFields, getMT5AccountListKey, getMT5AccountKey } from '@deriv/shared';
 import {
     eu_real_financial_specs,
+    au_real_financial_specs,
     real_financial_stp_specs,
     real_financial_specs,
     real_synthetic_specs,
@@ -47,12 +48,25 @@ const MT5RealAccountDisplay = ({
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
     can_have_more_real_synthetic_mt5,
+    residence,
+    residence_list,
 }) => {
     const should_show_trade_servers = is_logged_in && !is_eu && has_real_account && can_have_more_real_synthetic_mt5;
     const [active_hover, setActiveHover] = React.useState(0);
 
-    const has_required_credentials =
-        account_settings.citizen && account_settings.tax_identification_number && account_settings.tax_residence;
+    const has_required_credentials = React.useMemo(() => {
+        const { citizen, tax_identification_number, tax_residence } = account_settings;
+
+        if (citizen && tax_identification_number && tax_residence) return true;
+
+        if (citizen && tax_residence) {
+            const is_tin_required = landing_companies?.config?.tax_details_required ?? false;
+
+            return is_tin_required || !residence_list.filter(v => v.value === tax_residence && v.tin_format).length;
+        }
+
+        return false;
+    }, [account_settings, residence_list, landing_companies]);
 
     const button_label = getRealFinancialStpBtnLbl(
         is_fully_authenticated,
@@ -61,6 +75,18 @@ const MT5RealAccountDisplay = ({
     );
 
     const is_real_financial_stp_disabled = !has_real_account || is_pending_authentication;
+
+    const financial_specs = React.useMemo(() => {
+        const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
+        const is_australian = residence === 'au';
+        if (is_australian) {
+            return au_real_financial_specs;
+        }
+        if (should_show_eu) {
+            return eu_real_financial_specs;
+        }
+        return real_financial_specs;
+    }, [residence, is_logged_in, is_eu, is_eu_country]);
 
     const onSelectRealSynthetic = () => {
         if (is_eu && standpoint.malta && !has_malta_account) {
@@ -118,7 +144,6 @@ const MT5RealAccountDisplay = ({
         }
     };
 
-    const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
     const synthetic_account_items =
         (landing_companies?.mt_gaming_company?.financial || !is_logged_in) &&
         (Object.keys(current_list).some(key => key.startsWith('real.synthetic'))
@@ -199,7 +224,7 @@ const MT5RealAccountDisplay = ({
             onPasswordManager={openPasswordManager}
             onClickFund={onClickFundReal}
             descriptor={localize(
-                'Trade major, minor, exotic currency pairs, and cryptocurrencies with Straight-Through Processing (STP) of your orders direct to the market.'
+                'Trade popular currency pairs and cryptocurrencies with straight-through processing order (STP).'
             )}
             specs={real_financial_stp_specs}
             is_disabled={isMT5AccountCardDisabled('financial_stp')}
@@ -226,16 +251,10 @@ const MT5RealAccountDisplay = ({
             onSelectAccount={onSelectRealFinancial}
             onPasswordManager={openPasswordManager}
             onClickFund={onClickFundReal}
-            descriptor={
-                is_eu || is_eu_country
-                    ? localize(
-                          'Trade commodities, cryptocurrencies, major (standard) and minor currency pairs with high leverage.'
-                      )
-                    : localize(
-                          'Trade commodities, cryptocurrencies, major (standard and micro-lots) and minor currency pairs with high leverage.'
-                      )
-            }
-            specs={should_show_eu ? eu_real_financial_specs : real_financial_specs}
+            descriptor={localize(
+                'Trade CFDs on forex, stocks & indices, commodities, and cryptocurrencies with leverage.'
+            )}
+            specs={financial_specs}
             is_logged_in={is_logged_in}
         />
     );
@@ -247,7 +266,6 @@ const MT5RealAccountDisplay = ({
             className={classNames('mt5-real-accounts-display', {
                 'mt5-real-accounts-display--has-trade-servers': should_show_trade_servers,
             })}
-            style={{ justifyContent: items.length < 3 ? 'center' : 'space-between' }}
         >
             <DesktopWrapper>
                 <Carousel

@@ -31,6 +31,7 @@ const SelectNative = ({
     disabled,
     error,
     hint,
+    classNameHint,
     hide_selected_value,
     label,
     list_items,
@@ -76,7 +77,13 @@ const SelectNative = ({
                 ) : (
                     <Icon className='dc-select-native__suffix-icon' icon={suffix_icon} size={16} fill />
                 )}
-                <select className='dc-select-native__picker' value={value} disabled={disabled} {...props}>
+                <select
+                    id='dt_components_select-native_select-tag'
+                    className='dc-select-native__picker'
+                    value={value}
+                    disabled={disabled}
+                    {...props}
+                >
                     {Array.isArray(list_items) ? (
                         <React.Fragment>
                             {/*
@@ -127,8 +134,8 @@ const SelectNative = ({
                 as='p'
                 color='less-prominent'
                 size='xxs'
-                styles={{ lineHeight: '1.8' }}
-                className='dc-select-native__hint'
+                line_height='l'
+                className={classNames('dc-select-native__hint', classNameHint)}
             >
                 {hint}
             </Text>
@@ -152,6 +159,7 @@ const list_items_shape = PropTypes.oneOfType([
 SelectNative.propTypes = {
     className: PropTypes.string,
     classNameDisplay: PropTypes.string,
+    classNameHint: PropTypes.string,
     disabled: PropTypes.bool,
     error: PropTypes.string,
     hint: PropTypes.string,

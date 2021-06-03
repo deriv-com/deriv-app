@@ -47,6 +47,7 @@ export default class UIStore extends BaseStore {
     @observable is_account_signup_modal_visible = false;
     @observable is_set_residence_modal_visible = false;
     @observable is_reset_password_modal_visible = false;
+    @observable is_reset_trading_password_modal_visible = false;
     // @observable is_purchase_lock_on       = false;
 
     // SmartCharts Controls
@@ -141,6 +142,8 @@ export default class UIStore extends BaseStore {
         target_label: '',
         target_dmt5_label: '',
     };
+
+    @observable manage_real_account_tab_index = 0;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -409,6 +412,11 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    setManageRealAccountActiveTabIndex(index) {
+        this.manage_real_account_tab_index = index;
+    }
+
+    @action.bound
     closeRealAccountSignup() {
         this.is_real_acc_signup_on = false;
         this.real_account_signup_target = '';
@@ -627,6 +635,11 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleResetPasswordModal(state_change = !this.is_reset_password_modal_visible) {
         this.is_reset_password_modal_visible = state_change;
+    }
+
+    @action.bound
+    setResetTradingPasswordModalOpen(is_reset_trading_password_modal_visible) {
+        this.is_reset_trading_password_modal_visible = is_reset_trading_password_modal_visible;
     }
 
     @action.bound

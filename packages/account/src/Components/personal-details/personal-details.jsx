@@ -28,7 +28,12 @@ const DateOfBirthField = props => (
         {({ field: { value }, form: { setFieldValue, errors, touched, setTouched } }) => (
             <DateOfBirthPicker
                 error={touched.date_of_birth && errors.date_of_birth}
-                onBlur={() => setTouched({ date_of_birth: true })}
+                onBlur={() =>
+                    setTouched({
+                        ...touched,
+                        date_of_birth: true,
+                    })
+                }
                 onChange={({ target }) =>
                     setFieldValue(
                         'date_of_birth',
@@ -275,6 +280,7 @@ const PersonalDetails = ({
                                                                 {...field}
                                                                 list_portal_id='modal_root'
                                                                 required
+                                                                should_hide_disabled_options={false}
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -527,7 +533,6 @@ const PersonalDetails = ({
                                                                     label={localize('Account opening reason')}
                                                                     list_items={account_opening_reason_list}
                                                                     value={values.account_opening_reason}
-                                                                    use_text={true}
                                                                     error={
                                                                         touched.account_opening_reason &&
                                                                         errors.account_opening_reason

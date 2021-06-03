@@ -22,7 +22,12 @@ const CookieBanner = ({ onAccept, onDecline, is_open, is_dark_mode }) => (
         <Button className='cookie-banner__btn-dont-accept' secondary onClick={onDecline}>
             {localize('Don’t accept')}
         </Button>
-        <Button className='cookie-banner__btn-accept' secondary onClick={onAccept}>
+        <Button
+            id='dt_core_cookie-banner_accept-btn'
+            className='cookie-banner__btn-accept'
+            secondary
+            onClick={onAccept}
+        >
             {localize('Accept')}
         </Button>
     </div>

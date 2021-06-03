@@ -240,7 +240,7 @@ class DeactivateAccountReason extends React.Component {
 
         this.setState({
             log: {
-                onchangeReceived: {
+                onchangeReceivedData: {
                     remaining_characters,
                     total_accumulated_characters,
                     input_action,

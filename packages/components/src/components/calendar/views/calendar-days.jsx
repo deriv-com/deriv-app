@@ -23,7 +23,6 @@ const getDays = ({
     has_range_selection,
     hide_others,
     events,
-    hovered_date,
     isPeriodDisabled,
     start_date,
     selected_date,
@@ -74,7 +73,6 @@ const getDays = ({
 
     dates.map(date => {
         const moment_date = toMoment(date).startOf('day');
-        const moment_hovered = toMoment(hovered_date).startOf('day');
         const is_active = selected_date && moment_date.isSame(moment_selected);
         const is_today = moment_date.isSame(moment_today, 'day');
 
@@ -167,7 +165,6 @@ Days.propTypes = {
             descrip: PropTypes.string,
         })
     ),
-    hovered_date: PropTypes.string,
     onMouseLeave: PropTypes.func,
     onMouseOver: PropTypes.func,
     start_date: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

@@ -18,7 +18,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                         'Only letters, numbers, spaces, and these special characters allowed: period, comma, colon, semicolon, brackets, at sign, hashtag, slash, hyphen.'
                     ),
                     {
-                        regex: /^[a-zA-Z0-9\s'.,:;(){}x{b0}@#/-\\\[\]]{1,70}$/,
+                        regex: /^[a-zA-Z0-9\s'.,:;()x{b0}@#/-\\\[\]]{1,70}$/,
                     },
                 ],
                 ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
@@ -35,7 +35,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                         'Only letters, numbers, spaces, and these special characters allowed: period, comma, colon, semicolon, brackets, at sign, hashtag, slash, hyphen.'
                     ),
                     {
-                        regex: /^[a-zA-Z0-9\s'.,:;(){}x{b0}@#/-\\\[\]]{0,70}$/,
+                        regex: /^[a-zA-Z0-9\s'.,:;()x{b0}@#/-\\\[\]]{0,70}$/,
                     },
                 ],
                 ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],

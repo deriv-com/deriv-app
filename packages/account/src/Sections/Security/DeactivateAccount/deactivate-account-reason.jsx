@@ -217,17 +217,14 @@ class DeactivateAccountReason extends React.Component {
 
     handleChange = (e, onChange) => {
         const { remaining_characters, total_accumulated_characters, input_action } = this.state;
-        
-        this.setState({
-            log: 'No Objection!',
-        });
 
         if ((remaining_characters <= 0 || total_accumulated_characters >= character_limit_no) && !input_action) {
-            this.setState({
-                log: 'Preventing Default!',
-            });
             e.preventDefault();
         } else {
+            this.setState({
+                log: `Changing into: ${e.target.value}`,
+            });
+
             onChange(e);
         }
     };
@@ -414,6 +411,7 @@ class DeactivateAccountReason extends React.Component {
                             <pre style={{ whiteSpace: 'pre-wrap' }}>
                                 {JSON.stringify(this.state.input_action, undefined, 2)}
                             </pre>
+                            <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(this.state.log, undefined, 2)}</pre>
 
                             <Field name='other_trading_platforms'>
                                 {({ field }) => (

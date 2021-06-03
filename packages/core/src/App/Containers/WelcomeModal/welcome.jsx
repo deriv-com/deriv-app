@@ -13,7 +13,7 @@ import NotSure from 'Assets/SvgComponents/onboarding/not-sure.svg';
 import NotSureMobile from 'Assets/SvgComponents/onboarding/not-sure-mobile.svg';
 import WelcomeItem from './welcome-item.jsx';
 
-const Welcome = ({ switchPlatform }) => (
+const Welcome = ({ switchPlatform, is_norway_residence }) => (
     <>
         <DesktopWrapper>
             <Text as='h2' weight='bold' align='center' color='prominent' className='welcome__title' size='m'>
@@ -37,7 +37,11 @@ const Welcome = ({ switchPlatform }) => (
                 onClick={() => switchPlatform({ route: routes.mt5 })}
                 icon={<CFDs />}
                 mobileIcon={<CFDsMobile />}
-                options={['Forex', 'Synthetics', 'Stocks and indices', 'Cryptocurrencies', 'Commodities']}
+                options={
+                    is_norway_residence
+                        ? ['Synthetics', 'Stocks and indices', 'Cryptocurrencies', 'Commodities']
+                        : ['Forex', 'Synthetics', 'Stocks and indices', 'Cryptocurrencies', 'Commodities']
+                }
             />
             <WelcomeItem
                 description={
@@ -50,7 +54,7 @@ const Welcome = ({ switchPlatform }) => (
                 title={localize('Multipliers')}
                 icon={<Multipliers />}
                 mobileIcon={<MultipliersMobile />}
-                options={['Forex', 'Synthetics']}
+                options={is_norway_residence ? ['Synthetics'] : ['Forex', 'Synthetics']}
             />
             <WelcomeItem
                 description={
@@ -63,7 +67,11 @@ const Welcome = ({ switchPlatform }) => (
                 title={localize('Digital Options')}
                 icon={<DigitalOptions />}
                 mobileIcon={<DigitalOptionsMobile />}
-                options={['Forex', 'Synthetics', 'Stocks and indices', 'Commodities']}
+                options={
+                    is_norway_residence
+                        ? ['Synthetics', 'Stocks and indices', 'Commodities']
+                        : ['Forex', 'Synthetics', 'Stocks and indices', 'Commodities']
+                }
             />
             <WelcomeItem
                 description={
@@ -84,6 +92,7 @@ const Welcome = ({ switchPlatform }) => (
 
 Welcome.propTypes = {
     switchPlatform: PropTypes.func.isRequired,
+    is_norway_residence: PropTypes.bool.isRequired,
 };
 
 export default Welcome;

@@ -5,7 +5,7 @@ import { Modal, ThemedScrollbars } from '@deriv/components';
 import Welcome from './welcome.jsx';
 
 const WelcomeModal = props => {
-    const { toggleWelcomeModal, history, toggleShouldShowMultipliersOnboarding } = props;
+    const { toggleWelcomeModal, history, is_norway_residence, toggleShouldShowMultipliersOnboarding } = props;
     const switchPlatform = React.useCallback(
         ({ route, should_show_multiplier } = {}) => {
             toggleWelcomeModal({ is_visible: false, should_persist: true });
@@ -18,15 +18,16 @@ const WelcomeModal = props => {
     return (
         <Modal width='760px' className='welcome' is_open has_close_icon={false} has_outer_content>
             <ThemedScrollbars height={700}>
-                <Welcome switchPlatform={switchPlatform} />
+                <Welcome switchPlatform={switchPlatform} is_norway_residence={is_norway_residence} />
             </ThemedScrollbars>
         </Modal>
     );
 };
 
 export default withRouter(
-    connect(({ ui }) => ({
+    connect(({ ui, client }) => ({
         toggleWelcomeModal: ui.toggleWelcomeModal,
         toggleShouldShowMultipliersOnboarding: ui.toggleShouldShowMultipliersOnboarding,
+        is_norway_residence: client.residence === 'no',
     }))(WelcomeModal)
 );

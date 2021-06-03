@@ -145,8 +145,30 @@ class DeactivateAccountReason extends React.Component {
 
             remaining_characters = remaining_characters >= 0 ? remaining_characters : 0;
 
+            const { input_action } = this.state;
+
+            const delete_inputs = ['Delete', 'Backspace', 'deleteContentBackward'];
+
+            const final_accumulated_characters = delete_inputs.includes(input_action)
+                ? text_inputs_length - 1
+                : text_inputs_length;
+
             this.setState({
-                total_accumulated_characters: text_inputs_length,
+                log2: {
+                    text_inputs_length,
+                    final_accumulated_characters,
+                    character_limit_no,
+                    input_action,
+                    is_delete_input: delete_inputs.includes(input_action),
+                },
+                log: {
+                    last_event_handler: 'onchange',
+                },
+                input_action,
+            });
+
+            this.setState({
+                total_accumulated_characters: final_accumulated_characters,
                 remaining_characters,
             });
 
@@ -218,36 +240,13 @@ class DeactivateAccountReason extends React.Component {
     };
 
     handleChange = (e, onChange) => {
-        setTimeout(() => {
-            const { remaining_characters, total_accumulated_characters, input_action } = this.state;
+        const { remaining_characters, total_accumulated_characters, input_action } = this.state;
 
-            const delete_inputs = ['Delete', 'Backspace', 'deleteContentBackward'];
-
-            const final_accumulated_characters = delete_inputs.includes(input_action)
-                ? total_accumulated_characters - 1
-                : total_accumulated_characters;
-
-            this.setState({
-                log2: {
-                    remaining_characters,
-                    final_accumulated_characters,
-                    total_accumulated_characters,
-                    character_limit_no,
-                    input_action,
-                    is_delete_input: delete_inputs.includes(input_action),
-                },
-                log: {
-                    last_event_handler: 'onchange',
-                },
-                input_action,
-            });
-
-            if ((remaining_characters <= 0 || total_accumulated_characters >= character_limit_no) && !input_action) {
-                e.preventDefault();
-            } else {
-                onChange(e);
-            }
-        }, 500);
+        if ((remaining_characters <= 0 || total_accumulated_characters >= character_limit_no) && !input_action) {
+            e.preventDefault();
+        } else {
+            onChange(e);
+        }
     };
 
     handleInputOnInput = e => {
@@ -259,12 +258,6 @@ class DeactivateAccountReason extends React.Component {
         }
 
         this.setState({
-            log: {
-                last_event_handler: 'oninput',
-            },
-        });
-
-        this.setState({
             input_action,
         });
     };
@@ -272,12 +265,6 @@ class DeactivateAccountReason extends React.Component {
     handleInputKeyDown = e => {
         const key = e.key;
         let input_action = key;
-
-        this.setState({
-            log: {
-                last_event_handler: 'onkeydown',
-            },
-        });
 
         if (this.state.remaining_characters <= 0 && !allowed_keys.has(key)) {
             input_action = null;

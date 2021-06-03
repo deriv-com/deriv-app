@@ -161,10 +161,6 @@ class DeactivateAccountReason extends React.Component {
                     input_action,
                     is_delete_input: delete_inputs.includes(input_action),
                 },
-                log: {
-                    last_event_handler: 'onchange',
-                },
-                input_action,
             });
 
             this.setState({
@@ -241,6 +237,16 @@ class DeactivateAccountReason extends React.Component {
 
     handleChange = (e, onChange) => {
         const { remaining_characters, total_accumulated_characters, input_action } = this.state;
+
+        this.setState({
+            log: {
+                onchangeReceived: {
+                    remaining_characters,
+                    total_accumulated_characters,
+                    input_action,
+                },
+            },
+        });
 
         if ((remaining_characters <= 0 || total_accumulated_characters >= character_limit_no) && !input_action) {
             e.preventDefault();

@@ -118,9 +118,15 @@
     &-item-small {
         height: 8.6rem;
 
+        @media (min-width: 992px) {
+            height: 11.2rem;
+        }
+
         &__icon {
+            width: 6rem;
+
             @media (min-width: 992px) {
-                width: 6rem;
+                width: 7.8rem;
             }
         }
     }

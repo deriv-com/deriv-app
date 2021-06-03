@@ -10,6 +10,7 @@ import DigitalOptionsMobile from 'Assets/SvgComponents/onboarding/digital-option
 import Multipliers from 'Assets/SvgComponents/onboarding/multipliers.svg';
 import MultipliersMobile from 'Assets/SvgComponents/onboarding/multipliers-mobile.svg';
 import NotSure from 'Assets/SvgComponents/onboarding/not-sure.svg';
+import NotSureMobile from 'Assets/SvgComponents/onboarding/not-sure-mobile.svg';
 import WelcomeItem from './welcome-item.jsx';
 
 const Welcome = ({ switchPlatform }) => (
@@ -74,7 +75,7 @@ const Welcome = ({ switchPlatform }) => (
                 onClick={() => switchPlatform()}
                 title={localize('Not sure?')}
                 icon={<NotSure />}
-                mobileIcon={<NotSure />}
+                mobileIcon={<NotSureMobile />}
                 small
             />
         </div>

@@ -219,6 +219,9 @@ class DeactivateAccountReason extends React.Component {
         const { remaining_characters, total_accumulated_characters, input_action } = this.state;
 
         if ((remaining_characters <= 0 || total_accumulated_characters >= character_limit_no) && !input_action) {
+            this.setState({
+                log: 'Prevented Change',
+            });
             e.preventDefault();
         } else {
             this.setState({
@@ -248,7 +251,6 @@ class DeactivateAccountReason extends React.Component {
 
         if (this.state.remaining_characters <= 0 && !allowed_keys.has(key)) {
             input_action = null;
-            e.preventDefault();
         }
 
         this.setState({

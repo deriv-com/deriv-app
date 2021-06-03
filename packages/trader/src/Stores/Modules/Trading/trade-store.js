@@ -326,6 +326,15 @@ export default class TradeStore extends BaseStore {
     }
 
     @action.bound
+    async validateContracts() {
+        const r = await WS.storage.contractsFor(this.symbol);
+        if (['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code)) {
+            const symbol_to_update = await pickDefaultSymbol(this.active_symbols);
+            await this.processNewValuesAsync({ symbol: symbol_to_update });
+        }
+    }
+
+    @action.bound
     async prepareTradeStore(should_set_default_symbol = true) {
         this.initial_barriers = { barrier_1: this.barrier_1, barrier_2: this.barrier_2 };
         await when(() => !this.root_store.client.is_populating_account_list);
@@ -349,11 +358,7 @@ export default class TradeStore extends BaseStore {
             this.should_refresh_active_symbols = true;
         });
 
-        const r = await WS.storage.contractsFor(this.symbol);
-        if (['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code)) {
-            const symbol_to_update = await pickDefaultSymbol(this.active_symbols);
-            await this.processNewValuesAsync({ symbol: symbol_to_update });
-        }
+        await this.validateContracts();
         if (should_set_default_symbol) await this.setDefaultSymbol();
         await this.setContractTypes();
         await this.processNewValuesAsync(
@@ -970,11 +975,7 @@ export default class TradeStore extends BaseStore {
             runInAction(() => {
                 this.should_refresh_active_symbols = true;
             });
-            const r = await WS.storage.contractsFor(this.symbol);
-            if (['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code)) {
-                const symbol_to_update = await pickDefaultSymbol(this.active_symbols);
-                await this.processNewValuesAsync({ symbol: symbol_to_update });
-            }
+            await this.validateContracts();
             await this.setDefaultSymbol();
         }
         this.resetErrorServices();

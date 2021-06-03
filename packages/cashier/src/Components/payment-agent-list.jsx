@@ -8,11 +8,11 @@ import {
     Loading,
     MobileWrapper,
     SelectNative,
-    Text,
     Tabs,
+    Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { website_name, isDesktop } from '@deriv/shared';
+import { isDesktop, website_name } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import PaymentAgentDetails from './payment-agent-details.jsx';
 import Error from './Error/error.jsx';
@@ -34,6 +34,10 @@ const PaymentAgentList = ({
     verification_code,
     is_payment_agent_withdraw,
 }) => {
+    const initial_active_index = verification_code || is_payment_agent_withdraw ? 1 : 0;
+
+    const [active_index, setActiveIndex] = React.useState(initial_active_index);
+
     React.useEffect(() => {
         onMount();
     }, [onMount]);
@@ -55,7 +59,9 @@ const PaymentAgentList = ({
         ...supported_banks,
     ];
 
-    const onTabItemClick = index => {
+    const setActiveTabIndex = index => {
+        setActiveIndex(index);
+
         if (index === 1) {
             sendVerificationEmail();
         }
@@ -75,9 +81,9 @@ const PaymentAgentList = ({
                     </Text>
                     <div className='payment-agent__instructions'>
                         <Tabs
-                            active_index={verification_code || is_payment_agent_withdraw ? 1 : 0}
+                            active_index={active_index}
                             className='tabs--desktop'
-                            onTabItemClick={onTabItemClick}
+                            onTabItemClick={setActiveTabIndex}
                             top
                             header_fit_content={isDesktop()}
                         >

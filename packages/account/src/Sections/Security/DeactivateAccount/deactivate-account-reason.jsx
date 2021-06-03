@@ -260,7 +260,6 @@ class DeactivateAccountReason extends React.Component {
 
         if (this.state.remaining_characters <= 0 && !allowed_native_input.has(input_action)) {
             input_action = null;
-            e.preventDefault();
         }
 
         this.setState({

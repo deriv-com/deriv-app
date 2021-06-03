@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import { Icon, Modal, Button, Money, Text } from '@deriv/components';
+import { CFD_PLATFORMS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getTopUpConfig } from '../Helpers/constants';
@@ -27,7 +28,7 @@ const CFDTopUpDemoModal = ({
         closeSuccessTopUpModal();
     };
 
-    const platform_title = platform === 'dxtrade' ? 'Deriv X' : 'DMT5';
+    const platform_title = platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5';
 
     if ((!mt5_companies && !dxtrade_companies) || !current_account) return null;
 

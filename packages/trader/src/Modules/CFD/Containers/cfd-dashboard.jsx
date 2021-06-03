@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { Redirect } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Tabs, PageError, Loading, Text } from '@deriv/components';
-import { isEmptyObject, isMobile, routes } from '@deriv/shared';
+import { isEmptyObject, isMobile, routes, CFD_PLATFORMS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display.jsx';
@@ -173,10 +173,10 @@ class CFDDashboard extends React.Component {
 
         if (is_logged_in && !landing_companies) return <Loading />;
 
-        if (platform === 'dxtrade' && !is_dxtrade_allowed) return <Redirect to={routes.mt5} />;
+        if (platform === CFD_PLATFORMS.DXTRADE && !is_dxtrade_allowed) return <Redirect to={routes.mt5} />;
         return (
             <React.Fragment>
-                {is_mt5_allowed || platform === 'dxtrade' || !is_logged_in ? (
+                {is_mt5_allowed || platform === CFD_PLATFORMS.DXTRADE || !is_logged_in ? (
                     <div className='cfd-dashboard__container'>
                         <NotificationMessages />
                         <div className='cfd-dashboard'>
@@ -185,7 +185,7 @@ class CFDDashboard extends React.Component {
                                     {general_messages.getWelcomeHeader(is_logged_in, platform)}
                                 </h1>
                             </div>
-                            {(platform === 'mt5'
+                            {(platform === CFD_PLATFORMS.MT5
                                 ? has_mt5_account_error
                                 : has_dxtrade_account_error || dxtrade_accounts_list_error) && (
                                 <div className='cfd-dashboard__accounts-error'>
@@ -201,7 +201,7 @@ class CFDDashboard extends React.Component {
                                         <Localize
                                             i18n_default_text='Due to an issue on our server, some of your {{platform}} accounts are unavailable at the moment. Please bear with us and thank you for your patience.'
                                             values={{
-                                                platform: platform === 'mt5' ? 'DMT5' : 'Deriv X',
+                                                platform: platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
                                             }}
                                         />
                                     </Text>
@@ -244,7 +244,7 @@ class CFDDashboard extends React.Component {
                                                 has_maltainvest_account={has_maltainvest_account}
                                                 has_malta_account={has_malta_account}
                                                 has_cfd_account_error={
-                                                    platform === 'mt5'
+                                                    platform === CFD_PLATFORMS.MT5
                                                         ? mt5_disabled_signup_types.demo
                                                         : dxtrade_disabled_signup_types.demo ||
                                                           !!dxtrade_accounts_list_error
@@ -280,7 +280,7 @@ class CFDDashboard extends React.Component {
                                             is_logged_in={is_logged_in}
                                             has_maltainvest_account={has_maltainvest_account}
                                             has_cfd_account_error={
-                                                platform === 'mt5'
+                                                platform === CFD_PLATFORMS.MT5
                                                     ? mt5_disabled_signup_types.real
                                                     : dxtrade_disabled_signup_types.real ||
                                                       !!dxtrade_accounts_list_error
@@ -307,10 +307,10 @@ class CFDDashboard extends React.Component {
                                         className='cfd-dashboard__maintenance-icon'
                                     />
                                     <div className='cfd-dashboard__maintenance-text'>
-                                        {platform === 'dxtrade' && (
+                                        {platform === CFD_PLATFORMS.DXTRADE && (
                                             <Localize i18n_default_text='Server maintenance starts at 06:00 GMT every Sunday and may last up to 2 hours. Service may be disrupted during this time.' />
                                         )}
-                                        {platform === 'mt5' && (
+                                        {platform === CFD_PLATFORMS.MT5 && (
                                             <Localize i18n_default_text='Server maintenance starting 01:00 GMT every Sunday. This process may take up to 2 hours to complete. Service may be disrupted during this time.' />
                                         )}
                                     </div>
@@ -326,7 +326,7 @@ class CFDDashboard extends React.Component {
                             <MobileWrapper>
                                 {/* <div className='cfd-dashboard__download-center'>
                                     If you have the app, launch it
-                                    {platform === 'dxtrade' && (
+                                    {platform === CFD_PLATFORMS.DXTRADE && (
                                         <React.Fragment>
                                             <div className='cfd-dashboard__download-center-options--mobile'>
                                                 <Icon icon='IcDxtradeDeviceDesktop' width={128} height={83} />
@@ -364,20 +364,22 @@ class CFDDashboard extends React.Component {
                                 </div> */}
                                 <div className='cfd-dashboard__download-center'>
                                     <h1 className='cfd-dashboard__download-center--heading'>
-                                        {platform === 'mt5' && <Localize i18n_default_text='Download the MT5 app' />}
-                                        {platform === 'dxtrade' && (
+                                        {platform === CFD_PLATFORMS.MT5 && (
+                                            <Localize i18n_default_text='Download the MT5 app' />
+                                        )}
+                                        {platform === CFD_PLATFORMS.DXTRADE && (
                                             <Localize i18n_default_text='Download the Deriv X app' />
                                         )}
                                     </h1>
                                     <div className='cfd-dashboard__download-center-options--mobile'>
                                         <div className='cfd-dashboard__download-center-options--mobile-devices'>
-                                            {platform === 'mt5' && (
+                                            {platform === CFD_PLATFORMS.MT5 && (
                                                 <React.Fragment>
                                                     <Icon icon='IcMt5DeviceTablet' width={133} height={106} />
                                                     <Icon icon='IcMt5DevicePhone' width={48} height={74} />
                                                 </React.Fragment>
                                             )}
-                                            {platform === 'dxtrade' && (
+                                            {platform === CFD_PLATFORMS.DXTRADE && (
                                                 <React.Fragment>
                                                     <Icon icon='IcDxtradeDeviceTablet' width={133} height={106} />
                                                     <Icon icon='IcDxtradeDevicePhone' width={48} height={74} />
@@ -387,7 +389,7 @@ class CFDDashboard extends React.Component {
                                         <div className='cfd-dashboard__download-center-options--mobile-links'>
                                             <a
                                                 href={
-                                                    platform === 'mt5'
+                                                    platform === CFD_PLATFORMS.MT5
                                                         ? getPlatformMt5DownloadLink('android')
                                                         : getPlatformDXTradeDownloadLink('android')
                                                 }
@@ -398,7 +400,7 @@ class CFDDashboard extends React.Component {
                                             </a>
                                             <a
                                                 href={
-                                                    platform === 'mt5'
+                                                    platform === CFD_PLATFORMS.MT5
                                                         ? getPlatformMt5DownloadLink('ios')
                                                         : getPlatformDXTradeDownloadLink('ios')
                                                 }
@@ -414,7 +416,7 @@ class CFDDashboard extends React.Component {
                             <CFDTopUpDemoModal platform={platform} />
                             <CFDPasswordModal platform={platform} />
                             <CFDServerErrorDialog />
-                            {platform === 'mt5' && (
+                            {platform === CFD_PLATFORMS.MT5 && (
                                 <React.Fragment>
                                     <MT5AccountOpeningRealFinancialStpModal />
                                     <CFDFinancialStpPendingDialog />

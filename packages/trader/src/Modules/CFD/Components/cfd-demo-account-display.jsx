@@ -1,5 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
+import { CFD_PLATFORMS } from '@deriv/shared';
 import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card.jsx';
 import Loading from '../../../templates/_common/components/loading.jsx';
@@ -136,53 +137,56 @@ const CFDDemoAccountDisplay = ({
                     has_banner
                 />
             )}
-            {(landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) && platform === 'mt5' && (
-                <CFDAccountCard
-                    has_cfd_account={has_cfd_account}
-                    title={localize('Financial STP')}
-                    type={{
-                        category: 'demo',
-                        type: 'financial_stp',
-                        platform,
-                    }}
-                    is_disabled={has_cfd_account_error}
-                    is_logged_in={is_logged_in}
-                    existing_data={
-                        current_list[
-                            Object.keys(current_list).find(key => key.startsWith(`${platform}.demo.financial_stp@`))
-                        ]
-                    }
-                    commission_message={localize('No commission')}
-                    onSelectAccount={() =>
-                        onSelectAccount({
+            {(landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) &&
+                platform === CFD_PLATFORMS.MT5 && (
+                    <CFDAccountCard
+                        has_cfd_account={has_cfd_account}
+                        title={localize('Financial STP')}
+                        type={{
                             category: 'demo',
                             type: 'financial_stp',
-                        })
-                    }
-                    onPasswordManager={openPasswordManager}
-                    onClickFund={() =>
-                        openAccountTransfer(
+                            platform,
+                        }}
+                        is_disabled={has_cfd_account_error}
+                        is_logged_in={is_logged_in}
+                        existing_data={
                             current_list[
                                 Object.keys(current_list).find(key => key.startsWith(`${platform}.demo.financial_stp@`))
-                            ],
-                            {
+                            ]
+                        }
+                        commission_message={localize('No commission')}
+                        onSelectAccount={() =>
+                            onSelectAccount({
                                 category: 'demo',
                                 type: 'financial_stp',
-                            }
-                        )
-                    }
-                    descriptor={localize(
-                        'Trade popular currency pairs and cryptocurrencies with straight-through processing order (STP).'
-                    )}
-                    specs={{
-                        [localize('Leverage')]: localize('Up to 1:100'),
-                        [localize('Margin call')]: localize('150%'),
-                        [localize('Stop out level')]: localize('75%'),
-                        [localize('Number of assets')]: localize('50+'),
-                    }}
-                    has_banner
-                />
-            )}
+                            })
+                        }
+                        onPasswordManager={openPasswordManager}
+                        onClickFund={() =>
+                            openAccountTransfer(
+                                current_list[
+                                    Object.keys(current_list).find(key =>
+                                        key.startsWith(`${platform}.demo.financial_stp@`)
+                                    )
+                                ],
+                                {
+                                    category: 'demo',
+                                    type: 'financial_stp',
+                                }
+                            )
+                        }
+                        descriptor={localize(
+                            'Trade popular currency pairs and cryptocurrencies with straight-through processing order (STP).'
+                        )}
+                        specs={{
+                            [localize('Leverage')]: localize('Up to 1:100'),
+                            [localize('Margin call')]: localize('150%'),
+                            [localize('Stop out level')]: localize('75%'),
+                            [localize('Number of assets')]: localize('50+'),
+                        }}
+                        has_banner
+                    />
+                )}
         </div>
     );
 };

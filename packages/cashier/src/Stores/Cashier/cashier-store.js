@@ -13,6 +13,7 @@ import {
     getCFDAccount,
     getPropertyValue,
     routes,
+    CFD_PLATFORMS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import OnRampStore from './on-ramp-store';
@@ -1137,11 +1138,12 @@ export default class CashierStore extends BaseStore {
 
         const mt5_login_list = (await this.WS.storage.mt5LoginList())?.mt5_login_list;
         // TODO: move `tradingPlatformAccountsList` to deriv-api to use storage
-        const dxtrade_accounts_list = (await this.WS.tradingPlatformAccountsList('dxtrade'))?.trading_platform_accounts;
+        const dxtrade_accounts_list = (await this.WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE))
+            ?.trading_platform_accounts;
 
         // TODO: remove this temporary mapping when API adds market_type and sub_account_type to transfer_between_accounts
         const accounts = transfer_between_accounts.accounts.map(account => {
-            if (account.account_type === 'mt5' && Array.isArray(mt5_login_list) && mt5_login_list.length) {
+            if (account.account_type === CFD_PLATFORMS.MT5 && Array.isArray(mt5_login_list) && mt5_login_list.length) {
                 // account_type in transfer_between_accounts (mt5|binary)
                 // gets overridden by account_type in mt5_login_list (demo|real)
                 // since in cashier all these are real accounts, the mt5 account type is what we want to keep
@@ -1149,10 +1151,10 @@ export default class CashierStore extends BaseStore {
 
                 if (found_account === undefined) return account;
 
-                return { ...account, ...found_account, account_type: 'mt5' };
+                return { ...account, ...found_account, account_type: CFD_PLATFORMS.MT5 };
             }
             if (
-                account.account_type === 'dxtrade' &&
+                account.account_type === CFD_PLATFORMS.DXTRADE &&
                 Array.isArray(dxtrade_accounts_list) &&
                 dxtrade_accounts_list.length
             ) {
@@ -1163,7 +1165,7 @@ export default class CashierStore extends BaseStore {
 
                 if (found_account === undefined) return account;
 
-                return { ...account, ...found_account, account_type: 'dxtrade' };
+                return { ...account, ...found_account, account_type: CFD_PLATFORMS.DXTRADE };
             }
             return account;
         });
@@ -1173,8 +1175,8 @@ export default class CashierStore extends BaseStore {
         // should have more than one account
         if (transfer_between_accounts.accounts.length > 1) {
             accounts.sort((a, b) => {
-                const a_is_mt = a.account_type === 'mt5';
-                const b_is_mt = b.account_type === 'mt5';
+                const a_is_mt = a.account_type === CFD_PLATFORMS.MT5;
+                const b_is_mt = b.account_type === CFD_PLATFORMS.MT5;
                 const a_is_crypto = !a_is_mt && isCryptocurrency(a.currency);
                 const b_is_crypto = !b_is_mt && isCryptocurrency(b.currency);
                 const a_is_fiat = !a_is_mt && !a_is_crypto;
@@ -1226,8 +1228,8 @@ export default class CashierStore extends BaseStore {
                 balance: account.balance,
                 currency: account.currency,
                 is_crypto: isCryptocurrency(account.currency),
-                is_mt: account.account_type === 'mt5',
-                is_dxtrade: account.account_type === 'dxtrade',
+                is_mt: account.account_type === CFD_PLATFORMS.MT5,
+                is_dxtrade: account.account_type === CFD_PLATFORMS.DXTRADE,
                 ...(is_cfd && {
                     platform_icon: cfd_icon_display,
                     market_type: getCFDAccount({
@@ -1410,7 +1412,7 @@ export default class CashierStore extends BaseStore {
                     this.config.account_transfer.setBalanceSelectedTo(account.balance);
                 }
                 // if one of the accounts was mt5
-                if (account.account_type === 'mt5') {
+                if (account.account_type === CFD_PLATFORMS.MT5) {
                     Promise.all([this.WS.mt5LoginList(), this.WS.balanceAll()]).then(
                         ([mt5_login_list_response, balance_response]) => {
                             // update the balance for account switcher by renewing the mt5_login_list response
@@ -1421,15 +1423,16 @@ export default class CashierStore extends BaseStore {
                     );
                 }
                 // if one of the accounts was dxtrade
-                if (account.account_type === 'dxtrade') {
-                    Promise.all([this.WS.tradingPlatformAccountsList('dxtrade'), this.WS.balanceAll()]).then(
-                        ([dxtrade_login_list_response, balance_response]) => {
-                            // update the balance for account switcher by renewing the dxtrade_login_list_response
-                            this.root_store.client.responseTradingPlatformAccountsList(dxtrade_login_list_response);
-                            // update total balance since Dxtrade total only comes in non-stream balance call
-                            this.root_store.client.setBalanceOtherAccounts(balance_response.balance);
-                        }
-                    );
+                if (account.account_type === CFD_PLATFORMS.DXTRADE) {
+                    Promise.all([
+                        this.WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE),
+                        this.WS.balanceAll(),
+                    ]).then(([dxtrade_login_list_response, balance_response]) => {
+                        // update the balance for account switcher by renewing the dxtrade_login_list_response
+                        this.root_store.client.responseTradingPlatformAccountsList(dxtrade_login_list_response);
+                        // update total balance since Dxtrade total only comes in non-stream balance call
+                        this.root_store.client.setBalanceOtherAccounts(balance_response.balance);
+                    });
                 }
             });
             this.setAccountTransferAmount(null);

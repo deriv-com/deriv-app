@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, Money, ThemedScrollbars, Text } from '@deriv/components';
-import { formatMoney, getCFDAccount, getCFDAccountDisplay } from '@deriv/shared';
+import { formatMoney, getCFDAccount, getCFDAccountDisplay, CFD_PLATFORMS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
 const getDerivAccount = (client_accounts, login_id) =>
@@ -151,13 +151,13 @@ const AccountHasBalanceOrOpenPositions = ({
                                 currency_icon={`IcMt5-${getCFDAccount({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
-                                    platform: 'mt5',
+                                    platform: CFD_PLATFORMS.MT5,
                                 })}`}
                                 loginid={account.display_login}
                                 title={getCFDAccountDisplay({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
-                                    platform: 'mt5',
+                                    platform: CFD_PLATFORMS.MT5,
                                 })}
                                 value={
                                     <Localize
@@ -177,13 +177,13 @@ const AccountHasBalanceOrOpenPositions = ({
                                 currency_icon={`IcMt5-${getCFDAccount({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
-                                    platform: 'mt5',
+                                    platform: CFD_PLATFORMS.MT5,
                                 })}`}
                                 loginid={account.display_login}
                                 title={getCFDAccountDisplay({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
-                                    platform: 'mt5',
+                                    platform: CFD_PLATFORMS.MT5,
                                 })}
                                 value={
                                     <Money
@@ -204,13 +204,13 @@ const AccountHasBalanceOrOpenPositions = ({
                                 currency_icon={`IcDxtrade-${getCFDAccount({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
-                                    platform: 'dxtrade',
+                                    platform: CFD_PLATFORMS.DXTRADE,
                                 })}`}
                                 loginid={account.display_login}
                                 title={getCFDAccountDisplay({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
-                                    platform: 'dxtrade',
+                                    platform: CFD_PLATFORMS.DXTRADE,
                                 })}
                                 value={
                                     <Localize
@@ -230,13 +230,13 @@ const AccountHasBalanceOrOpenPositions = ({
                                 currency_icon={`IcDxtrade-${getCFDAccount({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
-                                    platform: 'dxtrade',
+                                    platform: CFD_PLATFORMS.DXTRADE,
                                 })}`}
                                 loginid={account.display_login}
                                 title={getCFDAccountDisplay({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
-                                    platform: 'dxtrade',
+                                    platform: CFD_PLATFORMS.DXTRADE,
                                 })}
                                 value={
                                     <Money

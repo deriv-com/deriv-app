@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { localize, Localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
-import { getAccountTypeFields, getAccountListKey, getCFDAccountKey } from '@deriv/shared';
+import { getAccountTypeFields, getAccountListKey, getCFDAccountKey, CFD_PLATFORMS } from '@deriv/shared';
 import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card.jsx';
 
@@ -47,7 +47,11 @@ const CFDRealAccountDisplay = ({
     residence_list,
 }) => {
     const should_show_trade_servers =
-        is_logged_in && !is_eu && has_real_account && can_have_more_real_synthetic_mt5 && platform === 'mt5';
+        is_logged_in &&
+        !is_eu &&
+        has_real_account &&
+        can_have_more_real_synthetic_mt5 &&
+        platform === CFD_PLATFORMS.MT5;
     const [active_hover, setActiveHover] = React.useState(0);
 
     const has_required_credentials = React.useMemo(() => {
@@ -213,7 +217,7 @@ const CFDRealAccountDisplay = ({
               ]);
 
     const financial_stp_account = (landing_companies?.mt_financial_company?.financial_stp || !is_logged_in) &&
-        platform === 'mt5' && (
+        platform === CFD_PLATFORMS.MT5 && (
             <CFDAccountCard
                 key='real.financial_stp'
                 has_cfd_account={has_cfd_account}

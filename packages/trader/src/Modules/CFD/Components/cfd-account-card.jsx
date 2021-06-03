@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { isMobile, mobileOSDetect } from '@deriv/shared';
+import { isMobile, mobileOSDetect, CFD_PLATFORMS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { CFDAccountCopy } from './cfd-account-copy.jsx';
 import { getDXTradeWebTerminalLink, getMT5WebTerminalLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
@@ -215,7 +215,7 @@ const CFDAccountCard = ({
         return getPlatformDXTradeDownloadLink('android');
     };
 
-    const is_web_terminal_unsupported = isMobile() && platform === 'dxtrade';
+    const is_web_terminal_unsupported = isMobile() && platform === CFD_PLATFORMS.DXTRADE;
 
     return (
         <div ref={wrapper_ref} className='cfd-account-card__wrapper'>
@@ -242,7 +242,9 @@ const CFDAccountCard = ({
                     className={classNames('cfd-account-card__type', {
                         'cfd-account-card__type--has-banner': has_banner || has_popular_banner || has_server_banner,
                     })}
-                    id={`${platform === 'dxtrade' ? 'dxtrade' : 'mt5'}_${type.category}_${type.type}`}
+                    id={`${platform === CFD_PLATFORMS.DXTRADE ? CFD_PLATFORMS.DXTRADE : CFD_PLATFORMS.MT5}_${
+                        type.category
+                    }_${type.type}`}
                 >
                     {icon}
                     <div className='cfd-account-card__type--description'>
@@ -294,13 +296,13 @@ const CFDAccountCard = ({
                                 </div>
                                 <div className='cfd-account-card__login-specs'>
                                     <Text as='p' color='less-prominent' size='xxxs' align='left'>
-                                        {platform === 'mt5'
+                                        {platform === CFD_PLATFORMS.MT5
                                             ? localize('Use below credential to login')
                                             : localize('Log in with this username and your trading password.')}
                                     </Text>
                                     <table className='cfd-account-card__login-specs-table'>
                                         <tbody>
-                                            {platform === 'mt5' ? (
+                                            {platform === CFD_PLATFORMS.MT5 ? (
                                                 <React.Fragment>
                                                     <tr className='cfd-account-card__login-specs-table-row'>
                                                         <td className='cfd-account-card__login-specs-table-attribute'>
@@ -460,7 +462,7 @@ const CFDAccountCard = ({
                                 className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
                                 type='button'
                                 href={
-                                    platform === 'dxtrade'
+                                    platform === CFD_PLATFORMS.DXTRADE
                                         ? getDXTradeWebTerminalLink(type.category)
                                         : getMT5WebTerminalLink({
                                               category: type.category,

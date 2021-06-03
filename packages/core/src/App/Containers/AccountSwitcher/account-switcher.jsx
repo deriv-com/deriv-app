@@ -14,7 +14,7 @@ import {
     Text,
     useOnClickOutside,
 } from '@deriv/components';
-import { routes, formatMoney, getCFDAccount, getAccountTypeFields } from '@deriv/shared';
+import { routes, formatMoney, getCFDAccount, getAccountTypeFields, CFD_PLATFORMS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { connect } from 'Stores/connect';
@@ -226,11 +226,11 @@ const AccountSwitcher = props => {
     };
 
     const getRemainingDemoMT5 = () => {
-        return getRemainingAccounts(getDemoMT5(), 'mt5');
+        return getRemainingAccounts(getDemoMT5(), CFD_PLATFORMS.MT5);
     };
 
     const getRemainingDemoDXTrade = () => {
-        return getRemainingAccounts(getDemoDXTrade(), 'dxtrade');
+        return getRemainingAccounts(getDemoDXTrade(), CFD_PLATFORMS.DXTRADE);
     };
 
     const getRealMT5 = () => {
@@ -249,11 +249,11 @@ const AccountSwitcher = props => {
     };
 
     const getRemainingRealMT5 = () => {
-        return getRemainingAccounts(getRealMT5(), 'mt5');
+        return getRemainingAccounts(getRealMT5(), CFD_PLATFORMS.MT5);
     };
 
     const getRemainingRealDXTrade = () => {
-        return getRemainingAccounts(getRealDXTrade(), 'dxtrade');
+        return getRemainingAccounts(getRealDXTrade(), CFD_PLATFORMS.DXTRADE);
     };
 
     const canOpenMulti = () => {
@@ -433,13 +433,13 @@ const AccountSwitcher = props => {
                                                 currency_icon={`IcMt5-${getCFDAccount({
                                                     market_type: account.market_type,
                                                     sub_account_type: account.sub_account_type,
-                                                    platform: 'mt5',
+                                                    platform: CFD_PLATFORMS.MT5,
                                                 })}`}
                                                 has_balance={'balance' in account}
                                                 has_error={account.has_error}
                                                 loginid={account.display_login}
                                                 onClickAccount={redirectToMt5Demo}
-                                                platform='mt5'
+                                                platform={CFD_PLATFORMS.MT5}
                                             />
                                         ))}
                                     </div>
@@ -486,12 +486,12 @@ const AccountSwitcher = props => {
                                         currency={account.currency}
                                         currency_icon={`IcDxtrade-${getCFDAccount({
                                             market_type: account.market_type,
-                                            platform: 'dxtrade',
+                                            platform: CFD_PLATFORMS.DXTRADE,
                                         })}`}
                                         has_balance={'balance' in account}
                                         loginid={account.display_login}
                                         onClickAccount={redirectToDXTradeDemo}
-                                        platform='dxtrade'
+                                        platform={CFD_PLATFORMS.DXTRADE}
                                     />
                                 ))}
                             </div>
@@ -623,14 +623,14 @@ const AccountSwitcher = props => {
                                                 currency_icon={`IcMt5-${getCFDAccount({
                                                     market_type: account.market_type,
                                                     sub_account_type: account.sub_account_type,
-                                                    platform: 'mt5',
+                                                    platform: CFD_PLATFORMS.MT5,
                                                 })}`}
                                                 has_balance={'balance' in account}
                                                 has_error={account.has_error}
                                                 loginid={account.display_login}
                                                 onClickAccount={redirectToMt5Real}
                                                 server={findServerForAccount(account)}
-                                                platform='mt5'
+                                                platform={CFD_PLATFORMS.MT5}
                                             />
                                         ))}
                                     </div>
@@ -694,13 +694,13 @@ const AccountSwitcher = props => {
                                                 currency={account.currency}
                                                 currency_icon={`IcDxtrade-${getCFDAccount({
                                                     market_type: account.market_type,
-                                                    platform: 'dxtrade',
+                                                    platform: CFD_PLATFORMS.DXTRADE,
                                                 })}`}
                                                 has_balance={'balance' in account}
                                                 has_error={account.has_error}
                                                 loginid={account.display_login}
                                                 onClickAccount={redirectToDXTradeReal}
-                                                platform='dxtrade'
+                                                platform={CFD_PLATFORMS.DXTRADE}
                                             />
                                         ))}
                                     </div>

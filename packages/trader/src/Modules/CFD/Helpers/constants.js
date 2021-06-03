@@ -1,5 +1,11 @@
 import { OSDetect } from '@deriv/shared';
 
+const REAL_DXTRADE_URL = 'https://dx.deriv.com';
+const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com/';
+
+const IOS_APP_URL = 'https://apps.apple.com/tt/app/dxtrade/id1510582738';
+const ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.devexperts.dxmarket.client&hl=en';
+
 const getServerName = is_demo => (is_demo ? 'Deriv-Demo' : 'Deriv-Server');
 
 const getBrokerName = () => 'Deriv Limited';
@@ -15,9 +21,9 @@ const getTopUpConfig = () => {
 const getPlatformDXTradeDownloadLink = (platform = undefined) => {
     switch (platform || OSDetect()) {
         case 'ios':
-            return 'https://apps.apple.com/tt/app/dxtrade/id1510582738';
+            return IOS_APP_URL;
         case 'android':
-            return 'https://play.google.com/store/apps/details?id=com.devexperts.dxmarket.client&hl=en';
+            return ANDROID_APP_URL;
         default:
             return getDXTradeWebTerminalLink(); // Web
     }
@@ -41,7 +47,7 @@ const getPlatformMt5DownloadLink = (platform = undefined) => {
 };
 
 const getDXTradeWebTerminalLink = category => {
-    return category === 'real' ? 'https://dx.deriv.com' : 'https://dx-demo.deriv.com/';
+    return category === 'real' ? REAL_DXTRADE_URL : DEMO_DXTRADE_URL;
 };
 
 const getMT5WebTerminalLink = ({ category, loginid, server_name = 'Deriv-Server' }) => {

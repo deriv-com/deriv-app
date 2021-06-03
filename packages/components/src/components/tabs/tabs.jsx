@@ -25,6 +25,7 @@ const Tabs = ({
     is_full_width,
     is_scrollable,
     is_overflow_hidden,
+    is_p2p,
     onTabItemClick,
     should_update_hash,
     single_tab_has_no_label,
@@ -148,6 +149,8 @@ const Tabs = ({
                                     active_icon_color={active_icon_color}
                                     className={className}
                                     count={count}
+                                    children_count={valid_children.length}
+                                    is_p2p
                                     icon={icon}
                                     icon_color={icon_color}
                                     icon_size={icon_size}

@@ -19,10 +19,12 @@ const Tab = ({
     is_active,
     is_scrollable,
     is_label_hidden,
+    is_p2p,
     label,
     onClick,
     setActiveLineStyle,
     top,
+    children_count,
 }) => {
     React.useEffect(() => {
         setActiveLineStyle();
@@ -37,8 +39,10 @@ const Tab = ({
         'dc-tabs__item--is-hidden': is_label_hidden,
         [`dc-tabs__item--${className}`]: className,
         'dc-tabs__item--is-scrollable-and-active': is_scrollable && is_active,
+        'dc-tabs__p2p-item--small': children_count > 3 && is_p2p,
     });
     const title_color = is_active ? active_icon_color : icon_color;
+
     return (
         <li id={id} className={classes} style={{ color: title_color }} onClick={onClick} ref={active_tab_ref}>
             {icon && <Icon icon={icon} size={icon_size} custom_color={title_color} className='dc-tabs__item__icon' />}

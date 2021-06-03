@@ -48,8 +48,10 @@
             vertical-align: middle;
             width: unset;
             height: 40px;
+        }
 
-            @include mobile {
+        @include mobile {
+            & .dc-tabs__p2p-item--small {
                 padding: 0 1.1rem;
             }
         }

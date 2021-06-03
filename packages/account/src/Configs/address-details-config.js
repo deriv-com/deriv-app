@@ -12,6 +12,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
             default_value: account_settings.address_line_1 ?? '',
             rules: [
                 ['req', localize('First line of address is required')],
+                ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
                 [
                     'regular',
                     localize(
@@ -21,7 +22,6 @@ const address_details_config = ({ account_settings, is_svg }) => {
                         regex: /^[a-zA-Z0-9\s'.,:;()x{b0}@#/-\\\[\]]{1,70}$/,
                     },
                 ],
-                ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
                 ['po_box', getErrorMessages().po_box()],
             ].filter(x => (is_svg ? x.indexOf('po_box') !== 0 : x)),
         },
@@ -29,6 +29,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.address_line_2 ?? '',
             rules: [
+                ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
                 [
                     'regular',
                     localize(
@@ -38,7 +39,6 @@ const address_details_config = ({ account_settings, is_svg }) => {
                         regex: /^[a-zA-Z0-9\s'.,:;()x{b0}@#/-\\\[\]]{0,70}$/,
                     },
                 ],
-                ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
                 ['po_box', getErrorMessages().po_box()],
             ].filter(x => (is_svg ? x.indexOf('po_box') !== 0 : x)),
         },

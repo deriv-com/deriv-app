@@ -29,6 +29,8 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.first_name ?? '',
             rules: [
+                ['req', localize('First name is required')],
+                ['length', localize('First name should be between 2 and 50 characters.'), { min: 2, max: 50 }],
                 [
                     'regular',
                     localize('Letters, spaces, periods, hyphens, apostrophes only'),
@@ -36,15 +38,15 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
                         regex: /^[a-zA-Z\s'.-]{2,50}$/,
                     },
                 ],
-                ['req', localize('First name is required')],
                 ['letter_symbol', getErrorMessages().letter_symbol()],
-                ['length', localize('First name should be between 2 and 50 characters.'), { min: 2, max: 50 }],
             ],
         },
         last_name: {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.last_name ?? '',
             rules: [
+                ['req', localize('Last name is required')],
+                ['length', localize('Last name should be between 2 and 50 characters.'), { min: 2, max: 50 }],
                 [
                     'regular',
                     localize('Letters, spaces, periods, hyphens, apostrophes only'),
@@ -52,9 +54,7 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
                         regex: /^[a-zA-Z\s'.-]{2,50}$/,
                     },
                 ],
-                ['req', localize('Last name is required')],
                 ['letter_symbol', getErrorMessages().letter_symbol()],
-                ['length', localize('Last name should be between 2 and 50 characters.'), { min: 2, max: 50 }],
             ],
         },
         date_of_birth: {

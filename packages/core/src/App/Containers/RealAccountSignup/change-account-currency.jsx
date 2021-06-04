@@ -19,9 +19,37 @@ const ChangeAccountCurrency = ({
     client_currency,
     current_currency_type,
     current_fiat_currency,
+    is_dxtrade_allowed,
 }) => {
     const getReorderedCurrencies = () =>
         reorderCurrencies(legal_allowed_currencies.filter(currency => currency.type === FIAT_CURRENCY_TYPE));
+
+    const is_fiat = current_currency_type === 'fiat';
+    const fiat_message = is_dxtrade_allowed ? (
+        <Localize
+            i18n_default_text="We can't change your account currency as you've either made a deposit into your {{currency}} account or created a real account on DMT5 or Deriv X."
+            values={{
+                currency: getCurrencyDisplayCode(client_currency),
+            }}
+        />
+    ) : (
+        <Localize
+            i18n_default_text="We can't change your account currency as you've either made a deposit into your {{currency}} account or created a real account on DMT5."
+            values={{
+                currency: getCurrencyDisplayCode(client_currency),
+            }}
+        />
+    );
+    const non_fiat_mesage = (
+        <Localize
+            i18n_default_text='Please switch to your {{fiat_currency}} account to change currencies.'
+            values={{
+                fiat_currency: current_fiat_currency?.toUpperCase?.(),
+            }}
+        />
+    );
+
+    const disabled_message = is_fiat ? fiat_message : non_fiat_mesage;
 
     return (
         <Formik
@@ -53,21 +81,7 @@ const ChangeAccountCurrency = ({
                                 size='xxs'
                                 className='account-wizard--disabled-message-description'
                             >
-                                {current_currency_type === 'fiat' ? (
-                                    <Localize
-                                        i18n_default_text='Currency change is not available because either you have deposited money into your {{currency}} account or you have created a real MetaTrader 5 (MT5) account.'
-                                        values={{
-                                            currency: getCurrencyDisplayCode(client_currency),
-                                        }}
-                                    />
-                                ) : (
-                                    <Localize
-                                        i18n_default_text='Please switch to your {{fiat_currency}} account to change currencies.'
-                                        values={{
-                                            fiat_currency: current_fiat_currency?.toUpperCase?.(),
-                                        }}
-                                    />
-                                )}
+                                {disabled_message}
                             </Text>
                         </div>
                     )}
@@ -118,10 +132,12 @@ ChangeAccountCurrency.propTypes = {
     current_currency_type: PropTypes.string,
     current_fiat_currency: PropTypes.string,
     client_currency: PropTypes.string,
+    is_dxtrade_allowed: PropTypes.bool,
 };
 
 export default connect(({ client }) => ({
     legal_allowed_currencies: client.upgradeable_currencies,
     client_currency: client.currency,
     current_fiat_currency: client.current_fiat_currency,
+    is_dxtrade_allowed: client.is_dxtrade_allowed,
 }))(ChangeAccountCurrency);

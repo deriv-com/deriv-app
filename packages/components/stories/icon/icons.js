@@ -11,6 +11,7 @@ export const icons = {
         'IcBrandDmt5Synthetics',
         'IcBrandDmt5',
         'IcBrandDtrader',
+        'IcBrandDxtrade',
         'IcBrandSmarttrader',
     ],
     cashier: [
@@ -406,6 +407,20 @@ export const icons = {
         'IcDashboardSynthetic',
         'IcDashboardTermsOfUse',
         'IcDashboardWallet',
+    ],
+    dxtrade: [
+        'IcDxtradeDeviceDesktopLight',
+        'IcDxtradeDeviceDesktop',
+        'IcDxtradeDeviceLaptopLight',
+        'IcDxtradeDeviceLaptop',
+        'IcDxtradeDevicePhoneLight',
+        'IcDxtradeDevicePhone',
+        'IcDxtradeDeviceTabletLight',
+        'IcDxtradeDeviceTablet',
+        'IcDxtradeFinancialPlatform',
+        'IcDxtradeFinancial',
+        'IcDxtradeSyntheticPlatform',
+        'IcDxtradeSynthetic',
     ],
     flag: [
         'IcFlagDe',

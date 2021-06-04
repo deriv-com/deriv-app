@@ -184,6 +184,7 @@ const CFDDemoAccountDisplay = ({
                             [localize('Stop out level')]: localize('75%'),
                             [localize('Number of assets')]: localize('50+'),
                         }}
+                        platform={platform}
                         has_banner
                     />
                 )}

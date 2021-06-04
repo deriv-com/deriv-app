@@ -374,11 +374,21 @@
         margin-left: auto;
     }
     &__separator {
-        height: 4px;
-        background-color: var(--general-section-2);
+        display: block;
+        position: relative;
 
+        &:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background-color: var(--general-section-2);
+            z-index: 1;
+        }
         &--no-padding {
-            margin: 0 -8px;
+            &:after {
+                width: calc(100% + 0.4rem);
+            }
         }
         &--auto-margin {
             margin-top: auto;

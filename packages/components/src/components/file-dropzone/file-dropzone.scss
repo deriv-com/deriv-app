@@ -34,9 +34,6 @@
             &--enter-done {
                 opacity: 1;
                 transform: translate3d(0, 0, 0);
-                @include mobile {
-                    max-width: 26rem;
-                }
             }
             &--enter {
                 opacity: 0;
@@ -53,6 +50,9 @@
             &--exit-active {
                 opacity: 0;
                 transform: translate3d(0, -16px, 0);
+            }
+            @include mobile {
+                max-width: 26rem;
             }
         }
         &__filename {

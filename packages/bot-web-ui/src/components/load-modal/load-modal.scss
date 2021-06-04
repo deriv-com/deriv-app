@@ -9,6 +9,10 @@
             @include mobile {
                 width: 100%;
             }
+
+            &__body {
+                height: 100%;
+            }
         }
         & .dc-tabs {
             @include mobile {

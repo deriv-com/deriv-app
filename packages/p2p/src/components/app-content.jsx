@@ -52,7 +52,6 @@ const AppContent = () => {
             is_overflow_hidden
             onTabItemClick={general_store.handleTabClick}
             top
-            is_p2p
         >
             <div label={localize('Buy / Sell')}>
                 <TemporarilyBarredHint />

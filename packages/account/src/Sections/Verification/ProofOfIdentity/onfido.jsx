@@ -16,11 +16,11 @@ import { onfido_status_codes } from './proof-of-identity';
 
 const onfido_container_id = 'onfido';
 
-const OnfidoContainer = ({ height, is_message_enabled }) => {
+const OnfidoContainer = ({ height, is_description_enabled }) => {
     return (
         <ThemedScrollbars is_bypassed={isMobile()} height={height}>
             <div className='onfido-container'>
-                {is_message_enabled && (
+                {is_description_enabled && (
                     <div className='onfido-container__message'>
                         <Text size='xs'>
                             <Localize
@@ -42,13 +42,14 @@ const Onfido = ({
     country_code,
     handleComplete,
     height,
-    is_message_enabled,
+    is_description_enabled,
     onfido_service_token,
     status,
     ...props
 }) => {
     const [onfido_init, setOnfido] = React.useState(null);
     const [onfido_init_error, setOnfidoInitError] = React.useState(false);
+    // const [is_continue_uploading, setContinueUploading] = React.useState(false);
 
     // didMount hook
     // added eslint-disable-line below as the init func needs to be wrapped in a useCallback but its an external sdk
@@ -114,7 +115,7 @@ const Onfido = ({
         } catch (err) {
             setOnfidoInitError(true);
         }
-    }, [documents_supported, onComplete, onfido_service_token]);
+    }, [documents_supported, country_code, onComplete, onfido_service_token]);
 
     // didUpdate hook
     React.useEffect(() => {
@@ -136,7 +137,7 @@ const Onfido = ({
     }
 
     if (status === onfido_status_codes.onfido)
-        return <OnfidoContainer height={height} is_message_enabled={is_message_enabled} />;
+        return <OnfidoContainer height={height} is_description_enabled={is_description_enabled} />;
 
     switch (status) {
         case onfido_status_codes.pending:
@@ -160,7 +161,7 @@ Onfido.propTypes = {
     handleComplete: PropTypes.func,
     has_poa: PropTypes.bool,
     height: PropTypes.number,
-    is_message_enabled: PropTypes.bool,
+    is_description_enabled: PropTypes.bool,
     onfido_service_token: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
     status: PropTypes.oneOf(Object.keys(onfido_status_codes)),
 };

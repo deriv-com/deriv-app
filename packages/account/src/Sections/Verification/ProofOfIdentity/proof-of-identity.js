@@ -25,5 +25,6 @@ export const getIdentityStatus = (identity, needs_verification, is_mlt_mx, allow
         return onfido_status_codes[status];
     }
     if (onfido_unsupported) return onfido_status_codes.unsupported;
+
     return onfido_status_codes.onfido;
 };

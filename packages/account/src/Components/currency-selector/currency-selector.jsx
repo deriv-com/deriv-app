@@ -31,6 +31,7 @@ const CurrencySelector = ({
     onSubmitEnabledChange,
     has_wallet_account,
     is_dxtrade_allowed,
+    residence,
     ...props
 }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
@@ -102,7 +103,11 @@ const CurrencySelector = ({
     const description = is_dxtrade_allowed ? (
         <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real DMT5 or Deriv X account.' />
     ) : (
-        <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real DMT5 account.' />
+        <Localize
+            i18n_default_text={`You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit${
+                residence === 'im' ? '' : 'or created a real DMT5 account'
+            }.`}
+        />
     );
 
     return (

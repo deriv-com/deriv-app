@@ -21,6 +21,7 @@ export default class MyAdsStore extends BaseStore {
     @observable error_message = '';
     @observable has_more_items_to_load = false;
     @observable is_ad_created_modal_visible = false;
+    @observable is_api_error_modal_visible = false;
     @observable is_delete_modal_open = false;
     @observable is_form_loading = false;
     @observable is_table_loading = false;
@@ -73,7 +74,7 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    getWebsiteStatus(createAd, setSubmitting) {
+    getWebsiteStatus(createAd = () => {}, setSubmitting) {
         requestWS({ website_status: 1 }).then(response => {
             if (response.error) {
                 this.setApiErrorMessage(response.error.message);
@@ -81,7 +82,6 @@ export default class MyAdsStore extends BaseStore {
             } else {
                 const { p2p_config } = response.website_status;
                 this.setAdvertsArchivePeriod(p2p_config.adverts_archive_period);
-                this.setIsAdCreatedModalVisible(true);
                 createAd();
             }
         });
@@ -116,16 +116,23 @@ export default class MyAdsStore extends BaseStore {
             create_advert.description = values.default_advert_description;
         }
 
-        const createAd = () =>
+        const createAd = () => {
             requestWS(create_advert).then(response => {
                 // If we get an error we should let the user submit the form again else we just go back to the list of ads
                 if (response.error) {
                     this.setApiErrorMessage(response.error.message);
                     setSubmitting(false);
-                } else if (!this.api_error_message && !this.is_ad_created_modal_visible) {
+                } else if (should_not_show_auto_archive_message !== 'true' && this.adverts_archive_period) {
+                    setTimeout(() => {
+                        if (!this.is_api_error_modal_visible) {
+                            this.setIsAdCreatedModalVisible(true);
+                        }
+                    }, 200);
+                } else if (!this.is_api_error_modal_visible && !this.is_ad_created_modal_visible) {
                     this.setShowAdForm(false);
                 }
             });
+        };
 
         if (should_not_show_auto_archive_message !== 'true') {
             this.getWebsiteStatus(createAd, setSubmitting);
@@ -283,6 +290,11 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setIsAdCreatedModalVisible(is_ad_created_modal_visible) {
         this.is_ad_created_modal_visible = is_ad_created_modal_visible;
+    }
+
+    @action.bound
+    setIsApiErrorModalVisible(is_api_error_modal_visible) {
+        this.is_api_error_modal_visible = is_api_error_modal_visible;
     }
 
     @action.bound

@@ -36,7 +36,7 @@ const CreateAdForm = () => {
     const { currency, local_currency_config } = general_store.client;
 
     const [advert_type, setAdvertType] = React.useState(buy_sell.BUY);
-    const [is_api_error_modal_visible, setIsApiErrorModalVisible] = React.useState(false);
+    const [,] = React.useState(false);
     const should_not_show_auto_archive_message_again = React.useRef(false);
 
     const onCheckboxChange = () =>
@@ -54,7 +54,7 @@ const CreateAdForm = () => {
     React.useEffect(() => {
         const disposeApiErrorReaction = reaction(
             () => my_ads_store.api_error_message,
-            () => setIsApiErrorModalVisible(!!my_ads_store.api_error_message)
+            () => my_ads_store.setIsApiErrorModalVisible(!!my_ads_store.api_error_message)
         );
 
         return () => {
@@ -66,7 +66,9 @@ const CreateAdForm = () => {
 
     React.useEffect(() => {
         const ad_website_status = setInterval(() => {
-            my_ads_store.getWebsiteStatus();
+            if (my_ads_store.is_ad_created_modal_visible) {
+                my_ads_store.getWebsiteStatus();
+            }
         }, 10000);
 
         return () => {
@@ -354,7 +356,7 @@ const CreateAdForm = () => {
             </Formik>
             <Modal
                 className='p2p-my-ads__modal-error'
-                is_open={is_api_error_modal_visible}
+                is_open={my_ads_store.is_api_error_modal_visible}
                 small
                 has_close_icon={false}
                 title={localize('Something’s not right')}
@@ -368,7 +370,7 @@ const CreateAdForm = () => {
                     <Button
                         has_effect
                         text={localize('Ok')}
-                        onClick={() => setIsApiErrorModalVisible(false)}
+                        onClick={() => my_ads_store.setIsApiErrorModalVisible(false)}
                         primary
                         large
                     />
@@ -385,10 +387,11 @@ const CreateAdForm = () => {
                 <Modal.Body>
                     <Text as='p' size='xs' color='prominent'>
                         <Localize
-                            i18n_default_text="If the ad doesn't receive an order for {{adverts_archive_period}} days, it will be archived."
+                            i18n_default_text="If the ad doesn't receive an order for {{adverts_archive_period}} days, it will be deactivated."
                             values={{ adverts_archive_period: my_ads_store.adverts_archive_period }}
                         />
                     </Text>
+                    <br />
                     <Checkbox
                         label={localize('Don’t show this message again.')}
                         onChange={onCheckboxChange}

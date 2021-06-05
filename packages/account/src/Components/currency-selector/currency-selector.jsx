@@ -31,7 +31,7 @@ const CurrencySelector = ({
     onSubmitEnabledChange,
     has_wallet_account,
     is_dxtrade_allowed,
-    residence,
+    is_mt5_allowed,
     ...props
 }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
@@ -100,15 +100,20 @@ const CurrencySelector = ({
         return localize('Next');
     };
 
-    const description = is_dxtrade_allowed ? (
-        <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real DMT5 or Deriv X account.' />
-    ) : (
-        <Localize
-            i18n_default_text={`You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit${
-                residence === 'im' ? '' : 'or created a real DMT5 account'
-            }.`}
-        />
-    );
+    const description = React.useMemo(() => {
+        if (is_dxtrade_allowed && is_mt5_allowed) {
+            return (
+                <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real DMT5 or Deriv X account.' />
+            );
+        } else if (!is_dxtrade_allowed && is_mt5_allowed) {
+            return (
+                <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real DMT5 account.' />
+            );
+        }
+        return (
+            <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit' />
+        );
+    }, [is_dxtrade_allowed, is_mt5_allowed]);
 
     return (
         <Formik

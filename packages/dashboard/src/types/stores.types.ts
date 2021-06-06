@@ -44,29 +44,29 @@ export type TConfigStore = {
     setConfig: (config: TConfigProps) => void;
 };
 
-export type TMT5Store = {
+export type TCFDStore = {
     account_title: string;
     account_type: {
         category: TAccountCategory;
         type: TAccountType;
     };
-    has_mt5_error: boolean;
-    is_mt5_success_dialog_enabled: boolean;
-    is_mt5_password_modal_enabled: boolean;
+    has_cfd_error: boolean;
+    is_cfd_success_dialog_enabled: boolean;
+    is_cfd_password_modal_enabled: boolean;
     error_message: string;
     setError: (x: boolean) => void;
-    setMt5SuccessDialog: (x: boolean) => void;
+    setCFDSuccessDialog: (x: boolean) => void;
     submitMt5Password: () => void;
     beginRealSignupForMt5: () => void;
-    enableMt5PasswordModal: () => void;
-    disableMt5PasswordModal: () => void;
+    enableCFDPasswordModal: () => void;
+    disableCFDPasswordModal: () => void;
 };
 
 export type TRootStore = {
     ui_store: TUIStore;
     client_store: TClientStore;
     config_store: TConfigStore;
-    mt5_store: TMT5Store;
+    cfd_store: TCFDStore;
 };
 
 export type TUIStore = {

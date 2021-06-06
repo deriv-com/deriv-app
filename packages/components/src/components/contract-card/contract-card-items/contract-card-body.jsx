@@ -57,7 +57,7 @@ const MultiplierCardBody = ({
                 className={classNames({
                     'dc-contract-card-items-wrapper--mobile': is_mobile,
                     'dc-contract-card-items-wrapper': !is_mobile,
-                    'dc-contract-card-items-wrapper--has-progress-slider': has_progress_slider,
+                    'dc-contract-card-items-wrapper--has-progress-slider': has_progress_slider && !is_sold,
                 })}
             >
                 <ContractCardItem header={getCardLabels().STAKE} className='dc-contract-card__stake'>
@@ -88,7 +88,7 @@ const MultiplierCardBody = ({
                 <ContractCardItem header={getCardLabels().BUY_PRICE} className='dc-contract-card__buy-price'>
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
-                {has_progress_slider && is_mobile && (
+                {has_progress_slider && is_mobile && !is_sold && (
                     <ContractCardItem className='dc-contract-card__date-expiry'>{progress_slider}</ContractCardItem>
                 )}
                 <div className='dc-contract-card__limit-order-info'>

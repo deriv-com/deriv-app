@@ -21,7 +21,6 @@ const Native = ({
 }) => {
     const [is_focused, setIsFocused] = React.useState(0);
     const input_ref = React.useRef();
-    const [datepicker_value, setDatePickerValue] = React.useState('');
 
     React.useEffect(() => {
         if (input_ref.current) input_ref.current.value = value;
@@ -86,7 +85,6 @@ const Native = ({
                 onBlur={handleBlur}
                 onFocus={handleFocus}
                 disabled={disabled}
-                value={datepicker_value}
                 onChange={e => {
                     let new_value = e.target.value;
                     const moment_value = toMoment(new_value);
@@ -105,7 +103,10 @@ const Native = ({
                         new_value = days_diff < 0 ? moment_maxdate.format('YYYY-MM-DD') : new_value;
                     }
 
-                    setDatePickerValue(new_value);
+                    if (input_ref.current) {
+                        input_ref.current.value = new_value;
+                    }
+
                     onSelect(new_value);
                 }}
             />

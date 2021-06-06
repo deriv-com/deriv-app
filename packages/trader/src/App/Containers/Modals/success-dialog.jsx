@@ -4,6 +4,10 @@ import React from 'react';
 import { Button, Icon, Modal, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 
+const Checkmark = ({ className }) => (
+    <Icon className={className} icon='IcCheckmarkCircle' custom_color='var(--status-success)' size={24} />
+);
+
 const SuccessDialog = ({
     classNameMessage = undefined,
     has_cancel,
@@ -22,15 +26,9 @@ const SuccessDialog = ({
     has_close_icon,
     width = undefined,
 }) => {
-    const MainIcon = () => icon || null;
-
-    const Checkmark = ({ className }) => (
-        <Icon className={className} icon='IcCheckmarkCircle' custom_color='var(--status-success)' size={24} />
-    );
-
     return (
         <Modal
-            className='mt5-success-dialog'
+            className='cfd-success-dialog'
             is_open={is_open}
             toggleModal={toggleModal}
             has_close_icon={has_close_icon}
@@ -45,7 +43,7 @@ const SuccessDialog = ({
                         'success-change__icon-area--xlarge': icon_size === 'xlarge',
                     })}
                 >
-                    <MainIcon />
+                    {icon}
                     <Checkmark className='bottom-right-overlay' />
                 </div>
                 {!heading && (

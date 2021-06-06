@@ -8,41 +8,47 @@ import './ad-status.scss';
 const AdStatus = ({ days_until_archive, is_active }) => {
     if (!is_active) {
         return (
-            <div className='ad-status--inactive'>
-                <Text color='loss-danger' line_height='s' size='xs' weight='bold'>
-                    <Localize i18n_default_text='Inactive' />
-                </Text>
-            </div>
+            <Text className='ad-status--inactive' color='loss-danger' line_height='s' size='xs' weight='bold'>
+                <Localize i18n_default_text='Inactive' />
+            </Text>
         );
     } else if (days_until_archive > 1 && days_until_archive <= 10) {
         return (
-            <div className='ad-status--days_until_archive'>
-                <Text color='warning' line_height='m' size='xs' weight='bold'>
-                    <Localize
-                        i18n_default_text='Deactivating in: <br/> {{days_until_archive}} days'
-                        values={{ days_until_archive }}
-                    />
-                </Text>
-            </div>
+            <Text
+                align='right'
+                className='ad-status--days_until_archive'
+                color='warning'
+                line_height='m'
+                size='xs'
+                weight='bold'
+            >
+                <Localize
+                    i18n_default_text='Deactivating in: {{days_until_archive}} days'
+                    values={{ days_until_archive }}
+                />
+            </Text>
         );
     } else if (days_until_archive === 1) {
         return (
-            <div className='ad-status--days_until_archive'>
-                <Text color='warning' line_height='m' size='xs' weight='bold'>
-                    <Localize
-                        i18n_default_text='Deactivating in: <br/> {{days_until_archive}} day'
-                        values={{ days_until_archive }}
-                    />
-                </Text>
-            </div>
+            <Text
+                align='right'
+                className='ad-status--days_until_archive'
+                color='warning'
+                line_height='m'
+                size='xs'
+                weight='bold'
+            >
+                <Localize
+                    i18n_default_text='Deactivating in: {{days_until_archive}} day'
+                    values={{ days_until_archive }}
+                />
+            </Text>
         );
     } else if (!days_until_archive) {
         return (
-            <div className='ad-status--active'>
-                <Text color='profit-success' line_height='s' size='xs' weight='bold'>
-                    <Localize i18n_default_text='Active' />
-                </Text>
-            </div>
+            <Text className='ad-status--active' color='profit-success' line_height='s' size='xs' weight='bold'>
+                <Localize i18n_default_text='Active' />
+            </Text>
         );
     }
 

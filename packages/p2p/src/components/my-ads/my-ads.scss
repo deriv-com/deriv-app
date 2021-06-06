@@ -319,8 +319,10 @@
                 }
 
                 @include mobile {
-                    .p2p-my-ads__table-row-details .dc-text {
-                        color: var(--text-disabled);
+                    .dc-text {
+                        &:not(.ad-status--inactive) {
+                            color: var(--text-disabled);
+                        }
                     }
                 }
             }

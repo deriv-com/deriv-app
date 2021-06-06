@@ -6,6 +6,12 @@
     &__subtitle {
         margin-bottom: 1.6rem;
     }
+    &__close {
+        display: flex;
+        justify-content: flex-end;
+        padding-bottom: 1.2rem;
+        cursor: pointer;
+    }
     &__icon {
         margin-bottom: 2.4rem;
         @include mobile {

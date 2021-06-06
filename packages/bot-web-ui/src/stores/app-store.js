@@ -79,7 +79,12 @@ export default class AppStore {
 
                 const trade_options_blocks = Blockly.derivWorkspace
                     .getAllBlocks()
-                    .filter(b => b.type === 'trade_definition_tradeoptions');
+                    .filter(
+                        b =>
+                            b.type === 'trade_definition_tradeoptions' ||
+                            b.type === 'trade_definition_multiplier' ||
+                            (b.isDescendantOf('trade_definition_multiplier') && b.category_ === 'trade_parameters')
+                    );
 
                 trade_options_blocks.forEach(trade_options_block => trade_options_block.setCurrency(currency));
             }

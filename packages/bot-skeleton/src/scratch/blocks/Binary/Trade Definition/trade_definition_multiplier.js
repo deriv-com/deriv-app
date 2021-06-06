@@ -147,7 +147,7 @@ Blockly.Blocks.trade_definition_multiplier = {
                     });
                 }
             });
-        } else if (this.parentBlock_?.type === 'trade_definition') {
+        } else if (this.isDescendantOf('trade_definition')) {
             runIrreversibleEvents(() => {
                 runGroupedEvents(false, () => {
                     const duration_block = this.workspace.newBlock('trade_definition_tradeoptions');

@@ -129,7 +129,14 @@ export default class RunPanelStore {
     @action.bound
     onStopButtonClick() {
         const { ui } = this.root_store.core;
+        const { is_multiplier } = this.root_store.summary_card;
+
         this.dbot.stopBot();
+
+        if (is_multiplier) {
+            this.onClickSell();
+        }
+
         ui.setPromptHandler(false);
 
         if (this.error_type) {

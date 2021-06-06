@@ -54,10 +54,10 @@ export const config = {
     opposites: {
         MULTIPLIER: [
             {
-                MULTUP: localize('Multiply Up'),
+                MULTUP: localize('Up'),
             },
             {
-                MULTDOWN: localize('Multiply Down'),
+                MULTDOWN: localize('Down'),
             },
         ],
         CALLPUT: [

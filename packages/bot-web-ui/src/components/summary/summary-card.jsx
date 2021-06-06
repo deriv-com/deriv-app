@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { ContractCard } from '@deriv/components';
-import { isMultiplierContract } from '@deriv/shared';
 import ContractCardLoader from 'Components/contract-card-loading';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { connect } from 'Stores/connect';
@@ -18,14 +17,13 @@ const SummaryCard = ({
     is_contract_loading,
     is_contract_inactive,
     is_mobile,
+    is_multiplier,
     onClickSell,
     is_sell_requested,
     removeToast,
     server_time,
     setCurrentFocus,
 }) => {
-    const is_multiplier = contract_info && isMultiplierContract(contract_info.contract_type);
-
     const card_header = (
         <ContractCard.Header
             contract_info={contract_info}
@@ -122,6 +120,7 @@ SummaryCard.propTypes = {
     is_contract_inactive: PropTypes.bool,
     is_contract_loading: PropTypes.bool,
     is_mobile: PropTypes.bool,
+    is_multiplier: PropTypes.bool,
     onClickSell: PropTypes.func,
     is_sell_requested: PropTypes.bool,
     removeToast: PropTypes.func,
@@ -138,6 +137,7 @@ export default connect(({ summary_card, common, run_panel, ui }) => ({
     is_contract_inactive: summary_card.is_contract_inactive,
     is_contract_loading: summary_card.is_contract_loading,
     is_mobile: ui.is_mobile,
+    is_multiplier: summary_card.is_multiplier,
     onClickSell: run_panel.onClickSell,
     is_sell_requested: run_panel.is_sell_requested,
     removeToast: ui.removeToast,

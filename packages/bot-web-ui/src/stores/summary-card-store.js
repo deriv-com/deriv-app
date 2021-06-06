@@ -51,6 +51,11 @@ export default class SummaryCardStore {
         return !this.contract_info && !this.is_loading;
     }
 
+    @computed
+    get is_multiplier() {
+        return isMultiplierContract(this.contract_info?.contract_type);
+    }
+
     @action.bound
     clear(should_unset_contract = true) {
         if (should_unset_contract) {
@@ -121,9 +126,8 @@ export default class SummaryCardStore {
     @action.bound
     populateConfig(contract_info) {
         this.contract_info = contract_info;
-        const is_multiplier = isMultiplierContract(this.contract_info.contract_type);
 
-        if (is_multiplier && contract_info.contract_id && contract_info.limit_order) {
+        if (this.is_multiplier && contract_info.contract_id && contract_info.limit_order) {
             this.populateContractUpdateConfig(this.contract_info);
         }
     }

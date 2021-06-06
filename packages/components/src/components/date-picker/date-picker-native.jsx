@@ -21,6 +21,7 @@ const Native = ({
 }) => {
     const [is_focused, setIsFocused] = React.useState(0);
     const input_ref = React.useRef();
+    const [datepicker_value, setDatePickerValue] = React.useState('');
 
     React.useEffect(() => {
         if (input_ref.current) input_ref.current.value = value;
@@ -70,7 +71,8 @@ const Native = ({
             >
                 {label || (!value && placeholder)}
             </label>
-            <Icon icon='IcCalendar' className='dc-datepicker__calendar-icon' color={disabled && 'disabled'} />
+            <Icon icon='IcC(alendar' className='dc-datepicker__calendar-icon' color={disabled && 'disabled'} />
+
             <input
                 ref={input_ref}
                 id={id}
@@ -84,17 +86,26 @@ const Native = ({
                 onBlur={handleBlur}
                 onFocus={handleFocus}
                 disabled={disabled}
+                value={datepicker_value}
                 onChange={e => {
                     let new_value = e.target.value;
+                    const moment_value = toMoment(new_value);
+
+                    if (min_date) {
+                        const moment_mindate = toMoment(min_date);
+                        const days_diff = moment_mindate.diff(moment_value, 'days');
+
+                        new_value = days_diff > 0 ? moment_mindate.format('YYYY-MM-DD') : new_value;
+                    }
 
                     if (max_date) {
                         const moment_maxdate = toMoment(max_date);
-                        const moment_value = toMoment(new_value);
                         const days_diff = moment_maxdate.diff(moment_value, 'days');
 
                         new_value = days_diff < 0 ? moment_maxdate.format('YYYY-MM-DD') : new_value;
                     }
 
+                    setDatePickerValue(new_value);
                     onSelect(new_value);
                 }}
             />

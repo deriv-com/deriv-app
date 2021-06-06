@@ -15,7 +15,7 @@ const AdStatus = ({ days_until_archive, is_active }) => {
     } else if (days_until_archive > 1 && days_until_archive <= 10) {
         return (
             <Text
-                align='right'
+                align='center'
                 className='ad-status--days_until_archive'
                 color='warning'
                 line_height='m'
@@ -31,7 +31,7 @@ const AdStatus = ({ days_until_archive, is_active }) => {
     } else if (days_until_archive === 1) {
         return (
             <Text
-                align='right'
+                align='center'
                 className='ad-status--days_until_archive'
                 color='warning'
                 line_height='m'

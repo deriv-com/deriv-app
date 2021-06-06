@@ -35,8 +35,6 @@ const CreateAdForm = () => {
 
     const { currency, local_currency_config } = general_store.client;
 
-    const [advert_type, setAdvertType] = React.useState(buy_sell.BUY);
-    const [,] = React.useState(false);
     const should_not_show_auto_archive_message_again = React.useRef(false);
 
     const onCheckboxChange = () =>
@@ -96,8 +94,8 @@ const CreateAdForm = () => {
                     offer_amount: true,
                 }}
             >
-                {({ errors, handleChange, isSubmitting, isValid, touched, values }) => {
-                    const is_sell_advert = advert_type === buy_sell.SELL;
+                {({ errors, handleChange, isSubmitting, isValid, setFieldValue, touched, values }) => {
+                    const is_sell_advert = values.type === buy_sell.SELL;
 
                     return (
                         <div className='p2p-my-ads__form'>
@@ -115,8 +113,8 @@ const CreateAdForm = () => {
                                                     {...field}
                                                     className='p2p-my-ads__form-radio-group'
                                                     name='type'
-                                                    onToggle={event => setAdvertType(event.target.value)}
-                                                    selected={advert_type}
+                                                    onToggle={event => setFieldValue('type', event.target.value)}
+                                                    selected={values.type}
                                                     required
                                                 >
                                                     <RadioGroup.Item
@@ -134,7 +132,7 @@ const CreateAdForm = () => {
                                             <CreateAdSummary
                                                 offer_amount={errors.offer_amount ? '' : values.offer_amount}
                                                 price_rate={errors.price_rate ? '' : values.price_rate}
-                                                type={advert_type}
+                                                type={values.type}
                                             />
                                         </div>
                                         <div className='p2p-my-ads__form-container'>

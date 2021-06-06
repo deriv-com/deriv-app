@@ -12,7 +12,8 @@
     }
 
     &--days_until_archive {
-        text-align: center;
+        display: block;
+        max-width: 80%;
     }
 
     &--inactive {

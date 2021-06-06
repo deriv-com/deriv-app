@@ -1725,6 +1725,20 @@ $MIN_HEIGHT_FLOATING: calc(
     height: 100%;
     width: 100%;
 
+    &__header-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 63.2rem;
+    }
+    &__header {
+        margin-bottom: 1.6rem;
+    }
+    &__dropdown-container {
+        width: 40.4rem;
+        min-height: 35.2rem;
+        margin-top: 1.6rem;
+    }
     &__redirect {
         width: auto !important;
     }

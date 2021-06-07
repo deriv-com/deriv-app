@@ -455,6 +455,7 @@ class DeactivateAccountReason extends React.Component {
                             details={this.state.details}
                             mt5_login_list={this.props.mt5_login_list}
                             client_accounts={this.props.client_accounts}
+                            dxtrade_accounts_list={this.props.dxtrade_accounts_list}
                             onBackClick={this.props.onBackClick}
                         />
                     )}
@@ -470,4 +471,5 @@ class DeactivateAccountReason extends React.Component {
 export default connect(({ client }) => ({
     client_accounts: client.account_list,
     mt5_login_list: client.mt5_login_list,
+    dxtrade_accounts_list: client.dxtrade_accounts_list,
 }))(DeactivateAccountReason);

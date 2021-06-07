@@ -192,14 +192,8 @@ class FinancialAssessment extends React.Component {
                 // TODO: Find a better solution for handling no-op instead of using is_mounted flags
                 if (this.is_mounted) {
                     WS.wait('get_account_status').then(() => {
-                        const mt5_session_storage = sessionStorage.getItem('open_mt5_account_type');
-                        const has_mt5_financial_session = /labuan_financial_stp|labuan_advanced/.test(
-                            mt5_session_storage
-                        );
                         const has_trading_experience =
-                            (has_mt5_financial_session ||
-                                this.props.is_financial_account ||
-                                this.props.is_trading_experience_incomplete) &&
+                            (this.props.is_financial_account || this.props.is_trading_experience_incomplete) &&
                             !this.props.is_svg;
 
                         const needs_financial_assessment =

@@ -26,6 +26,7 @@ export const routes = {
     index: '/index',
     limits: '/settings/limits',
     mt5: '/mt5',
+    dxtrade: '/derivx',
     personal: '/settings/personal',
     positions: '/reports/positions',
     profit: '/reports/profit',

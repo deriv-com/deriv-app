@@ -111,7 +111,7 @@ const CurrencySelector = ({
             );
         }
         return (
-            <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit' />
+            <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit.' />
         );
     }, [is_dxtrade_allowed, is_mt5_allowed]);
 

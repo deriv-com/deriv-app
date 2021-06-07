@@ -12,11 +12,8 @@ const ResetPassword = ({ logoutClient, verification_code }) => {
     const onResetComplete = (error_msg, actions) => {
         actions.setSubmitting(false);
         // Error would be returned on invalid token (and the like) cases.
-        // TODO: Proper error handling (currently we have no place to put the message)
         if (error_msg) {
             actions.resetForm({ password: '' });
-            // eslint-disable-next-line no-console
-            console.error(error_msg);
             actions.setStatus({ error_msg });
             return;
         }

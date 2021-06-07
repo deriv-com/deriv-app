@@ -1,14 +1,6 @@
 import { observable, action, reaction, computed, runInAction } from 'mobx';
 import { localize } from '@deriv/translations';
-import {
-    error_types,
-    unrecoverable_errors,
-    observer,
-    message_types,
-    load,
-    config,
-    getSavedWorkspaces,
-} from '@deriv/bot-skeleton';
+import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { contract_stages } from 'Constants/contract-stage';
 import { run_panel } from 'Constants/run-panel';
 import { journalError, switch_account_notification } from 'Utils/bot-notifications';
@@ -301,25 +293,6 @@ export default class RunPanelStore {
             }
         );
 
-        this.reloadWorkspaceOnSwitchAccount = reaction(
-            () => client.currency,
-            async () => {
-                const workspace = Blockly.derivWorkspace;
-                const recent_files = await getSavedWorkspaces();
-                let block_string = workspace.strategy_to_load;
-                let file_name = config.default_file_name;
-                if (recent_files.length > 0) {
-                    block_string = recent_files[0].xml;
-                    file_name = recent_files[0].name;
-                }
-                load({
-                    block_string,
-                    file_name,
-                    workspace,
-                });
-            }
-        );
-
         return () => {
             if (typeof this.disposeIsSocketOpenedListener === 'function') {
                 this.disposeIsSocketOpenedListener();
@@ -332,7 +305,6 @@ export default class RunPanelStore {
             if (typeof this.disposeStopBotListener === 'function') {
                 this.disposeStopBotListener();
             }
-            this.reloadWorkspaceOnSwitchAccount();
         };
     }
 

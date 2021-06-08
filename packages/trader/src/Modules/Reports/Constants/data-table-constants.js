@@ -10,7 +10,7 @@ import IndicativeCell from '../Components/indicative-cell.jsx';
 import MarketSymbolIconRow from '../Components/market-symbol-icon-row.jsx';
 import ProfitLossCell from '../Components/profit_loss_cell.jsx';
 import CurrencyWrapper from '../Components/currency-wrapper.jsx';
-//redeploying test link
+
 const getModeFromValue = key => {
     const map = {
         buy: 'success',

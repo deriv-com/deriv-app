@@ -52,7 +52,7 @@ const Content = ({ currency_icon, loginid, title, value }) => (
     </div>
 );
 
-const AccountHasBalanceOrOpenPositions = ({
+const AccountHasPendingConditions = ({
     details,
     mt5_login_list,
     dxtrade_accounts_list,

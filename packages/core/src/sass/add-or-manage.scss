@@ -6,13 +6,13 @@
     .dc-tabs__content {
         display: flex;
         flex-direction: column;
+        padding-bottom: 7rem;
     }
     .dc-tabs__list--header-fit-content {
         margin: 0 auto;
     }
     .account-wizard--disabled {
         &-message p:first-child {
-            background-color: var(--general-section-1);
             font-size: 1.2rem;
             display: flex;
             justify-content: center;
@@ -54,7 +54,7 @@
     }
     @include desktop {
         .currency-selector__radio-group--with-margin {
-            margin-bottom: 6rem;
+            margin-bottom: 3rem;
             margin-left: auto;
             margin-right: auto;
             width: 768px;
@@ -78,7 +78,7 @@
             }
         }
         .currency-selector__radio-group--with-margin {
-            margin-bottom: 7rem;
+            margin-bottom: 3rem;
         }
         & .change-currency {
             .currency-list__items {
@@ -269,6 +269,10 @@
         height: 100%;
         padding: 6rem 0 0;
     }
+}
+
+.dc-mobile-dialog {
+    height: 100%;
 }
 
 .dc-mobile-dialog--enter-done .dc-mobile-dialog__content {

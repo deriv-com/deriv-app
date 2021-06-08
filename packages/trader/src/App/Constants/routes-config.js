@@ -8,8 +8,8 @@ import Trade from 'Modules/Trading';
 
 const ContractDetails = React.lazy(() => import(/* webpackChunkName: "contract" */ 'Modules/Contract'));
 
-// MT5 Routes
-const MT5 = React.lazy(() => import(/* webpackChunkName: "mt5", webpackPrefetch: true */ 'Modules/MT5'));
+// CFD Routes
+const CFD = React.lazy(() => import(/* webpackChunkName: "cfd", webpackPrefetch: true */ 'Modules/CFD'));
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
@@ -46,7 +46,20 @@ const initRoutesConfig = () => {
             getTitle: () => localize('Contract Details'),
             is_authenticated: true,
         },
-        { path: routes.mt5, component: MT5, getTitle: () => localize('MT5'), is_authenticated: false },
+        {
+            path: routes.dxtrade,
+            // eslint-disable-next-line react/display-name
+            component: props => <CFD {...props} platform='dxtrade' />,
+            getTitle: () => localize('Deriv X'),
+            is_authenticated: false,
+        },
+        {
+            path: routes.mt5,
+            // eslint-disable-next-line react/display-name
+            component: props => <CFD {...props} platform='mt5' />,
+            getTitle: () => localize('MT5'),
+            is_authenticated: false,
+        },
         {
             path: routes.reports,
             component: lazyLoadReportComponent('Reports'),

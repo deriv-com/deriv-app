@@ -19,7 +19,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                         'Only letters, numbers, spaces, and these special characters allowed: period, comma, colon, semicolon, brackets, at sign, hashtag, slash, hyphen.'
                     ),
                     {
-                        regex: /^[a-zA-Z0-9\s'.,:;()x{b0}@#/-\\\[\]]{1,70}$/,
+                        regex: /^[a-zA-Z0-9\s'.,:;()@#-/\\\[\]]{1,70}$/,
                     },
                 ],
                 ['po_box', getErrorMessages().po_box()],
@@ -36,7 +36,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                         'Only letters, numbers, spaces, and these special characters allowed: period, comma, colon, semicolon, brackets, at sign, hashtag, slash, hyphen.'
                     ),
                     {
-                        regex: /^[a-zA-Z0-9\s'.,:;()x{b0}@#/-\\\[\]]{0,70}$/,
+                        regex: /^[a-zA-Z0-9\s'.,:;()@#-/\\\[\]]{0,70}$/,
                     },
                 ],
                 ['po_box', getErrorMessages().po_box()],
@@ -83,7 +83,13 @@ const address_details_config = ({ account_settings, is_svg }) => {
                     }),
                     { min: 0, max: 20 },
                 ],
-                ['postcode', getErrorMessages().postcode()],
+                [
+                    'regular',
+                    localize('Letters, numbers, spaces, hyphens only'),
+                    {
+                        regex: /^[a-zA-Z0-9\s-]{0,20}$/,
+                    },
+                ],
             ],
         },
     };

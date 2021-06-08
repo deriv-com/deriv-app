@@ -21,11 +21,12 @@
         width: 12.7rem;
         align-items: center;
         height: 4rem;
+        border: 1px solid #a6a6a6;
 
         &-text {
             display: flex;
             flex-direction: column;
-            padding: 0.4rem 0.8rem 0.4rem 0.2rem;
+            padding: 0.4rem 0rem 0.4rem 0.2rem;
         }
         &--icon {
             margin-left: 0.6rem;

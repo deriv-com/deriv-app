@@ -92,25 +92,6 @@ const GeneralErrorContent = ({ message, onClick }) => (
 
 const character_limit_no = 110;
 
-const allowed_keys = new Set([
-    'Alt',
-    'ArrowDown',
-    'ArrowLeft',
-    'ArrowRight',
-    'ArrowUp',
-    'Backspace',
-    'Clear',
-    'Cut',
-    'Copy',
-    'Control',
-    'Delete',
-    'End',
-    'Home',
-    'Shift',
-]);
-
-const allowed_native_input = new Set(['deleteContentBackward']);
-
 class DeactivateAccountReason extends React.Component {
     static contextType = PlatformContext;
 
@@ -235,7 +216,7 @@ class DeactivateAccountReason extends React.Component {
     handleChange = (e, old_value, onChange) => {
         const value = e.target.value;
 
-        const { remaining_characters, total_accumulated_characters, last_accumulated_characters } = this.state;
+        const { remaining_characters, total_accumulated_characters } = this.state;
 
         const is_delete_action = old_value.length > value.length;
 

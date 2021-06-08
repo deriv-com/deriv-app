@@ -49,12 +49,6 @@
             width: unset;
             height: 40px;
         }
-
-        @include mobile {
-            & .dc-tabs__item--small {
-                padding: 0 1.1rem;
-            }
-        }
     }
     &::-webkit-scrollbar {
         width: 5px;

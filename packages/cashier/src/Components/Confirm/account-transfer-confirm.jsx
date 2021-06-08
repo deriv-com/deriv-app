@@ -4,6 +4,7 @@ import { localize } from '@deriv/translations';
 import { Money } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import Confirm from '../confirm.jsx';
+import { getAccountText } from '../../_common/utility';
 
 const AccountTransferConfirm = ({
     error,
@@ -20,7 +21,11 @@ const AccountTransferConfirm = ({
                 label: localize('Transfer from'),
                 value: [selected_from.text, selected_from.value],
             },
-            { key: 'transfer-to', label: localize('Transfer to'), value: [selected_to.text, selected_to.value] },
+            {
+                key: 'transfer-to',
+                label: localize('Transfer to'),
+                value: [getAccountText(selected_to), selected_to.value],
+            },
             {
                 key: 'amount',
                 label: localize('Amount'),

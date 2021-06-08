@@ -8,7 +8,12 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
 
-const ResetTradingPassword = ({ setDialogTitleFunc, toggleResetTradingPasswordModal, verification_code }) => {
+const ResetTradingPassword = ({
+    setDialogTitleFunc,
+    toggleResetTradingPasswordModal,
+    verification_code,
+    is_dxtrade_allowed,
+}) => {
     const handleSubmit = (values, actions) => {
         actions.setSubmitting(true);
         const params = {
@@ -107,7 +112,11 @@ const ResetTradingPassword = ({ setDialogTitleFunc, toggleResetTradingPasswordMo
                                         <Localize i18n_default_text='Success' />
                                     </Text>
                                     <Text align='center' as='p' size='xs' className='reset-trading-password__subtext'>
-                                        {localize('You have a new trading password. Use this to log in to DMT5.')}
+                                        {is_dxtrade_allowed
+                                            ? localize(
+                                                  'You have a new trading password. Use this to log in to DMT5 and Deriv X.'
+                                              )
+                                            : localize('You have a new trading password. Use this to log in to DMT5.')}
                                     </Text>
                                     <Button
                                         type='button'
@@ -177,6 +186,7 @@ const ResetTradingPassword = ({ setDialogTitleFunc, toggleResetTradingPasswordMo
 };
 
 ResetTradingPassword.propTypes = {
+    is_dxtrade_allowed: PropTypes.bool,
     setDialogTitleFunc: PropTypes.func,
     toggleResetTradingPasswordModal: PropTypes.func,
     verification_code: PropTypes.string,
@@ -189,6 +199,7 @@ const ResetTradingPasswordModal = ({
     is_visible,
     toggleResetTradingPasswordModal,
     verification_code,
+    is_dxtrade_allowed,
 }) => {
     const [dialog_title, setDialogTitle] = React.useState('');
     const setDialogTitleFunc = is_invalid_token => {
@@ -209,6 +220,7 @@ const ResetTradingPasswordModal = ({
                 toggleResetTradingPasswordModal={toggleResetTradingPasswordModal}
                 verification_code={verification_code}
                 setDialogTitleFunc={setDialogTitleFunc}
+                is_dxtrade_allowed={is_dxtrade_allowed}
             />
         </Dialog>
     );
@@ -219,6 +231,7 @@ ResetTradingPasswordModal.propTypes = {
     enableApp: PropTypes.func,
     is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
+    is_dxtrade_allowed: PropTypes.bool,
     toggleResetTradingPasswordModal: PropTypes.func,
     verification_code: PropTypes.string,
 };
@@ -230,4 +243,5 @@ export default connect(({ ui, client }) => ({
     is_visible: ui.is_reset_trading_password_modal_visible,
     toggleResetTradingPasswordModal: ui.setResetTradingPasswordModalOpen,
     verification_code: client.verification_code.trading_platform_password_reset,
+    is_dxtrade_allowed: client.is_dxtrade_allowed,
 }))(ResetTradingPasswordModal);

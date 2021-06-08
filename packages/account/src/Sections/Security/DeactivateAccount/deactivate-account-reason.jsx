@@ -126,9 +126,6 @@ class DeactivateAccountReason extends React.Component {
         total_checkbox_checked: 0,
         remaining_characters: character_limit_no,
         total_accumulated_characters: 0,
-        input_action: null,
-        log: null,
-        log2: null,
     };
     validateFields = values => {
         const error = {};
@@ -235,49 +232,18 @@ class DeactivateAccountReason extends React.Component {
         }
     };
 
-    handleChange = (e, onChange) => {
-        const { remaining_characters, total_accumulated_characters, input_action } = this.state;
+    handleChange = (e, old_value, onChange) => {
+        const value = e.target.value;
 
-        this.setState({
-            log: {
-                onchangeReceivedData: {
-                    remaining_characters,
-                    total_accumulated_characters,
-                    input_action,
-                },
-            },
-        });
+        const { remaining_characters, total_accumulated_characters, last_accumulated_characters } = this.state;
 
-        if ((remaining_characters <= 0 || total_accumulated_characters >= character_limit_no) && !input_action) {
+        const is_delete_action = old_value.length > value.length;
+
+        if ((remaining_characters <= 0 || total_accumulated_characters >= character_limit_no) && !is_delete_action) {
             e.preventDefault();
         } else {
             onChange(e);
         }
-    };
-
-    handleInputOnInput = e => {
-        let input_action = e.nativeEvent.inputType;
-
-        if (this.state.remaining_characters <= 0 && !allowed_native_input.has(input_action)) {
-            input_action = null;
-        }
-
-        this.setState({
-            input_action,
-        });
-    };
-
-    handleInputKeyDown = e => {
-        const key = e.key;
-        let input_action = key;
-
-        if (this.state.remaining_characters <= 0 && !allowed_keys.has(key)) {
-            input_action = null;
-        }
-
-        this.setState({
-            input_action,
-        });
     };
 
     handleInputPaste = e => {
@@ -432,14 +398,6 @@ class DeactivateAccountReason extends React.Component {
                                 )}
                             </Field>
 
-                            <pre style={{ whiteSpace: 'pre-wrap' }}>
-                                {JSON.stringify(this.state.input_action, undefined, 2)}
-                            </pre>
-                            <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(this.state.log, undefined, 2)}</pre>
-                            <pre style={{ whiteSpace: 'pre-wrap' }}>
-                                {JSON.stringify(this.state.log2, undefined, 2)}
-                            </pre>
-
                             <Field name='other_trading_platforms'>
                                 {({ field }) => (
                                     <Input
@@ -454,9 +412,10 @@ class DeactivateAccountReason extends React.Component {
                                         name='other_trading_platforms'
                                         value={values.other_trading_platforms}
                                         max_characters={character_limit_no}
-                                        onChange={e => this.handleChange(e, handleChange)}
+                                        onChange={e =>
+                                            this.handleChange(e, values.other_trading_platforms, handleChange)
+                                        }
                                         onKeyDown={this.handleInputKeyDown}
-                                        onInput={this.handleInputOnInput}
                                         onPaste={this.handleInputPaste}
                                     />
                                 )}
@@ -473,9 +432,8 @@ class DeactivateAccountReason extends React.Component {
                                         name='do_to_improve'
                                         value={values.do_to_improve}
                                         max_characters={character_limit_no}
-                                        onChange={e => this.handleChange(e, handleChange)}
+                                        onChange={e => this.handleChange(e, values.do_to_improve, handleChange)}
                                         onKeyDown={this.handleInputKeyDown}
-                                        onInput={this.handleInputOnInput}
                                         onPaste={this.handleInputPaste}
                                     />
                                 )}

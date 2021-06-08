@@ -86,8 +86,5 @@
   },
   "dependencies": {
     "dotenv": "^8.2.0"
-  },
-  "jest": {
-    "setupTestFrameworkScriptFile": "./setupTests.js"
   }
 }

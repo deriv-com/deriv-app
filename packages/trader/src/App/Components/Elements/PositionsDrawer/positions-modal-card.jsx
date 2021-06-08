@@ -17,6 +17,7 @@ import { BinaryLink } from 'App/Components/Routes';
 import { connect } from 'Stores/connect';
 import { getSymbolDisplayName } from 'Stores/Modules/Trading/Helpers/active-symbols';
 import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
+import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { getContractTypeDisplay, getCardLabels } from 'Constants/contract';
 import { getMarketInformation } from 'Modules/Reports/Helpers/market-underlying';
@@ -62,6 +63,7 @@ const PositionsModalCard = ({
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
     const is_crypto = isCryptoContract(contract_info.underlying);
     const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);
+    const has_ended = !!getEndTime(contract_info);
     const fallback_result = profit_loss >= 0 ? 'won' : 'lost';
 
     const should_show_sell = hasContractEntered(contract_info) && isOpen(contract_info);
@@ -229,7 +231,7 @@ const PositionsModalCard = ({
             getContractById={getContractById}
             is_mobile={is_mobile}
             is_multiplier={is_multiplier}
-            has_progress_slider={is_mobile && has_progress_slider}
+            has_progress_slider={is_mobile && has_progress_slider && !has_ended}
             removeToast={removeToast}
             server_time={server_time}
             setCurrentFocus={setCurrentFocus}

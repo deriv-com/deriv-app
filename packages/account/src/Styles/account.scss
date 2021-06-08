@@ -1663,6 +1663,27 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 }
 
+.dc-modal__container_success-dialog {
+    align-items: center;
+
+    .success-dialog__body {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+        padding: 0 1rem;
+
+        &-icon {
+            margin-left: 3rem;
+        }
+        &-close {
+            position: absolute;
+            right: 2.4rem;
+            top: 2.4rem;
+        }
+    }
+}
+
 .dc-modal__container_api_token__modal {
     .api-token {
         &__popup {

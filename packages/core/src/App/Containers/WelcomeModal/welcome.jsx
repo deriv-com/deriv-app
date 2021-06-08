@@ -46,7 +46,7 @@ const Welcome = ({ switchPlatform }) => (
                         components={[<Text key={0} weight='bold' as='strong' color='prominent' />]}
                     />
                 }
-                onClick={() => switchPlatform({ should_show_multiplier: true })}
+                onClick={() => switchPlatform({ should_show_multiplier: true, route: routes.trade })}
                 title={localize('Multipliers')}
                 icon={<Multipliers />}
                 mobileIcon={<MultipliersMobile />}
@@ -59,7 +59,7 @@ const Welcome = ({ switchPlatform }) => (
                         components={[<Text key={0} weight='bold' as='strong' color='prominent' />]}
                     />
                 }
-                onClick={() => switchPlatform()}
+                onClick={() => switchPlatform({ route: routes.trade })}
                 title={localize('Digital Options')}
                 icon={<DigitalOptions />}
                 mobileIcon={<DigitalOptionsMobile />}
@@ -72,7 +72,7 @@ const Welcome = ({ switchPlatform }) => (
                         components={[<Text key={0} weight='bold' as='strong' color='prominent' />]}
                     />
                 }
-                onClick={() => switchPlatform()}
+                onClick={() => switchPlatform({ route: routes.trade })}
                 title={localize('Not sure?')}
                 icon={<NotSure />}
                 mobileIcon={<NotSureMobile />}

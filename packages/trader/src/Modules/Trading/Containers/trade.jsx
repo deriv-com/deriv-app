@@ -44,6 +44,7 @@ const Trade = ({
     onMount,
     onUnmount,
     prepareTradeStore,
+    setContractTypes,
     setMobileDigitView,
     show_digits_stats,
     should_show_multipliers_onboarding,
@@ -84,12 +85,17 @@ const Trade = ({
     }, [symbol, setDigits, setTrySyntheticIndices]);
 
     React.useEffect(() => {
+        const selectMultipliers = async () => {
+            await setContractTypes();
+
+            onChange({ target: { name: 'contract_type', value: 'multiplier' } });
+        };
         if (
             should_show_multipliers_onboarding &&
             !is_chart_loading &&
             (!is_synthetics_unavailable || !is_market_closed)
         ) {
-            onChange({ target: { name: 'contract_type', value: 'multiplier' } });
+            selectMultipliers();
         }
     }, [should_show_multipliers_onboarding, is_chart_loading]);
 
@@ -218,6 +224,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_market_unavailable_visible: ui.has_only_forward_starting_contracts,
     should_show_multipliers_onboarding: ui.should_show_multipliers_onboarding,
     onChange: modules.trade.onChange,
+    setContractTypes: modules.trade.setContractTypes,
 }))(Trade);
 
 // CHART (ChartTrade)--------------------------------------------------------

@@ -19,7 +19,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                         'Only letters, numbers, spaces, and these special characters allowed: period, comma, colon, semicolon, brackets, at sign, hashtag, slash, hyphen.'
                     ),
                     {
-                        regex: /^[a-zA-Z0-9\s'.,:;()@#-/\\\[\]]{1,70}$/,
+                        regex: /^[a-zA-Z0-9\s'.,:;()@#/\-\\\[\]]{1,70}$/,
                     },
                 ],
                 ['po_box', getErrorMessages().po_box()],
@@ -36,7 +36,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                         'Only letters, numbers, spaces, and these special characters allowed: period, comma, colon, semicolon, brackets, at sign, hashtag, slash, hyphen.'
                     ),
                     {
-                        regex: /^[a-zA-Z0-9\s'.,:;()@#-/\\\[\]]{0,70}$/,
+                        regex: /^[a-zA-Z0-9\s'.,:;()@#/\-\\\[\]]{1,70}$/,
                     },
                 ],
                 ['po_box', getErrorMessages().po_box()],
@@ -51,7 +51,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                     'regular',
                     localize('Letters, numbers, spaces, periods, hyphens, apostrophes only'),
                     {
-                        regex: /^[A-Za-z0-9\s'.-]{1,35}$/,
+                        regex: /^[A-Za-z0-9\s'.\-]{1,35}$/,
                     },
                 ],
             ],
@@ -65,7 +65,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                     'regular',
                     localize('State is not in a proper format'),
                     {
-                        regex: /^[\w\s\W'.-;,]{0,60}$/,
+                        regex: /^[\w\s\W'.;,\-]{0,60}$/,
                     },
                 ],
             ],
@@ -87,7 +87,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                     'regular',
                     localize('Letters, numbers, spaces, hyphens only'),
                     {
-                        regex: /^[a-zA-Z0-9\s-]{0,20}$/,
+                        regex: /^[a-zA-Z0-9\s\-]{0,20}$/,
                     },
                 ],
             ],

@@ -43,8 +43,8 @@ const CFDDemoAccountDisplay = ({
         }
         return {
             [localize('Leverage')]: localize('Up to 1:1000'),
-            [localize('Margin call')]: localize('150%'),
-            [localize('Stop out level')]: localize('75%'),
+            [localize('Margin call')]: localize('100%'),
+            [localize('Stop out level')]: localize('50%'),
             [localize('Number of assets')]: localize('50+'),
         };
     }, [is_eu, is_eu_country, residence, platform]);
@@ -180,8 +180,8 @@ const CFDDemoAccountDisplay = ({
                         )}
                         specs={{
                             [localize('Leverage')]: localize('Up to 1:100'),
-                            [localize('Margin call')]: localize('150%'),
-                            [localize('Stop out level')]: localize('75%'),
+                            [localize('Margin call')]: localize('100%'),
+                            [localize('Stop out level')]: localize('50%'),
                             [localize('Number of assets')]: localize('50+'),
                         }}
                         platform={platform}

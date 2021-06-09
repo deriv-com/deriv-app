@@ -33,11 +33,9 @@ const PaymentAgentList = ({
     supported_banks,
     verification_code,
     is_payment_agent_withdraw,
+    active_index,
+    setActiveIndex,
 }) => {
-    const initial_active_index = verification_code || is_payment_agent_withdraw ? 1 : 0;
-
-    const [active_index, setActiveIndex] = React.useState(initial_active_index);
-
     React.useEffect(() => {
         onMount();
     }, [onMount]);
@@ -199,6 +197,8 @@ PaymentAgentList.propTypes = {
     supported_banks: MobxPropTypes.arrayOrObservableArray,
     verification_code: PropTypes.string,
     is_payment_agent_withdraw: PropTypes.bool,
+    active_index: PropTypes.number,
+    setActiveIndex: PropTypes.func,
 };
 
 export default connect(({ modules }) => ({
@@ -213,4 +213,6 @@ export default connect(({ modules }) => ({
     selected_bank: modules.cashier.config.payment_agent.selected_bank,
     sendVerificationEmail: modules.cashier.sendVerificationEmail,
     supported_banks: modules.cashier.config.payment_agent.supported_banks,
+    active_index: modules.cashier.config.payment_agent.active_index,
+    setActiveIndex: modules.cashier.config.payment_agent.setActiveIndex,
 }))(PaymentAgentList);

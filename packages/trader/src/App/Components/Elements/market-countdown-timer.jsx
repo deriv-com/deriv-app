@@ -134,10 +134,10 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
         const opening_time_moment_obj = moment(opening_time, 'HH:mm');
         const opening_time_hour = opening_time_moment_obj.format('HH');
         const opening_time_min = opening_time_moment_obj.format('mm');
-        const formatted_opening_time =
-            Number(opening_time_hour) > 11
-                ? `${Number(opening_time_hour) % 12}:${opening_time_min}`
-                : `${Number(opening_time_hour)}:${opening_time_min}`;
+        const formatted_opening_time = `${
+            Number(opening_time_hour % 12) ? Number(opening_time_hour) : 12
+        }:${opening_time_min} ${Number(opening_time_hour >= 12) ? 'pm' : 'am'}`;
+
         const opening_date = target_date.format('DD MMM YYYY');
         const opening_day = target_date.format('dddd');
         opening_time_banner = (

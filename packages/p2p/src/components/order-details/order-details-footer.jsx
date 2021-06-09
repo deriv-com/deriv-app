@@ -26,6 +26,16 @@ const OrderDetailsFooter = observer(() => {
     const [should_show_complain_modal, setShouldShowComplainModal] = React.useState(false);
     const [should_show_confirm_modal, setShouldShowConfirmModal] = React.useState(false);
 
+    React.useEffect(() => {
+        const website_status = setInterval(() => {
+            order_store.getWebsiteStatus();
+        }, 10000);
+
+        return () => {
+            clearInterval(website_status);
+        };
+    });
+
     const hideCancelOrderModal = () => setShouldShowCancelModal(false);
     const showCancelOrderModal = () => {
         order_store.getAdvertiserInfo(setShouldShowCancelModal);

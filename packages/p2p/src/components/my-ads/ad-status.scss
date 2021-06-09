@@ -1,0 +1,30 @@
+.ad-status {
+    &--active {
+        background: rgba(75, 180, 179, 0.16);
+        border-radius: 1.6rem;
+        padding: 0.2rem 1.6rem;
+        text-align: center;
+        width: 8.8rem;
+
+        @include mobile {
+            margin-bottom: 0.8rem;
+        }
+    }
+
+    &--days_until_archive {
+        display: block;
+        max-width: 80%;
+    }
+
+    &--inactive {
+        border: 1px solid var(--status-danger);
+        border-radius: 0.2rem;
+        padding: 0.1rem 1.2rem;
+        text-align: center;
+        width: 8.8rem;
+
+        @include mobile {
+            margin-bottom: 0.8rem;
+        }
+    }
+}

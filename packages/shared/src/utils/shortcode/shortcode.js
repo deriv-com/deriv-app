@@ -1,6 +1,6 @@
 // category_underlying_amount
 const base_pattern =
-    '^([A-Z]+)_((?:1HZ[0-9-V]+)|(?:(?:CRASH|BOOM)[0-9\\d]+)|(?:cry_[A-Z]+)|(?:OTC_[A-Z0-9]+)|R_[\\d]{2,3}|[A-Z]+)_([\\d.]+)';
+    '^([A-Z]+)_((?:1HZ[0-9-V]+)|(?:(?:CRASH|BOOM)[0-9\\d]+)|(?:cry_[A-Z]+)|(?:JD[0-9]+)|(?:OTC_[A-Z0-9]+)|R_[\\d]{2,3}|[A-Z]+)_([\\d.]+)';
 
 // category_underlying_amount_multiplier_starttime
 const multipliers_regex = new RegExp(`${base_pattern}_(\\d+)_(\\d+)`);

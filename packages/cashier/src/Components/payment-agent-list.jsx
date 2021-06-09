@@ -33,8 +33,8 @@ const PaymentAgentList = ({
     supported_banks,
     verification_code,
     is_payment_agent_withdraw,
-    pa_active_tab_index,
-    setPAActiveTabIndex,
+    payment_agent_active_tab_index,
+    setPaymentAgentActiveTabIndex,
 }) => {
     React.useEffect(() => {
         onMount();
@@ -58,7 +58,7 @@ const PaymentAgentList = ({
     ];
 
     const setActiveTabIndex = index => {
-        setPAActiveTabIndex(index);
+        setPaymentAgentActiveTabIndex(index);
 
         if (index === 1) {
             sendVerificationEmail();
@@ -79,7 +79,7 @@ const PaymentAgentList = ({
                     </Text>
                     <div className='payment-agent__instructions'>
                         <Tabs
-                            active_index={pa_active_tab_index}
+                            active_index={payment_agent_active_tab_index}
                             className='tabs--desktop'
                             onTabItemClick={setActiveTabIndex}
                             top
@@ -197,8 +197,8 @@ PaymentAgentList.propTypes = {
     supported_banks: MobxPropTypes.arrayOrObservableArray,
     verification_code: PropTypes.string,
     is_payment_agent_withdraw: PropTypes.bool,
-    pa_active_tab_index: PropTypes.number,
-    setPAActiveTabIndex: PropTypes.func,
+    payment_agent_active_tab_index: PropTypes.number,
+    setPaymentAgentActiveTabIndex: PropTypes.func,
 };
 
 export default connect(({ modules }) => ({
@@ -213,6 +213,6 @@ export default connect(({ modules }) => ({
     selected_bank: modules.cashier.config.payment_agent.selected_bank,
     sendVerificationEmail: modules.cashier.sendVerificationEmail,
     supported_banks: modules.cashier.config.payment_agent.supported_banks,
-    pa_active_tab_index: modules.cashier.config.payment_agent.active_tab_index,
-    setPAActiveTabIndex: modules.cashier.config.payment_agent.setActiveTabIndex,
+    payment_agent_active_tab_index: modules.cashier.config.payment_agent.active_tab_index,
+    setPaymentAgentActiveTabIndex: modules.cashier.config.payment_agent.setActiveTabIndex,
 }))(PaymentAgentList);

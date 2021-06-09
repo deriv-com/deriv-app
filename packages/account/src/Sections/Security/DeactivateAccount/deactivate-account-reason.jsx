@@ -131,7 +131,7 @@ class DeactivateAccountReason extends React.Component {
             }
 
             this.setState({
-                total_accumulated_characters: final_accumulated_characters,
+                total_accumulated_characters: text_inputs_length,
                 remaining_characters,
             });
 
@@ -238,8 +238,6 @@ class DeactivateAccountReason extends React.Component {
         };
         const { is_dashboard } = this.context;
 
-        const leaving_reason_msg = `Please tell us why you’re leaving. (Select up to ${max_allowed_reasons} reasons.)`;
-
         return this.state.is_loading ? (
             <Loading is_fullscreen={false} />
         ) : (
@@ -249,7 +247,9 @@ class DeactivateAccountReason extends React.Component {
                 })}
             >
                 <Text weight='bold' size='xs' className='deactivate-account-reasons__title' as='p'>
-                    {localize(leaving_reason_msg)}
+                    {localize('Please tell us why you’re leaving. (Select up to {{ allowed_reasons }} reasons.)', {
+                        allowed_reasons: max_allowed_reasons,
+                    })}
                 </Text>
                 <Formik initialValues={initial_form} validate={this.validateFields} onSubmit={this.handleSubmitForm}>
                     {({ values, setFieldValue, errors, handleChange, handleSubmit }) => (

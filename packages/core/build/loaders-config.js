@@ -38,6 +38,8 @@ const svg_file_loaders = [
     },
 ];
 
+let svg_id_counter = 0;
+
 const svg_loaders = [
     {
         loader: 'babel-loader',
@@ -55,6 +57,15 @@ const svg_loaders = [
                     { removeTitle: false },
                     { removeUselessStrokeAndFill: false },
                     { removeUknownsAndDefaults: false },
+                    {
+                        cleanupIDs: {
+                            prefix: {
+                                toString() {
+                                    return `id-${svg_id_counter++}`;
+                                },
+                            },
+                        },
+                    },
                 ],
                 floatPrecision: 2,
             },

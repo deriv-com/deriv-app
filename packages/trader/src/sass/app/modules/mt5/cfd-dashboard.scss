@@ -1132,6 +1132,9 @@
             .dc-file-dropzone {
                 max-width: 400px;
             }
+            @include mobile {
+                flex: unset;
+            }
         }
         &-remove-btn {
             position: absolute;

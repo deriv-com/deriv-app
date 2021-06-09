@@ -185,11 +185,7 @@ const BuySellForm = props => {
                                     </Field>
                                     {isDesktop() && (
                                         <div className='buy-sell__modal-field'>
-                                            <BuySellFormReceiveAmount
-                                                is_sell_advert={buy_sell_store.is_sell_advert}
-                                                local_currency={local_currency}
-                                                receive_amount={buy_sell_store.receive_amount}
-                                            />
+                                            <BuySellFormReceiveAmount />
                                         </div>
                                     )}
                                 </div>

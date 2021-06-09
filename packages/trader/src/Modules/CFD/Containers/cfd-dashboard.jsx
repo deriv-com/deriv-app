@@ -38,6 +38,7 @@ class CFDDashboard extends React.Component {
         is_account_needed_modal_open: false,
         is_demo_tab: true,
         required_account: {},
+        is_notification_loaded: false,
         password_manager: {
             is_visible: false,
             selected_login: '',
@@ -82,6 +83,10 @@ class CFDDashboard extends React.Component {
             return /demo/.test(this.props.location.hash) ? 1 : 0;
         }
         return undefined;
+    };
+
+    stopNotificationLoading = () => {
+        this.setState({ is_notification_loaded: true });
     };
 
     updateActiveIndex = index => {
@@ -184,7 +189,11 @@ class CFDDashboard extends React.Component {
             <React.Fragment>
                 {is_mt5_allowed || platform === CFD_PLATFORMS.DXTRADE || !is_logged_in ? (
                     <div className='cfd-dashboard__container'>
-                        <NotificationMessages />
+                        <NotificationMessages
+                            is_mt5
+                            is_notification_loaded={this.state.is_notification_loaded}
+                            stopNotificationLoading={this.stopNotificationLoading}
+                        />
                         <div className='cfd-dashboard'>
                             <div className='cfd-dashboard__welcome-message'>
                                 <h1 className='cfd-dashboard__welcome-message--heading'>

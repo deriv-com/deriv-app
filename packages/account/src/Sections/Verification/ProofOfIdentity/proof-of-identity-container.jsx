@@ -5,6 +5,7 @@ import { WS } from 'Services/ws-methods';
 // import Limited from 'Components/poi-limited';
 // import Unverified from 'Components/poi-unverified';
 import CountrySelector from 'Components/poi-country-selector/';
+import DocumentUpload from 'Components/poi-idv-document-upload';
 import NotRequired from 'Components/poi-not-required';
 // import RejectedReasons from 'Components/poi-rejected-reasons';
 // import ErrorMessage from 'Components/error-component';
@@ -92,6 +93,9 @@ const ProofOfIdentityContainer = ({
     // const rejectionStatus = [onfido_status_codes.rejected, onfido_status_codes.suspected];
     // const is_rejected = rejectionStatus.includes(status);
     // const has_rejected_reasons = !!rejected_reasons.length && is_rejected;
+
+    // TODO: These are just for display
+    if (true) return <DocumentUpload />;
     if (true) return <CountrySelector />;
 
     if (status === onfido_status_codes.not_required) return <NotRequired />;

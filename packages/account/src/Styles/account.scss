@@ -334,6 +334,9 @@ $MIN_HEIGHT_FLOATING: calc(
             border-width: 1px;
             background-color: var(--general-main-1);
 
+            .back-btn {
+                margin-right: 8px;
+            }
             &-note {
                 color: var(--text-prominent);
                 font-size: var(--text-size-xxs);
@@ -1725,22 +1728,31 @@ $MIN_HEIGHT_FLOATING: calc(
     height: 100%;
     width: 100%;
 
-    &__header-container {
+    &__container {
         display: flex;
         flex-direction: column;
+        justify-content: center;
         align-items: center;
-        width: 63.2rem;
+        margin-top: 3.8rem;
     }
     &__header {
         margin-bottom: 1.6rem;
     }
-    &__dropdown-container {
-        width: 40.4rem;
-        min-height: 35.2rem;
-        margin-top: 1.6rem;
+    &__fieldset {
+        width: 41.4rem;
+
+        .document-dropdown {
+            margin-bottom: 3.6rem;
+        }
+        .country-dropdown {
+            min-height: 35.2rem;
+        }
     }
     &__redirect {
         width: auto !important;
+    }
+    .btm-spacer {
+        margin-bottom: 2.4rem;
     }
 }
 

@@ -4,7 +4,7 @@ import React from 'react';
 import { Field, Formik } from 'formik';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
 import { isMobile, isDesktop, reorderCurrencies, PlatformContext } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import RadioButtonGroup from './radio-button-group.jsx';
 import RadioButton from './radio-button.jsx';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
@@ -30,6 +30,8 @@ const CurrencySelector = ({
     selected_step_ref,
     onSubmitEnabledChange,
     has_wallet_account,
+    is_dxtrade_allowed,
+    is_mt5_allowed,
     ...props
 }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
@@ -98,6 +100,21 @@ const CurrencySelector = ({
         return localize('Next');
     };
 
+    const description = React.useMemo(() => {
+        if (is_dxtrade_allowed && is_mt5_allowed) {
+            return (
+                <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real DMT5 or Deriv X account.' />
+            );
+        } else if (!is_dxtrade_allowed && is_mt5_allowed) {
+            return (
+                <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real DMT5 account.' />
+            );
+        }
+        return (
+            <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit.' />
+        );
+    }, [is_dxtrade_allowed, is_mt5_allowed]);
+
     return (
         <Formik
             innerRef={selected_step_ref}
@@ -131,6 +148,7 @@ const CurrencySelector = ({
                                                 error={errors.currency}
                                                 touched={touched.currency}
                                                 item_count={reorderCurrencies(fiat).length}
+                                                description={description}
                                             >
                                                 {reorderCurrencies(fiat).map(currency => (
                                                     <Field
@@ -155,6 +173,7 @@ const CurrencySelector = ({
                                                 error={errors.currency}
                                                 touched={touched.currency}
                                                 item_count={reorderCurrencies(crypto, 'crypto').length}
+                                                description={description}
                                             >
                                                 {reorderCurrencies(crypto, 'crypto').map(currency => (
                                                     <Field
@@ -206,6 +225,7 @@ CurrencySelector.propTypes = {
     value: PropTypes.any,
     is_dashboard: PropTypes.bool,
     real_account_signup_target: PropTypes.string,
+    is_dxtrade_allowed: PropTypes.bool,
 };
 
 export default CurrencySelector;

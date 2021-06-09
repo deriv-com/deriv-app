@@ -5,7 +5,7 @@ import Dropzone from 'react-dropzone';
 import { truncateFileName } from '@deriv/shared';
 import Text from '../text';
 
-const FadeInMessage = ({ is_visible, children, key, timeout }) => (
+const FadeInMessage = ({ is_visible, color, children, key, timeout }) => (
     <CSSTransition
         appear
         key={key}
@@ -21,25 +21,35 @@ const FadeInMessage = ({ is_visible, children, key, timeout }) => (
         }}
         unmountOnExit
     >
-        {children}
+        <Text
+            align='center'
+            color={color || 'general'}
+            size='xxs'
+            line_height='m'
+            weight='normal'
+            className='dc-file-dropzone__message'
+        >
+            {children}
+        </Text>
     </CSSTransition>
 );
 
-const FileDropzone = ({ className, ...props }) => (
-    <Dropzone
-        // sends back accepted files array
-        onDropAccepted={props.onDropAccepted}
-        // sends back rejected files array
-        onDropRejected={props.onDropRejected}
-        // allow multiple uploads
-        multiple={props.multiple || false}
-        // accept prop is same as native HTML5 input accept - e.g - 'image/png'
-        accept={props.accept}
-        // set maximum size limit for file, in bytes (binary)
-        maxSize={props.max_size}
-    >
-        {({ getRootProps, getInputProps, isDragAccept, isDragActive, isDragReject }) => {
-            return (
+const FileDropzone = ({ className, ...props }) => {
+    const dropzone_ref = React.useRef(null);
+    return (
+        <Dropzone
+            // sends back accepted files array
+            onDropAccepted={props.onDropAccepted}
+            // sends back rejected files array
+            onDropRejected={props.onDropRejected}
+            // allow multiple uploads
+            multiple={props.multiple || false}
+            // accept prop is same as native HTML5 input accept - e.g - 'image/png'
+            accept={props.accept}
+            // set maximum size limit for file, in bytes (binary)
+            maxSize={props.max_size}
+        >
+            {({ getRootProps, getInputProps, isDragAccept, isDragActive, isDragReject }) => (
                 <div
                     {...getRootProps()}
                     className={classNames('dc-file-dropzone', className, {
@@ -48,6 +58,7 @@ const FileDropzone = ({ className, ...props }) => (
                         'dc-file-dropzone--has-error':
                             (isDragReject || !!props.validation_error_message) && !isDragAccept,
                     })}
+                    ref={dropzone_ref}
                 >
                     <input {...getInputProps()} />
                     <div className='dc-file-dropzone__content'>
@@ -61,14 +72,14 @@ const FileDropzone = ({ className, ...props }) => (
                             }
                             timeout={150}
                         >
-                            <div className='dc-file-dropzone__message'>{props.message}</div>
+                            {props.message}
                         </FadeInMessage>
                         <FadeInMessage
                             // message shown on hover if files are accepted onDrag
                             is_visible={isDragActive && !isDragReject}
                             timeout={150}
                         >
-                            <div className='dc-file-dropzone__message'>{props.hover_message}</div>
+                            {props.hover_message}
                         </FadeInMessage>
                         {/* Handle cases for displaying multiple files and single filenames */}
 
@@ -86,7 +97,15 @@ const FileDropzone = ({ className, ...props }) => (
                               ))
                             : props.value[0] &&
                               !isDragActive && (
-                                  <Text size='xxs' weight='bold' align='center' className='dc-file-dropzone__filename'>
+                                  <Text
+                                      size='xxs'
+                                      weight='bold'
+                                      align='center'
+                                      className='dc-file-dropzone__filename'
+                                      styles={{
+                                          maxWidth: `calc(${dropzone_ref.current?.offsetWidth || 365}px - 3.2rem)`,
+                                      }}
+                                  >
                                       {props.filename_limit
                                           ? truncateFileName(props.value[0], props.filename_limit)
                                           : props.value[0].name}
@@ -96,29 +115,23 @@ const FileDropzone = ({ className, ...props }) => (
                             // message shown if there are errors with the dragged file
                             is_visible={isDragReject}
                             timeout={150}
+                            color='loss-danger'
                         >
-                            <div
-                                className={classNames('dc-file-dropzone__message', 'dc-file-dropzone__message--error')}
-                            >
-                                {props.error_message}
-                            </div>
+                            {props.error_message}
                         </FadeInMessage>
                         <FadeInMessage
                             // message shown on if there are validation errors with file uploaded
                             is_visible={!!props.validation_error_message && !isDragActive}
                             timeout={150}
+                            color='loss-danger'
                         >
-                            <div
-                                className={classNames('dc-file-dropzone__message', 'dc-file-dropzone__message--error')}
-                            >
-                                {props.validation_error_message}
-                            </div>
+                            {props.validation_error_message}
                         </FadeInMessage>
                     </div>
                 </div>
-            );
-        }}
-    </Dropzone>
-);
+            )}
+        </Dropzone>
+    );
+};
 
 export default FileDropzone;

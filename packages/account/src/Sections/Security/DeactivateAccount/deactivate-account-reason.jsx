@@ -35,7 +35,8 @@ const preparingReason = values => {
     if (is_to_do_improve_has_value) {
         selected_reasons = `${selected_reasons}, ${values.doToImprove}`;
     }
-    return selected_reasons;
+
+    return selected_reasons.replace(/(\r\n|\n|\r)/gm, ' ');
 };
 
 const selectedReasons = values => {
@@ -140,7 +141,7 @@ class DeactivateAccountReason extends React.Component {
                 this.setState({ remaining_characters: 0 });
             }
 
-            if (!/^[0-9A-z .,'-]*$/.test(final_value)) {
+            if (!/^[ a-zA-Z0-9.,'-\s]*$/.test(final_value)) {
                 error.characters_limits = localize("Must be numbers, letters, and special characters . , ' -");
             }
 
@@ -455,6 +456,7 @@ class DeactivateAccountReason extends React.Component {
                             details={this.state.details}
                             mt5_login_list={this.props.mt5_login_list}
                             client_accounts={this.props.client_accounts}
+                            dxtrade_accounts_list={this.props.dxtrade_accounts_list}
                             onBackClick={this.props.onBackClick}
                         />
                     )}
@@ -470,4 +472,5 @@ class DeactivateAccountReason extends React.Component {
 export default connect(({ client }) => ({
     client_accounts: client.account_list,
     mt5_login_list: client.mt5_login_list,
+    dxtrade_accounts_list: client.dxtrade_accounts_list,
 }))(DeactivateAccountReason);

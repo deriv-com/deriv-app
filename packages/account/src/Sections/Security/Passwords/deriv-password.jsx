@@ -46,7 +46,6 @@ const DerivPassword = ({ email, is_social_signup, social_identity_provider }) =>
                                 )}
                             </div>
                             <Button
-                                className='account__passwords-footer-btn'
                                 onClick={() => {
                                     setIsUnlinkModalOpen(true);
                                     setIsSentEmailModalOpen(true);

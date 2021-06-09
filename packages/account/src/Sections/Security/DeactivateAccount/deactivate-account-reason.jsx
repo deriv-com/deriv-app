@@ -35,7 +35,8 @@ const preparingReason = values => {
     if (is_to_do_improve_has_value) {
         selected_reasons = `${selected_reasons}, ${values.do_to_improve}`;
     }
-    return selected_reasons;
+
+    return selected_reasons.replace(/(\r\n|\n|\r)/gm, ' ');
 };
 
 const selectedReasons = values => {
@@ -91,6 +92,7 @@ const GeneralErrorContent = ({ message, onClick }) => (
 );
 
 const character_limit_no = 110;
+const max_allowed_reasons = 3;
 
 class DeactivateAccountReason extends React.Component {
     static contextType = PlatformContext;
@@ -111,35 +113,22 @@ class DeactivateAccountReason extends React.Component {
     validateFields = values => {
         const error = {};
         const selected_reason_count = selectedReasons(values).length;
+        const text_inputs_length = (values.other_trading_platforms + values.do_to_improve).length;
+        const character_limit_error_msg = "Must be numbers, letters, and special characters . , ' -";
 
         if (!selected_reason_count) {
             error.empty_reason = localize('Please select at least one reason');
         }
-        if ((values.other_trading_platforms + values.do_to_improve).length > 0 || selected_reason_count) {
+        if (text_inputs_length > 0 || selected_reason_count) {
             const final_value = preparingReason(values);
 
-            const text_inputs_length = values.other_trading_platforms.length + values.do_to_improve.length;
             let remaining_characters = character_limit_no - text_inputs_length;
 
             remaining_characters = remaining_characters >= 0 ? remaining_characters : 0;
 
-            const { input_action } = this.state;
-
-            const delete_inputs = ['Delete', 'Backspace', 'deleteContentBackward'];
-
-            const final_accumulated_characters = delete_inputs.includes(input_action)
-                ? text_inputs_length - 1
-                : text_inputs_length;
-
-            this.setState({
-                log2: {
-                    text_inputs_length,
-                    final_accumulated_characters,
-                    character_limit_no,
-                    input_action,
-                    is_delete_input: delete_inputs.includes(input_action),
-                },
-            });
+            if (!/^[ a-zA-Z0-9.,'-\s]*$/.test(final_value)) {
+                error.characters_limits = localize(character_limit_error_msg);
+            }
 
             this.setState({
                 total_accumulated_characters: final_accumulated_characters,
@@ -147,13 +136,14 @@ class DeactivateAccountReason extends React.Component {
             });
 
             if (!/^[0-9A-z .,'-’]*$/.test(final_value)) {
-                error.characters_limits = localize("Must be numbers, letters, and special characters . , ' -");
+                error.characters_limits = localize(character_limit_error_msg);
             }
         } else {
             this.setState({ remaining_characters: character_limit_no });
         }
         return error;
     };
+
     handleSubmitForm = values => {
         const final_reason = preparingReason(values);
         this.setState({
@@ -167,7 +157,8 @@ class DeactivateAccountReason extends React.Component {
         if (!values[name]) {
             this.setState({ total_checkbox_checked: this.state.total_checkbox_checked + 1 }, () => {
                 setFieldValue(name, !values[name]);
-                if (this.state.total_checkbox_checked === 3) this.setState({ is_checkbox_disabled: true });
+                if (this.state.total_checkbox_checked === max_allowed_reasons)
+                    this.setState({ is_checkbox_disabled: true });
             });
         } else {
             this.setState({ total_checkbox_checked: this.state.total_checkbox_checked - 1 }, () => {
@@ -247,6 +238,8 @@ class DeactivateAccountReason extends React.Component {
         };
         const { is_dashboard } = this.context;
 
+        const leaving_reason_msg = `Please tell us why you’re leaving. (Select up to ${max_allowed_reasons} reasons.)`;
+
         return this.state.is_loading ? (
             <Loading is_fullscreen={false} />
         ) : (
@@ -256,7 +249,7 @@ class DeactivateAccountReason extends React.Component {
                 })}
             >
                 <Text weight='bold' size='xs' className='deactivate-account-reasons__title' as='p'>
-                    {localize('Please tell us why you’re leaving. (Select up to 3 reasons.)')}
+                    {localize(leaving_reason_msg)}
                 </Text>
                 <Formik initialValues={initial_form} validate={this.validateFields} onSubmit={this.handleSubmitForm}>
                     {({ values, setFieldValue, errors, handleChange, handleSubmit }) => (

@@ -8,7 +8,7 @@ Blockly.Blocks.ema_statement = {
     },
     definition() {
         return {
-            message0: localize('set {{ variable }} to Exponentional Moving Average {{ dummy }}', {
+            message0: localize('set {{ variable }} to Exponential Moving Average {{ dummy }}', {
                 variable: '%1',
                 dummy: '%2',
             }),

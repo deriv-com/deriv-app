@@ -107,12 +107,15 @@ const CompositeCalendarMobile = React.memo(
 
         const selectDate = (e, key) => {
             setSelectedDateRange({ value: CUSTOM_KEY });
+
+            const value = e.target?.value ? toMoment(e.target.value).format('DD MMM YYYY') : '';
+
             if (key === 'from') {
-                setFrom(e.target?.value ? toMoment(e.target.value).format('DD MMM YYYY') : '');
+                setFrom(value);
             }
 
             if (key === 'to') {
-                setTo(e.target?.value ? toMoment(e.target.value).format('DD MMM YYYY') : '');
+                setTo(value);
             }
         };
 
@@ -198,6 +201,7 @@ const CompositeCalendarMobile = React.memo(
                                 selected_value={selected_date_range.value}
                                 onChange={onDateRangeChange}
                             />
+
                             <div className='composite-calendar-modal__custom-date-range'>
                                 <DatePicker
                                     className='composite-calendar-modal__custom-date-range-start-date'

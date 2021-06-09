@@ -128,4 +128,4 @@ export const getContractUpdateConfig = ({ contract_update, limit_order }) => {
 
 export const shouldShowExpiration = symbol => /^cry/.test(symbol);
 
-export const shouldShowCancellation = symbol => !/^(cry|CRASH|BOOM|stpRNG)/.test(symbol);
+export const shouldShowCancellation = symbol => !/^(cry|CRASH|BOOM|stpRNG|WLD|JD)/.test(symbol);

@@ -40,11 +40,14 @@ const Trade = ({
     is_trade_enabled,
     network_status,
     NotificationMessages,
+    onChange,
     onMount,
     onUnmount,
     prepareTradeStore,
+    setContractTypes,
     setMobileDigitView,
     show_digits_stats,
+    should_show_multipliers_onboarding,
     symbol,
 }) => {
     const [digits, setDigits] = React.useState([]);
@@ -80,6 +83,21 @@ const Trade = ({
         setTrySyntheticIndices(false);
         setTryOpenMarkets(false);
     }, [symbol, setDigits, setTrySyntheticIndices]);
+
+    React.useEffect(() => {
+        const selectMultipliers = async () => {
+            await setContractTypes();
+
+            onChange({ target: { name: 'contract_type', value: 'multiplier' } });
+        };
+        if (
+            should_show_multipliers_onboarding &&
+            !is_chart_loading &&
+            (!is_synthetics_unavailable || !is_market_closed)
+        ) {
+            selectMultipliers();
+        }
+    }, [should_show_multipliers_onboarding, is_chart_loading]);
 
     const bottomWidgets = React.useCallback(({ digits: d, tick: t }) => {
         return <BottomWidgetsMobile digits={d} tick={t} setTick={setTick} setDigits={setDigits} />;
@@ -204,6 +222,9 @@ export default connect(({ client, common, modules, ui }) => ({
     purchase_info: modules.trade.purchase_info,
     NotificationMessages: ui.notification_messages_ui,
     is_market_unavailable_visible: ui.has_only_forward_starting_contracts,
+    should_show_multipliers_onboarding: ui.should_show_multipliers_onboarding,
+    onChange: modules.trade.onChange,
+    setContractTypes: modules.trade.setContractTypes,
 }))(Trade);
 
 // CHART (ChartTrade)--------------------------------------------------------

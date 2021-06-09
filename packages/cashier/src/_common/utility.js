@@ -1,3 +1,5 @@
+import { getCurrencyName } from '@deriv/shared';
+
 const template = (string, content) => {
     let to_replace = content;
     if (content && !Array.isArray(content)) {
@@ -88,11 +90,16 @@ const eu_countries = [
 // check if client is from EU
 const isEuCountry = country => eu_countries.includes(country);
 
-module.exports = {
-    template,
-    createElement,
-    getStaticHash,
-    PromiseClass,
-    isEuCountry,
-    copyToClipboard,
+// check if mlt or dxtrade for account text
+const getAccountText = account => {
+    let account_text = '';
+    if (account.is_dxtrade || account.is_mt) {
+        account_text = account.text;
+    } else {
+        account_text = getCurrencyName(account.text);
+    }
+
+    return account_text;
 };
+
+export { copyToClipboard, createElement, getAccountText, getStaticHash, isEuCountry, PromiseClass, template };

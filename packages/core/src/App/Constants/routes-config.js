@@ -418,6 +418,12 @@ const getModules = ({ is_dashboard }) => {
                       getTitle: () => localize('Trader'),
                       routes: [
                           {
+                              path: routes.dxtrade,
+                              component: Trader,
+                              getTitle: () => localize('Deriv X'),
+                              is_authenticated: false,
+                          },
+                          {
                               path: routes.mt5,
                               component: Trader,
                               getTitle: () => localize('MT5'),

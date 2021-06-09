@@ -239,6 +239,7 @@ const CFDRealAccountDisplay = ({
                 is_button_primary={is_pending_authentication}
                 onPasswordManager={openPasswordManager}
                 onClickFund={onClickFundReal}
+                platform={platform}
                 descriptor={localize(
                     'Trade popular currency pairs and cryptocurrencies with straight-through processing order (STP).'
                 )}

@@ -106,6 +106,7 @@ class Common {
             await this.connectToQA();
         }
         await this.page.goto(process.env.HOME_URL);
+        await page.waitForLoadState('domcontentloaded');
     }
 
     async connectToQA() {
@@ -189,9 +190,7 @@ class Common {
     async realAccountSignup(options) {
         if (await this.isMobile()) {
             await this.page.waitForSelector('#dt_components_carousel-nav_nav-tag > ul > li:nth-child(2)');
-            await this.page.waitForSelector(
-                '#dt_components_carousel-nav_nav-tag > ul > li:nth-child(2)'
-            );
+            await this.page.waitForSelector('#dt_components_carousel-nav_nav-tag > ul > li:nth-child(2)');
             await this.page.mouse.move(180, 220);
             await this.page.mouse.down();
             await this.page.mouse.move(320, 220);
@@ -208,12 +207,8 @@ class Common {
         await this.page.waitForSelector('#real_account_tab');
         await this.page.click('#real_account_tab');
 
-        await this.page.waitForSelector(
-            '#dt_core_account-switcher_add-new-account'
-        );
-        await this.page.click(
-            '#dt_core_account-switcher_add-new-account'
-        );
+        await this.page.waitForSelector('#dt_core_account-switcher_add-new-account');
+        await this.page.click('#dt_core_account-switcher_add-new-account');
         await this.page.waitForSelector(`text=${options.currency}`);
         await this.page.click(`text=${options.currency}`);
         await this.page.waitForSelector('text=Next');
@@ -227,14 +222,16 @@ class Common {
 
     async fillTermsAndConditions() {
         await this.page.waitForSelector('text=Terms of use');
-        const elementHandle = await this.page.$('text=I agree');
+        const elementHandle = await this.page.$('text=/I agree/');
         await elementHandle.scrollIntoViewIfNeeded();
-        await this.page.waitForSelector('text=I am not a PEP, and I have not been a PEP in the last 12 months.');
-        await this.page.click('text=I am not a PEP, and I have not been a PEP in the last 12 months.');
+        await this.page.waitForSelector('text=/I am not a PEP/');
+        await this.page.click('text=/I am not a PEP/');
         if (await this.isMobile()) {
             await this.page.click('//html/body/div[2]/div/div/div[2]/div/div/div[2]/form/div[1]/div[5]/label/span[1]');
         } else {
-            await this.page.click('//html/body/div[2]/div/div/div[2]/div[2]/form/div[1]/div/div[5]/label/span[1]');
+            await page.click(
+                '.dc-themed-scrollbars > .details-form__elements > .terms-of-use__checkbox:nth-child(11) > .dc-checkbox > .dc-checkbox__box'
+            );
         }
 
         await this.page.waitForSelector('text=Add Account');
@@ -288,29 +285,29 @@ class Common {
                 await this.page.waitForSelector(`input[name=${selector}]`);
                 await this.page.click(`input[name=${selector}]`);
                 await this.page.press(`input[name=${selector}]`, 'Tab');
-                await this.page.waitForSelector('text=is required');
+                await this.page.waitForSelector('text=/is required/');
                 return Promise.resolve();
             case 'general':
                 await this.page.waitForSelector(`input[name=${selector}]`);
                 await this.page.click(`input[name=${selector}]`);
                 await this.page.press(`input[name=${selector}]`, 'Tab');
-                await this.page.waitForSelector('text=is required');
+                await this.page.waitForSelector('text=/is required/');
                 await this.page.fill(`input[name=${selector}]`, '123456789012345');
                 await this.page.press(`input[name=${selector}]`, 'Tab');
-                await this.page.waitForSelector('text=Only letters');
+                await this.page.waitForSelector('text=/Letters, spaces, periods,/');
                 return Promise.resolve();
             case 'phone':
                 await this.page.waitForSelector(`input[name=${selector}]`);
                 await this.page.fill(`input[name=${selector}]`, 'asdfghjkl');
                 await this.page.click(`#modal_root`);
-                await this.page.waitForSelector('text=is not in a proper format');
+                await this.page.waitForSelector('text=/is not in a proper format/');
                 return Promise.resolve();
             case 'date':
                 if (await this.isMobile()) {
                     await this.page.waitForSelector(`input[name=${selector}]`);
                     await this.page.click(`input[name=${selector}]`);
                     await this.page.click(`#modal_root`);
-                    await this.page.waitForSelector('text=is not in a proper format');
+                    await this.page.waitForSelector('text=/is not in a proper format/');
                     return Promise.resolve();
                 }
             default:

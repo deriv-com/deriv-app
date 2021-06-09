@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { action, observable } from 'mobx';
 import { getDecimalPlaces } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
@@ -8,15 +8,20 @@ import { decimalValidator, lengthValidator, textValidator } from 'Utils/validati
 import { requestWS } from 'Utils/websocket';
 
 export default class MyAdsStore extends BaseStore {
+    @observable activate_deactivate_error_message = '';
     @observable adverts = [];
+    @observable adverts_archive_period = null;
     @observable api_error = '';
     @observable api_error_message = '';
     @observable api_table_error_message = '';
     @observable available_balance = null;
     @observable contact_info = '';
     @observable default_advert_description = '';
+    @observable delete_error_message = '';
     @observable error_message = '';
     @observable has_more_items_to_load = false;
+    @observable is_ad_created_modal_visible = false;
+    @observable is_api_error_modal_visible = false;
     @observable is_delete_modal_open = false;
     @observable is_form_loading = false;
     @observable is_table_loading = false;
@@ -69,9 +74,25 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    handleSubmit = (values, { setSubmitting }) => {
-        const is_sell_ad = values.type === buy_sell.SELL;
+    getWebsiteStatus(createAd = () => {}, setSubmitting) {
+        requestWS({ website_status: 1 }).then(response => {
+            if (response.error) {
+                this.setApiErrorMessage(response.error.message);
+                setSubmitting(false);
+            } else {
+                const { p2p_config } = response.website_status;
+                this.setAdvertsArchivePeriod(p2p_config.adverts_archive_period);
+                createAd();
+            }
+        });
+    }
+
+    @action.bound
+    handleSubmit(values, { setSubmitting }) {
         this.setApiErrorMessage('');
+
+        const is_sell_ad = values.type === buy_sell.SELL;
+        const should_not_show_auto_archive_message = localStorage.getItem('should_not_show_auto_archive_message');
 
         const create_advert = {
             p2p_advert_create: 1,
@@ -95,25 +116,51 @@ export default class MyAdsStore extends BaseStore {
             create_advert.description = values.default_advert_description;
         }
 
-        requestWS(create_advert).then(response => {
-            // If we get an error we should let the user submit the form again else we just go back to the list of ads
-            if (response.error) {
-                this.setApiErrorMessage(response.error.message);
-                setSubmitting(false);
-            } else {
-                this.setShowAdForm(false);
-            }
-        });
-    };
+        const createAd = () => {
+            requestWS(create_advert).then(response => {
+                // If we get an error we should let the user submit the form again else we just go back to the list of ads
+                if (response.error) {
+                    this.setApiErrorMessage(response.error.message);
+                    setSubmitting(false);
+                } else if (should_not_show_auto_archive_message !== 'true' && this.adverts_archive_period) {
+                    setTimeout(() => {
+                        if (!this.is_api_error_modal_visible) {
+                            this.setIsAdCreatedModalVisible(true);
+                        }
+                    }, 200);
+                } else if (!this.is_api_error_modal_visible && !this.is_ad_created_modal_visible) {
+                    this.setShowAdForm(false);
+                }
+            });
+        };
+
+        if (should_not_show_auto_archive_message !== 'true') {
+            this.getWebsiteStatus(createAd, setSubmitting);
+        } else {
+            createAd();
+        }
+    }
 
     @action.bound
-    onClickCancel = () => {
+    onClickActivateDeactivate(id, is_ad_active, setIsAdvertActive) {
+        requestWS({ p2p_advert_update: 1, id, is_active: is_ad_active ? 0 : 1 }).then(response => {
+            if (response.error) {
+                this.setActivateDeactivateErrorMessage(response.error.message);
+            } else {
+                setIsAdvertActive(!!response.p2p_advert_update.is_active);
+            }
+            this.setSelectedAdId('');
+        });
+    }
+
+    @action.bound
+    onClickCancel() {
         this.setSelectedAdId('');
         this.setShouldShowPopup(false);
-    };
+    }
 
     @action.bound
-    onClickConfirm = showError => {
+    onClickConfirm(showError) {
         requestWS({ p2p_advert_update: 1, id: this.selected_ad_id, delete: 1 }).then(response => {
             if (response.error) {
                 showError({ error_message: response.error.message });
@@ -124,7 +171,7 @@ export default class MyAdsStore extends BaseStore {
                 this.setShouldShowPopup(false);
             }
         });
-    };
+    }
 
     @action.bound
     onClickCreate() {
@@ -132,10 +179,10 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    onClickDelete = id => {
+    onClickDelete(id) {
         this.setSelectedAdId(id);
         this.setIsDeleteModalOpen(true);
-    };
+    }
 
     @action.bound
     loadMoreAds({ startIndex }, is_initial_load = false) {
@@ -181,8 +228,18 @@ export default class MyAdsStore extends BaseStore {
     };
 
     @action.bound
+    setActivateDeactivateErrorMessage(activate_deactivate_error_message) {
+        this.activate_deactivate_error_message = activate_deactivate_error_message;
+    }
+
+    @action.bound
     setAdverts(adverts) {
         this.adverts = adverts;
+    }
+
+    @action.bound
+    setAdvertsArchivePeriod(adverts_archive_period) {
+        this.adverts_archive_period = adverts_archive_period;
     }
 
     @action.bound
@@ -216,6 +273,11 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
+    setDeleteErrorMessage(delete_error_message) {
+        this.delete_error_message = delete_error_message;
+    }
+
+    @action.bound
     setErrorMessage(error_message) {
         this.error_message = error_message;
     }
@@ -223,6 +285,16 @@ export default class MyAdsStore extends BaseStore {
     @action.bound
     setHasMoreItemsToLoad(has_more_items_to_load) {
         this.has_more_items_to_load = has_more_items_to_load;
+    }
+
+    @action.bound
+    setIsAdCreatedModalVisible(is_ad_created_modal_visible) {
+        this.is_ad_created_modal_visible = is_ad_created_modal_visible;
+    }
+
+    @action.bound
+    setIsApiErrorModalVisible(is_api_error_modal_visible) {
+        this.is_api_error_modal_visible = is_api_error_modal_visible;
     }
 
     @action.bound

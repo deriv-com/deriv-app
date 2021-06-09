@@ -824,12 +824,6 @@ $side-padding: 1.2em;
             justify-content: center;
         }
     }
-    .indicative {
-        @include desktop {
-            padding-top: 0;
-            padding-bottom: 0;
-        }
-    }
     .type {
         padding-right: 0;
     }

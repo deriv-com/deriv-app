@@ -3,8 +3,8 @@ import { OSDetect } from '@deriv/shared';
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com/';
 
-const IOS_APP_URL = 'https://apps.apple.com/tt/app/dxtrade/id1510582738';
-const ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.devexperts.dxmarket.client&hl=en';
+const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503';
+const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
 
 const getServerName = is_demo => (is_demo ? 'Deriv-Demo' : 'Deriv-Server');
 
@@ -21,9 +21,9 @@ const getTopUpConfig = () => {
 const getPlatformDXTradeDownloadLink = (platform = undefined) => {
     switch (platform || OSDetect()) {
         case 'ios':
-            return IOS_APP_URL;
+            return DXTRADE_IOS_APP_URL;
         case 'android':
-            return ANDROID_APP_URL;
+            return DXTRADE_ANDROID_APP_URL;
         default:
             return getDXTradeWebTerminalLink(); // Web
     }

@@ -35,7 +35,8 @@ const preparingReason = values => {
     if (is_to_do_improve_has_value) {
         selected_reasons = `${selected_reasons}, ${values.doToImprove}`;
     }
-    return selected_reasons;
+
+    return selected_reasons.replace(/(\r\n|\n|\r)/gm, ' ');
 };
 
 const selectedReasons = values => {
@@ -140,7 +141,7 @@ class DeactivateAccountReason extends React.Component {
                 this.setState({ remaining_characters: 0 });
             }
 
-            if (!/^[0-9A-z .,'-]*$/.test(final_value)) {
+            if (!/^[ a-zA-Z0-9.,'-\s]*$/.test(final_value)) {
                 error.characters_limits = localize("Must be numbers, letters, and special characters . , ' -");
             }
 

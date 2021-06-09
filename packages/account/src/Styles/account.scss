@@ -423,6 +423,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__error-message {
+            padding: 1rem 0;
             position: unset;
         }
         &__personal-details {
@@ -573,8 +574,8 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-top: 0.8rem;
             justify-content: flex-end;
 
-            @include mobile {
-                display: unset;
+            &-btn {
+                min-width: 14.9rem;
             }
         }
 

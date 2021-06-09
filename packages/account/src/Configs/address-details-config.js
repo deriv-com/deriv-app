@@ -11,7 +11,6 @@ const address_details_config = ({ account_settings, is_svg }) => {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.address_line_1 ?? '',
             rules: [
-                //reset build
                 ['req', localize('First line of address is required')],
                 ['length', localize('This should not exceed {{max}} characters.', { max: 70 }), { max: 70 }],
                 [

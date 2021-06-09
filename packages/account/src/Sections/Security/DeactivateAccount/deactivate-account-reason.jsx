@@ -7,7 +7,7 @@ import { Formik, Field } from 'formik';
 import { Checkbox, Input, FormSubmitButton, Modal, Icon, Loading, Text, Button } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
-import AccountHasPendingConditions from './account-has-balance.jsx';
+import AccountHasBalanceOrOpenPositions from './account-has-balance.jsx';
 
 const initial_form = {
     'I have other financial priorities': false,
@@ -192,8 +192,8 @@ class DeactivateAccountReason extends React.Component {
         } else {
             const { code, message, details } = account_closure_response.error;
             const getModalToRender = () => {
-                if (code === 'AccountHasPendingConditions') {
-                    return 'AccountHasPendingConditions';
+                if (code === 'AccountHasBalanceOrOpenPositions') {
+                    return 'AccountHasBalanceOrOpenPositions';
                 }
                 if (code === 'MT5AccountInaccessible') {
                     return 'inaccessible_modal';
@@ -450,11 +450,12 @@ class DeactivateAccountReason extends React.Component {
                     {this.state.which_modal_should_render === 'warning_modal' && (
                         <WarningModal closeModal={this.closeModal} startDeactivating={this.startDeactivating} />
                     )}
-                    {this.state.which_modal_should_render === 'AccountHasPendingConditions' && (
-                        <AccountHasPendingConditions
+                    {this.state.which_modal_should_render === 'AccountHasBalanceOrOpenPositions' && (
+                        <AccountHasBalanceOrOpenPositions
                             details={this.state.details}
                             mt5_login_list={this.props.mt5_login_list}
                             client_accounts={this.props.client_accounts}
+                            dxtrade_accounts_list={this.props.dxtrade_accounts_list}
                             onBackClick={this.props.onBackClick}
                         />
                     )}
@@ -470,4 +471,5 @@ class DeactivateAccountReason extends React.Component {
 export default connect(({ client }) => ({
     client_accounts: client.account_list,
     mt5_login_list: client.mt5_login_list,
+    dxtrade_accounts_list: client.dxtrade_accounts_list,
 }))(DeactivateAccountReason);

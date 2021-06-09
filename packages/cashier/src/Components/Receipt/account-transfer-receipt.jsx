@@ -2,9 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Modal, Icon, Text } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode, getCurrencyName, routes } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { getAccountText } from '../../_common/utility';
 
 const AccountTransferReceipt = ({
     disableApp,
@@ -44,7 +45,10 @@ const AccountTransferReceipt = ({
         // we should always show the statement of the account transferred to
         // unless if the account transferred to is your logged in account, or
         // the account transferred to is a DMT5 account that can't be switched to and from account is your logged in account
-        if (selected_to.value === loginid || (selected_to.is_mt && selected_from.value === loginid)) {
+        if (
+            selected_to.value === loginid ||
+            ((selected_to.is_mt || selected_to.is_dxtrade) && selected_from.value === loginid)
+        ) {
             openStatement();
         } else {
             // if the account transferred to is a DMT5 account that can't be switched to, switch to from account instead
@@ -66,34 +70,22 @@ const AccountTransferReceipt = ({
             <div className='cashier__transferred-details-wrapper'>
                 <span className='account-transfer__transfer-details-from'>
                     <div className='cashier__transferred-details'>
-                        <div className='cashier__text--bold cashier__text--right'>
-                            {selected_from.is_mt ? selected_from.text : getCurrencyName(selected_from.text)}
-                        </div>
-                        <div className='cashier__text--faint'>{selected_from.value}</div>
+                        <div className='cashier__text--bold cashier__text--right'>{getAccountText(selected_from)}</div>
+                        <div className='cashier__text--faint cashier__text--right'>{selected_from.value}</div>
                     </div>
                     <Icon
-                        icon={
-                            selected_from.mt_icon
-                                ? `IcMt5-${selected_from.mt_icon}`
-                                : `IcCurrency-${selected_from.currency?.toLowerCase()}`
-                        }
+                        icon={selected_from.platform_icon || `IcCurrency-${selected_from.currency?.toLowerCase()}`}
                         size={32}
                     />
                 </span>
                 <Icon className='cashier__transferred-icon' icon='IcArrowLeftBold' />
                 <span className='account-transfer__transfer-details-to'>
                     <Icon
-                        icon={
-                            selected_to.mt_icon
-                                ? `IcMt5-${selected_to.mt_icon}`
-                                : `IcCurrency-${selected_to.currency?.toLowerCase()}`
-                        }
+                        icon={selected_to.platform_icon || `IcCurrency-${selected_to.currency?.toLowerCase()}`}
                         size={32}
                     />
                     <div className='cashier__transferred-details'>
-                        <div className='cashier__text--bold'>
-                            {selected_to.is_mt ? selected_to.text : getCurrencyName(selected_to.text)}
-                        </div>
+                        <div className='cashier__text--bold'>{getAccountText(selected_to)}</div>
                         <div className='cashier__text--faint'>{selected_to.value}</div>
                     </div>
                 </span>

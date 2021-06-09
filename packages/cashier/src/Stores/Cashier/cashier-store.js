@@ -81,11 +81,11 @@ class ConfigPaymentAgent {
     @observable selected_bank = 0;
     @observable supported_banks = [];
     @observable verification = new ConfigVerification();
-    @observable active_index = 0;
+    @observable active_tab_index = 0;
 
     @action.bound
-    setActiveIndex(index) {
-        this.active_index = index;
+    setActiveTabIndex(index) {
+        this.active_tab_index = index;
     }
 }
 

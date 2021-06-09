@@ -10,10 +10,10 @@ const PaymentAgent = ({
     is_virtual,
     setActiveTab,
     verification_code,
-    setActiveIndex,
+    setPAActiveTabIndex,
 }) => {
     const initial_active_index = verification_code || is_payment_agent_withdraw ? 1 : 0;
-    setActiveIndex(initial_active_index);
+    setPAActiveTabIndex(initial_active_index);
 
     React.useEffect(() => {
         setActiveTab(container);
@@ -35,7 +35,7 @@ PaymentAgent.propTypes = {
     is_virtual: PropTypes.bool,
     setActiveTab: PropTypes.func,
     verification_code: PropTypes.string,
-    setActiveIndex: PropTypes.number,
+    setPAActiveTabIndex: PropTypes.number,
 };
 
 export default connect(({ client, modules }) => ({
@@ -44,5 +44,5 @@ export default connect(({ client, modules }) => ({
     container: modules.cashier.config.payment_agent.container,
     is_payment_agent_withdraw: modules.cashier.config.payment_agent.is_withdraw,
     setActiveTab: modules.cashier.setActiveTab,
-    setActiveIndex: modules.cashier.config.payment_agent.setActiveIndex,
+    setPAActiveTabIndex: modules.cashier.config.payment_agent.setActiveTabIndex,
 }))(PaymentAgent);

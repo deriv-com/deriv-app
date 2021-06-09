@@ -19,6 +19,7 @@ import { getDecimalPlaces, getCurrencyDisplayCode, getCurrencyName, validNumber 
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import FormError from '../Error/form-error.jsx';
+import { getAccountText } from '../../_common/utility';
 
 const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
     let server;
@@ -29,14 +30,10 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
 
     return (
         <React.Fragment key={idx}>
-            {(account.currency || account.mt_icon) && (
+            {(account.currency || account.platform_icon) && (
                 <div>
                     <Icon
-                        icon={
-                            account.mt_icon
-                                ? `IcMt5-${account.mt_icon}`
-                                : `IcCurrency-${account.currency.toLowerCase()}`
-                        }
+                        icon={account.platform_icon || `IcCurrency-${account.currency.toLowerCase()}`}
                         className='account-transfer__currency-icon'
                     />
                 </div>
@@ -44,7 +41,7 @@ const AccountOption = ({ mt5_login_list, account, idx, is_dark_mode_on }) => {
 
             <div className='account-transfer__currency-wrapper'>
                 <Text size='xxs' line_height='xs' styles={{ color: 'inherit', fontWeight: 'inherit' }}>
-                    {account.is_mt ? account.mt_icon : getCurrencyName(account.text)}
+                    {getAccountText(account)}
                 </Text>
                 <Text size='xxxs' align='left' color='less-prominent'>
                     {account.value}
@@ -77,7 +74,7 @@ const AccountTransferBullet = ({ children }) => (
     </div>
 );
 
-const AccountTransferNote = ({ currency, transfer_fee, minimum_fee }) => (
+const AccountTransferNote = ({ currency, transfer_fee, minimum_fee, is_dxtrade_allowed }) => (
     <div className='account-transfer__notes'>
         <DesktopWrapper>
             <Text as='h2' color='prominent' weight='bold' className='cashier__header account-transfer__notes-header'>
@@ -85,8 +82,11 @@ const AccountTransferNote = ({ currency, transfer_fee, minimum_fee }) => (
             </Text>
         </DesktopWrapper>
         <AccountTransferBullet>
+            <Localize i18n_default_text='Transfer limits may vary depending on changes in exchange rates.' />
+        </AccountTransferBullet>
+        <AccountTransferBullet>
             <Localize
-                i18n_default_text='We’ll charge a {{transfer_fee}}% transfer fee, or {{minimum_fee}} {{currency}}, whichever is higher.'
+                i18n_default_text='Transfers are subject to a {{transfer_fee}}% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher.'
                 values={{
                     transfer_fee,
                     minimum_fee,
@@ -95,17 +95,26 @@ const AccountTransferNote = ({ currency, transfer_fee, minimum_fee }) => (
             />
         </AccountTransferBullet>
         <AccountTransferBullet>
-            <Localize i18n_default_text='Transfers may be unavailable when the exchange markets are closed, when there is high volatility, or when there are technical issues.' />
+            {is_dxtrade_allowed ? (
+                <Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts, your Deriv account and Deriv MT5 (DMT5) account, or your Deriv account and Deriv X account.' />
+            ) : (
+                <Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts, your Deriv account and Deriv MT5 (DMT5) account, or your Deriv account.' />
+            )}
+        </AccountTransferBullet>
+        <AccountTransferBullet>
+            <Localize i18n_default_text='Transfers may be unavailable when the market is closed (weekends or holidays), periods of high volatility, or when there are technical issues.' />
         </AccountTransferBullet>
     </div>
 );
 
-let remaining_transfers, transfer_to_hint;
+let remaining_transfers;
 
 let accounts_from = [];
 let mt_accounts_from = [];
+let dxtrade_accounts_from = [];
 let accounts_to = [];
 let mt_accounts_to = [];
+let dxtrade_accounts_to = [];
 
 const AccountTransferForm = ({
     account_transfer_amount,
@@ -118,6 +127,7 @@ const AccountTransferForm = ({
     setAccountTransferAmount,
     setSideNotes,
     transfer_fee,
+    is_dxtrade_allowed,
     is_dark_mode_on,
     minimum_fee,
     mt5_login_list,
@@ -129,6 +139,7 @@ const AccountTransferForm = ({
 }) => {
     const [from_accounts, setFromAccounts] = React.useState({});
     const [to_accounts, setToAccounts] = React.useState({});
+    const [transfer_to_hint, setTransferToHint] = React.useState();
 
     const validateAmount = amount => {
         if (!amount) return localize('This field is required.');
@@ -146,6 +157,19 @@ const AccountTransferForm = ({
         return undefined;
     };
 
+    const getAccounts = (type, { is_mt, is_dxtrade }) => {
+        if (type === 'from') {
+            if (is_mt) return mt_accounts_from;
+            if (is_dxtrade) return dxtrade_accounts_from;
+            return accounts_from;
+        } else if (type === 'to') {
+            if (is_mt) return mt_accounts_to;
+            if (is_dxtrade) return dxtrade_accounts_to;
+            return accounts_to;
+        }
+        return [];
+    };
+
     React.useEffect(() => {
         onMount();
     }, [onMount]);
@@ -153,8 +177,10 @@ const AccountTransferForm = ({
     React.useEffect(() => {
         accounts_from = [];
         mt_accounts_from = [];
+        dxtrade_accounts_from = [];
         accounts_to = [];
         mt_accounts_to = [];
+        dxtrade_accounts_to = [];
 
         accounts_list.forEach((account, idx) => {
             const text = (
@@ -167,6 +193,8 @@ const AccountTransferForm = ({
             );
             const value = account.value;
             const account_server = mt5_login_list.find(server => server.login === account.value);
+
+            const is_cfd_account = account.is_mt || account.is_dxtrade;
             let server_region = '';
             if (account_server?.market_type === 'gaming' || account_server?.market_type === 'synthetic') {
                 server_region = `[${account_server.server_info.geolocation.region}${
@@ -176,43 +204,53 @@ const AccountTransferForm = ({
                 }]`;
             }
 
-            (account.is_mt ? mt_accounts_from : accounts_from).push({
+            getAccounts('from', account).push({
                 text,
                 value,
                 is_mt: account.is_mt,
+                is_dxtrade: account.is_dxtrade,
                 nativepicker_text: `${
-                    account.is_mt ? account.mt_icon : getCurrencyName(account.currency)
-                } ${server_region} (${account.balance} ${account.is_mt ? account.currency : account.text})`,
+                    is_cfd_account ? account.market_type : getCurrencyName(account.currency)
+                } ${server_region} (${account.balance} ${is_cfd_account ? account.currency : account.text})`,
             });
             const is_selected_from = account.value === selected_from.value;
+
+            if ((selected_from.is_mt && account.is_dxtrade) || (selected_from.is_dxtrade && account.is_mt)) return;
+
             // account from and to cannot be the same
             if (!is_selected_from) {
                 const is_selected_from_mt = selected_from.is_mt && account.is_mt;
+                const is_selected_from_dxtrade = selected_from.is_dxtrade && account.is_dxtrade;
                 const is_selected_from_crypto = selected_from.is_crypto && account.is_crypto;
+
                 // cannot transfer to MT account from MT
                 // cannot transfer to crypto account from crypto
+                // cannot transfer to Dxtrade account from Dxtrade
 
-                const is_disabled = is_selected_from_mt || is_selected_from_crypto;
+                const is_disabled = is_selected_from_mt || is_selected_from_crypto || is_selected_from_dxtrade;
 
-                (account.is_mt ? mt_accounts_to : accounts_to).push({
+                getAccounts('to', account).push({
                     text,
                     value,
                     is_mt: account.is_mt,
+                    is_dxtrade: account.is_dxtrade,
                     disabled: is_disabled,
                     nativepicker_text: `${
-                        account.is_mt ? account.mt_icon : getCurrencyName(account.currency)
-                    } ${server_region} (${account.balance} ${account.is_mt ? account.currency : account.text})`,
+                        is_cfd_account ? account.market_type : getCurrencyName(account.currency)
+                    } ${server_region} (${account.balance} ${is_cfd_account ? account.currency : account.text})`,
                 });
             }
         });
 
         setFromAccounts({
             ...(mt_accounts_from.length && { [localize('DMT5 accounts')]: mt_accounts_from }),
+            ...(dxtrade_accounts_from.length && { [localize('Deriv X accounts')]: dxtrade_accounts_from }),
             ...(accounts_from.length && { [localize('Deriv accounts')]: accounts_from }),
         });
 
         setToAccounts({
             ...(mt_accounts_to.length && { [localize('DMT5 accounts')]: mt_accounts_to }),
+            ...(dxtrade_accounts_to.length && { [localize('Deriv X accounts')]: dxtrade_accounts_to }),
             ...(accounts_to.length && { [localize('Deriv accounts')]: accounts_to }),
         });
     }, [accounts_list, selected_to, selected_from]);
@@ -225,22 +263,37 @@ const AccountTransferForm = ({
                     currency={selected_from.currency}
                     minimum_fee={minimum_fee}
                     key={0}
+                    is_dxtrade_allowed={is_dxtrade_allowed}
                 />,
             ]);
         }
-    }, [transfer_fee, selected_from, minimum_fee, from_accounts]);
+    }, [transfer_fee, selected_from, minimum_fee, from_accounts, is_dxtrade_allowed]);
 
     React.useEffect(() => {
         const { daily_transfers } = account_limits;
         const mt5_remaining_transfers = daily_transfers?.mt5?.available;
+        const dxtrade_remaining_transfers = daily_transfers?.dxtrade?.available;
         const internal_remaining_transfers = daily_transfers?.internal?.available;
 
         const is_mt_transfer = selected_to.is_mt || selected_from.is_mt;
-        remaining_transfers = is_mt_transfer ? mt5_remaining_transfers : internal_remaining_transfers;
-        transfer_to_hint =
+        const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
+
+        const getRemainingTransfers = () => {
+            if (is_mt_transfer) {
+                return mt5_remaining_transfers;
+            } else if (is_dxtrade_transfer) {
+                return dxtrade_remaining_transfers;
+            }
+            return internal_remaining_transfers;
+        };
+
+        remaining_transfers = getRemainingTransfers();
+
+        const hint =
             +remaining_transfers === 1
                 ? localize('You have {{number}} transfer remaining for today.', { number: remaining_transfers })
                 : localize('You have {{number}} transfers remaining for today.', { number: remaining_transfers });
+        setTransferToHint(hint);
     }, [selected_to, selected_from, account_limits]);
 
     return (
@@ -471,6 +524,7 @@ export default connect(({ client, modules, ui }) => ({
     onMount: client.getLimits,
     accounts_list: modules.cashier.config.account_transfer.accounts_list,
     is_dark_mode_on: ui.is_dark_mode_on,
+    is_dxtrade_allowed: client.is_dxtrade_allowed,
     minimum_fee: modules.cashier.config.account_transfer.minimum_fee,
     mt5_login_list: client.mt5_login_list,
     onChangeTransferFrom: modules.cashier.onChangeTransferFrom,

@@ -9,7 +9,7 @@ import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import PasswordsFooter from './passwords-footer.jsx';
 
-const ChangePasswordForm = ({ email, is_trading_password, logout, onClickSendEmail }) => {
+const ChangePasswordForm = ({ email, is_trading_password, logout, onClickSendEmail, onPasswordChange }) => {
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
 
@@ -47,6 +47,7 @@ const ChangePasswordForm = ({ email, is_trading_password, logout, onClickSendEma
                     } else {
                         setIsSubmitSuccess(true);
                         resetForm({ new_password: '' });
+                        onPasswordChange?.();
                         setTimeout(() => {
                             if (isMounted()) {
                                 setIsSubmitSuccess(false);
@@ -89,7 +90,7 @@ const ChangePasswordForm = ({ email, is_trading_password, logout, onClickSendEma
 
         if (values.new_password) {
             if (!validLength(values.new_password, { min: 8, max: 25 })) {
-                errors.new_password = localize('Password length should be between 8 to 25 characters.');
+                errors.new_password = localize('Your password should be between 8 and 25 characters.');
             }
             if (values.old_password === values.new_password) {
                 errors.new_password = localize('Current password and new password cannot be the same.');
@@ -170,6 +171,7 @@ ChangePasswordForm.propTypes = {
     is_trading_password: PropTypes.bool,
     logout: PropTypes.func,
     onClickSendEmail: PropTypes.func,
+    onPasswordChange: PropTypes.func,
 };
 
 export default connect(({ client }) => ({

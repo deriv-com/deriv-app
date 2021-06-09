@@ -2,13 +2,14 @@ import classNames from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ButtonToggle, Dropdown, InputField, Money } from '@deriv/components';
+import { ButtonToggle, Dropdown, InputField } from '@deriv/components';
 import { AMOUNT_MAX_LENGTH, getDecimalPlaces, addComma } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 import { Localize, localize } from '@deriv/translations';
 import AllowEquals from './allow-equals.jsx';
 import MultipliersInfo from './Multiplier/info.jsx';
+import Multiplier from './Multiplier/multiplier.jsx';
 
 const Input = ({
     amount,
@@ -66,7 +67,6 @@ const Amount = ({
     has_equals_only,
     onChange,
     setCurrentFocus,
-    stop_out,
     validation_errors,
 }) => {
     if (is_minimized) {
@@ -98,10 +98,7 @@ const Amount = ({
             header={is_multiplier ? localize('Stake') : undefined}
             header_tooltip={
                 is_multiplier ? (
-                    <Localize
-                        i18n_default_text='To ensure your loss does not exceed your stake, your contract will be closed automatically when your loss equals to <0/>.'
-                        components={[<Money key={0} amount={stop_out} currency={currency} show_currency />]}
-                    />
+                    <Localize i18n_default_text='Your gross profit is the percentage change in market price times your stake and the multiplier chosen here.' />
                 ) : undefined
             }
         >
@@ -135,7 +132,7 @@ const Amount = ({
                         is_nativepicker={false}
                         list={currencies_list}
                         name='currency'
-                        initial_offset={250}
+                        initial_offset={256}
                         no_border={true}
                         value={currency}
                         onChange={onChange}
@@ -164,11 +161,14 @@ const Amount = ({
                 has_equals_only={has_equals_only}
             />
             {is_multiplier && (
-                <MultipliersInfo
-                    className='trade-container__multipliers-trade-info'
-                    should_show_tooltip
-                    is_tooltip_relative
-                />
+                <React.Fragment>
+                    <Multiplier />
+                    <MultipliersInfo
+                        className='trade-container__multipliers-trade-info'
+                        should_show_tooltip
+                        is_tooltip_relative
+                    />
+                </React.Fragment>
             )}
         </Fieldset>
     );

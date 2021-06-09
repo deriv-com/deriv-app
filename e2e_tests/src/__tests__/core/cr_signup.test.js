@@ -11,6 +11,10 @@ describe('Signup', () => {
     beforeEach(async () => {
         await jestPlaywright.resetContext({
             ...default_context_config,
+            httpCredentials: {
+                username: `${process.env.QA_EMAIL_INBOX_USER_NAME}`,
+                password: `${process.env.QA_EMAIL_INBOX_PASSWORD}`,
+            },
         });
         await context.addInitScript(replaceWebsocket);
         p = new Common(page);

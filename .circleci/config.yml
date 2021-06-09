@@ -146,12 +146,6 @@ commands:
   k8s_deploy:
     description: "Deploy to k8s cluster"
     parameters:
-      k8s_svc_name:
-        type: string
-        default: "staging-deriv-app"
-      k8s_image_name:
-        type: string
-        default: "deriv-app"
       k8s_namespace:
         type: string
         default: "deriv-app-staging"
@@ -161,15 +155,11 @@ commands:
           name: Deploying to k8s cluster to namespace << parameters.k8s_namespace >>
           command: |
             TAG=${CIRCLE_TAG:-$CIRCLE_SHA1}
-            echo $CA_CRT | base64 --decode > ca.crt
-            kubectl --server=${KUBE_SERVER} --certificate-authority=ca.crt --token=$SERVICEACCOUNT_TOKEN set image deployment/<< parameters.k8s_svc_name >> << parameters.k8s_svc_name >>=${DOCKHUB_ORGANISATION}/<< parameters.k8s_image_name >>:${TAG}
-
             export NAMESPACE=<< parameters.k8s_namespace >>
             git clone https://github.com/binary-com/devops-ci-scripts
             cd devops-ci-scripts/k8s-build_tools
             echo $CA_CRT | base64 --decode > ca.crt
             ./release.sh deriv-app ${TAG}
-
 jobs:
   build:
     docker:
@@ -230,7 +220,6 @@ jobs:
       - docker_build_push:
           docker_image_latest_tag: latest
       - k8s_deploy:
-          k8s_svc_name: production-deriv-app
           k8s_namespace: "deriv-app-production"
       - notify_slack
     environment:

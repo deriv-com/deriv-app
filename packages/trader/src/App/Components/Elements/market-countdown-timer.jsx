@@ -3,12 +3,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Text, usePrevious } from '@deriv/components';
-import { useIsMounted } from '@deriv/shared';
+import { useIsMounted, convertTimeFormat } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import { isMarketClosed } from 'Stores/Modules/Trading/Helpers/active-symbols';
-import { convertTimeFormat } from '@deriv/shared';
 
 // check market in coming 7 days
 const days_to_check_before_exit = 7;

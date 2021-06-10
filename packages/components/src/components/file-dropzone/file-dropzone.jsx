@@ -5,7 +5,7 @@ import Dropzone from 'react-dropzone';
 import { truncateFileName } from '@deriv/shared';
 import Text from '../text';
 
-const FadeInMessage = ({ is_visible, color, children, key, timeout }) => (
+const FadeInMessage = ({ is_visible, color, children, key, timeout, no_text }) => (
     <CSSTransition
         appear
         key={key}
@@ -21,16 +21,20 @@ const FadeInMessage = ({ is_visible, color, children, key, timeout }) => (
         }}
         unmountOnExit
     >
-        <Text
-            align='center'
-            color={color || 'general'}
-            size='xxs'
-            line_height='m'
-            weight='normal'
-            className='dc-file-dropzone__message'
-        >
-            {children}
-        </Text>
+        {no_text ? (
+            <div className='dc-file-dropzone__message'>{children}</div>
+        ) : (
+            <Text
+                align='center'
+                color={color || 'general'}
+                size='xxs'
+                line_height='m'
+                weight='normal'
+                className='dc-file-dropzone__message'
+            >
+                {children}
+            </Text>
+        )}
     </CSSTransition>
 );
 
@@ -92,6 +96,7 @@ const FileDropzone = ({ className, noClick = false, ...props }) => {
                                 !props.validation_error_message
                             }
                             timeout={150}
+                            no_text={noClick}
                         >
                             {noClick ? props.message(open) : props.message}
                         </FadeInMessage>

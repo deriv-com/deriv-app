@@ -52,6 +52,7 @@ uploadFile.propTypes = {
         pageType: PropTypes.oneOf(Object.values(PAGE_TYPE)),
         expirationDate: PropTypes.string,
         documentId: PropTypes.string,
+        lifetimeValid: PropTypes.bool,
     }),
 };
 

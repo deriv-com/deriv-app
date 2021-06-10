@@ -4,7 +4,6 @@ export const ROOT_CLASS = 'manual-poi-details';
 
 export const DOCUMENT_TYPES = {
     NATIONAL_IDENTITY_CARD: 'national_identity_card',
-    NIMC: 'nimc',
     PASSPORT: 'passport',
     DRIVING_LICENCE: 'driving_licence',
     OTHER: 'other',
@@ -62,7 +61,7 @@ export const getDocumentIndex = ({ residence }) => [
         },
     },
     {
-        onfido_name: 'Driving licence',
+        onfido_name: 'Driving Licence',
         card: {
             title: localize('Driving licence'),
             description: localize('Upload the front and back of your driving licence.'),
@@ -156,7 +155,8 @@ export const getDocumentIndex = ({ residence }) => [
                       documents_title: localize('Upload both of the following documents:'),
                       documents: [
                           {
-                              document_type: DOCUMENT_TYPES.NIMC,
+                              document_type: DOCUMENT_TYPES.NATIONAL_IDENTITY_CARD,
+                              lifetime_valid: true,
                               pageType: PAGE_TYPE.FRONT,
                               name: 'identity_card_front',
                               icon: 'IcPoiNimcSlipHorizontal',
@@ -165,7 +165,7 @@ export const getDocumentIndex = ({ residence }) => [
                           {
                               document_type: DOCUMENT_TYPES.OTHER,
                               pageType: PAGE_TYPE.PHOTO,
-                              name: 'identity_card_back',
+                              name: 'birth_certificate_front',
                               icon: 'IcDop',
                               info: 'Upload your proof of age: birth certificate or age declaration document.',
                           },

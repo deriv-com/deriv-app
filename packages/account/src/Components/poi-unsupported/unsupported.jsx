@@ -11,7 +11,7 @@ import { getDocumentIndex, DOCUMENT_TYPES } from './constants';
 const checkNimcStep = documents => {
     let has_nimc = false;
     documents.forEach(document => {
-        if (document.document_type === DOCUMENT_TYPES.NIMC) {
+        if (document.document_type === DOCUMENT_TYPES.NATIONAL_IDENTITY_CARD && document.lifetime_valid) {
             has_nimc = true;
         }
     });

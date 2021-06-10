@@ -55,6 +55,7 @@
         .dc-file-dropzone__message {
             width: 100%;
             max-width: none;
+            pointer-events: all;
         }
     }
     &__uploader {

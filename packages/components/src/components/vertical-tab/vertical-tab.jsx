@@ -12,6 +12,7 @@ import Icon from '../icon/icon.jsx';
 
 const setSelectedIndex = ({ current_path, list, is_routed, selected_index, setCurrTabIndex, setVerticalTabIndex }) => {
     let index;
+
     if (typeof selected_index === 'undefined') {
         index = is_routed
             ? Math.max(

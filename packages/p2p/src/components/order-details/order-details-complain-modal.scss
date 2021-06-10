@@ -1,6 +1,10 @@
 .order-details-complain-modal {
     &__body {
         flex-grow: 1;
+
+        @include mobile {
+            flex-direction: column;
+        }
     }
 
     &__explanation {
@@ -37,6 +41,10 @@
             @include tablet-up {
                 border-bottom: 1px solid var(--general-section-1);
                 padding: 1.6rem 0;
+            }
+
+            .dc-radio-group__label {
+                flex: 1;
             }
 
             .dc-radio-group__circle {

@@ -180,12 +180,13 @@ const BinarySocketBase = (() => {
 
     const cashier = (action, parameters = {}) => deriv_api.send({ cashier: action, ...parameters });
 
-    const newAccountVirtual = (verification_code, client_password, residence, device_data) =>
+    const newAccountVirtual = (verification_code, client_password, residence, email_consent, device_data) =>
         deriv_api.send({
             new_account_virtual: 1,
             verification_code,
             client_password,
             residence,
+            email_consent,
             ...device_data,
         });
 
@@ -209,21 +210,6 @@ const BinarySocketBase = (() => {
             ...values,
         });
 
-    const mt5PasswordChange = (login, old_password, new_password, password_type, values) =>
-        deriv_api.send({
-            mt5_password_change: 1,
-            login,
-            old_password,
-            new_password,
-            password_type,
-            ...values,
-        });
-    const mt5PasswordReset = payload =>
-        deriv_api.send({
-            ...payload,
-            mt5_password_reset: 1,
-        });
-
     const getFinancialAssessment = () =>
         deriv_api.send({
             get_financial_assessment: 1,
@@ -236,6 +222,30 @@ const BinarySocketBase = (() => {
         deriv_api.send({ statement: 1, description: 1, limit, offset, ...other_properties });
 
     const verifyEmail = (email, type) => deriv_api.send({ verify_email: email, type });
+
+    const tradingPlatformPasswordChange = payload =>
+        deriv_api.send({
+            trading_platform_password_change: 1,
+            ...payload,
+        });
+
+    const tradingPlatformInvestorPasswordChange = payload =>
+        deriv_api.send({
+            trading_platform_investor_password_change: 1,
+            ...payload,
+        });
+
+    const tradingPlatformInvestorPasswordReset = payload =>
+        deriv_api.send({
+            trading_platform_investor_password_reset: 1,
+            ...payload,
+        });
+
+    const tradingPlatformPasswordReset = payload =>
+        deriv_api.send({
+            trading_platform_password_reset: 1,
+            ...payload,
+        });
 
     const paymentAgentList = (country, currency) =>
         deriv_api.send({ paymentagent_list: country, ...(currency && { currency }) });
@@ -310,6 +320,30 @@ const BinarySocketBase = (() => {
 
     const tradingServers = () => deriv_api.send({ platform: 'mt5', trading_servers: 1 });
 
+    const tradingPlatformAccountsList = platform =>
+        deriv_api.send({
+            trading_platform_accounts: 1,
+            platform,
+        });
+
+    const tradingPlatformNewAccount = values =>
+        deriv_api.send({
+            trading_platform_new_account: 1,
+            ...values,
+        });
+
+    const triggerMt5DryRun = ({ email }) =>
+        deriv_api.send({
+            account_type: 'financial',
+            dry_run: 1,
+            email,
+            leverage: 100,
+            mainPassword: 'Test1234',
+            mt5_account_type: 'financial_stp',
+            mt5_new_account: 1,
+            name: 'test real labuan financial stp',
+        });
+
     return {
         init,
         openNewConnection,
@@ -348,8 +382,6 @@ const BinarySocketBase = (() => {
         contractUpdateHistory,
         getFinancialAssessment,
         mt5NewAccount,
-        mt5PasswordChange,
-        mt5PasswordReset,
         newAccountVirtual,
         newAccountReal,
         newAccountRealMaltaInvest,
@@ -358,6 +390,10 @@ const BinarySocketBase = (() => {
         profitTable,
         statement,
         verifyEmail,
+        tradingPlatformPasswordChange,
+        tradingPlatformPasswordReset,
+        tradingPlatformInvestorPasswordChange,
+        tradingPlatformInvestorPasswordReset,
         activeSymbols,
         paymentAgentList,
         paymentAgentWithdraw,
@@ -380,6 +416,9 @@ const BinarySocketBase = (() => {
         accountStatistics,
         realityCheck,
         tradingServers,
+        tradingPlatformAccountsList,
+        tradingPlatformNewAccount,
+        triggerMt5DryRun,
     };
 })();
 

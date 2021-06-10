@@ -15,12 +15,42 @@ const getDisplayText = (list_items, value) => {
     return '';
 };
 
+const SelectNativeOptions = ({ list_items, should_hide_disabled_options, use_text }) => {
+    const options = should_hide_disabled_options ? list_items.filter(opt => !opt.disabled) : list_items;
+    const has_group = Array.isArray(list_items) && !!list_items[0]?.group;
+
+    if (has_group) {
+        const dropdown_items = options.reduce((dropdown_map, item) => {
+            dropdown_map[item.group] = dropdown_map[item.group] || [];
+            dropdown_map[item.group].push(item);
+
+            return dropdown_map;
+        }, {});
+        const group_names = Object.keys(dropdown_items);
+        return group_names.map(option => (
+            <optgroup key={option} label={option}>
+                {dropdown_items[option].map(value => (
+                    <option key={value.value} value={use_text ? value.text : value.value}>
+                        {value.nativepicker_text || value.text}
+                    </option>
+                ))}
+            </optgroup>
+        ));
+    }
+    return options.map(option => (
+        <option key={option.value} value={use_text ? option.text : option.value}>
+            {option.nativepicker_text || option.text}
+        </option>
+    ));
+};
+
 const SelectNative = ({
     className,
     classNameDisplay,
     disabled,
     error,
     hint,
+    classNameHint,
     hide_selected_value,
     label,
     list_items,
@@ -29,6 +59,7 @@ const SelectNative = ({
     suffix_icon,
     use_text,
     value,
+    should_hide_disabled_options,
     ...props
 }) => (
     <div
@@ -65,7 +96,13 @@ const SelectNative = ({
                 ) : (
                     <Icon className='dc-select-native__suffix-icon' icon={suffix_icon} size={16} fill />
                 )}
-                <select className='dc-select-native__picker' value={value} disabled={disabled} {...props}>
+                <select
+                    id='dt_components_select-native_select-tag'
+                    className='dc-select-native__picker'
+                    value={value}
+                    disabled={disabled}
+                    {...props}
+                >
                     {Array.isArray(list_items) ? (
                         <React.Fragment>
                             {/*
@@ -77,28 +114,29 @@ const SelectNative = ({
                             {/*
                              * Safari on ios allows to select a disabled option. So, we should avoid showing it
                              */}
-                            {list_items
-                                .filter(opt => !opt.disabled)
-                                .map((option, idx) => (
-                                    <option key={idx} value={use_text ? option.text : option.value}>
-                                        {option.nativepicker_text || option.text}
-                                    </option>
-                                ))}
+                            <SelectNativeOptions
+                                list_items={list_items}
+                                should_hide_disabled_options={should_hide_disabled_options}
+                                use_text={use_text}
+                            />
                         </React.Fragment>
                     ) : (
                         Object.keys(list_items).map(key => {
-                            const enabled_items = list_items[key].filter(opt => !opt.disabled);
-                            if (enabled_items.length > 0) {
+                            const items = should_hide_disabled_options
+                                ? list_items[key].filter(opt => !opt.disabled)
+                                : list_items[key];
+
+                            if (items.length > 0) {
                                 return (
                                     <optgroup key={key} label={key}>
                                         {/*
                                          * Safari on ios allows to select a disabled option. So, we should avoid showing it
                                          */}
-                                        {enabled_items.map((option, idx) => (
-                                            <option key={idx} value={use_text ? option.text : option.value}>
-                                                {option.nativepicker_text || option.text}
-                                            </option>
-                                        ))}
+                                        <SelectNativeOptions
+                                            list_items={list_items[key]}
+                                            should_hide_disabled_options={should_hide_disabled_options}
+                                            use_text={use_text}
+                                        />
                                     </optgroup>
                                 );
                             }
@@ -115,8 +153,8 @@ const SelectNative = ({
                 as='p'
                 color='less-prominent'
                 size='xxs'
-                styles={{ lineHeight: '1.8' }}
-                className='dc-select-native__hint'
+                line_height='l'
+                className={classNames('dc-select-native__hint', classNameHint)}
             >
                 {hint}
             </Text>
@@ -140,6 +178,7 @@ const list_items_shape = PropTypes.oneOfType([
 SelectNative.propTypes = {
     className: PropTypes.string,
     classNameDisplay: PropTypes.string,
+    classNameHint: PropTypes.string,
     disabled: PropTypes.bool,
     error: PropTypes.string,
     hint: PropTypes.string,
@@ -150,6 +189,11 @@ SelectNative.propTypes = {
     suffix_icon: PropTypes.string,
     use_text: PropTypes.bool,
     value: PropTypes.string,
+    should_hide_disabled_options: PropTypes.bool,
+};
+
+SelectNative.defaultProps = {
+    should_hide_disabled_options: true,
 };
 
 export default SelectNative;

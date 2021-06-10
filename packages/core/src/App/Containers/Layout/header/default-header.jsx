@@ -35,6 +35,7 @@ const DefaultHeader = ({
     is_logged_in,
     is_logging_in,
     is_mt5_allowed,
+    is_dxtrade_allowed,
     is_notifications_visible,
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
@@ -48,6 +49,7 @@ const DefaultHeader = ({
     needs_financial_assessment,
     notifications_count,
     openRealAccountSignup,
+    is_options_blocked,
     removeNotificationMessage,
     setDarkMode,
     toggleAccountsDialog,
@@ -71,7 +73,10 @@ const DefaultHeader = ({
             if (config.link_to === routes.mt5) {
                 return !is_logged_in || is_mt5_allowed;
             }
-            if (is_mf && config.href === routes.smarttrader) {
+            if (config.link_to === routes.dxtrade) {
+                return is_dxtrade_allowed;
+            }
+            if ((is_mf || is_options_blocked) && config.href === routes.smarttrader) {
                 return false;
             }
             return true;
@@ -132,6 +137,7 @@ const DefaultHeader = ({
                 >
                     {is_logging_in && (
                         <div
+                            id='dt_core_header_acc-info-preloader'
                             className={classNames('acc-info__preloader', {
                                 'acc-info__preloader--no-currency': !currency,
                                 'acc-info__preloader--is-crypto': getDecimalPlaces(currency) > 2,
@@ -140,7 +146,7 @@ const DefaultHeader = ({
                             <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={isMobile()} speed={3} />
                         </div>
                     )}
-                    <div className='acc-info__container'>
+                    <div id={'dt_core_header_acc-info-container'} className='acc-info__container'>
                         <AccountActions
                             acc_switcher_disabled_message={acc_switcher_disabled_message}
                             balance={balance}
@@ -188,6 +194,7 @@ DefaultHeader.propTypes = {
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_mt5_allowed: PropTypes.bool,
+    is_dxtrade_allowed: PropTypes.bool,
     is_notifications_visible: PropTypes.bool,
     // is_p2p_enabled: PropTypes.bool,
     // is_payment_agent_transfer_visible: PropTypes.bool,
@@ -224,6 +231,7 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_mt5_allowed: client.is_mt5_allowed,
+    is_dxtrade_allowed: client.is_dxtrade_allowed,
     is_notifications_visible: ui.is_notifications_visible,
     is_p2p_enabled: modules.cashier.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
@@ -236,6 +244,7 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     needs_financial_assessment: client.needs_financial_assessment,
     notifications_count: ui.filtered_notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
+    is_options_blocked: client.is_options_blocked,
     removeNotificationMessage: ui.removeNotificationMessage,
     setDarkMode: ui.setDarkMode,
     toggleAccountsDialog: ui.toggleAccountsDialog,

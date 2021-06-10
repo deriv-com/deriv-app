@@ -8,23 +8,26 @@ import {
     isDesktopOs,
     isEmptyObject,
     LocalStore,
-    removeEmptyPropertiesFromObject,
     setCurrencies,
     State,
     toMoment,
+    deriv_urls,
+    urlForLanguage,
+    CFD_PLATFORMS,
 } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
-import { isEuCountry, isSyntheticsUnavailable } from '_common/utility';
+import { isEuCountry, isOptionsBlocked, isSyntheticsUnavailable } from '_common/utility';
 import BaseStore from './base-store';
 import { getClientAccountType, getAccountTitle } from './Helpers/client';
-import { createDeviceDataObject, getCookieObject, setDeviceDataCookie } from './Helpers/device';
+import { setDeviceDataCookie } from './Helpers/device';
 import { handleClientNotifications, clientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
+const LANGUAGE_KEY = 'i18n_language';
 const storage_key = 'client.accounts';
 const store_name = 'client_store';
 const eu_shortcode_regex = new RegExp('^(maltainvest|malta|iom)$');
@@ -32,6 +35,7 @@ const eu_excluded_regex = new RegExp('^mt$');
 
 export default class ClientStore extends BaseStore {
     @observable loginid;
+    @observable preferred_language;
     @observable upgrade_info;
     @observable email;
     @observable accounts = {};
@@ -46,6 +50,7 @@ export default class ClientStore extends BaseStore {
     @observable selected_currency = '';
     @observable is_populating_account_list = false;
     @observable is_populating_mt5_account_list = true;
+    @observable is_populating_dxtrade_account_list = true;
     @observable has_reality_check = false;
     @observable is_reality_check_dismissed;
     @observable reality_check_dur;
@@ -56,6 +61,8 @@ export default class ClientStore extends BaseStore {
     @observable device_data = {};
     @observable is_logging_in = false;
     @observable has_logged_out = false;
+    @observable is_landing_company_loaded = false;
+    @observable is_account_setting_loaded = false;
     // this will store the landing_company API response, including
     // financial_company: {}
     // gaming_company: {}
@@ -67,10 +74,14 @@ export default class ClientStore extends BaseStore {
     @observable mt5_disabled_signup_types = { real: false, demo: false };
     @observable mt5_login_list = [];
     @observable mt5_login_list_error = null;
+    @observable dxtrade_accounts_list = [];
+    @observable dxtrade_accounts_list_error = null;
+    @observable dxtrade_disabled_signup_types = { real: false, demo: false };
     @observable statement = [];
     @observable obj_total_balance = {
         amount_real: undefined,
         amount_mt5: undefined,
+        amount_dxtrade: undefined,
         currency: '',
     };
 
@@ -79,6 +90,7 @@ export default class ClientStore extends BaseStore {
         reset_password: '',
         payment_withdraw: '',
         payment_agent_withdraw: '',
+        trading_platform_password_reset: '',
     };
     @observable account_limits = {};
 
@@ -109,6 +121,7 @@ export default class ClientStore extends BaseStore {
                 this.currency,
                 this.residence,
                 this.account_settings,
+                this.preferred_language,
             ],
             () => {
                 this.setCookieAccount();
@@ -208,8 +221,9 @@ export default class ClientStore extends BaseStore {
     @computed
     get can_change_fiat_currency() {
         const has_no_mt5 = !this.has_mt5_login;
+        const has_no_dxtrade = !this.has_dxtrade_login;
         const has_no_transaction = this.statement.count === 0 && this.statement.transactions.length === 0;
-        const has_account_criteria = has_no_transaction && has_no_mt5;
+        const has_account_criteria = has_no_transaction && has_no_mt5 && has_no_dxtrade;
         return !this.is_virtual && has_account_criteria && this.current_currency_type === 'fiat';
     }
 
@@ -322,15 +336,27 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get has_dxtrade_login() {
+        return this.dxtrade_accounts_list.length > 0;
+    }
+
+    @computed
     get has_account_error_in_mt5_list() {
         if (!this.is_logged_in) return false;
         return this.mt5_login_list?.some(account => !!account.has_error);
     }
 
     @computed
+    get has_account_error_in_dxtrade_list() {
+        if (!this.is_logged_in) return false;
+        return this.dxtrade_accounts_list?.some(account => !!account.has_error);
+    }
+
+    @computed
     get can_have_more_real_synthetic_mt5() {
         const number_of_current_added_synthetics = this.mt5_login_list.reduce((acc, cur) => {
-            const is_included = cur.account_type === 'real' && cur.market_type === 'gaming';
+            const is_included =
+                cur.account_type === 'real' && (cur.market_type === 'synthetic' || cur.market_type === 'gaming');
             return is_included ? acc + 1 : acc;
         }, 0);
         const number_of_available_synthetic = this.trading_servers.reduce(
@@ -402,6 +428,16 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_social_signup() {
+        return this.account_status?.status?.includes('social_signup');
+    }
+
+    @computed
+    get is_trading_password_required() {
+        return this.account_status?.status?.includes('trading_password_required');
+    }
+
+    @computed
     get is_financial_information_incomplete() {
         return this.account_status?.status?.some(status => status === 'financial_information_not_complete');
     }
@@ -423,6 +459,11 @@ export default class ClientStore extends BaseStore {
         const document_status = this.account_status?.authentication?.document?.status;
         const identity_status = this.account_status?.authentication?.identity?.status;
         return { document_status, identity_status };
+    }
+
+    @computed
+    get social_identity_provider() {
+        return this.account_status?.social_identity_provider;
     }
 
     @computed
@@ -566,12 +607,30 @@ export default class ClientStore extends BaseStore {
         return this.isMT5Allowed(this.landing_companies);
     }
 
+    @computed
+    get is_dxtrade_allowed() {
+        return this.isDxtradeAllowed();
+    }
+
     isMT5Allowed = landing_companies => {
         // default allowing mt5 to true before landing_companies gets populated
         // since most clients are allowed to use mt5
         if (!landing_companies || !Object.keys(landing_companies).length) return true;
 
         return 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
+    };
+
+    isDxtradeAllowed = () => {
+        if (!this.website_status?.clients_country || !this.landing_companies) return false;
+
+        const is_svg =
+            this.landing_companies?.financial_company?.shortcode === 'svg' ||
+            this.landing_companies?.gaming_company?.shortcode === 'svg';
+
+        const is_au = (this.residence || this.website_status.clients_country) === 'au';
+        if (is_au) return false;
+
+        return is_svg || (!this.is_logged_in && !this.is_eu && !this.is_eu_country);
     };
 
     @computed
@@ -588,7 +647,14 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_synthetics_unavailable() {
-        return isSyntheticsUnavailable(this.residence);
+        return this.is_logged_in
+            ? isSyntheticsUnavailable(this.residence)
+            : isSyntheticsUnavailable(this.website_status.clients_country);
+    }
+
+    @computed
+    get is_options_blocked() {
+        return isOptionsBlocked(this.residence);
     }
 
     /**
@@ -642,6 +708,14 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    setCFDDisabledSignupTypes(platform, disabled_types_obj) {
+        if (platform === CFD_PLATFORMS.DXTRADE) {
+            const current_list = this.dxtrade_disabled_signup_types;
+            this.dxtrade_disabled_signup_types = { current_list, ...disabled_types_obj };
+        }
+    }
+
+    @action.bound
     getLimits() {
         return new Promise(resolve => {
             WS.authorized.storage.getLimits().then(data => {
@@ -664,9 +738,24 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    setPreferredLanguage = lang => {
+        this.preferred_language = lang;
+        LocalStore.setObject(LANGUAGE_KEY, lang);
+    };
+
+    @action.bound
     setCookieAccount() {
-        const domain = window.location.hostname.includes('deriv.com') ? 'deriv.com' : 'binary.sx';
-        const { loginid, email, landing_company_shortcode, currency, residence, account_settings } = this;
+        const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
+        // eslint-disable-next-line max-len
+        const {
+            loginid,
+            email,
+            landing_company_shortcode,
+            currency,
+            residence,
+            account_settings,
+            preferred_language,
+        } = this;
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
             const client_information = {
@@ -678,6 +767,7 @@ export default class ClientStore extends BaseStore {
                 first_name,
                 last_name,
                 name,
+                preferred_language,
             };
             Cookies.set('client_information', client_information, { domain });
             this.has_cookie_account = true;
@@ -911,6 +1001,11 @@ export default class ClientStore extends BaseStore {
         return this.website_status && !BinarySocket.getAvailability().is_down;
     }
 
+    isEuCountrySelected = selected_country => {
+        if (selected_country) return isEuCountry(selected_country);
+        return false;
+    };
+
     isAccountOfType = type => {
         const client_account_type = getClientAccountType(this.loginid);
 
@@ -1007,7 +1102,6 @@ export default class ClientStore extends BaseStore {
     async init(login_new_user) {
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
-
         this.setDeviceData();
 
         // On case of invalid token, no need to continue with additional api calls.
@@ -1028,7 +1122,6 @@ export default class ClientStore extends BaseStore {
 
         this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
-
         this.setSwitched('');
         let client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login
@@ -1050,6 +1143,10 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 this.is_populating_account_list = false;
             });
+            const language = authorize_response.authorize.preferred_language;
+            if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
+                window.location.replace(urlForLanguage(authorize_response.authorize.preferred_language));
+            }
         }
 
         /**
@@ -1081,27 +1178,22 @@ export default class ClientStore extends BaseStore {
         if (this.is_logged_in) {
             WS.storage.mt5LoginList().then(this.responseMt5LoginList);
             WS.tradingServers().then(this.responseTradingServers);
+            WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
             this.responseStatement(
                 await BinarySocket.send({
                     statement: 1,
                 })
             );
             const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
+            this.setPreferredLanguage(account_settings.preferred_language);
+            await this.fetchResidenceList();
+
             if (account_settings && !account_settings.residence) {
-                await this.fetchResidenceList();
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
+
             await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             if (!this.is_virtual) await this.getLimits();
-
-            if (
-                !this.switched &&
-                !this.has_any_real_account &&
-                this.is_mt5_allowed &&
-                !this.root_store.ui.is_real_acc_signup_on
-            ) {
-                this.root_store.ui.toggleWelcomeModal({ is_visible: true });
-            }
         } else {
             this.resetMt5AccountListPopulation();
         }
@@ -1138,6 +1230,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     responseLandingCompany(response) {
+        this.is_landing_company_loaded = true;
         this.landing_companies = response.landing_company;
         this.setRealityCheck();
     }
@@ -1399,12 +1492,15 @@ export default class ClientStore extends BaseStore {
 
         if (obj_balance.total) {
             const total_real = getPropertyValue(obj_balance, ['total', 'deriv']);
-            const total_mt5 = getPropertyValue(obj_balance, ['total', 'mt5']);
+            const total_mt5 = getPropertyValue(obj_balance, ['total', CFD_PLATFORMS.MT5]);
+            const total_dxtrade = getPropertyValue(obj_balance, ['total', CFD_PLATFORMS.DXTRADE]);
             // in API streaming responses MT5 balance is not re-sent, so we need to reuse the first mt5 total sent
             const has_mt5 = !isEmptyObject(total_mt5);
+            const has_dxtrade = !isEmptyObject(total_dxtrade);
             this.obj_total_balance = {
                 amount_real: +total_real.amount,
                 amount_mt5: has_mt5 ? +total_mt5.amount : this.obj_total_balance.amount_mt5,
+                amount_dxtrade: has_dxtrade ? +total_dxtrade.amount : this.obj_total_balance.amount_dxtrade,
                 currency: total_real.currency,
             };
         }
@@ -1429,6 +1525,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setAccountSettings(settings) {
         this.account_settings = settings;
+        this.is_account_setting_loaded = true;
     }
 
     @action.bound
@@ -1632,15 +1729,15 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setDeviceData() {
-        // Set client URL params on init
-        const affiliate_token = Cookies.getJSON('affiliate_tracking');
-        const date_first_contact_cookie = setDeviceDataCookie(
+        setDeviceDataCookie('signup_device', isDesktopOs() ? 'desktop' : 'mobile');
+    }
+
+    @action.bound
+    getSignupParams() {
+        const param_list = [
             'date_first_contact',
-            this.root_store.common.server_time.format('YYYY-MM-DD')
-        );
-        const signup_device_cookie = setDeviceDataCookie('signup_device', isDesktopOs() ? 'desktop' : 'mobile');
-        const cookies_list = [
-            'gclid',
+            'signup_device',
+            'gclid_url',
             'utm_source',
             'utm_ad_id',
             'utm_adgroup_id',
@@ -1653,18 +1750,18 @@ export default class ClientStore extends BaseStore {
             'utm_medium',
             'utm_term',
             'utm_content',
+            'affiliate_token',
         ];
-        const cookies = {
-            signup_device: signup_device_cookie,
-            date_first_contact: date_first_contact_cookie,
-        };
+        const signup_params = {};
+        const url_params = new URLSearchParams(window.location.search);
 
-        cookies_list.forEach(element => {
-            cookies[element] = getCookieObject(element);
+        param_list.forEach(key => {
+            if (url_params.get(key)) {
+                signup_params[key] = url_params.get(key);
+            }
         });
 
-        const device_data = createDeviceDataObject(cookies);
-        this.device_data = { ...this.device_data, ...device_data, affiliate_token };
+        return signup_params;
     }
 
     @action.bound
@@ -1694,16 +1791,18 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    onSignup({ password, residence }, cb) {
+    onSignup({ password, residence, email_consent }, cb) {
         if (!this.verification_code.signup || !password || !residence) return;
-
+        if (email_consent === undefined) return;
+        email_consent = email_consent ? 1 : 0;
         // Currently the code doesn't reach here and the console log is needed for debugging.
         // TODO: remove console log when AccountSignup component and validation are ready
         WS.newAccountVirtual(
             this.verification_code.signup,
             password,
             residence,
-            removeEmptyPropertiesFromObject(this.device_data)
+            email_consent,
+            this.getSignupParams()
         ).then(async response => {
             if (response.error) {
                 cb(response.error.message);
@@ -1719,8 +1818,12 @@ export default class ClientStore extends BaseStore {
                 });
 
                 this.root_store.ui.showAccountTypesModalForEuropean();
+                const is_excluded_from_onboarding = ['au', 'sg', 'no'].includes(this.residence);
+                const shortcode =
+                    this.landing_companies?.financial_company?.shortcode ||
+                    this.landing_companies?.gaming_company?.shortcode;
 
-                if (this.is_mt5_allowed) {
+                if (shortcode === 'svg' && !is_excluded_from_onboarding) {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
                 }
             }
@@ -1845,6 +1948,40 @@ export default class ClientStore extends BaseStore {
             });
         } else {
             this.mt5_login_list_error = response.error;
+        }
+    }
+
+    @action.bound
+    responseTradingPlatformAccountsList(response) {
+        const { platform } = response.echo_req || {};
+
+        this[`is_populating_${platform}_account_list`] = false;
+
+        if (!response.error) {
+            this[`${platform}_accounts_list`] = response.trading_platform_accounts.map(account => {
+                const display_login = account.error ? account.error.details.account_id : account.account_id;
+                if (account.error) {
+                    const { account_type, server } = account.error.details;
+                    if (platform === CFD_PLATFORMS.DXTRADE) {
+                        this.setCFDDisabledSignupTypes(platform, {
+                            real: account_type === 'real',
+                            demo: account_type === 'demo',
+                        });
+                    }
+                    return {
+                        account_type,
+                        display_login,
+                        has_error: true,
+                        server,
+                    };
+                }
+                return {
+                    ...account,
+                    display_login,
+                };
+            });
+        } else {
+            this[`${platform}_accounts_list_error`] = response.error;
         }
     }
 

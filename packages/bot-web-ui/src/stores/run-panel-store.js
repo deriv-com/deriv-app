@@ -21,6 +21,7 @@ export default class RunPanelStore {
     @observable is_drawer_open = true;
     @observable is_dialog_open = false;
     @observable is_sell_requested = false;
+    @observable is_run_button_disabled = false;
 
     run_id = '';
 
@@ -84,9 +85,20 @@ export default class RunPanelStore {
             (journal.unfiltered_messages.length === 0 && transactions.elements.length === 0)
         );
     }
+    @action.bound
+    setIsRunButtonDisabled(is_run_button_disabled) {
+        this.is_run_button_disabled = is_run_button_disabled;
+    }
 
     @action.bound
     async onRunButtonClick() {
+        if (this.is_run_button_disabled) {
+            return;
+        }
+        this.setIsRunButtonDisabled(true);
+        setTimeout(() => {
+            this.setIsRunButtonDisabled(false);
+        }, 200);
         const { core, summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = core;
 
@@ -286,6 +298,13 @@ export default class RunPanelStore {
             () => registerIsSocketOpenedListener()
         );
 
+        this.disposeStopBotListener = reaction(
+            () => !this.is_running,
+            () => {
+                if (!this.is_running) this.setContractStage(contract_stages.NOT_RUNNING);
+            }
+        );
+
         return () => {
             if (typeof this.disposeIsSocketOpenedListener === 'function') {
                 this.disposeIsSocketOpenedListener();
@@ -293,6 +312,10 @@ export default class RunPanelStore {
 
             if (typeof this.disposeLogoutListener === 'function') {
                 this.disposeLogoutListener();
+            }
+
+            if (typeof this.disposeStopBotListener === 'function') {
+                this.disposeStopBotListener();
             }
         };
     }
@@ -497,11 +520,12 @@ export default class RunPanelStore {
 
     @action.bound
     onUnmount() {
-        const { journal, transactions } = this.root_store;
+        const { journal, summary_card, transactions } = this.root_store;
 
         this.unregisterBotListeners();
         this.disposeReactionsFn();
         journal.disposeReactionsFn();
+        summary_card.disposeReactionsFn();
         transactions.disposeReactionsFn();
 
         observer.unregisterAll('ui.log.error');

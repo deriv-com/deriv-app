@@ -119,7 +119,7 @@ const AddressDetails = ({
                         <form ref={setRef} onSubmit={handleSubmit}>
                             <Div100vhContainer
                                 className='details-form'
-                                height_offset={is_dashboard ? '242px' : '110px'}
+                                height_offset={is_dashboard ? '222px' : '90px'}
                                 is_disabled={isDesktop()}
                             >
                                 {!is_dashboard && (

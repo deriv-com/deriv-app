@@ -28,7 +28,12 @@ const DateOfBirthField = props => (
         {({ field: { value }, form: { setFieldValue, errors, touched, setTouched } }) => (
             <DateOfBirthPicker
                 error={touched.date_of_birth && errors.date_of_birth}
-                onBlur={() => setTouched({ date_of_birth: true })}
+                onBlur={() =>
+                    setTouched({
+                        ...touched,
+                        date_of_birth: true,
+                    })
+                }
                 onChange={({ target }) =>
                     setFieldValue(
                         'date_of_birth',
@@ -148,7 +153,7 @@ const PersonalDetails = ({
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef, height }) => (
                         <form ref={setRef} onSubmit={handleSubmit} autoComplete='off' onClick={handleClickOutside}>
-                            <Div100vhContainer className='details-form' height_offset='110px' is_disabled={isDesktop()}>
+                            <Div100vhContainer className='details-form' height_offset='90px' is_disabled={isDesktop()}>
                                 <ThemedScrollbars height={height} onScroll={closeTooltipOnScroll}>
                                     {is_dashboard && (
                                         <div className='details-form__sub-header'>
@@ -163,7 +168,15 @@ const PersonalDetails = ({
                                         className='details-form__elements'
                                         style={{ paddingBottom: isDesktop() ? 'unset' : null }}
                                     >
-                                        {!is_dashboard && <FormSubHeader title={localize('Title and name')} />}
+                                        {!is_dashboard && (
+                                            <FormSubHeader
+                                                title={
+                                                    'salutation' in props.value
+                                                        ? localize('Title and name')
+                                                        : localize('Name')
+                                                }
+                                            />
+                                        )}
                                         {'salutation' in props.value && ( // TODO: [deriv-eu] Remove salutation once api is optional
                                             <RadioGroup
                                                 className='dc-radio__input'
@@ -267,6 +280,7 @@ const PersonalDetails = ({
                                                                 {...field}
                                                                 list_portal_id='modal_root'
                                                                 required
+                                                                should_hide_disabled_options={false}
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -316,6 +330,7 @@ const PersonalDetails = ({
                                                                 }}
                                                                 {...field}
                                                                 required
+                                                                should_hide_disabled_options={false}
                                                             />
                                                         </MobileWrapper>
                                                     </React.Fragment>
@@ -518,7 +533,6 @@ const PersonalDetails = ({
                                                                     label={localize('Account opening reason')}
                                                                     list_items={account_opening_reason_list}
                                                                     value={values.account_opening_reason}
-                                                                    use_text={true}
                                                                     error={
                                                                         touched.account_opening_reason &&
                                                                         errors.account_opening_reason

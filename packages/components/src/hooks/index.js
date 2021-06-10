@@ -9,3 +9,4 @@ export * from './use-prevent-ios-zoom';
 export * from './use-deep-effect';
 export * from './use-state-callback';
 export * from './use-constructor';
+export * from './use-safe-state';

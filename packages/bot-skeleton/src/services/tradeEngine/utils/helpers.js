@@ -81,6 +81,17 @@ const getBackoffDelayInMs = (error, delay_index) => {
     return next_delay_in_seconds * 1000;
 };
 
+export const updateErrorMessage = error => {
+    if (error.error?.code === 'InputValidationFailed') {
+        if (error.error.details?.duration) {
+            error.error.message = localize('Duration must be a positive integer');
+        }
+        if (error.error.details?.amount) {
+            error.error.message = localize('Amount must be a positive number.');
+        }
+    }
+};
+
 export const shouldThrowError = (error, errors_to_ignore = []) => {
     if (!error.error) {
         return false;
@@ -94,6 +105,7 @@ export const shouldThrowError = (error, errors_to_ignore = []) => {
         'DisconnectError',
         'MarketIsClosed',
     ];
+    updateErrorMessage(error);
     const is_ignorable_error = errors_to_ignore.concat(default_errors_to_ignore).includes(error.error.code);
 
     return !is_ignorable_error;

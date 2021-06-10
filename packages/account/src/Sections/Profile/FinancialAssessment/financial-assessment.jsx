@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Formik } from 'formik';
-import { withRouter } from 'react-router';
+import { useHistory, useLocation, withRouter } from 'react-router';
 import {
     FormSubmitErrorMessage,
     Loading,
@@ -117,30 +117,44 @@ const ConfirmationPage = ({ toggleModal, onSubmit }) => (
     </div>
 );
 
-const SubmittedPage = withRouter(({ history }) => {
-    const redirectToPOA = () => {
-        history.push(routes.proof_of_address);
+const SubmittedPage = () => {
+    const history = useHistory();
+    const location = useLocation();
+
+    // Passing "custom_button_options" object in "location.state" allows
+    // another app/route to determine which button the user will see after
+    // submitting their financial assessment.
+    const button_text = location.state?.custom_button_options
+        ? location.state.custom_button_options.button_text
+        : localize('Continue');
+    const icon_text = location.state?.custom_button_options
+        ? location.state.custom_button_options.icon_text
+        : localize('Let’s continue with providing proofs of address and identity.');
+    const route_to_path = location.state?.custom_button_options
+        ? location.state.custom_button_options.route_to_path
+        : routes.proof_of_address;
+
+    const onClickButton = () => {
+        if (location.state?.custom_button_options?.is_hard_redirect) {
+            window.location.href = window.location.origin + route_to_path;
+        } else {
+            history.push(route_to_path);
+        }
     };
+
     return (
         <IconMessageContent
             className='submit-success'
             message={localize('Financial assessment submitted successfully')}
-            text={localize('Let’s continue with providing proofs of address and identity.')}
+            text={icon_text}
             icon={<Icon icon='IcSuccess' width={96} height={90} />}
         >
             <div className='account-management-flex-wrapper account-management-submit-success'>
-                <Button
-                    type='button'
-                    has_effect
-                    text={localize('Continue')}
-                    onClick={() => redirectToPOA()}
-                    primary
-                    large
-                />
+                <Button type='button' has_effect text={button_text} onClick={onClickButton} primary large />
             </div>
         </IconMessageContent>
     );
-});
+};
 
 class FinancialAssessment extends React.Component {
     static contextType = PlatformContext;
@@ -178,14 +192,8 @@ class FinancialAssessment extends React.Component {
                 // TODO: Find a better solution for handling no-op instead of using is_mounted flags
                 if (this.is_mounted) {
                     WS.wait('get_account_status').then(() => {
-                        const mt5_session_storage = sessionStorage.getItem('open_mt5_account_type');
-                        const has_mt5_financial_session = /labuan_financial_stp|labuan_advanced/.test(
-                            mt5_session_storage
-                        );
                         const has_trading_experience =
-                            (has_mt5_financial_session ||
-                                this.props.is_financial_account ||
-                                this.props.is_trading_experience_incomplete) &&
+                            (this.props.is_financial_account || this.props.is_trading_experience_incomplete) &&
                             !this.props.is_svg;
 
                         const needs_financial_assessment =
@@ -227,7 +235,10 @@ class FinancialAssessment extends React.Component {
                         ...res_data.get_financial_assessment,
                         is_submit_success: true,
                     });
-                    setTimeout(() => this.setState({ is_submit_success: false }), 3000);
+
+                    if (isDesktop()) {
+                        setTimeout(() => this.setState({ is_submit_success: false }), 3000);
+                    }
 
                     this.props.removeNotificationMessage({ key: 'risk' });
                     this.props.removeNotificationByKey({ key: 'risk' });
@@ -297,9 +308,10 @@ class FinancialAssessment extends React.Component {
             has_trading_experience,
         } = this.state;
         const { is_dashboard } = this.context;
+
         if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
-        if (this.props.is_virtual) return <DemoMessage />;
+        if (this.props.is_virtual) return <DemoMessage has_demo_icon={is_dashboard} has_button={is_dashboard} />;
         if (isMobile() && is_submit_success) return <SubmittedPage />;
 
         return (

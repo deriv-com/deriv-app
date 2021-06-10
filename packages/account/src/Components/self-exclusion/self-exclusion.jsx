@@ -23,6 +23,7 @@ const SelfExclusion = ({
     footer_ref,
     is_app_settings,
     is_cr,
+    is_dashboard,
     is_eu,
     is_mf,
     is_mlt,
@@ -360,7 +361,7 @@ const SelfExclusion = ({
     };
 
     if (is_virtual) {
-        return <DemoMessage />;
+        return <DemoMessage has_demo_icon={is_dashboard} has_button={is_dashboard} />;
     }
 
     if (state.is_loading || is_switching) {

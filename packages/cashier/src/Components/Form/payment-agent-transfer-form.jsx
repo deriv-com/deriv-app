@@ -20,7 +20,7 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
         decimals: getDecimalPlaces(currency),
         ...(transfer_limit.min && {
             min: transfer_limit.min,
-            max: balance >= transfer_limit.min && balance < transfer_limit.max ? balance : transfer_limit.max,
+            max: +balance >= transfer_limit.min && +balance < transfer_limit.max ? balance : transfer_limit.max,
         }),
     });
 
@@ -151,7 +151,7 @@ const PaymentAgentTransferForm = ({
                                     className='payment-agent-transfer__input-area'
                                     type='textarea'
                                     label={localize('Description')}
-                                    error={touched.description && errors.description}
+                                    error={errors.description}
                                     required
                                     autoComplete='off'
                                     has_character_counter

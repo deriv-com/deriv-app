@@ -90,7 +90,11 @@ const copyConfig = base => {
             to: '.well-known/apple-app-site-association',
             toType: 'file',
         },
-        { from: path.resolve(__dirname, '../src/root_files/assetlinks.json'), to: 'assetlinks.json', toType: 'file' },
+        {
+            from: path.resolve(__dirname, '../src/root_files/assetlinks.json'),
+            to: '.well-known/assetlinks.json',
+            toType: 'file',
+        },
         {
             from: path.resolve(__dirname, '../src/public/images/favicons/favicon.ico'),
             to: 'favicon.ico',

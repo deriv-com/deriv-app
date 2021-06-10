@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
-import { Localize } from '@deriv/translations';
 
-const RadioButtonGroup = ({ label, className, children, is_title_enabled, is_fiat, item_count }) => {
+const RadioButtonGroup = ({ label, className, children, is_title_enabled, is_fiat, item_count, description }) => {
     const [is_currency_selected, setIsCurrencySelected] = useState(false);
 
     const onCurrencyClicked = () => {
@@ -29,11 +28,7 @@ const RadioButtonGroup = ({ label, className, children, is_title_enabled, is_fia
             >
                 {children}
             </div>
-            {is_fiat && is_currency_selected && (
-                <p className='currency-selector__description'>
-                    <Localize i18n_default_text='You are limited to one fiat account. You can change the currency of your fiat account anytime before you make a first-time deposit or create an MT5 account.' />
-                </p>
-            )}
+            {is_fiat && is_currency_selected && <p className='currency-selector__description'>{description}</p>}
         </div>
     );
 };

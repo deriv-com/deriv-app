@@ -20,6 +20,7 @@ const MultiplierAmountModal = ({ is_open, enableApp, disableApp, toggleModal }) 
                 enableApp={enableApp}
                 is_open={is_open}
                 is_title_centered
+                should_header_stick_body={false}
                 disableApp={disableApp}
                 toggleModal={toggleModal}
                 height='auto'
@@ -86,9 +87,9 @@ const TradeParamsMobile = ({ amount, currency, toggleModal, trade_store, trade_s
 
     return (
         <React.Fragment>
-            <div className='trade-params__multiplier-icinfo-wrapper'>
+            <div className='trade-params__multiplier-ic-info-wrapper'>
                 <Popover
-                    alignment='top'
+                    alignment='right'
                     icon='info'
                     id='dt_multiplier-stake__tooltip'
                     zIndex={9999}

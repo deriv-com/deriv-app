@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Money, Button, Text } from '@deriv/components';
-import { formatMoney, getCurrencyName, getMT5AccountDisplay, getCurrencyDisplayCode, isBot } from '@deriv/shared';
+import { formatMoney, getCurrencyName, getCFDAccountDisplay, getCurrencyDisplayCode, isBot } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
 const AccountList = ({
@@ -22,12 +22,13 @@ const AccountList = ({
     server,
     is_dark_mode_on,
     sub_account_type,
+    platform,
 }) => {
     if (is_disabled && !currency) return null;
     const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
 
     return (
-        <>
+        <React.Fragment>
             <div
                 id={`dt_${loginid}`}
                 className={classNames('acc-switcher__account', {
@@ -52,6 +53,7 @@ const AccountList = ({
                                 server={server}
                                 has_error={has_error}
                                 is_dark_mode_on={is_dark_mode_on}
+                                platform={platform}
                             />
                         )}
                         <div
@@ -96,7 +98,7 @@ const AccountList = ({
                     )}
                 </span>
             </div>
-        </>
+        </React.Fragment>
     );
 };
 
@@ -110,7 +112,7 @@ const CurrencyDisplay = ({ currency, is_virtual }) => {
     return getCurrencyName(currency);
 };
 
-const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_dark_mode_on }) => {
+const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_dark_mode_on, platform }) => {
     // TODO: Remove once account with error has market_type and sub_account_type in details response
     if (has_error)
         return (
@@ -128,7 +130,7 @@ const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_d
         );
     return (
         <div>
-            {getMT5AccountDisplay(market_type, sub_account_type)}
+            {getCFDAccountDisplay({ market_type, sub_account_type, platform })}
             {server?.server_info?.geolocation && (market_type === 'gaming' || market_type === 'synthetic') && (
                 <Text
                     color={is_dark_mode_on ? 'general' : 'colored-background'}

@@ -213,3 +213,17 @@ export const formatMiliseconds = (miliseconds, str_format) => moment.utc(milisec
  */
 export const convertDateFormat = (date, from_date_format, to_date_format) =>
     moment(date, from_date_format).format(to_date_format);
+
+/**
+ *  Convert the 24 hours format time to 12 hours formatted time.
+ * @param  {String} time 24 hours format, may or may not include seconds
+ * @return {String} equivalent 12-hour time
+ */
+export const convertTimeFormat = time => {
+    const time_moment_obj = moment(time, 'HH:mm');
+    const time_hour = time_moment_obj.format('HH');
+    const time_min = time_moment_obj.format('mm');
+    const formatted_time = `${Number(time_hour % 12) || 12}:${time_min}`;
+    const timeSuffix = `${Number(time_hour >= 12) ? 'pm' : 'am'}`;
+    return `${formatted_time} ${timeSuffix}`;
+};

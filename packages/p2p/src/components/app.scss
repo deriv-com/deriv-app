@@ -37,11 +37,9 @@
             flex: 1;
         }
 
-        &__list--full-width {
-            .dc-themed-scrollbars-wrapper li {
-                @include mobile {
-                    padding: 0 1.1rem;
-                }
+        .dc-themed-scrollbars-wrapper li {
+            @include mobile {
+                flex: 1;
             }
         }
 

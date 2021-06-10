@@ -48,6 +48,10 @@
             vertical-align: middle;
             width: unset;
             height: 40px;
+
+            @include mobile {
+                padding: 0 1.1rem;
+            }
         }
     }
     &::-webkit-scrollbar {

@@ -62,7 +62,7 @@
 
         @include mobile {
             width: calc(95vw - 20px);
-            height: 100%;
+            height: calc(100% + 6rem);
             padding: 2rem 4rem;
             background-color: var(--general-main-2);
         }
@@ -86,11 +86,12 @@
     &__password-selection {
         .account-signup__heading {
             padding-top: 1.5rem;
-            margin-bottom: 3.3rem;
+            margin-bottom: 4.3rem;
 
             @include mobile {
                 padding-top: 0;
                 text-align: center;
+                margin-top: -30px;
             }
         }
         & .dc-password-meter__container {

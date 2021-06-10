@@ -11,7 +11,6 @@ import ErrorMessage from 'Components/error-component';
 import Onfido from './onfido.jsx';
 import { getIdentityStatus, onfido_status_codes } from './proof-of-identity';
 import { populateVerificationStatus } from '../Helpers/verification';
-import { doc } from 'prettier';
 
 const ProofOfIdentityContainer = ({
     account_status,
@@ -114,8 +113,10 @@ const ProofOfIdentityContainer = ({
     );
 
     const handleComplete = data => {
-        let docIds = [];
-        for (let key in data) docIds.push(data[key].id);
+        const docIds = [];
+        for (const key in data) {
+            docIds.push(data[key].id);
+        }
 
         notificationEvent({
             notification_event: 1,

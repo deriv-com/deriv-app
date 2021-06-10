@@ -1,5 +1,4 @@
 export * from './use-blockscroll';
-export * from './use-cancellable-promise';
 export * from './use-hover';
 export * from './use-interval';
 export * from './use-onclickoutside';

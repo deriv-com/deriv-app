@@ -600,7 +600,7 @@ const CFDPasswordModal = ({
                 message={getSubmitText(account_type.type, account_type.category, platform)}
                 icon={<IconType platform={platform} type={account_type.type} />}
                 icon_size='xlarge'
-                text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('OK')}
+                text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('Continue')}
                 has_cancel={account_type.category === 'real'}
             />
             <SentEmailModal

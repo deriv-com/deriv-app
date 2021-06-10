@@ -148,7 +148,6 @@ const Tabs = ({
                                     active_icon_color={active_icon_color}
                                     className={className}
                                     count={count}
-                                    children_count={valid_children.length}
                                     icon={icon}
                                     icon_color={icon_color}
                                     icon_size={icon_size}

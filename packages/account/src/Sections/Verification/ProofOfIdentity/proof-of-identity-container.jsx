@@ -114,9 +114,9 @@ const ProofOfIdentityContainer = ({
 
     const handleComplete = data => {
         const docIds = [];
-        for (const key in data) {
+        Object.keys(data).forEach(key => {
             docIds.push(data[key].id);
-        }
+        });
 
         notificationEvent({
             notification_event: 1,

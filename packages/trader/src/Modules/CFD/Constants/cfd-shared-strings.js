@@ -21,7 +21,7 @@ export const general_messages = {
     },
     getFinancialAccountDescriptor: platform => {
         if (platform === CFD_PLATFORMS.DXTRADE) {
-            return localize('Trade CFDs on forex, commodities, and cryptocurrencies with leverage.');
+            return localize('Trade forex, commodities and cryptocurrencies at high leverage.');
         } else if (platform === CFD_PLATFORMS.MT5) {
             return localize('Trade CFDs on forex, stocks & indices, commodities, and cryptocurrencies with leverage.');
         }

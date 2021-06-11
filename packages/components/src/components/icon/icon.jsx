@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { getKebabCase, getUrlBase } from '@deriv/shared';
+import * as icons_path from './icons-path';
 
 const Icon = React.forwardRef(
     (
@@ -10,15 +11,19 @@ const Icon = React.forwardRef(
     ) => {
         if (!icon) return null;
 
-        let filename = 'common';
-        const filenames = /^Ic(Currency|Tradetype|Mt5|Flag|Underlying)/g.exec(icon);
+        console.log(`^Ic(${Object.keys(icons_path).join('|')}).+/`, 'gi');
+
+        let category = 'common';
+        const filenames = new RegExp(`^Ic(${Object.keys(icons_path).join('|')}).+`, 'gi').exec(icon);
         if (filenames) {
-            filename = getKebabCase(filenames[1]);
+            category = getKebabCase(filenames[1]);
         }
 
         const sprite_id = icon.startsWith('IcUnderlying')
             ? `ic-underlying-${icon.split('IcUnderlying')[1].toUpperCase()}`
             : getKebabCase(icon);
+
+        const filename = icons_path[category];
 
         return (
             <svg

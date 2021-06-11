@@ -35,6 +35,7 @@ $color-grey-8: #d7d7d7;
 $color_grey-9: #868686;
 $color-grey-10: #919191;
 $color-grey-11: #fafafa;
+$color-grey-12: #f5f7fa;
 $color-green: #85acb0;
 $color-green-1: #4bb4b3;
 $color-green-2: #3d9494;
@@ -66,6 +67,7 @@ $alpha-color-red-2: transparentize($color-red, 0.84);
 $alpha-color-red-3: transparentize($color-red, 0.76);
 $alpha-color-green-1: transparentize($color-green-1, 0.08);
 $alpha-color-green-2: transparentize($color-green-3, 0.08);
+$alpha-color-yellow-1: transparentize($color-yellow, 0.84);
 
 /* gradient colors */
 $gradient-color-green-1: linear-gradient(to top, $color-white, transparentize($color-green-1, 0.84));

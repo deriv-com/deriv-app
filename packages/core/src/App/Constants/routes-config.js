@@ -279,9 +279,9 @@ const getModules = ({ is_dashboard }) => {
                     icon: 'IcSecurity',
                     subroutes: [
                         {
-                            path: routes.deriv_password,
+                            path: routes.passwords,
                             component: Account,
-                            getTitle: () => localize('Deriv password'),
+                            getTitle: () => localize('Passwords'),
                         },
                         {
                             path: routes.self_exclusion,
@@ -417,6 +417,12 @@ const getModules = ({ is_dashboard }) => {
                       component: Trader,
                       getTitle: () => localize('Trader'),
                       routes: [
+                          {
+                              path: routes.dxtrade,
+                              component: Trader,
+                              getTitle: () => localize('Deriv X'),
+                              is_authenticated: false,
+                          },
                           {
                               path: routes.mt5,
                               component: Trader,

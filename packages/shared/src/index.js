@@ -9,7 +9,7 @@ export * from './utils/files';
 export * from './utils/hooks';
 export * from './utils/location';
 export * from './utils/login';
-export * from './utils/mt5';
+export * from './utils/cfd';
 export * from './utils/object';
 export * from './utils/os';
 export * from './utils/promise';

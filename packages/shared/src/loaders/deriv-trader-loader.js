@@ -4,9 +4,9 @@ const existsSync = require('fs').existsSync;
 import the corresponding stylesheet. The deriv-account-loader will automatically import
 stylesheets.
 
-    import { MT5Store } from '@deriv/trader';
+    import { CFDStore } from '@deriv/trader';
     ↓ ↓ ↓
-    import MT5Store from '@deriv/trader/dist/js/MT5Store';
+    import CFDStore from '@deriv/trader/dist/js/CFDStore';
 */
 
 function checkExists(component) {

@@ -20,6 +20,29 @@ describe('Time to chart ready in desktop', () => {
     test("[performance]-time-to-chart-ready", async () => {
         await p.navigate()
         await p.waitForChart();
+        let chart_ready_time = Date.now()
+        let performanceTiming = JSON.parse(await p.evaluate(() => JSON.stringify(window.performance.toJSON())));
+        const prod_load_time = (chart_ready_time - performanceTiming.timing.connectStart)/1000;
+
+        await p.navigateLocal()
+        await p.waitForChart();
+        chart_ready_time = Date.now()
+        performanceTiming = JSON.parse(await p.evaluate(() => JSON.stringify(window.performance.toJSON())));
+        const local_load_time = (chart_ready_time - performanceTiming.timing.connectStart)/1000;
+
+        logger.save(expect.getState().testPath, 'Chart ready for desktop:', {
+            'connection start:': performanceTiming.timing.connectStart,
+            'chart ready time:': chart_ready_time,
+            'TTCR:': `${prod_load_time} (s)`,
+            'production load time:': `${prod_load_time} (s)`,
+            'local load time:': `${local_load_time} (s)`,
+            'load time improvement:': `${parseFloat(prod_load_time - local_load_time).toFixed(2)} (s)`,
+        })
+    });
+
+    test("[performance]-time-to-chart-ready", async () => {
+        await p.navigate()
+        await p.waitForChart();
         const chart_ready_time = Date.now()
         const performanceTiming = JSON.parse(await p.evaluate(() => JSON.stringify(window.performance.toJSON())))
 

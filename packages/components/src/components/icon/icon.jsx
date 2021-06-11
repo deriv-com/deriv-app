@@ -11,8 +11,6 @@ const Icon = React.forwardRef(
     ) => {
         if (!icon) return null;
 
-        console.log(`^Ic(${Object.keys(icons_path).join('|')}).+/`, 'gi');
-
         let category = 'common';
         const filenames = new RegExp(`^Ic(${Object.keys(icons_path).join('|')}).+`, 'gi').exec(icon);
         if (filenames) {

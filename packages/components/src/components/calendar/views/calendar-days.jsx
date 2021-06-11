@@ -23,7 +23,6 @@ const getDays = ({
     has_range_selection,
     hide_others,
     events,
-    hovered_date,
     isPeriodDisabled,
     start_date,
     selected_date,
@@ -74,7 +73,6 @@ const getDays = ({
 
     dates.map(date => {
         const moment_date = toMoment(date).startOf('day');
-        const moment_hovered = toMoment(hovered_date).startOf('day');
         const is_active = selected_date && moment_date.isSame(moment_selected);
         const is_today = moment_date.isSame(moment_today, 'day');
 
@@ -87,7 +85,6 @@ const getDays = ({
         const message = calendar_events.map(event => event.descrip)[0] || '';
         const duration_from_today = daysFromTodayTo(date);
         const is_between = moment_date.isBetween(moment_today, moment_selected);
-        const is_between_hover = moment_date.isBetween(moment_today, moment_hovered);
         const is_before_min_or_after_max_date = isPeriodDisabled(moment_date, 'day');
         const is_disabled =
             // check if date is before min_date or after_max_date
@@ -113,7 +110,6 @@ const getDays = ({
                     'dc-calendar__cell--disabled': is_disabled,
                     'dc-calendar__cell--is-hidden': is_other_month && hide_others,
                     'dc-calendar__cell--other': is_other_month,
-                    'dc-calendar__cell--between-hover': is_between_hover && has_range_selection,
                     'dc-calendar__cell--between': is_between && has_range_selection,
                 })}
                 onClick={is_disabled ? undefined : e => updateSelected(e, 'day')}
@@ -169,7 +165,6 @@ Days.propTypes = {
             descrip: PropTypes.string,
         })
     ),
-    hovered_date: PropTypes.string,
     onMouseLeave: PropTypes.func,
     onMouseOver: PropTypes.func,
     start_date: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

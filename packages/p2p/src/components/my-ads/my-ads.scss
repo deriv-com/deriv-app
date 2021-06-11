@@ -23,7 +23,7 @@
     }
 
     .dc-input__wrapper {
-        width: 67.2rem; // TODO: Kill these fixed widths.
+        max-width: 67.2rem; // TODO: Kill these fixed widths.
 
         @include mobile {
             max-width: 90vw;
@@ -42,6 +42,7 @@
         min-height: 50px;
 
         @include mobile {
+            border-bottom: 1px solid var(--general-section-1);
             justify-content: flex-end;
             margin: unset;
         }
@@ -59,13 +60,31 @@
             }
         }
 
+        &-radio-group {
+            display: flex;
+            margin-top: unset;
+            padding-bottom: 1.2rem;
+
+            .dc-radio-group__circle {
+                border: 2px solid var(--border-hover);
+
+                &--selected {
+                    border: 4px solid var(--brand-red-coral);
+                }
+            }
+
+            @include mobile {
+                padding: 0.5rem 0;
+            }
+        }
+
         &-summary {
             color: var(--text-less-prominent);
             font-size: 1.4rem;
             margin-bottom: -1.6rem;
 
             @include mobile {
-                margin: 1.6rem 0;
+                margin: 0.6rem 0;
             }
         }
         &-scrollbar {
@@ -74,7 +93,7 @@
             width: calc(100% - 4.8rem);
 
             @include mobile {
-                height: calc(100vh - 33.5rem);
+                height: calc(100vh - 26.5rem);
                 margin: 0 1.6rem;
                 position: unset;
                 width: 90vw;
@@ -89,6 +108,7 @@
         &-container {
             display: flex;
             height: 8rem;
+            justify-content: space-between;
             width: 67.2rem;
 
             @include mobile {
@@ -102,24 +122,19 @@
             margin-bottom: 0;
             margin-left: 0;
             margin-top: 4.3rem;
+            width: 32.4rem;
 
             @include mobile {
                 margin: 2.1rem 0;
             }
 
-            &:not(:last-child) {
-                margin-right: 2.4rem;
-
-                @include mobile {
-                    margin-right: unset;
-                }
-            }
             &--single {
                 width: 18.9rem;
             }
             &--textarea {
                 height: 9.6rem;
                 margin-bottom: 0;
+                width: 67.2rem;
 
                 @include mobile {
                     width: 90vw;
@@ -175,26 +190,96 @@
             color: var(--text-profit-success);
             font-weight: bold;
         }
-        &-delete {
-            justify-content: flex-end;
+        &-popovers {
+            background-color: var(--general-main-1);
+            display: flex;
+            justify-content: space-around;
+            position: absolute;
+            right: 0;
+            width: 10rem;
 
-            > svg {
+            &__archive {
+                align-items: center;
                 cursor: pointer;
-                margin-right: 2.4rem;
+                display: flex;
+                height: 3.2rem;
+                justify-content: center;
+                width: 3.2rem;
+
+                @include desktop {
+                    &:hover {
+                        background-color: var(--general-hover);
+                    }
+                }
+
+                @include mobile {
+                    align-items: center;
+                    background-color: #85acb0;
+                    display: flex;
+                    height: 100%;
+                    justify-content: center;
+                    width: 6rem;
+                }
+            }
+
+            &__delete {
+                align-items: center;
+                cursor: pointer;
+                display: flex;
+                height: 3.2rem;
+                justify-content: center;
+                width: 3.2rem;
+
+                @include desktop {
+                    &:hover {
+                        background-color: var(--general-hover);
+                    }
+                }
+
+                @include mobile {
+                    align-items: center;
+                    background-color: var(--brand-red-coral);
+                    display: flex;
+                    height: 100%;
+                    justify-content: center;
+                    width: 6rem;
+                }
+            }
+
+            &__unarchive {
+                align-items: center;
+                cursor: pointer;
+                display: flex;
+                height: 3.2rem;
+                justify-content: center;
+                width: 3.2rem;
+
+                @include desktop {
+                    &:hover {
+                        background-color: var(--general-hover);
+                    }
+                }
+
+                @include mobile {
+                    align-items: center;
+                    background-color: var(--brand-orange);
+                    display: flex;
+                    height: 100%;
+                    justify-content: center;
+                    width: 6rem;
+                }
             }
 
             @include mobile {
-                align-items: center;
-                background-color: var(--brand-red-coral);
-                cursor: pointer;
                 display: flex;
-                height: 100%;
+                justify-content: unset;
             }
         }
         &-available {
-            flex-flow: column;
             align-items: flex-start;
+            flex-flow: column;
             justify-content: center;
+            width: 85%;
 
             &-progress {
                 margin-bottom: 0.4rem;
@@ -206,25 +291,53 @@
         }
         &-row {
             padding: 1.6rem;
-            grid-template-columns: 2fr 2fr 2fr 2fr 1fr;
+            grid-template-columns: repeat(4, 2fr) 1.5fr;
 
             @include mobile {
                 grid-template-columns: unset;
                 padding: 1.6rem;
                 width: 100%;
             }
+
             &-details {
                 display: flex;
                 justify-content: space-between;
             }
+
+            &-disabled {
+                .dc-table__cell {
+                    color: var(--text-disabled);
+                }
+
+                .dc-progress-indicator {
+                    &__container {
+                        background-color: var(--general-section-1);
+                    }
+                    &__bar {
+                        background-color: var(--general-disabled);
+                    }
+                }
+
+                @include mobile {
+                    .dc-text {
+                        &:not(.ad-status--inactive) {
+                            color: var(--text-disabled);
+                        }
+                    }
+                }
+            }
         }
+
+        &-status {
+            height: 100%;
+            width: 100%;
+        }
+
         &--disabled {
             .dc-table__cell {
                 color: var(--text-disabled);
             }
-            .dc-text {
-                color: var(--text-disabled);
-            }
+
             .dc-progress-indicator {
                 &__container {
                     background-color: var(--general-section-1);

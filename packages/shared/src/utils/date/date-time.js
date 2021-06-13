@@ -215,7 +215,7 @@ export const convertDateFormat = (date, from_date_format, to_date_format) =>
     moment(date, from_date_format).format(to_date_format);
 
 /**
- *  Convert the 24 hours format time to 12 hours formatted time.
+ *  Convert 24 hours format time to 12 hours formatted time.
  * @param  {String} time 24 hours format, may or may not include seconds
  * @return {String} equivalent 12-hour time
  */

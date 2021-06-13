@@ -11,7 +11,7 @@ import Multipliers from 'Assets/SvgComponents/onboarding/multipliers.svg';
 import MultipliersMobile from 'Assets/SvgComponents/onboarding/multipliers-mobile.svg';
 import NotSure from 'Assets/SvgComponents/onboarding/not-sure.svg';
 import NotSureMobile from 'Assets/SvgComponents/onboarding/not-sure-mobile.svg';
-import WelcomeItem from './welcome-item.jsx';
+import WelcomeItem from './welcome-item-cr.jsx';
 
 const Welcome = ({ switchPlatform }) => (
     <>

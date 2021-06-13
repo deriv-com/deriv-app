@@ -93,15 +93,9 @@ const Onfido = ({
                                       }
                                     : false,
                             },
-                            useLiveDocumentCapture: true,
                         },
                     },
-                    {
-                        type: 'face',
-                        options: {
-                            useLiveDocumentCapture: true,
-                        },
-                    },
+                    'face',
                 ],
             });
             setOnfido(onfido);

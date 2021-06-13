@@ -6,6 +6,7 @@ import { CSSTransition } from 'react-transition-group';
 import Button from '../button/button.jsx';
 import Icon from '../icon/icon.jsx';
 import Text from '../text';
+import { useOnClickOutside } from '../../hooks';
 
 const Dialog = ({
     disableApp,
@@ -17,6 +18,7 @@ const Dialog = ({
     onConfirm,
     ...other_props
 }) => {
+    const wrapper_ref = React.useRef();
     React.useEffect(() => {
         if (is_visible && !!disableApp) {
             disableApp();
@@ -36,6 +38,10 @@ const Dialog = ({
         }
         onConfirm();
     };
+
+    const validateClickOutside = () => has_close_icon && is_visible && is_closed_on_cancel;
+
+    useOnClickOutside(wrapper_ref, onCancel ? handleCancel : handleConfirm, validateClickOutside);
 
     const {
         cancel_button_text,
@@ -77,6 +83,7 @@ const Dialog = ({
                     className={classNames('dc-dialog__dialog', {
                         'dc-dialog__dialog--has-margin': !is_mobile_full_width,
                     })}
+                    ref={wrapper_ref}
                 >
                     <div className='dc-dialog__header-wrapper'>
                         {!!title && (

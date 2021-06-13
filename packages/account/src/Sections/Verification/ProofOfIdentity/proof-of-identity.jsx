@@ -24,11 +24,12 @@ const ProofOfIdentity = ({
 }) => {
     const [is_status_loading, setStatusLoading] = useState(true);
     const [api_error, setAPIError] = React.useState();
-    const [is_missing_personal_details, setMissingPersonalDetails] = React.useState(false);
+    const [missing_personal_details, setMissingPersonalDetails] = React.useState(false);
     const [onfido_service_token, setOnfidoToken] = React.useState();
     const isMounted = useIsMounted();
     const from_platform = getPlatformRedirect(app_routing_history);
     const should_show_redirect_btn = from_platform.name === 'P2P';
+    const has_invalid_postal_code = missing_personal_details === 'postal_code';
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
 
@@ -67,19 +68,29 @@ const ProofOfIdentity = ({
     React.useEffect(() => {
         // only re-mount logic when switching is done
         if (isMounted && !is_switching) {
-            WS.authorized.getAccountStatus().then(response => {
-                if (response.error) {
-                    setAPIError(response.error);
+            WS.authorized.getAccountStatus().then(response_account_status => {
+                if (response_account_status.error) {
+                    setAPIError(response_account_status.error);
                 }
                 if (!should_allow_authentication) {
                     routeBackInApp(history, [from_platform]);
                 }
+
+                // TODO: add check if require onfido
                 getOnfidoServiceToken().then(response_token => {
                     if (response_token.error) {
-                        if (response_token.error.code === 'MissingPersonalDetails') {
-                            setMissingPersonalDetails(true);
-                        } else {
-                            setAPIError(response_token.error);
+                        const code = response_token?.error?.code;
+
+                        switch (code) {
+                            case 'MissingPersonalDetails':
+                                setMissingPersonalDetails('all');
+                                break;
+                            case 'InvalidPostalCode':
+                                setMissingPersonalDetails('postal_code');
+                                break;
+                            default:
+                                setAPIError(response_token.error);
+                                break;
                         }
                     }
 
@@ -99,9 +110,10 @@ const ProofOfIdentity = ({
     ]);
 
     if (is_status_loading || is_switching) return <Loading is_fullscreen={false} />;
-    if (api_error) return <ErrorMessage error_message={api_error.message} />;
+    if (api_error) return <ErrorMessage error_message={api_error?.message || api_error} />;
     if (is_virtual) return <DemoMessage />;
-    if (is_missing_personal_details) return <MissingPersonalDetails />;
+    if (missing_personal_details)
+        return <MissingPersonalDetails has_invalid_postal_code={has_invalid_postal_code} from='proof_of_identity' />;
 
     return (
         <AutoHeightWrapper default_height={200}>

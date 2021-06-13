@@ -1,14 +1,11 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { useStateCallback } from '@deriv/components';
-import { WS } from 'Services/ws-methods';
-// import Limited from 'Components/poi-limited';
-// import Unverified from 'Components/poi-unverified';
-import CountrySelector from 'Components/poi-country-selector/';
-import DocumentUpload from 'Components/poi-idv-document-upload';
+// TODO: Showing IDV upload and country selector
+// import CountrySelector from 'Components/poi-country-selector/';
+// import DocumentUpload from 'Components/poi-idv-document-upload';
 import NotRequired from 'Components/poi-not-required';
-// import RejectedReasons from 'Components/poi-rejected-reasons';
-// import ErrorMessage from 'Components/error-component';
+import Unsupported from 'Components/poi-unsupported';
 import Onfido from './onfido.jsx';
 import { onfido_status_codes } from './proof-of-identity';
 import { populateVerificationStatus } from '../Helpers/verification';
@@ -36,11 +33,8 @@ const ProofOfIdentityContainer = ({
             country_code,
             rejected_reasons,
             submissions_left,
+            is_country_supported,
         } = populateVerificationStatus(account_status);
-
-        // if there is no rejection reasons, continue uploading document
-        // const has_no_rejections = !rejected_reasons?.length;
-        // setContinueUploading(has_no_rejections);
 
         setVerificationStatus(
             {
@@ -52,6 +46,7 @@ const ProofOfIdentityContainer = ({
                 country_code,
                 submissions_left,
                 rejected_reasons,
+                is_country_supported,
             },
             () => {
                 setStatus(identity_status);
@@ -59,61 +54,30 @@ const ProofOfIdentityContainer = ({
         );
     }, [account_status, setVerificationStatus]);
 
-    const handleComplete = () => {
-        WS.notificationEvent({
-            notification_event: 1,
-            category: 'authentication',
-            event: 'poi_documents_uploaded',
-        }).then(response => {
-            if (response.error) {
-                setAPIError(true);
-                return;
-            }
-            setStatus('pending');
-
-            WS.authorized.getAccountStatus().then(() => {
-                refreshNotifications();
-            });
-        });
-    };
     // component didMount hook
     React.useEffect(() => {
         createVerificationConfig();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const {
-        needs_poa,
-        // allow_document_upload,
-        documents_supported,
-        country_code,
-        // submissions_left,
-        // rejected_reasons,
-    } = verification_status;
+    const { is_country_supported } = verification_status;
 
-    // const rejectionStatus = [onfido_status_codes.rejected, onfido_status_codes.suspected];
-    // const is_rejected = rejectionStatus.includes(status);
-    // const has_rejected_reasons = !!rejected_reasons.length && is_rejected;
+    // TODO: Showing IDV upload and country selector
+    // if (true) return <DocumentUpload />;
+    // if (true) return <CountrySelector />;
 
-    // TODO: These are just for display
-    if (true) return <DocumentUpload />;
-    if (true) return <CountrySelector />;
-
-    if (status === onfido_status_codes.not_required) return <NotRequired />;
-    // if (!submissions_left && is_rejected) return <Limited />;
-    // if (has_rejected_reasons && !is_continue_uploading)
-    //     return <RejectedReasons rejected_reasons={rejected_reasons} setContinueUploading={setContinueUploading} />;
+    if (status === onfido_status_codes.none) return <NotRequired />;
+    if (!is_country_supported) return <Unsupported />;
 
     return (
         <Onfido
-            country_code={country_code}
-            documents_supported={documents_supported}
             status={status}
+            verification_status={verification_status}
             onfido_service_token={onfido_service_token}
-            needs_poa={needs_poa}
+            setStatus={setStatus}
             height={height ?? null}
-            handleComplete={handleComplete}
+            refreshNotifications={refreshNotifications}
             is_description_enabled={is_description_enabled}
-            // setContinueUploading={setContinueUploading}
+            setAPIError={setAPIError}
             redirect_button={redirect_button}
         />
     );

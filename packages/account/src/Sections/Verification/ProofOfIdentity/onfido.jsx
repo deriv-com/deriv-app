@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ThemedScrollbars, usePrevious, Text } from '@deriv/components';
+import { ThemedScrollbars, Text } from '@deriv/components';
 import { init } from 'onfido-sdk-ui';
 import { isMobile, routes } from '@deriv/shared';
 import { getLanguage, Localize } from '@deriv/translations';
+import { WS } from 'Services/ws-methods';
 import UploadComplete from 'Components/poi-upload-complete';
-import Unsupported from 'Components/poi-unsupported';
 import Expired from 'Components/poi-expired';
-import OnfidoFailed from 'Components/poi-onfido-failed';
 import Verified from 'Components/poi-verified';
 import getOnfidoPhrases from 'Constants/onfido-phrases';
-import MissingPersonalDetails from 'Components/poi-missing-personal-details';
+import RejectedReasons from 'Components/poi-rejected-reasons';
+import Limited from 'Components/poi-limited';
 import { onfido_status_codes } from './proof-of-identity';
 
 const onfido_container_id = 'onfido';
@@ -38,36 +38,39 @@ const OnfidoContainer = ({ height, is_description_enabled }) => {
 };
 
 const Onfido = ({
-    documents_supported,
-    country_code,
-    handleComplete,
     height,
     is_description_enabled,
     onfido_service_token,
     status,
-    ...props
+    setAPIError,
+    setStatus,
+    refreshNotifications,
+    verification_status,
+    redirect_button,
 }) => {
-    const [onfido_init, setOnfido] = React.useState(null);
-    const [onfido_init_error, setOnfidoInitError] = React.useState(false);
-    // const [is_continue_uploading, setContinueUploading] = React.useState(false);
+    const onfido_init = React.useRef();
 
-    // didMount hook
-    // added eslint-disable-line below as the init func needs to be wrapped in a useCallback but its an external sdk
-    React.useEffect(() => {
-        if (status === onfido_status_codes.onfido && onfido_service_token) {
-            initOnfido();
-        }
-        return () => {
-            onfido_init?.tearDown();
-        };
-    }, [onfido_service_token]); // eslint-disable-line react-hooks/exhaustive-deps
-
-    const previous_onfido_service_token = usePrevious(onfido_service_token);
+    const { needs_poa, documents_supported, country_code, rejected_reasons, submissions_left } = verification_status;
 
     const onComplete = React.useCallback(() => {
-        onfido_init?.tearDown();
-        handleComplete();
-    }, [handleComplete, onfido_init]);
+        onfido_init?.current?.tearDown();
+
+        WS.notificationEvent({
+            notification_event: 1,
+            category: 'authentication',
+            event: 'poi_documents_uploaded',
+        }).then(response => {
+            if (response.error) {
+                setAPIError(response.error);
+                return;
+            }
+            setStatus('pending');
+
+            WS.authorized.getAccountStatus().then(() => {
+                refreshNotifications();
+            });
+        });
+    }, [onfido_init, refreshNotifications, setAPIError, setStatus]);
 
     const initOnfido = React.useCallback(async () => {
         try {
@@ -105,45 +108,41 @@ const Onfido = ({
                     'face',
                 ],
             });
-            setOnfido(onfido);
+            onfido_init.current = onfido;
         } catch (err) {
-            setOnfidoInitError(true);
+            setAPIError(err);
         }
-    }, [documents_supported, country_code, onComplete, onfido_service_token]);
-
-    // didUpdate hook
-    React.useEffect(() => {
-        if (previous_onfido_service_token && onfido_service_token) {
-            if (previous_onfido_service_token !== onfido_service_token) {
-                if (status === onfido_status_codes.onfido && onfido_service_token) {
-                    initOnfido();
-                }
-            }
-        }
-    }, [initOnfido, previous_onfido_service_token, onfido_service_token, status]);
-
-    if (status === onfido_status_codes.unsupported) return <Unsupported {...props} />;
-
-    if (onfido_service_token?.error?.code === 'InvalidPostalCode' && status !== 'verified') {
-        return <MissingPersonalDetails has_invalid_postal_code from='proof_of_identity' />;
-    } else if (onfido_init_error && onfido_service_token?.error && status !== 'verified') {
-        return <OnfidoFailed {...props} />;
-    }
-
-    if (status === onfido_status_codes.onfido)
-        return <OnfidoContainer height={height} is_description_enabled={is_description_enabled} />;
+    }, [documents_supported, country_code, onComplete, onfido_service_token, setAPIError]);
 
     switch (status) {
+        case onfido_status_codes.none:
+            initOnfido();
+            return <OnfidoContainer height={height} is_description_enabled={is_description_enabled} />;
         case onfido_status_codes.pending:
-            return <UploadComplete {...props} />;
+            return (
+                <UploadComplete
+                    needs_poa={needs_poa}
+                    is_description_enabled={is_description_enabled}
+                    redirect_button={redirect_button}
+                />
+            );
         case onfido_status_codes.rejected:
-            return <OnfidoFailed {...props} />;
-        case onfido_status_codes.verified:
-            return <Verified {...props} />;
-        case onfido_status_codes.expired:
-            return <Expired {...props} />;
         case onfido_status_codes.suspected:
-            return <OnfidoFailed suspected={onfido_status_codes.suspected} {...props} />;
+            initOnfido();
+            if (!submissions_left) return <Limited />;
+            return (
+                <RejectedReasons rejected_reasons={rejected_reasons} setContinueUploading={() => setStatus('none')} />
+            );
+        case onfido_status_codes.verified:
+            return (
+                <Verified
+                    needs_poa={needs_poa}
+                    is_description_enabled={is_description_enabled}
+                    redirect_button={redirect_button}
+                />
+            );
+        case onfido_status_codes.expired:
+            return <Expired />;
         default:
             return null;
     }

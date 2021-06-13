@@ -1,15 +1,13 @@
 export const onfido_status_codes = {
-    none: 'onfido',
-    onfido: 'onfido',
+    none: 'none',
     pending: 'pending',
     rejected: 'rejected',
     verified: 'verified',
-    unsupported: 'unsupported',
-    not_required: 'not_required',
     expired: 'expired',
     suspected: 'suspected',
 };
 
+// TODO: will be deprecated
 export const getIdentityStatus = (identity, needs_verification, is_mlt_mx, allow_poi_resubmission) => {
     const { status } = identity;
     const onfido_unsupported = !identity.services.onfido.is_country_supported;

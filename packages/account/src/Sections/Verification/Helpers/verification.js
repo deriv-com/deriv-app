@@ -12,9 +12,11 @@ export const populateVerificationStatus = account_status => {
     const submissions_left = identity.services.onfido.submissions_left;
     const rejected_reasons = identity.services.onfido.last_rejected;
     const identity_status = identity.status;
+    const is_country_supported = identity.services.onfido.is_country_supported;
 
     return {
         allow_document_upload,
+        is_country_supported,
         country_code,
         has_poa,
         has_poi,

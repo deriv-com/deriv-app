@@ -16,16 +16,16 @@ import WelcomeItem from './welcome-item-cr.jsx';
 const Welcome = ({ switchPlatform }) => (
     <>
         <DesktopWrapper>
-            <Text as='h2' weight='bold' align='center' color='prominent' className='welcome__title' size='m'>
+            <Text as='h2' weight='bold' align='center' color='prominent' className='welcome__header' size='m'>
                 {localize('Where would you like to start?')}
             </Text>
         </DesktopWrapper>
         <MobileWrapper>
-            <Text as='h2' weight='bold' align='center' color='prominent' className='welcome__title' size='xsm'>
+            <Text as='h2' weight='bold' align='center' color='prominent' className='welcome__header' size='xsm'>
                 {localize('Where would you like to start?')}
             </Text>
         </MobileWrapper>
-        <div className='welcome__body'>
+        <div className='welcome__main'>
             <WelcomeItem
                 title={localize('CFDs')}
                 description={

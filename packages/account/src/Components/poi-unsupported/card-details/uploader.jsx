@@ -74,12 +74,12 @@ const Uploader = ({ data, value, is_full, onChange, has_frame }) => {
         setFieldValue(data.name, file);
     };
 
-    const handleAccepte = (files, setFieldValue) => {
+    const handleAccept = (files, setFieldValue) => {
         const file = { file: files[0], errors: [], ...data };
         handleChange(file, setFieldValue);
     };
 
-    const handleRejecte = (files, setFieldValue) => {
+    const handleReject = (files, setFieldValue) => {
         const errors = files[0].errors.map(error =>
             DROPZONE_ERRORS[error.code] ? DROPZONE_ERRORS[error.code] : DROPZONE_ERRORS.GENERAL
         );
@@ -128,8 +128,8 @@ const Uploader = ({ data, value, is_full, onChange, has_frame }) => {
                             />
                         }
                         multiple={false}
-                        onDropAccepted={files => handleAccepte(files, setFieldValue)}
-                        onDropRejected={files => handleRejecte(files, setFieldValue)}
+                        onDropAccepted={files => handleAccept(files, setFieldValue)}
+                        onDropRejected={files => handleReject(files, setFieldValue)}
                         validation_error_message={value?.errors?.length ? ValidationErrorMessage : null}
                         noClick
                         value={value ? [value] : []}

@@ -1,11 +1,14 @@
 .dc-modal__container_welcome {
     overflow: visible;
-    background-color: var(--general-section-4);
 
     @include mobile {
         overflow: auto;
         max-height: 95vh;
     }
+}
+
+.welcome-cr {
+    background-color: var(--general-section-4);
 }
 
 // styles for cr

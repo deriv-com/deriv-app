@@ -2,10 +2,10 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { connect } from 'Stores/connect';
 import { Modal, Carousel, Icon, Button, ThemedScrollbars, Text } from '@deriv/components';
 import { routes, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 
 const WelcomeColumn = ({
     className,
@@ -199,7 +199,7 @@ const WelcomeModal = ({ toggleWelcomeModal, history, is_dxtrade_allowed }) => {
     ];
 
     return (
-        <Modal width='760px' className='welcome' is_open={true} has_close_icon={false} has_outer_content={true}>
+        <Modal width='760px' className='welcome' is_open has_close_icon={false} has_outer_content>
             <ThemedScrollbars height={700}>
                 <Text as='h2' weight='bold' align='center' color='prominent' className='welcome__title'>
                     {localize('Where would you like to start?')}

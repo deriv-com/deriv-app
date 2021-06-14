@@ -70,7 +70,7 @@ const Native = ({
             >
                 {label || (!value && placeholder)}
             </label>
-            
+
             <Icon icon='IcCalendar' className='dc-datepicker__calendar-icon' color={disabled && 'disabled'} />
 
             <input

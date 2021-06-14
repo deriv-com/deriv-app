@@ -10,6 +10,7 @@ import { useOnClickOutside } from '../../hooks';
 
 const Dialog = ({
     disableApp,
+    dismissable,
     enableApp,
     is_closed_on_cancel,
     is_closed_on_confirm,
@@ -39,7 +40,7 @@ const Dialog = ({
         onConfirm();
     };
 
-    const validateClickOutside = () => has_close_icon && is_visible && is_closed_on_cancel;
+    const validateClickOutside = () => dismissable || (has_close_icon && is_visible && is_closed_on_cancel);
 
     useOnClickOutside(wrapper_ref, onCancel ? handleCancel : handleConfirm, validateClickOutside);
 

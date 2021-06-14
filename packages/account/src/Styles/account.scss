@@ -1557,13 +1557,6 @@ $MIN_HEIGHT_FLOATING: calc(
 .onfido-container {
     margin-top: 24px;
 
-    .onfido-sdk-ui-crossDevice-CrossDeviceLink-numberInputSection {
-        .ods-button.-action--primary {
-            height: 100%;
-            font-size: 0.875em;
-        }
-    }
-
     &__message {
         padding: 1rem;
         margin: 0 auto 1.4rem;

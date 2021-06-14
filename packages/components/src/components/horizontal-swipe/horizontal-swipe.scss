@@ -2,6 +2,7 @@
     display: flex;
 
     &--left {
+        display: flex;
         left: 0;
         position: absolute;
     }
@@ -12,6 +13,7 @@
         z-index: 1000;
     }
     &--right {
+        display: flex;
         position: absolute;
         right: 0;
     }

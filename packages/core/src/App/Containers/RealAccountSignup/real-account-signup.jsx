@@ -66,7 +66,6 @@ const RealAccountSignup = ({
     setParams,
     state_index,
     state_value,
-    toggleWelcomeModal,
     has_fiat,
     available_crypto_currencies,
 }) => {
@@ -171,9 +170,6 @@ const RealAccountSignup = ({
 
     const closeModalthenOpenWelcomeModal = curr => {
         closeRealAccountSignup();
-        setTimeout(() => {
-            toggleWelcomeModal({ is_visible: true, should_persist: true });
-        }, 300);
         setParams({
             currency: curr,
         });
@@ -371,7 +367,6 @@ export default connect(({ ui, client, common }) => ({
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     real_account_signup_target: ui.real_account_signup_target,
     closeRealAccountSignup: ui.closeRealAccountSignup,
-    toggleWelcomeModal: ui.toggleWelcomeModal,
     setParams: ui.setRealAccountSignupParams,
     residence: client.residence,
     is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required

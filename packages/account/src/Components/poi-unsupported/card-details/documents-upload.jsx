@@ -1,5 +1,5 @@
 import React from 'react';
-import cn from 'classnames';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Formik, Form } from 'formik';
 import { localize } from '@deriv/translations';
@@ -51,7 +51,7 @@ const DocumentsUpload = ({ initial_values, data, goToCards, onSubmit }) => {
 
     return (
         <div
-            className={cn(ROOT_CLASS, {
+            className={classNames(ROOT_CLASS, {
                 [`${ROOT_CLASS}--mobile`]: isMobile(),
             })}
         >

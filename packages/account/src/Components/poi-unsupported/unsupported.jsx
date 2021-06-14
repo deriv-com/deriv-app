@@ -1,5 +1,5 @@
 import React from 'react';
-import cn from 'classnames';
+import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { Timeline } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
@@ -40,7 +40,7 @@ const Unsupported = ({ residence, ...props }) => {
 
     return (
         <Timeline
-            className={cn('manual-poi', {
+            className={classNames('manual-poi', {
                 'manual-poi--mobile': isMobile(),
             })}
             disabled_items={[2]}

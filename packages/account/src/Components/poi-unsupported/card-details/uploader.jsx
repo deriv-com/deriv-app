@@ -1,5 +1,5 @@
 import React from 'react';
-import cn from 'classnames';
+import classNames from 'classnames';
 import PropTypes, { string } from 'prop-types';
 import { Field } from 'formik';
 import { localize } from '@deriv/translations';
@@ -38,7 +38,7 @@ const Preview = ({ data, setFieldValue, value, has_frame, handleChange }) => {
     return (
         <div className={`${ROOT_CLASS}__uploader-details ${ROOT_CLASS}__uploader-details--preview`}>
             <div
-                className={cn(`${ROOT_CLASS}__uploader-image`, {
+                className={classNames(`${ROOT_CLASS}__uploader-image`, {
                     [`${ROOT_CLASS}__uploader-image--has-frame`]: has_frame,
                 })}
                 style={{ backgroundImage: `url(${background_url})` }}
@@ -107,7 +107,7 @@ const Uploader = ({ data, value, is_full, onChange, has_frame }) => {
         <Field name={data.name}>
             {({ form: { setFieldValue } }) => (
                 <div
-                    className={cn(`${ROOT_CLASS}__uploader`, {
+                    className={classNames(`${ROOT_CLASS}__uploader`, {
                         [`${ROOT_CLASS}__uploader--full`]: is_full,
                     })}
                 >

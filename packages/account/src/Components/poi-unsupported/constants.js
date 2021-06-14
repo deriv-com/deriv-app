@@ -72,7 +72,7 @@ export const getDocumentIndex = ({ residence }) => [
             fields: [
                 {
                     name: 'document_id',
-                    label: 'Driving licence number',
+                    label: localize('Driving licence number'),
                     type: 'text',
                     required: true,
                 },
@@ -85,14 +85,14 @@ export const getDocumentIndex = ({ residence }) => [
                     pageType: PAGE_TYPE.FRONT,
                     name: 'driving_licence_front',
                     icon: 'IcDrivingLicenceFront',
-                    info: 'Upload the front of your driving licence.',
+                    info: localize('Upload the front of your driving licence.'),
                 },
                 {
                     document_type: DOCUMENT_TYPES.DRIVING_LICENCE,
                     pageType: PAGE_TYPE.BACK,
                     name: 'driving_licence_back',
                     icon: 'IcIdCardBack',
-                    info: 'Upload the back of your driving licence.',
+                    info: localize('Upload the back of your driving licence.'),
                 },
             ],
         },
@@ -109,7 +109,7 @@ export const getDocumentIndex = ({ residence }) => [
             fields: [
                 {
                     name: 'document_id',
-                    label: 'Identity card number',
+                    label: localize('Identity card number'),
                     type: 'text',
                     required: true,
                 },
@@ -122,14 +122,14 @@ export const getDocumentIndex = ({ residence }) => [
                     pageType: PAGE_TYPE.FRONT,
                     name: 'identity_card_front',
                     icon: 'IcIdCardFront',
-                    info: 'Upload the front of your identity card.',
+                    info: localize('Upload the front of your identity card.'),
                 },
                 {
                     document_type: DOCUMENT_TYPES.NATIONAL_IDENTITY_CARD,
                     pageType: PAGE_TYPE.BACK,
                     name: 'identity_card_back',
                     icon: 'IcIdCardBack',
-                    info: 'Upload the back of your identity card.',
+                    info: localize('Upload the back of your identity card.'),
                 },
             ],
         },
@@ -146,7 +146,7 @@ export const getDocumentIndex = ({ residence }) => [
                       fields: [
                           {
                               name: 'nimc_slip_number',
-                              label: 'NIMC slip number',
+                              label: localize('NIMC slip number'),
                               type: 'text',
                               required: true,
                           },
@@ -160,14 +160,16 @@ export const getDocumentIndex = ({ residence }) => [
                               pageType: PAGE_TYPE.FRONT,
                               name: 'identity_card_front',
                               icon: 'IcPoiNimcSlipHorizontal',
-                              info: 'Upload your NIMC slip.',
+                              info: localize('Upload your NIMC slip.'),
                           },
                           {
                               document_type: DOCUMENT_TYPES.OTHER,
                               pageType: PAGE_TYPE.PHOTO,
                               name: 'birth_certificate_front',
                               icon: 'IcDop',
-                              info: 'Upload your proof of age: birth certificate or age declaration document.',
+                              info: localize(
+                                  'Upload your proof of age: birth certificate or age declaration document.'
+                              ),
                           },
                       ],
                   },

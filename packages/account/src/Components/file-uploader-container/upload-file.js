@@ -32,14 +32,7 @@ const uploadFile = (file, getSocket, settings) =>
                 }
 
                 // send files
-                uploader
-                    .upload(processed_files[0])
-                    .then(api_response => {
-                        resolve(api_response);
-                    })
-                    .catch(error => {
-                        reject(error);
-                    });
+                uploader.upload(processed_files[0]).then(resolve).catch(reject);
             });
         });
     });

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { getKebabCase, getUrlBase } from '@deriv/shared';
-import * as icons_path from './icons-path';
+import * as icons_manifest from './icons-manifest';
 
 const Icon = React.forwardRef(
     (
@@ -12,7 +12,7 @@ const Icon = React.forwardRef(
         if (!icon) return null;
 
         let category = 'common';
-        const filenames = new RegExp(`^Ic(${Object.keys(icons_path).join('|')}).+`, 'gi').exec(icon);
+        const filenames = new RegExp(`^Ic(${Object.keys(icons_manifest).join('|')}).+`, 'gi').exec(icon);
         if (filenames) {
             category = getKebabCase(filenames[1]);
         }
@@ -21,7 +21,7 @@ const Icon = React.forwardRef(
             ? `ic-underlying-${icon.split('IcUnderlying')[1].toUpperCase()}`
             : getKebabCase(icon);
 
-        const filename = icons_path[category];
+        const filename = icons_manifest[category];
 
         return (
             <svg

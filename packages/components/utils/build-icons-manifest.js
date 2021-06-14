@@ -13,11 +13,11 @@ const svgs_path = icons.reduce((acc, fname) => {
     return acc;
 }, {});
 
-function generate() {
+function buildIconsManifest() {
     const buffer = ['// auto-generated file. DO NOT MODIFY.', ''];
     buffer.push(`module.exports = ${JSON.stringify(svgs_path)}`);
 
-    fs.writeFileSync(path.join(__dirname, '../src/components/icon/icons-path.js'), buffer.join(EOL) + EOL);
+    fs.writeFileSync(path.join(__dirname, '../src/components/icon/icons-manifest.js'), buffer.join(EOL) + EOL);
 }
 
-module.exports.generate = generate;
+module.exports.buildIconsManifest = buildIconsManifest;

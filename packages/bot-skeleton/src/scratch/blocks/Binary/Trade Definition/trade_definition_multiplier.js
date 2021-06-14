@@ -127,6 +127,8 @@ Blockly.Blocks.trade_definition_multiplier = {
                 const fake_creation_event = new Blockly.Events.Create(this);
                 fake_creation_event.recordUndo = false;
                 Blockly.Events.fire(fake_creation_event);
+            } else if (this.selected_trade_type !== 'multiplier') {
+                this.updateMultiplierInput(true);
             }
         }
     },

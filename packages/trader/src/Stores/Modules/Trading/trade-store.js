@@ -579,7 +579,7 @@ export default class TradeStore extends BaseStore {
                             });
                         }
                     } else if (response.buy) {
-                        if (this.proposal_info[type]?.id !== proposal_id) {
+                        if (this.proposal_info[type] && this.proposal_info[type].id !== proposal_id) {
                             throw new Error('Proposal ID does not match.');
                         }
                         const contract_data = {
@@ -1195,10 +1195,10 @@ export default class TradeStore extends BaseStore {
     }
 
     async getFirstOpenMarket(markets_to_search) {
-        if (this.active_symbols?.length) {
+        if (this?.active_symbols?.length) {
             return findFirstOpenMarket(this.active_symbols, markets_to_search);
         }
-        const { active_symbols, error } = this.should_refresh_active_symbols
+        const { active_symbols, error } = this?.should_refresh_active_symbols
             ? // if SmartCharts has requested active_symbols, we wait for the response
               await WS.wait('active_symbols')
             : // else requests new active_symbols

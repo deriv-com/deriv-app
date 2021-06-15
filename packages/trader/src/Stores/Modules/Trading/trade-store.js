@@ -1194,11 +1194,12 @@ export default class TradeStore extends BaseStore {
         return this.contract_type === 'multiplier';
     }
 
+    @action.bound
     async getFirstOpenMarket(markets_to_search) {
-        if (this?.active_symbols?.length) {
+        if (this.active_symbols?.length) {
             return findFirstOpenMarket(this.active_symbols, markets_to_search);
         }
-        const { active_symbols, error } = this?.should_refresh_active_symbols
+        const { active_symbols, error } = this.should_refresh_active_symbols
             ? // if SmartCharts has requested active_symbols, we wait for the response
               await WS.wait('active_symbols')
             : // else requests new active_symbols

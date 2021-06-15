@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Button, InfiniteDataList, Loading, Table } from '@deriv/components';
+import { Button, InfiniteDataList, Loading, Modal, Table, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -16,7 +16,8 @@ const getHeaders = offered_currency => [
     { text: localize('Limits') },
     { text: localize('Rate (1 {{ offered_currency }})', { offered_currency }) },
     { text: localize('Available amount') },
-    { text: '' }, // empty header for delete icon
+    { text: localize('Status') },
+    { text: '' }, // empty header for delete and archive icons
 ];
 
 const MyAdsTable = () => {
@@ -74,7 +75,7 @@ const MyAdsTable = () => {
                             has_more_items_to_load={my_ads_store.has_more_items_to_load}
                             loadMoreRowsFn={my_ads_store.loadMoreAds}
                             keyMapperFn={item => item.id}
-                            getRowSize={() => (isMobile() ? 123 : 56)}
+                            getRowSize={() => (isMobile() ? 151 : 75)}
                         />
                     </Table.Body>
                 </Table>
@@ -87,6 +88,28 @@ const MyAdsTable = () => {
                     </div>
                 )}
                 <MyAdsDeleteModal />
+                <Modal
+                    className='p2p-my-ads__modal-error'
+                    is_open={my_ads_store.activate_deactivate_error_message}
+                    small
+                    has_close_icon={false}
+                    title={localize('Something’s not right')}
+                >
+                    <Modal.Body>
+                        <Text as='p' size='xs' color='prominent'>
+                            {my_ads_store.activate_deactivate_error_message}
+                        </Text>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button
+                            has_effect
+                            text={localize('Ok')}
+                            onClick={() => my_ads_store.setActivateDeactivateErrorMessage('')}
+                            primary
+                            large
+                        />
+                    </Modal.Footer>
+                </Modal>
             </React.Fragment>
         );
     }

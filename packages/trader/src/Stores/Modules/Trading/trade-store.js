@@ -122,6 +122,7 @@ export default class TradeStore extends BaseStore {
     @observable commission;
     @observable cancellation_price;
     @observable stop_out;
+    @observable expiration;
     @observable hovered_contract_type;
     @observable cancellation_duration = '60m';
     @observable cancellation_range_list = [];
@@ -224,7 +225,12 @@ export default class TradeStore extends BaseStore {
                 }
             }
         );
-
+        reaction(
+            () => this.root_store.client.is_logged_in,
+            async () => {
+                await this.setSymbolsAfterLogin();
+            }
+        );
         reaction(
             () => [this.contract_type],
             () => {
@@ -280,6 +286,15 @@ export default class TradeStore extends BaseStore {
             const symbol = await pickDefaultSymbol(this.active_symbols);
             await this.processNewValuesAsync({ symbol });
         }
+    }
+
+    @action.bound
+    async setSymbolsAfterLogin() {
+        await this.setActiveSymbols();
+        runInAction(() => {
+            this.should_refresh_active_symbols = true;
+        });
+        await this.setDefaultSymbol();
     }
 
     @action.bound
@@ -561,6 +576,12 @@ export default class TradeStore extends BaseStore {
             const is_tick_contract = this.duration_unit === 't';
             processPurchase(proposal_id, price).then(
                 action(response => {
+                    if (!this.is_trade_component_mounted) {
+                        this.enablePurchase();
+                        this.is_purchasing_contract = false;
+                        return;
+                    }
+
                     const last_digit = +this.last_digit;
                     if (response.error) {
                         // using javascript to disable purchase-buttons manually to compensate for mobx lag
@@ -861,6 +882,13 @@ export default class TradeStore extends BaseStore {
         const prev_proposal_info = getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
 
+        // add/update expiration or date_expiry for crypto indices from proposal
+        const date_expiry = response.proposal?.date_expiry;
+
+        if (!response.error && !!date_expiry && this.is_crypto_multiplier) {
+            this.expiration = date_expiry;
+        }
+
         this.proposal_info = {
             ...this.proposal_info,
             [contract_type]: getProposalInfo(this, response, obj_prev_contract_basis),
@@ -906,6 +934,19 @@ export default class TradeStore extends BaseStore {
                 if (details?.field === 'stop_loss' && commission_match?.[1]) {
                     this.commission = commission_match[1];
                 }
+            }
+
+            // Sometimes when we navigate fast, `forget_all` proposal is called immediately after proposal subscription calls.
+            // But, in the BE, `forget_all` proposal call is processed before the proposal subscriptions are registered. In this case, `forget_all` proposal doesn't forget the new subscriptions.
+            // So when we send new proposal subscription requests, we get `AlreadySubscribed` error.
+            // If we get an error message with code `AlreadySubscribed`, `forget_all` proposal will be called and all the existing subscriptions will be marked as complete in `deriv-api` and will subscribe to new proposals
+            if (response.error.code === 'AlreadySubscribed') {
+                this.refresh();
+
+                if (this.is_trade_component_mounted) {
+                    this.debouncedProposal();
+                }
+                return;
             }
         } else {
             this.validateAllProperties();
@@ -1092,6 +1133,10 @@ export default class TradeStore extends BaseStore {
             layout = this.prev_chart_layout;
         }
         return layout;
+    }
+
+    get is_crypto_multiplier() {
+        return this.contract_type === 'multiplier' && /^cry/.test(this.symbol);
     }
 
     @action.bound

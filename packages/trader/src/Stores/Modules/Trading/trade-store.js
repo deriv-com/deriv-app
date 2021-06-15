@@ -1067,7 +1067,6 @@ export default class TradeStore extends BaseStore {
             return;
         }
         this.disposePreSwitchAccount();
-        this.disposeSwitchAccount();
         this.disposeLogout();
         this.disposeClientInit();
         this.disposeNetworkStatusChange();

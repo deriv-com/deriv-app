@@ -66,10 +66,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         if (!this.workspace || this.workspace.isDragging() || this.isInFlyout) {
             return;
         }
-        if (this.parentBlock_?.type === 'trade_definition_restartonerror') {
-            this.setDisabled(true);
-            return;
-        }
         if (
             (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
             event.type === Blockly.Events.END_DRAG

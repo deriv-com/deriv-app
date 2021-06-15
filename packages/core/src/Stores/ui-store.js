@@ -145,6 +145,9 @@ export default class UIStore extends BaseStore {
 
     @observable manage_real_account_tab_index = 0;
 
+    // onboarding
+    @observable should_show_multipliers_onboarding = false;
+
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
     constructor(root_store) {
@@ -756,5 +759,10 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleShouldShowRealAccountsList(value) {
         this.should_show_real_accounts_list = value;
+    }
+
+    @action.bound
+    toggleShouldShowMultipliersOnboarding(value) {
+        this.should_show_multipliers_onboarding = value;
     }
 }

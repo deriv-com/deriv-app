@@ -1,7 +1,16 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { Formik, Field, Form } from 'formik';
-import { Div100vhContainer, Dropdown, Modal, Input, Button, Text, ThemedScrollbars } from '@deriv/components';
+import {
+    Button,
+    Checkbox,
+    Div100vhContainer,
+    Input,
+    Modal,
+    RadioGroup,
+    Text,
+    ThemedScrollbars,
+} from '@deriv/components';
 import { formatMoney, isDesktop, isMobile, mobileOSDetect } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
@@ -21,15 +30,29 @@ const CreateAdFormWrapper = ({ children }) => {
 
 const CreateAdForm = () => {
     const { general_store, my_ads_store } = useStores();
-    const { currency, local_currency_config } = general_store.client;
     const available_balance = useUpdatingAvailableBalance();
     const os = mobileOSDetect();
-    const [is_api_error_modal_visible, setIsApiErrorModalVisible] = React.useState(false);
+
+    const { currency, local_currency_config } = general_store.client;
+
+    const should_not_show_auto_archive_message_again = React.useRef(false);
+
+    const onCheckboxChange = () =>
+        (should_not_show_auto_archive_message_again.current = !should_not_show_auto_archive_message_again.current);
+
+    const onClickOkCreatedAd = () => {
+        localStorage.setItem(
+            'should_not_show_auto_archive_message',
+            JSON.stringify(should_not_show_auto_archive_message_again.current)
+        );
+        my_ads_store.setIsAdCreatedModalVisible(false);
+        my_ads_store.setShowAdForm(false);
+    };
 
     React.useEffect(() => {
         const disposeApiErrorReaction = reaction(
             () => my_ads_store.api_error_message,
-            () => setIsApiErrorModalVisible(!!my_ads_store.api_error_message)
+            () => my_ads_store.setIsApiErrorModalVisible(!!my_ads_store.api_error_message)
         );
 
         return () => {
@@ -38,6 +61,18 @@ const CreateAdForm = () => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        const ad_website_status = setInterval(() => {
+            if (my_ads_store.is_ad_created_modal_visible) {
+                my_ads_store.getWebsiteStatus();
+            }
+        }, 10000);
+
+        return () => {
+            clearInterval(ad_website_status);
+        };
+    }, [my_ads_store.is_ad_created_modal_visible]);
 
     return (
         <React.Fragment>
@@ -50,7 +85,7 @@ const CreateAdForm = () => {
                     offer_amount: '',
                     payment_info: my_ads_store.payment_info,
                     price_rate: '',
-                    type: 'buy',
+                    type: buy_sell.BUY,
                 }}
                 onSubmit={my_ads_store.handleSubmit}
                 validate={my_ads_store.validateCreateAdForm}
@@ -59,7 +94,7 @@ const CreateAdForm = () => {
                     offer_amount: true,
                 }}
             >
-                {({ errors, handleChange, isSubmitting, isValid, touched, values }) => {
+                {({ errors, handleChange, isSubmitting, isValid, setFieldValue, touched, values }) => {
                     const is_sell_advert = values.type === buy_sell.SELL;
 
                     return (
@@ -72,6 +107,27 @@ const CreateAdForm = () => {
                                     is_scrollbar_hidden={isMobile()}
                                 >
                                     <CreateAdFormWrapper>
+                                        <Field name='type'>
+                                            {({ field }) => (
+                                                <RadioGroup
+                                                    {...field}
+                                                    className='p2p-my-ads__form-radio-group'
+                                                    name='type'
+                                                    onToggle={event => setFieldValue('type', event.target.value)}
+                                                    selected={values.type}
+                                                    required
+                                                >
+                                                    <RadioGroup.Item
+                                                        value={buy_sell.BUY}
+                                                        label={localize('Buy {{currency}}', { currency })}
+                                                    />
+                                                    <RadioGroup.Item
+                                                        value={buy_sell.SELL}
+                                                        label={localize('Sell {{currency}}', { currency })}
+                                                    />
+                                                </RadioGroup>
+                                            )}
+                                        </Field>
                                         <div className='p2p-my-ads__form-summary'>
                                             <CreateAdSummary
                                                 offer_amount={errors.offer_amount ? '' : values.offer_amount}
@@ -80,21 +136,6 @@ const CreateAdForm = () => {
                                             />
                                         </div>
                                         <div className='p2p-my-ads__form-container'>
-                                            <Field name='type'>
-                                                {({ field }) => (
-                                                    <Dropdown
-                                                        {...field}
-                                                        placeholder={localize('Type')}
-                                                        is_align_text_left
-                                                        className='p2p-my-ads__form-field'
-                                                        list={[
-                                                            { text: localize('Buy'), value: buy_sell.BUY },
-                                                            { text: localize('Sell'), value: buy_sell.SELL },
-                                                        ]}
-                                                        error={touched.type && errors.type}
-                                                    />
-                                                )}
-                                            </Field>
                                             <Field name='offer_amount'>
                                                 {({ field }) => (
                                                     <Input
@@ -134,8 +175,6 @@ const CreateAdForm = () => {
                                                     />
                                                 )}
                                             </Field>
-                                        </div>
-                                        <div className='p2p-my-ads__form-container'>
                                             <Field name='price_rate'>
                                                 {({ field }) => (
                                                     <Input
@@ -163,6 +202,8 @@ const CreateAdForm = () => {
                                                     />
                                                 )}
                                             </Field>
+                                        </div>
+                                        <div className='p2p-my-ads__form-container'>
                                             <Field name='min_transaction'>
                                                 {({ field }) => (
                                                     <Input
@@ -274,7 +315,7 @@ const CreateAdForm = () => {
                                                             <Localize i18n_default_text='Instructions (optional)' />
                                                         </Text>
                                                     }
-                                                    hint={localize('This information will be visible to everyone')}
+                                                    hint={localize('This information will be visible to everyone.')}
                                                     className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
                                                     initial_character_count={
                                                         my_ads_store.default_advert_description.length
@@ -313,7 +354,7 @@ const CreateAdForm = () => {
             </Formik>
             <Modal
                 className='p2p-my-ads__modal-error'
-                is_open={is_api_error_modal_visible}
+                is_open={my_ads_store.is_api_error_modal_visible}
                 small
                 has_close_icon={false}
                 title={localize('Something’s not right')}
@@ -327,10 +368,36 @@ const CreateAdForm = () => {
                     <Button
                         has_effect
                         text={localize('Ok')}
-                        onClick={() => setIsApiErrorModalVisible(false)}
+                        onClick={() => my_ads_store.setIsApiErrorModalVisible(false)}
                         primary
                         large
                     />
+                </Modal.Footer>
+            </Modal>
+
+            <Modal
+                className='p2p-my-ads__ad-created'
+                has_close_icon={false}
+                is_open={my_ads_store.is_ad_created_modal_visible}
+                small
+                title={localize("You've created an ad")}
+            >
+                <Modal.Body>
+                    <Text as='p' size='xs' color='prominent'>
+                        <Localize
+                            i18n_default_text="If the ad doesn't receive an order for {{adverts_archive_period}} days, it will be deactivated."
+                            values={{ adverts_archive_period: my_ads_store.adverts_archive_period }}
+                        />
+                    </Text>
+                    <br />
+                    <Checkbox
+                        label={localize('Don’t show this message again.')}
+                        onChange={onCheckboxChange}
+                        value={should_not_show_auto_archive_message_again.current}
+                    />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button has_effect text={localize('Ok')} onClick={onClickOkCreatedAd} primary large />
                 </Modal.Footer>
             </Modal>
         </React.Fragment>

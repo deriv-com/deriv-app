@@ -52,18 +52,14 @@ const WarningModal = props => {
             <Text as='p' weight='bold' color='loss-danger' className='account-closure-warning-modal__warning-message'>
                 {localize('Warning!')}
             </Text>
-            <Text size='xs' line_height='x'>
-                {localize('If you deactivate:')}
+            <Text size='xs' line_height='x' weight='bold'>
+                {localize('Deactivate account?')}
             </Text>
             <div className='account-closure-warning-modal__content-wrapper'>
                 <Text as='p' className='account-closure-warning-modal__content'>
-                    {localize('You’ll be logged out automatically.')}
-                </Text>
-                <Text as='p' size='xs' color='prominent'>
-                    <Localize
-                        i18n_default_text='You will <0>NOT</0> be able to log in again.'
-                        components={[<Text size='xs' line_height='s' key={0} color='loss-danger' weight='bold' />]}
-                    />
+                    {localize(
+                        'Deactivating your account will automatically log you out. You can reactivate your account by logging in at any time.'
+                    )}
                 </Text>
             </div>
             <FormSubmitButton

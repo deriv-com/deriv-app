@@ -1819,12 +1819,8 @@ export default class ClientStore extends BaseStore {
                 });
 
                 this.root_store.ui.showAccountTypesModalForEuropean();
-                const is_excluded_from_onboarding = ['au', 'sg', 'no'].includes(this.residence);
-                const shortcode =
-                    this.landing_companies?.financial_company?.shortcode ||
-                    this.landing_companies?.gaming_company?.shortcode;
 
-                if (shortcode === 'svg' && !is_excluded_from_onboarding) {
+                if (!this.is_uk) {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
                 }
             }

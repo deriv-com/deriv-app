@@ -6,26 +6,24 @@ export const populateVerificationStatus = account_status => {
     const needs_poi = needs_verification.length && needs_verification.includes('identity');
 
     const allow_document_upload = account_status.status.some(status => status === 'allow_document_upload');
-
-    const documents_supported = identity.services.onfido.documents_supported;
-    const country_code = identity.services.onfido.country_code;
-    const submissions_left = identity.services.onfido.submissions_left;
-    const rejected_reasons = identity.services.onfido.last_rejected;
     const identity_status = identity.status;
-    const is_country_supported = identity.services.onfido.is_country_supported;
+    const identity_last_attempt = identity.attempts[0];
+
+    const idv = identity.services.idv;
+    const onfido = identity.services.onfido;
+    const manual = identity.services.manual;
 
     return {
         allow_document_upload,
-        is_country_supported,
-        country_code,
         has_poa,
         has_poi,
-        identity_status,
         needs_poa,
         needs_poi,
         needs_verification,
-        documents_supported,
-        rejected_reasons,
-        submissions_left,
+        idv,
+        onfido,
+        manual,
+        identity_status,
+        identity_last_attempt,
     };
 };

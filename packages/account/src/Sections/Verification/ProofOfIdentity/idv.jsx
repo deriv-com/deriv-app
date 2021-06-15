@@ -1,22 +1,25 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import * as React from 'react';
 import UploadComplete from 'Components/poi-upload-complete';
 import Expired from 'Components/poi-expired';
 import Verified from 'Components/poi-verified';
 import RejectedReasons from 'Components/poi-rejected-reasons';
-import Limited from 'Components/poi-limited';
+import IDVNoSubmissions from 'Components/poi-limited';
 import { identity_status_codes } from './proof-of-identity-utils';
 
-const Onfido = ({ onfido, verification_status, redirect_button, handleRequireSubmission }) => {
-    const { status, submissions_left, last_rejected: rejected_reasons } = onfido;
+const Idv = ({ idv, handleRequireSubmission, verification_status, redirect_button }) => {
+    const { status, submissions_left, last_rejected: rejected_reasons } = idv;
     const { needs_poa } = verification_status;
 
     switch (status) {
         case identity_status_codes.pending:
+            // TODO: use IDV component
             return <UploadComplete needs_poa={needs_poa} redirect_button={redirect_button} />;
         case identity_status_codes.rejected:
         case identity_status_codes.suspected:
-            if (!submissions_left) return <Limited handleRequireSubmission={handleRequireSubmission} />;
+            // TODO: use IDV component
+            if (!submissions_left) return <IDVNoSubmissions handleRequireSubmission={handleRequireSubmission} />;
+
+            // TODO: use IDV component
             return (
                 <RejectedReasons
                     rejected_reasons={rejected_reasons}
@@ -24,23 +27,14 @@ const Onfido = ({ onfido, verification_status, redirect_button, handleRequireSub
                 />
             );
         case identity_status_codes.verified:
+            // TODO: use IDV component
             return <Verified needs_poa={needs_poa} redirect_button={redirect_button} />;
         case identity_status_codes.expired:
+            // TODO: use IDV component
             return <Expired redirect_button={redirect_button} handleRequireSubmission={handleRequireSubmission} />;
         default:
             return null;
     }
 };
 
-Onfido.propTypes = {
-    country_code: PropTypes.string,
-    documents_supported: PropTypes.array,
-    handleComplete: PropTypes.func,
-    has_poa: PropTypes.bool,
-    height: PropTypes.number,
-    is_description_enabled: PropTypes.bool,
-    onfido_service_token: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-    onfido_status: PropTypes.oneOf(Object.keys(identity_status_codes)),
-};
-
-export default Onfido;
+export default Idv;

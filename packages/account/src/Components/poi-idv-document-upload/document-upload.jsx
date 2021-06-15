@@ -1,11 +1,12 @@
-import React from 'react';
+import * as React from 'react';
 import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import FormFooter from 'Components/form-footer';
+
 import BackButtonIcon from '../../Assets/ic-poi-back-btn.svg';
 import DocumentUploadLogo from '../../Assets/ic-document-upload-icon.svg';
 
-const DocumentUpload = () => {
+const DocumentUpload = ({ handleBack }) => {
     return (
         <div className='proof-of-identity__container'>
             <DocumentUploadLogo className='btm-spacer' />
@@ -39,10 +40,10 @@ const DocumentUpload = () => {
                 <Input autoComplete='off' name='document_number' placeholder='Enter your document number' required />
             </fieldset>
             <FormFooter>
-                <Button className='back-btn' type='button' has_effect large secondary>
+                <Button onClick={handleBack} className='back-btn' type='button' has_effect large secondary>
                     <BackButtonIcon className='back-btn' /> {localize('Go Back')}
                 </Button>
-                <Button type='button' has_effect is_disabled={true} text={localize('Next')} large primary />
+                <Button type='button' has_effect is_disabled={true} text={localize('Verify')} large primary />
             </FormFooter>
         </div>
     );

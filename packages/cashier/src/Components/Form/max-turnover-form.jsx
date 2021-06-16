@@ -6,7 +6,7 @@ import { getDecimalPlaces, routes, validNumber } from '@deriv/shared';
 import { Button, Input, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { WS } from 'Services';
+import { WS } from '@deriv/shared';
 
 const MaxTurnoverForm = ({
     onMount,

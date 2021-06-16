@@ -62,13 +62,14 @@ const AccountSignup = ({
     onSignup,
     residence_list,
     isEuCountrySelected,
+    selected_residence,
+    setSelectedResidence,
 }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
     const [api_error, setApiError] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
     const [country, setCountry] = React.useState('');
     const [pw_input, setPWInput] = React.useState('');
-    const [selected_residence, setSelectedResidence] = React.useState('');
     const [is_eu_resident, setIsEuResident] = React.useState(false);
 
     const updatePassword = new_password => {
@@ -151,7 +152,6 @@ const AccountSignup = ({
                         <Form>
                             {!selected_residence ? (
                                 <ResidenceForm
-                                    header_text={localize('Thanks for verifying your email')}
                                     class_prefix='account-signup'
                                     errors={errors}
                                     touched={touched}
@@ -298,6 +298,8 @@ const AccountSignupModal = ({
     residence_list,
     toggleAccountSignupModal,
 }) => {
+    const [selected_residence, setSelectedResidence] = React.useState('');
+
     React.useEffect(() => {
         // a logged in user should not be able to create a new account
         if (is_visible && is_logged_in) {
@@ -313,6 +315,8 @@ const AccountSignupModal = ({
             is_loading={is_loading || !residence_list.length}
             is_mobile_full_width={false}
             is_content_centered
+            title={!selected_residence ? localize('Thanks for verifying your email') : ''}
+            header_icon='IcVerify'
         >
             <AccountSignup
                 clients_country={clients_country}
@@ -321,6 +325,8 @@ const AccountSignupModal = ({
                 isModalVisible={toggleAccountSignupModal}
                 isEuCountrySelected={isEuCountrySelected}
                 enableApp={enableApp}
+                selected_residence={selected_residence}
+                setSelectedResidence={setSelectedResidence}
             />
         </Dialog>
     );

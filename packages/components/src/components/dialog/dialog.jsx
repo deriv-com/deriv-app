@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
+import { isMobile } from '@deriv/shared';
 import Button from '../button/button.jsx';
 import Icon from '../icon/icon.jsx';
 import Text from '../text';
@@ -15,6 +16,7 @@ const Dialog = ({
     is_visible,
     onCancel,
     onConfirm,
+    header_icon,
     ...other_props
 }) => {
     React.useEffect(() => {
@@ -71,25 +73,50 @@ const Dialog = ({
             <div
                 className={classNames('dc-dialog__wrapper', className, {
                     'dc-dialog__wrapper--has-portal': !!portal_element_id,
+                    'dc-dialog__wrapper--has-icon': header_icon,
                 })}
             >
                 <div
                     className={classNames('dc-dialog__dialog', {
                         'dc-dialog__dialog--has-margin': !is_mobile_full_width,
+                        'dc-dialog__dialog--no-padding': header_icon,
                     })}
                 >
-                    <div className='dc-dialog__header-wrapper'>
-                        {!!title && (
-                            <Text as='h1' color='prominent' weight='bold' className='dc-dialog__header'>
+                    {header_icon && title ? (
+                        <div className='dc-dialog__header-wrapper__centered'>
+                            <Icon
+                                className='advertiser-page__header-verification-icon'
+                                icon={header_icon}
+                                size={isMobile() ? 30 : 35}
+                            />
+                            <Text
+                                as='h1'
+                                align='center'
+                                color='prominent'
+                                weight='bold'
+                                className='dc-dialog__header'
+                                size={isMobile() ? 'xs' : 'sm'}
+                            >
                                 {title}
                             </Text>
-                        )}
-                        {has_close_icon && (
-                            <div onClick={onCancel ? handleCancel : handleConfirm} className='dc-dialog__header--close'>
-                                <Icon icon='IcCross' />
-                            </div>
-                        )}
-                    </div>
+                        </div>
+                    ) : (
+                        <div className='dc-dialog__header-wrapper'>
+                            {!!title && (
+                                <Text as='h1' color='prominent' weight='bold' className='dc-dialog__header'>
+                                    {title}
+                                </Text>
+                            )}
+                            {has_close_icon && (
+                                <div
+                                    onClick={onCancel ? handleCancel : handleConfirm}
+                                    className='dc-dialog__header--close'
+                                >
+                                    <Icon icon='IcCross' />
+                                </div>
+                            )}
+                        </div>
+                    )}
                     {is_text ? (
                         <Text as='p' size='xs' styles={{ lineHeight: '1.43' }} className={content_classes}>
                             {children}

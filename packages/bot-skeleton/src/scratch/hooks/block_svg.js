@@ -235,7 +235,13 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
     const COLLAPSED_INPUT_NAME = '_TEMP_COLLAPSED_INPUT';
 
     // Show/hide the inputs.
-    this.inputList.forEach(input => render_list.push(...input.setVisible(!collapsed)));
+    this.inputList.forEach(input => {
+        render_list.push(...input.setVisible(!collapsed));
+
+        // Hide empty rounded inputs
+        if (collapsed && input.type === 1 && !input.connection.targetConnection && input.outlinePath)
+            input.outlinePath.style.visibility = 'hidden';
+    });
 
     if (collapsed) {
         this.getIcons()

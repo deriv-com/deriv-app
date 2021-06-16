@@ -229,15 +229,13 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get legal_allowed_currencies() {
-        if (!this.landing_companies && !this.current_landing_company) return [];
-        if (this.root_store.ui && this.root_store.ui.real_account_signup_target) {
-            if (this.root_store.ui.real_account_signup_target.match(/set_currency|manage/)) {
-                return this.current_landing_company.legal_allowed_currencies;
-            }
-            const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
-            return this.landing_companies[`${target}_company`].legal_allowed_currencies;
+        if (!this.landing_companies || !(this.root_store.ui && this.root_store.ui.real_account_signup_target))
+            return [];
+        if (['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target)) {
+            return this.current_landing_company.legal_allowed_currencies;
         }
-        return [];
+        const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
+        return this.landing_companies[`${target}_company`].legal_allowed_currencies;
     }
 
     @computed

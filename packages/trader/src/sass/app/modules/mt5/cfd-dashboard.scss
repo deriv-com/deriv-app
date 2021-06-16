@@ -1379,6 +1379,9 @@
             min-width: calc(100vw - 3.2rem);
         }
     }
+    .cfd-account__platform {
+        font-style: italic;
+    }
 }
 .cfd-personal-details-form-error {
     @include typeface(--paragraph-left-normal-red);

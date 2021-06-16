@@ -213,16 +213,6 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
             },
         },
         {
-            attribute: localize('Negative Balance Protection'),
-            dxtrade: {
-                synthetic: localize('Available'),
-                synthetic_eu: localize('Available'),
-                financial: localize('N/A'),
-                financial_au: localize('Required'),
-                financial_eu: localize('Required'),
-            },
-        },
-        {
             attribute: localize('Number of assets'),
             mt5: {
                 synthetic: localize('10+'),

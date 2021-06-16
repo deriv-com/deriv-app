@@ -15,14 +15,14 @@ const CashierDefault = ({
     is_eu,
     is_landing_company_loaded,
     is_mobile,
-    is_p2p_enabled,
     is_payment_agent_visible,
     is_switching,
     openRealAccountSignup,
     setIsCashierDefault,
     setIsDeposit,
-    setManageRealAccountActiveTabIndex,
-    toggleAccountsDialog,
+    setPromptHandler,
+    shouldNavigateAfterChooseCrypto,
+    shouldNavigateAfterPrompt,
 }) => {
     const history = useHistory();
     const is_crypto = !!currency && isCryptocurrency(currency);
@@ -35,56 +35,81 @@ const CashierDefault = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const openRealAccount = target => {
+        openRealAccountSignup('choose');
+        shouldNavigateAfterChooseCrypto(target);
+    };
+
     const onClickDepositCash = () => {
         if (!is_crypto) {
+            setPromptHandler(true, shouldNavigateAfterPrompt);
             setIsDeposit(true);
             return;
         }
-        if (has_fiat_account) {
-            toggleAccountsDialog();
-            return;
+
+        if (is_crypto) {
+            if (has_fiat_account) {
+                shouldNavigateAfterPrompt(routes.cashier_deposit, 'deposit');
+            } else {
+                openRealAccountSignup('deposit_cash');
+            }
         }
-        setManageRealAccountActiveTabIndex(1);
-        openRealAccountSignup('manage');
     };
 
     const onClickDepositCrypto = () => {
+        if (!is_crypto) {
+            if (has_crypto_account) {
+                // shouldNavigateAfterPrompt(routes.cashier_deposit, 'deposit');
+                openRealAccount(routes.cashier_deposit);
+            } else {
+                openRealAccountSignup('deposit_crypto');
+            }
+        }
         if (is_crypto) {
-            setIsDeposit(true);
-            return;
+            openRealAccount(routes.cashier_deposit);
         }
-        if (has_crypto_account) {
-            toggleAccountsDialog();
-            return;
+    };
+
+    const onClickOnramp = () => {
+        if (is_crypto) {
+            openRealAccount(routes.cashier_onramp);
         }
-        setManageRealAccountActiveTabIndex(0);
-        openRealAccountSignup('manage');
+        if (!is_crypto) {
+            if (has_crypto_account) {
+                // shouldNavigateAfterPrompt(routes.cashier_onramp, 'onramp');
+                openRealAccount(routes.cashier_onramp);
+            } else {
+                openRealAccountSignup('deposit_crypto');
+            }
+        }
     };
 
     const onClickPaymentAgent = () => {
-        history.push(routes.cashier_pa);
+        openRealAccount(routes.cashier_pa);
     };
 
     const onClickDp2p = () => {
-        history.push(routes.cashier_p2p);
+        if (!is_crypto) {
+            history.push(routes.cashier_p2p);
+        }
+        if (is_crypto) {
+            if (has_fiat_account) {
+                shouldNavigateAfterPrompt(routes.cashier_p2p, 'P2P');
+            } else {
+                openRealAccountSignup('deposit_crypto');
+            }
+        }
     };
 
     const getDepositOptions = () => {
         const options = [];
         options.push(Providers.createCashProvider(onClickDepositCash));
-        if (!is_eu) {
-            options.push(Providers.createCryptoProvider(onClickDepositCrypto));
-
-            // Put the crypto option first in case the account is crypto.
-            if (is_crypto)
-                options.sort(
-                    (first_option, second_option) => options.indexOf(second_option) - options.indexOf(first_option)
-                );
-        }
+        options.push(Providers.createCryptoProvider(onClickDepositCrypto));
+        options.push(Providers.createOnrampProvider(onClickOnramp, is_crypto));
         if (is_payment_agent_visible) {
             options.push(Providers.createPaymentAgentProvider(onClickPaymentAgent));
         }
-        if (is_p2p_enabled) {
+        if (!is_eu) {
             options.push(Providers.createDp2pProvider(onClickDp2p));
         }
         return options;
@@ -94,34 +119,39 @@ const CashierDefault = ({
         return <Loading className='cashier-default__loader' />;
 
     return (
-        <div className='cashier-default'>
-            <div className='cashier-default-header'>
-                <Text size={is_mobile ? 's' : 'sm'} line_height='xxl'>
-                    <Localize i18n_default_text='Choose a way to fund your account' />
-                </Text>
-            </div>
-            {is_mobile && (
-                <div className='cashier-default-header' onClick={() => window.open(getStaticUrl('/payment-methods'))}>
-                    <Text size='xs' color='red'>
-                        <Localize i18n_default_text='Learn more about payment methods' />
+        <div>
+            <div className='cashier-default'>
+                <div className='cashier-default-header'>
+                    <Text size={is_mobile ? 's' : 'sm'} line_height='xxl'>
+                        <Localize i18n_default_text='Choose a way to fund your account' />
                     </Text>
                 </div>
-            )}
-            <ThemedScrollbars className='cashier-default-content'>
-                <div className='cashier-default-content__description'>
-                    {getDepositOptions()?.map((deposit, idx) => (
-                        <CashierDefaultDetails
-                            key={`${deposit.detail_header}${idx}`}
-                            detail_click={deposit.detail_click}
-                            detail_contents={deposit.detail_contents}
-                            detail_description={deposit.detail_description}
-                            detail_header={deposit.detail_header}
-                            is_dark_mode_on={is_dark_mode_on}
-                            is_mobile={is_mobile}
-                        />
-                    ))}
-                </div>
-            </ThemedScrollbars>
+                {is_mobile && (
+                    <div
+                        className='cashier-default-header'
+                        onClick={() => window.open(getStaticUrl('/payment-methods'))}
+                    >
+                        <Text size='xs' color='red'>
+                            <Localize i18n_default_text='Learn more about payment methods' />
+                        </Text>
+                    </div>
+                )}
+                <ThemedScrollbars className='cashier-default-content'>
+                    <div className='cashier-default-content__description'>
+                        {getDepositOptions()?.map((deposit, idx) => (
+                            <CashierDefaultDetails
+                                key={`${deposit.detail_header}${idx}`}
+                                detail_click={deposit.detail_click}
+                                detail_contents={deposit.detail_contents}
+                                detail_description={deposit.detail_description}
+                                detail_header={deposit.detail_header}
+                                is_dark_mode_on={is_dark_mode_on}
+                                is_mobile={is_mobile}
+                            />
+                        ))}
+                    </div>
+                </ThemedScrollbars>
+            </div>
         </div>
     );
 };
@@ -133,14 +163,14 @@ CashierDefault.propTypes = {
     is_eu: PropTypes.bool,
     is_landing_company_loaded: PropTypes.bool,
     is_mobile: PropTypes.bool,
-    is_p2p_enabled: PropTypes.bool,
     is_payment_agent_visible: PropTypes.bool,
     is_switching: PropTypes.bool,
     openRealAccountSignup: PropTypes.func,
     setIsCashierDefault: PropTypes.func,
     setIsDeposit: PropTypes.func,
-    setManageRealAccountActiveTabIndex: PropTypes.func,
-    toggleAccountsDialog: PropTypes.func,
+    setPromptHandler: PropTypes.func,
+    shouldNavigateAfterChooseCrypto: PropTypes.bool,
+    shouldNavigateAfterPrompt: PropTypes.bool,
 };
 
 export default connect(({ client, modules, ui }) => ({
@@ -150,12 +180,12 @@ export default connect(({ client, modules, ui }) => ({
     is_eu: client.is_eu,
     is_landing_company_loaded: client.is_landing_company_loaded,
     is_mobile: ui.is_mobile,
-    is_p2p_enabled: modules.cashier.is_p2p_enabled,
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
     is_switching: client.is_switching,
     openRealAccountSignup: ui.openRealAccountSignup,
     setIsCashierDefault: modules.cashier.setIsCashierDefault,
     setIsDeposit: modules.cashier.setIsDeposit,
-    setManageRealAccountActiveTabIndex: ui.setManageRealAccountActiveTabIndex,
-    toggleAccountsDialog: ui.toggleAccountsDialog,
+    setPromptHandler: ui.setPromptHandler,
+    shouldNavigateAfterChooseCrypto: ui.shouldNavigateAfterChooseCrypto,
+    shouldNavigateAfterPrompt: modules.cashier.account_prompt_dialog.shouldNavigateAfterPrompt,
 }))(CashierDefault);

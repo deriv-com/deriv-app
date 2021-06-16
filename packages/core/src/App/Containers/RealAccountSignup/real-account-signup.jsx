@@ -8,6 +8,7 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AccountWizard from './account-wizard.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
+import ChooseCryptoCurrency from './choose-crypto-currency.jsx';
 import SetCurrency from './set-currency.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
@@ -22,6 +23,7 @@ const modal_pages_indices = {
     status_dialog: 3,
     set_currency: 4,
     signup_error: 5,
+    choose_crypto_currency: 6,
 };
 
 const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_residence, is_belgium_residence }) => {
@@ -143,6 +145,10 @@ const RealAccountSignup = ({
             ),
             title: () => localize('Add a real account'),
         },
+        {
+            body: () => <ChooseCryptoCurrency className='account-wizard__body' onError={showErrorModal} />,
+            title: () => localize('Choose a cryptocurrency account'),
+        },
     ]);
 
     const getModalHeight = () => {
@@ -261,6 +267,10 @@ const RealAccountSignup = ({
 
     const getActiveModalIndex = () => {
         let active_modal_index_no;
+        if (real_account_signup_target === 'choose') {
+            active_modal_index_no = modal_pages_indices.choose_crypto_currency;
+            return active_modal_index_no;
+        }
         if (state_value.active_modal_index === -1) {
             if (has_real_account && currency && getIsManageTarget()) {
                 active_modal_index_no = modal_pages_indices.add_or_manage_account;

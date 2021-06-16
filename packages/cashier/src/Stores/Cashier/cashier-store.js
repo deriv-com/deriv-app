@@ -17,6 +17,7 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import OnRampStore from './on-ramp-store';
+import AccountPromptDialog from '../account-prompt-dialog-store';
 import BaseStore from '../base-store';
 import CashierNotifications from '../../Containers/cashier-notifications.jsx';
 
@@ -154,6 +155,8 @@ export default class CashierStore extends BaseStore {
             root_store: this.root_store,
             WS: this.WS,
         });
+
+        this.account_prompt_dialog = new AccountPromptDialog(this.root_store);
         this.init();
     }
 

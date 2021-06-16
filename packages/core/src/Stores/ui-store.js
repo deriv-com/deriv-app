@@ -7,6 +7,7 @@ import {
     isTouchDevice,
     platform_name,
     isMobile,
+    routes,
 } from '@deriv/shared';
 import { sortNotifications, sortNotificationsMobile } from 'App/Components/Elements/NotificationMessage';
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
@@ -147,6 +148,7 @@ export default class UIStore extends BaseStore {
 
     // onboarding
     @observable should_show_multipliers_onboarding = false;
+    @observable choose_crypto_currency_target = null;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -764,5 +766,19 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleShouldShowMultipliersOnboarding(value) {
         this.should_show_multipliers_onboarding = value;
+    }
+
+    @action.bound
+    shouldNavigateAfterChooseCrypto(next_location) {
+        this.choose_crypto_currency_target = next_location;
+    }
+
+    @action.bound
+    continueRouteAfterChooseCrypto() {
+        this.root_store.common.routeTo(this.choose_crypto_currency_target);
+
+        if (this.choose_crypto_currency_target === routes.cashier_deposit) {
+            this.root_store.modules.cashier.setIsDeposit(true);
+        }
     }
 }

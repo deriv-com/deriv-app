@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'formik';
 import { DatePicker, Input } from '@deriv/components';
+import { toMoment } from '@deriv/shared';
 import { ROOT_CLASS } from '../constants';
 
 const InputField = ({ data }) => {
@@ -14,7 +15,7 @@ const InputField = ({ data }) => {
                             {...field}
                             className={`${ROOT_CLASS}__field`}
                             type='text'
-                            label={data.label}
+                            label={`${data.label}${data.required ? '*' : ''}`}
                             error={touched[field.name] && errors[field.name]}
                         />
                     )}
@@ -28,9 +29,10 @@ const InputField = ({ data }) => {
                             {...field}
                             className={`${ROOT_CLASS}__field`}
                             date_format='YYYY-MM-DD'
-                            display_format='DD MMM YYYY'
+                            display_format='DD-MM-YYYY'
+                            min_date={toMoment().add(1, 'days').format('YYYY-MM-DD')}
                             name={data.name}
-                            label={data.label}
+                            label={`${data.label}${data.required ? '*' : ''}`}
                             error={touched[field.name] && errors[field.name]}
                             readOnly
                         />

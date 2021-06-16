@@ -20,7 +20,7 @@ export const SELFIE_DOCUMENT = {
     pageType: PAGE_TYPE.PHOTO,
     name: 'selfie',
     icon: 'IcSelfie',
-    info: localize('Upload your selfie'),
+    info: localize('Upload your selfie.'),
 };
 
 const date_field = {

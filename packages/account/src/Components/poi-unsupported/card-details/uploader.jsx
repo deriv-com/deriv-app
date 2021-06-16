@@ -30,10 +30,11 @@ const Message = ({ data, open }) => (
 );
 
 const Preview = ({ data, setFieldValue, value, has_frame, handleChange }) => {
-    if (!value) {
-        return null;
-    }
-    const background_url = value.file ? URL.createObjectURL(value.file) : '';
+    const [background_url, setBackgroundUrl] = React.useState();
+
+    React.useEffect(() => {
+        setBackgroundUrl(value.file ? URL.createObjectURL(value.file) : '');
+    }, [value]);
 
     return (
         <div className={`${ROOT_CLASS}__uploader-details ${ROOT_CLASS}__uploader-details--preview`}>
@@ -67,6 +68,12 @@ const Preview = ({ data, setFieldValue, value, has_frame, handleChange }) => {
 };
 
 const Uploader = ({ data, value, is_full, onChange, has_frame }) => {
+    const [image, setImage] = React.useState();
+
+    React.useEffect(() => {
+        setImage(value);
+    }, [value]);
+
     const handleChange = (file, setFieldValue) => {
         if (onChange && typeof onChange === 'function') {
             onChange(file);
@@ -89,7 +96,7 @@ const Uploader = ({ data, value, is_full, onChange, has_frame }) => {
 
     const ValidationErrorMessage = open => (
         <div className={`${ROOT_CLASS}__uploader-details`}>
-            {value.errors.map((error, index) => (
+            {image.errors.map((error, index) => (
                 <Text key={index} as='p' size='xs' color='secondary' align='center'>
                     {error}
                 </Text>
@@ -119,20 +126,22 @@ const Uploader = ({ data, value, is_full, onChange, has_frame }) => {
                         max_size={max_document_size}
                         message={open => <Message open={open} data={data} />}
                         preview_single={
-                            <Preview
-                                data={data}
-                                value={value}
-                                has_frame={has_frame}
-                                setFieldValue={setFieldValue}
-                                handleChange={handleChange}
-                            />
+                            image && (
+                                <Preview
+                                    data={data}
+                                    value={image}
+                                    has_frame={has_frame}
+                                    setFieldValue={setFieldValue}
+                                    handleChange={handleChange}
+                                />
+                            )
                         }
                         multiple={false}
                         onDropAccepted={files => handleAccept(files, setFieldValue)}
                         onDropRejected={files => handleReject(files, setFieldValue)}
                         validation_error_message={value?.errors?.length ? ValidationErrorMessage : null}
                         noClick
-                        value={value ? [value] : []}
+                        value={image ? [image] : []}
                     />
                 </div>
             )}

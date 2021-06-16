@@ -68,18 +68,21 @@ class DBot {
 
                 // Push main.xml to workspace and reset the undo stack.
                 this.workspace.current_strategy_id = Blockly.utils.genUid();
-                let strategy_to_load = main_xml;
+                Blockly.derivWorkspace.strategy_to_load = main_xml;
                 let file_name = config.default_file_name;
                 if (recent_files && recent_files.length) {
                     const latest_file = recent_files[0];
-                    strategy_to_load = latest_file.xml;
+                    Blockly.derivWorkspace.strategy_to_load = latest_file.xml;
                     file_name = latest_file.name;
                     Blockly.derivWorkspace.current_strategy_id = latest_file.id;
                 }
 
                 const event_group = `dbot-load${Date.now()}`;
                 Blockly.Events.setGroup(event_group);
-                Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(strategy_to_load), this.workspace);
+                Blockly.Xml.domToWorkspace(
+                    Blockly.Xml.textToDom(Blockly.derivWorkspace.strategy_to_load),
+                    this.workspace
+                );
                 const { save_modal } = DBotStore.instance;
 
                 save_modal.updateBotName(file_name);

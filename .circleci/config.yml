@@ -94,32 +94,6 @@ commands:
           success_message: "Release succeeded for app.deriv.com with version *$(cat packages/core/dist/version)*"
           webhook: ${SLACK_WEBHOOK}
 
-  deploy:
-    description: "Deploy to static branches"
-    parameters:
-      target_branch:
-        type: string
-    steps:
-      - attach_workspace:
-          at: packages/core/dist
-      - run:
-          name: Tag build
-          command: echo "<< parameters.target_branch >>-$(date -u +"%Y-%m-%dT%H:%M:%SZ")" > packages/core/dist/version
-      - run:
-          name: Install and configure dependencies
-          command: |
-            mkdir "${HOME}/.npm-packages"
-            npm config set prefix "${HOME}/.npm-packages"
-            npm i -g gh-pages
-            git config user.email "ci-build@binary.com"
-            git config user.name "ci-build"
-      - add_ssh_keys:
-          fingerprints:
-            - "01:67:4a:6d:26:9c:70:c4:1a:60:91:88:d9:dd:f0:83"
-      - run:
-          name: Deploy docs to gh-pages branch
-          command: /home/circleci/.npm-packages/bin/gh-pages -d packages/core/dist --branch << parameters.target_branch >> --message "[skip ci]"
-
   docker_build_push:
     description: "Build and Push image to docker hub"
     parameters:
@@ -184,8 +158,6 @@ jobs:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
-      - deploy:
-          target_branch: staging
       - docker_build_push
       - k8s_deploy
       - notify_slack
@@ -199,8 +171,6 @@ jobs:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build_dashboard
-      - deploy:
-          target_branch: staging-dashboard
       - docker_build_push:
           docker_image_name: deriv-app-dashboard
           docker_image_latest_tag: latest-staging-dashboard
@@ -215,8 +185,6 @@ jobs:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
-      - deploy:
-          target_branch: production
       - docker_build_push:
           docker_image_latest_tag: latest
       - k8s_deploy:
@@ -232,8 +200,6 @@ jobs:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build_dashboard
-      - deploy:
-          target_branch: production-dashboard
       - docker_build_push:
           docker_image_name: deriv-app-dashboard
           docker_image_latest_tag: latest

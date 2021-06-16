@@ -1819,7 +1819,9 @@ export default class ClientStore extends BaseStore {
 
                 this.root_store.ui.showAccountTypesModalForEuropean();
 
-                this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
+                if (!this.is_uk) {
+                    this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
+                }
             }
         });
     }

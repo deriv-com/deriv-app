@@ -83,6 +83,12 @@ class ConfigPaymentAgent {
     @observable selected_bank = 0;
     @observable supported_banks = [];
     @observable verification = new ConfigVerification();
+    @observable active_tab_index = 0;
+
+    @action.bound
+    setActiveTabIndex(index) {
+        this.active_tab_index = index;
+    }
 }
 
 class ConfigPaymentAgentTransfer {
@@ -482,11 +488,10 @@ export default class CashierStore extends BaseStore {
                 this.setLoading(false);
                 // set the height of the container after content loads so that the
                 // loading bar stays vertically centered until the end
-                // As cashier.deriv.com is not supported the dark theme for the deposit, when we switch to the dark theme the IFrame height (with white background)is too small so we've added the condition to update height
-                if (this.active_container === 'deposit' && e.data < 540) {
-                    this.setContainerHeight('540');
+                if (this.root_store.ui.is_mobile) {
+                    this.setContainerHeight(window.innerHeight - 100);
                 } else {
-                    this.setContainerHeight(+e.data || '1200');
+                    this.setContainerHeight(window.innerHeight - 190);
                 }
                 // do not remove the listener
                 // on every iframe screen change we need to update the height to more/less to match the new content

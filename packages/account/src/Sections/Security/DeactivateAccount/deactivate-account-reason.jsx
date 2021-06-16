@@ -1,12 +1,11 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import classNames from 'classnames';
-import { routes, PlatformContext } from '@deriv/shared';
+import { routes, PlatformContext, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Formik, Field } from 'formik';
 import { Checkbox, Input, FormSubmitButton, Modal, Icon, Loading, Text, Button } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import { WS } from '@deriv/shared';
 import AccountHasBalanceOrOpenPositions from './account-has-balance.jsx';
 
 const initial_form = {

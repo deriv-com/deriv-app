@@ -2,10 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { getLanguage } from '@deriv/translations';
-import { routes } from '@deriv/shared';
+import { routes, WS } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import P2P from '@deriv/p2p';
-import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { get, init, timePromise } from '_common/server_time';
 

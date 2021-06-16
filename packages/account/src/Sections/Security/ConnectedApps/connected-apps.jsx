@@ -11,10 +11,9 @@ import {
     Loading,
     Text,
 } from '@deriv/components';
-import { PlatformContext } from '@deriv/shared';
+import { PlatformContext, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ErrorComponent from 'Components/error-component';
-import { WS } from '@deriv/shared';
 import GetConnectedAppsColumnsTemplate from './data-table-template.jsx';
 
 class ConnectedApps extends React.Component {

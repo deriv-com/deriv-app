@@ -11,8 +11,7 @@ import {
     Loading,
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getSelectedRoute, isMobile, routes } from '@deriv/shared';
-import { WS } from '@deriv/shared';
+import { getSelectedRoute, isMobile, routes, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import 'Sass/cashier.scss';
 

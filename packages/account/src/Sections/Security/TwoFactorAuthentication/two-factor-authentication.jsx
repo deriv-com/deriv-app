@@ -12,9 +12,8 @@ import {
     Loading,
     Text,
 } from '@deriv/components';
-import { getPropertyValue, isMobile, PlatformContext } from '@deriv/shared';
+import { getPropertyValue, isMobile, PlatformContext, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import LoadErrorMessage from 'Components/load-error-message';
 import DigitForm from './digit-form.jsx';

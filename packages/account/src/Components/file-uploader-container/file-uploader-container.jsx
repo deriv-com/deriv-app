@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
-import { PlatformContext, isDesktop } from '@deriv/shared';
+import { PlatformContext, isDesktop, WS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { WS } from '@deriv/shared';
 import FileUploader from './file-uploader.jsx';
 
 const FileProperties = () => {

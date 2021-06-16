@@ -6,8 +6,8 @@ import {
     isDigitContract,
     getDigitInfo,
     getDisplayStatus,
+    WS,
 } from '@deriv/shared';
-import { WS } from '@deriv/shared';
 import { createChartMarkers } from './Helpers/chart-markers';
 import { setLimitOrderBarriers, getLimitOrder } from './Helpers/limit-orders';
 import { getChartConfig, getContractUpdateConfig, getEndTime } from './Helpers/logic';

@@ -3,11 +3,10 @@ import * as PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
-import { routes, validLength, validPassword, getErrorMessages, CFD_PLATFORMS } from '@deriv/shared';
+import { routes, validLength, validPassword, getErrorMessages, CFD_PLATFORMS, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
-import { WS } from '@deriv/shared';
 
 const ResetPasswordIntent = ({ current_list, children, ...props }) => {
     const reset_password_intent = localStorage.getItem('cfd_reset_password_intent');

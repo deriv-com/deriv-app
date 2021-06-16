@@ -2,7 +2,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { useStateCallback } from '@deriv/components';
 import Unsupported from 'Components/poi-unsupported';
-import POISelector from './proof-of-identity-submission.jsx';
+import POISubmission from './proof-of-identity-submission.jsx';
 import Onfido from './onfido.jsx';
 import IdvContainer from './idv.jsx';
 import { identity_status_codes, service_code } from './proof-of-identity-utils';
@@ -58,7 +58,7 @@ const ProofOfIdentityContainer = ({
 
     if (identity_status === identity_status_codes.none || require_submission) {
         return (
-            <POISelector
+            <POISubmission
                 residence_list={residence_list}
                 height={height ?? null}
                 is_description_enabled={is_description_enabled}

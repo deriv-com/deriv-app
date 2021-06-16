@@ -75,7 +75,7 @@ const POISelector = ({
                             /* TODO: add more props here */
                         />
                     );
-                case submission_status_code.onfido:
+                case service_code.onfido:
                     return (
                         <OnfidoUpload
                             height={height}
@@ -89,7 +89,7 @@ const POISelector = ({
                             handleBack={handleBack}
                         />
                     );
-                case submission_status_code.manual:
+                case service_code.manual:
                     return <Unsupported manual={manual} handleViewComplete={handleViewComplete} />;
                 default:
                     return null;

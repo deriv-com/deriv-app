@@ -9,11 +9,11 @@ class QAEmails extends Common {
 
     async navigate() {
         await this.page.goto(`https://${process.env.QABOX_SERVER}/emails`);
+        await this.page.waitForLoadState('domcontentloaded');
     }
 
     async findActivationLink(context, email) {
-        await this.page.waitForLoadState('domcontentloaded');
-        const elements = await this.page.$$('text=One more step to create your acc..>');
+        const elements = await this.page.$$('text=/One more step to create/');
         // eslint-disable-next-line consistent-return
         const promises = elements
             .reverse()
@@ -25,7 +25,7 @@ class QAEmails extends Common {
                         ignoreHTTPSErrors: true,
                     });
                     await new_page.goto(`https://${process.env.QABOX_SERVER}/emails/${href}`);
-                    const is_target_email = await new_page.$(`text=${email}`, { timeout: 1000 });
+                    const is_target_email = await new_page.$(`text="To: ${email}"`, { timeout: 1000 });
                     let verify_link = null;
                     if (is_target_email) {
                         verify_link = await new_page.$eval('a.button', el => el.getAttribute('href'));

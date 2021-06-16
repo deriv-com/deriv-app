@@ -60,7 +60,11 @@ const Popover = ({
             )}
             {(popover_ref || !relative_render) && (
                 <TinyPopover
-                    isOpen={is_open ?? ((is_hovered && message) || (is_bubble_hover_enabled && is_bubble_hovered))}
+                    isOpen={
+                        is_bubble_hover_enabled
+                            ? is_open ?? ((is_hovered && message) || (is_bubble_hover_enabled && is_bubble_hovered))
+                            : is_open ?? (is_hovered && message)
+                    }
                     position={alignment}
                     transitionDuration={0.25}
                     padding={margin + 8}

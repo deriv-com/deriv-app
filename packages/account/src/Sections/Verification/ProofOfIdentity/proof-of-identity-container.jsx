@@ -1,13 +1,11 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { useStateCallback } from '@deriv/components';
-// TODO: Showing IDV upload and country selector
-// import CountrySelector from 'Components/poi-country-selector/';
-// import DocumentUpload from 'Components/poi-idv-document-upload';
-import NotRequired from 'Components/poi-not-required';
 import Unsupported from 'Components/poi-unsupported';
+import POISubmission from './proof-of-identity-submission.jsx';
 import Onfido from './onfido.jsx';
-import { onfido_status_codes } from './proof-of-identity';
+import IdvContainer from './idv.jsx';
+import { identity_status_codes, service_code } from './proof-of-identity-utils';
 import { populateVerificationStatus } from '../Helpers/verification';
 
 const ProofOfIdentityContainer = ({
@@ -15,72 +13,105 @@ const ProofOfIdentityContainer = ({
     refreshNotifications,
     onfido_service_token,
     is_description_enabled = true,
+    residence_list,
     height,
     redirect_button,
     setAPIError,
 }) => {
-    const [status, setStatus] = React.useState('');
     const [verification_status, setVerificationStatus] = useStateCallback({});
+    const [require_submission, setRequireSubmission] = React.useState(false);
+
+    const handleRequireSubmission = () => {
+        setRequireSubmission(true);
+    };
 
     const createVerificationConfig = React.useCallback(() => {
         const {
-            allow_document_upload,
-            identity_status,
             has_poa,
             needs_poa,
             needs_poi,
-            documents_supported,
-            country_code,
-            rejected_reasons,
-            submissions_left,
-            is_country_supported,
+            idv,
+            onfido,
+            manual,
+            identity_status,
+            identity_last_attempt,
         } = populateVerificationStatus(account_status);
 
-        setVerificationStatus(
-            {
-                allow_document_upload,
-                has_poa,
-                needs_poa,
-                needs_poi,
-                documents_supported,
-                country_code,
-                submissions_left,
-                rejected_reasons,
-                is_country_supported,
-            },
-            () => {
-                setStatus(identity_status);
-            }
-        );
+        setVerificationStatus({
+            has_poa,
+            needs_poa,
+            needs_poi,
+            idv,
+            onfido,
+            manual,
+            identity_status,
+            identity_last_attempt,
+        });
     }, [account_status, setVerificationStatus]);
 
     // component didMount hook
     React.useEffect(() => {
         createVerificationConfig();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [createVerificationConfig]);
 
-    const { is_country_supported } = verification_status;
+    const { idv, onfido, manual, identity_status, identity_last_attempt, needs_poa } = verification_status;
 
-    // TODO: Showing IDV upload and country selector
-    // if (true) return <DocumentUpload />;
-    // if (true) return <CountrySelector />;
+    if (identity_status === identity_status_codes.none || require_submission) {
+        return (
+            <POISubmission
+                residence_list={residence_list}
+                height={height ?? null}
+                is_description_enabled={is_description_enabled}
+                onfido_service_token={onfido_service_token}
+                idv={idv}
+                onfido={onfido}
+                needs_poa={needs_poa}
+                setAPIError={setAPIError}
+                manual={manual}
+                refreshNotifications={refreshNotifications}
+                redirect_button={redirect_button}
+            />
+        );
+    }
 
-    if (status === onfido_status_codes.none) return <NotRequired />;
-    if (!is_country_supported) return <Unsupported />;
-
-    return (
-        <Onfido
-            status={status}
-            verification_status={verification_status}
-            onfido_service_token={onfido_service_token}
-            setStatus={setStatus}
-            height={height ?? null}
-            refreshNotifications={refreshNotifications}
-            is_description_enabled={is_description_enabled}
-            setAPIError={setAPIError}
-            redirect_button={redirect_button}
-        />
-    );
+    switch (identity_last_attempt.service) {
+        case service_code.idv:
+            return (
+                <IdvContainer
+                    // TODO: start deprecated
+                    is_description_enabled={is_description_enabled}
+                    redirect_button={redirect_button}
+                    // End deprecation
+                    idv={idv}
+                    residence_list={residence_list}
+                    handleRequireSubmission={handleRequireSubmission}
+                    setAPIError={setAPIError}
+                    refreshNotifications={refreshNotifications}
+                    verification_status={verification_status}
+                />
+            );
+        case service_code.onfido:
+            return (
+                <Onfido
+                    // TODO: start deprecated
+                    is_description_enabled={is_description_enabled}
+                    redirect_button={redirect_button}
+                    // End deprecated
+                    verification_status={verification_status}
+                    handleRequireSubmission={handleRequireSubmission}
+                    residence_list={residence_list}
+                    onfido={onfido}
+                    onfido_service_token={onfido_service_token}
+                    height={height ?? null}
+                    refreshNotifications={refreshNotifications}
+                    setAPIError={setAPIError}
+                />
+            );
+        case service_code.manual:
+            return <Unsupported manual={manual} />;
+        default:
+            return null;
+    }
 };
 
 ProofOfIdentityContainer.propTypes = {

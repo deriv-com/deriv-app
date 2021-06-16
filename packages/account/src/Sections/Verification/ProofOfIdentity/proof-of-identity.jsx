@@ -3,11 +3,12 @@ import * as Cookies from 'js-cookie';
 import { withRouter } from 'react-router-dom';
 import { AutoHeightWrapper, Button, Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getPlatformRedirect, useIsMounted } from '@deriv/shared';
+import { getPlatformRedirect } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services/ws-methods';
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
+import NotRequired from 'Components/poi-not-required';
 import MissingPersonalDetails from 'Components/poi-missing-personal-details';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
 
@@ -15,18 +16,18 @@ const ProofOfIdentity = ({
     account_status,
     app_routing_history,
     history,
-    is_mx_mlt,
+    should_allow_authentication,
     is_switching,
     is_virtual,
     refreshNotifications,
     routeBackInApp,
-    should_allow_authentication,
+    fetchResidenceList,
 }) => {
     const [is_status_loading, setStatusLoading] = useState(true);
     const [api_error, setAPIError] = React.useState();
     const [missing_personal_details, setMissingPersonalDetails] = React.useState(false);
     const [onfido_service_token, setOnfidoToken] = React.useState();
-    const isMounted = useIsMounted();
+    const [residence_list, setResidenceList] = React.useState();
     const from_platform = getPlatformRedirect(app_routing_history);
     const should_show_redirect_btn = from_platform.name === 'P2P';
     const has_invalid_postal_code = missing_personal_details === 'postal_code';
@@ -67,51 +68,51 @@ const ProofOfIdentity = ({
 
     React.useEffect(() => {
         // only re-mount logic when switching is done
-        if (isMounted && !is_switching) {
+        if (!is_switching) {
             WS.authorized.getAccountStatus().then(response_account_status => {
                 if (response_account_status.error) {
                     setAPIError(response_account_status.error);
-                }
-                if (!should_allow_authentication) {
-                    routeBackInApp(history, [from_platform]);
+                    return;
                 }
 
-                // TODO: add check if require onfido
-                getOnfidoServiceToken().then(response_token => {
-                    if (response_token.error) {
-                        const code = response_token?.error?.code;
+                fetchResidenceList().then(response_residence_list => {
+                    if (response_residence_list.error) {
+                        setAPIError(response_residence_list.error);
+                        setStatusLoading(false);
+                    } else {
+                        setResidenceList(response_residence_list.residence_list);
+                        // TODO: add check if require onfido
+                        getOnfidoServiceToken().then(response_token => {
+                            if (response_token.error) {
+                                const code = response_token?.error?.code;
 
-                        switch (code) {
-                            case 'MissingPersonalDetails':
-                                setMissingPersonalDetails('all');
-                                break;
-                            case 'InvalidPostalCode':
-                                setMissingPersonalDetails('postal_code');
-                                break;
-                            default:
-                                setAPIError(response_token.error);
-                                break;
-                        }
+                                switch (code) {
+                                    case 'MissingPersonalDetails':
+                                        setMissingPersonalDetails('all');
+                                        break;
+                                    case 'InvalidPostalCode':
+                                        setMissingPersonalDetails('postal_code');
+                                        break;
+                                    default:
+                                        setAPIError(response_token.error);
+                                        break;
+                                }
+                            } else {
+                                setOnfidoToken(response_token);
+                            }
+
+                            setStatusLoading(false);
+                        });
                     }
-
-                    setStatusLoading(false);
-                    setOnfidoToken(response_token);
                 });
             });
         }
-    }, [
-        getOnfidoServiceToken,
-        from_platform,
-        history,
-        isMounted,
-        routeBackInApp,
-        should_allow_authentication,
-        is_switching,
-    ]);
+    }, [is_switching]);
 
     if (is_status_loading || is_switching) return <Loading is_fullscreen={false} />;
     if (api_error) return <ErrorMessage error_message={api_error?.message || api_error} />;
     if (is_virtual) return <DemoMessage />;
+    if (!should_allow_authentication) return <NotRequired />;
     if (missing_personal_details)
         return <MissingPersonalDetails has_invalid_postal_code={has_invalid_postal_code} from='proof_of_identity' />;
 
@@ -122,9 +123,9 @@ const ProofOfIdentity = ({
                     <ProofOfIdentityContainer
                         account_status={account_status}
                         setAPIError={setAPIError}
-                        is_mx_mlt={is_mx_mlt}
                         refreshNotifications={refreshNotifications}
                         onfido_service_token={onfido_service_token}
+                        residence_list={residence_list}
                         height={height}
                         redirect_button={
                             should_show_redirect_btn && (
@@ -151,11 +152,11 @@ const ProofOfIdentity = ({
 export default connect(({ client, common }) => ({
     account_status: client.account_status,
     has_missing_required_field: client.has_missing_required_field,
-    is_mx_mlt: client.landing_company_shortcode === 'iom' || client.landing_company_shortcode === 'malta',
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
     refreshNotifications: client.refreshNotifications,
     routeBackInApp: common.routeBackInApp,
     app_routing_history: common.app_routing_history,
     should_allow_authentication: client.should_allow_authentication,
+    fetchResidenceList: client.fetchResidenceList,
 }))(withRouter(ProofOfIdentity));

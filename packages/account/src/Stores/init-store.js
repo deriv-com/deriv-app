@@ -1,6 +1,6 @@
 import { configure } from 'mobx';
-import RootStore from 'Stores';
 import { setWebsocket } from '@deriv/shared';
+import RootStore from 'Stores';
 
 configure({ enforceActions: 'observed' });
 

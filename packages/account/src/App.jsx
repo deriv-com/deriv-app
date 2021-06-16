@@ -1,6 +1,6 @@
 import React from 'react';
-import Routes from 'Containers/routes.jsx';
 import { setWebsocket } from '@deriv/shared';
+import Routes from 'Containers/routes.jsx';
 import { MobxContentProvider } from 'Stores/connect';
 import initStore from 'Stores/init-store';
 

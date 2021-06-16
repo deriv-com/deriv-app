@@ -1,0 +1,254 @@
+/** @define header; weak */
+.signup-onboarding-header {
+    position: fixed;
+    z-index: 99999999;
+    box-sizing: border-box;
+    height: $HEADER_HEIGHT_SIGNUP;
+    width: 100%;
+    top: 0;
+    transition: opacity 0.3s;
+    backface-visibility: hidden;
+    color: $color-white;
+    background-color: $color-black;
+
+    &__menu-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        height: inherit;
+
+        a {
+            display: contents;
+        }
+
+        &-icon {
+            margin: 0 5px;
+        }
+    }
+    &--is-disabled:after {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    &__menu-mobile-body-wrapper {
+        position: relative;
+        height: calc(100% - 3.6rem);
+    }
+    &__menu-mobile-platform-switcher {
+        position: absolute;
+        height: 100%;
+        top: 24px;
+        left: 0;
+    }
+    &__menu-mobile-theme {
+        border-bottom: 1px solid var(--general-section-1);
+        padding-bottom: 1.6rem;
+        margin-bottom: 1.6rem;
+    }
+    &__menu-mobile-link {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+
+        &--active {
+            .header__menu-mobile-link-text {
+                font-weight: bold;
+                color: var(--text-prominent);
+            }
+        }
+        &-text {
+            font-size: 1.4rem;
+            color: var(--text-general);
+        }
+        &-icon {
+            margin-right: 16px;
+            width: 16px;
+            height: 16px;
+        }
+        &-flag-icon {
+            margin-right: 16px;
+        }
+        &-suffix-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        &-toggler {
+            &-label {
+                width: 48px;
+                height: 25.6px;
+                margin-left: auto;
+                margin-right: 1.6rem;
+            }
+            &-button {
+                width: 19.2px;
+                height: 19.2px;
+                top: 3px;
+                left: 4px;
+
+                &--active {
+                    left: calc(100% - 4px) !important;
+                }
+            }
+        }
+    }
+    &__menu-items {
+        display: flex;
+        position: relative;
+        box-sizing: border-box;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
+    &__navbar-icons {
+        cursor: pointer;
+        padding: 0.8em 1.6em;
+        align-self: center;
+        height: 100%;
+
+        &--notify-toggle {
+            order: 2;
+            order: 2;
+            padding: 0.5em 1em;
+            width: 2em;
+        }
+    }
+    &__menu-left {
+        justify-content: flex-start;
+        order: -1;
+        display: inline-flex;
+        flex: 1;
+        height: #{$HEADER_HEIGHT - 1px};
+
+        &-extensions {
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+    }
+    &__menu-right {
+        justify-content: flex-end;
+        order: 1;
+        display: inline-flex;
+        height: #{$HEADER_HEIGHT - 1px};
+        position: relative;
+
+        &--hidden {
+            display: none;
+        }
+        @include mobile {
+            .acc-info__separator {
+                display: none;
+            }
+            .notifications-toggle {
+                margin-right: 0;
+            }
+        }
+    }
+    &__menu-toggle {
+        align-self: center;
+        display: flex;
+    }
+    &__menu-links {
+        height: 100%;
+        align-self: center;
+
+        @media (max-width: 520px) {
+            display: none;
+        }
+    }
+    &__menu-link {
+        height: 100%;
+        padding: 0 1.6em;
+        text-decoration: none;
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-evenly;
+        transition: background-color 0.3s;
+        cursor: pointer;
+
+        &-text {
+            @include typeface(--title-left-normal-black);
+            padding: 0.5em 0;
+            position: relative;
+            color: var(--text-general);
+            @include colorIcon(var(--text-general), none, var(--text-general));
+
+            &:before {
+                position: absolute;
+                top: 1.4em;
+                left: 1.2em;
+            }
+            &:after {
+                display: block;
+                content: attr(title);
+                font-weight: 400;
+                height: 0;
+                overflow: hidden;
+                visibility: hidden;
+            }
+        }
+        &:hover:not(&--active) {
+            background-color: var(--general-hover);
+        }
+        &--active {
+            & > .header__menu-link-text[title] {
+                font-weight: bold;
+                color: var(--text-prominent);
+
+                &:after {
+                    color: var(--text-prominent);
+                }
+            }
+            .header__icon {
+                @extend %inline-icon.active;
+            }
+        }
+    }
+    &__logo {
+        background-color: var(--brand-secondary);
+        border-radius: 10px;
+        color: var(--text-colored-background);
+        display: inline-block;
+        font-size: 1.4rem;
+        font-weight: normal;
+        height: 20px;
+        line-height: 1.43;
+        text-align: center;
+        width: 50px;
+        margin-left: 8px;
+    }
+    &__mobile-drawer {
+        &-icon {
+            width: 16px;
+            height: 16px;
+            transform: scale(1.3); // TODO: fix the icons sizes and remove this
+        }
+        &-toggle {
+            padding: 0 1.2rem;
+            border-right: 1px solid var(--general-section-1);
+            display: flex;
+            align-items: center;
+            height: inherit;
+        }
+    }
+    &__title {
+        display: inline-block;
+        font-weight: bold;
+        color: var(--text-prominent);
+    }
+    &__icon {
+        margin-right: 0.8rem;
+        vertical-align: middle;
+    }
+    @include mobile {
+        height: $MOBILE_HEADER_HEIGHT_SIGNUP;
+
+        .header__menu-left,
+        .header__menu-right {
+            height: #{$MOBILE_HEADER_HEIGHT - 1px};
+        }
+    }
+}

@@ -3,9 +3,15 @@ import { Modal, Button } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const CFDFinancialStpPendingDialog = ({ enableApp, disableApp, toggleModal, is_cfd_pending_dialog_open }) => (
+const CFDFinancialStpPendingDialog = ({
+    enableApp,
+    disableApp,
+    toggleModal,
+    is_cfd_pending_dialog_open,
+    is_fully_authenticated,
+}) => (
     <Modal
-        title={localize('Thanks for submitting your documents!')}
+        title={is_fully_authenticated ? ' ' : localize('Thanks for submitting your documents!')}
         className='cfd-pending-dialog'
         is_open={is_cfd_pending_dialog_open}
         disableApp={disableApp}
@@ -15,7 +21,11 @@ const CFDFinancialStpPendingDialog = ({ enableApp, disableApp, toggleModal, is_c
         small
     >
         <Modal.Body>
-            <Localize i18n_default_text='We’ll process your documents within 1-3 days. Once they are verified, we’ll notify you via email.' />
+            {is_fully_authenticated ? (
+                <Localize i18n_default_text='Your MT5 Financial STP account is almost ready, please set your password now.' />
+            ) : (
+                <Localize i18n_default_text='We’ll process your documents within 1-3 days. Once they are verified, we’ll notify you via email.' />
+            )}
         </Modal.Body>
         <Modal.Footer>
             <Button has_effect text={localize('OK')} onClick={toggleModal} primary />
@@ -23,7 +33,8 @@ const CFDFinancialStpPendingDialog = ({ enableApp, disableApp, toggleModal, is_c
     </Modal>
 );
 
-export default connect(({ ui, modules: { cfd } }) => ({
+export default connect(({ ui, client, modules: { cfd } }) => ({
+    is_fully_authenticated: client.is_fully_authenticated,
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
     toggleModal: cfd.closeCFDPendingDialog,

@@ -6,7 +6,7 @@ import { Button, Dialog, PasswordInput, PasswordMeter, Text } from '@deriv/compo
 import { redirectToLogin, validPassword, validLength, getErrorMessages } from '@deriv/shared';
 import { getLanguage, localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { WS } from 'Services/index';
+import { WS } from '@deriv/shared';
 
 const ResetPassword = ({ logoutClient, verification_code }) => {
     const onResetComplete = (error_msg, actions) => {

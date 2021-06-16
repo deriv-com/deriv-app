@@ -6,7 +6,7 @@ import Bowser from 'bowser';
 import { convertDateFormat, isMobile, isDesktop, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 import LoadErrorMessage from 'Components/load-error-message';
 
 const API_FETCH_LIMIT = 50;

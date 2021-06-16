@@ -4,7 +4,7 @@ import { Formik, Form, Field } from 'formik';
 import { Input, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getPropertyValue } from '@deriv/shared';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 
 const DigitForm = ({ is_enabled, setEnabled }) => {
     const [is_success, setSuccess] = React.useState(false);

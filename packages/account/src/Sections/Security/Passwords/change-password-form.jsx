@@ -5,7 +5,7 @@ import { PasswordInput, PasswordMeter } from '@deriv/components';
 import { useHistory } from 'react-router-dom';
 import { routes, isMobile, useIsMounted, validPassword, validLength, getErrorMessages } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import PasswordsFooter from './passwords-footer.jsx';
 

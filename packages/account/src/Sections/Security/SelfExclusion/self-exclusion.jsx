@@ -1,6 +1,6 @@
 import React from 'react';
 import { PlatformContext } from '@deriv/shared';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import SelfExclusionComponent from 'Components/self-exclusion/self-exclusion.jsx';
 

@@ -4,7 +4,7 @@ import { AutoHeightWrapper, Button } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getPlatformRedirect, PlatformContext } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 import DemoMessage from 'Components/demo-message';
 import MissingPersonalDetails from 'Components/poi-missing-personal-details';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';

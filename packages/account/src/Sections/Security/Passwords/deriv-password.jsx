@@ -4,7 +4,7 @@ import { Button, Icon, Text } from '@deriv/components';
 import { toTitleCase } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
 import UnlinkModal from 'Components/unlink-modal';

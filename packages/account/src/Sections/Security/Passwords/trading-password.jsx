@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Modal, Button, Text, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
 import ChangePasswordForm from './change-password-form.jsx';

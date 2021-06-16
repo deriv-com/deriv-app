@@ -6,7 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import { Formik, Field } from 'formik';
 import { Checkbox, Input, FormSubmitButton, Modal, Icon, Loading, Text, Button } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 import AccountHasBalanceOrOpenPositions from './account-has-balance.jsx';
 
 const initial_form = {

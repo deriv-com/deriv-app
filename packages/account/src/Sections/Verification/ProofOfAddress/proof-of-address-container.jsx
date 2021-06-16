@@ -8,7 +8,7 @@ import Submitted from 'Components/poa-submitted';
 import Verified from 'Components/poa-verified';
 import NotRequired from 'Components/poa-not-required';
 import PoaStatusCodes from 'Components/poa-status-codes';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 import ProofOfAddressForm from './proof-of-address-form.jsx';
 
 const ProofOfAddressContainer = ({ is_mx_mlt, refreshNotifications }) => {

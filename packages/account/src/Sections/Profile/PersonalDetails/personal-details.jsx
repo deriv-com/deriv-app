@@ -32,7 +32,7 @@ import {
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { withRouter } from 'react-router';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 // import { account_opening_reason_list }         from './constants';
 import LeaveConfirm from 'Components/leave-confirm';

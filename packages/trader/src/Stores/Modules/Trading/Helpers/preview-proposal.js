@@ -1,6 +1,6 @@
 import debounce from 'lodash.debounce';
 import { isEmptyObject } from '@deriv/shared';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 import { createProposalRequests } from './proposal';
 
 export const requestPreviewProposal = debounce((store, override = {}, onProposalResponse) => {

@@ -1,7 +1,7 @@
 import { action, observable } from 'mobx';
 import { routes, isEmptyObject, isForwardStarting } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 import ContractStore from './contract-store';
 import { contractCancelled, contractSold } from '../Portfolio/Helpers/portfolio-notifications';
 import BaseStore from '../../base-store';

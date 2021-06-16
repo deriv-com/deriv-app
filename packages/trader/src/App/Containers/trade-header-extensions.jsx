@@ -5,7 +5,7 @@ import { MobileWrapper } from '@deriv/components';
 import { isMobile, routes } from '@deriv/shared';
 import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggle-positions-mobile.jsx';
 import { connect, MobxContentProvider } from 'Stores/connect';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 
 const TradeHeaderExtensions = props => {
     const {

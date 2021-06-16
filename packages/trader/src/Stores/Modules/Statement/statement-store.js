@@ -1,7 +1,7 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable, runInAction } from 'mobx';
 import { toMoment } from '@deriv/shared';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 
 import { formatStatementTransaction } from './Helpers/format-response';
 import getDateBoundaries from '../Profit/Helpers/format-request';

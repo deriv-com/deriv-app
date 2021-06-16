@@ -1,6 +1,6 @@
 import { action, computed, observable, runInAction } from 'mobx';
 import { getAccountListKey, getAccountTypeFields, CFD_PLATFORMS } from '@deriv/shared';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 import BaseStore from 'Stores/base-store';
 import { getDxCompanies, getMtCompanies } from './Helpers/cfd-config';
 

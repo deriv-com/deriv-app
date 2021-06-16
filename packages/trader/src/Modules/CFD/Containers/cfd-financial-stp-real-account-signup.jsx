@@ -4,7 +4,7 @@ import { FormProgress, DesktopWrapper, MobileWrapper, Div100vhContainer } from '
 import { getPropertyValue, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 import CFDPOA from '../Components/cfd-poa.jsx';
 import CFDPersonalDetailsForm from '../Components/cfd-personal-details-form.jsx';
 import CFDPOI from '../Components/cfd-poi.jsx';

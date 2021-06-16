@@ -5,7 +5,7 @@ import moment from 'moment';
 import { Text, usePrevious } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { isMarketClosed } from 'Stores/Modules/Trading/Helpers/active-symbols';
 

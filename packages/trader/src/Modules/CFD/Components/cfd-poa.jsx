@@ -24,7 +24,7 @@ import {
     PoaSubmitted,
     PoaStatusCodes,
 } from '@deriv/account';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode } from '@deriv/shared';
 import { InputField } from './cfd-personal-details-form.jsx';

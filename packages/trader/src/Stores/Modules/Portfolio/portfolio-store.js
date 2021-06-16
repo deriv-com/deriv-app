@@ -1,7 +1,7 @@
 import throttle from 'lodash.throttle';
 import { action, computed, observable, reaction } from 'mobx';
 import { createTransformer } from 'mobx-utils';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 import {
     isEmptyObject,
     isEnded,

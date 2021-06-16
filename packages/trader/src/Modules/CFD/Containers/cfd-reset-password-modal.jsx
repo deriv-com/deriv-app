@@ -7,7 +7,7 @@ import { routes, validLength, validPassword, getErrorMessages, CFD_PLATFORMS } f
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 
 const ResetPasswordIntent = ({ current_list, children, ...props }) => {
     const reset_password_intent = localStorage.getItem('cfd_reset_password_intent');

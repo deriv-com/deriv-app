@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal } from '@deriv/components';
 import { ProofOfIdentityContainer } from '@deriv/account';
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 

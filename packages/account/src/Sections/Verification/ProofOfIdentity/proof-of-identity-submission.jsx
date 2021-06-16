@@ -11,6 +11,8 @@ const POISelector = ({
     residence_list,
     height,
     is_description_enabled,
+    has_require_submission,
+    // identity_last_attempt,
     idv,
     onfido_service_token,
     onfido,
@@ -20,7 +22,7 @@ const POISelector = ({
     refreshNotifications,
     redirect_button,
 }) => {
-    const [submission_status, setSubmissionStatus] = React.useState(submission_status_code.selecting); // selecting, submitting, complete
+    const [submission_status, setSubmissionStatus] = React.useState(); // selecting, submitting, complete
     const [submission_service, setSubmissionService] = React.useState();
     const [selected_country, setSelectedCountry] = React.useState();
 
@@ -53,6 +55,14 @@ const POISelector = ({
     const handleBack = () => {
         setSubmissionStatus(submission_status_code.selecting);
     };
+
+    React.useEffect(() => {
+        if (has_require_submission) {
+            // TODO
+        } else {
+            setSubmissionStatus(submission_status_code.selecting);
+        }
+    }, []);
 
     switch (submission_status) {
         case submission_status_code.selecting:

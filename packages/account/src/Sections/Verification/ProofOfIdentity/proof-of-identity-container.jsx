@@ -19,10 +19,10 @@ const ProofOfIdentityContainer = ({
     setAPIError,
 }) => {
     const [verification_status, setVerificationStatus] = useStateCallback({});
-    const [require_submission, setRequireSubmission] = React.useState(false);
+    const [has_require_submission, setHasRequireSubmission] = React.useState(false);
 
     const handleRequireSubmission = () => {
-        setRequireSubmission(true);
+        setHasRequireSubmission(true);
     };
 
     const createVerificationConfig = React.useCallback(() => {
@@ -56,13 +56,15 @@ const ProofOfIdentityContainer = ({
 
     const { idv, onfido, manual, identity_status, identity_last_attempt, needs_poa } = verification_status;
 
-    if (identity_status === identity_status_codes.none || require_submission) {
+    if (identity_status === identity_status_codes.none || has_require_submission) {
         return (
             <POISubmission
                 residence_list={residence_list}
                 height={height ?? null}
                 is_description_enabled={is_description_enabled}
                 onfido_service_token={onfido_service_token}
+                identity_last_attempt={identity_last_attempt}
+                has_require_submission={has_require_submission}
                 idv={idv}
                 onfido={onfido}
                 needs_poa={needs_poa}

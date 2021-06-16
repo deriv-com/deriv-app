@@ -1132,6 +1132,9 @@
             .dc-file-dropzone {
                 max-width: 400px;
             }
+            @include mobile {
+                flex: unset;
+            }
         }
         &-remove-btn {
             position: absolute;
@@ -1375,6 +1378,9 @@
         @include mobile {
             min-width: calc(100vw - 3.2rem);
         }
+    }
+    .cfd-account__platform {
+        font-style: italic;
     }
 }
 .cfd-personal-details-form-error {

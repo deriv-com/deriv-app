@@ -82,6 +82,12 @@ class ConfigPaymentAgent {
     @observable selected_bank = 0;
     @observable supported_banks = [];
     @observable verification = new ConfigVerification();
+    @observable active_tab_index = 0;
+
+    @action.bound
+    setActiveTabIndex(index) {
+        this.active_tab_index = index;
+    }
 }
 
 class ConfigPaymentAgentTransfer {

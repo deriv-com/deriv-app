@@ -56,7 +56,7 @@ const WarningModal = props => {
                 {localize('Deactivate account?')}
             </Text>
             <div className='account-closure-warning-modal__content-wrapper'>
-                <Text as='p' className='account-closure-warning-modal__content'>
+                <Text as='p' align='center' className='account-closure-warning-modal__content'>
                     {localize(
                         'Deactivating your account will automatically log you out. You can reactivate your account by logging in at any time.'
                     )}

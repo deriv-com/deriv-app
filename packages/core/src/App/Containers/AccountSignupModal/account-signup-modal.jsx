@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Checkbox, Dialog, Loading, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import {
+    isMobile,
     validPassword,
     getLocation,
     validLength,
@@ -160,6 +161,7 @@ const AccountSignup = ({
                                     residence_list={residence_list}
                                     default_value={country}
                                 >
+                                    {!isMobile() && <div className='account-signup__separator' />}
                                     <Button
                                         className={classNames('account-signup__btn', {
                                             'account-signup__btn--disabled': !values.residence || errors.residence,
@@ -170,6 +172,7 @@ const AccountSignup = ({
                                             onResidenceSelection(values.residence);
                                         }}
                                         primary
+                                        large
                                         text={localize('Next')}
                                     />
                                 </ResidenceForm>

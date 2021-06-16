@@ -1,6 +1,15 @@
 /* @define account-signup; weak */
 .account-signup {
-    margin: 1.6rem 1.6rem 0;
+    margin: 2.1rem 1.6rem 1.1rem;
+
+    &__separator {
+        position: absolute;
+        bottom: 7.2rem;
+        height: 2px;
+        background-color: var(--general-section-2);
+        width: 100%;
+    }
+
     form {
         @include mobile {
             height: 365px;
@@ -140,6 +149,7 @@
     &__btn {
         align-self: flex-end;
         margin: 0;
+        margin-top: 4.1rem;
         background-color: var(--button-primary-default);
         font-weight: bold;
         color: var(--text-colored-background);
@@ -162,7 +172,7 @@
         }
     }
     &__residence-field {
-        margin-bottom: 2.7rem;
+        margin-bottom: 7.2rem;
 
         @include desktop {
             min-width: 30rem;

@@ -66,7 +66,7 @@ const WarningModal = props => {
                 is_disabled={false}
                 label={localize('Deactivate')}
                 has_cancel
-                cancel_label={localize('Back')}
+                cancel_label={localize('Go back')}
                 onCancel={() => props.closeModal()}
                 onClick={() => props.startDeactivating()}
             />

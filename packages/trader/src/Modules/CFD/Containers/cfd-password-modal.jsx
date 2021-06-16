@@ -4,6 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import { SentEmailModal } from '@deriv/account';
+import { getMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 import {
     DesktopWrapper,
     FormSubmitButton,
@@ -109,18 +110,37 @@ const PasswordModalHeader = ({
         </Text>
     );
 };
-const getSubmitText = (account_title, category, platform) => {
+const getSubmitText = (type, category, platform) => {
+    if (!category && !type) return '';
+
+    const category_label = category === 'real' ? localize('real') : localize('demo');
+    const type_label = getMtCompanies()[category][type].short_title;
+
     if (category === 'real') {
-        return localize(
-            'You have created a {{platform}} {{account_title}} account. To start trading, transfer funds from your Deriv account into this account.',
-            { account_title, platform: platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5' }
+        return (
+            <Localize
+                i18n_default_text='You have created a <0>{{platform}}</0> {{category}} <1>{{type}}</1> account. To start trading, transfer funds from your Deriv account into this account.'
+                values={{
+                    type: type_label,
+                    platform: platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
+                    category: category_label,
+                }}
+                components={[<i className='cfd-account__platform' key={0} />, <strong key={1} />]}
+            />
         );
     }
 
-    return localize('You have created a {{platform}} {{account_title}} account.', {
-        account_title,
-        platform: platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
-    });
+    return (
+        <Localize
+            i18n_default_text='You have created a <0>{{platform}}</0> {{category}} <1>{{type}}</1> account.'
+            values={{
+                type: type_label,
+                platform: platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
+                category: category_label,
+            }}
+            components={[<i className='cfd-account__platform' key={0} />, <strong key={1} />]}
+        />
+    );
 };
 
 const IconType = React.memo(({ platform, type }) => {
@@ -577,10 +597,10 @@ const CFDPasswordModal = ({
                 onCancel={closeModal}
                 onSubmit={closeOpenSuccess}
                 classNameMessage='cfd-password-modal__message'
-                message={getSubmitText(account_title, account_type.category, platform)}
+                message={getSubmitText(account_type.type, account_type.category, platform)}
                 icon={<IconType platform={platform} type={account_type.type} />}
                 icon_size='xlarge'
-                text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('OK')}
+                text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('Continue')}
                 has_cancel={account_type.category === 'real'}
             />
             <SentEmailModal

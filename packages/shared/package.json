@@ -30,9 +30,7 @@
     "moment": "^2.24.0"
   },
   "devDependencies": {
-    "babel-jest": "^26.5.2",
     "chai": "^4.2.0",
-    "jest": "^26.4.2",
     "jsdom": "^16.2.1",
     "moment": "^2.24.0"
   },

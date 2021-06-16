@@ -13,7 +13,7 @@ const CountrySelector = ({ residence_list, selected_country, setSelectedCountry,
 
             setCountryList(countries);
         }
-    }, []);
+    }, [fetchResidenceList]);
 
     return (
         <>

@@ -39,7 +39,7 @@ class DataTable extends React.PureComponent {
         } = this.props;
         const item = data_source[index];
         const action = getRowAction && getRowAction(item);
-        const contract_id = data_source[index].contract_id || data_source[index].id;
+        const contract_id = item.contract_id || item.id;
         const row_key = keyMapper?.(item) || key;
 
         // If row content is complex, consider rendering a light-weight placeholder while scrolling.
@@ -54,7 +54,7 @@ class DataTable extends React.PureComponent {
                 passthrough={passthrough}
                 replace={typeof action === 'object' ? action : undefined}
                 row_obj={item}
-                show_preloader={typeof preloaderCheck === 'function' ? preloaderCheck(item) : null}
+                show_preloader={typeof preloaderCheck === 'function' ? preloaderCheck(item) : false}
                 to={typeof action === 'string' ? action : undefined}
             />
         );

@@ -202,8 +202,6 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     init(notification_messages) {
-        // eslint-disable-next-line no-console
-        console.log('test staging release');
         this.notification_messages_ui = notification_messages;
     }
 

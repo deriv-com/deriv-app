@@ -3,7 +3,7 @@ import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, Selec
 import { Formik, Field } from 'formik';
 import { localize } from '@deriv/translations';
 import FormFooter from 'Components/form-footer';
-import getDocumentData from './document-data';
+import { getDocumentData, formatInput } from './document-data';
 import BackButtonIcon from '../../Assets/ic-poi-back-btn.svg';
 import DocumentUploadLogo from '../../Assets/ic-document-upload-icon.svg';
 
@@ -109,6 +109,18 @@ const IdvDocumentUpload = ({ selected_country, handleViewComplete, handleBack })
                                             onItemSelection={({ text }) =>
                                                 setFieldValue('document_type', text || '', true)
                                             }
+                                            onKeyup={e => {
+                                                setFieldValue(
+                                                    'document_number',
+                                                    formatInput(
+                                                        getDocumentData(country_code, values.document_type)
+                                                            .sample_format,
+                                                        e.target.value,
+                                                        '-'
+                                                    ),
+                                                    true
+                                                );
+                                            }}
                                             use_text={true}
                                             required
                                         />

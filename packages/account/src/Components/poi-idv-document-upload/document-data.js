@@ -55,6 +55,16 @@ const idv_document_data = {
     },
 };
 
-const getDocumentData = (country_code, document_type) => idv_document_data[country_code][document_type];
+export const getDocumentData = (country_code, document_type) => idv_document_data[country_code][document_type];
 
-export default getDocumentData;
+// Formats string based on separator and example format.
+// Will get separator char position from example format and auto formats input string.
+export const formatInput = (example_format, input_string, separator) => {
+    const dash_index = example_format.indexOf(separator);
+    if (dash_index !== -1) {
+        if (input_string.length + 1 >= dash_index) {
+            return input_string.splice(dash_index, 0, separator);
+        }
+    }
+    return input_string;
+};

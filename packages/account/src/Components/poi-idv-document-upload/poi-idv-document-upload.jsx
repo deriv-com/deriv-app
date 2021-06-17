@@ -3,12 +3,16 @@ import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, Selec
 import { Formik, Field } from 'formik';
 import { localize } from '@deriv/translations';
 import FormFooter from 'Components/form-footer';
+import getDocumentData from './document-data';
 import BackButtonIcon from '../../Assets/ic-poi-back-btn.svg';
 import DocumentUploadLogo from '../../Assets/ic-document-upload-icon.svg';
 
-const IdvDocumentUpload = ({ document_data }) => {
+const IdvDocumentUpload = ({ selected_country, handleViewComplete, handleBack }) => {
     const [document_list, setDocumentList] = React.useState([]);
     const [is_input_disable, setInputDisable] = React.useState(true);
+
+    const document_data = selected_country.identity.services.idv.document_supported;
+    const country_code = selected_country.value;
 
     React.useEffect(() => {
         setDocumentList(
@@ -39,7 +43,9 @@ const IdvDocumentUpload = ({ document_data }) => {
         } else {
             const format_regex = new RegExp(document_list.find(d => d.text === document_type).value);
             if (!format_regex.test(document_number)) {
-                errors.document_number = localize('Please enter the correct format. Example: <example of ID no.>');
+                errors.document_number = localize(
+                    `Please enter the correct format. Example: ${getDocumentData(country_code, document_type)}`
+                );
             }
         }
 
@@ -50,6 +56,7 @@ const IdvDocumentUpload = ({ document_data }) => {
         // TODO: Implement submission
         // eslint-disable-next-line
         console.log(values);
+        handleViewComplete();
     };
 
     return (
@@ -130,7 +137,7 @@ const IdvDocumentUpload = ({ document_data }) => {
                     </fieldset>
                     <FormFooter>
                         <Button className='back-btn' type='button' has_effect large secondary>
-                            <BackButtonIcon className='back-btn' /> {localize('Go Back')}
+                            <BackButtonIcon className='back-btn' onClick={handleBack} /> {localize('Go Back')}
                         </Button>
                         <Button
                             type='button'

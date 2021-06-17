@@ -2,7 +2,6 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { useStateCallback } from '@deriv/components';
 import Unsupported from 'Components/poi-unsupported';
-import IdvDocumentUpload from 'Components/poi-idv-document-upload/poi-idv-document-upload.jsx';
 import POISubmission from './proof-of-identity-submission.jsx';
 import Onfido from './onfido.jsx';
 import IdvContainer from './idv.jsx';
@@ -56,26 +55,6 @@ const ProofOfIdentityContainer = ({
     }, [createVerificationConfig]);
 
     const { idv, onfido, manual, identity_status, identity_last_attempt, needs_poa } = verification_status;
-
-    // TODO: Showing IDV upload and country selector
-    // TODO: Get country code and pass document. Currently hardcoded for testing
-    const document_data = {
-        alien_card: {
-            display_name: 'Alien Card',
-            format: '^[0-9]{6,9}$',
-        },
-        national_id: {
-            display_name: 'National ID',
-            format: '^[0-9]{1,9}$',
-        },
-        passport: {
-            display_name: 'Passport',
-            format: '^[A-Z0-9]{7,9}$',
-        },
-    };
-
-    if (true) return <IdvDocumentUpload document_data={document_data} />;
-    // if (true) return <CountrySelector />;
 
     if (identity_status === identity_status_codes.none || require_submission) {
         return (

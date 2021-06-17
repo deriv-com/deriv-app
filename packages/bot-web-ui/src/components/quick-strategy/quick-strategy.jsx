@@ -167,434 +167,229 @@ const QuickStrategyForm = ({
                                     )}
                                 </Field>
                             </div>
-                            {is_mobile ? (
-                                <React.Fragment>
-                                    <div className='quick-strategy__form-row'>
-                                        <Field name='quick-strategy__duration-unit'>
-                                            {({ field }) => (
-                                                <>
-                                                    <SelectNative
-                                                        list_items={duration_unit_dropdown}
-                                                        value={selected_duration_unit.value}
-                                                        label={localize('Duration unit')}
-                                                        should_show_empty_option={false}
-                                                        onChange={e => {
-                                                            onChangeDropdownItem(
-                                                                'duration-unit',
-                                                                e.target.value,
-                                                                setFieldValue
-                                                            );
-                                                        }}
-                                                        {...field}
-                                                    />
-                                                </>
-                                            )}
-                                        </Field>
-                                    </div>
-                                    <div className='quick-strategy__form-row'>
-                                        <Field name='quick-strategy__duration-value'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    className='quick-strategy__input'
-                                                    label_className='quick-strategy__input-label'
-                                                    field_className='quick-strategy__input-field'
-                                                    type='text'
-                                                    error={
-                                                        initial_errors[field.name] ||
-                                                        (touched[field.name] && errors[field.name])
-                                                    }
-                                                    label={localize('Duration value')}
+                            <div
+                                className={classNames('quick-strategy__form-row', {
+                                    'quick-strategy__form-row--multiple': !is_mobile,
+                                })}
+                            >
+                                <Field name='quick-strategy__duration-unit'>
+                                    {({ field }) => (
+                                        <>
+                                            {is_mobile ? (
+                                                <SelectNative
+                                                    list_items={duration_unit_dropdown}
+                                                    value={selected_duration_unit.value}
+                                                    label={localize('Duration unit')}
+                                                    should_show_empty_option={false}
                                                     onChange={e => {
-                                                        handleChange(e);
-                                                        onChangeInputValue('input_duration_value', e);
+                                                        onChangeDropdownItem(
+                                                            'duration-unit',
+                                                            e.target.value,
+                                                            setFieldValue
+                                                        );
                                                     }}
-                                                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                                    onBlur={() => setCurrentFocus(null)}
-                                                    placeholder='5'
-                                                    trailing_icon={
-                                                        <Popover
-                                                            alignment={is_mobile ? 'top' : 'bottom'}
-                                                            message={localize(
-                                                                'The trade length of your purchased contract.'
-                                                            )}
-                                                            zIndex={popover_zindex.QUICK_STRATEGY}
-                                                        >
-                                                            <Icon icon='IcInfoOutline' />
-                                                        </Popover>
-                                                    }
+                                                />
+                                            ) : (
+                                                <Autocomplete
+                                                    {...field}
+                                                    autoComplete='off'
+                                                    type='text'
+                                                    label={localize('Duration unit')}
+                                                    list_items={duration_unit_dropdown}
+                                                    disabled={duration_unit_dropdown.length === 1}
+                                                    onHideDropdownList={() => {
+                                                        onHideDropdownList(
+                                                            'duration-unit',
+                                                            values[field.name],
+                                                            setFieldValue
+                                                        );
+                                                    }}
+                                                    onItemSelection={({ value }) => {
+                                                        onChangeDropdownItem('duration-unit', value, setFieldValue);
+                                                    }}
+                                                    onScrollStop={() => onScrollStopDropdownList('duration-unit')}
                                                 />
                                             )}
-                                        </Field>
-                                    </div>
-                                    <div className='quick-strategy__form-row'>
-                                        <Field name='quick-strategy__stake'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    className='quick-strategy__input'
-                                                    label_className='quick-strategy__input-label'
-                                                    field_className='quick-strategy__input-field'
-                                                    type='text'
-                                                    error={
-                                                        initial_errors[field.name] ||
-                                                        (touched[field.name] && errors[field.name])
-                                                    }
-                                                    label={localize('Initial stake')}
-                                                    onChange={e => {
-                                                        handleChange(e);
-                                                        onChangeInputValue('input_stake', e);
-                                                    }}
-                                                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                                    onBlur={() => setCurrentFocus(null)}
-                                                    placeholder='10'
-                                                    trailing_icon={
-                                                        <Popover
-                                                            alignment={is_mobile ? 'top' : 'bottom'}
-                                                            message={localize(
-                                                                'The amount that you pay to enter a trade.'
-                                                            )}
-                                                            zIndex={popover_zindex.QUICK_STRATEGY}
-                                                        >
-                                                            <Icon icon='IcInfoOutline' />
-                                                        </Popover>
-                                                    }
-                                                />
-                                            )}
-                                        </Field>
-                                    </div>
-                                    <div className='quick-strategy__form-row'>
-                                        <Field name='quick-strategy__loss'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    className='quick-strategy__input'
-                                                    label_className='quick-strategy__input-label'
-                                                    field_className='quick-strategy__input-field'
-                                                    type='text'
-                                                    error={
-                                                        initial_errors[field.name] ||
-                                                        (touched[field.name] && errors[field.name])
-                                                    }
-                                                    label={localize('Loss threshold')}
-                                                    onChange={e => {
-                                                        handleChange(e);
-                                                        onChangeInputValue('input_loss', e);
-                                                    }}
-                                                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                                    onBlur={() => setCurrentFocus(null)}
-                                                    placeholder='5000'
-                                                    trailing_icon={
-                                                        <Popover
-                                                            alignment={is_mobile ? 'top' : 'bottom'}
-                                                            message={localize(
-                                                                'The bot will stop trading if your total loss exceeds this amount.'
-                                                            )}
-                                                            zIndex={popover_zindex.QUICK_STRATEGY}
-                                                        >
-                                                            <Icon icon='IcInfoOutline' />
-                                                        </Popover>
-                                                    }
-                                                />
-                                            )}
-                                        </Field>
-                                    </div>
-                                    <div className='quick-strategy__form-row'>
-                                        <Field name='quick-strategy__size'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    className='quick-strategy__input'
-                                                    label_className='quick-strategy__input-label'
-                                                    field_className='quick-strategy__input-field'
-                                                    type='text'
-                                                    error={
-                                                        initial_errors[field.name] ||
-                                                        (touched[field.name] && errors[field.name])
-                                                    }
-                                                    label={getSizeText(active_index)}
-                                                    onChange={e => {
-                                                        handleChange(e);
-                                                        onChangeInputValue('input_size', e);
-                                                    }}
-                                                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                                    onBlur={() => setCurrentFocus(null)}
-                                                    placeholder='2'
-                                                    trailing_icon={
-                                                        <Popover
-                                                            alignment={is_mobile ? 'top' : 'bottom'}
-                                                            message={getSizeDesc(active_index)}
-                                                            zIndex={popover_zindex.QUICK_STRATEGY}
-                                                        >
-                                                            <Icon icon='IcInfoOutline' />
-                                                        </Popover>
-                                                    }
-                                                />
-                                            )}
-                                        </Field>
-                                    </div>
-                                    <div className='quick-strategy__form-row'>
-                                        <Field name='quick-strategy__profit'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    className='quick-strategy__input'
-                                                    label_className='quick-strategy__input-label'
-                                                    field_className='quick-strategy__input-field'
-                                                    type='text'
-                                                    error={
-                                                        initial_errors[field.name] ||
-                                                        (touched[field.name] && errors[field.name])
-                                                    }
-                                                    label={localize('Profit threshold')}
-                                                    onChange={e => {
-                                                        handleChange(e);
-                                                        onChangeInputValue('input_profit', e);
-                                                    }}
-                                                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                                    onBlur={() => setCurrentFocus(null)}
-                                                    placeholder='5000'
-                                                    trailing_icon={
-                                                        <Popover
-                                                            alignment={is_mobile ? 'top' : 'bottom'}
-                                                            message={localize(
-                                                                'The bot will stop trading if your total profit exceeds this amount.'
-                                                            )}
-                                                            zIndex={popover_zindex.QUICK_STRATEGY}
-                                                        >
-                                                            <Icon icon='IcInfoOutline' />
-                                                        </Popover>
-                                                    }
-                                                />
-                                            )}
-                                        </Field>
-                                    </div>
-                                </React.Fragment>
-                            ) : (
-                                <React.Fragment>
-                                    <div className='quick-strategy__form-row quick-strategy__form-row--multiple'>
-                                        <Field name='quick-strategy__duration-unit'>
-                                            {({ field }) => (
-                                                <>
-                                                    {is_mobile ? (
-                                                        <SelectNative
-                                                            list_items={duration_unit_dropdown}
-                                                            value={selected_duration_unit.value}
-                                                            label={localize('Duration unit')}
-                                                            should_show_empty_option={false}
-                                                            onChange={e => {
-                                                                onChangeDropdownItem(
-                                                                    'duration-unit',
-                                                                    e.target.value,
-                                                                    setFieldValue
-                                                                );
-                                                            }}
-                                                        />
-                                                    ) : (
-                                                        <Autocomplete
-                                                            {...field}
-                                                            autoComplete='off'
-                                                            type='text'
-                                                            label={localize('Duration unit')}
-                                                            list_items={duration_unit_dropdown}
-                                                            disabled={duration_unit_dropdown.length === 1}
-                                                            onHideDropdownList={() => {
-                                                                onHideDropdownList(
-                                                                    'duration-unit',
-                                                                    values[field.name],
-                                                                    setFieldValue
-                                                                );
-                                                            }}
-                                                            onItemSelection={({ value }) => {
-                                                                onChangeDropdownItem(
-                                                                    'duration-unit',
-                                                                    value,
-                                                                    setFieldValue
-                                                                );
-                                                            }}
-                                                            onScrollStop={() =>
-                                                                onScrollStopDropdownList('duration-unit')
-                                                            }
-                                                        />
+                                        </>
+                                    )}
+                                </Field>
+                                <Field name='quick-strategy__duration-value'>
+                                    {({ field }) => (
+                                        <Input
+                                            {...field}
+                                            className='quick-strategy__input'
+                                            label_className='quick-strategy__input-label'
+                                            field_className='quick-strategy__input-field'
+                                            type='text'
+                                            error={
+                                                initial_errors[field.name] ||
+                                                (touched[field.name] && errors[field.name])
+                                            }
+                                            label={localize('Duration value')}
+                                            onChange={e => {
+                                                handleChange(e);
+                                                onChangeInputValue('input_duration_value', e);
+                                            }}
+                                            onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                                            onBlur={() => setCurrentFocus(null)}
+                                            placeholder='5'
+                                            trailing_icon={
+                                                <Popover
+                                                    alignment={is_mobile ? 'top' : 'bottom'}
+                                                    message={localize('The trade length of your purchased contract.')}
+                                                    zIndex={popover_zindex.QUICK_STRATEGY}
+                                                >
+                                                    <Icon icon='IcInfoOutline' />
+                                                </Popover>
+                                            }
+                                        />
+                                    )}
+                                </Field>
+                            </div>
+                            <div
+                                className={classNames('quick-strategy__form-row', {
+                                    'quick-strategy__form-row--multiple': !is_mobile,
+                                })}
+                            >
+                                <Field name='quick-strategy__stake'>
+                                    {({ field }) => (
+                                        <Input
+                                            {...field}
+                                            className='quick-strategy__input'
+                                            label_className='quick-strategy__input-label'
+                                            field_className='quick-strategy__input-field'
+                                            type='text'
+                                            error={
+                                                initial_errors[field.name] ||
+                                                (touched[field.name] && errors[field.name])
+                                            }
+                                            label={localize('Initial stake')}
+                                            onChange={e => {
+                                                handleChange(e);
+                                                onChangeInputValue('input_stake', e);
+                                            }}
+                                            onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                                            onBlur={() => setCurrentFocus(null)}
+                                            placeholder='10'
+                                            trailing_icon={
+                                                <Popover
+                                                    alignment={is_mobile ? 'top' : 'bottom'}
+                                                    message={localize('The amount that you pay to enter a trade.')}
+                                                    zIndex={popover_zindex.QUICK_STRATEGY}
+                                                >
+                                                    <Icon icon='IcInfoOutline' />
+                                                </Popover>
+                                            }
+                                        />
+                                    )}
+                                </Field>
+                                <Field name='quick-strategy__loss'>
+                                    {({ field }) => (
+                                        <Input
+                                            {...field}
+                                            className='quick-strategy__input'
+                                            label_className='quick-strategy__input-label'
+                                            field_className='quick-strategy__input-field'
+                                            type='text'
+                                            error={
+                                                initial_errors[field.name] ||
+                                                (touched[field.name] && errors[field.name])
+                                            }
+                                            label={localize('Loss threshold')}
+                                            onChange={e => {
+                                                handleChange(e);
+                                                onChangeInputValue('input_loss', e);
+                                            }}
+                                            onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                                            onBlur={() => setCurrentFocus(null)}
+                                            placeholder='5000'
+                                            trailing_icon={
+                                                <Popover
+                                                    alignment={is_mobile ? 'top' : 'bottom'}
+                                                    message={localize(
+                                                        'The bot will stop trading if your total loss exceeds this amount.'
                                                     )}
-                                                </>
-                                            )}
-                                        </Field>
-                                        <Field name='quick-strategy__duration-value'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    className='quick-strategy__input'
-                                                    label_className='quick-strategy__input-label'
-                                                    field_className='quick-strategy__input-field'
-                                                    type='text'
-                                                    error={
-                                                        initial_errors[field.name] ||
-                                                        (touched[field.name] && errors[field.name])
-                                                    }
-                                                    label={localize('Duration value')}
-                                                    onChange={e => {
-                                                        handleChange(e);
-                                                        onChangeInputValue('input_duration_value', e);
-                                                    }}
-                                                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                                    onBlur={() => setCurrentFocus(null)}
-                                                    placeholder='5'
-                                                    trailing_icon={
-                                                        <Popover
-                                                            alignment={is_mobile ? 'top' : 'bottom'}
-                                                            message={localize(
-                                                                'The trade length of your purchased contract.'
-                                                            )}
-                                                            zIndex={popover_zindex.QUICK_STRATEGY}
-                                                        >
-                                                            <Icon icon='IcInfoOutline' />
-                                                        </Popover>
-                                                    }
-                                                />
-                                            )}
-                                        </Field>
-                                    </div>
-                                    <div className='quick-strategy__form-row quick-strategy__form-row--multiple'>
-                                        <Field name='quick-strategy__stake'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    className='quick-strategy__input'
-                                                    label_className='quick-strategy__input-label'
-                                                    field_className='quick-strategy__input-field'
-                                                    type='text'
-                                                    error={
-                                                        initial_errors[field.name] ||
-                                                        (touched[field.name] && errors[field.name])
-                                                    }
-                                                    label={localize('Initial stake')}
-                                                    onChange={e => {
-                                                        handleChange(e);
-                                                        onChangeInputValue('input_stake', e);
-                                                    }}
-                                                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                                    onBlur={() => setCurrentFocus(null)}
-                                                    placeholder='10'
-                                                    trailing_icon={
-                                                        <Popover
-                                                            alignment={is_mobile ? 'top' : 'bottom'}
-                                                            message={localize(
-                                                                'The amount that you pay to enter a trade.'
-                                                            )}
-                                                            zIndex={popover_zindex.QUICK_STRATEGY}
-                                                        >
-                                                            <Icon icon='IcInfoOutline' />
-                                                        </Popover>
-                                                    }
-                                                />
-                                            )}
-                                        </Field>
-                                        <Field name='quick-strategy__loss'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    className='quick-strategy__input'
-                                                    label_className='quick-strategy__input-label'
-                                                    field_className='quick-strategy__input-field'
-                                                    type='text'
-                                                    error={
-                                                        initial_errors[field.name] ||
-                                                        (touched[field.name] && errors[field.name])
-                                                    }
-                                                    label={localize('Loss threshold')}
-                                                    onChange={e => {
-                                                        handleChange(e);
-                                                        onChangeInputValue('input_loss', e);
-                                                    }}
-                                                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                                    onBlur={() => setCurrentFocus(null)}
-                                                    placeholder='5000'
-                                                    trailing_icon={
-                                                        <Popover
-                                                            alignment={is_mobile ? 'top' : 'bottom'}
-                                                            message={localize(
-                                                                'The bot will stop trading if your total loss exceeds this amount.'
-                                                            )}
-                                                            zIndex={popover_zindex.QUICK_STRATEGY}
-                                                        >
-                                                            <Icon icon='IcInfoOutline' />
-                                                        </Popover>
-                                                    }
-                                                />
-                                            )}
-                                        </Field>
-                                    </div>
-                                    <div className='quick-strategy__form-row quick-strategy__form-row--multiple'>
-                                        <Field name='quick-strategy__size'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    className='quick-strategy__input'
-                                                    label_className='quick-strategy__input-label'
-                                                    field_className='quick-strategy__input-field'
-                                                    type='text'
-                                                    error={
-                                                        initial_errors[field.name] ||
-                                                        (touched[field.name] && errors[field.name])
-                                                    }
-                                                    label={getSizeText(active_index)}
-                                                    onChange={e => {
-                                                        handleChange(e);
-                                                        onChangeInputValue('input_size', e);
-                                                    }}
-                                                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                                    onBlur={() => setCurrentFocus(null)}
-                                                    placeholder='2'
-                                                    trailing_icon={
-                                                        <Popover
-                                                            alignment={is_mobile ? 'top' : 'bottom'}
-                                                            message={getSizeDesc(active_index)}
-                                                            zIndex={popover_zindex.QUICK_STRATEGY}
-                                                        >
-                                                            <Icon icon='IcInfoOutline' />
-                                                        </Popover>
-                                                    }
-                                                />
-                                            )}
-                                        </Field>
-                                        <Field name='quick-strategy__profit'>
-                                            {({ field }) => (
-                                                <Input
-                                                    {...field}
-                                                    className='quick-strategy__input'
-                                                    label_className='quick-strategy__input-label'
-                                                    field_className='quick-strategy__input-field'
-                                                    type='text'
-                                                    error={
-                                                        initial_errors[field.name] ||
-                                                        (touched[field.name] && errors[field.name])
-                                                    }
-                                                    label={localize('Profit threshold')}
-                                                    onChange={e => {
-                                                        handleChange(e);
-                                                        onChangeInputValue('input_profit', e);
-                                                    }}
-                                                    onFocus={e => setCurrentFocus(e.currentTarget.name)}
-                                                    onBlur={() => setCurrentFocus(null)}
-                                                    placeholder='5000'
-                                                    trailing_icon={
-                                                        <Popover
-                                                            alignment={is_mobile ? 'top' : 'bottom'}
-                                                            message={localize(
-                                                                'The bot will stop trading if your total profit exceeds this amount.'
-                                                            )}
-                                                            zIndex={popover_zindex.QUICK_STRATEGY}
-                                                        >
-                                                            <Icon icon='IcInfoOutline' />
-                                                        </Popover>
-                                                    }
-                                                />
-                                            )}
-                                        </Field>
-                                    </div>
-                                </React.Fragment>
-                            )}
+                                                    zIndex={popover_zindex.QUICK_STRATEGY}
+                                                >
+                                                    <Icon icon='IcInfoOutline' />
+                                                </Popover>
+                                            }
+                                        />
+                                    )}
+                                </Field>
+                            </div>
+                            <div
+                                className={classNames('quick-strategy__form-row', {
+                                    'quick-strategy__form-row--multiple': !is_mobile,
+                                })}
+                            >
+                                <Field name='quick-strategy__size'>
+                                    {({ field }) => (
+                                        <Input
+                                            {...field}
+                                            className='quick-strategy__input'
+                                            label_className='quick-strategy__input-label'
+                                            field_className='quick-strategy__input-field'
+                                            type='text'
+                                            error={
+                                                initial_errors[field.name] ||
+                                                (touched[field.name] && errors[field.name])
+                                            }
+                                            label={getSizeText(active_index)}
+                                            onChange={e => {
+                                                handleChange(e);
+                                                onChangeInputValue('input_size', e);
+                                            }}
+                                            onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                                            onBlur={() => setCurrentFocus(null)}
+                                            placeholder='2'
+                                            trailing_icon={
+                                                <Popover
+                                                    alignment={is_mobile ? 'top' : 'bottom'}
+                                                    message={getSizeDesc(active_index)}
+                                                    zIndex={popover_zindex.QUICK_STRATEGY}
+                                                >
+                                                    <Icon icon='IcInfoOutline' />
+                                                </Popover>
+                                            }
+                                        />
+                                    )}
+                                </Field>
+                                <Field name='quick-strategy__profit'>
+                                    {({ field }) => (
+                                        <Input
+                                            {...field}
+                                            className='quick-strategy__input'
+                                            label_className='quick-strategy__input-label'
+                                            field_className='quick-strategy__input-field'
+                                            type='text'
+                                            error={
+                                                initial_errors[field.name] ||
+                                                (touched[field.name] && errors[field.name])
+                                            }
+                                            label={localize('Profit threshold')}
+                                            onChange={e => {
+                                                handleChange(e);
+                                                onChangeInputValue('input_profit', e);
+                                            }}
+                                            onFocus={e => setCurrentFocus(e.currentTarget.name)}
+                                            onBlur={() => setCurrentFocus(null)}
+                                            placeholder='5000'
+                                            trailing_icon={
+                                                <Popover
+                                                    alignment={is_mobile ? 'top' : 'bottom'}
+                                                    message={localize(
+                                                        'The bot will stop trading if your total profit exceeds this amount.'
+                                                    )}
+                                                    zIndex={popover_zindex.QUICK_STRATEGY}
+                                                >
+                                                    <Icon icon='IcInfoOutline' />
+                                                </Popover>
+                                            }
+                                        />
+                                    )}
+                                </Field>
+                            </div>
                         </div>
                     </ThemedScrollbars>
                     <div

@@ -21,21 +21,29 @@ const OnfidoSdkView = ({
     const { documents_supported, country_code } = onfido;
     const onfido_init = React.useRef();
 
-    const onComplete = React.useCallback(() => {
-        onfido_init?.current?.tearDown();
+    const onComplete = React.useCallback(
+        data => {
+            onfido_init?.tearDown();
+            onfido_init?.current?.tearDown();
+            const document_ids = Object.keys(data).map(key => data[key].id);
 
-        WS.notificationEvent({
-            notification_event: 1,
-            category: 'authentication',
-            event: 'poi_documents_uploaded',
-        }).then(response => {
-            if (response.error) {
-                setAPIError(response.error);
-                return;
-            }
-            handleViewComplete();
-        });
-    }, [setAPIError, handleViewComplete]);
+            WS.notificationEvent({
+                notification_event: 1,
+                category: 'authentication',
+                event: 'poi_documents_uploaded',
+                args: {
+                    documents: document_ids,
+                },
+            }).then(response => {
+                if (response.error) {
+                    setAPIError(response.error);
+                    return;
+                }
+                handleViewComplete();
+            });
+        },
+        [setAPIError, handleViewComplete]
+    );
 
     const initOnfido = React.useCallback(async () => {
         try {

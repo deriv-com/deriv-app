@@ -35,41 +35,42 @@ commands:
   npm_install_from_cache:
     description: "npm install and save cache"
     steps:
-      - run:
-          name: "Create cache key"
-          command: echo $(find . ./packages/ -maxdepth 2 -name package-lock.json -type f -exec md5sum {} \; | sort -n | md5sum | cut -d" " -f1) >> CACHE_KEY1
-      - restore_cache:
-          keys:
-            - node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
+      # - run:
+      #     name: "Create cache key"
+      #     command: echo $(find . ./packages/ -maxdepth 2 -name package-lock.json -type f -exec md5sum {} \; | sort -n | md5sum | cut -d" " -f1) >> CACHE_KEY1
+      # - restore_cache:
+      #     keys:
+      #       - node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
       - run:
           name: "Install npm packages"
           command: |
-            if [ -d "./node_modules" ]; then
-              echo "Found cache. Using cached node_modules."
-              node_modules/lerna/cli.js link
-            else
-              echo "Could not find cache. Bootstrapping..."
-              npm run bootstrap
-            fi
-      - save_cache:
-          name: "Saving node_modules cache"
-          key: node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
-          paths:
-            # VERIFY_CACHE_FOLDERS_START (DO NOT REMOVE)
-            - "node_modules"
-            - "packages/account/node_modules"
-            - "packages/bot-skeleton/node_modules"
-            - "packages/bot-web-ui/node_modules"
-            - "packages/cashier/node_modules"
-            - "packages/components/node_modules"
-            - "packages/core/node_modules"
-            - "packages/dashboard/node_modules"
-            - "packages/indicators/node_modules"
-            - "packages/p2p/node_modules"
-            - "packages/shared/node_modules"
-            - "packages/trader/node_modules"
-            - "packages/translations/node_modules"
-            # VERIFY_CACHE_FOLDERS_END (DO NOT REMOVE)
+            npm run bootstrap
+            # if [ -d "./node_modules" ]; then
+            #   echo "Found cache. Using cached node_modules."
+            #   node_modules/lerna/cli.js link
+            # else
+            #   echo "Could not find cache. Bootstrapping..."
+            #   npm run bootstrap
+            # fi
+      # - save_cache:
+      #     name: "Saving node_modules cache"
+      #     key: node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
+      #     paths:
+      #       # VERIFY_CACHE_FOLDERS_START (DO NOT REMOVE)
+      #       - "node_modules"
+      #       - "packages/account/node_modules"
+      #       - "packages/bot-skeleton/node_modules"
+      #       - "packages/bot-web-ui/node_modules"
+      #       - "packages/cashier/node_modules"
+      #       - "packages/components/node_modules"
+      #       - "packages/core/node_modules"
+      #       - "packages/dashboard/node_modules"
+      #       - "packages/indicators/node_modules"
+      #       - "packages/p2p/node_modules"
+      #       - "packages/shared/node_modules"
+      #       - "packages/trader/node_modules"
+      #       - "packages/translations/node_modules"
+      #       # VERIFY_CACHE_FOLDERS_END (DO NOT REMOVE)
 
   build:
     description: "Build"
@@ -93,6 +94,18 @@ commands:
           failure_message: "Release failed for app.deriv.com with version *$(cat packages/core/dist/version)*"
           success_message: "Release succeeded for app.deriv.com with version *$(cat packages/core/dist/version)*"
           webhook: ${SLACK_WEBHOOK}
+
+  versioning:
+    description: "Version the branch"
+    parameters:
+      target_branch:
+        type: string
+    steps:
+      - attach_workspace:
+          at: packages/core/dist
+      - run:
+          name: Tag
+          command: echo "<< parameters.target_branch >>-$(date -u +"%Y-%m-%dT%H:%M:%SZ")" > packages/core/dist/version
 
   docker_build_push:
     description: "Build and Push image to docker hub"
@@ -158,6 +171,8 @@ jobs:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
+      - versioning:
+          target_branch: staging
       - docker_build_push
       - k8s_deploy
       - notify_slack
@@ -171,6 +186,8 @@ jobs:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build_dashboard
+      - versioning:
+          target_branch: staging-dashboard
       - docker_build_push:
           docker_image_name: deriv-app-dashboard
           docker_image_latest_tag: latest-staging-dashboard
@@ -185,6 +202,8 @@ jobs:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
+      - versioning:
+          target_branch: production
       - docker_build_push:
           docker_image_latest_tag: latest
       - k8s_deploy:
@@ -200,6 +219,8 @@ jobs:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build_dashboard
+      - versioning:
+          target_branch: production-dashboard
       - docker_build_push:
           docker_image_name: deriv-app-dashboard
           docker_image_latest_tag: latest

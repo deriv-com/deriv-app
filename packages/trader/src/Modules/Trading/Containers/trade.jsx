@@ -12,7 +12,15 @@ import { ChartBottomWidgets, ChartToolbarWidgets, ChartTopWidgets, DigitsWidget 
 import FormLayout from '../Components/Form/form-layout.jsx';
 import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 
-function masterData() {
+/**
+ * ChartInitalMasterData function is responsible to provide a fake/temprary data
+ * for chart graph for the initial request, till the stream engine retrive the
+ * real data back. for now it only provide a fake data, but later we need to
+ * connect it to the websocket to retrive the requested symbol last data
+ */
+// TODO : ChartInitalMasterData should return the inital market last data
+// as a temprary information
+function ChartInitalMasterData() {
     const _date = new Date();
     _date.setMinutes(_date.getMinutes(), 0, 0);
 
@@ -369,7 +377,7 @@ const Chart = props => {
     return (
         <SmartChartWithRef
             initialData={{
-                masterData: masterData(),
+                masterData: ChartInitalMasterData(),
                 activeSymbols: active_symbols,
                 tradingTimes: {
                     trading_times: trading_times,

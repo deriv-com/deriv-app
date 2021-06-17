@@ -1,12 +1,12 @@
 import { action } from 'mobx';
-import CommonResourceBase from '_common/base/common_resources'; // eslint-disable-line import/order
+import CommonResourceBase from '_common/base/common_resource_base'; // eslint-disable-line import/order
 
 let client_store;
 
 const CommonResources = (() => {
     const init = store => {
-        CommonResourceBase.activeSymbols(updateActiveSymbolStore);
-        CommonResourceBase.tradingTimes(updateTradingTimeStore);
+        CommonResourceBase.onActiveSymbolsResponse(updateActiveSymbolStore);
+        CommonResourceBase.onTradingTimesResponse(updateTradingTimeStore);
         client_store = store.client;
     };
 

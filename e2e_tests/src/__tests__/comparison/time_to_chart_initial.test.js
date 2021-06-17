@@ -21,17 +21,17 @@ describe('Time to chart ready in desktop', () => {
         await p.navigate()
         await p.waitForChart();
         let chart_ready_time = Date.now()
-        let performanceTiming = JSON.parse(await p.evaluate(() => JSON.stringify(window.performance.toJSON())));
-        const prod_load_time = (chart_ready_time - performanceTiming.timing.connectStart)/1000;
+        let performance_timing = JSON.parse(await p.evaluate(() => JSON.stringify(window.performance.toJSON())));
+        const prod_load_time = (chart_ready_time - performance_timing.timing.connectStart)/1000;
 
         await p.navigateLocal()
         await p.waitForChart();
         chart_ready_time = Date.now()
-        performanceTiming = JSON.parse(await p.evaluate(() => JSON.stringify(window.performance.toJSON())));
-        const local_load_time = (chart_ready_time - performanceTiming.timing.connectStart)/1000;
+        performance_timing = JSON.parse(await p.evaluate(() => JSON.stringify(window.performance.toJSON())));
+        const local_load_time = (chart_ready_time - performance_timing.timing.connectStart)/1000;
 
         logger.save(expect.getState().testPath, 'Chart ready for desktop:', {
-            'connection start:': performanceTiming.timing.connectStart,
+            'connection start:': performance_timing.timing.connectStart,
             'chart ready time:': chart_ready_time,
             'TTCR:': `${prod_load_time} (s)`,
             'production load time:': `${prod_load_time} (s)`,

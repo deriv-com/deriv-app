@@ -6,6 +6,7 @@ import { toMoment } from '@deriv/shared';
 import { ROOT_CLASS } from '../constants';
 
 const InputField = ({ data }) => {
+    const min_date = toMoment().add(6, 'months').format('YYYY-MM-DD');
     switch (data.type) {
         case 'text':
             return (
@@ -30,7 +31,9 @@ const InputField = ({ data }) => {
                             className={`${ROOT_CLASS}__field`}
                             date_format='YYYY-MM-DD'
                             display_format='DD-MM-YYYY'
-                            min_date={toMoment().add(1, 'days').format('YYYY-MM-DD')}
+                            start_date={min_date}
+                            min_date={min_date}
+                            should_show_today={false}
                             name={data.name}
                             label={`${data.label}${data.required ? '*' : ''}`}
                             error={touched[field.name] && errors[field.name]}

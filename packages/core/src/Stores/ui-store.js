@@ -767,7 +767,7 @@ export default class UIStore extends BaseStore {
             const notification_key = 'install_pwa';
             this.removeNotificationMessage({
                 key: notification_key,
-                should_show_again: false,
+                should_show_again: true,
             });
             this.removeNotificationByKey({ key: notification_key });
         }

@@ -82,7 +82,7 @@ const POISelector = ({
                             idv={idv}
                             handleViewComplete={handleViewComplete}
                             handleBack={handleBack}
-                            /* TODO: add more props here */
+                            selected_country={selected_country}
                         />
                     );
                 case service_code.onfido:

@@ -1,3 +1,3 @@
-import DocumentUpload from './document-upload.jsx';
+import IdvDocumentUpload from './poi-idv-document-upload.jsx';
 
-export default DocumentUpload;
+export default IdvDocumentUpload;

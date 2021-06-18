@@ -39,7 +39,7 @@ module.exports = function (env, argv) {
                     test: /\.m?js/,
                     include: /node_modules/,
                     resolve: {
-                      fullySpecified: false,
+                        fullySpecified: false,
                     },
                 },
                 {
@@ -117,7 +117,10 @@ module.exports = function (env, argv) {
         },
         plugins: [
             new CleanWebpackPlugin(),
-            new MiniCssExtractPlugin({ filename: 'bot-web-ui.main.css' }),
+            new MiniCssExtractPlugin({
+                filename: 'bot.main.[contenthash].css',
+                chunkFilename: 'bot.[name].[contenthash].css',
+            }),
             new StyleLintPlugin({ fix: true }),
             new CopyWebpackPlugin({ patterns: [{ from: 'node_modules/@deriv/bot-skeleton/dist/media', to: 'media' }] }),
             new SpriteLoaderPlugin(),

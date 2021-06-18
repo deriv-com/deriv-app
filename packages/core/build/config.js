@@ -5,7 +5,7 @@ const { transformContentUrlBase } = require('./helpers');
 const copyConfig = base => {
     const patterns = [
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot-web-ui.main.css*'),
+            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/*.css*'),
             to: 'css/',
             flatten: true,
         },
@@ -24,13 +24,8 @@ const copyConfig = base => {
             flatten: true,
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/js/smartcharts/**'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist/*.smartcharts.*'),
             to: 'js/smartcharts/',
-            flatten: true,
-        },
-        {
-            from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/css/smartcharts.css*'),
-            to: 'css/',
             flatten: true,
         },
         {
@@ -42,12 +37,12 @@ const copyConfig = base => {
         },
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/js/**'),
-            to: 'account/js',
+            to: 'js',
             flatten: true,
         },
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/css/**'),
-            to: 'account/css/',
+            to: 'css/',
             flatten: true,
         },
         {
@@ -147,8 +142,6 @@ const htmlOutputConfig = is_release => ({
 
 const htmlInjectConfig = () => ({
     links: [
-        'css/smartcharts.css',
-        'css/bot-web-ui.main.css',
         {
             path: 'manifest.json',
             attributes: {
@@ -178,7 +171,10 @@ const htmlPreloadConfig = () => ({
     fileWhitelist: [/\.css$/],
 });
 
-const cssConfig = () => ({ filename: 'css/core[name].main.css', chunkFilename: 'css/core.[name].[contenthash].css' });
+const cssConfig = () => ({
+    filename: 'css/core.[name].[contenthash].main.css',
+    chunkFilename: 'css/core.chunk.[name].[contenthash].css',
+});
 
 const stylelintConfig = () => ({
     configFile: path.resolve(__dirname, '../.stylelintrc.js'),

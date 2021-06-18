@@ -37,7 +37,7 @@ module.exports = function () {
                                 spriteFilename: svgPath => {
                                     const category = /components\/icon\/([\w-]*)/.exec(svgPath)[1];
 
-                                    return category ? `${category}.[hash].svg` : 'common.[hash].svg';
+                                    return category ? `${category}.[contenthash].svg` : 'common.[contenthash].svg';
                                 },
                                 publicPath: '/icon/sprite/',
                             },

@@ -1,8 +1,6 @@
 import React from 'react';
-import Loadable from 'react-loadable';
+import { routes, makeLazyLoader } from '@deriv/shared';
 import { Loading } from '@deriv/components';
-import { routes } from '@deriv/shared';
-
 import { localize } from '@deriv/translations';
 import Trade from 'Modules/Trading';
 
@@ -14,27 +12,16 @@ const CFD = React.lazy(() => import(/* webpackChunkName: "cfd", webpackPrefetch:
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
-const handleLoading = props => {
-    // 200ms default
-    if (props.pastDelay) {
-        return <Loading />;
+const lazyLoadReportComponent = makeLazyLoader(
+    () => import(/* webpackChunkName: "reports" */ 'Modules/Reports'),
+    props => {
+        // 200ms default
+        if (props.pastDelay) {
+            return <Loading />;
+        }
+        return null;
     }
-    return null;
-};
-
-const makeLazyLoader = importFn => component_name =>
-    Loadable.Map({
-        loader: {
-            ComponentModule: importFn,
-        },
-        render(loaded, props) {
-            const ComponentLazy = loaded.ComponentModule.default[component_name];
-            return <ComponentLazy {...props} />;
-        },
-        loading: handleLoading,
-    });
-
-const lazyLoadReportComponent = makeLazyLoader(() => import(/* webpackChunkName: "reports" */ 'Modules/Reports'));
+);
 
 // Order matters
 const initRoutesConfig = () => {

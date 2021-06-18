@@ -499,12 +499,6 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     removeNotificationByKey({ key }) {
-        // eslint-disable-next-line no-console
-        console.log('');
-        // eslint-disable-next-line no-console
-        console.warn('removeNotificationByKey: ');
-        // eslint-disable-next-line no-console
-        console.log(key);
         this.notifications = this.notifications.filter(n => n.key !== key);
     }
 
@@ -748,12 +742,6 @@ export default class UIStore extends BaseStore {
     @action.bound
     notifyAppInstall(prompt) {
         this.deferred_prompt = prompt;
-        // eslint-disable-next-line no-console
-        console.log('');
-        // eslint-disable-next-line no-console
-        console.warn('Add notification by key in 10 seconds');
-        // eslint-disable-next-line no-console
-        console.log(prompt);
         setTimeout(() => {
             this.addNotificationMessageByKey('install_pwa');
         }, 10000);
@@ -767,7 +755,7 @@ export default class UIStore extends BaseStore {
             const notification_key = 'install_pwa';
             this.removeNotificationMessage({
                 key: notification_key,
-                should_show_again: true,
+                should_show_again: false,
             });
             this.removeNotificationByKey({ key: notification_key });
         }

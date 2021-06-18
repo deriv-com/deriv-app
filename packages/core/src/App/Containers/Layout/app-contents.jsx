@@ -53,12 +53,6 @@ const AppContents = ({
     pageView();
 
     React.useEffect(() => {
-        // eslint-disable-next-line no-console
-        console.log('');
-        // eslint-disable-next-line no-console
-        console.warn('HEYYYYYYYYY');
-        // eslint-disable-next-line no-console
-        console.log('');
         const handleInstallPrompt = e => {
             // Prevent the mini-infobar from appearing on mobile
             e.preventDefault();

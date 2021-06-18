@@ -764,7 +764,12 @@ export default class UIStore extends BaseStore {
         this.deferred_prompt.prompt();
         const choice = await this.deferred_prompt.userChoice;
         if (choice.outcome === 'accepted') {
-            this.removeNotificationByKey({ key: 'install_pwa' });
+            const notification_key = 'install_pwa';
+            this.removeNotificationMessage({
+                key: notification_key,
+                should_show_again: false,
+            });
+            this.removeNotificationByKey({ key: notification_key });
         }
     }
 

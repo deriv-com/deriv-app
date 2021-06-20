@@ -1,0 +1,48 @@
+.platform-onboarding {
+    .dc-table {
+        &__header {
+            height: 8rem;
+            border-bottom: none;
+        }
+
+        &__head {
+            justify-content: center;
+            padding: 1.6rem;
+
+            .dc-icon {
+                margin-right: 8px;
+            }
+        }
+
+        &__footer {
+            .dc-table__row {
+                border-bottom: none;
+            }
+            .platform-table-col {
+                padding: 18px;
+            }
+        }
+    }
+
+    .platform-table-row {
+        grid-template-columns: 22% 38.5% 38.5%;
+    }
+
+    .platform-table-col {
+        padding: 18px 0;
+        justify-content: center;
+    }
+
+    .platform-item {
+        padding: 0 12px;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .dc-btn {
+        display: flex;
+        flex: 1;
+    }
+}

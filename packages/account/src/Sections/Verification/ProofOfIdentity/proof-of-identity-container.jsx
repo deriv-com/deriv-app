@@ -1,7 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { useStateCallback } from '@deriv/components';
-import IdvUploadComplete from 'Components/poi-idv-upload-complete';
 import Unsupported from 'Components/poi-unsupported';
 import POISubmission from './proof-of-identity-submission.jsx';
 import Onfido from './onfido.jsx';
@@ -55,7 +54,6 @@ const ProofOfIdentityContainer = ({
         createVerificationConfig();
     }, [createVerificationConfig]);
 
-    if (true) return <IdvUploadComplete needs_poa={true} />;
     const { idv, onfido, manual, identity_status, identity_last_attempt, needs_poa } = verification_status;
 
     if (identity_status === identity_status_codes.none || require_submission) {

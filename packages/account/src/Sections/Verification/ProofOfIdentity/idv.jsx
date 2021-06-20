@@ -1,5 +1,5 @@
-import * as React from 'react';
-import UploadComplete from 'Components/poi-upload-complete';
+import React from 'react';
+import IdvUploadComplete from 'Components/poi-idv-upload-complete';
 import Expired from 'Components/poi-expired';
 import Verified from 'Components/poi-verified';
 import RejectedReasons from 'Components/poi-rejected-reasons';
@@ -12,8 +12,7 @@ const Idv = ({ idv, handleRequireSubmission, verification_status, redirect_butto
 
     switch (status) {
         case identity_status_codes.pending:
-            // TODO: use IDV component
-            return <UploadComplete needs_poa={needs_poa} redirect_button={redirect_button} />;
+            return <IdvUploadComplete needs_poa={needs_poa} />;
         case identity_status_codes.rejected:
         case identity_status_codes.suspected:
             // TODO: use IDV component

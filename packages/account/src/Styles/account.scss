@@ -1770,6 +1770,9 @@ $MIN_HEIGHT_FLOATING: calc(
     &__redirect {
         width: auto !important;
     }
+    .text {
+        display: block;
+    }
     .btm-spacer {
         margin-bottom: 2.4rem;
     }

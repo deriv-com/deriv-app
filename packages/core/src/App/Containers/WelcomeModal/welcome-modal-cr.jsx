@@ -1,7 +1,7 @@
 import React from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'Stores/connect';
-import { Modal, ThemedScrollbars } from '@deriv/components';
+import { Dialog, ThemedScrollbars } from '@deriv/components';
 import Welcome from './welcome-cr.jsx';
 
 const WelcomeModal = props => {
@@ -16,11 +16,11 @@ const WelcomeModal = props => {
     );
 
     return (
-        <Modal width='760px' className='welcome welcome-cr' is_open has_close_icon={false} has_outer_content>
+        <Dialog is_visible className='welcome welcome-cr'>
             <ThemedScrollbars height={700}>
                 <Welcome switchPlatform={switchPlatform} />
             </ThemedScrollbars>
-        </Modal>
+        </Dialog>
     );
 };
 

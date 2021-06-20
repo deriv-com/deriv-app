@@ -9,6 +9,20 @@
 
 .welcome-cr {
     background-color: var(--general-section-4);
+
+    .dc-dialog__dialog {
+        background-color: var(--general-section-4);
+        max-width: 100%;
+        max-height: 100%;
+        box-shadow: none;
+        margin-top: 7rem;
+        width: 588px;
+        padding: 0;
+    }
+
+    .dc-dialog__content {
+        max-width: 100%;
+    }
 }
 
 .welcome {

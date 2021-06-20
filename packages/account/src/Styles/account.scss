@@ -1729,6 +1729,15 @@ $MIN_HEIGHT_FLOATING: calc(
         align-items: center;
         margin-top: 3.8rem;
     }
+    &__container-no-margin {
+        margin-top: 0;
+    }
+    &__inner-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
     &__header {
         margin-bottom: 1.6rem;
     }
@@ -1741,6 +1750,22 @@ $MIN_HEIGHT_FLOATING: calc(
         .country-dropdown {
             min-height: 35.2rem;
         }
+    }
+    &__sample-container {
+        width: 26.1rem;
+        margin-left: 16px;
+    }
+    &__image-container {
+        width: fit-content;
+        height: fit-content;
+        padding: 8px;
+        border-radius: 4px;
+        background-color: $color-grey-2;
+    }
+    &__image {
+        max-width: 31.5rem;
+        border-radius: 4px;
+        object-fit: contain;
     }
     &__redirect {
         width: auto !important;

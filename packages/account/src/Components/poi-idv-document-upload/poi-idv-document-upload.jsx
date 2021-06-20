@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize } from '@deriv/translations';
@@ -9,6 +10,7 @@ import DocumentUploadLogo from '../../Assets/ic-document-upload-icon.svg';
 
 const IdvDocumentUpload = ({ selected_country, handleViewComplete, handleBack }) => {
     const [document_list, setDocumentList] = React.useState([]);
+    const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
 
     const document_data = selected_country.identity.services.idv.documents_supported;
@@ -45,7 +47,9 @@ const IdvDocumentUpload = ({ selected_country, handleViewComplete, handleBack })
             const format_regex = new RegExp(selected_document.value);
             if (!format_regex.test(document_number)) {
                 errors.document_number = localize(
-                    `Please enter the correct format. Example: ${getDocumentData(selected_document.id, document_type)}`
+                    `Please enter the correct format. Example: ${
+                        getDocumentData(country_code, selected_document.id).example_format
+                    }`
                 );
             }
         }
@@ -71,83 +75,111 @@ const IdvDocumentUpload = ({ selected_country, handleViewComplete, handleBack })
                     <Text className='btm-spacer'>
                         {localize('Please select the document type and enter the document number.')}
                     </Text>
-                    <fieldset className='proof-of-identity__fieldset'>
-                        <Field name='document'>
-                            {({ field }) => (
-                                <React.Fragment>
-                                    <DesktopWrapper>
-                                        <div className='document-dropdown'>
-                                            <Autocomplete
-                                                {...field}
-                                                name='document_type'
-                                                data-lpignore='true'
-                                                error={touched.document_type && errors.document_type}
-                                                autoComplete='off'
-                                                type='text'
-                                                label={localize('Choose the document type')}
-                                                list_items={document_list}
-                                                value={values.document_type}
-                                                onChange={handleChange}
-                                                onItemSelection={({ text }) =>
-                                                    setFieldValue('document_type', text || '', true)
-                                                }
-                                                required
-                                            />
-                                        </div>
-                                    </DesktopWrapper>
-                                    <MobileWrapper>
-                                        <SelectNative
+                    <div className='proof-of-identity__inner-container'>
+                        <div
+                            className={classNames('proof-of-identity__container', {
+                                'proof-of-identity__container-no-margin': document_image,
+                            })}
+                        >
+                            <fieldset className='proof-of-identity__fieldset'>
+                                <Field name='document'>
+                                    {({ field }) => (
+                                        <React.Fragment>
+                                            <DesktopWrapper>
+                                                <div className='document-dropdown'>
+                                                    <Autocomplete
+                                                        {...field}
+                                                        name='document_type'
+                                                        data-lpignore='true'
+                                                        error={touched.document_type && errors.document_type}
+                                                        autoComplete='off'
+                                                        type='text'
+                                                        label={localize('Choose the document type')}
+                                                        list_items={document_list}
+                                                        value={values.document_type}
+                                                        onChange={handleChange}
+                                                        onItemSelection={({ text }) => {
+                                                            setFieldValue('document_type', text || '', true);
+                                                            const selected_document = document_list.find(
+                                                                d => d.text === text
+                                                            );
+                                                            const { sample_image } = getDocumentData(
+                                                                country_code,
+                                                                selected_document.id
+                                                            );
+                                                            setDocumentImage(sample_image || null);
+                                                        }}
+                                                        required
+                                                    />
+                                                </div>
+                                            </DesktopWrapper>
+                                            <MobileWrapper>
+                                                <SelectNative
+                                                    {...field}
+                                                    name='document_type'
+                                                    error={touched.document_type && errors.document_type}
+                                                    label={localize('Choose the document type')}
+                                                    list_items={document_list}
+                                                    value={values.document_number}
+                                                    onChange={e => {
+                                                        handleChange(e);
+                                                        setFieldValue('document_type', e.target.value, true);
+                                                    }}
+                                                    onItemSelection={({ text }) =>
+                                                        setFieldValue('document_type', text || '', true)
+                                                    }
+                                                    onKeyup={e => {
+                                                        setFieldValue(
+                                                            'document_number',
+                                                            formatInput(
+                                                                getDocumentData(country_code, values.document_type)
+                                                                    .sample_format,
+                                                                e.target.value,
+                                                                '-'
+                                                            ),
+                                                            true
+                                                        );
+                                                    }}
+                                                    use_text={true}
+                                                    required
+                                                />
+                                            </MobileWrapper>
+                                        </React.Fragment>
+                                    )}
+                                </Field>
+                            </fieldset>
+                            <fieldset className='proof-of-identity__fieldset'>
+                                <Field name='document_number'>
+                                    {({ field }) => (
+                                        <Input
                                             {...field}
-                                            name='document_type'
-                                            error={touched.document_type && errors.document_type}
-                                            label={localize('Choose the document type')}
-                                            list_items={document_list}
+                                            name='document_number'
+                                            disabled={is_input_disable}
+                                            error={touched.document_number && errors.document_number}
+                                            autoComplete='off'
+                                            placeholder='Enter your document number'
                                             value={values.document_number}
-                                            onChange={e => {
-                                                handleChange(e);
-                                                setFieldValue('document_type', e.target.value, true);
-                                            }}
-                                            onItemSelection={({ text }) =>
-                                                setFieldValue('document_type', text || '', true)
-                                            }
-                                            onKeyup={e => {
-                                                setFieldValue(
-                                                    'document_number',
-                                                    formatInput(
-                                                        getDocumentData(country_code, values.document_type)
-                                                            .sample_format,
-                                                        e.target.value,
-                                                        '-'
-                                                    ),
-                                                    true
-                                                );
-                                            }}
-                                            use_text={true}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
                                             required
                                         />
-                                    </MobileWrapper>
-                                </React.Fragment>
-                            )}
-                        </Field>
-                    </fieldset>
-                    <fieldset className='proof-of-identity__fieldset'>
-                        <Field name='document_number'>
-                            {({ field }) => (
-                                <Input
-                                    {...field}
-                                    name='document_number'
-                                    disabled={is_input_disable}
-                                    error={touched.document_number && errors.document_number}
-                                    autoComplete='off'
-                                    placeholder='Enter your document number'
-                                    value={values.document_number}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    required
-                                />
-                            )}
-                        </Field>
-                    </fieldset>
+                                    )}
+                                </Field>
+                            </fieldset>
+                        </div>
+                        {document_image && (
+                            <div className='proof-of-identity__sample-container'>
+                                <Text weight='bold'>{localize('Sample:')}</Text>
+                                <div className='proof-of-identity__image-container'>
+                                    <img
+                                        className='proof-of-identity__image'
+                                        src={document_image}
+                                        alt='document sample image'
+                                    />
+                                </div>
+                            </div>
+                        )}
+                    </div>
                     <FormFooter>
                         <Button className='back-btn' type='button' has_effect large secondary>
                             <BackButtonIcon className='back-btn' onClick={handleBack} /> {localize('Go Back')}

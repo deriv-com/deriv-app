@@ -1,7 +1,7 @@
 import React from 'react';
 import { WS } from 'Services/ws-methods';
 import CountrySelector from 'Components/poi-country-selector';
-import IdvUpload from 'Components/poi-idv-document-upload';
+import IdvDocumentUpload from 'Components/poi-idv-document-upload';
 import Unsupported from 'Components/poi-unsupported';
 import UploadComplete from 'Components/poi-upload-complete';
 import OnfidoUpload from './onfido-sdk-view.jsx';
@@ -68,7 +68,7 @@ const POISelector = ({
             switch (submission_service) {
                 case service_code.idv:
                     return (
-                        <IdvUpload
+                        <IdvDocumentUpload
                             idv={idv}
                             handleViewComplete={handleViewComplete}
                             handleBack={handleBack}

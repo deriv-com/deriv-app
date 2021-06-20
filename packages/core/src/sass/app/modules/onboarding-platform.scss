@@ -1,8 +1,24 @@
 .platform-onboarding {
+    padding: 20px;
+    overflow: scroll;
+    height: calc(100vh - 48px);
+
+    @media (min-width: 992px) {
+        padding: 0;
+    }
+
     .dc-table {
         &__header {
             height: 8rem;
-            border-bottom: none;
+            display: grid;
+            grid-template-columns: 50% 50%;
+            border-bottom-width: 0;
+            background-color: #fff;
+
+            @media (min-width: 992px) {
+                grid-template-columns: 22% 38.5% 38.5%;
+                border-bottom-width: 1px;
+            }
         }
 
         &__head {
@@ -17,19 +33,48 @@
         &__footer {
             .dc-table__row {
                 border-bottom: none;
+                padding-top: 18px;
             }
-            .platform-table-col {
-                padding: 18px;
+
+            .platform-table-row {
+                .platform-table-col:first-of-type {
+                    position: initial;
+                }
             }
         }
     }
 
     .platform-table-row {
-        grid-template-columns: 22% 38.5% 38.5%;
+        grid-template-columns: 50% 50%;
+        padding-top: 31px;
+        position: relative;
+
+        @media (min-width: 992px) {
+            justify-content: center;
+            grid-template-columns: 22% 38.5% 38.5%;
+        }
+
+        .platform-table-col:first-of-type {
+            position: absolute;
+        }
+    }
+    .platform-table-row-items {
+        @media (min-width: 992px) {
+            grid-template-columns: 22% 38.5% 38.5%;
+        }
+
+        .platform-table-col {
+            justify-content: initial;
+
+            @media (min-width: 992px) {
+                justify-content: center;
+            }
+        }
     }
 
     .platform-table-col {
         padding: 18px 0;
+
         justify-content: center;
     }
 

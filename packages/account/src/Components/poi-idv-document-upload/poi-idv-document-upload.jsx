@@ -11,14 +11,14 @@ const IdvDocumentUpload = ({ selected_country, handleViewComplete, handleBack })
     const [document_list, setDocumentList] = React.useState([]);
     const [is_input_disable, setInputDisable] = React.useState(true);
 
-    const document_data = selected_country.identity.services.idv.document_supported;
+    const document_data = selected_country.identity.services.idv.documents_supported;
     const country_code = selected_country.value;
 
     React.useEffect(() => {
         setDocumentList(
             Object.keys(document_data).map(i => {
                 const { display_name, format } = document_data[i];
-                return { text: display_name, value: format };
+                return { id: i, text: display_name, value: format };
             })
         );
     }, [document_data]);
@@ -41,10 +41,11 @@ const IdvDocumentUpload = ({ selected_country, handleViewComplete, handleBack })
         if (!document_number) {
             errors.document_number = localize('Please enter your document number.');
         } else {
-            const format_regex = new RegExp(document_list.find(d => d.text === document_type).value);
+            const selected_document = document_list.find(d => d.text === document_type);
+            const format_regex = new RegExp(selected_document.value);
             if (!format_regex.test(document_number)) {
                 errors.document_number = localize(
-                    `Please enter the correct format. Example: ${getDocumentData(country_code, document_type)}`
+                    `Please enter the correct format. Example: ${getDocumentData(selected_document.id, document_type)}`
                 );
             }
         }

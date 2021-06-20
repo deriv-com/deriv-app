@@ -4,7 +4,7 @@ const idv_document_data = {
             example_format: '123456',
             sample_image: 'ke_alien_card.png',
         },
-        national_identity_card: {
+        national_id: {
             example_format: '123456789',
             sample_image: 'ke_national_identity_card.png',
         },

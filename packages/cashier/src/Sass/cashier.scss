@@ -61,6 +61,9 @@
         &--align-left {
             text-align: left;
         }
+        &-padding {
+            padding: 1.6rem;
+        }
         &--align-center {
             text-align: center;
             display: flex;
@@ -71,7 +74,6 @@
             @include mobile {
                 width: 100vw;
                 margin-top: 4rem;
-                padding: 1.6rem;
 
                 .dc-collapsible {
                     position: relative;

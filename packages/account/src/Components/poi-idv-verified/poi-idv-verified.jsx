@@ -2,17 +2,14 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import PoaButton from 'Components/poa-button';
-import IdvDocumentPending from '../../Assets/ic-idv-document-pending.svg';
+import IdvDocumentVerified from '../../Assets/ic-idv-verified.svg';
 
-const IdvUploadComplete = ({ needs_poa }) => {
+const IdvVerified = ({ needs_poa }) => {
     return (
         <div className='proof-of-identity__container'>
-            <IdvDocumentPending className='btm-spacer' />
+            <IdvDocumentVerified className='btm-spacer' />
             <Text className='proof-of-identity__header' align='center' weight='bold'>
-                {localize("We've received your document number")}
-            </Text>
-            <Text className='text' size='xs' align='center'>
-                {localize("We'll process your details within a few minutes and notify its' status via email.")}
+                {localize("We've successfully verified your document number")}
             </Text>
             {needs_poa && (
                 <React.Fragment>
@@ -26,4 +23,4 @@ const IdvUploadComplete = ({ needs_poa }) => {
     );
 };
 
-export default IdvUploadComplete;
+export default IdvVerified;

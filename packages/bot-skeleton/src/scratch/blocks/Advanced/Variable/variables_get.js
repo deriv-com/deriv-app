@@ -30,6 +30,30 @@ Blockly.Blocks.variables_get = {
             description: '',
         };
     },
+    onchange(event) {
+        if (event.type === Blockly.Events.VAR_RENAME) {
+            const all_blocks = this.workspace.getAllBlocks();
+            const function_blocks = all_blocks.filter(block => block.category_ === 'custom_functions');
+            const old_param = event.oldName;
+            const new_param = event.newName;
+            function_blocks.forEach(block => {
+                if (block.arguments?.length) {
+                    const param_index = block.arguments.findIndex(item => item === old_param);
+                    if (param_index !== -1) {
+                        block.arguments[param_index] = new_param;
+                        const param_field = block.getField('PARAMS');
+                        if (param_field) {
+                            block.setFieldValue(`${localize('with: ')} ${block.arguments.join(', ')}`, 'PARAMS');
+                        }
+                        const with_field = block.getField('WITH');
+                        if (with_field) {
+                            block.updateShape();
+                        }
+                    }
+                }
+            });
+        }
+    },
 };
 
 Blockly.JavaScript.variables_get = block => {

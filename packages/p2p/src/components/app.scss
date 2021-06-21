@@ -37,6 +37,12 @@
             flex: 1;
         }
 
+        .dc-themed-scrollbars-wrapper li {
+            @include mobile {
+                flex: 1;
+            }
+        }
+
         > .dc-tabs__content {
             display: flex;
             flex-direction: column;

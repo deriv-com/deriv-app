@@ -23,8 +23,6 @@ const ResetTradingPassword = ({
 
         WS.tradingPlatformPasswordReset(params).then(async response => {
             if (response.error) {
-                // eslint-disable-next-line no-console
-                console.error(response.error.message);
                 actions.setStatus({ error_msg: response.error.message, error_code: response.error.code });
                 setDialogTitleFunc(true);
             } else {

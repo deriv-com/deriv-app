@@ -66,7 +66,7 @@ const PaymentAgentList = ({
     };
 
     return (
-        <div className='cashier__wrapper--align-left'>
+        <div className='cashier__wrapper--align-left cashier__wrapper-padding'>
             {error?.code ? (
                 <Error error={error} />
             ) : (

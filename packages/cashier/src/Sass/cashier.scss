@@ -40,10 +40,6 @@
     &__wrapper {
         text-align: center;
 
-        @include desktop {
-            max-width: 672px;
-        }
-
         &,
         &--align-left {
             color: var(--text-general);
@@ -61,6 +57,9 @@
         &--align-left {
             text-align: left;
         }
+        &-padding {
+            padding: 1.6rem;
+        }
         &--align-center {
             text-align: center;
             display: flex;
@@ -71,7 +70,6 @@
             @include mobile {
                 width: 100vw;
                 margin-top: 4rem;
-                padding: 1.6rem;
 
                 .dc-collapsible {
                     position: relative;
@@ -254,6 +252,10 @@
         align-self: center;
         @include mobile {
             font-size: var(--text-size-xxs);
+
+            &-by-name {
+                flex: 1;
+            }
         }
     }
     &__text {
@@ -839,6 +841,10 @@
         padding-left: 1.6rem !important;
         margin-bottom: 0 !important;
         flex: 1;
+
+        @include mobile {
+            max-width: 72vw;
+        }
     }
     &__filter {
         min-width: 22.8rem;

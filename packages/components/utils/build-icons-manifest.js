@@ -18,7 +18,7 @@ function validateIcons(svgs_map) {
 
         let category = 'common';
         const category_match = new RegExp(`^Ic(${Object.keys(svgs_map).join('|')})`, 'gi').exec(icon_name);
-        if (category_match?.[1]) {
+        if (category_match && category_match[1]) {
             category = getKebabCase(category_match[1]);
         }
 

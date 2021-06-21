@@ -4,7 +4,7 @@ import React from 'react';
 import { Button, Checkbox, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { getErrorMessages, redirectToSignUp } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import SignupSeparatorContainer from '../AccountSignupModal/signup-separator-container.jsx';
+import SignupSeparatorContainer from './signup-separator-container.jsx';
 import 'Sass/app/modules/account-signup.scss';
 
 const AccountSignupPassword = ({

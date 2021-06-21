@@ -12,7 +12,6 @@ const Redirect = ({
     hasAnyRealAccount,
     openRealAccountSignup,
     setResetTradingPasswordModalOpen,
-    toggleAccountSignupModal,
     toggleResetPasswordModal,
 }) => {
     const url_query_string = window.location.search;
@@ -29,7 +28,6 @@ const Redirect = ({
             });
             redirected_to_route = true;
             sessionStorage.removeItem('redirect_url');
-            toggleAccountSignupModal(true);
             break;
         }
         case 'reset_password': {
@@ -109,7 +107,6 @@ export default withRouter(
         hasAnyRealAccount: client.hasAnyRealAccount,
         openRealAccountSignup: ui.openRealAccountSignup,
         setResetTradingPasswordModalOpen: ui.setResetTradingPasswordModalOpen,
-        toggleAccountSignupModal: ui.toggleAccountSignupModal,
         toggleResetPasswordModal: ui.toggleResetPasswordModal,
     }))(Redirect)
 );

@@ -1721,10 +1721,6 @@ export default class ClientStore extends BaseStore {
         } else {
             LocalStore.remove(`verification_code.${action}`);
         }
-        if (action === 'signup') {
-            // TODO: add await if error handling needs to happen before AccountSignup is initialised
-            this.fetchResidenceList(); // Prefetch for use in account signup process
-        }
     }
 
     @action.bound

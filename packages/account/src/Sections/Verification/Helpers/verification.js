@@ -7,12 +7,16 @@ export const populateVerificationStatus = account_status => {
 
     const allow_document_upload = account_status.status.some(status => status === 'allow_document_upload');
     const identity_status = identity.status;
-    // TODO: Temporary disable until API is ready
-    // const identity_last_attempt = identity.attempts[0];
 
-    const idv = identity.services.idv;
-    const onfido = identity.services.onfido;
-    const manual = identity.services.manual;
+    const { idv, onfido, manual } = identity.services;
+    // TODO: Enable when API is ready
+    // const identity_last_attempt = identity.attempts.latest;
+    const identity_last_attempt = {
+        service: 'onfido',
+        country_code: 'za',
+        time: '0000000',
+        id: 2,
+    };
 
     return {
         allow_document_upload,
@@ -25,6 +29,6 @@ export const populateVerificationStatus = account_status => {
         onfido,
         manual,
         identity_status,
-        // identity_last_attempt,
+        identity_last_attempt,
     };
 };

@@ -10,7 +10,6 @@ const CountrySelector = ({ residence_list, selected_country, setSelectedCountry,
     React.useEffect(() => {
         if (country_list.length === 0) {
             const countries = residence_list.filter(r => !r.disabled);
-
             setCountryList(countries);
         }
     }, []);

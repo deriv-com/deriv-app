@@ -316,14 +316,14 @@ const getModules = ({ is_dashboard }) => {
                     path: routes.cashier_deposit,
                     component: Cashier,
                     getTitle: () => localize('Deposit'),
-                    icon_component: 'IcWalletAdd',
+                    icon_component: 'IcCashierAdd',
                     default: true,
                 },
                 {
                     path: routes.cashier_withdrawal,
                     component: Cashier,
                     getTitle: () => localize('Withdrawal'),
-                    icon_component: 'IcWalletMinus',
+                    icon_component: 'IcCashierMinus',
                 },
                 {
                     path: routes.cashier_pa,

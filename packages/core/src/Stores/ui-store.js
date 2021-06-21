@@ -417,6 +417,11 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
+    resetRealAccountSignupTarget() {
+        this.real_account_signup_target = '';
+    }
+
+    @action.bound
     setManageRealAccountActiveTabIndex(index) {
         this.manage_real_account_tab_index = index;
     }

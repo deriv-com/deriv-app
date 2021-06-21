@@ -26,6 +26,8 @@ const AddOrManageAccounts = props => {
         onSuccessSetAccountCurrency,
         setCurrency,
         setLoading,
+        resetRealAccountSignupTarget,
+        is_add_crypto,
     } = props;
 
     const initial_active_index =
@@ -71,6 +73,7 @@ const AddOrManageAccounts = props => {
                     .then(() => {
                         onSuccessSetAccountCurrency('', value);
                         setSubmitting(false);
+                        resetRealAccountSignupTarget();
                     })
                     .catch(error => {
                         onError(error);
@@ -106,6 +109,26 @@ const AddOrManageAccounts = props => {
             />
         </div>
     );
+
+    if (is_add_crypto)
+        return (
+            <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
+                <div
+                    className={classNames('add-crypto-currency', {
+                        'account-wizard--disabled': hasNoAvailableCrypto(),
+                    })}
+                >
+                    <AddCryptoCurrency
+                        className='account-wizard__body'
+                        onSubmit={updateValue}
+                        value={form_value}
+                        form_error={form_error}
+                        should_show_crypto_only
+                        hasNoAvailableCrypto={hasNoAvailableCrypto}
+                    />
+                </div>
+            </ThemedScrollbars>
+        );
 
     return (
         <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
@@ -177,6 +200,7 @@ AddOrManageAccounts.propTypes = {
     can_change_fiat_currency: PropTypes.bool,
     current_currency_type: PropTypes.string,
     is_loading: PropTypes.bool,
+    is_add_crypto: PropTypes.bool,
     setLoading: PropTypes.func,
 };
 
@@ -190,4 +214,5 @@ export default connect(({ client, ui }) => ({
     manage_real_account_tab_index: ui.manage_real_account_tab_index,
     setCurrency: client.setAccountCurrency,
     createCryptoAccount: client.createCryptoAccount,
+    resetRealAccountSignupTarget: ui.resetRealAccountSignupTarget,
 }))(AddOrManageAccounts);

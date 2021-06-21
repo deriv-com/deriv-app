@@ -6,8 +6,8 @@ import { Dialog } from '@deriv/components';
 import { connect } from 'Stores/connect';
 
 const AccountPromptDialog = ({
-    accounts_list,
     continueRoute,
+    currency,
     is_confirmed,
     last_location,
     onCancel,
@@ -16,8 +16,6 @@ const AccountPromptDialog = ({
 }) => {
     React.useEffect(continueRoute, [is_confirmed, last_location]);
 
-    const non_crypto_accounts = accounts_list.filter(x => !x.is_crypto);
-    const currency = non_crypto_accounts.map(x => x.currency)[0];
     const is_crypto = !!currency && isCryptocurrency(currency);
 
     return (
@@ -30,21 +28,20 @@ const AccountPromptDialog = ({
             is_visible={should_show}
         >
             {is_crypto ? (
+                <Localize i18n_default_text='To deposit cryptocurrency, switch your account.' />
+            ) : (
                 <Localize
                     i18n_default_text='To deposit money, please switch to your {{currency_symbol}} account.'
                     values={{
                         currency_symbol: currency?.toUpperCase(),
                     }}
                 />
-            ) : (
-                <Localize i18n_default_text='To deposit cryptocurrency, switch your account.' />
             )}
         </Dialog>
     );
 };
 
 AccountPromptDialog.propTypes = {
-    accounts_list: PropTypes.array,
     continueRoute: PropTypes.func,
     is_confirmed: PropTypes.bool,
     last_location: PropTypes.string,
@@ -53,9 +50,9 @@ AccountPromptDialog.propTypes = {
     should_show: PropTypes.bool,
 };
 
-export default connect(({ modules }) => ({
-    accounts_list: modules.cashier.config.account_transfer.accounts_list,
+export default connect(({ client, modules }) => ({
     continueRoute: modules.cashier.account_prompt_dialog.continueRoute,
+    currency: client.currency,
     is_confirmed: modules.cashier.account_prompt_dialog.is_confirmed,
     last_location: modules.cashier.account_prompt_dialog.last_location,
     onCancel: modules.cashier.account_prompt_dialog.onCancel,

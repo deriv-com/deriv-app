@@ -18,11 +18,14 @@ const CashierDefault = ({
     is_payment_agent_visible,
     is_switching,
     openRealAccountSignup,
+    resetIsConfirmed,
+    shouldNavigateAfterChooseCrypto,
+    shouldNavigateAfterPrompt,
     setIsCashierDefault,
     setIsDeposit,
     setPromptHandler,
-    shouldNavigateAfterChooseCrypto,
-    shouldNavigateAfterPrompt,
+    setDepositTarget,
+    setShouldShowAllAvailableCurrencies,
 }) => {
     const history = useHistory();
     const is_crypto = !!currency && isCryptocurrency(currency);
@@ -31,6 +34,7 @@ const CashierDefault = ({
 
     React.useEffect(() => {
         setIsCashierDefault(true);
+        resetIsConfirmed();
         return () => setIsCashierDefault(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -41,6 +45,7 @@ const CashierDefault = ({
     };
 
     const onClickDepositCash = () => {
+        setDepositTarget(routes.cashier_deposit);
         if (!is_crypto) {
             setPromptHandler(true, shouldNavigateAfterPrompt);
             setIsDeposit(true);
@@ -57,12 +62,12 @@ const CashierDefault = ({
     };
 
     const onClickDepositCrypto = () => {
+        setDepositTarget(routes.cashier_deposit);
         if (!is_crypto) {
             if (has_crypto_account) {
-                // shouldNavigateAfterPrompt(routes.cashier_deposit, 'deposit');
                 openRealAccount(routes.cashier_deposit);
             } else {
-                openRealAccountSignup('deposit_crypto');
+                openRealAccountSignup('add');
             }
         }
         if (is_crypto) {
@@ -71,6 +76,7 @@ const CashierDefault = ({
     };
 
     const onClickOnramp = () => {
+        setDepositTarget(routes.cashier_onramp);
         if (is_crypto) {
             openRealAccount(routes.cashier_onramp);
         }
@@ -79,24 +85,27 @@ const CashierDefault = ({
                 // shouldNavigateAfterPrompt(routes.cashier_onramp, 'onramp');
                 openRealAccount(routes.cashier_onramp);
             } else {
-                openRealAccountSignup('deposit_crypto');
+                openRealAccountSignup('add');
             }
         }
     };
 
     const onClickPaymentAgent = () => {
+        setShouldShowAllAvailableCurrencies(true);
+        setDepositTarget(routes.cashier_pa);
         openRealAccount(routes.cashier_pa);
     };
 
     const onClickDp2p = () => {
+        setDepositTarget(routes.cashier_p2p);
         if (!is_crypto) {
             history.push(routes.cashier_p2p);
         }
         if (is_crypto) {
             if (has_fiat_account) {
-                shouldNavigateAfterPrompt(routes.cashier_p2p, 'P2P');
+                shouldNavigateAfterPrompt(routes.cashier_p2p, 'DP2P');
             } else {
-                openRealAccountSignup('deposit_crypto');
+                openRealAccountSignup('deposit_cash');
             }
         }
     };
@@ -109,7 +118,7 @@ const CashierDefault = ({
         if (is_payment_agent_visible) {
             options.push(Providers.createPaymentAgentProvider(onClickPaymentAgent));
         }
-        if (!is_eu) {
+        if (!is_eu && currency === 'USD') {
             options.push(Providers.createDp2pProvider(onClickDp2p));
         }
         return options;
@@ -166,11 +175,11 @@ CashierDefault.propTypes = {
     is_payment_agent_visible: PropTypes.bool,
     is_switching: PropTypes.bool,
     openRealAccountSignup: PropTypes.func,
+    shouldNavigateAfterChooseCrypto: PropTypes.bool,
+    shouldNavigateAfterPrompt: PropTypes.bool,
     setIsCashierDefault: PropTypes.func,
     setIsDeposit: PropTypes.func,
     setPromptHandler: PropTypes.func,
-    shouldNavigateAfterChooseCrypto: PropTypes.bool,
-    shouldNavigateAfterPrompt: PropTypes.bool,
 };
 
 export default connect(({ client, modules, ui }) => ({
@@ -183,9 +192,12 @@ export default connect(({ client, modules, ui }) => ({
     is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
     is_switching: client.is_switching,
     openRealAccountSignup: ui.openRealAccountSignup,
+    resetIsConfirmed: modules.cashier.account_prompt_dialog.resetIsConfirmed,
+    shouldNavigateAfterChooseCrypto: ui.shouldNavigateAfterChooseCrypto,
+    shouldNavigateAfterPrompt: modules.cashier.account_prompt_dialog.shouldNavigateAfterPrompt,
     setIsCashierDefault: modules.cashier.setIsCashierDefault,
     setIsDeposit: modules.cashier.setIsDeposit,
     setPromptHandler: ui.setPromptHandler,
-    shouldNavigateAfterChooseCrypto: ui.shouldNavigateAfterChooseCrypto,
-    shouldNavigateAfterPrompt: modules.cashier.account_prompt_dialog.shouldNavigateAfterPrompt,
+    setDepositTarget: modules.cashier.setDepositTarget,
+    setShouldShowAllAvailableCurrencies: modules.cashier.setShouldShowAllAvailableCurrencies,
 }))(CashierDefault);

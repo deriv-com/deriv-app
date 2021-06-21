@@ -24,6 +24,11 @@ export default class AccountPromptDialogStore {
     }
 
     @action.bound
+    resetIsConfirmed() {
+        this.is_confirmed = false;
+    }
+
+    @action.bound
     async onConfirm() {
         this.should_show = false;
         this.is_confirmed = true;

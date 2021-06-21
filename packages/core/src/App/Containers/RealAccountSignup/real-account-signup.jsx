@@ -55,8 +55,12 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
 };
 
 const RealAccountSignup = ({
+    available_crypto_currencies,
     closeRealAccountSignup,
+    continueRoute,
     currency,
+    deposit_target,
+    has_fiat,
     has_real_account,
     history,
     is_belgium_residence,
@@ -65,11 +69,10 @@ const RealAccountSignup = ({
     is_real_acc_signup_on,
     real_account_signup_target,
     routing_history,
+    setIsDeposit,
     setParams,
     state_index,
     state_value,
-    has_fiat,
-    available_crypto_currencies,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -97,10 +100,12 @@ const RealAccountSignup = ({
                     is_loading={local_props.is_loading}
                     setLoading={setLoading}
                     onError={showErrorModal}
+                    is_add_crypto={local_props.real_account_signup_target === 'add'}
                 />
             ),
             title: local_props =>
-                local_props.has_fiat && local_props.available_crypto_currencies?.length === 0
+                (local_props.real_account_signup_target === 'add' && localize('Create a cryptocurrency account')) ||
+                (local_props.has_fiat && local_props.available_crypto_currencies?.length === 0)
                     ? localize('Manage account')
                     : localize('Add or manage account'),
         },
@@ -183,6 +188,14 @@ const RealAccountSignup = ({
 
     const closeModalThenOpenCashier = () => {
         closeRealAccountSignup();
+        continueRoute();
+        if (real_account_signup_target === 'add') {
+            history.push(deposit_target);
+            if (deposit_target === routes.cashier_deposit) {
+                setIsDeposit(true);
+            }
+            return;
+        }
         history.push(routes.cashier_deposit);
     };
 
@@ -271,6 +284,11 @@ const RealAccountSignup = ({
             active_modal_index_no = modal_pages_indices.choose_crypto_currency;
             return active_modal_index_no;
         }
+
+        if (real_account_signup_target === 'add') {
+            active_modal_index_no = modal_pages_indices.add_or_manage_account;
+            return active_modal_index_no;
+        }
         if (state_value.active_modal_index === -1) {
             if (has_real_account && currency && getIsManageTarget()) {
                 active_modal_index_no = modal_pages_indices.add_or_manage_account;
@@ -337,7 +355,12 @@ const RealAccountSignup = ({
                     width={!has_close_icon ? 'auto' : '904px'}
                 >
                     {is_real_acc_signup_on && (
-                        <ModalContent state_value={state_value} passthrough={state_index} is_loading={is_loading} />
+                        <ModalContent
+                            state_value={state_value}
+                            passthrough={state_index}
+                            is_loading={is_loading}
+                            real_account_signup_target={real_account_signup_target}
+                        />
                     )}
                 </Modal>
             </DesktopWrapper>
@@ -370,9 +393,13 @@ const RealAccountSignup = ({
     );
 };
 
-export default connect(({ ui, client, common }) => ({
+export default connect(({ ui, client, common, modules }) => ({
+    available_crypto_currencies: client.available_crypto_currencies,
+    has_fiat: client.has_fiat,
     has_real_account: client.has_active_real_account,
+    continueRoute: modules.cashier.continueRoute,
     currency: client.currency,
+    deposit_target: modules.cashier.deposit_target,
     is_eu: client.is_eu,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     real_account_signup_target: ui.real_account_signup_target,
@@ -381,8 +408,7 @@ export default connect(({ ui, client, common }) => ({
     residence: client.residence,
     is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
     is_belgium_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
+    setIsDeposit: modules.cashier.setIsDeposit,
     state_value: ui.real_account_signup,
     routing_history: common.app_routing_history,
-    has_fiat: client.has_fiat,
-    available_crypto_currencies: client.available_crypto_currencies,
 }))(withRouter(RealAccountSignup));

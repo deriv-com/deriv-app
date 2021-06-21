@@ -18,59 +18,49 @@ const ChooseCryptoCurrency = ({
     currency_title,
     legal_allowed_currencies,
     openRealAccountSignup,
-    setManageRealAccountActiveTabIndex,
     switchAccount,
+    should_show_all_available_currencies,
+    setShouldShowAllAvailableCurrencies,
 }) => {
-    const getReorderedCryptoCurrencies = () => {
-        const reorderCryptoCurrencies = reorderCurrencies(
+    React.useEffect(() => {
+        return () => setShouldShowAllAvailableCurrencies(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const has_all_cryptos = () => {
+        return (
             legal_allowed_currencies.filter(
                 currency =>
-                    currency.type === CRYPTO_CURRENCY_TYPE &&
-                    !available_crypto_currencies.some(x => x.value === currency.value)
-            ),
-            CRYPTO_CURRENCY_TYPE
+                    currency.type === CRYPTO_CURRENCY_TYPE && !account_list.some(x => x.title === currency.value)
+            ).length === 0
         );
-        reorderCryptoCurrencies.push({
-            value: 'plus',
-            name: 'Add new',
-            secondLineLabel: 'crypto account',
-            icon: 'IcCashierAdd',
-            // onClick: () => {
-            //     setManageRealAccountActiveTabIndex(1);
-            //     openRealAccountSignup('manage');
-            // },
-        });
-        return reorderCryptoCurrencies;
     };
 
-    // const [is_loading, setIsLoading] = React.useState(false);
-    // const [setError] = React.useState(null);
+    const getReorderedCryptoCurrencies = () => {
+        const reorderCryptoCurrencies = should_show_all_available_currencies
+            ? reorderCurrencies(
+                  legal_allowed_currencies.filter(currency => account_list.some(x => x.title === currency.value)),
+                  CRYPTO_CURRENCY_TYPE
+              )
+            : reorderCurrencies(
+                  legal_allowed_currencies.filter(
+                      currency =>
+                          currency.type === CRYPTO_CURRENCY_TYPE &&
+                          !available_crypto_currencies.some(x => x.value === currency.value)
+                  ),
+                  CRYPTO_CURRENCY_TYPE
+              );
+        if (!has_all_cryptos()) {
+            reorderCryptoCurrencies.push({
+                value: 'plus',
+                name: 'Add new',
+                secondLineLabel: 'crypto account',
+                icon: 'IcCashierAdd',
+            });
+        }
 
-    // const setLoading = is_loading_val => {
-    //     setIsLoading(is_loading_val);
-    // };
-
-    // const cacheFormValues = payload => {
-    //     localStorage.setItem(
-    //         'real_account_signup_wizard',
-    //         JSON.stringify(
-    //             payload.map(item => {
-    //                 if (typeof item.form_value === 'object') {
-    //                     return item.form_value;
-    //                 }
-    //                 return false;
-    //             })
-    //         )
-    //     );
-    // };
-
-    // const showErrorModal = (err, payload) => {
-    //     if (payload) {
-    //         cacheFormValues(payload);
-    //     }
-
-    //     setError(err);
-    // };
+        return reorderCryptoCurrencies;
+    };
 
     const [form_error] = React.useState('');
     const [form_value] = React.useState({ crypto: '' });
@@ -83,15 +73,16 @@ const ChooseCryptoCurrency = ({
 
     const onSubmit = async obj => {
         Object.entries(obj).map(([title, value]) => {
-            closeRealAccountSignup();
-            if (value === 'plus') {
-                setManageRealAccountActiveTabIndex(1);
-                openRealAccountSignup('manage');
-            } else {
-                if (value !== currency_title) {
-                    doSwitch(value);
+            if (title === 'currency') {
+                if (value === 'plus') {
+                    openRealAccountSignup('add');
+                } else {
+                    closeRealAccountSignup();
+                    if (value !== currency_title) {
+                        doSwitch(value);
+                    }
+                    continueRouteAfterChooseCrypto();
                 }
-                continueRouteAfterChooseCrypto();
             }
         });
     };
@@ -124,7 +115,6 @@ const ChooseCryptoCurrency = ({
                                 label={currency.name}
                                 icon={currency.icon}
                                 secondLineLabel={currency.secondLineLabel}
-                                // onClick={currency.onClick}
                             />
                         ))}
                     </CurrencyRadioButtonGroup>
@@ -149,11 +139,10 @@ ChooseCryptoCurrency.propTypes = {
     currency_title: PropTypes.string,
     legal_allowed_currencies: PropTypes.array,
     openRealAccountSignup: PropTypes.func,
-    setManageRealAccountActiveTabIndex: PropTypes.func,
     switchAccount: PropTypes.func,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client, modules, ui }) => ({
     account_list: client.account_list,
     available_crypto_currencies: client.available_crypto_currencies,
     closeRealAccountSignup: ui.closeRealAccountSignup,
@@ -161,6 +150,7 @@ export default connect(({ client, ui }) => ({
     currency_title: client.currency,
     legal_allowed_currencies: client.upgradeable_currencies,
     openRealAccountSignup: ui.openRealAccountSignup,
-    setManageRealAccountActiveTabIndex: ui.setManageRealAccountActiveTabIndex,
     switchAccount: client.switchAccount,
+    should_show_all_available_currencies: modules.cashier.should_show_all_available_currencies,
+    setShouldShowAllAvailableCurrencies: modules.cashier.setShouldShowAllAvailableCurrencies,
 }))(ChooseCryptoCurrency);

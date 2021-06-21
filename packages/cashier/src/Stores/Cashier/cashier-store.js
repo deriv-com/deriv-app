@@ -172,7 +172,9 @@ export default class CashierStore extends BaseStore {
     @observable cashier_route_tab_index = 0;
     @observable is_10k_withdrawal_limit_reached = undefined;
     @observable is_deposit = false;
+    @observable should_show_all_available_currencies = false;
     @observable is_cashier_default = true;
+    @observable deposit_target = '';
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -228,8 +230,23 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setShouldShowAllAvailableCurrencies(value) {
+        this.should_show_all_available_currencies = value;
+    }
+
+    @action.bound
     setIsCashierDefault(is_cashier_default) {
         this.is_cashier_default = is_cashier_default;
+    }
+
+    @action.bound
+    setDepositTarget(target) {
+        this.deposit_target = target;
+    }
+
+    @action.bound
+    continueRoute() {
+        this.root_store.common.routeTo(this.deposit_target);
     }
 
     @action.bound
@@ -378,7 +395,7 @@ export default class CashierStore extends BaseStore {
     setIsP2pVisible(is_p2p_visible) {
         this.is_p2p_visible = is_p2p_visible;
         if (!is_p2p_visible && window.location.pathname.endsWith(routes.cashier_p2p)) {
-            this.root_store.common.routeTo(routes.cashier_deposit);
+            this.root_store.common.routeTo(this.account_prompt_dialog.last_location ?? routes.cashier_deposit);
         }
     }
 

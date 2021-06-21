@@ -6,7 +6,7 @@ const { EOL } = require('os');
 const path = require('path');
 const fs = require('fs');
 
-const { getIconNameFromPath } = require('./helper');
+const { getFileNameFromPath, getPascalCase } = require('./helper');
 
 const entries_object = require('./icons.js');
 
@@ -27,7 +27,7 @@ function buildIcons() {
         if (!categories[dirname]) {
             categories[dirname] = [];
         }
-        const icon_name = getIconNameFromPath(pathname);
+        const icon_name = getPascalCase(getFileNameFromPath(pathname));
         categories[dirname].push(icon_name);
 
         buffer.push(`import './${pathname}.svg';`);

@@ -12,9 +12,9 @@ const Icon = React.forwardRef(
         if (!icon) return null;
 
         let category = 'common';
-        const filenames = new RegExp(`^Ic(${Object.keys(icons_manifest).join('|')}).+`, 'gi').exec(icon);
-        if (filenames) {
-            category = getKebabCase(filenames[1]);
+        const category_match = new RegExp(`^Ic(${Object.keys(icons_manifest).join('|')})`, 'gi').exec(icon);
+        if (category_match?.[1]) {
+            category = getKebabCase(category_match[1]);
         }
 
         const sprite_id = icon.startsWith('IcUnderlying')

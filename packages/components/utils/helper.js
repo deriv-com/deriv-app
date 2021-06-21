@@ -1,3 +1,11 @@
+const getKebabCase = str => {
+    if (!str) return str;
+    return str
+        .replace(/([a-z0-9])([A-Z])/g, '$1-$2') // get all lowercase letters that are near to uppercase ones
+        .replace(/[\s]+/g, '-') // replace all spaces and low dash
+        .toLowerCase();
+};
+
 const getPascalCase = str => {
     if (!str) return '';
     return (
@@ -10,8 +18,10 @@ const getPascalCase = str => {
     );
 };
 
-const getIconNameFromPath = path => getPascalCase(path.match(/([^/]*)\/*$/)[1].replace('.svg', ''));
+const getFileNameFromPath = path => path.match(/([^/]*)\/*$/)[1].replace('.svg', '');
 
 module.exports = {
-    getIconNameFromPath,
+    getPascalCase,
+    getFileNameFromPath,
+    getKebabCase,
 };

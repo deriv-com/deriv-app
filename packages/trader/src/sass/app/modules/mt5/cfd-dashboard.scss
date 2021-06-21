@@ -810,6 +810,7 @@
         &--primary {
             background-color: var(--brand-red-coral);
             color: var(--text-colored-background);
+            margin-top: 1rem;
         }
         &--secondary {
             background-color: transparent;
@@ -1071,16 +1072,32 @@
             flex-direction: column;
             justify-content: space-around;
             align-items: center;
-            height: 24rem;
+            height: auto;
             padding: 0 3rem;
+            padding-bottom: 7rem;
+            @include mobile {
+                overflow-y: auto;
+            }
         }
         &__message {
             @include typeface(--title-center-bold-black);
             color: var(--text-prominent);
+            margin-bottom: 1rem;
         }
         &__text {
             @include typeface(--paragraph-center-normal-black);
             color: var(--text-prominent);
+        }
+        &__continue {
+            margin-top: 3rem;
+        }
+        &__list {
+            &-message {
+                display: flex;
+            }
+            &-icon {
+                margin-right: 1.2rem;
+            }
         }
     }
 }
@@ -1332,7 +1349,6 @@
 
             & .dc-btn {
                 width: 100%;
-
                 &:only-child {
                     max-width: 14rem;
                     width: auto;

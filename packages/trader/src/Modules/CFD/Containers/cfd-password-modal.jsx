@@ -406,6 +406,7 @@ const CFDPasswordModal = ({
     trading_servers,
 }) => {
     const [server, setServer] = React.useState('');
+    const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);
 
     const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
     const has_mt5_account = Boolean(mt5_login_list?.length);
@@ -484,7 +485,8 @@ const CFDPasswordModal = ({
         !is_cfd_success_dialog_enabled &&
         (!has_cfd_error || is_password_error || is_password_reset);
 
-    const should_show_success = !has_cfd_error && is_cfd_success_dialog_enabled && is_cfd_password_modal_enabled;
+    const should_show_success =
+        !has_cfd_error && is_cfd_success_dialog_enabled && is_cfd_password_modal_enabled && is_password_modal_exited;
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
     const is_real_synthetic = [account_type.category, account_type.type].join('_') === 'real_synthetic';
     const should_show_server_form = React.useMemo(() => {
@@ -555,6 +557,8 @@ const CFDPasswordModal = ({
                             is_password_reset_error={is_password_reset}
                         />
                     )}
+                    onExited={() => setPasswordModalExited(true)}
+                    onEntered={() => setPasswordModalExited(false)}
                 >
                     <RequireTradingPasswordModal
                         has_mt5_account={has_mt5_account}
@@ -602,6 +606,7 @@ const CFDPasswordModal = ({
                 icon_size='xlarge'
                 text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('Continue')}
                 has_cancel={account_type.category === 'real'}
+                has_close_icon={false}
             />
             <SentEmailModal
                 is_open={is_sent_email_modal_open}

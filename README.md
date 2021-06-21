@@ -3,7 +3,8 @@ Deriv App
 This repository contains the various platforms of the Deriv application.
 
 ### In this document:
-- [Installation](#installation)
+- [Pre-installation](#Pre-installation)
+- [Quick start](#Quick-start)
 - Packages in this repo:
   - [Bot](packages/bot/README.md)
   - [Components](packages/components/README.md)
@@ -31,25 +32,73 @@ This repository contains the various platforms of the Deriv application.
 
 [comment]: <> (TODO: Refactor Clean Project to be under usage)
 
-## Installation
-In order to work on your own version of the Deriv application, please **fork this project**.
+## Pre-installation
 
-You will need to perform the following on your development machine:
+Before running or contribute to this project, you need to have the following packages setup in your environment
 
-1. Node.js (v12.18.0 is recommended) and NPM (see <https://nodejs.org/en/download/package-manager/>)
-2. Clone your own fork of this repo
-3. Run `npm run bootstrap` from the root folder
-4. If you have a custom domain that you use for GH Pages, add a file named `CNAME` in `packages/core/scripts/` to be used for your GH Pages deployments
-5. Run `npm run build` and then you're good to go
+1. Node.js (v12.18.0 is recommended)
+2. NPM (see <https://nodejs.org/en/download/package-manager/>)
+3. git (for `contribution`)
 
-> **Note:** Internal behavior of bootstrap has changed to hoist "common" packages to root node_modules instead of individual
->packages. This behavior benefits us from having issues with multiple instances of the same library across dependencies, but 
->it throws error if the package versions are out of date. This was a trade-off we decided to So when you are adding a dependency which already exists in other packages, their version should be matched. 
->In case of wanting a new version for a dependency, please update all packages.
+## Quick start
 
-[comment]: <> (3. If you wish to install and work with only a single, or multiple but specific packages, then follow `3i` for each package. However, if you wish to install and work with all packages, follow `3ii`.)
-[comment]: <> (i. Run `npm run bootstrap {package name}`. Replace `{package name}` with the name of the package you want to work with. eg.: `trader`, `bot`)
-[comment]: <> (ii. Install all packages with a hoisting strategy \(lift all common packages to a root `node_modules` and not package specific\), run `npm run hoist`)
+1.  **Fork the project**
+
+    In order to work on your own version of the Deriv application, please fork the project to your own repo.
+
+2. **Clone using SSH**
+
+    ```sh
+    git clone git@github.com:binary-com/deriv-app.git
+    ```
+
+3. **Enter project directory**
+
+    ```sh
+    cd deriv-app
+    ```
+
+4.  **Install your dependencies:**
+
+    ```sh
+    npm run bootstrap
+    ```
+
+Note\*: If you get the error `peer dependencies`, follow the instruction bellow:
+   
+1. discard any changes related package-lock.json (if applicable)
+2. Make sure that Node version is same as recommended version otherwise upgrade or downgrade it
+3. Run the following commands:
+
+    ```sh
+    $ npm ci
+    $ lerna link
+    $ lerna bootstrap --ci --hoist --strict
+    $ lerna link
+    $ npm run build
+    $ npm run bootstrap
+    ```
+
+    > **Note:** Internal behavior of bootstrap has changed to hoist "common" packages to root node_modules instead of individual
+    >packages. This behavior benefits us from having issues with multiple instances of the same library across dependencies, but 
+    >it throws error if the package versions are out of date. This was a trade-off we decided to So when you are adding a dependency which already exists in other packages, their version should be matched. 
+    >In case of wanting a new version for a dependency, please update all packages.
+
+    [comment]: <> (3. If you wish to install and work with only a single, or multiple but specific packages, then follow `3i` for each package. However, if you wish to install and work with all packages, follow `3ii`.)
+    [comment]: <> (i. Run `npm run bootstrap {package name}`. Replace `{package name}` with the name of the package you want to work with. eg.: `trader`, `bot`)
+    [comment]: <> (ii. Install all packages with a hoisting strategy \(lift all common packages to a root `node_modules` and not package specific\), run `npm run hoist`)
+
+
+5.  **Set custom domain:**
+
+    If you have a custom domain that you use for GH Pages, add a file named `CNAME` in `packages/core/scripts/` to be used for your GH Pages deployments
+
+
+6.  **Build the project:**
+
+    ```sh
+    npm run build
+    ```
 
 ## Working With This Repo
 All packages must contain the following scripts to perform the stated actions:

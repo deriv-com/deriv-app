@@ -488,6 +488,8 @@ const CFDPasswordModal = ({
     const should_show_success =
         !has_cfd_error && is_cfd_success_dialog_enabled && is_cfd_password_modal_enabled && is_password_modal_exited;
 
+    const should_show_sent_email_modal = is_sent_email_modal_open && is_password_modal_exited;
+
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
     const is_real_synthetic = [account_type.category, account_type.type].join('_') === 'real_synthetic';
     const should_show_server_form = React.useMemo(() => {
@@ -610,7 +612,7 @@ const CFDPasswordModal = ({
                 has_close_icon={false}
             />
             <SentEmailModal
-                is_open={is_sent_email_modal_open}
+                is_open={should_show_sent_email_modal}
                 identifier_title='trading_password'
                 onClose={() => setIsSentEmailModalOpen(false)}
                 onClickSendEmail={handleForgotPassword}

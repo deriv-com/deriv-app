@@ -22,7 +22,7 @@ import CreateAdSummary from './create-ad-summary.jsx';
 
 const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
-        return <Div100vhContainer height_offset='136px'>{children}</Div100vhContainer>;
+        return <Div100vhContainer height_offset="auto">{children}</Div100vhContainer>;
     }
 
     return children;

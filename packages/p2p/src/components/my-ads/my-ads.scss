@@ -50,6 +50,10 @@
 
     &__form {
         @include mobile {
+            form {
+                height: calc(100vh - 25rem);
+            }
+
             .dc-input__footer {
                 justify-content: space-between;
                 width: 86vw;

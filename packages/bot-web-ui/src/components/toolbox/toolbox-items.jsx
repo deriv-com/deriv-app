@@ -101,6 +101,7 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                         <Field name='NUM'>1</Field>
                     </Shadow>
                 </Value>
+                <Field name='AMOUNT_LIMITS' />
             </Block>
             <Block type='trade_definition_multiplier'>
                 <Field name='MULTIPLIERTYPE_LIST' />

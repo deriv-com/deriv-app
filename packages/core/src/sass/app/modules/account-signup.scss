@@ -1,4 +1,23 @@
-/* @define account-signup; weak */
+.account-signup-wrapper {
+    @include mobile {
+        background-color: #fff;
+
+        .dc-dialog__dialog--has-margin {
+            width: 100vw;
+            min-height: 400px;
+            box-shadow: none;
+        }
+
+        .dc-dialog__header-wrapper__centered {
+            justify-content: center;
+            display: flex;
+            background-color: #f2f3f4;
+            width: 100vw;
+            position: relative;
+            border-radius: 0;
+        }
+    }
+}
 .account-signup {
     margin: 2.1rem 1.6rem 1.1rem;
 
@@ -12,7 +31,7 @@
 
     form {
         @include mobile {
-            height: 365px;
+            height: 200px;
         }
     }
     & .dc-select-native {
@@ -68,13 +87,6 @@
         position: relative;
         left: 50%;
         transform: translate(-50%);
-
-        @include mobile {
-            width: calc(95vw - 20px);
-            height: 100%;
-            padding: 6rem 4rem;
-            background-color: var(--general-main-2);
-        }
     }
     .dc-password-input {
         &__visibility-icon {

@@ -221,6 +221,7 @@ const AccountSignupModal = ({
             is_content_centered
             title={!selected_residence ? localize('Thanks for verifying your email') : ''}
             header_icon='IcVerify'
+            className='account-signup-wrapper'
         >
             <AccountSignup
                 clients_country={clients_country}

@@ -6,13 +6,20 @@ import FormFooter from 'Components/form-footer';
 
 const CountrySelector = ({ residence_list, selected_country, setSelectedCountry, handleSelectionNext }) => {
     const [country_list, setCountryList] = React.useState([]);
+    const [country_input, setCountryInput] = React.useState('');
+
+    const handleMobileSelect = e => {
+        setCountryInput(e?.target?.value);
+        const matching_country = country_list.find(c => c.text === e?.target?.value);
+        if (matching_country) {
+            setSelectedCountry(matching_country);
+        }
+    };
 
     React.useEffect(() => {
-        if (country_list.length === 0) {
-            const countries = residence_list.filter(r => !r.disabled);
-            setCountryList(countries);
-        }
-    }, []);
+        const countries = residence_list.filter(r => !r.disabled);
+        setCountryList(countries);
+    }, [residence_list]);
 
     return (
         <>
@@ -32,10 +39,11 @@ const CountrySelector = ({ residence_list, selected_country, setSelectedCountry,
                                 type='text'
                                 label={localize('Country')}
                                 list_items={country_list}
-                                value={selected_country ? selected_country.text : ''}
-                                onChange={e => setSelectedCountry(e?.target?.value)}
+                                value={country_input}
+                                onChange={e => setCountryInput(e?.target?.value)}
                                 onItemSelection={item => {
                                     setSelectedCountry(item);
+                                    setCountryInput(item.text);
                                 }}
                                 required
                             />
@@ -46,6 +54,8 @@ const CountrySelector = ({ residence_list, selected_country, setSelectedCountry,
                             placeholder={localize('Place of birth')}
                             label={localize('Country')}
                             list_items={country_list}
+                            value={country_input}
+                            onChange={handleMobileSelect}
                             use_text={true}
                             required
                         />

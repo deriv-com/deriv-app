@@ -9,7 +9,13 @@ export const populateVerificationStatus = account_status => {
     const identity_status = identity.status;
 
     const { idv, onfido, manual } = identity.services;
-    const identity_last_attempt = identity.attempts.latest;
+    // const identity_last_attempt = identity.attempts.latest;
+    const identity_last_attempt = {
+        id: 1,
+        service: 'onfido',
+        country_code: 'za',
+        time: 166321,
+    };
 
     return {
         allow_document_upload,

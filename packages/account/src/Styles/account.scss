@@ -1744,6 +1744,10 @@ $MIN_HEIGHT_FLOATING: calc(
     &__fieldset {
         width: 41.4rem;
 
+        @include mobile {
+            width: 90%;
+        }
+
         .document-dropdown {
             margin-bottom: 3.6rem;
         }
@@ -1775,6 +1779,10 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     .btm-spacer {
         margin-bottom: 2.4rem;
+
+        @include mobile {
+            margin-bottom: 1.6rem;
+        }
     }
 }
 

@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
+import { connect } from 'Stores/connect';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { Text, MobileWrapper, DesktopWrapper } from '@deriv/components';
@@ -13,77 +15,94 @@ import NotSure from 'Assets/SvgComponents/onboarding/not-sure.svg';
 import NotSureMobile from 'Assets/SvgComponents/onboarding/not-sure-mobile.svg';
 import WelcomeItem from './welcome-item.jsx';
 
-const Welcome = ({ switchPlatform }) => (
-    <>
-        <DesktopWrapper>
-            <Text as='h2' weight='bold' align='center' color='prominent' className='welcome__header' size='m'>
-                {localize('Where would you like to start?')}
-            </Text>
-        </DesktopWrapper>
-        <MobileWrapper>
-            <Text as='h2' weight='bold' align='center' color='prominent' className='welcome__header' size='xsm'>
-                {localize('Where would you like to start?')}
-            </Text>
-        </MobileWrapper>
-        <div className='welcome__main'>
-            <WelcomeItem
-                title={localize('CFDs')}
-                description={
-                    <Localize
-                        i18n_default_text='<0>Maximise returns </0> by <0>risking more</0> than you put in.'
-                        components={[<Text key={0} weight='bold' as='strong' color='prominent' />]}
-                    />
-                }
-                onClick={() => switchPlatform({ route: routes.mt5 })}
-                icon={<CFDs />}
-                mobileIcon={<CFDsMobile />}
-                options={['Forex', 'Synthetics', 'Stocks and indices', 'Cryptocurrencies', 'Commodities']}
-            />
-            <WelcomeItem
-                description={
-                    <Localize
-                        i18n_default_text='<0>Multiply returns </0> by <0>risking only</0> what you put in.'
-                        components={[<Text key={0} weight='bold' as='strong' color='prominent' />]}
-                    />
-                }
-                onClick={() => switchPlatform({ should_show_multiplier: true, route: routes.trade })}
-                title={localize('Multipliers')}
-                icon={<Multipliers />}
-                mobileIcon={<MultipliersMobile />}
-                options={['Forex', 'Synthetics']}
-            />
-            <WelcomeItem
-                description={
-                    <Localize
-                        i18n_default_text='Earn <0>fixed returns </0> by <0>risking only</0> what you put in.'
-                        components={[<Text key={0} weight='bold' as='strong' color='prominent' />]}
-                    />
-                }
-                onClick={() => switchPlatform({ route: routes.trade })}
-                title={localize('Digital Options')}
-                icon={<DigitalOptions />}
-                mobileIcon={<DigitalOptionsMobile />}
-                options={['Forex', 'Synthetics', 'Stocks and indices', 'Commodities']}
-            />
-            <WelcomeItem
-                description={
-                    <Localize
-                        i18n_default_text='Let us introduce you to trading on Deriv.'
-                        components={[<Text key={0} weight='bold' as='strong' color='prominent' />]}
-                    />
-                }
-                onClick={() => switchPlatform({ route: routes.trade })}
-                title={localize('Not sure?')}
-                icon={<NotSure />}
-                mobileIcon={<NotSureMobile />}
-                small
-            />
-        </div>
-    </>
-);
+const Welcome = props => {
+    const { toggleWelcomeModal, history, toggleShouldShowMultipliersOnboarding, onNext } = props;
+    const switchPlatform = React.useCallback(
+        ({ route, should_show_multiplier } = {}) => {
+            toggleWelcomeModal({ is_visible: false, should_persist: true });
+            if (route) history.push(route);
+            if (should_show_multiplier) toggleShouldShowMultipliersOnboarding(true);
+        },
+        [toggleWelcomeModal, history, toggleShouldShowMultipliersOnboarding]
+    );
 
-Welcome.propTypes = {
-    switchPlatform: PropTypes.func.isRequired,
+    return (
+        <>
+            <DesktopWrapper>
+                <Text as='h2' weight='bold' align='center' color='prominent' className='welcome__header' size='m'>
+                    {localize('Where would you like to start?')}
+                </Text>
+            </DesktopWrapper>
+            <MobileWrapper>
+                <Text as='h2' weight='bold' align='center' color='prominent' className='welcome__header' size='xsm'>
+                    {localize('Where would you like to start?')}
+                </Text>
+            </MobileWrapper>
+            <div className='welcome__main'>
+                <WelcomeItem
+                    title={localize('CFDs')}
+                    description={
+                        <Localize
+                            i18n_default_text='<0>Maximise returns </0> by <0>risking more</0> than you put in.'
+                            components={[<Text key={0} weight='bold' as='strong' color='prominent' />]}
+                        />
+                    }
+                    onClick={onNext}
+                    icon={<CFDs />}
+                    mobileIcon={<CFDsMobile />}
+                    options={['Forex', 'Synthetics', 'Stocks and indices', 'Cryptocurrencies', 'Commodities']}
+                />
+                <WelcomeItem
+                    description={
+                        <Localize
+                            i18n_default_text='<0>Multiply returns </0> by <0>risking only</0> what you put in.'
+                            components={[<Text key={0} weight='bold' as='strong' color='prominent' />]}
+                        />
+                    }
+                    onClick={() => switchPlatform({ should_show_multiplier: true, route: routes.trade })}
+                    title={localize('Multipliers')}
+                    icon={<Multipliers />}
+                    mobileIcon={<MultipliersMobile />}
+                    options={['Forex', 'Synthetics']}
+                />
+                <WelcomeItem
+                    description={
+                        <Localize
+                            i18n_default_text='Earn <0>fixed returns </0> by <0>risking only</0> what you put in.'
+                            components={[<Text key={0} weight='bold' as='strong' color='prominent' />]}
+                        />
+                    }
+                    onClick={() => switchPlatform({ route: routes.trade })}
+                    title={localize('Digital Options')}
+                    icon={<DigitalOptions />}
+                    mobileIcon={<DigitalOptionsMobile />}
+                    options={['Forex', 'Synthetics', 'Stocks and indices', 'Commodities']}
+                />
+                <WelcomeItem
+                    description={
+                        <Localize
+                            i18n_default_text='Let us introduce you to trading on Deriv.'
+                            components={[<Text key={0} weight='bold' as='strong' color='prominent' />]}
+                        />
+                    }
+                    onClick={() => switchPlatform({ route: routes.trade })}
+                    title={localize('Not sure?')}
+                    icon={<NotSure />}
+                    mobileIcon={<NotSureMobile />}
+                    small
+                />
+            </div>
+        </>
+    );
 };
 
-export default Welcome;
+Welcome.propTypes = {
+    onNext: PropTypes.func.isRequired,
+};
+
+export default withRouter(
+    connect(({ ui }) => ({
+        toggleWelcomeModal: ui.toggleWelcomeModal,
+        toggleShouldShowMultipliersOnboarding: ui.toggleShouldShowMultipliersOnboarding,
+    }))(Welcome)
+);

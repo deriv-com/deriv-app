@@ -1,5 +1,5 @@
 import { action } from 'mobx';
-import { Pushwoosh } from 'web-push-notifications';
+import { Pushwoosh } from '@deriv/web-push-notifications';
 import { getAppId, urlForCurrentDomain } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BaseStore from './base-store';
@@ -29,7 +29,6 @@ export default class PushwooshStore extends BaseStore {
                 safariWebsitePushID: 'web.com.deriv',
                 defaultNotificationTitle: 'Deriv.com',
                 defaultNotificationImage: urlForCurrentDomain('https://deriv.com/favicons/favicon-192x192.png'),
-                autoSubscribe: true,
                 serviceWorkerUrl: '/service-worker.js',
             },
         ]);

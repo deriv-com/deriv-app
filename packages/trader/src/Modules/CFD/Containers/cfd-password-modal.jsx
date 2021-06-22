@@ -442,7 +442,7 @@ const CFDPasswordModal = ({
     const closeDialogs = () => {
         setCFDSuccessDialog(false);
         setMt5Error(false);
-        setServer('');
+        setTimeout(() => setServer(''), 300); // To prevent flashing on modal transitions
     };
 
     const closeModal = () => {

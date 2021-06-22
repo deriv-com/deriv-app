@@ -3,6 +3,7 @@ import { str as crc32 } from 'crc-32';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import withI18n from '../components';
+import { isProduction } from '@deriv/shared';
 
 const LANGUAGE_KEY = 'i18n_language';
 const DEFAULT_LANGUAGE = 'EN';
@@ -21,6 +22,9 @@ const ALL_LANGUAGES = Object.freeze({
     ZH_TW: '繁體中文',
 });
 
+//Add or remove languages here that will be made available on production.
+const production_languages = ['EN', 'ID', 'PT', 'ES'];
+
 const getUrlBase = (path = '') => {
     const l = window.location;
 
@@ -34,7 +38,12 @@ const isStaging = () => /staging-app\.deriv\.com/i.test(window.location.hostname
 const isLocal = () => /localhost\.binary\.sx/i.test(window.location.hostname);
 
 const isLanguageAvailable = lang => {
-    if (!lang) return false;
+    // Remove the available_languages and search_lang variables from the code when all languages are supported.
+    const available_lang = production_languages.includes(lang);
+
+    // If language is not available, or a certain language is not available on production, default to english language.
+    // Remove !available_lang && isProduction() if all languages are supported.
+    if (!lang || (!available_lang && isProduction())) return false;
 
     const selected_language = lang.toUpperCase();
     const is_ach = selected_language === 'ACH';

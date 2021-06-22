@@ -464,10 +464,12 @@ const ContentRenderer = props => {
         setCurrentFocus,
         selected_duration_unit,
     } = props;
-    const symbol_dropdown_options = symbol_dropdown.map(symbol => ({
-        component: <MarketOption symbol={symbol} />,
-        ...symbol,
-    }));
+    const symbol_dropdown_options = symbol_dropdown
+        .map(symbol => ({
+            component: <MarketOption symbol={symbol} />,
+            ...symbol,
+        }))
+        .filter(option => option.group !== 'Cryptocurrencies' && option.group !== 'Jump Indices'); // Until Crypto enabled for Dbot
     const trade_type_dropdown_options = trade_type_dropdown.map(trade_type => ({
         component: <TradeTypeOption trade_type={trade_type} />,
         ...trade_type,

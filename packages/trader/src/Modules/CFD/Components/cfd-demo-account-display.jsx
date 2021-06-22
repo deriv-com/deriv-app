@@ -3,6 +3,7 @@ import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card.jsx';
+import { general_messages } from '../Constants/cfd-shared-strings';
 import Loading from '../../../templates/_common/components/loading.jsx';
 
 const CFDDemoAccountDisplay = ({
@@ -43,8 +44,8 @@ const CFDDemoAccountDisplay = ({
         }
         return {
             [localize('Leverage')]: localize('Up to 1:1000'),
-            [localize('Margin call')]: localize('150%'),
-            [localize('Stop out level')]: localize('75%'),
+            [localize('Margin call')]: localize('100%'),
+            [localize('Stop out level')]: localize('50%'),
             [localize('Number of assets')]: localize('50+'),
         };
     }, [is_eu, is_eu_country, residence, platform]);
@@ -130,9 +131,7 @@ const CFDDemoAccountDisplay = ({
                         )
                     }
                     platform={platform}
-                    descriptor={localize(
-                        'Trade CFDs on forex, stocks & indices, commodities, and cryptocurrencies with leverage.'
-                    )}
+                    descriptor={general_messages.getFinancialAccountDescriptor(platform)}
                     specs={financial_specs}
                     has_banner
                 />
@@ -180,8 +179,8 @@ const CFDDemoAccountDisplay = ({
                         )}
                         specs={{
                             [localize('Leverage')]: localize('Up to 1:100'),
-                            [localize('Margin call')]: localize('150%'),
-                            [localize('Stop out level')]: localize('75%'),
+                            [localize('Margin call')]: localize('100%'),
+                            [localize('Stop out level')]: localize('50%'),
                             [localize('Number of assets')]: localize('50+'),
                         }}
                         platform={platform}

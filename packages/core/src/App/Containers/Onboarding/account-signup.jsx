@@ -62,6 +62,7 @@ const AccountSignup = ({
     isEuCountrySelected,
     selected_residence,
     setSelectedResidence,
+    onNext,
 }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
     const [api_error, setApiError] = React.useState(false);
@@ -101,8 +102,7 @@ const AccountSignup = ({
         if (error) {
             setApiError(error);
         } else {
-            // TODO: check if cr show the welcome modal
-            // if not redirect to routs.root
+            onNext();
             enableApp();
         }
     };
@@ -198,23 +198,18 @@ const AccountSignupModal = ({
     disableApp,
     clients_country,
     is_loading,
-    is_logged_in,
     isEuCountrySelected,
-    logout,
     onSignup,
     residence_list,
     toggleAccountSignupModal,
     fetchResidenceList,
+    onNext,
 }) => {
     const [selected_residence, setSelectedResidence] = React.useState('');
 
     React.useEffect(() => {
-        // a logged in user should not be able to create a new account
-        if (is_logged_in) {
-            logout();
-        }
         fetchResidenceList();
-    }, [is_logged_in, logout, fetchResidenceList]);
+    }, [fetchResidenceList]);
 
     return (
         <Dialog
@@ -236,6 +231,7 @@ const AccountSignupModal = ({
                 enableApp={enableApp}
                 selected_residence={selected_residence}
                 setSelectedResidence={setSelectedResidence}
+                onNext={onNext}
             />
         </Dialog>
     );

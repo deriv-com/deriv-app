@@ -9,8 +9,8 @@ const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV
 
 const output = {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bot-web-ui.main.js',
-    chunkFilename: 'bot.[name].[contenthash].js',
+    filename: 'bot/js/bot-web-ui.main.js',
+    chunkFilename: 'bot/js/bot.[name].[contenthash].js',
     libraryExport: 'default',
     library: '@deriv/bot-web-ui',
     libraryTarget: 'umd',
@@ -118,11 +118,13 @@ module.exports = function (env, argv) {
         plugins: [
             new CleanWebpackPlugin(),
             new MiniCssExtractPlugin({
-                filename: 'bot.main.[contenthash].css',
-                chunkFilename: 'bot.[name].[contenthash].css',
+                filename: 'bot/css/bot.main.[contenthash].css',
+                chunkFilename: 'bot/css/bot.[name].[contenthash].css',
             }),
             new StyleLintPlugin({ fix: true }),
-            new CopyWebpackPlugin({ patterns: [{ from: 'node_modules/@deriv/bot-skeleton/dist/media', to: 'media' }] }),
+            new CopyWebpackPlugin({
+                patterns: [{ from: 'node_modules/@deriv/bot-skeleton/dist/media', to: 'bot/media' }],
+            }),
             new SpriteLoaderPlugin(),
         ],
         externals: [

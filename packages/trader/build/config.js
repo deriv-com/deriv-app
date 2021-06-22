@@ -3,21 +3,6 @@ const stylelintFormatter = require('stylelint-formatter-pretty');
 const { IS_RELEASE } = require('./constants');
 // const { transformContentUrlBase } = require('./helpers');
 
-const copyConfig = base => {
-    return {
-        patterns: [
-            // { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file' },
-            {
-                from: path.resolve(__dirname, '../src/public/images/favicons/favicon.ico'),
-                to: 'favicon.ico',
-                toType: 'file',
-            },
-            { from: path.resolve(__dirname, '../src/public/images/favicons/**') },
-            { from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/**') },
-        ],
-    };
-};
-
 const generateSWConfig = () => ({
     importWorkboxFrom: 'local',
     cleanupOutdatedCaches: true,
@@ -54,8 +39,8 @@ const htmlInjectConfig = () => ({
 });
 
 const cssConfig = () => ({
-    filename: 'css/trader.main.[contenthash].css',
-    chunkFilename: 'css/trader.[name].[contenthash].css',
+    filename: 'trader/css/trader.main.[contenthash].css',
+    chunkFilename: 'trader/css/trader.[name].[contenthash].css',
 });
 
 const stylelintConfig = () => ({
@@ -66,7 +51,6 @@ const stylelintConfig = () => ({
 });
 
 module.exports = {
-    copyConfig,
     htmlOutputConfig,
     htmlInjectConfig,
     cssConfig,

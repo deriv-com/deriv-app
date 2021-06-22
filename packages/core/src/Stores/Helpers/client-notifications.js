@@ -475,6 +475,7 @@ const checkAccountStatus = (
     const {
         authenticated,
         cashier_locked,
+        system_maintenance,
         withdrawal_locked,
         mt5_withdrawal_locked,
         document_needs_action,

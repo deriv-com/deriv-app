@@ -72,6 +72,7 @@ const ProofOfIdentity = ({
             WS.authorized.getAccountStatus().then(response_account_status => {
                 if (response_account_status.error) {
                     setAPIError(response_account_status.error);
+                    setStatusLoading(false);
                     return;
                 }
 

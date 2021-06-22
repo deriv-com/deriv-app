@@ -1,6 +1,5 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { useStateCallback } from '@deriv/components';
 import Unsupported from 'Components/poi-unsupported';
 import POISubmission from './proof-of-identity-submission.jsx';
 import Onfido from './onfido.jsx';
@@ -18,42 +17,13 @@ const ProofOfIdentityContainer = ({
     redirect_button,
     setAPIError,
 }) => {
-    const [verification_status, setVerificationStatus] = useStateCallback({});
     const [require_submission, setRequireSubmission] = React.useState(false);
 
     const handleRequireSubmission = () => {
         setRequireSubmission(true);
     };
 
-    const createVerificationConfig = React.useCallback(() => {
-        const {
-            has_poa,
-            needs_poa,
-            needs_poi,
-            idv,
-            onfido,
-            manual,
-            identity_status,
-            identity_last_attempt,
-        } = populateVerificationStatus(account_status);
-
-        setVerificationStatus({
-            has_poa,
-            needs_poa,
-            needs_poi,
-            idv,
-            onfido,
-            manual,
-            identity_status,
-            identity_last_attempt,
-        });
-    }, [account_status, setVerificationStatus]);
-
-    // component didMount hook
-    React.useEffect(() => {
-        createVerificationConfig();
-    }, [createVerificationConfig]);
-
+    const verification_status = populateVerificationStatus(account_status);
     const { idv, onfido, manual, identity_status, identity_last_attempt, needs_poa } = verification_status;
 
     if (identity_status === identity_status_codes.none || require_submission) {

@@ -111,8 +111,38 @@ export const clientNotifications = (ui = {}, client = {}) => {
         cashier_locked: {
             key: 'cashier_locked',
             header: localize('Cashier disabled'),
-            message: localize(
-                'Deposits and withdrawals have been disabled on your account. Please check your email for more details.'
+            message: (
+                <Localize
+                    i18n_default_text='We’re updating our cashier system and it’ll be back online soon. Please see our <0>status page</0> for updates.'
+                    components={[
+                        <a
+                            key={0}
+                            className='link'
+                            rel='noopener noreferrer'
+                            target='_blank'
+                            href='https://deriv.statuspage.io/'
+                        />,
+                    ]}
+                />
+            ),
+            type: 'warning',
+        },
+        system_maintenance: {
+            key: 'system_maintenance',
+            header: localize('System Maintenance'),
+            message: (
+                <Localize
+                    i18n_default_text='We’re updating our cashier system and it’ll be back online soon. Please see our <0>status page</0> for updates.'
+                    components={[
+                        <a
+                            key={0}
+                            className='link'
+                            rel='noopener noreferrer'
+                            target='_blank'
+                            href='https://deriv.statuspage.io/'
+                        />,
+                    ]}
+                />
             ),
             type: 'warning',
         },
@@ -471,6 +501,8 @@ const checkAccountStatus = (
     if (needs_poa && !(document.status === 'expired')) addNotificationMessage(clientNotifications().needs_poa);
     if (needs_poi && !(identity.status === 'expired')) addNotificationMessage(clientNotifications().needs_poi);
     if (cashier_locked) addNotificationMessage(clientNotifications().cashier_locked);
+    if (system_maintenance) addNotificationMessage(clientNotifications().system_maintenance);
+
     if (withdrawal_locked) {
         // if client is withdrawal locked but it's because they need to authenticate
         // and they have submitted verification documents,

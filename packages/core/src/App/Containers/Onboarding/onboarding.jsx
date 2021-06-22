@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'Stores/connect';
-import Platforms from './platforms.jsx';
+import Platforms from './cfds-platforms.jsx';
 import AccountSignup from './account-signup.jsx';
 import Welcome from './welcome.jsx';
 

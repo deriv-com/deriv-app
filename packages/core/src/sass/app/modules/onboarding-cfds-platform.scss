@@ -1,10 +1,11 @@
 .platform-onboarding {
     padding: 20px;
-    overflow: scroll;
     height: calc(100vh - 48px);
+    overflow: scroll;
 
     @media (min-width: 992px) {
         padding: 0;
+        overflow: unset;
     }
 
     .dc-table {
@@ -56,6 +57,10 @@
 
         .platform-table-col:first-of-type {
             position: absolute;
+
+            @media (min-width: 992px) {
+                position: static;
+            }
         }
     }
     .platform-table-row-items {
@@ -74,7 +79,6 @@
 
     .platform-table-col {
         padding: 18px 0;
-
         justify-content: center;
     }
 

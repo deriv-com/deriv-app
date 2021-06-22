@@ -27,7 +27,7 @@ const Welcome = props => {
     );
 
     return (
-        <>
+        <div className='welcome-cr'>
             <DesktopWrapper>
                 <Text as='h2' weight='bold' align='center' color='prominent' className='welcome__header' size='m'>
                     {localize('Where would you like to start?')}
@@ -92,7 +92,7 @@ const Welcome = props => {
                     small
                 />
             </div>
-        </>
+        </div>
     );
 };
 

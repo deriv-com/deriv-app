@@ -9,19 +9,10 @@
 
 .welcome-cr {
     background-color: var(--general-section-4);
+    padding-top: 2.4rem;
 
-    .dc-dialog__dialog {
-        background-color: var(--general-section-4);
-        max-width: 100%;
-        max-height: 100%;
-        box-shadow: none;
-        margin-top: 7rem;
-        width: 588px;
-        padding: 0;
-    }
-
-    .dc-dialog__content {
-        max-width: 100%;
+    @media (min-width: 992px) {
+        padding-top: 10.2rem;
     }
 }
 
@@ -30,6 +21,7 @@
 
     &__header {
         margin: 2.4rem;
+        margin-top: 0;
     }
 
     &__main {

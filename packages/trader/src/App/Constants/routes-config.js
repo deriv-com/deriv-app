@@ -14,13 +14,7 @@ const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/P
 
 const lazyLoadReportComponent = makeLazyLoader(
     () => import(/* webpackChunkName: "reports" */ 'Modules/Reports'),
-    props => {
-        // 200ms default
-        if (props.pastDelay) {
-            return <Loading />;
-        }
-        return null;
-    }
+    () => <Loading />
 );
 
 // Order matters

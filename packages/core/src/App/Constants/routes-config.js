@@ -456,13 +456,7 @@ const getModules = ({ is_dashboard }) => {
 
 const lazyLoadComplaintsPolicy = makeLazyLoader(
     () => import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy'),
-    props => {
-        // 200ms default
-        if (props.pastDelay) {
-            return <Loading />;
-        }
-        return null;
-    }
+    () => <Loading />
 );
 
 // Order matters

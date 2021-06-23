@@ -9,13 +9,7 @@ import { Loading } from '@deriv/components';
 
 const App = makeLazyLoader(
     () => import(/* webpackChunkName: "trader-app", webpackPreload: true */ 'App/app.jsx'),
-    props => {
-        // 200ms default
-        if (props.pastDelay) {
-            return <Loading />;
-        }
-        return null;
-    }
+    () => <Loading />
 )();
 
 export default App;

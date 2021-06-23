@@ -1,7 +1,6 @@
 import debounce from 'lodash.debounce';
 import { action, computed, observable } from 'mobx';
-import { toMoment } from '@deriv/shared';
-import { WS } from 'Services/ws-methods';
+import { toMoment, WS } from '@deriv/shared';
 
 import getDateBoundaries from './Helpers/format-request';
 import { formatProfitTableTransactions } from './Helpers/format-response';
@@ -108,15 +107,15 @@ export default class ProfitTableStore extends BaseStore {
         this.onNetworkStatusChange(this.networkStatusChangeListener);
         await WS.wait('authorize');
 
-        /* Caching won't work for profit_table because date filtering happens based on `buy_time` of a contract. 
-        If we already have a cache for a period and if we sell a contract that was purchased in that period 
+        /* Caching won't work for profit_table because date filtering happens based on `buy_time` of a contract.
+        If we already have a cache for a period and if we sell a contract that was purchased in that period
         then the sold contract won't be there in profit_table when visited again unless we fetch it again.
         Caching will only work if the date filtering happens based on `sell_time` of a contract in BE. */
         this.clearTable();
         this.fetchNextBatch();
     }
 
-    /* DO NOT call clearDateFilter() upon unmounting the component, date filters should stay 
+    /* DO NOT call clearDateFilter() upon unmounting the component, date filters should stay
     as we change tab or click on any contract for later references as discussed with UI/UX and QA */
     @action.bound
     onUnmount() {

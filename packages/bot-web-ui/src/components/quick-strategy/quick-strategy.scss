@@ -47,6 +47,11 @@
             justify-content: space-between;
             margin: 4.5rem 0;
 
+            @include mobile {
+                flex-direction: column;
+                gap: 4.5rem;
+            }
+
             &:first-child {
                 margin-top: 0;
             }

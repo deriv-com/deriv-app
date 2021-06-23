@@ -111,19 +111,8 @@ export const clientNotifications = (ui = {}, client = {}) => {
         cashier_locked: {
             key: 'cashier_locked',
             header: localize('Cashier disabled'),
-            message: (
-                <Localize
-                    i18n_default_text='We’re updating our cashier system and it’ll be back online soon. Please see our <0>status page</0> for updates.'
-                    components={[
-                        <a
-                            key={0}
-                            className='link'
-                            rel='noopener noreferrer'
-                            target='_blank'
-                            href='https://deriv.statuspage.io/'
-                        />,
-                    ]}
-                />
+            message: localize(
+                'Deposits and withdrawals have been disabled on your account. Please check your email for more details.'
             ),
             type: 'warning',
         },
@@ -448,6 +437,12 @@ const getStatusValidations = status_arr =>
         return validations;
     }, {});
 
+const getCashierValidations = cashier_arr =>
+    cashier_arr.reduce((validations, code) => {
+        validations[code] = true;
+        return validations;
+    }, {});
+
 const addVerificationNotifications = (identity, document, addNotificationMessage) => {
     if (identity.status === 'expired') addNotificationMessage(clientNotifications().poi_expired);
 
@@ -470,12 +465,12 @@ const checkAccountStatus = (
         prompt_client_to_authenticate,
         risk_classification,
         status,
+        cashier_validation,
     } = account_status;
 
     const {
         authenticated,
         cashier_locked,
-        system_maintenance,
         withdrawal_locked,
         mt5_withdrawal_locked,
         document_needs_action,
@@ -483,6 +478,8 @@ const checkAccountStatus = (
         max_turnover_limit_not_set,
         allow_document_upload,
     } = getStatusValidations(status);
+
+    const { system_maintenance } = getCashierValidations(cashier_validation);
 
     addVerificationNotifications(identity, document, addNotificationMessage);
 

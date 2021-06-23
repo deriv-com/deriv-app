@@ -31,6 +31,7 @@ const CashierDefault = ({
     const is_crypto = !!currency && isCryptocurrency(currency);
     const has_crypto_account = accounts_list.some(x => x.is_crypto);
     const has_fiat_account = accounts_list.some(x => !x.is_crypto);
+    const user_fiat_currency = accounts_list.filter(x => !x.is_crypto);
 
     React.useEffect(() => {
         setIsCashierDefault(true);
@@ -118,7 +119,7 @@ const CashierDefault = ({
         if (is_payment_agent_visible) {
             options.push(Providers.createPaymentAgentProvider(onClickPaymentAgent));
         }
-        if (!is_eu && currency === 'USD') {
+        if (!is_eu && user_fiat_currency[0].currency === 'USD') {
             options.push(Providers.createDp2pProvider(onClickDp2p));
         }
         return options;

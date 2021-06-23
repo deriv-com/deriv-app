@@ -50,8 +50,12 @@
 
     &__form {
         @include mobile {
-            form {
+            &-element {
                 height: calc(100vh - 25rem);
+
+                &--ios {
+                    height: calc(100vh - 20rem);
+                }
             }
 
             .dc-input__footer {

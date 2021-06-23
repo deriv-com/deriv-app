@@ -52,17 +52,12 @@ const copyConfig = base => {
             from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/public/**'),
             to: 'public',
             transformPath(context) {
-                return context.split('node_modules/@deriv/cashier/dist/cashier')[1];
+                return context.split('node_modules/@deriv/cashier/dist/')[1];
             },
         },
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/trader'),
             to: 'trader',
-        },
-        {
-            from: path.resolve(__dirname, '../node_modules/@deriv/translations/src/translations/*.*'),
-            to: 'public/i18n',
-            flatten: true,
         },
         { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file', noErrorOnMissing: true },
         { from: path.resolve(__dirname, '../src/root_files/404.html'), to: '404.html', toType: 'file' },

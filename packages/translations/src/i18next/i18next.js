@@ -70,10 +70,10 @@ const getInitialLanguage = () => {
 
 const loadLanguageJson = async lang => {
     if (!i18n.hasResourceBundle(lang, 'translations') && lang.toUpperCase() !== DEFAULT_LANGUAGE) {
-        const response = await fetch(getUrlBase(`/public/i18n/${lang.toLowerCase()}.json`));
-        const lang_json = await response.text();
+        const response = await import(/* webpackChunkName: "[request]" */ `../translations/${lang.toLowerCase()}.json`);
 
-        i18n.addResourceBundle(lang, 'translations', JSON.parse(lang_json));
+        const lang_json = response;
+        i18n.addResourceBundle(lang, 'translations', lang_json);
         document.documentElement.setAttribute('lang', lang);
     }
 };

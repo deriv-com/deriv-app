@@ -1749,7 +1749,7 @@ $MIN_HEIGHT_FLOATING: calc(
         width: 38.4rem;
 
         @include mobile {
-            width: 90%;
+            min-width: 90%;
         }
 
         .document-dropdown {

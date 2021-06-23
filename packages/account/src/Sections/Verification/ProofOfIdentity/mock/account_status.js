@@ -81,7 +81,7 @@ export const getAccountStatus = (service_type, status, last_attempt) => {
                         last_rejected: [],
                         reported_properties: {},
                         status,
-                        submissions_left: 0,
+                        submissions_left: 3,
                     },
                     manual: {
                         status: 'none',

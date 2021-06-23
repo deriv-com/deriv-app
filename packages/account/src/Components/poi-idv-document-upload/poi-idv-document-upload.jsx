@@ -120,7 +120,7 @@ const IdvDocumentUpload = ({ selected_country, handleViewComplete, handleBack })
                                                     error={touched.document_type && errors.document_type}
                                                     label={localize('Choose the document type')}
                                                     list_items={document_list}
-                                                    value={values.document_number}
+                                                    value={values.document_type}
                                                     onChange={e => {
                                                         handleChange(e);
                                                         setFieldValue('document_type', e.target.value, true);
@@ -128,18 +128,6 @@ const IdvDocumentUpload = ({ selected_country, handleViewComplete, handleBack })
                                                     onItemSelection={({ text }) =>
                                                         setFieldValue('document_type', text || '', true)
                                                     }
-                                                    onKeyup={e => {
-                                                        setFieldValue(
-                                                            'document_number',
-                                                            formatInput(
-                                                                getDocumentData(country_code, values.document_type)
-                                                                    .sample_format,
-                                                                e.target.value,
-                                                                '-'
-                                                            ),
-                                                            true
-                                                        );
-                                                    }}
                                                     use_text={true}
                                                     required
                                                 />
@@ -159,8 +147,20 @@ const IdvDocumentUpload = ({ selected_country, handleViewComplete, handleBack })
                                             autoComplete='off'
                                             placeholder='Enter your document number'
                                             value={values.document_number}
-                                            onChange={handleChange}
                                             onBlur={handleBlur}
+                                            onChange={handleChange}
+                                            onKeyup={e => {
+                                                setFieldValue(
+                                                    'document_number',
+                                                    formatInput(
+                                                        getDocumentData(country_code, values.document_type)
+                                                            .sample_format,
+                                                        e.target.value,
+                                                        '-'
+                                                    ),
+                                                    true
+                                                );
+                                            }}
                                             required
                                         />
                                     )}

@@ -20,7 +20,7 @@ const Download = () => {
             <Dp2pAppIcon />
             <div className='p2p-verification__text'>
                 <Text color='prominent' size='s' line_height='m' weight='bold'>
-                    <Localize i18n_default_text='DP2P is ready for you' />
+                    <Localize i18n_default_text='Deriv P2P is ready for you' />
                 </Text>
             </div>
             <a className='p2p-verification__app-store' href={app_store_url} rel='noopener noreferrer'>

@@ -7,7 +7,7 @@ import { PersonalDetailsForm } from '../personal-details.jsx';
 
 afterAll(cleanup);
 
-jest.mock('Services/ws-methods', () => ({
+jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     __esModule: true, // this property makes it work,
     default: 'mockedDefaultExport',
     WS: {

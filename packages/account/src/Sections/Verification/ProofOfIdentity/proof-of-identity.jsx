@@ -5,7 +5,6 @@ import { AutoHeightWrapper, Button, Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getPlatformRedirect } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { WS } from 'Services/ws-methods';
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
 import NotRequired from 'Components/poi-not-required';
@@ -34,7 +33,7 @@ const ProofOfIdentity = ({
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
 
-    const getOnfidoServiceToken = React.useCallback(
+    const getOnfidoServicxweToken = React.useCallback(
         () =>
             new Promise(resolve => {
                 const onfido_cookie_name = 'onfido_token';

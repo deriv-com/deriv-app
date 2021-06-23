@@ -17,10 +17,7 @@ export default class AccountPromptDialogStore {
             this.last_location = next_location;
             this.should_show = true;
             this.current_location = current_location;
-            return false;
         }
-
-        return true;
     }
 
     @action.bound

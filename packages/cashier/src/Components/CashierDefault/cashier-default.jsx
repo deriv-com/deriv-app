@@ -23,7 +23,6 @@ const CashierDefault = ({
     shouldNavigateAfterPrompt,
     setIsCashierDefault,
     setIsDeposit,
-    setPromptHandler,
     setDepositTarget,
     setShouldShowAllAvailableCurrencies,
 }) => {
@@ -48,7 +47,6 @@ const CashierDefault = ({
     const onClickDepositCash = () => {
         setDepositTarget(routes.cashier_deposit);
         if (!is_crypto) {
-            setPromptHandler(true, shouldNavigateAfterPrompt);
             setIsDeposit(true);
             return;
         }
@@ -180,7 +178,6 @@ CashierDefault.propTypes = {
     shouldNavigateAfterPrompt: PropTypes.bool,
     setIsCashierDefault: PropTypes.func,
     setIsDeposit: PropTypes.func,
-    setPromptHandler: PropTypes.func,
 };
 
 export default connect(({ client, modules, ui }) => ({
@@ -198,7 +195,6 @@ export default connect(({ client, modules, ui }) => ({
     shouldNavigateAfterPrompt: modules.cashier.account_prompt_dialog.shouldNavigateAfterPrompt,
     setIsCashierDefault: modules.cashier.setIsCashierDefault,
     setIsDeposit: modules.cashier.setIsDeposit,
-    setPromptHandler: ui.setPromptHandler,
     setDepositTarget: modules.cashier.setDepositTarget,
     setShouldShowAllAvailableCurrencies: modules.cashier.setShouldShowAllAvailableCurrencies,
 }))(CashierDefault);

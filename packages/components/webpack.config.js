@@ -39,7 +39,7 @@ module.exports = function () {
 
                                     return category ? `${category}.[contenthash].svg` : 'common.[contenthash].svg';
                                 },
-                                publicPath: '/icon/sprite/',
+                                publicPath: '/icon/sprites/',
                             },
                         },
                         {

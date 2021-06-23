@@ -15,10 +15,6 @@ const copyConfig = base => {
             flatten: true,
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/dashboard/lib/assets/images'),
-            to: 'js/dashboard/assets/images',
-        },
-        {
             from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/js/*.*'),
             to: 'bot/js/',
             flatten: true,
@@ -83,8 +79,8 @@ const copyConfig = base => {
         { from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/**') },
         { from: path.resolve(__dirname, '../src/public/images/app/header/**') },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/components/lib/icon/sprite'),
-            to: 'public/images/sprite',
+            from: path.resolve(__dirname, '../node_modules/@deriv/components/lib/icon/sprites'),
+            to: 'public/sprites',
             toType: 'dir',
         },
         {

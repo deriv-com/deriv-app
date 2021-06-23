@@ -51,7 +51,7 @@ const Icon = React.forwardRef(
                         : undefined
                 }
             >
-                <use xlinkHref={`${getUrlBase(`/public/images/sprite/${filename}.svg`)}#${sprite_id}`} />
+                <use xlinkHref={`${getUrlBase(`/public/sprites/${filename}.svg`)}#${sprite_id}`} />
             </svg>
         );
     }

@@ -29,7 +29,7 @@ function validateIcons(svgs_map) {
 }
 
 function buildIconsManifest() {
-    const sprite_bundles = glob.sync('./lib/icon/sprite/**/*.svg');
+    const sprite_bundles = glob.sync('./lib/icon/sprites/**/*.svg');
 
     const svgs_map = sprite_bundles.reduce((acc, fname) => {
         const name = getFileNameFromPath(fname);

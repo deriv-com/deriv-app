@@ -1,12 +1,13 @@
 .account-signup {
-    &__residence-selection {
+    &__residence-selection,
+    &__password-selection {
         padding-top: 2rem;
         align-items: center;
         display: flex;
         flex-direction: column;
 
         @media (max-width: 991px) {
-            padding: 2rem 1.6rem 0;
+            padding: 2rem 2.4rem 0;
         }
 
         &--footer {
@@ -21,6 +22,20 @@
                 margin-top: 10rem;
                 padding: 1.6rem 2.4rem;
             }
+        }
+    }
+
+    &__password-selection {
+        &--main {
+            padding: 0 0.8rem 2.4rem;
+
+            @media (min-width: 992px) {
+                padding: 0 2.4rem 2.4rem;
+            }
+        }
+
+        &--footer {
+            margin-top: 0;
         }
     }
 
@@ -43,10 +58,11 @@
     .dc-dialog {
         &__dialog {
             max-height: initial;
+            min-width: 384px;
         }
 
         &__content {
-            max-width: initial;
+            max-width: 38.4rem;
             margin-bottom: initial;
         }
     }

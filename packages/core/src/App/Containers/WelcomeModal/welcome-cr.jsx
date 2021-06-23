@@ -11,21 +11,21 @@ import Multipliers from 'Assets/SvgComponents/onboarding/multipliers.svg';
 import MultipliersMobile from 'Assets/SvgComponents/onboarding/multipliers-mobile.svg';
 import NotSure from 'Assets/SvgComponents/onboarding/not-sure.svg';
 import NotSureMobile from 'Assets/SvgComponents/onboarding/not-sure-mobile.svg';
-import WelcomeItem from './welcome-item.jsx';
+import WelcomeItem from './welcome-item-cr.jsx';
 
 const Welcome = ({ switchPlatform }) => (
     <>
         <DesktopWrapper>
-            <Text as='h2' weight='bold' align='center' color='prominent' className='welcome__title' size='m'>
+            <Text as='h2' weight='bold' align='center' color='prominent' className='welcome__header' size='m'>
                 {localize('Where would you like to start?')}
             </Text>
         </DesktopWrapper>
         <MobileWrapper>
-            <Text as='h2' weight='bold' align='center' color='prominent' className='welcome__title' size='xsm'>
+            <Text as='h2' weight='bold' align='center' color='prominent' className='welcome__header' size='xsm'>
                 {localize('Where would you like to start?')}
             </Text>
         </MobileWrapper>
-        <div className='welcome__body'>
+        <div className='welcome__main'>
             <WelcomeItem
                 title={localize('CFDs')}
                 description={

@@ -75,7 +75,12 @@ const Radio = ({ children, field, props }) => (
 
 const RadioDropDown = ({ field, values, ...props }) => (
     <Radio field={field} props={props}>
-        <Text as='p' size='xs' line_height='s' className='payment-agent__radio-label cashier__paragraph'>
+        <Text
+            as='p'
+            size='xxs'
+            line_height='s'
+            className='payment-agent__radio-label cashier__paragraph cashier__paragraph-by-name'
+        >
             <Localize i18n_default_text='By name' />
         </Text>
         <Field name='payment_agents'>
@@ -83,6 +88,8 @@ const RadioDropDown = ({ field, values, ...props }) => (
                 <React.Fragment>
                     <DesktopWrapper>
                         <Dropdown
+                            placeholder={localize('Choose an agent')}
+                            is_align_text_left
                             className='cashier__drop-down payment-agent__drop-down'
                             classNameDisplay='cashier__drop-down-display'
                             classNameDisplaySpan='cashier__drop-down-display-span'
@@ -99,6 +106,7 @@ const RadioDropDown = ({ field, values, ...props }) => (
                         <SelectNative
                             placeholder={localize('Please select')}
                             name='payment_methods'
+                            className='payment-agent__drop-down'
                             list_items={props.payment_agent_list}
                             value={values.payment_agents}
                             label={localize('Choose agent')}
@@ -118,7 +126,7 @@ const RadioDropDown = ({ field, values, ...props }) => (
 
 const RadioInput = ({ touched, errors, field, values, ...props }) => (
     <Radio field={field} props={props}>
-        <Text as='p' size='xs' line_height='s' className='payment-agent__radio-label cashier__paragraph'>
+        <Text as='p' size='xxs' line_height='s' className='payment-agent__radio-label cashier__paragraph'>
             <Localize i18n_default_text='By payment agent ID' />
         </Text>
         <Field>
@@ -202,8 +210,15 @@ const PaymentAgentWithdrawForm = ({
     const should_fill_id = !payment_agent_name && payment_agent_id;
 
     return (
-        <div className='cashier__wrapper--align-left payment-agent__withdrawal'>
-            <Text as='h2' weight='bold' color='prominent' className='cashier__header'>
+        <div className='cashier__wrapper--align-center payment-agent__withdrawal'>
+            <Text
+                as='p'
+                size='s'
+                weight='bold'
+                align='center'
+                color='prominent'
+                className='cashier__header payment-agent__withdrawal-header'
+            >
                 <Localize i18n_default_text='Payment agent withdrawal' />
             </Text>
             <Formik
@@ -245,7 +260,7 @@ const PaymentAgentWithdrawForm = ({
                             {({ field }) => (
                                 <Input
                                     {...field}
-                                    className='cashier__input cashier__input--short dc-input--no-placeholder'
+                                    className='cashier__input dc-input--no-placeholder'
                                     type='text'
                                     label={localize('Amount')}
                                     error={touched.amount && errors.amount}

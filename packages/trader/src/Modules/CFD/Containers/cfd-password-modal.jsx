@@ -25,11 +25,11 @@ import {
     getErrorMessages,
     isDesktop,
     CFD_PLATFORMS,
+    WS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import 'Sass/app/modules/mt5/cfd.scss';
-import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 
 const RequireTradingPasswordModal = ({

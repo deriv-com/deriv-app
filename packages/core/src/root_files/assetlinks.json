@@ -4,7 +4,7 @@
         "target": {
             "namespace": "android_app",
             "package_name": "com.deriv.app",
-            "sha256_cert_fingerprints": ["94:6D:09:5A:69:12:B0:1F:67:60:8A:F4:DD:26:78:D7:24:C9:B8:BA"]
+            "sha256_cert_fingerprints": ["9B:BD:04:CB:27:B5:FE:59:30:0E:3C:5C:F6:AC:79:52:F3:36:04:7A:FD:A4:59:82:CC:C8:90:3C:74:0E:22:0C"]
         }
     }
 ]

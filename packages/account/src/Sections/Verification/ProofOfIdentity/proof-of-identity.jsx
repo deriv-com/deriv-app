@@ -110,7 +110,14 @@ const ProofOfIdentity = ({
         }
     }, [is_switching]);
 
-    if (is_status_loading || is_switching) return <Loading is_fullscreen={false} />;
+    if (is_status_loading || is_switching)
+        return (
+            <div className='proof-of-identity'>
+                <div className='proof-of-identity__main-container'>
+                    <Loading is_fullscreen={false} />
+                </div>
+            </div>
+        );
     if (api_error) return <ErrorMessage error_message={api_error?.message || api_error} />;
     if (is_virtual) return <DemoMessage />;
     if (!should_allow_authentication) return <NotRequired />;
@@ -121,29 +128,31 @@ const ProofOfIdentity = ({
         <AutoHeightWrapper default_height={200}>
             {({ setRef, height }) => (
                 <div ref={setRef} className='proof-of-identity'>
-                    <ProofOfIdentityContainer
-                        account_status={account_status}
-                        setAPIError={setAPIError}
-                        refreshNotifications={refreshNotifications}
-                        onfido_service_token={onfido_service_token}
-                        residence_list={residence_list}
-                        height={height}
-                        redirect_button={
-                            should_show_redirect_btn && (
-                                <Button
-                                    primary
-                                    className='proof-of-identity__redirect'
-                                    onClick={() => routeBackTo(from_platform.route)}
-                                >
-                                    <Localize
-                                        i18n_default_text='Back to {{platform_name}}'
-                                        values={{ platform_name: from_platform.name }}
-                                    />
-                                </Button>
-                            )
-                        }
-                        is_description_enabled
-                    />
+                    <div className='proof-of-identity__main-container'>
+                        <ProofOfIdentityContainer
+                            account_status={account_status}
+                            setAPIError={setAPIError}
+                            refreshNotifications={refreshNotifications}
+                            onfido_service_token={onfido_service_token}
+                            residence_list={residence_list}
+                            height={height}
+                            redirect_button={
+                                should_show_redirect_btn && (
+                                    <Button
+                                        primary
+                                        className='proof-of-identity__redirect'
+                                        onClick={() => routeBackTo(from_platform.route)}
+                                    >
+                                        <Localize
+                                            i18n_default_text='Back to {{platform_name}}'
+                                            values={{ platform_name: from_platform.name }}
+                                        />
+                                    </Button>
+                                )
+                            }
+                            is_description_enabled
+                        />
+                    </div>
                 </div>
             )}
         </AutoHeightWrapper>

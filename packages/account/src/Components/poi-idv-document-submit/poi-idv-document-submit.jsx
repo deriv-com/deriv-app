@@ -8,7 +8,7 @@ import { getDocumentData, formatInput } from './document-data';
 import BackButtonIcon from '../../Assets/ic-poi-back-btn.svg';
 import DocumentUploadLogo from '../../Assets/ic-document-upload-icon.svg';
 
-const IdvDocumentUpload = ({ selected_country, handleViewComplete, handleBack }) => {
+const IdvDocumentSubmit = ({ selected_country, handleViewComplete, handleBack }) => {
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
@@ -199,4 +199,4 @@ const IdvDocumentUpload = ({ selected_country, handleViewComplete, handleBack })
     );
 };
 
-export default IdvDocumentUpload;
+export default IdvDocumentSubmit;

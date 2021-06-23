@@ -2,9 +2,8 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { ThemedScrollbars, Text } from '@deriv/components';
 import { init } from 'onfido-sdk-ui';
-import { isMobile, routes } from '@deriv/shared';
+import { isMobile, routes, WS } from '@deriv/shared';
 import { getLanguage, Localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
 import getOnfidoPhrases from 'Constants/onfido-phrases';
 
 const OnfidoSdkView = ({

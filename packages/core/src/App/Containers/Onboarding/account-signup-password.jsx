@@ -4,12 +4,11 @@ import React from 'react';
 import { Button, Checkbox, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { getErrorMessages, redirectToSignUp } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import SignupSeparatorContainer from './signup-separator-container.jsx';
 import 'Sass/app/modules/account-signup.scss';
 
 const AccountSignupPassword = ({
     pw_input,
-    isModalVisible,
+    onCancel,
     touched,
     errors,
     values,
@@ -76,35 +75,33 @@ const AccountSignupPassword = ({
                     </Field>
                 )}
             </div>
-
-            {api_error ? (
-                <React.Fragment>
-                    <Text
-                        as='p'
-                        size='xxs'
-                        color='loss-danger'
-                        className='account-signup__subtext account-signup__subtext--error'
-                        align='center'
-                    >
-                        {api_error}
-                    </Text>
-                    <div className='account-signup__error-wrapper'>
-                        <Button
-                            secondary
-                            text={localize('Cancel')}
-                            type='button'
-                            onClick={() => isModalVisible(false)}
-                        />
-                        <Button
-                            primary
-                            text={localize('Create new account')}
-                            type='button'
-                            onClick={() => redirectToSignUp({ is_dashboard })}
-                        />
-                    </div>
-                </React.Fragment>
-            ) : (
-                <div className='account-signup__password-selection--footer'>
+            <div
+                className={classNames('account-signup__password-selection--footer', {
+                    'account-signup__password-selection--footer-has-error': api_error,
+                })}
+            >
+                {api_error ? (
+                    <React.Fragment>
+                        <Text
+                            as='p'
+                            size='xxs'
+                            color='loss-danger'
+                            className='account-signup__subtext account-signup__subtext--error'
+                            align='center'
+                        >
+                            {api_error}
+                        </Text>
+                        <div className='account-signup__error-wrapper'>
+                            <Button secondary text={localize('Cancel')} type='button' onClick={onCancel} />
+                            <Button
+                                primary
+                                text={localize('Create new account')}
+                                type='button'
+                                onClick={() => redirectToSignUp({ is_dashboard })}
+                            />
+                        </div>
+                    </React.Fragment>
+                ) : (
                     <Button
                         className={classNames('account-signup__btn', {
                             'account-signup__btn--disabled': !values.password || errors.password || isSubmitting,
@@ -115,8 +112,8 @@ const AccountSignupPassword = ({
                         text={localize('Start trading')}
                         primary
                     />
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 };

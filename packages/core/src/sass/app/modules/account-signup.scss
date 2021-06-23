@@ -36,6 +36,9 @@
 
         &--footer {
             margin-top: 0;
+            &-has-error {
+                flex-direction: column;
+            }
         }
     }
 
@@ -45,6 +48,21 @@
 
     &__heading {
         margin-bottom: 1.6rem;
+    }
+
+    &__receive-update-checkbox {
+        padding: 1.6rem 0;
+    }
+
+    &__error-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 0.8rem;
+        margin: 0;
+    }
+
+    &__subtext--error {
+        margin-bottom: 1rem;
     }
 
     @media (max-width: 991px) {

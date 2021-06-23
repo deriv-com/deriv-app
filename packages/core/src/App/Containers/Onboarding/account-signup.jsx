@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Form } from 'formik';
+import { withRouter } from 'react-router-dom';
 import { Dialog, Loading } from '@deriv/components';
 import {
     validPassword,
@@ -9,6 +10,7 @@ import {
     website_name,
     getErrorMessages,
     PlatformContext,
+    routes,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
@@ -63,6 +65,7 @@ const AccountSignup = ({
     selected_residence,
     setSelectedResidence,
     onNext,
+    onCancel,
 }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
     const [api_error, setApiError] = React.useState(false);
@@ -176,6 +179,7 @@ const AccountSignup = ({
                                     setFieldValue={setFieldValue}
                                     api_error={api_error}
                                     isSubmitting={isSubmitting}
+                                    onCancel={onCancel}
                                 />
                             )}
                         </Form>
@@ -204,6 +208,7 @@ const AccountSignupModal = ({
     toggleAccountSignupModal,
     fetchResidenceList,
     onNext,
+    history,
 }) => {
     const [selected_residence, setSelectedResidence] = React.useState('');
 
@@ -233,6 +238,11 @@ const AccountSignupModal = ({
                 selected_residence={selected_residence}
                 setSelectedResidence={setSelectedResidence}
                 onNext={onNext}
+                onCancel={() => {
+                    history.push({
+                        pathname: routes.root,
+                    });
+                }}
             />
         </Dialog>
     );
@@ -248,16 +258,18 @@ AccountSignupModal.propTypes = {
     residence_list: PropTypes.arrayOf(PropTypes.object),
 };
 
-export default connect(({ ui, client }) => ({
-    toggleAccountSignupModal: ui.toggleAccountSignupModal,
-    enableApp: ui.enableApp,
-    disableApp: ui.disableApp,
-    is_loading: ui.is_loading,
-    onSignup: client.onSignup,
-    is_logged_in: client.is_logged_in,
-    residence_list: client.residence_list,
-    clients_country: client.clients_country,
-    isEuCountrySelected: client.isEuCountrySelected,
-    logout: client.logout,
-    fetchResidenceList: client.fetchResidenceList,
-}))(AccountSignupModal);
+export default withRouter(
+    connect(({ ui, client }) => ({
+        toggleAccountSignupModal: ui.toggleAccountSignupModal,
+        enableApp: ui.enableApp,
+        disableApp: ui.disableApp,
+        is_loading: ui.is_loading,
+        onSignup: client.onSignup,
+        is_logged_in: client.is_logged_in,
+        residence_list: client.residence_list,
+        clients_country: client.clients_country,
+        isEuCountrySelected: client.isEuCountrySelected,
+        logout: client.logout,
+        fetchResidenceList: client.fetchResidenceList,
+    }))(AccountSignupModal)
+);

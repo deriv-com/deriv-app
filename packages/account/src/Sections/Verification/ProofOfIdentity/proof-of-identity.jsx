@@ -3,7 +3,7 @@ import * as Cookies from 'js-cookie';
 import { withRouter } from 'react-router-dom';
 import { AutoHeightWrapper, Button, Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getPlatformRedirect } from '@deriv/shared';
+import { getPlatformRedirect, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';

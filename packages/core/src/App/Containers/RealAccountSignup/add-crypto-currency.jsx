@@ -34,6 +34,7 @@ const AddCryptoCurrency = ({
     form_error,
     has_fiat,
     legal_allowed_currencies,
+    onClickBack,
     onSubmit,
     should_show_crypto_only,
     should_show_fiat_only,
@@ -168,6 +169,9 @@ const AddCryptoCurrency = ({
                         label={localize('Add account')}
                         is_absolute={!isMobile()}
                         form_error={form_error}
+                        has_cancel
+                        cancel_label={localize('Back')}
+                        onCancel={() => onClickBack()}
                     />
                 </form>
             )}

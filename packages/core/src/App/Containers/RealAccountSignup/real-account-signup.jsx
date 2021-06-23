@@ -103,11 +103,14 @@ const RealAccountSignup = ({
                     is_add_crypto={local_props.real_account_signup_target === 'add'}
                 />
             ),
-            title: local_props =>
-                (local_props.real_account_signup_target === 'add' && localize('Create a cryptocurrency account')) ||
-                (local_props.has_fiat && local_props.available_crypto_currencies?.length === 0)
-                    ? localize('Manage account')
-                    : localize('Add or manage account'),
+            title: local_props => {
+                if (local_props.real_account_signup_target === 'add') {
+                    return localize('Create a cryptocurrency account');
+                } else if (local_props.has_fiat && local_props.available_crypto_currencies?.length === 0) {
+                    return localize('Manage account');
+                }
+                return localize('Add or manage account');
+            },
         },
         {
             body: local_props => (

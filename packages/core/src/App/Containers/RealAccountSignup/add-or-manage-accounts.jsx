@@ -28,6 +28,7 @@ const AddOrManageAccounts = props => {
         setLoading,
         resetRealAccountSignupTarget,
         is_add_crypto,
+        openRealAccountSignup,
     } = props;
 
     const initial_active_index =
@@ -87,6 +88,12 @@ const AddOrManageAccounts = props => {
         manageOrChangeAccount(value, setSubmitting);
     };
 
+    const onClickBack = () => {
+        if (is_add_crypto) {
+            openRealAccountSignup('choose');
+        }
+    };
+
     const hasNoAvailableCrypto = () => {
         return available_crypto_currencies.length === 0 && has_fiat;
     };
@@ -121,6 +128,7 @@ const AddOrManageAccounts = props => {
                     <AddCryptoCurrency
                         className='account-wizard__body'
                         onSubmit={updateValue}
+                        onClickBack={onClickBack}
                         value={form_value}
                         form_error={form_error}
                         should_show_crypto_only
@@ -214,5 +222,6 @@ export default connect(({ client, ui }) => ({
     manage_real_account_tab_index: ui.manage_real_account_tab_index,
     setCurrency: client.setAccountCurrency,
     createCryptoAccount: client.createCryptoAccount,
+    openRealAccountSignup: ui.openRealAccountSignup,
     resetRealAccountSignupTarget: ui.resetRealAccountSignupTarget,
 }))(AddOrManageAccounts);

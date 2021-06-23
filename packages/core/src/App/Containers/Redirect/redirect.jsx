@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { loginUrl, routes, PlatformContext } from '@deriv/shared';
-import { getAllowedLanguages, currentLanguage, getURL } from 'Utils/Language';
 import { getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
@@ -21,15 +20,8 @@ const Redirect = ({
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
     const { is_dashboard } = React.useContext(PlatformContext);
-    const uses_allowed_language = Object.keys(getAllowedLanguages()).includes(currentLanguage);
-    const default_to_english = getURL(currentLanguage).replace(`&lang=${currentLanguage}`, '');
-    const new_signup = url_params.get('action') === 'signup';
 
     setVerificationCode(url_params.get('code'), url_params.get('action'));
-
-    if (new_signup && !uses_allowed_language) {
-        window.location.assign(default_to_english);
-    }
 
     switch (url_params.get('action')) {
         case 'signup': {

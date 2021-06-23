@@ -37,3 +37,13 @@ export const changeLanguage = key => {
         window.location.replace(getURL(key));
     });
 };
+
+const defaultToEnglish = () => {
+    const allowed_language = Object.keys(getAllowedLanguages()).includes(currentLanguage);
+    let new_url;
+    if (!allowed_language) {
+        new_url = window.location.replace(getURL('EN'));
+    }
+    return new_url;
+};
+defaultToEnglish();

@@ -1,11 +1,14 @@
 /*
- Responses that should be ignored upon receiving errors.
- We still log them, but having an error inside of these
- will not break the queue and send them to trackjs.
- This will look for predefined `ignored_responses_in_trackjs` from GTM, if
- there is none, then it just does not filter out any response.
+    Responses that should be ignored upon receiving errors.
+    We still log them, but having an error inside of these
+    will not break the queue and send them to trackjs.
+    This will look for predefined `ignored_responses_in_trackjs` from GTM, if
+    there is none, then it just does not filter out any response.
 */
-const ignored_responses_in_trackjs = window.ignored_responses_in_trackjs || [];
+
+const getIgnoredResponseKeywords = () => {
+    return window.ignored_responses_in_trackjs || [];
+};
 
 class ResponseQueue {
     constructor() {
@@ -57,7 +60,7 @@ export const ApiCallProxyHandler = {
                                         queue.fresh();
                                         if (
                                             window.TrackJS &&
-                                            !ignored_responses_in_trackjs.some(item => item === response.error.code)
+                                            !getIgnoredResponseKeywords().some(item => item === response.error.code)
                                         ) {
                                             window.TrackJS.track(response.error.code);
                                         }

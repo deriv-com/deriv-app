@@ -12,8 +12,7 @@ import {
     Loading,
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getSelectedRoute, getStaticUrl, isMobile, routes } from '@deriv/shared';
-import { WS } from 'Services';
+import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import AccountPromptDialog from '../Components/account-prompt-dialog.jsx';
 import 'Sass/cashier.scss';

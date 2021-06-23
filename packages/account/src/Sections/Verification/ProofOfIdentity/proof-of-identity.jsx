@@ -33,7 +33,7 @@ const ProofOfIdentity = ({
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
 
-    const getOnfidoServicxweToken = React.useCallback(
+    const getOnfidoServiceToken = React.useCallback(
         () =>
             new Promise(resolve => {
                 const onfido_cookie_name = 'onfido_token';

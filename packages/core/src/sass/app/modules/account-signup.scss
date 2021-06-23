@@ -5,9 +5,13 @@
         display: flex;
         flex-direction: column;
 
+        @media (max-width: 991px) {
+            padding: 2rem 1.6rem 0;
+        }
+
         &--footer {
             width: 100%;
-            padding: 1.6rem 2.4rem;
+            padding: 1.6rem 0;
             margin-top: 2rem;
             display: flex;
             justify-content: flex-end;
@@ -15,6 +19,7 @@
             @media (min-width: 992px) {
                 border-top: 1px solid var(--general-section-2);
                 margin-top: 10rem;
+                padding: 1.6rem 2.4rem;
             }
         }
     }
@@ -26,14 +31,42 @@
     &__heading {
         margin-bottom: 1.6rem;
     }
+
+    @media (max-width: 991px) {
+        &__btn {
+            flex: 1;
+        }
+    }
 }
 
 .account-signup-wrapper {
-    .dc-dialog__content {
-        max-width: initial;
-        margin-bottom: initial;
+    .dc-dialog {
+        &__dialog {
+            max-height: initial;
+        }
+
+        &__content {
+            max-width: initial;
+            margin-bottom: initial;
+        }
     }
-    .dc-dialog__dialog {
-        max-height: initial;
+
+    @media (max-width: 991px) {
+        background-color: #fff;
+
+        .dc-dialog {
+            &__dialog {
+                border-radius: 0;
+                box-shadow: none;
+
+                &--has-margin {
+                    width: 100%;
+                }
+            }
+
+            &__header-wrapper__centered {
+                border-radius: 0;
+            }
+        }
     }
 }

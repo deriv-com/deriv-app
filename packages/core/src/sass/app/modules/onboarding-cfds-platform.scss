@@ -4,7 +4,7 @@
     overflow: scroll;
 
     @media (min-width: 992px) {
-        padding: 0;
+        padding: 20px 0 0;
         overflow: unset;
     }
 
@@ -34,13 +34,17 @@
         &__footer {
             .dc-table__row {
                 border-bottom: none;
-                padding-top: 18px;
             }
 
             .platform-table-row {
+                padding-top: 0;
+
                 .platform-table-col:first-of-type {
                     position: initial;
                 }
+            }
+            .platform-table-col {
+                padding: 1.8rem;
             }
         }
     }
@@ -83,11 +87,15 @@
     }
 
     .platform-item {
-        padding: 0 12px;
+        padding: 0 0.7rem;
         justify-content: center;
         display: flex;
         align-items: center;
         flex-direction: column;
+
+        @media (min-width: 992px) {
+            padding: 0 1.2rem;
+        }
     }
 
     .dc-btn {

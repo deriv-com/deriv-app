@@ -155,7 +155,7 @@ const Platforms = () => (
                 {localize('Platforms')}
             </Text>
         </DesktopWrapper>
-        <Table fixed>
+        <Table>
             <Table.Header>
                 <DesktopWrapper>
                     <Table.Head />

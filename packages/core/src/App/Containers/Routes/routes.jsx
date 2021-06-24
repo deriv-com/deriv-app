@@ -58,18 +58,21 @@ const Routes = ({
 
     const lang = getLanguage();
     const lang_regex = /[?&]lang=/;
+    const has_lang = lang_regex.test(location.search);
 
     if (has_error) {
         return <Error {...error} />;
     }
 
     // we need to replace state of history object on every route
-    // to prevent language query parameter from disappering for non-english languages
-    if (!lang_regex.test(location.search) && lang !== 'EN') {
+    // to prevent language query parameter from disappering
+    // for non-english languages. Upon visiting with a
+    // non-supported language, the language still
+    // shows up in the URL. This is not in sync
+    // with the default language (EN), so we
+    // will remove it.
+    if ((!has_lang && lang !== 'EN') || (has_lang && lang === 'EN')) {
         window.history.replaceState({}, document.title, urlForLanguage(lang));
-    }
-    if (lang_regex.test(location.search) && lang === 'EN') {
-        window.history.replaceState({}, document.title, urlForLanguage('EN'));
     }
 
     return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;

@@ -60,17 +60,32 @@ const POISelector = ({
     React.useEffect(() => {
         if (has_require_submission) {
             switch (identity_last_attempt.service) {
-                case service_code.idv:
-                    setSubmissionStatus(submission_status_code.selecting);
+                case service_code.idv: {
+                    if (idv.submissions_left) {
+                        setSubmissionStatus(submission_status_code.selecting);
+                    } else {
+                        setSelectedCountry(identity_last_attempt.country);
+                        setSubmissionStatus(submission_status_code.submitting);
+                        setSubmissionService(service_code.onfido);
+                    }
                     break;
-                case service_code.onfido:
+                }
+                case service_code.onfido: {
                     setSelectedCountry(identity_last_attempt.country);
                     setSubmissionStatus(submission_status_code.submitting);
+                    if (onfido.submissions_left) {
+                        setSubmissionService(service_code.onfido);
+                    } else {
+                        setSubmissionService(service_code.manual);
+                    }
                     break;
-                case service_code.manual:
+                }
+                case service_code.manual: {
                     setSelectedCountry(identity_last_attempt.country);
                     setSubmissionStatus(submission_status_code.submitting);
+                    setSubmissionService(service_code.manual);
                     break;
+                }
                 default:
                     break;
             }

@@ -6,13 +6,13 @@ import LogoMobile from 'Assets/SvgComponents/header/deriv-onboarding-logo-mobile
 
 const SignupOnboardingHeader = () => (
     <header className={classNames('signup-onboarding-header')}>
-        <div className={classNames('signup-onboarding-header__menu-center')}>
-            <StaticUrl href='/'>
+        <div className={classNames('signup-onboarding-header__container')}>
+            <StaticUrl href='/' className='signup-onboarding-header__link'>
                 <DesktopWrapper>
-                    <Logo className='signup-onboarding-header__menu-center-icon' />
+                    <Logo className='signup-onboarding-header__icon' />
                 </DesktopWrapper>
                 <MobileWrapper>
-                    <LogoMobile className='signup-onboarding-header__menu-center-icon' />
+                    <LogoMobile className='signup-onboarding-header__icon' />
                 </MobileWrapper>
             </StaticUrl>
         </div>

@@ -57,7 +57,6 @@ const validateSignup = (values, residence_list) => {
 
 const AccountSignup = ({
     enableApp,
-    isModalVisible,
     clients_country,
     onSignup,
     residence_list,
@@ -71,7 +70,6 @@ const AccountSignup = ({
     const [api_error, setApiError] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
     const [country, setCountry] = React.useState('');
-    const [pw_input, setPWInput] = React.useState('');
     const [is_eu_resident, setIsEuResident] = React.useState(false);
 
     React.useEffect(() => {
@@ -82,10 +80,6 @@ const AccountSignup = ({
             setIsLoading(false);
         });
     }, []);
-
-    const updatePassword = new_password => {
-        setPWInput(new_password);
-    };
 
     const onResidenceSelection = values => {
         const residence = values;
@@ -165,14 +159,11 @@ const AccountSignup = ({
                                 />
                             ) : (
                                 <AccountSignupPassword
-                                    pw_input={pw_input}
-                                    isModalVisible={isModalVisible}
-                                    touched={touched}
-                                    errors={errors}
+                                    touched={touched.password}
+                                    errors={errors.password}
                                     values={values}
                                     handleBlur={handleBlur}
                                     setFieldTouched={setFieldTouched}
-                                    updatePassword={updatePassword}
                                     handleChange={handleChange}
                                     is_dashboard={is_dashboard}
                                     is_eu_resident={is_eu_resident}

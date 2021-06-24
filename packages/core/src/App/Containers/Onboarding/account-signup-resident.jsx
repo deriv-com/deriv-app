@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
@@ -41,6 +42,17 @@ const AccountSignupResident = ({
             </div>
         </ResidenceForm>
     );
+};
+
+AccountSignupResident.propTypes = {
+    errors: PropTypes.object,
+    touched: PropTypes.object,
+    setFieldTouched: PropTypes.func,
+    setFieldValue: PropTypes.func,
+    country: PropTypes.string,
+    residence_list: PropTypes.array,
+    values: PropTypes.object,
+    onResidenceSelection: PropTypes.func,
 };
 
 export default AccountSignupResident;

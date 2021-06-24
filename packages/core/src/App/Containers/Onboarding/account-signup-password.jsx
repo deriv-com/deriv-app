@@ -1,20 +1,19 @@
 import classNames from 'classnames';
 import { Field } from 'formik';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button, Checkbox, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { getErrorMessages, redirectToSignUp } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import 'Sass/app/modules/account-signup.scss';
 
 const AccountSignupPassword = ({
-    pw_input,
     onCancel,
     touched,
-    errors,
+    error,
     values,
     handleBlur,
     setFieldTouched,
-    updatePassword,
     handleChange,
     is_dashboard,
     is_eu_resident,
@@ -22,6 +21,11 @@ const AccountSignupPassword = ({
     api_error,
     isSubmitting,
 }) => {
+    const [pw_input, setPWInput] = React.useState('');
+    const updatePassword = new_password => {
+        setPWInput(new_password);
+    };
+
     return (
         <div className='account-signup__password-selection'>
             <div className='account-signup__password-selection--main'>
@@ -32,14 +36,14 @@ const AccountSignupPassword = ({
                     {({ field }) => (
                         <PasswordMeter
                             input={pw_input}
-                            has_error={!!(touched.password && errors.password)}
+                            has_error={!!(touched && error)}
                             custom_feedback_messages={getErrorMessages().password_warnings}
                         >
                             <PasswordInput
                                 {...field}
                                 className='account-signup__password-field'
                                 label={localize('Create a password')}
-                                error={touched.password && errors.password}
+                                error={touched && error}
                                 required
                                 value={values.password}
                                 onBlur={handleBlur}
@@ -104,11 +108,11 @@ const AccountSignupPassword = ({
                 ) : (
                     <Button
                         className={classNames('account-signup__btn', {
-                            'account-signup__btn--disabled': !values.password || errors.password || isSubmitting,
+                            'account-signup__btn--disabled': !values.password || error || isSubmitting,
                         })}
                         id='dt_core_account-signup-modal_submit-btn'
                         type='submit'
-                        is_disabled={!values.password || !!errors.password || isSubmitting}
+                        is_disabled={!values.password || !!error || isSubmitting}
                         text={localize('Start trading')}
                         primary
                     />
@@ -116,6 +120,21 @@ const AccountSignupPassword = ({
             </div>
         </div>
     );
+};
+
+AccountSignupPassword.propTypes = {
+    onCancel: PropTypes.func,
+    touched: PropTypes.bool,
+    error: PropTypes.string,
+    values: PropTypes.object,
+    handleBlur: PropTypes.func,
+    setFieldTouched: PropTypes.func,
+    handleChange: PropTypes.func,
+    is_dashboard: PropTypes.bool,
+    is_eu_resident: PropTypes.bool,
+    setFieldValue: PropTypes.func,
+    api_error: PropTypes.bool,
+    isSubmitting: PropTypes.bool,
 };
 
 export default AccountSignupPassword;

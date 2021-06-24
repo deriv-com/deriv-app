@@ -170,7 +170,7 @@ Dialog.propTypes = {
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     has_close_icon: PropTypes.bool,
-    header_icon: PropTypes.bool,
+    header_icon: PropTypes.string,
     is_closed_on_cancel: PropTypes.bool,
     is_closed_on_confirm: PropTypes.bool,
     is_content_centered: PropTypes.bool,

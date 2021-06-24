@@ -1,4 +1,4 @@
-import { WS } from 'Services/ws-methods';
+import { WS } from '@deriv/shared';
 
 /* This action does not modify state directlly.
  * The payload will be the callback that get's called for each tick

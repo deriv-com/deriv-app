@@ -27,43 +27,42 @@ const CountrySelector = ({ residence_list, selected_country, setSelectedCountry,
                 <Text className='proof-of-identity__header' align='center' weight='bold'>
                     {localize('Proof of Identity')}
                 </Text>
-                <Text className='proof-of-identity__header' size='xs'>
-                    {localize('In which country was your document issued?')}
-                </Text>
+                <Text size='xs'>{localize('In which country was your document issued?')}</Text>
                 <fieldset className='proof-of-identity__fieldset'>
                     <DesktopWrapper>
-                        <div className='proof-of-identity__dropdown-container'>
-                            <Autocomplete
-                                data-lpignore='true'
-                                autoComplete='off' // prevent chrome autocomplete
-                                type='text'
-                                label={localize('Country')}
-                                list_items={country_list}
-                                value={country_input}
-                                onChange={e => setCountryInput(e?.target?.value)}
-                                onItemSelection={item => {
-                                    setSelectedCountry(item);
-                                    setCountryInput(item.text);
-                                }}
-                                required
-                            />
-                        </div>
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <SelectNative
-                            placeholder={localize('Place of birth')}
+                        <Autocomplete
+                            data-lpignore='true'
+                            autoComplete='off' // prevent chrome autocomplete
+                            type='text'
                             label={localize('Country')}
                             list_items={country_list}
                             value={country_input}
-                            onChange={handleMobileSelect}
-                            use_text={true}
+                            onChange={e => setCountryInput(e?.target?.value)}
+                            onItemSelection={item => {
+                                setSelectedCountry(item);
+                                setCountryInput(item.text);
+                            }}
                             required
                         />
+                    </DesktopWrapper>
+                    <MobileWrapper>
+                        <div className='proof-of-identity__dropdown-container'>
+                            <SelectNative
+                                placeholder={localize('Place of birth')}
+                                label={localize('Country')}
+                                list_items={country_list}
+                                value={country_input}
+                                onChange={handleMobileSelect}
+                                use_text={true}
+                                required
+                            />
+                        </div>
                     </MobileWrapper>
                 </fieldset>
             </div>
-            <FormFooter>
+            <FormFooter className='proof-of-identity__footer'>
                 <Button
+                    className='proof-of-identity__submit-button'
                     type='button'
                     is_disabled={!selected_country}
                     has_effect

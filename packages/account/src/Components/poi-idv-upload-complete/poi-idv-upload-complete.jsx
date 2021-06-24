@@ -7,7 +7,7 @@ import IdvDocumentPending from '../../Assets/ic-idv-document-pending.svg';
 const IdvUploadComplete = ({ needs_poa }) => {
     return (
         <div className='proof-of-identity__container'>
-            <IdvDocumentPending className='btm-spacer' />
+            <IdvDocumentPending className='icon btm-spacer' />
             <Text className='proof-of-identity__header' align='center' weight='bold'>
                 {localize("We've received your document number")}
             </Text>

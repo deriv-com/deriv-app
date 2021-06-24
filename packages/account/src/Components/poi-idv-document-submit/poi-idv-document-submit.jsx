@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize } from '@deriv/translations';
@@ -86,21 +85,28 @@ const IdvDocumentSubmit = ({ selected_country, handleViewComplete, handleBack })
 
     return (
         <Formik initialValues={initial_form} validate={validateFields} onSubmit={submitHandler}>
-            {({ errors, setFieldValue, touched, values, handleChange, handleBlur, isSubmitting, isValid, dirty }) => (
+            {({
+                errors,
+                setFieldValue,
+                touched,
+                values,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+                isValid,
+                dirty,
+            }) => (
                 <div className='proof-of-identity__container'>
-                    <DocumentSubmitLogo className='btm-spacer' />
+                    <DocumentSubmitLogo className='icon btm-spacer' />
                     <Text className='proof-of-identity__header' align='center' weight='bold'>
                         {localize('Verify your identity')}
                     </Text>
-                    <Text className='btm-spacer'>
+                    <Text className='proof-of-identity__text btm-spacer' size='xs'>
                         {localize('Please select the document type and enter the document number.')}
                     </Text>
                     <div className='proof-of-identity__inner-container'>
-                        <div
-                            className={classNames('proof-of-identity__container', {
-                                'proof-of-identity__container-no-margin': document_image,
-                            })}
-                        >
+                        <div className='proof-of-identity__container'>
                             <fieldset className='proof-of-identity__fieldset'>
                                 <Field name='document'>
                                     {({ field }) => (
@@ -147,7 +153,7 @@ const IdvDocumentSubmit = ({ selected_country, handleViewComplete, handleBack })
                                     )}
                                 </Field>
                             </fieldset>
-                            <fieldset className='proof-of-identity__fieldset'>
+                            <fieldset className='proof-of-identity__fieldset-input'>
                                 <Field name='document_number'>
                                     {({ field }) => (
                                         <Input
@@ -195,7 +201,9 @@ const IdvDocumentSubmit = ({ selected_country, handleViewComplete, handleBack })
                             <BackButtonIcon className='back-btn' /> {localize('Go Back')}
                         </Button>
                         <Button
-                            type='button'
+                            className='proof-of-identity__submit-button'
+                            type='submit'
+                            onClick={handleSubmit}
                             has_effect
                             is_disabled={!dirty || isSubmitting || !isValid}
                             text={localize('Next')}

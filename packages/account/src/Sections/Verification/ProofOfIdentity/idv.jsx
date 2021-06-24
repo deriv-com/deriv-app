@@ -15,7 +15,8 @@ const Idv = ({ idv, handleRequireSubmission, verification_status, redirect_butto
             return <IdvUploadComplete needs_poa={needs_poa} />;
         case identity_status_codes.rejected:
         case identity_status_codes.suspected:
-            if (!submissions_left) return <IDVNoSubmissions handleRequireSubmission={handleRequireSubmission} />;
+            if (Number(submissions_left) === 0)
+                return <IDVNoSubmissions handleRequireSubmission={handleRequireSubmission} />;
             return (
                 <IdvRejected rejected_reasons={rejected_reasons} handleRequireSubmission={handleRequireSubmission} />
             );

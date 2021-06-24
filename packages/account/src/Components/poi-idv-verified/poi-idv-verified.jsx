@@ -7,7 +7,7 @@ import IdvDocumentVerified from '../../Assets/ic-idv-verified.svg';
 const IdvVerified = ({ needs_poa }) => {
     return (
         <div className='proof-of-identity__container'>
-            <IdvDocumentVerified className='btm-spacer' />
+            <IdvDocumentVerified className='icon btm-spacer' />
             <Text className='proof-of-identity__header' align='center' weight='bold'>
                 {localize('Your document number has been verified')}
             </Text>

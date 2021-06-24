@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 const IdvExpired = ({ handleRequireSubmission }) => {
     return (
         <div className='proof-of-identity__container'>
-            <Icon icon='IcPoiFailed' className='btm-spacer' size={128} />
+            <Icon icon='IcPoiFailed' className='icon btm-spacer' size={128} />
             <Text className='proof-of-identity__header' align='center' weight='bold'>
                 {localize('Verification of document number failed')}
             </Text>

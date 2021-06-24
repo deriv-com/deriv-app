@@ -16,7 +16,7 @@ const Onfido = ({ onfido, verification_status, redirect_button, handleRequireSub
             return <UploadComplete needs_poa={needs_poa} redirect_button={redirect_button} />;
         case identity_status_codes.rejected:
         case identity_status_codes.suspected:
-            if (!submissions_left) return <Limited handleRequireSubmission={handleRequireSubmission} />;
+            if (Number(submissions_left) === 0) return <Limited handleRequireSubmission={handleRequireSubmission} />;
             return (
                 <RejectedReasons
                     rejected_reasons={rejected_reasons}

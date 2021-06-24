@@ -34,7 +34,7 @@ const POISelector = ({
             const is_idv_supported = selected_country.identity.services.idv.is_country_supported;
             const is_onfido_supported = selected_country.identity.services.onfido.is_country_supported;
 
-            if (is_idv_supported && idv_submissions_left) {
+            if (is_idv_supported && Number(idv_submissions_left) > 0) {
                 setSubmissionService('idv');
             } else if (is_onfido_supported && onfido_submissions_left) {
                 setSubmissionService('onfido');
@@ -61,7 +61,7 @@ const POISelector = ({
         if (has_require_submission) {
             switch (identity_last_attempt.service) {
                 case service_code.idv: {
-                    if (idv.submissions_left) {
+                    if (Number(idv.submissions_left) > 0) {
                         setSubmissionStatus(submission_status_code.selecting);
                     } else {
                         setSelectedCountry(identity_last_attempt.country_code);
@@ -73,7 +73,7 @@ const POISelector = ({
                 case service_code.onfido: {
                     setSelectedCountry(identity_last_attempt.country_code);
                     setSubmissionStatus(submission_status_code.submitting);
-                    if (onfido.submissions_left) {
+                    if (Number(onfido.submissions_left) > 0) {
                         setSubmissionService(service_code.onfido);
                     } else {
                         setSubmissionService(service_code.manual);

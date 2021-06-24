@@ -1730,19 +1730,32 @@ $MIN_HEIGHT_FLOATING: calc(
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-        margin-top: 3.8rem;
-        min-height: 50vw;
         overflow-y: scroll;
+        min-height: 50vh;
+
+        @include mobile {
+            min-height: unset;
+        }
+
+        .icon {
+            @include mobile {
+                margin-top: 2.6rem;
+            }
+        }
     }
-    &__container-no-margin {
-        margin-top: 0;
-        height: fit-content;
+    &__text {
+        @include mobile {
+            width: 95%;
+        }
+    }
+    &__dropdown-container {
+        margin-top: 1.6rem;
     }
     &__inner-container {
         display: flex;
         flex-direction: row;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
 
         @include mobile {
             flex-direction: column;
@@ -1750,29 +1763,45 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     &__header {
         margin-bottom: 1.6rem;
+
+        @include mobile {
+            margin: 2.4rem 0 0.8rem;
+        }
     }
     &__footer {
         @include mobile {
-            position: fixed;
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: flex-end;
+            position: fixed;
             bottom: 0;
         }
     }
+    &__submit-button {
+        @include mobile {
+            margin-right: 1.2rem;
+        }
+    }
     &__fieldset {
-        width: 38.4rem;
+        width: 39.5rem;
 
         @include mobile {
             min-width: 90%;
-            margin: 8px 0 3.2rem;
+            margin: 0.4rem 0 3.2rem;
         }
         .document-dropdown {
-            margin-bottom: 3.6rem;
+            margin: 0.4rem 0 3.2rem;
         }
         .country-dropdown {
             min-height: 35.2rem;
+        }
+    }
+    &__fieldset-input {
+        width: 39.5rem;
+
+        @include mobile {
+            margin-top: 0.4rem;
         }
     }
     &__sample-container {
@@ -1792,9 +1821,13 @@ $MIN_HEIGHT_FLOATING: calc(
         background-color: $color-grey-2;
     }
     &__image {
-        max-width: 26.5rem;
+        max-width: 24.5rem;
         border-radius: 4px;
         object-fit: contain;
+
+        @include mobile {
+            max-width: calc(95vw - 16px);
+        }
     }
     &__redirect {
         width: auto !important;

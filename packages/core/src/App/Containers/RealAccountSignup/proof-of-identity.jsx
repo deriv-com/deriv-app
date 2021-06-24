@@ -1,11 +1,10 @@
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
+import ProofOfIdentityContainer from '@deriv/account';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer } from '@deriv/components';
-import { ProofOfIdentityContainer } from '@deriv/account';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isMobile, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import WS from 'Services/ws-methods';
 
 class ProofOfIdentityForm extends React.PureComponent {
     state = {

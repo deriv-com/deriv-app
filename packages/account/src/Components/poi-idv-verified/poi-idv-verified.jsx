@@ -9,7 +9,7 @@ const IdvVerified = ({ needs_poa }) => {
         <div className='proof-of-identity__container'>
             <IdvDocumentVerified className='btm-spacer' />
             <Text className='proof-of-identity__header' align='center' weight='bold'>
-                {localize("We've successfully verified your document number")}
+                {localize('Your document number has been verified')}
             </Text>
             {needs_poa && (
                 <React.Fragment>

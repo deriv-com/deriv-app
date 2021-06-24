@@ -1,13 +1,10 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { ThemedScrollbars, Text, Button } from '@deriv/components';
+import { ThemedScrollbars, Text } from '@deriv/components';
 import { init } from 'onfido-sdk-ui';
-import { isMobile, routes } from '@deriv/shared';
-import { getLanguage, Localize, localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
-import FormFooter from 'Components/form-footer';
+import { isMobile, routes, WS } from '@deriv/shared';
+import { getLanguage, Localize } from '@deriv/translations';
 import getOnfidoPhrases from 'Constants/onfido-phrases';
-import BackButtonIcon from '../../../Assets/ic-poi-back-btn.svg';
 
 const OnfidoSdkView = ({
     height,
@@ -16,7 +13,6 @@ const OnfidoSdkView = ({
     onfido,
     setAPIError,
     handleViewComplete,
-    handleBack,
 }) => {
     const { documents_supported, country_code } = onfido;
     const onfido_init = React.useRef();
@@ -104,14 +100,7 @@ const OnfidoSdkView = ({
                         </Text>
                     </div>
                 )}
-
                 <div id='onfido' />
-
-                <FormFooter>
-                    <Button onClick={handleBack} className='back-btn' type='button' has_effect large secondary>
-                        <BackButtonIcon className='back-btn' /> {localize('Go Back')}
-                    </Button>
-                </FormFooter>
             </div>
         </ThemedScrollbars>
     );

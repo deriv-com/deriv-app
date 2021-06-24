@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as Cookies from 'js-cookie';
 import { withRouter } from 'react-router-dom';
 import { AutoHeightWrapper, Button, Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getPlatformRedirect } from '@deriv/shared';
+import { getPlatformRedirect, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { WS } from 'Services/ws-methods';
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
 import NotRequired from 'Components/poi-not-required';
 import MissingPersonalDetails from 'Components/poi-missing-personal-details';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
+import { getAccountStatus } from './mock/account_status';
 
 const ProofOfIdentity = ({
-    account_status,
+    // account_status,
     app_routing_history,
     history,
     should_allow_authentication,
@@ -23,7 +23,7 @@ const ProofOfIdentity = ({
     routeBackInApp,
     fetchResidenceList,
 }) => {
-    const [is_status_loading, setStatusLoading] = useState(true);
+    const [is_status_loading, setStatusLoading] = React.useState(true);
     const [api_error, setAPIError] = React.useState();
     const [missing_personal_details, setMissingPersonalDetails] = React.useState(false);
     const [onfido_service_token, setOnfidoToken] = React.useState();
@@ -31,6 +31,8 @@ const ProofOfIdentity = ({
     const from_platform = getPlatformRedirect(app_routing_history);
     const should_show_redirect_btn = from_platform.name === 'P2P';
     const has_invalid_postal_code = missing_personal_details === 'postal_code';
+
+    const account_status = getAccountStatus('idv', 'none', {});
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
 
@@ -72,6 +74,7 @@ const ProofOfIdentity = ({
             WS.authorized.getAccountStatus().then(response_account_status => {
                 if (response_account_status.error) {
                     setAPIError(response_account_status.error);
+                    setStatusLoading(false);
                     return;
                 }
 
@@ -109,40 +112,53 @@ const ProofOfIdentity = ({
         }
     }, [is_switching]);
 
-    if (is_status_loading || is_switching) return <Loading is_fullscreen={false} />;
-    if (api_error) return <ErrorMessage error_message={api_error?.message || api_error} />;
-    if (is_virtual) return <DemoMessage />;
-    if (!should_allow_authentication) return <NotRequired />;
-    if (missing_personal_details)
-        return <MissingPersonalDetails has_invalid_postal_code={has_invalid_postal_code} from='proof_of_identity' />;
+    let component_to_load;
+
+    if (is_status_loading || is_switching) {
+        component_to_load = <Loading is_fullscreen={false} />;
+    } else if (api_error) {
+        component_to_load = <ErrorMessage error_message={api_error?.message || api_error} />;
+    } else if (is_virtual) {
+        component_to_load = <DemoMessage />;
+    } else if (!should_allow_authentication) {
+        component_to_load = <NotRequired />;
+    } else if (missing_personal_details) {
+        component_to_load = (
+            <MissingPersonalDetails has_invalid_postal_code={has_invalid_postal_code} from='proof_of_identity' />
+        );
+    }
 
     return (
         <AutoHeightWrapper default_height={200}>
             {({ setRef, height }) => (
                 <div ref={setRef} className='proof-of-identity'>
-                    <ProofOfIdentityContainer
-                        account_status={account_status}
-                        setAPIError={setAPIError}
-                        refreshNotifications={refreshNotifications}
-                        onfido_service_token={onfido_service_token}
-                        residence_list={residence_list}
-                        height={height}
-                        redirect_button={
-                            should_show_redirect_btn && (
-                                <Button
-                                    primary
-                                    className='proof-of-identity__redirect'
-                                    onClick={() => routeBackTo(from_platform.route)}
-                                >
-                                    <Localize
-                                        i18n_default_text='Back to {{platform_name}}'
-                                        values={{ platform_name: from_platform.name }}
-                                    />
-                                </Button>
-                            )
-                        }
-                        is_description_enabled
-                    />
+                    <div className='proof-of-identity__main-container'>
+                        {component_to_load || (
+                            <ProofOfIdentityContainer
+                                account_status={account_status}
+                                setAPIError={setAPIError}
+                                refreshNotifications={refreshNotifications}
+                                onfido_service_token={onfido_service_token}
+                                residence_list={residence_list}
+                                height={height}
+                                redirect_button={
+                                    should_show_redirect_btn && (
+                                        <Button
+                                            primary
+                                            className='proof-of-identity__redirect'
+                                            onClick={() => routeBackTo(from_platform.route)}
+                                        >
+                                            <Localize
+                                                i18n_default_text='Back to {{platform_name}}'
+                                                values={{ platform_name: from_platform.name }}
+                                            />
+                                        </Button>
+                                    )
+                                }
+                                is_description_enabled
+                            />
+                        )}
+                    </div>
                 </div>
             )}
         </AutoHeightWrapper>
@@ -150,7 +166,7 @@ const ProofOfIdentity = ({
 };
 
 export default connect(({ client, common }) => ({
-    account_status: client.account_status,
+    // account_status: client.account_status,
     has_missing_required_field: client.has_missing_required_field,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,

@@ -3,12 +3,13 @@ import classNames from 'classnames';
 import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize } from '@deriv/translations';
+import { WS } from '@deriv/shared';
 import FormFooter from 'Components/form-footer';
-import { getDocumentData, formatInput } from './document-data';
+import { formatInput, getDocumentData } from './utils';
 import BackButtonIcon from '../../Assets/ic-poi-back-btn.svg';
 import DocumentUploadLogo from '../../Assets/ic-document-upload-icon.svg';
 
-const IdvDocumentUpload = ({ selected_country, handleViewComplete, handleBack }) => {
+const IdvDocumentSubmit = ({ selected_country, handleViewComplete, handleBack }) => {
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
@@ -57,15 +58,28 @@ const IdvDocumentUpload = ({ selected_country, handleViewComplete, handleBack })
         return errors;
     };
 
-    const submitHandler = async values => {
-        // TODO: Implement submission
-        // eslint-disable-next-line
-        console.log(values);
-        handleViewComplete();
+    const submitHandler = async (values, { setSubmitting, setStatus }) => {
+        setSubmitting(true);
+        const { document_number, document_type } = values;
+        const submit_data = {
+            identity_verification_document_add: 1,
+            document_number,
+            document_type,
+            issuing_country: country_code,
+        };
+
+        WS.send(submit_data).then(response => {
+            if (response.error) {
+                setStatus(response.error);
+            }
+
+            setSubmitting(false);
+            handleViewComplete();
+        });
     };
 
     return (
-        <Formik initialValues={initial_form} validate={validateFields} submit={submitHandler}>
+        <Formik initialValues={initial_form} validate={validateFields} onSubmit={submitHandler}>
             {({ errors, setFieldValue, touched, values, handleChange, handleBlur, isSubmitting, isValid, dirty }) => (
                 <div className='proof-of-identity__container'>
                     <DocumentUploadLogo className='btm-spacer' />
@@ -120,7 +134,7 @@ const IdvDocumentUpload = ({ selected_country, handleViewComplete, handleBack })
                                                     error={touched.document_type && errors.document_type}
                                                     label={localize('Choose the document type')}
                                                     list_items={document_list}
-                                                    value={values.document_number}
+                                                    value={values.document_type}
                                                     onChange={e => {
                                                         handleChange(e);
                                                         setFieldValue('document_type', e.target.value, true);
@@ -128,18 +142,6 @@ const IdvDocumentUpload = ({ selected_country, handleViewComplete, handleBack })
                                                     onItemSelection={({ text }) =>
                                                         setFieldValue('document_type', text || '', true)
                                                     }
-                                                    onKeyup={e => {
-                                                        setFieldValue(
-                                                            'document_number',
-                                                            formatInput(
-                                                                getDocumentData(country_code, values.document_type)
-                                                                    .sample_format,
-                                                                e.target.value,
-                                                                '-'
-                                                            ),
-                                                            true
-                                                        );
-                                                    }}
                                                     use_text={true}
                                                     required
                                                 />
@@ -159,8 +161,19 @@ const IdvDocumentUpload = ({ selected_country, handleViewComplete, handleBack })
                                             autoComplete='off'
                                             placeholder='Enter your document number'
                                             value={values.document_number}
-                                            onChange={handleChange}
                                             onBlur={handleBlur}
+                                            onChange={handleChange}
+                                            onKeyUp={e => {
+                                                const selected_document = document_list.find(
+                                                    d => d.text === values.document_type
+                                                );
+                                                const formatted_input = formatInput(
+                                                    getDocumentData(country_code, selected_document.id).example_format,
+                                                    e.target.value,
+                                                    '-'
+                                                );
+                                                setFieldValue('document_number', formatted_input, true);
+                                            }}
                                             required
                                         />
                                     )}
@@ -199,4 +212,4 @@ const IdvDocumentUpload = ({ selected_country, handleViewComplete, handleBack })
     );
 };
 
-export default IdvDocumentUpload;
+export default IdvDocumentSubmit;

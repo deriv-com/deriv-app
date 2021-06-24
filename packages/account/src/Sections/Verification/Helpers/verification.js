@@ -9,13 +9,12 @@ export const populateVerificationStatus = account_status => {
     const identity_status = identity.status;
 
     const { idv, onfido, manual } = identity.services;
-    // TODO: Enable when API is ready
     // const identity_last_attempt = identity.attempts.latest;
     const identity_last_attempt = {
+        id: 1,
         service: 'onfido',
         country_code: 'za',
-        time: '0000000',
-        id: 2,
+        time: 166321,
     };
 
     return {

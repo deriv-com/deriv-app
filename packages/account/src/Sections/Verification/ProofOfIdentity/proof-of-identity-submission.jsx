@@ -12,7 +12,7 @@ const POISelector = ({
     height,
     is_description_enabled,
     has_require_submission,
-    // identity_last_attempt,
+    identity_last_attempt,
     idv,
     onfido_service_token,
     onfido,
@@ -58,7 +58,21 @@ const POISelector = ({
 
     React.useEffect(() => {
         if (has_require_submission) {
-            // TODO
+            switch (identity_last_attempt.service) {
+                case service_code.idv:
+                    setSubmissionStatus(submission_status_code.selecting);
+                    break;
+                case service_code.onfido:
+                    setSelectedCountry(identity_last_attempt.country);
+                    setSubmissionStatus(submission_status_code.submitting);
+                    break;
+                case service_code.manual:
+                    setSelectedCountry(identity_last_attempt.country);
+                    setSubmissionStatus(submission_status_code.submitting);
+                    break;
+                default:
+                    break;
+            }
         } else {
             setSubmissionStatus(submission_status_code.selecting);
         }

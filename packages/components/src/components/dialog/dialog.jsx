@@ -85,7 +85,7 @@ const Dialog = ({
                     {header_icon && title ? (
                         <div className='dc-dialog__header-wrapper__centered'>
                             <Icon
-                                className='advertiser-page__header-verification-icon'
+                                className='dc-dialog__header-verification-icon'
                                 icon={header_icon}
                                 size={isMobile() ? 30 : 35}
                             />
@@ -161,6 +161,7 @@ const Dialog = ({
 Dialog.defaultProps = {
     is_closed_on_cancel: true,
     is_closed_on_confirm: true,
+    header_icon: false,
 };
 
 Dialog.propTypes = {
@@ -169,6 +170,7 @@ Dialog.propTypes = {
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
     has_close_icon: PropTypes.bool,
+    header_icon: PropTypes.bool,
     is_closed_on_cancel: PropTypes.bool,
     is_closed_on_confirm: PropTypes.bool,
     is_content_centered: PropTypes.bool,

@@ -90,12 +90,12 @@
                 width: 100%;
                 background-color: $color-grey-2;
 
-                h1 {
-                    padding-top: 25px;
+                .dc-text {
+                    padding-top: 2.5rem;
                 }
 
-                svg {
-                    margin: 23px 9px 1px 11px;
+                .dc-dialog__header-verification-icon {
+                    margin: 2.3rem 0.9rem 0.1rem 1.1rem;
                 }
             }
         }
@@ -154,8 +154,8 @@
 
             &-wrapper {
                 &__centered {
-                    svg {
-                        margin: 20px 0 5px 10px;
+                    .dc-dialog__header-verification-icon {
+                        margin: 2rem 0 0.5rem 1rem;
                     }
                 }
             }

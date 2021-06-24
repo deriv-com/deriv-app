@@ -14,6 +14,7 @@ import {
     ToggleSettings,
 } from 'App/Components/Layout/Footer';
 import LiveChat from 'App/Components/Elements/LiveChat';
+import { routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import ServerTime from '../server-time.jsx';
 
@@ -52,7 +53,7 @@ const Footer = ({
         footer_extensions_right = footer_extensions.filter(footer_extension => footer_extension.position === 'right');
     }
 
-    if (pathname === '/onboarding') return null;
+    if (pathname === routes.onboarding) return null;
     return (
         <footer
             className={classNames('footer', {

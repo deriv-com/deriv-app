@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { PlatformContext } from '@deriv/shared';
+import { PlatformContext, deriv_urls, routes } from '@deriv/shared';
 import DefaultHeader from './default-header.jsx';
 import DashboardPlatformHeader from './dashboard-platform-header.jsx';
 import DashboardHeader from './dashboard-header.jsx';
@@ -13,11 +13,11 @@ const Header = ({ location: { pathname } }) => {
         /**
          * The below line will implement when the new domain myapps.deriv.com added.
          */
-        if (/myapps.deriv/.test(window.location.hostname)) return <DashboardPlatformHeader />;
+        if (window.location.hostname === deriv_urls.DERIV_DASHBOARD_HOST_NAME) return <DashboardPlatformHeader />;
         return <DashboardHeader />;
     }
 
-    if (pathname === '/onboarding') {
+    if (pathname === routes.onboarding) {
         return <SignupOnboardingHeader />;
     }
 

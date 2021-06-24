@@ -8,12 +8,12 @@ const Options = ({ options }) => (
         {options.map(option => (
             <React.Fragment key={option}>
                 <DesktopWrapper>
-                    <Text size='xxxs' color='less-prominent' className='welcome-item__option'>
+                    <Text size='xxxs' className='welcome-item__option'>
                         {option}
                     </Text>
                 </DesktopWrapper>
                 <MobileWrapper>
-                    <Text size='xxxxs' color='less-prominent' className='welcome-item__option'>
+                    <Text size='xxxxs' className='welcome-item__option'>
                         {option}
                     </Text>
                 </MobileWrapper>

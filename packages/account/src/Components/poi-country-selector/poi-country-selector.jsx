@@ -27,7 +27,9 @@ const CountrySelector = ({ residence_list, selected_country, setSelectedCountry,
                 <Text className='proof-of-identity__header' align='center' weight='bold'>
                     {localize('Proof of Identity')}
                 </Text>
-                <Text size='xs'>{localize('In which country was your document issued?')}</Text>
+                <Text className='proof-of-identity__country-text ' size='xs'>
+                    {localize('In which country was your document issued?')}
+                </Text>
                 <fieldset className='proof-of-identity__fieldset'>
                     <DesktopWrapper>
                         <Autocomplete

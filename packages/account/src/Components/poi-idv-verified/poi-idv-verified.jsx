@@ -8,7 +8,7 @@ const IdvVerified = ({ needs_poa }) => {
     return (
         <div className='proof-of-identity__container'>
             <IdvDocumentVerified className='icon btm-spacer' />
-            <Text className='proof-of-identity__header' align='center' weight='bold'>
+            <Text className='proof-of-identity__status-header' align='center' weight='bold'>
                 {localize('Your document number has been verified')}
             </Text>
             {needs_poa && (

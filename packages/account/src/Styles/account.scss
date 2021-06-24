@@ -1738,14 +1738,20 @@ $MIN_HEIGHT_FLOATING: calc(
         }
 
         .icon {
+            margin-top: 5.2rem;
+
             @include mobile {
                 margin-top: 2.6rem;
             }
         }
     }
+    &__country-text {
+        margin-bottom: 1.6rem;
+    }
     &__text {
         @include mobile {
             width: 95%;
+            margin-bottom: unset;
         }
     }
     &__dropdown-container {
@@ -1762,6 +1768,13 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
     &__header {
+        margin: 5.4rem 0 1.6rem;
+
+        @include mobile {
+            margin: 2.4rem 0 0.8rem;
+        }
+    }
+    &__status-header {
         margin-bottom: 1.6rem;
 
         @include mobile {

@@ -11,6 +11,7 @@ import NotRequired from 'Components/poi-not-required';
 import MissingPersonalDetails from 'Components/poi-missing-personal-details';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
 import { getAccountStatus } from './mock/account_status';
+import { identity_status_codes } from './proof-of-identity-utils';
 
 const ProofOfIdentity = ({
     // account_status,
@@ -32,7 +33,19 @@ const ProofOfIdentity = ({
     const should_show_redirect_btn = from_platform.name === 'P2P';
     const has_invalid_postal_code = missing_personal_details === 'postal_code';
 
-    const account_status = getAccountStatus('idv', 'none', {}, 3);
+    const account_status = getAccountStatus(
+        'idv',
+        identity_status_codes.verified,
+        {
+            latest: {
+                id: 1,
+                service: 'idv',
+                country_code: 'za',
+                time: 166321,
+            },
+        },
+        3
+    );
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
 

@@ -8,7 +8,7 @@ const IdvUploadComplete = ({ needs_poa }) => {
     return (
         <div className='proof-of-identity__container'>
             <IdvDocumentPending className='icon btm-spacer' />
-            <Text className='proof-of-identity__header' align='center' weight='bold'>
+            <Text className='proof-of-identity__status-header' align='center' weight='bold'>
                 {localize("We've received your document number")}
             </Text>
             <Text className='text' size='xs' align='center'>

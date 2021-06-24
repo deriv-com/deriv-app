@@ -71,7 +71,7 @@ export const reference_account_status = {
     ],
 };
 
-export const getAccountStatus = (service_type, status, last_attempt) => {
+export const getAccountStatus = (service_type, status, last_attempt, submissions_left) => {
     let updated_service = {};
     switch (service_type) {
         case 'idv':
@@ -81,7 +81,7 @@ export const getAccountStatus = (service_type, status, last_attempt) => {
                         last_rejected: [],
                         reported_properties: {},
                         status,
-                        submissions_left: 3,
+                        submissions_left,
                     },
                     manual: {
                         status: 'none',
@@ -121,7 +121,7 @@ export const getAccountStatus = (service_type, status, last_attempt) => {
                         ],
                         reported_properties: {},
                         status,
-                        submissions_left: 3,
+                        submissions_left,
                     },
                 },
                 status,

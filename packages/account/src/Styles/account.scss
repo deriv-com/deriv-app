@@ -1766,9 +1766,8 @@ $MIN_HEIGHT_FLOATING: calc(
 
         @include mobile {
             min-width: 90%;
-            margin: 8px 0 3.2rem 0;
+            margin: 8px 0 3.2rem;
         }
-
         .document-dropdown {
             margin-bottom: 3.6rem;
         }

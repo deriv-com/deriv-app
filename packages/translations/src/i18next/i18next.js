@@ -21,6 +21,7 @@ const ALL_LANGUAGES = Object.freeze({
     ZH_CN: '简体中文',
     ZH_TW: '繁體中文',
 });
+
 const allowed_languages = { EN: 'English', ID: 'Indonesia', PT: 'Português', ES: 'Español' };
 
 export const getAllowedLanguages = () => {
@@ -59,10 +60,10 @@ const isLanguageAvailable = lang => {
 
     if (is_ach) return isStaging() || isLocal();
 
-    return Object.keys(getAllowedLanguages()).includes(selected_language);
+    return Object.keys(getAllLanguages()).includes(selected_language);
 };
 
-export const getAllLanguages = () => ALL_LANGUAGES;
+export const getAllLanguages = () => (isProduction() ? allowed_languages : ALL_LANGUAGES);
 
 const getInitialLanguage = () => {
     const url_params = new URLSearchParams(window.location.search);

@@ -2,6 +2,7 @@ import React from 'react';
 import { str as crc32 } from 'crc-32';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import { isProduction } from '../../../shared/src/utils/config/config';
 import withI18n from '../components';
 
 const LANGUAGE_KEY = 'i18n_language';
@@ -20,6 +21,24 @@ const ALL_LANGUAGES = Object.freeze({
     ZH_CN: '简体中文',
     ZH_TW: '繁體中文',
 });
+const allowed_languages = { EN: 'English', ID: 'Indonesia', PT: 'Português', ES: 'Español' };
+
+export const getAllowedLanguages = () => {
+    const exclude_languages = ['ACH'];
+    // TODO Change language_list to const when languages are available in prod.
+    let language_list = Object.keys(getAllLanguages())
+        .filter(key => !exclude_languages.includes(key))
+        .reduce((obj, key) => {
+            obj[key] = getAllLanguages()[key];
+            return obj;
+        }, {});
+
+    // TODO Remove production check when all languages are available in prod.
+    if (isProduction()) {
+        language_list = allowed_languages;
+    }
+    return language_list;
+};
 
 const getUrlBase = (path = '') => {
     const l = window.location;
@@ -41,7 +60,7 @@ const isLanguageAvailable = lang => {
 
     if (is_ach) return isStaging() || isLocal();
 
-    return Object.keys(ALL_LANGUAGES).includes(selected_language);
+    return Object.keys(getAllowedLanguages()).includes(selected_language);
 };
 
 export const getAllLanguages = () => ALL_LANGUAGES;

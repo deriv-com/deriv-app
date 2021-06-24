@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import React from 'react';
-import { getAllowedLanguages } from '../language';
+import { getAllowedLanguages } from '@deriv/translations';
 
 describe('getAllowedLanguages', () => {
     it('It Returns the desired allowed languages', () => {

@@ -68,6 +68,9 @@ const Routes = ({
     if (!lang_regex.test(location.search) && lang !== 'EN') {
         window.history.replaceState({}, document.title, urlForLanguage(lang));
     }
+    if (lang_regex.test(location.search) && lang === 'EN') {
+        window.history.replaceState({}, document.title, urlForLanguage('EN'));
+    }
 
     return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;
 };

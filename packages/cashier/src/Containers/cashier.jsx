@@ -164,6 +164,7 @@ Cashier.propTypes = {
     history: PropTypes.object,
     is_account_transfer_visible: PropTypes.bool,
     is_account_setting_loaded: PropTypes.bool,
+    is_cashier_default: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_onramp_tab_visible: PropTypes.bool,
@@ -184,6 +185,7 @@ Cashier.propTypes = {
 };
 
 export default connect(({ client, common, modules, ui }) => ({
+    is_cashier_default: modules.cashier.is_cashier_default,
     is_account_transfer_visible: modules.cashier.is_account_transfer_visible,
     is_account_setting_loaded: client.is_account_setting_loaded,
     is_logged_in: client.is_logged_in,

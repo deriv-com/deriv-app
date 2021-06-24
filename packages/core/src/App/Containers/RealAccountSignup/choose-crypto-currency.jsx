@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { FormSubmitButton, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isMobile, reorderCurrencies } from '@deriv/shared';
+import { reorderCurrencies } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
 import './currency-selector.scss';
@@ -122,7 +122,7 @@ const ChooseCryptoCurrency = ({
                         className='currency-selector__button'
                         is_disabled={isSubmitting || !values.currency}
                         label={localize('Continue')}
-                        is_absolute={!isMobile()}
+                        is_absolute
                         form_error={form_error}
                     />
                 </form>

@@ -117,7 +117,7 @@ const CashierDefault = ({
         if (is_payment_agent_visible) {
             options.push(Providers.createPaymentAgentProvider(onClickPaymentAgent));
         }
-        if (!is_eu && user_fiat_currency[0].currency === 'USD') {
+        if (!is_eu && user_fiat_currency[0]?.currency === 'USD') {
             options.push(Providers.createDp2pProvider(onClickDp2p));
         }
         return options;

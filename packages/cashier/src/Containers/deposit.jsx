@@ -59,6 +59,8 @@ const Deposit = ({
     currency,
     setSideNotes,
 }) => {
+    const is_crypto = !!currency && isCryptocurrency(currency);
+
     React.useEffect(() => {
         setActiveTab(container);
         setIsDeposit(false);
@@ -108,7 +110,14 @@ const Deposit = ({
             return <Error error={error} />;
         }
 
-        return <CashierContainer iframe_height={iframe_height} iframe_url={iframe_url} is_loading={is_loading} />;
+        return (
+            <CashierContainer
+                iframe_height={iframe_height}
+                iframe_url={iframe_url}
+                is_loading={is_loading}
+                is_crypto={is_crypto}
+            />
+        );
     }
     return <CashierDefault />;
 };

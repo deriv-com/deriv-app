@@ -4,6 +4,7 @@ import { isCryptocurrency } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Dialog } from '@deriv/components';
 import { connect } from 'Stores/connect';
+import 'Sass/cashier.scss';
 
 const AccountPromptDialog = ({
     accounts_list,
@@ -23,6 +24,7 @@ const AccountPromptDialog = ({
 
     return (
         <Dialog
+            className='acc-prompt-dialog'
             title={is_crypto ? localize('Switch accounts?') : localize('Switch to crypto account?')}
             confirm_button_text={is_crypto ? localize('Switch accounts') : localize('Switch to crpto account')}
             cancel_button_text={localize('Cancel')}

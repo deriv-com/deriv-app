@@ -97,6 +97,20 @@
             }
         }
     }
+    &__transfer-onramp {
+        border-top: 2px solid var(--general-section-2);
+
+        &__button {
+            margin: 0 1.6em 1rem 0 !important;
+
+            &:not(:last-child) {
+                margin-right: 1em;
+            }
+            @include mobile {
+                height: 2.8rem !important;
+            }
+        }
+    }
     &__loader {
         font-size: 1rem;
 
@@ -1465,3 +1479,7 @@ div.payment-agent-transfer {
     }
 }
 /* stylelint-enable plugin/selector-bem-pattern */
+
+.acc-prompt-dialog {
+    padding: 0 1rem;
+}

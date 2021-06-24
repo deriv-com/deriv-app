@@ -10,9 +10,9 @@ import {
     isEmptyObject,
     isMobile,
     showDigitalOptionsUnavailableError,
+    WS,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import ServerTime from '_common/base/server_time';
 import { processPurchase } from './Actions/purchase';

@@ -1725,31 +1725,47 @@ $MIN_HEIGHT_FLOATING: calc(
     &__main-container {
         max-width: 67.2rem;
     }
-
     &__container {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         margin-top: 3.8rem;
+        overflow-y: scroll;
     }
     &__container-no-margin {
         margin-top: 0;
+        height: fit-content;
     }
     &__inner-container {
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
+
+        @include mobile {
+            flex-direction: column;
+        }
     }
     &__header {
         margin-bottom: 1.6rem;
+    }
+    &__footer {
+        @include mobile {
+            position: fixed;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+            bottom: 0;
+        }
     }
     &__fieldset {
         width: 38.4rem;
 
         @include mobile {
             min-width: 90%;
+            margin: 8px 0 3.2rem 0;
         }
 
         .document-dropdown {
@@ -1760,8 +1776,13 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
     &__sample-container {
-        width: 26.1rem;
-        margin-left: 16px;
+        margin-left: 1.6rem;
+
+        @include mobile {
+            margin-left: unset;
+            min-height: 50vh;
+            width: 100%;
+        }
     }
     &__image-container {
         width: fit-content;
@@ -1771,7 +1792,7 @@ $MIN_HEIGHT_FLOATING: calc(
         background-color: $color-grey-2;
     }
     &__image {
-        max-width: 31.5rem;
+        max-width: 26.5rem;
         border-radius: 4px;
         object-fit: contain;
     }

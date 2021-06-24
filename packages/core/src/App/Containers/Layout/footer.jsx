@@ -43,6 +43,7 @@ const Footer = ({
     toggleSettingsModal,
     settings_extension,
     landing_company_shortcode,
+    location: { pathname },
 }) => {
     let footer_extensions_left = [];
     let footer_extensions_right = [];
@@ -51,6 +52,7 @@ const Footer = ({
         footer_extensions_right = footer_extensions.filter(footer_extension => footer_extension.position === 'right');
     }
 
+    if (pathname === '/onboarding') return null;
     return (
         <footer
             className={classNames('footer', {

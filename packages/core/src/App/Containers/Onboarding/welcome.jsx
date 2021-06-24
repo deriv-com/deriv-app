@@ -16,14 +16,13 @@ import NotSureMobile from 'Assets/SvgComponents/onboarding/not-sure-mobile.svg';
 import WelcomeItem from './welcome-item.jsx';
 
 const Welcome = props => {
-    const { toggleWelcomeModal, history, toggleShouldShowMultipliersOnboarding, onNext } = props;
+    const { history, toggleShouldShowMultipliersOnboarding, onNext } = props;
     const switchPlatform = React.useCallback(
         ({ route, should_show_multiplier } = {}) => {
-            toggleWelcomeModal({ is_visible: false, should_persist: true });
             if (route) history.push(route);
             if (should_show_multiplier) toggleShouldShowMultipliersOnboarding(true);
         },
-        [toggleWelcomeModal, history, toggleShouldShowMultipliersOnboarding]
+        [history, toggleShouldShowMultipliersOnboarding]
     );
 
     return (
@@ -102,7 +101,6 @@ Welcome.propTypes = {
 
 export default withRouter(
     connect(({ ui }) => ({
-        toggleWelcomeModal: ui.toggleWelcomeModal,
         toggleShouldShowMultipliersOnboarding: ui.toggleShouldShowMultipliersOnboarding,
     }))(Welcome)
 );

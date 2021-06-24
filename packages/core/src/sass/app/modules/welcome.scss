@@ -9,10 +9,12 @@
 
 .welcome-cr {
     background-color: var(--general-section-4);
-    padding-top: 2.4rem;
+    padding: 2.4rem 1.6rem 0;
+
+    height: 100vh;
 
     @media (min-width: 992px) {
-        padding-top: 10.2rem;
+        padding: 10.2rem 0 0;
     }
 }
 

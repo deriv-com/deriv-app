@@ -25,12 +25,14 @@ const AppContents = ({
     notifyAppInstall,
     pageView,
     pushDataLayer,
+    location: { pathname },
 }) => {
     const [show_cookie_banner, setShowCookieBanner] = React.useState(false);
     const [is_gtm_tracking, setIsGtmTracking] = React.useState(false);
     const { is_dashboard } = React.useContext(PlatformContext);
 
     const tracking_status = tracking_status_cookie.get(TRACKING_STATUS_KEY);
+    const is_onboarding = pathname === '/onboarding';
 
     React.useEffect(() => {
         const allow_tracking = !is_eu_country || tracking_status === 'accepted';
@@ -88,12 +90,13 @@ const AppContents = ({
                 'app-contents--is-route-modal': is_route_modal_on,
                 'app-contents--is-scrollable': is_cfd_page || is_cashier_visible,
                 'app-contents--is-dashboard': is_dashboard,
+                'app-contents--is-onboarding': is_onboarding,
             })}
         >
             <MobileWrapper>{children}</MobileWrapper>
             <DesktopWrapper>
                 {/* Calculate height of user screen and offset height of header and footer */}
-                <ThemedScrollbars height='calc(100vh - 84px)' has_horizontal>
+                <ThemedScrollbars height={is_onboarding ? 'calc(100vh - 72px)' : 'calc(100vh - 84px)'} has_horizontal>
                     {children}
                 </ThemedScrollbars>
             </DesktopWrapper>

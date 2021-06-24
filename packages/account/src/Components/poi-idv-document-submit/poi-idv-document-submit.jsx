@@ -7,7 +7,7 @@ import { WS } from '@deriv/shared';
 import FormFooter from 'Components/form-footer';
 import { formatInput, getDocumentData } from './utils';
 import BackButtonIcon from '../../Assets/ic-poi-back-btn.svg';
-import DocumentUploadLogo from '../../Assets/ic-document-upload-icon.svg';
+import DocumentSubmitLogo from '../../Assets/ic-document-submit-icon.svg';
 
 const IdvDocumentSubmit = ({ selected_country, handleViewComplete, handleBack }) => {
     const [document_list, setDocumentList] = React.useState([]);
@@ -58,6 +58,12 @@ const IdvDocumentSubmit = ({ selected_country, handleViewComplete, handleBack })
         return errors;
     };
 
+    const getSampleImage = document_name => {
+        const selected_document = document_list.find(d => d.text === document_name);
+        const { sample_image } = getDocumentData(country_code, selected_document.id);
+        return sample_image;
+    };
+
     const submitHandler = async (values, { setSubmitting, setStatus }) => {
         setSubmitting(true);
         const { document_number, document_type } = values;
@@ -82,7 +88,7 @@ const IdvDocumentSubmit = ({ selected_country, handleViewComplete, handleBack })
         <Formik initialValues={initial_form} validate={validateFields} onSubmit={submitHandler}>
             {({ errors, setFieldValue, touched, values, handleChange, handleBlur, isSubmitting, isValid, dirty }) => (
                 <div className='proof-of-identity__container'>
-                    <DocumentUploadLogo className='btm-spacer' />
+                    <DocumentSubmitLogo className='btm-spacer' />
                     <Text className='proof-of-identity__header' align='center' weight='bold'>
                         {localize('Verify your identity')}
                     </Text>
@@ -114,14 +120,7 @@ const IdvDocumentSubmit = ({ selected_country, handleViewComplete, handleBack })
                                                         onChange={handleChange}
                                                         onItemSelection={({ text }) => {
                                                             setFieldValue('document_type', text || '', true);
-                                                            const selected_document = document_list.find(
-                                                                d => d.text === text
-                                                            );
-                                                            const { sample_image } = getDocumentData(
-                                                                country_code,
-                                                                selected_document.id
-                                                            );
-                                                            setDocumentImage(sample_image || null);
+                                                            setDocumentImage(getSampleImage(text) || null);
                                                         }}
                                                         required
                                                     />
@@ -138,10 +137,8 @@ const IdvDocumentSubmit = ({ selected_country, handleViewComplete, handleBack })
                                                     onChange={e => {
                                                         handleChange(e);
                                                         setFieldValue('document_type', e.target.value, true);
+                                                        setDocumentImage(getSampleImage(e.target.value) || null);
                                                     }}
-                                                    onItemSelection={({ text }) =>
-                                                        setFieldValue('document_type', text || '', true)
-                                                    }
                                                     use_text={true}
                                                     required
                                                 />
@@ -193,9 +190,9 @@ const IdvDocumentSubmit = ({ selected_country, handleViewComplete, handleBack })
                             </div>
                         )}
                     </div>
-                    <FormFooter>
-                        <Button className='back-btn' type='button' has_effect large secondary>
-                            <BackButtonIcon className='back-btn' onClick={handleBack} /> {localize('Go Back')}
+                    <FormFooter className='proof-of-identity__footer'>
+                        <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
+                            <BackButtonIcon className='back-btn' /> {localize('Go Back')}
                         </Button>
                         <Button
                             type='button'

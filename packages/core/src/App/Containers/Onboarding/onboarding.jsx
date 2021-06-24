@@ -1,11 +1,20 @@
 import React from 'react';
+import { routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import Platforms from './cfds-platforms.jsx';
 import AccountSignup from './account-signup.jsx';
 import Welcome from './welcome.jsx';
 
-const Onboarding = ({ should_show_cr_onboarding }) => {
+const Onboarding = ({ should_show_cr_onboarding, is_logged_in, history }) => {
     const [step, setStep] = React.useState('signup');
+
+    React.useEffect(() => {
+        if (is_logged_in && !should_show_cr_onboarding) {
+            history.push({
+                pathname: routes.root,
+            });
+        }
+    }, [is_logged_in, should_show_cr_onboarding, history]);
 
     return (
         <>
@@ -18,4 +27,5 @@ const Onboarding = ({ should_show_cr_onboarding }) => {
 
 export default connect(({ client }) => ({
     should_show_cr_onboarding: client.should_show_cr_onboarding,
+    is_logged_in: client.is_logged_in,
 }))(Onboarding);

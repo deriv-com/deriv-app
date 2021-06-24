@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as Cookies from 'js-cookie';
 import { withRouter } from 'react-router-dom';
 import { AutoHeightWrapper, Button, Loading } from '@deriv/components';
@@ -10,9 +10,10 @@ import ErrorMessage from 'Components/error-component';
 import NotRequired from 'Components/poi-not-required';
 import MissingPersonalDetails from 'Components/poi-missing-personal-details';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
+import { getAccountStatus } from './mock/account_status';
 
 const ProofOfIdentity = ({
-    account_status,
+    // account_status,
     app_routing_history,
     history,
     should_allow_authentication,
@@ -22,7 +23,7 @@ const ProofOfIdentity = ({
     routeBackInApp,
     fetchResidenceList,
 }) => {
-    const [is_status_loading, setStatusLoading] = useState(true);
+    const [is_status_loading, setStatusLoading] = React.useState(true);
     const [api_error, setAPIError] = React.useState();
     const [missing_personal_details, setMissingPersonalDetails] = React.useState(false);
     const [onfido_service_token, setOnfidoToken] = React.useState();
@@ -30,6 +31,8 @@ const ProofOfIdentity = ({
     const from_platform = getPlatformRedirect(app_routing_history);
     const should_show_redirect_btn = from_platform.name === 'P2P';
     const has_invalid_postal_code = missing_personal_details === 'postal_code';
+
+    const account_status = getAccountStatus('idv', 'none', {});
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
 
@@ -163,7 +166,7 @@ const ProofOfIdentity = ({
 };
 
 export default connect(({ client, common }) => ({
-    account_status: client.account_status,
+    // account_status: client.account_status,
     has_missing_required_field: client.has_missing_required_field,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,

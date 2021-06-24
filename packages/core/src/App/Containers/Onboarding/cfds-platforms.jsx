@@ -1,6 +1,8 @@
 import React from 'react';
+import { withRouter } from 'react-router';
 import { Button, Text, Table, Icon, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { routes } from '@deriv/shared';
 
 const data = [
     {
@@ -143,7 +145,7 @@ const Row = ({ title, dmt5, derivx, has_items }) => (
     </>
 );
 
-const Platforms = () => (
+const Platforms = ({ history }) => (
     <section className='platform-onboarding'>
         <MobileWrapper>
             <Text as='h2' weight='bold' align='center' color='prominent' size='xsm'>
@@ -200,12 +202,26 @@ const Platforms = () => (
                         <Table.Cell className='platform-table-col' />
                     </DesktopWrapper>
                     <Table.Cell className='platform-table-col'>
-                        <Button type='button' secondary small>
+                        <Button
+                            type='button'
+                            secondary
+                            small
+                            onClick={() => {
+                                history.push(routes.mt5);
+                            }}
+                        >
                             {localize('Choose DMT5')}
                         </Button>
                     </Table.Cell>
                     <Table.Cell className='platform-table-col'>
-                        <Button type='button' secondary small>
+                        <Button
+                            type='button'
+                            secondary
+                            small
+                            onClick={() => {
+                                history.push(routes.dxtrade);
+                            }}
+                        >
                             {localize('Choose Deriv X')}
                         </Button>
                     </Table.Cell>
@@ -215,4 +231,4 @@ const Platforms = () => (
     </section>
 );
 
-export default Platforms;
+export default withRouter(Platforms);

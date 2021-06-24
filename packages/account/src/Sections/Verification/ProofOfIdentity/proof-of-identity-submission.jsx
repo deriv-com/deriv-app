@@ -64,14 +64,14 @@ const POISelector = ({
                     if (idv.submissions_left) {
                         setSubmissionStatus(submission_status_code.selecting);
                     } else {
-                        setSelectedCountry(identity_last_attempt.country);
+                        setSelectedCountry(identity_last_attempt.country_code);
                         setSubmissionStatus(submission_status_code.submitting);
                         setSubmissionService(service_code.onfido);
                     }
                     break;
                 }
                 case service_code.onfido: {
-                    setSelectedCountry(identity_last_attempt.country);
+                    setSelectedCountry(identity_last_attempt.country_code);
                     setSubmissionStatus(submission_status_code.submitting);
                     if (onfido.submissions_left) {
                         setSubmissionService(service_code.onfido);
@@ -81,7 +81,7 @@ const POISelector = ({
                     break;
                 }
                 case service_code.manual: {
-                    setSelectedCountry(identity_last_attempt.country);
+                    setSelectedCountry(identity_last_attempt.country_code);
                     setSubmissionStatus(submission_status_code.submitting);
                     setSubmissionService(service_code.manual);
                     break;

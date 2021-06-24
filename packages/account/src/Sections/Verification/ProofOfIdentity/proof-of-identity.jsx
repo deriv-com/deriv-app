@@ -32,7 +32,7 @@ const ProofOfIdentity = ({
     const should_show_redirect_btn = from_platform.name === 'P2P';
     const has_invalid_postal_code = missing_personal_details === 'postal_code';
 
-    const account_status = getAccountStatus('idv', 'none', {});
+    const account_status = getAccountStatus('idv', 'none', {}, 3);
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
 

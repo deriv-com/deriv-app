@@ -2,6 +2,7 @@ import React from 'react';
 import { WS } from '@deriv/shared';
 import CountrySelector from 'Components/poi-country-selector';
 import IdvDocumentSubmit from 'Components/poi-idv-document-submit';
+import IdvUploadComplete from 'Components/poi-idv-upload-complete';
 import Unsupported from 'Components/poi-unsupported';
 import UploadComplete from 'Components/poi-upload-complete';
 import OnfidoUpload from './onfido-sdk-view.jsx';
@@ -122,8 +123,7 @@ const POISelector = ({
         case submission_status_code.complete: {
             switch (submission_service) {
                 case service_code.idv:
-                    // TODO: add IDV upload complete
-                    return <UploadComplete needs_poa={needs_poa} redirect_button={redirect_button} />;
+                    return <IdvUploadComplete needs_poa={needs_poa} redirect_button={redirect_button} />;
                 case service_code.onfido:
                     return <UploadComplete needs_poa={needs_poa} redirect_button={redirect_button} />;
                 case service_code.manual:

@@ -229,8 +229,16 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get legal_allowed_currencies() {
-        if (!this.landing_companies || !(this.root_store.ui && this.root_store.ui.real_account_signup_target))
+        if (!this.landing_companies || !this.root_store.ui) return [];
+        if (!this.root_store.ui.real_account_signup_target) {
+            if (this.landing_companies.gaming_company) {
+                return this.landing_companies.gaming_company.legal_allowed_currencies;
+            }
+            if (this.landing_companies.financial_company) {
+                return this.landing_companies.financial_company.legal_allowed_currencies;
+            }
             return [];
+        }
         if (['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target)) {
             return this.current_landing_company.legal_allowed_currencies;
         }

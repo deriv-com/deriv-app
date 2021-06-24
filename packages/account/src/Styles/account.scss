@@ -1728,9 +1728,10 @@ $MIN_HEIGHT_FLOATING: calc(
     &__container {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         margin-top: 3.8rem;
+        min-height: 50vw;
         overflow-y: scroll;
     }
     &__container-no-margin {

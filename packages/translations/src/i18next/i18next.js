@@ -34,9 +34,8 @@ export const getAllowedLanguages = () => {
         }, {});
 
     // TODO Remove production check when all languages are available in prod.
-    if (isProduction()) {
-        language_list = allowed_languages;
-    }
+    if (isProduction()) language_list = allowed_languages;
+
     return language_list;
 };
 

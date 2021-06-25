@@ -749,6 +749,7 @@ export default class ClientStore extends BaseStore {
             residence,
             account_settings,
             preferred_language,
+            user_id,
         } = this;
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
@@ -762,6 +763,7 @@ export default class ClientStore extends BaseStore {
                 last_name,
                 name,
                 preferred_language,
+                user_id,
             };
             Cookies.set('client_information', client_information, { domain });
             this.has_cookie_account = true;

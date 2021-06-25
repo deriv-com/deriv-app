@@ -71,14 +71,14 @@ export const reference_account_status = {
     ],
 };
 
-export const getAccountStatus = (service_type, status, last_attempt, submissions_left) => {
+export const getAccountStatus = (service_type, status, last_attempt, submissions_left, last_rejected) => {
     let updated_service = {};
     switch (service_type) {
         case 'idv':
             updated_service = {
                 services: {
                     idv: {
-                        last_rejected: [],
+                        last_rejected,
                         reported_properties: {},
                         status,
                         submissions_left,
@@ -115,10 +115,7 @@ export const getAccountStatus = (service_type, status, last_attempt, submissions
                             'Visa',
                         ],
                         is_country_supported: 1,
-                        last_rejected: [
-                            "Your selfie isn't clear. Please take a clearer photo and try again. Ensure that there's enough light where you are and that your entire face is in the frame.",
-                            'The document you provided is not supported for your country. Please provide a supported document for your country.',
-                        ],
+                        last_rejected,
                         reported_properties: {},
                         status,
                         submissions_left,

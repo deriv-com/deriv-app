@@ -35,7 +35,7 @@ const ProofOfIdentity = ({
 
     const account_status = getAccountStatus(
         'idv',
-        identity_status_codes.verified,
+        identity_status_codes.rejected,
         {
             latest: {
                 id: 1,
@@ -44,7 +44,8 @@ const ProofOfIdentity = ({
                 time: 166321,
             },
         },
-        3
+        0,
+        ['We were unable to verify your identity based on the details you entered.']
     );
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);

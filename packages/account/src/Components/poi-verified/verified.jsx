@@ -39,7 +39,7 @@ export const Verified = ({ needs_poa, redirect_button }) => {
             className='account-management-dashboard'
             text={localize('To continue trading, you must also submit a proof of address.')}
         >
-            {<PoaButton />}
+            <PoaButton />
             {redirect_button}
         </IconMessageContent>
     );

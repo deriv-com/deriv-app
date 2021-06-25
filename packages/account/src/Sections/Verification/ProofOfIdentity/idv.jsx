@@ -3,7 +3,7 @@ import IdvUploadComplete from 'Components/poi-idv-upload-complete';
 import IdvExpired from 'Components/poi-idv-expired';
 import IdvVerified from 'Components/poi-idv-verified';
 import IdvRejected from 'Components/poi-idv-rejected';
-import IDVNoSubmissions from 'Components/poi-limited';
+import IdvNoSubmissions from 'Components/poi-idv-limited';
 import { identity_status_codes } from './proof-of-identity-utils';
 
 const Idv = ({ idv, handleRequireSubmission, verification_status, redirect_button }) => {
@@ -16,7 +16,7 @@ const Idv = ({ idv, handleRequireSubmission, verification_status, redirect_butto
         case identity_status_codes.rejected:
         case identity_status_codes.suspected:
             if (Number(submissions_left) === 0)
-                return <IDVNoSubmissions handleRequireSubmission={handleRequireSubmission} />;
+                return <IdvNoSubmissions handleRequireSubmission={handleRequireSubmission} />;
             return (
                 <IdvRejected rejected_reasons={rejected_reasons} handleRequireSubmission={handleRequireSubmission} />
             );

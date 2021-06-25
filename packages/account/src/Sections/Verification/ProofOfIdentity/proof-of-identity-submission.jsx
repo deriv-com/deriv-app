@@ -8,7 +8,7 @@ import UploadComplete from 'Components/poi-upload-complete';
 import OnfidoUpload from './onfido-sdk-view.jsx';
 import { submission_status_code, service_code } from './proof-of-identity-utils';
 
-const POISelector = ({
+const POISubmission = ({
     has_require_submission,
     height,
     identity_last_attempt,
@@ -57,6 +57,8 @@ const POISelector = ({
         setSubmissionStatus(submission_status_code.selecting);
     };
 
+    const getCountryFromResidence = country_code => residence_list.find(residence => residence.value === country_code);
+
     React.useEffect(() => {
         if (has_require_submission) {
             switch (identity_last_attempt.service) {
@@ -64,14 +66,14 @@ const POISelector = ({
                     if (Number(idv.submissions_left) > 0) {
                         setSubmissionStatus(submission_status_code.selecting);
                     } else {
-                        setSelectedCountry(identity_last_attempt.country_code);
+                        setSelectedCountry(getCountryFromResidence(identity_last_attempt.country_code));
                         setSubmissionStatus(submission_status_code.submitting);
                         setSubmissionService(service_code.onfido);
                     }
                     break;
                 }
                 case service_code.onfido: {
-                    setSelectedCountry(identity_last_attempt.country_code);
+                    setSelectedCountry(getCountryFromResidence(identity_last_attempt.country_code));
                     setSubmissionStatus(submission_status_code.submitting);
                     if (Number(onfido.submissions_left) > 0) {
                         setSubmissionService(service_code.onfido);
@@ -81,7 +83,7 @@ const POISelector = ({
                     break;
                 }
                 case service_code.manual: {
-                    setSelectedCountry(identity_last_attempt.country_code);
+                    setSelectedCountry(getCountryFromResidence(identity_last_attempt.country_code));
                     setSubmissionStatus(submission_status_code.submitting);
                     setSubmissionService(service_code.manual);
                     break;
@@ -109,7 +111,6 @@ const POISelector = ({
                 case service_code.idv:
                     return (
                         <IdvDocumentSubmit
-                            idv={idv}
                             handleViewComplete={handleViewComplete}
                             handleBack={handleBack}
                             selected_country={selected_country}
@@ -122,6 +123,7 @@ const POISelector = ({
                             is_description_enabled={is_description_enabled}
                             onfido_service_token={onfido_service_token}
                             onfido={onfido}
+                            selected_country={selected_country}
                             residence_list={residence_list}
                             setAPIError={setAPIError}
                             refreshNotifications={refreshNotifications}
@@ -153,4 +155,4 @@ const POISelector = ({
     }
 };
 
-export default POISelector;
+export default POISubmission;

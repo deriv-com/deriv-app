@@ -11,10 +11,18 @@ const OnfidoSdkView = ({
     height,
     is_description_enabled,
     onfido_service_token,
-    onfido,
+    selected_country,
     setAPIError,
 }) => {
-    const { documents_supported, country_code } = onfido;
+    console.log(selected_country);
+    const {
+        identity: {
+            services: {
+                onfido: { documents_supported },
+            },
+        },
+        value: country_code,
+    } = selected_country;
     const onfido_init = React.useRef();
 
     const onComplete = React.useCallback(
@@ -58,15 +66,13 @@ const OnfidoSdkView = ({
                         type: 'document',
                         options: {
                             documentTypes: {
-                                passport: documents_supported.some(doc => /Passport/g.test(doc)),
-                                driving_licence: documents_supported.some(doc => /Driving Licence/g.test(doc))
+                                passport: !!documents_supported.passport,
+                                driving_licence: documents_supported.driving_licence
                                     ? {
                                           country: country_code,
                                       }
                                     : false,
-                                national_identity_card: documents_supported.some(doc =>
-                                    /National Identity Card/g.test(doc)
-                                )
+                                national_identity_card: documents_supported.national_identity_card
                                     ? {
                                           country: country_code,
                                       }

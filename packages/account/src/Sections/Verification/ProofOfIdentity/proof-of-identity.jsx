@@ -10,8 +10,8 @@ import ErrorMessage from 'Components/error-component';
 import NotRequired from 'Components/poi-not-required';
 import MissingPersonalDetails from 'Components/poi-missing-personal-details';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
-import { getAccountStatus } from './mock/account_status';
-import { identity_status_codes } from './proof-of-identity-utils';
+import { figmaAccountStatus } from './mock/account_status';
+// import { identity_status_codes } from './proof-of-identity-utils';
 
 const ProofOfIdentity = ({
     // account_status,
@@ -33,20 +33,7 @@ const ProofOfIdentity = ({
     const should_show_redirect_btn = from_platform.name === 'P2P';
     const has_invalid_postal_code = missing_personal_details === 'postal_code';
 
-    const account_status = getAccountStatus(
-        'idv',
-        identity_status_codes.none,
-        {
-            latest: {
-                id: 1,
-                service: 'idv',
-                country_code: 'za',
-                time: 166321,
-            },
-        },
-        3,
-        ['We were unable to verify your identity based on the details you entered.']
-    );
+    const account_status = figmaAccountStatus('idv_result_rejected_limited');
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
 

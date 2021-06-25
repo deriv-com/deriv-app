@@ -7,16 +7,16 @@ export const reference_account_status = {
         identity: {
             services: {
                 idv: {
-                    last_rejected: [],
+                    // last_rejected: [],
                     reported_properties: {},
-                    status: 'none',
-                    submissions_left: 0,
+                    status: 'rejected',
+                    submissions_left: 2,
                 },
                 manual: {
                     status: 'none',
                 },
                 onfido: {
-                    country_code: 'GBR',
+                    // country_code: 'GBR',
                     documents_supported: [
                         'Asylum Registration Card',
                         'Certificate of Naturalisation',
@@ -27,20 +27,20 @@ export const reference_account_status = {
                         'Residence Permit',
                         'Visa',
                     ],
-                    is_country_supported: 1,
-                    last_rejected: [
-                        'The document you provided is not supported for your country. Please provide a supported document for your country.',
-                        "Your selfie isn't clear. Please take a clearer photo and try again. Ensure that there's enough light where you are and that your entire face is in the frame.",
-                    ],
+                    // is_country_supported: 1,
+                    // last_rejected: [
+                    //     'The document you provided is not supported for your country. Please provide a supported document for your country.',
+                    //     "Your selfie isn't clear. Please take a clearer photo and try again. Ensure that there's enough light where you are and that your entire face is in the frame.",
+                    // ],
                     reported_properties: {},
-                    status: 'rejected',
+                    status: 'none',
                     submissions_left: 3,
                 },
             },
             attempts: {
                 latest: {
                     id: 1,
-                    service: 'onfido',
+                    service: 'idv',
                     country_code: 'za',
                     time: 166321,
                 },
@@ -69,6 +69,433 @@ export const reference_account_status = {
         'trading_password_required',
         'unwelcome',
     ],
+};
+
+export const figmaAccountStatus = type => {
+    switch (type) {
+        case 'idv_none': {
+            return {
+                authentication: {
+                    document: {
+                        status: 'pending',
+                    },
+                    identity: {
+                        services: {
+                            idv: {
+                                reported_properties: {},
+                                status: 'none',
+                                submissions_left: 3,
+                            },
+                            manual: {
+                                status: 'none',
+                            },
+                            onfido: {
+                                reported_properties: {},
+                                status: 'none',
+                                submissions_left: 3,
+                            },
+                        },
+                        attempts: {
+                            latest: null,
+                            count: 0,
+                        },
+                        status: 'none',
+                    },
+                    needs_verification: ['identity'],
+                },
+                cashier_validation: [
+                    'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET',
+                    'ASK_UK_FUNDS_PROTECTION',
+                    'unwelcome_status',
+                ],
+                currency_config: {
+                    GBP: {
+                        is_deposit_suspended: 0,
+                        is_withdrawal_suspended: 0,
+                    },
+                },
+                prompt_client_to_authenticate: 1,
+                risk_classification: 'low',
+                status: [
+                    'allow_document_upload',
+                    'cashier_locked',
+                    'document_under_review',
+                    'financial_information_not_complete',
+                    'max_turnover_limit_not_set',
+                    'trading_experience_not_complete',
+                    'trading_password_required',
+                    'unwelcome',
+                ],
+            };
+        }
+        case 'idv_none_poa': {
+            return {
+                authentication: {
+                    document: {
+                        status: 'none',
+                    },
+                    identity: {
+                        services: {
+                            idv: {
+                                reported_properties: {},
+                                status: 'none',
+                                submissions_left: 3,
+                            },
+                            manual: {
+                                status: 'none',
+                            },
+                            onfido: {
+                                reported_properties: {},
+                                status: 'none',
+                                submissions_left: 3,
+                            },
+                        },
+                        attempts: {
+                            latest: null,
+                            count: 0,
+                        },
+                        status: 'none',
+                    },
+                    needs_verification: ['identity', 'document'],
+                },
+                cashier_validation: [
+                    'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET',
+                    'ASK_UK_FUNDS_PROTECTION',
+                    'unwelcome_status',
+                ],
+                currency_config: {
+                    GBP: {
+                        is_deposit_suspended: 0,
+                        is_withdrawal_suspended: 0,
+                    },
+                },
+                prompt_client_to_authenticate: 1,
+                risk_classification: 'low',
+                status: [
+                    'allow_document_upload',
+                    'cashier_locked',
+                    'document_under_review',
+                    'financial_information_not_complete',
+                    'max_turnover_limit_not_set',
+                    'trading_experience_not_complete',
+                    'trading_password_required',
+                    'unwelcome',
+                ],
+            };
+        }
+        case 'idv_result_pass': {
+            return {
+                authentication: {
+                    document: {
+                        status: 'none',
+                    },
+                    identity: {
+                        services: {
+                            idv: {
+                                reported_properties: {},
+                                status: 'verified',
+                                submissions_left: 3,
+                            },
+                            manual: {
+                                status: 'none',
+                            },
+                            onfido: {
+                                reported_properties: {},
+                                status: 'none',
+                                submissions_left: 3,
+                            },
+                        },
+                        attempts: {
+                            latest: {
+                                id: 1,
+                                service: 'idv',
+                                country_code: 'za',
+                                time: 166321,
+                            },
+                            count: 0,
+                        },
+                        status: 'verified',
+                    },
+                    needs_verification: ['identity'],
+                },
+                cashier_validation: [
+                    'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET',
+                    'ASK_UK_FUNDS_PROTECTION',
+                    'unwelcome_status',
+                ],
+                currency_config: {
+                    GBP: {
+                        is_deposit_suspended: 0,
+                        is_withdrawal_suspended: 0,
+                    },
+                },
+                prompt_client_to_authenticate: 1,
+                risk_classification: 'low',
+                status: [
+                    'allow_document_upload',
+                    'cashier_locked',
+                    'document_under_review',
+                    'financial_information_not_complete',
+                    'max_turnover_limit_not_set',
+                    'trading_experience_not_complete',
+                    'trading_password_required',
+                    'unwelcome',
+                ],
+            };
+        }
+        case 'idv_result_pass_poa': {
+            return {
+                authentication: {
+                    document: {
+                        status: 'none',
+                    },
+                    identity: {
+                        services: {
+                            idv: {
+                                reported_properties: {},
+                                status: 'verified',
+                                submissions_left: 3,
+                            },
+                            manual: {
+                                status: 'none',
+                            },
+                            onfido: {
+                                reported_properties: {},
+                                status: 'none',
+                                submissions_left: 3,
+                            },
+                        },
+                        attempts: {
+                            latest: {
+                                id: 1,
+                                service: 'idv',
+                                country_code: 'za',
+                                time: 166321,
+                            },
+                            count: 0,
+                        },
+                        status: 'verified',
+                    },
+                    needs_verification: ['identity', 'document'],
+                },
+                cashier_validation: [
+                    'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET',
+                    'ASK_UK_FUNDS_PROTECTION',
+                    'unwelcome_status',
+                ],
+                currency_config: {
+                    GBP: {
+                        is_deposit_suspended: 0,
+                        is_withdrawal_suspended: 0,
+                    },
+                },
+                prompt_client_to_authenticate: 1,
+                risk_classification: 'low',
+                status: [
+                    'allow_document_upload',
+                    'cashier_locked',
+                    'document_under_review',
+                    'financial_information_not_complete',
+                    'max_turnover_limit_not_set',
+                    'trading_experience_not_complete',
+                    'trading_password_required',
+                    'unwelcome',
+                ],
+            };
+        }
+        case 'idv_result_expired': {
+            return {
+                authentication: {
+                    document: {
+                        status: 'none',
+                    },
+                    identity: {
+                        services: {
+                            idv: {
+                                reported_properties: {},
+                                status: 'expired',
+                                submissions_left: 3,
+                            },
+                            manual: {
+                                status: 'none',
+                            },
+                            onfido: {
+                                reported_properties: {},
+                                status: 'none',
+                                submissions_left: 3,
+                            },
+                        },
+                        attempts: {
+                            latest: {
+                                id: 1,
+                                service: 'idv',
+                                country_code: 'za',
+                                time: 166321,
+                            },
+                            count: 0,
+                        },
+                        status: 'expired',
+                    },
+                    needs_verification: ['identity'],
+                },
+                cashier_validation: [
+                    'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET',
+                    'ASK_UK_FUNDS_PROTECTION',
+                    'unwelcome_status',
+                ],
+                currency_config: {
+                    GBP: {
+                        is_deposit_suspended: 0,
+                        is_withdrawal_suspended: 0,
+                    },
+                },
+                prompt_client_to_authenticate: 1,
+                risk_classification: 'low',
+                status: [
+                    'allow_document_upload',
+                    'cashier_locked',
+                    'document_under_review',
+                    'financial_information_not_complete',
+                    'max_turnover_limit_not_set',
+                    'trading_experience_not_complete',
+                    'trading_password_required',
+                    'unwelcome',
+                ],
+            };
+        }
+        case 'idv_result_rejected': {
+            return {
+                authentication: {
+                    document: {
+                        status: 'pending',
+                    },
+                    identity: {
+                        services: {
+                            idv: {
+                                last_rejected: [],
+                                reported_properties: {},
+                                status: 'rejected',
+                                submissions_left: 2,
+                            },
+                            manual: {
+                                status: 'none',
+                            },
+                            onfido: {
+                                // last_rejected: [
+                                //     'The document you provided is not supported for your country. Please provide a supported document for your country.',
+                                //     "Your selfie isn't clear. Please take a clearer photo and try again. Ensure that there's enough light where you are and that your entire face is in the frame.",
+                                // ],
+                                reported_properties: {},
+                                status: 'none',
+                                submissions_left: 3,
+                            },
+                        },
+                        attempts: {
+                            latest: {
+                                id: 1,
+                                service: 'idv',
+                                country_code: 'za',
+                                time: 166321,
+                            },
+                            count: 1,
+                        },
+                        status: 'rejected',
+                    },
+                    needs_verification: ['identity'],
+                },
+                cashier_validation: [
+                    'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET',
+                    'ASK_UK_FUNDS_PROTECTION',
+                    'unwelcome_status',
+                ],
+                currency_config: {
+                    GBP: {
+                        is_deposit_suspended: 0,
+                        is_withdrawal_suspended: 0,
+                    },
+                },
+                prompt_client_to_authenticate: 1,
+                risk_classification: 'low',
+                status: [
+                    'allow_document_upload',
+                    'cashier_locked',
+                    'document_under_review',
+                    'financial_information_not_complete',
+                    'max_turnover_limit_not_set',
+                    'trading_experience_not_complete',
+                    'trading_password_required',
+                    'unwelcome',
+                ],
+            };
+        }
+        case 'idv_result_rejected_limited': {
+            return {
+                authentication: {
+                    document: {
+                        status: 'pending',
+                    },
+                    identity: {
+                        services: {
+                            idv: {
+                                last_rejected: [],
+                                reported_properties: {},
+                                status: 'rejected',
+                                submissions_left: 0,
+                            },
+                            manual: {
+                                status: 'none',
+                            },
+                            onfido: {
+                                // last_rejected: [
+                                //     'The document you provided is not supported for your country. Please provide a supported document for your country.',
+                                //     "Your selfie isn't clear. Please take a clearer photo and try again. Ensure that there's enough light where you are and that your entire face is in the frame.",
+                                // ],
+                                reported_properties: {},
+                                status: 'none',
+                                submissions_left: 3,
+                            },
+                        },
+                        attempts: {
+                            latest: {
+                                id: 1,
+                                service: 'idv',
+                                country_code: 'za',
+                                time: 166321,
+                            },
+                            count: 1,
+                        },
+                        status: 'rejected',
+                    },
+                    needs_verification: ['identity'],
+                },
+                cashier_validation: [
+                    'ASK_SELF_EXCLUSION_MAX_TURNOVER_SET',
+                    'ASK_UK_FUNDS_PROTECTION',
+                    'unwelcome_status',
+                ],
+                currency_config: {
+                    GBP: {
+                        is_deposit_suspended: 0,
+                        is_withdrawal_suspended: 0,
+                    },
+                },
+                prompt_client_to_authenticate: 1,
+                risk_classification: 'low',
+                status: [
+                    'allow_document_upload',
+                    'cashier_locked',
+                    'document_under_review',
+                    'financial_information_not_complete',
+                    'max_turnover_limit_not_set',
+                    'trading_experience_not_complete',
+                    'trading_password_required',
+                    'unwelcome',
+                ],
+            };
+        }
+        default:
+            return {};
+    }
 };
 
 export const getAccountStatus = (service_type, status, last_attempt, submissions_left, last_rejected) => {

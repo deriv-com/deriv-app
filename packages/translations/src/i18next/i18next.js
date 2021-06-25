@@ -60,10 +60,10 @@ const isLanguageAvailable = lang => {
 
     if (is_ach) return isStaging() || isLocal();
 
-    return Object.keys(getAllLanguages()).includes(selected_language);
+    return Object.keys(getAllowedLanguages()).includes(selected_language);
 };
 
-export const getAllLanguages = () => (isProduction() ? allowed_languages : ALL_LANGUAGES);
+export const getAllLanguages = () => ALL_LANGUAGES;
 
 const getInitialLanguage = () => {
     const url_params = new URLSearchParams(window.location.search);

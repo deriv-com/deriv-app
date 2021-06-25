@@ -8,7 +8,7 @@ import { formatInput, getDocumentData } from './utils';
 import BackButtonIcon from '../../Assets/ic-poi-back-btn.svg';
 import DocumentSubmitLogo from '../../Assets/ic-document-submit-icon.svg';
 
-const IdvDocumentSubmit = ({ selected_country, handleViewComplete, handleBack }) => {
+const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country }) => {
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
@@ -77,7 +77,6 @@ const IdvDocumentSubmit = ({ selected_country, handleViewComplete, handleBack })
             if (response.error) {
                 setStatus(response.error);
             }
-
             setSubmitting(false);
             handleViewComplete();
         });
@@ -86,16 +85,16 @@ const IdvDocumentSubmit = ({ selected_country, handleViewComplete, handleBack })
     return (
         <Formik initialValues={initial_form} validate={validateFields} onSubmit={submitHandler}>
             {({
+                dirty,
                 errors,
-                setFieldValue,
-                touched,
-                values,
-                handleChange,
                 handleBlur,
+                handleChange,
                 handleSubmit,
                 isSubmitting,
                 isValid,
-                dirty,
+                setFieldValue,
+                touched,
+                values,
             }) => (
                 <div className='proof-of-identity__container'>
                     <DocumentSubmitLogo className='icon btm-spacer' />

@@ -4,25 +4,25 @@ import { localize } from '@deriv/translations';
 
 import FormFooter from 'Components/form-footer';
 
-const CountrySelector = ({ residence_list, selected_country, setSelectedCountry, handleSelectionNext }) => {
+const CountrySelector = ({ handleSelectionNext, residence_list, selected_country, setSelectedCountry }) => {
     const [country_list, setCountryList] = React.useState([]);
     const [country_input, setCountryInput] = React.useState('');
 
     const handleMobileSelect = e => {
-        setCountryInput(e?.target?.value);
-        const matching_country = country_list.find(c => c.text === e?.target?.value);
+        setCountryInput(e.target.value);
+        const matching_country = country_list.find(c => c.text === e.target.value);
         if (matching_country) {
             setSelectedCountry(matching_country);
         }
     };
 
     React.useEffect(() => {
-        const countries = residence_list.filter(r => !r.disabled);
-        setCountryList(countries);
+        const enabled_countries = residence_list.filter(r => !r.disabled);
+        setCountryList(enabled_countries);
     }, [residence_list]);
 
     return (
-        <>
+        <React.Fragment>
             <div className='proof-of-identity__container'>
                 <Text className='proof-of-identity__header' align='center' weight='bold'>
                     {localize('Proof of Identity')}
@@ -34,12 +34,12 @@ const CountrySelector = ({ residence_list, selected_country, setSelectedCountry,
                     <DesktopWrapper>
                         <Autocomplete
                             data-lpignore='true'
-                            autoComplete='off' // prevent chrome autocomplete
+                            autoComplete='off'
                             type='text'
                             label={localize('Country')}
                             list_items={country_list}
                             value={country_input}
-                            onChange={e => setCountryInput(e?.target?.value)}
+                            onChange={e => setCountryInput(e.target.value)}
                             onItemSelection={item => {
                                 setSelectedCountry(item);
                                 setCountryInput(item.text);
@@ -75,7 +75,7 @@ const CountrySelector = ({ residence_list, selected_country, setSelectedCountry,
                     primary
                 />
             </FormFooter>
-        </>
+        </React.Fragment>
     );
 };
 

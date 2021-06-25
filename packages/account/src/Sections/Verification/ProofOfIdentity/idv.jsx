@@ -6,7 +6,7 @@ import IdvRejected from 'Components/poi-idv-rejected';
 import IdvNoSubmissions from 'Components/poi-idv-limited';
 import { identity_status_codes } from './proof-of-identity-utils';
 
-const Idv = ({ idv, handleRequireSubmission, verification_status, redirect_button }) => {
+const Idv = ({ handleRequireSubmission, idv, redirect_button, verification_status }) => {
     const { status, submissions_left, last_rejected: rejected_reasons } = idv;
     const { needs_poa } = verification_status;
 

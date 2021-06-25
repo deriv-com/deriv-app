@@ -16,13 +16,13 @@ import { identity_status_codes } from './proof-of-identity-utils';
 const ProofOfIdentity = ({
     // account_status,
     app_routing_history,
+    fetchResidenceList,
     history,
-    should_allow_authentication,
     is_switching,
     is_virtual,
     refreshNotifications,
     routeBackInApp,
-    fetchResidenceList,
+    should_allow_authentication,
 }) => {
     const [is_status_loading, setStatusLoading] = React.useState(true);
     const [api_error, setAPIError] = React.useState();
@@ -35,7 +35,7 @@ const ProofOfIdentity = ({
 
     const account_status = getAccountStatus(
         'idv',
-        identity_status_codes.rejected,
+        identity_status_codes.none,
         {
             latest: {
                 id: 1,
@@ -44,7 +44,7 @@ const ProofOfIdentity = ({
                 time: 166321,
             },
         },
-        0,
+        3,
         ['We were unable to verify your identity based on the details you entered.']
     );
 
@@ -181,12 +181,12 @@ const ProofOfIdentity = ({
 
 export default connect(({ client, common }) => ({
     // account_status: client.account_status,
+    app_routing_history: common.app_routing_history,
+    fetchResidenceList: client.fetchResidenceList,
     has_missing_required_field: client.has_missing_required_field,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
     refreshNotifications: client.refreshNotifications,
     routeBackInApp: common.routeBackInApp,
-    app_routing_history: common.app_routing_history,
     should_allow_authentication: client.should_allow_authentication,
-    fetchResidenceList: client.fetchResidenceList,
 }))(withRouter(ProofOfIdentity));

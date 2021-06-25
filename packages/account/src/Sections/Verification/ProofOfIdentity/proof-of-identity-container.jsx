@@ -9,12 +9,12 @@ import { populateVerificationStatus } from '../Helpers/verification';
 
 const ProofOfIdentityContainer = ({
     account_status,
-    refreshNotifications,
-    onfido_service_token,
-    is_description_enabled = true,
-    residence_list,
     height,
+    is_description_enabled = true,
+    onfido_service_token,
     redirect_button,
+    refreshNotifications,
+    residence_list,
     setAPIError,
 }) => {
     const [has_require_submission, setHasRequireSubmission] = React.useState(false);

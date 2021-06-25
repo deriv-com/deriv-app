@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { ThemedScrollbars, Text } from '@deriv/components';
+import { Text, ThemedScrollbars } from '@deriv/components';
 import { init } from 'onfido-sdk-ui';
 import { isMobile, routes, WS } from '@deriv/shared';
 import { getLanguage, Localize } from '@deriv/translations';
 import getOnfidoPhrases from 'Constants/onfido-phrases';
 
 const OnfidoSdkView = ({
+    handleViewComplete,
     height,
     is_description_enabled,
     onfido_service_token,
     onfido,
     setAPIError,
-    handleViewComplete,
 }) => {
     const { documents_supported, country_code } = onfido;
     const onfido_init = React.useRef();

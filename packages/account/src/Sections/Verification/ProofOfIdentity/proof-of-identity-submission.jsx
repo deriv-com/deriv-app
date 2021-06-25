@@ -9,19 +9,19 @@ import OnfidoUpload from './onfido-sdk-view.jsx';
 import { submission_status_code, service_code } from './proof-of-identity-utils';
 
 const POISelector = ({
-    residence_list,
-    height,
-    is_description_enabled,
     has_require_submission,
+    height,
     identity_last_attempt,
     idv,
+    is_description_enabled,
+    manual,
+    needs_poa,
     onfido_service_token,
     onfido,
-    needs_poa,
-    setAPIError,
-    manual,
-    refreshNotifications,
     redirect_button,
+    refreshNotifications,
+    residence_list,
+    setAPIError,
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // selecting, submitting, complete
     const [submission_service, setSubmissionService] = React.useState();

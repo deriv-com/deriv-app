@@ -7,7 +7,7 @@ import RejectedReasons from 'Components/poi-rejected-reasons';
 import Limited from 'Components/poi-limited';
 import { identity_status_codes } from './proof-of-identity-utils';
 
-const Onfido = ({ onfido, verification_status, redirect_button, handleRequireSubmission }) => {
+const Onfido = ({ handleRequireSubmission, onfido, redirect_button, verification_status }) => {
     const { status, submissions_left, last_rejected: rejected_reasons } = onfido;
     const { needs_poa } = verification_status;
 

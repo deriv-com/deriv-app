@@ -5,8 +5,6 @@ import { config } from '../../../../constants/config';
 Blockly.Blocks.multiplier_take_profit = {
     init() {
         this.jsonInit(this.definition());
-        this.setMovable(false);
-        this.setDeletable(false);
     },
     definition() {
         return {
@@ -31,6 +29,9 @@ Blockly.Blocks.multiplier_take_profit = {
             colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
+            tooltip: localize(
+                'Your contract is closed automatically when your profit is more than or equals to this amount.'
+            ),
             category: Blockly.Categories.Trade_Definition,
         };
     },

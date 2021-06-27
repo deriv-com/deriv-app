@@ -71,13 +71,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         if (!this.workspace || this.workspace.isDragging() || this.isInFlyout) {
             return;
         }
-        if (
-            (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
-            event.type === Blockly.Events.END_DRAG
-        ) {
-            this.setCurrency();
-            this.updateAmountLimits();
-        }
 
         const trade_definition_block = this.workspace
             .getAllBlocks(true)
@@ -103,6 +96,14 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             this.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST') || config.BARRIER_TYPES[1][1],
         ];
 
+        if (
+            (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
+            event.type === Blockly.Events.END_DRAG
+        ) {
+            this.setCurrency();
+            this.updateAmountLimits();
+        }
+
         const is_load_event = /^dbot-load/.test(event.group);
 
         if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
@@ -111,7 +112,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.updateBarrierInputs(false, false);
                 this.updateDurationInput(false, false);
                 this.updatePredictionInput(false);
-                this.updateAmountLimits();
             } else {
                 this.updateBarrierInputs(true, true);
                 this.enforceSingleBarrierType('BARRIEROFFSETTYPE_LIST', true);
@@ -148,7 +148,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.enforceSingleBarrierType(true);
                 this.updateDurationInput(true, true);
                 this.updatePredictionInput(true);
-                this.updateAmountLimits();
             }
         } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.id) {
             // Ensure this block is populated after initial drag from flyout.
@@ -221,13 +220,15 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             this.amount_limits = limits;
             const { max_payout, min_stake } = limits;
             if (max_payout && min_stake) {
-                this.setFieldValue(
-                    localize('(min: {{min_stake}} - max: {{max_payout}})', {
-                        min_stake,
-                        max_payout,
-                    }),
-                    'AMOUNT_LIMITS'
-                );
+                runIrreversibleEvents(() => {
+                    this.setFieldValue(
+                        localize('(min: {{min_stake}} - max: {{max_payout}})', {
+                            min_stake,
+                            max_payout,
+                        }),
+                        'AMOUNT_LIMITS'
+                    );
+                });
             }
         });
     },
@@ -256,6 +257,15 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     stake_shadow_block.render();
 
                     const take_profit_block = this.workspace.newBlock('multiplier_take_profit');
+                    const take_profit_input = take_profit_block.getInput('AMOUNT');
+
+                    const take_profit_shadow_block = this.workspace.newBlock('math_number_positive');
+                    take_profit_shadow_block.setShadow(true);
+                    take_profit_shadow_block.setFieldValue(0, 'NUM');
+                    take_profit_shadow_block.outputConnection.connect(take_profit_input.connection);
+                    take_profit_shadow_block.initSvg();
+                    take_profit_shadow_block.render();
+
                     multiplier_block
                         .getLastConnectionInStatement('MULTIPLIER_PARAMS')
                         .connect(take_profit_block.previousConnection);
@@ -263,6 +273,15 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     take_profit_block.render();
 
                     const stop_loss_block = this.workspace.newBlock('multiplier_stop_loss');
+                    const stop_loss_input = stop_loss_block.getInput('AMOUNT');
+
+                    const stop_loss_shadow_block = this.workspace.newBlock('math_number_positive');
+                    stop_loss_shadow_block.setShadow(true);
+                    stop_loss_shadow_block.setFieldValue(0, 'NUM');
+                    stop_loss_shadow_block.outputConnection.connect(stop_loss_input.connection);
+                    stop_loss_shadow_block.initSvg();
+                    stop_loss_shadow_block.render();
+
                     multiplier_block
                         .getLastConnectionInStatement('MULTIPLIER_PARAMS')
                         .connect(stop_loss_block.previousConnection);

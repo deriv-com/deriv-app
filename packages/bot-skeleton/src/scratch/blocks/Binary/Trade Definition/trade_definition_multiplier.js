@@ -17,7 +17,7 @@ Blockly.Blocks.trade_definition_multiplier = {
             message0: localize('Multiplier: {{ multiplier }}', {
                 multiplier: '%1',
             }),
-            message1: `${localize('Stake')}: %1 %2`,
+            message1: `${localize('Stake')}: %1 %2 %3`,
             message2: '%1',
             message3: '%1',
             args0: [
@@ -37,6 +37,11 @@ Blockly.Blocks.trade_definition_multiplier = {
                     type: 'input_value',
                     name: 'AMOUNT',
                     check: 'Number',
+                },
+                {
+                    type: 'field_label',
+                    name: 'AMOUNT_LIMITS',
+                    text: '',
                 },
             ],
             args2: [
@@ -69,12 +74,6 @@ Blockly.Blocks.trade_definition_multiplier = {
         if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
             return;
         }
-        if (
-            (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
-            event.type === Blockly.Events.END_DRAG
-        ) {
-            this.setCurrency();
-        }
 
         const trade_definition_block = this.workspace
             .getAllBlocks(true)
@@ -91,9 +90,37 @@ Blockly.Blocks.trade_definition_multiplier = {
         }
 
         this.selected_symbol = market_block.getFieldValue('SYMBOL_LIST');
+        this.selected_market = market_block.getFieldValue('MARKET_LIST');
         this.selected_trade_type_category = trade_type_block.getFieldValue('TRADETYPECAT_LIST');
         this.selected_trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
         this.selected_multiplier = this.getFieldValue('MULTIPLIERTYPE_LIST');
+
+        if (
+            (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
+            event.type === Blockly.Events.END_DRAG
+        ) {
+            this.setCurrency();
+            this.updateAmountLimits();
+        }
+        if (event.type === Blockly.Events.BLOCK_CHANGE || event.type === Blockly.Events.END_DRAG) {
+            // Enforce only multiplier_<type> blocks in MULTIPLIER_PARAMS statement.
+            const blocks_in_multiplier = this.getBlocksInStatement('MULTIPLIER_PARAMS');
+
+            if (blocks_in_multiplier.length > 0) {
+                let block_types_in_multiplier = [];
+                blocks_in_multiplier.forEach(block => {
+                    block_types_in_multiplier.push(block.type);
+                    if (
+                        !/^multiplier_.+$/.test(block.type) ||
+                        new Set(block_types_in_multiplier).size !== block_types_in_multiplier.length
+                    ) {
+                        runIrreversibleEvents(() => {
+                            block.unplug(true);
+                        });
+                    }
+                });
+            }
+        }
 
         const is_load_event = /^dbot-load/.test(event.group);
 
@@ -132,6 +159,7 @@ Blockly.Blocks.trade_definition_multiplier = {
             }
         }
     },
+    updateAmountLimits: Blockly.Blocks.trade_definition_tradeoptions.updateAmountLimits,
     updateMultiplierInput(should_use_default_value) {
         const { contracts_for } = ApiHelpers.instance;
 
@@ -189,6 +217,20 @@ Blockly.Blocks.trade_definition_multiplier = {
         return {
             AMOUNT: input => {
                 const input_number = Number(input);
+                const max_payout = this.amount_limits?.max_payout;
+                const min_stake = this.amount_limits?.min_stake;
+                if (min_stake && input_number < min_stake) {
+                    this.error_message = localize("Please enter a stake amount that's at least {{min_stake}}.", {
+                        min_stake,
+                    });
+                    return input_number < min_stake;
+                }
+                if (max_payout && input_number > max_payout) {
+                    this.error_message = localize("Please enter a payout amount that's lower than {{max_payout}}.", {
+                        max_payout,
+                    });
+                    return input_number > max_payout;
+                }
                 this.error_message = localize('Amount must be a positive number.');
                 return !isNaN(input_number) && input_number <= 0;
             },

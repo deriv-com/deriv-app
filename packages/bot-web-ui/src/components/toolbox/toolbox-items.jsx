@@ -111,13 +111,21 @@ export const ToolboxItems = ReactDomServer.renderToStaticMarkup(
                         <Field name='NUM'>1</Field>
                     </Shadow>
                 </Value>
-                <Statement name='MULTIPLIER_PARAMS'>
-                    <Block type='multiplier_take_profit' deletable='false' movable='false'>
-                        <Next>
-                            <Block type='multiplier_stop_loss' deletable='false' movable='false' />
-                        </Next>
-                    </Block>
-                </Statement>
+                <Field name='AMOUNT_LIMITS' />
+            </Block>
+            <Block type='multiplier_take_profit'>
+                <Value name='AMOUNT'>
+                    <Shadow type='math_number'>
+                        <Field name='NUM'>0</Field>
+                    </Shadow>
+                </Value>
+            </Block>
+            <Block type='multiplier_stop_loss'>
+                <Value name='AMOUNT'>
+                    <Shadow type='math_number'>
+                        <Field name='NUM'>0</Field>
+                    </Shadow>
+                </Value>
             </Block>
         </Category>
         <Category id='purchase_conditions' name='Purchase contract'>

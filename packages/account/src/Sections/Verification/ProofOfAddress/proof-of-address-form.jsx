@@ -24,8 +24,8 @@ import {
     getLocation,
     PlatformContext,
     isDesktop,
+    WS,
 } from '@deriv/shared';
-import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';

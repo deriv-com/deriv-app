@@ -107,7 +107,7 @@ Blockly.Blocks.trade_definition_multiplier = {
             const blocks_in_multiplier = this.getBlocksInStatement('MULTIPLIER_PARAMS');
 
             if (blocks_in_multiplier.length > 0) {
-                let block_types_in_multiplier = [];
+                const block_types_in_multiplier = [];
                 blocks_in_multiplier.forEach(block => {
                     block_types_in_multiplier.push(block.type);
                     if (
@@ -207,6 +207,7 @@ Blockly.Blocks.trade_definition_multiplier = {
                     stake_shadow_block.render(true);
 
                     this.dispose();
+                    Blockly.derivWorkspace.cleanUp();
                 });
             });
         }

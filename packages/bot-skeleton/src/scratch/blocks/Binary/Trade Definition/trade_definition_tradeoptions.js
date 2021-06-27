@@ -289,6 +289,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     stop_loss_block.render();
 
                     this.dispose();
+                    Blockly.derivWorkspace.cleanUp();
                 });
             });
         } else {

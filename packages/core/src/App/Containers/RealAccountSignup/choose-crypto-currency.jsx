@@ -54,7 +54,7 @@ const ChooseCryptoCurrency = ({
             reorderCryptoCurrencies.push({
                 value: 'plus',
                 name: 'Add new',
-                secondLineLabel: 'crypto account',
+                second_line_label: 'crypto account',
                 icon: 'IcCashierAdd',
             });
         }
@@ -114,7 +114,7 @@ const ChooseCryptoCurrency = ({
                                 id={currency.value}
                                 label={currency.name}
                                 icon={currency.icon}
-                                secondLineLabel={currency.secondLineLabel}
+                                second_line_label={currency.second_line_label}
                             />
                         ))}
                     </CurrencyRadioButtonGroup>

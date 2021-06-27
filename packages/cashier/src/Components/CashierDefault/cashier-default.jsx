@@ -44,49 +44,41 @@ const CashierDefault = ({
         shouldNavigateAfterChooseCrypto(target);
     };
 
+    const openTarget = target => {
+        setDepositTarget(target);
+        if (is_crypto) {
+            openRealAccount(target);
+        } else if (has_crypto_account) {
+            openRealAccount(target);
+        } else {
+            openRealAccountSignup('add');
+        }
+    };
+
+    const fiatAccountConditions = (next_location, current_location) => {
+        if (has_fiat_account) {
+            shouldNavigateAfterPrompt(next_location, current_location);
+        } else {
+            openRealAccountSignup('deposit_cash');
+        }
+    };
+
     const onClickDepositCash = () => {
         setDepositTarget(routes.cashier_deposit);
-        if (!is_crypto) {
-            setIsDeposit(true);
-            return;
-        }
 
         if (is_crypto) {
-            if (has_fiat_account) {
-                shouldNavigateAfterPrompt(routes.cashier_deposit, 'deposit');
-            } else {
-                openRealAccountSignup('deposit_cash');
-            }
+            fiatAccountConditions(routes.cashier_deposit, 'deposit');
+        } else {
+            setIsDeposit(true);
         }
     };
 
     const onClickDepositCrypto = () => {
-        setDepositTarget(routes.cashier_deposit);
-        if (!is_crypto) {
-            if (has_crypto_account) {
-                openRealAccount(routes.cashier_deposit);
-            } else {
-                openRealAccountSignup('add');
-            }
-        }
-        if (is_crypto) {
-            openRealAccount(routes.cashier_deposit);
-        }
+        openTarget(routes.cashier_deposit);
     };
 
     const onClickOnramp = () => {
-        setDepositTarget(routes.cashier_onramp);
-        if (is_crypto) {
-            openRealAccount(routes.cashier_onramp);
-        }
-        if (!is_crypto) {
-            if (has_crypto_account) {
-                // shouldNavigateAfterPrompt(routes.cashier_onramp, 'onramp');
-                openRealAccount(routes.cashier_onramp);
-            } else {
-                openRealAccountSignup('add');
-            }
-        }
+        openTarget(routes.cashier_onramp);
     };
 
     const onClickPaymentAgent = () => {
@@ -97,15 +89,11 @@ const CashierDefault = ({
 
     const onClickDp2p = () => {
         setDepositTarget(routes.cashier_p2p);
-        if (!is_crypto) {
-            history.push(routes.cashier_p2p);
-        }
+
         if (is_crypto) {
-            if (has_fiat_account) {
-                shouldNavigateAfterPrompt(routes.cashier_p2p, 'DP2P');
-            } else {
-                openRealAccountSignup('deposit_cash');
-            }
+            fiatAccountConditions(routes.cashier_p2p, 'DP2P');
+        } else {
+            history.push(routes.cashier_p2p);
         }
     };
 
@@ -174,8 +162,8 @@ CashierDefault.propTypes = {
     is_payment_agent_visible: PropTypes.bool,
     is_switching: PropTypes.bool,
     openRealAccountSignup: PropTypes.func,
-    shouldNavigateAfterChooseCrypto: PropTypes.bool,
-    shouldNavigateAfterPrompt: PropTypes.bool,
+    shouldNavigateAfterChooseCrypto: PropTypes.func,
+    shouldNavigateAfterPrompt: PropTypes.func,
     setIsCashierDefault: PropTypes.func,
     setIsDeposit: PropTypes.func,
 };

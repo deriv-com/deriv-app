@@ -44,7 +44,7 @@ const RadioButton = ({
     icon,
     id,
     label,
-    secondLineLabel,
+    second_line_label,
     className,
     onClick,
     ...props
@@ -71,24 +71,23 @@ const RadioButton = ({
                 })}
                 onClick={onClick}
             >
-                {!icon && (
-                    <>
+                {icon ? (
+                    <React.Fragment>
+                        <Icon className='currency-list__icon' icon={icon} />
+                        <div className='label currency-list__item-text'>
+                            <div className='currency-list__item-label'>{label}</div>
+                            <div className='currency-list__item-code'>{second_line_label}</div>
+                        </div>
+                    </React.Fragment>
+                ) : (
+                    <React.Fragment>
                         <Icon className='currency-list__icon' icon={`IcCurrency-${id.toLowerCase()}`} />
                         {/^(UST|eUSDT)$/i.test(id) && <USTPopover id={id} />}
                         <div className='label currency-list__item-text'>
                             <div className='currency-list__item-label'>{label}</div>
                             <div className='currency-list__item-code'>({getCurrencyDisplayCode(id)})</div>
                         </div>
-                    </>
-                )}
-                {icon && (
-                    <>
-                        <Icon className='currency-list__icon' icon={icon} />
-                        <div className='label currency-list__item-text'>
-                            <div className='currency-list__item-label'>{label}</div>
-                            <div className='currency-list__item-code'>{secondLineLabel}</div>
-                        </div>
-                    </>
+                    </React.Fragment>
                 )}
             </label>
         </React.Fragment>

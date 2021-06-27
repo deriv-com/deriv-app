@@ -112,6 +112,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.updateBarrierInputs(false, false);
                 this.updateDurationInput(false, false);
                 this.updatePredictionInput(false);
+                this.updateAmountLimits();
             } else {
                 this.updateBarrierInputs(true, true);
                 this.enforceSingleBarrierType('BARRIEROFFSETTYPE_LIST', true);
@@ -148,6 +149,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.enforceSingleBarrierType(true);
                 this.updateDurationInput(true, true);
                 this.updatePredictionInput(true);
+                this.updateAmountLimits();
             }
         } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.id) {
             // Ensure this block is populated after initial drag from flyout.
@@ -242,8 +244,8 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     multiplier_block.initSvg();
                     multiplier_block.render();
 
-                    const parent_block = this.getParent();
-                    const parent_connection = parent_block.getInput('SUBMARKET').connection;
+                    const trade_definition_block = this.workspace.getTradeDefinitionBlock();
+                    const parent_connection = trade_definition_block.getInput('SUBMARKET').connection;
                     const child_connection = multiplier_block.previousConnection;
                     parent_connection.connect(child_connection);
 

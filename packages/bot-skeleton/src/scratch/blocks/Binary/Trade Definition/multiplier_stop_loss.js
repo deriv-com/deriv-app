@@ -62,28 +62,7 @@ Blockly.Blocks.multiplier_stop_loss = {
                 AMOUNT: input => {
                     const input_number = Number(input);
                     this.error_message = localize('Stop loss must be a positive number.');
-                    const trade_definition_block = this.workspace.getTradeDefinitionBlock();
-                    let stake_amount = 0;
-                    if (trade_definition_block) {
-                        const multiplier_block = trade_definition_block.getChildByType('trade_definition_multiplier');
-                        stake_amount =
-                            Number(
-                                Blockly.JavaScript.valueToCode(
-                                    multiplier_block,
-                                    'AMOUNT',
-                                    Blockly.JavaScript.ORDER_ATOMIC
-                                )
-                            ) || 0;
-                        if (input_number > stake_amount) {
-                            this.error_message = localize(
-                                'Invalid stop loss. Stop loss cannot be more than {{ stake }}',
-                                {
-                                    stake: stake_amount,
-                                }
-                            );
-                        }
-                    }
-                    return !isNaN(input_number) && (input_number <= 0 || input_number > stake_amount);
+                    return !isNaN(input_number) && input_number <= 0;
                 },
             };
         }

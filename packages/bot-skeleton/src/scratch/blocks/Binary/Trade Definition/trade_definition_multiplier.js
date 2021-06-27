@@ -128,6 +128,7 @@ Blockly.Blocks.trade_definition_multiplier = {
             if (is_load_event) {
                 // Do NOT touch any values when a strategy is being loaded.
                 this.updateMultiplierInput(false);
+                this.updateAmountLimits();
             } else {
                 this.updateMultiplierInput(true);
             }
@@ -147,6 +148,7 @@ Blockly.Blocks.trade_definition_multiplier = {
                 }
             } else if (event.name === 'SYMBOL_LIST' || event.name === 'TRADETYPE_LIST') {
                 this.updateMultiplierInput(true);
+                this.updateAmountLimits();
             }
         } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.id) {
             // Ensure this block is populated after initial drag from flyout.
@@ -184,8 +186,8 @@ Blockly.Blocks.trade_definition_multiplier = {
                     duration_block.initSvg();
                     duration_block.render();
 
-                    const parent_block = this.getParent();
-                    const parent_connection = parent_block.getInput('SUBMARKET').connection;
+                    const trade_definition_block = this.workspace.getTradeDefinitionBlock();
+                    const parent_connection = trade_definition_block.getInput('SUBMARKET').connection;
                     const child_connection = duration_block.previousConnection;
                     parent_connection.connect(child_connection);
 

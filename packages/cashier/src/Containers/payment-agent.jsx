@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'Stores/connect';
-import PaymentAgentList from '../Components/payment-agent-list.jsx';
-import Virtual from '../Components/Error/virtual.jsx';
+import PaymentAgentList from 'Components/payment-agent-list.jsx';
+import Virtual from 'Components/Error/virtual.jsx';
 
 const PaymentAgent = ({
     container,

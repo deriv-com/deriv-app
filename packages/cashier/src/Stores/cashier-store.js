@@ -16,9 +16,9 @@ import {
     CFD_PLATFORMS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
+import CashierNotifications from 'Containers/cashier-notifications.jsx';
 import OnRampStore from './on-ramp-store';
-import BaseStore from '../base-store';
-import CashierNotifications from '../../Containers/cashier-notifications.jsx';
+import BaseStore from './base-store';
 
 const hasTransferNotAllowedLoginid = loginid => loginid.startsWith('MX');
 

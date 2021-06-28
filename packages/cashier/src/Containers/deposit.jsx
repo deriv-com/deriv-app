@@ -4,15 +4,15 @@ import { Loading } from '@deriv/components';
 // import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import CashierContainer from '../Components/cashier-container.jsx';
-import Error from '../Components/Error/error.jsx';
-import Virtual from '../Components/Error/virtual.jsx';
-import CashierLocked from '../Components/Error/cashier-locked.jsx';
-import DepositsLocked from '../Components/Error/deposit-locked.jsx';
-import FundsProtection from '../Components/Error/funds-protection.jsx';
-import MaxTurnover from '../Components/Form/max-turnover-form.jsx';
-// import SideNote from '../Components/side-note.jsx';
-import USDTSideNote from '../Components/usdt-side-note.jsx';
+import CashierContainer from 'Components/cashier-container.jsx';
+import Error from 'Components/Error/error.jsx';
+import Virtual from 'Components/Error/virtual.jsx';
+import CashierLocked from 'Components/Error/cashier-locked.jsx';
+import DepositsLocked from 'Components/Error/deposit-locked.jsx';
+import FundsProtection from 'Components/Error/funds-protection.jsx';
+import MaxTurnover from 'Components/Form/max-turnover-form.jsx';
+// import SideNote from 'Components/side-note.jsx';
+import USDTSideNote from 'Components/usdt-side-note.jsx';
 
 // const DepositeSideNote = () => {
 //     const notes = [

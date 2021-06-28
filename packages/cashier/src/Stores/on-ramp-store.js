@@ -2,7 +2,7 @@ import { action, computed, observable, reaction } from 'mobx';
 import { localize } from '@deriv/translations';
 import { getKebabCase, isCryptocurrency, routes, websiteUrl } from '@deriv/shared';
 import OnrampProviders from 'Config/on-ramp-providers';
-import BaseStore from '../base-store';
+import BaseStore from './base-store';
 
 export default class OnRampStore extends BaseStore {
     @observable api_error = null;

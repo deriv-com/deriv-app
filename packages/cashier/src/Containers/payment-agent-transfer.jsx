@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import Error from '../Components/Error/error.jsx';
-import NoBalance from '../Components/Error/no-balance.jsx';
-import Virtual from '../Components/Error/virtual.jsx';
-import PaymentAgentTransferConfirm from '../Components/Confirm/payment-agent-transfer-confirm.jsx';
-import PaymentAgentTransferForm from '../Components/Form/payment-agent-transfer-form.jsx';
-import PaymentAgentTransferReceipt from '../Components/Receipt/payment-agent-transfer-receipt.jsx';
+import Error from 'Components/Error/error.jsx';
+import NoBalance from 'Components/Error/no-balance.jsx';
+import Virtual from 'Components/Error/virtual.jsx';
+import PaymentAgentTransferConfirm from 'Components/Confirm/payment-agent-transfer-confirm.jsx';
+import PaymentAgentTransferForm from 'Components/Form/payment-agent-transfer-form.jsx';
+import PaymentAgentTransferReceipt from 'Components/Receipt/payment-agent-transfer-receipt.jsx';
 
 const PaymentAgentTransfer = ({
     balance,

@@ -229,27 +229,21 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get legal_allowed_currencies() {
-        if (!this.landing_companies) return [];
-        if (this.root_store.ui && this.root_store.ui.real_account_signup_target) {
-            const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
-            if (this.landing_companies[`${target}_company`] && this.current_landing_company && this.accounts) {
-                if (this.accounts[this.loginid] && !this.accounts[this.loginid].currency) {
-                    return this.landing_companies[`${target}_company`].legal_allowed_currencies.filter(currency =>
-                        this.current_landing_company.legal_allowed_currencies.includes(currency)
-                    );
-                }
+        if (!this.landing_companies || !this.root_store.ui) return [];
+        if (!this.root_store.ui.real_account_signup_target) {
+            if (this.landing_companies.gaming_company) {
+                return this.landing_companies.gaming_company.legal_allowed_currencies;
             }
-            if (this.landing_companies[`${target}_company`]) {
-                return this.landing_companies[`${target}_company`].legal_allowed_currencies;
+            if (this.landing_companies.financial_company) {
+                return this.landing_companies.financial_company.legal_allowed_currencies;
             }
+            return [];
         }
-        if (this.landing_companies.gaming_company) {
-            return this.landing_companies.gaming_company.legal_allowed_currencies;
+        if (['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target)) {
+            return this.current_landing_company.legal_allowed_currencies;
         }
-        if (this.landing_companies.financial_company) {
-            return this.landing_companies.financial_company.legal_allowed_currencies;
-        }
-        return [];
+        const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
+        return this.landing_companies[`${target}_company`].legal_allowed_currencies;
     }
 
     @computed
@@ -1818,12 +1812,8 @@ export default class ClientStore extends BaseStore {
                 });
 
                 this.root_store.ui.showAccountTypesModalForEuropean();
-                const is_excluded_from_onboarding = ['au', 'sg', 'no'].includes(this.residence);
-                const shortcode =
-                    this.landing_companies?.financial_company?.shortcode ||
-                    this.landing_companies?.gaming_company?.shortcode;
 
-                if (shortcode === 'svg' && !is_excluded_from_onboarding) {
+                if (!this.is_uk) {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
                 }
             }

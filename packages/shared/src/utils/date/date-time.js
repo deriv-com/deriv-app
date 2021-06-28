@@ -224,6 +224,6 @@ export const convertTimeFormat = time => {
     const time_hour = time_moment_obj.format('HH');
     const time_min = time_moment_obj.format('mm');
     const formatted_time = `${Number(time_hour % 12) || 12}:${time_min}`;
-    const timeSuffix = `${Number(time_hour >= 12) ? 'pm' : 'am'}`;
-    return `${formatted_time} ${timeSuffix}`;
+    const time_suffix = `${Number(time_hour >= 12) ? 'pm' : 'am'}`;
+    return `${formatted_time} ${time_suffix}`;
 };

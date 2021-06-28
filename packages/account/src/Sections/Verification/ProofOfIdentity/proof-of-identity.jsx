@@ -33,7 +33,7 @@ const ProofOfIdentity = ({
     const should_show_redirect_btn = from_platform.name === 'P2P';
     const has_invalid_postal_code = missing_personal_details === 'postal_code';
 
-    const account_status = figmaAccountStatus('idv_result_rejected_limited');
+    const account_status = figmaAccountStatus('idv_none');
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
 

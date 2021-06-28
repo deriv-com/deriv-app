@@ -14,7 +14,6 @@ const OnfidoSdkView = ({
     selected_country,
     setAPIError,
 }) => {
-    console.log(selected_country);
     const {
         identity: {
             services: {

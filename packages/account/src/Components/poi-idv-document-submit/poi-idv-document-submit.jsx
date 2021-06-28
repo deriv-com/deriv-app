@@ -18,14 +18,14 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
 
     React.useEffect(() => {
         setDocumentList(
-            Object.keys(document_data).map(i => {
-                const { display_name, format } = document_data[i];
-                return { id: i, text: display_name, value: format };
+            Object.keys(document_data).map(key => {
+                const { display_name, format } = document_data[key];
+                return { id: key, text: display_name, value: format };
             })
         );
     }, [document_data]);
 
-    const initial_form = {
+    const initial_form_values = {
         document_type: '',
         document_number: '',
     };
@@ -83,7 +83,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
     };
 
     return (
-        <Formik initialValues={initial_form} validate={validateFields} onSubmit={submitHandler}>
+        <Formik initialValues={initial_form_values} validate={validateFields} onSubmit={submitHandler}>
             {({
                 dirty,
                 errors,
@@ -113,7 +113,6 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                             <DesktopWrapper>
                                                 <div className='document-dropdown'>
                                                     <Autocomplete
-                                                        {...field}
                                                         name='document_type'
                                                         data-lpignore='true'
                                                         error={touched.document_type && errors.document_type}
@@ -128,12 +127,12 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                                             setDocumentImage(getSampleImage(text) || null);
                                                         }}
                                                         required
+                                                        {...field}
                                                     />
                                                 </div>
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
-                                                    {...field}
                                                     name='document_type'
                                                     error={touched.document_type && errors.document_type}
                                                     label={localize('Choose the document type')}
@@ -146,6 +145,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                                     }}
                                                     use_text={true}
                                                     required
+                                                    {...field}
                                                 />
                                             </MobileWrapper>
                                         </React.Fragment>

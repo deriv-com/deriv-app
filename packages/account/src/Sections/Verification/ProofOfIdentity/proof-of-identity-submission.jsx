@@ -53,9 +53,7 @@ const POISubmission = ({
         });
     };
 
-    const handleBack = () => {
-        setSubmissionStatus(submission_status_code.selecting);
-    };
+    const handleBack = () => setSubmissionStatus(submission_status_code.selecting);
 
     const getCountryFromResidence = country_code => residence_list.find(residence => residence.value === country_code);
 

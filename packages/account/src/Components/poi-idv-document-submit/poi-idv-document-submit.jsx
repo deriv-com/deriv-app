@@ -98,7 +98,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
             }) => (
                 <div className='proof-of-identity__container'>
                     <DocumentSubmitLogo className='icon btm-spacer' />
-                    <Text className='proof-of-identity__header' align='center' weight='bold'>
+                    <Text className='proof-of-identity btm-spacer' align='center' weight='bold'>
                         {localize('Verify your identity')}
                     </Text>
                     <Text className='proof-of-identity__text btm-spacer' size='xs'>
@@ -113,6 +113,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                             <DesktopWrapper>
                                                 <div className='document-dropdown'>
                                                     <Autocomplete
+                                                        {...field}
                                                         name='document_type'
                                                         data-lpignore='true'
                                                         error={touched.document_type && errors.document_type}
@@ -122,17 +123,17 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                                         list_items={document_list}
                                                         value={values.document_type}
                                                         onChange={handleChange}
-                                                        onItemSelection={({ text }) => {
-                                                            setFieldValue('document_type', text || '', true);
-                                                            setDocumentImage(getSampleImage(text) || null);
+                                                        onItemSelection={items => {
+                                                            setFieldValue('document_type', items.text || '', true);
+                                                            setDocumentImage(getSampleImage(items.text) || null);
                                                         }}
                                                         required
-                                                        {...field}
                                                     />
                                                 </div>
                                             </DesktopWrapper>
                                             <MobileWrapper>
                                                 <SelectNative
+                                                    {...field}
                                                     name='document_type'
                                                     error={touched.document_type && errors.document_type}
                                                     label={localize('Choose the document type')}
@@ -145,7 +146,6 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                                     }}
                                                     use_text={true}
                                                     required
-                                                    {...field}
                                                 />
                                             </MobileWrapper>
                                         </React.Fragment>

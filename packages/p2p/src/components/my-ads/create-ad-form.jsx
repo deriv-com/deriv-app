@@ -99,6 +99,7 @@ const CreateAdForm = () => {
 
                     return (
                         <div className='p2p-my-ads__form'>
+                            {/* Needs rebuild to trigger change */}
                             <Form
                                 className={classNames('p2p-my-ads__form-element', {
                                     'p2p-my-ads__form-element--ios': is_sell_advert && os === 'iOS',

@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { PasswordInput, PasswordMeter } from '@deriv/components';
-import { isMobile, useIsMounted, validPassword, validLength, getErrorMessages } from '@deriv/shared';
+import { isMobile, useIsMounted, validPassword, validLength, getErrorMessages, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import PasswordsFooter from './passwords-footer.jsx';
 

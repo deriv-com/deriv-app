@@ -1730,11 +1730,12 @@ $MIN_HEIGHT_FLOATING: calc(
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-        overflow-y: scroll;
         min-height: 50vh;
 
         @include mobile {
             min-height: unset;
+            overflow-y: scroll;
+            justify-content: center;
         }
 
         .icon {
@@ -1752,6 +1753,7 @@ $MIN_HEIGHT_FLOATING: calc(
         @include mobile {
             width: 95%;
             margin-bottom: unset;
+            text-align: center;
         }
     }
     &__dropdown-container {
@@ -1761,7 +1763,8 @@ $MIN_HEIGHT_FLOATING: calc(
         display: flex;
         flex-direction: row;
         justify-content: center;
-        align-items: flex-start;
+        align-items: center;
+        width: 100%;
 
         @include mobile {
             flex-direction: column;
@@ -1800,7 +1803,7 @@ $MIN_HEIGHT_FLOATING: calc(
         width: 39.5rem;
 
         @include mobile {
-            min-width: 90%;
+            width: 95%;
             margin: 0.4rem 0 3.2rem;
         }
         .document-dropdown {
@@ -1810,10 +1813,21 @@ $MIN_HEIGHT_FLOATING: calc(
             min-height: 35.2rem;
         }
     }
+    &__fieldset-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        @include mobile {
+            width: 100%;
+        }
+    }
     &__fieldset-input {
         width: 39.5rem;
 
         @include mobile {
+            width: 95%;
             margin-top: 0.4rem;
         }
     }
@@ -1823,7 +1837,7 @@ $MIN_HEIGHT_FLOATING: calc(
         @include mobile {
             margin-left: unset;
             min-height: 50vh;
-            width: 100%;
+            width: 95%;
         }
     }
     &__image-container {

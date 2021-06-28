@@ -25,7 +25,7 @@ const CountrySelector = ({ handleSelectionNext, residence_list, setSelectedCount
         return errors;
     };
 
-    const submitHandler = async (values, { setSubmitting }) => {
+    const submitHandler = (values, { setSubmitting }) => {
         const matching_country = country_list.find(c => c.text === values.country_input);
         if (matching_country) {
             setSelectedCountry(matching_country);

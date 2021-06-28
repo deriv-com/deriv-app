@@ -63,7 +63,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
         return sample_image;
     };
 
-    const submitHandler = async (values, { setSubmitting, setStatus }) => {
+    const submitHandler = (values, { setSubmitting, setStatus }) => {
         setSubmitting(true);
         const { document_number, document_type } = values;
         const submit_data = {
@@ -105,7 +105,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                         {localize('Please select the document type and enter the document number.')}
                     </Text>
                     <div className='proof-of-identity__inner-container'>
-                        <div className='proof-of-identity__container'>
+                        <div className='proof-of-identity__fieldset-container'>
                             <fieldset className='proof-of-identity__fieldset'>
                                 <Field name='document'>
                                     {({ field }) => (

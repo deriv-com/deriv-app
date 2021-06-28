@@ -1,7 +1,14 @@
-import { getPropertyValue, cloneObject, isTimeValid, minDate, toMoment, shouldShowCancellation } from '@deriv/shared';
+import {
+    getPropertyValue,
+    cloneObject,
+    isTimeValid,
+    minDate,
+    toMoment,
+    shouldShowCancellation,
+    WS,
+} from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
 
 import { getUnitMap } from 'Stores/Modules/Portfolio/Helpers/details';
 import { buildBarriersConfig } from './barrier';

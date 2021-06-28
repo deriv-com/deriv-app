@@ -2,10 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { when } from 'mobx';
 import { MobileWrapper } from '@deriv/components';
-import { isMobile, routes } from '@deriv/shared';
+import { isMobile, routes, WS } from '@deriv/shared';
 import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggle-positions-mobile.jsx';
 import { connect, MobxContentProvider } from 'Stores/connect';
-import { WS } from 'Services/ws-methods';
 
 const TradeHeaderExtensions = props => {
     const {

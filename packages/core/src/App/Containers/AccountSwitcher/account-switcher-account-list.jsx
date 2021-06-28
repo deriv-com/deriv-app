@@ -26,12 +26,11 @@ const AccountList = ({
 }) => {
     if (is_disabled && !currency) return null;
     const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
-
     return (
         <React.Fragment>
             <div
                 id={`dt_${loginid}`}
-                className={classNames('acc-switcher__account', {
+                className={classNames('acc-switcher__account', market_type, {
                     'acc-switcher__account--selected': loginid === selected_loginid,
                     'acc-switcher__account--disabled': is_disabled,
                 })}

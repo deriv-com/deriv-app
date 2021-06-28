@@ -217,7 +217,7 @@ export default class RunPanelStore {
         };
         this.onCancelButtonClick = this.onCloseDialog;
         this.dialog_options = {
-            title: localize('Are you sure'),
+            title: localize('Are you sure?'),
             message: localize('This will close the current contract.'),
         };
         this.is_dialog_open = true;

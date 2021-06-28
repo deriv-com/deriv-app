@@ -54,5 +54,5 @@ export const isForwardStarting = (shortcode, purchase_time) => {
     const shortcode_info = extractInfoFromShortcode(shortcode);
     if (shortcode_info?.multiplier) return false;
     const start_time = shortcode_info?.start_time;
-    return start_time && purchase_time && +start_time !== +purchase_time;
+    return start_time && purchase_time && /f$/gi.test(start_time);
 };

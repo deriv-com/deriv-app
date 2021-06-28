@@ -1,12 +1,11 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import classNames from 'classnames';
-import { routes, PlatformContext } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { routes, PlatformContext, WS } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { Formik, Field } from 'formik';
 import { Checkbox, Input, FormSubmitButton, Modal, Icon, Loading, Text, Button } from '@deriv/components';
 import { connect } from 'Stores/connect';
-import { WS } from 'Services/ws-methods';
 import AccountHasBalanceOrOpenPositions from './account-has-balance.jsx';
 
 const initial_form = {
@@ -52,25 +51,21 @@ const WarningModal = props => {
             <Text as='p' weight='bold' color='loss-danger' className='account-closure-warning-modal__warning-message'>
                 {localize('Warning!')}
             </Text>
-            <Text size='xs' line_height='x'>
-                {localize('If you deactivate:')}
+            <Text size='xs' line_height='x' weight='bold'>
+                {localize('Deactivate account?')}
             </Text>
             <div className='account-closure-warning-modal__content-wrapper'>
-                <Text as='p' className='account-closure-warning-modal__content'>
-                    {localize('You’ll be logged out automatically.')}
-                </Text>
-                <Text as='p' size='xs' color='prominent'>
-                    <Localize
-                        i18n_default_text='You will <0>NOT</0> be able to log in again.'
-                        components={[<Text size='xs' line_height='s' key={0} color='loss-danger' weight='bold' />]}
-                    />
+                <Text as='p' align='center' className='account-closure-warning-modal__content'>
+                    {localize(
+                        'Deactivating your account will automatically log you out. You can reactivate your account by logging in at any time.'
+                    )}
                 </Text>
             </div>
             <FormSubmitButton
                 is_disabled={false}
                 label={localize('Deactivate')}
                 has_cancel
-                cancel_label={localize('Back')}
+                cancel_label={localize('Go back')}
                 onCancel={() => props.closeModal()}
                 onClick={() => props.startDeactivating()}
             />

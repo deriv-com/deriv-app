@@ -423,6 +423,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
         &__error-message {
+            padding: 1rem 0;
             position: unset;
         }
         &__personal-details {
@@ -573,8 +574,8 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-top: 0.8rem;
             justify-content: flex-end;
 
-            @include mobile {
-                display: unset;
+            &-btn {
+                min-width: 14.9rem;
             }
         }
 
@@ -1556,13 +1557,6 @@ $MIN_HEIGHT_FLOATING: calc(
 .onfido-container {
     margin-top: 24px;
 
-    .onfido-sdk-ui-crossDevice-CrossDeviceLink-numberInputSection {
-        .ods-button.-action--primary {
-            height: 100%;
-            font-size: 0.875em;
-        }
-    }
-
     &__message {
         padding: 1rem;
         margin: 0 auto 1.4rem;
@@ -1911,6 +1905,7 @@ $MIN_HEIGHT_FLOATING: calc(
             @include typeface(--paragraph-left-normal-prominent, none);
             color: var(--text-general);
             line-height: 1.43;
+            text-align: center;
         }
         &__content-wrapper {
             display: flex;

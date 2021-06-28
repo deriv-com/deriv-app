@@ -4,6 +4,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import { SentEmailModal } from '@deriv/account';
+import { getMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 import {
     DesktopWrapper,
     FormSubmitButton,
@@ -24,11 +25,11 @@ import {
     getErrorMessages,
     isDesktop,
     CFD_PLATFORMS,
+    WS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import 'Sass/app/modules/mt5/cfd.scss';
-import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 
 const RequireTradingPasswordModal = ({
@@ -109,18 +110,37 @@ const PasswordModalHeader = ({
         </Text>
     );
 };
-const getSubmitText = (account_title, category, platform) => {
+const getSubmitText = (type, category, platform) => {
+    if (!category && !type) return '';
+
+    const category_label = category === 'real' ? localize('real') : localize('demo');
+    const type_label = getMtCompanies()[category][type].short_title;
+
     if (category === 'real') {
-        return localize(
-            'You have created a {{platform}} {{account_title}} account. To start trading, transfer funds from your Deriv account into this account.',
-            { account_title, platform: platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5' }
+        return (
+            <Localize
+                i18n_default_text='You have created a <0>{{platform}}</0> {{category}} <1>{{type}}</1> account. To start trading, transfer funds from your Deriv account into this account.'
+                values={{
+                    type: type_label,
+                    platform: platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
+                    category: category_label,
+                }}
+                components={[<i className='cfd-account__platform' key={0} />, <strong key={1} />]}
+            />
         );
     }
 
-    return localize('You have created a {{platform}} {{account_title}} account.', {
-        account_title,
-        platform: platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
-    });
+    return (
+        <Localize
+            i18n_default_text='You have created a <0>{{platform}}</0> {{category}} <1>{{type}}</1> account.'
+            values={{
+                type: type_label,
+                platform: platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
+                category: category_label,
+            }}
+            components={[<i className='cfd-account__platform' key={0} />, <strong key={1} />]}
+        />
+    );
 };
 
 const IconType = React.memo(({ platform, type }) => {
@@ -386,6 +406,7 @@ const CFDPasswordModal = ({
     trading_servers,
 }) => {
     const [server, setServer] = React.useState('');
+    const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);
 
     const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
     const has_mt5_account = Boolean(mt5_login_list?.length);
@@ -421,7 +442,7 @@ const CFDPasswordModal = ({
     const closeDialogs = () => {
         setCFDSuccessDialog(false);
         setMt5Error(false);
-        setServer('');
+        setTimeout(() => setServer(''), 300); // To prevent flashing on modal transitions
     };
 
     const closeModal = () => {
@@ -464,7 +485,11 @@ const CFDPasswordModal = ({
         !is_cfd_success_dialog_enabled &&
         (!has_cfd_error || is_password_error || is_password_reset);
 
-    const should_show_success = !has_cfd_error && is_cfd_success_dialog_enabled && is_cfd_password_modal_enabled;
+    const should_show_success =
+        !has_cfd_error && is_cfd_success_dialog_enabled && is_cfd_password_modal_enabled && is_password_modal_exited;
+
+    const should_show_sent_email_modal = is_sent_email_modal_open && is_password_modal_exited;
+
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
     const is_real_synthetic = [account_type.category, account_type.type].join('_') === 'real_synthetic';
     const should_show_server_form = React.useMemo(() => {
@@ -535,6 +560,8 @@ const CFDPasswordModal = ({
                             is_password_reset_error={is_password_reset}
                         />
                     )}
+                    onExited={() => setPasswordModalExited(true)}
+                    onEntered={() => setPasswordModalExited(false)}
                 >
                     <RequireTradingPasswordModal
                         has_mt5_account={has_mt5_account}
@@ -577,14 +604,15 @@ const CFDPasswordModal = ({
                 onCancel={closeModal}
                 onSubmit={closeOpenSuccess}
                 classNameMessage='cfd-password-modal__message'
-                message={getSubmitText(account_title, account_type.category, platform)}
+                message={getSubmitText(account_type.type, account_type.category, platform)}
                 icon={<IconType platform={platform} type={account_type.type} />}
                 icon_size='xlarge'
-                text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('OK')}
+                text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('Continue')}
                 has_cancel={account_type.category === 'real'}
+                has_close_icon={false}
             />
             <SentEmailModal
-                is_open={is_sent_email_modal_open}
+                is_open={should_show_sent_email_modal}
                 identifier_title='trading_password'
                 onClose={() => setIsSentEmailModalOpen(false)}
                 onClickSendEmail={handleForgotPassword}

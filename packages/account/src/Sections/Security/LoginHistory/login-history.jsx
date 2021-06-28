@@ -3,10 +3,9 @@ import React from 'react';
 import classNames from 'classnames';
 import { Loading, Table, Text, ThemedScrollbars } from '@deriv/components';
 import Bowser from 'bowser';
-import { convertDateFormat, isMobile, isDesktop, PlatformContext } from '@deriv/shared';
+import { convertDateFormat, isMobile, isDesktop, PlatformContext, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { WS } from 'Services/ws-methods';
 import LoadErrorMessage from 'Components/load-error-message';
 
 const API_FETCH_LIMIT = 50;
@@ -18,14 +17,17 @@ const getFormattedData = login_history => {
         data[i] = {};
         const environment = login_history[i].environment;
         const environment_split = environment.split(' ');
+        const dp2p_UA = environment.match(
+            /(?<date>[0-9a-zA-Z-]+\s[0-9:]+GMT)[\s](IP=)(?<ip>[\w:.]+)\sIP_COUNTRY=(?<country>([a-zA-Z]{2}))\s(User_AGENT=)(\w.*)(?<name>iPhone|Android)([\W\w]+)\s(?<app>DP2P)(?<version>[\w\W]+)\s(LANG=)([\w]{2})/
+        );
         const date = environment_split[0];
         const time = environment_split[1].replace('GMT', '');
         const date_time = convertDateFormat(`${date} ${time}`, 'D-MMMM-YY hh:mm:ss', 'YYYY-MM-DD hh:mm:ss');
         data[i].date = `${date_time} GMT`;
         data[i].action = login_history[i].action === 'login' ? localize('Login') : localize('Logout');
         const user_agent = environment.substring(environment.indexOf('User_AGENT'), environment.indexOf('LANG'));
-        const ua = Bowser.getParser(user_agent)?.getBrowser();
-        data[i].browser = ua ? `${ua.name} v${ua.version}` : localize('Unknown');
+        const ua = dp2p_UA ? dp2p_UA.groups : Bowser.getParser(user_agent)?.getBrowser();
+        data[i].browser = ua ? `${ua.name} ${ua.app || ''} v${ua.version}` : localize('Unknown');
         data[i].ip = environment_split[2].split('=')[1];
         data[i].status = login_history[i].status === 1 ? localize('Successful') : localize('Failed');
         data[i].id = i;
@@ -175,7 +177,6 @@ const LoginHistory = ({ is_switching }) => {
         const fetchData = async () => {
             const api_res = await WS.authorized.fetchLoginHistory(API_FETCH_LIMIT);
             setLoading(false);
-
             if (api_res.error) {
                 setError(api_res.error.message);
             } else {

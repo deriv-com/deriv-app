@@ -18,6 +18,11 @@
     }
 }
 
+.dc-mobile-full-page-modal.quick-strategy__wrapper {
+    height: 100%;
+    overflow-y: visible;
+}
+
 .quick-strategy {
     $quick-strategy: &;
 
@@ -46,6 +51,16 @@
             display: flex;
             justify-content: space-between;
             margin: 4.5rem 0;
+
+            > * + * {
+                @include mobile {
+                    margin-top: 4.5rem;
+                }
+            }
+
+            @include mobile {
+                flex-direction: column;
+            }
 
             &:first-child {
                 margin-top: 0;

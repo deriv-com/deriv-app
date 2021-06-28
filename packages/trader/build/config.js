@@ -3,31 +3,6 @@ const stylelintFormatter = require('stylelint-formatter-pretty');
 const { IS_RELEASE } = require('./constants');
 // const { transformContentUrlBase } = require('./helpers');
 
-const copyConfig = base => {
-    return {
-        patterns: [
-            {
-                from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist/*.smartcharts.*'),
-                to: 'js/smartcharts/',
-                flatten: true,
-            },
-            {
-                from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist/smartcharts.css*'),
-                to: 'css/',
-                flatten: true,
-            },
-            // { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file' },
-            {
-                from: path.resolve(__dirname, '../src/public/images/favicons/favicon.ico'),
-                to: 'favicon.ico',
-                toType: 'file',
-            },
-            { from: path.resolve(__dirname, '../src/public/images/favicons/**') },
-            { from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/**') },
-        ],
-    };
-};
-
 const generateSWConfig = () => ({
     importWorkboxFrom: 'local',
     cleanupOutdatedCaches: true,
@@ -51,7 +26,6 @@ const htmlOutputConfig = () => ({
 
 const htmlInjectConfig = () => ({
     links: [
-        'css/smartcharts.css',
         {
             path: 'public/images/favicons',
             glob: '*',
@@ -64,7 +38,10 @@ const htmlInjectConfig = () => ({
     append: false,
 });
 
-const cssConfig = () => ({ filename: 'css/trader.main.css', chunkFilename: 'css/trader.[name].[contenthash].css' });
+const cssConfig = () => ({
+    filename: 'trader/css/trader.main.[contenthash].css',
+    chunkFilename: 'trader/css/trader.[name].[contenthash].css',
+});
 
 const stylelintConfig = () => ({
     configFile: path.resolve(__dirname, '../.stylelintrc.js'),
@@ -74,7 +51,6 @@ const stylelintConfig = () => ({
 });
 
 module.exports = {
-    copyConfig,
     htmlOutputConfig,
     htmlInjectConfig,
     cssConfig,

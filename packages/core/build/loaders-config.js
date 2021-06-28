@@ -33,10 +33,12 @@ const svg_file_loaders = [
     {
         loader: 'file-loader',
         options: {
-            name: '[path][name].[ext]',
+            name: '[path][name].[contenthash].[ext]',
         },
     },
 ];
+
+let svg_id_counter = 0;
 
 const svg_loaders = [
     {
@@ -55,6 +57,15 @@ const svg_loaders = [
                     { removeTitle: false },
                     { removeUselessStrokeAndFill: false },
                     { removeUknownsAndDefaults: false },
+                    {
+                        cleanupIDs: {
+                            prefix: {
+                                toString() {
+                                    return `id-${svg_id_counter++}`;
+                                },
+                            },
+                        },
+                    },
                 ],
                 floatPrecision: 2,
             },

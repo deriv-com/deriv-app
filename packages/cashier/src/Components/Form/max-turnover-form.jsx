@@ -2,11 +2,10 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Formik, Form, Field } from 'formik';
-import { getDecimalPlaces, routes, validNumber } from '@deriv/shared';
+import { getDecimalPlaces, routes, validNumber, WS } from '@deriv/shared';
 import { Button, Input, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { WS } from 'Services';
 
 const MaxTurnoverForm = ({
     onMount,

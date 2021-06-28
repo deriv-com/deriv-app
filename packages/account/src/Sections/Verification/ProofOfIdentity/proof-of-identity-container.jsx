@@ -112,11 +112,19 @@ const ProofOfIdentityContainer = ({
         [is_mx_mlt, onStateChange, refreshNotifications, setVerificationStatus, status]
     );
 
-    const handleComplete = () => {
+    const handleComplete = data => {
+        const docIds = [];
+        Object.keys(data).forEach(key => {
+            docIds.push(data[key].id);
+        });
+
         notificationEvent({
             notification_event: 1,
             category: 'authentication',
             event: 'poi_documents_uploaded',
+            args: {
+                documents: docIds,
+            },
         }).then(response => {
             if (response.error) {
                 setAPIError(true);

@@ -40,8 +40,6 @@ Blockly.Blocks.purchase = {
             return;
         }
 
-        this.enforceLimitations();
-
         if (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) {
             this.populatePurchaseList(event);
         } else if (event.type === Blockly.Events.BLOCK_CHANGE) {
@@ -74,19 +72,6 @@ Blockly.Blocks.purchase = {
                 event_group: event.group,
                 should_pretend_empty: true,
             });
-        }
-    },
-    enforceLimitations() {
-        const top_parent = this.getTopParent();
-
-        if (top_parent) {
-            if (this.isDescendantOf('before_purchase')) {
-                if (this.disabled) {
-                    this.setDisabled(false);
-                }
-            } else if (!this.disabled) {
-                this.setDisabled(true);
-            }
         }
     },
     restricted_parents: ['before_purchase'],

@@ -106,12 +106,6 @@
                 position: unset;
                 width: 90vw;
             }
-
-            &--ios {
-                @include mobile {
-                    height: calc(100vh - 39rem);
-                }
-            }
         }
         &-container {
             display: flex;

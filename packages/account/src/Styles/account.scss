@@ -2038,6 +2038,7 @@ $MIN_HEIGHT_FLOATING: calc(
             @include typeface(--paragraph-left-normal-prominent, none);
             color: var(--text-general);
             line-height: 1.43;
+            text-align: center;
         }
         &__content-wrapper {
             display: flex;

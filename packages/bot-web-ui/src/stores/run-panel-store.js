@@ -128,14 +128,20 @@ export default class RunPanelStore {
 
     @action.bound
     onStopButtonClick() {
-        const { ui } = this.root_store.core;
         const { is_multiplier } = this.root_store.summary_card;
 
-        this.dbot.stopBot();
-
         if (is_multiplier) {
-            this.onClickSell();
+            this.showStopMultiplierContractDialog();
+        } else {
+            this.stopBot();
         }
+    }
+
+    @action.bound
+    stopBot() {
+        const { ui } = this.root_store.core;
+
+        this.dbot.stopBot();
 
         ui.setPromptHandler(false);
 
@@ -200,6 +206,21 @@ export default class RunPanelStore {
     @action.bound
     onCloseDialog() {
         this.is_dialog_open = false;
+    }
+
+    @action.bound
+    showStopMultiplierContractDialog() {
+        this.onOkButtonClick = () => {
+            this.stopBot();
+            this.onClickSell();
+            this.onCloseDialog();
+        };
+        this.onCancelButtonClick = this.onCloseDialog;
+        this.dialog_options = {
+            title: localize('Are you sure'),
+            message: localize('This will close the current contract.'),
+        };
+        this.is_dialog_open = true;
     }
 
     @action.bound

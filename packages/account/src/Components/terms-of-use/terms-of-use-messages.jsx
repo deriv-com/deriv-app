@@ -22,7 +22,7 @@ export const SVGDescription = () => (
         <p>
             <Localize
                 i18n_default_text={
-                    'Your account will be opened with Deriv (SVG) LLC, and will be subject to the jurisdiction and laws of Saint Vincent and the Grenadines.'
+                    'Your account will be opened with Deriv (SVG) LLC, and will be subject to the laws of Saint Vincent and the Grenadines.'
                 }
             />
         </p>
@@ -48,7 +48,7 @@ export const IOMDescription = () => (
         <p>
             <Localize
                 i18n_default_text={
-                    'Your account will be opened with Deriv (MX) Ltd, regulated by the UK Gaming Commission (UKGC) and subject to the jurisdiction and laws of the Isle of Man.'
+                    'Your account will be opened with Deriv (MX) Ltd, regulated by the UK Gaming Commission (UKGC), and will be subject to the laws of the Isle of Man.'
                 }
             />
         </p>
@@ -78,7 +78,7 @@ export const MaltaInvestDescription = () => (
         <p>
             <Localize
                 i18n_default_text={
-                    'Your account will be opened with Deriv Investments (Europe) Limited, regulated by the Malta Financial Services Authority (MFSA) and will be subject to the jurisdiction and laws of Malta.'
+                    'Your account will be opened with Deriv Investments (Europe) Limited, regulated by the Malta Financial Services Authority (MFSA), and will be subject to the laws of Malta.'
                 }
             />
         </p>
@@ -104,7 +104,7 @@ export const SamoaDescription = () => (
         <p>
             <Localize
                 i18n_default_text={
-                    'Your account will be opened with Deriv Capital International Ltd and will be subject to the jurisdiction and laws of Samoa.'
+                    'Your account will be opened with Deriv Capital International Ltd and will be subject to the laws of Samoa.'
                 }
             />
         </p>

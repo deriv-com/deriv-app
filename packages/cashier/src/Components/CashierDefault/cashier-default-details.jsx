@@ -21,7 +21,7 @@ const CashierDefaultDetails = ({
                     <Text size='xs' className='cashier-default-detail__text'>
                         {detail_description}
                     </Text>
-                    <Icon icon={is_dark_mode_on ? 'IcChevronRightBoldDark' : 'IcChevronRightBold'} color='' size={16} />
+                    <Icon icon={is_dark_mode_on ? 'IcChevronRightBoldDark' : 'IcChevronRightBold'} size={16} />
                 </div>
                 {detail_contents?.map((content, id) => (
                     <div key={id} className='cashier-default-detail__array'>

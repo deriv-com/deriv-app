@@ -22,12 +22,14 @@ const ChooseCryptoCurrency = ({
     should_show_all_available_currencies,
     setShouldShowAllAvailableCurrencies,
 }) => {
+    const [form_error] = React.useState('');
+    const [form_value] = React.useState({ crypto: '' });
+
     React.useEffect(() => {
         return () => setShouldShowAllAvailableCurrencies(false);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [setShouldShowAllAvailableCurrencies]);
 
-    const has_all_cryptos = () => {
+    const hasAllCryptos = () => {
         return (
             legal_allowed_currencies.filter(
                 currency =>
@@ -50,20 +52,17 @@ const ChooseCryptoCurrency = ({
                   ),
                   CRYPTO_CURRENCY_TYPE
               );
-        if (!has_all_cryptos()) {
+        if (!hasAllCryptos()) {
             reorderCryptoCurrencies.push({
                 value: 'plus',
-                name: 'Add new',
-                second_line_label: 'crypto account',
+                name: localize('Add new'),
+                second_line_label: localize('crypto account'),
                 icon: 'IcCashierAdd',
             });
         }
 
         return reorderCryptoCurrencies;
     };
-
-    const [form_error] = React.useState('');
-    const [form_value] = React.useState({ crypto: '' });
 
     const doSwitch = async value => {
         const target_account = account_list.filter(account => account.title === value);

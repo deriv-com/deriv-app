@@ -16,7 +16,7 @@
             display: grid;
             grid-template-columns: 50% 50%;
             border-bottom-width: 0;
-            background-color: #fff;
+            background-color: var(--general-main-1);
 
             @media (min-width: 992px) {
                 grid-template-columns: 22% 38.5% 38.5%;

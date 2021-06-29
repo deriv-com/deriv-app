@@ -86,7 +86,7 @@
     }
 
     @media (max-width: 991px) {
-        background-color: #fff;
+        background-color: var(--general-main-1);
 
         .dc-dialog {
             &__dialog {

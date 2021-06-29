@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 
 import FormFooter from 'Components/form-footer';
 
-const CountrySelector = ({ handleSelectionNext, residence_list, setSelectedCountry }) => {
+const CountrySelector = ({ handleSelectionNext, residence_list, selected_country, setSelectedCountry }) => {
     const [country_list, setCountryList] = React.useState([]);
 
     const initial_form_values = {
@@ -25,13 +25,17 @@ const CountrySelector = ({ handleSelectionNext, residence_list, setSelectedCount
         return errors;
     };
 
-    const submitHandler = (values, { setSubmitting }) => {
-        const matching_country = country_list.find(c => c.text === values.country_input);
+    const updateSelectedCountry = country_name => {
+        const matching_country = country_list.find(c => c.text === country_name);
         if (matching_country) {
             setSelectedCountry(matching_country);
-            setSubmitting(false);
-            handleSelectionNext();
         }
+    };
+
+    const submitHandler = (values, { setSubmitting }) => {
+        updateSelectedCountry(values.country_input);
+        setSubmitting(false);
+        handleSelectionNext();
     };
 
     React.useEffect(() => {
@@ -68,7 +72,7 @@ const CountrySelector = ({ handleSelectionNext, residence_list, setSelectedCount
                                                 onChange={handleChange}
                                                 onItemSelection={({ text }) => {
                                                     setFieldValue('country_input', text || '', true);
-                                                    setSelectedCountry(country_list.find(c => c.text === text));
+                                                    updateSelectedCountry(text);
                                                 }}
                                                 required
                                             />
@@ -83,7 +87,10 @@ const CountrySelector = ({ handleSelectionNext, residence_list, setSelectedCount
                                                     label={localize('Country')}
                                                     list_items={country_list}
                                                     value={values.country_input}
-                                                    onChange={handleChange}
+                                                    onChange={e => {
+                                                        handleChange(e);
+                                                        updateSelectedCountry(e.target.value);
+                                                    }}
                                                     use_text={true}
                                                     required
                                                 />
@@ -100,7 +107,7 @@ const CountrySelector = ({ handleSelectionNext, residence_list, setSelectedCount
                             type='submit'
                             onClick={handleSubmit}
                             has_effect
-                            is_disabled={!dirty || isSubmitting || !isValid}
+                            is_disabled={!dirty || isSubmitting || !isValid || !selected_country}
                             is_loading={false}
                             text={localize('Next')}
                             large

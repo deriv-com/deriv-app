@@ -47,19 +47,20 @@ const SelectNativeOptions = ({ list_items, should_hide_disabled_options, use_tex
 const SelectNative = ({
     className,
     classNameDisplay,
+    classNameHint,
     disabled,
     error,
-    hint,
-    classNameHint,
     hide_selected_value,
+    hint,
     label,
     list_items,
+    onItemSelection,
     placeholder,
+    should_hide_disabled_options,
     should_show_empty_option = true,
     suffix_icon,
     use_text,
     value,
-    should_hide_disabled_options,
     ...props
 }) => (
     <div

@@ -6,100 +6,100 @@ import { routes } from '@deriv/shared';
 
 const data = [
     {
-        title: 'Operating Systems',
+        title: localize('Operating Systems'),
         dmt5: [
-            { title: 'iOS', icon: 'IcIos' },
-            { title: 'Android', icon: 'IcAndroid' },
-            { title: 'Windows', icon: 'IcWindowsGray' },
-            { title: 'macOS', icon: 'IcMacos2' },
-            { title: 'Linux', icon: 'IcLinux2' },
-            { title: 'Browser', icon: 'IcBrowser' },
+            { title: localize('iOS'), icon: 'IcIos' },
+            { title: localize('Android'), icon: 'IcAndroid' },
+            { title: localize('Windows'), icon: 'IcWindowsGray' },
+            { title: localize('macOS'), icon: 'IcMacos2' },
+            { title: localize('Linux'), icon: 'IcLinux2' },
+            { title: localize('Browser'), icon: 'IcBrowser' },
         ],
         derivx: [
-            { title: 'iOS', icon: 'IcIos' },
-            { title: 'Android', icon: 'IcAndroid' },
-            { title: 'Browser', icon: 'IcBrowser' },
+            { title: localize('iOS'), icon: 'IcIos' },
+            { title: localize('Android'), icon: 'IcAndroid' },
+            { title: localize('Browser'), icon: 'IcBrowser' },
         ],
         has_items: true,
     },
     {
-        title: 'Asset classes',
+        title: localize('Asset classes'),
         dmt5: [
             {
-                title: 'Synthetics',
+                title: localize('Synthetics'),
                 icon: 'IcMt5Synthetics',
             },
             {
-                title: 'Cryptos',
+                title: localize('Cryptos'),
                 icon: 'IcMt5Cryptos',
             },
             {
-                title: 'Indices',
+                title: localize('Indices'),
                 icon: 'IcMt5Cryptos',
             },
             {
-                title: 'Stocks',
+                title: localize('Stocks'),
                 icon: 'IcMt5Stocks',
             },
             {
-                title: 'Forex',
+                title: localize('Forex'),
                 icon: 'IcMt5Forex',
             },
             {
-                title: 'Commodities',
+                title: localize('Commodities'),
                 icon: 'IcMt5Commodities',
             },
         ],
         derivx: [
             {
-                title: 'Synthetics',
+                title: localize('Synthetics'),
                 icon: 'IcMt5Synthetics',
             },
             {
-                title: 'Cryptos',
+                title: localize('Cryptos'),
                 icon: 'IcMt5Cryptos',
             },
             {
-                title: 'Indices',
+                title: localize('Indices'),
                 icon: 'IcMt5Cryptos',
             },
             {
-                title: 'Stocks',
+                title: localize('Stocks'),
                 icon: 'IcMt5Stocks',
             },
             {
-                title: 'Forex',
+                title: localize('Forex'),
                 icon: 'IcMt5Forex',
             },
             {
-                title: 'Commodities',
+                title: localize('Commodities'),
                 icon: 'IcMt5Commodities',
             },
         ],
         has_items: true,
     },
     {
-        title: 'Assets',
-        dmt5: '190+',
-        derivx: '190+',
+        title: localize('Assets'),
+        dmt5: localize('190+'),
+        derivx: localize('190+'),
         has_items: false,
     },
     {
-        title: 'Leverage',
-        dmt5: 'Up to 1:1000',
-        derivx: 'Up to 1:1000',
+        title: localize('Leverage'),
+        dmt5: localize('Up to 1:1000'),
+        derivx: localize('Up to 1:1000'),
         has_items: false,
     },
     {
-        title: 'Trading signals',
-        dmt5: 'Yes',
-        derivx: 'No',
+        title: localize('Trading signals'),
+        dmt5: localize('Yes'),
+        derivx: localize('No'),
         has_items: false,
     },
     {
-        title: 'Customisability',
-        dmt5: 'Moderate',
-        derivx: 'High',
+        title: localize('Customisability'),
+        dmt5: localize('Moderate'),
+        derivx: localize('High'),
         has_items: false,
     },
 ];
@@ -109,7 +109,7 @@ const Items = ({ items }) =>
         <div key={title} className='platform-item'>
             <Icon icon={icon} size={16} />
             <Text as='p' align='center' color='prominent' size='xxxs'>
-                {localize(title)}
+                {title}
             </Text>
         </div>
     ));
@@ -119,7 +119,7 @@ const Row = ({ title, dmt5, derivx, has_items }) => (
         <Table.Row className={has_items ? 'platform-table-row-items' : 'platform-table-row'}>
             <Table.Cell className='platform-table-col'>
                 <Text as='p' weight='bold' align='center' color='prominent' size='xs'>
-                    {localize(title)}
+                    {title}
                 </Text>
             </Table.Cell>
 
@@ -128,7 +128,7 @@ const Row = ({ title, dmt5, derivx, has_items }) => (
                     <Items items={dmt5} />
                 ) : (
                     <Text as='p' weight='bold' align='center' color='prominent' size='s'>
-                        {localize(dmt5)}
+                        {dmt5}
                     </Text>
                 )}
             </Table.Cell>
@@ -137,7 +137,7 @@ const Row = ({ title, dmt5, derivx, has_items }) => (
                     <Items items={derivx} />
                 ) : (
                     <Text as='p' weight='bold' align='center' color='prominent' size='s'>
-                        {localize(derivx)}
+                        {derivx}
                     </Text>
                 )}
             </Table.Cell>

@@ -21,6 +21,14 @@ const ALL_LANGUAGES = Object.freeze({
     ZH_TW: '繁體中文',
 });
 
+const getUrlBase = (path = '') => {
+    const l = window.location;
+
+    if (!/^\/(br_)/.test(l.pathname)) return path;
+
+    return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
+};
+
 const isStaging = () => /staging-app\.deriv\.com/i.test(window.location.hostname);
 
 const isLocal = () => /localhost\.binary\.sx/i.test(window.location.hostname);
@@ -62,10 +70,10 @@ const getInitialLanguage = () => {
 
 const loadLanguageJson = async lang => {
     if (!i18n.hasResourceBundle(lang, 'translations') && lang.toUpperCase() !== DEFAULT_LANGUAGE) {
-        const response = await import(/* webpackChunkName: "[request]" */ `../translations/${lang.toLowerCase()}.json`);
+        const response = await fetch(getUrlBase(`/public/i18n/${lang.toLowerCase()}.json`));
+        const lang_json = await response.text();
 
-        const lang_json = response;
-        i18n.addResourceBundle(lang, 'translations', lang_json);
+        i18n.addResourceBundle(lang, 'translations', JSON.parse(lang_json));
         document.documentElement.setAttribute('lang', lang);
     }
 };

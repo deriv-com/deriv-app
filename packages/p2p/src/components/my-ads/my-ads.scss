@@ -51,6 +51,7 @@
     &__form {
         @include mobile {
             &-element {
+                overflow-y: hidden;
                 height: calc(100vh - 20rem);
 
                 &--ios {

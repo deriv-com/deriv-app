@@ -13,17 +13,7 @@ import {
 import { isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
-const BriefModal = ({
-    disableApp,
-    enableApp,
-    enableMax30dayTurnover,
-    IntervalField,
-    SpendingLimitIntervalField,
-    is_visible,
-    logout,
-    onSubmit,
-    validateForm,
-}) => {
+const BriefModal = ({ disableApp, enableApp, IntervalField, is_visible, logout, onSubmit, validateForm }) => {
     return (
         <Modal
             className='reality-check'
@@ -31,19 +21,13 @@ const BriefModal = ({
             is_open={is_visible}
             disableApp={disableApp}
             has_close_icon={false}
-            title={
-                enableMax30dayTurnover
-                    ? localize('Spending limit and trading statistics')
-                    : localize('Trading statistics')
-            }
+            title={localize('Trading statistics')}
             portalId='modal_root_absolute'
             width='588px'
         >
             <Formik
                 initialValues={{
                     interval: '',
-                    max_30day_turnover: '',
-                    spending_limit: '1',
                 }}
                 validate={validateForm}
                 onSubmit={onSubmit}
@@ -59,89 +43,7 @@ const BriefModal = ({
                                     is_disabled={isDesktop()}
                                 >
                                     <ThemedScrollbars height={500} className='reality-check__scrollbar'>
-                                        {enableMax30dayTurnover && (
-                                            <>
-                                                <div className='reality-check__section'>
-                                                    <Text
-                                                        as='strong'
-                                                        size={isDesktop() ? 'xs' : 'xxs'}
-                                                        line_height='m'
-                                                        weight='bold'
-                                                        className='reality-check__text reality-check__text--title'
-                                                    >
-                                                        <Localize i18n_default_text='Spending limit' />
-                                                    </Text>
-                                                    <Text
-                                                        as='p'
-                                                        size={isDesktop() ? 'xs' : 'xxs'}
-                                                        line_height='m'
-                                                        className='reality-check__text reality-check__text--description'
-                                                    >
-                                                        <Localize i18n_default_text='You can limit the total amount you spend in 30 days, trading on DTrader, DBot, and SmartTrader. This limit will get renewed automatically every 30 days. If you wish to remove the limit or increase your spending amount, please contact our Client Support team via live chat on our website.' />
-                                                    </Text>
-                                                    <div
-                                                        style={{ display: 'flex', marginBottom: isDesktop() ? 25 : 4 }}
-                                                    >
-                                                        <RadioGroup
-                                                            name='spending_limit'
-                                                            className='radio-group--spending_limit'
-                                                            selected={values.spending_limit}
-                                                            onToggle={e => {
-                                                                e.persist();
-                                                                handleChange({
-                                                                    target: {
-                                                                        name: 'spending_limit',
-                                                                        value: e.target.value,
-                                                                    },
-                                                                });
-                                                            }}
-                                                        >
-                                                            {[
-                                                                {
-                                                                    id: '1',
-                                                                    label: 'Set a 30-day spending limit',
-                                                                    value: '1',
-                                                                },
-                                                                { id: '0', label: 'No spending limit', value: '0' },
-                                                            ].map(item => (
-                                                                <RadioGroup.Item
-                                                                    key={item.value}
-                                                                    label={item.label}
-                                                                    value={item.value}
-                                                                />
-                                                            ))}
-                                                        </RadioGroup>
-                                                    </div>
-                                                    <SpendingLimitIntervalField
-                                                        values={values}
-                                                        touched={touched}
-                                                        errors={errors}
-                                                        handleChange={handleChange}
-                                                        handleBlur={handleBlur}
-                                                        disabled={values.spending_limit === '0'}
-                                                    />
-                                                    <Text
-                                                        as='p'
-                                                        size='xs'
-                                                        line_height='m'
-                                                        className='reality-check__text reality-check__text--description'
-                                                    >
-                                                        <Localize i18n_default_text='If you decide to set a spending limit later, you can always do so by going to “Self-exclusion” in your account settings.' />
-                                                    </Text>
-                                                </div>
-                                                <div className='reality-check__separator' />
-                                            </>
-                                        )}
                                         <div className='reality-check__section'>
-                                            <Text
-                                                as='strong'
-                                                size={isDesktop() ? 'xs' : 'xxs'}
-                                                line_height='m'
-                                                weight='bold'
-                                                className='reality-check__text reality-check__text--title'
-                                            >
-                                                <Localize i18n_default_text='Viewing trading statistics' />
-                                            </Text>
                                             <Text
                                                 as='p'
                                                 size={isDesktop() ? 'xs' : 'xxs'}

@@ -8,6 +8,7 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import BriefModal from './brief-modal.jsx';
 import SummaryModal from './summary-modal.jsx';
+import SpendingLimitModal from './spending-limit-modal.jsx';
 
 const SpendingLimitIntervalField = ({ values, disabled, touched, errors, handleChange, handleBlur }) => (
     <div className='reality-check__fieldset reality-check__fieldset--spending-limit'>
@@ -90,13 +91,13 @@ const RealityCheckModal = ({
 
     const enableMax30dayTurnover = !self_exclusion.max_30day_turnover;
 
-    const validateForm = values => {
+    const spendingLimitValidateForm = values => {
         const errors = {};
         const min_number = 1;
 
-        if (enableMax30dayTurnover && values.spending_limit === '1' && !values.max_30day_turnover) {
+        if (values.spending_limit === '1' && !values.max_30day_turnover) {
             errors.max_30day_turnover = localize('This field is required.');
-        } else if (enableMax30dayTurnover && values.spending_limit === '1') {
+        } else if (values.spending_limit === '1') {
             const { is_ok, message } = validNumber(values.max_30day_turnover, {
                 type: 'float',
                 decimals: getDecimalPlaces(currency),
@@ -104,6 +105,11 @@ const RealityCheckModal = ({
             });
             if (!is_ok) errors.max_30day_turnover = message;
         }
+
+        return errors;
+    };
+    const validateForm = values => {
+        const errors = {};
 
         if (!values.interval) {
             errors.interval = localize('This field is required.');
@@ -120,10 +126,26 @@ const RealityCheckModal = ({
         setRealityCheckDuration(values.interval);
     };
 
+    // if user previously did not set max_30day_turnover,
+    // we force him/her here to fill this field
+    if (enableMax30dayTurnover) {
+        return (
+            <SpendingLimitModal
+                disableApp={disableApp}
+                enableApp={enableApp}
+                is_visible={!self_exclusion.max_30day_turnover}
+                openStatement={openStatement}
+                validateForm={spendingLimitValidateForm}
+                onSubmit={setSpendingLimitTradingStatistics}
+                InputField={SpendingLimitIntervalField}
+            />
+        );
+    }
+
     // if user has seen the brief once and set
     // the initial reality check interval
     // we can show the summary from now on
-    if ((!reality_check_dismissed && reality_check_duration) || (!reality_check_dismissed && !enableMax30dayTurnover)) {
+    if (!reality_check_dismissed && reality_check_duration) {
         return (
             <SummaryModal
                 disableApp={disableApp}
@@ -145,7 +167,7 @@ const RealityCheckModal = ({
     // we are going to show the BriefModal in a case that user
     // did not fill it previously, but if user filled it previously
     // we just show SummaryModal
-    if (enableMax30dayTurnover) {
+    if (!enableMax30dayTurnover) {
         return (
             <BriefModal
                 disableApp={disableApp}
@@ -153,11 +175,9 @@ const RealityCheckModal = ({
                 is_visible={is_visible}
                 openStatement={openStatement}
                 validateForm={validateForm}
-                onSubmit={setSpendingLimitTradingStatistics}
+                onSubmit={onSubmit}
                 logout={logoutClient}
-                enableMax30dayTurnover={enableMax30dayTurnover}
                 IntervalField={TradingViewIntervalField}
-                SpendingLimitIntervalField={SpendingLimitIntervalField}
             />
         );
     }

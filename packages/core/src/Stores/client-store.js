@@ -198,6 +198,9 @@ export default class ClientStore extends BaseStore {
         // scenario three
         if (!this.reality_check_dismissed && balance === 0 && this.statement.count > 0) return true;
 
+        //another scenario
+        if (this.has_reality_check && !this.self_exclusion.max_30day_turnover) return true;
+
         return false;
     }
 
@@ -2025,17 +2028,13 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setSpendingLimitTradingStatistics(values, form_props) {
-        if (!values.interval) return;
-
         // when there is no spending limit set, system set it as 9999999xx by default
         const max_30day_turnover = !!values.max_30day_turnover ? values.max_30day_turnover : NO_SPENDING_LIMIT_TURNOVER;
         WS.send({ set_self_exclusion: 1, max_30day_turnover: max_30day_turnover }).then(response => {
             if (response.error) {
                 form_props?.setStatus(response.error);
-                setTimeout(() => {
-                    this.setSpendingLimit(values.interval);
-                }, 200);
             } else {
+                runInAction(() => (this.self_exclusion.max_30day_turnover = max_30day_turnover));
                 if (this.root_store.modules.cashier) {
                     this.root_store.modules.cashier.setErrorConfig('is_self_exclusion_max_turnover_set', false);
                 }
@@ -2045,9 +2044,6 @@ export default class ClientStore extends BaseStore {
                 }
             }
             form_props?.setSubmitting(false);
-            setTimeout(() => {
-                this.setSpendingLimit(values.interval);
-            }, 200);
         });
     }
 

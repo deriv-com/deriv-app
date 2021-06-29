@@ -112,7 +112,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             key: 'cashier_locked',
             header: localize('Cashier disabled'),
             message: localize(
-                'Deposits and withdrawals have been disabled on your account. Please check your email for more details.'
+                'We’re updating our cashier system and it’ll be back online soon. Please see our <0>status page</0> for updates.'
             ),
             type: 'warning',
         },
@@ -498,8 +498,9 @@ const checkAccountStatus = (
 
     if (needs_poa && !(document.status === 'expired')) addNotificationMessage(clientNotifications().needs_poa);
     if (needs_poi && !(identity.status === 'expired')) addNotificationMessage(clientNotifications().needs_poi);
-    if (cashier_locked) addNotificationMessage(clientNotifications().cashier_locked);
+
     if (system_maintenance) addNotificationMessage(clientNotifications().system_maintenance);
+    else if (cashier_locked) addNotificationMessage(clientNotifications().cashier_locked);
 
     if (withdrawal_locked) {
         // if client is withdrawal locked but it's because they need to authenticate

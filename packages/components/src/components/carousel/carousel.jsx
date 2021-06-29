@@ -86,7 +86,7 @@ const Carousel = ({
                             className={classNames('dc-carousel__icon', { 'dc-carousel__icon--left': is_mt5 })}
                             onClick={handlePrevClick}
                         >
-                            <Icon icon='IcChevronLeft' size='24' />
+                            <Icon icon='IcChevronLeftBoldMt5' size='28' />
                         </span>
                     )}
 
@@ -112,7 +112,7 @@ const Carousel = ({
 
                     {show_nav && nav_position === 'middle' && sliced_list_length > 1 && (
                         <span className='dc-carousel__icon' onClick={handleNextClick}>
-                            <Icon icon='IcChevronRight' size='24' />
+                            <Icon icon='IcChevronRightBoldMt5' size='28' />
                         </span>
                     )}
                 </div>

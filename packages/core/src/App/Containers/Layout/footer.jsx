@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import * as React from 'react';
-import { withRouter } from 'react-router';
+import { useLocation } from 'react-router';
 import {
     AccountLimits as AccountLimitsFooter,
     EndpointNote,
@@ -44,8 +44,9 @@ const Footer = ({
     toggleSettingsModal,
     settings_extension,
     landing_company_shortcode,
-    location: { pathname },
 }) => {
+    const { pathname } = useLocation();
+
     let footer_extensions_left = [];
     let footer_extensions_right = [];
     if (footer_extensions.filter) {
@@ -97,24 +98,21 @@ Footer.propTypes = {
     is_route_modal_on: PropTypes.bool,
     is_settings_modal_on: PropTypes.bool,
     landing_company_shortcode: PropTypes.string,
-    location: PropTypes.object,
     toggleSettingsModal: PropTypes.func,
 };
 
-export default withRouter(
-    connect(({ client, ui }) => ({
-        enableApp: ui.enableApp,
-        footer_extensions: ui.footer_extensions,
-        settings_extension: ui.settings_extension,
-        is_app_disabled: ui.is_app_disabled,
-        is_route_modal_on: ui.is_route_modal_on,
-        is_logged_in: client.is_logged_in,
-        is_eu: client.is_eu,
-        is_loading: ui.is_loading,
-        is_settings_modal_on: ui.is_settings_modal_on,
-        is_virtual: client.is_virtual,
-        landing_company_shortcode: client.landing_company_shortcode,
-        disableApp: ui.disableApp,
-        toggleSettingsModal: ui.toggleSettingsModal,
-    }))(Footer)
-);
+export default connect(({ client, ui }) => ({
+    enableApp: ui.enableApp,
+    footer_extensions: ui.footer_extensions,
+    settings_extension: ui.settings_extension,
+    is_app_disabled: ui.is_app_disabled,
+    is_route_modal_on: ui.is_route_modal_on,
+    is_logged_in: client.is_logged_in,
+    is_eu: client.is_eu,
+    is_loading: ui.is_loading,
+    is_settings_modal_on: ui.is_settings_modal_on,
+    is_virtual: client.is_virtual,
+    landing_company_shortcode: client.landing_company_shortcode,
+    disableApp: ui.disableApp,
+    toggleSettingsModal: ui.toggleSettingsModal,
+}))(Footer);

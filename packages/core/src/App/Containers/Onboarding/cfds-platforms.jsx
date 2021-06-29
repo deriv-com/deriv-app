@@ -1,5 +1,5 @@
 import React from 'react';
-import { withRouter } from 'react-router';
+import { useHistory } from 'react-router';
 import { Button, Text, Table, Icon, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
@@ -145,90 +145,94 @@ const Row = ({ title, dmt5, derivx, has_items }) => (
     </>
 );
 
-const Platforms = ({ history }) => (
-    <section className='platform-onboarding'>
-        <MobileWrapper>
-            <Text as='h2' weight='bold' align='center' color='prominent' size='xsm'>
-                {localize('Platforms')}
-            </Text>
-        </MobileWrapper>
-        <DesktopWrapper>
-            <Text as='h2' weight='bold' align='center' color='prominent' size='m'>
-                {localize('Platforms')}
-            </Text>
-        </DesktopWrapper>
-        <Table>
-            <Table.Header>
-                <DesktopWrapper>
-                    <Table.Head />
-                </DesktopWrapper>
-                <Table.Head>
-                    <MobileWrapper>
-                        <Icon icon='IcBrandDmt5' size={32} />
-                        <Text as='h3' weight='bold' align='center' color='prominent' size='xsm'>
-                            {localize('DMT5')}
-                        </Text>
-                    </MobileWrapper>
-                    <DesktopWrapper>
-                        <Icon icon='IcBrandDmt5' size={48} />
-                        <Text as='h3' weight='bold' align='center' color='prominent' size='m'>
-                            {localize('DMT5')}
-                        </Text>
-                    </DesktopWrapper>
-                </Table.Head>
-                <Table.Head>
-                    <MobileWrapper>
-                        <Icon icon='IcBrandDxtrade' size={32} />
-                        <Text as='h3' weight='bold' align='center' color='prominent' size='xsm'>
-                            {localize('Deriv X')}
-                        </Text>
-                    </MobileWrapper>
-                    <DesktopWrapper>
-                        <Icon icon='IcBrandDxtrade' size={48} />
-                        <Text as='h3' weight='bold' align='center' color='prominent' size='m'>
-                            {localize('Deriv X')}
-                        </Text>
-                    </DesktopWrapper>
-                </Table.Head>
-            </Table.Header>
-            <Table.Body>
-                {data.map(item => (
-                    <Row key={item.title} {...item} />
-                ))}
-            </Table.Body>
-            <Table.Footer>
-                <Table.Row className='platform-table-row'>
-                    <DesktopWrapper>
-                        <Table.Cell className='platform-table-col' />
-                    </DesktopWrapper>
-                    <Table.Cell className='platform-table-col'>
-                        <Button
-                            type='button'
-                            secondary
-                            small
-                            onClick={() => {
-                                history.push(routes.mt5);
-                            }}
-                        >
-                            {localize('Choose DMT5')}
-                        </Button>
-                    </Table.Cell>
-                    <Table.Cell className='platform-table-col'>
-                        <Button
-                            type='button'
-                            secondary
-                            small
-                            onClick={() => {
-                                history.push(routes.dxtrade);
-                            }}
-                        >
-                            {localize('Choose Deriv X')}
-                        </Button>
-                    </Table.Cell>
-                </Table.Row>
-            </Table.Footer>
-        </Table>
-    </section>
-);
+const Platforms = () => {
+    const history = useHistory();
 
-export default withRouter(Platforms);
+    return (
+        <section className='platform-onboarding'>
+            <MobileWrapper>
+                <Text as='h2' weight='bold' align='center' color='prominent' size='xsm'>
+                    {localize('Platforms')}
+                </Text>
+            </MobileWrapper>
+            <DesktopWrapper>
+                <Text as='h2' weight='bold' align='center' color='prominent' size='m'>
+                    {localize('Platforms')}
+                </Text>
+            </DesktopWrapper>
+            <Table>
+                <Table.Header>
+                    <DesktopWrapper>
+                        <Table.Head />
+                    </DesktopWrapper>
+                    <Table.Head>
+                        <MobileWrapper>
+                            <Icon icon='IcBrandDmt5' size={32} />
+                            <Text as='h3' weight='bold' align='center' color='prominent' size='xsm'>
+                                {localize('DMT5')}
+                            </Text>
+                        </MobileWrapper>
+                        <DesktopWrapper>
+                            <Icon icon='IcBrandDmt5' size={48} />
+                            <Text as='h3' weight='bold' align='center' color='prominent' size='m'>
+                                {localize('DMT5')}
+                            </Text>
+                        </DesktopWrapper>
+                    </Table.Head>
+                    <Table.Head>
+                        <MobileWrapper>
+                            <Icon icon='IcBrandDxtrade' size={32} />
+                            <Text as='h3' weight='bold' align='center' color='prominent' size='xsm'>
+                                {localize('Deriv X')}
+                            </Text>
+                        </MobileWrapper>
+                        <DesktopWrapper>
+                            <Icon icon='IcBrandDxtrade' size={48} />
+                            <Text as='h3' weight='bold' align='center' color='prominent' size='m'>
+                                {localize('Deriv X')}
+                            </Text>
+                        </DesktopWrapper>
+                    </Table.Head>
+                </Table.Header>
+                <Table.Body>
+                    {data.map(item => (
+                        <Row key={item.title} {...item} />
+                    ))}
+                </Table.Body>
+                <Table.Footer>
+                    <Table.Row className='platform-table-row'>
+                        <DesktopWrapper>
+                            <Table.Cell className='platform-table-col' />
+                        </DesktopWrapper>
+                        <Table.Cell className='platform-table-col'>
+                            <Button
+                                type='button'
+                                secondary
+                                small
+                                onClick={() => {
+                                    history.push(routes.mt5);
+                                }}
+                            >
+                                {localize('Choose DMT5')}
+                            </Button>
+                        </Table.Cell>
+                        <Table.Cell className='platform-table-col'>
+                            <Button
+                                type='button'
+                                secondary
+                                small
+                                onClick={() => {
+                                    history.push(routes.dxtrade);
+                                }}
+                            >
+                                {localize('Choose Deriv X')}
+                            </Button>
+                        </Table.Cell>
+                    </Table.Row>
+                </Table.Footer>
+            </Table>
+        </section>
+    );
+};
+
+export default Platforms;

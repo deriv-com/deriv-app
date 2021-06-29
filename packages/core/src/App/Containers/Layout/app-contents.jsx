@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter } from 'react-router';
+import { useLocation } from 'react-router';
 import WS from 'Services/ws-methods';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
 import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext, routes } from '@deriv/shared';
@@ -25,11 +25,11 @@ const AppContents = ({
     notifyAppInstall,
     pageView,
     pushDataLayer,
-    location: { pathname },
 }) => {
     const [show_cookie_banner, setShowCookieBanner] = React.useState(false);
     const [is_gtm_tracking, setIsGtmTracking] = React.useState(false);
     const { is_dashboard } = React.useContext(PlatformContext);
+    const { pathname } = useLocation();
 
     const tracking_status = tracking_status_cookie.get(TRACKING_STATUS_KEY);
     const is_onboarding = pathname === routes.onboarding;
@@ -122,21 +122,19 @@ AppContents.propTypes = {
     is_route_modal_on: PropTypes.bool,
 };
 
-export default withRouter(
-    connect(({ client, gtm, rudderstack, ui }) => ({
-        is_eu_country: client.is_eu_country,
-        is_eu: client.is_eu,
-        is_logged_in: client.is_logged_in,
-        is_logging_in: client.is_logging_in,
-        pushDataLayer: gtm.pushDataLayer,
-        identifyEvent: rudderstack.identifyEvent,
-        pageView: rudderstack.pageView,
-        is_app_disabled: ui.is_app_disabled,
-        is_cashier_visible: ui.is_cashier_visible,
-        is_dark_mode: ui.is_dark_mode_on,
-        is_cfd_page: ui.is_cfd_page,
-        is_positions_drawer_on: ui.is_positions_drawer_on,
-        is_route_modal_on: ui.is_route_modal_on,
-        notifyAppInstall: ui.notifyAppInstall,
-    }))(AppContents)
-);
+export default connect(({ client, gtm, rudderstack, ui }) => ({
+    is_eu_country: client.is_eu_country,
+    is_eu: client.is_eu,
+    is_logged_in: client.is_logged_in,
+    is_logging_in: client.is_logging_in,
+    pushDataLayer: gtm.pushDataLayer,
+    identifyEvent: rudderstack.identifyEvent,
+    pageView: rudderstack.pageView,
+    is_app_disabled: ui.is_app_disabled,
+    is_cashier_visible: ui.is_cashier_visible,
+    is_dark_mode: ui.is_dark_mode_on,
+    is_cfd_page: ui.is_cfd_page,
+    is_positions_drawer_on: ui.is_positions_drawer_on,
+    is_route_modal_on: ui.is_route_modal_on,
+    notifyAppInstall: ui.notifyAppInstall,
+}))(AppContents);

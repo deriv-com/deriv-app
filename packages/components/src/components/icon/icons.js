@@ -342,7 +342,6 @@ import './common/ic-user-outline.svg';
 import './common/ic-user.svg';
 import './common/ic-utility.svg';
 import './common/ic-verification.svg';
-import './common/ic-verify.svg';
 import './common/ic-wallet-add.svg';
 import './common/ic-wallet-minus.svg';
 import './common/ic-web-terminal.svg';

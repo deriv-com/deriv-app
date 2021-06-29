@@ -51,12 +51,7 @@
     &__form {
         @include mobile {
             &-element {
-                overflow-x: hidden;
-                height: calc(100vh - 20rem);
-
-                &--ios {
-                    height: calc(100vh - 35rem);
-                }
+                padding: 0 0 10rem;
             }
 
             .dc-input__footer {
@@ -102,7 +97,7 @@
             width: calc(100% - 4.8rem);
 
             @include mobile {
-                height: calc(100vh - 26.5rem);
+                height: fit-content;
                 margin: 0 1.6rem;
                 position: unset;
                 width: 90vw;

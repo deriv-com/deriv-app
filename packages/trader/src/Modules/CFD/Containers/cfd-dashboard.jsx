@@ -50,16 +50,19 @@ class CFDDashboard extends React.Component {
     };
 
     async componentDidMount() {
+        this.scrollToSelectedMarket();
         this.updateActiveIndex(this.getIndexToSet());
         this.openResetPassword();
         this.props.onMount();
     }
 
     componentWillUnmount() {
+        this.scrollToSelectedMarket();
         this.props.onUnmount();
     }
 
     componentDidUpdate() {
+        this.scrollToSelectedMarket();
         this.updateActiveIndex();
         this.props.checkShouldOpenAccount();
     }
@@ -83,6 +86,12 @@ class CFDDashboard extends React.Component {
             return /demo/.test(this.props.location.hash) ? 1 : 0;
         }
         return undefined;
+    };
+
+    scrollToSelectedMarket = () => {
+        const selected_market = localStorage.getItem('selectedMarket');
+        const market_element = document.getElementsByClassName(selected_market);
+        if (market_element[0] !== undefined) market_element[0].scrollIntoView();
     };
 
     stopNotificationLoading = () => {

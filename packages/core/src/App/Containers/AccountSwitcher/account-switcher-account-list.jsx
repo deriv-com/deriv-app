@@ -24,6 +24,12 @@ const AccountList = ({
     sub_account_type,
     platform,
 }) => {
+    const SwitchMarket = element_class => {
+        const filter_class = element_class.match(market_type);
+        localStorage.setItem('selectedMarket', filter_class[0]);
+        onClickAccount();
+    };
+
     if (is_disabled && !currency) return null;
     const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
     return (
@@ -34,12 +40,14 @@ const AccountList = ({
                     'acc-switcher__account--selected': loginid === selected_loginid,
                     'acc-switcher__account--disabled': is_disabled,
                 })}
-                onClick={is_disabled ? undefined : onClickAccount}
+                onClick={e => {
+                    if (!is_disabled) SwitchMarket(e.currentTarget.className);
+                }}
             >
-                <span className='acc-switcher__id'>
+                <span className='acc-switcher__id synthetic'>
                     <Icon
                         icon={is_virtual ? 'IcCurrencyVirtual' : currency_badge}
-                        className={'acc-switcher__id-icon'}
+                        className={'acc-switcher__id-icon synthetic'}
                         size={24}
                     />
                     <span>

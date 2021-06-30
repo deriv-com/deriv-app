@@ -185,6 +185,11 @@ class CFDDashboard extends React.Component {
 
         const has_mt5_account_error = this.state.is_demo_tab ? has_mt5_demo_account_error : has_mt5_real_account_error;
 
+        const has_cfd_account_error =
+            platform === CFD_PLATFORMS.MT5
+                ? has_mt5_account_error
+                : has_dxtrade_account_error || dxtrade_accounts_list_error;
+
         if (is_logged_in && !landing_companies) return <Loading />;
 
         if (platform === CFD_PLATFORMS.DXTRADE && !is_dxtrade_allowed) return <Redirect to={routes.mt5} />;
@@ -204,9 +209,7 @@ class CFDDashboard extends React.Component {
                                     {general_messages.getWelcomeHeader(is_logged_in, platform)}
                                 </h1>
                             </div>
-                            {(platform === CFD_PLATFORMS.MT5
-                                ? has_mt5_account_error
-                                : has_dxtrade_account_error || dxtrade_accounts_list_error) && (
+                            {has_cfd_account_error && (
                                 <div className='cfd-dashboard__accounts-error'>
                                     <Text
                                         as='p'
@@ -435,7 +438,7 @@ class CFDDashboard extends React.Component {
                                 </div>
                             </MobileWrapper>
                             <CFDTopUpDemoModal platform={platform} />
-                            <CFDPasswordModal platform={platform} />
+                            <CFDPasswordModal platform={platform} has_suspended_account={has_cfd_account_error} />
                             <CFDServerErrorDialog />
                             {platform === CFD_PLATFORMS.MT5 && (
                                 <React.Fragment>

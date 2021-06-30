@@ -118,8 +118,14 @@ module.exports = function () {
             ],
         },
         plugins: [
-            // TODO: bundle dashboard assets with webpack visibility and add contenthash
-            // to thier filename like other packages to avoid caching issue.
+            new CopyPlugin({
+                patterns: [
+                    {
+                        from: path.resolve(__dirname, 'src/assets'),
+                        to: path.resolve(__dirname, 'lib/assets'),
+                    },
+                ],
+            }),
             ...(is_publishing ? [new MiniCssExtractPlugin({ filename: 'main.css' })] : []),
             // ...(is_release ? [] : [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ]),
         ],

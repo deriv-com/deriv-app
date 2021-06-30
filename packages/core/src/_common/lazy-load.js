@@ -1,7 +1,16 @@
 import React from 'react';
 import Loadable from 'react-loadable';
+import { Loading } from '@deriv/components';
 
-export const makeLazyLoader = (importFn, loaderFn) => component_name =>
+const handleLoading = props => {
+    // 200ms default
+    if (props.pastDelay) {
+        return <Loading />;
+    }
+    return null;
+};
+
+export const makeLazyLoader = importFn => component_name =>
     Loadable.Map({
         loader: {
             ComponentModule: importFn,
@@ -12,5 +21,5 @@ export const makeLazyLoader = (importFn, loaderFn) => component_name =>
                 : loaded.ComponentModule.default;
             return <ComponentLazy {...props} />;
         },
-        loading: loaderFn,
+        loading: handleLoading,
     });

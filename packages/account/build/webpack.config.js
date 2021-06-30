@@ -69,10 +69,10 @@ module.exports = function (env, argv) {
             minimizer: MINIMIZERS,
         },
         output: {
-            filename: 'account/js/[name].js',
+            filename: 'js/[name].js',
             publicPath: base,
             path: path.resolve(__dirname, '../dist'),
-            chunkFilename: 'account/js/account.[name].[contenthash].js',
+            chunkFilename: 'js/account.[name].[contenthash].js',
             libraryExport: 'default',
             library: '@deriv/account',
             libraryTarget: 'umd',

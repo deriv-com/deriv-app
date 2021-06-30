@@ -40,7 +40,7 @@ const ProofOfIdentity = ({
     // idv_result_expired - Idv verification expired
     // idv_result_rejected - Idv verification rejected have submissions left
     // idv_result_rejected_limited - Idv verification rejected but no submissions left
-    const account_status = figmaAccountStatus('idv_result_rejected_limited');
+    const account_status = figmaAccountStatus('idv_none');
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
 

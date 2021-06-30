@@ -33,8 +33,6 @@ import initStore from './app';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import { CFD_TEXT } from '../Constants/cfd-text';
 
-// TODO: Lazy load smartchart styles
-import '@deriv/deriv-charts/dist/smartcharts.css';
 // eslint-disable-next-line import/extensions
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';

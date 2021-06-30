@@ -113,6 +113,7 @@ const MINIMIZERS = !IS_RELEASE
 
 const plugins = (base, is_test_env, is_mocha_only) => [
     new CleanWebpackPlugin(),
+    new CopyPlugin(copyConfig(base)),
     // new HtmlWebPackPlugin(htmlOutputConfig()),
     // new HtmlWebpackTagsPlugin(htmlInjectConfig()),
     new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
@@ -120,12 +121,7 @@ const plugins = (base, is_test_env, is_mocha_only) => [
     new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
     ...(IS_RELEASE
         ? []
-        : [
-              new WebpackManifestPlugin({
-                  fileName: 'trader/asset-manifest.json',
-                  filter: file => file.name !== 'CNAME',
-              }),
-          ]),
+        : [new WebpackManifestPlugin({ fileName: 'asset-manifest.json', filter: file => file.name !== 'CNAME' })]),
     ...(is_test_env && !is_mocha_only
         ? [new StylelintPlugin(stylelintConfig())]
         : [

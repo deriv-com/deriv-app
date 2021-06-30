@@ -11,7 +11,7 @@ const copyConfig = base => {
         },
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/media/**'),
-            to: 'bot/media',
+            to: 'media',
             flatten: true,
         },
         {

@@ -165,7 +165,6 @@ const CFDRealAccountDisplay = ({
                           <CFDAccountCard
                               key={index}
                               has_cfd_account={has_cfd_account}
-                              has_cfd_account_error={has_cfd_account_error}
                               title={localize('Synthetic')}
                               is_hovered={index === active_hover}
                               is_disabled={isMT5AccountCardDisabled('synthetic')}

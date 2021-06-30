@@ -13,6 +13,7 @@ const messages = () => [
     <Localize key={1} i18n_default_text='You can open an account for each cryptocurrency.' />,
     <Localize key={2} i18n_default_text='Add a real account' />,
     <Localize key={3} i18n_default_text='Choose a currency you would like to trade with.' />,
+    <Localize key={4} i18n_default_text='Choose a currency' />,
 ];
 
 const Headers = ({ heading, subheading }) => (
@@ -36,6 +37,7 @@ const AddCryptoCurrency = ({
     legal_allowed_currencies,
     onClickBack,
     onSubmit,
+    should_show_cancel,
     should_show_crypto_only,
     should_show_fiat_only,
     value,
@@ -67,7 +69,12 @@ const AddCryptoCurrency = ({
             {({ handleSubmit, values, errors, touched, isSubmitting }) => (
                 <form onSubmit={handleSubmit}>
                     {!canAddFiat() && <Headers heading={messages()[0]} subheading={messages()[1]} />}
-                    {canAddFiat() && <Headers heading={messages()[2]} subheading={messages()[3]} />}
+                    {canAddFiat() && (
+                        <Headers
+                            heading={should_show_cancel ? messages()[4] : messages()[2]}
+                            subheading={messages()[3]}
+                        />
+                    )}
                     {canAddFiat() && (
                         <React.Fragment>
                             <CurrencyRadioButtonGroup
@@ -169,7 +176,7 @@ const AddCryptoCurrency = ({
                         label={localize('Add account')}
                         is_absolute={!isMobile()}
                         form_error={form_error}
-                        has_cancel
+                        has_cancel={should_show_cancel}
                         cancel_label={localize('Back')}
                         onCancel={() => onClickBack()}
                     />
@@ -186,6 +193,7 @@ AddCryptoCurrency.propTypes = {
     hasNoAvailableCrypto: PropTypes.func,
     form_error: PropTypes.string,
     onSubmit: PropTypes.func,
+    should_show_cancel: PropTypes.bool,
     should_show_crypto_only: PropTypes.bool,
     should_show_fiat_only: PropTypes.bool,
     value: PropTypes.shape({
@@ -194,8 +202,9 @@ AddCryptoCurrency.propTypes = {
     }),
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     legal_allowed_currencies: client.upgradeable_currencies,
     has_fiat: client.has_fiat,
+    should_show_cancel: ui.should_show_cancel,
 }))(AddCryptoCurrency);

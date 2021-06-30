@@ -150,6 +150,9 @@ export default class UIStore extends BaseStore {
     @observable should_show_multipliers_onboarding = false;
     @observable choose_crypto_currency_target = null;
 
+    // add crypto accounts
+    @observable should_show_cancel = false;
+
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
     constructor(root_store) {
@@ -414,6 +417,11 @@ export default class UIStore extends BaseStore {
         this.is_real_acc_signup_on = true;
         this.real_account_signup_target = target;
         this.is_accounts_switcher_on = false;
+    }
+
+    @action.bound
+    setShouldShowCancel(value) {
+        this.should_show_cancel = value;
     }
 
     @action.bound

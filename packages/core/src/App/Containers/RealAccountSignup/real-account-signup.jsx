@@ -100,12 +100,15 @@ const RealAccountSignup = ({
                     is_loading={local_props.is_loading}
                     setLoading={setLoading}
                     onError={showErrorModal}
-                    is_add_crypto={local_props.real_account_signup_target === 'add'}
+                    is_add_crypto={local_props.real_account_signup_target === 'add_crypto'}
+                    is_add_fiat={local_props.real_account_signup_target === 'add_fiat'}
                 />
             ),
             title: local_props => {
-                if (local_props.real_account_signup_target === 'add') {
+                if (local_props.real_account_signup_target === 'add_crypto') {
                     return localize('Create a cryptocurrency account');
+                } else if (local_props.real_account_signup_target === 'add_fiat') {
+                    return localize('Add a Deriv real account');
                 } else if (local_props.has_fiat && local_props.available_crypto_currencies?.length === 0) {
                     return localize('Manage account');
                 }
@@ -192,7 +195,7 @@ const RealAccountSignup = ({
     const closeModalThenOpenCashier = () => {
         closeRealAccountSignup();
         continueRoute();
-        if (real_account_signup_target === 'add') {
+        if (real_account_signup_target === 'add_crypto') {
             history.push(deposit_target);
             if (deposit_target === routes.cashier_deposit) {
                 setIsDeposit(true);
@@ -287,8 +290,7 @@ const RealAccountSignup = ({
             active_modal_index_no = modal_pages_indices.choose_crypto_currency;
             return active_modal_index_no;
         }
-
-        if (real_account_signup_target === 'add') {
+        if (['add_crypto', 'add_fiat'].includes(real_account_signup_target)) {
             active_modal_index_no = modal_pages_indices.add_or_manage_account;
             return active_modal_index_no;
         }

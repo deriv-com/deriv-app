@@ -20,6 +20,7 @@ const ChooseCryptoCurrency = ({
     openRealAccountSignup,
     switchAccount,
     should_show_all_available_currencies,
+    setShouldShowCancel,
     setShouldShowAllAvailableCurrencies,
 }) => {
     const [form_error] = React.useState('');
@@ -74,7 +75,8 @@ const ChooseCryptoCurrency = ({
         Object.entries(obj).map(([title, value]) => {
             if (title === 'currency') {
                 if (value === 'plus') {
-                    openRealAccountSignup('add');
+                    openRealAccountSignup('add_crypto');
+                    setShouldShowCancel(true);
                 } else {
                     closeRealAccountSignup();
                     if (value !== currency_title) {
@@ -138,6 +140,7 @@ ChooseCryptoCurrency.propTypes = {
     currency_title: PropTypes.string,
     legal_allowed_currencies: PropTypes.array,
     openRealAccountSignup: PropTypes.func,
+    setShouldShowCancel: PropTypes.func,
     switchAccount: PropTypes.func,
 };
 
@@ -149,6 +152,7 @@ export default connect(({ client, modules, ui }) => ({
     currency_title: client.currency,
     legal_allowed_currencies: client.upgradeable_currencies,
     openRealAccountSignup: ui.openRealAccountSignup,
+    setShouldShowCancel: ui.setShouldShowCancel,
     switchAccount: client.switchAccount,
     should_show_all_available_currencies: modules.cashier.should_show_all_available_currencies,
     setShouldShowAllAvailableCurrencies: modules.cashier.setShouldShowAllAvailableCurrencies,

@@ -51,7 +51,7 @@ const CashierDefault = ({
         } else if (has_crypto_account) {
             openRealAccount(target);
         } else {
-            openRealAccountSignup('add');
+            openRealAccountSignup('add_crypto');
         }
     };
 
@@ -59,7 +59,7 @@ const CashierDefault = ({
         if (has_fiat_account) {
             shouldNavigateAfterPrompt(next_location, current_location);
         } else {
-            openRealAccountSignup('deposit_cash');
+            openRealAccountSignup('add_fiat');
         }
     };
 

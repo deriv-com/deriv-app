@@ -11,6 +11,7 @@ import './brand/ic-brand-dmt5.svg';
 import './brand/ic-brand-dtrader.svg';
 import './brand/ic-brand-dxtrade.svg';
 import './brand/ic-brand-smarttrader.svg';
+import './cashier/ic-cashier-add.svg';
 import './cashier/ic-cashier-air-tm-dark.svg';
 import './cashier/ic-cashier-air-tm-light.svg';
 import './cashier/ic-cashier-ali-pay-dark.svg';

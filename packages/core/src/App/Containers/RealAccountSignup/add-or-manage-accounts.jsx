@@ -19,16 +19,18 @@ const AddOrManageAccounts = props => {
         createCryptoAccount,
         current_currency_type,
         has_fiat,
+        is_add_crypto,
+        is_add_fiat,
         is_eu,
         is_loading,
         manage_real_account_tab_index,
         onError,
         onSuccessSetAccountCurrency,
+        openRealAccountSignup,
+        resetRealAccountSignupTarget,
         setCurrency,
         setLoading,
-        resetRealAccountSignupTarget,
-        is_add_crypto,
-        openRealAccountSignup,
+        setShouldShowCancel,
     } = props;
 
     const initial_active_index =
@@ -45,6 +47,7 @@ const AddOrManageAccounts = props => {
             setLoading(false);
         };
         fetchMt5LoginList();
+        return () => setShouldShowCancel(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -89,9 +92,7 @@ const AddOrManageAccounts = props => {
     };
 
     const onClickBack = () => {
-        if (is_add_crypto) {
-            openRealAccountSignup('choose');
-        }
+        openRealAccountSignup('choose');
     };
 
     const hasNoAvailableCrypto = () => {
@@ -137,6 +138,23 @@ const AddOrManageAccounts = props => {
                 </div>
             </ThemedScrollbars>
         );
+
+    if (is_add_fiat) {
+        return (
+            <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
+                <div className='change-currency'>
+                    <AddCryptoCurrency
+                        className='account-wizard__body'
+                        onSubmit={updateValue}
+                        value={form_value}
+                        form_error={form_error}
+                        should_show_fiat_only
+                        hasNoAvailableCrypto={hasNoAvailableCrypto}
+                    />
+                </div>
+            </ThemedScrollbars>
+        );
+    }
 
     return (
         <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
@@ -210,6 +228,7 @@ AddOrManageAccounts.propTypes = {
     is_loading: PropTypes.bool,
     is_add_crypto: PropTypes.bool,
     setLoading: PropTypes.func,
+    setShouldShowCancel: PropTypes.func,
 };
 
 export default connect(({ client, ui }) => ({
@@ -221,6 +240,7 @@ export default connect(({ client, ui }) => ({
     is_eu: client.is_eu,
     manage_real_account_tab_index: ui.manage_real_account_tab_index,
     setCurrency: client.setAccountCurrency,
+    setShouldShowCancel: ui.setShouldShowCancel,
     createCryptoAccount: client.createCryptoAccount,
     openRealAccountSignup: ui.openRealAccountSignup,
     resetRealAccountSignupTarget: ui.resetRealAccountSignupTarget,

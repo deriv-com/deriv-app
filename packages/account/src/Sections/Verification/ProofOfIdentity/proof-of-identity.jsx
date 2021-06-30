@@ -33,7 +33,14 @@ const ProofOfIdentity = ({
     const should_show_redirect_btn = from_platform.name === 'P2P';
     const has_invalid_postal_code = missing_personal_details === 'postal_code';
 
-    const account_status = figmaAccountStatus('idv_none');
+    // idv_none - Initial document verification for idv supported country
+    // idv_none_poa - Initial document verification for idv supported country that needs POA
+    // idv_result_pass - Idv verification pass
+    // idv_result_pass_poa - Idv verification pass and needs POA
+    // idv_result_expired - Idv verification expired
+    // idv_result_rejected - Idv verification rejected have submissions left
+    // idv_result_rejected_limited - Idv verification rejected but no submissions left
+    const account_status = figmaAccountStatus('idv_result_rejected_limited');
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
 

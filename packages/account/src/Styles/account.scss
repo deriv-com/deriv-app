@@ -1740,6 +1740,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
         .icon {
             margin-top: 5.2rem;
+            margin-bottom: 2.6rem;
 
             @include mobile {
                 margin-top: 2.6rem;
@@ -1751,7 +1752,7 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     &__text {
         @include mobile {
-            width: 95%;
+            width: 94%;
             margin-bottom: unset;
             text-align: center;
         }
@@ -1777,13 +1778,6 @@ $MIN_HEIGHT_FLOATING: calc(
             margin: 2.4rem 0 0.8rem;
         }
     }
-    &__status-header {
-        margin-bottom: 1.6rem;
-
-        @include mobile {
-            margin: 2.4rem 0 0.8rem;
-        }
-    }
     &__footer {
         @include mobile {
             display: flex;
@@ -1803,7 +1797,7 @@ $MIN_HEIGHT_FLOATING: calc(
         width: 39.5rem;
 
         @include mobile {
-            width: 95%;
+            width: 94%;
             margin: 0.4rem 0 3.2rem;
         }
         .document-dropdown {
@@ -1827,7 +1821,7 @@ $MIN_HEIGHT_FLOATING: calc(
         width: 39.5rem;
 
         @include mobile {
-            width: 95%;
+            width: 94%;
             margin-top: 0.4rem;
         }
     }
@@ -1837,7 +1831,7 @@ $MIN_HEIGHT_FLOATING: calc(
         @include mobile {
             margin-left: unset;
             min-height: 50vh;
-            width: 95%;
+            width: 94%;
         }
     }
     &__image-container {
@@ -1863,11 +1857,7 @@ $MIN_HEIGHT_FLOATING: calc(
         display: block;
     }
     .btm-spacer {
-        margin-bottom: 2.4rem;
-
-        @include mobile {
-            margin-bottom: 1.6rem;
-        }
+        margin-bottom: 1.6rem;
     }
 }
 

@@ -14,7 +14,14 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
     const [is_input_disable, setInputDisable] = React.useState(true);
 
     const document_data = selected_country.identity.services.idv.documents_supported;
-    const country_code = selected_country.value;
+    const {
+        value: country_code,
+        identity: {
+            services: {
+                idv: { has_visual_sample },
+            },
+        },
+    } = selected_country;
 
     React.useEffect(() => {
         setDocumentList(
@@ -97,7 +104,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                 values,
             }) => (
                 <div className='proof-of-identity__container'>
-                    <DocumentSubmitLogo className='icon btm-spacer' />
+                    <DocumentSubmitLogo className='icon' />
                     <Text className='proof-of-identity btm-spacer' align='center' weight='bold'>
                         {localize('Verify your identity')}
                     </Text>
@@ -125,7 +132,9 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                                         onChange={handleChange}
                                                         onItemSelection={items => {
                                                             setFieldValue('document_type', items.text || '', true);
-                                                            setDocumentImage(getSampleImage(items.text) || null);
+                                                            if (has_visual_sample) {
+                                                                setDocumentImage(getSampleImage(items.text) || null);
+                                                            }
                                                         }}
                                                         required
                                                     />
@@ -142,7 +151,9 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                                     onChange={e => {
                                                         handleChange(e);
                                                         setFieldValue('document_type', e.target.value, true);
-                                                        setDocumentImage(getSampleImage(e.target.value) || null);
+                                                        if (has_visual_sample) {
+                                                            setDocumentImage(getSampleImage(e.target.value) || null);
+                                                        }
                                                     }}
                                                     use_text={true}
                                                     required

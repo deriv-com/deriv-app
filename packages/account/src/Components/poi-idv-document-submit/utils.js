@@ -51,7 +51,7 @@ const idv_document_data = {
             sample_image: '',
         },
         voter_id: {
-            example_format: '1234567890123',
+            example_format: '1234567890123456789',
             sample_image: getUrlBase('/public/images/common/ng_voter_id.png'),
         },
     },

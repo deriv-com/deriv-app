@@ -145,7 +145,7 @@ export default class UIStore extends BaseStore {
     @observable manage_real_account_tab_index = 0;
 
     // onboarding
-    @observable should_show_multipliers_onboarding = false;
+    @observable onboarding_contract_type = null;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -756,7 +756,7 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    toggleShouldShowMultipliersOnboarding(value) {
-        this.should_show_multipliers_onboarding = value;
+    setOnboardingContractType(value) {
+        this.onboarding_contract_type = value;
     }
 }

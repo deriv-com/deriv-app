@@ -16,13 +16,13 @@ import NotSureMobile from 'Assets/SvgComponents/onboarding/not-sure-mobile.svg';
 import WelcomeItem from './welcome-item.jsx';
 
 const Welcome = props => {
-    const { history, toggleShouldShowMultipliersOnboarding, onNext } = props;
+    const { history, setOnboardingContractType, onNext } = props;
     const switchPlatform = React.useCallback(
-        ({ route, should_show_multiplier } = {}) => {
+        ({ route, contract_type } = {}) => {
             if (route) history.push(route);
-            if (should_show_multiplier) toggleShouldShowMultipliersOnboarding(true);
+            setOnboardingContractType(contract_type);
         },
-        [history, toggleShouldShowMultipliersOnboarding]
+        [history, setOnboardingContractType]
     );
 
     return (
@@ -58,7 +58,7 @@ const Welcome = props => {
                             components={[<Text key={0} weight='bold' as='strong' color='prominent' />]}
                         />
                     }
-                    onClick={() => switchPlatform({ should_show_multiplier: true, route: routes.trade })}
+                    onClick={() => switchPlatform({ route: routes.trade, contract_type: 'multiplier' })}
                     title={localize('Multipliers')}
                     icon={<Multipliers />}
                     mobileIcon={<MultipliersMobile />}
@@ -71,7 +71,7 @@ const Welcome = props => {
                             components={[<Text key={0} weight='bold' as='strong' color='prominent' />]}
                         />
                     }
-                    onClick={() => switchPlatform({ route: routes.trade })}
+                    onClick={() => switchPlatform({ route: routes.trade, contract_type: 'rise_fall' })}
                     title={localize('Digital Options')}
                     icon={<DigitalOptions />}
                     mobileIcon={<DigitalOptionsMobile />}
@@ -101,6 +101,6 @@ Welcome.propTypes = {
 
 export default withRouter(
     connect(({ ui }) => ({
-        toggleShouldShowMultipliersOnboarding: ui.toggleShouldShowMultipliersOnboarding,
+        setOnboardingContractType: ui.setOnboardingContractType,
     }))(Welcome)
 );

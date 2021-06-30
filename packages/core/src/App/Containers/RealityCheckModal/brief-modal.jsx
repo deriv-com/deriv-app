@@ -7,7 +7,6 @@ import {
     Modal,
     FormSubmitButton,
     Text,
-    RadioGroup,
     ThemedScrollbars,
 } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';

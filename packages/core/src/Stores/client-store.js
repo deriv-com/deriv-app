@@ -198,7 +198,7 @@ export default class ClientStore extends BaseStore {
         // scenario three
         if (!this.reality_check_dismissed && balance === 0 && this.statement.count > 0) return true;
 
-        //another scenario
+        // another scenario
         if (this.has_reality_check && !this.self_exclusion.max_30day_turnover) return true;
 
         return false;

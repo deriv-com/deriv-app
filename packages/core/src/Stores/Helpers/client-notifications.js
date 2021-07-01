@@ -431,17 +431,21 @@ const hasMissingRequiredField = (account_settings, client, isAccountOfType) => {
     }
 };
 
-const getStatusValidations = status_arr =>
-    status_arr.reduce((validations, stats) => {
-        validations[stats] = true;
-        return validations;
-    }, {});
+const getStatusValidations = status_arr => {
+    if (status_arr)
+        status_arr.reduce((validations, stats) => {
+            validations[stats] = true;
+            return validations;
+        }, {});
+};
 
-const getCashierValidations = cashier_arr =>
-    cashier_arr.reduce((validations, code) => {
-        validations[code] = true;
-        return validations;
-    }, {});
+const getCashierValidations = cashier_arr => {
+    if (cashier_arr)
+        cashier_arr.reduce((validations, code) => {
+            validations[code] = true;
+            return validations;
+        }, {});
+};
 
 const addVerificationNotifications = (identity, document, addNotificationMessage) => {
     if (identity.status === 'expired') addNotificationMessage(clientNotifications().poi_expired);

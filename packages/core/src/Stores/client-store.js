@@ -343,7 +343,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get list_of_real_mt5_accounts_with_error() {
-        return getListOfMT5AccountsWithError('real');
+        return this.getListOfMT5AccountsWithError('real');
     }
 
     @computed
@@ -353,7 +353,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get list_of_demo_mt5_accounts_with_error() {
-        return getListOfMT5AccountsWithError('demo');
+        return this.getListOfMT5AccountsWithError('demo');
     }
 
     @computed

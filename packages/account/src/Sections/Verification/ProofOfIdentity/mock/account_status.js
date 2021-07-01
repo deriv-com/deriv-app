@@ -1,12 +1,4 @@
-// TODO: Mock data only for testing. Usage Guide:
-// idv_none - Initial document verification for idv supported country
-// idv_none_poa - Initial document verification for idv supported country that needs POA
-// idv_result_pass - Idv verification pass
-// idv_result_pass_poa - Idv verification pass and needs POA
-// idv_result_expired - Idv verification expired
-// idv_result_rejected - Idv verification rejected have submissions left
-// idv_result_rejected_limited - Idv verification rejected but no submissions left
-// const account_status = figmaAccountStatus('idv_result_rejected_limited');
+// TODO: Mock data only for testing.
 export const reference_account_status = {
     authentication: {
         document: {
@@ -79,6 +71,15 @@ export const reference_account_status = {
     ],
 };
 
+// idv_none - Initial document verification for idv supported country
+// idv_none_poa - Initial document verification for idv supported country that needs POA
+// idv_result_pass - Idv verification pass
+// idv_result_pass_poa - Idv verification pass and needs POA
+// idv_result_expired - Idv verification expired
+// idv_result_rejected - Idv verification rejected have submissions left
+// idv_result_rejected_limited - Idv verification rejected but no submissions left
+// Usage Guide:
+// const account_status = figmaAccountStatus('idv_result_rejected_limited');
 export const figmaAccountStatus = type => {
     switch (type) {
         case 'idv_none': {

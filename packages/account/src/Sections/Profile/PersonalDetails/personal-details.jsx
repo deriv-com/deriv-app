@@ -29,10 +29,10 @@ import {
     filterObjProperties,
     PlatformContext,
     routes,
+    WS,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { withRouter } from 'react-router';
-import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 // import { account_opening_reason_list }         from './constants';
 import LeaveConfirm from 'Components/leave-confirm';
@@ -45,7 +45,7 @@ import LoadErrorMessage from 'Components/load-error-message';
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
         const value = values[field];
-        if (!fn(value) && !errors[field] && err_msg !== true) errors[field] = err_msg;
+        if (/^\s+$/.test(value) || (!fn(value) && !errors[field] && err_msg !== true)) errors[field] = err_msg;
     });
 };
 

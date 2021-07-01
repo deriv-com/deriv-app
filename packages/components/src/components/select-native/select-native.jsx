@@ -17,7 +17,26 @@ const getDisplayText = (list_items, value) => {
 
 const SelectNativeOptions = ({ list_items, should_hide_disabled_options, use_text }) => {
     const options = should_hide_disabled_options ? list_items.filter(opt => !opt.disabled) : list_items;
+    const has_group = Array.isArray(list_items) && !!list_items[0]?.group;
 
+    if (has_group) {
+        const dropdown_items = options.reduce((dropdown_map, item) => {
+            dropdown_map[item.group] = dropdown_map[item.group] || [];
+            dropdown_map[item.group].push(item);
+
+            return dropdown_map;
+        }, {});
+        const group_names = Object.keys(dropdown_items);
+        return group_names.map(option => (
+            <optgroup key={option} label={option}>
+                {dropdown_items[option].map(value => (
+                    <option key={value.value} value={use_text ? value.text : value.value}>
+                        {value.nativepicker_text || value.text}
+                    </option>
+                ))}
+            </optgroup>
+        ));
+    }
     return options.map(option => (
         <option key={option.value} value={use_text ? option.text : option.value}>
             {option.nativepicker_text || option.text}

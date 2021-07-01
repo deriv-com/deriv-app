@@ -128,7 +128,7 @@ export default class UIStore extends BaseStore {
     mobile_toast_timeout = 3500;
     @observable.shallow toasts = [];
 
-    @observable is_mt5_page = false;
+    @observable is_cfd_page = false;
     @observable is_nativepicker_visible = false;
     @observable is_landscape = false;
 
@@ -144,6 +144,9 @@ export default class UIStore extends BaseStore {
     };
 
     @observable manage_real_account_tab_index = 0;
+
+    // onboarding
+    @observable should_show_multipliers_onboarding = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -749,12 +752,22 @@ export default class UIStore extends BaseStore {
         this.deferred_prompt.prompt();
         const choice = await this.deferred_prompt.userChoice;
         if (choice.outcome === 'accepted') {
-            this.removeNotificationByKey('install_pwa');
+            const notification_key = 'install_pwa';
+            this.removeNotificationMessage({
+                key: notification_key,
+                should_show_again: false,
+            });
+            this.removeNotificationByKey({ key: notification_key });
         }
     }
 
     @action.bound
     toggleShouldShowRealAccountsList(value) {
         this.should_show_real_accounts_list = value;
+    }
+
+    @action.bound
+    toggleShouldShowMultipliersOnboarding(value) {
+        this.should_show_multipliers_onboarding = value;
     }
 }

@@ -8,8 +8,12 @@ import 'Sass/app/modules/account-types.scss';
 const MainCard = ({ button_text, buttonOnClick, platforms, is_button_disabled, items, subtitle, title }) => {
     return (
         <div className='account-card__main'>
-            <h3 className='account-card__main-title'>{title}</h3>
-            <h4 className='account-card__main-subtitle'>{subtitle}</h4>
+            <Text as='h3' weight='bold' className='account-card__main-title'>
+                {title}
+            </Text>
+            <Text as='h4' size='xxs' weight='bold' className='account-card__main-subtitle'>
+                {subtitle}
+            </Text>
             {Object.keys(items).length && (
                 <div className='account-card__main-table-container'>
                     <table className='account-card__main-items'>

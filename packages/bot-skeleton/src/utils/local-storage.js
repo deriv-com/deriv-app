@@ -1,4 +1,5 @@
 import LZString from 'lz-string';
+import localForage from 'localforage';
 import DBotStore from '../scratch/dbot-store';
 import { save_types } from '../constants/save-type';
 
@@ -7,13 +8,12 @@ import { save_types } from '../constants/save-type';
  * @param {String} save_type // constants/save_types.js (unsaved, local, googledrive)
  * @param {Blockly.Events} event // Blockly event object
  */
-export const saveWorkspaceToRecent = (xml, save_type = save_types.UNSAVED) => {
+export const saveWorkspaceToRecent = async (xml, save_type = save_types.UNSAVED) => {
     // Ensure strategies don't go through expensive conversion.
     xml.setAttribute('is_dbot', true);
-
     const { save_modal } = DBotStore.instance;
     const workspace_id = Blockly.derivWorkspace.current_strategy_id || Blockly.utils.genUid();
-    const workspaces = getSavedWorkspaces();
+    const workspaces = await getSavedWorkspaces();
     const current_xml = Blockly.Xml.domToText(xml);
     const current_timestamp = Date.now();
     const current_workspace_index = workspaces.findIndex(workspace => workspace.id === workspace_id);
@@ -44,24 +44,24 @@ export const saveWorkspaceToRecent = (xml, save_type = save_types.UNSAVED) => {
         workspaces.pop();
     }
 
-    localStorage.setItem('saved_workspaces', LZString.compress(JSON.stringify(workspaces)));
+    localForage.setItem('saved_workspaces', LZString.compress(JSON.stringify(workspaces)));
 };
 
-export const getSavedWorkspaces = () => {
+export const getSavedWorkspaces = async () => {
     try {
-        return JSON.parse(LZString.decompress(localStorage.getItem('saved_workspaces'))) || [];
+        return JSON.parse(LZString.decompress(await localForage.getItem('saved_workspaces'))) || [];
     } catch (e) {
         return [];
     }
 };
 
-export const removeExistingWorkspace = workspace_id => {
-    const workspaces = getSavedWorkspaces();
+export const removeExistingWorkspace = async workspace_id => {
+    const workspaces = await getSavedWorkspaces();
     const current_workspace_index = workspaces.findIndex(workspace => workspace.id === workspace_id);
 
     if (current_workspace_index >= 0) {
         workspaces.splice(current_workspace_index, 1);
     }
 
-    localStorage.setItem('saved_workspaces', LZString.compress(JSON.stringify(workspaces)));
+    await localForage.setItem('saved_workspaces', LZString.compress(JSON.stringify(workspaces)));
 };

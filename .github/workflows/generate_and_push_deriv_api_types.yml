@@ -1,0 +1,113 @@
+name: Generate and push @deriv/api-types
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 * * * *"
+
+jobs:
+  generate_and_push_deriv_api_types:
+    if: github.repository == 'binary-com/deriv-app'
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Setup node
+        id: step1
+        uses: actions/setup-node@v2
+        with:
+          node-version: "12"
+          check-latest: true
+          registry-url: "https://registry.npmjs.org"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+
+      - name: Generate hash of existing package
+        id: step2
+        run: |
+          npm i json-schema-to-typescript
+          npm i @deriv/api-types@latest
+          echo ::set-output name=old_declarations_hash::"$(git hash-object ./node_modules/@deriv/api-types/index.d.ts)"
+
+      - name: Generate declarations file from upstream
+        id: step3
+        run: |
+          git clone https://github.com/binary-com/websockets.git --depth 1
+          cd websockets
+          git checkout HEAD
+
+          # Parse the JSON schema into TypeScript interfaces into index.d.ts
+          ${GITHUB_WORKSPACE}/node_modules/.bin/json2ts --input "./config/v3/**/[!example]*.json" --no-bannerComment > index.d.ts
+
+          if [ ${{ steps.step2.outputs.old_declarations_hash }} = $(git hash-object index.d.ts) ]
+          then
+            echo "Hashes are the same. Aborting."
+            echo ::set-output name=should_create_pr::false
+          else
+            echo "Hashes are different. I will publish a new version."
+
+            cd ${GITHUB_WORKSPACE}/node_modules/@deriv/api-types
+            npm version patch
+
+            # Remove the existing file.
+            rm index.d.ts
+
+            # Copy the newly generated file into the package.
+            cp ${GITHUB_WORKSPACE}/websockets/index.d.ts index.d.ts
+
+            # Publish the package with a new version.
+            npm publish
+
+            echo ::set-output name=should_create_pr::true
+          fi
+      - name: Bump version and create PR
+        id: step4
+        run: |
+          if [ ${{ steps.step3.outputs.should_create_pr }} = true ]
+          then
+            # Sleep to make sure the package is available on NPM.
+            sleep 30s
+
+            new_version=$(npm show @deriv/api-types version)
+
+            # Make a shallow clone of the project
+            git clone "https://DerivFE:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/binary-com/deriv-app.git" --depth 1
+
+            # lerna: To allow us to bootstrap the project.
+            # json: To manually edit the target package's package.json
+            npm i -g lerna@latest json@latest
+
+            cd deriv-app
+
+            package_name="@deriv/api-types"
+            old_version=$(json -f packages/dashboard/package.json -a devDependencies."$package_name")
+            safe_old_version=$(echo $old_version | sed 's/[^a-zA-Z0-9.]//g')
+
+            git checkout -b "$package_name"
+
+            # "Manually" bump the version in package.json to accommodate 
+            # Lerna's flexibility (or its lack thereof).
+            json -I -f packages/dashboard/package.json -e "this.devDependencies[\"$package_name\"]=\"$new_version\"" -o json-4
+            rm packages/dashboard/package-lock.json
+
+            # We have to run "lerna bootstrap --no-ci" to generate a new 
+            # package-lock.json ("npm run bootstrap" requires this).
+            lerna bootstrap --no-ci
+            npm run bootstrap
+
+            # Identify with Git, these values come from the shared Deriv FE account. https://github.com/DerivFE
+            git config --global user.name "DerivFE"
+            git config --global user.email "80095553+DerivFE@users.noreply.github.com"
+
+            # Commit the files + add a message
+            git commit -a -m "feat: bump $package_name from $safe_old_version to $new_version"
+
+            # Force push to this branch in case a previous run created it.
+            git push --set-upstream origin "$package_name" -f
+
+            # Get the diff and use this as the PRs body.
+            pr_body=$(curl "https://diff.intrinsic.com/$package_name/$safe_old_version/$new_version.diff")
+
+            # Use "gh" to create a PR from the CLI.
+            sudo apt install gh
+            gh auth login --with-token <<< ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+            gh pr close "$package_name" || true
+            gh pr create --title "Bump $package_name from $safe_old_version to $new_version" --body "\`\`\`diff $pr_body \`\`\`" --base "master" --head "binary-com:$package_name"
+          fi

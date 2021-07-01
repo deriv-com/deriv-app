@@ -4,8 +4,9 @@ import React from 'react';
 import { FormSubmitButton, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { isMobile, reorderCurrencies } from '@deriv/shared';
-import { RadioButtonGroup, RadioButton } from './currency-selector.jsx';
+import { isMobile, reorderCurrencies, website_name } from '@deriv/shared';
+import { CurrencyRadioButtonGroup, CurrencyRadioButton } from '@deriv/account';
+import './currency-selector.scss';
 
 const messages = () => [
     <Localize key={0} i18n_default_text='Choose your preferred cryptocurrency' />,
@@ -16,8 +17,12 @@ const messages = () => [
 
 const Headers = ({ heading, subheading }) => (
     <React.Fragment>
-        <h1 className='add-crypto-currency__title'>{heading}</h1>
-        <h3 className='add-crypto-currency__sub-title'>{subheading}</h3>
+        <Text as='h1' color='prominent' align='center' weight='bold' className='add-crypto-currency__title'>
+            {heading}
+        </Text>
+        <Text as='h3' size='xxs' color='prominent' align='center' className='add-crypto-currency__sub-title'>
+            {subheading}
+        </Text>
     </React.Fragment>
 );
 
@@ -33,6 +38,7 @@ const AddCryptoCurrency = ({
     should_show_crypto_only,
     should_show_fiat_only,
     value,
+    hasNoAvailableCrypto,
 }) => {
     const getReorderedFiatCurrencies = () =>
         reorderCurrencies(legal_allowed_currencies.filter(currency => currency.type === FIAT_CURRENCY_TYPE));
@@ -63,7 +69,7 @@ const AddCryptoCurrency = ({
                     {canAddFiat() && <Headers heading={messages()[2]} subheading={messages()[3]} />}
                     {canAddFiat() && (
                         <React.Fragment>
-                            <RadioButtonGroup
+                            <CurrencyRadioButtonGroup
                                 id='fiat_currency'
                                 is_fiat
                                 className='currency-selector__radio-group currency-selector__radio-group--with-margin'
@@ -76,23 +82,46 @@ const AddCryptoCurrency = ({
                                 {getReorderedFiatCurrencies().map(currency => (
                                     <Field
                                         key={currency.value}
-                                        component={RadioButton}
+                                        component={CurrencyRadioButton}
                                         name='currency'
                                         id={currency.value}
                                         label={currency.name}
                                     />
                                 ))}
-                            </RadioButtonGroup>
+                            </CurrencyRadioButtonGroup>
                         </React.Fragment>
                     )}
                     {canAddFiat() && (
-                        <Text as='p' color='prominent' size='xxs' className='currency-selector__deposit-warn'>
-                            <Localize i18n_default_text='You’ll be not able to change currency once you have made a deposit.' />
+                        <Text
+                            as='p'
+                            color='prominent'
+                            size='xxs'
+                            align='center'
+                            className='currency-selector__deposit-warn'
+                        >
+                            <Localize i18n_default_text='You’ll not be able to change currency once you have made a deposit.' />
                         </Text>
+                    )}
+                    {hasNoAvailableCrypto() && (
+                        <div className='account-wizard--disabled-message'>
+                            <Text
+                                as='p'
+                                align='center'
+                                size='xxs'
+                                className='account-wizard--disabled-message-description'
+                            >
+                                {localize(
+                                    'You already have an account for each of the cryptocurrencies available on {{deriv}}.',
+                                    {
+                                        deriv: website_name,
+                                    }
+                                )}
+                            </Text>
+                        </div>
                     )}
                     {!should_show_fiat_only &&
                         (available_crypto_currencies.length !== 0 ? (
-                            <RadioButtonGroup
+                            <CurrencyRadioButtonGroup
                                 id='crypto_currency'
                                 className='currency-selector__radio-group currency-selector__radio-group--with-margin'
                                 label={localize('Cryptocurrencies')}
@@ -105,16 +134,16 @@ const AddCryptoCurrency = ({
                                 {getReorderedCryptoCurrencies().map(currency => (
                                     <Field
                                         key={currency.value}
-                                        component={RadioButton}
+                                        component={CurrencyRadioButton}
                                         name='currency'
                                         id={currency.value}
                                         label={currency.name}
                                         selected={canAddCrypto(currency)}
                                     />
                                 ))}
-                            </RadioButtonGroup>
+                            </CurrencyRadioButtonGroup>
                         ) : (
-                            <RadioButtonGroup
+                            <CurrencyRadioButtonGroup
                                 id='crypto_currency'
                                 className='currency-selector__radio-group currency-selector__radio-group--with-margin'
                                 label={localize('Cryptocurrencies')}
@@ -124,14 +153,14 @@ const AddCryptoCurrency = ({
                                 {getReorderedCryptoCurrencies().map(currency => (
                                     <Field
                                         key={currency.value}
-                                        component={RadioButton}
+                                        component={CurrencyRadioButton}
                                         name='currency'
                                         id={currency.value}
                                         label={currency.name}
                                         selected
                                     />
                                 ))}
-                            </RadioButtonGroup>
+                            </CurrencyRadioButtonGroup>
                         ))}
                     <FormSubmitButton
                         className='currency-selector__button'
@@ -150,7 +179,17 @@ AddCryptoCurrency.propTypes = {
     available_crypto_currencies: PropTypes.array,
     legal_allowed_currencies: PropTypes.array,
     has_fiat: PropTypes.bool,
+    hasNoAvailableCrypto: PropTypes.func,
+    form_error: PropTypes.string,
+    onSubmit: PropTypes.func,
+    should_show_crypto_only: PropTypes.bool,
+    should_show_fiat_only: PropTypes.bool,
+    value: PropTypes.shape({
+        crypto: PropTypes.string,
+        fiat: PropTypes.string,
+    }),
 };
+
 export default connect(({ client }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     legal_allowed_currencies: client.upgradeable_currencies,

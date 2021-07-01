@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { loginUrl, routes } from '@deriv/shared';
+import { loginUrl, routes, PlatformContext } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
@@ -11,22 +12,36 @@ const Redirect = ({
     setVerificationCode,
     hasAnyRealAccount,
     openRealAccountSignup,
+    setResetTradingPasswordModalOpen,
     toggleAccountSignupModal,
     toggleResetPasswordModal,
 }) => {
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     setVerificationCode(url_params.get('code'), url_params.get('action'));
 
     switch (url_params.get('action')) {
         case 'signup': {
+            if (is_dashboard) {
+                history.push({
+                    pathname: routes.dashboard,
+                    search: url_query_string,
+                });
+                redirected_to_route = true;
+            }
+            sessionStorage.removeItem('redirect_url');
             toggleAccountSignupModal(true);
             break;
         }
         case 'reset_password': {
             toggleResetPasswordModal(true);
+            break;
+        }
+        case 'trading_platform_password_reset': {
+            setResetTradingPasswordModalOpen(true);
             break;
         }
         case 'payment_withdraw': {
@@ -53,15 +68,16 @@ const Redirect = ({
             break;
         }
         case 'verification': {
-            sessionStorage.setItem('redirect_url', `${routes.cashier_p2p}#verification`);
+            // Removing this will break mobile DP2P app. Do not remove.
+            sessionStorage.setItem('redirect_url', routes.cashier_p2p_verification);
             window.location.href = loginUrl({
                 language: getLanguage(),
             });
             break;
         }
-        case 'mt5_password_reset': {
-            localStorage.setItem('mt5_reset_password_code', url_params.get('code'));
-            const is_demo = localStorage.getItem('mt5_reset_password_intent')?.includes('demo');
+        case 'trading_platform_investor_password_reset': {
+            localStorage.setItem('cfd_reset_password_code', url_params.get('code'));
+            const is_demo = localStorage.getItem('cfd_reset_password_intent')?.includes('demo');
             history.push(`${routes.mt5}#${is_demo ? 'demo' : 'real'}#reset-password`);
             redirected_to_route = true;
             break;
@@ -83,6 +99,7 @@ const Redirect = ({
 Redirect.propTypes = {
     getServerTime: PropTypes.object,
     history: PropTypes.object,
+    setResetTradingPasswordModalOpen: PropTypes.func,
     setVerificationCode: PropTypes.func,
     toggleAccountSignupModal: PropTypes.func,
     toggleResetPasswordModal: PropTypes.func,
@@ -95,6 +112,7 @@ export default withRouter(
         fetchResidenceList: client.fetchResidenceList,
         hasAnyRealAccount: client.hasAnyRealAccount,
         openRealAccountSignup: ui.openRealAccountSignup,
+        setResetTradingPasswordModalOpen: ui.setResetTradingPasswordModalOpen,
         toggleAccountSignupModal: ui.toggleAccountSignupModal,
         toggleResetPasswordModal: ui.toggleResetPasswordModal,
     }))(Redirect)

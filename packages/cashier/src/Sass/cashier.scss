@@ -21,12 +21,14 @@
         top: 0.4rem;
         right: -1.5rem;
     }
+    &__hint {
+        color: var(--text-general);
+    }
     &__content {
         width: 100%;
         background: var(--status-default);
 
         &-header {
-            text-align: center;
             margin-bottom: 3.2rem;
 
             @include mobile {
@@ -37,10 +39,6 @@
     }
     &__wrapper {
         text-align: center;
-
-        @include desktop {
-            max-width: 672px;
-        }
 
         &,
         &--align-left {
@@ -58,6 +56,15 @@
         }
         &--align-left {
             text-align: left;
+        }
+        &-padding {
+            padding: 1.6rem;
+        }
+        &--align-center {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         &--is-mobile {
             @include mobile {
@@ -103,27 +110,20 @@
         }
     }
     &__header {
-        font-size: 1.6rem;
-        line-height: 1.5;
-        font-weight: bold;
-        color: var(--text-prominent);
-
         @include mobile {
             font-size: 1.4rem;
         }
     }
     &__form {
         &-submit {
-            display: flex;
-            justify-content: flex-end;
-            width: 100%;
+            text-align: right;
         }
         &-submit-button {
-            margin: 3.2rem 0 2.4rem 2.4rem;
+            margin: 3.9rem 0 2.4rem 2.4rem;
         }
         @include mobile {
             &-submit {
-                margin: 0;
+                margin: 1.6rem 0;
                 flex-flow: column;
                 height: unset;
                 margin-bottom: 1.6rem;
@@ -172,10 +172,13 @@
                 background-color: var(--general-main-1);
             }
         }
+        .dc-select-cashier__hint {
+            color: var(--text-general);
+        }
         &-display {
             justify-content: left;
             min-height: 4rem;
-            min-width: 20.3rem;
+            min-width: 28.3rem;
             height: auto;
 
             &-span {
@@ -222,8 +225,8 @@
             }
         }
         &-details {
-            margin-left: 8px;
-            margin-right: 8px;
+            margin-left: 0.8rem;
+            margin-right: 0.8rem;
             vertical-align: super;
             font-size: 1.4rem;
             text-align: left;
@@ -247,13 +250,11 @@
     }
     &__paragraph {
         align-self: center;
-
         @include mobile {
-            padding-left: 1.6rem;
-            padding-right: 0.8rem;
+            font-size: var(--text-size-xxs);
 
-            &:first-child {
-                margin-top: 2.4rem;
+            &-by-name {
+                flex: 1;
             }
         }
     }
@@ -264,18 +265,21 @@
         margin-left: auto;
         margin-right: auto;
 
+        &--bold {
+            font-weight: bold;
+        }
+        &--end {
+            align-self: flex-end;
+        }
+        &--faint {
+            color: var(--text-less-prominent);
+        }
         &--full-width {
             max-width: unset;
             min-width: 44.5rem;
         }
-        &--bold {
-            font-weight: bold;
-        }
         &--right {
             text-align: right;
-        }
-        &--faint {
-            color: var(--text-less-prominent);
         }
         @include mobile {
             max-width: 100%;
@@ -344,14 +348,6 @@
             margin: 2.4rem 0 0;
         }
     }
-    &__usdt-side-note {
-        &--header {
-            font-size: 1.6rem;
-            line-height: 1.5;
-            font-weight: bold;
-            color: var(--text-prominent);
-        }
-    }
     &__account-switch-text {
         color: var(--text-loss-danger);
         cursor: pointer;
@@ -362,7 +358,6 @@
     }
     &__virtual {
         &-header {
-            @include typeface(--title-center-bold-prominent);
             margin-top: 0;
             margin-bottom: 1.6rem;
 
@@ -429,10 +424,6 @@
             margin-bottom: 1.6rem;
         }
         &__header {
-            color: var(--text-loss-danger);
-            font-weight: bold;
-            font-size: 1.6rem;
-            line-height: 1.5;
             margin-bottom: 0.8rem;
         }
         &__button {
@@ -442,8 +433,97 @@
                 width: calc(100% - 3.2rem);
             }
         }
-        &__footer {
-            font-size: 1.2rem;
+    }
+
+    &-default {
+        height: calc(100vh - 20rem);
+
+        @include mobile {
+            height: unset;
+            margin-top: 2.4rem;
+        }
+        &__loader {
+            position: fixed;
+            left: 0;
+        }
+        &-header {
+            text-align: center;
+        }
+        &-content {
+            &::-webkit-scrollbar {
+                display: none;
+            }
+
+            &__description {
+                margin-bottom: 5rem;
+            }
+        }
+        &-detail {
+            margin: 2.4rem 2.4rem 0;
+            width: 67.4rem;
+
+            @include mobile {
+                width: unset;
+            }
+
+            &__icons {
+                position: relative;
+                margin-top: auto;
+                overflow: hidden;
+                width: 100%;
+            }
+
+            &__div {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                padding: 1.6rem;
+                position: static;
+                border: 2px solid var(--general-section-1);
+                border-radius: $BORDER_RADIUS * 2;
+                margin: 0.8rem 0rem;
+                cursor: pointer;
+            }
+            &__content {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                width: 100%;
+            }
+            &__text {
+                position: static;
+                width: 100%;
+            }
+            &__array {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                position: static;
+                margin-top: 1.6rem;
+                gap: 1.2rem;
+                width: 100%;
+                white-space: nowrap;
+
+                @include mobile {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    width: 100%;
+                }
+            }
+            &__icons-array {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 1.2rem;
+                margin-right: 1.2rem;
+            }
+            &__icon {
+                @include mobile {
+                    display: inline-block;
+                    margin-right: 1.2rem;
+                }
+            }
         }
     }
 }
@@ -458,6 +538,11 @@
             width: 100%;
             height: 4rem;
         }
+    }
+
+    &__button {
+        min-width: 25.8rem;
+        padding: 6px 16px;
     }
 }
 
@@ -476,7 +561,6 @@
         margin-bottom: 2.4rem;
     }
     &__title {
-        @include typeface(--title-center-bold-black);
         margin-bottom: 0.8rem;
     }
     &__desc {
@@ -507,7 +591,6 @@
     margin: 4rem auto 0;
 
     &__title {
-        @include typeface(--title-center-bold-black);
         margin-bottom: 3.2rem;
     }
     &__desc {
@@ -560,7 +643,6 @@
         margin-bottom: 2.4rem;
     }
     &__title {
-        @include typeface(--title-center-bold-black);
         margin-bottom: 0.8rem;
     }
     &__desc {
@@ -571,11 +653,7 @@
 /** @define withdraw */
 .withdraw {
     &__header {
-        font-weight: bold;
         margin-bottom: 8px;
-        font-size: 1.6rem;
-        line-height: 1.5;
-        color: var(--text-general);
     }
 
     &__verify-button {
@@ -610,14 +688,7 @@
 
             @include mobile {
                 width: 100%;
-                padding: 1.6rem;
-            }
-        }
-        &-resend,
-        &-sent {
-            &-text {
-                font-size: 1.4rem;
-                line-height: 1.43;
+                padding: 1.6rem 0;
             }
         }
         &-resend {
@@ -640,7 +711,6 @@
 .payment-agent {
     &__instructions {
         margin-top: 2.4rem;
-        display: flex;
 
         &-section {
             border: 1px solid var(--border-normal);
@@ -703,48 +773,61 @@
                 }
             }
         }
-        &-button {
-            display: block;
-            margin: auto;
-        }
         @include mobile {
             display: grid;
-            margin: 1.6rem;
             grid-template-columns: 1fr;
             grid-gap: 0.8rem;
+        }
+
+        .dc-tabs__list--header--tabs--desktop {
+            margin: 0 auto;
+            @include mobile {
+                margin: 0 3.5rem;
+            }
+        }
+
+        .withdraw__icon {
+            margin-top: 2.8rem;
         }
     }
     &__list {
         &-header {
-            margin-top: 32px;
-            font-size: 1.4rem;
-            line-height: 1.43;
+            margin-top: 2.8rem;
+            margin-bottom: 1.8rem;
         }
         &-selector {
-            margin-bottom: 8px;
+            margin-bottom: 1rem;
             display: flex;
-            justify-content: flex-end;
-            margin-right: 1px;
+            justify-content: space-between;
+
+            .cashier {
+                &__paragraph {
+                    margin-right: 0.8rem;
+                }
+            }
+
+            .dc-dropdown__display-text {
+                color: var(--text-less-prominent);
+            }
         }
         &-line {
             border-bottom: 1px solid var(--general-section-1);
             position: relative;
-            width: 80%;
-            margin-left: 20%;
-            top: -25px;
+            width: 88%;
+            margin-left: 12%;
+            top: -28px;
         }
         @include mobile {
             &-header {
-                padding-left: 1.6rem;
                 position: relative;
                 z-index: 1;
             }
             &-selector {
-                margin: 0.8rem 1.6rem 3.2rem;
+                margin-bottom: 1.8rem;
 
                 /* postcss-bem-linter: ignore */
                 & .dc-input {
-                    max-width: 18rem;
+                    width: 18rem;
                     margin-left: auto;
                 }
                 /* postcss-bem-linter: ignore */
@@ -752,12 +835,20 @@
                     background-color: var(--general-main-1);
                 }
             }
+            &-line {
+                width: 66%;
+                margin-left: 33%;
+            }
         }
     }
     &__drop-down {
-        margin-left: 8px !important;
-        width: auto !important;
+        padding-left: 1.6rem !important;
         margin-bottom: 0 !important;
+        flex: 1;
+
+        @include mobile {
+            max-width: 72vw;
+        }
     }
     &__filter {
         min-width: 22.8rem;
@@ -792,7 +883,7 @@
         }
         &-icon {
             vertical-align: middle;
-            margin-right: 12px;
+            margin-right: 0.8rem;
             /* postcss-bem-linter: ignore */
             --fill-color1: var(--text-general);
         }
@@ -800,6 +891,7 @@
     &__disclaimer {
         background-color: var(--general-section-1);
         margin-top: 2.4rem;
+        margin-bottom: 2.4rem;
         padding: 1.6rem;
         font-size: 1.2rem;
         line-height: 1.5;
@@ -809,16 +901,13 @@
 
         &-group {
             display: block;
-            margin-bottom: 3.9rem;
         }
         &-wrapper {
             display: flex;
-            margin-bottom: 2rem;
-            // width is set to limit the selection area of the radio label
-            width: fit-content;
+            margin-bottom: 3.9rem;
         }
         &-circle {
-            border: 2px solid var(--text-general);
+            border: 2px solid var(--text-less-prominent);
             border-radius: 50%;
             box-shadow: 0 0 1px 0 $color-white;
             width: 16px;
@@ -855,10 +944,10 @@
         margin-top: 0.8rem;
     }
     &__input {
-        width: 12.6rem !important;
-        margin-left: 8px;
+        margin-left: 1.6rem;
         display: inline-block !important;
         margin-bottom: 0 !important;
+        flex: 1;
 
         &-field {
             text-align: left;
@@ -866,17 +955,17 @@
             padding: 10px 12px !important;
             height: 4rem;
         }
-        &-error {
-            white-space: nowrap;
-        }
     }
     &__paragraph {
         align-self: flex-start;
     }
+    &__withdrawal {
+        &-header {
+            margin: 3.2rem 0;
+        }
+    }
     @include mobile {
         &__accordion {
-            margin: 0 1.6rem;
-
             & .dc-accordion {
                 &__item {
                     font-size: 1.2rem;
@@ -912,11 +1001,10 @@
         &__receipt {
             margin: 0 1.6rem;
             width: calc(100% - 3.2rem);
-            padding-top: 2.4rem;
 
             .cashier {
                 &__header {
-                    font-size: 1.6rem;
+                    font-size: 1.4rem;
                 }
                 &__done-button {
                     width: 100%;
@@ -925,12 +1013,13 @@
                     margin: 0;
                 }
                 &__form-submit {
-                    margin: 2.4rem 0 1.6rem;
+                    margin: 2.4rem 0 3.2rem;
                     display: grid;
                     grid-template-columns: 1fr 1fr;
                     grid-gap: 0.8rem;
                 }
                 &__transferred-amount {
+                    margin-top: 1.6rem;
                     margin-bottom: 0;
                 }
                 &__transferred-details-wrapper {
@@ -938,7 +1027,7 @@
                 }
                 &__success {
                     width: 100%;
-                    margin: 0 auto 3.2rem;
+                    margin: 0 auto;
                     background-color: var(--general-main-1);
                 }
             }
@@ -947,6 +1036,7 @@
                     padding-left: 0;
                 }
                 &__transferred-contact {
+                    margin: 0.8rem;
                     &-wrapper {
                         margin: 0.8rem;
                     }
@@ -966,7 +1056,8 @@
             align-items: center;
 
             form {
-                width: calc(100% - 3.2rem);
+                width: 100%;
+                margin-top: 3.2rem;
             }
             &-wrapper {
                 display: flex;
@@ -977,40 +1068,26 @@
             .payment-agent__radio {
                 &-wrapper {
                     width: 100%;
-                    flex-direction: column;
-                    justify-content: flex-start;
-                    align-items: flex-start;
                     position: relative;
 
                     &:first-child {
                         margin-top: 2.4rem;
                     }
-                    .dc-input {
-                        width: 100% !important;
-                        margin-left: 0;
-                        margin-top: 3.2rem;
-                    }
                 }
                 &-circle {
-                    width: 21px;
-                    height: 21px;
-                    position: absolute;
-                    left: 1.6rem;
-                }
-                &-label {
-                    position: absolute;
-                    left: 3.2rem;
+                    width: 16px;
+                    height: 16px;
                 }
             }
             .cashier {
                 &__header {
-                    margin: 2.4rem 0 1.6rem;
+                    display: none;
                 }
                 &__input {
                     width: 100%;
                 }
                 &__form-submit-button {
-                    max-width: 18rem;
+                    max-width: 10rem;
                     margin-left: auto;
                 }
             }
@@ -1158,9 +1235,6 @@
         &-statement {
             margin-right: 0.8rem;
         }
-    }
-    &__native-select {
-        margin-bottom: 2.4rem;
     }
     &__form-submit {
         display: flex;

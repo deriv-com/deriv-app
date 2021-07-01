@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
+import { PlatformContext } from '@deriv/shared';
 import Button from '../button/button.jsx';
 import Icon from '../icon/icon.jsx';
+import Text from '../text';
 
 const SendEmailTemplate = ({
     children,
@@ -17,6 +20,7 @@ const SendEmailTemplate = ({
     const [is_email_not_received_clicked, setIsEmailNotReceivedClicked] = React.useState(false);
     const [is_resend_btn_disabled, setIsResendBtnDisabled] = React.useState(false);
     const [resend_email_btn_text, setResendEmailBtnText] = React.useState(txt_resend);
+    const { is_dashboard } = React.useContext(PlatformContext);
 
     const timeout_limit = resend_timeout || 60;
     let resend_interval = null;
@@ -44,7 +48,7 @@ const SendEmailTemplate = ({
         setIsResendBtnDisabled(true);
         resend_interval = setInterval(() => {
             if (--timeout) {
-                setResendEmailBtnText(txt_resend_in.replace('{{seconds}}', timeout));
+                setResendEmailBtnText(`${txt_resend_in} ${timeout}`);
             } else {
                 setIsResendBtnDisabled(false);
                 setResendEmailBtnText(txt_resend);
@@ -54,11 +58,25 @@ const SendEmailTemplate = ({
     };
 
     return (
-        <div className='send-email-template'>
+        <div className={classNames('send-email-template', { 'send-email-template-dashboard': is_dashboard })}>
             <div className='send-email-template__sent'>
-                <Icon icon='IcEmailSent' className='send-email-template__icon' size={128} />
-                <h1 className='send-email-template__title'>{title}</h1>
-                <p className='send-email-template__subtitle'>{subtitle}</p>
+                <Icon
+                    icon={is_dashboard ? 'IcEmailSentDashboard' : 'IcEmailSent'}
+                    className='send-email-template__icon'
+                    size={128}
+                />
+                <Text as='h1' align='center' className='send-email-template__title' color='prominent' weight='bold'>
+                    {title}
+                </Text>
+                <Text
+                    as='p'
+                    size='xs'
+                    align='center'
+                    styles={{ lineHeight: '20px' }}
+                    className='send-email-template__subtitle'
+                >
+                    {subtitle}
+                </Text>
                 <Button
                     className='send-email-template__btn'
                     onClick={onClickEmailNotReceived}

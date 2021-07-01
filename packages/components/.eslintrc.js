@@ -1,3 +1,5 @@
+const webpackConfig = require('./webpack.config');
+
 module.exports = {
     extends: '../../.eslintrc.js',
     settings: {
@@ -5,7 +7,7 @@ module.exports = {
             version: '16',
         },
         'import/resolver': {
-            webpack: { config: 'webpack.config.js' },
+            webpack: { config: webpackConfig({}) },
         },
     },
 };

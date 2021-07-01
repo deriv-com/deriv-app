@@ -2,13 +2,14 @@ import classNames from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ButtonToggle, Dropdown, InputField, Money } from '@deriv/components';
+import { ButtonToggle, Dropdown, InputField } from '@deriv/components';
 import { AMOUNT_MAX_LENGTH, getDecimalPlaces, addComma } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 import { Localize, localize } from '@deriv/translations';
 import AllowEquals from './allow-equals.jsx';
 import MultipliersInfo from './Multiplier/info.jsx';
+import Multiplier from './Multiplier/multiplier.jsx';
 
 const Input = ({
     amount,
@@ -63,6 +64,7 @@ const Amount = ({
     is_multiplier,
     is_nativepicker,
     is_single_currency,
+    has_equals_only,
     onChange,
     setCurrentFocus,
     validation_errors,
@@ -96,10 +98,7 @@ const Amount = ({
             header={is_multiplier ? localize('Stake') : undefined}
             header_tooltip={
                 is_multiplier ? (
-                    <Localize
-                        i18n_default_text='To ensure your loss does not exceed your stake, your contract will be closed automatically when your loss equals to <0/>.'
-                        components={[<Money key={0} amount={amount} currency={currency} show_currency />]}
-                    />
+                    <Localize i18n_default_text='Your gross profit is the percentage change in market price times your stake and the multiplier chosen here.' />
                 ) : undefined
             }
         >
@@ -133,7 +132,7 @@ const Amount = ({
                         is_nativepicker={false}
                         list={currencies_list}
                         name='currency'
-                        initial_offset={250}
+                        initial_offset={256}
                         no_border={true}
                         value={currency}
                         onChange={onChange}
@@ -159,13 +158,17 @@ const Amount = ({
                 expiry_type={expiry_type}
                 onChange={onChange}
                 value={parseInt(is_equal)}
+                has_equals_only={has_equals_only}
             />
             {is_multiplier && (
-                <MultipliersInfo
-                    className='trade-container__multipliers-trade-info'
-                    should_show_tooltip
-                    is_tooltip_relative
-                />
+                <React.Fragment>
+                    <Multiplier />
+                    <MultipliersInfo
+                        className='trade-container__multipliers-trade-info'
+                        should_show_tooltip
+                        is_tooltip_relative
+                    />
+                </React.Fragment>
             )}
         </Fieldset>
     );
@@ -188,6 +191,7 @@ Amount.propTypes = {
     is_multiplier: PropTypes.bool,
     is_nativepicker: PropTypes.bool,
     is_single_currency: PropTypes.bool,
+    has_equals_only: PropTypes.bool,
     setCurrentFocus: PropTypes.func,
     onChange: PropTypes.func,
     validation_errors: PropTypes.object,
@@ -208,6 +212,8 @@ export default connect(({ modules, client, ui }) => ({
     is_equal: modules.trade.is_equal,
     is_single_currency: client.is_single_currency,
     is_multiplier: modules.trade.is_multiplier,
+    has_equals_only: modules.trade.has_equals_only,
+    stop_out: modules.trade.stop_out,
     onChange: modules.trade.onChange,
     setCurrentFocus: ui.setCurrentFocus,
     validation_errors: modules.trade.validation_errors,

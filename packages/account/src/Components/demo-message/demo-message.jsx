@@ -1,13 +1,19 @@
 import React from 'react';
-import { Icon } from '@deriv/components';
+import PropTypes from 'prop-types';
 import { localize } from '@deriv/translations';
-import IconMessageContent from 'Components/icon-message-content';
+import IconWithMessage from 'Components/icon-with-message';
 
-const DemoMessage = () => (
-    <IconMessageContent
+const DemoMessage = ({ has_demo_icon, has_button }) => (
+    <IconWithMessage
+        icon={has_demo_icon ? 'IcPoaLockDemo' : 'IcPoaLock'}
         message={localize('This feature is not available for demo accounts.')}
-        icon={<Icon icon='IcPoaLock' size={128} />}
+        has_button={has_button}
     />
 );
+
+DemoMessage.propTypes = {
+    has_demo_icon: PropTypes.bool,
+    full_width: PropTypes.bool,
+};
 
 export default DemoMessage;

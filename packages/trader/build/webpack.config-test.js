@@ -7,7 +7,7 @@ module.exports = function (env, argv) {
 
     return {
         context: path.resolve(__dirname, '../src'),
-        devtool: IS_RELEASE ? 'cheap-module-eval-source-map' : 'source-map',
+        devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: './index.js',
         externals: [nodeExternals()],
         mode: IS_RELEASE ? 'development' : 'production',
@@ -15,7 +15,7 @@ module.exports = function (env, argv) {
             rules: rules(true, env && env.mocha_only),
         },
         optimization: {
-            namedChunks: true,
+            chunkIds: 'named',
             minimize: true,
             minimizer: MINIMIZERS,
         },

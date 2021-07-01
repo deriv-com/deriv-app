@@ -15,6 +15,7 @@ import {
 import { CommonPropTypes } from './types';
 import Popover from '../../popover';
 import { getDaysOfTheWeek, week_headers_abbr } from '../helpers';
+import Text from '../../text';
 
 const getDays = ({
     calendar_date,
@@ -22,7 +23,6 @@ const getDays = ({
     has_range_selection,
     hide_others,
     events,
-    hovered_date,
     isPeriodDisabled,
     start_date,
     selected_date,
@@ -30,6 +30,7 @@ const getDays = ({
     disabled_days,
     onMouseOver,
     onMouseLeave,
+    should_show_today = true,
 }) => {
     // adjust Calendar week by 1 day so that Calendar week starts on Monday
     // change to zero to set Calendar week to start on Sunday
@@ -72,7 +73,6 @@ const getDays = ({
 
     dates.map(date => {
         const moment_date = toMoment(date).startOf('day');
-        const moment_hovered = toMoment(hovered_date).startOf('day');
         const is_active = selected_date && moment_date.isSame(moment_selected);
         const is_today = moment_date.isSame(moment_today, 'day');
 
@@ -85,7 +85,6 @@ const getDays = ({
         const message = calendar_events.map(event => event.descrip)[0] || '';
         const duration_from_today = daysFromTodayTo(date);
         const is_between = moment_date.isBetween(moment_today, moment_selected);
-        const is_between_hover = moment_date.isBetween(moment_today, moment_hovered);
         const is_before_min_or_after_max_date = isPeriodDisabled(moment_date, 'day');
         const is_disabled =
             // check if date is before min_date or after_max_date
@@ -105,13 +104,12 @@ const getDays = ({
                 key={date}
                 className={classNames('dc-calendar__cell', {
                     'dc-calendar__cell--active': is_active,
-                    'dc-calendar__cell--today': is_today,
+                    'dc-calendar__cell--today': should_show_today && is_today,
                     'dc-calendar__cell--active-duration': is_active && has_range_selection && !is_today,
                     'dc-calendar__cell--today-duration': is_today && has_range_selection,
                     'dc-calendar__cell--disabled': is_disabled,
                     'dc-calendar__cell--is-hidden': is_other_month && hide_others,
                     'dc-calendar__cell--other': is_other_month,
-                    'dc-calendar__cell--between-hover': is_between_hover && has_range_selection,
                     'dc-calendar__cell--between': is_between && has_range_selection,
                 })}
                 onClick={is_disabled ? undefined : e => updateSelected(e, 'day')}
@@ -143,9 +141,9 @@ const Days = props => {
     return (
         <div className='dc-calendar__body dc-calendar__body--date'>
             {Object.keys(week_headers_abbr).map((item, idx) => (
-                <span key={idx} className='dc-calendar__text dc-calendar__text--bold'>
+                <Text size='xxs' align='center' weight='bold' key={idx}>
                     {week_headers_abbr[item]}
-                </span>
+                </Text>
             ))}
             {days}
         </div>
@@ -167,7 +165,6 @@ Days.propTypes = {
             descrip: PropTypes.string,
         })
     ),
-    hovered_date: PropTypes.string,
     onMouseLeave: PropTypes.func,
     onMouseOver: PropTypes.func,
     start_date: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

@@ -21,6 +21,7 @@ const BinarySocketBase = (() => {
     let wrong_app_id = 0;
     let is_disconnect_called = false;
     let is_connected_before = false;
+    let is_switching_socket = false;
 
     const availability = {
         is_up: true,
@@ -41,7 +42,8 @@ const BinarySocketBase = (() => {
 
     const closeAndOpenNewConnection = () => {
         close();
-        openNewConnection(true);
+        is_switching_socket = true;
+        openNewConnection();
     };
 
     const hasReadyState = (...states) => binary_socket && states.some(s => binary_socket.readyState === s);
@@ -53,7 +55,7 @@ const BinarySocketBase = (() => {
         client_store = client;
     };
 
-    const openNewConnection = is_switching_socket => {
+    const openNewConnection = () => {
         if (wrong_app_id === getAppId()) return;
 
         if (!is_switching_socket) config.wsEvent('init');
@@ -109,6 +111,8 @@ const BinarySocketBase = (() => {
         deriv_api.onClose().subscribe(() => {
             if (!is_switching_socket) {
                 config.wsEvent('close');
+            } else {
+                is_switching_socket = false;
             }
 
             if (wrong_app_id !== getAppId() && typeof config.onDisconnect === 'function' && !is_disconnect_called) {
@@ -176,12 +180,13 @@ const BinarySocketBase = (() => {
 
     const cashier = (action, parameters = {}) => deriv_api.send({ cashier: action, ...parameters });
 
-    const newAccountVirtual = (verification_code, client_password, residence, device_data) =>
+    const newAccountVirtual = (verification_code, client_password, residence, email_consent, device_data) =>
         deriv_api.send({
             new_account_virtual: 1,
             verification_code,
             client_password,
             residence,
+            email_consent,
             ...device_data,
         });
 
@@ -205,21 +210,6 @@ const BinarySocketBase = (() => {
             ...values,
         });
 
-    const mt5PasswordChange = (login, old_password, new_password, password_type, values) =>
-        deriv_api.send({
-            mt5_password_change: 1,
-            login,
-            old_password,
-            new_password,
-            password_type,
-            ...values,
-        });
-    const mt5PasswordReset = payload =>
-        deriv_api.send({
-            ...payload,
-            mt5_password_reset: 1,
-        });
-
     const getFinancialAssessment = () =>
         deriv_api.send({
             get_financial_assessment: 1,
@@ -228,10 +218,34 @@ const BinarySocketBase = (() => {
     const profitTable = (limit, offset, date_boundaries) =>
         deriv_api.send({ profit_table: 1, description: 1, limit, offset, ...date_boundaries });
 
-    const statement = (limit, offset, date_boundaries) =>
-        deriv_api.send({ statement: 1, description: 1, limit, offset, ...date_boundaries });
+    const statement = (limit, offset, other_properties) =>
+        deriv_api.send({ statement: 1, description: 1, limit, offset, ...other_properties });
 
     const verifyEmail = (email, type) => deriv_api.send({ verify_email: email, type });
+
+    const tradingPlatformPasswordChange = payload =>
+        deriv_api.send({
+            trading_platform_password_change: 1,
+            ...payload,
+        });
+
+    const tradingPlatformInvestorPasswordChange = payload =>
+        deriv_api.send({
+            trading_platform_investor_password_change: 1,
+            ...payload,
+        });
+
+    const tradingPlatformInvestorPasswordReset = payload =>
+        deriv_api.send({
+            trading_platform_investor_password_reset: 1,
+            ...payload,
+        });
+
+    const tradingPlatformPasswordReset = payload =>
+        deriv_api.send({
+            trading_platform_password_reset: 1,
+            ...payload,
+        });
 
     const paymentAgentList = (country, currency) =>
         deriv_api.send({ paymentagent_list: country, ...(currency && { currency }) });
@@ -304,6 +318,32 @@ const BinarySocketBase = (() => {
 
     const realityCheck = () => deriv_api.send({ reality_check: 1 });
 
+    const tradingServers = () => deriv_api.send({ platform: 'mt5', trading_servers: 1 });
+
+    const tradingPlatformAccountsList = platform =>
+        deriv_api.send({
+            trading_platform_accounts: 1,
+            platform,
+        });
+
+    const tradingPlatformNewAccount = values =>
+        deriv_api.send({
+            trading_platform_new_account: 1,
+            ...values,
+        });
+
+    const triggerMt5DryRun = ({ email }) =>
+        deriv_api.send({
+            account_type: 'financial',
+            dry_run: 1,
+            email,
+            leverage: 100,
+            mainPassword: 'Test1234',
+            mt5_account_type: 'financial_stp',
+            mt5_new_account: 1,
+            name: 'test real labuan financial stp',
+        });
+
     return {
         init,
         openNewConnection,
@@ -342,8 +382,6 @@ const BinarySocketBase = (() => {
         contractUpdateHistory,
         getFinancialAssessment,
         mt5NewAccount,
-        mt5PasswordChange,
-        mt5PasswordReset,
         newAccountVirtual,
         newAccountReal,
         newAccountRealMaltaInvest,
@@ -352,6 +390,10 @@ const BinarySocketBase = (() => {
         profitTable,
         statement,
         verifyEmail,
+        tradingPlatformPasswordChange,
+        tradingPlatformPasswordReset,
+        tradingPlatformInvestorPasswordChange,
+        tradingPlatformInvestorPasswordReset,
         activeSymbols,
         paymentAgentList,
         paymentAgentWithdraw,
@@ -373,6 +415,10 @@ const BinarySocketBase = (() => {
         closeAndOpenNewConnection,
         accountStatistics,
         realityCheck,
+        tradingServers,
+        tradingPlatformAccountsList,
+        tradingPlatformNewAccount,
+        triggerMt5DryRun,
     };
 })();
 

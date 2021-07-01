@@ -6,19 +6,14 @@
     .dc-tabs__content {
         display: flex;
         flex-direction: column;
+        padding-bottom: 7rem;
     }
     .dc-tabs__list--header-fit-content {
         margin: 0 auto;
     }
     .account-wizard--disabled {
-        .currency-list__items {
-            margin-top: 6rem;
-        }
         &-message p:first-child {
-            margin-top: 6rem;
-            background-color: var(--general-section-1);
             font-size: 1.2rem;
-            height: 58px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -40,8 +35,8 @@
             display: none;
         }
         &__deposit-warn {
-            width: 70%;
-            margin: 2.8rem auto 0;
+            width: 78%;
+            margin: 2.8rem auto;
             padding: 10px;
             background-color: var(--general-section-1);
             border-radius: $BORDER_RADIUS;
@@ -59,12 +54,13 @@
     }
     @include desktop {
         .currency-selector__radio-group--with-margin {
-            margin-bottom: 6rem;
+            margin-bottom: 3rem;
             margin-left: auto;
             margin-right: auto;
             width: 768px;
         }
         .dc-form-submit-button--absolute {
+            position: fixed;
             padding: 1.6rem;
             width: 100%;
             right: 0;
@@ -72,10 +68,7 @@
     }
 
     @include mobile {
-        flex-direction: column;
         flex-wrap: unset;
-        overflow-x: hidden;
-        overflow-y: auto;
 
         & .account-wizard__btn-area {
             & .dc-btn,
@@ -85,7 +78,7 @@
             }
         }
         .currency-selector__radio-group--with-margin {
-            margin-bottom: 7rem;
+            margin-bottom: 3rem;
         }
         & .change-currency {
             .currency-list__items {
@@ -100,12 +93,12 @@
         .account-wizard--disabled {
             &-message p:first-child {
                 width: 100%;
-                height: 75px;
-                padding-left: 1rem;
-                padding-right: 1rem;
+                height: 7.5rem;
+                margin-top: 0.6rem;
+                padding: 0 1rem;
             }
             .currency-list__items {
-                margin-top: 8rem;
+                margin-top: 1.6rem;
             }
         }
         & .dc-form-submit-button {
@@ -114,7 +107,7 @@
             height: 72px;
             bottom: 0;
             width: 100%;
-            background-color: var(--general-main-1);
+            background-color: var(--fill-normal);
             border: 2px solid var(--general-section-1);
 
             button {
@@ -131,9 +124,20 @@
     flex-direction: column;
     position: relative;
     flex-grow: 1;
-    padding: 2rem 2rem 1rem;
+    padding: 2.4rem;
 
-    &__icon-area {
+    &__close {
+        position: absolute;
+        cursor: pointer;
+        top: 1.8rem;
+        right: 1.8rem;
+
+        @include mobile {
+            // margin: 0.8rem;
+        }
+    }
+
+    &__header {
         display: flex;
         align-items: center;
         width: auto;
@@ -168,29 +172,34 @@
         &--xlarge,
         &--large {
             width: auto;
+            flex-grow: 1;
 
             .bottom-right-overlay {
-                width: 48px;
-                height: 48px;
+                width: 4.8rem;
+                height: 4.8rem;
                 right: -1rem;
                 bottom: -1rem;
 
                 @include mobile {
-                    max-width: 36px;
+                    max-width: 3.6rem;
                     height: auto;
                 }
+            }
+
+            @include mobile {
+                flex-grow: 0;
             }
         }
         &--xlarge {
             svg:first-child {
-                width: 128px;
-                height: 128px;
+                width: 12.8rem;
+                height: 12.8rem;
             }
         }
         &--large {
             svg.inline-icon {
-                width: 120px;
-                height: 120px;
+                width: 12rem;
+                height: 12rem;
             }
         }
         &--center {
@@ -198,71 +207,61 @@
             width: auto;
             margin-top: 3rem;
         }
-    }
-    &__icon-area.set-currency {
-        svg:first-child {
-            margin: 0 auto;
+        &--set-currency {
+            svg:first-child {
+                margin: 0 auto;
+            }
+            .bottom-right-overlay {
+                bottom: 2rem;
+            }
         }
-        .bottom-right-overlay {
-            bottom: 2rem;
-        }
     }
-    &__body-area {
+    &__body {
         flex-grow: 1;
 
-        h2 {
-            @include typeface(--title-center-bold-black);
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-            color: var(--text-general);
+        &--no-grow {
+            flex-grow: 0;
+            margin-bottom: 3.2rem;
+        }
+    }
+    &__message {
+        &-header {
+            margin: 1rem 0 0.8rem;
 
             @include mobile {
                 line-height: 24px;
-                margin: 1.6rem 0 0.8rem;
+                margin-top: 1.6rem;
             }
         }
-        p {
-            @include typeface(--paragraph-left-normal-black);
-            padding: 0.3rem;
-            line-height: unset;
-            text-align: center;
-            text-transform: none;
-            color: var(--text-general);
+        &-text {
+            padding: 0.2rem 0;
 
             @include mobile {
                 padding: 0 1rem;
                 line-height: 2rem;
             }
         }
-        &--no-grow {
-            flex-grow: 0;
-            margin-bottom: 3.2rem;
-        }
     }
-    &__btn-area {
-        margin: 2rem 0 1rem;
-        width: 100%;
+    &__footer {
         display: flex;
-        justify-content: center;
+        width: 100%;
+        flex-direction: column;
+        margin: 1.4rem 0 0;
 
         & .dc-btn {
-            margin: 0 0.5rem;
+            margin: 0.4rem;
             height: 4rem;
             border-width: 2px;
 
             @include mobile {
-                margin: 0 0.8rem;
-                width: 15.6rem;
+                margin: 0.4rem 1.4rem;
             }
-        }
-        @include mobile {
-            margin: 0 0 1rem;
-            align-items: center;
         }
     }
 
     @include desktop {
-        min-width: 440px;
+        width: 38.4rem;
+        min-height: 35.2rem;
     }
     @include mobile {
         justify-content: flex-start;
@@ -270,6 +269,10 @@
         height: 100%;
         padding: 6rem 0 0;
     }
+}
+
+.dc-mobile-dialog {
+    height: 100%;
 }
 
 .dc-mobile-dialog--enter-done .dc-mobile-dialog__content {

@@ -10,6 +10,9 @@
     &--info {
         background-color: var(--transparent-info);
     }
+    &--warn {
+        background-color: var(--status-warning-transparent);
+    }
     &__icon {
         margin-right: 8px;
     }

@@ -45,7 +45,9 @@ const PageError = ({
                     'dc-page-error__box--left': !!image_url,
                 })}
             >
-                <h3 className='dc-page-error__header'>{header}</h3>
+                <Text as='h3' size='l' align='center' weight='bold' line_height='s' color='prominent'>
+                    {header}
+                </Text>
                 <div
                     className={classNames('dc-page-error__message-wrapper', {
                         'dc-page-error__message-wrapper--left': !!image_url,

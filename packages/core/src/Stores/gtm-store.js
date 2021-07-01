@@ -1,6 +1,6 @@
 import * as Cookies from 'js-cookie';
 import { action, computed } from 'mobx';
-import { getAppId, toMoment, epochToMoment } from '@deriv/shared';
+import { getAppId, toMoment, epochToMoment, CFD_PLATFORMS } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
 import BaseStore from './base-store';
@@ -40,7 +40,7 @@ export default class GTMStore extends BaseStore {
             ) {
                 if (path === 'bot') {
                     return 'DBot';
-                } else if (path === 'mt5') {
+                } else if (path === CFD_PLATFORMS.MT5) {
                     return 'MT5';
                 }
                 return 'DTrader';
@@ -53,6 +53,7 @@ export default class GTMStore extends BaseStore {
                 visitorId: this.visitorId,
                 currency: this.root_store.client.currency,
                 userId: this.root_store.client.user_id,
+                email: this.root_store.client.email,
             }),
             loggedIn: this.root_store.client.is_logged_in,
             theme: this.root_store.ui.is_dark_mode_on ? 'dark' : 'light',

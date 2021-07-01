@@ -54,9 +54,8 @@ export default class DownloadStore {
                 localize('Profit/Loss'),
             ],
         ];
-
-        transaction_csv_titles.push(
-            this.root_store.transactions.transactions.map(item => [
+        this.root_store.transactions.transactions.forEach(item =>
+            transaction_csv_titles.push([
                 item.data.display_name,
                 item.data.transaction_ids.buy,
                 item.data.transaction_ids.sell,

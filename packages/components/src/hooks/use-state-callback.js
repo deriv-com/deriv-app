@@ -5,10 +5,10 @@ export const useStateCallback = initial_state => {
     const [state, setState] = React.useState(initial_state);
     const callbackRef = React.useRef(null); // a mutable ref to store existing callback
 
-    const setStateCallback = (current_state, cb) => {
+    const setStateCallback = React.useCallback((current_state, cb) => {
         callbackRef.current = cb; // store the passed callback to the ref
         setState(current_state);
-    };
+    }, []);
 
     React.useEffect(() => {
         // callback ref current is null on initial render, so we only execute callback on state

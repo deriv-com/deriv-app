@@ -2,4 +2,4 @@ import React from 'react';
 
 export const PlatformContext = React.createContext({});
 
-PlatformContext.displayName = 'DerivCryptoPlatformContext';
+PlatformContext.displayName = 'DerivDashboardPlatformContext';

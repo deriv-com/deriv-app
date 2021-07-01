@@ -9,7 +9,7 @@ import './Binary/During Purchase';
 import './Binary/Indicators';
 import './Binary/Tick Analysis';
 import './Binary/Tools/Candle';
-import './Binary/Tools/Misc.';
+import './Binary/Tools/Misc';
 import './Binary/Tools/Time';
 import './Binary/Trade Definition';
 

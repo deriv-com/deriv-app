@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Text from '../text';
 
 const Radio = ({
     children,
@@ -40,7 +41,9 @@ const Radio = ({
                     'dc-radio-group__circle--selected': checked,
                 })}
             />
-            <span className={classNames('dc-radio-group__label', classNameLabel)}>{children}</span>
+            <Text size='xs' className={classNames('dc-radio-group__label', classNameLabel)}>
+                {children}
+            </Text>
         </label>
     );
 };

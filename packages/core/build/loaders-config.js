@@ -8,6 +8,7 @@ const js_loaders = [
     {
         loader: 'babel-loader',
         options: {
+            cacheDirectory: true,
             rootMode: 'upward',
         },
     },
@@ -37,10 +38,13 @@ const svg_file_loaders = [
     },
 ];
 
+let svg_id_counter = 0;
+
 const svg_loaders = [
     {
         loader: 'babel-loader',
         options: {
+            cacheDirectory: true,
             rootMode: 'upward',
         },
     },
@@ -53,6 +57,15 @@ const svg_loaders = [
                     { removeTitle: false },
                     { removeUselessStrokeAndFill: false },
                     { removeUknownsAndDefaults: false },
+                    {
+                        cleanupIDs: {
+                            prefix: {
+                                toString() {
+                                    return `id-${svg_id_counter++}`;
+                                },
+                            },
+                        },
+                    },
                 ],
                 floatPrecision: 2,
             },
@@ -63,9 +76,6 @@ const svg_loaders = [
 const css_loaders = [
     {
         loader: MiniCssExtractPlugin.loader,
-        options: {
-            sourceMap: true,
-        },
     },
     {
         loader: 'css-loader',
@@ -77,8 +87,8 @@ const css_loaders = [
         loader: 'postcss-loader',
         options: {
             sourceMap: true,
-            config: {
-                path: path.resolve(__dirname),
+            postcssOptions: {
+                config: path.resolve(__dirname),
             },
         },
     },

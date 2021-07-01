@@ -140,4 +140,29 @@ stories
                 ))}
             </FlexWrapper>
         </Theme>
+    ))
+    .add('primary_light', () => (
+        <Theme is_dark={boolean('Theme', false)}>
+            <FlexWrapper>
+                {Object.keys(getButtonObject('primary_light')).map((size, idx) => (
+                    <GroupWrapper key={idx}>
+                        <Text size='1.6rem'>{size}</Text>
+                        {getButtonObject('primary_light')[size].map((item, index) => (
+                            <ButtonWrapper key={index}>
+                                <Button
+                                    onClick={action('clicked')}
+                                    text={item.text}
+                                    primary_light
+                                    is_disabled={item.is_disabled}
+                                    has_effect={item.has_effect}
+                                    small={size === 'small'}
+                                    medium={size === 'medium'}
+                                    large={size === 'large'}
+                                />
+                            </ButtonWrapper>
+                        ))}
+                    </GroupWrapper>
+                ))}
+            </FlexWrapper>
+        </Theme>
     ));

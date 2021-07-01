@@ -9,6 +9,7 @@ import { getProfitOrLoss } from 'Modules/Reports/Helpers/profit-loss';
 import IndicativeCell from '../Components/indicative-cell.jsx';
 import MarketSymbolIconRow from '../Components/market-symbol-icon-row.jsx';
 import ProfitLossCell from '../Components/profit_loss_cell.jsx';
+import CurrencyWrapper from '../Components/currency-wrapper.jsx';
 
 const getModeFromValue = key => {
     const map = {
@@ -20,6 +21,7 @@ const getModeFromValue = key => {
         withdrawal: 'info',
         default: 'default',
         adjustment: 'adjustment',
+        transfer: 'transfer',
     };
 
     if (Object.keys(map).find(x => x === key)) {
@@ -35,9 +37,12 @@ export const getStatementTableColumnsTemplate = currency => [
         key: 'icon',
         title: isMobile() ? '' : localize('Type'),
         col_index: 'icon',
-        renderCellContent: ({ cell_value, row_obj }) => (
-            <MarketSymbolIconRow action={cell_value} key={row_obj.transaction_id} payload={row_obj} />
-        ),
+        renderCellContent: ({ cell_value, passthrough, row_obj }) => {
+            const icon = passthrough.isTopUp(row_obj) ? 'icCashierTopUp' : null;
+            return (
+                <MarketSymbolIconRow action={cell_value} icon={icon} key={row_obj.transaction_id} payload={row_obj} />
+            );
+        },
     },
     {
         title: localize('Ref. ID'),
@@ -46,7 +51,7 @@ export const getStatementTableColumnsTemplate = currency => [
     {
         title: localize('Currency'),
         col_index: 'currency',
-        renderCellContent: () => getCurrencyDisplayCode(currency),
+        renderCellContent: () => <CurrencyWrapper currency={getCurrencyDisplayCode(currency)} />,
     },
     {
         title: localize('Transaction time'),
@@ -59,8 +64,10 @@ export const getStatementTableColumnsTemplate = currency => [
         key: 'mode',
         title: localize('Transaction'),
         col_index: 'action_type',
-        renderCellContent: ({ cell_value, row_obj }) => (
-            <Label mode={getModeFromValue(cell_value)}>{row_obj.action}</Label>
+        renderCellContent: ({ cell_value, passthrough, row_obj }) => (
+            <Label mode={getModeFromValue(cell_value)}>
+                {(passthrough.isTopUp(row_obj) && localize('Top up')) || row_obj.action}
+            </Label>
         ),
     },
     {
@@ -97,7 +104,8 @@ export const getProfitTableColumnsTemplate = (currency, items_count) => [
     {
         title: localize('Currency'),
         col_index: 'currency',
-        renderCellContent: ({ is_footer }) => (is_footer ? '' : getCurrencyDisplayCode(currency)),
+        renderCellContent: ({ is_footer }) =>
+            is_footer ? '' : <CurrencyWrapper currency={getCurrencyDisplayCode(currency)} />,
     },
     {
         title: localize('Buy time'),
@@ -161,7 +169,9 @@ export const getOpenPositionsColumnsTemplate = currency => [
     {
         title: localize('Currency'),
         col_index: 'currency',
-        renderCellContent: ({ row_obj }) => getCurrencyDisplayCode(row_obj.contract_info?.currency),
+        renderCellContent: ({ row_obj }) => (
+            <CurrencyWrapper currency={getCurrencyDisplayCode(row_obj.contract_info?.currency)} />
+        ),
     },
     {
         title: localize('Buy price'),
@@ -248,7 +258,9 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
     {
         title: localize('Currency'),
         col_index: 'currency',
-        renderCellContent: ({ row_obj }) => getCurrencyDisplayCode(row_obj.contract_info?.currency),
+        renderCellContent: ({ row_obj }) => (
+            <CurrencyWrapper currency={getCurrencyDisplayCode(row_obj.contract_info?.currency)} />
+        ),
     },
     {
         title: localize('Stake'),

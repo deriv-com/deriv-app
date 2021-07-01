@@ -218,8 +218,6 @@
     }
     &__symbol {
         margin-left: 0.4rem;
-        font-size: 1em;
-        line-height: 1.5;
     }
     &__header {
         display: flex;
@@ -255,8 +253,8 @@
         grid-template-columns: 1fr 1fr;
         grid-template-areas:
             'stake current-stake'
-            'deal-cancel-fee  limit-order-info'
-            'buy-price  limit-order-info';
+            'deal-cancel-fee limit-order-info'
+            'buy-price limit-order-info';
         grid-gap: 0.8rem 0.4rem;
         flex: 1;
         margin-top: 0.5rem;
@@ -269,7 +267,23 @@
                 'deal-cancel-fee buy-price limit-order-info';
             grid-gap: 0.8rem 0.4rem;
             flex: 1;
-            padding: 0.4rem 0rem;
+            padding: 0.4rem 0;
+        }
+        &--has-progress-slider {
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-areas:
+                'stake current-stake date-expiry'
+                'deal-cancel-fee buy-price date-expiry'
+                'limit-order-info limit-order-info date-expiry';
+
+            .dc-contract-card {
+                &__limit-order-info {
+                    grid-template-columns: 1fr 1fr;
+                }
+                &__stop-loss {
+                    order: unset !important;
+                }
+            }
         }
     }
     &__profit-loss {
@@ -320,6 +334,9 @@
 
             &--is-crypto {
                 margin-left: -6px;
+            }
+            @include mobile {
+                padding-left: 0.4rem;
             }
         }
         &__body--loss {
@@ -457,6 +474,12 @@
     }
     &__stake {
         grid-area: stake;
+    }
+    &__date-expiry {
+        grid-area: date-expiry;
+        .dc-contract-card-item__body {
+            justify-content: flex-end;
+        }
     }
     &__current-stake {
         grid-area: current-stake;

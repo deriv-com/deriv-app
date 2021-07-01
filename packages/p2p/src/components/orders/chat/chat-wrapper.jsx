@@ -7,7 +7,7 @@ import { useStores } from 'Stores';
 import ChatHeader from './chat-header.jsx';
 
 const ChatWrapper = observer(({ children, is_modal_open }) => {
-    const { sendbird_store } = useStores();
+    const { sendbird_store, order_store } = useStores();
 
     return isMobile() ? (
         <MobileFullPageModal
@@ -16,7 +16,11 @@ const ChatWrapper = observer(({ children, is_modal_open }) => {
             is_flex
             is_modal_open={is_modal_open}
             page_header_className='order-chat__header'
-            pageHeaderReturnFn={() => sendbird_store.setShouldShowChatModal(false)}
+            pageHeaderReturnFn={() => {
+                sendbird_store.setShouldShowChatModal(false);
+                sendbird_store.setShouldShowChatOnOrders(false);
+                order_store.hideDetails(true);
+            }}
             renderPageHeaderText={() => <ChatHeader.Body />}
         >
             {children}

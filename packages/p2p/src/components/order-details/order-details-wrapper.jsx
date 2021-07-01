@@ -4,9 +4,10 @@ import { Icon, MobileFullPageModal } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import { useStores } from 'Stores';
+import OrderDetailsFooter from 'Components/order-details/order-details-footer.jsx';
 
 const OrderDetailsWrapper = ({ children, onPageReturn, page_title }) => {
-    const { sendbird_store } = useStores();
+    const { order_store, sendbird_store } = useStores();
 
     return isMobile() ? (
         <MobileFullPageModal
@@ -16,13 +17,18 @@ const OrderDetailsWrapper = ({ children, onPageReturn, page_title }) => {
             is_modal_open
             pageHeaderReturnFn={onPageReturn}
             page_header_text={page_title}
-            page_header_trailing_icon={
+            renderPageHeaderTrailingIcon={() => (
                 <Icon
                     icon='IcChat'
                     height={15}
                     width={16}
                     onClick={() => sendbird_store.setShouldShowChatModal(true)}
                 />
+            )}
+            renderPageFooterChildren={() =>
+                order_store.order_information.should_show_order_footer && (
+                    <OrderDetailsFooter order_information={order_store.order_information} />
+                )
             }
         >
             {children}

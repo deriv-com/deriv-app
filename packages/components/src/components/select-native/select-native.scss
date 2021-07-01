@@ -2,6 +2,14 @@
     width: 100%;
     position: relative;
 
+    &--hide-selected-value {
+        margin-left: 10px;
+        width: 40px;
+
+        .dc-select-native__wrapper {
+            width: 40px;
+        }
+    }
     &__wrapper {
         height: 38px;
 
@@ -59,6 +67,9 @@
             color: var(--text-general);
             max-width: 100%;
         }
+        &--disabled {
+            color: var(--text-disabled);
+        }
     }
     &__picker {
         opacity: 0;
@@ -85,9 +96,10 @@
         }
     }
     &__hint {
-        color: var(--text-less-prominent);
-        font-size: 1.2rem;
         margin-left: 1.2rem;
-        line-height: 1.8rem;
+    }
+    &__suffix-icon {
+        position: absolute;
+        left: 11px;
     }
 }

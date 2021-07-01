@@ -6,7 +6,7 @@ module.exports = function (env, argv) {
 
     return {
         context: path.resolve(__dirname, '../src'),
-        devtool: IS_RELEASE ? 'source-map' : 'cheap-module-eval-source-map',
+        devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: {
             cashier: path.resolve(__dirname, '../src', 'index.js'),
             'cashier-store': path.resolve(__dirname, '../src', 'Stores/Cashier/cashier-store'),
@@ -20,8 +20,8 @@ module.exports = function (env, argv) {
             extensions: ['.js', '.jsx'],
         },
         optimization: {
-            namedChunks: true,
-            namedModules: true,
+            chunkIds: 'named',
+            moduleIds: 'named',
             minimize: IS_RELEASE,
             minimizer: MINIMIZERS,
         },

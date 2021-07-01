@@ -5,9 +5,12 @@ import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Button from '../button/button.jsx';
 import Icon from '../icon/icon.jsx';
+import Text from '../text';
+import { useOnClickOutside } from '../../hooks';
 
 const Dialog = ({
     disableApp,
+    dismissable,
     enableApp,
     is_closed_on_cancel,
     is_closed_on_confirm,
@@ -16,6 +19,7 @@ const Dialog = ({
     onConfirm,
     ...other_props
 }) => {
+    const wrapper_ref = React.useRef();
     React.useEffect(() => {
         if (is_visible && !!disableApp) {
             disableApp();
@@ -36,6 +40,10 @@ const Dialog = ({
         onConfirm();
     };
 
+    const validateClickOutside = () => dismissable || (has_close_icon && is_visible && is_closed_on_cancel);
+
+    useOnClickOutside(wrapper_ref, onCancel ? handleCancel : handleConfirm, validateClickOutside);
+
     const {
         cancel_button_text,
         className,
@@ -53,6 +61,7 @@ const Dialog = ({
         'dc-dialog__content--centered': is_content_centered,
     });
 
+    const is_text = typeof children === 'string' || typeof children?.props?.i18n_default_text === 'string';
     const dialog = (
         <CSSTransition
             appear
@@ -75,17 +84,24 @@ const Dialog = ({
                     className={classNames('dc-dialog__dialog', {
                         'dc-dialog__dialog--has-margin': !is_mobile_full_width,
                     })}
+                    ref={wrapper_ref}
                 >
                     <div className='dc-dialog__header-wrapper'>
-                        {!!title && <h1 className='dc-dialog__header'>{title}</h1>}
+                        {!!title && (
+                            <Text as='h1' color='prominent' weight='bold' className='dc-dialog__header'>
+                                {title}
+                            </Text>
+                        )}
                         {has_close_icon && (
                             <div onClick={onCancel ? handleCancel : handleConfirm} className='dc-dialog__header--close'>
                                 <Icon icon='IcCross' />
                             </div>
                         )}
                     </div>
-                    {typeof children === 'string' ? (
-                        <p className={content_classes}>{children}</p>
+                    {is_text ? (
+                        <Text as='p' size='xs' styles={{ lineHeight: '1.43' }} className={content_classes}>
+                            {children}
+                        </Text>
                     ) : (
                         <div className={content_classes}>{children}</div>
                     )}

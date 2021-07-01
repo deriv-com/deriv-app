@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Icon, Money, PopoverMobile, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
+import { useUpdatingAvailableBalance } from 'Components/hooks';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import MyProfileSeparatorContainer from '../my-profile-separator-container';
@@ -9,6 +10,7 @@ import MyProfileSeparatorContainer from '../my-profile-separator-container';
 const MyProfileBalance = () => {
     const { general_store, my_profile_store } = useStores();
     const [is_balance_tooltip_open, setIsBalanceTooltipOpen] = React.useState(false);
+    const available_balance = useUpdatingAvailableBalance(my_profile_store.advertiser_info.balance_available);
 
     return (
         <div className='my-profile-balance'>
@@ -24,11 +26,7 @@ const MyProfileBalance = () => {
                     size={isMobile() ? 'xs' : 's'}
                     weight='bold'
                 >
-                    <Money
-                        amount={my_profile_store.balance_available}
-                        currency={general_store.client.currency}
-                        show_currency
-                    />
+                    <Money amount={available_balance} currency={general_store.client.currency} show_currency />
                 </Text>
                 <PopoverMobile
                     button_text={localize('Got it')}

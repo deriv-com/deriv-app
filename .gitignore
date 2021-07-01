@@ -18,3 +18,5 @@ packages/account/lib/
 packages/components/.out
 packages/p2p/lib/
 packages/dashboard/lib/
+.env
+

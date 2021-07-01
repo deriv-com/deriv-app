@@ -1,0 +1,17 @@
+.da-icon-with-message {
+    margin-top: 8rem;
+    padding: 3.2rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    &__text {
+        margin-top: 1rem;
+    }
+    &-full-width {
+        width: calc(100vw - 33rem);
+    }
+    @include mobile {
+        width: 100vw;
+    }
+}

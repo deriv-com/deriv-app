@@ -1,7 +1,6 @@
 import { flow } from 'mobx';
-import { LocalStore, redirectToLogin } from '@deriv/shared';
+import { LocalStore, redirectToLogin, WS } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
 
 export const showUnavailableLocationError = flow(function* (showError, is_logged_in) {
     const website_status = yield WS.wait('website_status');
@@ -86,6 +85,15 @@ const findFirstSymbol = async (active_symbols, pattern) => {
     );
     const is_symbol_offered = await isSymbolOffered(first_symbol);
     if (is_symbol_offered) return first_symbol;
+    return undefined;
+};
+
+export const findFirstOpenMarket = async (active_symbols, markets) => {
+    const market = markets.shift();
+    const first_symbol = active_symbols.find(symbol_info => market === symbol_info.market && isSymbolOpen(symbol_info));
+    const is_symbol_offered = await isSymbolOffered(first_symbol);
+    if (is_symbol_offered) return { category: first_symbol.market, subcategory: first_symbol.submarket };
+    else if (markets.length > 0) return findFirstOpenMarket(active_symbols, markets);
     return undefined;
 };
 

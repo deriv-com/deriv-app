@@ -31,7 +31,7 @@ const AccountActions = React.memo(
         toggleAccountsDialog,
         toggleNotifications,
     }) => {
-        const context_type = React.useContext(PlatformContext);
+        const { is_dashboard } = React.useContext(PlatformContext);
 
         if (is_logged_in) {
             return (
@@ -93,7 +93,7 @@ const AccountActions = React.memo(
                         {!is_virtual && !currency && (
                             <div className='set-currency'>
                                 <Button
-                                    onClick={openRealAccountSignup}
+                                    onClick={() => openRealAccountSignup('set_currency')}
                                     has_effect
                                     type='button'
                                     text={localize('Set currency')}
@@ -117,7 +117,7 @@ const AccountActions = React.memo(
         return (
             <React.Fragment>
                 <LoginButton className='acc-info__button' />
-                <SignupButton is_deriv_crypto={context_type.is_deriv_crypto} className='acc-info__button' />
+                <SignupButton className='acc-info__button' is_dashboard={is_dashboard} />
             </React.Fragment>
         );
     }

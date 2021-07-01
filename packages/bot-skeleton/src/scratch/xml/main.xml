@@ -49,6 +49,7 @@
             <field name="NUM">1</field>
           </shadow>
         </value>
+        <field name="AMOUNT_LIMITS"></field>
       </block>
     </statement>
   </block>

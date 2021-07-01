@@ -61,9 +61,7 @@
         width: 100%;
     }
     &__title {
-        @include typeface(--title-left-bold-black);
         margin: auto;
-        color: var(--text-prominent);
         cursor: default;
     }
     &__nav {

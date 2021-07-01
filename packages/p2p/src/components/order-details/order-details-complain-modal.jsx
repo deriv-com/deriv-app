@@ -60,6 +60,7 @@ const OrderDetailsComplainModal = ({
     if (isMobile()) {
         return (
             <MobileFullPageModal
+                body_className='order-details-complain-modal__body'
                 className='order-details-complain-modal'
                 height_offset='80px'
                 is_flex
@@ -67,16 +68,15 @@ const OrderDetailsComplainModal = ({
                 page_header_className='order-details-complain-modal__header'
                 page_header_text={localize('Complaint')}
                 pageHeaderReturnFn={hideComplainOrderModal}
-                page_footer_children={
+                renderPageFooterChildren={() => (
                     <ComplainFooter
                         dispute_reason={dispute_reason}
                         disputeOrderRequest={disputeOrderRequest}
                         error_message={error_message}
                         hideComplainOrderModal={hideComplainOrderModal}
                     />
-                }
+                )}
                 page_footer_className='order-details-complain-modal__footer'
-                should_wrap_body
             >
                 <OrderDetailsComplainModalRadioGroup
                     is_buy_order_for_user={is_buy_order_for_user}
@@ -100,16 +100,15 @@ const OrderDetailsComplainModal = ({
                 </Text>
             )}
             width='440px'
+            height='500px'
         >
-            <Modal.Body>
-                <div className='order-details-complain-modal__body'>
-                    <OrderDetailsComplainModalRadioGroup
-                        is_buy_order_for_user={is_buy_order_for_user}
-                        dispute_reason={dispute_reason}
-                        onCheckboxChange={onCheckboxChange}
-                    />
-                    <ComplainExplanation />
-                </div>
+            <Modal.Body className='order-details-complain-modal__body'>
+                <OrderDetailsComplainModalRadioGroup
+                    is_buy_order_for_user={is_buy_order_for_user}
+                    dispute_reason={dispute_reason}
+                    onCheckboxChange={onCheckboxChange}
+                />
+                <ComplainExplanation />
             </Modal.Body>
             <Modal.Footer>
                 <div className='order-details-complain-modal__footer'>
@@ -127,8 +126,8 @@ const OrderDetailsComplainModal = ({
 
 OrderDetailsComplainModal.propTypes = {
     dispute_reason: PropTypes.string,
-    onCheckboxChange: PropTypes.func,
     is_buy_order_for_user: PropTypes.bool,
+    onCheckboxChange: PropTypes.func,
 };
 
 export default OrderDetailsComplainModal;

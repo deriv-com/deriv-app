@@ -2,7 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import Icon from '../icon';
+import Icon from '../icon/icon.jsx';
+import Text from '../text/text.jsx';
 
 class SubMenu extends React.PureComponent {
     constructor(props) {
@@ -31,7 +32,9 @@ class SubMenu extends React.PureComponent {
                         <Icon className='dc-mobile-drawer__submenu-toggle-icon' icon={this.props.submenu_icon} />
                     )}
                     {this.props.submenu_title && (
-                        <h3 className='dc-mobile-drawer__submenu-toggle-text'>{this.props.submenu_title}</h3>
+                        <Text as='h3' size='xs'>
+                            {this.props.submenu_title}
+                        </Text>
                     )}
                     {this.props.submenu_suffix_icon && (
                         <Icon
@@ -82,7 +85,11 @@ const SubMenuList = ({ is_expanded, collapse, children, has_subheader, submenu_t
                 <div className='dc-mobile-drawer__submenu-back'>
                     <Icon className='dc-mobile-drawer__submenu-back-icon' icon='IcChevronLeft' />
                 </div>
-                {submenu_title && <h3 className='dc-mobile-drawer__submenu-list-title-text'>{submenu_title}</h3>}
+                {submenu_title && (
+                    <Text as='h3' weight='bold' color='prominent'>
+                        {submenu_title}
+                    </Text>
+                )}
             </div>
             {children}
         </div>

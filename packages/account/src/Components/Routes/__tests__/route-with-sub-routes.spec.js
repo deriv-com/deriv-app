@@ -11,7 +11,7 @@ configure({ adapter: new Adapter() });
 describe('<RouteWithSubRoutes />', () => {
     it('should render one <RouteWithSubRoutesRender /> component', () => {
         const comp = (
-            <PlatformContext.Provider value={{ is_deriv_crypto: false }}>
+            <PlatformContext.Provider>
                 <RouteWithSubRoutesRender />
             </PlatformContext.Provider>
         );
@@ -21,11 +21,7 @@ describe('<RouteWithSubRoutes />', () => {
     it('should have props as passed as route', () => {
         const route = { path: '/', component: Redirect, title: '', exact: true, to: '/root' };
         const comp = (
-            <PlatformContext.Provider
-                value={{
-                    is_deriv_crypto: false,
-                }}
-            >
+            <PlatformContext.Provider>
                 <RouteWithSubRoutesRender {...route} />
             </PlatformContext.Provider>
         );

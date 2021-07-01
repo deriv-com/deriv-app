@@ -16,7 +16,6 @@ import './utils';
 import './icon';
 import './inject';
 import './procedures';
-import './toolbox';
 import './trashcan';
 import './variable_map';
 import './variables';

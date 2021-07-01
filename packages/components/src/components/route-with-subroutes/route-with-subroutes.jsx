@@ -2,12 +2,10 @@ import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
     redirectToLogin,
-    redirectToSignUp,
     removeBranchName,
     routes as shared_routes,
     isEmptyObject,
     default_title,
-    PlatformContext,
 } from '@deriv/shared';
 
 const RouteWithSubRoutes = ({
@@ -21,10 +19,8 @@ const RouteWithSubRoutes = ({
     to,
     language,
     Component404,
-    LoginPrompt,
+    should_redirect_login,
 }) => {
-    const { is_deriv_crypto } = React.useContext(PlatformContext);
-
     const validateRoute = pathname => {
         if (pathname === '') return true;
 
@@ -50,14 +46,8 @@ const RouteWithSubRoutes = ({
 
             result = <Redirect to={redirect_to} />;
         } else if (is_authenticated && !is_logged_in) {
-            if (LoginPrompt) {
-                result = (
-                    <LoginPrompt
-                        onLogin={() => redirectToLogin(is_logged_in, language)}
-                        onSignup={() => redirectToSignUp({ is_deriv_crypto })}
-                        page_title={getTitle()}
-                    />
-                );
+            if (should_redirect_login) {
+                redirectToLogin(is_logged_in, language);
             } else {
                 result = <Redirect to={shared_routes.root} />;
             }

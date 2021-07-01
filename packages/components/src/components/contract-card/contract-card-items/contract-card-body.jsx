@@ -32,8 +32,11 @@ const MultiplierCardBody = ({
     current_focus,
     getCardLabels,
     getContractById,
+    has_progress_slider,
+    progress_slider,
     is_mobile,
     is_sold,
+    onMouseLeave,
     removeToast,
     setCurrentFocus,
     should_show_cancellation_warning,
@@ -54,6 +57,7 @@ const MultiplierCardBody = ({
                 className={classNames({
                     'dc-contract-card-items-wrapper--mobile': is_mobile,
                     'dc-contract-card-items-wrapper': !is_mobile,
+                    'dc-contract-card-items-wrapper--has-progress-slider': has_progress_slider && !is_sold,
                 })}
             >
                 <ContractCardItem header={getCardLabels().STAKE} className='dc-contract-card__stake'>
@@ -84,6 +88,9 @@ const MultiplierCardBody = ({
                 <ContractCardItem header={getCardLabels().BUY_PRICE} className='dc-contract-card__buy-price'>
                     <Money amount={buy_price} currency={currency} />
                 </ContractCardItem>
+                {has_progress_slider && is_mobile && !is_sold && (
+                    <ContractCardItem className='dc-contract-card__date-expiry'>{progress_slider}</ContractCardItem>
+                )}
                 <div className='dc-contract-card__limit-order-info'>
                     <ContractCardItem header={getCardLabels().TAKE_PROFIT} className='dc-contract-card__take-profit'>
                         {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
@@ -107,6 +114,7 @@ const MultiplierCardBody = ({
                             getCardLabels={getCardLabels}
                             getContractById={getContractById}
                             is_valid_to_cancel={is_valid_to_cancel}
+                            onMouseLeave={onMouseLeave}
                             removeToast={removeToast}
                             setCurrentFocus={setCurrentFocus}
                             should_show_cancellation_warning={should_show_cancellation_warning}
@@ -146,9 +154,11 @@ const ContractCardBody = ({
     current_focus,
     getCardLabels,
     getContractById,
+    has_progress_slider,
     is_mobile,
     is_multiplier,
     is_sold,
+    onMouseLeave,
     status,
     server_time,
     removeToast,
@@ -160,6 +170,18 @@ const ContractCardBody = ({
     const { buy_price, sell_price, payout, profit, tick_count, date_expiry, purchase_time } = contract_info;
     const current_tick = tick_count ? getCurrentTick(contract_info) : null;
 
+    const progress_slider_mobile_el = (
+        <ProgressSliderMobile
+            current_tick={current_tick}
+            expiry_time={date_expiry}
+            getCardLabels={getCardLabels}
+            is_loading={false}
+            server_time={server_time}
+            start_time={purchase_time}
+            ticks_count={tick_count}
+        />
+    );
+
     const card_body = is_multiplier ? (
         <MultiplierCardBody
             addToast={addToast}
@@ -170,8 +192,11 @@ const ContractCardBody = ({
             current_focus={current_focus}
             getCardLabels={getCardLabels}
             getContractById={getContractById}
+            has_progress_slider={has_progress_slider}
+            progress_slider={progress_slider_mobile_el}
             is_mobile={is_mobile}
             is_sold={is_sold}
+            onMouseLeave={onMouseLeave}
             status={status}
             removeToast={removeToast}
             setCurrentFocus={setCurrentFocus}
@@ -223,15 +248,7 @@ const ContractCardBody = ({
                             is_contract_won={getDisplayStatus(contract_info) === 'won'}
                         />
                     ) : (
-                        <ProgressSliderMobile
-                            current_tick={current_tick}
-                            expiry_time={date_expiry}
-                            getCardLabels={getCardLabels}
-                            is_loading={false}
-                            server_time={server_time}
-                            start_time={purchase_time}
-                            ticks_count={tick_count}
-                        />
+                        progress_slider_mobile_el
                     )}
                 </div>
             </MobileWrapper>
@@ -267,6 +284,7 @@ ContractCardBody.propTypes = {
     is_mobile: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_sold: PropTypes.bool,
+    onMouseLeave: PropTypes.func,
     removeToast: PropTypes.func,
     server_time: PropTypes.object,
     setCurrentFocus: PropTypes.func,

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Button } from '@deriv/components';
+import { Icon, Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -8,7 +8,9 @@ const FundsProtection = ({ submitFundsProtection }) => {
     return (
         <div className='funds-protection'>
             <Icon icon='IcCashierFundsProtection' className='funds-protection__icon' />
-            <h2 className='funds-protection__title'>{localize('Funds protection level')}</h2>
+            <Text as='h2' weight='bold' align='center' className='funds-protection__title'>
+                {localize('Funds protection level')}
+            </Text>
             <p className='funds-protection__desc'>
                 {
                     <Localize

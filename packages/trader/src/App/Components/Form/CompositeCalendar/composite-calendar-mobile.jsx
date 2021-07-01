@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, DatePicker, Icon, InputField, MobileDialog } from '@deriv/components';
+import { Button, DatePicker, Icon, InputField, MobileDialog, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
 
@@ -20,7 +20,15 @@ export const RadioButton = ({ id, className, selected_value, value, label, onCha
                     'composite-calendar-modal__radio-circle--selected': selected_value === value,
                 })}
             />
-            <p className='composite-calendar-modal__radio-label'>{label}</p>
+            <Text
+                as='p'
+                color='prominent'
+                size='xs'
+                line_height='unset'
+                weight={selected_value === value ? 'bold' : 'normal'}
+            >
+                {label}
+            </Text>
         </label>
     );
 };
@@ -99,12 +107,15 @@ const CompositeCalendarMobile = React.memo(
 
         const selectDate = (e, key) => {
             setSelectedDateRange({ value: CUSTOM_KEY });
+
+            const value = e.target?.value ? toMoment(e.target.value).format('DD MMM YYYY') : '';
+
             if (key === 'from') {
-                setFrom(e.target?.value ? toMoment(e.target.value).format('DD MMM YYYY') : '');
+                setFrom(value);
             }
 
             if (key === 'to') {
-                setTo(e.target?.value ? toMoment(e.target.value).format('DD MMM YYYY') : '');
+                setTo(value);
             }
         };
 
@@ -190,6 +201,7 @@ const CompositeCalendarMobile = React.memo(
                                 selected_value={selected_date_range.value}
                                 onChange={onDateRangeChange}
                             />
+
                             <div className='composite-calendar-modal__custom-date-range'>
                                 <DatePicker
                                     className='composite-calendar-modal__custom-date-range-start-date'

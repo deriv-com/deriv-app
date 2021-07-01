@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon, Money, Button, Text } from '@deriv/components';
-import { formatMoney, getCurrencyName, getMT5AccountDisplay, getCurrencyDisplayCode } from '@deriv/shared';
+import { formatMoney, getCurrencyName, getCFDAccountDisplay, getCurrencyDisplayCode, isBot } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
 const AccountList = ({
@@ -10,6 +10,7 @@ const AccountList = ({
     currency_icon,
     display_type,
     has_balance,
+    has_error,
     has_reset_balance,
     is_disabled,
     is_virtual,
@@ -18,13 +19,16 @@ const AccountList = ({
     onClickAccount,
     onClickResetVirtualBalance,
     selected_loginid,
+    server,
+    is_dark_mode_on,
     sub_account_type,
+    platform,
 }) => {
     if (is_disabled && !currency) return null;
     const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
 
     return (
-        <>
+        <React.Fragment>
             <div
                 id={`dt_${loginid}`}
                 className={classNames('acc-switcher__account', {
@@ -43,9 +47,22 @@ const AccountList = ({
                         {display_type === 'currency' ? (
                             <CurrencyDisplay is_virtual={is_virtual} currency={currency} />
                         ) : (
-                            <AccountDisplay market_type={market_type} sub_account_type={sub_account_type} />
+                            <AccountDisplay
+                                market_type={market_type}
+                                sub_account_type={sub_account_type}
+                                server={server}
+                                has_error={has_error}
+                                is_dark_mode_on={is_dark_mode_on}
+                                platform={platform}
+                            />
                         )}
-                        <div className='acc-switcher__loginid-text'>{loginid}</div>
+                        <div
+                            className={classNames('acc-switcher__loginid-text', {
+                                'acc-switcher__loginid-text--disabled': has_error,
+                            })}
+                        >
+                            {loginid}
+                        </div>
                     </span>
                     {has_reset_balance ? (
                         <Button
@@ -81,7 +98,7 @@ const AccountList = ({
                     )}
                 </span>
             </div>
-        </>
+        </React.Fragment>
     );
 };
 
@@ -95,8 +112,39 @@ const CurrencyDisplay = ({ currency, is_virtual }) => {
     return getCurrencyName(currency);
 };
 
-const AccountDisplay = ({ market_type, sub_account_type }) => (
-    <div>{getMT5AccountDisplay(market_type, sub_account_type)}</div>
-);
+const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_dark_mode_on, platform }) => {
+    // TODO: Remove once account with error has market_type and sub_account_type in details response
+    if (has_error)
+        return (
+            <div>
+                <Text color='disabled' size='xs'>
+                    <Localize i18n_default_text='Unavailable' />
+                </Text>
+                {server?.server_info?.geolocation && (market_type === 'gaming' || market_type === 'synthetic') && (
+                    <Text color='less-prominent' size='xxs' className='badge-server badge-server--disabled'>
+                        {server.server_info.geolocation.region}&nbsp;
+                        {server.server_info.geolocation.sequence !== 1 ? server.server_info.geolocation.sequence : ''}
+                    </Text>
+                )}
+            </div>
+        );
+    return (
+        <div>
+            {getCFDAccountDisplay({ market_type, sub_account_type, platform })}
+            {server?.server_info?.geolocation && (market_type === 'gaming' || market_type === 'synthetic') && (
+                <Text
+                    color={is_dark_mode_on ? 'general' : 'colored-background'}
+                    size='xxs'
+                    className={classNames('badge-server', {
+                        'badge-server-bot': isBot(),
+                    })}
+                >
+                    {server.server_info.geolocation.region}&nbsp;
+                    {server.server_info.geolocation.sequence !== 1 ? server.server_info.geolocation.sequence : ''}
+                </Text>
+            )}
+        </div>
+    );
+};
 
 export default AccountList;

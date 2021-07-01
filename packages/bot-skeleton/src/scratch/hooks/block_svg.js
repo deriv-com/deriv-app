@@ -70,7 +70,7 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
 
     if (this.isDeletable() && this.isMovable() && !block.isInFlyout) {
         menu_options.push(Blockly.ContextMenu.blockDuplicateOption(block, e));
-
+        menu_options.push(Blockly.ContextMenu.blockDetachOption(block, e));
         if (this.isEditable() && this.workspace.options.comments) {
             menu_options.push(Blockly.ContextMenu.blockCommentOption(block));
         }
@@ -99,12 +99,15 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
     // Option to disable/enable block.
     if (this.workspace.options.disable) {
         const restricted_parents = block.restricted_parents || [];
+        const is_trade_parameter = this.type.includes('trade_definition_') && !this.isMovable();
+
         const disable_option = {
             text: this.disabled ? localize('Enable Block') : localize('Disable Block'),
             enabled:
-                !this.disabled ||
-                restricted_parents.length === 0 ||
-                restricted_parents.some(restricted_parent => block.isDescendantOf(restricted_parent)),
+                !is_trade_parameter &&
+                (!this.disabled ||
+                    restricted_parents.length === 0 ||
+                    restricted_parents.some(restricted_parent => block.isDescendantOf(restricted_parent))),
             callback: () => {
                 const group = Blockly.Events.getGroup();
                 if (!group) {
@@ -223,19 +226,31 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
         return;
     }
 
+    // Firefox fix for Blockly widthcache bug
+    if (navigator.userAgent.search('Firefox') > 0) {
+        setTimeout(() => {
+            this.workspace.getAllFields().forEach(field => field.forceRerender());
+        }, 0); /* Time duration must be 0. We need this function
+        asynchronous for proper rerender after block resizing. */
+    }
+
     const render_list = [];
     const COLLAPSED_INPUT_NAME = '_TEMP_COLLAPSED_INPUT';
 
     // Show/hide the inputs.
-    this.inputList.forEach(input => render_list.push(...input.setVisible(!collapsed)));
+    this.inputList.forEach(input => {
+        render_list.push(...input.setVisible(!collapsed));
+
+        // Hide empty rounded inputs
+        if (collapsed && input.type === 1 && !input.connection.targetConnection && input.outlinePath)
+            input.outlinePath.style.visibility = 'hidden';
+    });
 
     if (collapsed) {
         this.getIcons()
             // Never hide ScratchBlockComments!
             .filter(icon => !(icon instanceof Blockly.ScratchBlockComment))
             .forEach(icon => icon.setVisible(false));
-
-        const text = this.toString(Blockly.COLLAPSE_CHARS);
 
         // Ensure class persists through collapse. Falls back to first
         // field that has a class. Doesn't work when multiple
@@ -256,12 +271,25 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
         const dropdown_path =
             this.workspace.options.pathToMedia +
             (isDarkRgbColour(this.getColour()) ? 'dropdown-arrow.svg' : 'dropdown-arrow-dark.svg');
-        const field_label = new Blockly.FieldLabel(text, field_class);
         const field_expand_icon = new Blockly.FieldImage(dropdown_path, 16, 16, localize('Expand'), () =>
             this.setCollapsed(false)
         );
 
-        this.appendDummyInput(COLLAPSED_INPUT_NAME).appendField(field_label).appendField(field_expand_icon).init();
+        if (this.type === 'procedures_defreturn' || this.type === 'procedures_defnoreturn') {
+            const function_name = this.getFieldValue('NAME');
+            const args = ` (${this.arguments.join(', ')})`;
+
+            this.appendDummyInput(COLLAPSED_INPUT_NAME)
+                .appendField(new Blockly.FieldLabel(localize('function'), field_class))
+                .appendField(new Blockly.FieldLabel(function_name + args, 'header__title'))
+                .appendField(field_expand_icon)
+                .init();
+        } else {
+            const text = this.toString(Blockly.COLLAPSE_CHARS);
+            const field_label = new Blockly.FieldLabel(text, field_class);
+
+            this.appendDummyInput(COLLAPSED_INPUT_NAME).appendField(field_label).appendField(field_expand_icon).init();
+        }
     } else {
         this.removeInput(COLLAPSED_INPUT_NAME);
         this.setWarningText(null); // Clear any warnings inherited from enclosed blocks.
@@ -283,4 +311,34 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
 
     // Check whether the collapsed block needs to be highlighted.
     this.setErrorHighlighted(collapsed && this.hasErrorHighlightedDescendant());
+};
+
+/**
+ * @deriv/bot: Add check for workspace.getCanvas() before appendChild() is called.
+ */
+Blockly.BlockSvg.prototype.initSvg = function () {
+    goog.asserts.assert(this.workspace.rendered, 'Workspace is headless.');
+    if (!this.isInsertionMarker()) {
+        // Insertion markers not allowed to have inputs or icons
+        // Input shapes are empty holes drawn when a value input is not connected.
+        // eslint-disable-next-line no-cond-assign
+        for (let i = 0, input; (input = this.inputList[i]); i++) {
+            input.init();
+            input.initOutlinePath(this.svgGroup_);
+        }
+        const icons = this.getIcons();
+        for (let i = 0; i < icons.length; i++) {
+            icons[i].createIcon();
+        }
+    }
+    this.updateColour();
+    this.updateMovable();
+    if (!this.workspace.options.readOnly && !this.eventsInit_) {
+        Blockly.bindEventWithChecks_(this.getSvgRoot(), 'mousedown', this, this.onMouseDown_);
+    }
+    this.eventsInit_ = true;
+
+    if (!this.getSvgRoot().parentNode && this.workspace.getCanvas()) {
+        this.workspace.getCanvas().appendChild(this.getSvgRoot());
+    }
 };

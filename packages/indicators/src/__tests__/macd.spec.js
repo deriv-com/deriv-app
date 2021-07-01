@@ -22,6 +22,6 @@ describe('macd', () => {
         );
 
         // expect diff to be less than 0.1 for each sample
-        expect(parseInt((diff / (3 * 100)) * 10, 10)).toEqual(0);
+        expect(parseInt((diff / (3 * 100)) * 10)).toEqual(0);
     });
 });

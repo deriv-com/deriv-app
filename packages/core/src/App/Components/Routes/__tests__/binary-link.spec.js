@@ -16,7 +16,7 @@ describe('<BinaryLink />', () => {
     const Mock = ({ children }) => (
         <MobxContentProvider store={store}>
             <BrowserRouter>
-                <PlatformContext.Provider value={{ is_deriv_crypto: false }}>{children}</PlatformContext.Provider>
+                <PlatformContext.Provider>{children}</PlatformContext.Provider>
             </BrowserRouter>
         </MobxContentProvider>
     );

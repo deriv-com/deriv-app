@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
-import { Button, DesktopWrapper, Input } from '@deriv/components';
+import { Button, DesktopWrapper, Input, Text } from '@deriv/components';
 import { getDecimalPlaces, validNumber, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -20,16 +20,16 @@ const validateTransfer = (values, { balance, currency, transfer_limit }) => {
         decimals: getDecimalPlaces(currency),
         ...(transfer_limit.min && {
             min: transfer_limit.min,
-            max: transfer_limit.max,
+            max: +balance >= transfer_limit.min && +balance < transfer_limit.max ? balance : transfer_limit.max,
         }),
     });
 
     if (!values.amount) {
         errors.amount = localize('This field is required.');
-    } else if (!is_ok) {
-        errors.amount = message;
     } else if (+balance < +values.amount) {
         errors.amount = localize('Insufficient balance.');
+    } else if (!is_ok) {
+        errors.amount = message;
     }
 
     if (values.description && !/^[0-9A-Za-z .,'-]{0,250}$/.test(values.description.replace(/\n/g, ' '))) {
@@ -72,9 +72,15 @@ const PaymentAgentTransferForm = ({
     return (
         <div className='cashier__wrapper payment-agent-transfer__container'>
             <DesktopWrapper>
-                <h2 className='cashier__header cashier__content-header'>
+                <Text
+                    as='h2'
+                    color='prominent'
+                    weight='bold'
+                    align='center'
+                    className='cashier__header cashier__content-header'
+                >
                     <Localize i18n_default_text='Transfer to client' />
-                </h2>
+                </Text>
             </DesktopWrapper>
             <Formik
                 initialValues={{
@@ -102,7 +108,7 @@ const PaymentAgentTransferForm = ({
                                     error={touched.loginid && errors.loginid}
                                     required
                                     autoComplete='off'
-                                    maxLength='20'
+                                    maxLength={20}
                                 />
                             )}
                         </Field>
@@ -145,7 +151,7 @@ const PaymentAgentTransferForm = ({
                                     className='payment-agent-transfer__input-area'
                                     type='textarea'
                                     label={localize('Description')}
-                                    error={touched.description && errors.description}
+                                    error={errors.description}
                                     required
                                     autoComplete='off'
                                     has_character_counter

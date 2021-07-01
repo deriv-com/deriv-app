@@ -134,7 +134,7 @@ export const load = ({
                     save_modal.updateBotName(file_name);
                     workspace.clearUndo();
                     workspace.current_strategy_id = strategy_id || Blockly.utils.genUid();
-                    saveWorkspaceToRecent(xml, from);
+                    await saveWorkspaceToRecent(xml, from);
                 }
             }
 
@@ -314,6 +314,14 @@ export const hasAllRequiredBlocks = workspace => {
     return has_all_required_blocks;
 };
 
+export const isAllRequiredBlocksEnabled = workspace => {
+    const disabled_blocks = workspace.getAllBlocks().filter(block => block.disabled);
+    const { mandatoryMainBlocks } = config;
+    const required_block_types = ['trade_definition_tradeoptions', ...mandatoryMainBlocks];
+    const disabled_block_types = disabled_blocks.map(block => block.type);
+    return !disabled_block_types.some(block => required_block_types.includes(block));
+};
+
 export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chronological) => {
     const ws_metrics = workspace.getMetrics();
 
@@ -322,7 +330,9 @@ export const scrollWorkspace = (workspace, scroll_amount, is_horizontal, is_chro
 
     if (is_horizontal) {
         scroll_x += is_chronological ? scroll_amount : -scroll_amount;
+        scroll_y += -20;
     } else {
+        scroll_x += -20;
         scroll_y += is_chronological ? scroll_amount : -scroll_amount;
     }
 

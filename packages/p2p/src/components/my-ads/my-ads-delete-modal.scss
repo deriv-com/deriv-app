@@ -1,0 +1,17 @@
+.dc-modal__container_delete-modal {
+    .dc-modal-header {
+        border-bottom: unset !important;
+    }
+
+    .dc-modal-body {
+        padding: 2rem 2.4rem;
+
+        @include mobile {
+            padding: 0 1.6rem;
+        }
+    }
+
+    .dc-modal-footer {
+        border-top: none;
+    }
+}

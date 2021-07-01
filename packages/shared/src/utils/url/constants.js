@@ -1,14 +1,20 @@
+const isBrowser = () => typeof window !== 'undefined';
+
+const deriv_com_url = 'deriv.com';
+const deriv_me_url = 'deriv.me';
+
+const supported_domains = [deriv_com_url, deriv_me_url];
+const domain_url_initial = isBrowser() && window.location.hostname.split('app.')[1];
+const domain_url = supported_domains.includes(domain_url_initial) ? domain_url_initial : deriv_com_url;
+
 export const deriv_urls = Object.freeze({
-    DERIV_COM_PRODUCTION: 'https://deriv.com',
+    DERIV_HOST_NAME: domain_url,
+    DERIV_COM_PRODUCTION: `https://${domain_url}`,
     DERIV_COM_STAGING: 'https://staging.deriv.com',
-    DERIV_CRYPTO_COM_PRODUCTION: 'https://derivcrypto.com',
-    DERIV_CRYPTO_COM_STAGING: 'https://staging.derivcrypto.com',
-    DERIV_APP_PRODUCTION: 'https://app.deriv.com',
+    DERIV_DASHBOARD_PRODUCTION: `https://myapps.${domain_url}`,
+    DERIV_DASHBOARD_STAGING: 'https://staging-myapps.deriv.com',
+    DERIV_APP_PRODUCTION: `https://app.${domain_url}`,
     DERIV_APP_STAGING: 'https://staging-app.deriv.com',
-    DERIV_APP_CRYPTO_PRODUCTION: 'https://app.derivcrypto.com',
-    DERIV_APP_CRYPTO_STAGING: 'https://staging-app.derivcrypto.com',
-    SMARTTRADER_PRODUCTION: 'https://smarttrader.deriv.com',
+    SMARTTRADER_PRODUCTION: `https://smarttrader.${domain_url}`,
     SMARTTRADER_STAGING: 'https://staging-smarttrader.deriv.com',
-    SMARTTRADER_CRYPTO_PRODUCTION: 'https://smarttrader.derivcrypto.com',
-    SMARTTRADER_CRYPTO_STAGING: 'https://staging-smarttrader.derivcrypto.com',
 });

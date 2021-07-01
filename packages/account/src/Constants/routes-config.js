@@ -3,7 +3,7 @@ import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
     AccountLimits,
-    DerivPassword,
+    Passwords,
     PersonalDetails,
     FinancialAssessment,
     ProofOfIdentity,
@@ -22,7 +22,7 @@ import {
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
 // Order matters
-const initRoutesConfig = ({ is_deriv_crypto }) => [
+const initRoutesConfig = ({ is_dashboard }) => [
     {
         path: routes.account_deactivated,
         component: AccountDeactivated,
@@ -47,66 +47,62 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
                         getTitle: () => localize('Personal details'),
                         default: true,
                     },
-                    ...(is_deriv_crypto
-                        ? []
-                        : [
-                              {
-                                  path: routes.financial_assessment,
-                                  component: FinancialAssessment,
-                                  getTitle: () => localize('Financial assessment'),
-                              },
-                          ]),
+                    {
+                        path: routes.financial_assessment,
+                        component: FinancialAssessment,
+                        getTitle: () => localize('Financial assessment'),
+                    },
                 ],
             },
-            ...(is_deriv_crypto
-                ? []
-                : [
-                      {
-                          getTitle: () => localize('Verification'),
-                          icon: 'IcVerification',
-                          subroutes: [
-                              {
-                                  path: routes.proof_of_identity,
-                                  component: ProofOfIdentity,
-                                  getTitle: () => localize('Proof of identity'),
-                              },
-                              {
-                                  path: routes.proof_of_address,
-                                  component: ProofOfAddress,
-                                  getTitle: () => localize('Proof of address'),
-                              },
-                          ],
-                      },
-                  ]),
+            {
+                getTitle: () => localize('Verification'),
+                icon: 'IcVerification',
+                subroutes: [
+                    {
+                        path: routes.proof_of_identity,
+                        component: ProofOfIdentity,
+                        getTitle: () => localize('Proof of identity'),
+                    },
+                    {
+                        path: routes.proof_of_address,
+                        component: ProofOfAddress,
+                        getTitle: () => localize('Proof of address'),
+                    },
+                ],
+            },
             {
                 getTitle: () => localize('Security and safety'),
                 icon: 'IcSecurity',
                 subroutes: [
                     {
-                        path: routes.deriv_password,
-                        component: DerivPassword,
-                        getTitle: () => localize('Deriv password'),
+                        path: routes.passwords,
+                        component: Passwords,
+                        getTitle: () => localize('Passwords'),
                     },
                     {
                         path: routes.self_exclusion,
                         component: SelfExclusion,
-                        getTitle: () => localize('Self exclusion'),
+                        getTitle: () => (is_dashboard ? localize('Self-exclusion') : localize('Self exclusion')),
                     },
                     {
                         path: routes.account_limits,
                         component: AccountLimits,
-                        getTitle: () => localize('Account limits'),
+                        getTitle: () => (is_dashboard ? localize('Withdrawal limits') : localize('Account limits')),
                     },
                     {
                         path: routes.login_history,
                         component: LoginHistory,
                         getTitle: () => localize('Login history'),
                     },
-                    {
-                        path: routes.api_token,
-                        component: ApiToken,
-                        getTitle: () => localize('API token'),
-                    },
+                    ...(is_dashboard
+                        ? []
+                        : [
+                              {
+                                  path: routes.api_token,
+                                  component: ApiToken,
+                                  getTitle: () => localize('API token'),
+                              },
+                          ]),
                     {
                         path: routes.connected_apps,
                         component: ConnectedApps,
@@ -124,6 +120,18 @@ const initRoutesConfig = ({ is_deriv_crypto }) => [
                     },
                 ],
             },
+            // TO DO -- Please remove these comments after changing for dashboard routes
+            // It is possible to add a Deriv Dashboard only path.
+            // ...(is_dashboard
+            //     ? [
+            //           {
+            //               component: Home,
+            //               getTitle: () => localize('Dashboard-only path'),
+            //               is_authenticated: false,
+            //               path: routes.resources,
+            //           },
+            //       ]
+            //     : []),
         ],
     },
 ];
@@ -133,9 +141,9 @@ let routesConfig;
 // For default page route if page/path is not found, must be kept at the end of routes_config array
 const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
-const getRoutesConfig = ({ is_deriv_crypto }) => {
+const getRoutesConfig = ({ is_dashboard }) => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig({ is_deriv_crypto });
+        routesConfig = initRoutesConfig({ is_dashboard });
         routesConfig.push(route_default);
     }
     return routesConfig;

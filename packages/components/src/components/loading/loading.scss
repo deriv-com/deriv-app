@@ -57,9 +57,4 @@
             background-color: var(--brand-secondary);
         }
     }
-    &__text {
-        line-height: 44px;
-        color: var(--text-prominent);
-        @include typeface(--paragraph-center-normal-black, none);
-    }
 }

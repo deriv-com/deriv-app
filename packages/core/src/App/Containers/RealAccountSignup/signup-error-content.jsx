@@ -7,21 +7,21 @@ const Heading = ({ code }) => {
     switch (code) {
         case 'InvalidPhone':
             return (
-                <h1>
+                <Text as='h1' align='center' weight='bold'>
                     <Localize i18n_default_text='Let’s try that again' />
-                </h1>
+                </Text>
             );
         case 'DuplicateAccount':
             return (
-                <h1>
+                <Text as='h1' align='center' weight='bold'>
                     <Localize i18n_default_text='Already signed up?' />
-                </h1>
+                </Text>
             );
         default:
             return (
-                <h1>
+                <Text as='h1' align='center' weight='bold'>
                     <Localize i18n_default_text='Something’s not right' />
-                </h1>
+                </Text>
             );
     }
 };

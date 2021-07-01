@@ -21,7 +21,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 duration_unit: '%1',
                 duration_value: '%2',
             }),
-            message1: `${is_stake ? localize('Stake') : localize('Payout')}: %1 %2`,
+            message1: `${is_stake ? localize('Stake') : localize('Payout')}: %1 %2 %3`,
             args0: [
                 {
                     type: 'field_dropdown',
@@ -43,6 +43,11 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     type: 'input_value',
                     name: 'AMOUNT',
                     check: 'Number',
+                },
+                {
+                    type: 'field_label',
+                    name: 'AMOUNT_LIMITS',
+                    text: '',
                 },
             ],
             colour: Blockly.Colours.Special1.colour,
@@ -72,6 +77,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             event.type === Blockly.Events.END_DRAG
         ) {
             this.setCurrency();
+            this.updateAmountLimits();
         }
 
         const trade_definition_block = this.workspace
@@ -89,6 +95,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         }
 
         this.selected_symbol = market_block.getFieldValue('SYMBOL_LIST');
+        this.selected_market = market_block.getFieldValue('MARKET_LIST');
         this.selected_trade_type_category = trade_type_block.getFieldValue('TRADETYPECAT_LIST');
         this.selected_trade_type = trade_type_block.getFieldValue('TRADETYPE_LIST');
         this.selected_duration = this.getFieldValue('DURATIONTYPE_LIST');
@@ -105,6 +112,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.updateBarrierInputs(false, false);
                 this.updateDurationInput(false, false);
                 this.updatePredictionInput(false);
+                this.updateAmountLimits();
             } else {
                 this.updateBarrierInputs(true, true);
                 this.enforceSingleBarrierType('BARRIEROFFSETTYPE_LIST', true);
@@ -141,6 +149,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 this.enforceSingleBarrierType(true);
                 this.updateDurationInput(true, true);
                 this.updatePredictionInput(true);
+                this.updateAmountLimits();
             }
         } else if (event.type === Blockly.Events.END_DRAG && event.blockId === this.id) {
             // Ensure this block is populated after initial drag from flyout.
@@ -198,6 +207,26 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             // Remove any extra inputs (quietly) if not required
             for (let i = input_names.length; i > barriers.values.length; i--) {
                 this.removeInput(input_names[i - 1], true);
+            }
+        });
+    },
+    updateAmountLimits() {
+        const { account_limits } = ApiHelpers.instance;
+        const { currency, landing_company_shortcode } = DBotStore.instance.client;
+        account_limits.getStakePayoutLimits(currency, landing_company_shortcode, this.selected_market).then(limits => {
+            if (!this.getField('AMOUNT_LIMITS')) {
+                return;
+            }
+            this.amount_limits = limits;
+            const { max_payout, min_stake } = limits;
+            if (max_payout && min_stake) {
+                this.setFieldValue(
+                    localize('(min: {{min_stake}} - max: {{max_payout}})', {
+                        min_stake,
+                        max_payout,
+                    }),
+                    'AMOUNT_LIMITS'
+                );
             }
         });
     },
@@ -368,6 +397,20 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         return {
             AMOUNT: input => {
                 const input_number = Number(input);
+                const max_payout = this.amount_limits?.max_payout;
+                const min_stake = this.amount_limits?.min_stake;
+                if (min_stake && input_number < min_stake) {
+                    this.error_message = localize("Please enter a stake amount that's at least {{min_stake}}.", {
+                        min_stake,
+                    });
+                    return input_number < min_stake;
+                }
+                if (max_payout && input_number > max_payout) {
+                    this.error_message = localize("Please enter a payout amount that's lower than {{max_payout}}.", {
+                        max_payout,
+                    });
+                    return input_number > max_payout;
+                }
                 this.error_message = localize('Amount must be a positive number.');
                 return !isNaN(input_number) && input_number <= 0;
             },

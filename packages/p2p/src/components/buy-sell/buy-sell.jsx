@@ -1,5 +1,5 @@
 import React from 'react';
-import { useIsMounted } from '@deriv/shared';
+import { useSafeState } from '@deriv/components';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -14,20 +14,30 @@ import BuySellTable from './buy-sell-table.jsx';
 import './buy-sell.scss';
 
 const BuySell = () => {
-    const isMounted = useIsMounted();
     const { buy_sell_store } = useStores();
-    const [is_toggle_visible, setIsToggleVisible] = React.useState(true);
+    const [is_toggle_visible, setIsToggleVisible] = useSafeState(true);
     const previous_scroll_top = React.useRef(0);
 
-    React.useEffect(() => buy_sell_store.registerIsListedReaction(), []);
+    React.useEffect(() => {
+        const disposeIsListedReaction = buy_sell_store.registerIsListedReaction();
+        const disposeAdvertIntervalReaction = buy_sell_store.registerAdvertIntervalReaction();
+
+        return () => {
+            disposeIsListedReaction();
+            disposeAdvertIntervalReaction();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const onScroll = event => {
-        if (isMounted() && event.target.scrollTop !== previous_scroll_top.current) {
-            const is_scrolling_down = event.target.scrollTop > previous_scroll_top.current;
-            setIsToggleVisible(!is_scrolling_down);
-        }
+        if (!buy_sell_store.show_advertiser_page) {
+            if (event.target.scrollTop !== previous_scroll_top.current) {
+                const is_scrolling_down = event.target.scrollTop > previous_scroll_top.current;
+                setIsToggleVisible(!is_scrolling_down);
+            }
 
-        previous_scroll_top.current = event.target.scrollTop;
+            previous_scroll_top.current = event.target.scrollTop;
+        }
     };
 
     if (buy_sell_store.should_show_verification) {
@@ -42,7 +52,11 @@ const BuySell = () => {
     if (buy_sell_store.show_advertiser_page && !buy_sell_store.should_show_verification) {
         return (
             <React.Fragment>
-                <PageReturn onClick={buy_sell_store.hideAdvertiserPage} page_title={localize("Advertiser's page")} />
+                <PageReturn
+                    className='buy-sell__advertiser-page-return'
+                    onClick={buy_sell_store.hideAdvertiserPage}
+                    page_title={localize("Advertiser's page")}
+                />
                 <AdvertiserPage />
             </React.Fragment>
         );

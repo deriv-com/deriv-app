@@ -15,4 +15,7 @@ module.exports = {
             version: '16',
         },
     },
+    rules: {
+        'no-underscore-dangle': 0,
+    }
 };

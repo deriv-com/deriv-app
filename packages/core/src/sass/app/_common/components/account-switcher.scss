@@ -194,6 +194,12 @@
             height: 100%;
             border-radius: 0;
         }
+        .dc-themed-scrollbars {
+            scrollbar-color: var(--text-less-prominent) transparent;
+            &::-webkit-scrollbar-thumb {
+                background-color: var(--text-less-prominent);
+            }
+        }
     }
     &__new-account {
         display: flex;
@@ -368,11 +374,21 @@
         margin-left: auto;
     }
     &__separator {
-        height: 4px;
-        background-color: var(--general-section-2);
+        display: block;
+        position: relative;
 
+        &:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 4px;
+            background-color: var(--general-section-2);
+            z-index: 1;
+        }
         &--no-padding {
-            margin: 0 -8px;
+            &:after {
+                width: calc(100% + 0.4rem);
+            }
         }
         &--auto-margin {
             margin-top: auto;
@@ -392,6 +408,10 @@
         font-size: 1rem;
         color: var(--text-less-prominent);
         line-height: 1.4;
+
+        &--disabled {
+            color: var(--text-disabled);
+        }
     }
     &__loader {
         margin: 1rem auto !important;
@@ -424,4 +444,21 @@
     color: var(--text-less-prominent);
     line-height: 1.5;
     text-align: right;
+}
+
+/** @define badge-server; weak */
+.badge-server {
+    display: inline-block;
+    background-color: $color-blue-2;
+    padding: 0.2rem;
+    border-radius: 0.2rem;
+    margin-left: 0.5rem;
+    height: 2.2rem;
+
+    &-bot {
+        color: var(--text-colored-background);
+    }
+    &--disabled {
+        background-color: var(--border-disabled);
+    }
 }

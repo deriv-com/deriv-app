@@ -29,7 +29,7 @@ const getUrlBase = (path = '') => {
     return `/${l.pathname.split('/')[1]}${/^\//.test(path) ? path : `/${path}`}`;
 };
 
-const isStaging = () => /staging-app\.derivcrypto\.com|staging-app\.deriv\.com/i.test(window.location.hostname);
+const isStaging = () => /staging-app\.deriv\.com/i.test(window.location.hostname);
 
 const isLocal = () => /localhost\.binary\.sx/i.test(window.location.hostname);
 
@@ -52,9 +52,10 @@ const getInitialLanguage = () => {
     const local_storage_language = localStorage.getItem(LANGUAGE_KEY);
 
     if (query_lang) {
-        if (isLanguageAvailable(query_lang)) {
-            localStorage.setItem(LANGUAGE_KEY, query_lang);
-            return query_lang;
+        const query_lang_uppercase = query_lang.toUpperCase();
+        if (isLanguageAvailable(query_lang_uppercase)) {
+            localStorage.setItem(LANGUAGE_KEY, query_lang_uppercase);
+            return query_lang_uppercase;
         }
     }
 
@@ -100,9 +101,7 @@ export const initializeTranslations = async () => {
     await loadLanguageJson(initial_language);
 };
 
-export const getLanguage = () => {
-    return i18n.language || initial_language;
-};
+export const getLanguage = () => i18n.language || initial_language;
 
 // eslint-disable-next-line no-unused-vars
 export const changeLanguage = async (lang, cb) => {

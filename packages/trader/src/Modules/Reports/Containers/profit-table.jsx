@@ -4,7 +4,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
-import { extractInfoFromShortcode, urlFor, website_name } from '@deriv/shared';
+import { extractInfoFromShortcode, isForwardStarting, urlFor, website_name } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from 'App/Components/Elements/ContentLoader';
 import CompositeCalendar from 'App/Components/Form/CompositeCalendar';
@@ -18,7 +18,8 @@ import { ReportsMeta } from '../Components/reports-meta.jsx';
 import { getProfitTableColumnsTemplate } from '../Constants/data-table-constants';
 
 const getRowAction = row_obj =>
-    getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()]
+    getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()] &&
+    !isForwardStarting(row_obj.shortcode, row_obj.purchase_time_unix)
         ? getContractPath(row_obj.contract_id)
         : {
               component: (
@@ -144,7 +145,9 @@ const ProfitTable = ({
                             empty_message_component={EmptyTradeHistoryMessage}
                             component_icon={component_icon}
                             localized_message={localize('You have no trading activity yet.')}
-                            localized_period_message={localize('You have no trading activity for this period.')}
+                            localized_period_message={localize(
+                                "You've made no transactions of this type during this period."
+                            )}
                         />
                     ) : (
                         <div className='reports__content'>

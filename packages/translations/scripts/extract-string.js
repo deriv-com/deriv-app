@@ -33,7 +33,7 @@ const getStringsFromXmlFile = input => {
 };
 
 const getTranslatableFiles = () => {
-    const packages_with_translations = ['account', 'bot-web-ui', 'core', 'dashboard', 'trader', 'bot-skeleton'];
+    const packages_with_translations = ['account', 'cashier', 'bot-web-ui', 'core', 'dashboard', 'trader', 'bot-skeleton'];
     const globs = ['**/*.js', '**/*.jsx', '**/xml/*.xml'];
     const file_paths = [];
 

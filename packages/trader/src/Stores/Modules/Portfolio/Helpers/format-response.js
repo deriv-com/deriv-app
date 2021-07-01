@@ -2,6 +2,10 @@ import { getUnsupportedContracts } from 'Constants';
 import { getSymbolDisplayName } from 'Stores/Modules/Trading/Helpers/active-symbols';
 import { getMarketInformation } from 'Modules/Reports/Helpers/market-underlying';
 
+const isUnSupportedContract = portfolio_pos =>
+    !!getUnsupportedContracts()[portfolio_pos.contract_type] || // check unsupported contract type
+    !!portfolio_pos.is_forward_starting; // for forward start contracts
+
 export const formatPortfolioPosition = (portfolio_pos, active_symbols = [], indicative) => {
     const purchase = parseFloat(portfolio_pos.buy_price);
     const payout = parseFloat(portfolio_pos.payout);
@@ -19,7 +23,7 @@ export const formatPortfolioPosition = (portfolio_pos, active_symbols = [], indi
         purchase,
         reference: +transaction_id,
         type: portfolio_pos.contract_type,
-        is_unsupported: !!getUnsupportedContracts()[portfolio_pos.contract_type],
+        is_unsupported: isUnSupportedContract(portfolio_pos),
         contract_update: portfolio_pos.limit_order,
     };
 };

@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Collapsible, ContractCard, useHover } from '@deriv/components';
+import { isCryptoContract, isDesktop } from '@deriv/shared';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { getEndTime } from 'Stores/Modules/Contract/Helpers/logic';
 import { connect } from 'Stores/connect';
@@ -9,6 +10,7 @@ import { getSymbolDisplayName } from 'Stores/Modules/Trading/Helpers/active-symb
 import { connectWithContractUpdate } from 'Stores/Modules/Contract/Helpers/multiplier';
 import { getMarketInformation } from 'Modules/Reports/Helpers/market-underlying';
 import { SwipeableContractDrawer } from './swipeable-components.jsx';
+import MarketClosedContractOverlay from './market-closed-contract-overlay.jsx';
 
 const ContractDrawerCard = ({
     active_symbols,
@@ -18,6 +20,7 @@ const ContractDrawerCard = ({
     currency,
     current_focus,
     getContractById,
+    is_market_closed,
     is_mobile,
     is_multiplier,
     is_sell_requested,
@@ -35,9 +38,14 @@ const ContractDrawerCard = ({
     toggleCancellationWarning,
     toggleContractAuditDrawer,
 }) => {
-    const { profit } = contract_info;
+    const [hover_ref, should_hide_closed_overlay] = useHover();
+
+    const { profit, underlying: symbol } = contract_info;
     const is_sold = !!getEndTime(contract_info);
     const display_name = getSymbolDisplayName(active_symbols, getMarketInformation(contract_info.shortcode).underlying);
+
+    const is_crypto = isCryptoContract(contract_info.underlying);
+    const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);
 
     const card_header = (
         <ContractCard.Header
@@ -45,7 +53,7 @@ const ContractDrawerCard = ({
             display_name={display_name}
             getCardLabels={getCardLabels}
             getContractTypeDisplay={getContractTypeDisplay}
-            has_progress_slider={!is_multiplier}
+            has_progress_slider={isDesktop() && has_progress_slider}
             is_mobile={is_mobile}
             is_sell_requested={is_sell_requested}
             is_sold={is_sold}
@@ -108,8 +116,19 @@ const ContractDrawerCard = ({
                 className={classNames('dc-contract-card', {
                     'dc-contract-card--green': is_mobile && !is_multiplier && profit > 0 && !result,
                     'dc-contract-card--red': is_mobile && !is_multiplier && profit < 0 && !result,
+                    'contract-card__market-closed--disabled': is_market_closed && should_hide_closed_overlay,
                 })}
+                ref={hover_ref}
             >
+                {is_market_closed && !getEndTime(contract_info) && (
+                    <div
+                        className={classNames({
+                            'contract-card__market-closed--hidden': isDesktop() && should_hide_closed_overlay,
+                        })}
+                    >
+                        <MarketClosedContractOverlay symbol={symbol} />
+                    </div>
+                )}
                 {contract_el}
                 {card_footer}
             </div>
@@ -138,6 +157,7 @@ ContractDrawerCard.propTypes = {
     contract_info: PropTypes.object,
     currency: PropTypes.string,
     current_focus: PropTypes.string,
+    is_market_closed: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_sell_requested: PropTypes.bool,
     onClickCancel: PropTypes.func,

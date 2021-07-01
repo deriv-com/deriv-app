@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
@@ -8,35 +7,15 @@ import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
 
-const BuySellFormReceiveAmount = ({ is_sell_advert, receive_amount, local_currency }) => (
-    <React.Fragment>
-        <Text as='p' color='less-prominent' line_height='m' size='xxs'>
-            {is_sell_advert ? (
-                <Localize i18n_default_text='You receive' />
-            ) : (
-                <Localize i18n_default_text="You'll send" />
-            )}
-        </Text>
-        <Text as='p' color='general' line_height='m' size='xs' weight='bold'>
-            {getFormattedText(receive_amount, local_currency)}
-        </Text>
-    </React.Fragment>
-);
-
-BuySellFormReceiveAmount.propTypes = {
-    is_sell_advert: PropTypes.bool.isRequired,
-    receive_amount: PropTypes.number.isRequired,
-    local_currency: PropTypes.string.isRequired,
-};
-
-const BuySellForm = observer(props => {
+const BuySellForm = props => {
     const isMounted = useIsMounted();
-    const { buy_sell_store } = useStores();
-    const { setPageFooterParent } = props;
+    const { advertiser_page_store, buy_sell_store } = useStores();
 
     buy_sell_store.setFormProps(props);
 
+    const { setPageFooterParent } = props;
     const {
         advertiser_details,
         description,
@@ -45,7 +24,7 @@ const BuySellForm = observer(props => {
         min_order_amount_limit,
         min_order_amount_limit_display,
         price,
-    } = buy_sell_store?.advert;
+    } = buy_sell_store?.advert || {};
 
     React.useEffect(
         () => {
@@ -64,13 +43,16 @@ const BuySellForm = observer(props => {
                 }
             );
 
+            advertiser_page_store.setFormErrorMessage('');
             buy_sell_store.setInitialReceiveAmount();
 
             if (buy_sell_store.is_sell_advert) {
                 buy_sell_store.getAdvertiserInfo();
             }
 
-            return disposeReceiveAmountReaction;
+            return () => {
+                disposeReceiveAmountReaction();
+            };
         },
         [] // eslint-disable-line react-hooks/exhaustive-deps
     );
@@ -136,18 +118,18 @@ const BuySellForm = observer(props => {
                                                 <Localize i18n_default_text="Buyer's instructions" />
                                             )}
                                         </Text>
-                                        {description.split('\n').map((text, idx) => (
-                                            <Text key={idx} as='p' color='general' line_height='m' size='xs'>
-                                                {text || '-'}
-                                            </Text>
-                                        ))}
+                                        {description
+                                            .trim()
+                                            .replace(/([\r\n]){2,}/g, '\n\n')
+                                            .split('\n')
+                                            .map((text, idx) => (
+                                                <Text key={idx} as='p' color='general' line_height='m' size='xs'>
+                                                    {text || '-'}
+                                                </Text>
+                                            ))}
                                     </div>
                                 </div>
-                                <div
-                                    className={classNames('buy-sell__modal-field-wrapper', {
-                                        'buy-sell__modal-field-wrapper--no-flex': isMobile(),
-                                    })}
-                                >
+                                <div className='buy-sell__modal-field-wrapper'>
                                     <Field name='amount'>
                                         {({ field }) => (
                                             <Input
@@ -155,7 +137,11 @@ const BuySellForm = observer(props => {
                                                 data-lpignore='true'
                                                 type='number'
                                                 error={errors.amount}
-                                                label={localize('Amount')}
+                                                label={
+                                                    buy_sell_store.is_buy_advert
+                                                        ? localize('Buy amount')
+                                                        : localize('Sell amount')
+                                                }
                                                 hint={
                                                     <Localize
                                                         i18n_default_text='Limits: {{min}}–{{max}} {{currency}}'
@@ -199,11 +185,7 @@ const BuySellForm = observer(props => {
                                     </Field>
                                     {isDesktop() && (
                                         <div className='buy-sell__modal-field'>
-                                            <BuySellFormReceiveAmount
-                                                is_sell_advert={buy_sell_store.is_sell_advert}
-                                                local_currency={local_currency}
-                                                receive_amount={buy_sell_store.receive_amount}
-                                            />
+                                            <BuySellFormReceiveAmount />
                                         </div>
                                     )}
                                 </div>
@@ -254,7 +236,7 @@ const BuySellForm = observer(props => {
             }}
         </Formik>
     );
-});
+};
 
 BuySellForm.propTypes = {
     advert: PropTypes.object,
@@ -275,4 +257,4 @@ BuySellForm.propTypes = {
     validatePopup: PropTypes.func,
 };
 
-export default BuySellForm;
+export default observer(BuySellForm);

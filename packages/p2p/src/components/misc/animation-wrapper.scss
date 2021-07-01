@@ -1,0 +1,22 @@
+.animation-wrapper {
+    &-enter {
+        transform: scale3d(1, 0, 1);
+        opacity: 0;
+
+        &-done {
+            transform: scale3d(1, 1, 1);
+            opacity: 1;
+        }
+    }
+    &-exit {
+        transform: scale3d(1, 1, 1);
+        opacity: 1;
+
+        &-done {
+            display: none;
+            transform: scale3d(1, 0, 1);
+            opacity: 0;
+            height: 0px;
+        }
+    }
+}

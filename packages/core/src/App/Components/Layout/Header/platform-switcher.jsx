@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import { Icon } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { getPlatformInformation, isMobile } from '@deriv/shared';
 
 import { PlatformSwitcherLoader } from './Components/Preloader/platform-switcher.jsx';
@@ -50,9 +50,9 @@ class PlatformSwitcher extends React.PureComponent {
                         icon={getPlatformInformation(this.props.app_routing_history).icon}
                         size={32}
                     />
-                    <h1 className='platform-switcher__header'>
+                    <Text as='h1' styles={{ lineHeight: '2.4rem' }} weight='bold'>
                         {getPlatformInformation(this.props.app_routing_history).header}
-                    </h1>
+                    </Text>
                     <Icon className='platform-switcher__arrow' icon='IcChevronDownBold' />
                 </div>
                 <CSSTransition

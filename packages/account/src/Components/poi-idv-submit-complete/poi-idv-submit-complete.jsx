@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import PoaButton from 'Components/poa-button';
 import IdvDocumentPending from '../../Assets/ic-idv-document-pending.svg';
 
-const IdvUploadComplete = ({ needs_poa }) => {
+const IdvSubmitComplete = ({ needs_poa }) => {
     return (
         <div className='proof-of-identity__container'>
             <IdvDocumentPending className='icon' />
@@ -29,4 +29,4 @@ const IdvUploadComplete = ({ needs_poa }) => {
     );
 };
 
-export default IdvUploadComplete;
+export default IdvSubmitComplete;

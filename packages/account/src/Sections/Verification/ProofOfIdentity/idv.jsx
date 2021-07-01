@@ -1,5 +1,5 @@
 import React from 'react';
-import IdvUploadComplete from 'Components/poi-idv-upload-complete';
+import IdvUploadComplete from 'Components/poi-idv-submit-complete';
 import IdvExpired from 'Components/poi-idv-expired';
 import IdvVerified from 'Components/poi-idv-verified';
 import IdvRejected from 'Components/poi-idv-rejected';

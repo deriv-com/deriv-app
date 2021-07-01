@@ -2,7 +2,7 @@ import React from 'react';
 import { WS } from '@deriv/shared';
 import CountrySelector from 'Components/poi-country-selector';
 import IdvDocumentSubmit from 'Components/poi-idv-document-submit';
-import IdvUploadComplete from 'Components/poi-idv-upload-complete';
+import IdvUploadComplete from 'Components/poi-idv-submit-complete';
 import Unsupported from 'Components/poi-unsupported';
 import UploadComplete from 'Components/poi-upload-complete';
 import OnfidoUpload from './onfido-sdk-view.jsx';

@@ -307,6 +307,30 @@ const CFDPasswordForm = props => {
     );
 };
 
+const CFDServerModalWarning = ({ show_warning = true, platform }) => {
+    if (!show_warning) return null;
+    return (
+        <div className='cfd-password-modal__warning'>
+            <Text
+                as='p'
+                className='cfd-password-modal__warning-text'
+                lineHeight='l'
+                size='xxs'
+                color='prominent'
+                weight='normal'
+                align='center'
+            >
+                <Localize
+                    i18n_default_text='Due to an issue on our server, some of your {{platform}} accounts are unavailable at the moment. Please bear     with us and thank you for your patience.'
+                    values={{
+                        platform: platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
+                    }}
+                />
+            </Text>
+        </div>
+    );
+};
+
 const CFDServerForm = ({ ...props }) => {
     const available_servers = React.useMemo(() => {
         return [...props.trading_servers]
@@ -329,26 +353,7 @@ const CFDServerForm = ({ ...props }) => {
 
     return (
         <React.Fragment>
-            {props.has_error && (
-                <div className='cfd-password-modal__warning'>
-                    <Text
-                        as='p'
-                        className='cfd-password-modal__warning-text'
-                        lineHeight='l'
-                        size='xxs'
-                        color='prominent'
-                        weight='normal'
-                        align='center'
-                    >
-                        <Localize
-                            i18n_default_text='Due to an issue on our server, some of your {{platform}} accounts are unavailable at the moment. Please bear     with us and thank you for your patience.'
-                            values={{
-                                platform: props.platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
-                            }}
-                        />
-                    </Text>
-                </div>
-            )}
+            <CFDServerModalWarning platform={props.platform} show_warning={props.has_error} />
             <Formik
                 initialValues={{
                     server: props.trading_servers.find(server => !server.disabled)?.id ?? '',

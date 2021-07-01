@@ -22,7 +22,7 @@ import CreateAdSummary from './create-ad-summary.jsx';
 
 const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
-        return <Div100vhContainer height_offset='136px'>{children}</Div100vhContainer>;
+        return <Div100vhContainer height_offset='auto'>{children}</Div100vhContainer>;
     }
 
     return children;
@@ -99,7 +99,12 @@ const CreateAdForm = () => {
 
                     return (
                         <div className='p2p-my-ads__form'>
-                            <Form noValidate>
+                            <Form
+                                className={classNames('p2p-my-ads__form-element', {
+                                    'p2p-my-ads__form-element--ios': is_sell_advert && os === 'iOS',
+                                })}
+                                noValidate
+                            >
                                 <ThemedScrollbars
                                     className={classNames('p2p-my-ads__form-scrollbar', {
                                         'p2p-my-ads__form-scrollbar--ios': is_sell_advert && os === 'iOS',

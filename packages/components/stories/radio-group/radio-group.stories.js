@@ -9,7 +9,7 @@ const stories = storiesOf('Radio Group', module);
 
 stories.addDecorator(withKnobs).addDecorator(withInfo);
 
-stories.add('basic usage', () => (
+stories.add('Basic usage', () => (
     <Theme is_dark={boolean('Theme', false)}>
         <div style={{ display: 'flex' }}>
             <RadioGroup

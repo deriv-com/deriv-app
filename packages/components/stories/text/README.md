@@ -33,19 +33,17 @@ import { Text` } from 'deriv-components';
 
 const DummyComponent = () => (
     <Text
-        message={
-            <Text
-                className='custom-class'
-                size='xl'
-                color='prominent'
-                align='center'
-                weight='bolder' 
-                line_height='m'
-                as='p'
-                styles={
-                    '--text-align': 'var(--text-align-left)',
-                }
-            >Hello Deriv</Text>
+        className='custom-class'
+        size='xl'
+        color='prominent'
+        align='center'
+        weight='bolder' 
+        line_height='m'
+        as='p'
+        styles={
+            '--text-align': 'var(--text-align-left)',
+        }
+        >Hello Deriv</Text>
         }
     />
 );

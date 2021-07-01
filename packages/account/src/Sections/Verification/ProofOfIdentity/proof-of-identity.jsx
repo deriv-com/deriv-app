@@ -10,11 +10,9 @@ import ErrorMessage from 'Components/error-component';
 import NotRequired from 'Components/poi-not-required';
 import MissingPersonalDetails from 'Components/poi-missing-personal-details';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
-import { figmaAccountStatus } from './mock/account_status';
-// import { identity_status_codes } from './proof-of-identity-utils';
 
 const ProofOfIdentity = ({
-    // account_status,
+    account_status,
     app_routing_history,
     fetchResidenceList,
     history,
@@ -32,15 +30,6 @@ const ProofOfIdentity = ({
     const from_platform = getPlatformRedirect(app_routing_history);
     const should_show_redirect_btn = from_platform.name === 'P2P';
     const has_invalid_postal_code = missing_personal_details === 'postal_code';
-
-    // idv_none - Initial document verification for idv supported country
-    // idv_none_poa - Initial document verification for idv supported country that needs POA
-    // idv_result_pass - Idv verification pass
-    // idv_result_pass_poa - Idv verification pass and needs POA
-    // idv_result_expired - Idv verification expired
-    // idv_result_rejected - Idv verification rejected have submissions left
-    // idv_result_rejected_limited - Idv verification rejected but no submissions left
-    const account_status = figmaAccountStatus('idv_result_rejected_limited');
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
 
@@ -174,7 +163,7 @@ const ProofOfIdentity = ({
 };
 
 export default connect(({ client, common }) => ({
-    // account_status: client.account_status,
+    account_status: client.account_status,
     app_routing_history: common.app_routing_history,
     fetchResidenceList: client.fetchResidenceList,
     has_missing_required_field: client.has_missing_required_field,

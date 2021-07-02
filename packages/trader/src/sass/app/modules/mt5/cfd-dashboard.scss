@@ -734,6 +734,9 @@
                 font-size: var(--text-size-xxxs);
             }
         }
+        &-tooltip {
+            width: 20rem;
+        }
     }
     &__account-selection {
         align-items: center;

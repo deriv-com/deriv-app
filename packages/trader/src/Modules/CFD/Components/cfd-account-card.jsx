@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper } from '@deriv/components';
+import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
 import { isMobile, mobileOSDetect, CFD_PLATFORMS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { CFDAccountCopy } from './cfd-account-copy.jsx';
@@ -50,9 +50,17 @@ const PasswordBox = ({ onClick }) => (
         <Text size='xs' className='cfd-account-card__password-text'>
             •••••••••••••••
         </Text>
-        <Button className='cfd-account-card__password-action' tertiary onClick={onClick}>
-            {localize('Change')}
-        </Button>
+        <Popover
+            alignment='right'
+            message={localize(
+                'Use these credentials to log in to your Deriv X account on the website and mobile apps.'
+            )}
+            classNameBubble='cfd-account-card__password-tooltip'
+        >
+            <Button className='cfd-account-card__password-action' tertiary onClick={onClick}>
+                {localize('Change')}
+            </Button>
+        </Popover>
     </div>
 );
 

@@ -13,7 +13,7 @@ import {
 import { isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
-const SpendingLimitModal = ({ disableApp, enableApp, InputField, is_visible, onSubmit, validateForm }) => (
+const SpendingLimitModal = ({ disableApp, currency, enableApp, InputField, is_visible, onSubmit, validateForm }) => (
     <Modal
         className='reality-check'
         enableApp={enableApp}
@@ -89,6 +89,7 @@ const SpendingLimitModal = ({ disableApp, enableApp, InputField, is_visible, onS
                                             handleChange={handleChange}
                                             handleBlur={handleBlur}
                                             disabled={values.spending_limit === '0'}
+                                            currency={currency}
                                         />
                                         <Text
                                             as='p'

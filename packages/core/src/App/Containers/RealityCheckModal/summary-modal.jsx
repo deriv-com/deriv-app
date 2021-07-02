@@ -85,7 +85,7 @@ const SummaryModal = ({
 
     return (
         <Modal
-            className='reality-check reality-check--summary'
+            className='reality-check reality-check__summary'
             enableApp={enableApp}
             is_open={is_visible}
             disableApp={disableApp}
@@ -95,10 +95,7 @@ const SummaryModal = ({
                 <React.Fragment>
                     <DesktopWrapper>
                         {!reality_check_duration ? (
-                            <Localize
-                                i18n_default_text='Your trading statistics'
-                                values={{ date_time: computed_values.start_date_time_gmt }}
-                            />
+                            <Localize i18n_default_text='Your trading statistics' />
                         ) : (
                             <Localize
                                 i18n_default_text='Your trading statistics since: {{date_time}}'

@@ -10,7 +10,7 @@ import BriefModal from './brief-modal.jsx';
 import SummaryModal from './summary-modal.jsx';
 import SpendingLimitModal from './spending-limit-modal.jsx';
 
-const SpendingLimitIntervalField = ({ values, disabled, touched, errors, handleChange, handleBlur }) => (
+const SpendingLimitIntervalField = ({ currency, disabled, touched, errors, handleChange, handleBlur }) => (
     <div className='reality-check__fieldset reality-check__fieldset--spending-limit'>
         <Field name='interval'>
             {({ field }) => (
@@ -19,8 +19,7 @@ const SpendingLimitIntervalField = ({ values, disabled, touched, errors, handleC
                     name='max_30day_turnover'
                     data-lpignore='true'
                     type='text'
-                    label={localize('My spending limit (EUR)')}
-                    value={values.max_30day_turnover}
+                    label={localize('My spending limit ({{currency}})', { currency })}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     disabled={disabled}
@@ -43,11 +42,11 @@ const TradingViewIntervalField = ({ values, touched, errors, handleChange, handl
                     name='interval'
                     data-lpignore='true'
                     type='text'
-                    label={localize('After … minutes of trading')}
+                    label={localize('After … minutes of trading')} // this is regards the Figma design
                     value={values.interval}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    hint={localize('Min: 10 minutes     Max: 60 minutes')}
+                    hint={localize('Min: 10 minutes     Max: 60 minutes')} // this is regards the Figma design
                     required
                     error={touched.interval && errors.interval}
                     autoComplete='off'
@@ -89,8 +88,6 @@ const RealityCheckModal = ({
         setVisibilityRealityCheck(0);
     };
 
-    const enableMax30dayTurnover = !self_exclusion.max_30day_turnover;
-
     const spendingLimitValidateForm = values => {
         const errors = {};
         const min_number = 1;
@@ -121,23 +118,27 @@ const RealityCheckModal = ({
         return errors;
     };
 
-    const onSubmit = values => {
+    const onSubmit = (values, form_props) => {
         setVisibilityRealityCheck(0);
         setRealityCheckDuration(values.interval);
+        form_props?.setSubmitting(false);
     };
+
+    const is_enable_max30day_turnover = !self_exclusion.max_30day_turnover;
 
     // if user previously did not set max_30day_turnover,
     // we force him/her here to fill this field
-    if (enableMax30dayTurnover) {
+    if (is_enable_max30day_turnover) {
         return (
             <SpendingLimitModal
                 disableApp={disableApp}
                 enableApp={enableApp}
-                is_visible={!self_exclusion.max_30day_turnover}
+                is_visible={is_enable_max30day_turnover}
                 openStatement={openStatement}
                 validateForm={spendingLimitValidateForm}
                 onSubmit={setSpendingLimitTradingStatistics}
                 InputField={SpendingLimitIntervalField}
+                currency={currency}
             />
         );
     }
@@ -163,11 +164,10 @@ const RealityCheckModal = ({
         );
     }
 
-    // Regards card https://redmine.deriv.cloud/issues/24171
     // we are going to show the BriefModal in a case that user
     // did not fill it previously, but if user filled it previously
     // we just show SummaryModal
-    if (!enableMax30dayTurnover) {
+    if (!is_enable_max30day_turnover) {
         return (
             <BriefModal
                 disableApp={disableApp}

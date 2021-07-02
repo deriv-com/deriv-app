@@ -500,8 +500,8 @@ const checkAccountStatus = (
     if (has_risk_assessment) addNotificationMessage(clientNotifications().risk);
     if (shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);
 
-    // regards card https://redmine.deriv.cloud/issues/32459
     // we are going to hide the turnover notification at all
+    // for reality check issue for now
     // if (should_show_max_turnover && false) {
     //     addNotificationMessage(clientNotifications().max_turnover_limit_not_set);
     // }

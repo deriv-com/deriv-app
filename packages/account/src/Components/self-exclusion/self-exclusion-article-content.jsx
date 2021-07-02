@@ -30,7 +30,7 @@ export const selfExclusionArticleItems = ({ is_eu, is_uk, is_deriv_crypto, is_ap
         if (is_uk) {
             eu_items.push({
                 component: (
-                    <Localize i18n_default_text='These spending limits are optional, and you can strengthen them at any time. If you don’t wish to set a specific limit, leave the field blank. If you live in the United Kingdom, Customer Support can only remove or weaken your spedning limits after 24 hours of receiving the request. If you live in the Isle of Man, Customer Support can only remove or weaken your spending limits after your spending limit period has expired.' />
+                    <Localize i18n_default_text='These spending limits are optional, and you can strengthen them at any time. If you don’t wish to set a specific limit, leave the field blank. If you live in the United Kingdom, Customer Support can only remove or weaken your spending limits after 24 hours of receiving the request. If you live in the Isle of Man, Customer Support can only remove or weaken your spending limits after your spending limit period has expired.' />
                 ),
             });
         } else {

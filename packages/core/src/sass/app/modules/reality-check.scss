@@ -133,17 +133,18 @@
         .radio-group--spending_limit {
             .dc-text {
                 font-weight: normal;
-                font-size: 12px;
-                line-height: 18px;
+                font-size: var(--text-size-xxs);
+                line-height: var(--text-lh-m);
             }
         }
     }
 }
 
 .dc-modal__container_reality-check {
-    max-width: 588px;
-    &.reality-check--summary {
-        max-width: 792px;
+    max-width: 588rem;
+
+    &.reality-check__summary {
+        max-width: 792rem;
         .dc-modal-body {
             @include mobile {
                 padding: 0;
@@ -231,7 +232,7 @@
     .dc-radio-group {
         .dc-radio-group__label {
             @include mobile {
-                font-size: 12px;
+                font-size: var(--text-size-xxs);
             }
         }
         .dc-radio-group__item:not(:last-child) {

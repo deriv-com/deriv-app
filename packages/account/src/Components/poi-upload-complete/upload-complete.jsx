@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 import PoaButton from 'Components/poa-button';
 import IconMessageContent from 'Components/icon-message-content';
 
-export const UploadComplete = ({ needs_poa, redirect_button }) => {
+export const UploadComplete = ({ needs_poa, redirect_button, is_from_external }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
     const message = localize('Your proof of identity was submitted successfully');
     if (!needs_poa) {
@@ -23,7 +23,7 @@ export const UploadComplete = ({ needs_poa, redirect_button }) => {
                 }
                 className={is_dashboard && 'account-management-dashboard'}
             >
-                {redirect_button}
+                {!is_from_external && redirect_button}
             </IconMessageContent>
         );
     }
@@ -50,7 +50,7 @@ export const UploadComplete = ({ needs_poa, redirect_button }) => {
                 </div>
                 <PoaButton />
             </React.Fragment>
-            {redirect_button}
+            {!is_from_external && redirect_button}
         </IconMessageContent>
     );
 };

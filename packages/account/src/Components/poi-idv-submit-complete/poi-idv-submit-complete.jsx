@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import PoaButton from 'Components/poa-button';
 import IdvDocumentPending from '../../Assets/ic-idv-document-pending.svg';
 
-const IdvSubmitComplete = ({ needs_poa }) => {
+const IdvSubmitComplete = ({ needs_poa, is_from_external }) => {
     return (
         <div className='proof-of-identity__container'>
             <IdvDocumentPending className='icon' />
@@ -22,7 +22,7 @@ const IdvSubmitComplete = ({ needs_poa }) => {
                     <Text className='text' size='xs' align='center'>
                         {localize("Next, we'll need your proof of address.")}
                     </Text>
-                    <PoaButton custom_text={localize('Submit proof address')} />
+                    {!is_from_external && <PoaButton custom_text={localize('Submit proof address')} />}
                 </React.Fragment>
             )}
         </div>

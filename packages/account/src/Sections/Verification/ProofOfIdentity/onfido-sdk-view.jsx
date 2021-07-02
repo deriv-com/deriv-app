@@ -9,7 +9,7 @@ import getOnfidoPhrases from 'Constants/onfido-phrases';
 const OnfidoSdkView = ({
     handleViewComplete,
     height,
-    is_description_enabled,
+    is_from_external,
     onfido_service_token,
     selected_country,
     setAPIError,
@@ -95,7 +95,7 @@ const OnfidoSdkView = ({
     return (
         <ThemedScrollbars is_bypassed={isMobile()} height={height}>
             <div className='onfido-container'>
-                {is_description_enabled && (
+                {!is_from_external && (
                     <div className='onfido-container__message'>
                         <Text size='xs'>
                             <Localize

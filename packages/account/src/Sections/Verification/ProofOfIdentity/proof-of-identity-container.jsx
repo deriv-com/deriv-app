@@ -10,7 +10,7 @@ import { populateVerificationStatus } from '../Helpers/verification';
 const ProofOfIdentityContainer = ({
     account_status,
     height,
-    is_description_enabled = true,
+    is_from_external,
     onfido_service_token,
     redirect_button,
     refreshNotifications,
@@ -31,7 +31,7 @@ const ProofOfIdentityContainer = ({
             <POISubmission
                 residence_list={residence_list}
                 height={height ?? null}
-                is_description_enabled={is_description_enabled}
+                is_from_external={is_from_external}
                 onfido_service_token={onfido_service_token}
                 identity_last_attempt={identity_last_attempt}
                 has_require_submission={has_require_submission}
@@ -51,7 +51,7 @@ const ProofOfIdentityContainer = ({
             return (
                 <IdvContainer
                     // TODO: start deprecated
-                    is_description_enabled={is_description_enabled}
+                    is_from_external={is_from_external}
                     redirect_button={redirect_button}
                     // End deprecation
                     idv={idv}
@@ -66,7 +66,7 @@ const ProofOfIdentityContainer = ({
             return (
                 <Onfido
                     // TODO: start deprecated
-                    is_description_enabled={is_description_enabled}
+                    is_from_external={is_from_external}
                     redirect_button={redirect_button}
                     // End deprecated
                     verification_status={verification_status}
@@ -90,7 +90,7 @@ ProofOfIdentityContainer.propTypes = {
     account_status: PropTypes.object,
     addNotificationByKey: PropTypes.func,
     getAccountStatus: PropTypes.func,
-    is_description_enabled: PropTypes.bool,
+    is_from_external: PropTypes.bool,
     serviceToken: PropTypes.func,
     notificationEvent: PropTypes.func,
     removeNotificationByKey: PropTypes.func,

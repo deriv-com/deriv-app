@@ -6,20 +6,26 @@ import IdvRejected from 'Components/poi-idv-rejected';
 import IdvNoSubmissions from 'Components/poi-idv-limited';
 import { identity_status_codes } from './proof-of-identity-utils';
 
-const Idv = ({ handleRequireSubmission, idv, redirect_button, verification_status }) => {
+const Idv = ({ handleRequireSubmission, idv, redirect_button, verification_status, is_from_external }) => {
     const { status, submissions_left } = idv;
     const { needs_poa } = verification_status;
 
     switch (status) {
         case identity_status_codes.pending:
-            return <IdvUploadComplete needs_poa={needs_poa} />;
+            return <IdvUploadComplete is_from_external={is_from_external} needs_poa={needs_poa} />;
         case identity_status_codes.rejected:
         case identity_status_codes.suspected:
             if (Number(submissions_left) < 1)
                 return <IdvNoSubmissions handleRequireSubmission={handleRequireSubmission} />;
             return <IdvRejected handleRequireSubmission={handleRequireSubmission} />;
         case identity_status_codes.verified:
-            return <IdvVerified needs_poa={needs_poa} redirect_button={redirect_button} />;
+            return (
+                <IdvVerified
+                    is_from_external={is_from_external}
+                    needs_poa={needs_poa}
+                    redirect_button={redirect_button}
+                />
+            );
         case identity_status_codes.expired:
             return <IdvExpired redirect_button={redirect_button} handleRequireSubmission={handleRequireSubmission} />;
         default:

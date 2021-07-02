@@ -21,6 +21,10 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
         ['pending', 'verified'].includes(poi_state) || ['pending', 'verified'].includes(identity_status)
     );
 
+    React.useEffect(() => {
+        console.log(ProofOfIdentityContainer);
+    }, []);
+
     return (
         <Formik
             initialValues={{
@@ -40,7 +44,8 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                                     height_offset='180px'
                                     is_disabled={isDesktop()}
                                 >
-                                    <ProofOfIdentityContainer
+                                    <ProofOfIdentityContainer height={height} is_from_external={true} />
+                                    {/* <ProofOfIdentityContainer
                                         {...props}
                                         serviceToken={WS.serviceToken}
                                         notificationEvent={WS.notificationEvent}
@@ -52,10 +57,8 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                                                 : status;
                                             setPOIState(poi_status);
                                         }}
-                                        is_trading_button_enabled={false}
-                                        is_description_enabled={false}
-                                        is_message_enabled={false}
-                                    />
+                                        is_from_external={true}
+                                    /> */}
                                 </Div100vhContainer>
                                 <Modal.Footer is_bypassed={isMobile()}>
                                     <FormSubmitButton

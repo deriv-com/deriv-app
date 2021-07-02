@@ -3,7 +3,7 @@ import { Button, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
 
-const Expired = ({ handleRequireSubmission, redirect_button }) => {
+const Expired = ({ handleRequireSubmission, redirect_button, is_from_external }) => {
     return (
         <IconMessageContent
             message={localize('New proof of identity document needed')}
@@ -17,7 +17,7 @@ const Expired = ({ handleRequireSubmission, redirect_button }) => {
                 text={localize('Upload Document')}
                 primary
             />
-            {redirect_button}
+            {!is_from_external && redirect_button}
         </IconMessageContent>
     );
 };

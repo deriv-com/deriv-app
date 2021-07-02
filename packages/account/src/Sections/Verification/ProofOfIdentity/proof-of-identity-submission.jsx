@@ -13,7 +13,7 @@ const POISubmission = ({
     height,
     identity_last_attempt,
     idv,
-    is_description_enabled,
+    is_from_external,
     manual,
     needs_poa,
     onfido_service_token,
@@ -118,7 +118,7 @@ const POISubmission = ({
                     return (
                         <OnfidoUpload
                             height={height}
-                            is_description_enabled={is_description_enabled}
+                            is_from_external={is_from_external}
                             onfido_service_token={onfido_service_token}
                             onfido={onfido}
                             selected_country={selected_country}
@@ -138,12 +138,30 @@ const POISubmission = ({
         case submission_status_code.complete: {
             switch (submission_service) {
                 case service_code.idv:
-                    return <IdvUploadComplete needs_poa={needs_poa} redirect_button={redirect_button} />;
+                    return (
+                        <IdvUploadComplete
+                            is_from_external={is_from_external}
+                            needs_poa={needs_poa}
+                            redirect_button={redirect_button}
+                        />
+                    );
                 case service_code.onfido:
-                    return <UploadComplete needs_poa={needs_poa} redirect_button={redirect_button} />;
+                    return (
+                        <UploadComplete
+                            is_from_external={is_from_external}
+                            needs_poa={needs_poa}
+                            redirect_button={redirect_button}
+                        />
+                    );
                 case service_code.manual:
                     // TODO: add manual upload complete
-                    return <UploadComplete needs_poa={needs_poa} redirect_button={redirect_button} />;
+                    return (
+                        <UploadComplete
+                            is_from_external={is_from_external}
+                            needs_poa={needs_poa}
+                            redirect_button={redirect_button}
+                        />
+                    );
                 default:
                     return null;
             }

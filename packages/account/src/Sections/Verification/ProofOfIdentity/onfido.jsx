@@ -7,13 +7,19 @@ import RejectedReasons from 'Components/poi-rejected-reasons';
 import Limited from 'Components/poi-limited';
 import { identity_status_codes } from './proof-of-identity-utils';
 
-const Onfido = ({ handleRequireSubmission, onfido, redirect_button, verification_status }) => {
+const Onfido = ({ handleRequireSubmission, onfido, redirect_button, verification_status, is_from_external }) => {
     const { status, submissions_left, last_rejected: rejected_reasons } = onfido;
     const { needs_poa } = verification_status;
 
     switch (status) {
         case identity_status_codes.pending:
-            return <UploadComplete needs_poa={needs_poa} redirect_button={redirect_button} />;
+            return (
+                <UploadComplete
+                    is_from_external={is_from_external}
+                    needs_poa={needs_poa}
+                    redirect_button={redirect_button}
+                />
+            );
         case identity_status_codes.rejected:
         case identity_status_codes.suspected:
             if (Number(submissions_left) < 1) return <Limited handleRequireSubmission={handleRequireSubmission} />;
@@ -24,9 +30,17 @@ const Onfido = ({ handleRequireSubmission, onfido, redirect_button, verification
                 />
             );
         case identity_status_codes.verified:
-            return <Verified needs_poa={needs_poa} redirect_button={redirect_button} />;
+            return (
+                <Verified is_from_external={is_from_external} needs_poa={needs_poa} redirect_button={redirect_button} />
+            );
         case identity_status_codes.expired:
-            return <Expired redirect_button={redirect_button} handleRequireSubmission={handleRequireSubmission} />;
+            return (
+                <Expired
+                    is_from_external={is_from_external}
+                    redirect_button={redirect_button}
+                    handleRequireSubmission={handleRequireSubmission}
+                />
+            );
         default:
             return null;
     }

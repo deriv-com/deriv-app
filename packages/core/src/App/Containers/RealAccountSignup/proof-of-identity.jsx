@@ -52,8 +52,7 @@ class ProofOfIdentityForm extends React.PureComponent {
                                             getAccountStatus={WS.authorized.getAccountStatus}
                                             height={height}
                                             onStateChange={this.onStateChange}
-                                            is_trading_button_enabled={false}
-                                            is_description_enabled={false}
+                                            is_from_external={true}
                                         />
                                     </Div100vhContainer>
                                     <FormSubmitButton

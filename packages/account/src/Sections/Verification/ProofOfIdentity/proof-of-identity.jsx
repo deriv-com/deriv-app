@@ -10,6 +10,7 @@ import ErrorMessage from 'Components/error-component';
 import NotRequired from 'Components/poi-not-required';
 import MissingPersonalDetails from 'Components/poi-missing-personal-details';
 import ProofOfIdentityContainer from './proof-of-identity-container.jsx';
+import { figmaAccountStatus } from './mock/account_status';
 
 const ProofOfIdentity = ({
     account_status,
@@ -21,6 +22,8 @@ const ProofOfIdentity = ({
     refreshNotifications,
     routeBackInApp,
     should_allow_authentication,
+    is_from_external,
+    height: external_height,
 }) => {
     const [is_status_loading, setStatusLoading] = React.useState(true);
     const [api_error, setAPIError] = React.useState();
@@ -30,6 +33,7 @@ const ProofOfIdentity = ({
     const from_platform = getPlatformRedirect(app_routing_history);
     const should_show_redirect_btn = from_platform.name === 'P2P';
     const has_invalid_postal_code = missing_personal_details === 'postal_code';
+    const parsed_account_status = figmaAccountStatus('idv_none') || account_status;
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
 
@@ -125,6 +129,37 @@ const ProofOfIdentity = ({
         );
     }
 
+    if (is_from_external) {
+        return (
+            component_to_load || (
+                <ProofOfIdentityContainer
+                    account_status={parsed_account_status}
+                    setAPIError={setAPIError}
+                    refreshNotifications={refreshNotifications}
+                    onfido_service_token={onfido_service_token}
+                    residence_list={residence_list}
+                    is_from_external={is_from_external}
+                    height={external_height}
+                    redirect_button={
+                        should_show_redirect_btn && (
+                            <Button
+                                primary
+                                className='proof-of-identity__redirect'
+                                onClick={() => routeBackTo(from_platform.route)}
+                            >
+                                <Localize
+                                    i18n_default_text='Back to {{platform_name}}'
+                                    values={{ platform_name: from_platform.name }}
+                                />
+                            </Button>
+                        )
+                    }
+                    is_description_enabled
+                />
+            )
+        );
+    }
+
     return (
         <AutoHeightWrapper default_height={200}>
             {({ setRef, height }) => (
@@ -132,11 +167,12 @@ const ProofOfIdentity = ({
                     <div className='proof-of-identity__main-container'>
                         {component_to_load || (
                             <ProofOfIdentityContainer
-                                account_status={account_status}
+                                account_status={parsed_account_status}
                                 setAPIError={setAPIError}
                                 refreshNotifications={refreshNotifications}
                                 onfido_service_token={onfido_service_token}
                                 residence_list={residence_list}
+                                is_from_external={is_from_external}
                                 height={height}
                                 redirect_button={
                                     should_show_redirect_btn && (

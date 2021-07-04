@@ -14,7 +14,7 @@ stories.addDecorator(withKnobs).addDecorator(withInfo);
 stories.add(
     'Basic usage',
     () => (
-        <Theme is_dark={boolean('dark mode', false)}>
+        <Theme is_dark={boolean('dark theme', false)}>
             <div className='text-component-container'>
                 <Text
                     size='s'

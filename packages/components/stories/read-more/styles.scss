@@ -1,0 +1,13 @@
+.read-more-component {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    width: 300px;
+    margin: 0 auto;
+}
+
+.theme--dark {
+    .dc-read-more__content {
+        color: #ffffff;
+    }
+}

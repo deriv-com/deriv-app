@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import { boolean,withKnobs } from '@storybook/addon-knobs';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
 import RadioGroup from 'Components/radio-group';
 import Theme from '../shared/theme';
@@ -35,12 +35,9 @@ stories.add(
         ];
 
         return (
-            <Theme is_dark={boolean('dark mode', false)}>
+            <Theme is_dark={boolean('dark theme', false)}>
                 <div className='radio-group-component'>
-                    <RadioGroup
-                        name='testRadio'
-                        onToggle={action('changed')}
-                    >
+                    <RadioGroup name='testRadio' onToggle={action('changed')}>
                         {radio_items.map(item => (
                             <RadioGroup.Item
                                 key={item.value}

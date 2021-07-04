@@ -16,7 +16,7 @@ const DummyComponent = props => (
 
 | Name           | Type       | Default | Description                                           |
 | -------------- | ---------- | ------- | ----------------------------------------------------- |
-| className      | {string}   | `null`  | additional custom class name for progress bar         |
+| className      | {string}   | `''`  | additional custom class name for progress bar         |
 | danger_limit   | {float}    | `0.2`   | threshold value before the danger style takes effect  |
 | label          | {string}   | `''`    | text label in the progress bar                        |
 | value          | {float}    | `0`     | progress bar value                                    |

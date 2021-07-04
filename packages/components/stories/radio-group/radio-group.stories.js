@@ -4,9 +4,8 @@ import { action } from '@storybook/addon-actions';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
 import RadioGroup from 'Components/radio-group';
-import Theme from '../shared/theme';
+import Wrapper from '../shared/wrapper';
 import notes from './README.md';
-import './styles.scss';
 
 const stories = storiesOf('Radio Group', module);
 
@@ -35,7 +34,7 @@ stories.add(
         ];
 
         return (
-            <Theme is_dark={boolean('dark theme', false)}>
+            <Wrapper is_dark={boolean('dark theme', false)}>
                 <div className='radio-group-component'>
                     <RadioGroup name='testRadio' onToggle={action('changed')}>
                         {radio_items.map(item => (
@@ -48,7 +47,7 @@ stories.add(
                         ))}
                     </RadioGroup>
                 </div>
-            </Theme>
+            </Wrapper>
         );
     },
     { notes }

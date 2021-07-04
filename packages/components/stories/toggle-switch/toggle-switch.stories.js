@@ -3,16 +3,16 @@ import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
 import React from 'react';
 import Switch from 'Components/toggle-switch';
-import Theme from '../shared/theme';
+import Wrapper from '../shared/wrapper';
 
 const stories = storiesOf('Toggle switch', module);
 
 stories.addDecorator(withKnobs).addDecorator(withInfo);
 
-stories.add('main', () => {
+stories.add('Basic usage', () => {
     const [is_enabled, setEnabled] = React.useState(false);
     return (
-        <Theme is_dark={boolean('Theme', false)}>
+        <Wrapper is_dark={boolean('dark theme', false)}>
             <div
                 style={{
                     display: 'flex',
@@ -33,6 +33,6 @@ stories.add('main', () => {
                     E.g Text
                 </h3>
             </div>
-        </Theme>
+        </Wrapper>
     );
 });

@@ -27,6 +27,14 @@ const getValidationRules = () => ({
                     message: localize('Higher barrier must be higher than lower barrier.'),
                 },
             ],
+            [
+                'custom',
+                {
+                    func: (value, options, store, inputs) =>
+                        /^[+-]/.test(inputs.barrier_1) ? +inputs.barrier_1 !== 0 : true,
+                    message: localize('Barrier cannot be zero.'),
+                },
+            ],
         ],
         trigger: 'barrier_2',
     },

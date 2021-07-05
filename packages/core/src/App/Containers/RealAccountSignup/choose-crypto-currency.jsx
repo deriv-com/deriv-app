@@ -32,7 +32,7 @@ const ChooseCryptoCurrency = ({
 
     const hasAllCryptos = () => {
         return (
-            legal_allowed_currencies.filter(
+            legal_allowed_currencies?.filter(
                 currency =>
                     currency.type === CRYPTO_CURRENCY_TYPE && !account_list.some(x => x.title === currency.value)
             ).length === 0
@@ -42,11 +42,11 @@ const ChooseCryptoCurrency = ({
     const getReorderedCryptoCurrencies = () => {
         const reorderCryptoCurrencies = should_show_all_available_currencies
             ? reorderCurrencies(
-                  legal_allowed_currencies.filter(currency => account_list.some(x => x.title === currency.value)),
+                  legal_allowed_currencies?.filter(currency => account_list.some(x => x.title === currency.value)),
                   CRYPTO_CURRENCY_TYPE
               )
             : reorderCurrencies(
-                  legal_allowed_currencies.filter(
+                  legal_allowed_currencies?.filter(
                       currency =>
                           currency.type === CRYPTO_CURRENCY_TYPE &&
                           !available_crypto_currencies.some(x => x.value === currency.value)

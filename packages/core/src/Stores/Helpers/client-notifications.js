@@ -432,14 +432,14 @@ const hasMissingRequiredField = (account_settings, client, isAccountOfType) => {
 };
 
 const getStatusValidations = status_arr => {
-    status_arr.reduce((validations, stats) => {
+    return status_arr.reduce((validations, stats) => {
         validations[stats] = true;
         return validations;
     }, {});
 };
 
 const getCashierValidations = cashier_arr => {
-    cashier_arr.reduce((validations, code) => {
+    return cashier_arr.reduce((validations, code) => {
         validations[code] = true;
         return validations;
     }, {});

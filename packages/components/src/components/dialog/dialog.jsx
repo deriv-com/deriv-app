@@ -7,9 +7,11 @@ import { isMobile } from '@deriv/shared';
 import Button from '../button/button.jsx';
 import Icon from '../icon/icon.jsx';
 import Text from '../text';
+import { useOnClickOutside } from '../../hooks';
 
 const Dialog = ({
     disableApp,
+    dismissable,
     enableApp,
     is_closed_on_cancel,
     is_closed_on_confirm,
@@ -19,6 +21,7 @@ const Dialog = ({
     header_icon,
     ...other_props
 }) => {
+    const wrapper_ref = React.useRef();
     React.useEffect(() => {
         if (is_visible && !!disableApp) {
             disableApp();
@@ -38,6 +41,10 @@ const Dialog = ({
         }
         onConfirm();
     };
+
+    const validateClickOutside = () => dismissable || (has_close_icon && is_visible && is_closed_on_cancel);
+
+    useOnClickOutside(wrapper_ref, onCancel ? handleCancel : handleConfirm, validateClickOutside);
 
     const {
         cancel_button_text,
@@ -81,6 +88,7 @@ const Dialog = ({
                         'dc-dialog__dialog--has-margin': !is_mobile_full_width,
                         'dc-dialog__dialog--no-padding': header_icon,
                     })}
+                    ref={wrapper_ref}
                 >
                     {header_icon && title ? (
                         <div className='dc-dialog__header-wrapper__centered'>

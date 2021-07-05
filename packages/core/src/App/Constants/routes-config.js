@@ -1,8 +1,8 @@
 import React from 'react';
 import { Redirect as RouterRedirect } from 'react-router-dom';
-import { getUrlBase, routes } from '@deriv/shared';
+import { makeLazyLoader, routes } from '@deriv/shared';
+import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { makeLazyLoader } from '_common/lazy-load';
 import { Redirect } from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
 import { Onboarding } from 'App/Containers/Onboarding';
@@ -11,34 +11,16 @@ import { Onboarding } from 'App/Containers/Onboarding';
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
 const Trader = React.lazy(() => {
-    const el_head = document.querySelector('head');
-    const el_main_css = document.createElement('link');
-    el_main_css.href = getUrlBase('/css/trader.main.css');
-    el_main_css.rel = 'stylesheet';
-    el_main_css.type = 'text/css';
-    el_head.appendChild(el_main_css);
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "trader" */ '@deriv/trader');
 });
 
 const Account = React.lazy(() => {
-    const el_head = document.querySelector('head');
-    const el_main_css = document.createElement('link');
-    el_main_css.href = getUrlBase('/account/css/account.css');
-    el_main_css.rel = 'stylesheet';
-    el_main_css.type = 'text/css';
-    el_head.appendChild(el_main_css);
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "account" */ '@deriv/account');
 });
 
 const Cashier = React.lazy(() => {
-    const el_head = document.querySelector('head');
-    const el_main_css = document.createElement('link');
-    el_main_css.href = getUrlBase('/css/cashier.css');
-    el_main_css.rel = 'stylesheet';
-    el_main_css.type = 'text/css';
-    el_head.appendChild(el_main_css);
     // eslint-disable-next-line import/no-unresolved
     return import(/* webpackChunkName: "cashier" */ '@deriv/cashier');
 });
@@ -335,14 +317,14 @@ const getModules = ({ is_dashboard }) => {
                     path: routes.cashier_deposit,
                     component: Cashier,
                     getTitle: () => localize('Deposit'),
-                    icon_component: 'IcWalletAdd',
+                    icon_component: 'IcCashierAdd',
                     default: true,
                 },
                 {
                     path: routes.cashier_withdrawal,
                     component: Cashier,
                     getTitle: () => localize('Withdrawal'),
-                    icon_component: 'IcWalletMinus',
+                    icon_component: 'IcCashierMinus',
                 },
                 {
                     path: routes.cashier_pa,
@@ -473,8 +455,9 @@ const getModules = ({ is_dashboard }) => {
     return modules;
 };
 
-const lazyLoadComplaintsPolicy = makeLazyLoader(() =>
-    import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy')
+const lazyLoadComplaintsPolicy = makeLazyLoader(
+    () => import(/* webpackChunkName: "complaints-policy" */ 'Modules/ComplaintsPolicy'),
+    () => <Loading />
 );
 
 // Order matters

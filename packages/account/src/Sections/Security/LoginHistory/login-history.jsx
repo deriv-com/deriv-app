@@ -3,10 +3,9 @@ import React from 'react';
 import classNames from 'classnames';
 import { Loading, Table, Text, ThemedScrollbars } from '@deriv/components';
 import Bowser from 'bowser';
-import { convertDateFormat, isMobile, isDesktop, PlatformContext } from '@deriv/shared';
+import { convertDateFormat, isMobile, isDesktop, PlatformContext, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { WS } from 'Services/ws-methods';
 import LoadErrorMessage from 'Components/load-error-message';
 
 const API_FETCH_LIMIT = 50;

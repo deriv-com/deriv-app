@@ -15,6 +15,7 @@ export const icons = {
         'IcBrandSmarttrader',
     ],
     cashier: [
+        'IcCashierAdd',
         'IcCashierAirTmDark',
         'IcCashierAirTmLight',
         'IcCashierAliPayDark',
@@ -71,6 +72,7 @@ export const icons = {
         'IcCashierMandiriPay',
         'IcCashierMastercardDark',
         'IcCashierMastercardLight',
+        'IcCashierMinus',
         'IcCashierNganLoungDark',
         'IcCashierNganLoungLight',
         'IcCashierNoAds',
@@ -123,6 +125,7 @@ export const icons = {
         'IcCashierXanpoolLight',
         'IcCashierXanpoolSmallDark',
         'IcCashierXanpoolSmallLight',
+        'IcCashier',
     ],
     common: [
         'IcAccountError',
@@ -166,7 +169,6 @@ export const icons = {
         'IcCalendarForwardToday',
         'IcCalendarToday',
         'IcCalendar',
-        'IcCashier',
         'IcCatAll',
         'IcCatMultiplier',
         'IcCatOptions',

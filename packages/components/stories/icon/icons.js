@@ -356,8 +356,6 @@ export const icons = {
         'IcUtility',
         'IcVerification',
         'IcVerify',
-        'IcWalletAdd',
-        'IcWalletMinus',
         'IcWebTerminal',
         'IcWebsite',
         'IcWindowsGray',

@@ -12,7 +12,7 @@ import AcceptRiskForm from './accept-risk-form.jsx';
 import { getItems } from './account-wizard-form';
 import 'Sass/details-form.scss';
 
-const StepperHeader = ({ has_target, has_real_account, has_currency, items, getCurrentStep, getTotalSteps }) => {
+const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, getTotalSteps }) => {
     const step = getCurrentStep() - 1;
     const step_title = items[step].header.title;
     return (
@@ -189,8 +189,6 @@ const AccountWizard = props => {
 
         return props.realAccountSignup(clone);
     };
-
-    const setAccountCurrency = () => props.setAccountCurrency(form_values().currency);
 
     const updateValue = (index, value, setSubmitting, goToNextStep) => {
         saveFormData(index, value);

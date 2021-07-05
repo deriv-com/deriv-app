@@ -50,6 +50,10 @@
 
     &__form {
         @include mobile {
+            &-element {
+                padding: 0 0 10rem;
+            }
+
             .dc-input__footer {
                 justify-content: space-between;
                 width: 86vw;
@@ -93,16 +97,10 @@
             width: calc(100% - 4.8rem);
 
             @include mobile {
-                height: calc(100vh - 26.5rem);
+                height: fit-content;
                 margin: 0 1.6rem;
                 position: unset;
                 width: 90vw;
-            }
-
-            &--ios {
-                @include mobile {
-                    height: calc(100vh - 39rem);
-                }
             }
         }
         &-container {

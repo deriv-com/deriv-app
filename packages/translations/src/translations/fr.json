@@ -2542,7 +2542,7 @@
     "-149993085": "Nouveau solde actuel",
     "-877064208": "EUR",
     "-1302404116": "Effet de levier maximum",
-    "-1146327194": "You’ll get a warning, known as a margin call, if your account balance drops down close to the stop out level.",
+    "-1284221303": "You’ll get a warning, known as margin call, if your account balance drops down close to the stop out level.",
     "-1848799829": "To understand stop out, first you need to learn about margin level, which is  the ratio of your equity (the total balance you would have if you close all your positions at that point) to the margin you're using at the moment. If your margin level drops below our stop out level, your positions may be closed automatically to protect you from further losses.",
     "-511301450": "Indique la disponibilité du trading de crypto-monnaie sur un compte particulier.",
     "-1591882610": "Synthétiques",

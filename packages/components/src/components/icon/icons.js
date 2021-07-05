@@ -443,7 +443,7 @@ import './mt5/ic-mt5-financial-stp.svg';
 import './mt5/ic-mt5-financial.svg';
 import './mt5/ic-mt5-forex.svg';
 import './mt5/ic-mt5-high-leverage.svg';
-import './mt5/ic-mt5-Indices.svg';
+import './mt5/ic-mt5-indices.svg';
 import './mt5/ic-mt5-liquid-risk.svg';
 import './mt5/ic-mt5-margin-trading.svg';
 import './mt5/ic-mt5-one-password.svg';

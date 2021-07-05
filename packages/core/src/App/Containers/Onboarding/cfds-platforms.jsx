@@ -35,7 +35,7 @@ const data = [
             },
             {
                 title: localize('Indices'),
-                icon: 'IcMt5Cryptos',
+                icon: 'IcMt5Indices',
             },
             {
                 title: localize('Stocks'),
@@ -61,11 +61,7 @@ const data = [
             },
             {
                 title: localize('Indices'),
-                icon: 'IcMt5Cryptos',
-            },
-            {
-                title: localize('Stocks'),
-                icon: 'IcMt5Stocks',
+                icon: 'IcMt5Indices',
             },
             {
                 title: localize('Forex'),

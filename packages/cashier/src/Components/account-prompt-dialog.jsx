@@ -24,8 +24,8 @@ const AccountPromptDialog = ({
     return (
         <Dialog
             className='acc-prompt-dialog'
-            title={is_crypto ? localize('Switch accounts?') : localize('Switch to crypto account?')}
-            confirm_button_text={is_crypto ? localize('Switch accounts') : localize('Switch to crypto account')}
+            title={is_crypto ? localize('Switch account?') : localize('Switch to crypto account?')}
+            confirm_button_text={is_crypto ? localize('Switch account') : localize('Switch to crypto account')}
             cancel_button_text={localize('Cancel')}
             onConfirm={onConfirm}
             onCancel={onCancel}

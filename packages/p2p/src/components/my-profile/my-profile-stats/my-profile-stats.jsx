@@ -84,9 +84,7 @@ const MyProfileStats = () => {
                         className='my-profile__stats-popover'
                         button_text={localize('Got it')}
                         is_open={is_statistics_tooltip_open}
-                        message={localize(
-                            'These fields are based on activities since 00:00 GMT: Buy, Sell, and Buy/Sell limit.'
-                        )}
+                        message={localize('Your Buy/Sell limit resets at 00:00 GMT daily.')}
                         setIsOpen={setIsStatisticsTooltipOpen}
                     >
                         <Icon icon='IcInfoOutline' size={16} />

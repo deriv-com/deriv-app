@@ -432,19 +432,17 @@ const hasMissingRequiredField = (account_settings, client, isAccountOfType) => {
 };
 
 const getStatusValidations = status_arr => {
-    if (status_arr)
-        status_arr.reduce((validations, stats) => {
-            validations[stats] = true;
-            return validations;
-        }, {});
+    status_arr.reduce((validations, stats) => {
+        validations[stats] = true;
+        return validations;
+    }, {});
 };
 
 const getCashierValidations = cashier_arr => {
-    if (cashier_arr)
-        cashier_arr.reduce((validations, code) => {
-            validations[code] = true;
-            return validations;
-        }, {});
+    cashier_arr.reduce((validations, code) => {
+        validations[code] = true;
+        return validations;
+    }, {});
 };
 
 const addVerificationNotifications = (identity, document, addNotificationMessage) => {
@@ -505,8 +503,7 @@ const checkAccountStatus = (
 
     if (system_maintenance) addNotificationMessage(clientNotifications().system_maintenance);
     else if (cashier_locked) addNotificationMessage(clientNotifications().cashier_locked);
-
-    if (withdrawal_locked) {
+    else if (withdrawal_locked) {
         // if client is withdrawal locked but it's because they need to authenticate
         // and they have submitted verification documents,
         // we should wait for review of documents to be done and show a different message

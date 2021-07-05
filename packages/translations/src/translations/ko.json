@@ -2542,6 +2542,7 @@
     "-149993085": "새 현재 잔액",
     "-877064208": "EUR",
     "-1302404116": "최대 레버리지",
+    "-1284221303": "You’ll get a warning, known as margin call, if your account balance drops down close to the stop out level.",
     "-1146327194": "You’ll get a warning, known as a margin call, if your account balance drops down close to the stop out level.",
     "-1848799829": "To understand stop out, first you need to learn about margin level, which is  the ratio of your equity (the total balance you would have if you close all your positions at that point) to the margin you're using at the moment. If your margin level drops below our stop out level, your positions may be closed automatically to protect you from further losses.",
     "-511301450": "특정한 계좌에 대해 암호화폐 트레이딩의 이용 가능성을 나타냅니다.",

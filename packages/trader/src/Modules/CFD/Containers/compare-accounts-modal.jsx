@@ -178,7 +178,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 financial_eu: localize('100%'),
                 financial_stp: localize('100%'),
                 footnote: localize(
-                    'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
+                    'You’ll get a warning, known as a margin call, if your account balance drops down close to the stop out level.'
                 ),
             },
             dxtrade: {
@@ -188,7 +188,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 financial_au: localize('100%'),
                 financial_eu: localize('100%'),
                 footnote: localize(
-                    'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
+                    'You’ll get a warning, known as a margin call, if your account balance drops down close to the stop out level.'
                 ),
             },
         },
@@ -202,7 +202,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 financial_eu: localize('50%'),
                 financial_stp: localize('50%'),
                 footnote: localize(
-                    'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
+                    "To understand stop out, first you need to learn about margin level, which is  the ratio of your equity (the total balance you would have if you close all your positions at that point) to the margin you're using at the moment. If your margin level drops below our stop out level, your positions may be closed automatically to protect you from further losses."
                 ),
             },
             dxtrade: {
@@ -212,7 +212,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 financial_au: localize('50%'),
                 financial_eu: localize('50%'),
                 footnote: localize(
-                    'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
+                    "To understand stop out, first you need to learn about margin level, which is  the ratio of your equity (the total balance you would have if you close all your positions at that point) to the margin you're using at the moment. If your margin level drops below our stop out level, your positions may be closed automatically to protect you from further losses."
                 ),
             },
         },

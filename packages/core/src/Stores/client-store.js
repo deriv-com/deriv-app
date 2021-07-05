@@ -229,8 +229,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get legal_allowed_currencies() {
-        if (!this.landing_companies || !this.root_store.ui) return [];
-        if (!this.root_store.ui.real_account_signup_target) {
+        const getDefaultAllowedCurrencies = () => {
             if (this.landing_companies.gaming_company) {
                 return this.landing_companies.gaming_company.legal_allowed_currencies;
             }
@@ -238,12 +237,22 @@ export default class ClientStore extends BaseStore {
                 return this.landing_companies.financial_company.legal_allowed_currencies;
             }
             return [];
+        };
+
+        if (!this.landing_companies || !this.root_store.ui) return [];
+        if (!this.root_store.ui.real_account_signup_target) {
+            return getDefaultAllowedCurrencies();
         }
         if (['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target)) {
             return this.current_landing_company.legal_allowed_currencies;
         }
         const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
-        return this.landing_companies[`${target}_company`].legal_allowed_currencies;
+
+        if (this.landing_companies[`${target}_company`]) {
+            return this.landing_companies[`${target}_company`].legal_allowed_currencies;
+        }
+
+        return getDefaultAllowedCurrencies();
     }
 
     @computed
@@ -747,6 +756,7 @@ export default class ClientStore extends BaseStore {
             residence,
             account_settings,
             preferred_language,
+            user_id,
         } = this;
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
@@ -760,6 +770,7 @@ export default class ClientStore extends BaseStore {
                 last_name,
                 name,
                 preferred_language,
+                user_id,
             };
             Cookies.set('client_information', client_information, { domain });
             this.has_cookie_account = true;

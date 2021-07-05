@@ -106,9 +106,7 @@ const CreateAdForm = () => {
                                 noValidate
                             >
                                 <ThemedScrollbars
-                                    className={classNames('p2p-my-ads__form-scrollbar', {
-                                        'p2p-my-ads__form-scrollbar--ios': is_sell_advert && os === 'iOS',
-                                    })}
+                                    className='p2p-my-ads__form-scrollbar'
                                     is_scrollbar_hidden={isMobile()}
                                 >
                                     <CreateAdFormWrapper>

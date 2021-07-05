@@ -97,6 +97,13 @@ const CashierDefault = ({
         }
     };
 
+    const show_p2p = () => {
+        if (is_eu || (user_fiat_currency?.length && user_fiat_currency[0]?.currency !== 'USD')) {
+            return false;
+        }
+        return true;
+    };
+
     const getDepositOptions = () => {
         const options = [];
         options.push(Providers.createCashProvider(onClickDepositCash));
@@ -105,7 +112,8 @@ const CashierDefault = ({
         if (is_payment_agent_visible) {
             options.push(Providers.createPaymentAgentProvider(onClickPaymentAgent));
         }
-        if (!is_eu && user_fiat_currency[0]?.currency === 'USD') {
+
+        if (show_p2p()) {
             options.push(Providers.createDp2pProvider(onClickDp2p));
         }
         return options;

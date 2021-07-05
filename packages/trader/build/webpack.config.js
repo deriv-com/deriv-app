@@ -48,10 +48,10 @@ module.exports = function (env, argv) {
             // }
         },
         output: {
-            filename: 'js/[name].js',
+            filename: 'trader/js/[name].js',
             publicPath: base,
             path: path.resolve(__dirname, '../dist'),
-            chunkFilename: 'js/trader.[name].[contenthash].js',
+            chunkFilename: 'trader/js/trader.[name].[contenthash].js',
             libraryExport: 'default',
             library: '@deriv/trader',
             libraryTarget: 'umd',

@@ -3,7 +3,7 @@ import notes from './README.md';
 import React from 'react';
 import RelativeDatepicker from 'Components/relative-datepicker';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
-import { action, actions } from '@storybook/addon-actions';
+import { action } from '@storybook/addon-actions';
 import { withInfo } from '@storybook/addon-info';
 import Wrapper from '../shared/wrapper';
 
@@ -17,7 +17,7 @@ stories.add(
         return (
             <Wrapper is_dark={boolean('dark_theme', false)}>
                 <div className='relative-datepicker-component'>
-                    <RelativeDatepicker onChange={actions('changed')} min={0} max={5} title={'Pick a date'} />
+                    <RelativeDatepicker onChange={action('changed')} min={0} max={5} title={'Pick a date'} />
                 </div>
             </Wrapper>
         );

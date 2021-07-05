@@ -16,14 +16,14 @@ const DummyComponent = props => (
 
 ## Props
 
-| Name      | Type       | Default | Description                                |
-| --------- | ---------- | ------- | ------------------------------------------ |
-| className | {string}   | null    | The classname for the Toast                |
-| is_open   | {boolean}  | true    | Define whether the toast is visible or not |
-| onClick   | {function} | null    | A function to visible toast                |
-| onClose   | {function} | null    | A function to hide toast                   |
-| type      | {string}   | 'info'  | Type of the message, one Of 'error' or info'|
-| timeout   | {number}   | 0       | Timeout in milliseconds                    |
+| Name      | Type       | Default | Description                                  |
+| --------- | ---------- | ------- | -------------------------------------------- |
+| className | {string}   | null    | The classname for the Toast                  |
+| is_open   | {boolean}  | true    | Define whether the toast is visible or not   |
+| onClick   | {function} | null    | Callback function when toast is clicked      |
+| onClose   | {function} | null    | A function to hide toast                     |
+| type      | {string}   | 'info'  | Type of the message, one of 'error' or info' |
+| timeout   | {number}   | 0       | Timeout in milliseconds                      |
 
 # Full example:
 
@@ -31,7 +31,12 @@ const DummyComponent = props => (
 import Toast from 'deriv-components';
 
 const DummyComponent = props => (
-    <Toast is_open={boolean('is open?', true)} timeout={number('Timeout', 3000)} onClose={console.log('Closed')}>
+    <Toast
+        is_open={boolean('is open?', true)}
+        onclick={() => console.log('Clicked!')}
+        timeout={number('Timeout', 3000)}
+        onClose={console.log('Closed')}
+    >
         Message
     </Toast>
 );

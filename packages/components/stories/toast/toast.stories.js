@@ -1,5 +1,6 @@
 import { storiesOf } from '@storybook/react';
 import { boolean, number, withKnobs } from '@storybook/addon-knobs';
+import { action } from '@storybook/addon-actions';
 import { withInfo } from '@storybook/addon-info';
 import React from 'react';
 import Toast from 'Components/toast';
@@ -14,8 +15,8 @@ stories
     .add(
         'static',
         () => (
-            <Theme is_dark={boolean('Theme', false)}>
-                <Toast>Message to be shown!</Toast>
+            <Theme is_dark={boolean('dark theme', false)}>
+                <Toast onClick={action('clicked')}>Message to be shown!</Toast>
             </Theme>
         ),
         { notes }
@@ -23,8 +24,9 @@ stories
     .add(
         'with timeout',
         () => (
-            <Theme is_dark={boolean('Theme', false)}>
+            <Theme is_dark={boolean('dark theme', false)}>
                 <Toast
+                    onClick={action('clicked')}
                     is_open={boolean('is open?', true)}
                     timeout={number('Timeout', 3000)}
                     onClose={console.log('Closed')}

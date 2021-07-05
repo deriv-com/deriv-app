@@ -44,6 +44,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         });
     };
     const onClickDelete = () => !general_store.is_barred && my_ads_store.onClickDelete(id);
+    const onClickEdit = () => my_ads_store.setShowAdForm(true);
     const onMouseEnter = () => setIsPopoverActionsVisible(true);
     const onMouseLeave = () => setIsPopoverActionsVisible(false);
 
@@ -51,38 +52,28 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         return (
             <HorizontalSwipe
                 is_left_swipe
+                right_hidden_component_width={is_advert_active ? '12rem' : '18rem'}
                 right_hidden_component={
                     <React.Fragment>
-                        {is_advert_active ? (
-                            <div className='p2p-my-ads__table-popovers__unarchive'>
-                                <Icon
-                                    icon='IcArchive'
-                                    custom_color='var(--general-main-1)'
-                                    size={14}
-                                    onClick={onClickActivateDeactivate}
-                                />
-                            </div>
-                        ) : (
-                            <div className='p2p-my-ads__table-popovers__archive'>
-                                <Icon
-                                    icon='IcUnarchive'
-                                    custom_color='var(--general-main-1)'
-                                    size={14}
-                                    onClick={onClickActivateDeactivate}
-                                />
+                        {!is_advert_active && (
+                            <div className='p2p-my-ads__table-popovers__edit' onClick={onClickEdit}>
+                                <Icon custom_color='var(--general-main-1)' icon='IcEdit' size={16} />
                             </div>
                         )}
-                        <div className='p2p-my-ads__table-popovers__delete'>
-                            <Icon
-                                icon='IcDelete'
-                                custom_color='var(--general-main-1)'
-                                size={16}
-                                onClick={onClickDelete}
-                            />
+                        {is_advert_active ? (
+                            <div className='p2p-my-ads__table-popovers__activate' onClick={onClickActivateDeactivate}>
+                                <Icon custom_color='var(--general-main-1)' icon='IcArchive' size={14} />
+                            </div>
+                        ) : (
+                            <div className='p2p-my-ads__table-popovers__deactivate' onClick={onClickActivateDeactivate}>
+                                <Icon custom_color='var(--general-main-1)' icon='IcUnarchive' size={14} />
+                            </div>
+                        )}
+                        <div className='p2p-my-ads__table-popovers__delete' onClick={onClickDelete}>
+                            <Icon custom_color='var(--general-main-1)' icon='IcDelete' size={16} />
                         </div>
                     </React.Fragment>
                 }
-                right_hidden_component_width='12rem'
                 visible_component={
                     <Table.Row
                         className={classNames('p2p-my-ads__table-row', {
@@ -188,7 +179,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                             <div onClick={onClickActivateDeactivate}>
                                 <Popover
                                     alignment='bottom'
-                                    className='p2p-my-ads__table-popovers__archive'
+                                    className='p2p-my-ads__table-popovers__deactivate'
                                     message={localize('Deactivate')}
                                 >
                                     <Icon icon='IcArchive' color={general_store.is_barred && 'disabled'} size={16} />
@@ -198,10 +189,21 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                             <div onClick={onClickActivateDeactivate}>
                                 <Popover
                                     alignment='bottom'
-                                    className='p2p-my-ads__table-popovers__unarchive'
+                                    className='p2p-my-ads__table-popovers__activate'
                                     message={localize('Activate')}
                                 >
                                     <Icon icon='IcUnarchive' color={general_store.is_barred && 'disabled'} size={16} />
+                                </Popover>
+                            </div>
+                        )}
+                        {!is_advert_active && (
+                            <div onClick={onClickEdit}>
+                                <Popover
+                                    alignment='bottom'
+                                    className='p2p-my-ads__table-popovers__edit'
+                                    message={localize('Edit')}
+                                >
+                                    <Icon icon='IcEdit' size={16} />
                                 </Popover>
                             </div>
                         )}

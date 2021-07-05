@@ -71,6 +71,7 @@ const RealAccountSignup = ({
     routing_history,
     setIsDeposit,
     setParams,
+    should_show_all_available_currencies,
     state_index,
     state_value,
 }) => {
@@ -158,7 +159,10 @@ const RealAccountSignup = ({
         },
         {
             body: () => <ChooseCryptoCurrency className='account-wizard__body' onError={showErrorModal} />,
-            title: () => localize('Choose a cryptocurrency account'),
+            title: local_props =>
+                local_props.should_show_all_available_currencies
+                    ? localize('Choose an account')
+                    : localize('Choose a cryptocurrency account'),
         },
     ]);
 
@@ -349,6 +353,7 @@ const RealAccountSignup = ({
                                     is_eu={is_eu}
                                     has_fiat={has_fiat}
                                     available_crypto_currencies={available_crypto_currencies}
+                                    should_show_all_available_currencies={should_show_all_available_currencies}
                                 />
                             );
                         }
@@ -383,6 +388,7 @@ const RealAccountSignup = ({
                                     currency={currency}
                                     is_isle_of_man_residence={is_isle_of_man_residence}
                                     is_belgium_residence={is_belgium_residence}
+                                    should_show_all_available_currencies={should_show_all_available_currencies}
                                 />
                             );
                         }
@@ -419,6 +425,7 @@ export default connect(({ ui, client, common, modules }) => ({
     is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
     is_belgium_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
     setIsDeposit: modules.cashier.setIsDeposit,
+    should_show_all_available_currencies: modules.cashier.should_show_all_available_currencies,
     state_value: ui.real_account_signup,
     routing_history: common.app_routing_history,
 }))(withRouter(RealAccountSignup));

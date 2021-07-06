@@ -24,7 +24,10 @@ test  :
   npm run test
   ```
 
-storybook: 
+storybook:
+
+- [`Storybook`](https://github.com/binary-com/deriv-app/blob/master/storybook/README.md)
+
   ```shell script
   npm run storybook
   ```

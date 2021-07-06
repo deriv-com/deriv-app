@@ -76,6 +76,7 @@ const PasswordModalHeader = ({
     account_title,
     is_password_reset_error,
     has_mt5_account,
+    platform,
 }) => {
     if (should_set_trading_password && has_mt5_account) {
         return null;
@@ -96,7 +97,12 @@ const PasswordModalHeader = ({
                 <Localize i18n_default_text='Set a trading password' />
             )}
             {!should_show_server_form && !should_set_trading_password && !is_password_reset_error && (
-                <Localize i18n_default_text='Enter your trading password' />
+                <Localize
+                    i18n_default_text='Enter your {{platform}} password'
+                    values={{
+                        platform: platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
+                    }}
+                />
             )}
             {!should_show_server_form && is_password_reset_error && <Localize i18n_default_text='Too many attempts' />}
             {should_show_server_form && (
@@ -241,6 +247,17 @@ const CFDPasswordForm = props => {
             {({ errors, isSubmitting, handleBlur, handleChange, handleSubmit, setFieldTouched, touched, values }) => (
                 <form onSubmit={handleSubmit}>
                     <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
+                        {!props.should_set_trading_password && (
+                            <Text size='xs' className='dc-modal__container_cfd-password-modal__account-title'>
+                                <Localize
+                                    i18n_default_text='Enter your {{platform}} password to add a {{platform}} {{account}} account.'
+                                    values={{
+                                        platform: props.platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
+                                        account: props.account_title,
+                                    }}
+                                />
+                            </Text>
+                        )}
                         <div className='input-element'>
                             <PasswordMeter
                                 input={values.password}
@@ -250,7 +267,9 @@ const CFDPasswordForm = props => {
                                 {() => (
                                     <PasswordInput
                                         autoComplete='new-password'
-                                        label={localize('Trading password')}
+                                        label={localize('{{platform}} password', {
+                                            platform: props.platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
+                                        })}
                                         error={
                                             (touched.password && errors.password) ||
                                             (values.password.length === 0 ? props.error_message : '')
@@ -287,7 +306,12 @@ const CFDPasswordForm = props => {
                         )}
                         {props.error_type === 'PasswordError' && (
                             <Text size='xs' as='p' className='dc-modal__container_mt5-password-modal__hint'>
-                                <Localize i18n_default_text='Hint: You may have chosen a different trading password from your Deriv log in password.' />
+                                <Localize
+                                    i18n_default_text='Hint: You may have entered your Deriv password, which is different from your {{platform}} password.'
+                                    values={{
+                                        platform: props.platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
+                                    }}
+                                />
                             </Text>
                         )}
                     </div>
@@ -558,6 +582,7 @@ const CFDPasswordModal = ({
                             account_title={account_title}
                             has_mt5_account={has_mt5_account}
                             is_password_reset_error={is_password_reset}
+                            platform={platform}
                         />
                     )}
                     onExited={() => setPasswordModalExited(true)}
@@ -587,6 +612,7 @@ const CFDPasswordModal = ({
                         account_title={account_title}
                         has_mt5_account={has_mt5_account}
                         is_password_reset_error={is_password_reset}
+                        platform={platform}
                     />
                     <RequireTradingPasswordModal
                         has_mt5_account={has_mt5_account}

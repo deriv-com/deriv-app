@@ -1,6 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, FormSubmitButton, Button, Icon, MultiStep, SendEmailTemplate } from '@deriv/components';
+import {
+    Text,
+    FormSubmitButton,
+    Button,
+    Icon,
+    MultiStep,
+    SendEmailTemplate,
+    getCFDPlatformLabel,
+} from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { CFD_PLATFORMS } from '@deriv/shared';
 
@@ -11,7 +19,7 @@ const ChangePassword = ({ platform, onConfirm }) => (
             <Localize
                 i18n_default_text='{{platform}} password'
                 values={{
-                    platform: platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
+                    platform: getCFDPlatformLabel(platform),
                 }}
             />
         </Text>
@@ -30,7 +38,7 @@ const ChangePassword = ({ platform, onConfirm }) => (
                 <Localize
                     i18n_default_text='Change {{platform}} password'
                     values={{
-                        platform: platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
+                        platform: getCFDPlatformLabel(platform),
                     }}
                 />
             </Text>
@@ -50,7 +58,7 @@ const ChangePasswordConfirmation = ({ platform, onConfirm, onCancel }) => (
             <Localize
                 i18n_default_text='Confirm to change your {{platform}} password'
                 values={{
-                    platform: platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
+                    platform: getCFDPlatformLabel(platform),
                 }}
             />
         </Text>
@@ -64,7 +72,7 @@ const ChangePasswordConfirmation = ({ platform, onConfirm, onCancel }) => (
             <Localize
                 i18n_default_text='This will change the password to all of your {{platform}} accounts.'
                 values={{
-                    platform: platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
+                    platform: getCFDPlatformLabel(platform),
                 }}
             />
         </Text>
@@ -94,7 +102,7 @@ const PasswordReset = ({ onClickSendEmail, platform }) => {
         <SendEmailTemplate
             className='sent-email'
             subtitle={localize('Please click on the link in the email to change your {{platform}} password.', {
-                platform: platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
+                platform: getCFDPlatformLabel(platform),
             })}
             lbl_no_receive={localize("Didn't receive the email?")}
             txt_resend={localize('Resend email')}

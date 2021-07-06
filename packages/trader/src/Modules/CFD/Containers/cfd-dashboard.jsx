@@ -2,7 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import { Redirect } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Tabs, PageError, Loading, Text } from '@deriv/components';
-import { isEmptyObject, isMobile, routes, CFD_PLATFORMS } from '@deriv/shared';
+import { isEmptyObject, isMobile, routes, getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display.jsx';
@@ -216,7 +216,7 @@ class CFDDashboard extends React.Component {
                                         <Localize
                                             i18n_default_text='Due to an issue on our server, some of your {{platform}} accounts are unavailable at the moment. Please bear with us and thank you for your patience.'
                                             values={{
-                                                platform: platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
+                                                platform: getCFDPlatformLabel(platform),
                                             }}
                                         />
                                     </Text>

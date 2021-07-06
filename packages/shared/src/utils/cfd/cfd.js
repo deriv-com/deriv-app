@@ -98,3 +98,14 @@ export const getAccountListKey = (account, platform) => {
         platform,
     })}@${platform === CFD_PLATFORMS.DXTRADE ? account.market_type : account.server}`;
 };
+
+export const getCFDPlatformLabel = platform => {
+    switch (platform) {
+        case CFD_PLATFORMS.MT5:
+            return 'DMT5';
+        case CFD_PLATFORMS.DXTRADE:
+            return 'Deriv X';
+        default:
+            return '';
+    }
+};

@@ -849,21 +849,6 @@
     &--error-message {
         margin-bottom: 1em;
     }
-    &__trading-password {
-        &-wrapper {
-            display: grid;
-            grid-auto-rows: auto;
-            justify-items: center;
-            grid-gap: 1rem;
-            margin-top: 3.2rem;
-        }
-        &-text {
-            margin-bottom: 1.4rem;
-        }
-        &-note {
-            margin-top: 1.4rem;
-        }
-    }
     &__investor-wrapper {
         margin: 3.2rem 0.5rem 0;
 
@@ -1235,6 +1220,29 @@
         overflow: hidden;
     }
 }
+
+.cfd-change-password {
+    &__description {
+        margin-bottom: 2.4rem;
+    }
+
+    &__icon {
+        margin-left: 2.3rem;
+        margin-bottom: 1.4rem;
+    }
+
+    &-confirmation {
+        &__description {
+            margin-top: 0.8rem;
+            margin-bottom: 2.4rem;
+        }
+    }
+}
+
+.cfd-trading-password {
+    margin-top: 3.2rem;
+}
+
 .dc-modal__container_cfd-financial-stp-signup-modal {
     max-height: calc(100vh - 102px) !important;
     @include desktop {

@@ -266,7 +266,7 @@ const RealAccountSignup = ({
                 active_modal_index_no = modal_pages_indices.add_or_manage_account;
             } else {
                 active_modal_index_no =
-                    real_account_signup_target === 'set_currency'
+                    !currency && real_account_signup_target !== 'maltainvest'
                         ? modal_pages_indices.set_currency
                         : modal_pages_indices.account_wizard;
             }

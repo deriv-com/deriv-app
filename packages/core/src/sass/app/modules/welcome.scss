@@ -81,6 +81,12 @@
             align-items: center;
             flex-basis: 32px;
             display: flex;
+
+            @include mobile {
+                position: absolute;
+                top: 3.4rem;
+                right: 0.5rem;
+            }
         }
 
         &__body {
@@ -99,6 +105,12 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+
+            &-description {
+                @include mobile {
+                    margin-right: 1.7rem;
+                }
+            }
         }
 
         &__options {

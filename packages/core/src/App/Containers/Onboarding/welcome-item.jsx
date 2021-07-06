@@ -53,7 +53,7 @@ const WelcomeItem = ({ title, description, options, onClick, icon, mobileIcon, s
                     <Text as='h3' weight='bold' color='prominent' size='s'>
                         {title}
                     </Text>
-                    <Text as='p' color='prominent' size='xs'>
+                    <Text as='p' color='prominent' size='xs' className='welcome-item__main-description'>
                         {description}
                     </Text>
                 </MobileWrapper>

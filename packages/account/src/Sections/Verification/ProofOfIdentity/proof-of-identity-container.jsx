@@ -15,7 +15,7 @@ import Onfido from './onfido.jsx';
 import IdvContainer from './idv.jsx';
 import { identity_status_codes, service_code } from './proof-of-identity-utils';
 // Enable for testing
-import { figmaAccountStatus } from './mock/account_status';
+// import { figmaAccountStatus } from './mock/account_status';
 import { populateVerificationStatus } from '../Helpers/verification';
 
 const ProofOfIdentityContainer = ({
@@ -26,6 +26,7 @@ const ProofOfIdentityContainer = ({
     is_from_external,
     is_switching,
     is_virtual,
+    onStateChange,
     refreshNotifications,
     routeBackInApp,
     should_allow_authentication,
@@ -125,9 +126,7 @@ const ProofOfIdentityContainer = ({
         }
     }, [is_switching]);
 
-    // Mock Account Data. To be removed:
-    const parsed_account_status = figmaAccountStatus('idv_none') || account_status;
-    const verification_status = populateVerificationStatus(parsed_account_status);
+    const verification_status = populateVerificationStatus(account_status);
     const { idv, onfido, manual, identity_status, identity_last_attempt, needs_poa } = verification_status;
     const redirect_button = should_show_redirect_btn && (
         <Button primary className='proof-of-identity__redirect' onClick={() => routeBackTo(from_platform.route)}>
@@ -203,6 +202,7 @@ const ProofOfIdentityContainer = ({
                     residence_list={residence_list}
                     onfido={onfido}
                     onfido_service_token={onfido_service_token}
+                    onStateChange={onStateChange}
                     height={height ?? null}
                     refreshNotifications={refreshNotifications}
                     setAPIError={setAPIError}

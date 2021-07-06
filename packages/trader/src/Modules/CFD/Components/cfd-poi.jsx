@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal } from '@deriv/components';
 import { ProofOfIdentityContainer } from '@deriv/account';
-import { isDesktop, isMobile, WS } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, value, ...props }) => {
@@ -20,10 +20,6 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
     const is_next_btn_disabled = !(
         ['pending', 'verified'].includes(poi_state) || ['pending', 'verified'].includes(identity_status)
     );
-
-    React.useEffect(() => {
-        console.log(ProofOfIdentityContainer);
-    }, []);
 
     return (
         <Formik
@@ -44,21 +40,17 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                                     height_offset='180px'
                                     is_disabled={isDesktop()}
                                 >
-                                    <ProofOfIdentityContainer height={height} is_from_external={true} />
-                                    {/* <ProofOfIdentityContainer
-                                        {...props}
-                                        serviceToken={WS.serviceToken}
-                                        notificationEvent={WS.notificationEvent}
-                                        getAccountStatus={WS.authorized.getAccountStatus}
+                                    <ProofOfIdentityContainer
                                         height={height}
+                                        is_from_external={true}
                                         onStateChange={({ status }) => {
                                             const poi_status = ['pending', 'verified'].includes(identity_status)
                                                 ? identity_status
                                                 : status;
                                             setPOIState(poi_status);
                                         }}
-                                        is_from_external={true}
-                                    /> */}
+                                        {...props}
+                                    />
                                 </Div100vhContainer>
                                 <Modal.Footer is_bypassed={isMobile()}>
                                     <FormSubmitButton

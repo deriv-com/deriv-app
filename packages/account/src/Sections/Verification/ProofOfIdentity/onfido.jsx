@@ -7,9 +7,20 @@ import RejectedReasons from 'Components/poi-rejected-reasons';
 import Limited from 'Components/poi-limited';
 import { identity_status_codes } from './proof-of-identity-utils';
 
-const Onfido = ({ handleRequireSubmission, onfido, redirect_button, verification_status, is_from_external }) => {
+const Onfido = ({
+    handleRequireSubmission,
+    is_from_external,
+    onfido,
+    onStateChange,
+    redirect_button,
+    verification_status,
+}) => {
     const { status, submissions_left, last_rejected: rejected_reasons } = onfido;
     const { needs_poa } = verification_status;
+
+    React.useEffect(() => {
+        if (onStateChange) onStateChange({ status });
+    }, []);
 
     switch (status) {
         case identity_status_codes.pending:
@@ -47,14 +58,12 @@ const Onfido = ({ handleRequireSubmission, onfido, redirect_button, verification
 };
 
 Onfido.propTypes = {
-    country_code: PropTypes.string,
-    documents_supported: PropTypes.array,
-    handleComplete: PropTypes.func,
-    has_poa: PropTypes.bool,
-    height: PropTypes.number,
-    is_description_enabled: PropTypes.bool,
-    onfido_service_token: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-    onfido_status: PropTypes.oneOf(Object.keys(identity_status_codes)),
+    handleRequireSubmission: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    is_from_external: PropTypes.bool,
+    onfido: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+    onStateChange: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    redirect_button: PropTypes.object,
+    verification_status: PropTypes.object,
 };
 
 export default Onfido;

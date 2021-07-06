@@ -53,9 +53,23 @@
                 padding: 2.4rem 1.6rem;
             }
         }
+
+        &__row {
+            @include mobile {
+                border: none;
+            }
+        }
+
+        &__cell:not(:first-of-type) {
+            @include mobile {
+                border-bottom: 1px solid var(--general-section-1);
+                margin: 2px;
+            }
+        }
     }
 
-    .platform-table-row {
+    .platform-table-row,
+    .platform-table-row-items {
         grid-template-columns: 50% 50%;
         padding-top: 31px;
         position: relative;
@@ -82,8 +96,22 @@
         .platform-table-col {
             justify-content: initial;
 
+            @include mobile {
+                display: flex;
+                align-items: flex-start;
+                flex-wrap: wrap;
+            }
             @include desktop {
                 justify-content: center;
+            }
+
+            .platform-item {
+                @include mobile {
+                    width: 33.3%;
+                    height: 4.8rem;
+                    justify-content: flex-start;
+                    padding: 0;
+                }
             }
         }
     }

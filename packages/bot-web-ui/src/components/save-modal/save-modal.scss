@@ -127,10 +127,6 @@ div.radio-group {
             flex-direction: column;
             justify-content: space-between;
             height: 100%;
-
-            &--acitve-keyboard {
-                justify-content: flex-start;
-            }
         }
         & .dc-input {
             width: 100% !important;

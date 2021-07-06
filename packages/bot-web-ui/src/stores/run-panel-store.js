@@ -1,5 +1,6 @@
+import React from 'react';
 import { observable, action, reaction, computed, runInAction } from 'mobx';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
 import { contract_stages } from 'Constants/contract-stage';
 import { run_panel } from 'Constants/run-panel';
@@ -210,15 +211,36 @@ export default class RunPanelStore {
 
     @action.bound
     showStopMultiplierContractDialog() {
+        const { summary_card } = this.root_store;
+
         this.onOkButtonClick = () => {
-            this.stopBot();
+            this.dbot.terminateBot();
+            this.onCloseDialog();
+            summary_card.clear();
+        };
+        this.onCancelButtonClick = () => {
             this.onClickSell();
+            this.stopBot();
             this.onCloseDialog();
         };
-        this.onCancelButtonClick = this.onCloseDialog;
         this.dialog_options = {
-            title: localize('Are you sure?'),
-            message: localize('This will close the current contract.'),
+            title: localize('Keep your current contract?'),
+            message: (
+                <Localize
+                    i18n_default_text='Would you like to keep your current contract or close it? If you decide to keep it running, you can check and close it later on the <0>Reports</0> page.'
+                    components={[
+                        <a
+                            key={0}
+                            className='link'
+                            rel='noopener noreferrer'
+                            target='_blank'
+                            href='/reports/positions'
+                        />,
+                    ]}
+                />
+            ),
+            ok_button_text: localize('Keep my contract'),
+            cancel_button_text: localize('Close my contract'),
         };
         this.is_dialog_open = true;
     }

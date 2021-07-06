@@ -21,9 +21,11 @@ const CashierContainer = ({ iframe_height, iframe_url, is_crypto, is_loading }) 
             )}
             {is_crypto && (
                 <div className='cashier__transfer-onramp'>
-                    <Text line_height='xxl'>
-                        <Localize i18n_default_text='Looking for a way to buy cryptocurrency?' />
-                    </Text>
+                    <div className='cashier__transfer-onramp__header'>
+                        <Text line_height='xxl'>
+                            <Localize i18n_default_text='Looking for a way to buy cryptocurrency?' />
+                        </Text>
+                    </div>
                     <div>
                         <Button
                             className='cashier__transfer-onramp__button'

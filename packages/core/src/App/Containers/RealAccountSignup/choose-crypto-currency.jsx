@@ -39,6 +39,11 @@ const ChooseCryptoCurrency = ({
         );
     };
 
+    const addNewCryptoAccount = () => {
+        openRealAccountSignup('add_crypto');
+        setShouldShowCancel(true);
+    };
+
     const getReorderedCryptoCurrencies = () => {
         const reorderCryptoCurrencies = should_show_all_available_currencies
             ? reorderCurrencies(
@@ -58,7 +63,8 @@ const ChooseCryptoCurrency = ({
                 value: 'plus',
                 name: localize('Add new'),
                 second_line_label: localize('crypto account'),
-                icon: 'IcCashierAdd',
+                icon: 'IcAddAccount',
+                onClick: () => addNewCryptoAccount(),
             });
         }
 
@@ -74,16 +80,11 @@ const ChooseCryptoCurrency = ({
     const onSubmit = async obj => {
         Object.entries(obj).map(([title, value]) => {
             if (title === 'currency') {
-                if (value === 'plus') {
-                    openRealAccountSignup('add_crypto');
-                    setShouldShowCancel(true);
-                } else {
-                    closeRealAccountSignup();
-                    if (value !== currency_title) {
-                        doSwitch(value);
-                    }
-                    continueRouteAfterChooseCrypto();
+                closeRealAccountSignup();
+                if (value !== currency_title) {
+                    doSwitch(value);
                 }
+                continueRouteAfterChooseCrypto();
             }
         });
     };
@@ -116,6 +117,7 @@ const ChooseCryptoCurrency = ({
                                 label={currency.name}
                                 icon={currency.icon}
                                 second_line_label={currency.second_line_label}
+                                onClick={currency.onClick}
                             />
                         ))}
                     </CurrencyRadioButtonGroup>

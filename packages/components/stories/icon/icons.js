@@ -142,6 +142,7 @@ export const icons = {
         'IcAccountTransfer',
         'IcAccountTrashCanDashboard',
         'IcAccountTrashCan',
+        'IcAddAccount',
         'IcAddBold',
         'IcAddOutline',
         'IcAddRounded',

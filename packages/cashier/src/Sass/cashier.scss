@@ -100,8 +100,12 @@
     &__transfer-onramp {
         border-top: 2px solid var(--general-section-2);
 
+        &__header {
+            margin-top: 1.6rem;
+        }
+
         &__button {
-            margin: 0 1.6em 1rem 0 !important;
+            margin: 1.6em 1rem 0 !important;
 
             &:not(:last-child) {
                 margin-right: 1em;

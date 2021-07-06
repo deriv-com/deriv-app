@@ -406,6 +406,7 @@ const AccountSwitcher = props => {
                                 loginid={account.loginid}
                                 onClickAccount={account.is_disabled ? undefined : () => doSwitch(account.loginid)}
                                 onClickResetVirtualBalance={resetBalance}
+                                selectedMarket={props.selectedMarket}
                                 selected_loginid={props.account_loginid}
                             />
                         ))}
@@ -446,6 +447,7 @@ const AccountSwitcher = props => {
                                                 has_error={account.has_error}
                                                 loginid={account.display_login}
                                                 onClickAccount={redirectToMt5Demo}
+                                                selectedMarket={props.selectedMarket}
                                                 platform={CFD_PLATFORMS.MT5}
                                             />
                                         ))}
@@ -498,6 +500,7 @@ const AccountSwitcher = props => {
                                         has_balance={'balance' in account}
                                         loginid={account.display_login}
                                         onClickAccount={redirectToDXTradeDemo}
+                                        selectedMarket={props.selectedMarket}
                                         platform={CFD_PLATFORMS.DXTRADE}
                                     />
                                 ))}
@@ -558,6 +561,7 @@ const AccountSwitcher = props => {
                                         onClickAccount={
                                             account.is_disabled ? undefined : () => doSwitch(account.loginid)
                                         }
+                                        selectedMarket={props.selectedMarket}
                                         selected_loginid={props.account_loginid}
                                     />
                                 );
@@ -636,6 +640,7 @@ const AccountSwitcher = props => {
                                                 has_error={account.has_error}
                                                 loginid={account.display_login}
                                                 onClickAccount={redirectToMt5Real}
+                                                selectedMarket={props.selectedMarket}
                                                 server={findServerForAccount(account)}
                                                 platform={CFD_PLATFORMS.MT5}
                                             />
@@ -865,6 +870,7 @@ AccountSwitcher.propTypes = {
 
 const account_switcher = withRouter(
     connect(({ client, common, ui }) => ({
+        selectedMarket: ui.selectedMarket,
         available_crypto_currencies: client.available_crypto_currencies,
         account_loginid: client.loginid,
         accounts: client.accounts,

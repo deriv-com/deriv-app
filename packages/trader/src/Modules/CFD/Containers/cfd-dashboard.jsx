@@ -67,6 +67,11 @@ class CFDDashboard extends React.Component {
         this.props.checkShouldOpenAccount();
     }
 
+    scrollToSelectedMarket = async () => {
+        const market_element = document.getElementsByClassName(this.props.selected_market);
+        if (market_element[0] !== '') market_element[0].scrollIntoView();
+    };
+
     openResetPassword = () => {
         if (!/reset-password/.test(this.props.location.hash)) {
             return;
@@ -86,12 +91,6 @@ class CFDDashboard extends React.Component {
             return /demo/.test(this.props.location.hash) ? 1 : 0;
         }
         return undefined;
-    };
-
-    scrollToSelectedMarket = () => {
-        const selected_market = localStorage.getItem('selectedMarket');
-        const market_element = document.getElementsByClassName(selected_market);
-        if (market_element[0] !== undefined) market_element[0].scrollIntoView();
     };
 
     stopNotificationLoading = () => {
@@ -148,6 +147,7 @@ class CFDDashboard extends React.Component {
         const {
             account_settings,
             account_status,
+            selected_market,
             beginRealSignupForMt5,
             country,
             createCFDAccount,
@@ -347,6 +347,7 @@ class CFDDashboard extends React.Component {
                                     platform={platform}
                                     active_index={this.state.active_index}
                                     is_dark_mode_on={is_dark_mode_on}
+                                    selected_market={selected_market}
                                 />
                             </DesktopWrapper>
                             <MobileWrapper>
@@ -476,6 +477,7 @@ class CFDDashboard extends React.Component {
 
 export default withRouter(
     connect(({ client, modules, ui }) => ({
+        selected_market: ui.selected_market,
         beginRealSignupForMt5: modules.cfd.beginRealSignupForMt5,
         checkShouldOpenAccount: modules.cfd.checkShouldOpenAccount,
         country: client.account_settings.residence,

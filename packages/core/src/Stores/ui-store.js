@@ -124,6 +124,9 @@ export default class UIStore extends BaseStore {
     // UI Focus retention
     @observable current_focus = null;
 
+    // Selecting a market from the MT5 menu.
+    @observable selected_market = '';
+
     // Mobile
     mobile_toast_timeout = 3500;
     @observable.shallow toasts = [];
@@ -430,7 +433,7 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    openAccountNeededModal(target, target_label, target_dmt5_label) {
+    Modal(target, target_label, target_dmt5_label) {
         this.is_account_needed_modal_on = true;
         this.account_needed_modal_props = {
             target,
@@ -769,5 +772,10 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleShouldShowMultipliersOnboarding(value) {
         this.should_show_multipliers_onboarding = value;
+    }
+
+    @action.bound
+    selectedMarket(market) {
+        this.selected_market = market;
     }
 }

@@ -18,15 +18,16 @@ const AccountList = ({
     market_type,
     onClickAccount,
     onClickResetVirtualBalance,
+    selectedMarket,
     selected_loginid,
     server,
     is_dark_mode_on,
     sub_account_type,
     platform,
 }) => {
-    const SwitchMarket = element_class => {
+    const switchMarket = element_class => {
         const filter_class = element_class.match(market_type);
-        localStorage.setItem('selectedMarket', filter_class[0]);
+        selectedMarket(filter_class[0]);
         onClickAccount();
     };
 
@@ -41,7 +42,7 @@ const AccountList = ({
                     'acc-switcher__account--disabled': is_disabled,
                 })}
                 onClick={e => {
-                    if (!is_disabled) SwitchMarket(e.currentTarget.className);
+                    if (!is_disabled) switchMarket(e.currentTarget.className);
                 }}
             >
                 <span className='acc-switcher__id synthetic'>

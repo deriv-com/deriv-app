@@ -165,6 +165,7 @@ const ProofOfIdentityContainer = ({
                 has_require_submission={has_require_submission}
                 idv={idv}
                 onfido={onfido}
+                onStateChange={onStateChange}
                 needs_poa={needs_poa}
                 setAPIError={setAPIError}
                 manual={manual}

@@ -6,7 +6,7 @@ import IdvUploadComplete from 'Components/poi-idv-submit-complete';
 import Unsupported from 'Components/poi-unsupported';
 import UploadComplete from 'Components/poi-upload-complete';
 import OnfidoUpload from './onfido-sdk-view.jsx';
-import { submission_status_code, service_code } from './proof-of-identity-utils';
+import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
 
 const POISubmission = ({
     has_require_submission,
@@ -18,6 +18,7 @@ const POISubmission = ({
     needs_poa,
     onfido_service_token,
     onfido,
+    onStateChange,
     redirect_button,
     refreshNotifications,
     residence_list,
@@ -47,6 +48,7 @@ const POISubmission = ({
 
     const handleViewComplete = () => {
         setSubmissionStatus(submission_status_code.complete);
+        if (onStateChange) onStateChange(identity_status_codes.pending);
 
         WS.authorized.getAccountStatus().then(() => {
             refreshNotifications();

@@ -7,20 +7,9 @@ import RejectedReasons from 'Components/poi-rejected-reasons';
 import Limited from 'Components/poi-limited';
 import { identity_status_codes } from './proof-of-identity-utils';
 
-const Onfido = ({
-    handleRequireSubmission,
-    is_from_external,
-    onfido,
-    onStateChange,
-    redirect_button,
-    verification_status,
-}) => {
+const Onfido = ({ handleRequireSubmission, is_from_external, onfido, redirect_button, verification_status }) => {
     const { status, submissions_left, last_rejected: rejected_reasons } = onfido;
     const { needs_poa } = verification_status;
-
-    React.useEffect(() => {
-        if (onStateChange) onStateChange({ status });
-    }, []);
 
     switch (status) {
         case identity_status_codes.pending:

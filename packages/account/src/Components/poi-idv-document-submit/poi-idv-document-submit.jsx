@@ -73,18 +73,21 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
     const submitHandler = (values, { setSubmitting, setStatus }) => {
         setSubmitting(true);
         const { document_number, document_type } = values;
+        const selected_document = document_list.find(d => d.text === document_type);
+
         const submit_data = {
             identity_verification_document_add: 1,
             document_number,
-            document_type,
+            document_type: selected_document.id,
             issuing_country: country_code,
         };
 
         WS.send(submit_data).then(response => {
+            setSubmitting(false);
             if (response.error) {
                 setStatus(response.error);
+                return;
             }
-            setSubmitting(false);
             handleViewComplete();
         });
     };

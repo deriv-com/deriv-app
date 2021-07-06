@@ -11,14 +11,14 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
     const [poi_state, setPOIState] = React.useState('none');
     const validateForm = React.useCallback(() => {
         const errors = {};
-        if (!['pending', 'verified'].includes(poi_state) && !['pending', 'verified'].includes(identity_status)) {
+        if (!['pending'].includes(poi_state) || !['pending', 'verified'].includes(identity_status)) {
             errors.poi_state = true;
         }
         return errors;
     }, [poi_state, identity_status]);
 
     const is_next_btn_disabled = !(
-        ['pending', 'verified'].includes(poi_state) || ['pending', 'verified'].includes(identity_status)
+        ['pending'].includes(poi_state) || ['pending', 'verified'].includes(identity_status)
     );
 
     return (
@@ -43,12 +43,7 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                                     <ProofOfIdentityContainer
                                         height={height}
                                         is_from_external={true}
-                                        onStateChange={({ status }) => {
-                                            const poi_status = ['pending', 'verified'].includes(identity_status)
-                                                ? identity_status
-                                                : status;
-                                            setPOIState(poi_status);
-                                        }}
+                                        onStateChange={({ status }) => setPOIState(status)}
                                         {...props}
                                     />
                                 </Div100vhContainer>

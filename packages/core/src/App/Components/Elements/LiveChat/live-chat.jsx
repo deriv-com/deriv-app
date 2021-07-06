@@ -89,6 +89,7 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                         window.LC_API.on_chat_ended = () => {
                             window.LiveChatWidget.call('set_customer_email', session_variables.email);
                             window.LiveChatWidget.call('set_customer_name', `${client_first_name} ${client_last_name}`);
+                            return;
                         };
                     } else {
                         // client not logged in
@@ -99,6 +100,7 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                         window.LC_API.on_chat_ended = () => {
                             window.LiveChatWidget.call('set_customer_email', ' ');
                             window.LiveChatWidget.call('set_customer_name', ' ');
+                            return;
                         };
                     }
                 }

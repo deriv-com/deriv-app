@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import { Button, Text, Table, Icon, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { routes } from '@deriv/shared';
+import { routes, isMobile } from '@deriv/shared';
 
 const data = [
     {
@@ -103,8 +103,8 @@ const data = [
 const Items = ({ items }) =>
     items.map(({ title, icon }) => (
         <div key={title} className='platform-item'>
-            <Icon icon={icon} size={16} />
-            <Text as='p' align='center' color='prominent' size='xxxs'>
+            <Icon icon={icon} size={isMobile() ? 16 : 24} />
+            <Text as='p' align='center' color='prominent' size='xxxs' className='platform-item__text'>
                 {title}
             </Text>
         </div>
@@ -147,12 +147,26 @@ const Platforms = () => {
     return (
         <section className='platform-onboarding'>
             <MobileWrapper>
-                <Text as='h2' weight='bold' align='center' color='prominent' size='xsm'>
+                <Text
+                    as='h2'
+                    weight='bold'
+                    align='center'
+                    color='prominent'
+                    size='xsm'
+                    className='platform-onbordering-title'
+                >
                     {localize('Platforms')}
                 </Text>
             </MobileWrapper>
             <DesktopWrapper>
-                <Text as='h2' weight='bold' align='center' color='prominent' size='m'>
+                <Text
+                    as='h2'
+                    weight='bold'
+                    align='center'
+                    color='prominent'
+                    size='m'
+                    className='platform-onbordering-title'
+                >
                     {localize('Platforms')}
                 </Text>
             </DesktopWrapper>
@@ -204,7 +218,6 @@ const Platforms = () => {
                             <Button
                                 type='button'
                                 secondary
-                                small
                                 onClick={() => {
                                     history.push(routes.mt5);
                                 }}
@@ -216,7 +229,6 @@ const Platforms = () => {
                             <Button
                                 type='button'
                                 secondary
-                                small
                                 onClick={() => {
                                     history.push(routes.dxtrade);
                                 }}

@@ -92,7 +92,7 @@ const ChatMessages = observer(() => {
                                     ))}
                                 <div className={`order-chat__messages-item-timestamp`}>
                                     <Text color='less-prominent' line_height='s' size='xxxs'>
-                                        {formatMiliseconds(chat_message.created_at, 'HH:mm')}
+                                        {formatMiliseconds(chat_message.created_at, 'HH:mm', true)}
                                     </Text>
                                     {is_my_message && (
                                         <ChatMessageReceipt

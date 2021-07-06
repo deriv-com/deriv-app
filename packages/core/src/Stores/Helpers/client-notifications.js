@@ -111,8 +111,19 @@ export const clientNotifications = (ui = {}, client = {}) => {
         cashier_locked: {
             key: 'cashier_locked',
             header: localize('Cashier disabled'),
-            message: localize(
-                'We’re updating our cashier system and it’ll be back online soon. Please see our <0>status page</0> for updates.'
+            message: (
+                <Localize
+                    i18n_default_text='We’re updating our cashier system and it’ll be back online soon. Please see our <0>status page</0> for updates.'
+                    components={[
+                        <a
+                            key={0}
+                            className='link'
+                            rel='noopener noreferrer'
+                            target='_blank'
+                            href='https://deriv.statuspage.io/'
+                        />,
+                    ]}
+                />
             ),
             type: 'warning',
         },

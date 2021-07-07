@@ -146,7 +146,6 @@ class CFDDashboard extends React.Component {
         const {
             account_settings,
             account_status,
-            selected_market,
             beginRealSignupForMt5,
             country,
             createCFDAccount,
@@ -346,7 +345,6 @@ class CFDDashboard extends React.Component {
                                     platform={platform}
                                     active_index={this.state.active_index}
                                     is_dark_mode_on={is_dark_mode_on}
-                                    selected_market={selected_market}
                                 />
                             </DesktopWrapper>
                             <MobileWrapper>

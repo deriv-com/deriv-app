@@ -49,7 +49,7 @@ class CFDDashboard extends React.Component {
         },
     };
 
-    componentDidMount() {
+    async componentDidMount() {
         this.scrollToSelectedMarket();
         this.updateActiveIndex(this.getIndexToSet());
         this.openResetPassword();

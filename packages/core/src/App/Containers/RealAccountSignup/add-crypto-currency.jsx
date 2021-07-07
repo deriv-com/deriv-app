@@ -1,7 +1,7 @@
 import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { FormSubmitButton, Text } from '@deriv/components';
+import { FormSubmitButton, Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { isMobile, reorderCurrencies, website_name } from '@deriv/shared';
@@ -178,6 +178,7 @@ const AddCryptoCurrency = ({
                         form_error={form_error}
                         has_cancel={should_show_cancel}
                         cancel_label={localize('Back')}
+                        cancel_icon={<Icon icon='IcArrowLeftBold' />}
                         onCancel={() => onClickBack()}
                     />
                 </form>

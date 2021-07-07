@@ -13,7 +13,7 @@ const CashierDefaultDetails = ({
 }) => {
     return (
         <div className='cashier-default-detail'>
-            <Text size='sm' weight='bold'>
+            <Text size='sm' weight='bold' color='prominent'>
                 {detail_header}
             </Text>
             <div className='cashier-default-detail__div' onClick={detail_click}>

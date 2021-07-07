@@ -49,7 +49,7 @@ class CFDDashboard extends React.Component {
         },
     };
 
-    async componentDidMount() {
+    componentDidMount() {
         this.scrollToSelectedMarket();
         this.updateActiveIndex(this.getIndexToSet());
         this.openResetPassword();
@@ -57,7 +57,6 @@ class CFDDashboard extends React.Component {
     }
 
     componentWillUnmount() {
-        this.scrollToSelectedMarket();
         this.props.onUnmount();
     }
 
@@ -67,9 +66,9 @@ class CFDDashboard extends React.Component {
         this.props.checkShouldOpenAccount();
     }
 
-    scrollToSelectedMarket = async () => {
+    scrollToSelectedMarket = () => {
         const market_element = document.getElementsByClassName(this.props.selected_market);
-        if (market_element[0] !== '') market_element[0].scrollIntoView();
+        if (market_element[0] !== undefined) market_element[0].scrollIntoView({ block: 'center' });
     };
 
     openResetPassword = () => {

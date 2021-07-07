@@ -1,16 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-    Text,
-    FormSubmitButton,
-    Button,
-    Icon,
-    MultiStep,
-    SendEmailTemplate,
-    getCFDPlatformLabel,
-} from '@deriv/components';
+import { Text, FormSubmitButton, Button, Icon, MultiStep, SendEmailTemplate } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { CFD_PLATFORMS } from '@deriv/shared';
+import { getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
 
 const ChangePassword = ({ platform, onConfirm }) => (
     <div className='cfd-change-password'>

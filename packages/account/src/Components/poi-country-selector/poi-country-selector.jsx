@@ -49,7 +49,7 @@ const CountrySelector = ({ handleSelectionNext, residence_list, selected_country
                 <React.Fragment>
                     <div className='proof-of-identity__container'>
                         <Text className='proof-of-identity__header' align='center' weight='bold'>
-                            {localize('Proof of Identity')}
+                            {localize('Proof of identity')}
                         </Text>
                         <Text className='proof-of-identity__country-text ' size='xs'>
                             {localize('In which country was your document issued?')}

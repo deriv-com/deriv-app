@@ -45,10 +45,10 @@ const AccountList = ({
                     if (!is_disabled) switchMarket(e.currentTarget.className);
                 }}
             >
-                <span className='acc-switcher__id synthetic'>
+                <span className='acc-switcher__id'>
                     <Icon
                         icon={is_virtual ? 'IcCurrencyVirtual' : currency_badge}
-                        className={'acc-switcher__id-icon synthetic'}
+                        className={'acc-switcher__id-icon'}
                         size={24}
                     />
                     <span>

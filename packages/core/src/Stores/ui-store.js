@@ -433,7 +433,7 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    Modal(target, target_label, target_dmt5_label) {
+    openAccountNeededModal(target, target_label, target_dmt5_label) {
         this.is_account_needed_modal_on = true;
         this.account_needed_modal_props = {
             target,

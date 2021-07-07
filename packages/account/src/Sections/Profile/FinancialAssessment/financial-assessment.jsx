@@ -14,11 +14,9 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
-import { routes, isMobile, isDesktop, PlatformContext } from '@deriv/shared';
-
+import { routes, isMobile, isDesktop, PlatformContext, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { WS } from 'Services/ws-methods';
 import LeaveConfirm from 'Components/leave-confirm';
 import IconMessageContent from 'Components/icon-message-content';
 import DemoMessage from 'Components/demo-message';
@@ -192,14 +190,8 @@ class FinancialAssessment extends React.Component {
                 // TODO: Find a better solution for handling no-op instead of using is_mounted flags
                 if (this.is_mounted) {
                     WS.wait('get_account_status').then(() => {
-                        const mt5_session_storage = sessionStorage.getItem('open_mt5_account_type');
-                        const has_mt5_financial_session = /labuan_financial_stp|labuan_advanced/.test(
-                            mt5_session_storage
-                        );
                         const has_trading_experience =
-                            (has_mt5_financial_session ||
-                                this.props.is_financial_account ||
-                                this.props.is_trading_experience_incomplete) &&
+                            (this.props.is_financial_account || this.props.is_trading_experience_incomplete) &&
                             !this.props.is_svg;
 
                         const needs_financial_assessment =

@@ -43,8 +43,8 @@ const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
     };
 
     const handleRejectedFiles = files => {
-        const is_file_too_large = files.length > 0 && files[0].size > max_document_size;
-        const supported_files = files.filter(file => getSupportedFiles(file.name));
+        const is_file_too_large = files.length > 0 && files[0].file.size > max_document_size;
+        const supported_files = files.filter(each_file => getSupportedFiles(each_file.file.name));
         const error_message =
             is_file_too_large && supported_files.length > 0
                 ? localize('File size should be 8MB or less')
@@ -97,7 +97,7 @@ const FileUploader = React.forwardRef(({ onFileDrop, getSocket }, ref) => {
             <FileDropzone
                 accept={supported_filetypes}
                 error_message={localize('Please upload supported file type.')}
-                filename_limit={32}
+                filename_limit={26}
                 hover_message={localize('Drop files here..')}
                 max_size={max_document_size}
                 message={<UploadMessage />}

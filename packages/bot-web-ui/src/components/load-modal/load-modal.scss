@@ -9,11 +9,16 @@
             @include mobile {
                 width: 100%;
             }
+
+            &__body {
+                height: 100%;
+            }
         }
         & .dc-tabs {
             @include mobile {
                 height: 100%;
                 display: unset;
+                flex: 1;
 
                 &__content {
                     height: calc(100% - 40px);

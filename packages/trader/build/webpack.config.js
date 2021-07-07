@@ -9,7 +9,7 @@ module.exports = function (env, argv) {
         devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
         entry: {
             trader: path.resolve(__dirname, '../src', 'index.js'),
-            MT5Store: 'Stores/Modules/MT5/mt5-store.js',
+            CFDStore: 'Stores/Modules/CFD/cfd-store.js',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {
@@ -48,10 +48,10 @@ module.exports = function (env, argv) {
             // }
         },
         output: {
-            filename: 'js/[name].js',
+            filename: 'trader/js/[name].js',
             publicPath: base,
             path: path.resolve(__dirname, '../dist'),
-            chunkFilename: 'js/trader.[name].[contenthash].js',
+            chunkFilename: 'trader/js/trader.[name].[contenthash].js',
             libraryExport: 'default',
             library: '@deriv/trader',
             libraryTarget: 'umd',

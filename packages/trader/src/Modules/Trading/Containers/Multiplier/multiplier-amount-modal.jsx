@@ -1,8 +1,7 @@
 import React from 'react';
 import { Div100vhContainer, Modal, Money, Popover, usePreventIOSZoom } from '@deriv/components';
-import { useIsMounted } from '@deriv/shared';
+import { useIsMounted, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
@@ -20,6 +19,7 @@ const MultiplierAmountModal = ({ is_open, enableApp, disableApp, toggleModal }) 
                 enableApp={enableApp}
                 is_open={is_open}
                 is_title_centered
+                should_header_stick_body={false}
                 disableApp={disableApp}
                 toggleModal={toggleModal}
                 height='auto'
@@ -86,9 +86,9 @@ const TradeParamsMobile = ({ amount, currency, toggleModal, trade_store, trade_s
 
     return (
         <React.Fragment>
-            <div className='trade-params__multiplier-icinfo-wrapper'>
+            <div className='trade-params__multiplier-ic-info-wrapper'>
                 <Popover
-                    alignment='top'
+                    alignment='right'
                     icon='info'
                     id='dt_multiplier-stake__tooltip'
                     zIndex={9999}

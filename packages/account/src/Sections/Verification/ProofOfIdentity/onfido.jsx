@@ -63,10 +63,13 @@ const Onfido = ({
 
     const previous_onfido_service_token = usePrevious(onfido_service_token);
 
-    const onComplete = React.useCallback(() => {
-        onfido_init?.tearDown();
-        handleComplete();
-    }, [handleComplete, onfido_init]);
+    const onComplete = React.useCallback(
+        data => {
+            onfido_init?.tearDown();
+            handleComplete(data);
+        },
+        [handleComplete, onfido_init]
+    );
 
     const initOnfido = React.useCallback(async () => {
         try {
@@ -99,15 +102,9 @@ const Onfido = ({
                                       }
                                     : false,
                             },
-                            useLiveDocumentCapture: true,
                         },
                     },
-                    {
-                        type: 'face',
-                        options: {
-                            useLiveDocumentCapture: true,
-                        },
-                    },
+                    'face',
                 ],
             });
             setOnfido(onfido);

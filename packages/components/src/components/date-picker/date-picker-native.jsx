@@ -70,7 +70,9 @@ const Native = ({
             >
                 {label || (!value && placeholder)}
             </label>
+
             <Icon icon='IcCalendar' className='dc-datepicker__calendar-icon' color={disabled && 'disabled'} />
+
             <input
                 ref={input_ref}
                 id={id}
@@ -85,7 +87,28 @@ const Native = ({
                 onFocus={handleFocus}
                 disabled={disabled}
                 onChange={e => {
-                    onSelect(e.target.value);
+                    let new_value = e.target.value;
+                    const moment_value = toMoment(new_value);
+
+                    if (min_date) {
+                        const moment_mindate = toMoment(min_date);
+                        const days_diff = moment_mindate.diff(moment_value, 'days');
+
+                        new_value = days_diff > 0 ? moment_mindate.format('YYYY-MM-DD') : new_value;
+                    }
+
+                    if (max_date) {
+                        const moment_maxdate = toMoment(max_date);
+                        const days_diff = moment_maxdate.diff(moment_value, 'days');
+
+                        new_value = days_diff < 0 ? moment_maxdate.format('YYYY-MM-DD') : new_value;
+                    }
+
+                    if (input_ref.current) {
+                        input_ref.current.value = new_value;
+                    }
+
+                    onSelect(new_value);
                 }}
             />
             {error && (

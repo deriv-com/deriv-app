@@ -1,40 +1,21 @@
 import React from 'react';
-import Loadable from 'react-loadable';
+import { routes, makeLazyLoader } from '@deriv/shared';
 import { Loading } from '@deriv/components';
-import { routes } from '@deriv/shared';
-
 import { localize } from '@deriv/translations';
 import Trade from 'Modules/Trading';
 
 const ContractDetails = React.lazy(() => import(/* webpackChunkName: "contract" */ 'Modules/Contract'));
 
-// MT5 Routes
-const MT5 = React.lazy(() => import(/* webpackChunkName: "mt5", webpackPrefetch: true */ 'Modules/MT5'));
+// CFD Routes
+const CFD = React.lazy(() => import(/* webpackChunkName: "cfd", webpackPrefetch: true */ 'Modules/CFD'));
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
 
-const handleLoading = props => {
-    // 200ms default
-    if (props.pastDelay) {
-        return <Loading />;
-    }
-    return null;
-};
-
-const makeLazyLoader = importFn => component_name =>
-    Loadable.Map({
-        loader: {
-            ComponentModule: importFn,
-        },
-        render(loaded, props) {
-            const ComponentLazy = loaded.ComponentModule.default[component_name];
-            return <ComponentLazy {...props} />;
-        },
-        loading: handleLoading,
-    });
-
-const lazyLoadReportComponent = makeLazyLoader(() => import(/* webpackChunkName: "reports" */ 'Modules/Reports'));
+const lazyLoadReportComponent = makeLazyLoader(
+    () => import(/* webpackChunkName: "reports" */ 'Modules/Reports'),
+    () => <Loading />
+);
 
 // Order matters
 const initRoutesConfig = () => {
@@ -46,7 +27,20 @@ const initRoutesConfig = () => {
             getTitle: () => localize('Contract Details'),
             is_authenticated: true,
         },
-        { path: routes.mt5, component: MT5, getTitle: () => localize('MT5'), is_authenticated: false },
+        {
+            path: routes.dxtrade,
+            // eslint-disable-next-line react/display-name
+            component: props => <CFD {...props} platform='dxtrade' />,
+            getTitle: () => localize('Deriv X'),
+            is_authenticated: false,
+        },
+        {
+            path: routes.mt5,
+            // eslint-disable-next-line react/display-name
+            component: props => <CFD {...props} platform='mt5' />,
+            getTitle: () => localize('MT5'),
+            is_authenticated: false,
+        },
         {
             path: routes.reports,
             component: lazyLoadReportComponent('Reports'),

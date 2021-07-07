@@ -35,35 +35,39 @@ const LanguageLink = ({ lang }) => (
     </React.Fragment>
 );
 
-const LanguageSettings = () => (
-    <div className='settings-language'>
-        <div className='settings-language__language-header'>
-            <Text size='xs' color='prominent' weight='bold'>
-                <Localize i18n_default_text='Select language' />
-            </Text>
+const LanguageSettings = () => {
+    return (
+        <div className='settings-language'>
+            <div className='settings-language__language-header'>
+                <Text size='xs' color='prominent' weight='bold'>
+                    <Localize i18n_default_text='Select language' />
+                </Text>
+            </div>
+            <div className='settings-language__language-container'>
+                {Object.keys(getAllowedLanguages()).map(key =>
+                    isCurrentLanguage(key) ? (
+                        <NonClickableLink lang={key} key={key}>
+                            <LanguageLink lang={key} />
+                        </NonClickableLink>
+                    ) : (
+                        <span
+                            id={`dt_settings_${key}_button`}
+                            key={key}
+                            onClick={() => {
+                                changeLanguage(key);
+                            }}
+                            className={classNames('settings-language__language-link', {
+                                'settings-language__language-link--active': isCurrentLanguage(key),
+                            })}
+                        >
+                            <LanguageLink lang={key} key={key} />
+                        </span>
+                    )
+                )}
+            </div>
         </div>
-        <div className='settings-language__language-container'>
-            {Object.keys(getAllowedLanguages()).map(key =>
-                isCurrentLanguage(key) ? (
-                    <NonClickableLink lang={key} key={key}>
-                        <LanguageLink lang={key} />
-                    </NonClickableLink>
-                ) : (
-                    <span
-                        id={`dt_settings_${key}_button`}
-                        key={key}
-                        onClick={() => changeLanguage(key)}
-                        className={classNames('settings-language__language-link', {
-                            'settings-language__language-link--active': isCurrentLanguage(key),
-                        })}
-                    >
-                        <LanguageLink lang={key} key={key} />
-                    </span>
-                )
-            )}
-        </div>
-    </div>
-);
+    );
+};
 
 LanguageLink.propTypes = {
     lang: PropTypes.string,

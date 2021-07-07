@@ -13,7 +13,7 @@ import {
     isTouchDevice,
     initFormErrorMessages,
     mobileOSDetect,
-    setSharedMT5Text,
+    setSharedCFDText,
 } from '@deriv/shared';
 import { initializeTranslations, getLanguage, useOnLoadTranslation } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
@@ -31,8 +31,10 @@ import AppModals from './Containers/Modals';
 import Routes from './Containers/Routes/routes.jsx';
 import initStore from './app';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
-import { MT5_TEXT } from '../Constants/mt5-text';
+import { CFD_TEXT } from '../Constants/cfd-text';
 
+// TODO: Lazy load smartchart styles
+import '@deriv/deriv-charts/dist/smartcharts.css';
 // eslint-disable-next-line import/extensions
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
@@ -54,7 +56,7 @@ const App = ({ root_store }) => {
         // TODO: [translation-to-shared]: add translation implemnentation in shared
         setUrlLanguage(getLanguage());
         initFormErrorMessages(FORM_ERROR_MESSAGES);
-        setSharedMT5Text(MT5_TEXT);
+        setSharedCFDText(CFD_TEXT);
         handleResize();
     }, []);
 

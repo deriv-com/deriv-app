@@ -314,7 +314,6 @@ AccountWizard.propTypes = {
     realAccountSignup: PropTypes.func,
     residence: PropTypes.string,
     residence_list: PropTypes.array,
-    setAccountCurrency: PropTypes.func,
 };
 
 export default connect(({ client, ui }) => ({
@@ -325,7 +324,6 @@ export default connect(({ client, ui }) => ({
     upgrade_info: client.upgrade_info,
     real_account_signup_target: ui.real_account_signup_target,
     has_currency: !!client.currency,
-    setAccountCurrency: client.setAccountCurrency,
     residence: client.residence,
     residence_list: client.residence_list,
     states_list: client.states_list,

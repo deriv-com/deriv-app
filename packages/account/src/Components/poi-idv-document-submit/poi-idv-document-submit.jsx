@@ -45,6 +45,10 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
         document_number: '',
     };
 
+    const getExampleFormat = example_format => {
+        return example_format ? localize('Example: ') + example_format : '';
+    };
+
     const validateFields = values => {
         const errors = {};
         const { document_type, document_number } = values;
@@ -57,12 +61,12 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
 
         if (!document_number) {
             errors.document_number =
-                localize('Please enter your document number. Example: ') + document_type.example_format;
+                localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
         } else {
             const format_regex = new RegExp(document_type.value);
             if (!format_regex.test(document_number)) {
                 errors.document_number =
-                    localize('Please enter the correct format. Example: ') + document_type.example_format;
+                    localize('Please enter the correct format. ') + getExampleFormat(document_type.example_format);
             }
         }
 
@@ -175,9 +179,8 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                             {...field}
                                             name='document_number'
                                             bottom_label={
-                                                values.document_type
-                                                    ? `Example: ${values.document_type.example_format}`
-                                                    : ''
+                                                values.document_type &&
+                                                getExampleFormat(values.document_type.example_format)
                                             }
                                             disabled={is_input_disable}
                                             error={touched.document_number && errors.document_number}
@@ -187,12 +190,13 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                             onBlur={handleBlur}
                                             onChange={handleChange}
                                             onKeyUp={e => {
-                                                const formatted_input = formatInput(
-                                                    values.document_type.example_format,
-                                                    e.target.value,
-                                                    '-'
-                                                );
-                                                setFieldValue('document_number', formatted_input, true);
+                                                const { example_format } = values.document_type;
+                                                let current_input = e.target.value;
+                                                if (example_format) {
+                                                    current_input = formatInput(example_format, current_input, '-');
+                                                }
+                                                setFieldValue('document_number', current_input, true);
+                                                validateFields(values);
                                             }}
                                             required
                                         />

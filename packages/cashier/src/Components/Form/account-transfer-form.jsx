@@ -257,17 +257,17 @@ const AccountTransferForm = ({
     }, [accounts_list, selected_to, selected_from]);
 
     React.useEffect(() => {
-        // if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
-        setSideNotes([
-            <AccountTransferNote
-                transfer_fee={transfer_fee}
-                currency={selected_from.currency}
-                minimum_fee={minimum_fee}
-                key={0}
-                is_dxtrade_allowed={is_dxtrade_allowed}
-            />,
-        ]);
-        // }
+        if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
+            setSideNotes([
+                <AccountTransferNote
+                    transfer_fee={transfer_fee}
+                    currency={selected_from.currency}
+                    minimum_fee={minimum_fee}
+                    key={0}
+                    is_dxtrade_allowed={is_dxtrade_allowed}
+                />,
+            ]);
+        }
     }, [transfer_fee, selected_from, minimum_fee, from_accounts, is_dxtrade_allowed]);
 
     React.useEffect(() => {

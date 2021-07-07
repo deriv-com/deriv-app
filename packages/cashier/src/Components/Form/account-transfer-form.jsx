@@ -99,7 +99,7 @@ const AccountTransferNote = ({ currency, transfer_fee, minimum_fee }) => (
             {/* {is_dxtrade_allowed ? (
                 <Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts, your Deriv account and Deriv MT5 (DMT5) account, or your Deriv account and Deriv X account.' />
             ) : ( */}
-            <Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts, your Deriv account and Deriv MT5 (DMT5) account, or your Deriv account.' />
+            <Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts, or your Deriv account and Deriv MT5 (DMT5) account.' />
             {/* )} */}
         </AccountTransferBullet>
         <AccountTransferBullet>

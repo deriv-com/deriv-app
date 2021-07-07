@@ -104,7 +104,13 @@ const Items = ({ items }) =>
     items.map(({ title, icon }) => (
         <div key={title} className='platform-item'>
             <Icon icon={icon} size={isMobile() ? 16 : 24} />
-            <Text as='p' align='center' color='prominent' size='xxxs' className='platform-item__text'>
+            <Text
+                as='p'
+                align='center'
+                color='prominent'
+                size={isMobile() ? 'xxxxs' : 'xxxs'}
+                className='platform-item__text'
+            >
                 {title}
             </Text>
         </div>

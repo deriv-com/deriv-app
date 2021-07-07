@@ -27,10 +27,18 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
         setDocumentList(
             Object.keys(document_data).map(key => {
                 const { display_name, format } = document_data[key];
-                return { id: key, text: display_name, value: format };
+                const { new_display_name, example_format, sample_image } = getDocumentData(country_code, key) || {};
+
+                return {
+                    id: key,
+                    text: new_display_name || display_name,
+                    value: format,
+                    sample_image,
+                    example_format,
+                };
             })
         );
-    }, [document_data]);
+    }, [country_code, document_data]);
 
     const initial_form_values = {
         document_type: '',
@@ -48,37 +56,26 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
         }
 
         if (!document_number) {
-            errors.document_number = localize('Please enter your document number.');
+            errors.document_number =
+                localize('Please enter your document number. Example: ') + document_type.example_format;
         } else {
-            const selected_document = document_list.find(d => d.text === document_type);
-            const format_regex = new RegExp(selected_document.value);
+            const format_regex = new RegExp(document_type.value);
             if (!format_regex.test(document_number)) {
-                errors.document_number = localize(
-                    `Please enter the correct format. Example: ${
-                        getDocumentData(country_code, selected_document.id).example_format
-                    }`
-                );
+                errors.document_number =
+                    localize('Please enter the correct format. Example: ') + document_type.example_format;
             }
         }
 
         return errors;
     };
 
-    const getSampleImage = document_name => {
-        const selected_document = document_list.find(d => d.text === document_name);
-        const { sample_image } = getDocumentData(country_code, selected_document.id);
-        return sample_image;
-    };
-
     const submitHandler = (values, { setSubmitting, setStatus }) => {
         setSubmitting(true);
         const { document_number, document_type } = values;
-        const selected_document = document_list.find(d => d.text === document_type);
-
         const submit_data = {
             identity_verification_document_add: 1,
             document_number,
-            document_type: selected_document.id,
+            document_type: document_type.id,
             issuing_country: country_code,
         };
 
@@ -131,12 +128,12 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                                         type='text'
                                                         label={localize('Choose the document type')}
                                                         list_items={document_list}
-                                                        value={values.document_type}
+                                                        value={values.document_type.text}
                                                         onChange={handleChange}
-                                                        onItemSelection={items => {
-                                                            setFieldValue('document_type', items.text || '', true);
+                                                        onItemSelection={item => {
+                                                            setFieldValue('document_type', item || '', true);
                                                             if (has_visual_sample) {
-                                                                setDocumentImage(getSampleImage(items.text) || null);
+                                                                setDocumentImage(item.sample_image || '');
                                                             }
                                                         }}
                                                         required
@@ -150,12 +147,17 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                                     error={touched.document_type && errors.document_type}
                                                     label={localize('Choose the document type')}
                                                     list_items={document_list}
-                                                    value={values.document_type}
+                                                    value={values.document_type.text}
                                                     onChange={e => {
                                                         handleChange(e);
-                                                        setFieldValue('document_type', e.target.value, true);
-                                                        if (has_visual_sample) {
-                                                            setDocumentImage(getSampleImage(e.target.value) || null);
+                                                        const selected_document = document_list.find(
+                                                            d => d.text === e.target.value
+                                                        );
+                                                        if (selected_document) {
+                                                            setFieldValue('document_type', selected_document, true);
+                                                            if (has_visual_sample) {
+                                                                setDocumentImage(selected_document.sample_image);
+                                                            }
                                                         }
                                                     }}
                                                     use_text={true}
@@ -172,6 +174,11 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                         <Input
                                             {...field}
                                             name='document_number'
+                                            bottom_label={
+                                                values.document_type
+                                                    ? `Example: ${values.document_type.example_format}`
+                                                    : ''
+                                            }
                                             disabled={is_input_disable}
                                             error={touched.document_number && errors.document_number}
                                             autoComplete='off'
@@ -180,11 +187,8 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                             onBlur={handleBlur}
                                             onChange={handleChange}
                                             onKeyUp={e => {
-                                                const selected_document = document_list.find(
-                                                    d => d.text === values.document_type
-                                                );
                                                 const formatted_input = formatInput(
-                                                    getDocumentData(country_code, selected_document.id).example_format,
+                                                    values.document_type.example_format,
                                                     e.target.value,
                                                     '-'
                                                 );

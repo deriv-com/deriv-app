@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Field from '../field/field.jsx';
 import Icon from '../icon/icon.jsx';
 import Text from '../text/text.jsx';
+import uuid from 'uuid';
 
 const getDisplayText = (list_items, value) => {
     const dropdown_items = Array.isArray(list_items) ? list_items : [].concat(...Object.values(list_items));
@@ -38,7 +39,7 @@ const SelectNativeOptions = ({ list_items, should_hide_disabled_options, use_tex
         ));
     }
     return options.map(option => (
-        <option key={option.value} value={use_text ? option.text : option.value}>
+        <option key={option.id || option.value} value={use_text ? option.text : option.value}>
             {option.nativepicker_text || option.text}
         </option>
     ));

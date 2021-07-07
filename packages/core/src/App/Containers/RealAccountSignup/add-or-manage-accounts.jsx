@@ -30,6 +30,7 @@ const AddOrManageAccounts = props => {
         resetRealAccountSignupTarget,
         setCurrency,
         setLoading,
+        setIsDeposit,
         setShouldShowCancel,
     } = props;
 
@@ -78,6 +79,7 @@ const AddOrManageAccounts = props => {
                         onSuccessSetAccountCurrency('', value);
                         setSubmitting(false);
                         resetRealAccountSignupTarget();
+                        setIsDeposit(true);
                     })
                     .catch(error => {
                         onError(error);
@@ -231,7 +233,7 @@ AddOrManageAccounts.propTypes = {
     setShouldShowCancel: PropTypes.func,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client, modules, ui }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     can_change_fiat_currency: client.can_change_fiat_currency,
     current_currency_type: client.current_currency_type,
@@ -244,4 +246,5 @@ export default connect(({ client, ui }) => ({
     createCryptoAccount: client.createCryptoAccount,
     openRealAccountSignup: ui.openRealAccountSignup,
     resetRealAccountSignupTarget: ui.resetRealAccountSignupTarget,
+    setIsDeposit: modules.cashier.setIsDeposit,
 }))(AddOrManageAccounts);

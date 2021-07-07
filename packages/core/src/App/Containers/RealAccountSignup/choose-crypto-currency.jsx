@@ -42,6 +42,7 @@ const ChooseCryptoCurrency = ({
     const addNewCryptoAccount = () => {
         openRealAccountSignup('add_crypto');
         setShouldShowCancel(true);
+        continueRouteAfterChooseCrypto();
     };
 
     const getReorderedCryptoCurrencies = () => {
@@ -79,7 +80,7 @@ const ChooseCryptoCurrency = ({
 
     const onSubmit = async obj => {
         Object.entries(obj).map(([title, value]) => {
-            if (title === 'currency') {
+            if (title) {
                 closeRealAccountSignup();
                 if (value !== currency_title) {
                     doSwitch(value);

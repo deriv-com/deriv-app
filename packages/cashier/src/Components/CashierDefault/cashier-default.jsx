@@ -120,7 +120,7 @@ const CashierDefault = ({
     };
 
     if (is_switching || accounts_list.length === 0 || !is_landing_company_loaded)
-        return <Loading className='cashier-default__loader' />;
+        return <Loading className='cashier-default__loader' is_fullscreen />;
 
     return (
         <div>

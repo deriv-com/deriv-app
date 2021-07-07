@@ -437,7 +437,7 @@ export default class UIStore extends BaseStore {
     @action.bound
     closeRealAccountSignup() {
         this.is_real_acc_signup_on = false;
-        this.real_account_signup_target = '';
+        this.resetRealAccountSignupTarget();
         setTimeout(() => {
             this.resetRealAccountSignupParams();
             this.setRealAccountSignupEnd(true);

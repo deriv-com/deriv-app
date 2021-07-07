@@ -1,6 +1,7 @@
 import { localize } from '@deriv/translations';
 import { runIrreversibleEvents } from '../../../utils';
 import ApiHelpers from '../../../../services/api/api-helpers';
+import DBotStore from '../../../dbot-store';
 
 /* eslint-disable */
 Blockly.Blocks.trade_definition_market = {
@@ -61,9 +62,11 @@ Blockly.Blocks.trade_definition_market = {
         // market options and Jump Diffusion Indices from
         // submarket options for Synthetic Indices
         // until multipliers are available for DBot
-        const market_options = active_symbols
-            .getMarketDropdownOptions()
-            .filter(option => option[1] !== 'cryptocurrency');
+        const { is_virtual, is_uk } = DBotStore.instance.client;
+        let market_options = active_symbols.getMarketDropdownOptions().filter(option => option[1] !== 'cryptocurrency');
+        if (is_virtual && is_uk) {
+            market_options = market_options.filter(option => option[1] !== 'forex');
+        }
         const submarket_options =
             market === 'synthetic_index'
                 ? active_symbols.getSubmarketDropdownOptions(market).filter(option => option[1] !== 'jump_index')

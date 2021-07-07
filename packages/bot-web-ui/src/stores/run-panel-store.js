@@ -211,9 +211,11 @@ export default class RunPanelStore {
 
     @action.bound
     showStopMultiplierContractDialog() {
-        const { summary_card } = this.root_store;
+        const { summary_card, core } = this.root_store;
+        const { ui } = core;
 
         this.onOkButtonClick = () => {
+            ui.setPromptHandler(false);
             this.dbot.terminateBot();
             this.onCloseDialog();
             summary_card.clear();

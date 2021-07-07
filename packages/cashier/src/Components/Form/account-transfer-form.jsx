@@ -95,11 +95,12 @@ const AccountTransferNote = ({ currency, transfer_fee, minimum_fee, is_dxtrade_a
             />
         </AccountTransferBullet>
         <AccountTransferBullet>
-            {is_dxtrade_allowed ? (
+            {/* TODO: Uncomment when real account is launched */}
+            {/* {is_dxtrade_allowed ? (
                 <Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts, your Deriv account and Deriv MT5 (DMT5) account, or your Deriv account and Deriv X account.' />
-            ) : (
-                <Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts, your Deriv account and Deriv MT5 (DMT5) account, or your Deriv account.' />
-            )}
+            ) : ( */}
+            <Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts, your Deriv account and Deriv MT5 (DMT5) account, or your Deriv account.' />
+            {/* )} */}
         </AccountTransferBullet>
         <AccountTransferBullet>
             <Localize i18n_default_text='Transfers may be unavailable when the market is closed (weekends or holidays), periods of high volatility, or when there are technical issues.' />
@@ -256,17 +257,17 @@ const AccountTransferForm = ({
     }, [accounts_list, selected_to, selected_from]);
 
     React.useEffect(() => {
-        if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
-            setSideNotes([
-                <AccountTransferNote
-                    transfer_fee={transfer_fee}
-                    currency={selected_from.currency}
-                    minimum_fee={minimum_fee}
-                    key={0}
-                    is_dxtrade_allowed={is_dxtrade_allowed}
-                />,
-            ]);
-        }
+        // if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
+        setSideNotes([
+            <AccountTransferNote
+                transfer_fee={transfer_fee}
+                currency={selected_from.currency}
+                minimum_fee={minimum_fee}
+                key={0}
+                is_dxtrade_allowed={is_dxtrade_allowed}
+            />,
+        ]);
+        // }
     }, [transfer_fee, selected_from, minimum_fee, from_accounts, is_dxtrade_allowed]);
 
     React.useEffect(() => {

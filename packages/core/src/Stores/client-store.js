@@ -244,7 +244,7 @@ export default class ClientStore extends BaseStore {
             return getDefaultAllowedCurrencies();
         }
         if (['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target)) {
-            return this.current_landing_company.legal_allowed_currencies;
+            return this.current_landing_company?.legal_allowed_currencies;
         }
         const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
 

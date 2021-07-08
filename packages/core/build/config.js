@@ -15,32 +15,10 @@ const copyConfig = base => {
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/js/*.*'),
             to: 'bot/js/',
-            flatten: true,
-        },
-        {
-            from: path.resolve(__dirname, '../node_modules/@deriv/dashboard/lib/assets/images'),
-            to: 'js/dashboard/assets/images',
-        },
-        {
-            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/js/*.*'),
-            to: 'bot/js/',
-            flatten: true,
         },
         {
             from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist/*.smartcharts.*'),
             to: 'js/smartcharts/',
-        },
-        {
-            from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/css/smartcharts.css*'),
-            to: 'css/',
-            flatten: true,
-        },
-        {
-            from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/public/**'),
-            to: 'public',
-            transformPath(context) {
-                return context.split('node_modules/@deriv/trader/dist/')[1];
-            },
         },
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/account/js/**'),
@@ -48,14 +26,16 @@ const copyConfig = base => {
         },
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/account/css/**'),
-            to: 'account/css/',
+            to: 'account/css',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/js/**'),
+            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/js/'),
             to: 'cashier/js',
         },
-        { from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/css/**'), to: 'css', flatten: true },
-        { from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/js/*.*'), to: 'js', flatten: true },
+        {
+            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/css/**'),
+            to: 'cashier/css',
+        },
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/public/**'),
             to: 'public',
@@ -64,18 +44,8 @@ const copyConfig = base => {
             },
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/js/trader.*.js'),
-            to: 'js',
-            flatten: true,
-        },
-        { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/css/**'), to: 'css', flatten: true },
-        {
             from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/trader'),
             to: 'trader',
-        },
-        {
-            from: path.resolve(__dirname, '../node_modules/@deriv/translations/src/translations/*.*'),
-            to: 'public/i18n',
         },
         { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file', noErrorOnMissing: true },
         { from: path.resolve(__dirname, '../src/root_files/404.html'), to: '404.html', toType: 'file' },

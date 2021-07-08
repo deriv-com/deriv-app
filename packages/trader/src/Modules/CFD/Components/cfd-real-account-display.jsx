@@ -273,7 +273,7 @@ const CFDRealAccountDisplay = ({
             onPasswordManager={openPasswordManager}
             onClickFund={onClickFundReal}
             platform={platform}
-            descriptor={general_messages.getFinancialAccountDescriptor(platform)}
+            descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu)}
             specs={financial_specs}
             is_logged_in={is_logged_in}
         />

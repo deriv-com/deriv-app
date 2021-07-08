@@ -1,8 +1,8 @@
 import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import { withRouter } from 'react-router';
-import { NavLink } from 'react-router-dom';
 import { SentEmailModal } from '@deriv/account';
 import { getMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 import {
@@ -32,44 +32,6 @@ import SuccessDialog from 'App/Containers/Modals/success-dialog.jsx';
 import 'Sass/app/modules/mt5/cfd.scss';
 import { connect } from 'Stores/connect';
 
-const RequireTradingPasswordModal = ({
-    should_set_trading_password,
-    has_mt5_account,
-    children,
-    platform,
-    is_dxtrade_allowed,
-}) => {
-    if (should_set_trading_password && has_mt5_account) {
-        return (
-            <div className='mt5-trading-password-required'>
-                <Icon icon='IcMt5OnePassword' size='128' />
-                <Text as='h2' size='s' line_height='24' weight='bold'>
-                    <Localize i18n_default_text='Set your trading password' />
-                </Text>
-                <Text as='p' size='xs' align='center'>
-                    {is_dxtrade_allowed ? (
-                        <Localize
-                            i18n_default_text='A trading password can be used to sign into any of your {{platform1}} (and {{platform2}}) accounts. '
-                            values={{
-                                platform1: platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
-                                platform2: platform === CFD_PLATFORMS.MT5 ? 'Deriv X' : 'DMT5',
-                            }}
-                        />
-                    ) : (
-                        <Localize i18n_default_text='You can now create one secure password to log into all your DMT5 accounts.' />
-                    )}
-                </Text>
-                <NavLink to={routes.passwords} className='dc-btn dc-btn--primary dc-btn__large'>
-                    <Text color='colored-background' weight='bold' size='xs'>
-                        <Localize i18n_default_text='Set your trading password' />
-                    </Text>
-                </NavLink>
-            </div>
-        );
-    }
-    return children;
-};
-
 const PasswordModalHeader = ({
     should_set_trading_password,
     should_show_server_form,
@@ -93,9 +55,6 @@ const PasswordModalHeader = ({
 
     return (
         <Text styles={style} as={element} line_height='24' weight='bold' size={font_size} align={alignment}>
-            {!should_show_server_form && should_set_trading_password && !is_password_reset_error && (
-                <Localize i18n_default_text='Set a trading password' />
-            )}
             {!should_show_server_form && !should_set_trading_password && !is_password_reset_error && (
                 <Localize
                     i18n_default_text='Enter your {{platform}} password'
@@ -185,7 +144,7 @@ const CFDPasswordForm = props => {
         if (props.should_show_server_form) {
             return localize('Next');
         } else if (!props.should_show_server_form && props.should_set_trading_password) {
-            return localize('Set trading password');
+            return localize('Create DMT5 password');
         } else if (props.error_type === 'PasswordReset') {
             return localize('Try later');
         }
@@ -195,6 +154,7 @@ const CFDPasswordForm = props => {
         props.should_show_server_form ||
         (isDesktop() ? !props.should_set_trading_password : true) ||
         props.error_type === 'PasswordReset';
+
     const cancel_button_label = getCancelButtonLabel(props);
 
     const handleCancel = () => {
@@ -246,7 +206,14 @@ const CFDPasswordForm = props => {
         >
             {({ errors, isSubmitting, handleBlur, handleChange, handleSubmit, setFieldTouched, touched, values }) => (
                 <form onSubmit={handleSubmit}>
-                    <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
+                    <div
+                        className={classNames(
+                            'cfd-password-modal__content dc-modal__container_cfd-password-modal__body',
+                            {
+                                'cfd-password-modal__create-password': props.should_set_trading_password,
+                            }
+                        )}
+                    >
                         {!props.should_set_trading_password && (
                             <Text size='xs' className='dc-modal__container_cfd-password-modal__account-title'>
                                 <Localize
@@ -257,6 +224,31 @@ const CFDPasswordForm = props => {
                                     }}
                                 />
                             </Text>
+                        )}
+                        {props.should_set_trading_password && (
+                            <div className='cfd-password-modal__create-password-content'>
+                                <Icon icon='IcMt5OnePassword' width='122' height='100' />
+                                <Text size='s' weight='bold' className='cfd-password-modal__create-password-title'>
+                                    <Localize
+                                        i18n_default_text='Create a {{platform}} password'
+                                        values={{
+                                            platform: props.platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
+                                        }}
+                                    />
+                                </Text>
+                                <Text
+                                    size='xs'
+                                    align='center'
+                                    className='cfd-password-modal__create-password-description'
+                                >
+                                    <Localize
+                                        i18n_default_text='You can use this password for all your {{platform}} accounts.'
+                                        values={{
+                                            platform: props.platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
+                                        }}
+                                    />
+                                </Text>
+                            </div>
                         )}
                         <div className='input-element'>
                             <PasswordMeter
@@ -290,15 +282,6 @@ const CFDPasswordForm = props => {
                                 <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (FX) Ltd. All trading in this account is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the Labuan Financial Service Authority (LFSA).' />
                             </div>
                         )}
-                        {props.should_set_trading_password && (
-                            <Text size='xs' as='p'>
-                                {props.is_dxtrade_allowed ? (
-                                    <Localize i18n_default_text='Use this to log in and trade on DMT5 and Deriv X.' />
-                                ) : (
-                                    <Localize i18n_default_text='Use this to log in and trade on DMT5.' />
-                                )}
-                            </Text>
-                        )}
                         {props.is_real_financial_stp && props.is_bvi && (
                             <div className='dc-modal__container_cfd-password-modal__description'>
                                 <Localize i18n_default_text='Your MT5 Financial STP account will be opened through Deriv (BVI) Ltd. All trading in this account is subject to the regulations and guidelines of the British Virgin Islands Financial Services Commission (BVIFSC). None of your other accounts, including your Deriv account, is subject to the regulations and guidelines of the British Virgin Islands Financial Services Commission (BVIFSC).' />
@@ -323,6 +306,7 @@ const CFDPasswordForm = props => {
                         is_absolute={isMobile()}
                         is_loading={isSubmitting}
                         label={button_label}
+                        is_center={props.should_set_trading_password}
                         form_error={props.form_error}
                     />
                 </form>
@@ -588,14 +572,7 @@ const CFDPasswordModal = ({
                     onExited={() => setPasswordModalExited(true)}
                     onEntered={() => setPasswordModalExited(false)}
                 >
-                    <RequireTradingPasswordModal
-                        has_mt5_account={has_mt5_account}
-                        should_set_trading_password={should_set_trading_password}
-                        platform={platform}
-                        is_dxtrade_allowed={is_dxtrade_allowed}
-                    >
-                        {should_show_server_form ? cfd_server_form : cfd_password_form}
-                    </RequireTradingPasswordModal>
+                    {should_show_server_form ? cfd_server_form : cfd_password_form}
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
@@ -614,14 +591,8 @@ const CFDPasswordModal = ({
                         is_password_reset_error={is_password_reset}
                         platform={platform}
                     />
-                    <RequireTradingPasswordModal
-                        has_mt5_account={has_mt5_account}
-                        should_set_trading_password={should_set_trading_password}
-                        platform={platform}
-                        is_dxtrade_allowed={is_dxtrade_allowed}
-                    >
-                        {should_show_server_form ? cfd_server_form : cfd_password_form}
-                    </RequireTradingPasswordModal>
+
+                    {should_show_server_form ? cfd_server_form : cfd_password_form}
                 </MobileDialog>
             </MobileWrapper>
             <SuccessDialog

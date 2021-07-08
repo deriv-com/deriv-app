@@ -62,9 +62,31 @@ Blockly.Blocks.trade_definition_market = {
         // market options and Jump Diffusion Indices from
         // submarket options for Synthetic Indices
         // until multipliers are available for DBot
-        const { is_virtual, is_uk } = DBotStore.instance.client;
+        const excludedCountries = [
+            'gb',
+            'ie',
+            'pt',
+            'se',
+            'pl',
+            'cy',
+            'nl',
+            'si',
+            'lv',
+            'hu',
+            'cz',
+            'ro',
+            'dk',
+            'fi',
+            'lt',
+            'hr',
+            'ee',
+            'sk',
+            'bg',
+            'at',
+        ];
+        const { is_virtual, residence } = DBotStore.instance.client;
         let market_options = active_symbols.getMarketDropdownOptions().filter(option => option[1] !== 'cryptocurrency');
-        if (is_virtual && is_uk) {
+        if (is_virtual && excludedCountries.includes(residence)) {
             market_options = market_options.filter(option => option[1] !== 'forex');
         }
         const submarket_options =

@@ -505,14 +505,15 @@ const ContentRenderer = props => {
         'bg',
         'at',
     ];
-    if (excludedCountries.includes(residence))
+    if (excludedCountries.includes(residence)) {
         symbol_dropdown_options = symbol_dropdown_options.filter(
             option => option.group === 'Daily Reset Indices' || option.group === 'Continuous Indices'
-        ); // Until Forex multiplier enabled for Dbot
+        );
+    } // Until Forex multiplier enabled for Dbot
     let selected_symbol_option;
-    symbol_dropdown_options.includes(selected_symbol)
-        ? (selected_symbol_option = selected_symbol)
-        : (selected_symbol_option = symbol_dropdown_options[1]);
+    if (symbol_dropdown_options.includes(selected_symbol)) selected_symbol_option = selected_symbol;
+    else selected_symbol_option = symbol_dropdown_options[0];
+
     const trade_type_dropdown_options = trade_type_dropdown.map(trade_type => ({
         component: <TradeTypeOption trade_type={trade_type} />,
         ...trade_type,

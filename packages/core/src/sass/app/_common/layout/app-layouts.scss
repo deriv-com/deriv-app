@@ -103,8 +103,9 @@
         background-color: var(--overlay-outside-dialog);
     }
     &--is-onboarding {
-        height: calc(100vh - #{$HEADER_HEIGHT_SIGNUP});
-        margin: $HEADER_HEIGHT_SIGNUP 0 0;
+        height: 100vh;
+        height: -webkit-fill-available;
+        padding: $HEADER_HEIGHT_SIGNUP 0 0;
     }
     @include mobile {
         // no footer:
@@ -121,8 +122,9 @@
             margin-top: $MOBILE_HEADER_HEIGHT_DASHBOARD;
         }
         &--is-onboarding {
-            height: calc(100vh - #{$MOBILE_HEADER_HEIGHT_SIGNUP});
-            margin: $MOBILE_HEADER_HEIGHT_SIGNUP 0 0;
+            height: 100vh;
+            height: -webkit-fill-available;
+            padding: $MOBILE_HEADER_HEIGHT_SIGNUP 0 0;
         }
         .ciq-menu {
             top: 0;

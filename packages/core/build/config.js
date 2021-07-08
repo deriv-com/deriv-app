@@ -5,14 +5,12 @@ const { transformContentUrlBase } = require('./helpers');
 const copyConfig = base => {
     const patterns = [
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot-web-ui.main.css*'),
+            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot-web-ui.main.css'),
             to: 'css/',
-            flatten: true,
         },
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/media/**'),
             to: 'js/bot/media',
-            flatten: true,
         },
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/dashboard/lib/assets/images'),
@@ -21,17 +19,14 @@ const copyConfig = base => {
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/*.*'),
             to: 'js/bot/',
-            flatten: true,
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/js/smartcharts/**'),
-            to: 'js/smartcharts/',
-            flatten: true,
+            from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/js/smartcharts/'),
+            to: 'js/smartcharts/[name][ext]',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/css/smartcharts.css*'),
+            from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/css/smartcharts.css'),
             to: 'css/',
-            flatten: true,
         },
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/public/**'),
@@ -43,20 +38,17 @@ const copyConfig = base => {
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/js/**'),
             to: 'account/js',
-            flatten: true,
         },
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/css/**'),
             to: 'account/css/',
-            flatten: true,
         },
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/js/**'),
             to: 'js',
-            flatten: true,
         },
-        { from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/css/**'), to: 'css', flatten: true },
-        { from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/js/*.*'), to: 'js', flatten: true },
+        { from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/css/**'), to: 'css' },
+        { from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/js/*.*'), to: 'js' },
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/public/**'),
             to: 'public',
@@ -67,14 +59,12 @@ const copyConfig = base => {
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/js/trader.*.js'),
             to: 'js',
-            flatten: true,
         },
-        { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/css/**'), to: 'css', flatten: true },
-        { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/*.*'), to: 'js', flatten: true },
+        { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/css/**'), to: 'css' },
+        { from: path.resolve(__dirname, '../node_modules/@deriv/trader/dist/*.*'), to: 'js' },
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/translations/src/translations/*.*'),
             to: 'public/i18n',
-            flatten: true,
         },
         { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file', noErrorOnMissing: true },
         { from: path.resolve(__dirname, '../src/root_files/404.html'), to: '404.html', toType: 'file' },
@@ -94,7 +84,6 @@ const copyConfig = base => {
         {
             from: path.resolve(__dirname, '../src/public/images/common/static_images/**'),
             to: 'public/images/common',
-            flatten: true,
         },
         // { from: path.resolve(__dirname, '../src/public/images/common/og_image.gif'), to: 'images/common/og_image.gif' }, // Once the design for og_image is ready, bring this back.
         { from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/**') },

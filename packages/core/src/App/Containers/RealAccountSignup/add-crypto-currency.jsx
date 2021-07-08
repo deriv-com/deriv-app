@@ -34,6 +34,7 @@ const AddCryptoCurrency = ({
     available_crypto_currencies,
     form_error,
     has_fiat,
+    is_add_fiat,
     legal_allowed_currencies,
     onClickBack,
     onSubmit,
@@ -70,10 +71,7 @@ const AddCryptoCurrency = ({
                 <form onSubmit={handleSubmit}>
                     {!canAddFiat() && <Headers heading={messages()[0]} subheading={messages()[1]} />}
                     {canAddFiat() && (
-                        <Headers
-                            heading={should_show_cancel ? messages()[4] : messages()[2]}
-                            subheading={messages()[3]}
-                        />
+                        <Headers heading={is_add_fiat ? messages()[4] : messages()[2]} subheading={messages()[3]} />
                     )}
                     {canAddFiat() && (
                         <React.Fragment>

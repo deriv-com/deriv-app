@@ -152,6 +152,7 @@ const AddOrManageAccounts = props => {
                         form_error={form_error}
                         should_show_fiat_only
                         hasNoAvailableCrypto={hasNoAvailableCrypto}
+                        is_add_fiat
                     />
                 </div>
             </ThemedScrollbars>

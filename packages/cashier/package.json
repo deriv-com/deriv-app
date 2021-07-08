@@ -6,7 +6,7 @@
     "deriv-app",
     "deriv.com"
   ],
-  "main": "dist/js/cashier.js",
+  "main": "dist/cashier/js/cashier.js",
   "directories": {
     "lib": "lib",
     "test": "__tests__"

@@ -202,8 +202,6 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     init(notification_messages) {
-        // eslint-disable-next-line no-console
-        console.log('test staging release');
         this.notification_messages_ui = notification_messages;
     }
 
@@ -754,7 +752,12 @@ export default class UIStore extends BaseStore {
         this.deferred_prompt.prompt();
         const choice = await this.deferred_prompt.userChoice;
         if (choice.outcome === 'accepted') {
-            this.removeNotificationByKey('install_pwa');
+            const notification_key = 'install_pwa';
+            this.removeNotificationMessage({
+                key: notification_key,
+                should_show_again: false,
+            });
+            this.removeNotificationByKey({ key: notification_key });
         }
     }
 

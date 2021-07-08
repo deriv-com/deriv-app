@@ -1,8 +1,7 @@
 import React from 'react';
 import { Div100vhContainer, Modal, Money, Popover, usePreventIOSZoom } from '@deriv/components';
-import { useIsMounted } from '@deriv/shared';
+import { useIsMounted, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
 import { connect } from 'Stores/connect';
 import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';

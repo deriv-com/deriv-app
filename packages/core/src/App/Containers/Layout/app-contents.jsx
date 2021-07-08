@@ -88,7 +88,7 @@ const AppContents = ({
                 'app-contents--is-disabled': is_app_disabled,
                 'app-contents--is-mobile': isMobile(),
                 'app-contents--is-route-modal': is_route_modal_on,
-                'app-contents--is-scrollable': is_cfd_page || is_cashier_visible,
+                'app-contents--is-scrollable': is_cfd_page || is_cashier_visible || is_onboarding,
                 'app-contents--is-dashboard': is_dashboard,
                 'app-contents--is-onboarding': is_onboarding,
             })}

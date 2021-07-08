@@ -1,13 +1,12 @@
 .platform-onboarding {
     padding: 20px;
-    height: calc(100vh - 48px);
-    overflow: scroll;
 
     @include desktop {
         padding: 20px 0 0;
         overflow: unset;
         max-width: 99.6rem;
         margin: auto;
+        height: calc(100vh - 7.2rem);
     }
 
     .platform-onbordering-title {

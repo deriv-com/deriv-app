@@ -18,7 +18,14 @@ import {
     Text,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isMobile, validLength, validPassword, getErrorMessages, CFD_PLATFORMS } from '@deriv/shared';
+import {
+    isMobile,
+    validLength,
+    validPassword,
+    getErrorMessages,
+    getCFDPlatformLabel,
+    CFD_PLATFORMS,
+} from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CFDStore from 'Stores/Modules/CFD/cfd-store';
 import TradingPasswordManager from './trading-password-manager.jsx';
@@ -425,11 +432,11 @@ const CFDPasswordManagerModal = ({
                     title={
                         selected_account_group === 'real'
                             ? localize('Manage {{platform}} Real {{account_title}} account password', {
-                                  platform: platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
+                                  platform: getCFDPlatformLabel(platform),
                                   account_title: selected_account,
                               })
                             : localize('Manage {{platform}} Demo {{account_title}} account password', {
-                                  platform: platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
+                                  platform: getCFDPlatformLabel(platform),
                                   account_title: selected_account,
                               })
                     }

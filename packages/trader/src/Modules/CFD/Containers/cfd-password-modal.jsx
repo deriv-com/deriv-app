@@ -24,6 +24,7 @@ import {
     validPassword,
     getErrorMessages,
     isDesktop,
+    getCFDPlatformLabel,
     CFD_PLATFORMS,
     WS,
 } from '@deriv/shared';
@@ -59,7 +60,7 @@ const PasswordModalHeader = ({
                 <Localize
                     i18n_default_text='Enter your {{platform}} password'
                     values={{
-                        platform: platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
+                        platform: getCFDPlatformLabel(platform),
                     }}
                 />
             )}
@@ -87,7 +88,7 @@ const getSubmitText = (type, category, platform) => {
                 i18n_default_text='You have created a <0>{{platform}}</0> {{category}} <1>{{type}}</1> account. To start trading, transfer funds from your Deriv account into this account.'
                 values={{
                     type: type_label,
-                    platform: platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
+                    platform: getCFDPlatformLabel(platform),
                     category: category_label,
                 }}
                 components={[<i className='cfd-account__platform' key={0} />, <strong key={1} />]}
@@ -100,7 +101,7 @@ const getSubmitText = (type, category, platform) => {
             i18n_default_text='You have created a <0>{{platform}}</0> {{category}} <1>{{type}}</1> account.'
             values={{
                 type: type_label,
-                platform: platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
+                platform: getCFDPlatformLabel(platform),
                 category: category_label,
             }}
             components={[<i className='cfd-account__platform' key={0} />, <strong key={1} />]}
@@ -219,7 +220,7 @@ const CFDPasswordForm = props => {
                                 <Localize
                                     i18n_default_text='Enter your {{platform}} password to add a {{platform}} {{account}} account.'
                                     values={{
-                                        platform: props.platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
+                                        platform: getCFDPlatformLabel(props.platform),
                                         account: props.account_title,
                                     }}
                                 />
@@ -232,7 +233,7 @@ const CFDPasswordForm = props => {
                                     <Localize
                                         i18n_default_text='Create a {{platform}} password'
                                         values={{
-                                            platform: props.platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
+                                            platform: getCFDPlatformLabel(props.platform),
                                         }}
                                     />
                                 </Text>
@@ -244,7 +245,7 @@ const CFDPasswordForm = props => {
                                     <Localize
                                         i18n_default_text='You can use this password for all your {{platform}} accounts.'
                                         values={{
-                                            platform: props.platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
+                                            platform: getCFDPlatformLabel(props.platform),
                                         }}
                                     />
                                 </Text>
@@ -260,7 +261,7 @@ const CFDPasswordForm = props => {
                                     <PasswordInput
                                         autoComplete='new-password'
                                         label={localize('{{platform}} password', {
-                                            platform: props.platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
+                                            platform: getCFDPlatformLabel(props.platform),
                                         })}
                                         error={
                                             (touched.password && errors.password) ||
@@ -292,7 +293,7 @@ const CFDPasswordForm = props => {
                                 <Localize
                                     i18n_default_text='Hint: You may have entered your Deriv password, which is different from your {{platform}} password.'
                                     values={{
-                                        platform: props.platform === CFD_PLATFORMS.DXTRADE ? 'Deriv X' : 'DMT5',
+                                        platform: getCFDPlatformLabel(props.platform),
                                     }}
                                 />
                             </Text>

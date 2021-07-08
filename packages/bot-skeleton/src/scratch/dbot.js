@@ -291,7 +291,7 @@ class DBot {
     }
 
     unHighlightAllBlocks() {
-        this.workspace.getAllBlocks().forEach(block => block.setErrorHighlighted(false));
+        this.workspace?.getAllBlocks().forEach(block => block.setErrorHighlighted(false));
     }
 
     /**

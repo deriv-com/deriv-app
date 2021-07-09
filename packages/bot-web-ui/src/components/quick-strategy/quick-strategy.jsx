@@ -476,14 +476,7 @@ const ContentRenderer = props => {
         setCurrentFocus,
         selected_duration_unit,
     } = props;
-    let symbol_dropdown_options = symbol_dropdown
-        .map(symbol => ({
-            component: <MarketOption symbol={symbol} />,
-            ...symbol,
-        }))
-        .filter(option => option.group !== 'Cryptocurrencies' && option.group !== 'Jump Indices'); // Until Crypto enabled for Dbot
-
-    const excludedCountries = [
+    const forexHideList = [
         'gb',
         'ie',
         'pt',
@@ -505,14 +498,25 @@ const ContentRenderer = props => {
         'bg',
         'at',
     ];
-    if (excludedCountries.includes(residence)) {
-        symbol_dropdown_options = symbol_dropdown_options.filter(
-            option => option.group === 'Daily Reset Indices' || option.group === 'Continuous Indices'
-        );
-    } // Until Forex multiplier enabled for Dbot
-    let selected_symbol_option;
-    if (symbol_dropdown_options.includes(selected_symbol)) selected_symbol_option = selected_symbol;
-    else selected_symbol_option = symbol_dropdown_options[0];
+    const shouldHideForex = forexHideList.includes(residence);
+    const symbol_dropdown_options = symbol_dropdown
+        .map(symbol => ({
+            component: <MarketOption symbol={symbol} />,
+            ...symbol,
+        }))
+        .filter(option => {
+            if (option.group === 'Cryptocurrencies' || option.group === 'Jump Indices') return false;
+            // Until Crypto enabled for Dbot
+            else if (
+                shouldHideForex &&
+                !(option.group === 'Daily Reset Indices' || option.group === 'Continuous Indices')
+            )
+                return false;
+            return true;
+        }); // Until Forex multiplier enabled for Dbot
+    const selected_symbol_option = symbol_dropdown_options.includes(selected_symbol)
+        ? selected_symbol
+        : symbol_dropdown_options[0];
 
     const trade_type_dropdown_options = trade_type_dropdown.map(trade_type => ({
         component: <TradeTypeOption trade_type={trade_type} />,

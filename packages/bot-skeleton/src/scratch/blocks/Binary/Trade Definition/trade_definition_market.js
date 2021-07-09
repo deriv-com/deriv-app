@@ -50,19 +50,7 @@ Blockly.Blocks.trade_definition_market = {
 
         this.enforceLimitations();
 
-        const { active_symbols } = ApiHelpers.instance;
-        const market_dropdown = this.getField('MARKET_LIST');
-        const submarket_dropdown = this.getField('SUBMARKET_LIST');
-        const symbol_dropdown = this.getField('SYMBOL_LIST');
-        const market = market_dropdown.getValue();
-        const submarket = submarket_dropdown.getValue();
-        const symbol = symbol_dropdown.getValue();
-
-        // Temporary solution to remove Crytocurrencies from
-        // market options and Jump Diffusion Indices from
-        // submarket options for Synthetic Indices
-        // until multipliers are available for DBot
-        const excludedCountries = [
+        const forexHideList = [
             'gb',
             'ie',
             'pt',
@@ -84,11 +72,28 @@ Blockly.Blocks.trade_definition_market = {
             'bg',
             'at',
         ];
+
+        const { active_symbols } = ApiHelpers.instance;
         const { is_virtual, residence } = DBotStore.instance.client;
-        let market_options = active_symbols.getMarketDropdownOptions().filter(option => option[1] !== 'cryptocurrency');
-        if (is_virtual && excludedCountries.includes(residence)) {
-            market_options = market_options.filter(option => option[1] !== 'forex');
-        }
+        const market_dropdown = this.getField('MARKET_LIST');
+        const submarket_dropdown = this.getField('SUBMARKET_LIST');
+        const symbol_dropdown = this.getField('SYMBOL_LIST');
+        const shouldHideForex = is_virtual && forexHideList.includes(residence);
+        const market = market_dropdown.getValue();
+        const submarket = submarket_dropdown.getValue();
+        const symbol = symbol_dropdown.getValue();
+
+        // Temporary solution to remove Crytocurrencies from
+        // market options and Jump Diffusion Indices from
+        // submarket options for Synthetic Indices
+        // until multipliers are available for DBot
+
+        const market_options = active_symbols.getMarketDropdownOptions().filter(option => {
+            if (option[1] === 'cryptocurrency') return false;
+            else if (shouldHideForex && option[1] === 'forex') return false;
+            else return true;
+        });
+
         const submarket_options =
             market === 'synthetic_index'
                 ? active_symbols.getSubmarketDropdownOptions(market).filter(option => option[1] !== 'jump_index')

@@ -765,6 +765,10 @@ export default class TradeStore extends BaseStore {
                 }
             }
 
+            if (obj_new_values.contract_type && obj_new_values.contract_type === 'rise_fall' && !!this.is_equal) {
+                this.onAllowEqualsChange();
+            }
+
             // TODO: handle barrier updates on proposal api
             // const is_barrier_changed = 'barrier_1' in new_state || 'barrier_2' in new_state;
             const snapshot = await processTradeParams(this, new_state);

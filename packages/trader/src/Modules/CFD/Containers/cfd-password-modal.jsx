@@ -244,7 +244,7 @@ const CFDPasswordForm = props => {
                         <div className='input-element'>
                             <PasswordMeter
                                 input={values.password}
-                                has_error={!!(touched.password && errors.password) || !!props.error_message}
+                                has_error={!!(touched.password && errors.password)}
                                 custom_feedback_messages={getErrorMessages().password_warnings}
                             >
                                 {() => (

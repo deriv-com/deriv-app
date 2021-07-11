@@ -138,6 +138,7 @@ const CFDAccountCard = ({
     existing_data,
     has_banner,
     has_cfd_account,
+    has_cfd_account_error,
     has_real_account,
     is_accounts_switcher_on,
     is_button_primary,
@@ -504,7 +505,11 @@ const CFDAccountCard = ({
                 <React.Fragment>
                     {should_show_trade_servers && (
                         <MobileWrapper>
-                            <AddTradeServerButton ref={button_ref} onSelectAccount={onSelectAccount} />
+                            <AddTradeServerButton
+                                ref={button_ref}
+                                onSelectAccount={onSelectAccount}
+                                is_disabled={has_cfd_account_error}
+                            />
                         </MobileWrapper>
                     )}
                 </React.Fragment>
@@ -516,7 +521,11 @@ const CFDAccountCard = ({
                     classNames='cfd-account-card__add-server'
                     unmountOnExit
                 >
-                    <AddTradeServerButton ref={button_ref} onSelectAccount={onSelectAccount} />
+                    <AddTradeServerButton
+                        ref={button_ref}
+                        onSelectAccount={onSelectAccount}
+                        is_disabled={has_cfd_account_error}
+                    />
                 </CSSTransition>
             </DesktopWrapper>
         </div>

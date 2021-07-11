@@ -48,6 +48,7 @@ const Withdrawal = ({
     iframe_url,
     is_10k_withdrawal_limit_reached,
     is_cashier_locked,
+    is_system_maintenance,
     is_virtual,
     is_withdrawal_locked,
     setActiveTab,
@@ -80,6 +81,9 @@ const Withdrawal = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, iframe_url, verification_code]);
 
+    if (is_system_maintenance) {
+        return <CashierLocked />;
+    }
     if (is_10k_withdrawal_limit_reached === undefined) {
         return <Loading is_fullscreen />;
     }
@@ -120,6 +124,7 @@ Withdrawal.propTypes = {
     is_withdrawal_locked: PropTypes.bool,
     setActiveTab: PropTypes.func,
     verification_code: PropTypes.string,
+    is_system_maintenance: PropTypes.bool,
 };
 
 export default connect(({ client, modules }) => ({
@@ -137,4 +142,5 @@ export default connect(({ client, modules }) => ({
     verify_error: modules.cashier.config.withdraw.verification.error,
     setActiveTab: modules.cashier.setActiveTab,
     setErrorMessage: modules.cashier.setErrorMessage,
+    is_system_maintenance: modules.cashier.is_system_maintenance,
 }))(Withdrawal);

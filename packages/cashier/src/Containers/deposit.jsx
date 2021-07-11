@@ -44,6 +44,7 @@ const Deposit = ({
     is_deposit_locked,
     is_loading,
     is_switching,
+    is_system_maintenance,
     is_virtual,
     error,
     iframe_height,
@@ -80,6 +81,9 @@ const Deposit = ({
     if (is_virtual) {
         return <Virtual />;
     }
+    if (is_system_maintenance) {
+        return <CashierLocked />;
+    }
     if (error.is_ask_uk_funds_protection) {
         return <FundsProtection />;
     }
@@ -113,6 +117,7 @@ Deposit.propTypes = {
     setActiveTab: PropTypes.func,
     setSideNotes: PropTypes.func,
     standpoint: PropTypes.object,
+    is_system_maintenance: PropTypes.bool,
 };
 
 export default connect(({ client, modules }) => ({
@@ -129,4 +134,5 @@ export default connect(({ client, modules }) => ({
     onMount: modules.cashier.onMount,
     setActiveTab: modules.cashier.setActiveTab,
     standpoint: client.standpoint,
+    is_system_maintenance: modules.cashier.is_system_maintenance,
 }))(Deposit);

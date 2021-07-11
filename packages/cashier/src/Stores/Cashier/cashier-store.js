@@ -399,6 +399,14 @@ export default class CashierStore extends BaseStore {
     }
 
     @computed
+    get is_system_maintenance() {
+        if (!this.root_store.client.account_status.cashier_validation) return false;
+        const { cashier_validation } = this.root_store.client.account_status;
+
+        return cashier_validation.some(validation => validation === 'system_maintenance');
+    }
+
+    @computed
     get is_deposit_locked() {
         const {
             is_authentication_needed,

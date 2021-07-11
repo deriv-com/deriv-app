@@ -22,6 +22,7 @@ const AccountTransfer = ({
     is_cashier_locked,
     is_loading,
     is_switching,
+    is_system_maintenance,
     is_transfer_confirm,
     is_transfer_lock,
     is_transfer_successful,
@@ -61,6 +62,9 @@ const AccountTransfer = ({
     }
     if (is_loading || is_switching || is_loading_status) {
         return <Loading className='cashier__loader' is_fullscreen={false} />;
+    }
+    if (is_system_maintenance) {
+        return <CashierLocked />;
     }
     if (is_cashier_locked) {
         return <CashierLocked />;
@@ -107,6 +111,7 @@ AccountTransfer.propTypes = {
     setActiveTab: PropTypes.func,
     setIsTransferConfirm: PropTypes.func,
     setSideNotes: PropTypes.func,
+    is_system_maintenance: PropTypes.bool,
 };
 
 export default connect(({ client, modules }) => ({
@@ -126,4 +131,5 @@ export default connect(({ client, modules }) => ({
     setActiveTab: modules.cashier.setActiveTab,
     setAccountTransferAmount: modules.cashier.setAccountTransferAmount,
     setIsTransferConfirm: modules.cashier.setIsTransferConfirm,
+    is_system_maintenance: modules.cashier.is_system_maintenance,
 }))(AccountTransfer);

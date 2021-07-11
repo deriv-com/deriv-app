@@ -7,6 +7,7 @@ import { Loading } from '@deriv/components';
 import P2P from '@deriv/p2p';
 import { connect } from 'Stores/connect';
 import { get, init, timePromise } from '_common/server_time';
+import CashierLocked from '../Components/Error/cashier-locked.jsx';
 
 /* P2P will use the same websocket connection as Deriv/Binary, we need to pass it as a prop */
 const P2PCashier = ({
@@ -15,6 +16,7 @@ const P2PCashier = ({
     is_dark_mode_on,
     is_logging_in,
     is_mobile,
+    is_system_maintenance,
     is_virtual,
     local_currency_config,
     location,
@@ -69,6 +71,9 @@ const P2PCashier = ({
     if (is_logging_in) {
         return <Loading is_fullscreen={false} />;
     }
+    if (is_system_maintenance) {
+        return <CashierLocked />;
+    }
 
     return (
         <P2P
@@ -101,6 +106,7 @@ P2PCashier.propTypes = {
     loginid: PropTypes.string,
     residence: PropTypes.string,
     setNotificationCount: PropTypes.func,
+    is_system_maintenance: PropTypes.bool,
 };
 
 export default withRouter(
@@ -114,5 +120,6 @@ export default withRouter(
         residence: client.residence,
         setNotificationCount: modules.cashier.setNotificationCount,
         is_mobile: ui.is_mobile,
+        is_system_maintenance: modules.cashier.is_system_maintenance,
     }))(P2PCashier)
 );

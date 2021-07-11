@@ -17,7 +17,7 @@ const copyConfig = base => {
             to: 'bot/js/',
         },
         {
-            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist/*.smartcharts.*'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist'),
             to: 'js/smartcharts/',
         },
         {

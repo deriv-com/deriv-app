@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'Stores/connect';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 
 const CashierLocked = ({ current_currency_type, is_system_maintenance }) => {
     return (

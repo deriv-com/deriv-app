@@ -177,9 +177,7 @@ export default class AppStore {
         }
     };
 
-    showDigitalOptionsMaltainvestError = async (client, common) => {
-        await this.root_store.ws.wait('landing_company', 'get_settings');
-
+    showDigitalOptionsMaltainvestError = (client, common) => {
         if (client.landing_company_shortcode === 'maltainvest' || client.is_options_blocked) {
             showDigitalOptionsUnavailableError(common.showError, {
                 text: localize(

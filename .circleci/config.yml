@@ -123,6 +123,9 @@ commands:
       docker_image_name:
         type: string
         default: "deriv-app"
+      docker_file:
+        type: string
+        default: "Dockerfile"
     steps:
       - setup_remote_docker:
           docker_layer_caching: true
@@ -130,12 +133,15 @@ commands:
           name: Building docker image
           command: |
             TAG=${CIRCLE_TAG:-$CIRCLE_SHA1}
-            docker build -t ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>:${TAG} -t ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>:<< parameters.docker_image_latest_tag >> .
+            docker build -t ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>:${TAG} -t ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>:<< parameters.docker_image_latest_tag >> - < Dockerfile
       - run:
           name: Pushing Image to docker hub
           command: |
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
             docker push ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>
+
+Dockerfile-storybook
+
 
   k8s_deploy:
     description: "Deploy to k8s cluster"
@@ -186,6 +192,7 @@ jobs:
       - docker_build_push:
           docker_image_latest_tag: latest
           docker_image_name: "deriv-app-storybook"
+          docker_file: "Dockerfile-storybook"
       - k8s_deploy:
           k8s_namespace: "deriv-app-storybook-production"
           k8s_service: "deriv-app-storybook"

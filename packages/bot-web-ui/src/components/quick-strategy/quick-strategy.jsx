@@ -476,28 +476,7 @@ const ContentRenderer = props => {
         setCurrentFocus,
         selected_duration_unit,
     } = props;
-    const forexHideList = [
-        'gb',
-        'ie',
-        'pt',
-        'se',
-        'pl',
-        'cy',
-        'nl',
-        'si',
-        'lv',
-        'hu',
-        'cz',
-        'ro',
-        'dk',
-        'fi',
-        'lt',
-        'hr',
-        'ee',
-        'sk',
-        'bg',
-        'at',
-    ];
+    const forexHideList = config.lists.FOREX_HIDE_LIST;
     const shouldHideForex = forexHideList.includes(residence);
     const symbol_dropdown_options = symbol_dropdown
         .map(symbol => ({

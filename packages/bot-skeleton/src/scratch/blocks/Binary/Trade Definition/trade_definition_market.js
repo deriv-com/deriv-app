@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+import { config } from '../../../../constants/config';
 import { runIrreversibleEvents } from '../../../utils';
 import ApiHelpers from '../../../../services/api/api-helpers';
 import DBotStore from '../../../dbot-store';
@@ -50,28 +51,7 @@ Blockly.Blocks.trade_definition_market = {
 
         this.enforceLimitations();
 
-        const forexHideList = [
-            'gb',
-            'ie',
-            'pt',
-            'se',
-            'pl',
-            'cy',
-            'nl',
-            'si',
-            'lv',
-            'hu',
-            'cz',
-            'ro',
-            'dk',
-            'fi',
-            'lt',
-            'hr',
-            'ee',
-            'sk',
-            'bg',
-            'at',
-        ];
+        const forexHideList = config.lists.FOREX_HIDE_LIST;
 
         const { active_symbols } = ApiHelpers.instance;
         const { is_virtual, residence } = DBotStore.instance.client;

@@ -140,9 +140,6 @@ commands:
             echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
             docker push ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>
 
-Dockerfile-storybook
-
-
   k8s_deploy:
     description: "Deploy to k8s cluster"
     parameters:

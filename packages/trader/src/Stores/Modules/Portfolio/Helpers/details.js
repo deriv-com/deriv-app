@@ -1,4 +1,4 @@
-import { epochToMoment, formatMiliseconds, getDiffDuration } from '@deriv/shared';
+import { epochToMoment, formatMilliseconds, getDiffDuration } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 export const getDurationUnitValue = obj_duration => {
@@ -16,11 +16,13 @@ export const getDurationUnitValue = obj_duration => {
         const has_seconds = isEndTime(duration_ms / (1000 * 60));
         const string_format = has_seconds ? 'HH[h] mm[m] ss[s]' : 'HH[h] mm[m]';
 
-        return is_end_time ? formatMiliseconds(duration_ms, string_format) : Math.floor(duration_ms / (1000 * 60 * 60));
+        return is_end_time
+            ? formatMilliseconds(duration_ms, string_format)
+            : Math.floor(duration_ms / (1000 * 60 * 60));
     } else if (duration_ms >= 60000 && duration_ms < 3600000) {
         const duration = duration_ms / (1000 * 60);
         const is_end_time = isEndTime(duration);
-        return is_end_time ? formatMiliseconds(duration_ms, 'mm[m] ss[s]') : Math.floor(duration_ms / (1000 * 60));
+        return is_end_time ? formatMilliseconds(duration_ms, 'mm[m] ss[s]') : Math.floor(duration_ms / (1000 * 60));
     } else if (duration_ms >= 1000 && duration_ms < 60000) {
         return Math.floor(duration_ms / 1000);
     }

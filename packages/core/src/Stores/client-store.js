@@ -1188,7 +1188,7 @@ export default class ClientStore extends BaseStore {
                 })
             );
             const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
-            this.setPreferredLanguage(account_settings.preferred_language);
+            if (account_settings) this.setPreferredLanguage(account_settings.preferred_language);
             await this.fetchResidenceList();
 
             if (account_settings && !account_settings.residence) {

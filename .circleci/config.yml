@@ -105,14 +105,14 @@ commands:
   versioning:
     description: "Version the branch"
     parameters:
-      target_branch:
+      version_name:
         type: string
     steps:
       - attach_workspace:
           at: packages/core/dist
       - run:
           name: Tag
-          command: echo "<< parameters.target_branch >>-$(date -u +"%Y-%m-%dT%H:%M:%SZ")" > packages/core/dist/version
+          command: echo "<< parameters.version_name >>-$(date -u +"%Y-%m-%dT%H:%M:%SZ")" > packages/core/dist/version
 
   docker_build_push:
     description: "Build and Push image to docker hub"
@@ -185,7 +185,7 @@ jobs:
       - npm_install_from_cache
       - build_storybook
       - versioning:
-          target_branch: storybook
+          version_name: storybook
       - docker_build_push:
           docker_image_latest_tag: latest
           docker_image_name: "deriv-app-storybook"
@@ -205,7 +205,7 @@ jobs:
       - npm_install_from_cache
       - build
       - versioning:
-          target_branch: staging
+          version_name: staging
       - docker_build_push
       - k8s_deploy
       - notify_slack
@@ -220,7 +220,7 @@ jobs:
       - npm_install_from_cache
       - build_dashboard
       - versioning:
-          target_branch: staging-dashboard
+          version_name: staging-dashboard
       - docker_build_push:
           docker_image_name: deriv-app-dashboard
           docker_image_latest_tag: latest-staging-dashboard
@@ -236,7 +236,7 @@ jobs:
       - npm_install_from_cache
       - build
       - versioning:
-          target_branch: production
+          version_name: production
       - docker_build_push:
           docker_image_latest_tag: latest
       - k8s_deploy:
@@ -253,7 +253,7 @@ jobs:
       - npm_install_from_cache
       - build_dashboard
       - versioning:
-          target_branch: production-dashboard
+          version_name: production-dashboard
       - docker_build_push:
           docker_image_name: deriv-app-dashboard
           docker_image_latest_tag: latest

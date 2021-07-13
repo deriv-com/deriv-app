@@ -18,16 +18,15 @@ const AccountList = ({
     market_type,
     onClickAccount,
     onClickResetVirtualBalance,
-    selectedMarket,
+    selectMT5AccountType,
     selected_loginid,
     server,
     is_dark_mode_on,
     sub_account_type,
     platform,
 }) => {
-    const switchMarket = element_class => {
-        const filter_class = element_class.match(market_type);
-        selectedMarket(filter_class[0]);
+    const switchMarket = market => {
+        selectMT5AccountType(market);
         onClickAccount();
     };
 
@@ -41,8 +40,8 @@ const AccountList = ({
                     'acc-switcher__account--selected': loginid === selected_loginid,
                     'acc-switcher__account--disabled': is_disabled,
                 })}
-                onClick={e => {
-                    if (!is_disabled) switchMarket(e.currentTarget.className);
+                onClick={() => {
+                    if (!is_disabled) switchMarket(market_type);
                 }}
             >
                 <span className='acc-switcher__id'>

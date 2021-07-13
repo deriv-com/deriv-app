@@ -775,7 +775,7 @@ export default class UIStore extends BaseStore {
     }
 
     @action.bound
-    selectedMarket(market) {
+    selectMT5AccountType(market) {
         this.selected_market = market;
     }
 }

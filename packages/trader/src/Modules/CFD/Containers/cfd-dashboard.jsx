@@ -66,9 +66,14 @@ class CFDDashboard extends React.Component {
         this.props.checkShouldOpenAccount();
     }
 
-    scrollToSelectedMarket = () => {
-        const market_element = document.getElementsByClassName(this.props.selected_market);
-        if (market_element[0] !== undefined) market_element[0].scrollIntoView({ block: 'center' });
+    scrollToSelectedMarket = async () => {
+        const current_hash = await this.props.location.hash;
+        const selected_market = this.props.selected_market;
+        const market_hash = selected_market === '' ? '' : `-${selected_market}`;
+
+        if (current_hash === '#demo' || current_hash === '#real') {
+            window.location.hash = current_hash + market_hash;
+        }
     };
 
     openResetPassword = () => {

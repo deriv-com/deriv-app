@@ -82,6 +82,7 @@
 
         &--left {
             position: relative;
+            right: 5.2rem;
         }
 
         &--mt5 {
@@ -93,9 +94,6 @@
             padding-top: 1rem;
             line-height: 6rem;
             text-align: center;
-            // &--left {
-            //     right: 5.2rem;
-            // }
         }
     }
 }

@@ -262,13 +262,13 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('Synthetics'),
                 synthetic_eu: localize('Synthetics'),
                 financial: localize(
-                    'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices'
+                    'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks, and Stock Indices'
                 ),
                 financial_au: localize(
-                    'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices'
+                    'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks, and Stock Indices'
                 ),
                 financial_eu: localize(
-                    'FX-majors (standard), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices'
+                    'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks, and Stock Indices'
                 ),
                 financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
                 footnote: null,

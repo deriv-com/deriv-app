@@ -136,7 +136,7 @@ const CFDDemoAccountDisplay = ({
                         )
                     }
                     platform={platform}
-                    descriptor={general_messages.getFinancialAccountDescriptor(platform)}
+                    descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu)}
                     specs={financial_specs}
                     has_banner
                 />

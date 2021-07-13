@@ -30,6 +30,7 @@
         "@deriv/translations": "^1.0.0",
         "bowser": "^2.9.0",
         "classnames": "^2.2.6",
+        "country-iso-2-to-3": "^1.1.0",
         "formik": "^2.1.4",
         "js-cookie": "^2.2.1",
         "mobx": "^5.15.7",

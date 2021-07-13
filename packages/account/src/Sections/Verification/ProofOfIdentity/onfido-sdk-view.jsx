@@ -4,6 +4,7 @@ import { Text, ThemedScrollbars } from '@deriv/components';
 import { init } from 'onfido-sdk-ui';
 import { isMobile, routes, WS } from '@deriv/shared';
 import { getLanguage, Localize } from '@deriv/translations';
+import getCountryISO3 from 'country-iso-2-to-3'
 import getOnfidoPhrases from 'Constants/onfido-phrases';
 
 const OnfidoSdkView = ({
@@ -22,6 +23,10 @@ const OnfidoSdkView = ({
         },
         value: country_code,
     } = selected_country;
+
+    // IDV uses iso2 (2 alphabet) country code format while onfido uses iso3
+    const onfido_country_code = (selected_country.length < 3) ? getCountryISO3(country_code) : country_code;
+
     const onfido_init = React.useRef();
 
     const onComplete = React.useCallback(
@@ -68,12 +73,12 @@ const OnfidoSdkView = ({
                                 passport: !!documents_supported.passport,
                                 driving_licence: documents_supported.driving_licence
                                     ? {
-                                          country: country_code,
+                                          country: onfido_country_code,
                                       }
                                     : false,
                                 national_identity_card: documents_supported.national_identity_card
                                     ? {
-                                          country: country_code,
+                                          country: onfido_country_code,
                                       }
                                     : false,
                             },
@@ -86,7 +91,7 @@ const OnfidoSdkView = ({
         } catch (err) {
             setAPIError(err);
         }
-    }, [documents_supported, country_code, onComplete, onfido_service_token, setAPIError]);
+    }, [documents_supported, onfido_country_code, onComplete, onfido_service_token, setAPIError]);
 
     React.useEffect(() => {
         initOnfido();

@@ -79,17 +79,23 @@
     }
     &__icon {
         cursor: pointer;
-        background: #f2f3f4;
-        width: 6rem;
-        height: 6rem;
-        border-radius: 50%;
-        transform: scale(0.5);
-        padding-top: 1rem;
-        line-height: 6rem;
-        text-align: center;
 
         &--left {
             position: relative;
+        }
+
+        &--mt5 {
+            background: var(--icon-grey-background);
+            width: 6rem;
+            height: 6rem;
+            border-radius: 50%;
+            transform: scale(0.5);
+            padding-top: 1rem;
+            line-height: 6rem;
+            text-align: center;
+            // &--left {
+            //     right: 5.2rem;
+            // }
         }
     }
 }

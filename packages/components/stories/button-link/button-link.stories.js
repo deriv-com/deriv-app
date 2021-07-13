@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
 import { withInfo } from '@storybook/addon-info';
@@ -19,9 +20,7 @@ storiesOf('ButtonLink', module)
                     <BrowserRouter>
                         <ButtonLink
                             to='#'
-                            onClick={() => {
-                                console.log('clicked');
-                            }}
+                            onClick={action('clicked')}
                             size='medium'
                         >
                             <p>This is a button link</p>

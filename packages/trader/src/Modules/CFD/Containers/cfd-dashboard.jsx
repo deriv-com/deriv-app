@@ -68,7 +68,7 @@ class CFDDashboard extends React.Component {
 
     scrollToSelectedMarket = async () => {
         const current_hash = await this.props.location.hash;
-        const selected_market = this.props.selected_market;
+        const selected_market = this.props.selected_mt5_account_type;
         const market_hash = selected_market === '' ? '' : `-${selected_market}`;
 
         if (current_hash === '#demo' || current_hash === '#real') {
@@ -479,7 +479,7 @@ class CFDDashboard extends React.Component {
 
 export default withRouter(
     connect(({ client, modules, ui }) => ({
-        selected_market: ui.selected_market,
+        selected_mt5_account_type: ui.selected_mt5_account_type,
         beginRealSignupForMt5: modules.cfd.beginRealSignupForMt5,
         checkShouldOpenAccount: modules.cfd.checkShouldOpenAccount,
         country: client.account_settings.residence,

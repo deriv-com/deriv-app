@@ -32,8 +32,11 @@ const SentEmailModal = ({ identifier_title, is_open, onClose, onClickSendEmail }
     const getSubtitle = () => {
         let subtitle = '';
         switch (identifier_title) {
+            case 'derivx_trading_password':
+                subtitle = localize('Please click on the link in the email to change your Deriv X password.');
+                break;
             case 'trading_password':
-                subtitle = localize('Please click on the link in the email to reset your trading password.');
+                subtitle = localize('Please click on the link in the email to change your DMT5 password.');
                 break;
             case 'Google':
             case 'Facebook':
@@ -53,6 +56,7 @@ const SentEmailModal = ({ identifier_title, is_open, onClose, onClickSendEmail }
         <SendEmailTemplate
             className='sent-email'
             subtitle={getSubtitle()}
+            title={localize('We’ve sent you an email')}
             lbl_no_receive={localize("Didn't receive the email?")}
             txt_resend={localize('Resend email')}
             txt_resend_in={localize('Resend email in')}

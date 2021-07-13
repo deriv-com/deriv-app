@@ -27,13 +27,11 @@ storiesOf('FormProgress', module)
 
             return (
                 <Wrapper inner_styles={{}} is_dark={boolean('Dark Theme', false)}>
-                    <div style={{ height: '100px', width: '100%' }}>
-                        <FormProgress steps={steps} current_step={currentStep} />
+                    <FormProgress steps={steps} current_step={currentStep} />
 
-                        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                            <Button onClick={decrement} text={'Prev Step'} primary medium />
-                            <Button onClick={increment} text={'Next Step'} primary medium />
-                        </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                        <Button onClick={decrement} text={'Prev Step'} primary medium />
+                        <Button onClick={increment} text={'Next Step'} primary medium />
                     </div>
                 </Wrapper>
             );

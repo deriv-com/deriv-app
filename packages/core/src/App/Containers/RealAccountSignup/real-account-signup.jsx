@@ -74,6 +74,7 @@ const RealAccountSignup = ({
     should_show_all_available_currencies,
     state_index,
     state_value,
+    deposit_real_account_signup_target,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -123,6 +124,12 @@ const RealAccountSignup = ({
                     current={local_props.state_value.current_currency}
                     onCancel={closeModal}
                     onSubmit={closeModalThenOpenCashier}
+                    deposit_real_account_signup_target={local_props.deposit_real_account_signup_target}
+                    deposit_target={local_props.deposit_target}
+                    closeRealAccountSignup={closeRealAccountSignup}
+                    continueRoute={continueRoute}
+                    setIsDeposit={setIsDeposit}
+                    history={history}
                 />
             ),
             title: local_props =>
@@ -198,14 +205,6 @@ const RealAccountSignup = ({
 
     const closeModalThenOpenCashier = () => {
         closeRealAccountSignup();
-        continueRoute();
-        if (real_account_signup_target === 'add_crypto') {
-            history.push(deposit_target);
-            if (deposit_target === routes.cashier_deposit) {
-                setIsDeposit(true);
-            }
-            return;
-        }
         history.push(routes.cashier_deposit);
     };
 
@@ -370,6 +369,8 @@ const RealAccountSignup = ({
                             passthrough={state_index}
                             is_loading={is_loading}
                             real_account_signup_target={real_account_signup_target}
+                            deposit_real_account_signup_target={deposit_real_account_signup_target}
+                            deposit_target={deposit_target}
                         />
                     )}
                 </Modal>
@@ -401,6 +402,8 @@ const RealAccountSignup = ({
                             passthrough={state_index}
                             is_loading={is_loading}
                             real_account_signup_target={real_account_signup_target}
+                            deposit_real_account_signup_target={deposit_real_account_signup_target}
+                            deposit_target={deposit_target}
                         />
                     )}
                 </MobileDialog>
@@ -428,4 +431,5 @@ export default connect(({ ui, client, common, modules }) => ({
     should_show_all_available_currencies: modules.cashier.should_show_all_available_currencies,
     state_value: ui.real_account_signup,
     routing_history: common.app_routing_history,
+    deposit_real_account_signup_target: ui.deposit_real_account_signup_target,
 }))(withRouter(RealAccountSignup));

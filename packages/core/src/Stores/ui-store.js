@@ -89,6 +89,7 @@ export default class UIStore extends BaseStore {
     // real account signup
     @observable is_real_acc_signup_on = false;
     @observable real_account_signup_target = undefined;
+    @observable deposit_real_account_signup_target = undefined;
     @observable has_real_account_signup_ended = false;
 
     // account types modal
@@ -426,6 +427,7 @@ export default class UIStore extends BaseStore {
 
     @action.bound
     resetRealAccountSignupTarget() {
+        this.deposit_real_account_signup_target = this.real_account_signup_target;
         this.real_account_signup_target = '';
     }
 

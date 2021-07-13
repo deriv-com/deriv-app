@@ -42,7 +42,6 @@ const ChooseCryptoCurrency = ({
     const addNewCryptoAccount = () => {
         openRealAccountSignup('add_crypto');
         setShouldShowCancel(true);
-        continueRouteAfterChooseCrypto();
     };
 
     const getReorderedCryptoCurrencies = () => {

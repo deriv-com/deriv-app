@@ -178,7 +178,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 financial_eu: localize('100%'),
                 financial_stp: localize('100%'),
                 footnote: localize(
-                    'You’ll get a warning, known as a margin call, if your account balance drops down close to the stop out level.'
+                    'You’ll get a warning, known as margin call, if your account balance drops down close to the stop out level.'
                 ),
             },
             dxtrade: {
@@ -188,7 +188,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 financial_au: localize('100%'),
                 financial_eu: localize('100%'),
                 footnote: localize(
-                    'You’ll get a warning, known as a margin call, if your account balance drops down close to the stop out level.'
+                    'You’ll get a warning, known as margin call, if your account balance drops down close to the stop out level.'
                 ),
             },
         },

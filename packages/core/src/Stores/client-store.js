@@ -1745,10 +1745,6 @@ export default class ClientStore extends BaseStore {
         } else {
             LocalStore.remove(`verification_code.${action}`);
         }
-        if (action === 'signup') {
-            // TODO: add await if error handling needs to happen before AccountSignup is initialised
-            this.fetchResidenceList(); // Prefetch for use in account signup process
-        }
     }
 
     @action.bound
@@ -1843,7 +1839,7 @@ export default class ClientStore extends BaseStore {
 
                 this.root_store.ui.showAccountTypesModalForEuropean();
 
-                if (!this.is_uk) {
+                if (!this.is_uk && !this.should_show_cr_onboarding) {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
                 }
             }
@@ -2067,6 +2063,15 @@ export default class ClientStore extends BaseStore {
     @computed
     get has_residence() {
         return !!this.accounts[this.loginid]?.residence;
+    }
+
+    @computed
+    get should_show_cr_onboarding() {
+        const is_excluded_from_cr_onboarding = ['au', 'sg', 'no'].includes(this.residence);
+        const shortcode =
+            this.landing_companies?.financial_company?.shortcode || this.landing_companies?.gaming_company?.shortcode;
+
+        return shortcode === 'svg' && !is_excluded_from_cr_onboarding;
     }
 
     @action.bound

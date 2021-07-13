@@ -4,6 +4,9 @@ import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-ne
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import { connect } from 'Stores/connect';
 
+const AccountSignupModal = React.lazy(() =>
+    import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal')
+);
 const ResetOrUnlinkPasswordModal = React.lazy(() =>
     import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../ResetOrUnlinkPasswordModal')
 );
@@ -46,6 +49,9 @@ const AppModals = ({
             break;
         case 'trading_platform_password_reset':
             ComponentToLoad = <ResetTradingPasswordModal />;
+            break;
+        case 'signup':
+            ComponentToLoad = <AccountSignupModal />;
             break;
         default:
             if (is_set_residence_modal_visible) {

@@ -227,7 +227,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                             onClick={handleSubmit}
                             has_effect
                             is_disabled={!dirty || isSubmitting || !isValid}
-                            text={localize('Next')}
+                            text={localize('Verify')}
                             large
                             primary
                         />

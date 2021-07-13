@@ -4,7 +4,7 @@ import { Text, ThemedScrollbars } from '@deriv/components';
 import { init } from 'onfido-sdk-ui';
 import { isMobile, routes, WS } from '@deriv/shared';
 import { getLanguage, Localize } from '@deriv/translations';
-import getCountryISO3 from 'country-iso-2-to-3'
+import getCountryISO3 from 'country-iso-2-to-3';
 import getOnfidoPhrases from 'Constants/onfido-phrases';
 
 const OnfidoSdkView = ({
@@ -25,7 +25,8 @@ const OnfidoSdkView = ({
     } = selected_country;
 
     // IDV uses iso2 (2 alphabet) country code format while onfido uses iso3
-    const onfido_country_code = (selected_country.length < 3) ? getCountryISO3(country_code) : country_code;
+    const onfido_country_code = country_code.length < 3 ? getCountryISO3(country_code.toUpperCase()) : country_code;
+    const onfido_documents = Object.keys(documents_supported).map(d => documents_supported[d].display_name);
 
     const onfido_init = React.useRef();
 
@@ -70,13 +71,13 @@ const OnfidoSdkView = ({
                         type: 'document',
                         options: {
                             documentTypes: {
-                                passport: !!documents_supported.passport,
-                                driving_licence: documents_supported.driving_licence
+                                passport: onfido_documents.includes('Passport'),
+                                driving_licence: onfido_documents.includes('Driving Licence')
                                     ? {
                                           country: onfido_country_code,
                                       }
                                     : false,
-                                national_identity_card: documents_supported.national_identity_card
+                                national_identity_card: onfido_documents.includes('National Identity Card')
                                     ? {
                                           country: onfido_country_code,
                                       }

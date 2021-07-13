@@ -612,7 +612,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_dxtrade_allowed() {
-        return this.isDxtradeAllowed();
+        return this.isDxtradeAllowed(this.landing_companies);
     }
 
     isMT5Allowed = landing_companies => {
@@ -623,17 +623,15 @@ export default class ClientStore extends BaseStore {
         return 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
     };
 
-    isDxtradeAllowed = () => {
-        if (!this.website_status?.clients_country || !this.landing_companies) return false;
+    isDxtradeAllowed = landing_companies => {
+        if (!this.website_status?.clients_country || !landing_companies || !Object.keys(landing_companies).length)
+            return true;
 
-        const is_svg =
-            this.landing_companies?.financial_company?.shortcode === 'svg' ||
-            this.landing_companies?.gaming_company?.shortcode === 'svg';
-
-        const is_au = (this.residence || this.website_status.clients_country) === 'au';
-        if (is_au) return false;
-
-        return is_svg || (!this.is_logged_in && !this.is_eu && !this.is_eu_country);
+        return (
+            'dxtrade_financial_company' in landing_companies ||
+            'dxtrade_gaming_company' in landing_companies ||
+            (!this.is_logged_in && !this.is_eu && !this.is_eu_country)
+        );
     };
 
     @computed

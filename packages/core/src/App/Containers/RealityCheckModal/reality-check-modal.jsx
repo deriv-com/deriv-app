@@ -18,7 +18,7 @@ const SpendingLimitIntervalField = ({ currency, disabled, touched, errors, handl
                     {...field}
                     name='max_30day_turnover'
                     data-lpignore='true'
-                    type='text'
+                    type='number'
                     label={localize('My spending limit ({{currency}})', { currency })}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -41,7 +41,7 @@ const TradingViewIntervalField = ({ values, touched, errors, handleChange, handl
                     {...field}
                     name='interval'
                     data-lpignore='true'
-                    type='text'
+                    type='number'
                     label={localize('After … minutes of trading')} // this is regards the Figma design
                     value={values.interval}
                     onChange={handleChange}
@@ -51,6 +51,7 @@ const TradingViewIntervalField = ({ values, touched, errors, handleChange, handl
                     error={touched.interval && errors.interval}
                     autoComplete='off'
                     maxLength='2'
+                    max='60'
                 />
             )}
         </Field>

@@ -188,21 +188,21 @@ export default class ClientStore extends BaseStore {
             return false;
         }
 
-        const balance = this.obj_total_balance.amount_real;
-
         if (!this.has_reality_check) return false;
         // scenario one
-        if (!this.reality_check_dismissed && balance > 0) return true;
+        if (!this.reality_check_dismissed && this.balance > 0) return true;
+
         // scenario two
         if (
             !this.reality_check_dismissed &&
-            balance === 0 &&
+            this.balance === 0 &&
             this.statement.count === 0 &&
             !!this.last_transaction?.action
         )
             return true;
+
         // scenario three
-        if (!this.reality_check_dismissed && balance === 0 && this.statement.count > 0) return true;
+        if (!this.reality_check_dismissed && this.balance === 0 && this.statement.count > 0) return true;
 
         // another scenario
         if (this.has_reality_check && !this.self_exclusion.max_30day_turnover) return true;
@@ -1534,10 +1534,12 @@ export default class ClientStore extends BaseStore {
             const total_real = getPropertyValue(obj_balance, ['total', 'deriv']);
             const total_mt5 = getPropertyValue(obj_balance, ['total', CFD_PLATFORMS.MT5]);
             const total_dxtrade = getPropertyValue(obj_balance, ['total', CFD_PLATFORMS.DXTRADE]);
+            const current_account = getPropertyValue(obj_balance, ['accounts', obj_balance.loginid]);
             // in API streaming responses MT5 balance is not re-sent, so we need to reuse the first mt5 total sent
             const has_mt5 = !isEmptyObject(total_mt5);
             const has_dxtrade = !isEmptyObject(total_dxtrade);
             this.obj_total_balance = {
+                current_account: current_account?.balance,
                 amount_real: +total_real.amount,
                 amount_mt5: has_mt5 ? +total_mt5.amount : this.obj_total_balance.amount_mt5,
                 amount_dxtrade: has_dxtrade ? +total_dxtrade.amount : this.obj_total_balance.amount_dxtrade,

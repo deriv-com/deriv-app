@@ -286,10 +286,12 @@ workflows:
   release_staging:
     jobs:
       - release_staging:
+          context: binary-frontend-artifact-upload
           filters:
             branches:
               only: /^master$/
       - release_staging_dashboard:
+          context: binary-frontend-artifact-upload
           filters:
             branches:
               only: /^master$/

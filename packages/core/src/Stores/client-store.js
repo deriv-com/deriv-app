@@ -343,10 +343,31 @@ export default class ClientStore extends BaseStore {
         return this.dxtrade_accounts_list.length > 0;
     }
 
+    getListOfMT5AccountsWithError = account_type => {
+        if (!this.is_logged_in) return [];
+        return this.mt5_login_list?.filter(
+            account => !!account.has_error && (!account_type || account.account_type === account_type)
+        );
+    };
+
     @computed
-    get has_account_error_in_mt5_list() {
-        if (!this.is_logged_in) return false;
-        return this.mt5_login_list?.some(account => !!account.has_error);
+    get list_of_real_mt5_accounts_with_error() {
+        return this.getListOfMT5AccountsWithError('real');
+    }
+
+    @computed
+    get has_account_error_in_mt5_real_list() {
+        return this.list_of_real_mt5_accounts_with_error.length > 0;
+    }
+
+    @computed
+    get list_of_demo_mt5_accounts_with_error() {
+        return this.getListOfMT5AccountsWithError('demo');
+    }
+
+    @computed
+    get has_account_error_in_mt5_demo_list() {
+        return this.list_of_demo_mt5_accounts_with_error.length > 0;
     }
 
     @computed
@@ -612,7 +633,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_dxtrade_allowed() {
-        return this.isDxtradeAllowed();
+        return this.isDxtradeAllowed(this.landing_companies);
     }
 
     isMT5Allowed = landing_companies => {
@@ -623,17 +644,15 @@ export default class ClientStore extends BaseStore {
         return 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
     };
 
-    isDxtradeAllowed = () => {
-        if (!this.website_status?.clients_country || !this.landing_companies) return false;
+    isDxtradeAllowed = landing_companies => {
+        if (!this.website_status?.clients_country || !landing_companies || !Object.keys(landing_companies).length)
+            return true;
 
-        const is_svg =
-            this.landing_companies?.financial_company?.shortcode === 'svg' ||
-            this.landing_companies?.gaming_company?.shortcode === 'svg';
-
-        const is_au = (this.residence || this.website_status.clients_country) === 'au';
-        if (is_au) return false;
-
-        return is_svg || (!this.is_logged_in && !this.is_eu && !this.is_eu_country);
+        return (
+            'dxtrade_financial_company' in landing_companies ||
+            'dxtrade_gaming_company' in landing_companies ||
+            (!this.is_logged_in && !this.is_eu && !this.is_eu_country)
+        );
     };
 
     @computed
@@ -707,7 +726,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setMT5DisabledSignupTypes(disabled_types_obj) {
         const current_list = this.mt5_disabled_signup_types;
-        this.mt5_disabled_signup_types = { current_list, ...disabled_types_obj };
+        this.mt5_disabled_signup_types = { ...current_list, ...disabled_types_obj };
     }
 
     @action.bound
@@ -1190,7 +1209,7 @@ export default class ClientStore extends BaseStore {
                 })
             );
             const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
-            this.setPreferredLanguage(account_settings.preferred_language);
+            if (account_settings) this.setPreferredLanguage(account_settings.preferred_language);
             await this.fetchResidenceList();
 
             if (account_settings && !account_settings.residence) {
@@ -1726,10 +1745,6 @@ export default class ClientStore extends BaseStore {
         } else {
             LocalStore.remove(`verification_code.${action}`);
         }
-        if (action === 'signup') {
-            // TODO: add await if error handling needs to happen before AccountSignup is initialised
-            this.fetchResidenceList(); // Prefetch for use in account signup process
-        }
     }
 
     @action.bound
@@ -1824,7 +1839,7 @@ export default class ClientStore extends BaseStore {
 
                 this.root_store.ui.showAccountTypesModalForEuropean();
 
-                if (!this.is_uk) {
+                if (!this.is_uk && !this.should_show_cr_onboarding) {
                     this.root_store.ui.toggleWelcomeModal({ is_visible: true, should_persist: true });
                 }
             }
@@ -1932,8 +1947,7 @@ export default class ClientStore extends BaseStore {
                 if (account.error) {
                     const { account_type, server } = account.error.details;
                     this.setMT5DisabledSignupTypes({
-                        real: account_type === 'real',
-                        demo: account_type === 'demo',
+                        [account_type]: true,
                     });
                     return {
                         account_type,
@@ -2049,6 +2063,15 @@ export default class ClientStore extends BaseStore {
     @computed
     get has_residence() {
         return !!this.accounts[this.loginid]?.residence;
+    }
+
+    @computed
+    get should_show_cr_onboarding() {
+        const is_excluded_from_cr_onboarding = ['au', 'sg', 'no'].includes(this.residence);
+        const shortcode =
+            this.landing_companies?.financial_company?.shortcode || this.landing_companies?.gaming_company?.shortcode;
+
+        return shortcode === 'svg' && !is_excluded_from_cr_onboarding;
     }
 
     @action.bound

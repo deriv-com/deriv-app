@@ -1,1 +1,1 @@
-export default from './welcome-modal-non-cr.jsx';
+export default from './welcome-modal.jsx';

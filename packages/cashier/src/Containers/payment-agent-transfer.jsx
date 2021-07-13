@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
+import CashierLocked from '../Components/Error/cashier-locked.jsx';
 import Error from '../Components/Error/error.jsx';
 import NoBalance from '../Components/Error/no-balance.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
@@ -13,7 +14,9 @@ const PaymentAgentTransfer = ({
     balance,
     container,
     error,
+    is_cashier_locked,
     is_loading,
+    is_system_maintenance,
     is_transfer_successful,
     is_try_transfer_successful,
     is_virtual,
@@ -39,6 +42,9 @@ const PaymentAgentTransfer = ({
     }
     if (is_loading) {
         return <Loading className='cashier__loader' />;
+    }
+    if (is_cashier_locked && is_system_maintenance) {
+        return <CashierLocked />;
     }
     if (error.is_show_full_page) {
         // for errors with CTA hide the form and show the error,
@@ -68,6 +74,8 @@ PaymentAgentTransfer.propTypes = {
     onMount: PropTypes.func,
     onUnMount: PropTypes.func,
     setActiveTab: PropTypes.func,
+    is_system_maintenance: PropTypes.bool,
+    is_cashier_locked: PropTypes.bool,
 };
 
 export default connect(({ client, modules }) => ({
@@ -81,4 +89,6 @@ export default connect(({ client, modules }) => ({
     onMount: modules.cashier.onMountPaymentAgentTransfer,
     onUnMount: modules.cashier.resetPaymentAgentTransfer,
     setActiveTab: modules.cashier.setActiveTab,
+    is_system_maintenance: modules.cashier.is_system_maintenance,
+    is_cashier_locked: modules.cashier.is_cashier_locked,
 }))(PaymentAgentTransfer);

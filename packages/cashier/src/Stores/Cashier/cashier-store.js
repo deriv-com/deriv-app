@@ -417,6 +417,7 @@ export default class CashierStore extends BaseStore {
             account_status,
             is_eu,
             mt5_login_list,
+            is_deposit_lock,
         } = this.root_store.client;
         if (!account_status.status) return false;
 
@@ -433,6 +434,7 @@ export default class CashierStore extends BaseStore {
             is_tnc_needed;
 
         return (
+            is_deposit_lock ||
             need_authentication ||
             need_tnc ||
             need_financial_assessment ||

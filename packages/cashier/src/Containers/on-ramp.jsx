@@ -40,8 +40,8 @@ const OnRampInfo = () => (
 
 const OnRamp = ({
     filtered_onramp_providers,
+    is_cashier_locked,
     is_onramp_modal_open,
-    is_system_maintenance,
     menu_options,
     onMountOnramp,
     onUnmountOnramp,
@@ -75,7 +75,7 @@ const OnRamp = ({
             value: menu_option.path,
         }));
 
-    if (is_system_maintenance) {
+    if (is_cashier_locked) {
         return <CashierLocked />;
     }
 
@@ -142,7 +142,7 @@ OnRamp.propTypes = {
     setIsOnRampModalOpen: PropTypes.func,
     setSideNotes: PropTypes.func,
     should_show_dialog: PropTypes.bool,
-    is_system_maintenance: PropTypes.bool,
+    is_cashier_locked: PropTypes.bool,
 };
 
 export default connect(({ modules, common }) => ({
@@ -155,5 +155,5 @@ export default connect(({ modules, common }) => ({
     routeTo: common.routeTo,
     setIsOnRampModalOpen: modules.cashier.onramp.setIsOnRampModalOpen,
     should_show_dialog: modules.cashier.onramp.should_show_dialog,
-    is_system_maintenance: modules.cashier.is_system_maintenance,
+    is_cashier_locked: modules.cashier.is_cashier_locked,
 }))(OnRamp);

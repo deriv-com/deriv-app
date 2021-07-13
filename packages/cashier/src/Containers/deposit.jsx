@@ -54,6 +54,7 @@ const Deposit = ({
     container,
     currency,
     setSideNotes,
+    current_currency_type,
 }) => {
     React.useEffect(() => {
         setActiveTab(container);
@@ -82,7 +83,9 @@ const Deposit = ({
         return <Virtual />;
     }
     if (is_system_maintenance) {
-        return <CashierLocked />;
+        if (is_cashier_locked || (is_deposit_locked && current_currency_type === 'crypto')) {
+            return <CashierLocked />;
+        }
     }
     if (error.is_ask_uk_funds_protection) {
         return <FundsProtection />;
@@ -118,6 +121,7 @@ Deposit.propTypes = {
     setSideNotes: PropTypes.func,
     standpoint: PropTypes.object,
     is_system_maintenance: PropTypes.bool,
+    current_currency_type: PropTypes.string,
 };
 
 export default connect(({ client, modules }) => ({
@@ -135,4 +139,5 @@ export default connect(({ client, modules }) => ({
     setActiveTab: modules.cashier.setActiveTab,
     standpoint: client.standpoint,
     is_system_maintenance: modules.cashier.is_system_maintenance,
+    current_currency_type: client.current_currency_type,
 }))(Deposit);

@@ -7,8 +7,8 @@ import Virtual from '../Components/Error/virtual.jsx';
 
 const PaymentAgent = ({
     container,
+    is_cashier_locked,
     is_payment_agent_withdraw,
-    is_system_maintenance,
     is_virtual,
     setActiveTab,
     verification_code,
@@ -25,7 +25,7 @@ const PaymentAgent = ({
     if (is_virtual) {
         return <Virtual />;
     }
-    if (is_system_maintenance) {
+    if (is_cashier_locked) {
         return <CashierLocked />;
     }
 
@@ -41,7 +41,7 @@ PaymentAgent.propTypes = {
     setActiveTab: PropTypes.func,
     verification_code: PropTypes.string,
     setPaymentAgentActiveTabIndex: PropTypes.func,
-    is_system_maintenance: PropTypes.bool,
+    is_cashier_locked: PropTypes.bool,
 };
 
 export default connect(({ client, modules }) => ({
@@ -51,5 +51,5 @@ export default connect(({ client, modules }) => ({
     is_payment_agent_withdraw: modules.cashier.config.payment_agent.is_withdraw,
     setActiveTab: modules.cashier.setActiveTab,
     setPaymentAgentActiveTabIndex: modules.cashier.config.payment_agent.setActiveTabIndex,
-    is_system_maintenance: modules.cashier.is_system_maintenance,
+    is_cashier_locked: modules.cashier.is_cashier_locked,
 }))(PaymentAgent);

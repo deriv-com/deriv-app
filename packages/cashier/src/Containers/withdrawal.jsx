@@ -55,6 +55,7 @@ const Withdrawal = ({
     setErrorMessage,
     setSideNotes,
     verification_code,
+    current_currency_type,
 }) => {
     React.useEffect(() => {
         setActiveTab(container);
@@ -80,15 +81,19 @@ const Withdrawal = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, iframe_url, verification_code]);
-
     if (is_system_maintenance) {
-        return <CashierLocked />;
+        if (is_cashier_locked || (is_withdrawal_locked && current_currency_type === 'crypto')) {
+            return <CashierLocked />;
+        }
     }
     if (is_10k_withdrawal_limit_reached === undefined) {
         return <Loading is_fullscreen />;
     }
     if (is_10k_withdrawal_limit_reached) {
         return <WithdrawalLocked is_10K_limit />;
+    }
+    if (is_cashier_locked) {
+        return <CashierLocked />;
     }
     if (verification_code || iframe_url) {
         return <Withdraw />;
@@ -98,9 +103,6 @@ const Withdrawal = ({
     }
     if (!+balance) {
         return <NoBalance />;
-    }
-    if (is_cashier_locked) {
-        return <CashierLocked />;
     }
     if (is_withdrawal_locked) {
         return <WithdrawalLocked />;
@@ -125,6 +127,7 @@ Withdrawal.propTypes = {
     setActiveTab: PropTypes.func,
     verification_code: PropTypes.string,
     is_system_maintenance: PropTypes.bool,
+    current_currency_type: PropTypes.bool,
 };
 
 export default connect(({ client, modules }) => ({
@@ -143,4 +146,5 @@ export default connect(({ client, modules }) => ({
     setActiveTab: modules.cashier.setActiveTab,
     setErrorMessage: modules.cashier.setErrorMessage,
     is_system_maintenance: modules.cashier.is_system_maintenance,
+    current_currency_type: client.current_currency_type,
 }))(Withdrawal);

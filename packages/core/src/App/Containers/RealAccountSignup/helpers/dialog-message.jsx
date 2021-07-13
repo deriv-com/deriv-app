@@ -9,12 +9,19 @@ import { EXPERIAN } from './constants';
  * @param {String} landing_company_shortcode
  * @param {EXPERIAN} status
  */
-export const DialogMessage = ({ status = EXPERIAN.SUCCESS, landing_company_shortcode }) => {
+export const DialogMessage = ({ status = EXPERIAN.SUCCESS, landing_company_shortcode, is_fully_authenticated }) => {
     let message = '';
     if (landing_company_shortcode === 'maltainvest') {
-        message = (
-            <Localize i18n_default_text='We need proofs of your identity and address before you can start trading.' />
-        );
+        if (is_fully_authenticated) {
+            message = [
+                <Localize key={0} i18n_default_text='You have added a Deriv Financial account.' />,
+                <Localize key={1} i18n_default_text='Make a deposit now to start trading.' />,
+            ];
+        } else {
+            message = (
+                <Localize i18n_default_text='We need proofs of your identity and address before you can start trading.' />
+            );
+        }
     } else {
         switch (status) {
             case EXPERIAN.WARN:
@@ -35,7 +42,22 @@ export const DialogMessage = ({ status = EXPERIAN.SUCCESS, landing_company_short
         }
     }
 
-    return (
+    return Array.isArray(message) ? (
+        <>
+            {message.map((text, index) => (
+                <Text
+                    key={index}
+                    as='p'
+                    align='center'
+                    className='status-dialog__message-text'
+                    color='general'
+                    size='xs'
+                >
+                    {text}
+                </Text>
+            ))}
+        </>
+    ) : (
         <Text as='p' align='center' className='status-dialog__message-text' color='general' size='xs'>
             {message}
         </Text>

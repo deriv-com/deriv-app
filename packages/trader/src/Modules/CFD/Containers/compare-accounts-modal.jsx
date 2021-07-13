@@ -13,17 +13,21 @@ import {
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { isDesktop, CFD_PLATFORMS } from '@deriv/shared';
+import { isDesktop, CFD_PLATFORMS, isLandingCompanyEnabled } from '@deriv/shared';
 
 const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
-    const logged_out_types_count = platform === CFD_PLATFORMS.MT5 ? 3 : 2;
-    const account_types_count = is_logged_in
-        ? [
-              landing_companies?.mt_gaming_company?.financial,
-              landing_companies?.mt_financial_company?.financial,
-              landing_companies?.mt_financial_company?.financial_stp && platform === CFD_PLATFORMS.MT5,
-          ].filter(Boolean).length
-        : logged_out_types_count;
+    const getLoggedOutTypesCount = () => (platform === CFD_PLATFORMS.MT5 ? 3 : 2);
+    const getLoggedInTypesCount = () =>
+        (platform === CFD_PLATFORMS.MT5
+            ? [
+                  landing_companies?.mt_gaming_company?.financial,
+                  landing_companies?.mt_financial_company?.financial,
+                  landing_companies?.mt_financial_company?.financial_stp && platform === CFD_PLATFORMS.MT5,
+              ]
+            : [landing_companies?.dxtrade_gaming_company, landing_companies?.dxtrade_financial_company]
+        ).filter(Boolean).length;
+
+    const account_types_count = is_logged_in ? getLoggedInTypesCount() : getLoggedOutTypesCount();
 
     return [
         {
@@ -445,15 +449,19 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
         setCols(compareAccountsData({ landing_companies, is_logged_in, platform, show_eu_related, residence }));
 
         if (is_logged_in) {
-            updateColumnsStyle(
-                `1.5fr ${landing_companies?.mt_gaming_company?.financial ? '1fr' : ''} ${
-                    landing_companies?.mt_financial_company?.financial ? '2fr' : ''
-                } ${
-                    landing_companies?.mt_financial_company?.financial_stp && platform === CFD_PLATFORMS.MT5
-                        ? ' 1fr '
-                        : ''
-                }`
-            );
+            if (platform === CFD_PLATFORMS.MT5) {
+                updateColumnsStyle(
+                    `1.5fr ${landing_companies?.mt_gaming_company?.financial ? '1fr' : ''} ${
+                        landing_companies?.mt_financial_company?.financial ? '2fr' : ''
+                    } ${landing_companies?.mt_financial_company?.financial_stp ? ' 1fr ' : ''}`
+                );
+            } else {
+                updateColumnsStyle(
+                    `1.5fr ${landing_companies?.dxtrade_gaming_company ? '1fr' : ''} ${
+                        landing_companies?.dxtrade_financial_company ? '2fr' : ''
+                    }`
+                );
+            }
         }
     }, [
         landing_companies?.mt_financial_company,
@@ -482,10 +490,14 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
                                 <Table.Head />
                                 {is_logged_in ? (
                                     <React.Fragment>
-                                        {landing_companies?.mt_gaming_company?.financial && (
+                                        {isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) && (
                                             <Table.Head>{localize('Synthetic')}</Table.Head>
                                         )}
-                                        {landing_companies?.mt_financial_company?.financial && (
+                                        {isLandingCompanyEnabled({
+                                            landing_companies,
+                                            platform,
+                                            type: 'financial',
+                                        }) && (
                                             <Table.Head>
                                                 {localize('Financial')}
                                                 <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
@@ -493,15 +505,18 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
                                                 </Text>
                                             </Table.Head>
                                         )}
-                                        {landing_companies?.mt_financial_company?.financial_stp &&
-                                            platform === CFD_PLATFORMS.MT5 && (
-                                                <Table.Head>
-                                                    {localize('Financial STP')}
-                                                    <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
-                                                        *
-                                                    </Text>
-                                                </Table.Head>
-                                            )}
+                                        {isLandingCompanyEnabled({
+                                            landing_companies,
+                                            platform,
+                                            type: 'financial_stp',
+                                        }) && (
+                                            <Table.Head>
+                                                {localize('Financial STP')}
+                                                <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
+                                                    *
+                                                </Text>
+                                            </Table.Head>
+                                        )}
                                     </React.Fragment>
                                 ) : (
                                     <React.Fragment>

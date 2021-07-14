@@ -13,11 +13,9 @@ import CashierLocked from '../Components/Error/cashier-locked.jsx';
 const P2PCashier = ({
     currency,
     history,
-    is_cashier_locked,
     is_dark_mode_on,
     is_logging_in,
     is_mobile,
-    is_system_maintenance,
     is_virtual,
     local_currency_config,
     location,
@@ -73,10 +71,6 @@ const P2PCashier = ({
         return <Loading is_fullscreen={false} />;
     }
 
-    if (is_cashier_locked && is_system_maintenance) {
-        return <CashierLocked />;
-    }
-
     return (
         <P2P
             client={{ currency, local_currency_config, is_virtual, residence, loginid }}
@@ -108,8 +102,6 @@ P2PCashier.propTypes = {
     loginid: PropTypes.string,
     residence: PropTypes.string,
     setNotificationCount: PropTypes.func,
-    is_system_maintenance: PropTypes.bool,
-    is_cashier_locked: PropTypes.bool,
 };
 
 export default withRouter(
@@ -123,7 +115,5 @@ export default withRouter(
         residence: client.residence,
         setNotificationCount: modules.cashier.setNotificationCount,
         is_mobile: ui.is_mobile,
-        is_system_maintenance: modules.cashier.is_system_maintenance,
-        is_cashier_locked: modules.cashier.is_cashier_locked,
     }))(P2PCashier)
 );

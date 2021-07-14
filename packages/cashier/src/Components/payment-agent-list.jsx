@@ -40,18 +40,6 @@ const PaymentAgentList = ({
         onMount();
     }, [onMount]);
 
-    if (is_email_sent) {
-        return (
-            <div className='cashier__wrapper'>
-                <EmailSent
-                    is_email_sent={is_email_sent}
-                    is_resend_clicked={is_resend_clicked}
-                    resend_timeout={resend_timeout}
-                />
-            </div>
-        );
-    }
-
     const list_with_default = [
         { text: <Localize i18n_default_text='All payment agents' />, value: 0 },
         ...supported_banks,
@@ -66,7 +54,7 @@ const PaymentAgentList = ({
     };
 
     return (
-        <div className='cashier__wrapper--align-left'>
+        <div className='cashier__wrapper--align-left cashier__wrapper-padding'>
             {error?.code ? (
                 <Error error={error} />
             ) : (
@@ -171,8 +159,18 @@ const PaymentAgentList = ({
                                 </div>
                             </div>
                             <div label={localize('Withdrawal')}>
-                                {(verification_code || is_payment_agent_withdraw) && (
-                                    <PaymentAgentWithdrawForm verification_code={verification_code} />
+                                {is_email_sent ? (
+                                    <div className='cashier__wrapper'>
+                                        <EmailSent
+                                            is_email_sent={is_email_sent}
+                                            is_resend_clicked={is_resend_clicked}
+                                            resend_timeout={resend_timeout}
+                                        />
+                                    </div>
+                                ) : (
+                                    (verification_code || is_payment_agent_withdraw) && (
+                                        <PaymentAgentWithdrawForm verification_code={verification_code} />
+                                    )
                                 )}
                             </div>
                         </Tabs>

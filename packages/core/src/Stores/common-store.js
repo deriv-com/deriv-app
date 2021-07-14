@@ -1,8 +1,9 @@
 import { action, observable, reaction } from 'mobx';
 import { routes, toMoment, getUrlSmartTrader, isMobile, getAppId } from '@deriv/shared';
+import { getAllowedLanguages } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
 import ServerTime from '_common/base/server_time';
-import { currentLanguage, getAllowedLanguages } from 'Utils/Language/index';
+import { currentLanguage } from 'Utils/Language/index';
 import BaseStore from './base-store';
 import { clientNotifications } from './Helpers/client-notifications';
 

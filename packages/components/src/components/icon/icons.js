@@ -153,6 +153,7 @@ import './common/ic-bank.svg';
 import './common/ic-bell.svg';
 import './common/ic-black-warning.svg';
 import './common/ic-box.svg';
+import './common/ic-button-back.svg';
 import './common/ic-calendar-datefrom.svg';
 import './common/ic-calendar-dateto.svg';
 import './common/ic-calendar-forward-today.svg';

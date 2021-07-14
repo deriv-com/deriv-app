@@ -32,7 +32,8 @@ const POISubmission = ({
             const { submissions_left: idv_submissions_left } = idv;
             const { submissions_left: onfido_submissions_left } = onfido;
             const is_idv_supported = selected_country.identity.services.idv.is_country_supported;
-            const is_onfido_supported = selected_country.identity.services.onfido.is_country_supported;
+            const is_onfido_supported =
+                selected_country.identity.services.onfido.is_country_supported && onfido.is_country_supported;
 
             if (is_idv_supported && Number(idv_submissions_left) > 0) {
                 setSubmissionService('idv');
@@ -116,7 +117,7 @@ const POISubmission = ({
                         />
                     );
                 case service_code.onfido:
-                    if (selected_country.identity.services.onfido.is_country_supported) {
+                    if (selected_country.identity.services.onfido.is_country_supported && onfido.is_country_supported) {
                         return (
                             <OnfidoUpload
                                 height={height}

@@ -161,7 +161,8 @@ class CFDDashboard extends React.Component {
             has_malta_account,
             has_maltainvest_account,
             has_cfd_account,
-            has_mt5_account_error,
+            has_mt5_real_account_error,
+            has_mt5_demo_account_error,
             has_dxtrade_account_error,
             mt5_disabled_signup_types,
             dxtrade_disabled_signup_types,
@@ -182,9 +183,17 @@ class CFDDashboard extends React.Component {
             !is_eu && is_logged_in && !has_real_account && upgradeable_landing_companies?.length > 0;
         if ((!country && is_logged_in) || is_logging_in) return <Loading />; // Wait for country name to be loaded before rendering
 
+        const has_mt5_account_error = this.state.is_demo_tab ? has_mt5_demo_account_error : has_mt5_real_account_error;
+
+        const has_cfd_account_error =
+            platform === CFD_PLATFORMS.MT5
+                ? has_mt5_account_error
+                : has_dxtrade_account_error || dxtrade_accounts_list_error;
+
         if (is_logged_in && !landing_companies) return <Loading />;
 
         if (platform === CFD_PLATFORMS.DXTRADE && !is_dxtrade_allowed) return <Redirect to={routes.mt5} />;
+
         return (
             <React.Fragment>
                 {is_mt5_allowed || platform === CFD_PLATFORMS.DXTRADE || !is_logged_in ? (
@@ -200,9 +209,7 @@ class CFDDashboard extends React.Component {
                                     {general_messages.getWelcomeHeader(is_logged_in, platform)}
                                 </h1>
                             </div>
-                            {(platform === CFD_PLATFORMS.MT5
-                                ? has_mt5_account_error
-                                : has_dxtrade_account_error || dxtrade_accounts_list_error) && (
+                            {has_cfd_account_error && (
                                 <div className='cfd-dashboard__accounts-error'>
                                     <Text
                                         as='p'
@@ -261,8 +268,8 @@ class CFDDashboard extends React.Component {
                                                     has_malta_account={has_malta_account}
                                                     has_cfd_account_error={
                                                         platform === CFD_PLATFORMS.MT5
-                                                            ? mt5_disabled_signup_types.demo
-                                                            : dxtrade_disabled_signup_types.demo ||
+                                                            ? mt5_disabled_signup_types.real
+                                                            : dxtrade_disabled_signup_types.real ||
                                                               !!dxtrade_accounts_list_error
                                                     }
                                                     openAccountNeededModal={openAccountNeededModal}
@@ -298,8 +305,8 @@ class CFDDashboard extends React.Component {
                                             has_maltainvest_account={has_maltainvest_account}
                                             has_cfd_account_error={
                                                 platform === CFD_PLATFORMS.MT5
-                                                    ? mt5_disabled_signup_types.real
-                                                    : dxtrade_disabled_signup_types.real ||
+                                                    ? mt5_disabled_signup_types.demo
+                                                    : dxtrade_disabled_signup_types.demo ||
                                                       !!dxtrade_accounts_list_error
                                             }
                                             openAccountNeededModal={openAccountNeededModal}
@@ -431,7 +438,7 @@ class CFDDashboard extends React.Component {
                                 </div>
                             </MobileWrapper>
                             <CFDTopUpDemoModal platform={platform} />
-                            <CFDPasswordModal platform={platform} />
+                            <CFDPasswordModal platform={platform} has_suspended_account={has_cfd_account_error} />
                             <CFDServerErrorDialog />
                             {platform === CFD_PLATFORMS.MT5 && (
                                 <React.Fragment>
@@ -499,7 +506,8 @@ export default withRouter(
         residence: client.residence,
         residence_list: client.residence_list,
         has_cfd_account: modules.cfd.has_cfd_account,
-        has_mt5_account_error: client.has_account_error_in_mt5_list,
+        has_mt5_real_account_error: client.has_account_error_in_mt5_real_list,
+        has_mt5_demo_account_error: client.has_account_error_in_mt5_demo_list,
         has_dxtrade_account_error: client.has_account_error_in_dxtrade_list,
         has_real_account: client.has_active_real_account,
         setAccountType: modules.cfd.setAccountType,

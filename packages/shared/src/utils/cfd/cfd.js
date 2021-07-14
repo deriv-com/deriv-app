@@ -109,3 +109,15 @@ export const getCFDPlatformLabel = platform => {
             return '';
     }
 };
+
+export const isLandingCompanyEnabled = ({ landing_companies, platform, type }) => {
+    if (platform === CFD_PLATFORMS.MT5) {
+        if (type === 'gaming') return !!landing_companies?.mt_gaming_company?.financial;
+        if (type === 'financial') return !!landing_companies?.mt_financial_company?.financial;
+        if (type === 'financial_stp') return !!landing_companies?.mt_financial_company?.financial_stp;
+    } else if (platform === CFD_PLATFORMS.DXTRADE) {
+        if (type === 'gaming') return !!landing_companies?.dxtrade_gaming_company?.standard;
+        if (type === 'financial') return !!landing_companies?.dxtrade_financial_company?.standard;
+    }
+    return false;
+};

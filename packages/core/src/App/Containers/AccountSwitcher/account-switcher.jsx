@@ -189,14 +189,18 @@ const AccountSwitcher = props => {
     const getRemainingAccounts = (existing_cfd_accounts, platform) => {
         const gaming_config = getCFDConfig(
             'gaming',
-            props.landing_companies?.mt_gaming_company,
+            platform === CFD_PLATFORMS.MT5
+                ? props.landing_companies?.mt_gaming_company
+                : props.landing_companies?.dxtrade_gaming_company,
             existing_cfd_accounts,
             props.trading_servers,
             platform
         );
         const financial_config = getCFDConfig(
             'financial',
-            props.landing_companies?.mt_financial_company,
+            platform === CFD_PLATFORMS.MT5
+                ? props.landing_companies?.mt_financial_company
+                : props.landing_companies?.dxtrade_financial_company,
             existing_cfd_accounts,
             props.trading_servers,
             platform
@@ -487,7 +491,7 @@ const AccountSwitcher = props => {
                                 {getDemoDXTrade().map(account => (
                                     <AccountList
                                         is_dark_mode_on={props.is_dark_mode_on}
-                                        key={account.login}
+                                        key={account.account_id}
                                         market_type={account.market_type}
                                         balance={account.balance}
                                         currency={account.currency}
@@ -696,7 +700,7 @@ const AccountSwitcher = props => {
                                         {getRealDXTrade().map(account => (
                                             <AccountList
                                                 is_dark_mode_on={props.is_dark_mode_on}
-                                                key={account.login}
+                                                key={account.account_id}
                                                 market_type={account.market_type}
                                                 balance={account.balance}
                                                 currency={account.currency}

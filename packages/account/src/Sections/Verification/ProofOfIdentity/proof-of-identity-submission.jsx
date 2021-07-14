@@ -117,20 +117,23 @@ const POISubmission = ({
                         />
                     );
                 case service_code.onfido:
-                    return (
-                        <OnfidoUpload
-                            height={height}
-                            is_from_external={is_from_external}
-                            onfido_service_token={onfido_service_token}
-                            onfido={onfido}
-                            selected_country={selected_country}
-                            residence_list={residence_list}
-                            setAPIError={setAPIError}
-                            refreshNotifications={refreshNotifications}
-                            handleViewComplete={handleViewComplete}
-                            handleBack={handleBack}
-                        />
-                    );
+                    if (selected_country.identity.services.onfido.is_country_supported) {
+                        return (
+                            <OnfidoUpload
+                                height={height}
+                                is_from_external={is_from_external}
+                                onfido_service_token={onfido_service_token}
+                                onfido={onfido}
+                                selected_country={selected_country}
+                                residence_list={residence_list}
+                                setAPIError={setAPIError}
+                                refreshNotifications={refreshNotifications}
+                                handleViewComplete={handleViewComplete}
+                                handleBack={handleBack}
+                            />
+                        );
+                    }
+                    return <Unsupported manual={manual} handleViewComplete={handleViewComplete} />;
                 case service_code.manual:
                     return <Unsupported manual={manual} handleViewComplete={handleViewComplete} />;
                 default:

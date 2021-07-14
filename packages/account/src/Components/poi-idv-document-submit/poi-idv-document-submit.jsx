@@ -53,7 +53,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
         const errors = {};
         const { document_type, document_number } = values;
 
-        if (!document_type) {
+        if (!document_type || !document_type.text || !document_type.value) {
             errors.document_type = localize('Please select a document type.');
         } else {
             setInputDisable(false);
@@ -135,9 +135,23 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                                         value={values.document_type.text}
                                                         onChange={handleChange}
                                                         onItemSelection={item => {
-                                                            setFieldValue('document_type', item || '', true);
-                                                            if (has_visual_sample) {
-                                                                setDocumentImage(item.sample_image || '');
+                                                            const select_value =
+                                                                item.text === 'No results found' || !item.text
+                                                                    ? ''
+                                                                    : item.text;
+                                                            if (select_value) {
+                                                                setFieldValue('document_type', item || '', true);
+                                                                if (has_visual_sample) {
+                                                                    setDocumentImage(item.sample_image || '');
+                                                                }
+                                                            } else {
+                                                                // Clear off all values
+                                                                setFieldValue(
+                                                                    'document_type',
+                                                                    { text: '', value: '' },
+                                                                    true
+                                                                );
+                                                                setDocumentImage('');
                                                             }
                                                         }}
                                                         required

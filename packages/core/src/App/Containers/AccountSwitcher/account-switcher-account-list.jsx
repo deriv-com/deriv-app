@@ -24,9 +24,9 @@ const AccountList = ({
     sub_account_type,
     platform,
 }) => {
-    const switchAccountType = acc_type => {
+    const switchAccountType = async acc_type => {
+        await onClickAccount();
         window.location.hash += `-${acc_type}`;
-        onClickAccount();
     };
 
     if (is_disabled && !currency) return null;

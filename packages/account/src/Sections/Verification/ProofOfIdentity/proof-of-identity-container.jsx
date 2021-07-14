@@ -122,7 +122,7 @@ const ProofOfIdentityContainer = ({
                     });
             });
         }
-    }, [account_status, is_switching]);
+    }, [is_switching]);
 
     if (is_status_loading || is_switching) {
         return <Loading is_fullscreen={false} />;

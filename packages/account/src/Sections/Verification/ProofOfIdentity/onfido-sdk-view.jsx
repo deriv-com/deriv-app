@@ -1,20 +1,21 @@
 import * as React from 'react';
+import * as Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
-import { Text, ThemedScrollbars } from '@deriv/components';
+import { Loading, Text, ThemedScrollbars } from '@deriv/components';
 import { init } from 'onfido-sdk-ui';
 import { isMobile, routes, WS } from '@deriv/shared';
 import { getLanguage, Localize } from '@deriv/translations';
 import getCountryISO3 from 'country-iso-2-to-3';
 import getOnfidoPhrases from 'Constants/onfido-phrases';
+import MissingPersonalDetails from 'Components/poi-missing-personal-details';
 
-const OnfidoSdkView = ({
-    handleViewComplete,
-    height,
-    is_from_external,
-    onfido_service_token,
-    selected_country,
-    setAPIError,
-}) => {
+const OnfidoSdkView = ({ handleViewComplete, height, is_from_external, selected_country, setAPIError }) => {
+    const [onfido_service_token, setOnfidoToken] = React.useState();
+    const [missing_personal_details, setMissingPersonalDetails] = React.useState(false);
+    const [is_status_loading, setStatusLoading] = React.useState(true);
+
+    const has_invalid_postal_code = missing_personal_details === 'postal_code';
+
     const {
         identity: {
             services: {
@@ -24,7 +25,7 @@ const OnfidoSdkView = ({
         value: country_code,
     } = selected_country;
 
-    // IDV uses iso2 (2 alphabet) country code format while onfido uses iso3
+    // IDV uses ISO2 country code format while onfido uses ISO3. This will check first and convert it to the proper ISO3 country code.
     const onfido_country_code = country_code.length < 3 ? getCountryISO3(country_code.toUpperCase()) : country_code;
     const onfido_documents = Object.keys(documents_supported).map(d => documents_supported[d].display_name);
 
@@ -92,11 +93,75 @@ const OnfidoSdkView = ({
         } catch (err) {
             setAPIError(err);
         }
-    }, [documents_supported, onfido_country_code, onComplete, onfido_service_token, setAPIError]);
+    }, [onfido_service_token, onComplete, onfido_documents, onfido_country_code, setAPIError]);
+
+    const getOnfidoServiceToken = React.useCallback(
+        () =>
+            new Promise(resolve => {
+                const onfido_cookie_name = 'onfido_token';
+                const onfido_cookie = Cookies.get(onfido_cookie_name);
+
+                if (!onfido_cookie) {
+                    WS.serviceToken({
+                        service_token: 1,
+                        service: 'onfido',
+                    }).then(response => {
+                        if (response.error) {
+                            resolve({ error: response.error });
+                            return;
+                        }
+
+                        const { token } = response.service_token.onfido;
+                        const in_90_minutes = 1 / 16;
+                        Cookies.set(onfido_cookie_name, token, {
+                            expires: in_90_minutes,
+                            secure: true,
+                            sameSite: 'strict',
+                        });
+                        resolve(token);
+                    });
+                } else {
+                    resolve(onfido_cookie);
+                }
+            }),
+        []
+    );
 
     React.useEffect(() => {
-        initOnfido();
-    }, [initOnfido]);
+        getOnfidoServiceToken()
+            .then(response_token => {
+                if (response_token.error) {
+                    const code = response_token?.error?.code;
+
+                    switch (code) {
+                        case 'MissingPersonalDetails':
+                            setMissingPersonalDetails('all');
+                            break;
+                        case 'InvalidPostalCode':
+                            setMissingPersonalDetails('postal_code');
+                            break;
+                        default:
+                            setAPIError(response_token.error);
+                            break;
+                    }
+                } else {
+                    setOnfidoToken(response_token);
+                }
+
+                setStatusLoading(false);
+            })
+            .then(() => {
+                initOnfido();
+            });
+    }, [getOnfidoServiceToken, initOnfido, setAPIError]);
+
+    if (is_status_loading) {
+        return <Loading is_fullscreen={false} />;
+    }
+
+    if (missing_personal_details) {
+        return <MissingPersonalDetails has_invalid_postal_code={has_invalid_postal_code} from='proof_of_identity' />;
+    }
 
     return (
         <ThemedScrollbars is_bypassed={isMobile()} height={height}>

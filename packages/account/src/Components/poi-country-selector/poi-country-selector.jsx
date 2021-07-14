@@ -71,7 +71,9 @@ const CountrySelector = ({ handleSelectionNext, residence_list, selected_country
                                                 value={values.country_input}
                                                 onChange={handleChange}
                                                 onItemSelection={({ text }) => {
-                                                    setFieldValue('country_input', text || '', true);
+                                                    const select_value =
+                                                        text === 'No results found' || !text ? '' : text;
+                                                    setFieldValue('country_input', select_value, true);
                                                     updateSelectedCountry(text);
                                                 }}
                                                 required

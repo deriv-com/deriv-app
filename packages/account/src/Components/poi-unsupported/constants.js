@@ -152,7 +152,7 @@ export const getDocumentIndex = ({ residence }) => [
                           },
                           { ...date_field, required: false },
                       ],
-                      documents_title: localize('Upload both of the following documents:'),
+                      documents_title: localize('Next, upload both of the following documents.'),
                       documents: [
                           {
                               document_type: DOCUMENT_TYPES.NATIONAL_IDENTITY_CARD,

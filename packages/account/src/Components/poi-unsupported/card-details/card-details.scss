@@ -78,10 +78,13 @@
         display: flex;
         align-items: center;
         flex-direction: column;
+        justify-content: space-between;
         padding: 0 1.5rem;
+        min-height: 19.2rem;
 
         &--preview {
             padding: 0 2.4rem;
+            max-height: 20.3rem;
         }
 
         p {

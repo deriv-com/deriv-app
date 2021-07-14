@@ -32,7 +32,7 @@ const icons = [
 const IconsItem = ({ data }) => (
     <div className={`${ROOT_CLASS}__icons-item`}>
         <Icon icon={data.icon} size={24} />
-        <Text as='p' size='xxxs' weight='bold' align='center'>
+        <Text as='p' size='xxxs' align='center'>
             {data.text}
         </Text>
     </div>
@@ -42,7 +42,7 @@ const DocumentsUpload = ({ initial_values, data, goToCards, onSubmit }) => {
     const { fields, documents_title, documents } = data;
 
     const fields_title = localize('First, enter your {{label}} and the expiry date.', {
-        label: fields[0].label.toLowerCase(),
+        label: fields[0].label,
     });
 
     const goBack = () => {
@@ -60,43 +60,59 @@ const DocumentsUpload = ({ initial_values, data, goToCards, onSubmit }) => {
                 validate={values => validateFields(values, fields, documents)}
                 onSubmit={onSubmit}
             >
-                {({ values, isValid }) => (
-                    <Form className={`${ROOT_CLASS}__form`}>
-                        <div className={`${ROOT_CLASS}__fields-content`}>
-                            <Text as='h3' size='s' weight='bold' color='prominent'>
-                                {fields_title}
-                            </Text>
-                            <div className={`${ROOT_CLASS}__fields-wrap`}>
-                                {fields.map(field => (
-                                    <InputField key={field.name} data={field} />
-                                ))}
+                {({ values, isValid, touched }) => {
+                    const is_form_touched = Object.keys(touched).length > 0;
+
+                    return (
+                        <Form className={`${ROOT_CLASS}__form`}>
+                            <div className={`${ROOT_CLASS}__fields-content`}>
+                                <Text as='h3' size='s' color='prominent'>
+                                    {fields_title}
+                                </Text>
+                                <div className={`${ROOT_CLASS}__fields-wrap`}>
+                                    {fields.map(field => (
+                                        <InputField key={field.name} data={field} />
+                                    ))}
+                                </div>
+                                <div className={`${ROOT_CLASS}__divider`} />
+                                <Text as='h3' size='s' color='prominent'>
+                                    {documents_title}
+                                </Text>
+                                <div className={`${ROOT_CLASS}__uploaders-wrap`}>
+                                    {documents.map(item => (
+                                        <Uploader
+                                            key={item.name}
+                                            data={item}
+                                            value={values[item.name]}
+                                            is_full={documents.length === 1}
+                                        />
+                                    ))}
+                                </div>
+                                <div className={`${ROOT_CLASS}__icons`}>
+                                    {icons.map(item => (
+                                        <IconsItem key={item.icon} data={item} />
+                                    ))}
+                                </div>
                             </div>
-                            <div className={`${ROOT_CLASS}__divider`} />
-                            <Text as='h3' size='s' weight='bold' color='prominent'>
-                                {documents_title}
-                            </Text>
-                            <div className={`${ROOT_CLASS}__uploaders-wrap`}>
-                                {documents.map(item => (
-                                    <Uploader
-                                        key={item.name}
-                                        data={item}
-                                        value={values[item.name]}
-                                        is_full={documents.length === 1}
-                                    />
-                                ))}
+                            <div className={`${ROOT_CLASS}__btns`}>
+                                <Button
+                                    onClick={goBack}
+                                    secondary
+                                    large
+                                    text={localize('Go back')}
+                                    icon={<Icon icon={'IcButtonBack'} size={16} />}
+                                />
+                                <Button
+                                    type='submit'
+                                    primary
+                                    large
+                                    is_disabled={!isValid || !is_form_touched}
+                                    text={localize('Next')}
+                                />
                             </div>
-                            <div className={`${ROOT_CLASS}__icons`}>
-                                {icons.map(item => (
-                                    <IconsItem key={item.icon} data={item} />
-                                ))}
-                            </div>
-                        </div>
-                        <div className={`${ROOT_CLASS}__btns`}>
-                            <Button onClick={goBack} secondary large text={localize('Go back')} />
-                            <Button type='submit' primary large is_disabled={!isValid} text={localize('Next')} />
-                        </div>
-                    </Form>
-                )}
+                        </Form>
+                    );
+                }}
             </Formik>
         </div>
     );

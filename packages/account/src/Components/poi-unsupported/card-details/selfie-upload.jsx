@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Formik, Form } from 'formik';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
-import { Button, Text } from '@deriv/components';
+import { Button, Icon, Text } from '@deriv/components';
 import Uploader from './uploader.jsx';
 import { setInitialValues, validateFields } from './utils';
 import { ROOT_CLASS, SELFIE_DOCUMENT } from '../constants';
@@ -21,41 +21,51 @@ const SelfieUpload = ({ initial_values, goBack, onConfirm, onFileDrop }) => {
                 validate={values => validateFields(values, undefined, [SELFIE_DOCUMENT])}
                 onSubmit={onConfirm}
             >
-                {({ values, isValid, isSubmitting }) => (
-                    <Form className={`${ROOT_CLASS}__form`}>
-                        <div className={`${ROOT_CLASS}__fields-content`}>
-                            <Text as='h3' size='s' weight='bold' color='prominent'>
-                                {localize('Upload your selfie')}
-                            </Text>
-                            <div className={`${ROOT_CLASS}__uploaders-wrap`}>
-                                <Uploader
-                                    data={SELFIE_DOCUMENT}
-                                    value={values[SELFIE_DOCUMENT.name]}
-                                    is_full={true}
-                                    onChange={onFileDrop}
-                                    has_frame
+                {({ values, isValid, isSubmitting, touched }) => {
+                    const is_form_touched = Object.keys(touched).length > 0;
+
+                    return (
+                        <Form className={`${ROOT_CLASS}__form`}>
+                            <div className={`${ROOT_CLASS}__fields-content`}>
+                                <Text as='h3' size='s' weight='bold' color='prominent'>
+                                    {localize('Upload your selfie')}
+                                </Text>
+                                <div className={`${ROOT_CLASS}__uploaders-wrap`}>
+                                    <Uploader
+                                        data={SELFIE_DOCUMENT}
+                                        value={values[SELFIE_DOCUMENT.name]}
+                                        is_full={true}
+                                        onChange={onFileDrop}
+                                        has_frame
+                                    />
+                                </div>
+                                <div className={`${ROOT_CLASS}__notice`}>
+                                    <Text as='p' size='xs' color='general'>
+                                        {localize(
+                                            'Before uploading, please ensure that you’re facing forward in the selfie, your face is within the frame, and your eyes are clearly visible even if you’re wearing glasses.'
+                                        )}
+                                    </Text>
+                                </div>
+                            </div>
+                            <div className={`${ROOT_CLASS}__btns`}>
+                                <Button
+                                    onClick={goBack}
+                                    secondary
+                                    large
+                                    text={localize('Go back')}
+                                    icon={<Icon icon={'IcButtonBack'} size={16} />}
+                                />
+                                <Button
+                                    type='submit'
+                                    primary
+                                    large
+                                    is_disabled={!is_form_touched || !isValid || isSubmitting}
+                                    text={localize('Confirm and upload')}
                                 />
                             </div>
-                            <div className={`${ROOT_CLASS}__notice`}>
-                                <Text as='p' size='xs' color='general'>
-                                    {localize(
-                                        'Face forward and remove your glasses if necessary. Make sure your eyes are clearly visible and your face is within the frame.'
-                                    )}
-                                </Text>
-                            </div>
-                        </div>
-                        <div className={`${ROOT_CLASS}__btns`}>
-                            <Button onClick={goBack} secondary large text={localize('Go back')} />
-                            <Button
-                                type='submit'
-                                primary
-                                large
-                                is_disabled={!isValid || isSubmitting}
-                                text={localize('Confirm and upload')}
-                            />
-                        </div>
-                    </Form>
-                )}
+                        </Form>
+                    );
+                }}
             </Formik>
         </div>
     );

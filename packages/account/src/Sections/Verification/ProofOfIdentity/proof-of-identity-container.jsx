@@ -14,8 +14,6 @@ import POISubmission from './proof-of-identity-submission.jsx';
 import Onfido from './onfido.jsx';
 import IdvContainer from './idv.jsx';
 import { identity_status_codes, service_code } from './proof-of-identity-utils';
-// Enable for testing
-// import { figmaAccountStatus } from './mock/account_status';
 import { populateVerificationStatus } from '../Helpers/verification';
 
 const ProofOfIdentityContainer = ({
@@ -126,7 +124,6 @@ const ProofOfIdentityContainer = ({
         }
     }, [is_switching]);
 
-    // const new_account_status = figmaAccountStatus('idv_none') || account_status;
     const verification_status = populateVerificationStatus(account_status);
     const { idv, onfido, manual, identity_status, identity_last_attempt, needs_poa } = verification_status;
     const redirect_button = should_show_redirect_btn && (

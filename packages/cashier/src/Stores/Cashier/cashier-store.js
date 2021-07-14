@@ -374,7 +374,7 @@ export default class CashierStore extends BaseStore {
             }
         } else if (isCryptocurrency(this.root_store.client.currency)) {
             this.setLoading(false);
-            this.setContainerHeight('400');
+            this.setContainerHeight('380');
             this.setIframeUrl(response_cashier.cashier);
             // crypto cashier can only be accessed once and the session expires
             // so no need to set timeouts to keep the session alive

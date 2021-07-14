@@ -124,14 +124,6 @@ const ProofOfIdentityContainer = ({
         }
     }, [account_status, is_switching]);
 
-    const verification_status = populateVerificationStatus(account_status);
-    const { idv, onfido, manual, identity_status, identity_last_attempt, needs_poa } = verification_status;
-    const redirect_button = should_show_redirect_btn && (
-        <Button primary className='proof-of-identity__redirect' onClick={() => routeBackTo(from_platform.route)}>
-            <Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name: from_platform.name }} />
-        </Button>
-    );
-
     if (is_status_loading || is_switching) {
         return <Loading is_fullscreen={false} />;
     }
@@ -151,6 +143,14 @@ const ProofOfIdentityContainer = ({
     if (!should_allow_authentication) {
         return <NotRequired />;
     }
+
+    const verification_status = populateVerificationStatus(account_status);
+    const { idv, onfido, manual, identity_status, identity_last_attempt, needs_poa } = verification_status;
+    const redirect_button = should_show_redirect_btn && (
+        <Button primary className='proof-of-identity__redirect' onClick={() => routeBackTo(from_platform.route)}>
+            <Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name: from_platform.name }} />
+        </Button>
+    );
 
     if (identity_status === identity_status_codes.none || has_require_submission) {
         return (

@@ -321,7 +321,7 @@ const CFDServerModalWarning = ({ show_warning = true, platform }) => {
                 align='center'
             >
                 <Localize
-                    i18n_default_text='Due to an issue on our server, some of your {{platform}} accounts are unavailable at the moment. Please bear     with us and thank you for your patience.'
+                    i18n_default_text='Due to an issue on our server, some of your {{platform}} accounts are unavailable at the moment. Please bear with us and thank you for your patience.'
                     values={{
                         platform: platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
                     }}

@@ -481,7 +481,7 @@ const checkAccountStatus = (
         allow_document_upload,
     } = getStatusValidations(status);
 
-    const { system_maintenance } = getCashierValidations(cashier_validation);
+    const { system_maintenance } = cashier_validation ? getCashierValidations(cashier_validation) : {};
 
     addVerificationNotifications(identity, document, addNotificationMessage);
 

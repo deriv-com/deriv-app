@@ -62,6 +62,7 @@ const DocumentsUpload = ({ initial_values, data, goToCards, onSubmit }) => {
             >
                 {({ values, isValid, touched }) => {
                     const is_form_touched = Object.keys(touched).length > 0;
+                    const is_form_empty = Object.values(values).some(field => field === null || field === '');
 
                     return (
                         <Form className={`${ROOT_CLASS}__form`}>
@@ -106,7 +107,7 @@ const DocumentsUpload = ({ initial_values, data, goToCards, onSubmit }) => {
                                     type='submit'
                                     primary
                                     large
-                                    is_disabled={!isValid || !is_form_touched}
+                                    is_disabled={!isValid || (!is_form_touched && is_form_empty)}
                                     text={localize('Next')}
                                 />
                             </div>

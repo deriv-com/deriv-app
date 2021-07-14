@@ -23,6 +23,7 @@ const SelfieUpload = ({ initial_values, goBack, onConfirm, onFileDrop }) => {
             >
                 {({ values, isValid, isSubmitting, touched }) => {
                     const is_form_touched = Object.keys(touched).length > 0;
+                    const is_form_empty = Object.values(values).some(field => field === null || field === '');
 
                     return (
                         <Form className={`${ROOT_CLASS}__form`}>
@@ -59,7 +60,7 @@ const SelfieUpload = ({ initial_values, goBack, onConfirm, onFileDrop }) => {
                                     type='submit'
                                     primary
                                     large
-                                    is_disabled={!is_form_touched || !isValid || isSubmitting}
+                                    is_disabled={!isValid || isSubmitting || (!is_form_touched && is_form_empty)}
                                     text={localize('Confirm and upload')}
                                 />
                             </div>

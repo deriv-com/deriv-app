@@ -27,6 +27,11 @@ const SpendingLimitIntervalField = ({ currency, disabled, touched, errors, handl
                     error={touched.max_30day_turnover && errors.max_30day_turnover}
                     autoComplete='off'
                     maxLength='13'
+                    onKeyPress={e => {
+                        if (e.target.value?.length >= 13) {
+                            e.preventDefault();
+                        }
+                    }}
                 />
             )}
         </Field>

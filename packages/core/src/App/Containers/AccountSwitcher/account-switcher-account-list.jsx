@@ -16,7 +16,7 @@ const AccountList = ({
     is_virtual,
     loginid,
     account_type,
-    onClickAccount,
+    redirectAccount,
     onClickResetVirtualBalance,
     selected_loginid,
     server,
@@ -25,7 +25,7 @@ const AccountList = ({
     platform,
 }) => {
     const switchAccountType = async acc_type => {
-        await onClickAccount();
+        await redirectAccount();
         window.location.hash += `-${acc_type}`;
     };
 

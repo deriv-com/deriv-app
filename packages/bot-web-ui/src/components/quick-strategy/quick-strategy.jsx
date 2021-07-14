@@ -493,9 +493,9 @@ const ContentRenderer = props => {
                 return false;
             return true;
         }); // Until Forex multiplier enabled for Dbot
-    const selected_symbol_option = symbol_dropdown_options.includes(selected_symbol)
-        ? selected_symbol
-        : symbol_dropdown_options[0];
+
+    const has_cached_symbol = symbol_dropdown_options.some(symbol => symbol.value === selected_symbol.value);
+    const selected_symbol_option = has_cached_symbol ? selected_symbol : symbol_dropdown_options[0];
 
     const trade_type_dropdown_options = trade_type_dropdown.map(trade_type => ({
         component: <TradeTypeOption trade_type={trade_type} />,

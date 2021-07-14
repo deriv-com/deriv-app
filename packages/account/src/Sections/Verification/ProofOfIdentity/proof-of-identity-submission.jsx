@@ -16,7 +16,6 @@ const POISubmission = ({
     is_from_external,
     manual,
     needs_poa,
-    onfido_service_token,
     onfido,
     onStateChange,
     redirect_button,
@@ -122,7 +121,6 @@ const POISubmission = ({
                             <OnfidoUpload
                                 height={height}
                                 is_from_external={is_from_external}
-                                onfido_service_token={onfido_service_token}
                                 onfido={onfido}
                                 selected_country={selected_country}
                                 residence_list={residence_list}

@@ -285,6 +285,16 @@ export default class CFDStore extends BaseStore {
 
     @action.bound
     async submitMt5Password(values, actions) {
+        if (this.root_store.client.is_trading_password_required) {
+            const response = await WS.tradingPlatformPasswordChange({
+                new_password: values.password,
+                platform: CFD_PLATFORMS.MT5,
+            });
+            if (response.error) {
+                return;
+            }
+        }
+
         this.resetFormErrors();
         const response = await this.openMT5Account(values);
         if (!response.error) {
@@ -310,6 +320,16 @@ export default class CFDStore extends BaseStore {
 
     @action.bound
     async submitCFDPassword(values, actions) {
+        if (this.root_store.client.is_deriv_x_trading_password_required) {
+            const response = await WS.tradingPlatformPasswordChange({
+                new_password: values.password,
+                platform: CFD_PLATFORMS.DXTRADE,
+            });
+            if (response.error) {
+                return;
+            }
+        }
+
         const response = await this.openCFDAccount(values);
         if (!response.error) {
             WS.tradingPlatformAccountsList(values.platform).then(

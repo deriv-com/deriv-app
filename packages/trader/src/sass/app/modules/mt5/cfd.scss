@@ -139,6 +139,22 @@
             margin-bottom: 1.6rem;
         }
     }
+    &__change-password-confirmation {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        max-width: 30rem;
+        margin-top: -2.5rem;
+
+        &-wrapper {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+        .dc-form-submit-button {
+            margin-bottom: 2.2rem;
+        }
+    }
 }
 
 .dc-modal__container_top-up-virtual {

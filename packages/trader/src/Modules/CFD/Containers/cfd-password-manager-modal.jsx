@@ -326,12 +326,12 @@ const CFDPasswordManagerTabContent = ({
         <React.Fragment>
             <DesktopWrapper>
                 <ThemedScrollbars height={password_container_height} is_bypassed={isMobile()} autohide={false}>
-                    <TradingPasswordManager toggleModal={toggleModal} platform={platform} />
+                    <TradingPasswordManager toggleModal={toggleModal} platform={platform} email={email} />
                 </ThemedScrollbars>
             </DesktopWrapper>
             <MobileWrapper>
                 <Div100vhContainer className='cfd-password-manager__scroll-wrapper' height_offset='120px'>
-                    <TradingPasswordManager toggleModal={toggleModal} platform={platform} />
+                    <TradingPasswordManager toggleModal={toggleModal} platform={platform} email={email} />
                 </Div100vhContainer>
             </MobileWrapper>
         </React.Fragment>

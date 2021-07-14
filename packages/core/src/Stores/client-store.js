@@ -442,7 +442,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_deriv_x_trading_password_required() {
-        return this.account_status?.status?.includes('deriv_x_trading_password_required');
+        return this.account_status?.status?.includes('dxtrade_trading_password_required');
     }
 
     @computed

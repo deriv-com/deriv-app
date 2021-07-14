@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Text, FormSubmitButton, Button, Icon, MultiStep, SendEmailTemplate } from '@deriv/components';
+import { Text, Button, Icon, MultiStep, SendEmailTemplate } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
+import { getCFDPlatformLabel, CFD_PLATFORMS, WS } from '@deriv/shared';
+import ChangePasswordConfirmation from './cfd-change-password-confirmation.jsx';
 
 const ChangePassword = ({ platform, onConfirm }) => (
     <div className='cfd-change-password'>
@@ -43,52 +44,18 @@ ChangePassword.propTypes = {
     platform: PropTypes.string,
 };
 
-const ChangePasswordConfirmation = ({ platform, onConfirm, onCancel }) => (
-    <div className='cfd-change-password-confirmation'>
-        <Icon className='cfd-change-password__icon' icon='IcMt5OnePassword' width='122' height='100' />
-        <Text as='p' align='center' size='s' weight='bold'>
-            <Localize
-                i18n_default_text='Confirm to change your {{platform}} password'
-                values={{
-                    platform: getCFDPlatformLabel(platform),
-                }}
-            />
-        </Text>
-        <Text
-            className='cfd-change-password-confirmation__description'
-            as='p'
-            align='center'
-            color='loss-danger'
-            size='xs'
-        >
-            <Localize
-                i18n_default_text='This will change the password to all of your {{platform}} accounts.'
-                values={{
-                    platform: getCFDPlatformLabel(platform),
-                }}
-            />
-        </Text>
-        <FormSubmitButton
-            is_center={true}
-            label={localize('Confirm')}
-            cancel_label={localize('Cancel')}
-            has_cancel={true}
-            onCancel={onCancel}
-            onClick={onConfirm}
-        />
-    </div>
-);
+const PasswordReset = ({ email, platform }) => {
+    const onClickSendEmail = React.useCallback(() => {
+        WS.verifyEmail(email, 'trading_platform_password_reset', {
+            url_parameters: {
+                platform,
+            },
+        });
+    }, [email, platform]);
 
-ChangePasswordConfirmation.propTypes = {
-    onConfirm: PropTypes.func,
-    onCancel: PropTypes.func,
-    platform: PropTypes.string,
-};
-
-const PasswordReset = ({ onClickSendEmail, platform }) => {
     React.useEffect(() => {
-        // TODO: send verify email
-    }, []);
+        onClickSendEmail();
+    }, [onClickSendEmail]);
 
     return (
         <SendEmailTemplate
@@ -104,16 +71,12 @@ const PasswordReset = ({ onClickSendEmail, platform }) => {
 };
 
 PasswordReset.propTypes = {
-    onClickSendEmail: PropTypes.func,
+    email: PropTypes.string,
     platform: PropTypes.string,
 };
 
-const TradingPasswordManager = ({ platform }) => {
+const TradingPasswordManager = ({ platform, email }) => {
     const multi_step_ref = React.useRef();
-
-    const onClickSendEmail = () => {
-        // TODO: send verify email
-    };
 
     const steps = [
         {
@@ -129,21 +92,20 @@ const TradingPasswordManager = ({ platform }) => {
             ),
         },
         {
-            component: <PasswordReset platform={platform} onClickSendEmail={onClickSendEmail} />,
+            component: <PasswordReset platform={platform} email={email} />,
         },
     ];
 
     return (
-        <React.Fragment>
-            <div className='cfd-trading-password'>
-                <MultiStep ref={multi_step_ref} steps={steps} />
-            </div>
-        </React.Fragment>
+        <div className='cfd-trading-password'>
+            <MultiStep ref={multi_step_ref} steps={steps} />
+        </div>
     );
 };
 
 TradingPasswordManager.propTypes = {
     platform: PropTypes.string,
+    email: PropTypes.string,
 };
 
 export default TradingPasswordManager;

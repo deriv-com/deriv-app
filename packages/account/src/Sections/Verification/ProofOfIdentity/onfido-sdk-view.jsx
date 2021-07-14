@@ -128,31 +128,28 @@ const OnfidoSdkView = ({ handleViewComplete, height, is_from_external, selected_
     );
 
     React.useEffect(() => {
-        getOnfidoServiceToken()
-            .then(response_token => {
-                if (response_token.error) {
-                    const code = response_token?.error?.code;
+        getOnfidoServiceToken().then(response_token => {
+            if (response_token.error) {
+                const code = response_token?.error?.code;
 
-                    switch (code) {
-                        case 'MissingPersonalDetails':
-                            setMissingPersonalDetails('all');
-                            break;
-                        case 'InvalidPostalCode':
-                            setMissingPersonalDetails('postal_code');
-                            break;
-                        default:
-                            setAPIError(response_token.error);
-                            break;
-                    }
-                } else {
-                    setOnfidoToken(response_token);
+                switch (code) {
+                    case 'MissingPersonalDetails':
+                        setMissingPersonalDetails('all');
+                        break;
+                    case 'InvalidPostalCode':
+                        setMissingPersonalDetails('postal_code');
+                        break;
+                    default:
+                        setAPIError(response_token.error);
+                        break;
                 }
+            } else {
+                setOnfidoToken(response_token);
+            }
 
-                setStatusLoading(false);
-            })
-            .then(() => {
-                initOnfido();
-            });
+            setStatusLoading(false);
+            initOnfido();
+        });
     }, [getOnfidoServiceToken, initOnfido, setAPIError]);
 
     if (is_status_loading) {

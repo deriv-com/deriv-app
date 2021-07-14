@@ -12,7 +12,7 @@ import SpendingLimitModal from './spending-limit-modal.jsx';
 
 const SpendingLimitIntervalField = ({ currency, disabled, touched, errors, handleChange, handleBlur }) => (
     <div className='reality-check__fieldset reality-check__fieldset--spending-limit'>
-        <Field name='interval'>
+        <Field name='max_30day_turnover'>
             {({ field }) => (
                 <Input
                     {...field}
@@ -52,6 +52,11 @@ const TradingViewIntervalField = ({ values, touched, errors, handleChange, handl
                     autoComplete='off'
                     maxLength='2'
                     max='60'
+                    onKeyPress={e => {
+                        if (e.target.value?.length >= 2) {
+                            e.preventDefault();
+                        }
+                    }}
                 />
             )}
         </Field>

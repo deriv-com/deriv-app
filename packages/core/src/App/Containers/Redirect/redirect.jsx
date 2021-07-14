@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { loginUrl, routes, PlatformContext } from '@deriv/shared';
+import { loginUrl, routes, PlatformContext, CFD_PLATFORMS } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
@@ -41,6 +41,16 @@ const Redirect = ({
             break;
         }
         case 'trading_platform_password_reset': {
+            const platform = url_params.get('platform');
+
+            if (platform) {
+                history.push({
+                    pathname: platform === CFD_PLATFORMS.MT5 ? routes.mt5 : routes.dxtrade,
+                    search: url_query_string,
+                });
+                redirected_to_route = true;
+            }
+
             setResetTradingPasswordModalOpen(true);
             break;
         }

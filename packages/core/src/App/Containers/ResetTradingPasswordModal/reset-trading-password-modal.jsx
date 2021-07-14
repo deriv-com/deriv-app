@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text } from '@deriv/components';
-import { getErrorMessages, validPassword, validLength } from '@deriv/shared';
+import { routes, getErrorMessages, validPassword, validLength, CFD_PLATFORMS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
@@ -16,9 +16,12 @@ const ResetTradingPassword = ({
 }) => {
     const handleSubmit = (values, actions) => {
         actions.setSubmitting(true);
+        const platform = window.location.pathname === routes.mt5 ? CFD_PLATFORMS.MT5 : CFD_PLATFORMS.DXTRADE;
+
         const params = {
             new_password: values.password,
             verification_code,
+            platform,
         };
 
         WS.tradingPlatformPasswordReset(params).then(async response => {

@@ -18,7 +18,6 @@ const AccountList = ({
     account_type,
     onClickAccount,
     onClickResetVirtualBalance,
-    selectMT5AccountType,
     selected_loginid,
     server,
     is_dark_mode_on,
@@ -26,7 +25,7 @@ const AccountList = ({
     platform,
 }) => {
     const switchAccountType = acc_type => {
-        selectMT5AccountType(acc_type);
+        window.location.hash += `-${acc_type}`;
         onClickAccount();
     };
 

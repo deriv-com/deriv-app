@@ -124,9 +124,6 @@ export default class UIStore extends BaseStore {
     // UI Focus retention
     @observable current_focus = null;
 
-    // Selecting a market from the MT5 menu.
-    @observable selected_mt5_account_type = '';
-
     // Mobile
     mobile_toast_timeout = 3500;
     @observable.shallow toasts = [];
@@ -772,10 +769,5 @@ export default class UIStore extends BaseStore {
     @action.bound
     toggleShouldShowMultipliersOnboarding(value) {
         this.should_show_multipliers_onboarding = value;
-    }
-
-    @action.bound
-    selectMT5AccountType(market) {
-        this.selected_mt5_account_type = market;
     }
 }

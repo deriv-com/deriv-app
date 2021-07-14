@@ -50,7 +50,6 @@ class CFDDashboard extends React.Component {
     };
 
     async componentDidMount() {
-        this.scrollToSelectedMarket();
         this.updateActiveIndex(this.getIndexToSet());
         this.openResetPassword();
         this.props.onMount();
@@ -61,20 +60,9 @@ class CFDDashboard extends React.Component {
     }
 
     componentDidUpdate() {
-        this.scrollToSelectedMarket();
         this.updateActiveIndex();
         this.props.checkShouldOpenAccount();
     }
-
-    scrollToSelectedMarket = async () => {
-        const current_hash = await this.props.location.hash;
-        const selected_market = this.props.selected_mt5_account_type;
-        const market_hash = selected_market === '' ? '' : `-${selected_market}`;
-
-        if (current_hash === '#demo' || current_hash === '#real') {
-            window.location.hash = current_hash + market_hash;
-        }
-    };
 
     openResetPassword = () => {
         if (!/reset-password/.test(this.props.location.hash)) {
@@ -486,7 +474,6 @@ class CFDDashboard extends React.Component {
 
 export default withRouter(
     connect(({ client, modules, ui }) => ({
-        selected_mt5_account_type: ui.selected_mt5_account_type,
         beginRealSignupForMt5: modules.cfd.beginRealSignupForMt5,
         checkShouldOpenAccount: modules.cfd.checkShouldOpenAccount,
         country: client.account_settings.residence,

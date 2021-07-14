@@ -5,6 +5,7 @@ export const FlexWrapper = ({ children }) => {
         display: 'flex',
         flexDirection: 'row',
         padding: '2rem',
+        justifyContent: 'center',
     };
     return <div style={style}>{children}</div>;
 };

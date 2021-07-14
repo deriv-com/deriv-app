@@ -93,7 +93,7 @@ const AccountActions = React.memo(
                         {!is_virtual && !currency && (
                             <div className='set-currency'>
                                 <Button
-                                    onClick={openRealAccountSignup}
+                                    onClick={() => openRealAccountSignup('set_currency')}
                                     has_effect
                                     type='button'
                                     text={localize('Set currency')}

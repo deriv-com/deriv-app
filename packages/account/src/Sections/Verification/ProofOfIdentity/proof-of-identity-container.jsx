@@ -122,7 +122,7 @@ const ProofOfIdentityContainer = ({
                     });
             });
         }
-    }, [is_switching]);
+    }, [account_status, is_switching]);
 
     const verification_status = populateVerificationStatus(account_status);
     const { idv, onfido, manual, identity_status, identity_last_attempt, needs_poa } = verification_status;

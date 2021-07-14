@@ -69,10 +69,10 @@ const SpendingLimitModal = ({ disableApp, currency, enableApp, InputField, is_vi
                                                 {[
                                                     {
                                                         id: '1',
-                                                        label: 'Set a 30-day spending limit',
+                                                        label: localize('Set a 30-day spending limit'),
                                                         value: '1',
                                                     },
-                                                    { id: '0', label: 'No spending limit', value: '0' },
+                                                    { id: '0', label: localize('No spending limit'), value: '0' },
                                                 ].map(item => (
                                                     <RadioGroup.Item
                                                         key={item.value}

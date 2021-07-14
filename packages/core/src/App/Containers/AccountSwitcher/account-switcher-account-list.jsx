@@ -15,7 +15,7 @@ const AccountList = ({
     is_disabled,
     is_virtual,
     loginid,
-    market_type,
+    account_type,
     onClickAccount,
     onClickResetVirtualBalance,
     selectMT5AccountType,
@@ -25,8 +25,8 @@ const AccountList = ({
     sub_account_type,
     platform,
 }) => {
-    const switchMarket = market => {
-        selectMT5AccountType(market);
+    const switchAccountType = acc_type => {
+        selectMT5AccountType(acc_type);
         onClickAccount();
     };
 
@@ -36,12 +36,12 @@ const AccountList = ({
         <React.Fragment>
             <div
                 id={`dt_${loginid}`}
-                className={classNames('acc-switcher__account', market_type, {
+                className={classNames('acc-switcher__account', {
                     'acc-switcher__account--selected': loginid === selected_loginid,
                     'acc-switcher__account--disabled': is_disabled,
                 })}
                 onClick={() => {
-                    if (!is_disabled) switchMarket(market_type);
+                    if (!is_disabled) switchAccountType(account_type);
                 }}
             >
                 <span className='acc-switcher__id'>
@@ -55,7 +55,7 @@ const AccountList = ({
                             <CurrencyDisplay is_virtual={is_virtual} currency={currency} />
                         ) : (
                             <AccountDisplay
-                                market_type={market_type}
+                                account_type={account_type}
                                 sub_account_type={sub_account_type}
                                 server={server}
                                 has_error={has_error}
@@ -119,15 +119,15 @@ const CurrencyDisplay = ({ currency, is_virtual }) => {
     return getCurrencyName(currency);
 };
 
-const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_dark_mode_on, platform }) => {
-    // TODO: Remove once account with error has market_type and sub_account_type in details response
+const AccountDisplay = ({ has_error, account_type, sub_account_type, server, is_dark_mode_on, platform }) => {
+    // TODO: Remove once account with error has account_type and sub_account_type in details response
     if (has_error)
         return (
             <div>
                 <Text color='disabled' size='xs'>
                     <Localize i18n_default_text='Unavailable' />
                 </Text>
-                {server?.server_info?.geolocation && (market_type === 'gaming' || market_type === 'synthetic') && (
+                {server?.server_info?.geolocation && (account_type === 'gaming' || account_type === 'synthetic') && (
                     <Text color='less-prominent' size='xxs' className='badge-server badge-server--disabled'>
                         {server.server_info.geolocation.region}&nbsp;
                         {server.server_info.geolocation.sequence !== 1 ? server.server_info.geolocation.sequence : ''}
@@ -137,8 +137,8 @@ const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_d
         );
     return (
         <div>
-            {getCFDAccountDisplay({ market_type, sub_account_type, platform })}
-            {server?.server_info?.geolocation && (market_type === 'gaming' || market_type === 'synthetic') && (
+            {getCFDAccountDisplay({ account_type, sub_account_type, platform })}
+            {server?.server_info?.geolocation && (account_type === 'gaming' || account_type === 'synthetic') && (
                 <Text
                     color={is_dark_mode_on ? 'general' : 'colored-background'}
                     size='xxs'

@@ -434,7 +434,7 @@ const AccountSwitcher = props => {
                                             <AccountList
                                                 is_dark_mode_on={props.is_dark_mode_on}
                                                 key={account.login}
-                                                market_type={account.market_type}
+                                                account_type={account.market_type}
                                                 sub_account_type={account.sub_account_type}
                                                 balance={account.balance}
                                                 currency={account.currency}
@@ -490,7 +490,7 @@ const AccountSwitcher = props => {
                                     <AccountList
                                         is_dark_mode_on={props.is_dark_mode_on}
                                         key={account.login}
-                                        market_type={account.market_type}
+                                        account_type={account.market_type}
                                         balance={account.balance}
                                         currency={account.currency}
                                         currency_icon={`IcDxtrade-${getCFDAccount({
@@ -627,7 +627,7 @@ const AccountSwitcher = props => {
                                             <AccountList
                                                 is_dark_mode_on={props.is_dark_mode_on}
                                                 key={account.login}
-                                                market_type={account.market_type}
+                                                account_type={account.market_type}
                                                 sub_account_type={account.sub_account_type}
                                                 balance={account.balance}
                                                 currency={account.currency}

@@ -49,6 +49,8 @@ const OnRamp = ({
     setIsOnRampModalOpen,
     should_show_dialog,
     setSideNotes,
+    is_cashier_default,
+    is_switching,
 }) => {
     const [selected_cashier_path, setSelectedCashierPath] = React.useState(routes.cashier_onramp);
 
@@ -65,7 +67,7 @@ const OnRamp = ({
         }
 
         return () => onUnmountOnramp();
-    }, [onMountOnramp, onUnmountOnramp]);
+    }, [onMountOnramp, onUnmountOnramp, is_cashier_default, is_switching]);
 
     const getActivePaths = () =>
         (menu_options ?? []).map(menu_option => ({
@@ -138,7 +140,7 @@ OnRamp.propTypes = {
     should_show_dialog: PropTypes.bool,
 };
 
-export default connect(({ modules, common }) => ({
+export default connect(({ modules, common, client }) => ({
     filtered_onramp_providers: modules.cashier.onramp.filtered_onramp_providers,
     is_onramp_modal_open: modules.cashier.onramp.is_onramp_modal_open,
     onMountOnramp: modules.cashier.onramp.onMountOnramp,
@@ -148,4 +150,6 @@ export default connect(({ modules, common }) => ({
     routeTo: common.routeTo,
     setIsOnRampModalOpen: modules.cashier.onramp.setIsOnRampModalOpen,
     should_show_dialog: modules.cashier.onramp.should_show_dialog,
+    is_cashier_default: modules.cashier.is_cashier_default,
+    is_switching: client.is_switching,
 }))(OnRamp);

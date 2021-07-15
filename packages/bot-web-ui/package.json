@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "name": "@deriv/bot-web-ui",
   "description": "Visual automation for Deriv.com",
-  "main": "dist/bot-web-ui.main.js",
+  "main": "dist/bot/js/bot-web-ui.main.js",
   "private": true,
   "jest": {
     "testPathIgnorePatterns": [
@@ -34,7 +34,7 @@
     "chai": "^4.2.0",
     "clean-webpack-plugin": "^3.0.0",
     "concurrently": "^5.3.0",
-    "copy-webpack-plugin": "^6.2.0",
+    "copy-webpack-plugin": "^9.0.1",
     "css-hot-loader": "^1.4.4",
     "css-loader": "^5.0.1",
     "eslint-config-airbnb-base": "^14.2.1",
@@ -53,13 +53,13 @@
     "sass-resources-loader": "^2.1.1",
     "stylelint-webpack-plugin": "^2.1.1",
     "svg-sprite-loader": "^5.2.1",
-    "webpack": "^5.14.0",
-    "webpack-cli": "^4.3.1"
+    "webpack": "^5.40.0",
+    "webpack-cli": "^4.7.2"
   },
   "dependencies": {
     "@deriv/bot-skeleton": "^1.0.0",
     "@deriv/components": "^1.0.0",
-    "@deriv/deriv-charts": "0.3.19",
+    "@deriv/deriv-charts": "0.3.42",
     "@deriv/shared": "^1.0.0",
     "@deriv/translations": "^1.0.0",
     "classnames": "^2.2.6",
@@ -69,7 +69,7 @@
     "immutable": "^3.8.2",
     "lz-string": "^1.4.4",
     "mobx": "^5.15.7",
-    "mobx-react": "^6.2.2",
+    "mobx-react": "6.3.1",
     "pako": "^1.0.11",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",

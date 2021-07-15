@@ -1,4 +1,4 @@
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -118,14 +118,8 @@ module.exports = function () {
             ],
         },
         plugins: [
-            new CopyPlugin({
-                patterns: [
-                    {
-                        from: path.resolve(__dirname, 'src/assets'),
-                        to: path.resolve(__dirname, 'lib/assets'),
-                    },
-                ],
-            }),
+            // TODO: bundle dashboard assets with webpack visibility and add contenthash
+            // to thier filename like other packages to avoid caching issue.
             ...(is_publishing ? [new MiniCssExtractPlugin({ filename: 'main.css' })] : []),
             // ...(is_release ? [] : [ new BundleAnalyzerPlugin({ analyzerMode: 'static' }) ]),
         ],
@@ -137,7 +131,7 @@ module.exports = function () {
                           test: /\.js$/,
                           parallel: 2,
                       }),
-                      new OptimizeCssAssetsPlugin(),
+                      new CssMinimizerPlugin()
                   ]
                 : [],
         },

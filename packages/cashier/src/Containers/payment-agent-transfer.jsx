@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { connect } from 'Stores/connect';
+import CashierLocked from '../Components/Error/cashier-locked.jsx';
 import Error from '../Components/Error/error.jsx';
 import NoBalance from '../Components/Error/no-balance.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
@@ -13,6 +14,7 @@ const PaymentAgentTransfer = ({
     balance,
     container,
     error,
+    is_cashier_locked,
     is_loading,
     is_transfer_successful,
     is_try_transfer_successful,
@@ -40,6 +42,9 @@ const PaymentAgentTransfer = ({
     if (is_loading) {
         return <Loading className='cashier__loader' />;
     }
+    if (is_cashier_locked) {
+        return <CashierLocked />;
+    }
     if (error.is_show_full_page) {
         // for errors with CTA hide the form and show the error,
         // for others show them at the bottom of the form next to submit button
@@ -61,6 +66,7 @@ PaymentAgentTransfer.propTypes = {
     balance: PropTypes.string,
     container: PropTypes.string,
     error: PropTypes.object,
+    is_cashier_locked: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_transfer_successful: PropTypes.bool,
     is_try_transfer_successful: PropTypes.bool,
@@ -75,6 +81,7 @@ export default connect(({ client, modules }) => ({
     is_virtual: client.is_virtual,
     container: modules.cashier.config.payment_agent_transfer.container,
     error: modules.cashier.config.payment_agent_transfer.error,
+    is_cashier_locked: modules.cashier.is_cashier_locked,
     is_loading: modules.cashier.is_loading,
     is_transfer_successful: modules.cashier.config.payment_agent_transfer.is_transfer_successful,
     is_try_transfer_successful: modules.cashier.config.payment_agent_transfer.is_try_transfer_successful,

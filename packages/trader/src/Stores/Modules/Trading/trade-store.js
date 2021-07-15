@@ -10,9 +10,9 @@ import {
     isEmptyObject,
     isMobile,
     showDigitalOptionsUnavailableError,
+    WS,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { WS } from 'Services/ws-methods';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import ServerTime from '_common/base/server_time';
 import { processPurchase } from './Actions/purchase';
@@ -585,7 +585,7 @@ export default class TradeStore extends BaseStore {
                             });
                         }
                     } else if (response.buy) {
-                        if (this.proposal_info[type]?.id !== proposal_id) {
+                        if (this.proposal_info[type] && this.proposal_info[type].id !== proposal_id) {
                             throw new Error('Proposal ID does not match.');
                         }
                         const contract_data = {
@@ -705,6 +705,12 @@ export default class TradeStore extends BaseStore {
         obj_old_values = {},
         should_forget_first = true
     ) {
+        // To switch to rise_fall_equal contract type when allow equal is checked on first page refresh or
+        // when switch back to Rise/Fall from another contract type i.e.
+        if (obj_new_values.contract_type && obj_new_values.contract_type === 'rise_fall' && !!this.is_equal) {
+            obj_new_values.contract_type = 'rise_fall_equal';
+        }
+
         if (/\bduration\b/.test(Object.keys(obj_new_values))) {
             // TODO: fix this in input-field.jsx
             if (typeof obj_new_values.duration === 'string') {
@@ -1213,6 +1219,7 @@ export default class TradeStore extends BaseStore {
         return this.contract_type === 'multiplier';
     }
 
+    @action.bound
     async getFirstOpenMarket(markets_to_search) {
         if (this.active_symbols?.length) {
             return findFirstOpenMarket(this.active_symbols, markets_to_search);

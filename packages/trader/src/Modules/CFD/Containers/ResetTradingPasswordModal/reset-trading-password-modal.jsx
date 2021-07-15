@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text } from '@deriv/components';
-import { routes, getErrorMessages, validPassword, validLength, CFD_PLATFORMS } from '@deriv/shared';
+import { routes, getErrorMessages, validPassword, validLength, CFD_PLATFORMS, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { WS } from 'Services';
 
 const ResetTradingPassword = ({
     setDialogTitleFunc,

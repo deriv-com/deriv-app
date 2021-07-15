@@ -15,6 +15,7 @@ import CFDPasswordModal from './cfd-password-modal.jsx';
 import CFDServerErrorDialog from './cfd-server-error-dialog.jsx';
 import CFDTopUpDemoModal from './cfd-top-up-demo-modal.jsx';
 import CFDResetPasswordModal from './cfd-reset-password-modal.jsx';
+import ResetTradingPasswordModal from './ResetTradingPasswordModal';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import CFDFinancialStpPendingDialog from '../Components/cfd-financial-stp-pending-dialog.jsx';
 import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display.jsx';
@@ -447,6 +448,7 @@ class CFDDashboard extends React.Component {
                                 </React.Fragment>
                             )}
                             <CFDResetPasswordModal platform={platform} />
+                            <ResetTradingPasswordModal platform={platform} />
                         </div>
                     </div>
                 ) : (

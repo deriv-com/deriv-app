@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text } from '@deriv/components';
-import { routes, getErrorMessages, validPassword, validLength, CFD_PLATFORMS, WS } from '@deriv/shared';
+import { getErrorMessages, validPassword, validLength, WS, getCFDPlatformLabel } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -12,10 +12,10 @@ const ResetTradingPassword = ({
     toggleResetTradingPasswordModal,
     verification_code,
     is_dxtrade_allowed,
+    platform,
 }) => {
     const handleSubmit = (values, actions) => {
         actions.setSubmitting(true);
-        const platform = window.location.pathname === routes.mt5 ? CFD_PLATFORMS.MT5 : CFD_PLATFORMS.DXTRADE;
 
         const params = {
             new_password: values.password,
@@ -131,7 +131,12 @@ const ResetTradingPassword = ({
                             {!status.error_msg && !status.reset_complete && (
                                 <div className='reset-trading-password__set-password'>
                                     <Text as='p' weight='bold' className='reset-trading-password__heading'>
-                                        <Localize i18n_default_text='Set new trading password' />
+                                        <Localize
+                                            i18n_default_text='Create a new {{platform}} password'
+                                            values={{
+                                                platform: getCFDPlatformLabel(platform),
+                                            }}
+                                        />
                                     </Text>
                                     <fieldset className='reset-trading-password__input-field'>
                                         <PasswordMeter
@@ -143,7 +148,9 @@ const ResetTradingPassword = ({
                                                 autoComplete='new-password'
                                                 className='reset-trading-password__password-field'
                                                 name='password'
-                                                label={localize('Trading password')}
+                                                label={localize('{{platform}} password', {
+                                                    platform: getCFDPlatformLabel(platform),
+                                                })}
                                                 onChange={e => {
                                                     setFieldTouched('password', true);
                                                     handleChange(e);
@@ -193,6 +200,7 @@ ResetTradingPassword.propTypes = {
     setDialogTitleFunc: PropTypes.func,
     toggleResetTradingPasswordModal: PropTypes.func,
     verification_code: PropTypes.string,
+    platform: PropTypes.string,
 };
 
 const ResetTradingPasswordModal = ({
@@ -203,6 +211,7 @@ const ResetTradingPasswordModal = ({
     toggleResetTradingPasswordModal,
     verification_code,
     is_dxtrade_allowed,
+    platform,
 }) => {
     const [dialog_title, setDialogTitle] = React.useState('');
     const setDialogTitleFunc = is_invalid_token => {
@@ -224,6 +233,7 @@ const ResetTradingPasswordModal = ({
                 verification_code={verification_code}
                 setDialogTitleFunc={setDialogTitleFunc}
                 is_dxtrade_allowed={is_dxtrade_allowed}
+                platform={platform}
             />
         </Dialog>
     );
@@ -237,6 +247,7 @@ ResetTradingPasswordModal.propTypes = {
     is_dxtrade_allowed: PropTypes.bool,
     toggleResetTradingPasswordModal: PropTypes.func,
     verification_code: PropTypes.string,
+    platform: PropTypes.string,
 };
 
 export default connect(({ ui, client }) => ({

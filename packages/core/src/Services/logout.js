@@ -5,9 +5,7 @@ import WS from './ws-methods';
 export const requestLogout = () => WS.logout().then(doLogout);
 
 function endChat() {
-    if (window.LC_API) {
-        window.LC_API.close_chat();
-    }
+    window.LC_API?.close_chat?.();
 }
 
 const doLogout = response => {

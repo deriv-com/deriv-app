@@ -71,7 +71,9 @@ export default class OrderStore {
                 this.setCancellationLimit(p2p_config.cancellation_limit);
             }
 
-            setShouldShowCancelModal(true);
+            if (typeof setShouldShowCancelModal === 'function') {
+                setShouldShowCancelModal(true);
+            }
         });
     }
 

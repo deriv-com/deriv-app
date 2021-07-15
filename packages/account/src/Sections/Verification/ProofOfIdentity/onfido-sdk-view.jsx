@@ -132,6 +132,8 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
                         setAPIError(response_token.error);
                         break;
                 }
+
+                setStatusLoading(false);
             } else {
                 setOnfidoToken(response_token);
                 initOnfido().then(() => {

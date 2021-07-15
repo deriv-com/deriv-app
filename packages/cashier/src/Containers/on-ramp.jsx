@@ -4,6 +4,7 @@ import { Modal, SelectNative, ReadMore, Text } from '@deriv/components';
 import { routes, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import CashierLocked from '../Components/Error/cashier-locked.jsx';
 import OnRampProviderCard from '../Components/on-ramp-provider-card.jsx';
 import OnRampProviderPopup from '../Components/on-ramp-provider-popup.jsx';
 import SideNote from '../Components/side-note.jsx';
@@ -39,6 +40,7 @@ const OnRampInfo = () => (
 
 const OnRamp = ({
     filtered_onramp_providers,
+    is_cashier_locked,
     is_onramp_modal_open,
     menu_options,
     onMountOnramp,
@@ -72,6 +74,10 @@ const OnRamp = ({
             text: menu_option.label,
             value: menu_option.path,
         }));
+
+    if (is_cashier_locked) {
+        return <CashierLocked />;
+    }
 
     return (
         <React.Fragment>
@@ -136,6 +142,7 @@ OnRamp.propTypes = {
     setIsOnRampModalOpen: PropTypes.func,
     setSideNotes: PropTypes.func,
     should_show_dialog: PropTypes.bool,
+    is_cashier_locked: PropTypes.bool,
 };
 
 export default connect(({ modules, common }) => ({
@@ -148,4 +155,5 @@ export default connect(({ modules, common }) => ({
     routeTo: common.routeTo,
     setIsOnRampModalOpen: modules.cashier.onramp.setIsOnRampModalOpen,
     should_show_dialog: modules.cashier.onramp.should_show_dialog,
+    is_cashier_locked: modules.cashier.is_cashier_locked,
 }))(OnRamp);

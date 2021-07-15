@@ -58,6 +58,8 @@ const Deposit = ({
     container,
     currency,
     setSideNotes,
+    is_system_maintenance,
+    current_currency_type,
 }) => {
     const is_crypto = !!currency && isCryptocurrency(currency);
 
@@ -94,6 +96,11 @@ const Deposit = ({
         return <Virtual />;
     }
     if (is_deposit || is_eu) {
+        if (is_system_maintenance) {
+            if (is_cashier_locked || (is_deposit_locked && current_currency_type === 'crypto')) {
+                return <CashierLocked />;
+            }
+        }
         if (error.is_ask_uk_funds_protection) {
             return <FundsProtection />;
         }
@@ -140,6 +147,8 @@ Deposit.propTypes = {
     setIsDeposit: PropTypes.func,
     setSideNotes: PropTypes.func,
     standpoint: PropTypes.object,
+    is_system_maintenance: PropTypes.bool,
+    current_currency_type: PropTypes.string,
 };
 
 export default connect(({ client, modules }) => ({
@@ -160,4 +169,6 @@ export default connect(({ client, modules }) => ({
     setActiveTab: modules.cashier.setActiveTab,
     setIsDeposit: modules.cashier.setIsDeposit,
     standpoint: client.standpoint,
+    is_system_maintenance: modules.cashier.is_system_maintenance,
+    current_currency_type: client.current_currency_type,
 }))(Deposit);

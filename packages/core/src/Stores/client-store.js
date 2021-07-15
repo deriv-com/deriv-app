@@ -244,7 +244,7 @@ export default class ClientStore extends BaseStore {
             return getDefaultAllowedCurrencies();
         }
         if (['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target)) {
-            return this.current_landing_company.legal_allowed_currencies;
+            return this.current_landing_company?.legal_allowed_currencies;
         }
         const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
 
@@ -467,6 +467,11 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_deposit_lock() {
+        return this.account_status?.status?.some(status_name => status_name === 'deposit_locked');
+    }
+
+    @computed
     get is_withdrawal_lock() {
         return this.account_status?.status?.some(status_name =>
             /^(withdrawal_locked|no_withdrawal_or_trading)$/.test(status_name)
@@ -676,7 +681,9 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_options_blocked() {
-        return isOptionsBlocked(this.residence);
+        return this.is_logged_in
+            ? isOptionsBlocked(this.residence)
+            : isOptionsBlocked(this.website_status.clients_country);
     }
 
     /**

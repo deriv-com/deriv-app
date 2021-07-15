@@ -170,18 +170,20 @@ const OnfidoSdkView = ({ handleViewComplete, height, is_from_external, selected_
     return (
         <ThemedScrollbars is_bypassed={isMobile()} height={height}>
             <div className='onfido-container'>
-                {!is_from_external && (
-                    <div className='onfido-container__message'>
-                        <Text size='xs'>
-                            <Localize
-                                i18n_default_text='Before uploading your document, please ensure that your <0>personal details</0> are updated to match your proof of identity. This will help to avoid delays during the verification process.'
-                                components={[<Link to={routes.personal_details} key={0} className='link' />]}
-                            />
-                        </Text>
-                    </div>
-                )}
-                {component_to_load}
-                <div id='onfido' />
+                {component_to_load ||
+                    (!is_from_external && (
+                        <React.Fragment>
+                            <div className='onfido-container__message'>
+                                <Text size='xs'>
+                                    <Localize
+                                        i18n_default_text='Before uploading your document, please ensure that your <0>personal details</0> are updated to match your proof of identity. This will help to avoid delays during the verification process.'
+                                        components={[<Link to={routes.personal_details} key={0} className='link' />]}
+                                    />
+                                </Text>
+                            </div>
+                            <div id='onfido' />
+                        </React.Fragment>
+                    ))}
             </div>
         </ThemedScrollbars>
     );

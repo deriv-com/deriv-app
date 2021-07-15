@@ -58,7 +58,7 @@ const NicknameForm = () => {
                                             className='dp2p-nickname__form-field'
                                             onChange={e => {
                                                 handleChange(e);
-                                                general_store.resetNicknameErrorState();
+                                                general_store.setNicknameError(undefined);
                                             }}
                                             required
                                         />
@@ -79,8 +79,8 @@ const NicknameForm = () => {
                                     is_disabled={
                                         !!errors.nickname ||
                                         values.nickname === '' ||
-                                        isSubmitting ||
-                                        general_store.nickname_error
+                                        !!isSubmitting ||
+                                        !!general_store.nickname_error
                                     }
                                     primary
                                     large

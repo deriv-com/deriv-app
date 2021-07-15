@@ -292,11 +292,6 @@ export default class GeneralStore extends BaseStore {
     }
 
     @action.bound
-    resetNicknameErrorState() {
-        this.setNicknameError(undefined);
-    }
-
-    @action.bound
     setActiveIndex(active_index) {
         this.active_index = active_index;
     }
@@ -439,7 +434,7 @@ export default class GeneralStore extends BaseStore {
     @action.bound
     toggleNicknamePopup() {
         this.setShouldShowPopup(!this.should_show_popup);
-        this.resetNicknameErrorState();
+        this.setNicknameError(undefined);
     }
 
     @action.bound

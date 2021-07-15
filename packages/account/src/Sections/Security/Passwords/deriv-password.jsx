@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon, Popover, Text } from '@deriv/components';
-import { toTitleCase } from '@deriv/shared'; // WS
+import { toTitleCase, WS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
@@ -10,13 +10,12 @@ import DerivComLogo from '../../../Assets/ic-brand-deriv-red.svg';
 import DerivGoLight from '../../../Assets/ic-brand-deriv-go-light.svg';
 import DerivGoDark from '../../../Assets/ic-brand-deriv-go-dark.svg';
 
-const DerivPassword = ({ is_dark_mode_on, is_social_signup, social_identity_provider }) => {
-    // email
+const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identity_provider }) => {
     const [is_unlink_modal_open, setIsUnlinkModalOpen] = React.useState(false);
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
     const onClickSendEmail = () => {
-        // WS.verifyEmail(email, 'reset_password');
+        WS.verifyEmail(email, 'reset_password');
         setIsUnlinkModalOpen(false);
         setIsSentEmailModalOpen(true);
     };

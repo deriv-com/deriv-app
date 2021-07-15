@@ -1,15 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon, Popover, Text } from '@deriv/components';
-// import { WS } from '@deriv/shared';
+import { CFD_PLATFORMS, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
 
-const PasswordsPlatform = ({ has_set_deriv_x_trading_password, has_set_trading_password }) => {
+const PasswordsPlatform = ({ email, has_set_deriv_x_trading_password, has_set_trading_password }) => {
     const [identifier, setIdenifier] = React.useState('');
-    const IDT_DERIV_X = 'derivx_trading_password';
-    const IDT_DMT5 = 'trading_password';
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
     const getPlatformTitle = () => {
@@ -22,9 +20,13 @@ const PasswordsPlatform = ({ has_set_deriv_x_trading_password, has_set_trading_p
         return title;
     };
 
-    const onClickSendEmail = id => {
-        // WS.verifyEmail(email, 'reset_password');
-        setIdenifier(id);
+    const onClickSendEmail = cfd_platform => {
+        WS.verifyEmail(email, 'trading_platform_password_reset', {
+            url_parameters: {
+                platform: cfd_platform,
+            },
+        });
+        setIdenifier(cfd_platform);
         setIsSentEmailModalOpen(true);
     };
 
@@ -49,7 +51,7 @@ const PasswordsPlatform = ({ has_set_deriv_x_trading_password, has_set_trading_p
                             <Button
                                 className='account__passwords-footer-btn'
                                 type='button'
-                                onClick={() => onClickSendEmail(IDT_DMT5)}
+                                onClick={() => onClickSendEmail(CFD_PLATFORMS.MT5)}
                                 text={localize('Change password')}
                                 primary
                                 large
@@ -74,7 +76,7 @@ const PasswordsPlatform = ({ has_set_deriv_x_trading_password, has_set_trading_p
                             <Button
                                 className='account__passwords-footer-btn'
                                 type='button'
-                                onClick={() => onClickSendEmail(IDT_DERIV_X)}
+                                onClick={() => onClickSendEmail(CFD_PLATFORMS.DXTRADE)}
                                 text={localize('Change password')}
                                 primary
                                 large
@@ -100,6 +102,7 @@ const PasswordsPlatform = ({ has_set_deriv_x_trading_password, has_set_trading_p
 };
 
 PasswordsPlatform.propTypes = {
+    email: PropTypes.string,
     has_set_deriv_x_trading_password: PropTypes.bool,
     has_set_trading_password: PropTypes.bool,
 };

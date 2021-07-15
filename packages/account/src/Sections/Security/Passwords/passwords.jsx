@@ -41,10 +41,13 @@ const Passwords = ({
                 />
             )}
             {!is_trading_password_required && (
-                <PasswordsPlatform has_set_trading_password={!is_trading_password_required} />
+                <PasswordsPlatform email={email} has_set_trading_password={!is_trading_password_required} />
             )}
             {!is_deriv_x_trading_password_required && (
-                <PasswordsPlatform has_set_deriv_x_trading_password={!is_deriv_x_trading_password_required} />
+                <PasswordsPlatform
+                    email={email}
+                    has_set_deriv_x_trading_password={!is_deriv_x_trading_password_required}
+                />
             )}
         </div>
     );

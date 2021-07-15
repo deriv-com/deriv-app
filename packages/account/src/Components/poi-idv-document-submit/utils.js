@@ -38,7 +38,7 @@ const idv_document_data = {
         },
         passport: {
             new_display_name: '',
-            example_format: 'A123456789',
+            example_format: 'A12345678',
             sample_image: getImageLocation('ke_passport.png'),
         },
     },

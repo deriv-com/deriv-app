@@ -1,5 +1,5 @@
 import React from 'react';
-import IdvUploadComplete from 'Components/poi-idv-submit-complete';
+import IdvSubmitComplete from 'Components/poi-idv-submit-complete';
 import IdvExpired from 'Components/poi-idv-expired';
 import IdvVerified from 'Components/poi-idv-verified';
 import IdvRejected from 'Components/poi-idv-rejected';
@@ -12,7 +12,7 @@ const Idv = ({ handleRequireSubmission, idv, redirect_button, verification_statu
 
     switch (status) {
         case identity_status_codes.pending:
-            return <IdvUploadComplete is_from_external={is_from_external} needs_poa={needs_poa} />;
+            return <IdvSubmitComplete is_from_external={is_from_external} needs_poa={needs_poa} />;
         case identity_status_codes.rejected:
         case identity_status_codes.suspected:
             if (Number(submissions_left) < 1)

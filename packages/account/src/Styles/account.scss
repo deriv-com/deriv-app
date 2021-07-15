@@ -1560,6 +1560,9 @@ $MIN_HEIGHT_FLOATING: calc(
 .onfido-container {
     margin-top: 24px;
 
+    &__hidden {
+        display: none;
+    }
     &__message {
         padding: 1rem;
         margin: 0 auto 1.4rem;

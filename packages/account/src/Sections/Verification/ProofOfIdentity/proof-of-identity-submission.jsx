@@ -21,7 +21,6 @@ const POISubmission = ({
     redirect_button,
     refreshNotifications,
     residence_list,
-    setAPIError,
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // selecting, submitting, complete
     const [submission_service, setSubmissionService] = React.useState();
@@ -32,8 +31,7 @@ const POISubmission = ({
             const { submissions_left: idv_submissions_left } = idv;
             const { submissions_left: onfido_submissions_left } = onfido;
             const is_idv_supported = selected_country.identity.services.idv.is_country_supported;
-            const is_onfido_supported =
-                selected_country.identity.services.onfido.is_country_supported && onfido.is_country_supported;
+            const is_onfido_supported = onfido.is_country_supported;
 
             if (is_idv_supported && Number(idv_submissions_left) > 0) {
                 setSubmissionService('idv');
@@ -117,18 +115,16 @@ const POISubmission = ({
                         />
                     );
                 case service_code.onfido:
-                    if (selected_country.identity.services.onfido.is_country_supported && onfido.is_country_supported) {
+                    if (onfido.is_country_supported) {
+                        const { country_code, documents_supported } = onfido;
                         return (
                             <OnfidoUpload
+                                country_code={country_code}
+                                documents_supported={documents_supported}
+                                handleViewComplete={handleViewComplete}
                                 height={height}
                                 is_from_external={is_from_external}
-                                onfido={onfido}
-                                selected_country={selected_country}
-                                residence_list={residence_list}
-                                setAPIError={setAPIError}
                                 refreshNotifications={refreshNotifications}
-                                handleViewComplete={handleViewComplete}
-                                handleBack={handleBack}
                             />
                         );
                     }

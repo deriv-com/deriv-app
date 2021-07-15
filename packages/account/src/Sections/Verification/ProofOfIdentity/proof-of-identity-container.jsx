@@ -99,7 +99,6 @@ const ProofOfIdentityContainer = ({
                 onfido={onfido}
                 onStateChange={onStateChange}
                 needs_poa={needs_poa}
-                setAPIError={setAPIError}
                 manual={manual}
                 refreshNotifications={refreshNotifications}
                 redirect_button={redirect_button}
@@ -118,7 +117,6 @@ const ProofOfIdentityContainer = ({
                     idv={idv}
                     residence_list={residence_list}
                     handleRequireSubmission={handleRequireSubmission}
-                    setAPIError={setAPIError}
                     refreshNotifications={refreshNotifications}
                     verification_status={verification_status}
                 />
@@ -135,9 +133,6 @@ const ProofOfIdentityContainer = ({
                     residence_list={residence_list}
                     onfido={onfido}
                     onStateChange={onStateChange}
-                    height={height ?? null}
-                    refreshNotifications={refreshNotifications}
-                    setAPIError={setAPIError}
                 />
             );
         case service_code.manual:

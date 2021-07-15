@@ -6,26 +6,18 @@ import { init } from 'onfido-sdk-ui';
 import { isMobile, routes, WS } from '@deriv/shared';
 import { getLanguage, Localize } from '@deriv/translations';
 import getCountryISO3 from 'country-iso-2-to-3';
+import ErrorMessage from 'Components/error-component';
 import getOnfidoPhrases from 'Constants/onfido-phrases';
 import MissingPersonalDetails from 'Components/poi-missing-personal-details';
 
-const OnfidoSdkView = ({ handleViewComplete, height, is_from_external, selected_country, setAPIError }) => {
+const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, height, is_from_external }) => {
+    const [api_error, setAPIError] = React.useState();
     const [onfido_service_token, setOnfidoToken] = React.useState();
     const [missing_personal_details, setMissingPersonalDetails] = React.useState(false);
     const [is_status_loading, setStatusLoading] = React.useState(true);
 
-    const {
-        identity: {
-            services: {
-                onfido: { documents_supported },
-            },
-        },
-        value: country_code,
-    } = selected_country;
-
     // IDV uses ISO2 country code format while onfido uses ISO3. This will check first and convert it to the proper ISO3 country code.
     const onfido_country_code = country_code.length < 3 ? getCountryISO3(country_code.toUpperCase()) : country_code;
-    const onfido_documents = Object.keys(documents_supported).map(d => documents_supported[d].display_name);
 
     const onfido_init = React.useRef();
 
@@ -70,13 +62,13 @@ const OnfidoSdkView = ({ handleViewComplete, height, is_from_external, selected_
                         type: 'document',
                         options: {
                             documentTypes: {
-                                passport: onfido_documents.includes('Passport'),
-                                driving_licence: onfido_documents.includes('Driving Licence')
+                                passport: documents_supported.includes('Passport'),
+                                driving_licence: documents_supported.includes('Driving Licence')
                                     ? {
                                           country: onfido_country_code,
                                       }
                                     : false,
-                                national_identity_card: onfido_documents.includes('National Identity Card')
+                                national_identity_card: documents_supported.includes('National Identity Card')
                                     ? {
                                           country: onfido_country_code,
                                       }
@@ -91,10 +83,10 @@ const OnfidoSdkView = ({ handleViewComplete, height, is_from_external, selected_
         } catch (err) {
             setAPIError(err);
         }
-    }, [onfido_service_token, onComplete, onfido_documents, onfido_country_code, setAPIError]);
+    }, [onfido_service_token, onComplete, documents_supported, onfido_country_code, setAPIError]);
 
     const getOnfidoServiceToken = React.useCallback(
-        async () =>
+        () =>
             new Promise(resolve => {
                 const onfido_cookie_name = 'onfido_token';
                 const onfido_cookie = Cookies.get(onfido_cookie_name);
@@ -108,7 +100,6 @@ const OnfidoSdkView = ({ handleViewComplete, height, is_from_external, selected_
                             resolve({ error: response.error });
                             return;
                         }
-
                         const { token } = response.service_token.onfido;
                         const in_90_minutes = 1 / 16;
                         Cookies.set(onfido_cookie_name, token, {
@@ -126,40 +117,37 @@ const OnfidoSdkView = ({ handleViewComplete, height, is_from_external, selected_
     );
 
     React.useEffect(() => {
-        getOnfidoServiceToken()
-            .then(response_token => {
-                if (response_token.error) {
-                    const code = response_token?.error?.code;
+        getOnfidoServiceToken().then(response_token => {
+            if (response_token.error) {
+                const code = response_token?.error?.code;
 
-                    switch (code) {
-                        case 'MissingPersonalDetails':
-                            setMissingPersonalDetails('all');
-                            break;
-                        case 'InvalidPostalCode':
-                            setMissingPersonalDetails('postal_code');
-                            break;
-                        default:
-                            setAPIError(response_token.error);
-                            break;
-                    }
-                } else {
-                    setOnfidoToken(response_token);
+                switch (code) {
+                    case 'MissingPersonalDetails':
+                        setMissingPersonalDetails('all');
+                        break;
+                    case 'InvalidPostalCode':
+                        setMissingPersonalDetails('postal_code');
+                        break;
+                    default:
+                        setAPIError(response_token.error);
+                        break;
                 }
-            })
-            .then(() => {
+            } else {
+                setOnfidoToken(response_token);
                 initOnfido().then(() => {
                     setStatusLoading(false);
                 });
-            });
-    }, [getOnfidoServiceToken, initOnfido, setAPIError]);
+            }
+        });
+    }, [getOnfidoServiceToken, initOnfido]);
 
     let component_to_load;
 
     if (is_status_loading) {
         component_to_load = <Loading is_fullscreen={false} />;
-    }
-
-    if (missing_personal_details) {
+    } else if (api_error) {
+        component_to_load = <ErrorMessage error_message={api_error?.message || api_error} />;
+    } else if (missing_personal_details) {
         component_to_load = (
             <MissingPersonalDetails
                 has_invalid_postal_code={missing_personal_details === 'postal_code'}
@@ -182,9 +170,9 @@ const OnfidoSdkView = ({ handleViewComplete, height, is_from_external, selected_
                                     />
                                 </Text>
                             </div>
-                            <div id='onfido' />
                         </React.Fragment>
                     ))}
+                <div id='onfido' className={component_to_load ? 'onfido-container__hidden' : ''} />
             </div>
         </ThemedScrollbars>
     );

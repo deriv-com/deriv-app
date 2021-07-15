@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import UploadComplete from 'Components/poi-upload-complete';
 import Expired from 'Components/poi-expired';
@@ -44,15 +43,6 @@ const Onfido = ({ handleRequireSubmission, is_from_external, onfido, redirect_bu
         default:
             return null;
     }
-};
-
-Onfido.propTypes = {
-    handleRequireSubmission: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-    is_from_external: PropTypes.bool,
-    onfido: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-    onStateChange: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-    redirect_button: PropTypes.object,
-    verification_status: PropTypes.object,
 };
 
 export default Onfido;

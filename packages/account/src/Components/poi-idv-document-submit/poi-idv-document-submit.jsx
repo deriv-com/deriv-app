@@ -136,11 +136,6 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                                         onChange={handleChange}
                                                         onItemSelection={item => {
                                                             if (item.text === 'No results found' || !item.text) {
-                                                                setFieldValue('document_type', item || '', true);
-                                                                if (has_visual_sample) {
-                                                                    setDocumentImage(item.sample_image || '');
-                                                                }
-                                                            } else {
                                                                 // Clear off all values
                                                                 setFieldValue(
                                                                     'document_type',
@@ -154,6 +149,11 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                                                     true
                                                                 );
                                                                 setDocumentImage('');
+                                                            } else {
+                                                                setFieldValue('document_type', item || '', true);
+                                                                if (has_visual_sample) {
+                                                                    setDocumentImage(item.sample_image || '');
+                                                                }
                                                             }
                                                         }}
                                                         required

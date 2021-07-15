@@ -40,6 +40,21 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
         );
     }, [country_code, document_data]);
 
+    const resetDocumentItemSelected = setFieldValue => {
+        setFieldValue(
+            'document_type',
+            {
+                id: '',
+                text: '',
+                value: '',
+                example_format: '',
+                sample_image: '',
+            },
+            true
+        );
+        setDocumentImage('');
+    };
+
     const initial_form_values = {
         document_type: '',
         document_number: '',
@@ -133,22 +148,17 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                                         label={localize('Choose the document type')}
                                                         list_items={document_list}
                                                         value={values.document_type.text}
+                                                        onBlur={e => {
+                                                            handleBlur(e);
+                                                            const current_input = e.target.value;
+                                                            if (!document_list.find(d => d.text === current_input)) {
+                                                                resetDocumentItemSelected(setFieldValue);
+                                                            }
+                                                        }}
                                                         onChange={handleChange}
                                                         onItemSelection={item => {
                                                             if (item.text === 'No results found' || !item.text) {
-                                                                // Clear off all values
-                                                                setFieldValue(
-                                                                    'document_type',
-                                                                    {
-                                                                        id: '',
-                                                                        text: '',
-                                                                        value: '',
-                                                                        example_format: '',
-                                                                        sample_image: '',
-                                                                    },
-                                                                    true
-                                                                );
-                                                                setDocumentImage('');
+                                                                resetDocumentItemSelected(setFieldValue);
                                                             } else {
                                                                 setFieldValue('document_type', item || '', true);
                                                                 if (has_visual_sample) {

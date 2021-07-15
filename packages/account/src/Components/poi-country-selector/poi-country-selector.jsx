@@ -45,7 +45,18 @@ const CountrySelector = ({ handleSelectionNext, residence_list, selected_country
 
     return (
         <Formik initialValues={initial_form_values} validate={validateFields} onSubmit={submitHandler}>
-            {({ dirty, errors, handleChange, handleSubmit, isSubmitting, isValid, setFieldValue, touched, values }) => (
+            {({
+                dirty,
+                errors,
+                handleBlur,
+                handleChange,
+                handleSubmit,
+                isSubmitting,
+                isValid,
+                setFieldValue,
+                touched,
+                values,
+            }) => (
                 <React.Fragment>
                     <div className='proof-of-identity__container'>
                         <Text className='proof-of-identity__header' align='center' weight='bold'>
@@ -69,6 +80,14 @@ const CountrySelector = ({ handleSelectionNext, residence_list, selected_country
                                                 label={localize('Country')}
                                                 list_items={country_list}
                                                 value={values.country_input}
+                                                onBlur={e => {
+                                                    handleBlur(e);
+                                                    const current_input = e.target.value;
+                                                    if (!country_list.find(c => c.text === current_input)) {
+                                                        setFieldValue('country_input', '', true);
+                                                        updateSelectedCountry('');
+                                                    }
+                                                }}
                                                 onChange={handleChange}
                                                 onItemSelection={({ text }) => {
                                                     const select_value =

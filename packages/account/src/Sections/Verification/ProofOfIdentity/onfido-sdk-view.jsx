@@ -14,8 +14,6 @@ const OnfidoSdkView = ({ handleViewComplete, height, is_from_external, selected_
     const [missing_personal_details, setMissingPersonalDetails] = React.useState(false);
     const [is_status_loading, setStatusLoading] = React.useState(true);
 
-    const has_invalid_postal_code = missing_personal_details === 'postal_code';
-
     const {
         identity: {
             services: {
@@ -163,7 +161,10 @@ const OnfidoSdkView = ({ handleViewComplete, height, is_from_external, selected_
 
     if (missing_personal_details) {
         component_to_load = (
-            <MissingPersonalDetails has_invalid_postal_code={has_invalid_postal_code} from='proof_of_identity' />
+            <MissingPersonalDetails
+                has_invalid_postal_code={missing_personal_details === 'postal_code'}
+                from='proof_of_identity'
+            />
         );
     }
 

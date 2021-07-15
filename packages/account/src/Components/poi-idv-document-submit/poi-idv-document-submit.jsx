@@ -135,11 +135,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                                         value={values.document_type.text}
                                                         onChange={handleChange}
                                                         onItemSelection={item => {
-                                                            const select_value =
-                                                                item.text === 'No results found' || !item.text
-                                                                    ? ''
-                                                                    : item.text;
-                                                            if (select_value) {
+                                                            if (item.text === 'No results found' || !item.text) {
                                                                 setFieldValue('document_type', item || '', true);
                                                                 if (has_visual_sample) {
                                                                     setDocumentImage(item.sample_image || '');
@@ -148,7 +144,13 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                                                 // Clear off all values
                                                                 setFieldValue(
                                                                     'document_type',
-                                                                    { text: '', value: '' },
+                                                                    {
+                                                                        id: '',
+                                                                        text: '',
+                                                                        value: '',
+                                                                        example_format: '',
+                                                                        sample_image: '',
+                                                                    },
                                                                     true
                                                                 );
                                                                 setDocumentImage('');

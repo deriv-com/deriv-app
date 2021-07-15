@@ -96,7 +96,7 @@ const OnfidoSdkView = ({ handleViewComplete, height, is_from_external, selected_
     }, [onfido_service_token, onComplete, onfido_documents, onfido_country_code, setAPIError]);
 
     const getOnfidoServiceToken = React.useCallback(
-        () =>
+        async () =>
             new Promise(resolve => {
                 const onfido_cookie_name = 'onfido_token';
                 const onfido_cookie = Cookies.get(onfido_cookie_name);
@@ -149,17 +149,22 @@ const OnfidoSdkView = ({ handleViewComplete, height, is_from_external, selected_
                 }
             })
             .then(() => {
-                initOnfido();
-                setStatusLoading(false);
+                initOnfido().then(() => {
+                    setStatusLoading(false);
+                });
             });
-    }, []);
+    }, [getOnfidoServiceToken, initOnfido, setAPIError]);
+
+    let component_to_load;
 
     if (is_status_loading) {
-        return <Loading is_fullscreen={false} />;
+        component_to_load = <Loading is_fullscreen={false} />;
     }
 
     if (missing_personal_details) {
-        return <MissingPersonalDetails has_invalid_postal_code={has_invalid_postal_code} from='proof_of_identity' />;
+        component_to_load = (
+            <MissingPersonalDetails has_invalid_postal_code={has_invalid_postal_code} from='proof_of_identity' />
+        );
     }
 
     return (
@@ -175,6 +180,7 @@ const OnfidoSdkView = ({ handleViewComplete, height, is_from_external, selected_
                         </Text>
                     </div>
                 )}
+                {component_to_load}
                 <div id='onfido' />
             </div>
         </ThemedScrollbars>

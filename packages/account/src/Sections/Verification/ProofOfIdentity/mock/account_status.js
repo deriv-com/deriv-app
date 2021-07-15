@@ -90,7 +90,7 @@ export const figmaAccountStatus = type => {
                         count: 0,
                     },
                     document: {
-                        status: 'pending',
+                        status: 'none',
                     },
                     identity: {
                         services: {
@@ -103,6 +103,19 @@ export const figmaAccountStatus = type => {
                                 status: 'none',
                             },
                             onfido: {
+                                country_code: 'GBR',
+                                documents_supported: [
+                                    'Asylum Registration Card',
+                                    'Certificate of Naturalisation',
+                                    'Driving Licence',
+                                    'Home Office Letter',
+                                    'Immigration Status Document',
+                                    'Passport',
+                                    'Residence Permit',
+                                    'Visa',
+                                ],
+                                is_country_supported: 1,
+                                last_rejected: [],
                                 reported_properties: {},
                                 status: 'none',
                                 submissions_left: 3,
@@ -158,6 +171,19 @@ export const figmaAccountStatus = type => {
                                 status: 'none',
                             },
                             onfido: {
+                                country_code: 'GBR',
+                                documents_supported: [
+                                    'Asylum Registration Card',
+                                    'Certificate of Naturalisation',
+                                    'Driving Licence',
+                                    'Home Office Letter',
+                                    'Immigration Status Document',
+                                    'Passport',
+                                    'Residence Permit',
+                                    'Visa',
+                                ],
+                                is_country_supported: 1,
+                                last_rejected: [],
                                 reported_properties: {},
                                 status: 'none',
                                 submissions_left: 3,

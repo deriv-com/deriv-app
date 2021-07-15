@@ -65,7 +65,7 @@ const ResetTradingPassword = ({
                 validate={validateReset}
                 onSubmit={handleSubmit}
             >
-                {({ handleBlur, errors, values, touched, isSubmitting, handleChange, status }) => (
+                {({ handleBlur, errors, values, touched, isSubmitting, setFieldTouched, handleChange, status }) => (
                     <Form>
                         <React.Fragment>
                             {status.error_msg && (
@@ -144,7 +144,10 @@ const ResetTradingPassword = ({
                                                 className='reset-trading-password__password-field'
                                                 name='password'
                                                 label={localize('Trading password')}
-                                                onChange={handleChange}
+                                                onChange={e => {
+                                                    setFieldTouched('password', true);
+                                                    handleChange(e);
+                                                }}
                                                 onBlur={handleBlur}
                                                 error={touched.password && errors.password}
                                                 value={values.password}

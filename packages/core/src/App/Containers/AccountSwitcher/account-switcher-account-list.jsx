@@ -15,7 +15,7 @@ const AccountList = ({
     is_disabled,
     is_virtual,
     loginid,
-    account_type,
+    market_type,
     redirectAccount,
     onClickResetVirtualBalance,
     selected_loginid,
@@ -24,11 +24,6 @@ const AccountList = ({
     sub_account_type,
     platform,
 }) => {
-    const switchAccountType = async acc_type => {
-        await redirectAccount();
-        window.location.hash += `-${acc_type}`;
-    };
-
     if (is_disabled && !currency) return null;
     const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
     return (
@@ -40,7 +35,7 @@ const AccountList = ({
                     'acc-switcher__account--disabled': is_disabled,
                 })}
                 onClick={() => {
-                    if (!is_disabled) switchAccountType(account_type);
+                    if (!is_disabled) redirectAccount();
                 }}
             >
                 <span className='acc-switcher__id'>
@@ -54,7 +49,7 @@ const AccountList = ({
                             <CurrencyDisplay is_virtual={is_virtual} currency={currency} />
                         ) : (
                             <AccountDisplay
-                                account_type={account_type}
+                                market_type={market_type}
                                 sub_account_type={sub_account_type}
                                 server={server}
                                 has_error={has_error}
@@ -118,15 +113,15 @@ const CurrencyDisplay = ({ currency, is_virtual }) => {
     return getCurrencyName(currency);
 };
 
-const AccountDisplay = ({ has_error, account_type, sub_account_type, server, is_dark_mode_on, platform }) => {
-    // TODO: Remove once account with error has account_type and sub_account_type in details response
+const AccountDisplay = ({ has_error, market_type, sub_account_type, server, is_dark_mode_on, platform }) => {
+    // TODO: Remove once account with error has market_type and sub_account_type in details response
     if (has_error)
         return (
             <div>
                 <Text color='disabled' size='xs'>
                     <Localize i18n_default_text='Unavailable' />
                 </Text>
-                {server?.server_info?.geolocation && (account_type === 'gaming' || account_type === 'synthetic') && (
+                {server?.server_info?.geolocation && (market_type === 'gaming' || market_type === 'synthetic') && (
                     <Text color='less-prominent' size='xxs' className='badge-server badge-server--disabled'>
                         {server.server_info.geolocation.region}&nbsp;
                         {server.server_info.geolocation.sequence !== 1 ? server.server_info.geolocation.sequence : ''}
@@ -136,8 +131,8 @@ const AccountDisplay = ({ has_error, account_type, sub_account_type, server, is_
         );
     return (
         <div>
-            {getCFDAccountDisplay({ account_type, sub_account_type, platform })}
-            {server?.server_info?.geolocation && (account_type === 'gaming' || account_type === 'synthetic') && (
+            {getCFDAccountDisplay({ market_type, sub_account_type, platform })}
+            {server?.server_info?.geolocation && (market_type === 'gaming' || market_type === 'synthetic') && (
                 <Text
                     color={is_dark_mode_on ? 'general' : 'colored-background'}
                     size='xxs'

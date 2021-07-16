@@ -1,4 +1,5 @@
 import React from 'react';
+import countries from 'i18n-iso-countries';
 import { WS } from '@deriv/shared';
 import CountrySelector from 'Components/poi-country-selector';
 import IdvDocumentSubmit from 'Components/poi-idv-document-submit';
@@ -14,7 +15,6 @@ const POISubmission = ({
     identity_last_attempt,
     idv,
     is_from_external,
-    manual,
     needs_poa,
     onfido,
     onStateChange,
@@ -31,14 +31,14 @@ const POISubmission = ({
             const { submissions_left: idv_submissions_left } = idv;
             const { submissions_left: onfido_submissions_left } = onfido;
             const is_idv_supported = selected_country.identity.services.idv.is_country_supported;
-            const is_onfido_supported = onfido.is_country_supported;
+            const is_onfido_supported = selected_country.identity.services.idv.is_country_supported;
 
             if (is_idv_supported && Number(idv_submissions_left) > 0) {
-                setSubmissionService('idv');
-            } else if (is_onfido_supported && onfido_submissions_left) {
-                setSubmissionService('onfido');
+                setSubmissionService(service_code.idv);
+            } else if (onfido_submissions_left && is_onfido_supported) {
+                setSubmissionService(service_code.onfido);
             } else {
-                setSubmissionService('manual');
+                setSubmissionService(service_code.manual);
             }
             setSubmissionStatus(submission_status_code.submitting);
         }
@@ -63,10 +63,14 @@ const POISubmission = ({
                 case service_code.idv: {
                     if (Number(idv.submissions_left) > 0) {
                         setSubmissionStatus(submission_status_code.selecting);
-                    } else {
-                        setSelectedCountry(getCountryFromResidence(identity_last_attempt.country_code));
-                        setSubmissionStatus(submission_status_code.submitting);
+                    } else if (onfido.is_country_supported) {
+                        const country_code = countries.alpha3ToAlpha2(onfido.country_code.toUpperCase());
+                        setSelectedCountry(getCountryFromResidence(country_code.toLowerCase()));
                         setSubmissionService(service_code.onfido);
+                        setSubmissionStatus(submission_status_code.submitting);
+                    } else {
+                        setSubmissionService(service_code.manual);
+                        setSubmissionStatus(submission_status_code.submitting);
                     }
                     break;
                 }
@@ -114,23 +118,24 @@ const POISubmission = ({
                             selected_country={selected_country}
                         />
                     );
-                case service_code.onfido:
-                    if (onfido.is_country_supported) {
-                        const { country_code, documents_supported } = onfido;
-                        return (
-                            <OnfidoUpload
-                                country_code={country_code}
-                                documents_supported={documents_supported}
-                                handleViewComplete={handleViewComplete}
-                                height={height}
-                                is_from_external={is_from_external}
-                                refreshNotifications={refreshNotifications}
-                            />
-                        );
-                    }
-                    return <Unsupported manual={manual} handleViewComplete={handleViewComplete} />;
+                case service_code.onfido: {
+                    const country_code = selected_country.value;
+                    const doc_obj = selected_country.identity.services.onfido.documents_supported;
+                    const documents_supported = Object.keys(doc_obj).map(d => doc_obj[d].display_name);
+
+                    return (
+                        <OnfidoUpload
+                            country_code={country_code}
+                            documents_supported={documents_supported}
+                            handleViewComplete={handleViewComplete}
+                            height={height}
+                            is_from_external={is_from_external}
+                            refreshNotifications={refreshNotifications}
+                        />
+                    );
+                }
                 case service_code.manual:
-                    return <Unsupported manual={manual} handleViewComplete={handleViewComplete} />;
+                    return <Unsupported />;
                 default:
                     return null;
             }

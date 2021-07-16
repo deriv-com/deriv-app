@@ -1,11 +1,11 @@
 import * as React from 'react';
-import * as Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
-import { Loading, Text, ThemedScrollbars } from '@deriv/components';
+import countries from 'i18n-iso-countries';
+import * as Cookies from 'js-cookie';
 import { init } from 'onfido-sdk-ui';
+import { Loading, Text, ThemedScrollbars } from '@deriv/components';
 import { isMobile, routes, WS } from '@deriv/shared';
 import { getLanguage, Localize } from '@deriv/translations';
-import getCountryISO3 from 'country-iso-2-to-3';
 import ErrorMessage from 'Components/error-component';
 import getOnfidoPhrases from 'Constants/onfido-phrases';
 import MissingPersonalDetails from 'Components/poi-missing-personal-details';
@@ -16,8 +16,16 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
     const [missing_personal_details, setMissingPersonalDetails] = React.useState(false);
     const [is_status_loading, setStatusLoading] = React.useState(true);
 
-    // IDV uses ISO2 country code format while onfido uses ISO3. This will check first and convert it to the proper ISO3 country code.
-    const onfido_country_code = country_code.length < 3 ? getCountryISO3(country_code.toUpperCase()) : country_code;
+    // IDV country code - Alpha ISO2. Onfido country code - Alpha ISO3
+    // Ensures that any form of country code passed here is supported.
+    const onfido_country_code =
+        country_code.length < 3 ? countries.alpha2ToAlpha3(country_code.toUpperCase()) : country_code;
+
+    // Onfido `document_supported` checks are made for an array of string.
+    // Ensure that `document_supported` passed respects this no the matter source.
+    const onfido_documents = Array.isArray(documents_supported)
+        ? documents_supported
+        : Object.keys(documents_supported).map(d => documents_supported[d].display_name);
 
     const onfido_init = React.useRef();
 
@@ -62,13 +70,13 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
                         type: 'document',
                         options: {
                             documentTypes: {
-                                passport: documents_supported.includes('Passport'),
-                                driving_licence: documents_supported.includes('Driving Licence')
+                                passport: onfido_documents.includes('Passport'),
+                                driving_licence: onfido_documents.includes('Driving Licence')
                                     ? {
                                           country: onfido_country_code,
                                       }
                                     : false,
-                                national_identity_card: documents_supported.includes('National Identity Card')
+                                national_identity_card: onfido_documents.includes('National Identity Card')
                                     ? {
                                           country: onfido_country_code,
                                       }
@@ -83,7 +91,7 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
         } catch (err) {
             setAPIError(err);
         }
-    }, [onfido_service_token, onComplete, documents_supported, onfido_country_code, setAPIError]);
+    }, [onfido_service_token, onComplete, onfido_documents, onfido_country_code]);
 
     const getOnfidoServiceToken = React.useCallback(
         () =>

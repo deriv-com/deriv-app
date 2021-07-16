@@ -399,6 +399,14 @@ export default class CashierStore extends BaseStore {
     }
 
     @computed
+    get is_system_maintenance() {
+        if (!this.root_store.client.account_status.cashier_validation) return false;
+        const { cashier_validation } = this.root_store.client.account_status;
+
+        return cashier_validation.some(validation => validation === 'system_maintenance');
+    }
+
+    @computed
     get is_deposit_locked() {
         const {
             is_authentication_needed,
@@ -409,6 +417,7 @@ export default class CashierStore extends BaseStore {
             account_status,
             is_eu,
             mt5_login_list,
+            is_deposit_lock,
         } = this.root_store.client;
         if (!account_status.status) return false;
 
@@ -425,6 +434,7 @@ export default class CashierStore extends BaseStore {
             is_tnc_needed;
 
         return (
+            is_deposit_lock ||
             need_authentication ||
             need_tnc ||
             need_financial_assessment ||

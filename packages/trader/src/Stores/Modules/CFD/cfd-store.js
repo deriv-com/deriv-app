@@ -296,6 +296,7 @@ export default class CFDStore extends BaseStore {
             actions.setStatus({ success: false });
             return true;
         }
+        return false;
     }
 
     @action.bound
@@ -344,6 +345,7 @@ export default class CFDStore extends BaseStore {
             actions.setStatus({ success: false });
             return true;
         }
+        return false;
     }
 
     @action.bound

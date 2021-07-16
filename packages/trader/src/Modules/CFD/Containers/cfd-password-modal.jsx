@@ -154,7 +154,11 @@ const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_
             {({ errors, isSubmitting, handleBlur, handleChange, handleSubmit, setFieldTouched, touched, values }) => (
                 <form onSubmit={handleSubmit}>
                     <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body cfd-password-modal__create-password-content'>
-                        <Icon icon='IcMt5OnePassword' width='122' height='100' />
+                        <Icon
+                            icon={platform === CFD_PLATFORMS.MT5 ? 'IcMt5OnePassword' : 'IcDxtradeOnePassword'}
+                            width='122'
+                            height='108'
+                        />
                         <Text size='s' weight='bold' className='cfd-password-modal__create-password-title'>
                             <Localize
                                 i18n_default_text='Create a {{platform}} password'

@@ -134,10 +134,14 @@
             flex-direction: column;
             width: 100%;
             align-items: center;
-            margin-top: -2.5rem;
+
+            @include desktop {
+                margin-top: -2.5rem;
+            }
 
             .dc-icon {
                 margin-left: 1.1rem;
+                flex: none;
             }
         }
         &-title {
@@ -154,7 +158,10 @@
         align-items: center;
         flex-direction: column;
         max-width: 30rem;
-        margin-top: -2.5rem;
+
+        @include desktop {
+            margin-top: -2.5rem;
+        }
 
         &-wrapper {
             display: flex;

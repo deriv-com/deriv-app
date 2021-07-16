@@ -725,6 +725,7 @@
             font-family: Courier, monospace;
             overflow: hidden;
             margin-right: 0.4rem;
+            flex: 1;
         }
         &-action {
             padding: 0;
@@ -746,7 +747,7 @@
         margin: 0 1.6rem 1.5rem; // -1 for border
         padding: 0;
         text-decoration: none;
-        width: 27rem;
+        width: calc(100% - 3.2rem);
         @include typeface(--paragraph-center-bold-black, none);
 
         &--primary {
@@ -790,7 +791,7 @@
     }
     &__manage {
         display: flex;
-        width: 272px;
+        width: calc(100% - 3.2rem);
 
         .dc-btn {
             width: 100%;

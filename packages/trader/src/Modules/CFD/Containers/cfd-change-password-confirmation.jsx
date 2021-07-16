@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import PropTypes from 'prop-types';
 import { Text, Icon, FormSubmitButton } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { getCFDPlatformLabel } from '@deriv/shared';
+import { CFD_PLATFORMS, getCFDPlatformLabel } from '@deriv/shared';
 
 const ChangePasswordConfirmation = ({ className, platform, onConfirm, onCancel }) => (
     <Formik initialValues={{}} onSubmit={onConfirm}>
@@ -16,7 +16,12 @@ const ChangePasswordConfirmation = ({ className, platform, onConfirm, onCancel }
                     })}
                 >
                     <div className={classNames('cfd-change-password-confirmation', className)}>
-                        <Icon className='cfd-change-password__icon' icon='IcMt5OnePassword' width='122' height='100' />
+                        <Icon
+                            className='cfd-change-password__icon'
+                            icon={platform === CFD_PLATFORMS.MT5 ? 'IcMt5OnePassword' : 'IcDxtradeOnePassword'}
+                            width='122'
+                            height='108'
+                        />
                         <Text as='p' align='center' size='s' weight='bold'>
                             <Localize
                                 i18n_default_text='Confirm to change your {{platform}} password'

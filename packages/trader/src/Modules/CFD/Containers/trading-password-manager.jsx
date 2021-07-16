@@ -7,7 +7,12 @@ import ChangePasswordConfirmation from './cfd-change-password-confirmation.jsx';
 
 const ChangePassword = ({ platform, onConfirm }) => (
     <div className='cfd-change-password'>
-        <Icon className='cfd-change-password__icon' icon='IcMt5OnePassword' width='122' height='100' />
+        <Icon
+            className='cfd-change-password__icon'
+            icon={platform === CFD_PLATFORMS.MT5 ? 'IcMt5OnePassword' : 'IcDxtradeOnePassword'}
+            width='122'
+            height='108'
+        />
         <Text as='p' align='center' size='s' weight='bold'>
             <Localize
                 i18n_default_text='{{platform}} password'

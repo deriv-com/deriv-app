@@ -96,14 +96,14 @@ const AccountSwitcher = props => {
 
     const redirectToMt5 = async account_type => {
         closeAccountsDialog();
-        props.history.push(routes.mt5);
-        window.location.hash = await account_type;
+        await props.history.push(routes.mt5);
+        window.location.hash = account_type;
     };
 
     const redirectToDXTrade = async account_type => {
         closeAccountsDialog();
-        props.history.push(routes.dxtrade);
-        window.location.hash = await account_type;
+        await props.history.push(routes.dxtrade);
+        window.location.hash = account_type;
     };
 
     const hasRequiredCredentials = () => {

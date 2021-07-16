@@ -135,7 +135,7 @@ const AccountSwitcher = props => {
     };
 
     const redirectToMt5Real = market_type => {
-        redirectToMt5(`real${market_type}`);
+        redirectToMt5(`real-${market_type}`);
     };
 
     // TODO: Uncomment when real account is launched
@@ -160,11 +160,11 @@ const AccountSwitcher = props => {
     // };
 
     const redirectToMt5Demo = market_type => {
-        redirectToMt5(`demo${market_type}`);
+        redirectToMt5(`demo-${market_type}`);
     };
 
     const redirectToDXTradeDemo = market_type => {
-        redirectToDXTrade(`demo${market_type}`);
+        redirectToDXTrade(`demo-${market_type}`);
     };
 
     const setAccountCurrency = () => {
@@ -451,7 +451,7 @@ const AccountSwitcher = props => {
                                                 has_balance={'balance' in account}
                                                 has_error={account.has_error}
                                                 loginid={account.display_login}
-                                                redirectAccount={() => redirectToMt5Demo(`-${account.market_type}`)}
+                                                redirectAccount={() => redirectToMt5Demo(account.market_type)}
                                                 platform={CFD_PLATFORMS.MT5}
                                             />
                                         ))}
@@ -503,7 +503,7 @@ const AccountSwitcher = props => {
                                         })}`}
                                         has_balance={'balance' in account}
                                         loginid={account.display_login}
-                                        redirectAccount={() => redirectToDXTradeDemo(`-${account.market_type}`)}
+                                        redirectAccount={() => redirectToDXTradeDemo(account.market_type)}
                                         platform={CFD_PLATFORMS.DXTRADE}
                                     />
                                 ))}
@@ -641,7 +641,7 @@ const AccountSwitcher = props => {
                                                 has_balance={'balance' in account}
                                                 has_error={account.has_error}
                                                 loginid={account.display_login}
-                                                redirectAccount={() => redirectToMt5Real(`-${account.market_type}`)}
+                                                redirectAccount={() => redirectToMt5Real(account.market_type)}
                                                 server={findServerForAccount(account)}
                                                 platform={CFD_PLATFORMS.MT5}
                                             />

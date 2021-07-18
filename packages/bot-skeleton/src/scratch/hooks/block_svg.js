@@ -99,12 +99,15 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
     // Option to disable/enable block.
     if (this.workspace.options.disable) {
         const restricted_parents = block.restricted_parents || [];
+        const is_trade_parameter = this.type.includes('trade_definition_') && !this.isMovable();
+
         const disable_option = {
             text: this.disabled ? localize('Enable Block') : localize('Disable Block'),
             enabled:
-                !this.disabled ||
-                restricted_parents.length === 0 ||
-                restricted_parents.some(restricted_parent => block.isDescendantOf(restricted_parent)),
+                !is_trade_parameter &&
+                (!this.disabled ||
+                    restricted_parents.length === 0 ||
+                    restricted_parents.some(restricted_parent => block.isDescendantOf(restricted_parent))),
             callback: () => {
                 const group = Blockly.Events.getGroup();
                 if (!group) {

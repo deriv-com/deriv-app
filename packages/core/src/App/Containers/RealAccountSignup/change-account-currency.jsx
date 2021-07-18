@@ -19,20 +19,21 @@ const ChangeAccountCurrency = ({
     client_currency,
     current_currency_type,
     current_fiat_currency,
-    is_dxtrade_allowed,
 }) => {
     const getReorderedCurrencies = () =>
         reorderCurrencies(legal_allowed_currencies.filter(currency => currency.type === FIAT_CURRENCY_TYPE));
 
     const is_fiat = current_currency_type === 'fiat';
-    const fiat_message = is_dxtrade_allowed ? (
-        <Localize
-            i18n_default_text="We can't change your account currency as you've either made a deposit into your {{currency}} account or created a real account on DMT5 or Deriv X."
-            values={{
-                currency: getCurrencyDisplayCode(client_currency),
-            }}
-        />
-    ) : (
+    const fiat_message = (
+        // TODO: Uncomment when real account is launched
+        // is_dxtrade_allowed ? (
+        //     <Localize
+        //         i18n_default_text="We can't change your account currency as you've either made a deposit into your {{currency}} account or created a real account on DMT5 or Deriv X."
+        //         values={{
+        //             currency: getCurrencyDisplayCode(client_currency),
+        //         }}
+        //     />
+        // ) : (
         <Localize
             i18n_default_text="We can't change your account currency as you've either made a deposit into your {{currency}} account or created a real account on DMT5."
             values={{
@@ -40,6 +41,8 @@ const ChangeAccountCurrency = ({
             }}
         />
     );
+    // );
+
     const non_fiat_mesage = (
         <Localize
             i18n_default_text='Please switch to your {{fiat_currency}} account to change currencies.'
@@ -132,12 +135,10 @@ ChangeAccountCurrency.propTypes = {
     current_currency_type: PropTypes.string,
     current_fiat_currency: PropTypes.string,
     client_currency: PropTypes.string,
-    is_dxtrade_allowed: PropTypes.bool,
 };
 
 export default connect(({ client }) => ({
     legal_allowed_currencies: client.upgradeable_currencies,
     client_currency: client.currency,
     current_fiat_currency: client.current_fiat_currency,
-    is_dxtrade_allowed: client.is_dxtrade_allowed,
 }))(ChangeAccountCurrency);

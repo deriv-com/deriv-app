@@ -16,6 +16,7 @@ import {
 import { MobxContentProvider } from 'Stores/connect';
 import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
+import './app.scss';
 
 const App = ({ passthrough }) => {
     const { root_store, WS } = passthrough;
@@ -32,9 +33,9 @@ const App = ({ passthrough }) => {
 
         ApiHelpers.setInstance(app.api_helpers_store);
         const { active_symbols } = ApiHelpers.instance;
-
         setIsLoading(true);
-        active_symbols.retrieveActiveSymbols(true).then(() => {
+        active_symbols.retrieveActiveSymbols(true).then(async () => {
+            await app.root_store.ws.wait('landing_company', 'get_settings');
             setIsLoading(false);
             onMount();
         });

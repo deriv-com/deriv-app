@@ -23,9 +23,9 @@ const DummyComponent = props => (
 | onClickSendEmail | {function} | null    | Callback function for onClick function of send button |
 | title            | {string}   | null    | Main title of the template                            |
 | subtitle         | {string}   | null    | Short description about the email                     |
-| lbl_no_receive   | {string}   | null    | Text for send button                                  |
+| lbl\_no\_receive | {string}   | null    | Text for send button                                  |
 | txt_resend       | {string}   | null    | Text for resend button                                |
-| txt_resend_in    | {string}   | null    | Text for resend button with timer                     |
+| txt\_resend\_in  | {string}   | null    | Text for resend button with timer                     |
 
 ## Full example:
 

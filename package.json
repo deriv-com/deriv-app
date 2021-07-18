@@ -15,7 +15,7 @@
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
     "@jest/globals": "^26.6.2",
-    "@testing-library/react": "^11.2.6",
+    "@testing-library/react": "^12.0.0",
     "@testing-library/jest-dom": "^5.12.0",
     "babel-eslint": "^10.1.0",
     "babel-polyfill": "^6.26.0",
@@ -46,7 +46,9 @@
     "stylelint-formatter-pretty": "^2.1.1",
     "stylelint-no-unsupported-browser-features": "^4.0.0",
     "stylelint-selector-bem-pattern": "^2.1.0",
-    "stylelint-webpack-plugin": "^2.1.1"
+    "stylelint-webpack-plugin": "^2.1.1",
+    "react-dom": "^16.13.1",
+    "react": "^16.13.1"
   },
   "scripts": {
     "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --hoist --strict && lerna link && npm run build:travis && npm run install:qa ;}; f",

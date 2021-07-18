@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
-const PercentageSelector = ({ amount, currency, total_amount }) => {
+const PercentageSelector = ({ amount, currency, getCalculatedAmount }) => {
     const [percentage, setPercentage] = React.useState('0');
 
     const calculateAmount = (e, percent) => {
@@ -16,7 +16,7 @@ const PercentageSelector = ({ amount, currency, total_amount }) => {
                 document.getElementById(i).style.backgroundColor = '#f2f3f4';
             }
         }
-        return amount * (percentage / 100);
+        getCalculatedAmount(amount * (percentage / 100));
     };
 
     return (
@@ -48,7 +48,7 @@ const PercentageSelector = ({ amount, currency, total_amount }) => {
                 </div>
             </div>
             <Text color='less-prominent' size='s'>
-                <Localize i18n_default_text={`${percentage}% of available balance (${total_amount} ${currency})`} />
+                <Localize i18n_default_text={`${percentage}% of available balance (${amount} ${currency})`} />
             </Text>
         </React.Fragment>
     );

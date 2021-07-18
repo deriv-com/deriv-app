@@ -21,6 +21,11 @@ export default class AccountPromptDialogStore {
     }
 
     @action.bound
+    resetLastLocation() {
+        this.last_location = null;
+    }
+
+    @action.bound
     resetIsConfirmed() {
         this.is_confirmed = false;
     }

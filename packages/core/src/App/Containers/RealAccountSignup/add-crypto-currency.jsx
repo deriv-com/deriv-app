@@ -1,7 +1,7 @@
 import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { FormSubmitButton, Icon, Text } from '@deriv/components';
+import { FormSubmitButton, Icon, Text, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { isMobile, reorderCurrencies, website_name } from '@deriv/shared';
@@ -75,26 +75,28 @@ const AddCryptoCurrency = ({
                     )}
                     {canAddFiat() && (
                         <React.Fragment>
-                            <CurrencyRadioButtonGroup
-                                id='fiat_currency'
-                                is_fiat
-                                className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                                value={values.currency}
-                                error={errors.currency}
-                                touched={touched.currency}
-                                is_title_enabled={canAddFiat()}
-                                item_count={getReorderedFiatCurrencies().length}
-                            >
-                                {getReorderedFiatCurrencies().map(currency => (
-                                    <Field
-                                        key={currency.value}
-                                        component={CurrencyRadioButton}
-                                        name='currency'
-                                        id={currency.value}
-                                        label={currency.name}
-                                    />
-                                ))}
-                            </CurrencyRadioButtonGroup>
+                            <ThemedScrollbars>
+                                <CurrencyRadioButtonGroup
+                                    id='fiat_currency'
+                                    is_fiat
+                                    className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                                    value={values.currency}
+                                    error={errors.currency}
+                                    touched={touched.currency}
+                                    is_title_enabled={canAddFiat()}
+                                    item_count={getReorderedFiatCurrencies().length}
+                                >
+                                    {getReorderedFiatCurrencies().map(currency => (
+                                        <Field
+                                            key={currency.value}
+                                            component={CurrencyRadioButton}
+                                            name='currency'
+                                            id={currency.value}
+                                            label={currency.name}
+                                        />
+                                    ))}
+                                </CurrencyRadioButtonGroup>
+                            </ThemedScrollbars>
                         </React.Fragment>
                     )}
                     {canAddFiat() && (
@@ -127,46 +129,50 @@ const AddCryptoCurrency = ({
                     )}
                     {!should_show_fiat_only &&
                         (available_crypto_currencies.length !== 0 ? (
-                            <CurrencyRadioButtonGroup
-                                id='crypto_currency'
-                                className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                                label={localize('Cryptocurrencies')}
-                                value={values.currency}
-                                error={errors.currency}
-                                touched={touched.currency}
-                                is_title_enabled={canAddFiat()}
-                                item_count={getReorderedCryptoCurrencies().length}
-                            >
-                                {getReorderedCryptoCurrencies().map(currency => (
-                                    <Field
-                                        key={currency.value}
-                                        component={CurrencyRadioButton}
-                                        name='currency'
-                                        id={currency.value}
-                                        label={currency.name}
-                                        selected={canAddCrypto(currency)}
-                                    />
-                                ))}
-                            </CurrencyRadioButtonGroup>
+                            <ThemedScrollbars>
+                                <CurrencyRadioButtonGroup
+                                    id='crypto_currency'
+                                    className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                                    label={localize('Cryptocurrencies')}
+                                    value={values.currency}
+                                    error={errors.currency}
+                                    touched={touched.currency}
+                                    is_title_enabled={canAddFiat()}
+                                    item_count={getReorderedCryptoCurrencies().length}
+                                >
+                                    {getReorderedCryptoCurrencies().map(currency => (
+                                        <Field
+                                            key={currency.value}
+                                            component={CurrencyRadioButton}
+                                            name='currency'
+                                            id={currency.value}
+                                            label={currency.name}
+                                            selected={canAddCrypto(currency)}
+                                        />
+                                    ))}
+                                </CurrencyRadioButtonGroup>
+                            </ThemedScrollbars>
                         ) : (
-                            <CurrencyRadioButtonGroup
-                                id='crypto_currency'
-                                className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                                label={localize('Cryptocurrencies')}
-                                is_title_enabled={canAddFiat()}
-                                item_count={getReorderedCryptoCurrencies().length}
-                            >
-                                {getReorderedCryptoCurrencies().map(currency => (
-                                    <Field
-                                        key={currency.value}
-                                        component={CurrencyRadioButton}
-                                        name='currency'
-                                        id={currency.value}
-                                        label={currency.name}
-                                        selected
-                                    />
-                                ))}
-                            </CurrencyRadioButtonGroup>
+                            <ThemedScrollbars>
+                                <CurrencyRadioButtonGroup
+                                    id='crypto_currency'
+                                    className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                                    label={localize('Cryptocurrencies')}
+                                    is_title_enabled={canAddFiat()}
+                                    item_count={getReorderedCryptoCurrencies().length}
+                                >
+                                    {getReorderedCryptoCurrencies().map(currency => (
+                                        <Field
+                                            key={currency.value}
+                                            component={CurrencyRadioButton}
+                                            name='currency'
+                                            id={currency.value}
+                                            label={currency.name}
+                                            selected
+                                        />
+                                    ))}
+                                </CurrencyRadioButtonGroup>
+                            </ThemedScrollbars>
                         ))}
                     <FormSubmitButton
                         className='currency-selector__button'

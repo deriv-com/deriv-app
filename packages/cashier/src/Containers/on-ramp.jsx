@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Modal, SelectNative, ReadMore, Text } from '@deriv/components';
+import { Loading, Modal, SelectNative, ReadMore, Text } from '@deriv/components';
 import { routes, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -64,7 +64,7 @@ const OnRamp = ({
 
     React.useEffect(() => {
         onMountOnramp();
-        if (typeof setSideNotes === 'function') {
+        if (typeof setSideNotes === 'function' && !is_switching) {
             setSideNotes([<OnRampSideNote key={0} />]);
         }
 
@@ -76,6 +76,8 @@ const OnRamp = ({
             text: menu_option.label,
             value: menu_option.path,
         }));
+
+    if (is_switching) return <Loading className='cashier-default__loader' is_fullscreen />;
 
     if (is_cashier_locked) {
         return <CashierLocked />;

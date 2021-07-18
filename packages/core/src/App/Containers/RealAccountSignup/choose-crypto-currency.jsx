@@ -1,7 +1,7 @@
 import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { FormSubmitButton, Text } from '@deriv/components';
+import { FormSubmitButton, Text, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { reorderCurrencies } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -103,24 +103,26 @@ const ChooseCryptoCurrency = ({
                     <Text as='h1' color='prominent' align='center' weight='bold' className='add-crypto-currency__title'>
                         {localize('Choose one of your accounts or add a new cryptocurrency account')}
                     </Text>
-                    <CurrencyRadioButtonGroup
-                        id='crypto_currency'
-                        className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                        item_count={getReorderedCryptoCurrencies().length}
-                    >
-                        {getReorderedCryptoCurrencies().map(currency => (
-                            <Field
-                                key={currency.value}
-                                component={CurrencyRadioButton}
-                                name='currency'
-                                id={currency.value}
-                                label={currency.name}
-                                icon={currency.icon}
-                                second_line_label={currency.second_line_label}
-                                onClick={currency.onClick}
-                            />
-                        ))}
-                    </CurrencyRadioButtonGroup>
+                    <ThemedScrollbars>
+                        <CurrencyRadioButtonGroup
+                            id='crypto_currency'
+                            className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                            item_count={getReorderedCryptoCurrencies().length}
+                        >
+                            {getReorderedCryptoCurrencies().map(currency => (
+                                <Field
+                                    key={currency.value}
+                                    component={CurrencyRadioButton}
+                                    name='currency'
+                                    id={currency.value}
+                                    label={currency.name}
+                                    icon={currency.icon}
+                                    second_line_label={currency.second_line_label}
+                                    onClick={currency.onClick}
+                                />
+                            ))}
+                        </CurrencyRadioButtonGroup>
+                    </ThemedScrollbars>
                     <FormSubmitButton
                         className='currency-selector__button'
                         is_disabled={isSubmitting || !values.currency}

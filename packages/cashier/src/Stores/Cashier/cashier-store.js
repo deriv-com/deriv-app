@@ -280,6 +280,7 @@ export default class CashierStore extends BaseStore {
                 if (this.root_store.client.is_logged_in) {
                     await this.checkP2pStatus();
                     await this.filterPaymentAgentList();
+                    this.account_prompt_dialog.resetLastLocation();
                 }
             }
         );

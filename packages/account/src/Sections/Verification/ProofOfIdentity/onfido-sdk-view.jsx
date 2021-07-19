@@ -31,7 +31,6 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
 
     const onComplete = React.useCallback(
         data => {
-            onfido_init?.tearDown();
             onfido_init?.current?.tearDown();
             const document_ids = Object.keys(data).map(key => data[key].id);
 

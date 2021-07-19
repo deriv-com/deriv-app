@@ -1370,6 +1370,7 @@ export default class ClientStore extends BaseStore {
 
     @action.bound
     setPreSwitchAccount(is_pre_switch) {
+        this.has_reality_check = false;
         this.pre_switch_broadcast = is_pre_switch;
     }
 

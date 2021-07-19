@@ -12,7 +12,7 @@ import {
 import { isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
-const BriefModal = ({ disableApp, enableApp, IntervalField, is_visible, logout, onSubmit, validateForm }) => {
+const BriefModal = ({ disableApp, enableApp, IntervalField, is_visible, onSubmit, validateForm }) => {
     return (
         <Modal
             className='reality-check'
@@ -73,11 +73,8 @@ const BriefModal = ({ disableApp, enableApp, IntervalField, is_visible, logout, 
                                 <Modal.Footer has_separator>
                                     <FormSubmitButton
                                         className='reality-check__submit'
-                                        has_cancel
-                                        cancel_label={localize('Log out')}
                                         is_disabled={!values.interval || !isValid || isSubmitting}
                                         label={localize('Continue trading')}
-                                        onCancel={logout}
                                     />
                                 </Modal.Footer>
                             </form>

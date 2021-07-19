@@ -69,13 +69,13 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
                         type: 'document',
                         options: {
                             documentTypes: {
-                                passport: onfido_documents.includes('Passport'),
-                                driving_licence: onfido_documents.includes('Driving Licence')
+                                passport: onfido_documents.some(doc => /Passport/g.test(doc)),
+                                driving_licence: onfido_documents.some(doc => /Driving Licence/g.test(doc))
                                     ? {
                                           country: onfido_country_code,
                                       }
                                     : false,
-                                national_identity_card: onfido_documents.includes('National Identity Card')
+                                national_identity_card: onfido_documents.some(doc => /National Identity Card/g.test(doc))
                                     ? {
                                           country: onfido_country_code,
                                       }

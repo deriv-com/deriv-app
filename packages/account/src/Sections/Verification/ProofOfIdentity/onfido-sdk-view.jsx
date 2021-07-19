@@ -154,8 +154,6 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
 
     if (is_status_loading) {
         component_to_load = <Loading is_fullscreen={false} />;
-    } else if (api_error) {
-        component_to_load = <ErrorMessage error_message={api_error?.message || api_error} />;
     } else if (missing_personal_details) {
         component_to_load = (
             <MissingPersonalDetails
@@ -163,6 +161,8 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
                 from='proof_of_identity'
             />
         );
+    } else if (api_error) {
+        component_to_load = <ErrorMessage error_message={api_error?.message || api_error} />;
     }
 
     return (

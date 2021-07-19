@@ -12,7 +12,6 @@ import POISubmission from './proof-of-identity-submission.jsx';
 import Onfido from './onfido.jsx';
 import IdvContainer from './idv.jsx';
 import { identity_status_codes, service_code } from './proof-of-identity-utils';
-import { figmaAccountStatus, idv_unsupported_pob } from './mock/account_status';
 import { populateVerificationStatus } from '../Helpers/verification';
 
 const ProofOfIdentityContainer = ({
@@ -80,7 +79,7 @@ const ProofOfIdentityContainer = ({
         return <NotRequired />;
     }
 
-    const verification_status = populateVerificationStatus(figmaAccountStatus('idv_result_rejected') || account_status);
+    const verification_status = populateVerificationStatus(account_status);
     const { idv, onfido, manual, identity_status, identity_last_attempt, needs_poa } = verification_status;
     const redirect_button = should_show_redirect_btn && (
         <Button primary className='proof-of-identity__redirect' onClick={() => routeBackTo(from_platform.route)}>

@@ -89,6 +89,9 @@
             &.active {
                 border: solid 2px var(--border-active);
             }
+            &:not(.active):hover {
+                background: var(--state-hover);
+            }
             &:not(.active):hover &__background {
                 opacity: 1;
             }

@@ -56,6 +56,16 @@ const copyConfig = base => {
             to: 'trader',
         },
         { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file', noErrorOnMissing: true },
+        {
+            from: path.resolve(__dirname, '../src/public/.well-known/apple-app-site-association'),
+            to: '.well-known/apple-app-site-association',
+            toType: 'file',
+        },
+        {
+            from: path.resolve(__dirname, '../src/public/.well-known/apple-app-site-association'),
+            to: '.well-known/assetslinks.json',
+            toType: 'file',
+        },
         { from: path.resolve(__dirname, '../src/root_files/404.html'), to: '404.html', toType: 'file' },
         {
             from: path.resolve(__dirname, '../src/root_files/localstorage-sync.html'),

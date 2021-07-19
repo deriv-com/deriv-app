@@ -27,6 +27,7 @@ const SpendingLimitModal = ({ disableApp, currency, enableApp, InputField, is_vi
         <Formik
             initialValues={{
                 spending_limit: '0',
+                max_30day_turnover: '',
             }}
             validate={validateForm}
             onSubmit={onSubmit}

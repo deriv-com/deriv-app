@@ -24,7 +24,7 @@ const SpendingLimitIntervalField = ({ currency, disabled, touched, errors, handl
                     onBlur={handleBlur}
                     disabled={disabled}
                     required
-                    error={touched.max_30day_turnover && errors.max_30day_turnover}
+                    error={(field.value || touched.max_30day_turnover) && errors.max_30day_turnover}
                     autoComplete='off'
                     maxLength='13'
                 />

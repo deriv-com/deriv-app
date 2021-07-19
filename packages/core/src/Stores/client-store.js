@@ -188,21 +188,23 @@ export default class ClientStore extends BaseStore {
             return false;
         }
 
+        const balance = parseFloat(this.balance);
+
         if (!this.has_reality_check) return false;
         // scenario one
-        if (!this.reality_check_dismissed && this.balance > 0) return true;
+        if (!this.reality_check_dismissed && balance > 0) return true;
 
         // scenario two
         if (
             !this.reality_check_dismissed &&
-            this.balance === 0 &&
+            balance === 0 &&
             this.statement.count === 0 &&
             !!this.last_transaction?.action
         )
             return true;
 
         // scenario three
-        if (!this.reality_check_dismissed && this.balance === 0 && this.statement.count > 0) return true;
+        if (!this.reality_check_dismissed && balance === 0 && this.statement.count > 0) return true;
 
         // another scenario
         if (this.has_reality_check && !this.self_exclusion.max_30day_turnover) return true;

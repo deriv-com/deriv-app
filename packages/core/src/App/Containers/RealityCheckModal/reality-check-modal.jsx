@@ -18,7 +18,7 @@ const SpendingLimitIntervalField = ({ currency, disabled, touched, errors, handl
                     {...field}
                     name='max_30day_turnover'
                     data-lpignore='true'
-                    type='number'
+                    type='text'
                     label={localize('My spending limit ({{currency}})', { currency })}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -27,11 +27,6 @@ const SpendingLimitIntervalField = ({ currency, disabled, touched, errors, handl
                     error={touched.max_30day_turnover && errors.max_30day_turnover}
                     autoComplete='off'
                     maxLength='13'
-                    onKeyPress={e => {
-                        if (e.target.value?.length >= 13) {
-                            e.preventDefault();
-                        }
-                    }}
                 />
             )}
         </Field>

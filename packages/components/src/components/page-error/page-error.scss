@@ -11,6 +11,12 @@
                 justify-content: left;
             }
         }
+        @media screen and (max-width: 1024px) {
+            flex-wrap: wrap;
+        }
+        @media screen and (max-width: 758px) {
+            height: calc(100vh - 224px);
+        }
     }
     &__box {
         background: var(--general-main-1);

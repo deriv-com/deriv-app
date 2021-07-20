@@ -585,9 +585,11 @@ const CFDPasswordModal = ({
 
     const handleForgotPassword = () => {
         closeModal();
+        const redirect_to = platform === CFD_PLATFORMS.MT5 ? CFD_PLATFORMS.MT5 : CFD_PLATFORMS.DERIVX;
         WS.verifyEmail(email, 'trading_platform_password_reset', {
             url_parameters: {
                 platform,
+                redirect_to,
             },
         });
         setIsSentEmailModalOpen(true);

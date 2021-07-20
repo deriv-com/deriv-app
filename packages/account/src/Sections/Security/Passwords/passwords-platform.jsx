@@ -23,6 +23,7 @@ const PasswordsPlatform = ({ email, has_set_deriv_x_trading_password, has_set_tr
     const onClickSendEmail = cfd_platform => {
         WS.verifyEmail(email, 'trading_platform_password_reset', {
             url_parameters: {
+                redirect_to: 'password',
                 platform: cfd_platform,
             },
         });
@@ -76,7 +77,7 @@ const PasswordsPlatform = ({ email, has_set_deriv_x_trading_password, has_set_tr
                             <Button
                                 className='account__passwords-footer-btn'
                                 type='button'
-                                onClick={() => onClickSendEmail(CFD_PLATFORMS.DXTRADE)}
+                                onClick={() => onClickSendEmail(CFD_PLATFORMS.DERIVX)}
                                 text={localize('Change password')}
                                 primary
                                 large

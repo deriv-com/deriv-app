@@ -5,7 +5,6 @@ import { Formik, Form } from 'formik';
 import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { getErrorMessages, validPassword, validLength, WS, getCFDPlatformLabel } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 
 const ResetTradingPassword = ({
     setDialogTitleFunc,
@@ -250,12 +249,4 @@ ResetTradingPasswordModal.propTypes = {
     platform: PropTypes.string,
 };
 
-export default connect(({ ui, client }) => ({
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
-    is_loading: ui.is_loading,
-    is_visible: ui.is_reset_trading_password_modal_visible,
-    toggleResetTradingPasswordModal: ui.setResetTradingPasswordModalOpen,
-    verification_code: client.verification_code.trading_platform_password_reset,
-    is_dxtrade_allowed: client.is_dxtrade_allowed,
-}))(ResetTradingPasswordModal);
+export default ResetTradingPasswordModal;

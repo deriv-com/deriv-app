@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import { DesktopWrapper, Icon, MobileWrapper, Tabs, PageError, Loading, Text } from '@deriv/components';
 import { isEmptyObject, isMobile, routes, getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { ResetTradingPasswordModal } from '@deriv/account';
 import { connect } from 'Stores/connect';
 import LoadingCFDRealAccountDisplay from './loading-cfd-real-account-display.jsx';
 import MissingRealAccount from './missing-real-account.jsx';
@@ -15,7 +16,6 @@ import CFDPasswordModal from './cfd-password-modal.jsx';
 import CFDServerErrorDialog from './cfd-server-error-dialog.jsx';
 import CFDTopUpDemoModal from './cfd-top-up-demo-modal.jsx';
 import CFDResetPasswordModal from './cfd-reset-password-modal.jsx';
-import ResetTradingPasswordModal from './ResetTradingPasswordModal';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import CFDFinancialStpPendingDialog from '../Components/cfd-financial-stp-pending-dialog.jsx';
 import { CFDDemoAccountDisplay } from '../Components/cfd-demo-account-display.jsx';
@@ -178,6 +178,11 @@ class CFDDashboard extends React.Component {
             toggleShouldShowRealAccountsList,
             can_have_more_real_synthetic_mt5,
             upgradeable_landing_companies,
+            is_reset_trading_password_modal_visible,
+            toggleResetTradingPasswordModal,
+            enableApp,
+            disableApp,
+            verification_code,
         } = this.props;
 
         const should_show_missing_real_account =
@@ -448,7 +453,16 @@ class CFDDashboard extends React.Component {
                                 </React.Fragment>
                             )}
                             <CFDResetPasswordModal platform={platform} />
-                            <ResetTradingPasswordModal platform={platform} />
+                            <ResetTradingPasswordModal
+                                platform={platform}
+                                enableApp={enableApp}
+                                disableApp={disableApp}
+                                toggleResetTradingPasswordModal={toggleResetTradingPasswordModal}
+                                is_visible={is_reset_trading_password_modal_visible}
+                                is_loading={is_loading}
+                                verification_code={verification_code}
+                                is_dxtrade_allowed={is_dxtrade_allowed}
+                            />
                         </div>
                     </div>
                 ) : (
@@ -527,5 +541,10 @@ export default withRouter(
         can_have_more_real_synthetic_mt5: client.can_have_more_real_synthetic_mt5,
         upgradeable_landing_companies: client.upgradeable_landing_companies,
         is_dark_mode_on: ui.is_dark_mode_on,
+        disableApp: ui.disableApp,
+        enableApp: ui.enableApp,
+        is_reset_trading_password_modal_visible: ui.is_reset_trading_password_modal_visible,
+        toggleResetTradingPasswordModal: ui.setResetTradingPasswordModalOpen,
+        verification_code: client.verification_code.trading_platform_password_reset,
     }))(CFDDashboard)
 );

@@ -41,14 +41,31 @@ const Redirect = ({
             break;
         }
         case 'trading_platform_password_reset': {
-            const platform = url_params.get('platform');
+            const redirect_to = url_params.get('redirect_to');
 
-            if (platform) {
-                history.push({
-                    pathname: platform === CFD_PLATFORMS.MT5 ? routes.mt5 : routes.dxtrade,
-                    search: url_query_string,
-                });
-                redirected_to_route = true;
+            if (redirect_to) {
+                let pathname = '';
+                switch (redirect_to) {
+                    case CFD_PLATFORMS.MT5:
+                        pathname = routes.mt5;
+                        break;
+                    case CFD_PLATFORMS.DERIVX:
+                        pathname = routes.dxtrade;
+                        break;
+                    case 'password':
+                        pathname = routes.passwords;
+                        break;
+                    default:
+                        break;
+                }
+
+                if (pathname) {
+                    history.push({
+                        pathname,
+                        search: url_query_string,
+                    });
+                    redirected_to_route = true;
+                }
             }
 
             setResetTradingPasswordModalOpen(true);

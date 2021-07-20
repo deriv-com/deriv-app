@@ -92,9 +92,6 @@
             &:not(.active):hover {
                 background: var(--state-hover);
             }
-            &:not(.active):hover &__background {
-                opacity: 1;
-            }
             @include mobile {
                 width: 302px;
             }

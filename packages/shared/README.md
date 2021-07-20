@@ -12,7 +12,7 @@
         -   [Google fonts](#google-fonts)
     -   [ Utility functions](#utility-functions)
 
-## Commands:
+## Commands
 
 Setup:
 

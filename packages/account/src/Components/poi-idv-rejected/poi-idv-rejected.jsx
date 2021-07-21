@@ -21,7 +21,7 @@ const IdvRejected = ({ handleRequireSubmission }) => {
                 className='account-management__continue'
                 onClick={handleRequireSubmission}
                 large
-                text={localize('Try Again')}
+                text={localize('Try again')}
                 primary
             />
         </div>

@@ -86,7 +86,7 @@ const ProofOfIdentityContainer = ({
             <POISubmission
                 residence_list={residence_list}
                 height={height ?? null}
-                is_from_external={is_from_external}
+                is_from_external={!!is_from_external}
                 identity_last_attempt={identity_last_attempt}
                 has_require_submission={has_require_submission}
                 idv={idv}
@@ -105,7 +105,7 @@ const ProofOfIdentityContainer = ({
             return (
                 <IdvContainer
                     // TODO: start deprecated
-                    is_from_external={is_from_external}
+                    is_from_external={!!is_from_external}
                     redirect_button={redirect_button}
                     // End deprecation
                     idv={idv}
@@ -119,7 +119,7 @@ const ProofOfIdentityContainer = ({
             return (
                 <Onfido
                     // TODO: start deprecated
-                    is_from_external={is_from_external}
+                    is_from_external={!!is_from_external}
                     redirect_button={redirect_button}
                     // End deprecated
                     verification_status={verification_status}

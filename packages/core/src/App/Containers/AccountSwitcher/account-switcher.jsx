@@ -713,7 +713,7 @@ const AccountSwitcher = props => {
                                                 has_balance={'balance' in account}
                                                 has_error={account.has_error}
                                                 loginid={account.display_login}
-                                                redirectAccount={() => redirectToDXTradeReal(`-${account.market_type}`)}
+                                                redirectAccount={() => redirectToDXTradeReal(account.market_type}
                                                 platform={CFD_PLATFORMS.DXTRADE}
                                             />
                                         ))}

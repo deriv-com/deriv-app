@@ -65,18 +65,12 @@ const ProofOfIdentityContainer = ({
 
     if (is_status_loading || is_switching) {
         return <Loading is_fullscreen={false} />;
-    }
-
-    if (api_error) {
-        return <ErrorMessage error_message={api_error?.message || api_error} />;
-    }
-
-    if (is_virtual) {
+    } else if (is_virtual) {
         return <DemoMessage />;
-    }
-
-    if (!should_allow_authentication) {
+    } else if (!should_allow_authentication) {
         return <NotRequired />;
+    } else if (api_error) {
+        return <ErrorMessage error_message={api_error?.message || api_error} />;
     }
 
     const verification_status = populateVerificationStatus(account_status);

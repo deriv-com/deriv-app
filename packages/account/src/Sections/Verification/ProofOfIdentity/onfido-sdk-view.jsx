@@ -75,7 +75,9 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
                                           country: onfido_country_code,
                                       }
                                     : false,
-                                national_identity_card: onfido_documents.some(doc => /National Identity Card/g.test(doc))
+                                national_identity_card: onfido_documents.some(doc =>
+                                    /National Identity Card/g.test(doc)
+                                )
                                     ? {
                                           country: onfido_country_code,
                                       }

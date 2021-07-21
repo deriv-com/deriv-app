@@ -2,17 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
+import { useHistory } from 'react-router-dom';
 import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { getErrorMessages, validPassword, validLength, WS, getCFDPlatformLabel } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
-const ResetTradingPassword = ({
-    setDialogTitleFunc,
-    toggleResetTradingPasswordModal,
-    verification_code,
-    is_dxtrade_allowed,
-    platform,
-}) => {
+const ResetTradingPassword = ({ setDialogTitleFunc, toggleResetTradingPasswordModal, verification_code, platform }) => {
     const handleSubmit = (values, actions) => {
         actions.setSubmitting(true);
 
@@ -210,13 +205,20 @@ const ResetTradingPasswordModal = ({
     is_visible,
     toggleResetTradingPasswordModal,
     verification_code,
-    is_dxtrade_allowed,
     platform,
 }) => {
     const [dialog_title, setDialogTitle] = React.useState('');
+    const history = useHistory();
+    React.useEffect(() => {
+        history.replace({
+            search: '',
+        });
+    }, [history]);
+
     const setDialogTitleFunc = is_invalid_token => {
         setDialogTitle(is_invalid_token ? localize('Reset trading password') : '');
     };
+
     return (
         <Dialog
             className='reset-trading-password__dialog'
@@ -232,7 +234,6 @@ const ResetTradingPasswordModal = ({
                 toggleResetTradingPasswordModal={toggleResetTradingPasswordModal}
                 verification_code={verification_code}
                 setDialogTitleFunc={setDialogTitleFunc}
-                is_dxtrade_allowed={is_dxtrade_allowed}
                 platform={platform}
             />
         </Dialog>
@@ -244,7 +245,6 @@ ResetTradingPasswordModal.propTypes = {
     enableApp: PropTypes.func,
     is_loading: PropTypes.bool,
     is_visible: PropTypes.bool,
-    is_dxtrade_allowed: PropTypes.bool,
     toggleResetTradingPasswordModal: PropTypes.func,
     verification_code: PropTypes.string,
     platform: PropTypes.string,

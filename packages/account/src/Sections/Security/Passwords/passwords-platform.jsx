@@ -77,7 +77,7 @@ const PasswordsPlatform = ({ email, has_set_deriv_x_trading_password, has_set_tr
                             <Button
                                 className='account__passwords-footer-btn'
                                 type='button'
-                                onClick={() => onClickSendEmail(CFD_PLATFORMS.DERIVX)}
+                                onClick={() => onClickSendEmail(CFD_PLATFORMS.DXTRADE)}
                                 text={localize('Change password')}
                                 primary
                                 large

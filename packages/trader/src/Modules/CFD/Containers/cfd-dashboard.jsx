@@ -461,7 +461,6 @@ class CFDDashboard extends React.Component {
                                 is_visible={is_reset_trading_password_modal_visible}
                                 is_loading={is_loading}
                                 verification_code={verification_code}
-                                is_dxtrade_allowed={is_dxtrade_allowed}
                             />
                         </div>
                     </div>

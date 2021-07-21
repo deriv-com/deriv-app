@@ -5,6 +5,7 @@ import ProofOfIdentityContainer from '@deriv/account';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer } from '@deriv/components';
 import { isDesktop, isMobile, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 
 class ProofOfIdentityForm extends React.PureComponent {
     state = {
@@ -86,4 +87,6 @@ ProofOfIdentityForm.propTypes = {
     value: PropTypes.object,
 };
 
-export default ProofOfIdentityForm;
+export default connect(({ client }) => ({
+    account_status: client.account_status,
+}))(ProofOfIdentityForm);

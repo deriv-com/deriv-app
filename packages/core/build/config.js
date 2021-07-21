@@ -62,7 +62,7 @@ const copyConfig = base => {
             toType: 'file',
         },
         {
-            from: path.resolve(__dirname, '../src/public/.well-known/apple-app-site-association'),
+            from: path.resolve(__dirname, '../src/public/.well-known/assetslinks.json'),
             to: '.well-known/assetslinks.json',
             toType: 'file',
         },

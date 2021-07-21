@@ -111,11 +111,12 @@ const ResetTradingPassword = ({
                                         <Localize i18n_default_text='Success' />
                                     </Text>
                                     <Text align='center' as='p' size='xs' className='reset-trading-password__subtext'>
-                                        {is_dxtrade_allowed
-                                            ? localize(
-                                                  'You have a new trading password. Use this to log in to DMT5 and Deriv X.'
-                                              )
-                                            : localize('You have a new trading password. Use this to log in to DMT5.')}
+                                        {localize(
+                                            'You have a new {{platform}} password to log in to your {{platform}} accounts on the web and mobile apps.',
+                                            {
+                                                platform: getCFDPlatformLabel(platform),
+                                            }
+                                        )}
                                     </Text>
                                     <Button
                                         type='button'

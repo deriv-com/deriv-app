@@ -301,7 +301,7 @@ export default class CFDStore extends BaseStore {
 
     @action.bound
     async submitMt5Password(values, actions) {
-        if (this.root_store.client.is_trading_password_required) {
+        if (this.root_store.client.is_mt5_password_not_set) {
             const has_error = await this.creatMT5Password(values, actions);
             if (has_error) return;
         }
@@ -350,7 +350,7 @@ export default class CFDStore extends BaseStore {
 
     @action.bound
     async submitCFDPassword(values, actions) {
-        if (this.root_store.client.is_deriv_x_trading_password_required) {
+        if (this.root_store.client.is_dxtrade_password_not_set) {
             const has_error = await this.createCFDPassword(values, actions);
             if (has_error) return;
         }

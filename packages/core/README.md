@@ -13,9 +13,6 @@ This repository contains the static HTML, Javascript, CSS, and images content of
     -   [Deploy to test folder](#deploy-to-test-folder)
 -   [Preview on your local machine](#preview-on-your-local-machine)
 -   [Miscellaneous](#miscellaneous)
--   [Release](#release)
-    -   [Staging](#staging)
-    -   [Production](#production)
 
 ## Other documents
 
@@ -81,19 +78,3 @@ npm run deploy:folder "br_my_test_folder"
 ## Miscellaneous
 
 -   In Webstorm, right-click on `src`, hover over `Mark directory as`, and click `Resource root` to enable import alias resolution.
-
-## Release
-
-### Staging
-
-_Ensure you have a remote with the name of `origin` pointing to the [deriv-app](https://github.com/binary-com/deriv-app) repository, and that you are on the `dev` branch._
-
-1. Navigate to the root of the project.
-2. Run `./scripts/release-staging.sh`
-
-### Production
-
-_Ensure you have a remote with the name of `origin` pointing to the [deriv-app](https://github.com/binary-com/deriv-app) repository, and `production` pointing to the [deriv-app-production](https://github.com/binary-com/deriv-app-production) repo, and that you are on the `master` branch._
-
-1. Navigate to root of project.
-2. Run `./scripts/release-prod.sh`

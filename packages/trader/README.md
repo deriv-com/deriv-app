@@ -14,9 +14,6 @@ This repository contains the static HTML, Javascript, CSS, and images content of
     -   [Preview on your local machine](#preview-on-your-local-machine)
 -   [Miscellaneous](#Miscellaneous)
 -   [Selenium tests](#selenium-tests)
--   [Release](#release)
-    -   [Staging](#staging)
-    -   [Production](#production)
 
 ## Other documents
 
@@ -98,19 +95,3 @@ npm run deploy:folder "br_my_test_folder"
 ## Selenium tests
 
 Elements for selenium test purposes should have `id` attributes, with the value of `dt_[element_name]_[unique_name|id]_[element_type]`. (e.g. `dt_settings_dark_button`)
-
-## Release
-
-### Staging
-
-_Ensure you have a remote with the name of `origin` pointing to the [deriv-app](https://github.com/binary-com/deriv-app) repo, and that you are on the `dev` branch._
-
-1. Navigate to the root of the project.
-2. Run `./scripts/release-staging.sh`
-
-### Production
-
-_Ensure you have a remote with the name of `origin` pointing to the [deriv-app](https://github.com/binary-com/deriv-app) repository, and `production` pointing to the [deriv-app-production](https://github.com/binary-com/deriv-app-production) repo, and that you are on the `master` branch._
-
-1. Navigate to the root of the project.
-2. Run `./scripts/release-prod.sh`

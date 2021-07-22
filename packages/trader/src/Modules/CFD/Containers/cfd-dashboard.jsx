@@ -182,7 +182,8 @@ class CFDDashboard extends React.Component {
             toggleResetTradingPasswordModal,
             enableApp,
             disableApp,
-            verification_code,
+            mt5_verification_code,
+            dxtrade_verification_code,
         } = this.props;
 
         const should_show_missing_real_account =
@@ -195,6 +196,8 @@ class CFDDashboard extends React.Component {
             platform === CFD_PLATFORMS.MT5
                 ? has_mt5_account_error
                 : has_dxtrade_account_error || dxtrade_accounts_list_error;
+
+        const verification_code = platform === CFD_PLATFORMS.MT5 ? mt5_verification_code : dxtrade_verification_code;
 
         if (is_logged_in && !landing_companies) return <Loading />;
 
@@ -544,6 +547,7 @@ export default withRouter(
         enableApp: ui.enableApp,
         is_reset_trading_password_modal_visible: ui.is_reset_trading_password_modal_visible,
         toggleResetTradingPasswordModal: ui.setResetTradingPasswordModalOpen,
-        verification_code: client.verification_code.trading_platform_password_reset,
+        mt5_verification_code: client.verification_code.trading_platform_mt5_password_reset,
+        dxtrade_verification_code: client.verification_code.trading_platform_dxtrade_password_reset,
     }))(CFDDashboard)
 );

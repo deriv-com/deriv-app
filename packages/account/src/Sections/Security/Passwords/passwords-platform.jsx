@@ -21,10 +21,14 @@ const PasswordsPlatform = ({ email, has_set_deriv_x_trading_password, has_set_tr
     };
 
     const onClickSendEmail = cfd_platform => {
-        WS.verifyEmail(email, 'trading_platform_password_reset', {
+        const password_reset_code =
+            cfd_platform === CFD_PLATFORMS.MT5
+                ? 'trading_platform_mt5_password_reset'
+                : 'trading_platform_dxtrade_password_reset';
+
+        WS.verifyEmail(email, password_reset_code, {
             url_parameters: {
                 redirect_to: 'password',
-                platform: cfd_platform,
             },
         });
         setIdenifier(cfd_platform);

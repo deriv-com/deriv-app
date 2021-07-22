@@ -534,7 +534,7 @@ const CFDPasswordModal = ({
     const should_set_trading_password =
         Array.isArray(account_status.status) &&
         account_status.status.includes(
-            platform === CFD_PLATFORMS.MT5 ? 'trading_password_required' : 'dxtrade_trading_password_required'
+            platform === CFD_PLATFORMS.MT5 ? 'mt5_password_not_set' : 'dxtrade_password_not_set'
         );
     const is_password_error = error_type === 'PasswordError';
     const is_password_reset = error_type === 'PasswordReset';
@@ -586,9 +586,14 @@ const CFDPasswordModal = ({
     const handleForgotPassword = () => {
         closeModal();
         const redirect_to = platform === CFD_PLATFORMS.MT5 ? CFD_PLATFORMS.MT5 : CFD_PLATFORMS.DERIVX;
-        WS.verifyEmail(email, 'trading_platform_password_reset', {
+
+        const password_reset_code =
+            platform === CFD_PLATFORMS.MT5
+                ? 'trading_platform_mt5_password_reset'
+                : 'trading_platform_dxtrade_password_reset';
+
+        WS.verifyEmail(email, password_reset_code, {
             url_parameters: {
-                platform,
                 redirect_to,
             },
         });

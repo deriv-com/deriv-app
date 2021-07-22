@@ -40,7 +40,8 @@ const Redirect = ({
             toggleResetPasswordModal(true);
             break;
         }
-        case 'trading_platform_password_reset': {
+        case 'trading_platform_mt5_password_reset':
+        case 'trading_platform_dxtrade_password_reset': {
             const redirect_to = url_params.get('redirect_to');
 
             if (redirect_to) {

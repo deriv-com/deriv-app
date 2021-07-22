@@ -1,5 +1,4 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import { Button, Loading } from '@deriv/components';
 import { getPlatformRedirect, WS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
@@ -7,7 +6,6 @@ import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
 import NotRequired from 'Components/poi-not-required';
 import Unsupported from 'Components/poi-unsupported';
-import { connect } from 'Stores/connect';
 import POISubmission from './proof-of-identity-submission.jsx';
 import Onfido from './onfido.jsx';
 import IdvContainer from './idv.jsx';
@@ -136,13 +134,4 @@ const ProofOfIdentityContainer = ({
     }
 };
 
-export default connect(({ client, common }) => ({
-    account_status: client.account_status,
-    app_routing_history: common.app_routing_history,
-    fetchResidenceList: client.fetchResidenceList,
-    is_switching: client.is_switching,
-    is_virtual: client.is_virtual,
-    refreshNotifications: client.refreshNotifications,
-    routeBackInApp: common.routeBackInApp,
-    should_allow_authentication: client.should_allow_authentication,
-}))(withRouter(ProofOfIdentityContainer));
+export default ProofOfIdentityContainer;

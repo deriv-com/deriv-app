@@ -1,10 +1,10 @@
 import { Formik } from 'formik';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal } from '@deriv/components';
 import { ProofOfIdentityContainer } from '@deriv/account';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 
 const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, value, ...props }) => {
     const { identity_status } = authentication_status;
@@ -27,7 +27,7 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                 poi_state: value.poi_state,
             }}
             validate={validateForm}
-            onSubmit={(values, actions) => onSubmit(index, { poi_state }, actions.setSubmitting)}
+            onSubmit={actions => onSubmit(index, { poi_state }, actions.setSubmitting)}
         >
             {({ handleSubmit }) => (
                 <AutoHeightWrapper default_height={200}>
@@ -67,17 +67,13 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
     );
 };
 
-CFDPOI.propTypes = {
-    authentication_status: PropTypes.object,
-    form_error: PropTypes.string,
-    index: PropTypes.number,
-    onCancel: PropTypes.func,
-    onSave: PropTypes.func,
-    onSubmit: PropTypes.func,
-    refreshNotifications: PropTypes.func,
-    addNotificationByKey: PropTypes.func,
-    removeNotificationMessage: PropTypes.func,
-    value: PropTypes.object,
-};
-
-export default CFDPOI;
+export default connect(({ client, common }) => ({
+    account_status: client.account_status,
+    app_routing_history: common.app_routing_history,
+    fetchResidenceList: client.fetchResidenceList,
+    is_switching: client.is_switching,
+    is_virtual: client.is_virtual,
+    refreshNotifications: client.refreshNotifications,
+    routeBackInApp: common.routeBackInApp,
+    should_allow_authentication: client.should_allow_authentication,
+}))(CFDPOI);

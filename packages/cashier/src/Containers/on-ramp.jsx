@@ -41,7 +41,10 @@ const OnRampInfo = () => (
 const OnRamp = ({
     filtered_onramp_providers,
     is_cashier_locked,
+    is_cashier_default,
+    is_loading,
     is_onramp_modal_open,
+    is_switching,
     menu_options,
     onMountOnramp,
     onUnmountOnramp,
@@ -51,8 +54,6 @@ const OnRamp = ({
     setIsOnRampModalOpen,
     should_show_dialog,
     setSideNotes,
-    is_cashier_default,
-    is_switching,
 }) => {
     const [selected_cashier_path, setSelectedCashierPath] = React.useState(routes.cashier_onramp);
 
@@ -64,7 +65,7 @@ const OnRamp = ({
 
     React.useEffect(() => {
         onMountOnramp();
-        if (typeof setSideNotes === 'function' && !is_switching) {
+        if (typeof setSideNotes === 'function' && !is_switching && !is_loading) {
             setSideNotes([<OnRampSideNote key={0} />]);
         }
 
@@ -77,7 +78,7 @@ const OnRamp = ({
             value: menu_option.path,
         }));
 
-    if (is_switching) return <Loading className='cashier-default__loader' is_fullscreen />;
+    if (is_switching || is_loading) return <Loading className='cashier-default__loader' is_fullscreen />;
 
     if (is_cashier_locked) {
         return <CashierLocked />;
@@ -136,7 +137,9 @@ const OnRamp = ({
 
 OnRamp.propTypes = {
     filtered_onramp_providers: PropTypes.array,
+    is_cashier_locked: PropTypes.bool,
     is_onramp_modal_open: PropTypes.bool,
+    is_loading: PropTypes.bool,
     menu_options: PropTypes.array,
     onMountOnramp: PropTypes.func,
     onUnmountOnramp: PropTypes.func,
@@ -146,12 +149,15 @@ OnRamp.propTypes = {
     setIsOnRampModalOpen: PropTypes.func,
     setSideNotes: PropTypes.func,
     should_show_dialog: PropTypes.bool,
-    is_cashier_locked: PropTypes.bool,
 };
 
 export default connect(({ modules, common, client }) => ({
     filtered_onramp_providers: modules.cashier.onramp.filtered_onramp_providers,
+    is_cashier_default: modules.cashier.is_cashier_default,
+    is_cashier_locked: modules.cashier.is_cashier_locked,
     is_onramp_modal_open: modules.cashier.onramp.is_onramp_modal_open,
+    is_loading: modules.cashier.is_loading,
+    is_switching: client.is_switching,
     onMountOnramp: modules.cashier.onramp.onMountOnramp,
     onUnmountOnramp: modules.cashier.onramp.onUnmountOnramp,
     onramp_popup_modal_title: modules.cashier.onramp.onramp_popup_modal_title,
@@ -159,7 +165,4 @@ export default connect(({ modules, common, client }) => ({
     routeTo: common.routeTo,
     setIsOnRampModalOpen: modules.cashier.onramp.setIsOnRampModalOpen,
     should_show_dialog: modules.cashier.onramp.should_show_dialog,
-    is_cashier_default: modules.cashier.is_cashier_default,
-    is_switching: client.is_switching,
-    is_cashier_locked: modules.cashier.is_cashier_locked,
 }))(OnRamp);

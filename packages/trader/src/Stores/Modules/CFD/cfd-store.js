@@ -309,16 +309,18 @@ export default class CFDStore extends BaseStore {
         this.resetFormErrors();
         const response = await this.openMT5Account(values);
         if (!response.error) {
-            actions.setStatus({ success: true });
-            actions.setSubmitting(false);
-            this.setError(false);
-            this.setCFDSuccessDialog(true);
             const [mt5_login_list_response, { get_account_status }] = await Promise.all([
                 WS.authorized.storage.mt5LoginList(),
                 WS.getAccountStatus(),
             ]);
             this.root_store.client.responseMt5LoginList(mt5_login_list_response);
             this.root_store.client.setAccountStatus(get_account_status);
+
+            actions.setStatus({ success: true });
+            actions.setSubmitting(false);
+            this.setError(false);
+            this.setCFDSuccessDialog(true);
+
             WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
             this.root_store.client.responseTradingServers(await WS.tradingServers());
             runInAction(() => {
@@ -357,16 +359,19 @@ export default class CFDStore extends BaseStore {
 
         const response = await this.openCFDAccount(values);
         if (!response.error) {
-            WS.tradingPlatformAccountsList(values.platform).then(
-                this.root_store.client.responseTradingPlatformAccountsList
-            );
+            const [trading_platform_accounts_list_response, { get_account_status }] = await Promise.all([
+                WS.tradingPlatformAccountsList(values.platform),
+                WS.getAccountStatus(),
+            ]);
+            this.root_store.client.responseTradingPlatformAccountsList(trading_platform_accounts_list_response);
+            this.root_store.client.setAccountStatus(get_account_status);
+
             actions.setStatus({ success: true });
             actions.setSubmitting(false);
             this.setError(false);
             this.setCFDSuccessDialog(true);
+
             WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
-            const { get_account_status } = await WS.getAccountStatus();
-            this.root_store.client.setAccountStatus(get_account_status);
             runInAction(() => {
                 this.setCFDNewAccount(response.trading_platform_new_account);
             });

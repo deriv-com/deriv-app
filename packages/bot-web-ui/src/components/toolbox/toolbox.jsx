@@ -124,7 +124,9 @@ const Toolbox = ({
                                                         className={classNames('db-toolbox__category-arrow', {
                                                             'db-toolbox__category-arrow--active': is_sub_category_open,
                                                         })}
-                                                    />
+                                                    >
+                                                        <Icon icon='IcChevronDownBold' />
+                                                    </div>
                                                 )}
                                             </div>
                                         </div>

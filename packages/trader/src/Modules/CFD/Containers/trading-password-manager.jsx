@@ -51,7 +51,7 @@ ChangePassword.propTypes = {
 
 const PasswordReset = ({ email, platform }) => {
     const onClickSendEmail = React.useCallback(() => {
-        const redirect_to = platform === CFD_PLATFORMS.MT5 ? CFD_PLATFORMS.MT5 : CFD_PLATFORMS.DERIVX;
+        const redirect_to = platform === CFD_PLATFORMS.MT5 ? 1 : 2;
         const password_reset_code =
             platform === CFD_PLATFORMS.MT5
                 ? 'trading_platform_mt5_password_reset'

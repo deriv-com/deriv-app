@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { loginUrl, routes, PlatformContext, CFD_PLATFORMS } from '@deriv/shared';
+import { loginUrl, routes, PlatformContext } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
@@ -47,13 +47,13 @@ const Redirect = ({
             if (redirect_to) {
                 let pathname = '';
                 switch (redirect_to) {
-                    case CFD_PLATFORMS.MT5:
+                    case '1':
                         pathname = routes.mt5;
                         break;
-                    case CFD_PLATFORMS.DERIVX:
+                    case '2':
                         pathname = routes.dxtrade;
                         break;
-                    case 'password':
+                    case '3':
                         pathname = routes.passwords;
                         break;
                     default:

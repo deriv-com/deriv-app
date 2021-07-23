@@ -28,7 +28,7 @@ const PasswordsPlatform = ({ email, has_set_deriv_x_trading_password, has_set_tr
 
         WS.verifyEmail(email, password_reset_code, {
             url_parameters: {
-                redirect_to: 'password',
+                redirect_to: 3,
             },
         });
         setIdenifier(cfd_platform);

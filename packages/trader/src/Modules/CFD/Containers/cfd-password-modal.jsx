@@ -585,7 +585,7 @@ const CFDPasswordModal = ({
 
     const handleForgotPassword = () => {
         closeModal();
-        const redirect_to = platform === CFD_PLATFORMS.MT5 ? CFD_PLATFORMS.MT5 : CFD_PLATFORMS.DERIVX;
+        const redirect_to = platform === CFD_PLATFORMS.MT5 ? 1 : 2;
 
         const password_reset_code =
             platform === CFD_PLATFORMS.MT5

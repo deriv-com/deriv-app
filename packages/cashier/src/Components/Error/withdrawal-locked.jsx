@@ -65,7 +65,9 @@ const WithdrawalLocked = ({ account_status, is_10K_limit, is_withdrawal_lock, is
                             : localize('Withdrawals are locked')}
                     </Text>
                     {is_withdrawal_lock ? (
-                        <p className='cashier-locked__desc'>{localize('Please check your email for more details.')}</p>
+                        <Text as='p' align='center' size='xs' className='cashier-locked__desc'>
+                            {localize('Please check your email for more details.')}
+                        </Text>
                     ) : (
                         <React.Fragment>
                             {!is_10K_limit && (

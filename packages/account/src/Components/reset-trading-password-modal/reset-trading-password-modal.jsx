@@ -210,10 +210,13 @@ const ResetTradingPasswordModal = ({
     const [dialog_title, setDialogTitle] = React.useState('');
     const history = useHistory();
     React.useEffect(() => {
-        history.replace({
-            search: '',
-        });
-    }, [history]);
+        if (is_visible) {
+            history.replace({
+                search: '',
+                hash: location.hash,
+            });
+        }
+    }, [history, is_visible]);
 
     const setDialogTitleFunc = is_invalid_token => {
         setDialogTitle(is_invalid_token ? localize('Reset trading password') : '');

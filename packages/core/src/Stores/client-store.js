@@ -175,7 +175,7 @@ export default class ClientStore extends BaseStore {
      * 4. call statement, if the length is 0
      * 5. whenever has any transaction and start showing reality check
      *
-     * three:
+     * three: (we are not exaclt sure about this, so for now let ignore it, but we keep it here to investigate it later)
      * 1. if landing company has reality check
      * 2. if balance is 0
      * 3. subscribe to transaction
@@ -204,7 +204,9 @@ export default class ClientStore extends BaseStore {
             return true;
 
         // scenario three
-        if (!this.reality_check_dismissed && balance === 0 && this.statement.count > 0) return true;
+        // we ignored this scenario because we are not sure about it. let keep
+        // it here, so that we investigate it in deep later
+        // if (!this.reality_check_dismissed && balance === 0 && this.statement.count > 0) return true;
 
         // another scenario
         if (this.has_reality_check && !this.self_exclusion.max_30day_turnover) return true;

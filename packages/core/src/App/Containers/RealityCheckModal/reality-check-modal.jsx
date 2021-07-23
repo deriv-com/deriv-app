@@ -41,22 +41,17 @@ const TradingViewIntervalField = ({ values, touched, errors, handleChange, handl
                     {...field}
                     name='interval'
                     data-lpignore='true'
-                    type='number'
+                    type='text'
                     label={localize('After … minutes of trading')} // this is regards the Figma design
                     value={values.interval}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     hint={localize('Min: 10 minutes     Max: 60 minutes')} // this is regards the Figma design
                     required
-                    error={touched.interval && errors.interval}
+                    error={(field.value || touched.interval) && errors.interval}
                     autoComplete='off'
                     maxLength='2'
                     max='60'
-                    onKeyPress={e => {
-                        if (e.target.value?.length >= 2) {
-                            e.preventDefault();
-                        }
-                    }}
                 />
             )}
         </Field>

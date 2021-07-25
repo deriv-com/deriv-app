@@ -36,9 +36,11 @@ This repository contains the various platforms of the Deriv application.
 
 Before running or contribute to this project, you need to have the setup of the following package in your environment.
 
--   node >=12.3.0
+-   node >=12.3.0 (latest lts is: 12.22.3)
 -   npm >=6.9.0
 -   git (for `contribution`)
+
+**Note**: `node -v` and `sudo node -v` should be the same version.
 
 ## Quick start
 
@@ -165,6 +167,8 @@ If you intend to remove `node_modules` folder(s) from the projects, please run `
 
 This runs `lerna clean && rm -rf $(git rev-parse --show-toplevel)/node_modules` under the hood.
 You can read more on the various lerna commands (and the [`clean` command](https://github.com/lerna/lerna/tree/master/commands/clean#readme)) over at the [Lerna docs](https://github.com/lerna/lerna/).
+
+**Note**: In case of facing permission denied error, please simply run `sudo chown -R $(whoami) .` from the root of the project.
 
 #### Examples of Script Usage
 

@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import React from 'react';
-import { action, computed, observable, toJS, reaction, when } from 'mobx';
+import { action, computed, observable, toJS, reaction, when, runInAction } from 'mobx';
 import {
     formatMoney,
     isEmptyObject,
@@ -134,6 +134,31 @@ class ConfigAccountTransfer {
     }
 }
 
+class ConfigWithdraw {
+    @observable container = 'withdraw';
+    @observable crypto_amount = '';
+    @observable fiat_amount = '';
+    @observable insufficient_fund_error = '';
+    @observable is_timer_visible = false;
+    @observable error = new ConfigError();
+    @observable verification = new ConfigVerification();
+
+    @action.bound
+    setCryptoAmount(amount) {
+        this.crypto_amount = amount;
+    }
+
+    @action.bound
+    setFiatAmount(amount) {
+        this.fiat_amount = amount;
+    }
+
+    @action.bound
+    setIsTimerVisible(is_timer_visible) {
+        this.is_timer_visible = is_timer_visible;
+    }
+}
+
 class ConfigVerification {
     is_button_clicked = false;
     timeout_button = '';
@@ -179,11 +204,7 @@ export default class CashierStore extends BaseStore {
         },
         payment_agent: new ConfigPaymentAgent(),
         payment_agent_transfer: new ConfigPaymentAgentTransfer(),
-        withdraw: {
-            ...toJS(new Config({ container: 'withdraw' })),
-            error: new ConfigError(),
-            verification: new ConfigVerification(),
-        },
+        withdraw: new ConfigWithdraw(),
     };
 
     active_container = this.config.deposit.container;
@@ -741,6 +762,44 @@ export default class CashierStore extends BaseStore {
         this.setVerificationResendTimeout(60, container);
         this.setErrorMessage('', null, null, true);
         this.root_store.client.setVerificationCode('', this.map_action[container]);
+    }
+
+    @action.bound
+    async getExchangeRate(from_currency, to_currency) {
+        const {exchange_rates} = await this.WS.send({
+            exchange_rates: 1,
+            base_currency: from_currency
+        });
+        return exchange_rates.rates[to_currency];
+    }
+
+    @action.bound
+    async onChangeCryptoAmount({target}, from_currency, to_currency) {
+        const rate = await this.getExchangeRate(from_currency, to_currency);
+        runInAction(() => {
+            const decimals = getDecimalPlaces(to_currency);
+            const amount = (rate * target.value).toFixed(decimals);
+            this.config.withdraw.setFiatAmount(amount);
+            this.config.withdraw.setIsTimerVisible(true);
+        });
+    }
+
+    @action.bound
+    async onChangeFiatAmount({target}, from_currency, to_currency) {
+        const rate = await this.getExchangeRate(from_currency, to_currency);
+        runInAction(() => {
+            const decimals = getDecimalPlaces(to_currency);
+            const amount = (rate * target.value).toFixed(decimals);
+            const balance = this.root_store.client.balance;
+            if(balance < amount) {
+                this.config.withdraw.insufficient_fund_error = 'Insufficient funds';
+                this.config.withdraw.setCryptoAmount('');
+            } else {
+                this.config.withdraw.insufficient_fund_error = '';
+                this.config.withdraw.setCryptoAmount(amount);
+                this.config.withdraw.setIsTimerVisible(true);
+            }
+        });
     }
 
     @action.bound

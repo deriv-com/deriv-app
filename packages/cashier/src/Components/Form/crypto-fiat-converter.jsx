@@ -26,7 +26,7 @@ const Timer = (props) => {
     return (
         <Text as='p' size='xs' className='timer'>
             <Localize i18n_default_text='{{remaining_time}}s'
-                values={{ remaining_time: remaining_time }}/>
+                values={{ remaining_time }}/>
         </Text>
     );
 };
@@ -118,7 +118,7 @@ const CryptoFiatConverter = ({
                                 />
                             )}
                         </Field>
-                        {arrow_icon_direction === 'right'? <Icon icon='IcArrowRightBold' /> : <Icon icon='IcArrowLeftBold' />}
+                        {arrow_icon_direction === 'right' ? <Icon icon='IcArrowRightBold' /> : <Icon icon='IcArrowLeftBold' />}
                         <Field name='fiat_amount' validate={validateFiatAmount}>
                             {({ field }) => (
                                 <InputGroup className='input-group'>
@@ -144,15 +144,15 @@ const CryptoFiatConverter = ({
                                             setFieldError('crypto_amount', '');          
                                         }}
                                         type='text'
-                                        error={(touched.fiat_amount && errors.fiat_amount) || localize(insufficient_fund_error)}
+                                        error={(touched.fiat_amount && errors.fiat_amount) || insufficient_fund_error}
                                         label={localize('Amount ({{currency}})', {currency: current_fiat_currency})}
                                         value={fiat_amount}
                                     />
                                     {is_timer_visible && <Timer onComplete={() => {
                                         onChangeCryptoAmount({
                                             target: {
-                                                value: crypto_amount
-                                            }
+                                                value: crypto_amount,
+                                            },
                                         }, crypto_currency, current_fiat_currency);
                                     }} /> }
                                 </InputGroup>

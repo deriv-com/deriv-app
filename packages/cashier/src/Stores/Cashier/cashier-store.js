@@ -768,7 +768,7 @@ export default class CashierStore extends BaseStore {
     async getExchangeRate(from_currency, to_currency) {
         const {exchange_rates} = await this.WS.send({
             exchange_rates: 1,
-            base_currency: from_currency
+            base_currency: from_currency,
         });
         return exchange_rates.rates[to_currency];
     }
@@ -792,7 +792,7 @@ export default class CashierStore extends BaseStore {
             const amount = (rate * target.value).toFixed(decimals);
             const balance = this.root_store.client.balance;
             if(balance < amount) {
-                this.config.withdraw.insufficient_fund_error = 'Insufficient funds';
+                this.config.withdraw.insufficient_fund_error = localize('Insufficient funds');
                 this.config.withdraw.setCryptoAmount('');
             } else {
                 this.config.withdraw.insufficient_fund_error = '';

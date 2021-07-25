@@ -87,7 +87,7 @@ const CryptoFiatConverter = ({
             }}
         >
                 {({ errors, values, touched, handleBlur, handleChange, setFieldError }) => (
-                    <Form className='withdraw__crypto-fiat-converter-form'>
+                    <Form className='crypto-fiat-converter-form'>
                         <Field name='crypto_amount' validate={validateCryptoAmount}>
                             {({ field }) => (
                                 <Input
@@ -184,15 +184,15 @@ CryptoFiatConverter.propTypes = {
 
 export default connect(({ client, modules }) => ({
     balance: client.balance,
-    crypto_amount: modules.cashier.config.withdraw.crypto_amount,
+    crypto_amount: modules.cashier.crypto_amount,
     crypto_currency: client.currency,
     current_fiat_currency: client.current_fiat_currency,
-    fiat_amount: modules.cashier.config.withdraw.fiat_amount,
-    insufficient_fund_error: modules.cashier.config.withdraw.insufficient_fund_error,
-    is_timer_visible: modules.cashier.config.withdraw.is_timer_visible,
+    fiat_amount: modules.cashier.fiat_amount,
+    insufficient_fund_error: modules.cashier.insufficient_fund_error,
+    is_timer_visible: modules.cashier.is_timer_visible,
     onChangeCryptoAmount: modules.cashier.onChangeCryptoAmount,
     onChangeFiatAmount: modules.cashier.onChangeFiatAmount,
-    setCryptoAmount: modules.cashier.config.withdraw.setCryptoAmount,
-    setFiatAmount: modules.cashier.config.withdraw.setFiatAmount,
-    setIsTimerVisible: modules.cashier.config.withdraw.setIsTimerVisible,
+    setCryptoAmount: modules.cashier.setCryptoAmount,
+    setFiatAmount: modules.cashier.setFiatAmount,
+    setIsTimerVisible: modules.cashier.setIsTimerVisible,
 }))(CryptoFiatConverter);

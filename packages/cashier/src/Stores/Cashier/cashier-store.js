@@ -134,31 +134,6 @@ class ConfigAccountTransfer {
     }
 }
 
-class ConfigWithdraw {
-    @observable container = 'withdraw';
-    @observable crypto_amount = '';
-    @observable fiat_amount = '';
-    @observable insufficient_fund_error = '';
-    @observable is_timer_visible = false;
-    @observable error = new ConfigError();
-    @observable verification = new ConfigVerification();
-
-    @action.bound
-    setCryptoAmount(amount) {
-        this.crypto_amount = amount;
-    }
-
-    @action.bound
-    setFiatAmount(amount) {
-        this.fiat_amount = amount;
-    }
-
-    @action.bound
-    setIsTimerVisible(is_timer_visible) {
-        this.is_timer_visible = is_timer_visible;
-    }
-}
-
 class ConfigVerification {
     is_button_clicked = false;
     timeout_button = '';
@@ -195,6 +170,10 @@ export default class CashierStore extends BaseStore {
     @observable is_10k_withdrawal_limit_reached = undefined;
     @observable is_deposit = false;
     @observable is_cashier_default = true;
+    @observable crypto_amount = '';
+    @observable fiat_amount = '';
+    @observable insufficient_fund_error = '';
+    @observable is_timer_visible = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -204,7 +183,11 @@ export default class CashierStore extends BaseStore {
         },
         payment_agent: new ConfigPaymentAgent(),
         payment_agent_transfer: new ConfigPaymentAgentTransfer(),
-        withdraw: new ConfigWithdraw(),
+        withdraw: {
+            ...toJS(new Config({ container: 'withdraw' })),
+            error: new ConfigError(),
+            verification: new ConfigVerification(),
+        },
     };
 
     active_container = this.config.deposit.container;
@@ -765,6 +748,21 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setCryptoAmount(amount) {
+        this.crypto_amount = amount;
+    }
+
+    @action.bound
+    setFiatAmount(amount) {
+        this.fiat_amount = amount;
+    }
+
+    @action.bound
+    setIsTimerVisible(is_timer_visible) {
+        this.is_timer_visible = is_timer_visible;
+    }
+
+    @action.bound
     async getExchangeRate(from_currency, to_currency) {
         const {exchange_rates} = await this.WS.send({
             exchange_rates: 1,
@@ -779,8 +777,8 @@ export default class CashierStore extends BaseStore {
         runInAction(() => {
             const decimals = getDecimalPlaces(to_currency);
             const amount = (rate * target.value).toFixed(decimals);
-            this.config.withdraw.setFiatAmount(amount);
-            this.config.withdraw.setIsTimerVisible(true);
+            this.setFiatAmount(amount);
+            this.setIsTimerVisible(true);
         });
     }
 
@@ -792,12 +790,12 @@ export default class CashierStore extends BaseStore {
             const amount = (rate * target.value).toFixed(decimals);
             const balance = this.root_store.client.balance;
             if(balance < amount) {
-                this.config.withdraw.insufficient_fund_error = localize('Insufficient funds');
-                this.config.withdraw.setCryptoAmount('');
+                this.insufficient_fund_error = localize('Insufficient funds');
+                this.setCryptoAmount('');
             } else {
-                this.config.withdraw.insufficient_fund_error = '';
-                this.config.withdraw.setCryptoAmount(amount);
-                this.config.withdraw.setIsTimerVisible(true);
+                this.insufficient_fund_error = '';
+                this.setCryptoAmount(amount);
+                this.setIsTimerVisible(true);
             }
         });
     }

@@ -2,7 +2,7 @@
 
 **A tool that will help publish hybrid Deriv packages to the NPM registry.**
 
-A hybrid package is a package that is both built as part of the Deriv App, but can also be published to the NPM registry by itself.
+A hybrid package is a package that is both built as part of Deriv App, but can also be published to the NPM registry by itself.
 
 **In this document**
 

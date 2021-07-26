@@ -291,9 +291,6 @@ export default class TradeStore extends BaseStore {
     @action.bound
     async setSymbolsAfterLogin() {
         await this.setActiveSymbols();
-        runInAction(() => {
-            this.should_refresh_active_symbols = true;
-        });
         await this.setDefaultSymbol();
     }
 
@@ -1004,9 +1001,6 @@ export default class TradeStore extends BaseStore {
             // We can call `setActiveSymbols` after setting `should_refresh_active_symbols` to true so that it utilizes `WS.wait('active_symbols')`
             // But `WS.wait` only works for the first time, when called subsequently it won't wait and will just return the first response.
             await this.setActiveSymbols();
-            runInAction(() => {
-                this.should_refresh_active_symbols = true;
-            });
             await this.setDefaultSymbol();
         }
         this.resetErrorServices();

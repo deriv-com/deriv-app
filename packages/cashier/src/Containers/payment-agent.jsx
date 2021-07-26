@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'Stores/connect';
+import CashierLocked from '../Components/Error/cashier-locked.jsx';
 import PaymentAgentList from '../Components/payment-agent-list.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
 
 const PaymentAgent = ({
     container,
+    is_cashier_locked,
     is_payment_agent_withdraw,
     is_virtual,
     setActiveTab,
@@ -23,7 +25,9 @@ const PaymentAgent = ({
     if (is_virtual) {
         return <Virtual />;
     }
-
+    if (is_cashier_locked) {
+        return <CashierLocked />;
+    }
     return (
         <PaymentAgentList verification_code={verification_code} is_payment_agent_withdraw={is_payment_agent_withdraw} />
     );
@@ -31,6 +35,7 @@ const PaymentAgent = ({
 
 PaymentAgent.propTypes = {
     container: PropTypes.string,
+    is_cashier_locked: PropTypes.bool,
     is_payment_agent_withdraw: PropTypes.bool,
     is_virtual: PropTypes.bool,
     setActiveTab: PropTypes.func,
@@ -39,6 +44,7 @@ PaymentAgent.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
+    is_cashier_locked: modules.cashier.is_cashier_locked,
     is_virtual: client.is_virtual,
     verification_code: client.verification_code.payment_agent_withdraw,
     container: modules.cashier.config.payment_agent.container,

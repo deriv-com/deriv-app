@@ -33,9 +33,9 @@ const App = ({ passthrough }) => {
 
         ApiHelpers.setInstance(app.api_helpers_store);
         const { active_symbols } = ApiHelpers.instance;
+
         setIsLoading(true);
-        active_symbols.retrieveActiveSymbols(true).then(async () => {
-            await app.root_store.ws.wait('landing_company', 'get_settings');
+        active_symbols.retrieveActiveSymbols(true).then(() => {
             setIsLoading(false);
             onMount();
         });

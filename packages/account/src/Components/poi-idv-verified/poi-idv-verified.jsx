@@ -16,7 +16,7 @@ const IdvVerified = ({ needs_poa, is_from_external }) => {
             <Text className='proof-of-identity__text btm-spacer' align='center' weight='bold'>
                 {isMobile() ? mobile_header_text : localize('Your document number has been verified')}
             </Text>
-            {needs_poa && (
+            {!!needs_poa && (
                 <React.Fragment>
                     {!isMobile() && (
                         <Text className='text' size='xs' align='center'>

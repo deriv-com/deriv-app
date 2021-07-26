@@ -4,7 +4,8 @@ import { storiesOf } from '@storybook/react';
 import Icon from 'Components/icon';
 import VerticalTab from 'Components/vertical-tab/vertical-tab';
 import 'Components/vertical-tab/vertical-tab.scss';
-import Theme from '../shared/theme';
+import Wrapper from '../shared/wrapper';
+import notes from './README.md';
 
 const TextComponent = props => (
     <div
@@ -85,29 +86,30 @@ const list = [
 
 const stories = storiesOf('Vertical Tabs', module);
 stories.addDecorator(withKnobs);
-stories.add('Basic usage', () => {
-    const [vertical_tab_index, setVerticalTabIndex] = React.useState(0);
+stories.add(
+    'Basic usage',
+    () => {
+        const [_, setVerticalTabIndex] = React.useState(0);
 
-    return (
-        <Theme is_dark={boolean('Dark theme?', false)}>
-            <div
-                style={{
-                    padding: '3.2rem',
-                    backgroundColor: 'var(--overlay-outside-dialog)',
-                }}
-            >
-                <VerticalTab
-                    header_title='Header'
-                    action_bar={action_bar_items}
-                    alignment='center'
-                    current_path='/'
-                    is_routed={false}
-                    is_full_width={boolean('Full screen?', true)}
-                    list={list}
-                    vertical_tab_index={vertical_tab_index}
-                    setVerticalTabIndex={setVerticalTabIndex}
-                />
-            </div>
-        </Theme>
-    );
-});
+        return (
+            <Wrapper is_dark={boolean('dark theme', false)}>
+                <div className='vertical-tabs-component'>
+                    <VerticalTab
+                        header_title='Header'
+                        action_bar={action_bar_items}
+                        alignment='center'
+                        current_path='/'
+                        is_routed={false}
+                        is_full_width={boolean('full screen', true)}
+                        list={list}
+                        vertical_tab_index={0}
+                        setVerticalTabIndex={setVerticalTabIndex}
+                    />
+                </div>
+            </Wrapper>
+        );
+    },
+    {
+        notes,
+    }
+);

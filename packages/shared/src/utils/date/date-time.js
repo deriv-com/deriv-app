@@ -203,7 +203,12 @@ export const getStartOfMonth = date => toMoment(date).clone().startOf('month').f
  * @param {Number} miliseconds miliseconds
  * @param {String} str_format formatting using moment e.g - YYYY-MM-DD HH:mm
  */
-export const formatMiliseconds = (miliseconds, str_format) => moment.utc(miliseconds).format(str_format);
+export const formatMilliseconds = (miliseconds, str_format, is_local_time = false) => {
+    if (is_local_time) {
+        return moment(miliseconds).format(str_format);
+    }
+    return moment.utc(miliseconds).format(str_format);
+};
 
 /**
  * returns a new date string

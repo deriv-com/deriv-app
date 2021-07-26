@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Theme from './theme.jsx';
+import './styles.scss';
 
 const Wrapper = ({ className, children, is_dark, is_block, is_full_width, has_no_padding, inner_styles }) => {
     const styles = {

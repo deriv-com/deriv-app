@@ -42,6 +42,9 @@ commands:
           keys:
             - node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
       - run:
+          name: "Install lerna"
+          command: sudo npm install -g lerna
+      - run:
           name: "Install npm packages"
           command: |
             npm run bootstrap
@@ -89,9 +92,6 @@ commands:
   build_storybook:
     description: "Build storybook"
     steps:
-      - run:
-          name: "Bootstrap for deriv storybook"
-          command: npm run bootstrap
       - run:
           name: "Build all packages for deriv storybook"
           command: npm run build:storybook

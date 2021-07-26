@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { CFD_PLATFORMS } from '@deriv/shared';
+import { CFD_PLATFORMS, isLandingCompanyEnabled } from '@deriv/shared';
 import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card.jsx';
 import { general_messages } from '../Constants/cfd-shared-strings';
@@ -56,7 +56,7 @@ const CFDDemoAccountDisplay = ({
         </div>
     ) : (
         <div className='cfd-demo-accounts-display'>
-            {(landing_companies?.mt_gaming_company?.financial || !is_logged_in) && (
+            {(isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) || !is_logged_in) && (
                 <CFDAccountCard
                     has_cfd_account={has_cfd_account}
                     title={localize('Synthetic')}
@@ -100,7 +100,12 @@ const CFDDemoAccountDisplay = ({
                 />
             )}
 
-            {(landing_companies?.mt_financial_company?.financial || !is_logged_in) && (
+            {(isLandingCompanyEnabled({
+                landing_companies,
+                platform,
+                type: 'financial',
+            }) ||
+                !is_logged_in) && (
                 <CFDAccountCard
                     has_cfd_account={has_cfd_account}
                     title={localize('Financial')}
@@ -131,7 +136,7 @@ const CFDDemoAccountDisplay = ({
                         )
                     }
                     platform={platform}
-                    descriptor={general_messages.getFinancialAccountDescriptor(platform)}
+                    descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu)}
                     specs={financial_specs}
                     has_banner
                 />

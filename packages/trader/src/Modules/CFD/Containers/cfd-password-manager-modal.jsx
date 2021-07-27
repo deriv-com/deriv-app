@@ -473,6 +473,7 @@ const CFDPasswordManagerModal = ({
                     toggleModal={toggleModal}
                     height='688px'
                     width='904px'
+                    should_header_stick_body={false}
                 >
                     <CFDPasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
                 </Modal>

@@ -47,23 +47,24 @@ const SpecBox = ({ value, is_bold }) => (
 
 const PasswordBox = ({ platform, onClick }) => (
     <div className='cfd-account-card__password-box'>
-        <Text size='xs' className='cfd-account-card__password-text'>
-            •••••••••••••••
-        </Text>
-        <Popover
-            alignment='right'
-            message={localize(
-                'Use these credentials to log in to your {{platform}} account on the website and mobile apps.',
-                {
-                    platform: getCFDPlatformLabel(platform),
-                }
-            )}
-            classNameBubble='cfd-account-card__password-tooltip'
-        >
-            <Button className='cfd-account-card__password-action' tertiary onClick={onClick}>
-                {localize('Change')}
-            </Button>
-        </Popover>
+        <div className='cfd-account-card__password-text'>
+            <Popover
+                alignment='right'
+                message={localize(
+                    'Use these credentials to log in to your {{platform}} account on the website and mobile apps.',
+                    {
+                        platform: getCFDPlatformLabel(platform),
+                    }
+                )}
+                classNameBubble='cfd-account-card__password-tooltip'
+                margin={35}
+            >
+                <Text size='xs'>•••••••••••••••</Text>
+            </Popover>
+        </div>
+        <Button className='cfd-account-card__password-action' tertiary onClick={onClick}>
+            {localize('Change')}
+        </Button>
     </div>
 );
 

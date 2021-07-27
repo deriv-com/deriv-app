@@ -62,7 +62,9 @@ const DocumentsUpload = ({ initial_values, data, goToCards, onSubmit }) => {
             >
                 {({ values, isValid, touched }) => {
                     const is_form_touched = Object.keys(touched).length > 0;
-                    const is_form_empty = Object.values(values).some(field => field === null || field === '');
+                    const is_form_empty = Object.values(values).some(
+                        (field, key) => (field === null || field === '') && fields[key]?.required
+                    );
 
                     return (
                         <Form className={`${ROOT_CLASS}__form`}>

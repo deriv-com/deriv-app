@@ -707,6 +707,30 @@
     }
 }
 
+.crypto-fiat-converter-form {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-gap: 0.8rem;
+    align-items: center;
+
+    .dc-input {
+        margin-bottom: 0;
+    }
+    .input-group {
+        display: flex;
+        .timer {
+            margin-top: 1rem;
+            margin-left: -4rem;
+            color: var(--text-less-prominent);
+        }
+    }
+    .dc-text {
+        grid-column: 3;
+        margin-left: 1rem;
+        color: var(--text-less-prominent);
+    }
+}
+
 /** @define payment-agent; weak */
 .payment-agent {
     &__instructions {

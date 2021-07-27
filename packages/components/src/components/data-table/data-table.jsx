@@ -13,15 +13,12 @@ import ThemedScrollbars from '../themed-scrollbars';
 */
 
 class DataTable extends React.PureComponent {
+    cache = React.createRef();
+    is_dynamic_height = !this.props.getRowSize;
     state = {
         scrollTop: 0,
         is_loading: true,
     };
-    constructor(props) {
-        super(props);
-        this.cache = React.createRef();
-        this.is_dynamic_height = !this.props.getRowSize;
-    }
 
     componentDidMount() {
         if (this.is_dynamic_height) {

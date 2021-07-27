@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
-import { isMobile, mobileOSDetect, CFD_PLATFORMS } from '@deriv/shared';
+import { isMobile, mobileOSDetect, getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { CFDAccountCopy } from './cfd-account-copy.jsx';
 import { getDXTradeWebTerminalLink, getMT5WebTerminalLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
@@ -45,7 +45,7 @@ const SpecBox = ({ value, is_bold }) => (
     </div>
 );
 
-const PasswordBox = ({ onClick }) => (
+const PasswordBox = ({ platform, onClick }) => (
     <div className='cfd-account-card__password-box'>
         <Text size='xs' className='cfd-account-card__password-text'>
             •••••••••••••••
@@ -53,7 +53,10 @@ const PasswordBox = ({ onClick }) => (
         <Popover
             alignment='right'
             message={localize(
-                'Use these credentials to log in to your Deriv X account on the website and mobile apps.'
+                'Use these credentials to log in to your {{platform}} account on the website and mobile apps.',
+                {
+                    platform: getCFDPlatformLabel(platform),
+                }
             )}
             classNameBubble='cfd-account-card__password-tooltip'
         >
@@ -336,6 +339,7 @@ const CFDAccountCard = ({
                                                 <td className='cfd-account-card__login-specs-table-data'>
                                                     <div className='cfd-account-card--paragraph'>
                                                         <PasswordBox
+                                                            platform={platform}
                                                             onClick={() => {
                                                                 onPasswordManager(
                                                                     existing_data.login,

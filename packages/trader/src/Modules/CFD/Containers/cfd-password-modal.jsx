@@ -86,7 +86,7 @@ const getSubmitText = (type, category, platform) => {
     if (category === 'real') {
         return (
             <Localize
-                i18n_default_text='You have created a <0>{{platform}}</0> {{category}} <1>{{type}}</1> account. To start trading, transfer funds from your Deriv account into this account.'
+                i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account. To start trading, transfer funds from your Deriv account into this account.'
                 values={{
                     type: type_label,
                     platform: getCFDPlatformLabel(platform),
@@ -99,7 +99,7 @@ const getSubmitText = (type, category, platform) => {
 
     return (
         <Localize
-            i18n_default_text='You have created a <0>{{platform}}</0> {{category}} <1>{{type}}</1> account.'
+            i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account.'
             values={{
                 type: type_label,
                 platform: getCFDPlatformLabel(platform),
@@ -217,12 +217,12 @@ const CreatePassword = ({ password, platform, validatePassword, onSubmit, error_
     );
 };
 
-const CFDCreatePasswordForm = ({ platform, error_message, validatePassword, submitPassword }) => {
+const CFDCreatePasswordForm = ({ has_mt5_account, platform, error_message, validatePassword, submitPassword }) => {
     const multi_step_ref = React.useRef();
     const [password, setPassword] = React.useState('');
 
     const onSubmit = (values, actions) => {
-        if (platform === CFD_PLATFORMS.MT5) {
+        if (platform === CFD_PLATFORMS.MT5 && has_mt5_account) {
             setPassword(values.password);
             multi_step_ref.current?.goNextStep();
         } else {
@@ -319,6 +319,7 @@ const CFDPasswordForm = props => {
                 error_message={props.error_message}
                 validatePassword={props.validatePassword}
                 submitPassword={props.submitPassword}
+                has_mt5_account={props.has_mt5_account}
             />
         );
     }
@@ -329,9 +330,10 @@ const CFDPasswordForm = props => {
                 password: '',
             }}
             enableReinitialize
+            validate={props.validatePassword}
             onSubmit={props.submitPassword}
         >
-            {({ isSubmitting, handleBlur, handleChange, handleSubmit, values, setFieldTouched }) => (
+            {({ errors, isSubmitting, handleBlur, handleChange, handleSubmit, setFieldTouched, touched, values }) => (
                 <form onSubmit={handleSubmit}>
                     <div className='cfd-password-modal__content dc-modal__container_cfd-password-modal__body'>
                         {!props.should_set_trading_password && (
@@ -351,7 +353,10 @@ const CFDPasswordForm = props => {
                                 label={localize('{{platform}} password', {
                                     platform: getCFDPlatformLabel(props.platform),
                                 })}
-                                error={values.password.length === 0 ? props.error_message : ''}
+                                error={
+                                    (touched.password && errors.password) ||
+                                    (values.password.length === 0 ? props.error_message : '')
+                                }
                                 name='password'
                                 value={values.password}
                                 onBlur={handleBlur}

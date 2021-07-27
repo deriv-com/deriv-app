@@ -259,6 +259,7 @@ const CFDPasswordManagerTabContent = ({
     setPasswordType,
     multi_step_ref,
     platform,
+    onChangeActiveTabIndex,
 }) => {
     const [active_tab_index, setActiveTabIndex] = React.useState(0);
     const [error_message_investor, setErrorMessageInvestor] = React.useState('');
@@ -318,6 +319,7 @@ const CFDPasswordManagerTabContent = ({
 
     const updateAccountTabIndex = index => {
         setActiveTabIndex(index);
+        onChangeActiveTabIndex(index);
         setErrorMessageInvestor('');
         setSubmitSuccessInvestor(false);
     };
@@ -341,7 +343,13 @@ const CFDPasswordManagerTabContent = ({
 
     return (
         <Tabs active_index={active_tab_index} onTabItemClick={updateAccountTabIndex} top>
-            <div label={localize('Trading password')}>{trading_password_manager}</div>
+            <div
+                label={localize('{{platform}} password', {
+                    platform: getCFDPlatformLabel(platform),
+                })}
+            >
+                {trading_password_manager}
+            </div>
             <div label={localize('Investor password')}>
                 <DesktopWrapper>
                     <ThemedScrollbars height={password_container_height}>
@@ -389,10 +397,41 @@ const CFDPasswordManagerModal = ({
     sendVerifyEmail,
 }) => {
     const multi_step_ref = React.useRef();
+    const [index, setIndex] = React.useState(0);
 
     const [password_type, setPasswordType] = React.useState('main');
 
     if (!selected_login) return null;
+
+    const getTitle = i => {
+        if (i === 0) {
+            return localize('Manage {{platform}} password', {
+                platform: getCFDPlatformLabel(platform),
+            });
+        }
+        return selected_account_group === 'real'
+            ? localize('Manage {{platform}} Real {{account_title}} account password', {
+                  platform: getCFDPlatformLabel(platform),
+                  account_title: selected_account,
+              })
+            : localize('Manage {{platform}} Demo {{account_title}} account password', {
+                  platform: getCFDPlatformLabel(platform),
+                  account_title: selected_account,
+              });
+    };
+
+    const getHeader = i => {
+        if (i === 0) {
+            return localize('Manage {{platform}} password', {
+                platform: getCFDPlatformLabel(platform),
+            });
+        }
+        return localize('Manage password');
+    };
+
+    const onChangeActiveTabIndex = i => {
+        setIndex(i);
+    };
 
     const steps = [
         {
@@ -405,6 +444,7 @@ const CFDPasswordManagerModal = ({
                     setPasswordType={setPasswordType}
                     multi_step_ref={multi_step_ref}
                     platform={platform}
+                    onChangeActiveTabIndex={onChangeActiveTabIndex}
                 />
             ),
         },
@@ -429,17 +469,7 @@ const CFDPasswordManagerModal = ({
                     disableApp={disableApp}
                     enableApp={enableApp}
                     is_open={is_visible}
-                    title={
-                        selected_account_group === 'real'
-                            ? localize('Manage {{platform}} Real {{account_title}} account password', {
-                                  platform: getCFDPlatformLabel(platform),
-                                  account_title: selected_account,
-                              })
-                            : localize('Manage {{platform}} Demo {{account_title}} account password', {
-                                  platform: getCFDPlatformLabel(platform),
-                                  account_title: selected_account,
-                              })
-                    }
+                    title={getTitle(index)}
                     toggleModal={toggleModal}
                     height='688px'
                     width='904px'
@@ -451,7 +481,7 @@ const CFDPasswordManagerModal = ({
                 <PageOverlay
                     is_open={is_visible}
                     portal_id='deriv_app'
-                    header={localize('Manage password')}
+                    header={getHeader(index)}
                     onClickClose={toggleModal}
                 >
                     <CFDPasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />

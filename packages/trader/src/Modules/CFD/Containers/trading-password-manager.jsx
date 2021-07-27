@@ -71,6 +71,7 @@ const PasswordReset = ({ email, platform }) => {
     return (
         <SendEmailTemplate
             className='sent-email'
+            title={localize(`We've sent you an email`)}
             subtitle={localize('Please click on the link in the email to change your {{platform}} password.', {
                 platform: getCFDPlatformLabel(platform),
             })}
@@ -96,6 +97,7 @@ const TradingPasswordManager = ({ platform, email }) => {
         {
             component: (
                 <ChangePasswordConfirmation
+                    confirm_label={localize('Confirm')}
                     platform={platform}
                     onConfirm={() => multi_step_ref.current?.goNextStep()}
                     onCancel={() => multi_step_ref.current?.goPrevStep()}

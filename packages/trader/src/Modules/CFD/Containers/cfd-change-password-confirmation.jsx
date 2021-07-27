@@ -6,7 +6,7 @@ import { Text, Icon, FormSubmitButton } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { CFD_PLATFORMS, getCFDPlatformLabel } from '@deriv/shared';
 
-const ChangePasswordConfirmation = ({ className, platform, onConfirm, onCancel }) => (
+const ChangePasswordConfirmation = ({ confirm_label, className, platform, onConfirm, onCancel }) => (
     <Formik initialValues={{}} onSubmit={onConfirm}>
         {({ isSubmitting, handleSubmit }) => (
             <form onSubmit={handleSubmit}>
@@ -46,7 +46,7 @@ const ChangePasswordConfirmation = ({ className, platform, onConfirm, onCancel }
                         </Text>
                         <FormSubmitButton
                             is_center={true}
-                            label={localize('Confirm')}
+                            label={confirm_label || localize('Create')}
                             cancel_label={localize('Cancel')}
                             is_loading={isSubmitting}
                             has_cancel={true}
@@ -60,6 +60,7 @@ const ChangePasswordConfirmation = ({ className, platform, onConfirm, onCancel }
 );
 
 ChangePasswordConfirmation.propTypes = {
+    confirm_label: PropTypes.string,
     onConfirm: PropTypes.func,
     onCancel: PropTypes.func,
     platform: PropTypes.string,

@@ -72,6 +72,7 @@ const RealityCheckModal = ({
     setVisibilityRealityCheck,
     setSpendingLimitTradingStatistics,
     self_exclusion,
+    balance,
 }) => {
     const history = useHistory();
 
@@ -126,6 +127,7 @@ const RealityCheckModal = ({
     };
 
     const is_enable_max30day_turnover = !self_exclusion.max_30day_turnover;
+    const has_balance = parseInt(balance) !== 0;
 
     // if user previously did not set max_30day_turnover,
     // we force him/her here to fill this field
@@ -168,7 +170,7 @@ const RealityCheckModal = ({
     // we are going to show the BriefModal in a case that user
     // did not fill it previously, but if user filled it previously
     // we just show SummaryModal
-    if (!is_enable_max30day_turnover) {
+    if (!is_enable_max30day_turnover && has_balance) {
         return (
             <BriefModal
                 disableApp={disableApp}
@@ -203,6 +205,7 @@ export default connect(({ client, common, ui }) => ({
     currency: client.currency,
     logoutClient: client.logout,
     is_visible: client.is_reality_check_visible,
+    balance: client.balance,
     reality_check_dismissed: client.reality_check_dismissed,
     reality_check_duration: client.reality_check_duration,
     setRealityCheckDuration: client.setRealityCheckDuration,

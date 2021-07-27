@@ -29,7 +29,7 @@ const DummyComponent = (props) => (
 | bottom                   | {boolean}              | null               | Set it to 'true' to have the navigation on bottom                                                                        |
 | center                   | {boolean}              | null               | Set it to 'true' to have the centered tabs                                                                               |
 | fit_content              | {boolean}              | null               | Set it to 'true' to have fixed tabs by '150px' width                                                                     |
-| single_tab_has_no_label  | {boolean}              | null               | Set it to 'true' to remove tabs when there is only one tab                                                               |
+| single\_tab\_has\_no\_label  | {boolean}              | null               | Set it to 'true' to remove tabs when there is only one tab                                                               |
 
 
 ## Full example:

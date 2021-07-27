@@ -244,7 +244,7 @@ const CFDPasswordForm = props => {
                         <div className='input-element'>
                             <PasswordMeter
                                 input={values.password}
-                                has_error={!!(touched.password && errors.password) || !!props.error_message}
+                                has_error={!!(touched.password && errors.password)}
                                 custom_feedback_messages={getErrorMessages().password_warnings}
                             >
                                 {() => (
@@ -307,6 +307,30 @@ const CFDPasswordForm = props => {
     );
 };
 
+const CFDServerModalWarning = ({ show_warning = true, platform }) => {
+    if (!show_warning) return null;
+    return (
+        <div className='cfd-password-modal__warning'>
+            <Text
+                as='p'
+                className='cfd-password-modal__warning-text'
+                lineHeight='l'
+                size='xxs'
+                color='prominent'
+                weight='normal'
+                align='center'
+            >
+                <Localize
+                    i18n_default_text='Due to an issue on our server, some of your {{platform}} accounts are unavailable at the moment. Please bear with us and thank you for your patience.'
+                    values={{
+                        platform: platform === CFD_PLATFORMS.MT5 ? 'DMT5' : 'Deriv X',
+                    }}
+                />
+            </Text>
+        </div>
+    );
+};
+
 const CFDServerForm = ({ ...props }) => {
     const available_servers = React.useMemo(() => {
         return [...props.trading_servers]
@@ -328,53 +352,56 @@ const CFDServerForm = ({ ...props }) => {
     }, [props.trading_servers]);
 
     return (
-        <Formik
-            initialValues={{
-                server: props.trading_servers.find(server => !server.disabled)?.id ?? '',
-            }}
-            validate={props.validateServer}
-            onSubmit={values => props.submitMt5Server(values.server)}
-        >
-            {({ handleSubmit, setFieldValue, errors, values, isSubmitting }) => (
-                <form onSubmit={handleSubmit}>
-                    <div className='cfd-password-modal__content'>
-                        <div className='dc-modal__container_cfd-password-modal__body'>
-                            <div className='input-element'>
-                                <RadioGroup
-                                    className='cfd-password-modal__radio'
-                                    name='server'
-                                    required
-                                    selected={props.trading_servers.find(server => !server.disabled)?.id}
-                                    onToggle={e => {
-                                        e.persist();
-                                        setFieldValue('server', e.target.value);
-                                    }}
-                                >
-                                    {available_servers.map(item => (
-                                        <RadioGroup.Item
-                                            key={item.value}
-                                            label={item.label}
-                                            value={item.value}
-                                            disabled={item.disabled}
-                                        />
-                                    ))}
-                                </RadioGroup>
+        <React.Fragment>
+            <CFDServerModalWarning platform={props.platform} show_warning={props.has_error} />
+            <Formik
+                initialValues={{
+                    server: props.trading_servers.find(server => !server.disabled)?.id ?? '',
+                }}
+                validate={props.validateServer}
+                onSubmit={values => props.submitMt5Server(values.server)}
+            >
+                {({ handleSubmit, setFieldValue, errors, values, isSubmitting }) => (
+                    <form onSubmit={handleSubmit}>
+                        <div className='cfd-password-modal__content'>
+                            <div className='dc-modal__container_cfd-password-modal__body'>
+                                <div className='input-element'>
+                                    <RadioGroup
+                                        className='cfd-password-modal__radio'
+                                        name='server'
+                                        required
+                                        selected={props.trading_servers.find(server => !server.disabled)?.id}
+                                        onToggle={e => {
+                                            e.persist();
+                                            setFieldValue('server', e.target.value);
+                                        }}
+                                    >
+                                        {available_servers.map(item => (
+                                            <RadioGroup.Item
+                                                key={item.value}
+                                                label={item.label}
+                                                value={item.value}
+                                                disabled={item.disabled}
+                                            />
+                                        ))}
+                                    </RadioGroup>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <FormSubmitButton
-                        is_disabled={isSubmitting || !values.server || Object.keys(errors).length > 0}
-                        has_cancel
-                        cancel_label={localize('Cancel')}
-                        onCancel={props.closeModal}
-                        is_absolute={isMobile()}
-                        is_loading={isSubmitting}
-                        label={localize('Next')}
-                        form_error={props.form_error}
-                    />
-                </form>
-            )}
-        </Formik>
+                        <FormSubmitButton
+                            is_disabled={isSubmitting || !values.server || Object.keys(errors).length > 0}
+                            has_cancel
+                            cancel_label={localize('Cancel')}
+                            onCancel={props.closeModal}
+                            is_absolute={isMobile()}
+                            is_loading={isSubmitting}
+                            label={localize('Next')}
+                            form_error={props.form_error}
+                        />
+                    </form>
+                )}
+            </Formik>
+        </React.Fragment>
     );
 };
 
@@ -396,6 +423,7 @@ const CFDPasswordModal = ({
     is_dxtrade_allowed,
     platform,
     has_cfd_error,
+    has_suspended_account,
     landing_companies,
     mt5_login_list,
     cfd_new_account,
@@ -539,6 +567,8 @@ const CFDPasswordModal = ({
             account_title={account_title}
             closeModal={closeModal}
             submitMt5Server={setServer}
+            platform={platform}
+            has_error={has_suspended_account}
         />
     );
 

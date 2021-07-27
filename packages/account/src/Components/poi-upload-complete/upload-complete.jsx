@@ -9,12 +9,12 @@ import IconMessageContent from 'Components/icon-message-content';
 
 export const UploadComplete = ({ needs_poa, is_description_enabled, redirect_button }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
-    const message = localize('Your proof of identity was submitted successfully');
+    const message = localize("We've received your proof of identity.");
     if (!needs_poa) {
         return (
             <IconMessageContent
                 message={message}
-                text={localize('Your document is being reviewed, please check back in 1-3 days.')}
+                text={localize('We’ll review your document and notify you of its status within 1 to 3 days.')}
                 icon={
                     is_dashboard ? (
                         <Icon icon='IcPoiVerifiedDashboard' width={273} height={128} />

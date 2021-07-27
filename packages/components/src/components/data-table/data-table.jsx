@@ -29,7 +29,7 @@ class DataTable extends React.PureComponent {
                 fixedWidth: true,
                 keyMapper: row_index => {
                     if (row_index < this.props.data_source.length)
-                        return this.props.keyMapper?.(data_source[row_index]) || row_index;
+                        return this.props.keyMapper?.(this.props.data_source[row_index]) || row_index;
                     return row_index;
                 },
             });

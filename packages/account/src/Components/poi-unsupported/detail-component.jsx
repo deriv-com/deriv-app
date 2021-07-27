@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Loading, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { WS } from '@deriv/shared';
-import Submitted from 'Components/poa-submitted';
+import UploadComplete from 'Components/poi-upload-complete';
 import PoiUnsupportedFailed from 'Components/poi-unsupported-failed';
 import uploadFile from 'Components/file-uploader-container/upload-file';
 import Onfido from 'Sections/Verification/ProofOfIdentity/onfido.jsx';
@@ -87,7 +87,7 @@ const DetailComponent = ({
         case STATUS.IS_UPLOADING:
             return <Loading is_fullscreen={false} is_slow_loading status={[localize('Uploading documents')]} />;
         case STATUS.IS_COMPLETED:
-            return <Submitted />;
+            return <UploadComplete />;
         case STATUS.IS_FAILED:
             return <PoiUnsupportedFailed error={response_error} />;
         default:

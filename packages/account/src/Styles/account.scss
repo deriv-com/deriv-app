@@ -1359,9 +1359,10 @@ $MIN_HEIGHT_FLOATING: calc(
         padding: 0;
         column-gap: 42px;
         text-align: left;
+        align-items: center;
 
         .table__cell {
-            height: 56px;
+            min-height: 5.6rem;
 
             .name {
                 &__content {

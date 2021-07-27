@@ -3,8 +3,29 @@ import PropTypes from 'prop-types';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
+const PercentageBlock = ({ calculateAmount, percentage_number }) => {
+    return (
+        <div className='percentage-selector__block-container'>
+            <Text color='prominent' size='xs'>
+                {`${percentage_number.value}%`}
+            </Text>
+            <div
+                id={percentage_number.id}
+                className='percentage-selector-block'
+                onClick={e => calculateAmount(e, percentage_number.value)}
+            />
+        </div>
+    );
+};
+
 const PercentageSelector = ({ amount, currency, getCalculatedAmount }) => {
-    const [percentage, setPercentage] = React.useState('0');
+    const [percentage, setPercentage] = React.useState(0);
+    const percentage_numbers = [
+        { id: 1, value: 25 },
+        { id: 2, value: 50 },
+        { id: 3, value: 75 },
+        { id: 4, value: 100 },
+    ];
 
     const calculateAmount = (e, percent) => {
         setPercentage(percent);
@@ -16,39 +37,30 @@ const PercentageSelector = ({ amount, currency, getCalculatedAmount }) => {
                 document.getElementById(i).style.backgroundColor = '#f2f3f4';
             }
         }
-        getCalculatedAmount(amount * (percentage / 100));
+
+        if (typeof getCalculatedAmount === 'function') {
+            getCalculatedAmount(amount * (percentage / 100));
+        }
     };
 
     return (
         <React.Fragment>
             <div className='percentage-selector'>
-                <div className='percentage-selector__block-container'>
-                    <Text color='prominent' size='xs'>
-                        {'25%'}
-                    </Text>
-                    <div id='1' className='percentage-selector-block' onClick={e => calculateAmount(e, 25)} />
-                </div>
-                <div className='percentage-selector__block-container'>
-                    <Text color='prominent' size='xs'>
-                        {'50%'}
-                    </Text>
-                    <div id='2' className='percentage-selector-block' onClick={e => calculateAmount(e, 50)} />
-                </div>
-                <div className='percentage-selector__block-container'>
-                    <Text color='prominent' size='xs'>
-                        {'75%'}
-                    </Text>
-                    <div id='3' className='percentage-selector-block' onClick={e => calculateAmount(e, 75)} />
-                </div>
-                <div className='percentage-selector__block-container'>
-                    <Text color='prominent' size='xs'>
-                        <Localize i18n_default_text='All' />
-                    </Text>
-                    <div id='4' className='percentage-selector-block' onClick={e => calculateAmount(e, 100)} />
-                </div>
+                {percentage_numbers.map(percentage_number => {
+                    return (
+                        <PercentageBlock
+                            key={percentage_number.id}
+                            calculateAmount={calculateAmount}
+                            percentage_number={percentage_number}
+                        />
+                    );
+                })}
             </div>
             <Text color='less-prominent' size='s'>
-                <Localize i18n_default_text={`${percentage}% of available balance (${amount} ${currency})`} />
+                <Localize
+                    i18n_default_text='{{percentage}}% of available balance ({{amount}} {{currency}})'
+                    values={{ percentage, amount, currency }}
+                />
             </Text>
         </React.Fragment>
     );

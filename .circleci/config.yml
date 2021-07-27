@@ -43,7 +43,7 @@ commands:
             - node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
       - run:
           name: "Install lerna"
-          command: sudo npm install -g lerna
+          command: sudo npm install -g lerna@^3.22.0
       - run:
           name: "Install npm packages"
           command: |

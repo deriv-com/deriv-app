@@ -134,8 +134,11 @@ const AccountSwitcher = props => {
         }
     };
 
-    const redirectToMt5Real = market_type => {
-        redirectToMt5(`real-${market_type}`);
+    const redirectToMt5Real = async (market_type, server) => {
+        const synthetic_server = server?.server_info?.geolocation.region;
+        const has_synthetic_server = market_type === 'synthetic' ? `-${synthetic_server.toLowerCase()}` : '';
+        const hash_id = `-${market_type}${has_synthetic_server}`;
+        await redirectToMt5(`real${market_type ? hash_id : ''}`);
     };
 
     // TODO: Uncomment when real account is launched
@@ -160,11 +163,13 @@ const AccountSwitcher = props => {
     // };
 
     const redirectToMt5Demo = market_type => {
-        redirectToMt5(`demo-${market_type}`);
+        const hash_id = market_type ? `-${market_type}` : '';
+        redirectToMt5(`demo${hash_id}`);
     };
 
     const redirectToDXTradeDemo = market_type => {
-        redirectToDXTrade(`demo-${market_type}`);
+        const hash_id = market_type ? `-${market_type}` : '';
+        redirectToDXTrade(`demo${hash_id}`);
     };
 
     const setAccountCurrency = () => {
@@ -641,7 +646,12 @@ const AccountSwitcher = props => {
                                                 has_balance={'balance' in account}
                                                 has_error={account.has_error}
                                                 loginid={account.display_login}
-                                                redirectAccount={() => redirectToMt5Real(account.market_type)}
+                                                redirectAccount={() => {
+                                                    redirectToMt5Real(
+                                                        account.market_type,
+                                                        findServerForAccount(account)
+                                                    );
+                                                }}
                                                 server={findServerForAccount(account)}
                                                 platform={CFD_PLATFORMS.MT5}
                                             />

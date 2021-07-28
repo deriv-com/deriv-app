@@ -191,8 +191,9 @@ const CFDAccountCard = ({
 
     const getServerName = React.useCallback(
         server => {
-            if (server) {
-                return `${server.server_info.geolocation.region} ${
+            const server_region = server?.server_info?.geolocation.region;
+            if (server_region) {
+                return `${server_region} ${
                     server.server_info.geolocation.sequence === 1 ? '' : server.server_info.geolocation.sequence
                 }`;
             }
@@ -217,12 +218,15 @@ const CFDAccountCard = ({
 
     const is_web_terminal_unsupported = isMobile() && platform === CFD_PLATFORMS.DXTRADE;
 
+    const current_synthetic_server = getServerName(existing_data).toLowerCase();
+    const is_synthetic_real = type.type === 'synthetic' && type.category === 'real' && type.platform === 'mt5';
+    const synthetic_server_id = (is_synthetic_real ? `-${current_synthetic_server}` : '').trim();
     return (
         <div ref={wrapper_ref} className='cfd-account-card__wrapper'>
             <div
                 className={classNames('cfd-account-card', { 'cfd-account-card__logged-out': !is_logged_in })}
                 ref={ref}
-                id={`${type.category}-${type.type}`}
+                id={`${type.category}-${type.type}${synthetic_server_id}`}
             >
                 {has_popular_banner && (
                     <div className='cfd-account-card__banner'>

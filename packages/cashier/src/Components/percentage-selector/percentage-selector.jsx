@@ -48,7 +48,10 @@ const PercentageSelector = ({ amount, currency, getCalculatedAmount }) => {
                 </div>
             </div>
             <Text color='less-prominent' size='s'>
-                <Localize i18n_default_text={`${percentage}% of available balance (${amount} ${currency})`} />
+                <Localize
+                    i18n_default_text={`{{percentage}}% of available balance ({{amount}} {{currency}})`}
+                    values={{ percentage, amount, currency }}
+                />
             </Text>
         </React.Fragment>
     );

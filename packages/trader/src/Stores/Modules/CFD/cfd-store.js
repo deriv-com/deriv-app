@@ -296,9 +296,6 @@ export default class CFDStore extends BaseStore {
             actions.setStatus({ success: false });
             return true;
         }
-        const { get_account_status } = await WS.getAccountStatus();
-        this.root_store.client.setAccountStatus(get_account_status);
-
         return false;
     }
 
@@ -331,6 +328,8 @@ export default class CFDStore extends BaseStore {
             actions.setSubmitting(false);
             actions.setStatus({ success: false });
         }
+        const { get_account_status } = await WS.getAccountStatus();
+        this.root_store.client.setAccountStatus(get_account_status);
     }
 
     @action.bound
@@ -346,8 +345,6 @@ export default class CFDStore extends BaseStore {
             actions.setStatus({ success: false });
             return true;
         }
-        const { get_account_status } = await WS.getAccountStatus();
-        this.root_store.client.setAccountStatus(get_account_status);
 
         return false;
     }
@@ -379,6 +376,8 @@ export default class CFDStore extends BaseStore {
             actions.setSubmitting(false);
             actions.setStatus({ success: false });
         }
+        const { get_account_status } = await WS.getAccountStatus();
+        this.root_store.client.setAccountStatus(get_account_status);
     }
 
     @action.bound

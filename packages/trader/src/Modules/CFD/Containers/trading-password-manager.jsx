@@ -70,7 +70,6 @@ const PasswordReset = ({ email, platform }) => {
 
     return (
         <SendEmailTemplate
-            className='sent-email'
             title={localize(`We've sent you an email`)}
             subtitle={localize('Please click on the link in the email to change your {{platform}} password.', {
                 platform: getCFDPlatformLabel(platform),

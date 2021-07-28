@@ -170,6 +170,9 @@ export default class CashierStore extends BaseStore {
     @observable is_10k_withdrawal_limit_reached = undefined;
     @observable is_deposit = false;
     @observable is_cashier_default = true;
+    @observable crypto_transactions = [];
+    @observable selected_transaction_id = '';
+    @observable is_cancel_modal_open = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -1599,5 +1602,60 @@ export default class CashierStore extends BaseStore {
         this.onRemount();
 
         return Promise.resolve();
+    }
+
+    @action.bound
+    setCryptoTransactions (transactions) {
+        this.crypto_transactions = transactions;
+    }
+
+    @action.bound
+    async getCryptoTransactions () {
+        await this.WS.send({
+            cashier_payments: 1,
+            provider: 'crypto',
+            transaction_type: 'all'
+        }).then(response => {
+            if (!response.error) {
+                const { crypto } = response.cashier_payments;
+                this.setCryptoTransactions(crypto);
+            } 
+        });
+    }
+
+    @action.bound
+    async cancelCryptoTransaction (transaction_id) {
+        await this.WS.send({
+            cashier_withdrawal_cancel: 1,
+            id: transaction_id
+        }).then(response => {
+            if (!response.error) {
+                this.getCryptoTransactions();
+                this.setSelectedTransactionId('');
+                this.setIsCancelModalOpen(false);
+            } 
+        });
+    }
+
+    @action.bound
+    setSelectedTransactionId(id) {
+        this.selected_transaction_id = id;
+    }
+
+    @action.bound
+    setIsCancelModalOpen(is_cancel_modal_open) {
+        this.is_cancel_modal_open = is_cancel_modal_open;
+    }
+
+    @action.bound
+    onClickCancelTransaction(id) {
+        this.setSelectedTransactionId(id);
+        this.setIsCancelModalOpen(true);
+    }
+
+    @action.bound
+    onClickModalCancel() {
+        this.setSelectedTransactionId('');
+        this.setIsCancelModalOpen(false);
     }
 }

@@ -296,6 +296,9 @@ export default class CFDStore extends BaseStore {
             actions.setStatus({ success: false });
             return true;
         }
+        const { get_account_status } = await WS.getAccountStatus();
+        this.root_store.client.setAccountStatus(get_account_status);
+
         return false;
     }
 
@@ -314,12 +317,8 @@ export default class CFDStore extends BaseStore {
             this.setError(false);
             this.setCFDSuccessDialog(true);
 
-            const [mt5_login_list_response, { get_account_status }] = await Promise.all([
-                WS.authorized.storage.mt5LoginList(),
-                WS.getAccountStatus(),
-            ]);
+            const mt5_login_list_response = await WS.authorized.mt5LoginList();
             this.root_store.client.responseMt5LoginList(mt5_login_list_response);
-            this.root_store.client.setAccountStatus(get_account_status);
 
             WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
             this.root_store.client.responseTradingServers(await WS.tradingServers());
@@ -347,6 +346,9 @@ export default class CFDStore extends BaseStore {
             actions.setStatus({ success: false });
             return true;
         }
+        const { get_account_status } = await WS.getAccountStatus();
+        this.root_store.client.setAccountStatus(get_account_status);
+
         return false;
     }
 
@@ -364,12 +366,8 @@ export default class CFDStore extends BaseStore {
             this.setError(false);
             this.setCFDSuccessDialog(true);
 
-            const [trading_platform_accounts_list_response, { get_account_status }] = await Promise.all([
-                WS.tradingPlatformAccountsList(values.platform),
-                WS.getAccountStatus(),
-            ]);
+            const trading_platform_accounts_list_response = await WS.tradingPlatformAccountsList(values.platform);
             this.root_store.client.responseTradingPlatformAccountsList(trading_platform_accounts_list_response);
-            this.root_store.client.setAccountStatus(get_account_status);
 
             WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
             runInAction(() => {

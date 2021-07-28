@@ -77,6 +77,7 @@ const PasswordReset = ({ email, platform }) => {
             })}
             lbl_no_receive={localize("Didn't receive the email?")}
             txt_resend={localize('Resend email')}
+            txt_resend_in={localize('Resend email in')}
             onClickSendEmail={onClickSendEmail}
         />
     );

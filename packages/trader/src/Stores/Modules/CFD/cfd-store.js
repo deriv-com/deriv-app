@@ -319,17 +319,16 @@ export default class CFDStore extends BaseStore {
 
             WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
             this.root_store.client.responseTradingServers(await WS.tradingServers());
-            runInAction(() => {
-                this.setCFDNewAccount(response.mt5_new_account);
-            });
+            this.setCFDNewAccount(response.mt5_new_account);
         } else {
             this.setError(true, response.error);
             actions.resetForm({});
             actions.setSubmitting(false);
             actions.setStatus({ success: false });
         }
-        const { get_account_status } = await WS.getAccountStatus();
-        this.root_store.client.setAccountStatus(get_account_status);
+        if (this.root_store.client.is_mt5_password_not_set) {
+            await WS.getAccountStatus();
+        }
     }
 
     @action.bound
@@ -367,17 +366,16 @@ export default class CFDStore extends BaseStore {
             this.root_store.client.responseTradingPlatformAccountsList(trading_platform_accounts_list_response);
 
             WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
-            runInAction(() => {
-                this.setCFDNewAccount(response.trading_platform_new_account);
-            });
+            this.setCFDNewAccount(response.trading_platform_new_account);
         } else {
             this.setError(true, response.error);
             actions.resetForm({});
             actions.setSubmitting(false);
             actions.setStatus({ success: false });
         }
-        const { get_account_status } = await WS.getAccountStatus();
-        this.root_store.client.setAccountStatus(get_account_status);
+        if (this.root_store.client.is_dxtrade_password_not_set) {
+            await WS.getAccountStatus();
+        }
     }
 
     @action.bound

@@ -39,8 +39,7 @@
     "stylelint-formatter-pretty": "^2.1.1",
     "stylelint-no-unsupported-browser-features": "^4.0.0",
     "stylelint-selector-bem-pattern": "^2.1.0",
-    "stylelint-webpack-plugin": "^2.1.1",
-    "@testing-library/user-event": "^13.2.1"
+    "stylelint-webpack-plugin": "^2.1.1"
   },
   "scripts": {
     "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --hoist --strict && lerna link && npm run build:travis && npm run install:qa ;}; f",
@@ -82,5 +81,8 @@
   },
   "dependencies": {
     "dotenv": "^8.2.0"
+  },
+  "optionalDependencies": {
+    "fsevents": "^2.3.2"
   }
 }

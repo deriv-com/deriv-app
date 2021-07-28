@@ -175,7 +175,7 @@ export default class ClientStore extends BaseStore {
      * 4. call statement, if the length is 0
      * 5. whenever has any transaction and start showing reality check
      *
-     * three: (we are not exaclt sure about this, so for now let ignore it, but we keep it here to investigate it later)
+     * three: (we are not exactly sure about this, so for now let ignore it, but we keep it here to investigate it later)
      * 1. if landing company has reality check
      * 2. if balance is 0
      * 3. subscribe to transaction

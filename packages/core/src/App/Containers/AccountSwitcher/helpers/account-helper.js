@@ -47,12 +47,9 @@ export const isDemo = account => account.account_type === 'demo';
 
 export const getCFDConfig = (market_type, landing_company, existing_cfd_accounts, trading_servers, platform) => {
     const cfd_config = [];
+
     if (landing_company) {
         Object.keys(landing_company).forEach(company => {
-            if (['gaming', 'synthetic', 'financial'].indexOf(company) === -1 && platform === CFD_PLATFORMS.DXTRADE) {
-                return;
-            }
-
             let has_account = existing_cfd_accounts.find(account => {
                 const account_market_type = account.market_type === 'synthetic' ? 'gaming' : account.market_type;
                 if (platform === CFD_PLATFORMS.DXTRADE) {

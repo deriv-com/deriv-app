@@ -167,7 +167,11 @@ const QuickStrategyForm = ({
                                     )}
                                 </Field>
                             </div>
-                            <div className='quick-strategy__form-row quick-strategy__form-row--multiple'>
+                            <div
+                                className={classNames('quick-strategy__form-row', {
+                                    'quick-strategy__form-row--multiple': !is_mobile,
+                                })}
+                            >
                                 <Field name='quick-strategy__duration-unit'>
                                     {({ field }) => (
                                         <>
@@ -242,7 +246,11 @@ const QuickStrategyForm = ({
                                     )}
                                 </Field>
                             </div>
-                            <div className='quick-strategy__form-row quick-strategy__form-row--multiple'>
+                            <div
+                                className={classNames('quick-strategy__form-row', {
+                                    'quick-strategy__form-row--multiple': !is_mobile,
+                                })}
+                            >
                                 <Field name='quick-strategy__stake'>
                                     {({ field }) => (
                                         <Input
@@ -310,7 +318,11 @@ const QuickStrategyForm = ({
                                     )}
                                 </Field>
                             </div>
-                            <div className='quick-strategy__form-row quick-strategy__form-row--multiple'>
+                            <div
+                                className={classNames('quick-strategy__form-row', {
+                                    'quick-strategy__form-row--multiple': !is_mobile,
+                                })}
+                            >
                                 <Field name='quick-strategy__size'>
                                     {({ field }) => (
                                         <Input
@@ -534,7 +546,7 @@ const QuickStrategy = props => {
                     className='modal--strategy'
                     is_open={is_strategy_modal_open}
                     toggleModal={toggleStrategyModal}
-                    width={'460px'}
+                    width={'540px'}
                 >
                     <div className='modal__content'>
                         <ContentRenderer {...props} />

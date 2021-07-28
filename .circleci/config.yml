@@ -44,13 +44,14 @@ commands:
       - run:
           name: "Install npm packages"
           command: |
-            if [ -d "./node_modules" ]; then
-              echo "Found cache. Using cached node_modules."
-              node_modules/lerna/cli.js link
-            else
-              echo "Could not find cache. Bootstrapping..."
-              npm run bootstrap
-            fi
+            npm run bootstrap
+            # if [ -d "./node_modules" ]; then
+            #   echo "Found cache. Using cached node_modules."
+            #   node_modules/lerna/cli.js link
+            # else
+            #   echo "Could not find cache. Bootstrapping..."
+            #   npm run bootstrap
+            # fi
       - save_cache:
           name: "Saving node_modules cache"
           key: node-v{{ .Environment.CACHE_VERSION }}-{{ checksum "CACHE_KEY1" }}
@@ -85,6 +86,16 @@ commands:
           name: "Build all packages for deriv dashboard"
           command: npm run build:dashboard
 
+  build_storybook:
+    description: "Build storybook"
+    steps:
+      - run:
+          name: "Bootstrap for deriv storybook"
+          command: npm run bootstrap
+      - run:
+          name: "Build all packages for deriv storybook"
+          command: npm run build:storybook
+
   notify_slack:
     description: "Notify slack"
     steps:
@@ -94,31 +105,17 @@ commands:
           success_message: "Release succeeded for app.deriv.com with version *$(cat packages/core/dist/version)*"
           webhook: ${SLACK_WEBHOOK}
 
-  deploy:
-    description: "Deploy to static branches"
+  versioning:
+    description: "Version the branch"
     parameters:
-      target_branch:
+      version_name:
         type: string
     steps:
       - attach_workspace:
           at: packages/core/dist
       - run:
-          name: Tag build
-          command: echo "<< parameters.target_branch >>-$(date -u +"%Y-%m-%dT%H:%M:%SZ")" > packages/core/dist/version
-      - run:
-          name: Install and configure dependencies
-          command: |
-            mkdir "${HOME}/.npm-packages"
-            npm config set prefix "${HOME}/.npm-packages"
-            npm i -g gh-pages
-            git config user.email "ci-build@binary.com"
-            git config user.name "ci-build"
-      - add_ssh_keys:
-          fingerprints:
-            - "01:67:4a:6d:26:9c:70:c4:1a:60:91:88:d9:dd:f0:83"
-      - run:
-          name: Deploy docs to gh-pages branch
-          command: /home/circleci/.npm-packages/bin/gh-pages -d packages/core/dist --branch << parameters.target_branch >> --message "[skip ci]"
+          name: Tag
+          command: echo "<< parameters.version_name >>-$(date -u +"%Y-%m-%dT%H:%M:%SZ")" > packages/core/dist/version
 
   docker_build_push:
     description: "Build and Push image to docker hub"
@@ -129,6 +126,9 @@ commands:
       docker_image_name:
         type: string
         default: "deriv-app"
+      docker_file:
+        type: string
+        default: "Dockerfile"
     steps:
       - setup_remote_docker:
           docker_layer_caching: true
@@ -136,7 +136,7 @@ commands:
           name: Building docker image
           command: |
             TAG=${CIRCLE_TAG:-$CIRCLE_SHA1}
-            docker build -t ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>:${TAG} -t ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>:<< parameters.docker_image_latest_tag >> .
+            docker build -t ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>:${TAG} -t ${DOCKHUB_ORGANISATION}/<< parameters.docker_image_name >>:<< parameters.docker_image_latest_tag >>  -f << parameters.docker_file >> .
       - run:
           name: Pushing Image to docker hub
           command: |
@@ -149,6 +149,9 @@ commands:
       k8s_namespace:
         type: string
         default: "deriv-app-staging"
+      k8s_service:
+        type: string
+        default: "deriv-app"
     steps:
       - k8s/install-kubectl
       - run:
@@ -159,7 +162,7 @@ commands:
             git clone https://github.com/binary-com/devops-ci-scripts
             cd devops-ci-scripts/k8s-build_tools
             echo $CA_CRT | base64 --decode > ca.crt
-            ./release.sh deriv-app ${TAG}
+            ./release.sh << parameters.k8s_service >> ${TAG}
 jobs:
   build:
     docker:
@@ -177,6 +180,26 @@ jobs:
       - npm_install_from_cache
       - build_dashboard
 
+  release_storybook:
+    docker:
+      - image: circleci/node:12.18.0-stretch
+    steps:
+      - git_checkout_from_cache
+      - npm_install_from_cache
+      - build_storybook
+      - versioning:
+          version_name: storybook
+      - docker_build_push:
+          docker_image_latest_tag: latest
+          docker_image_name: "deriv-app-storybook"
+          docker_file: "Dockerfile-storybook"
+      - k8s_deploy:
+          k8s_namespace: "deriv-app-storybook-production"
+          k8s_service: "deriv-app-storybook"
+      - notify_slack
+    environment:
+      NODE_ENV: staging
+
   release_staging:
     docker:
       - image: circleci/node:12.18.0-stretch
@@ -184,8 +207,8 @@ jobs:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
-      - deploy:
-          target_branch: staging
+      - versioning:
+          version_name: staging
       - docker_build_push
       - k8s_deploy
       - notify_slack
@@ -199,8 +222,8 @@ jobs:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build_dashboard
-      - deploy:
-          target_branch: staging-dashboard
+      - versioning:
+          version_name: staging-dashboard
       - docker_build_push:
           docker_image_name: deriv-app-dashboard
           docker_image_latest_tag: latest-staging-dashboard
@@ -215,8 +238,8 @@ jobs:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build
-      - deploy:
-          target_branch: production
+      - versioning:
+          version_name: production
       - docker_build_push:
           docker_image_latest_tag: latest
       - k8s_deploy:
@@ -232,8 +255,8 @@ jobs:
       - git_checkout_from_cache
       - npm_install_from_cache
       - build_dashboard
-      - deploy:
-          target_branch: production-dashboard
+      - versioning:
+          version_name: production-dashboard
       - docker_build_push:
           docker_image_name: deriv-app-dashboard
           docker_image_latest_tag: latest
@@ -253,13 +276,25 @@ jobs:
           command: npm test
 
 workflows:
+  release_storybook:
+    jobs:
+      - release_storybook:
+          context: binary-frontend-artifact-upload
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^storybook.*/
+
   release_staging:
     jobs:
       - release_staging:
+          context: binary-frontend-artifact-upload
           filters:
             branches:
               only: /^master$/
       - release_staging_dashboard:
+          context: binary-frontend-artifact-upload
           filters:
             branches:
               only: /^master$/

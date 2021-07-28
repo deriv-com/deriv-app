@@ -2,12 +2,12 @@ import classNames from 'classnames';
 import React from 'react';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
 import { routes, PlatformContext } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { localize, getAllowedLanguages } from '@deriv/translations';
 import { NetworkStatus } from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
-import { getAllowedLanguages, currentLanguage, changeLanguage } from 'Utils/Language';
+import { currentLanguage, changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
 
 const MenuLink = ({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink }) => {

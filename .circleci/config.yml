@@ -166,7 +166,7 @@ commands:
 jobs:
   build:
     docker:
-      - image: circleci/node:14.17.1
+      - image: circleci/node:12.18.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -174,7 +174,7 @@ jobs:
 
   build_dashboard:
     docker:
-      - image: circleci/node:14.17.1
+      - image: circleci/node:12.18.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -182,7 +182,7 @@ jobs:
 
   release_storybook:
     docker:
-      - image: circleci/node:14.17.1
+      - image: circleci/node:12.18.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -198,11 +198,11 @@ jobs:
           k8s_service: "deriv-app-storybook"
       - notify_slack
     environment:
-      NODE_ENV: production
+      NODE_ENV: staging
 
   release_staging:
     docker:
-      - image: circleci/node:14.17.1
+      - image: circleci/node:12.18.0-stretch
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache
@@ -246,7 +246,7 @@ jobs:
           k8s_namespace: "deriv-app-production"
       - notify_slack
     environment:
-      NODE_ENV: production
+      NODE_ENV: staging
 
   release_production_dashboard:
     docker:
@@ -262,7 +262,7 @@ jobs:
           docker_image_latest_tag: latest
       - notify_slack
     environment:
-      NODE_ENV: production
+      NODE_ENV: staging
 
   build_and_test:
     docker:

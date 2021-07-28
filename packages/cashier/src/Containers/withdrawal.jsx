@@ -4,6 +4,8 @@ import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import CryptoWithdrawForm from '../Components/Form/crypto-withdraw-form.jsx';
+import CryptoWithdrawReceipt from '../Components/Receipt/crypto-withdraw-receipt.jsx';
 import Withdraw from '../Components/withdraw.jsx';
 import SendEmail from '../Components/Email/send-email.jsx';
 import Error from '../Components/Error/error.jsx';
@@ -20,6 +22,7 @@ const WithdrawalSideNote = () => {
             i18n_default_text='Do not enter an address linked to an ICO purchase or crowdsale. If you do, the ICO tokens will not be credited into your account.'
             key={0}
         />,
+        <Localize i18n_default_text="We'll send you an email once your transaction has been processed." key={1} />,
         /*
         <Localize
             i18n_default_text='Each transaction will be confirmed once we receive three confirmations from the blockchain.'
@@ -48,7 +51,9 @@ const Withdrawal = ({
     iframe_url,
     is_10k_withdrawal_limit_reached,
     is_cashier_locked,
+    is_crypto,
     is_virtual,
+    is_withdraw_confirmed,
     is_withdrawal_locked,
     setActiveTab,
     setErrorMessage,
@@ -93,8 +98,14 @@ const Withdrawal = ({
     if (is_10k_withdrawal_limit_reached) {
         return <WithdrawalLocked is_10K_limit />;
     }
-    if (verification_code || iframe_url) {
+    if (!is_crypto && (verification_code || iframe_url)) {
         return <Withdraw />;
+    }
+    if (verification_code && is_crypto) {
+        return <CryptoWithdrawForm />;
+    }
+    if (is_withdraw_confirmed) {
+        return <CryptoWithdrawReceipt />;
     }
     if (is_virtual) {
         return <Virtual />;
@@ -124,6 +135,8 @@ Withdrawal.propTypes = {
     iframe_url: PropTypes.string,
     is_virtual: PropTypes.bool,
     is_cashier_locked: PropTypes.bool,
+    is_crypto: PropTypes.bool,
+    is_withdraw_confirmed: PropTypes.bool,
     is_withdrawal_locked: PropTypes.bool,
     setActiveTab: PropTypes.func,
     verification_code: PropTypes.string,
@@ -140,7 +153,9 @@ export default connect(({ client, modules }) => ({
     iframe_url: modules.cashier.config.withdraw.iframe_url,
     is_10k_withdrawal_limit_reached: modules.cashier.is_10k_withdrawal_limit_reached,
     is_cashier_locked: modules.cashier.is_cashier_locked,
+    is_crypto: modules.cashier.is_crypto,
     is_virtual: client.is_virtual,
+    is_withdraw_confirmed: modules.cashier.config.withdraw.is_withdraw_confirmed,
     is_withdrawal_locked: modules.cashier.is_withdrawal_locked,
     verification_code: client.verification_code.payment_withdraw,
     verify_error: modules.cashier.config.withdraw.verification.error,

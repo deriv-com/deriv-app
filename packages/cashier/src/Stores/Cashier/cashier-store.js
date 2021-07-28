@@ -134,6 +134,24 @@ class ConfigAccountTransfer {
     }
 }
 
+class ConfigWithdraw {
+    @observable container = 'withdraw';
+    @observable iframe_height = 0;
+    @observable iframe_url = '';
+    @observable error = new ConfigError();
+    @observable verification = new ConfigVerification();
+    @observable is_withdraw_confirmed = false;
+
+    is_session_timeout = true;
+    onIframeLoaded = '';
+    timeout_session = '';
+
+    @action.bound
+    setIsWithdrawConfirmed(value) {
+        this.is_withdraw_confirmed = value;
+    }
+}
+
 class ConfigVerification {
     is_button_clicked = false;
     timeout_button = '';
@@ -174,6 +192,9 @@ export default class CashierStore extends BaseStore {
     @observable fiat_amount = '';
     @observable insufficient_fund_error = '';
     @observable is_timer_visible = false;
+    @observable crypto_converter_error = '';
+    @observable fiat_converter_error = '';
+    @observable blockchain_address = '';
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -183,11 +204,7 @@ export default class CashierStore extends BaseStore {
         },
         payment_agent: new ConfigPaymentAgent(),
         payment_agent_transfer: new ConfigPaymentAgentTransfer(),
-        withdraw: {
-            ...toJS(new Config({ container: 'withdraw' })),
-            error: new ConfigError(),
-            verification: new ConfigVerification(),
-        },
+        withdraw: new ConfigWithdraw(),
     };
 
     active_container = this.config.deposit.container;
@@ -200,6 +217,12 @@ export default class CashierStore extends BaseStore {
         [this.config.withdraw.container]: 'payment_withdraw',
         [this.config.payment_agent.container]: 'payment_agent_withdraw',
     };
+
+    @computed
+    get is_crypto() {
+        const { currency } = this.root_store.client;
+        return !!currency && isCryptocurrency(currency);
+    }
 
     @computed
     get is_payment_agent_visible() {
@@ -224,8 +247,47 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    async requestWithdraw(verification_code) {
+        if (!this.root_store.client.is_logged_in) {
+            return;
+        }
+
+        this.setLoading(true);
+        this.setErrorMessage('');
+
+        await this.WS.authorized
+            .cryptoWithdraw({
+                address: this.blockchain_address,
+                amount: this.crypto_amount,
+                verification_code,
+            })
+            .then(response => {
+                if (response.error) {
+                    this.setErrorMessage(response.error);
+                    if (verification_code) {
+                        // clear verification code on error
+                        this.clearVerification();
+                    }
+                } else {
+                    this.config.withdraw.setIsWithdrawConfirmed(true);
+                }
+                this.setLoading(false);
+            });
+    }
+
+    @action.bound
+    resetWithrawForm() {
+        this.setBlockchainAddress('');
+    }
+
+    @action.bound
     setIsDeposit(is_deposit) {
         this.is_deposit = is_deposit;
+    }
+
+    @action.bound
+    setBlockchainAddress(address) {
+        this.blockchain_address = address;
     }
 
     @action.bound
@@ -763,8 +825,25 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    resetTimer() {
+        this.setCryptoAmount('');
+        this.setFiatAmount('');
+        this.setIsTimerVisible(false);
+    }
+
+    @action.bound
+    setCryptoConverterError(message) {
+        this.crypto_converter_error = message;
+    }
+
+    @action.bound
+    setFiatConverterError(message) {
+        this.fiat_converter_error = message;
+    }
+
+    @action.bound
     async getExchangeRate(from_currency, to_currency) {
-        const {exchange_rates} = await this.WS.send({
+        const { exchange_rates } = await this.WS.send({
             exchange_rates: 1,
             base_currency: from_currency,
         });
@@ -772,7 +851,7 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async onChangeCryptoAmount({target}, from_currency, to_currency) {
+    async onChangeCryptoAmount({ target }, from_currency, to_currency) {
         const rate = await this.getExchangeRate(from_currency, to_currency);
         runInAction(() => {
             const decimals = getDecimalPlaces(to_currency);
@@ -783,13 +862,13 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async onChangeFiatAmount({target}, from_currency, to_currency) {
+    async onChangeFiatAmount({ target }, from_currency, to_currency) {
         const rate = await this.getExchangeRate(from_currency, to_currency);
         runInAction(() => {
             const decimals = getDecimalPlaces(to_currency);
             const amount = (rate * target.value).toFixed(decimals);
             const balance = this.root_store.client.balance;
-            if(balance < amount) {
+            if (balance < amount) {
                 this.insufficient_fund_error = localize('Insufficient funds');
                 this.setCryptoAmount('');
             } else {
@@ -1656,5 +1735,14 @@ export default class CashierStore extends BaseStore {
         this.onRemount();
 
         return Promise.resolve();
+    }
+
+    @computed
+    get account_platform_icon() {
+        const platform_icon = this.root_store.client.account_list.find(
+            acc => this.root_store.client.loginid === acc.loginid
+        ).icon;
+
+        return platform_icon;
     }
 }

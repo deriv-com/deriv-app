@@ -114,7 +114,7 @@ class DeactivateAccountReason extends React.Component {
         if (!selected_reason_count) {
             error.empty_reason = localize('Please select at least one reason');
         }
-        if (text_inputs_length > 0 || selected_reason_count) {
+        if (text_inputs_length >= 0 || selected_reason_count) {
             const final_value = preparingReason(values);
 
             let remaining_characters = character_limit_no - text_inputs_length;

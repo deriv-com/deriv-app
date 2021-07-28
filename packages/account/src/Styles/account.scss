@@ -1363,6 +1363,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
         .table__cell {
             min-height: 5.6rem;
+            white-space: pre-wrap;
 
             .name {
                 &__content {

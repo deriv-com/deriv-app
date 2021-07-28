@@ -194,20 +194,11 @@ class FinancialAssessment extends React.Component {
                             (this.props.is_financial_account || this.props.is_trading_experience_incomplete) &&
                             !this.props.is_svg;
 
-                        const needs_financial_assessment =
-                            this.props.is_financial_information_incomplete ||
-                            this.props.is_high_risk ||
-                            has_trading_experience ||
-                            this.props.is_financial_account;
                         this.setState({ has_trading_experience });
 
                         if (data.error) {
                             this.setState({ api_initial_load_error: data.error.message });
                             return;
-                        } else if (!needs_financial_assessment) {
-                            // Additional layer of error handling if non high risk user somehow manages to reach FA page
-                            // need to redirect to default route for account to prevent app crash
-                            this.props.history.push(routes.personal_details);
                         }
                         this.setState({ ...data.get_financial_assessment, is_loading: false });
                     });

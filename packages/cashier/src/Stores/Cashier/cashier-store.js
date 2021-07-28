@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import React from 'react';
-import { action, computed, observable, toJS, reaction, when } from 'mobx';
+import { action, computed, observable, toJS, reaction, when, runInAction } from 'mobx';
 import {
     formatMoney,
     isEmptyObject,
@@ -175,6 +175,10 @@ export default class CashierStore extends BaseStore {
     @observable should_show_all_available_currencies = false;
     @observable is_cashier_default = true;
     @observable deposit_target = '';
+    @observable crypto_amount = '';
+    @observable fiat_amount = '';
+    @observable insufficient_fund_error = '';
+    @observable is_timer_visible = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -762,6 +766,59 @@ export default class CashierStore extends BaseStore {
         this.setVerificationResendTimeout(60, container);
         this.setErrorMessage('', null, null, true);
         this.root_store.client.setVerificationCode('', this.map_action[container]);
+    }
+
+    @action.bound
+    setCryptoAmount(amount) {
+        this.crypto_amount = amount;
+    }
+
+    @action.bound
+    setFiatAmount(amount) {
+        this.fiat_amount = amount;
+    }
+
+    @action.bound
+    setIsTimerVisible(is_timer_visible) {
+        this.is_timer_visible = is_timer_visible;
+    }
+
+    @action.bound
+    async getExchangeRate(from_currency, to_currency) {
+        const { exchange_rates } = await this.WS.send({
+            exchange_rates: 1,
+            base_currency: from_currency,
+        });
+        return exchange_rates.rates[to_currency];
+    }
+
+    @action.bound
+    async onChangeCryptoAmount({ target }, from_currency, to_currency) {
+        const rate = await this.getExchangeRate(from_currency, to_currency);
+        runInAction(() => {
+            const decimals = getDecimalPlaces(to_currency);
+            const amount = (rate * target.value).toFixed(decimals);
+            this.setFiatAmount(amount);
+            this.setIsTimerVisible(true);
+        });
+    }
+
+    @action.bound
+    async onChangeFiatAmount({ target }, from_currency, to_currency) {
+        const rate = await this.getExchangeRate(from_currency, to_currency);
+        runInAction(() => {
+            const decimals = getDecimalPlaces(to_currency);
+            const amount = (rate * target.value).toFixed(decimals);
+            const balance = this.root_store.client.balance;
+            if (balance < amount) {
+                this.insufficient_fund_error = localize('Insufficient funds');
+                this.setCryptoAmount('');
+            } else {
+                this.insufficient_fund_error = '';
+                this.setCryptoAmount(amount);
+                this.setIsTimerVisible(true);
+            }
+        });
     }
 
     @action.bound

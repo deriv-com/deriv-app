@@ -1,23 +1,23 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Field, Form, Formik} from 'formik';
+import { Field, Form, Formik } from 'formik';
 import { Input, Icon, Text } from '@deriv/components';
 import { getDecimalPlaces, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { useInterval } from '@deriv/components/src/hooks';
 
-const Timer = (props) => {
-    const initial_time = 60;
+const Timer = props => {
+    const initial_time = 50;
     const [remaining_time, setRemainingTime] = React.useState(initial_time);
-   
+
     useInterval(() => {
         if (remaining_time > 0) {
             setRemainingTime(remaining_time - 1);
         }
     }, 1000);
     React.useEffect(() => {
-        if(remaining_time === 0) {
+        if (remaining_time === 0) {
             props.onComplete();
             setRemainingTime(initial_time);
         }
@@ -25,8 +25,7 @@ const Timer = (props) => {
 
     return (
         <Text as='p' size='xs' className='timer'>
-            <Localize i18n_default_text='{{remaining_time}}s'
-                values={{ remaining_time }}/>
+            <Localize i18n_default_text='{{remaining_time}}s' values={{ remaining_time }} />
         </Text>
     );
 };
@@ -49,120 +48,150 @@ const CryptoFiatConverter = ({
     is_timer_visible,
     onChangeCryptoAmount,
     onChangeFiatAmount,
+    resetTimer,
     setCryptoAmount,
+    setCryptoConverterError,
     setFiatAmount,
+    setFiatConverterError,
     setIsTimerVisible,
 }) => {
     const [arrow_icon_direction, setArrowIconDirection] = React.useState('right');
+
+    React.useEffect(() => {
+        return () => resetTimer();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const validateCryptoAmount = amount => {
-        if(amount) {
+        let error_message;
+        if (!amount) {
+            error_message = localize('This field is required.');
+        } else {
             const { is_ok, message } = validNumber(amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(crypto_currency),
             });
-            if (!is_ok) return message; 
+            if (!is_ok) error_message = message;
 
-            if (+balance < +amount) return localize('Insufficient funds');
+            if (+balance < +amount) error_message = localize('Insufficient funds');
         }
-
-        return undefined;
+        setCryptoConverterError(error_message);
+        return error_message ?? undefined;
     };
+
     const validateFiatAmount = amount => {
-        if(amount) {
+        let error_message;
+        if (amount) {
             const { is_ok, message } = validNumber(amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(current_fiat_currency),
             });
-            if (!is_ok) return message; 
+            if (!is_ok) error_message = message;
         }
 
-        return undefined;
+        setFiatConverterError(error_message);
+        return error_message ?? undefined;
     };
 
     return (
-        <Formik 
+        <Formik
             initialValues={{
                 crypto_amount: '',
                 fiat_amount: '',
             }}
         >
-                {({ errors, values, touched, handleBlur, handleChange, setFieldError }) => (
-                    <Form className='crypto-fiat-converter-form'>
-                        <Field name='crypto_amount' validate={validateCryptoAmount}>
-                            {({ field }) => (
+            {({ errors, values, touched, handleBlur, handleChange, setFieldError }) => (
+                <Form className='crypto-fiat-converter-form'>
+                    <Field name='crypto_amount' validate={validateCryptoAmount}>
+                        {({ field }) => (
+                            <Input
+                                {...field}
+                                onFocus={() => {
+                                    setArrowIconDirection('right');
+                                }}
+                                onBlur={e => {
+                                    handleBlur(e);
+                                    if (!is_timer_visible) {
+                                        if (!values.crypto_amount || errors.crypto_amount) {
+                                            setFiatAmount('');
+                                        } else {
+                                            onChangeCryptoAmount(e, crypto_currency, current_fiat_currency);
+                                        }
+                                    }
+                                }}
+                                onChange={e => {
+                                    setIsTimerVisible(false);
+                                    handleChange(e);
+                                    setCryptoAmount(e.target.value);
+                                    setFieldError('fiat_amount', '');
+                                }}
+                                type='text'
+                                error={touched.crypto_amount && errors.crypto_amount}
+                                label={localize('Amount ({{currency}})', { currency: crypto_currency })}
+                                value={crypto_amount}
+                                autoComplete='off'
+                                required
+                            />
+                        )}
+                    </Field>
+                    {arrow_icon_direction === 'right' ? (
+                        <Icon icon='IcArrowRightBold' />
+                    ) : (
+                        <Icon icon='IcArrowLeftBold' />
+                    )}
+                    <Field name='fiat_amount' validate={validateFiatAmount}>
+                        {({ field }) => (
+                            <InputGroup className='input-group'>
                                 <Input
                                     {...field}
-                                    onFocus={() =>{
-                                        setArrowIconDirection('right'); 
+                                    onFocus={() => {
+                                        setArrowIconDirection('left');
                                     }}
                                     onBlur={e => {
                                         handleBlur(e);
-                                        if(!is_timer_visible) {
-                                            if(!values.crypto_amount || errors.crypto_amount) {
-                                                setFiatAmount('');
+                                        if (!is_timer_visible) {
+                                            if (!values.fiat_amount || errors.fiat_amount) {
+                                                setCryptoAmount('');
                                             } else {
-                                                onChangeCryptoAmount(e, crypto_currency, current_fiat_currency);
+                                                onChangeFiatAmount(e, current_fiat_currency, crypto_currency);
                                             }
-                                        } 
+                                        }
                                     }}
                                     onChange={e => {
                                         setIsTimerVisible(false);
                                         handleChange(e);
-                                        setCryptoAmount(e.target.value);   
-                                        setFieldError('fiat_amount', '');  
+                                        setFiatAmount(e.target.value);
+                                        setFieldError('crypto_amount', '');
                                     }}
                                     type='text'
-                                    error={touched.crypto_amount && errors.crypto_amount}
-                                    label={localize('Amount ({{currency}})', {currency: crypto_currency})}
-                                    value={crypto_amount}
+                                    error={(touched.fiat_amount && errors.fiat_amount) || insufficient_fund_error}
+                                    label={localize('Amount ({{currency}})', { currency: current_fiat_currency })}
+                                    value={fiat_amount}
+                                    autoComplete='off'
                                 />
-                            )}
-                        </Field>
-                        {arrow_icon_direction === 'right' ? <Icon icon='IcArrowRightBold' /> : <Icon icon='IcArrowLeftBold' />}
-                        <Field name='fiat_amount' validate={validateFiatAmount}>
-                            {({ field }) => (
-                                <InputGroup className='input-group'>
-                                    <Input
-                                        {...field}
-                                        onFocus={() =>{
-                                            setArrowIconDirection('left'); 
+                                {is_timer_visible && (
+                                    <Timer
+                                        onComplete={() => {
+                                            onChangeCryptoAmount(
+                                                {
+                                                    target: {
+                                                        value: crypto_amount,
+                                                    },
+                                                },
+                                                crypto_currency,
+                                                current_fiat_currency
+                                            );
                                         }}
-                                        onBlur={e => {
-                                            handleBlur(e);
-                                            if(!is_timer_visible){
-                                                if(!values.fiat_amount || errors.fiat_amount) {
-                                                    setCryptoAmount('');
-                                                } else {
-                                                    onChangeFiatAmount(e, current_fiat_currency, crypto_currency);
-                                                }
-                                            }
-                                        }}
-                                        onChange={e => {
-                                            setIsTimerVisible(false);
-                                            handleChange(e);
-                                            setFiatAmount(e.target.value);
-                                            setFieldError('crypto_amount', '');          
-                                        }}
-                                        type='text'
-                                        error={(touched.fiat_amount && errors.fiat_amount) || insufficient_fund_error}
-                                        label={localize('Amount ({{currency}})', {currency: current_fiat_currency})}
-                                        value={fiat_amount}
                                     />
-                                    {is_timer_visible && <Timer onComplete={() => {
-                                        onChangeCryptoAmount({
-                                            target: {
-                                                value: crypto_amount,
-                                            },
-                                        }, crypto_currency, current_fiat_currency);
-                                    }} /> }
-                                </InputGroup>
-                            )}
-                        </Field>
-                        <Text as='p' size='xxs'>
-                            <Localize i18n_default_text='Approximate value' />
-                        </Text>
-                    </Form>
-                )}
+                                )}
+                            </InputGroup>
+                        )}
+                    </Field>
+                    <Text as='p' size='xxs'>
+                        <Localize i18n_default_text='Approximate value' />
+                    </Text>
+                </Form>
+            )}
         </Formik>
     );
 };
@@ -177,8 +206,11 @@ CryptoFiatConverter.propTypes = {
     is_timer_visible: PropTypes.bool,
     onChangeCryptoAmount: PropTypes.func,
     onChangeFiatAmount: PropTypes.func,
+    resetTimer: PropTypes.func,
     setCryptoAmount: PropTypes.func,
+    setCryptoConverterError: PropTypes.func,
     setFiatAmount: PropTypes.func,
+    setFiatConverterError: PropTypes.func,
     setIsTimerVisible: PropTypes.func,
 };
 
@@ -192,7 +224,10 @@ export default connect(({ client, modules }) => ({
     is_timer_visible: modules.cashier.is_timer_visible,
     onChangeCryptoAmount: modules.cashier.onChangeCryptoAmount,
     onChangeFiatAmount: modules.cashier.onChangeFiatAmount,
+    resetTimer: modules.cashier.resetTimer,
     setCryptoAmount: modules.cashier.setCryptoAmount,
+    setCryptoConverterError: modules.cashier.setCryptoConverterError,
     setFiatAmount: modules.cashier.setFiatAmount,
+    setFiatConverterError: modules.cashier.setFiatConverterError,
     setIsTimerVisible: modules.cashier.setIsTimerVisible,
 }))(CryptoFiatConverter);

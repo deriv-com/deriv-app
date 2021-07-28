@@ -263,6 +263,16 @@ const BinarySocketBase = (() => {
             paymentagent_loginid: loginid,
         });
 
+    const cryptoWithdraw = ({ address, amount, verification_code }) =>
+        deriv_api.send({
+            cashier: 'withdraw',
+            provider: 'crypto',
+            type: 'api',
+            address,
+            amount,
+            verification_code,
+        });
+
     const paymentAgentTransfer = ({ amount, currency, description, transfer_to, dry_run = 0 }) =>
         deriv_api.send({
             amount,
@@ -382,6 +392,7 @@ const BinarySocketBase = (() => {
         cashierPayments,
         cancelContract,
         close,
+        cryptoWithdraw,
         contractUpdate,
         contractUpdateHistory,
         getFinancialAssessment,

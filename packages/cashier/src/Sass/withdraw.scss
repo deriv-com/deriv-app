@@ -1,0 +1,118 @@
+.withdraw {
+    &__wrapper .withdraw__input {
+        margin: 2.4rem 0 !important;
+        width: fit-content;
+        min-width: 38rem;
+
+        @include mobile {
+            width: 100%;
+            min-width: auto;
+            margin-bottom: 2.6rem !important;
+        }
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        &-submit {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-end;
+            margin: 2rem auto 0;
+
+            > * {
+                width: auto;
+            }
+            @include desktop {
+                min-width: 36rem;
+                width: fit-content;
+            }
+        }
+
+        &-icon {
+            margin-top: 2.4rem;
+        }
+    }
+
+    &__receipt {
+        &-detail {
+            display: inline-block;
+
+            @include mobile {
+                width: 100%;
+                min-width: auto;
+                margin-bottom: 2.6rem !important;
+            }
+        }
+
+        &-button {
+            margin-top: 3rem;
+        }
+
+        &-icon {
+            margin: 1.6rem;
+        }
+
+        &-status {
+            background-color: var(--general-section-1);
+            border-radius: $BORDER_RADIUS * 2;
+            height: 3.2rem;
+            width: fit-content;
+            min-width: 36rem;
+            margin-bottom: -0.8rem !important;
+
+            &-icon {
+                margin: 0 0.4rem;
+            }
+
+            @include mobile {
+                width: 100%;
+                min-width: auto;
+                margin-bottom: 2.4rem !important;
+            }
+        }
+
+        &-crypto {
+            color: var(--text-profit-success);
+            min-width: 36rem;
+            margin: 1.6rem 0;
+        }
+    }
+
+    &__account-info {
+        padding: 1.6rem 0;
+        width: fit-content;
+        min-width: 36rem;
+        border: 1px solid var(--general-section-1);
+        border-radius: $BORDER_RADIUS * 2;
+
+        @include mobile {
+            width: 100%;
+            min-width: auto;
+        }
+
+        &-detail {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            max-width: 100%;
+            padding: 0;
+            margin: 0.8rem;
+
+            &-text {
+                margin: 0 0.8rem;
+            }
+        }
+
+        &-address {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}

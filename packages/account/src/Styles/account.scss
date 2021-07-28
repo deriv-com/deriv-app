@@ -1392,8 +1392,8 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
     @include desktop {
-        .table__body .table__row:last-child {
-            border-bottom: none;
+        .table__body .table__row {
+            border-bottom: 1px solid var(--general-section-1);
         }
         &__row {
             padding: 0;

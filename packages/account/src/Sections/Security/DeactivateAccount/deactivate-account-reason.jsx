@@ -109,7 +109,6 @@ class DeactivateAccountReason extends React.Component {
         const error = {};
         const selected_reason_count = selectedReasons(values).length;
         const text_inputs_length = (values.other_trading_platforms + values.do_to_improve).length;
-        const character_limit_error_msg = "Must be numbers, letters, and special characters . , ' -";
         let remaining_characters = character_limit_no - text_inputs_length;
 
         if (selected_reason_count) {
@@ -118,7 +117,7 @@ class DeactivateAccountReason extends React.Component {
             remaining_characters = remaining_characters >= 0 ? remaining_characters : 0;
 
             if (!/^[ a-zA-Z0-9.,'-\s]*$/.test(final_value)) {
-                error.characters_limits = localize(character_limit_error_msg);
+                error.characters_limits = localize("Must be numbers, letters, and special characters . , ' -");
             }
         } else {
             error.empty_reason = localize('Please select at least one reason');

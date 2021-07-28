@@ -13,7 +13,7 @@ import ThemedScrollbars from '../themed-scrollbars';
 */
 
 class DataTable extends React.PureComponent {
-    cache = React.createRef();
+    cache_ref = React.createRef();
     is_dynamic_height = !this.props.getRowSize;
     state = {
         scrollTop: 0,
@@ -22,7 +22,7 @@ class DataTable extends React.PureComponent {
 
     componentDidMount() {
         if (this.is_dynamic_height) {
-            this.cache.current = new CellMeasurerCache({
+            this.cache_ref.current = new CellMeasurerCache({
                 fixedWidth: true,
                 keyMapper: row_index => {
                     if (row_index < this.props.data_source.length)
@@ -87,7 +87,7 @@ class DataTable extends React.PureComponent {
         );
 
         return this.is_dynamic_height ? (
-            <CellMeasurer cache={this.cache.current} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
+            <CellMeasurer cache={this.cache_ref.current} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
                 {({ measure }) => <div style={style}>{getContent({ measure })}</div>}
             </CellMeasurer>
         ) : (
@@ -124,12 +124,12 @@ class DataTable extends React.PureComponent {
                                 <List
                                     autoHeight
                                     className={className}
-                                    deferredMeasurementCache={this.cache.current}
+                                    deferredMeasurementCache={this.cache_ref.current}
                                     height={height}
                                     overscanRowCount={1}
                                     ref={ref => (this.list_ref = ref)}
                                     rowCount={data_source.length}
-                                    rowHeight={this.is_dynamic_height ? this.cache?.current.rowHeight : getRowSize}
+                                    rowHeight={this.is_dynamic_height ? this.cache_ref?.current.rowHeight : getRowSize}
                                     rowRenderer={this.rowRenderer}
                                     scrollingResetTimeInterval={0}
                                     scrollTop={this.state.scrollTop}

@@ -327,7 +327,9 @@ export default class CashierStore extends BaseStore {
             if (!response.error) {
                 const { crypto } = response.cashier_payments;
                 this.setCryptoTransactionsHistory(crypto);
+                return Promise.resolve(response);
             }
+            return Promise.reject(response.error);
         });
     }
 

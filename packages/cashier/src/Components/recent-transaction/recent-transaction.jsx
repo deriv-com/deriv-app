@@ -1,30 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Text, Icon } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { epochToMoment } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import { getStatus } from '../../Constants/transaction-status';
 
 const RecentTransaction = ({ crypto_transactions, currency }) => {
-    const getStatus = status => {
-        switch (status) {
-            case 'CONFIRMED':
-                return 'Successful';
-            case 'LOCKED':
-                return 'In review';
-            case 'PERFORMING_BLOCKCHAIN_TXN':
-                return 'In process';
-            case 'PROCESSING':
-                return 'In process';
-            case 'SENT':
-                return 'Successful';
-            case 'VERIFIED':
-                return 'In process';
-            default:
-                return status[0].toUpperCase() + status.slice(1).toLowerCase();
-        }
-    };
-
     let { address_hash, status_code, submit_date, transaction_hash, transaction_type } = crypto_transactions[
         crypto_transactions.length - 1
     ];
@@ -33,7 +15,7 @@ const RecentTransaction = ({ crypto_transactions, currency }) => {
     transaction_type = transaction_type[0].toUpperCase() + transaction_type.slice(1);
     transaction_hash = transaction_hash
         ? `${transaction_hash?.substring(0, 4)}....${transaction_hash?.substring(transaction_hash.length - 4)}`
-        : 'Pending';
+        : localize('Pending');
     address_hash = `${address_hash.substring(0, 4)}....${address_hash.substring(address_hash.length - 4)}`;
     status_code = getStatus(status_code);
 
@@ -53,7 +35,7 @@ const RecentTransaction = ({ crypto_transactions, currency }) => {
                     />
                     <div>
                         <div className='cashier-recent-transaction__status-wrapper'>
-                            <Text weight='normal' as='p' size='xxs'>
+                            <Text as='p' size='xxs'>
                                 {`${transaction_type} ${currency}`}
                             </Text>
                             <div className='cashier-recent-transaction__status'>
@@ -61,31 +43,31 @@ const RecentTransaction = ({ crypto_transactions, currency }) => {
                                     className='cashier-recent-transaction__status-indicator'
                                     style={{ backgroundColor: status_code === 'Successful' ? '#4bb4b3' : '#ffad3a' }}
                                 />
-                                <Text weight='normal' as='p' size='xxxs'>
+                                <Text as='p' size='xxxs'>
                                     {`${status_code}`}
                                 </Text>
                             </div>
                         </div>
-                        <Text weight='normal' as='p' size='xxxs' color='less-prominent' line_height='s'>
+                        <Text as='p' size='xxxs' color='less-prominent' line_height='s'>
                             {`${amount} ${currency} on ${submit_date}`}
                         </Text>
                         <div className='cashier-recent-transaction__hash-wrapper'>
                             <div className='cashier-recent-transaction__hash'>
-                                <Text weight='normal' as='p' size='xxxs' line_height='s'>
+                                <Text as='p' size='xxxs' line_height='s'>
                                     <Localize i18n_default_text='Address:' />
                                     &nbsp;
                                 </Text>
-                                <Text weight='normal' as='p' size='xxxs' color='red' line_height='s'>
+                                <Text as='p' size='xxxs' color='red' line_height='s'>
                                     {address_hash}
                                 </Text>
                             </div>
 
                             <div className='cashier-recent-transaction__hash'>
-                                <Text weight='normal' as='p' size='xxxs' line_height='xs'>
+                                <Text as='p' size='xxxs' line_height='xs'>
                                     <Localize i18n_default_text='Transaction hash:' />
                                     &nbsp;
                                 </Text>
-                                <Text weight='normal' as='p' size='xxxs' color='red' line_height='s'>
+                                <Text as='p' size='xxxs' color='red' line_height='s'>
                                     {transaction_hash}
                                 </Text>
                             </div>

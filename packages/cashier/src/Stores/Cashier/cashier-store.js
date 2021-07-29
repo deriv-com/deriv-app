@@ -170,6 +170,9 @@ export default class CashierStore extends BaseStore {
     @observable is_10k_withdrawal_limit_reached = undefined;
     @observable is_deposit = false;
     @observable is_cashier_default = true;
+    @observable crypto_transactions = [];
+    @observable selected_transaction_id = '';
+    @observable is_cancel_modal_open = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),

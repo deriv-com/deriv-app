@@ -69,114 +69,80 @@ const CryptoTransactionsRenderer = ({
         const onClickCancelTransaction = () => {
             showCancelModal(id);
         };
-        const TransactionIcon = () => {
-            return <Icon icon={transaction_type === 'withdrawal' ? 'IcCashierWithdrawal' : 'IcCashierDeposit'} size={32} />;
-        }
-        const TransactionType = () => {
-            return (
-                <Text 
-                    as='p' 
-                    size='xs' 
-                    weight='bold' 
-                    className={isMobile() ? 'crypto-transactions-history__table-type' : ''}
-                >
-                    {transaction_type}
-                </Text>
-            );
-        }
-        const Amount = () => {
-            return (
-                <Text 
-                    as='p' 
-                    size={isMobile() ? 'xxs' : 'xs'} 
-                    weight='bold' 
-                    color={transaction_type === 'withdrawal' ? 'red' : 'profit-success'} 
-                >
-                    {`${formatted_amount} ${currency}`}
-                </Text>
-            );
-        }
-        const AddressHash = () => {
-            return (
-                <a className='crypto-transactions-history__table-link' 
-                    href={address_url} 
-                    rel='noreferrer'
-                    target='_blank'>
-                    <Text 
-                        as='p' 
-                        size={isMobile() ? 'xxs' : 'xs'} 
-                        color='red'
-                    >
-                        {isMobile() ? address_hash : formatted_address_hash}
-                    </Text>
-                </a>
-            );
-        }
-        const TransactionHash = () => {
-            return (
-                <a className='crypto-transactions-history__table-link' 
-                    href={transaction_url} 
-                    rel='noreferrer'
-                    target='_blank'>
-                    <Text 
-                        as='p' 
-                        size={isMobile() ? 'xxs' : 'xs'} 
-                        color='red'>
-                            {formatted_transaction_hash}
-                    </Text>
-                </a>
-            );
-        }
-        const TransactionTime = () => {
-            return <Text as='p' size={isMobile() ? 'xxs' : 'xs'}>{formatted_submit_date}</Text>;
-        }
-        const StatusIndicator = () => {
-            return (
-                <div className= {classNames('crypto-transactions-history__table-status-code', {
-                    'crypto-transactions-history__table-status-code-successful' : 
-                        formatted_status_code === 'confirmed' || formatted_status_code === 'sent',
-                })} />
-            );
-        }
-        const Status = () => {
-            return <Text as='p' size={isMobile() ? 'xxs' : 'xs'}>{status_list[formatted_status_code].description}</Text>;
-        }
 
         if(isMobile()) {
             return (
                 <div>
                     <Table.Row className='crypto-transactions-history__table-row'>
                         <Table.Cell className='crypto-transactions-history__table-cell'>
-                            <TransactionIcon />
-                            <TransactionType />
+                            <Icon icon={transaction_type === 'withdrawal' ? 'IcCashierWithdrawal' : 'IcCashierDeposit'} size={32} />
+                            <Text 
+                                as='p' 
+                                size='xs' 
+                                weight='bold' 
+                                className='crypto-transactions-history__table-type'
+                            >
+                                {transaction_type}
+                            </Text>
                             <div className='crypto-transactions-history__table-status'>
-                                <StatusIndicator />
-                                <Status />
+                                <div className= {classNames('crypto-transactions-history__table-status-code', {
+                                    'crypto-transactions-history__table-status-code-successful' : 
+                                        formatted_status_code === 'confirmed' || formatted_status_code === 'sent',
+                                })} />
+                                <Text as='p' size='xxs'>{status_list[formatted_status_code].description}</Text>
                             </div>
                         </Table.Cell>
                         <Table.Cell>
                             <Text as='p' color='prominent' size='xxs' weight='bold'>{localize('Amount')}</Text>
                         </Table.Cell>
                         <Table.Cell className='crypto-transactions-history__table-amount'>
-                            <Amount />
+                            <Text 
+                                as='p' 
+                                size='xxs'
+                                weight='bold' 
+                                color={transaction_type === 'withdrawal' ? 'red' : 'profit-success'} 
+                            >
+                                {`${formatted_amount} ${currency}`}
+                            </Text>
                         </Table.Cell>
                         <Table.Cell>
                             <Text as='p' color='prominent' size='xxs' weight='bold'>{localize('Address')}</Text>
                         </Table.Cell>
                         <Table.Cell className='crypto-transactions-history__table-hash'>
-                            <AddressHash />
+                            <a className='crypto-transactions-history__table-link' 
+                                href={address_url} 
+                                rel='noreferrer'
+                                target='_blank'>
+                                <Text 
+                                    as='p' 
+                                    size='xxs'
+                                    color='red'
+                                >
+                                    {address_hash}
+                                </Text>
+                            </a>
                         </Table.Cell> 
                         <Table.Cell>
                             <Text as='p' color='prominent' size='xxs' weight='bold'>{localize('Transaction hash')}</Text>
                         </Table.Cell>
                         <Table.Cell className='crypto-transactions-history__table-hash'>
-                            <TransactionHash />
+                            <a className='crypto-transactions-history__table-link' 
+                                href={transaction_url} 
+                                rel='noreferrer'
+                                target='_blank'>
+                                <Text 
+                                    as='p' 
+                                    size='xxs'
+                                    color='red'>
+                                        {formatted_transaction_hash}
+                                </Text>
+                            </a>
                         </Table.Cell>
                         <Table.Cell>
                             <Text as='p' color='prominent' size='xxs' weight='bold'>{localize('Time')}</Text>
                         </Table.Cell>
                         <Table.Cell className='crypto-transactions-history__table-time'>
-                            <TransactionTime />
+                            <Text as='p' size='xxs'>{formatted_submit_date}</Text>
                         </Table.Cell>
                         <Table.Cell className='crypto-transactions-history__table-action'>
                             {is_valid_to_cancel === 1 && <Button 
@@ -198,11 +164,24 @@ const CryptoTransactionsRenderer = ({
             <div>
                 <Table.Row className='crypto-transactions-history__table-row'>
                     <Table.Cell className='crypto-transactions-history__table-type'>
-                        <TransactionIcon />
-                        <TransactionType />
+                        <Icon icon={transaction_type === 'withdrawal' ? 'IcCashierWithdrawal' : 'IcCashierDeposit'} size={32} />
+                        <Text 
+                            as='p' 
+                            size='xs' 
+                            weight='bold' 
+                        >
+                            {transaction_type}
+                        </Text>
                     </Table.Cell>
                     <Table.Cell className='crypto-transactions-history__table-amount'>
-                        <Amount />
+                        <Text 
+                            as='p' 
+                            size='xs'
+                            weight='bold' 
+                            color={transaction_type === 'withdrawal' ? 'red' : 'profit-success'} 
+                        >
+                            {`${formatted_amount} ${currency}`}
+                        </Text>
                     </Table.Cell>
                     <Table.Cell className='crypto-transactions-history__table-hash'>
                         <Popover 
@@ -210,7 +189,18 @@ const CryptoTransactionsRenderer = ({
                             className='crypto-transactions-history__table-popover'
                             message={localize('View address on Blockchain')}
                         >
-                            <AddressHash />
+                             <a className='crypto-transactions-history__table-link' 
+                                href={address_url} 
+                                rel='noreferrer'
+                                target='_blank'>
+                                <Text 
+                                    as='p' 
+                                    size='xs'
+                                    color='red'
+                                >
+                                    {formatted_address_hash}
+                                </Text>
+                            </a>
                         </Popover>
                     </Table.Cell>
                     <Table.Cell className='crypto-transactions-history__table-hash'>
@@ -218,16 +208,26 @@ const CryptoTransactionsRenderer = ({
                             <Popover 
                                 alignment='right' 
                                 className='crypto-transactions-history__table-popover'
-                                message={transaction_url? localize('View transaction on Blockchain') : ''}
+                                message={transaction_url ? localize('View transaction on Blockchain') : ''}
                             >
-                                <TransactionHash />
+                                <a className='crypto-transactions-history__table-link' 
+                                    href={transaction_url} 
+                                    rel='noreferrer'
+                                    target='_blank'>
+                                    <Text 
+                                        as='p' 
+                                        size='xs'
+                                        color='red'>
+                                            {formatted_transaction_hash}
+                                    </Text>
+                                </a>
                             </Popover> :
                             <Text as='p' size='xs' color='red'>{formatted_transaction_hash}</Text>
                         }
                     </Table.Cell>
                     { !is_transaction_clicked &&
                         <Table.Cell>
-                            <TransactionTime />
+                            <Text as='p' size='xs'>{formatted_submit_date}</Text>
                         </Table.Cell>
                     }
                     { !is_transaction_clicked &&
@@ -240,8 +240,11 @@ const CryptoTransactionsRenderer = ({
                                     : '' 
                                 }
                             >
-                                <StatusIndicator />
-                                <Status />
+                                <div className= {classNames('crypto-transactions-history__table-status-code', {
+                                    'crypto-transactions-history__table-status-code-successful' : 
+                                        formatted_status_code === 'confirmed' || formatted_status_code === 'sent',
+                                })} />
+                                <Text as='p' size='xs'>{status_list[formatted_status_code].description}</Text>
                             </Popover>
                         </Table.Cell>
                     }

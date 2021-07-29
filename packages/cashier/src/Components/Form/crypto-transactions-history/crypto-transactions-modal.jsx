@@ -4,7 +4,12 @@ import { Button, Modal } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const CryptoTransactionsModal = ({cancelCryptoTransaction, is_cancel_modal_open, onClickModalCancel, selected_transaction_id}) => {
+const CryptoTransactionsModal = ({
+        cancelCryptoTransaction, 
+        is_cancel_modal_open, 
+        onClickModalCancel, 
+        selected_transaction_id
+    }) => {
     return (
         <React.Fragment>
             <Modal

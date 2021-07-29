@@ -2,11 +2,12 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DataList, Icon, Table, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import CryptoTransactionsRenderer from './crypto-transactions-renderer.jsx';
 import CryptoTransactionsModal from './crypto-transactions-modal.jsx';
+import CryptoTransactionsRenderer from './crypto-transactions-renderer.jsx';
+import 'Sass/crypto-transactions-history.scss';
 
 const getHeaders = () => [
     { text: localize('Transaction') },
@@ -42,13 +43,14 @@ const CryptoTransactionsHistory = ({
                 <Table 
                     className='crypto-transactions-history__table'
                 >
-                    <Table.Header className='crypto-transactions-history__table-header'>
-                        <Table.Row className='crypto-transactions-history__table-row'>
-                            {getHeaders().map(header => (
-                                <Table.Head key={header.text}>{header.text}</Table.Head>
-                            ))}
-                        </Table.Row>
-                    </Table.Header>
+                    {isDesktop() && <Table.Header className='crypto-transactions-history__table-header'>
+                            <Table.Row className='crypto-transactions-history__table-row'>
+                                {getHeaders().map(header => (
+                                    <Table.Head key={header.text}>{header.text}</Table.Head>
+                                ))}
+                            </Table.Row>
+                        </Table.Header>
+                    }
                     <Table.Body className='crypto-transactions-history__table-body'>
                         <DataList
                             data_list_className='crypto-transactions-history__data-list'

@@ -1614,7 +1614,7 @@ export default class CashierStore extends BaseStore {
         await this.WS.send({
             cashier_payments: 1,
             provider: 'crypto',
-            transaction_type: 'all'
+            transaction_type: 'all',
         }).then(response => {
             if (!response.error) {
                 const { crypto } = response.cashier_payments;
@@ -1627,7 +1627,7 @@ export default class CashierStore extends BaseStore {
     async cancelCryptoTransaction (transaction_id) {
         await this.WS.send({
             cashier_withdrawal_cancel: 1,
-            id: transaction_id
+            id: transaction_id,
         }).then(response => {
             if (!response.error) {
                 this.getCryptoTransactions();

@@ -10,9 +10,19 @@ const CryptoTransactionsRenderer = ({
         row: crypto, 
         cancelCryptoTransaction, 
         currency, 
-        onClickCancelTransaction 
+        onClickCancelTransaction,
     }) => {
-        const { address_hash, address_url, amount, id, is_valid_to_cancel, status_code, submit_date, transaction_hash, transaction_url, transaction_type } = crypto;
+        const { 
+            address_hash, 
+            address_url, 
+            amount, 
+            id, 
+            is_valid_to_cancel, 
+            status_code, submit_date, 
+            transaction_hash, 
+            transaction_url, 
+            transaction_type 
+        } = crypto;
 
         const formatted_address_hash = address_hash ? `${address_hash.substring(0,4)}....${address_hash.substring(address_hash.length - 4)}` : '';
         const formatted_transaction_hash = transaction_hash ? `${transaction_hash.substring(0,4)}....${transaction_hash.substring(transaction_hash.length - 4)}` : 'Pending';
@@ -88,7 +98,7 @@ const CryptoTransactionsRenderer = ({
                             <Text as='p' color='prominent' size='xxs' weight='bold'>{localize('Amount')}</Text>
                         </Table.Cell>
                         <Table.Cell className='crypto-transactions-history__table-amount'>
-                            <Text as='p' size='xxs' weight='bold' color={transaction_type === 'withdrawal' ? 'red': 'profit-success'} >
+                            <Text as='p' size='xxs' weight='bold' color={transaction_type === 'withdrawal' ? 'red' : 'profit-success'} >
                                 {localize(`${formatted_amount} ${currency}`)}
                             </Text>
                         </Table.Cell>
@@ -146,7 +156,7 @@ const CryptoTransactionsRenderer = ({
                         <Text as='p' size='xs' weight='bold'>{transaction_type}</Text>
                     </Table.Cell>
                     <Table.Cell className='crypto-transactions-history__table-amount'>
-                        <Text as='p' size='xs' weight='bold' color={transaction_type === 'withdrawal' ? 'red': 'profit-success'} >
+                        <Text as='p' size='xs' weight='bold' color={transaction_type === 'withdrawal' ? 'red' : 'profit-success'} >
                             {localize(`${formatted_amount} ${currency}`)}
                         </Text>
                     </Table.Cell>

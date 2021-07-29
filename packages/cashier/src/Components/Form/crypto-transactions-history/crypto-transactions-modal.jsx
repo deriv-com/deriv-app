@@ -8,7 +8,7 @@ const CryptoTransactionsModal = ({
         cancelCryptoTransaction, 
         is_cancel_modal_open, 
         onClickModalCancel, 
-        selected_transaction_id
+        selected_transaction_id,
     }) => {
     return (
         <React.Fragment>

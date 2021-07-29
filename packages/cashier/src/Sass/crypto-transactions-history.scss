@@ -105,6 +105,10 @@
                     background-color: $color-green-1;
                 }
             }
+            .dc-popover__target {
+                display: flex;
+                align-items: center;
+            }
         }
         &-popover {
             cursor: pointer;

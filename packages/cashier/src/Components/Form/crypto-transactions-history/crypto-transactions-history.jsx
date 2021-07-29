@@ -58,7 +58,7 @@ const CryptoTransactionsHistory = ({
                                 data_source={crypto_transactions}
                                 rowRenderer={row_props => <CryptoTransactionsRenderer {...row_props} />}
                                 keyMapper={row => row.id}
-                                row_gap = {16}
+                                row_gap = { isMobile() ? 8 : 0 }
                             /> 
                         }
                     </Table.Body>

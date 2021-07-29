@@ -134,11 +134,11 @@ const AccountSwitcher = props => {
         }
     };
 
-    const redirectToMt5Real = async (market_type, server) => {
-        const synthetic_server = server?.server_info?.geolocation.region;
-        const has_synthetic_server = market_type === 'synthetic' ? `-${synthetic_server.toLowerCase()}` : '';
-        const hash_id = `-${market_type}${has_synthetic_server}`;
-        await redirectToMt5(`real${market_type ? hash_id : ''}`);
+    const redirectToMt5Real = (market_type, server) => {
+        const synthetic_server_region = server?.server_info?.geolocation.region;
+        const synthetic_server_string = market_type === 'synthetic' ? `-${synthetic_server_region.toLowerCase()}` : '';
+        const hash_id = `-${market_type}${synthetic_server_string}`;
+        redirectToMt5(`real${market_type ? hash_id : ''}`);
     };
 
     // TODO: Uncomment when real account is launched

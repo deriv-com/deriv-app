@@ -32,6 +32,7 @@ const AppModals = ({
     is_account_types_modal_visible,
     is_welcome_modal_visible,
     is_reality_check_visible,
+    is_spending_limit_visible,
     is_set_residence_modal_visible,
     is_eu,
     is_logged_in,
@@ -72,7 +73,7 @@ const AppModals = ({
         ComponentToLoad = <MT5AccountNeededModal />;
     }
 
-    if (is_reality_check_visible) {
+    if (is_reality_check_visible || is_spending_limit_visible) {
         ComponentToLoad = <RealityCheckModal />;
     }
 
@@ -93,4 +94,5 @@ export default connect(({ client, ui }) => ({
     is_eu: client.is_eu,
     is_logged_in: client.is_logged_in,
     is_reality_check_visible: client.is_reality_check_visible,
+    is_spending_limit_visible: client.is_spending_limit_visible,
 }))(AppModals);

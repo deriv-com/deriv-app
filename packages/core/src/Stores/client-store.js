@@ -216,6 +216,36 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get is_spending_limit_visible() {
+        if (!this.loginid || !this.landing_company) {
+            return false;
+        }
+
+        const balance = parseFloat(this.balance);
+
+        if (!this.has_reality_check) return false;
+
+        if (
+            this.has_reality_check &&
+            !this.self_exclusion.max_30day_turnover &&
+            this.landing_company_shortcode === 'iom' &&
+            (balance !== 0 || this.statement.count > 0)
+        ) {
+            return true;
+        }
+
+        if (
+            this.has_reality_check &&
+            !this.self_exclusion.max_30day_turnover &&
+            this.landing_company_shortcode === 'malta'
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @computed
     get is_svg() {
         if (!this.landing_company_shortcode) {
             return false;

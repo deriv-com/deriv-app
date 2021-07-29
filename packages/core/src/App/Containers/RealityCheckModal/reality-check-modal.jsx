@@ -71,7 +71,7 @@ const RealityCheckModal = ({
     setReportsTabIndex,
     setVisibilityRealityCheck,
     setSpendingLimitTradingStatistics,
-    self_exclusion,
+    is_spending_limit_visible,
     balance,
 }) => {
     const history = useHistory();
@@ -126,17 +126,16 @@ const RealityCheckModal = ({
         form_props?.setSubmitting(false);
     };
 
-    const is_enable_max30day_turnover = !self_exclusion.max_30day_turnover;
     const has_balance = parseInt(balance) !== 0;
 
     // if user previously did not set max_30day_turnover,
     // we force him/her here to fill this field
-    if (is_enable_max30day_turnover) {
+    if (is_spending_limit_visible) {
         return (
             <SpendingLimitModal
                 disableApp={disableApp}
                 enableApp={enableApp}
-                is_visible={is_enable_max30day_turnover}
+                is_visible={is_spending_limit_visible}
                 openStatement={openStatement}
                 validateForm={spendingLimitValidateForm}
                 onSubmit={setSpendingLimitTradingStatistics}
@@ -170,7 +169,7 @@ const RealityCheckModal = ({
     // we are going to show the BriefModal in a case that user
     // did not fill it previously, but if user filled it previously
     // we just show SummaryModal
-    if (!is_enable_max30day_turnover && has_balance) {
+    if (!is_spending_limit_visible && has_balance) {
         return (
             <BriefModal
                 disableApp={disableApp}
@@ -215,5 +214,5 @@ export default connect(({ client, common, ui }) => ({
     disableApp: ui.disableApp,
     setReportsTabIndex: ui.setReportsTabIndex,
     setSpendingLimitTradingStatistics: client.setSpendingLimitTradingStatistics,
-    self_exclusion: client.self_exclusion,
+    is_spending_limit_visible: client.is_spending_limit_visible,
 }))(RealityCheckModal);

@@ -93,7 +93,7 @@ const CryptoTransactionsRenderer = ({
                         </Table.Cell>
                         <Table.Cell className='crypto-transactions-history__table-amount'>
                             <Text as='p' size='xxs' weight='bold' color={transaction_type === 'withdrawal' ? 'red' : 'profit-success'} >
-                                {localize(`${formatted_amount} ${currency}`)}
+                                {`${formatted_amount} ${currency}`}
                             </Text>
                         </Table.Cell>
                         <Table.Cell>
@@ -122,7 +122,7 @@ const CryptoTransactionsRenderer = ({
                             <Text as='p' color='prominent' size='xxs' weight='bold'>{localize('Time')}</Text>
                         </Table.Cell>
                         <Table.Cell className='crypto-transactions-history__table-time'>
-                            <Text as='p' color='prominent' size='xxs'>{localize(formatted_submit_date)}</Text>
+                            <Text as='p' color='prominent' size='xxs'>{formatted_submit_date}</Text>
                         </Table.Cell>
                         <Table.Cell className='crypto-transactions-history__table-action'>
                             {is_valid_to_cancel === 1 && <Button 
@@ -151,7 +151,7 @@ const CryptoTransactionsRenderer = ({
                     </Table.Cell>
                     <Table.Cell className='crypto-transactions-history__table-amount'>
                         <Text as='p' size='xs' weight='bold' color={transaction_type === 'withdrawal' ? 'red' : 'profit-success'} >
-                            {localize(`${formatted_amount} ${currency}`)}
+                            {`${formatted_amount} ${currency}`}
                         </Text>
                     </Table.Cell>
                     <Table.Cell className='crypto-transactions-history__table-hash'>
@@ -187,7 +187,7 @@ const CryptoTransactionsRenderer = ({
                     </Table.Cell>
                     { !has_transaction_clicked &&
                         <Table.Cell>
-                            {localize(formatted_submit_date)}
+                            {formatted_submit_date}
                         </Table.Cell>
                     }
                     { !has_transaction_clicked &&

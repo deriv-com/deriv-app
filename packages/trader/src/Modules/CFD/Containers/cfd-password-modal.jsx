@@ -684,51 +684,58 @@ const CFDPasswordModal = ({
         />
     );
 
+    const password_modal = (
+        <Modal
+            className='cfd-password-modal'
+            has_close_icon={!should_show_server_form || should_set_trading_password}
+            is_open={should_show_password}
+            toggleModal={closeModal}
+            should_header_stick_body
+            renderTitle={() => (
+                <PasswordModalHeader
+                    should_show_server_form={should_show_server_form}
+                    should_set_trading_password={should_set_trading_password}
+                    account_title={account_title}
+                    has_mt5_account={has_mt5_account}
+                    is_password_reset_error={is_password_reset}
+                    platform={platform}
+                />
+            )}
+            onExited={() => setPasswordModalExited(true)}
+            onEntered={() => setPasswordModalExited(false)}
+            width={isMobile() && '32.8rem'}
+        >
+            {should_show_server_form ? cfd_server_form : cfd_password_form}
+        </Modal>
+    );
+
+    const password_dialog = (
+        <MobileDialog
+            has_full_height
+            portal_element_id='modal_root'
+            visible={should_show_password}
+            onClose={closeModal}
+            wrapper_classname='cfd-password-modal'
+        >
+            <PasswordModalHeader
+                should_show_server_form={should_show_server_form}
+                should_set_trading_password={should_set_trading_password}
+                account_title={account_title}
+                has_mt5_account={has_mt5_account}
+                is_password_reset_error={is_password_reset}
+                platform={platform}
+            />
+
+            {should_show_server_form ? cfd_server_form : cfd_password_form}
+        </MobileDialog>
+    );
+
+    if (should_set_trading_password) return password_modal;
+
     return (
         <React.Fragment>
-            <DesktopWrapper>
-                <Modal
-                    className='cfd-password-modal'
-                    has_close_icon={!should_show_server_form || should_set_trading_password}
-                    is_open={should_show_password}
-                    toggleModal={closeModal}
-                    should_header_stick_body
-                    renderTitle={() => (
-                        <PasswordModalHeader
-                            should_show_server_form={should_show_server_form}
-                            should_set_trading_password={should_set_trading_password}
-                            account_title={account_title}
-                            has_mt5_account={has_mt5_account}
-                            is_password_reset_error={is_password_reset}
-                            platform={platform}
-                        />
-                    )}
-                    onExited={() => setPasswordModalExited(true)}
-                    onEntered={() => setPasswordModalExited(false)}
-                >
-                    {should_show_server_form ? cfd_server_form : cfd_password_form}
-                </Modal>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <MobileDialog
-                    has_full_height
-                    portal_element_id='modal_root'
-                    visible={should_show_password}
-                    onClose={closeModal}
-                    wrapper_classname='cfd-password-modal'
-                >
-                    <PasswordModalHeader
-                        should_show_server_form={should_show_server_form}
-                        should_set_trading_password={should_set_trading_password}
-                        account_title={account_title}
-                        has_mt5_account={has_mt5_account}
-                        is_password_reset_error={is_password_reset}
-                        platform={platform}
-                    />
-
-                    {should_show_server_form ? cfd_server_form : cfd_password_form}
-                </MobileDialog>
-            </MobileWrapper>
+            <DesktopWrapper>{password_modal}</DesktopWrapper>
+            <MobileWrapper>{password_dialog}</MobileWrapper>
             <SuccessDialog
                 is_open={should_show_success}
                 toggleModal={closeModal}
@@ -741,6 +748,8 @@ const CFDPasswordModal = ({
                 text_submit={account_type.category === 'real' ? localize('Transfer now') : localize('Continue')}
                 has_cancel={account_type.category === 'real'}
                 has_close_icon={false}
+                width={isMobile() && '32.8rem'}
+                is_medium_button={isMobile()}
             />
             <SentEmailModal
                 is_open={should_show_sent_email_modal}

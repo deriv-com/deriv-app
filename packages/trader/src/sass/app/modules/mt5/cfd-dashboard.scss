@@ -1314,7 +1314,6 @@
             grid-gap: 0.6rem;
 
             & .dc-btn {
-                width: 100%;
                 &:only-child {
                     max-width: 14rem;
                     width: auto;
@@ -1349,8 +1348,6 @@
         }
     }
     .dc-modal-body {
-        min-width: 384px;
-
         .dc-modal-header__title {
             text-align: center;
             margin: auto;
@@ -1358,7 +1355,7 @@
             width: fit-content;
         }
         @include mobile {
-            min-width: calc(100vw - 3.2rem);
+            font-size: 1.4rem;
         }
     }
     .cfd-account__platform {

@@ -77,7 +77,7 @@
             overflow-x: hidden;
             height: 100%;
             max-height: calc(100% - 6.4rem);
-            padding: 2rem;
+            padding: 1rem;
         }
     }
     @include tablet-up {
@@ -134,10 +134,7 @@
             flex-direction: column;
             width: 100%;
             align-items: center;
-
-            @include desktop {
-                margin-top: -2.5rem;
-            }
+            margin-top: -2.5rem;
 
             .dc-icon {
                 margin-left: 1.1rem;

@@ -1,4 +1,3 @@
-import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DataList, Icon, Loading, Table, Text } from '@deriv/components';
@@ -70,7 +69,7 @@ const CryptoTransactionsHistory = ({
 };
 
 CryptoTransactionsHistory.propTypes = {
-    crypto_transactions: MobxPropTypes.arrayOrObservableArray,
+    crypto_transactions: PropTypes.array,
     currency: PropTypes.currency,
     getCryptoTransactions: PropTypes.func,
     is_loading: PropTypes.bool,

@@ -21,11 +21,11 @@ const CryptoTransactionsRenderer = ({
             status_code, submit_date, 
             transaction_hash, 
             transaction_url, 
-            transaction_type 
+            transaction_type,
         } = crypto;
 
         const formatted_address_hash = address_hash ? `${address_hash.substring(0,4)}....${address_hash.substring(address_hash.length - 4)}` : '';
-        const formatted_transaction_hash = transaction_hash ? `${transaction_hash.substring(0,4)}....${transaction_hash.substring(transaction_hash.length - 4)}` : 'Pending';
+        const formatted_transaction_hash = transaction_hash ? `${transaction_hash.substring(0,4)}....${transaction_hash.substring(transaction_hash.length - 4)}` : localize('Pending');
         const formatted_amount = transaction_type === 'withdrawal' ? `-${amount}` : `+${amount}`;
         const formatted_submit_date = epochToMoment(submit_date).format('DD MMM YYYY HH:mm:ss [GMT]');
         const formatted_status_code = status_code.toLowerCase();
@@ -83,7 +83,7 @@ const CryptoTransactionsRenderer = ({
                             <div className='crypto-transactions-history__table-status'>
                                 <div className= {classNames('crypto-transactions-history__table-status-code', {
                                     'crypto-transactions-history__table-status-code-successful' : 
-                                        formatted_status_code === 'confirmed' || formatted_status_code === 'sent'
+                                        formatted_status_code === 'confirmed' || formatted_status_code === 'sent',
                                 })} />
                                 <Text as='p' size='xxs'>{status_list[formatted_status_code].description}</Text>
                             </div>
@@ -194,7 +194,7 @@ const CryptoTransactionsRenderer = ({
                         <Table.Cell className='crypto-transactions-history__table-status'>
                             <div className= {classNames('crypto-transactions-history__table-status-code', {
                                 'crypto-transactions-history__table-status-code-successful' : 
-                                    formatted_status_code === 'confirmed' || formatted_status_code === 'sent'
+                                    formatted_status_code === 'confirmed' || formatted_status_code === 'sent',
                             })} />
                             <Text as='p' size='xs'>{status_list[formatted_status_code].description}</Text>
                         </Table.Cell>

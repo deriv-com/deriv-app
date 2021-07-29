@@ -191,6 +191,7 @@ export default class ClientStore extends BaseStore {
         const balance = parseFloat(this.balance);
 
         if (!this.has_reality_check) return false;
+
         // scenario one
         if (!this.reality_check_dismissed && balance > 0) return true;
 
@@ -210,7 +211,7 @@ export default class ClientStore extends BaseStore {
         if (!this.reality_check_dismissed && balance === 0 && this.statement.count > 0) return true;
 
         // another scenario
-        if (this.has_reality_check && !this.self_exclusion.max_30day_turnover) return true;
+        if (!this.self_exclusion.max_30day_turnover) return true;
 
         return false;
     }
@@ -226,7 +227,6 @@ export default class ClientStore extends BaseStore {
         if (!this.has_reality_check) return false;
 
         if (
-            this.has_reality_check &&
             !this.self_exclusion.max_30day_turnover &&
             this.landing_company_shortcode === 'iom' &&
             (balance !== 0 || this.statement.count > 0)
@@ -234,11 +234,7 @@ export default class ClientStore extends BaseStore {
             return true;
         }
 
-        if (
-            this.has_reality_check &&
-            !this.self_exclusion.max_30day_turnover &&
-            this.landing_company_shortcode === 'malta'
-        ) {
+        if (!this.self_exclusion.max_30day_turnover && this.landing_company_shortcode === 'malta') {
             return true;
         }
 

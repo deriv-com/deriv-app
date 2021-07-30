@@ -174,6 +174,7 @@ export default class CashierStore extends BaseStore {
     @observable fiat_amount = '';
     @observable insufficient_fund_error = '';
     @observable is_timer_visible = false;
+    @observable deposit_blockchain_address = '';
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -229,6 +230,11 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setDepositBlockchainAddress(deposit_blockchain_address) {
+        this.deposit_blockchain_address = deposit_blockchain_address;
+    }
+
+    @action.bound
     setIsCashierDefault(is_cashier_default) {
         this.is_cashier_default = is_cashier_default;
     }
@@ -242,6 +248,20 @@ export default class CashierStore extends BaseStore {
         this.onSwitchAccount(this.accountSwitcherListener);
     }
 
+    @action.bound
+    async requestDepositBlockChainAddress() {
+        await this.WS.send({
+            cashier: 'deposit',
+            provider: 'crypto',
+            type: 'api',
+        }).then(response => {
+            if (!response.error) {
+                this.setDepositBlockchainAddress(response.cashier.deposit.address);
+                return Promise.resolve();
+            }
+            return Promise.reject(response.error);
+        });
+    }
     // Initialise P2P attributes on app load without mounting the entire cashier
     @action.bound
     init() {
@@ -764,7 +784,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async getExchangeRate(from_currency, to_currency) {
-        const {exchange_rates} = await this.WS.send({
+        const { exchange_rates } = await this.WS.send({
             exchange_rates: 1,
             base_currency: from_currency,
         });
@@ -772,7 +792,7 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async onChangeCryptoAmount({target}, from_currency, to_currency) {
+    async onChangeCryptoAmount({ target }, from_currency, to_currency) {
         const rate = await this.getExchangeRate(from_currency, to_currency);
         runInAction(() => {
             const decimals = getDecimalPlaces(to_currency);
@@ -783,13 +803,13 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async onChangeFiatAmount({target}, from_currency, to_currency) {
+    async onChangeFiatAmount({ target }, from_currency, to_currency) {
         const rate = await this.getExchangeRate(from_currency, to_currency);
         runInAction(() => {
             const decimals = getDecimalPlaces(to_currency);
             const amount = (rate * target.value).toFixed(decimals);
             const balance = this.root_store.client.balance;
-            if(balance < amount) {
+            if (balance < amount) {
                 this.insufficient_fund_error = localize('Insufficient funds');
                 this.setCryptoAmount('');
             } else {

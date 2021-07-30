@@ -4,6 +4,7 @@ import { Loading } from '@deriv/components';
 // import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import CryptoDeposit from './crypto-deposit.jsx';
 import CashierContainer from '../Components/cashier-container.jsx';
 import Error from '../Components/Error/error.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
@@ -81,6 +82,9 @@ const Deposit = ({
     }
     if (is_virtual) {
         return <Virtual />;
+    }
+    if (isCryptocurrency(currency)) {
+        return <CryptoDeposit />;
     }
     if (is_system_maintenance) {
         if (is_cashier_locked || (is_deposit_locked && current_currency_type === 'crypto')) {

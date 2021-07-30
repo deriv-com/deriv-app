@@ -38,6 +38,7 @@ import './cashier/ic-cashier-changelly-row-dark.svg';
 import './cashier/ic-cashier-changelly-row-light.svg';
 import './cashier/ic-cashier-changelly.svg';
 import './cashier/ic-cashier-cimb-niaga.svg';
+import './cashier/ic-cashier-clipboard.svg';
 import './cashier/ic-cashier-deposit-lock.svg';
 import './cashier/ic-cashier-deposit.svg';
 import './cashier/ic-cashier-directa-dark.svg';

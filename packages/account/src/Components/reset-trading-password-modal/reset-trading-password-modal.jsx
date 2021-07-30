@@ -164,7 +164,7 @@ const ResetTradingPassword = ({ setDialogTitleFunc, toggleResetTradingPasswordMo
                                                 values={{ error_msg: status.error_msg }}
                                             />
                                         ) : (
-                                            <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
+                                            <Localize i18n_default_text='Strong passwords contain at least 8 characters that include uppercase and lowercase letters, numbers, and symbols.' />
                                         )}
                                     </Text>
                                     <FormSubmitButton

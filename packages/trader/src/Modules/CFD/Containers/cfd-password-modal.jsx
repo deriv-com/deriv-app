@@ -47,16 +47,16 @@ const PasswordModalHeader = ({
     }
 
     const element = isMobile() ? 'p' : 'span';
-    const alignment = isMobile() ? 'center' : 'left';
-    const font_size = isMobile() ? 'xs' : 's';
+    const alignment = 'center';
+    const font_size = 's';
     const style = isMobile()
         ? {
-              paddingTop: '2rem',
+              padding: '2rem',
           }
         : {};
 
     return (
-        <Text styles={style} as={element} line_height='24' weight='bold' size={font_size} align={alignment}>
+        <Text styles={style} as={element} line_height='m' weight='bold' size={font_size} align={alignment}>
             {!should_show_server_form && !should_set_trading_password && !is_password_reset_error && (
                 <Localize
                     i18n_default_text='Enter your {{platform}} password'
@@ -68,7 +68,7 @@ const PasswordModalHeader = ({
             {!should_show_server_form && is_password_reset_error && <Localize i18n_default_text='Too many attempts' />}
             {should_show_server_form && (
                 <Localize
-                    i18n_default_text='Choose a region for your DMT5 {{ account_type }} account'
+                    i18n_default_text='Choose a region for your DMT5 real {{ account_type }} account'
                     values={{
                         account_type: account_title,
                     }}

@@ -167,6 +167,10 @@ const CFDAccountCard = ({
         type.type === 'synthetic' &&
         existing_data?.server_info;
 
+    const is_real_synthetic_account = type.type === 'synthetic' && type.category === 'real' && type.platform === 'mt5';
+    const get_server_region = existing_data?.server_info?.geolocation.region;
+    const get_server_environment = existing_data?.server_info?.environment;
+
     const ref = React.useRef();
     const wrapper_ref = React.useRef();
     const button_ref = React.useRef();
@@ -207,10 +211,6 @@ const CFDAccountCard = ({
     const createFullServerNames = () => {
         let region_string = '';
         let server_number = '';
-        const is_real_synthetic_account =
-            type.type === 'synthetic' && type.category === 'real' && type.platform === 'mt5';
-        const get_server_region = existing_data?.server_info?.geolocation.region;
-        const get_server_environment = existing_data?.server_info?.environment;
         const server_environment = get_server_environment ? get_server_environment.toLowerCase() : '';
 
         if (is_real_synthetic_account && get_server_region) {

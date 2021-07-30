@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { useHistory } from 'react-router-dom';
-import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text } from '@deriv/components';
+import { Button, Dialog, Icon, PasswordInput, PasswordMeter, Text, FormSubmitButton } from '@deriv/components';
 import { getErrorMessages, validPassword, validLength, WS, getCFDPlatformLabel } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 
@@ -168,18 +167,14 @@ const ResetTradingPassword = ({ setDialogTitleFunc, toggleResetTradingPasswordMo
                                             <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
                                         )}
                                     </Text>
-                                    <Button
-                                        className={classNames('reset-trading-password__btn', {
-                                            'reset-trading-password__btn--disabled':
-                                                !values.password || errors.password || isSubmitting,
-                                        })}
-                                        type='submit'
+                                    <FormSubmitButton
                                         is_disabled={!values.password || !!errors.password || isSubmitting}
-                                        primary
-                                        large
-                                    >
-                                        <Localize i18n_default_text='Confirm' />
-                                    </Button>
+                                        has_cancel
+                                        cancel_label={localize('Cancel')}
+                                        onCancel={() => toggleResetTradingPasswordModal(false)}
+                                        is_loading={isSubmitting}
+                                        label={localize('Create')}
+                                    />
                                 </div>
                             )}
                         </React.Fragment>

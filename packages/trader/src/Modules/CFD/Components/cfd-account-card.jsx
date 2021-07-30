@@ -78,18 +78,23 @@ const CFDAccountCardAction = ({
     is_virtual,
     onSelectAccount,
     type,
+    platform,
+    title,
 }) => {
     if (
         is_virtual &&
-        has_real_account &&
         type.category === 'real' &&
-        type.type === 'financial_stp' &&
-        typeof handleClickSwitchAccount === 'function'
+        typeof handleClickSwitchAccount === 'function' &&
+        (platform === CFD_PLATFORMS.MT5 ? has_real_account && type.type === 'financial_stp' : true)
     ) {
         return (
             <div className='cfd-account-card__action-wrapper'>
                 <Localize
-                    i18n_default_text='<0>Switch to your real account</0><1> to create a DMT5 Financial STP account.</1>'
+                    i18n_default_text='<0>Switch to your real account</0><1> to create a {{platform}} {{account_title}} account.</1>'
+                    values={{
+                        platform: getCFDPlatformLabel(platform),
+                        account_title: title,
+                    }}
                     components={[
                         <a
                             className={classNames('cfd-account-card__action-wrapper__link link link--orange', {
@@ -464,6 +469,8 @@ const CFDAccountCard = ({
                                 is_virtual={is_virtual}
                                 onSelectAccount={onSelectAccount}
                                 type={type}
+                                platform={platform}
+                                title={title}
                             />
                         )}
                     </div>

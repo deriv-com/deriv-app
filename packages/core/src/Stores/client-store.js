@@ -229,27 +229,30 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get legal_allowed_currencies() {
-        if (!this.landing_companies) return [];
-        if (this.root_store.ui && this.root_store.ui.real_account_signup_target) {
-            const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
-            if (this.landing_companies[`${target}_company`] && this.current_landing_company && this.accounts) {
-                if (this.accounts[this.loginid] && !this.accounts[this.loginid].currency) {
-                    return this.landing_companies[`${target}_company`].legal_allowed_currencies.filter(currency =>
-                        this.current_landing_company.legal_allowed_currencies.includes(currency)
-                    );
-                }
+        const getDefaultAllowedCurrencies = () => {
+            if (this.landing_companies.gaming_company) {
+                return this.landing_companies.gaming_company.legal_allowed_currencies;
             }
-            if (this.landing_companies[`${target}_company`]) {
-                return this.landing_companies[`${target}_company`].legal_allowed_currencies;
+            if (this.landing_companies.financial_company) {
+                return this.landing_companies.financial_company.legal_allowed_currencies;
             }
+            return [];
+        };
+
+        if (!this.landing_companies || !this.root_store.ui) return [];
+        if (!this.root_store.ui.real_account_signup_target) {
+            return getDefaultAllowedCurrencies();
         }
-        if (this.landing_companies.gaming_company) {
-            return this.landing_companies.gaming_company.legal_allowed_currencies;
+        if (['set_currency', 'manage'].includes(this.root_store.ui.real_account_signup_target)) {
+            return this.current_landing_company?.legal_allowed_currencies;
         }
-        if (this.landing_companies.financial_company) {
-            return this.landing_companies.financial_company.legal_allowed_currencies;
+        const target = this.root_store.ui.real_account_signup_target === 'maltainvest' ? 'financial' : 'gaming';
+
+        if (this.landing_companies[`${target}_company`]) {
+            return this.landing_companies[`${target}_company`].legal_allowed_currencies;
         }
-        return [];
+
+        return getDefaultAllowedCurrencies();
     }
 
     @computed
@@ -340,10 +343,31 @@ export default class ClientStore extends BaseStore {
         return this.dxtrade_accounts_list.length > 0;
     }
 
+    getListOfMT5AccountsWithError = account_type => {
+        if (!this.is_logged_in) return [];
+        return this.mt5_login_list?.filter(
+            account => !!account.has_error && (!account_type || account.account_type === account_type)
+        );
+    };
+
     @computed
-    get has_account_error_in_mt5_list() {
-        if (!this.is_logged_in) return false;
-        return this.mt5_login_list?.some(account => !!account.has_error);
+    get list_of_real_mt5_accounts_with_error() {
+        return this.getListOfMT5AccountsWithError('real');
+    }
+
+    @computed
+    get has_account_error_in_mt5_real_list() {
+        return this.list_of_real_mt5_accounts_with_error.length > 0;
+    }
+
+    @computed
+    get list_of_demo_mt5_accounts_with_error() {
+        return this.getListOfMT5AccountsWithError('demo');
+    }
+
+    @computed
+    get has_account_error_in_mt5_demo_list() {
+        return this.list_of_demo_mt5_accounts_with_error.length > 0;
     }
 
     @computed
@@ -440,6 +464,11 @@ export default class ClientStore extends BaseStore {
     @computed
     get is_financial_information_incomplete() {
         return this.account_status?.status?.some(status => status === 'financial_information_not_complete');
+    }
+
+    @computed
+    get is_deposit_lock() {
+        return this.account_status?.status?.some(status_name => status_name === 'deposit_locked');
     }
 
     @computed
@@ -609,7 +638,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_dxtrade_allowed() {
-        return this.isDxtradeAllowed();
+        return this.isDxtradeAllowed(this.landing_companies);
     }
 
     isMT5Allowed = landing_companies => {
@@ -620,17 +649,15 @@ export default class ClientStore extends BaseStore {
         return 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
     };
 
-    isDxtradeAllowed = () => {
-        if (!this.website_status?.clients_country || !this.landing_companies) return false;
+    isDxtradeAllowed = landing_companies => {
+        if (!this.website_status?.clients_country || !landing_companies || !Object.keys(landing_companies).length)
+            return true;
 
-        const is_svg =
-            this.landing_companies?.financial_company?.shortcode === 'svg' ||
-            this.landing_companies?.gaming_company?.shortcode === 'svg';
-
-        const is_au = (this.residence || this.website_status.clients_country) === 'au';
-        if (is_au) return false;
-
-        return is_svg || (!this.is_logged_in && !this.is_eu && !this.is_eu_country);
+        return (
+            'dxtrade_financial_company' in landing_companies ||
+            'dxtrade_gaming_company' in landing_companies ||
+            (!this.is_logged_in && !this.is_eu && !this.is_eu_country)
+        );
     };
 
     @computed
@@ -704,7 +731,7 @@ export default class ClientStore extends BaseStore {
     @action.bound
     setMT5DisabledSignupTypes(disabled_types_obj) {
         const current_list = this.mt5_disabled_signup_types;
-        this.mt5_disabled_signup_types = { current_list, ...disabled_types_obj };
+        this.mt5_disabled_signup_types = { ...current_list, ...disabled_types_obj };
     }
 
     @action.bound
@@ -755,6 +782,7 @@ export default class ClientStore extends BaseStore {
             residence,
             account_settings,
             preferred_language,
+            user_id,
         } = this;
         const { first_name, last_name, name } = account_settings;
         if (loginid && email) {
@@ -768,6 +796,7 @@ export default class ClientStore extends BaseStore {
                 last_name,
                 name,
                 preferred_language,
+                user_id,
             };
             Cookies.set('client_information', client_information, { domain });
             this.has_cookie_account = true;
@@ -1185,7 +1214,7 @@ export default class ClientStore extends BaseStore {
                 })
             );
             const account_settings = (await WS.authorized.cache.getSettings()).get_settings;
-            this.setPreferredLanguage(account_settings.preferred_language);
+            if (account_settings) this.setPreferredLanguage(account_settings.preferred_language);
             await this.fetchResidenceList();
 
             if (account_settings && !account_settings.residence) {
@@ -1927,8 +1956,7 @@ export default class ClientStore extends BaseStore {
                 if (account.error) {
                     const { account_type, server } = account.error.details;
                     this.setMT5DisabledSignupTypes({
-                        real: account_type === 'real',
-                        demo: account_type === 'demo',
+                        [account_type]: true,
                     });
                     return {
                         account_type,

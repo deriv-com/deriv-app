@@ -85,11 +85,13 @@ const StatusDialogContainer = ({
                 <DialogMessage
                     status={getStatus()}
                     landing_company_shortcode={landing_company_shortcode}
+                    is_fully_authenticated={is_fully_authenticated}
                     currency={currency}
                 />
             </div>
             <DialogButtons
                 landing_company_shortcode={landing_company_shortcode}
+                is_fully_authenticated={is_fully_authenticated}
                 status={getStatus()}
                 closeModal={closeModal}
                 closeModalAndOpenPOI={closeModalAndOpenPOI}

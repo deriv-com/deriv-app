@@ -1359,11 +1359,11 @@ $MIN_HEIGHT_FLOATING: calc(
         padding: 0;
         column-gap: 42px;
         text-align: left;
-        align-items: center;
 
         .table__cell {
             min-height: 5.6rem;
             white-space: pre-wrap;
+            padding: 0;
 
             .name {
                 &__content {
@@ -1392,10 +1392,10 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
     }
+    .table__body .table__row {
+        border-bottom: 1px solid var(--general-section-1);
+    }
     @include desktop {
-        .table__body .table__row {
-            border-bottom: 1px solid var(--general-section-1);
-        }
         &__row {
             padding: 0;
         }
@@ -1449,7 +1449,11 @@ $MIN_HEIGHT_FLOATING: calc(
                     }
                     &--small {
                         max-width: 99px;
-
+                        
+                        .data-list__row-content .dc-btn {
+                            left: 50%;
+                            transform: translateX(-52%);
+                        }
                         .last_used__row-title {
                             line-height: 1.5;
                         }

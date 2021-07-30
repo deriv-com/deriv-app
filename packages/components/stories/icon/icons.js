@@ -42,6 +42,7 @@ export const icons = {
         'IcCashierChangellyRowLight',
         'IcCashierChangelly',
         'IcCashierCimbNiaga',
+        'IcCashierClipboard',
         'IcCashierDepositLock',
         'IcCashierDeposit',
         'IcCashierDirectaDark',

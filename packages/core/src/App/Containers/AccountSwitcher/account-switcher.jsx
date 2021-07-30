@@ -135,10 +135,20 @@ const AccountSwitcher = props => {
     };
 
     const redirectToMt5Real = (market_type, server) => {
-        const synthetic_server_region = server?.server_info?.geolocation.region;
-        const synthetic_region_string = market_type === 'synthetic' ? `-${synthetic_server_region.toLowerCase()}` : '';
-        const hash_id = `-${market_type}${synthetic_region_string}`;
-        redirectToMt5(`real${market_type ? hash_id : ''}`);
+        const synthetic_server_region = server ? server.server_info?.geolocation.region : '';
+        const synthetic_server_environment = server ? (server.server_info?.environment).toLowerCase() : '';
+
+        const serverElementName = () => {
+            let filter_server_number = '';
+            let synthetic_region_string = '';
+            if (market_type === 'synthetic') {
+                filter_server_number = synthetic_server_environment.split('server')[1];
+                synthetic_region_string = `-${synthetic_server_region.toLowerCase()}`;
+            }
+            return `-${market_type}${synthetic_region_string}${filter_server_number}`;
+        };
+
+        redirectToMt5(`real${market_type ? serverElementName() : ''}`);
     };
 
     // TODO: Uncomment when real account is launched

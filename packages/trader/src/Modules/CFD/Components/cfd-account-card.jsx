@@ -204,6 +204,24 @@ const CFDAccountCard = ({
         [existing_data]
     );
 
+    const createFullServerNames = () => {
+        let region_string = '';
+        let server_number = '';
+        const is_real_synthetic_account =
+            type.type === 'synthetic' && type.category === 'real' && type.platform === 'mt5';
+        const get_server_region = existing_data?.server_info?.geolocation.region;
+        const get_server_environment = existing_data?.server_info?.environment;
+        const server_environment = get_server_environment ? get_server_environment.toLowerCase() : '';
+
+        if (is_real_synthetic_account && get_server_region) {
+            region_string = `-${get_server_region.toLowerCase()}`;
+        }
+        if (server_environment !== '' && is_real_synthetic_account) {
+            server_number = server_environment.split('server')[1];
+        }
+        return `${type.category}-${type.type}${region_string}${server_number}`;
+    };
+
     const handleClickSwitchAccount = () => {
         toggleShouldShowRealAccountsList(true);
         toggleAccountsDialog(true);
@@ -218,16 +236,12 @@ const CFDAccountCard = ({
     };
 
     const is_web_terminal_unsupported = isMobile() && platform === CFD_PLATFORMS.DXTRADE;
-
-    const is_real_synthetic_account = type.type === 'synthetic' && type.category === 'real' && type.platform === 'mt5';
-    const current_synthetic_region = getServerName(existing_data).toLowerCase();
-    const synthetic_region_string = (is_real_synthetic_account ? `-${current_synthetic_region}` : '').trim();
     return (
         <div ref={wrapper_ref} className='cfd-account-card__wrapper'>
             <div
                 className={classNames('cfd-account-card', { 'cfd-account-card__logged-out': !is_logged_in })}
                 ref={ref}
-                id={`${type.category}-${type.type}${synthetic_region_string}`}
+                id={createFullServerNames()}
             >
                 {has_popular_banner && (
                     <div className='cfd-account-card__banner'>

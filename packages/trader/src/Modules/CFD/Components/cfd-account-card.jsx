@@ -159,7 +159,10 @@ const CFDAccountCard = ({
     toggleShouldShowRealAccountsList,
 }) => {
     const icon = type.type ? <Icon icon={account_icons[type.platform][type.type]} size={64} /> : null;
-    const has_popular_banner = type.type === 'synthetic' && type.category === 'real' && !existing_data;
+    const has_popular_banner =
+        type.type === 'synthetic' &&
+        type.category === 'real' &&
+        (platform === CFD_PLATFORMS.MT5 ? !existing_data : true);
     const has_demo_banner = type.category === 'demo';
     const has_server_banner =
         is_logged_in &&

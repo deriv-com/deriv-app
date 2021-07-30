@@ -163,7 +163,7 @@ class CFDResetPasswordModal extends React.Component {
                                                                 hint={
                                                                     !has_warning &&
                                                                     localize(
-                                                                        'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
+                                                                        'Strong passwords contain at least 8 characters that include uppercase and lowercase letters, numbers, and symbols.'
                                                                     )
                                                                 }
                                                             />

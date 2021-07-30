@@ -64,8 +64,8 @@ const Account = ({
     if (
         !is_loading &&
         !isEmptyObject(account_status) &&
-        !should_allow_authentication &&
-        /proof-of-identity|proof-of-address/.test(selected_content.path)
+        ((is_virtual && /financial-assessment/.test(selected_content.path)) ||
+            (!should_allow_authentication && /proof-of-identity|proof-of-address/.test(selected_content.path)))
     )
         routeBackInApp(history);
 

@@ -185,6 +185,7 @@ class FinancialAssessment extends React.Component {
         this.is_mounted = true;
         if (this.props.is_virtual) {
             this.setState({ is_loading: false });
+            this.props.history.push(routes.personal_details);
         } else {
             WS.authorized.storage.getFinancialAssessment().then(data => {
                 // TODO: Find a better solution for handling no-op instead of using is_mounted flags

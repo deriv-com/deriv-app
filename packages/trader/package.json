@@ -76,7 +76,7 @@
     "webpack": "^5.46.0",
     "webpack-bundle-analyzer": "^4.3.0",
     "webpack-cli": "^4.7.2",
-    "webpack-manifest-plugin": "git://github.com/shellscape/webpack-manifest-plugin",
+    "webpack-manifest-plugin": "^4.0.2",
     "webpack-node-externals": "^2.5.2"
   },
   "dependencies": {

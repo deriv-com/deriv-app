@@ -29,6 +29,7 @@ This repository contains the various platforms of the Deriv application.
 -   [JavaScript guidelines](docs/JavaScript/README.md) - Contains rules for JS/JSX code style
 -   [Modules docs](docs/Modules/README.md) - Contains implementation guides (i.e., scaffolding, code usage)
 -   [e2e and performance testing docs](e2e_tests/README.md) - Contains documents for create and running e2e and performance tests
+-   [Manage dependencies](docs/Dependencies/README.md)
 
 [comment]: <> (TODO: Refactor Clean Project to be under usage)
 

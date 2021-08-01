@@ -96,13 +96,13 @@
                 height: 1rem;
                 margin-right: 0.8rem;
                 border-radius: 50%;
-                background-color: $color-yellow;
+                background-color: var(--status-warning);
                 @include mobile {
                     width: 0.8rem;
                     height: 0.8rem;
                 }
                 &-successful {
-                    background-color: $color-green-1;
+                    background-color: var(--status-success);
                 }
             }
             .dc-popover__target {

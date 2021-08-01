@@ -61,7 +61,8 @@ module.exports = {
       },
     ],
     'import/prefer-default-export': 0,
-    'import/extensions': ['error', 'never', { jsx: 'always', json: 'always' }],
+    'import/extensions': ['warn', 'never', { jsx: 'always', json: 'always' }],
+    'no-sequences': ['warn'],
     'import/no-unresolved': [
       2,
       { ignore: ['@deriv/components', '@deriv/shared'] },

@@ -11,6 +11,9 @@
     "lib": "lib",
     "test": "__tests__"
   },
+  "engines": {
+    "node": "^14.17.1"
+  },
   "files": [
     "lib"
   ],

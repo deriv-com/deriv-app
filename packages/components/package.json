@@ -4,6 +4,9 @@
     "description": "deriv components",
     "main": "src/index.js",
     "private": true,
+    "engines": {
+        "node": "^14.17.1"
+    },
     "scripts": {
         "start": "rimraf lib && npm run test && npm run serve",
         "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --mode=production --progress --watch",

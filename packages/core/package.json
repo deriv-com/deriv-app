@@ -30,6 +30,9 @@
     "bugs": {
         "url": "https://github.com/binary-com/deriv-app/issues"
     },
+    "engines": {
+        "node": "^14.17.1"
+    },
     "homepage": "https://github.com/binary-com/deriv-app",
     "devDependencies": {
         "babel-eslint": "^10.1.0",

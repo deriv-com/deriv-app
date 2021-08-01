@@ -18,6 +18,9 @@
     "deploy:staging": "echo \"No deploy:staging specified\"",
     "deploy:production": "echo \"No deploy:production specified\""
   },
+  "engines": {
+    "node": "^14.17.1"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/binary-com/deriv-app.git"

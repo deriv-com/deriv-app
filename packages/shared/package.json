@@ -11,6 +11,9 @@
     "type": "git",
     "url": "git+https://github.com/binary-com/deriv-app.git"
   },
+  "engines": {
+    "node": "^14.17.1"
+  },
   "scripts": {
     "start": "echo \"No start specified\"",
     "serve": "echo \"No serve specified\"",

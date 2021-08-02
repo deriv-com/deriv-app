@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { DataList, Icon, Loading, Table, Text } from '@deriv/components';
+import { DataList, Icon, Loading, MobileWrapper, Table, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import CryptoTransactionsModal from './crypto-transactions-modal.jsx';
+import CryptoTransactionsCancelModal from './crypto-transactions-cancel-modal.jsx';
+import CryptoTransactionsStatusModal from './crypto-transactions-status-modal.jsx';
 import CryptoTransactionsRenderer from './crypto-transactions-renderer.jsx';
 import 'Sass/crypto-transactions-history.scss';
 
@@ -33,13 +34,16 @@ const CryptoTransactionsHistory = ({
             <div className='crypto-transactions-history'>
                 <div className='crypto-transactions-history__header'>
                     <div className='crypto-transactions-history__back'>
-                        <Icon icon='IcArrowLeftBold' />
+                        <Icon icon={isMobile() ? 'IcChevronLeftBold' : 'IcArrowLeftBold'} />
                         <Text as='p' size='xs' weight='bold'>
                             <Localize i18n_default_text={` ${currency} transactions history`} />
                         </Text>
                     </div>
                 </div>
-                { isMobile() && <CryptoTransactionsModal /> }
+                <MobileWrapper>
+                    <CryptoTransactionsCancelModal /> 
+                    <CryptoTransactionsStatusModal />
+                </MobileWrapper>
                 <Table 
                     className='crypto-transactions-history__table'
                 >

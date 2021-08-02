@@ -5,12 +5,14 @@ import { Button, Icon, Popover, Table, Text } from '@deriv/components';
 import { epochToMoment, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import { getStatus } from '../../../Constants/crypto-transactions-status';
 
 const CryptoTransactionsRenderer = ({ 
         row: crypto, 
         cancelCryptoTransaction, 
         currency, 
-        showCancelModal,
+        showCryptoTransactionsCancelModal,
+        showCryptoTransactionsStatusModal,
     }) => {
         const { 
             address_hash, 
@@ -18,7 +20,8 @@ const CryptoTransactionsRenderer = ({
             amount, 
             id, 
             is_valid_to_cancel, 
-            status_code, submit_date, 
+            status_code, 
+            submit_date, 
             transaction_hash, 
             transaction_url, 
             transaction_type,
@@ -30,31 +33,10 @@ const CryptoTransactionsRenderer = ({
             `${transaction_hash.substring(0,4)}....${transaction_hash.substring(transaction_hash.length - 4)}` 
             : localize('Pending');
         const formatted_amount = transaction_type === 'withdrawal' ? `-${amount}` : `+${amount}`;
-        const formatted_submit_date = epochToMoment(submit_date).format('DD MMM YYYY HH:mm:ss [GMT]');
-        const formatted_status_code = status_code.toLowerCase();
-        const status_list = {
-            confirmed: {
-                description: localize('Successful'),
-            },
-            locked: {
-                description: localize('In review'),
-            },
-            pending: {
-                description: localize('Pending'),
-            },
-            performing_blockchain_txn: {
-                description: localize('In process'),
-            },
-            processing: {
-                description: localize('In process'),
-            },
-            sent: {
-                description: localize('Successful'),
-            },
-            verified: {
-                description: localize('In process'),
-            },
-        };
+        const formatted_submit_date =  isMobile() ? epochToMoment(submit_date).format('DD MMM YYYY') 
+            : epochToMoment(submit_date).format('DD MMM YYYY HH:mm:ss [GMT]');
+        const formatted_submit_time =  epochToMoment(submit_date).format('HH:mm:ss [GMT]');
+        const status = getStatus(transaction_type, status_code);
 
         const [ is_transaction_clicked, setTransactionClicked ] = React.useState(false);
         const onClickCancel = () => {
@@ -67,7 +49,12 @@ const CryptoTransactionsRenderer = ({
             cancelCryptoTransaction(id);
         };
         const onClickCancelTransaction = () => {
-            showCancelModal(id);
+            showCryptoTransactionsCancelModal(id);
+        };
+        const onClickStatus = () => {
+            const description = status.description;
+            const name = status.name;
+            showCryptoTransactionsStatusModal(description, name);
         };
 
         if(isMobile()) {
@@ -84,12 +71,11 @@ const CryptoTransactionsRenderer = ({
                             >
                                 {transaction_type}
                             </Text>
-                            <div className='crypto-transactions-history__table-status'>
-                                <div className= {classNames('crypto-transactions-history__table-status-code', {
-                                    'crypto-transactions-history__table-status-code-successful' : 
-                                        formatted_status_code === 'confirmed' || formatted_status_code === 'sent',
-                                })} />
-                                <Text as='p' size='xxs'>{status_list[formatted_status_code].description}</Text>
+                            <div className='crypto-transactions-history__table-status' onClick={onClickStatus}>
+                                <div className= {classNames('crypto-transactions-history__table-status-code',
+                                    `crypto-transactions-history__table-status-code-{status.renderer}`
+                                )} />
+                                <Text as='p' size='xxs'>{status.name}</Text>
                             </div>
                         </Table.Cell>
                         <Table.Cell>
@@ -111,7 +97,7 @@ const CryptoTransactionsRenderer = ({
                         <Table.Cell className='crypto-transactions-history__table-hash'>
                             <a className='crypto-transactions-history__table-link' 
                                 href={address_url} 
-                                rel='noreferrer'
+                                rel='noopener noreferrer'
                                 target='_blank'>
                                 <Text 
                                     as='p' 
@@ -128,7 +114,7 @@ const CryptoTransactionsRenderer = ({
                         <Table.Cell className='crypto-transactions-history__table-hash'>
                             <a className='crypto-transactions-history__table-link' 
                                 href={transaction_url} 
-                                rel='noreferrer'
+                                rel='noopener noreferrer'
                                 target='_blank'>
                                 <Text 
                                     as='p' 
@@ -143,13 +129,15 @@ const CryptoTransactionsRenderer = ({
                         </Table.Cell>
                         <Table.Cell className='crypto-transactions-history__table-time'>
                             <Text as='p' size='xxs'>{formatted_submit_date}</Text>
+                            <div className='crypto-transactions-history__bullet' />
+                            <Text as='p' size='xxs'>{formatted_submit_time}</Text>
                         </Table.Cell>
                         <Table.Cell className='crypto-transactions-history__table-action'>
                             {is_valid_to_cancel === 1 && <Button 
                                 onClick={onClickCancelTransaction} 
                                 small 
                                 secondary >
-                                    <Text as='p' size='xxxs'>
+                                    <Text as='p' size='xxxs' weight='bolder'>
                                         <Localize i18n_default_text='Cancel transaction' />
                                     </Text>
                                 </Button>
@@ -191,7 +179,7 @@ const CryptoTransactionsRenderer = ({
                         >
                              <a className='crypto-transactions-history__table-link' 
                                 href={address_url} 
-                                rel='noreferrer'
+                                rel='noopener noreferrer'
                                 target='_blank'>
                                 <Text 
                                     as='p' 
@@ -212,7 +200,7 @@ const CryptoTransactionsRenderer = ({
                             >
                                 <a className='crypto-transactions-history__table-link' 
                                     href={transaction_url} 
-                                    rel='noreferrer'
+                                    rel='noopener noreferrer'
                                     target='_blank'>
                                     <Text 
                                         as='p' 
@@ -235,16 +223,12 @@ const CryptoTransactionsRenderer = ({
                             <Popover
                                 alignment='left'
                                 className='crypto-transactions-history__table-popover'
-                                message={ formatted_status_code === 'locked' 
-                                    ? localize("Your withdrawal request has been submitted. We're reviewing it now.") 
-                                    : '' 
-                                }
+                                message={status.description}
                             >
-                                <div className= {classNames('crypto-transactions-history__table-status-code', {
-                                    'crypto-transactions-history__table-status-code-successful' : 
-                                        formatted_status_code === 'confirmed' || formatted_status_code === 'sent',
-                                })} />
-                                <Text as='p' size='xs'>{status_list[formatted_status_code].description}</Text>
+                                 <div className= {classNames('crypto-transactions-history__table-status-code',
+                                    `crypto-transactions-history__table-status-code-{status.renderer}`
+                                )} />
+                                <Text as='p' size='xs'>{status.name}</Text>
                             </Popover>
                         </Table.Cell>
                     }
@@ -265,7 +249,7 @@ const CryptoTransactionsRenderer = ({
                                     className='crypto-transactions-history__table-popover'
                                     message={localize('Cancel transaction')}
                                 >
-                                    <Icon icon='IcCross' />                         
+                                    <Icon icon='IcCrossLight' size={10} />                         
                                 </Popover>
                             </div>}
                         </Table.Cell>
@@ -279,11 +263,13 @@ CryptoTransactionsRenderer.propTypes = {
     crypto: PropTypes.object,
     currency: PropTypes.string,
     cancelCryptoTransaction: PropTypes.func,
-    showCancelModal: PropTypes.func,
+    showCryptoTransactionsCancelModal: PropTypes.func,
+    showCryptoTransactionsStatusModal: PropTypes.func,
 };
 
 export default connect(({ client, modules }) => ({
     currency: client.currency,
     cancelCryptoTransaction: modules.cashier.cancelCryptoTransaction,
-    showCancelModal: modules.cashier.showCancelModal,
+    showCryptoTransactionsCancelModal: modules.cashier.showCryptoTransactionsCancelModal,
+    showCryptoTransactionsStatusModal: modules.cashier.showCryptoTransactionsStatusModal,
 }))(CryptoTransactionsRenderer);

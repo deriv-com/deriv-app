@@ -19,6 +19,9 @@
         .dc-text {
             margin-left: 0.8rem;
             width: max-content;
+            @include mobile {
+                margin-left: 2.2rem;
+            }
         }
     }
     &__table {
@@ -75,7 +78,7 @@
         }
         &-hash {
             a {
-                text-decoration-color: var(--brand-red-coral);
+                text-decoration: none;
             }
             @include mobile {
                 margin-bottom: 0.8rem;
@@ -101,8 +104,17 @@
                     width: 0.8rem;
                     height: 0.8rem;
                 }
+                &-in-process {
+                    background-color: var(--status-warning);
+                }
+                &-in-review {
+                    background-color: var(--status-info);
+                }
                 &-successful {
                     background-color: var(--status-success);
+                }
+                &-unsuccessful {
+                    background-color: var(--status-danger);
                 }
             }
             .dc-popover__target {
@@ -144,5 +156,14 @@
         .data-list__body-wrapper {
             flex: 1;
         }
+    }
+    &__bullet {
+        background-color: var(--text-general);
+        border-radius: 100%;
+        margin: 0 0.8rem;
+        width: 0.4rem;
+        height: 0.4rem;
+        margin-bottom: 0.2rem;
+        display: inline-block;
     }
 }

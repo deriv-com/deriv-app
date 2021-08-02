@@ -83,9 +83,6 @@ const Deposit = ({
     if (is_virtual) {
         return <Virtual />;
     }
-    if (isCryptocurrency(currency)) {
-        return <CryptoDeposit />;
-    }
     if (is_system_maintenance) {
         if (is_cashier_locked || (is_deposit_locked && current_currency_type === 'crypto')) {
             return <CashierLocked />;
@@ -106,7 +103,9 @@ const Deposit = ({
     if (error.message) {
         return <Error error={error} />;
     }
-
+    if (isCryptocurrency(currency)) {
+        return <CryptoDeposit />;
+    }
     return <CashierContainer iframe_height={iframe_height} iframe_url={iframe_url} is_loading={is_loading} />;
 };
 

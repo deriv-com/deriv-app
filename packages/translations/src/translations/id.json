@@ -2561,7 +2561,7 @@
     "-2102641225": "Pada saat rollover bank terjadi, likuiditas pada pasar forex akan berkurang dan hal ini dapat menyebabkan spread dan waktu pemrosesan order klien meningkat. Hal ini biasanya terjadi sekitar pukul 21:00 GMT selama waktu daylight saving, dan pukul 22:00 GMT di luar waktu daylight saving.",
     "-495364248": "Margin call dan stop out level akan berubah dari waktu ke waktu berdasarkan kondisi pasar.",
     "-536189739": "Untuk melindungi portofolio Anda dari pergerakan pasar yang merugikan karena kesenjangan pembukaan pasar, kami berhak menurunkan leverage pada semua simbol yang ditawarkan untuk akun keuangan sebelum penutupan pasar dan meningkatkannya kembali setelah pasar terbuka. Mohon pastikan bahwa Anda memiliki cukup dana yang tersedia pada akun {{platform}} Anda untuk mendukung posisi Anda setiap saat.",
-    "-10956371": "Anda memerlukan akun riil (dalam mata uang fiat atau kripto) pada Deriv untuk mendaftar akun riil DMT5.",
+    "-10956371": "Anda memerlukan akun riil (dalam mata uang fiat atau kripto) Deriv untuk mendaftar akun riil DMT5.",
     "-1760596315": "Daftar akun Deriv",
     "-149836494": "Nomor referensi transaksi Anda adalah {{transaction_id}}",
     "-1382749084": "Kembali ke trading",

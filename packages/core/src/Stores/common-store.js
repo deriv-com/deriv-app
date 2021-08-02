@@ -55,7 +55,6 @@ export default class CommonStore extends BaseStore {
         if (search) {
             const url_params = new URLSearchParams(search);
             this.platform_src = url_params.get('platform') || '';
-            console.log(this.platform_src);
         }
     }
 

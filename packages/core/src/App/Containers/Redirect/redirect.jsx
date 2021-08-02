@@ -82,6 +82,16 @@ const Redirect = ({
             redirected_to_route = true;
             break;
         }
+        case 'passthrough_authentication': {
+            const redirect_url = url_params.get('redirect_url');
+
+            history.push({
+                pathname: redirect_url,
+                search: url_query_string,
+            });
+            redirected_to_route = true;
+            break;
+        }
         default:
             break;
     }

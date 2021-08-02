@@ -227,7 +227,7 @@ class FinancialAssessment extends React.Component {
                     });
 
                     if (isDesktop()) {
-                        setTimeout(() => this.setState({ is_submit_success: false }), 3000);
+                        setTimeout(() => this.setState({ is_submit_success: false }), 10000);
                     }
 
                     this.props.removeNotificationMessage({ key: 'risk' });

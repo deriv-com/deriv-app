@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Text, Icon } from '@deriv/components';
+import classNames from 'classnames';
+import { ButtonLink, Text, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { epochToMoment } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -40,8 +41,10 @@ const RecentTransaction = ({ crypto_transactions, currency }) => {
                             </Text>
                             <div className='cashier-recent-transaction__status'>
                                 <span
-                                    className='cashier-recent-transaction__status-indicator'
-                                    style={{ backgroundColor: status_code === 'Successful' ? '#4bb4b3' : '#ffad3a' }}
+                                    className={classNames('cashier-recent-transaction__status-indicator', {
+                                        'cashier-recent-transaction__status-indicator--green':
+                                            status_code === 'Successful',
+                                    })}
                                 />
                                 <Text as='p' size='xxxs'>
                                     {`${status_code}`}
@@ -49,7 +52,14 @@ const RecentTransaction = ({ crypto_transactions, currency }) => {
                             </div>
                         </div>
                         <Text as='p' size='xxxs' color='less-prominent' line_height='s'>
-                            {`${amount} ${currency} on ${submit_date}`}
+                            <Localize
+                                i18n_default_text='{{amount}} {{currency}} on {{submit_date}}'
+                                values={{
+                                    amount,
+                                    currency,
+                                    submit_date,
+                                }}
+                            />
                         </Text>
                         <div className='cashier-recent-transaction__hash-wrapper'>
                             <div className='cashier-recent-transaction__hash'>
@@ -74,12 +84,11 @@ const RecentTransaction = ({ crypto_transactions, currency }) => {
                         </div>
                     </div>
                 </div>
-
-                <Button to='#' type='button' secondary className='cashier-recent-transaction__view-all-button'>
+                <ButtonLink to='#' className='cashier-recent-transaction__view-all-button'>
                     <Text weight='bold' as='p' size='xxs'>
                         <Localize i18n_default_text='View all' />
                     </Text>
-                </Button>
+                </ButtonLink>
             </div>
         </div>
     );

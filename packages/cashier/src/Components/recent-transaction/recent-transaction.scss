@@ -51,6 +51,11 @@
                 margin-right: 0.2rem;
                 width: 5px;
                 height: 5px;
+                background-color: #ffad3a8c;
+
+                &--green {
+                    background-color: #4bb4b3;
+                }
             }
         }
         &__hash-wrapper {
@@ -65,6 +70,8 @@
             float: right;
             height: 2.4rem;
             padding: 0.3rem 0.8rem;
+            border: 1px solid #999999;
+            background-color: var(--button-tertiary-default);
         }
     }
 }

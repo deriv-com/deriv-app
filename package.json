@@ -35,7 +35,9 @@
         "jest": "^26.4.2",
         "lerna": "^3.22.0",
         "lint-staged": "^10.4.0",
+        "postcss": "^8.3.6",
         "prettier": "^2.1.2",
+        "prettier-plugin-organize-imports": "^2.3.3",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-test-renderer": "^16.13.1",
@@ -44,8 +46,7 @@
         "stylelint-formatter-pretty": "^2.1.1",
         "stylelint-no-unsupported-browser-features": "^4.0.0",
         "stylelint-selector-bem-pattern": "^2.1.0",
-        "stylelint-webpack-plugin": "^2.1.1",
-        "postcss": "^8.3.6"
+        "stylelint-webpack-plugin": "^2.1.1"
     },
     "scripts": {
         "bootstrap": "f () { npm ci && lerna link && lerna bootstrap --ci --hoist --strict && lerna link && npm run build:travis && npm run install:qa ;}; f",

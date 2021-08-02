@@ -33,6 +33,7 @@ const Account = ({
     history,
     is_logged_in,
     is_logging_in,
+    is_mobile_platform,
     is_virtual,
     is_visible,
     location,
@@ -99,6 +100,7 @@ const Account = ({
     ];
 
     const is_account_limits_route = selected_content.path === routes.account_limits;
+
     if (is_account_limits_route) {
         action_bar_items.push({
             // eslint-disable-next-line react/display-name
@@ -109,12 +111,17 @@ const Account = ({
     if (!is_logged_in && is_logging_in) {
         return <Loading is_fullscreen className='account__initial-loader' />;
     }
+
     const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });
+
     return (
         <FadeWrapper is_visible={is_visible} className='account-page-wrapper' keyname='account-page-wrapper'>
             <div className='account'>
                 {isMobile() && selected_route ? (
-                    <PageOverlay header={selected_route.getTitle()} onClickClose={onClickClose}>
+                    <PageOverlay
+                        header={is_mobile_platform ? '' : selected_route.getTitle()}
+                        onClickClose={onClickClose}
+                    >
                         <selected_route.component component_icon={selected_route.icon_component} />
                     </PageOverlay>
                 ) : is_dashboard ? (
@@ -135,7 +142,7 @@ const Account = ({
                         extra_content={is_dashboard && <AccountLogout logout={logout} history={history} />}
                     />
                 ) : (
-                    <PageOverlay header={localize('Settings')} onClickClose={onClickClose}>
+                    <PageOverlay header={is_mobile_platform ? '' : localize('Settings')} onClickClose={onClickClose}>
                         <VerticalTab
                             alignment='center'
                             is_floating
@@ -174,6 +181,7 @@ export default connect(({ client, common, ui }) => ({
     currency: client.currency,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
+    is_mobile_platform: common.is_src_mobile_platform,
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,
     logout: client.logout,

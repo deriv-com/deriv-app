@@ -1,4 +1,4 @@
-import { action, observable, reaction } from 'mobx';
+import { action, computed, observable, reaction } from 'mobx';
 import { routes, toMoment, getUrlSmartTrader, isMobile, getAppId } from '@deriv/shared';
 import { getAllowedLanguages } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
@@ -42,6 +42,22 @@ export default class CommonStore extends BaseStore {
     @observable app_routing_history = [];
     @observable app_router = { history: null };
     @observable app_id = undefined;
+    @observable platform_src = '';
+
+    @action.bound
+    init() {
+        this.setPlatformSource();
+    }
+
+    @action.bound
+    setPlatformSource() {
+        const search = window.location.search;
+        if (search) {
+            const url_params = new URLSearchParams(search);
+            this.platform_src = url_params.get('platform') || '';
+            console.log(this.platform_src);
+        }
+    }
 
     @action.bound
     checkAppId() {
@@ -233,5 +249,11 @@ export default class CommonStore extends BaseStore {
         }
 
         history.push(routes.trade);
+    }
+
+    @computed
+    get is_src_mobile_platform() {
+        const mobile_platforms = ['p2p', 'derivgo'];
+        return mobile_platforms.includes(this.platform_src);
     }
 }

@@ -21,6 +21,7 @@ const Cashier = ({
     is_account_setting_loaded,
     is_logged_in,
     is_logging_in,
+    is_mobile_platform,
     is_onramp_tab_visible,
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
@@ -90,13 +91,13 @@ const Cashier = ({
     if ((!is_logged_in && is_logging_in) || !is_account_setting_loaded) {
         return <Loading is_fullscreen />;
     }
+
+    const header_title = isMobile() ? selected_route.getTitle() : localize('Cashier');
+
     return (
         <FadeWrapper is_visible={is_visible} className='cashier-page-wrapper' keyname='cashier-page-wrapper'>
             <div className='cashier'>
-                <PageOverlay
-                    header={isMobile() ? selected_route.getTitle() : localize('Cashier')}
-                    onClickClose={onClickClose}
-                >
+                <PageOverlay header={is_mobile_platform ? '' : header_title} onClickClose={onClickClose}>
                     <DesktopWrapper>
                         <VerticalTab
                             alignment='center'
@@ -185,6 +186,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_account_setting_loaded: client.is_account_setting_loaded,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
+    is_mobile_platform: common.is_src_mobile_platform,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
     is_p2p_enabled: modules.cashier.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,

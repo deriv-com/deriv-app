@@ -4,7 +4,7 @@ export const useBlockScroll = target_ref => {
     React.useEffect(() => {
         if (!target_ref) return undefined;
 
-        // Firefox Scrollbars doesn't take widths. Using the current logic of offsetting
+        // Firefox scrollbars doesn't take up container space. Using the current logic of offsetting
         // scrollbar widths will cause scrollable container to move in firefox
         const is_unsupported_browser = navigator.userAgent.indexOf('Firefox') > -1;
 

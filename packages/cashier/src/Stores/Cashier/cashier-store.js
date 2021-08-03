@@ -17,6 +17,7 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import OnRampStore from './on-ramp-store';
+import TransactionHistoryStore from './transaction-history-store';
 import BaseStore from '../base-store';
 import CashierNotifications from '../../Containers/cashier-notifications.jsx';
 
@@ -160,6 +161,10 @@ export default class CashierStore extends BaseStore {
             root_store: this.root_store,
             WS: this.WS,
         });
+
+        this.transaction_history = new TransactionHistoryStore({
+            WS: this.WS,
+        });
         this.init();
     }
 
@@ -174,7 +179,6 @@ export default class CashierStore extends BaseStore {
     @observable fiat_amount = '';
     @observable insufficient_fund_error = '';
     @observable is_timer_visible = false;
-    @observable crypto_transactions = [];
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -287,8 +291,6 @@ export default class CashierStore extends BaseStore {
             }
             this.is_populating_values = true;
 
-            await this.getCryptoTransactions();
-
             if (should_remount) {
                 this.onRemount = this.onMountCommon;
             }
@@ -315,22 +317,6 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setCashierTabIndex(index) {
         this.cashier_route_tab_index = index;
-    }
-
-    @action.bound setCryptoTransactionsHistory(transactions) {
-        this.crypto_transactions = transactions;
-    }
-
-    @action.bound
-    async getCryptoTransactions() {
-        await this.WS.send({ cashier_payments: 1, provider: 'crypto', transaction_type: 'all' }).then(response => {
-            if (!response.error) {
-                const { crypto } = response.cashier_payments;
-                this.setCryptoTransactionsHistory(crypto);
-                return Promise.resolve(response);
-            }
-            return Promise.reject(response.error);
-        });
     }
 
     @action.bound

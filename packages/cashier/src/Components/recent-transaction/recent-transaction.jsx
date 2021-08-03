@@ -7,7 +7,15 @@ import { epochToMoment } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import { getStatus } from '../../Constants/transaction-status';
 
-const RecentTransaction = ({ crypto_transactions, currency }) => {
+const RecentTransaction = ({ crypto_transactions, currency, onMount }) => {
+    React.useEffect(() => {
+        onMount();
+    }, []);
+
+    if (!crypto_transactions.length) {
+        return null;
+    }
+
     let { address_hash, status_code, submit_date, transaction_hash, transaction_type } = crypto_transactions[
         crypto_transactions.length - 1
     ];
@@ -84,7 +92,7 @@ const RecentTransaction = ({ crypto_transactions, currency }) => {
                         </div>
                     </div>
                 </div>
-                <ButtonLink to='#' className='cashier-recent-transaction__view-all-button'>
+                <ButtonLink to='#' className='dc-btn--secondary cashier-recent-transaction__view-all-button'>
                     <Text weight='bold' as='p' size='xxs'>
                         <Localize i18n_default_text='View all' />
                     </Text>
@@ -97,9 +105,11 @@ const RecentTransaction = ({ crypto_transactions, currency }) => {
 RecentTransaction.propTypes = {
     crypto_transactions: PropTypes.array,
     currency: PropTypes.string,
+    onMount: PropTypes.func,
 };
 
 export default connect(({ modules, client }) => ({
-    crypto_transactions: modules.cashier.crypto_transactions,
+    crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
+    onMount: modules.cashier.transaction_history.onMount,
 }))(RecentTransaction);

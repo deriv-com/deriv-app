@@ -6,6 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import { Field, Formik } from 'formik';
 import { connect } from 'Stores/connect';
 import CryptoFiatConverter from './crypto-fiat-converter.jsx';
+import PercentageSelector from '../percentage-selector';
 import '../../Sass/withdraw.scss';
 
 const MIN_ADDRESS_LENGTH = 25;
@@ -34,6 +35,7 @@ const Header = ({ currency }) => {
 
 const CryptoWithdrawForm = ({
     account_platform_icon,
+    balance,
     blockchain_address,
     crypto_amount,
     crypto_converter_error,
@@ -42,6 +44,7 @@ const CryptoWithdrawForm = ({
     requestWithdraw,
     resetWithrawForm,
     setBlockchainAddress,
+    setPercentageSelectorResult,
     verification_code,
 }) => {
     React.useEffect(() => {
@@ -98,6 +101,13 @@ const CryptoWithdrawForm = ({
                                 />
                             )}
                         </Field>
+                        <div className='withdraw__percentage-selector'>
+                            <PercentageSelector
+                                amount={+balance}
+                                currency={currency}
+                                getCalculatedAmount={setPercentageSelectorResult}
+                            />
+                        </div>
                         <CryptoFiatConverter />
                         <div className='withdraw__form-submit'>
                             <Button
@@ -127,6 +137,7 @@ const CryptoWithdrawForm = ({
 
 CryptoWithdrawForm.propTypes = {
     account_platform_icon: PropTypes.string,
+    balance: PropTypes.number,
     blockchain_address: PropTypes.string,
     crypto_amount: PropTypes.string,
     crypto_converter_error: PropTypes.string,
@@ -135,11 +146,13 @@ CryptoWithdrawForm.propTypes = {
     requestWithdraw: PropTypes.func,
     resetWithrawForm: PropTypes.func,
     setBlockchainAddress: PropTypes.func,
+    setPercentageSelectorResult: PropTypes.func,
     verification_code: PropTypes.string,
 };
 
 export default connect(({ client, modules }) => ({
     account_platform_icon: modules.cashier.account_platform_icon,
+    balance: client.balance,
     blockchain_address: modules.cashier.blockchain_address,
     crypto_amount: modules.cashier.crypto_amount,
     crypto_converter_error: modules.cashier.crypto_converter_error,
@@ -148,5 +161,6 @@ export default connect(({ client, modules }) => ({
     requestWithdraw: modules.cashier.requestWithdraw,
     resetWithrawForm: modules.cashier.resetWithrawForm,
     setBlockchainAddress: modules.cashier.setBlockchainAddress,
+    setPercentageSelectorResult: modules.cashier.setPercentageSelectorResult,
     verification_code: client.verification_code.payment_withdraw,
 }))(CryptoWithdrawForm);

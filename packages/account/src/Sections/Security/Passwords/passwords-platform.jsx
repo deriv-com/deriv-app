@@ -42,12 +42,13 @@ const PasswordsPlatform = ({ email, has_set_deriv_x_trading_password, has_set_tr
                 {has_set_trading_password && (
                     <React.Fragment>
                         <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
-                            {
-                                <Localize
-                                    i18n_default_text='Use the <0>DMT5 password</0> to log in to your DMT5 accounts on the desktop, web and mobile apps.'
-                                    components={[<strong key={0} />]}
-                                />
-                            }
+                            <Localize i18n_default_text='Your DMT5 password is for logging in to your Deriv MT5 accounts on the desktop, web, and mobile apps.' />
+                        </Text>
+                        <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
+                            <Localize
+                                i18n_default_text='Click the <0>Change password</0> button to change your DMT5 password.'
+                                components={[<strong key={0} />]}
+                            />
                         </Text>
                         <div className='passwords-platform__content'>
                             <Popover alignment='bottom' message='DMT5'>
@@ -67,12 +68,13 @@ const PasswordsPlatform = ({ email, has_set_deriv_x_trading_password, has_set_tr
                 {has_set_deriv_x_trading_password && (
                     <React.Fragment>
                         <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
-                            {
-                                <Localize
-                                    i18n_default_text='Use the <0>Deriv X password</0> to log in to your Deriv X accounts on the web and mobile apps.'
-                                    components={[<strong key={0} />]}
-                                />
-                            }
+                            <Localize i18n_default_text='Your Deriv X password is for logging in to your Deriv X accounts on the web and mobile apps.' />
+                        </Text>
+                        <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
+                            <Localize
+                                i18n_default_text='Click the <0>Change password</0> button to change your Deriv X password.'
+                                components={[<strong key={0} />]}
+                            />
                         </Text>
                         <div className='passwords-platform__content'>
                             <Popover alignment='bottom' message='Deriv X'>

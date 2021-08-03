@@ -571,7 +571,7 @@ $MIN_HEIGHT_FLOATING: calc(
             justify-content: center;
             flex-wrap: wrap;
             gap: 0.8rem;
-            padding: 0.8rem 1.6rem;
+            padding: 0 1.6rem;
             border: 1px solid var(--border-normal);
             border-radius: $BORDER_RADIUS;
             width: fit-content;

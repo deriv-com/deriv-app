@@ -28,16 +28,10 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
             <div className='account__passwords-wrapper'>
                 <React.Fragment>
                     <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
-                        <Localize
-                            i18n_default_text='Use the <0>Deriv password</0> to log in to Deriv.com, Deriv Go, DTrader, SmartTrader, and DBot.'
-                            components={[<strong key={0} />]}
-                        />
+                        <Localize i18n_default_text='Your Deriv password is for logging in to your Deriv account.' />
                     </Text>
                     <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
-                        <Localize
-                            i18n_default_text='Apps linked to your <0>Deriv password</0>:'
-                            components={[<strong key={0} />]}
-                        />
+                        <Localize i18n_default_text='Apps you can use with your Deriv login:' />
                     </Text>
                     <div className='passwords-platform__logo-container'>
                         <DerivComLogo className='passwords-platform__single-icon' />
@@ -63,13 +57,22 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                 {is_social_signup ? (
                     <React.Fragment>
                         <div className='account__passwords-item passwords-social-buttons'>
-                            <div
-                                className='account__passwords-linked'
-                                onClick={() => {
-                                    setIsUnlinkModalOpen(true);
-                                    setIsSentEmailModalOpen(true);
-                                }}
-                            >
+                            <div className='passwords-social-buttons__desc'>
+                                <Text
+                                    as='p'
+                                    className='passwords-platform__desc'
+                                    color='prominent'
+                                    size='xs'
+                                    weight='lighter'
+                                >
+                                    <Localize
+                                        i18n_default_text="You're using your {{identifier_title}} account to log in to your Deriv account. To change your login method into using a username and password, click the <0>Unlink</0> button."
+                                        components={[<strong key={0} />]}
+                                        values={{ identifier_title: capitalized_identifier }}
+                                    />
+                                </Text>
+                            </div>
+                            <div className='account__passwords-linked'>
                                 {social_identity_provider ? (
                                     <React.Fragment>
                                         <Icon icon={`IcStock${capitalized_identifier}`} size={16} />
@@ -79,12 +82,21 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                                                 values={{ identifier_title: capitalized_identifier }}
                                             />
                                         </Text>
-                                        <Icon icon='IcCross' size={16} />
                                     </React.Fragment>
                                 ) : (
                                     ''
                                 )}
                             </div>
+                            <Button
+                                onClick={() => {
+                                    setIsUnlinkModalOpen(true);
+                                    setIsSentEmailModalOpen(true);
+                                }}
+                                type='button'
+                                text={localize('Unlink')}
+                                tertiary
+                                large
+                            />
                         </div>
                     </React.Fragment>
                 ) : (

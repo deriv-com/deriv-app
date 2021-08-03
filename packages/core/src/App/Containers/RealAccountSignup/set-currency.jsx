@@ -1,14 +1,14 @@
+import { currencySelectorConfig } from '@deriv/account';
+import { Text } from '@deriv/components';
+import { generateValidationFunction, website_name } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import classNames from 'classnames';
 import React from 'react';
-import { localize } from '@deriv/translations';
-import { currencySelectorConfig } from '@deriv/account';
-import { website_name, generateValidationFunction } from '@deriv/shared';
-import { Text } from '@deriv/components';
+import 'Sass/change-account.scss';
+import 'Sass/set-currency.scss';
 import { connect } from 'Stores/connect';
 import CurrencySelector from './currency-selector.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';
-import 'Sass/set-currency.scss';
-import 'Sass/change-account.scss';
 
 const SetCurrency = ({
     setLoading,
@@ -45,7 +45,7 @@ const SetCurrency = ({
     };
 
     const noCryptoAvailable = () => {
-        return available_crypto_currencies.length === 0 && has_fiat;
+        return available_crypto_currencies.length === 0 && has_fiat && props.currency;
     };
 
     if (is_loading) return <LoadingModal />;

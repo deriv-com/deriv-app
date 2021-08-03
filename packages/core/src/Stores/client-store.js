@@ -1,30 +1,30 @@
-import Cookies from 'js-cookie';
-import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
-import moment from 'moment';
 import {
-    redirectToLogin,
+    CFD_PLATFORMS,
+    deriv_urls,
     getPropertyValue,
     getUrlSmartTrader,
     isDesktopOs,
     isEmptyObject,
     LocalStore,
+    redirectToLogin,
     setCurrencies,
     State,
     toMoment,
-    deriv_urls,
     urlForLanguage,
-    CFD_PLATFORMS,
 } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
+import Cookies from 'js-cookie';
+import { action, computed, observable, reaction, runInAction, toJS, when } from 'mobx';
+import moment from 'moment';
 import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
 import { isEuCountry, isOptionsBlocked, isSyntheticsUnavailable } from '_common/utility';
 import BaseStore from './base-store';
-import { getClientAccountType, getAccountTitle } from './Helpers/client';
+import { getAccountTitle, getClientAccountType } from './Helpers/client';
+import { clientNotifications, handleClientNotifications } from './Helpers/client-notifications';
 import { setDeviceDataCookie } from './Helpers/device';
-import { handleClientNotifications, clientNotifications } from './Helpers/client-notifications';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 
 const LANGUAGE_KEY = 'i18n_language';
@@ -681,9 +681,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_options_blocked() {
-        return this.is_logged_in
-            ? isOptionsBlocked(this.residence)
-            : isOptionsBlocked(this.website_status.clients_country);
+        return isOptionsBlocked(this.residence);
     }
 
     /**

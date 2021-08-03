@@ -1,6 +1,6 @@
-import React from 'react';
 import { boolean } from '@storybook/addon-knobs';
 import PageError from 'Components/page-error';
+import React from 'react';
 import Wrapper from '../../shared/wrapper';
 import image_404 from '../page-not-found.png';
 
@@ -12,7 +12,7 @@ const HasImage = () => (
             image_url={image_404}
             messages={[
                 'You may have followed a broken link, or the page has moved to a new address.',
-                'Error Code: 404 page not found',
+                'Error code: 404 page not found',
             ]}
         />
     </Wrapper>

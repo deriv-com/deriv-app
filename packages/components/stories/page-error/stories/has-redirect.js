@@ -1,9 +1,9 @@
-import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import { action } from '@storybook/addon-actions';
 import { boolean } from '@storybook/addon-knobs';
 import PageError from 'Components/page-error';
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Wrapper from '../../shared/wrapper';
 
 const Basic = () => (
@@ -13,9 +13,9 @@ const Basic = () => (
                 header='We couldn’t find that page'
                 messages={[
                     'You may have followed a broken link, or the page has moved to a new address.',
-                    'Error Code: 404 page not found',
+                    'Error code: 404 page not found',
                 ]}
-                redirect_label='Return to Trade'
+                redirect_label='Return to trade'
                 buttonOnClick={action('buttonOnClick')}
                 redirect_url={routes.trade}
             />

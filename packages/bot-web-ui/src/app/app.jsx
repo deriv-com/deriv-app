@@ -1,7 +1,5 @@
-import '../public-path'; // Leave this here (at the top)! OK boss!
-import React from 'react'; // eslint-disable-line import/first
+import { ApiHelpers, DBot, ServerTime } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
 import { Loading } from '@deriv/components';
-import { DBot, ServerTime, ApiHelpers } from '@deriv/bot-skeleton'; // eslint-disable-line import/first
 import {
     Audio,
     BlocklyLoading,
@@ -9,13 +7,15 @@ import {
     BotNotificationMessages,
     MainContent,
     QuickStrategy,
-    RunPanel,
     RoutePromptDialog,
+    RunPanel,
     Toolbar,
 } from 'Components';
-import { MobxContentProvider } from 'Stores/connect';
+import React from 'react'; // eslint-disable-line import/first
 import RootStore from 'Stores';
+import { MobxContentProvider } from 'Stores/connect';
 import GTM from 'Utils/gtm';
+import '../public-path'; // Leave this here (at the top)! OK boss!
 import './app.scss';
 
 const App = ({ passthrough }) => {
@@ -33,9 +33,9 @@ const App = ({ passthrough }) => {
 
         ApiHelpers.setInstance(app.api_helpers_store);
         const { active_symbols } = ApiHelpers.instance;
+
         setIsLoading(true);
-        active_symbols.retrieveActiveSymbols(true).then(async () => {
-            await app.root_store.ws.wait('landing_company', 'get_settings');
+        active_symbols.retrieveActiveSymbols(true).then(() => {
             setIsLoading(false);
             onMount();
         });

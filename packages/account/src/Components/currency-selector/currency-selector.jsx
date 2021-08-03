@@ -1,13 +1,13 @@
+import { AutoHeightWrapper, Div100vhContainer, FormSubmitButton, Modal, ThemedScrollbars } from '@deriv/components';
+import { isDesktop, isMobile, PlatformContext, reorderCurrencies } from '@deriv/shared';
+import { localize, Localize } from '@deriv/translations';
 import classNames from 'classnames';
+import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Field, Formik } from 'formik';
-import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
-import { isMobile, isDesktop, reorderCurrencies, PlatformContext } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import RadioButtonGroup from './radio-button-group.jsx';
 import RadioButton from './radio-button.jsx';
-import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
 export const Hr = () => <div className='currency-hr' />;
 
@@ -205,7 +205,7 @@ const CurrencySelector = ({
                                             : 'currency-selector--deriv-account'
                                     }
                                     is_disabled={isSubmitDisabled(values)}
-                                    is_center={!has_currency}
+                                    is_center={false}
                                     is_absolute={set_currency || is_dashboard}
                                     label={getSubmitLabel()}
                                     {...(has_cancel

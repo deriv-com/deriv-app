@@ -1,19 +1,19 @@
 /* eslint-disable react/display-name */
+import { DesktopWrapper, MobileDialog, MobileWrapper, Modal } from '@deriv/components';
+import { isNavigationFromPlatform, routes } from '@deriv/shared';
+import { localize, Localize } from '@deriv/translations';
 import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import { routes, isNavigationFromPlatform } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import 'Sass/account-wizard.scss';
+import 'Sass/real-account-signup.scss';
 import { connect } from 'Stores/connect';
 import AccountWizard from './account-wizard.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
-import SetCurrency from './set-currency.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
+import SetCurrency from './set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
-import 'Sass/account-wizard.scss';
-import 'Sass/real-account-signup.scss';
 
 const modal_pages_indices = {
     account_wizard: 0,
@@ -265,9 +265,10 @@ const RealAccountSignup = ({
             if (has_real_account && currency && getIsManageTarget()) {
                 active_modal_index_no = modal_pages_indices.add_or_manage_account;
             } else {
-                active_modal_index_no = !currency
-                    ? modal_pages_indices.set_currency
-                    : modal_pages_indices.account_wizard;
+                active_modal_index_no =
+                    !currency && real_account_signup_target !== 'maltainvest'
+                        ? modal_pages_indices.set_currency
+                        : modal_pages_indices.account_wizard;
             }
         } else {
             active_modal_index_no = state_value.active_modal_index;
@@ -277,14 +278,8 @@ const RealAccountSignup = ({
 
     // set title and body of the modal
     const { title: Title, body: ModalContent } = modal_content[getActiveModalIndex()];
-    const {
-        account_wizard,
-        add_or_manage_account,
-        finished_set_currency,
-        status_dialog,
-        set_currency,
-        signup_error,
-    } = modal_pages_indices;
+    const { account_wizard, add_or_manage_account, finished_set_currency, status_dialog, set_currency, signup_error } =
+        modal_pages_indices;
 
     const has_close_icon = [account_wizard, add_or_manage_account, set_currency, signup_error].includes(
         getActiveModalIndex()

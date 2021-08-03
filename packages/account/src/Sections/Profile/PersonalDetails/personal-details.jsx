@@ -1,46 +1,46 @@
 // import PropTypes        from 'prop-types';
-import React from 'react';
-import { Formik, Field } from 'formik';
-import classNames from 'classnames';
 import {
     Autocomplete,
-    Checkbox,
     Button,
+    Checkbox,
+    DateOfBirthPicker,
+    DesktopWrapper,
     FormSubmitErrorMessage,
     Input,
-    DesktopWrapper,
     Loading,
     MobileWrapper,
     SelectNative,
-    DateOfBirthPicker,
     Text,
 } from '@deriv/components';
 import {
-    toMoment,
+    filterObjProperties,
+    getLocation,
     isMobile,
+    PlatformContext,
+    removeObjProperties,
+    routes,
+    toMoment,
     validAddress,
+    validLength,
+    validLetterSymbol,
+    validPhone,
     validPostCode,
     validTaxID,
-    validPhone,
-    validLetterSymbol,
-    validLength,
-    getLocation,
-    removeObjProperties,
-    filterObjProperties,
-    PlatformContext,
-    routes,
     WS,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { withRouter } from 'react-router';
-import { connect } from 'Stores/connect';
-// import { account_opening_reason_list }         from './constants';
-import LeaveConfirm from 'Components/leave-confirm';
-import FormFooter from 'Components/form-footer';
+import classNames from 'classnames';
 import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
+import FormFooter from 'Components/form-footer';
 import FormSubHeader from 'Components/form-sub-header';
+// import { account_opening_reason_list }         from './constants';
+import LeaveConfirm from 'Components/leave-confirm';
 import LoadErrorMessage from 'Components/load-error-message';
+import { Field, Formik } from 'formik';
+import React from 'react';
+import { withRouter } from 'react-router';
+import { connect } from 'Stores/connect';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
@@ -124,7 +124,7 @@ export class PersonalDetailsForm extends React.Component {
                 this.setState({ is_submit_success: false }, () => {
                     setSubmitting(false);
                 });
-            }, 3000);
+            }, 10000);
             // redirection back based on 'from' param in query string
             const url_query_string = window.location.search;
             const url_params = new URLSearchParams(url_query_string);

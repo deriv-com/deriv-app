@@ -1,8 +1,8 @@
-import { action, computed, observable } from 'mobx';
 import { buy_sell } from 'Constants/buy-sell';
+import { action, computed, observable } from 'mobx';
+import BaseStore from 'Stores/base_store';
 import { getShortNickname } from 'Utils/string';
 import { requestWS } from 'Utils/websocket';
-import BaseStore from 'Stores/base_store';
 
 export default class AdvertiserPageStore extends BaseStore {
     @observable active_index = 0;
@@ -67,7 +67,6 @@ export default class AdvertiserPageStore extends BaseStore {
                 advertiser_id: this.advertiser_details_id,
                 offset: startIndex,
                 limit: general_store.list_item_limit,
-                use_client_limits: 1,
             }).then(response => {
                 if (response.error) {
                     this.setErrorMessage(response.error);

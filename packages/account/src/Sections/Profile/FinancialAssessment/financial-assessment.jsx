@@ -1,48 +1,48 @@
-import classNames from 'classnames';
-import React from 'react';
-import { Formik } from 'formik';
-import { useHistory, useLocation, withRouter } from 'react-router';
 import {
-    FormSubmitErrorMessage,
-    Loading,
     Button,
-    Dropdown,
-    Modal,
-    Icon,
     DesktopWrapper,
+    Dropdown,
+    FormSubmitErrorMessage,
+    Icon,
+    Loading,
     MobileWrapper,
+    Modal,
     SelectNative,
     Text,
 } from '@deriv/components';
-import { routes, isMobile, isDesktop, PlatformContext, WS } from '@deriv/shared';
+import { isDesktop, isMobile, PlatformContext, routes, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import LeaveConfirm from 'Components/leave-confirm';
-import IconMessageContent from 'Components/icon-message-content';
+import classNames from 'classnames';
 import DemoMessage from 'Components/demo-message';
-import LoadErrorMessage from 'Components/load-error-message';
 import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
-import FormSubHeader from 'Components/form-sub-header';
 import FormFooter from 'Components/form-footer';
+import FormSubHeader from 'Components/form-sub-header';
+import IconMessageContent from 'Components/icon-message-content';
+import LeaveConfirm from 'Components/leave-confirm';
+import LoadErrorMessage from 'Components/load-error-message';
+import { Formik } from 'formik';
+import React from 'react';
+import { useHistory, useLocation, withRouter } from 'react-router';
+import { connect } from 'Stores/connect';
 import {
     getAccountTurnoverList,
-    getEducationLevelList,
-    getEmploymentIndustryList,
-    getEmploymentStatusList,
-    getEstimatedWorthList,
-    getIncomeSourceList,
-    getNetIncomeList,
-    getOccupationList,
-    getSourceOfWealthList,
     getBinaryOptionsTradingExperienceList,
     getBinaryOptionsTradingFrequencyList,
     getCfdTradingExperienceList,
     getCfdTradingFrequencyList,
+    getEducationLevelList,
+    getEmploymentIndustryList,
+    getEmploymentStatusList,
+    getEstimatedWorthList,
     getForexTradingExperienceList,
     getForexTradingFrequencyList,
+    getIncomeSourceList,
+    getNetIncomeList,
+    getOccupationList,
     getOtherInstrumentsTradingExperienceList,
     getOtherInstrumentsTradingFrequencyList,
+    getSourceOfWealthList,
 } from './financial-information-list';
 
 const ConfirmationContent = ({ className }) => {
@@ -235,7 +235,7 @@ class FinancialAssessment extends React.Component {
                     });
 
                     if (isDesktop()) {
-                        setTimeout(() => this.setState({ is_submit_success: false }), 3000);
+                        setTimeout(() => this.setState({ is_submit_success: false }), 10000);
                     }
 
                     this.props.removeNotificationMessage({ key: 'risk' });

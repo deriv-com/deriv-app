@@ -2,9 +2,9 @@
 // 1- Please read https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial
 // 2- Please read RawMarker.jsx in https://github.com/binary-com/SmartCharts
 // 3- Please read contract-store.js & trade.jsx carefully
-import React from 'react';
 import { getDecimalPlaces } from '@deriv/shared';
 import { RawMarker } from 'Modules/SmartChart';
+import React from 'react';
 import * as ICONS from './icons';
 
 const is_firefox = navigator.userAgent.search('Firefox') > 0;
@@ -319,12 +319,12 @@ const currency_symbols = {
     GBP: '\u00A3',
     JPY: '\u00A5',
     USD: '\u0024',
-    BTC: '\u0042',
+    BTC: '\u20bf',
     BCH: '\ue901',
     ETH: '\u0045',
     ETC: '\ue900',
-    LTC: '\u004c',
-    UST: '\ue903',
+    LTC: '\u0141',
+    UST: '\u20ae',
 };
 
 const NonTickContract = RawMarkerMaker(

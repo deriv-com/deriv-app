@@ -1,10 +1,10 @@
+import { Button, Checkbox, FormSubmitButton, Icon, Input, Loading, Modal, Text } from '@deriv/components';
+import { PlatformContext, routes, WS } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import classNames from 'classnames';
+import { Field, Formik } from 'formik';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import classNames from 'classnames';
-import { routes, PlatformContext, WS } from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import { Formik, Field } from 'formik';
-import { Checkbox, Input, FormSubmitButton, Modal, Icon, Loading, Text, Button } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import AccountHasPendingConditions from './account-has-balance.jsx';
 
@@ -109,33 +109,25 @@ class DeactivateAccountReason extends React.Component {
         const error = {};
         const selected_reason_count = selectedReasons(values).length;
         const text_inputs_length = (values.other_trading_platforms + values.do_to_improve).length;
-        const character_limit_error_msg = "Must be numbers, letters, and special characters . , ' -";
+        let remaining_characters = character_limit_no - text_inputs_length;
 
-        if (!selected_reason_count) {
-            error.empty_reason = localize('Please select at least one reason');
-        }
-        if (text_inputs_length > 0 || selected_reason_count) {
+        if (selected_reason_count) {
             const final_value = preparingReason(values);
-
-            let remaining_characters = character_limit_no - text_inputs_length;
 
             remaining_characters = remaining_characters >= 0 ? remaining_characters : 0;
 
             if (!/^[ a-zA-Z0-9.,'-\s]*$/.test(final_value)) {
-                error.characters_limits = localize(character_limit_error_msg);
-            }
-
-            this.setState({
-                total_accumulated_characters: text_inputs_length,
-                remaining_characters,
-            });
-
-            if (!/^[0-9A-z .,'-’]*$/.test(final_value)) {
-                error.characters_limits = localize(character_limit_error_msg);
+                error.characters_limits = localize("Must be numbers, letters, and special characters . , ' -");
             }
         } else {
-            this.setState({ remaining_characters: character_limit_no });
+            error.empty_reason = localize('Please select at least one reason');
         }
+
+        this.setState({
+            total_accumulated_characters: text_inputs_length,
+            remaining_characters,
+        });
+
         return error;
     };
 

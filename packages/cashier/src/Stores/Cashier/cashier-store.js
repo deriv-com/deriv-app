@@ -199,6 +199,7 @@ export default class CashierStore extends BaseStore {
     @observable crypto_converter_error = '';
     @observable fiat_converter_error = '';
     @observable blockchain_address = '';
+    @observable percentage_selector_result = 0;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -248,6 +249,18 @@ export default class CashierStore extends BaseStore {
     @computed
     get is_p2p_enabled() {
         return this.is_p2p_visible && !this.root_store.client.is_eu;
+    }
+
+    @action.bound
+    setPercentageSelectorResult(amount) {
+        this.percentage_selector_result = amount;
+        this.setCryptoAmount(amount);
+        this.onChangeCryptoAmount(
+            { target: amount },
+            this.root_store.client.currency,
+            this.root_store.client.current_fiat_currency
+        );
+        this.setIsTimerVisible(false);
     }
 
     @action.bound
@@ -859,7 +872,7 @@ export default class CashierStore extends BaseStore {
         const rate = await this.getExchangeRate(from_currency, to_currency);
         runInAction(() => {
             const decimals = getDecimalPlaces(to_currency);
-            const amount = (rate * target.value).toFixed(decimals);
+            const amount = (rate * (target?.value ?? target)).toFixed(decimals);
             this.setFiatAmount(amount);
             this.setIsTimerVisible(true);
         });

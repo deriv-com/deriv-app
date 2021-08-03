@@ -115,4 +115,13 @@
             align-items: center;
         }
     }
+
+    &__percentage-selector {
+        margin-bottom: 1.6rem;
+        width: fit-content;
+
+        @include mobile {
+            width: 100%;
+        }
+    }
 }

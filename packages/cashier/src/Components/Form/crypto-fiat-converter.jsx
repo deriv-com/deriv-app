@@ -8,7 +8,7 @@ import { connect } from 'Stores/connect';
 import { useInterval } from '@deriv/components/src/hooks';
 
 const Timer = props => {
-    const initial_time = 50;
+    const initial_time = 60;
     const [remaining_time, setRemainingTime] = React.useState(initial_time);
 
     useInterval(() => {

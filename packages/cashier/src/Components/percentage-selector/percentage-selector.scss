@@ -1,19 +1,27 @@
 .percentage-selector {
     display: flex;
-    justify-content: space-around;
-    width: 36rem;
+    justify-content: space-between;
+    flex-direction: row;
+    width: fit-content;
+    min-width: 38rem;
+
+    @include mobile {
+        min-width: auto;
+        width: 100%;
+    }
 
     &-block {
         cursor: pointer;
-        display: flex;
         background-color: var(--general-section-1);
         height: 2.4rem;
-        width: 8.7rem;
+        min-width: 8.7rem;
+
+        @include mobile {
+            min-width: 7.9rem;
+        }
     }
 
     &__block-container {
         align-items: center;
-        display: flex;
-        flex-direction: column;
     }
 }

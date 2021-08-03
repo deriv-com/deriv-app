@@ -74,7 +74,7 @@ const Withdrawal = ({
     }, [check10kLimit]);
 
     React.useEffect(() => {
-        if ((iframe_url || verification_code) && isDesktop()) {
+        if (verification_code && isDesktop()) {
             if (isCryptocurrency(currency) && typeof setSideNotes === 'function') {
                 const side_notes = [
                     <WithdrawalSideNote key={0} />,
@@ -85,7 +85,7 @@ const Withdrawal = ({
             } else setSideNotes(null);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, iframe_url, verification_code]);
+    }, [currency, verification_code]);
 
     if (is_system_maintenance) {
         if (is_cashier_locked || (is_withdrawal_locked && current_currency_type === 'crypto')) {

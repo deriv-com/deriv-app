@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text } from '@deriv/components';
+import { getDecimalPlaces } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
 const PercentageSelector = ({ amount, currency, getCalculatedAmount }) => {
@@ -11,12 +12,12 @@ const PercentageSelector = ({ amount, currency, getCalculatedAmount }) => {
 
         for (let i = 1; i <= 4; i++) {
             if (i <= e.target.id) {
-                document.getElementById(i).style.backgroundColor = 'blue'; // TODO: Change color when design is updated
+                document.getElementById(i).style.backgroundColor = '#85ACB0'; // TODO: Change color when design is updated
             } else {
                 document.getElementById(i).style.backgroundColor = '#f2f3f4';
             }
         }
-        getCalculatedAmount(amount * (percentage / 100));
+        getCalculatedAmount((amount * (percent / 100)).toFixed(getDecimalPlaces(currency)));
     };
 
     return (
@@ -47,7 +48,7 @@ const PercentageSelector = ({ amount, currency, getCalculatedAmount }) => {
                     <div id='4' className='percentage-selector-block' onClick={e => calculateAmount(e, 100)} />
                 </div>
             </div>
-            <Text color='less-prominent' size='s'>
+            <Text color='less-prominent' size='xxs'>
                 <Localize
                     i18n_default_text={`{{percentage}}% of available balance ({{amount}} {{currency}})`}
                     values={{ percentage, amount, currency }}
@@ -60,7 +61,7 @@ const PercentageSelector = ({ amount, currency, getCalculatedAmount }) => {
 PercentageSelector.propTypes = {
     amount: PropTypes.number,
     currency: PropTypes.string,
-    total_amount: PropTypes.number,
+    getCalculatedAmount: PropTypes.func,
 };
 
 export default PercentageSelector;

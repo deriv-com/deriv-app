@@ -1656,7 +1656,7 @@ export default class ClientStore extends BaseStore {
         // if didn't find any login ID that matched the above condition
         // or the selected one doesn't have a token, set the first one
         if (!active_loginid || !client_object[active_loginid].token) {
-            active_loginid = obj_params.acct1;
+            active_loginid = obj_params.selected_acct || obj_params.acct1;
         }
 
         // TODO: send login flag to GTM if needed

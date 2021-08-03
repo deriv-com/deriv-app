@@ -86,7 +86,7 @@ const Redirect = ({
             const redirect_url = url_params.get('redirect_url');
 
             history.push({
-                pathname: redirect_url,
+                pathname: routes[redirect_url],
                 search: url_query_string,
             });
             redirected_to_route = true;

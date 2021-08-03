@@ -101,6 +101,12 @@ const DerivPassword = ({ email, is_dark_mode_on, is_social_signup, social_identi
                     </React.Fragment>
                 ) : (
                     <div>
+                        <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
+                            <Localize
+                                i18n_default_text='Click the <0>Change password</0> button to change your Deriv password.'
+                                components={[<strong key={0} />]}
+                            />
+                        </Text>
                         <Button
                             className='account__passwords-footer-btn'
                             type='button'

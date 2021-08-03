@@ -174,7 +174,6 @@ export default class CashierStore extends BaseStore {
     @observable fiat_amount = '';
     @observable insufficient_fund_error = '';
     @observable is_timer_visible = false;
-    @observable crypto_transactions = [];
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -285,9 +284,8 @@ export default class CashierStore extends BaseStore {
             if (this.is_populating_values) {
                 return;
             }
-            this.is_populating_values = true;
 
-            await this.getCryptoTransactions();
+            this.is_populating_values = true;
 
             if (should_remount) {
                 this.onRemount = this.onMountCommon;
@@ -315,22 +313,6 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setCashierTabIndex(index) {
         this.cashier_route_tab_index = index;
-    }
-
-    @action.bound setCryptoTransactionsHistory(transactions) {
-        this.crypto_transactions = transactions;
-    }
-
-    @action.bound
-    async getCryptoTransactions() {
-        await this.WS.send({ cashier_payments: 1, provider: 'crypto', transaction_type: 'all' }).then(response => {
-            if (!response.error) {
-                const { crypto } = response.cashier_payments;
-                this.setCryptoTransactionsHistory(crypto);
-                return Promise.resolve(response);
-            }
-            return Promise.reject(response.error);
-        });
     }
 
     @action.bound
@@ -782,7 +764,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async getExchangeRate(from_currency, to_currency) {
-        const { exchange_rates } = await this.WS.send({
+        const {exchange_rates} = await this.WS.send({
             exchange_rates: 1,
             base_currency: from_currency,
         });
@@ -790,7 +772,7 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async onChangeCryptoAmount({ target }, from_currency, to_currency) {
+    async onChangeCryptoAmount({target}, from_currency, to_currency) {
         const rate = await this.getExchangeRate(from_currency, to_currency);
         runInAction(() => {
             const decimals = getDecimalPlaces(to_currency);
@@ -801,13 +783,13 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async onChangeFiatAmount({ target }, from_currency, to_currency) {
+    async onChangeFiatAmount({target}, from_currency, to_currency) {
         const rate = await this.getExchangeRate(from_currency, to_currency);
         runInAction(() => {
             const decimals = getDecimalPlaces(to_currency);
             const amount = (rate * target.value).toFixed(decimals);
             const balance = this.root_store.client.balance;
-            if (balance < amount) {
+            if(balance < amount) {
                 this.insufficient_fund_error = localize('Insufficient funds');
                 this.setCryptoAmount('');
             } else {

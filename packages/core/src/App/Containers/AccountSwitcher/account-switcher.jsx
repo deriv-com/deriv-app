@@ -365,9 +365,7 @@ const AccountSwitcher = props => {
 
     const total_assets_message_real = () => {
         if (props.is_mt5_allowed && props.is_dxtrade_allowed) {
-            return localize('Total assets in your Deriv and DMT5 real accounts.');
-            // TODO: uncomment after enabling real accounts
-            // return localize('Total assets in your Deriv, DMT5 and Deriv X real accounts.');
+            return localize('Total assets in your Deriv, DMT5 and Deriv X real accounts.');
         } else if (props.is_mt5_allowed && !props.is_dxtrade_allowed) {
             return localize('Total assets in your Deriv and DMT5 real accounts.');
         } else if (!props.is_mt5_allowed && props.is_dxtrade_allowed) {

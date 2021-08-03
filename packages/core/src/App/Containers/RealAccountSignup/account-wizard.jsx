@@ -135,7 +135,14 @@ const AccountWizard = props => {
         return state_items
             .map(item => item.form_value)
             .reduce((obj, item) => {
-                const values = fromEntries(new Map(Object.entries(item)));
+                const original_form_values = fromEntries(new Map(Object.entries(item)));
+                const values = Object.keys(original_form_values).reduce((acc, current) => {
+                    acc[current] =
+                        typeof original_form_values[current] === 'string'
+                            ? original_form_values[current].trim()
+                            : original_form_values[current];
+                    return acc;
+                }, {});
                 if (values.date_of_birth) {
                     values.date_of_birth = toMoment(values.date_of_birth).format('YYYY-MM-DD');
                 }

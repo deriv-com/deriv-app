@@ -57,16 +57,15 @@ export const getCFDConfig = (market_type, landing_company, existing_cfd_accounts
                 }
                 return account.sub_account_type === company && account_market_type === market_type;
             });
-
             if (has_account && platform === CFD_PLATFORMS.MT5) {
-                const number_market_type_available = trading_servers.filter(
-                    s => s.supported_accounts.includes(market_type) && !s.disabled
-                ).length;
+                const number_market_type_available = trading_servers.filter(s => {
+                    const server_market_type = s.market_type === 'synthetic' ? 'gaming' : s.market_type;
+                    return market_type === server_market_type && !s.disabled;
+                }).length;
                 if (number_market_type_available && has_account.account_type === 'real') {
                     has_account = false;
                 }
             }
-
             if (!has_account) {
                 const type = getCFDAccountKey({ market_type, sub_account_type: company, platform });
                 if (type) {

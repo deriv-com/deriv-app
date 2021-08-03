@@ -7,7 +7,6 @@ import { connect } from 'Stores/connect';
 import CryptoTransactionsCancelModal from './crypto-transactions-cancel-modal.jsx';
 import CryptoTransactionsStatusModal from './crypto-transactions-status-modal.jsx';
 import CryptoTransactionsRenderer from './crypto-transactions-renderer.jsx';
-import 'Sass/crypto-transactions-history.scss';
 
 const getHeaders = () => [
     { text: localize('Transaction') },

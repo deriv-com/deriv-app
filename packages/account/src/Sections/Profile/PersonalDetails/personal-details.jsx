@@ -124,7 +124,7 @@ export class PersonalDetailsForm extends React.Component {
                 this.setState({ is_submit_success: false }, () => {
                     setSubmitting(false);
                 });
-            }, 3000);
+            }, 10000);
             // redirection back based on 'from' param in query string
             const url_query_string = window.location.search;
             const url_params = new URLSearchParams(url_query_string);

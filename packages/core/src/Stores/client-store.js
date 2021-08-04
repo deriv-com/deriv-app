@@ -14,6 +14,7 @@ import {
     deriv_urls,
     urlForLanguage,
     CFD_PLATFORMS,
+    routes,
 } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import { requestLogout, WS } from 'Services';
@@ -1176,6 +1177,9 @@ export default class ClientStore extends BaseStore {
                 // So it will send an authorize with the accepted token, to be handled by socket-general
                 await BinarySocket.authorize(client.token);
             }
+            if (redirect_url) {
+                window.location.replace(routes[redirect_url]);
+            }
             runInAction(() => {
                 this.is_populating_account_list = false;
             });
@@ -1628,6 +1632,10 @@ export default class ClientStore extends BaseStore {
         const client_object = {};
         let active_loginid;
 
+        if (obj_params.selected_acct) {
+            active_loginid = obj_params.selected_acct;
+        }
+
         account_list.forEach(function (account) {
             Object.keys(account).forEach(function (param) {
                 if (param === 'loginid') {
@@ -1663,7 +1671,7 @@ export default class ClientStore extends BaseStore {
         // if didn't find any login ID that matched the above condition
         // or the selected one doesn't have a token, set the first one
         if (!active_loginid || !client_object[active_loginid].token) {
-            active_loginid = obj_params.selected_acct || obj_params.acct1;
+            active_loginid = obj_params.acct1;
         }
 
         // TODO: send login flag to GTM if needed

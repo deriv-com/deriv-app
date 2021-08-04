@@ -12,7 +12,7 @@ const USDTSideNote = ({ type }) => {
     return (
         <div className='cashier__usdt-side-note'>
             <Text as='h2' weight='bold' color='prominent'>
-                <Localize i18n_default_text='About Tether' />
+                <Localize i18n_default_text={`About Tether (${type === 'eusdt' ? 'Ethereum' : 'Omni'})`} />
             </Text>
             {type === 'eusdt' && (
                 <Text as='p' size='xxs'>

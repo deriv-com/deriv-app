@@ -11,8 +11,5 @@ module.exports = {
                 config: webpackConfig({})
             },
         },
-        rules: {
-            'import/no-unresolved': 'off',
-        },
     },
 };

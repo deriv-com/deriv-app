@@ -37,8 +37,6 @@
         "lint-staged": "^10.4.0",
         "postcss": "^8.3.6",
         "prettier": "^2.1.2",
-        "react": "^16.14.0",
-        "react-dom": "^16.14.0",
         "react-test-renderer": "^16.13.1",
         "stylelint": "^13.13.1",
         "stylelint-config-prettier": "^8.0.2",
@@ -86,6 +84,8 @@
         }
     },
     "dependencies": {
+        "react": "^16.14.0",
+        "react-dom": "^16.14.0",
         "dotenv": "^8.2.0"
     },
     "optionalDependencies": {

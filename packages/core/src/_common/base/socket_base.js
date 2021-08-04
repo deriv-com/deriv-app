@@ -180,7 +180,8 @@ const BinarySocketBase = (() => {
 
     const cashier = (action, parameters = {}) => deriv_api.send({ cashier: action, ...parameters });
 
-    const cashier_payments = () => deriv_api.send({ cashier_payments: 1, provider: 'crypto', transaction_type: 'all' });
+    const cashierPayments = (provider, transaction_type) =>
+        deriv_api.send({ cashier_payments: 1, provider, transaction_type });
 
     const newAccountVirtual = (verification_code, client_password, residence, email_consent, device_data) =>
         deriv_api.send({
@@ -378,7 +379,7 @@ const BinarySocketBase = (() => {
         buyAndSubscribe,
         sell,
         cashier,
-        cashier_payments,
+        cashierPayments,
         cancelContract,
         close,
         contractUpdate,

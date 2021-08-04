@@ -162,7 +162,7 @@ export default class CashierStore extends BaseStore {
             WS: this.WS,
         });
 
-        this.transaction_history = new TransactionHistoryStore();
+        this.transaction_history = new TransactionHistoryStore(this.WS);
 
         this.init();
     }

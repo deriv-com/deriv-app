@@ -51,10 +51,10 @@
                 margin-right: 0.2rem;
                 width: 5px;
                 height: 5px;
-                background-color: #ffad3a8c;
+                background-color: var(--status-warning);
 
                 &--green {
-                    background-color: #4bb4b3;
+                    background-color: var(--status-success);
                 }
             }
         }

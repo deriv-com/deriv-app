@@ -8,22 +8,20 @@ import PasswordsPlatform from './passwords-platform.jsx';
 const Passwords = ({
     email,
     is_dark_mode_on,
-    is_dxtrade_password_not_set,
+    mt5_login_list,
     is_social_signup,
-    is_mt5_password_not_set,
+    dxtrade_accounts_list,
     social_identity_provider,
+    is_loading_dxtrade,
+    is_loading_mt5,
 }) => {
     const [is_loading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {
-        if (
-            is_dxtrade_password_not_set !== undefined &&
-            is_mt5_password_not_set !== undefined &&
-            is_social_signup !== undefined
-        ) {
+        if (is_loading_mt5 === false && is_loading_dxtrade === false && is_social_signup !== undefined) {
             setIsLoading(false);
         }
-    }, [is_dxtrade_password_not_set, is_mt5_password_not_set, is_social_signup]);
+    }, [is_loading_mt5, is_loading_dxtrade, is_social_signup]);
 
     if (is_loading) {
         return <Loading is_fullscreen={false} />;
@@ -40,11 +38,11 @@ const Passwords = ({
                     social_identity_provider={social_identity_provider}
                 />
             )}
-            {!is_mt5_password_not_set && (
-                <PasswordsPlatform email={email} has_set_trading_password={!is_mt5_password_not_set} />
+            {mt5_login_list?.length > 0 && (
+                <PasswordsPlatform email={email} has_mt5_accounts={mt5_login_list?.length > 0} />
             )}
-            {!is_dxtrade_password_not_set && (
-                <PasswordsPlatform email={email} has_set_deriv_x_trading_password={!is_dxtrade_password_not_set} />
+            {dxtrade_accounts_list?.length > 0 && (
+                <PasswordsPlatform email={email} has_dxtrade_accounts={dxtrade_accounts_list?.length > 0} />
             )}
         </div>
     );
@@ -53,17 +51,21 @@ const Passwords = ({
 Passwords.propTypes = {
     email: PropTypes.string,
     is_dark_mode_on: PropTypes.bool,
-    is_dxtrade_password_not_set: PropTypes.bool,
+    dxtrade_accounts_list: PropTypes.array,
     is_social_signup: PropTypes.bool,
-    is_mt5_password_not_set: PropTypes.bool,
+    mt5_login_list: PropTypes.array,
     social_identity_provider: PropTypes.string,
+    is_loading_mt5: PropTypes.bool,
+    is_loading_dxtrade: PropTypes.bool,
 };
 
 export default connect(({ client, ui }) => ({
     email: client.email,
     is_dark_mode_on: ui.is_dark_mode_on,
-    is_dxtrade_password_not_set: client.is_dxtrade_password_not_set,
     is_social_signup: client.is_social_signup,
-    is_mt5_password_not_set: client.is_mt5_password_not_set,
+    mt5_login_list: client.mt5_login_list,
+    dxtrade_accounts_list: client.dxtrade_accounts_list,
     social_identity_provider: client.social_identity_provider,
+    is_loading_mt5: client.is_populating_mt5_account_list,
+    is_loading_dxtrade: client.is_populating_dxtrade_account_list,
 }))(Passwords);

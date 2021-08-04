@@ -6,15 +6,15 @@ import { localize, Localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
 
-const PasswordsPlatform = ({ email, has_set_deriv_x_trading_password, has_set_trading_password }) => {
+const PasswordsPlatform = ({ email, has_dxtrade_accounts, has_mt5_accounts }) => {
     const [identifier, setIdenifier] = React.useState('');
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
     const getPlatformTitle = () => {
         let title = '';
-        if (has_set_trading_password) {
+        if (has_mt5_accounts) {
             title = localize('DMT5 Password');
-        } else if (has_set_deriv_x_trading_password) {
+        } else if (has_dxtrade_accounts) {
             title = localize('Deriv X Password');
         }
         return title;
@@ -39,7 +39,7 @@ const PasswordsPlatform = ({ email, has_set_deriv_x_trading_password, has_set_tr
         <React.Fragment>
             <FormSubHeader title={getPlatformTitle()} />
             <div className='account__passwords-wrapper'>
-                {has_set_trading_password && (
+                {has_mt5_accounts && (
                     <React.Fragment>
                         <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
                             <Localize i18n_default_text='Your DMT5 password is for logging in to your Deriv MT5 accounts on the desktop, web, and mobile apps.' />
@@ -65,7 +65,7 @@ const PasswordsPlatform = ({ email, has_set_deriv_x_trading_password, has_set_tr
                         </div>
                     </React.Fragment>
                 )}
-                {has_set_deriv_x_trading_password && (
+                {has_dxtrade_accounts && (
                     <React.Fragment>
                         <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
                             <Localize i18n_default_text='Your Deriv X password is for logging in to your Deriv X accounts on the web and mobile apps.' />
@@ -110,8 +110,8 @@ const PasswordsPlatform = ({ email, has_set_deriv_x_trading_password, has_set_tr
 
 PasswordsPlatform.propTypes = {
     email: PropTypes.string,
-    has_set_deriv_x_trading_password: PropTypes.bool,
-    has_set_trading_password: PropTypes.bool,
+    has_dxtrade_accounts: PropTypes.bool,
+    has_mt5_accounts: PropTypes.bool,
 };
 
 export default PasswordsPlatform;

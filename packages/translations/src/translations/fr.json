@@ -1429,7 +1429,7 @@
     "2080829530": "Vendu pour: {{sold_for}}",
     "2081088445": "Lorsque vous définissez vos limites ou votre auto-exclusion, elles seront agrégées sur tous vos types de compte dans DTrader et DBot. Par exemple, les pertes effectuées sur les deux plates-formes s'additionneront et seront comptabilisées dans la limite de perte que vous avez définie.",
     "2084693624": "Convertit une chaîne représentant une chaîne de date/heure en secondes depuis Epoch. Exemple: 2019-01-01 21:03:45 GMT + 0800 sera converti en 1546347825. L'heure et le décalage du fuseau horaire sont facultatifs.",
-    "2085387371": "Must be numbers, letters, and special characters . , ' -",
+    "2085387371": "Doit être des chiffres, des lettres et des caractères spéciaux. , '-",
     "2085602195": "- Valeur d'entrée: la valeur du premier tick du contrat",
     "2086792088": "Les deux obstacles doivent être relatifs ou absolus",
     "2088735355": "Votre session et vos limites de connexion",

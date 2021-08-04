@@ -54,7 +54,7 @@ module.exports = {
 
     'import/no-useless-path-segments': 'error',
     'import/order': [
-      'warn',
+      0, // TODO: we should turn this to error after we sorted our import orders.
       {
         groups: [['builtin', 'external'], 'internal', 'sibling', 'parent'],
         'newlines-between': 'ignore',

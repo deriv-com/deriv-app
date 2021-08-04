@@ -250,11 +250,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async requestDepositBlockChainAddress() {
-        await this.WS.send({
-            cashier: 'deposit',
-            provider: 'crypto',
-            type: 'api',
-        }).then(response => {
+        await this.WS.cashier('deposit', { provider: 'crypto', type: 'api' }).then(response => {
             if (!response.error) {
                 this.setDepositBlockchainAddress(response.cashier.deposit.address);
                 return Promise.resolve();

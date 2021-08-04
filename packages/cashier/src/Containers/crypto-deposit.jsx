@@ -10,10 +10,9 @@ import '../Sass/deposit.scss';
 const CryptoDeposit = ({ currency, deposit_blockchain_address, requestDepositBlockChainAddress }) => {
     React.useEffect(() => {
         return () => requestDepositBlockChainAddress();
-    }, []);
+    }, [requestDepositBlockChainAddress]);
 
     const currency_name = CryptoConfig.get()[currency].name;
-    const address_hash = deposit_blockchain_address?.toUpperCase();
 
     return (
         <div className='cashier__wrapper crypto-deposit__wrapper'>
@@ -38,24 +37,24 @@ const CryptoDeposit = ({ currency, deposit_blockchain_address, requestDepositBlo
                 <Text as='p' line_height='m' size={isMobile() ? 'xs' : 's'} align='center'>
                     <Localize i18n_default_text="Do not send any other currency to the following address. Otherwise, you'll lose funds." />
                 </Text>
-                <QRCode className='qrcode' value={address_hash} size={160} />
+                <QRCode className='qrcode' value={deposit_blockchain_address} size={160} />
                 <div className='crypto-deposit__clipboard-wrapper'>
                     <Text
                         className='crypto-deposit__address-hash'
                         line_height='m'
                         size={isMobile() ? 'xxs' : 'xs'}
                         weight='bold'
+                        align='center'
                     >
-                        {address_hash.slice(0, 33) || ''}
+                        {deposit_blockchain_address.slice(0, 34) || ''}
                     </Text>
                     <Clipboard
                         className='crypto-deposit__clipboard'
-                        text_copy={address_hash || ''}
+                        text_copy={deposit_blockchain_address || ''}
                         info_message={isMobile() ? '' : localize('copy')}
                         icon='IcCashierClipboard'
                         success_message={localize('copied!')}
                         popoverAlignment={isMobile() ? 'left' : 'bottom'}
-                        color='prominent'
                     />
                 </div>
             </div>

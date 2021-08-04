@@ -28,17 +28,23 @@
         display: flex;
         align-items: center;
         border-radius: 4px;
-        min-width: 33.7rem;
+        line-height: 0;
+        max-width: 33.7rem;
         padding: 1rem 1.3rem;
         background-color: var(--general-section-1);
 
         @include mobile {
-            min-width: 29.6rem;
+            max-width: 29.6rem;
         }
-    }
 
-    &__clipboard {
-        margin: 0.3rem 0.6rem 0.3rem 0.3rem;
+        .dc-popover__wrapper {
+            margin: 0.3rem 0.3rem 0.3rem 0.6rem;
+
+            .dc-clipboard {
+                width: 1.2rem;
+                height: 1.4rem;
+            }
+        }
     }
 
     &__fiat-onramp-wrapper {

@@ -27,7 +27,7 @@
     &__clipboard-wrapper {
         display: flex;
         align-items: center;
-        border-radius: 4px;
+        border-radius: $BORDER_RADIUS;
         line-height: 0;
         max-width: 33.7rem;
         padding: 1rem 1.3rem;

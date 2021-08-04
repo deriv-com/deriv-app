@@ -41,15 +41,14 @@ const DetailComponent = ({
             const uploadNext = () => {
                 const item = files[file_to_upload_index];
                 const { file, document_type, pageType, lifetime_valid } = item;
+                const expiration_date =
+                    typeof data.expiry_date?.format === 'function' ? data.expiry_date.format('YYYY-MM-DD') : undefined;
                 uploadFile(file, WS.getSocket, {
                     documentType: document_type,
                     pageType,
-                    expirationDate:
-                        typeof data.expiry_date?.format === 'function'
-                            ? data.expiry_date.format('YYYY-MM-DD')
-                            : undefined,
+                    expirationDate: expiration_date,
                     documentId: data.document_id || '',
-                    lifetimeValid: +lifetime_valid,
+                    lifetimeValid: +(lifetime_valid && !expiration_date),
                 })
                     .then(response => {
                         if (response.warning || response.error) {

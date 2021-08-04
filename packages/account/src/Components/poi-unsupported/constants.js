@@ -4,8 +4,11 @@ export const ROOT_CLASS = 'manual-poi-details';
 
 export const DOCUMENT_TYPES = {
     NATIONAL_IDENTITY_CARD: 'national_identity_card',
+    NIMC_SLIP: 'nimc_slip',
     PASSPORT: 'passport',
     DRIVING_LICENCE: 'driving_licence',
+    BIRTH_CERTIFICATE: 'birth_certificate',
+    SELFIE_WITH_ID: 'selfie_with_id',
     OTHER: 'other',
 };
 
@@ -16,9 +19,9 @@ const PAGE_TYPE = {
 };
 
 export const SELFIE_DOCUMENT = {
-    document_type: DOCUMENT_TYPES.OTHER,
+    document_type: DOCUMENT_TYPES.SELFIE_WITH_ID,
     pageType: PAGE_TYPE.PHOTO,
-    name: 'selfie',
+    name: 'selfie_with_id',
     icon: 'IcSelfie',
     info: localize('Upload your selfie.'),
 };
@@ -145,7 +148,7 @@ export const getDocumentIndex = ({ residence }) => [
                   details: {
                       fields: [
                           {
-                              name: 'nimc_slip_number',
+                              name: 'document_id',
                               label: localize('NIMC slip number'),
                               type: 'text',
                               required: true,
@@ -155,15 +158,15 @@ export const getDocumentIndex = ({ residence }) => [
                       documents_title: localize('Next, upload both of the following documents.'),
                       documents: [
                           {
-                              document_type: DOCUMENT_TYPES.NATIONAL_IDENTITY_CARD,
+                              document_type: DOCUMENT_TYPES.NIMC_SLIP,
                               lifetime_valid: true,
                               pageType: PAGE_TYPE.FRONT,
-                              name: 'identity_card_front',
+                              name: 'nimc_slip',
                               icon: 'IcPoiNimcSlipHorizontal',
                               info: localize('Upload your NIMC slip.'),
                           },
                           {
-                              document_type: DOCUMENT_TYPES.OTHER,
+                              document_type: DOCUMENT_TYPES.BIRTH_CERTIFICATE,
                               pageType: PAGE_TYPE.PHOTO,
                               name: 'birth_certificate_front',
                               icon: 'IcDop',

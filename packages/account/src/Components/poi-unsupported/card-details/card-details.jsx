@@ -9,7 +9,7 @@ const CardDetails = ({ data, goToCards, onComplete }) => {
     const [selfie, setSelfie] = React.useState();
     const [is_selfie_upload, setIsSelfieUpload] = React.useState(false);
 
-    const onSubmitDucuments = values => {
+    const onSubmitDocuments = values => {
         setDocuments(values);
         setIsSelfieUpload(true);
     };
@@ -25,7 +25,7 @@ const CardDetails = ({ data, goToCards, onComplete }) => {
                     initial_values={documents}
                     data={data}
                     goToCards={goToCards}
-                    onSubmit={onSubmitDucuments}
+                    onSubmit={onSubmitDocuments}
                 />
             ) : (
                 <SelfieUpload

@@ -1129,6 +1129,13 @@ export default class ClientStore extends BaseStore {
      */
     @action.bound
     async init(login_new_user) {
+        const search = window.location.search;
+        const search_params = new URLSearchParams(search);
+        const redirect_url = search_params?.get('redirect_url');
+
+        if (redirect_url) {
+            history.replaceState({}, document.title, `redirect${search}`);
+        }
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
         this.setDeviceData();

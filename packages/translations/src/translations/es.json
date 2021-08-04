@@ -1429,7 +1429,7 @@
     "2080829530": "Vendido por: {{sold_for}}",
     "2081088445": "Cuando establezca sus límites o autoexclusión, se agregarán a todos sus tipos de cuenta en DTrader y DBot. Por ejemplo, las pérdidas realizadas en ambas plataformas se sumarán y se contarán para el límite de pérdidas que establezca.",
     "2084693624": "Convierte una cadena que representa una cadena de fecha / hora en segundos desde Epoch. Ejemplo: 2019-01-01 21:03:45 GMT + 0800 se convertirá a 1546347825. La hora y el desplazamiento de zona horaria son opcionales.",
-    "2085387371": "Must be numbers, letters, and special characters . , ' -",
+    "2085387371": "Deben ser números, letras y caracteres especiales. , '-",
     "2085602195": "- Valor de entrada: el valor del primer tick del contrato",
     "2086792088": "Ambas barreras deben ser relativas o absolutas",
     "2088735355": "Su sesión y límites de inicio de sesión",

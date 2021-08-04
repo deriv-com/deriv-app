@@ -1429,7 +1429,7 @@
     "2080829530": "Venduto per: {{sold_for}}",
     "2081088445": "Quando imposti i limiti o l'autoesclusione, questi verranno conteggiati su tutte i tipi di conto su DTrader e DBot. Per esempio, le perdite registrate su entrambe le piattaforme si sommano tra loro e vengono conteggiate insieme rispetto al limite sulle perdite che hai impostato.",
     "2084693624": "Converte una stringa data/tempo in una stringa in secondi rispetto all'epoca. Ad esempio: 01-01-02019 21:03:45 GMT+0800 verrebbe convertito in 1546347825. Gli offset di tempo e fuso orario sono opzionali.",
-    "2085387371": "Must be numbers, letters, and special characters . , ' -",
+    "2085387371": "Deve comprendere numeri. lettere e i caratteri speciali. , ' -",
     "2085602195": "- Valore d'entrata: il valore del primo tick del contratto",
     "2086792088": "Entrambe le barriere dovrebbero essere relative o assolute",
     "2088735355": "I limiti di sessioni e accesso",

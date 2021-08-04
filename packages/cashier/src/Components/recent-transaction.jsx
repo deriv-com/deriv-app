@@ -5,12 +5,13 @@ import { ButtonLink, Text, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { epochToMoment } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { getStatus } from '../../Constants/transaction-status';
+import { getStatus } from '../Constants/transaction-status';
+import '../Sass/recent-transaction.scss';
 
 const RecentTransaction = ({ crypto_transactions, currency, onMount }) => {
     React.useEffect(() => {
         onMount();
-    }, []);
+    }, [onMount]);
 
     if (!crypto_transactions.length) {
         return null;
@@ -45,7 +46,13 @@ const RecentTransaction = ({ crypto_transactions, currency, onMount }) => {
                     <div>
                         <div className='cashier-recent-transaction__status-wrapper'>
                             <Text as='p' size='xxs'>
-                                {`${transaction_type} ${currency}`}
+                                <Localize
+                                    i18n_default_text='{{transaction_type}} {{currency}}'
+                                    values={{
+                                        transaction_type,
+                                        currency,
+                                    }}
+                                />
                             </Text>
                             <div className='cashier-recent-transaction__status'>
                                 <span
@@ -55,7 +62,12 @@ const RecentTransaction = ({ crypto_transactions, currency, onMount }) => {
                                     })}
                                 />
                                 <Text as='p' size='xxxs'>
-                                    {`${status_code}`}
+                                    <Localize
+                                        i18n_default_text='{{status_code}}'
+                                        values={{
+                                            status_code,
+                                        }}
+                                    />
                                 </Text>
                             </div>
                         </div>

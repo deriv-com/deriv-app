@@ -1,10 +1,7 @@
 import { action, observable } from 'mobx';
+import { WS } from '@deriv/shared';
 
 export default class TransactionHistoryStore {
-    constructor({ WS }) {
-        this.WS = WS;
-    }
-
     @observable crypto_transactions = [];
 
     @action.bound setCryptoTransactionsHistory(transactions) {
@@ -13,7 +10,7 @@ export default class TransactionHistoryStore {
 
     @action.bound
     async getCryptoTransactions() {
-        await this.WS.send({ cashier_payments: 1, provider: 'crypto', transaction_type: 'all' }).then(response => {
+        await WS.cashier_payments().then(response => {
             if (!response.error) {
                 const { crypto } = response.cashier_payments;
                 this.setCryptoTransactionsHistory(crypto);

@@ -29,13 +29,9 @@
         align-items: center;
         border-radius: $BORDER_RADIUS;
         line-height: 0;
-        max-width: 33.7rem;
+        width: fit-content;
         padding: 1rem 1.3rem;
         background-color: var(--general-section-1);
-
-        @include mobile {
-            max-width: 29.6rem;
-        }
 
         .dc-popover__wrapper {
             margin: 0.3rem 0.3rem 0.3rem 0.6rem;

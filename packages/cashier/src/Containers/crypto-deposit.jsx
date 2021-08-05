@@ -1,16 +1,20 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { ButtonLink, Clipboard, Text, Icon } from '@deriv/components';
+import { ButtonLink, Clipboard, Loading, Text, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { CryptoConfig, isMobile } from '@deriv/shared';
 import QRCode from 'qrcode.react';
 import { connect } from 'Stores/connect';
 import '../Sass/deposit.scss';
 
-const CryptoDeposit = ({ currency, deposit_blockchain_address, requestDepositBlockChainAddress }) => {
+const CryptoDeposit = ({ currency, deposit_address, pollApiForDepositAddress, is_deposit_address_loading }) => {
     React.useEffect(() => {
-        return () => requestDepositBlockChainAddress();
-    }, [requestDepositBlockChainAddress]);
+        return () => pollApiForDepositAddress(false);
+    }, [pollApiForDepositAddress]);
+
+    if (is_deposit_address_loading) {
+        return <Loading is_fullscreen={false} />;
+    }
 
     const currency_name = CryptoConfig.get()[currency].name;
 
@@ -37,7 +41,7 @@ const CryptoDeposit = ({ currency, deposit_blockchain_address, requestDepositBlo
                 <Text as='p' line_height='m' size={isMobile() ? 'xs' : 's'} align='center'>
                     <Localize i18n_default_text="Do not send any other currency to the following address. Otherwise, you'll lose funds." />
                 </Text>
-                <QRCode className='qrcode' value={deposit_blockchain_address} size={160} />
+                <QRCode className='qrcode' value={deposit_address || ''} size={160} />
                 <div className='crypto-deposit__clipboard-wrapper'>
                     <Text
                         className='crypto-deposit__address-hash'
@@ -46,11 +50,11 @@ const CryptoDeposit = ({ currency, deposit_blockchain_address, requestDepositBlo
                         weight='bold'
                         align='center'
                     >
-                        {deposit_blockchain_address.slice(0, 34) || ''}
+                        {deposit_address || ''}
                     </Text>
                     <Clipboard
                         className='crypto-deposit__clipboard'
-                        text_copy={deposit_blockchain_address || ''}
+                        text_copy={deposit_address || ''}
                         info_message={isMobile() ? '' : localize('copy')}
                         icon='IcCashierClipboard'
                         success_message={localize('copied!')}
@@ -86,6 +90,7 @@ CryptoDeposit.propTypes = {
 
 export default connect(({ modules, client }) => ({
     currency: client.currency,
-    deposit_blockchain_address: modules.cashier.deposit_blockchain_address,
-    requestDepositBlockChainAddress: modules.cashier.requestDepositBlockChainAddress,
+    deposit_address: modules.cashier.onramp.deposit_address,
+    pollApiForDepositAddress: modules.cashier.onramp.pollApiForDepositAddress,
+    is_deposit_address_loading: modules.cashier.onramp.is_deposit_address_loading,
 }))(CryptoDeposit);

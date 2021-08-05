@@ -230,11 +230,6 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setDepositBlockchainAddress(deposit_blockchain_address) {
-        this.deposit_blockchain_address = deposit_blockchain_address;
-    }
-
-    @action.bound
     setIsCashierDefault(is_cashier_default) {
         this.is_cashier_default = is_cashier_default;
     }
@@ -248,16 +243,6 @@ export default class CashierStore extends BaseStore {
         this.onSwitchAccount(this.accountSwitcherListener);
     }
 
-    @action.bound
-    async requestDepositBlockChainAddress() {
-        await this.WS.cashier('deposit', { provider: 'crypto', type: 'api' }).then(response => {
-            if (!response.error) {
-                this.setDepositBlockchainAddress(response.cashier.deposit.address);
-                return Promise.resolve();
-            }
-            return Promise.reject(response.error);
-        });
-    }
     // Initialise P2P attributes on app load without mounting the entire cashier
     @action.bound
     init() {

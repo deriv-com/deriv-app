@@ -120,7 +120,8 @@ const SubmittedPage = ({ platform }) => {
 
     const onClickButton = () => {
         if (platforms[platform].is_hard_redirect) {
-            window.location.href = window.location.origin + platforms[platform].route_to_path;
+            // window.location.href = window.location.origin + platforms[platform].route_to_path;
+            window.location.href = platforms[platform].route_to_path; // TODO: Delete after QA
         } else {
             history.push(platforms[platform].route_to_path);
         }

@@ -49,6 +49,7 @@ const Trade = ({
     show_digits_stats,
     should_show_multipliers_onboarding,
     symbol,
+    is_synthetics_available,
 }) => {
     const [digits, setDigits] = React.useState([]);
     const [tick, setTick] = React.useState({});
@@ -58,9 +59,18 @@ const Trade = ({
     const [subcategory, setSubcategory] = React.useState(null);
     const [is_digits_widget_active, setIsDigitsWidgetActive] = React.useState(false);
 
+    const open_market = React.useMemo(() => {
+        if (try_synthetic_indices) {
+            return { category: 'synthetic_index' };
+        } else if (try_open_markets && category) {
+            return { category, subcategory };
+        }
+        return null;
+    }, [try_synthetic_indices, try_open_markets, category, subcategory]);
+
     React.useEffect(() => {
         onMount();
-        if (is_eu) {
+        if (!is_synthetics_available) {
             const setMarket = async () => {
                 const markets_to_search = ['forex', 'indices', 'commodities']; // none-synthetic
                 const { category: market_cat, subcategory: market_subcat } =
@@ -109,7 +119,7 @@ const Trade = ({
     };
 
     const onTryOtherMarkets = async () => {
-        if (is_eu || is_synthetics_unavailable) {
+        if (!is_synthetics_available) {
             setTryOpenMarkets(true);
             setTimeout(() => setTryOpenMarkets(false));
         } else {
@@ -119,13 +129,6 @@ const Trade = ({
     };
 
     const form_wrapper_class = isMobile() ? 'mobile-wrapper' : 'sidebar__container desktop-only';
-
-    let open_market = null;
-    if (try_synthetic_indices) {
-        open_market = { category: 'synthetic_index' };
-    } else if (try_open_markets && category) {
-        open_market = { category, subcategory };
-    }
 
     return (
         <div id='trade_container' className='trade-container'>
@@ -185,7 +188,7 @@ const Trade = ({
                 {is_market_closed && !is_market_unavailable_visible && (
                     <MarketIsClosedOverlay
                         is_eu={is_eu}
-                        is_synthetics_unavailable={is_synthetics_unavailable}
+                        is_synthetics_available={is_synthetics_available}
                         {...(is_eu && category && { is_market_available: true })}
                         onClick={onTryOtherMarkets}
                         onMarketOpen={prepareTradeStore}
@@ -207,6 +210,7 @@ export default connect(({ client, common, modules, ui }) => ({
     getFirstOpenMarket: modules.trade.getFirstOpenMarket,
     is_eu: client.is_eu,
     is_synthetics_unavailable: client.is_synthetics_unavailable,
+    is_synthetics_available: modules.trade.is_synthetics_available,
     network_status: common.network_status,
     contract_type: modules.trade.contract_type,
     form_components: modules.trade.form_components,
@@ -301,6 +305,7 @@ const Chart = props => {
         // changing reference of topWidgets function by adding dependencies to useCallback results in Smartcharts performance drop.
         // so, using props_ref to get current props value
         const { is_digits_widget_active, try_synthetic_indices, try_open_markets, open_market } = props_ref.current;
+
         return (
             <ChartTopWidgets
                 open_market={open_market}
@@ -335,7 +340,7 @@ const Chart = props => {
     const max_ticks = granularity === 0 ? 8 : 24;
 
     if (!symbol || active_symbols.length === 0) return null;
-
+    const activeSymbols = JSON.parse(JSON.stringify(active_symbols));
     return (
         <SmartChartWithRef
             ref={charts_ref}
@@ -347,6 +352,15 @@ const Chart = props => {
             chartControlsWidgets={null}
             chartStatusListener={v => setChartStatus(!v)}
             chartType={chart_type}
+            initialData={{
+                activeSymbols: activeSymbols,
+            }}
+            chartData={{
+                activeSymbols: activeSymbols,
+            }}
+            feedCall={{
+                activeSymbols: false,
+            }}
             enabledNavigationWidget={isDesktop()}
             enabledChartFooter={false}
             id='trade'

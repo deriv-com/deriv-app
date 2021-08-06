@@ -11,9 +11,9 @@ export const useBlockScroll = target_ref => {
         };
 
         const scrollable_parent = getScrollableParentElement(target_ref.current);
-        // Scroll bar width. Firefox - 10px, other browsers - 5px
         const is_firefox_browser = navigator.userAgent.indexOf('Firefox') > -1;
-        const content_width_style = `calc(100% - ${is_firefox_browser ? '10px' : '5px'})`;
+        // No width offset is necessary in Firefox Browsers
+        const content_width_style = is_firefox_browser ? '100%' : 'calc(100% - 5px)';
 
         if (scrollable_parent) {
             scrollable_parent.style.overflowY = 'hidden';
@@ -22,7 +22,6 @@ export const useBlockScroll = target_ref => {
 
         return () => {
             if (!scrollable_parent) return;
-
             scrollable_parent.style.removeProperty('overflow');
             scrollable_parent.style.removeProperty('width');
         };

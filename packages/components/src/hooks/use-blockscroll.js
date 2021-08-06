@@ -16,7 +16,7 @@ export const useBlockScroll = target_ref => {
         const content_width_style = is_firefox_browser ? '100%' : 'calc(100% - 5px)';
 
         if (scrollable_parent) {
-            scrollable_parent.style.overflowY = 'hidden';
+            scrollable_parent.style.overflow = 'hidden';
             scrollable_parent.style.width = content_width_style;
         }
 

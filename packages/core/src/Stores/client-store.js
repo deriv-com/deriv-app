@@ -673,13 +673,6 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get is_synthetics_unavailable() {
-        return this.is_logged_in
-            ? isSyntheticsUnavailable(this.residence)
-            : isSyntheticsUnavailable(this.website_status.clients_country);
-    }
-
-    @computed
     get is_options_blocked() {
         return isOptionsBlocked(this.residence);
     }

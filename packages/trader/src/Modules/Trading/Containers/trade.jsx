@@ -36,7 +36,6 @@ const Trade = ({
     is_eu,
     is_market_closed,
     is_market_unavailable_visible,
-    is_synthetics_unavailable,
     is_trade_enabled,
     network_status,
     NotificationMessages,
@@ -100,11 +99,7 @@ const Trade = ({
 
             onChange({ target: { name: 'contract_type', value: 'multiplier' } });
         };
-        if (
-            should_show_multipliers_onboarding &&
-            !is_chart_loading &&
-            (!is_synthetics_unavailable || !is_market_closed)
-        ) {
+        if (should_show_multipliers_onboarding && !is_chart_loading && (is_synthetics_available || !is_market_closed)) {
             selectMultipliers();
         }
     }, [should_show_multipliers_onboarding, is_chart_loading]);
@@ -209,7 +204,6 @@ const Trade = ({
 export default connect(({ client, common, modules, ui }) => ({
     getFirstOpenMarket: modules.trade.getFirstOpenMarket,
     is_eu: client.is_eu,
-    is_synthetics_unavailable: client.is_synthetics_unavailable,
     is_synthetics_available: modules.trade.is_synthetics_available,
     network_status: common.network_status,
     contract_type: modules.trade.contract_type,
@@ -340,7 +334,7 @@ const Chart = props => {
     const max_ticks = granularity === 0 ? 8 : 24;
 
     if (!symbol || active_symbols.length === 0) return null;
-    const activeSymbols = JSON.parse(JSON.stringify(active_symbols));
+
     return (
         <SmartChartWithRef
             ref={charts_ref}
@@ -353,10 +347,10 @@ const Chart = props => {
             chartStatusListener={v => setChartStatus(!v)}
             chartType={chart_type}
             initialData={{
-                activeSymbols: activeSymbols,
+                activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
             }}
             chartData={{
-                activeSymbols: activeSymbols,
+                activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
             }}
             feedCall={{
                 activeSymbols: false,

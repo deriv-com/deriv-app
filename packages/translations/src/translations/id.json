@@ -1429,7 +1429,7 @@
     "2080829530": "Dijual seharga: {{sold_for}}",
     "2081088445": "Ketika Anda menetapkan batas atau pengecualian diri, mereka akan diperhitungkan pada semua jenis akun Anda pada DTrader dan DBot. Misalnya, kerugian yang dihasilkan pada kedua platform akan bertambah dan dihitung terhadap batas kerugian yang Anda tetapkan.",
     "2084693624": "Mengkonversi string yang mewakili tanggal/waktu string menjadi detik sejak Epoch. Contoh: 2019-01-01 21:03:45 GMT+ 0800 akan dikonversi ke 1546347825. Offset zona waktu dan waktu bersifat opsional.",
-    "2085387371": "Must be numbers, letters, and special characters . , ' -",
+    "2085387371": "Harus berupa angka, huruf, dan karakter khusus . , ' -",
     "2085602195": "- Nilai Masuk: nilai tik pertama kontrak",
     "2086792088": "Kedua barrier harus dalam bentuk relatif atau mutlak",
     "2088735355": "Batas sesi dan pengaksesan Anda",

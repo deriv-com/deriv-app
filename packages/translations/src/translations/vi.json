@@ -1429,6 +1429,7 @@
     "2080829530": "Đã bán cho: {{sold_for}}",
     "2081088445": "Khi bạn đặt giới hạn hoặc tự loại trừ cho mình, chúng sẽ được tổng hợp trên tất cả các loại tài khoản của bạn trong DTrader và DBot. Ví dụ: các khoản lỗ được thực hiện trên cả hai nền tảng sẽ được cộng lại và tính vào giới hạn lỗ mà bạn đã đặt.",
     "2084693624": "Chuyển đổi một chuỗi đại diện cho ngày/giờ thành giây kể từ Epoch. Ví dụ: 2019-01-01 21:03:45 GMT + 0800 sẽ được chuyển đổi thành 1546347825. Thời gian và múi giờ được tùy chọn.",
+    "2085387371": "Phải là số, chữ cái và ký tự đặc biệt . , '-",
     "2085602195": "- Giá trị đầu vào: giá trị của tick đầu tiên của hợp đồng",
     "2086792088": "Cả hai rào cản cần phải tương đối hoặc tuyệt đối",
     "2088735355": "Các giới hạn phiên và đăng nhập của bạn",

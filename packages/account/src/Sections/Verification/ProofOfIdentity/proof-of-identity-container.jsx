@@ -102,10 +102,8 @@ const ProofOfIdentityContainer = ({
         case service_code.idv:
             return (
                 <IdvContainer
-                    // TODO: start deprecated
                     is_from_external={!!is_from_external}
                     redirect_button={redirect_button}
-                    // End deprecation
                     idv={idv}
                     residence_list={residence_list}
                     handleRequireSubmission={handleRequireSubmission}
@@ -116,10 +114,8 @@ const ProofOfIdentityContainer = ({
         case service_code.onfido:
             return (
                 <Onfido
-                    // TODO: start deprecated
                     is_from_external={!!is_from_external}
                     redirect_button={redirect_button}
-                    // End deprecated
                     verification_status={verification_status}
                     handleRequireSubmission={handleRequireSubmission}
                     residence_list={residence_list}

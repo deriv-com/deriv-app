@@ -150,16 +150,9 @@ const POISubmission = ({
                             redirect_button={redirect_button}
                         />
                     );
-                case service_code.onfido:
-                    return (
-                        <UploadComplete
-                            is_from_external={is_from_external}
-                            needs_poa={needs_poa}
-                            redirect_button={redirect_button}
-                        />
-                    );
+                // This will be replaced in the next Manual Upload Project
                 case service_code.manual:
-                    // TODO: add manual upload complete
+                case service_code.onfido:
                     return (
                         <UploadComplete
                             is_from_external={is_from_external}

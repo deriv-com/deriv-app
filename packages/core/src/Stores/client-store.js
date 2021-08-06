@@ -432,8 +432,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get should_allow_authentication() {
-        const allow_document_upload = this.account_status?.status?.some(status => status === 'allow_document_upload');
-        return allow_document_upload;
+        return this.account_status?.status?.some(status => status === 'allow_document_upload');
     }
 
     @computed

@@ -60,6 +60,10 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
         document_number: '',
     };
 
+    const getDocument = text => {
+        return document_list.find(d => d.text === text);
+    };
+
     const getExampleFormat = example_format => {
         return example_format ? localize('Example: ') + example_format : '';
     };
@@ -150,8 +154,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                                         value={values.document_type.text}
                                                         onBlur={e => {
                                                             handleBlur(e);
-                                                            const current_input = e.target.value;
-                                                            if (!document_list.find(d => d.text === current_input)) {
+                                                            if (!getDocument(e.target.value)) {
                                                                 resetDocumentItemSelected(setFieldValue);
                                                             }
                                                         }}
@@ -181,9 +184,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                                     value={values.document_type.text}
                                                     onChange={e => {
                                                         handleChange(e);
-                                                        const selected_document = document_list.find(
-                                                            d => d.text === e.target.value
-                                                        );
+                                                        const selected_document = getDocument(e.target.value);
                                                         if (selected_document) {
                                                             setFieldValue('document_type', selected_document, true);
                                                             if (has_visual_sample) {

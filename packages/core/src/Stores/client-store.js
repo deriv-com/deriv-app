@@ -482,7 +482,6 @@ export default class ClientStore extends BaseStore {
         return this.account_status?.status?.some(status => status === 'trading_experience_not_complete');
     }
 
-    // TODO: will be deprecated
     @computed
     get authentication_status() {
         const document_status = this.account_status?.authentication?.document?.status;

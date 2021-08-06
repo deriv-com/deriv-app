@@ -163,7 +163,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                                             if (item.text === 'No results found' || !item.text) {
                                                                 resetDocumentItemSelected(setFieldValue);
                                                             } else {
-                                                                setFieldValue('document_type', item || '', true);
+                                                                setFieldValue('document_type', item, true);
                                                                 if (has_visual_sample) {
                                                                     setDocumentImage(item.sample_image || '');
                                                                 }
@@ -219,10 +219,9 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                             onChange={handleChange}
                                             onKeyUp={e => {
                                                 const { example_format } = values.document_type;
-                                                let current_input = e.target.value;
-                                                if (example_format) {
-                                                    current_input = formatInput(example_format, current_input, '-');
-                                                }
+                                                const current_input = example_format
+                                                    ? formatInput(example_format, current_input, '-')
+                                                    : e.target.value;
                                                 setFieldValue('document_number', current_input, true);
                                                 validateFields(values);
                                             }}

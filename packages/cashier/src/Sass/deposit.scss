@@ -18,6 +18,29 @@
         .qrcode {
             margin: 2.4rem 0;
         }
+
+        .crypto-api-error {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 2.4rem;
+
+            &__text {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 27.6rem;
+                padding: 0.8rem;
+                margin: 2.4rem 0;
+                border-radius: $BORDER_RADIUS;
+                background-color: var(--status-warning-transparent);
+            }
+
+            .dc-btn {
+                max-width: 6rem;
+                padding: 0.3rem 0.8rem;
+            }
+        }
     }
 
     &__transaction-currency {

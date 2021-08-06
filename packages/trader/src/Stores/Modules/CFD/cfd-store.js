@@ -324,7 +324,7 @@ export default class CFDStore extends BaseStore {
             actions.setSubmitting(false);
             this.setError(false);
             this.setCFDSuccessDialog(true);
-            this.getAccountStatus(CFD_PLATFORMS.MT5);
+            await this.getAccountStatus(CFD_PLATFORMS.MT5);
 
             const mt5_login_list_response = await WS.authorized.mt5LoginList();
             this.root_store.client.responseMt5LoginList(mt5_login_list_response);
@@ -333,7 +333,7 @@ export default class CFDStore extends BaseStore {
             this.root_store.client.responseTradingServers(await WS.tradingServers());
             this.setCFDNewAccount(response.mt5_new_account);
         } else {
-            this.getAccountStatus(CFD_PLATFORMS.MT5);
+            await this.getAccountStatus(CFD_PLATFORMS.MT5);
             this.setError(true, response.error);
             actions.resetForm({});
             actions.setSubmitting(false);
@@ -371,7 +371,7 @@ export default class CFDStore extends BaseStore {
             actions.setSubmitting(false);
             this.setError(false);
             this.setCFDSuccessDialog(true);
-            this.getAccountStatus(CFD_PLATFORMS.DXTRADE);
+            await this.getAccountStatus(CFD_PLATFORMS.DXTRADE);
 
             const trading_platform_accounts_list_response = await WS.tradingPlatformAccountsList(values.platform);
             this.root_store.client.responseTradingPlatformAccountsList(trading_platform_accounts_list_response);
@@ -379,7 +379,7 @@ export default class CFDStore extends BaseStore {
             WS.transferBetweenAccounts(); // get the list of updated accounts for transfer in cashier
             this.setCFDNewAccount(response.trading_platform_new_account);
         } else {
-            this.getAccountStatus(CFD_PLATFORMS.DXTRADE);
+            await this.getAccountStatus(CFD_PLATFORMS.DXTRADE);
             this.setError(true, response.error);
             actions.resetForm({});
             actions.setSubmitting(false);

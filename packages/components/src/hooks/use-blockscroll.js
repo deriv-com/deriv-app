@@ -6,19 +6,18 @@ export const useBlockScroll = target_ref => {
 
         const getScrollableParentElement = elem => {
             if (!elem) return null;
-
             if (elem.classList.contains('dc-themed-scrollbars') && elem.scrollHeight > elem.clientHeight) return elem;
             return getScrollableParentElement(elem.parentElement);
         };
 
         const scrollable_parent = getScrollableParentElement(target_ref.current);
-        // Apparently Firefox scrollbar width is different. 10px for thin
-        const is_unsupported_browser = navigator.userAgent.indexOf('Firefox') > -1;
-        const content_width_style = `calc(100% - ${is_unsupported_browser ? '10px' : '5px'})`; // 5px is the width of scrollbar
+        // Scroll bar width. Firefox - 10px, other browsers - 5px
+        const is_firefox_browser = navigator.userAgent.indexOf('Firefox') > -1;
+        const content_width_style = `calc(100% - ${is_firefox_browser ? '10px' : '5px'})`;
 
         if (scrollable_parent) {
-            scrollable_parent.style.width = content_width_style;
             scrollable_parent.style.overflowY = 'hidden';
+            scrollable_parent.style.width = content_width_style;
         }
 
         return () => {

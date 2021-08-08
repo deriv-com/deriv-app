@@ -25,16 +25,8 @@ const ContractCardHeader = ({
     server_time,
 }) => {
     const current_tick = contract_info.tick_count ? getCurrentTick(contract_info) : null;
-    const {
-        underlying,
-        multiplier,
-        contract_type,
-        shortcode,
-        purchase_time,
-        date_expiry,
-        tick_count,
-        is_sold,
-    } = contract_info;
+    const { underlying, multiplier, contract_type, shortcode, purchase_time, date_expiry, tick_count, is_sold } =
+        contract_info;
 
     return (
         <>

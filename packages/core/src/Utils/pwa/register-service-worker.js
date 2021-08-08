@@ -36,7 +36,7 @@ export default function register() {
                         installingWorker.onstatechange = () => {
                             if (installingWorker?.state === 'installed') {
                                 if (navigator?.serviceWorker?.controller && performance?.now() > EVERY_HOUR) {
-                                    console.log("Yo, I'm inside");
+                                    console.log("Yo, I'm inside"); // eslint-disable-line no-console
                                     // User's first visit:
                                     // At this point, the old content will have been purged and
                                     // the fresh content will have been added to the cache.

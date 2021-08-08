@@ -7,9 +7,9 @@ let interval_id;
 function refreshOnUpdate() {
     return swRegistrationObject => {
         swRegistrationObject.onupdatefound = () => {
-            const updatingWorker = swRegistrationObject.installing;
+            const updatingWorker = swRegistrationObject?.installing;
             updatingWorker.onstatechange = () => {
-                if (updatingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                if (updatingWorker?.state === 'installed' && navigator?.serviceWorker?.controller) {
                     // eslint-disable-next-line no-console
                     console.log('New version is found, refreshing the page...');
                     clearInterval(interval_id);
@@ -23,6 +23,7 @@ export default function register() {
     // Register the service worker
     if (/* process.env.NODE_ENV === 'production' && */ 'serviceWorker' in navigator) {
         window.addEventListener('load', () => {
+            console.log('-------------|First step--------------'); // eslint-disable-line no-console
             const sw_url = `${window.location.origin}${getUrlBase('/service-worker.js')}`;
             navigator?.serviceWorker
                 ?.register?.(sw_url)

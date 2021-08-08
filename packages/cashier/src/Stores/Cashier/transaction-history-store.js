@@ -1,4 +1,5 @@
 import { action, observable } from 'mobx';
+
 export default class TransactionHistoryStore {
     constructor(WS) {
         this.WS = WS;
@@ -66,7 +67,7 @@ export default class TransactionHistoryStore {
         this.setSelectedCryptoTransactionId(id);
         this.setIsCryptoTransactionsCancelModalVisible(true);
     }
-    
+
     @action.bound
     hideCryptoTransactionsCancelModal() {
         this.setSelectedCryptoTransactionId('');

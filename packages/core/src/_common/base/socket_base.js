@@ -383,6 +383,7 @@ const BinarySocketBase = (() => {
         sell,
         cashier,
         cashierPayments,
+        cancelCryptoTransaction,
         cancelContract,
         close,
         contractUpdate,

@@ -1,5 +1,5 @@
 {
-    "0": "[empty string]",
+    "0": "",
     "1014140": "Aby złożyć skargę, możesz również zadzwonić na numer telefonu: <0>+447723580049</0>.",
     "1855898": "Hasło handlowe — nowy, prosty sposób logowania do kont {{platform}}",
     "3215342": "Ostatnie 30 dni",
@@ -1429,7 +1429,7 @@
     "2080829530": "Sprzedano za: {{sold_for}}",
     "2081088445": "Ustawione przez Ciebie limity samodzielnego wykluczenia będą miały zastosowanie do wszystkich typów Twoich kont w DTrader i DBot. Na przykład, straty poniesione na wobu platformach zsumują się i zostaną wzięte pod uwagę w odniesieniu do ustanowionego przez Ciebie limitu strat.",
     "2084693624": "Zamienia ciąg reprezentujący datę/czas na sekundy od epoki. Na przykład: 2019-01-01 21:03:45 GMT+0800 zostanie zamieniony na 1546347825. Godzina i strefa czasowa są opcjonalne.",
-    "2085387371": "Must be numbers, letters, and special characters . , ' -",
+    "2085387371": "Muszą to być liczby, litery i znaki specjalne . , ' -",
     "2085602195": "- Wartość wejściowa: wartość pierwszego ticku kontraktu",
     "2086792088": "Oba limity powinny być wartością absolutną lub względną",
     "2088735355": "Limity sesji i logowania",

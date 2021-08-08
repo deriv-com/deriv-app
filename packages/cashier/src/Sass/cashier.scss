@@ -712,6 +712,14 @@
     grid-template-columns: 1fr auto 1fr;
     grid-gap: 0.8rem;
     align-items: center;
+    @include mobile {
+        display: flex;
+        flex-direction: column;
+        grid-gap: 1.4rem;
+        fieldset {
+            width: 100%;
+        }
+    }
 
     .dc-input {
         margin-bottom: 0;

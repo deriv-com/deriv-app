@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import React from 'react';
-import { action, computed, observable, toJS, reaction, when } from 'mobx';
+import { action, computed, observable, toJS, reaction, runInAction, when } from 'mobx';
 import {
     formatMoney,
     isEmptyObject,
@@ -174,6 +174,7 @@ export default class CashierStore extends BaseStore {
     @observable is_10k_withdrawal_limit_reached = undefined;
     @observable is_deposit = false;
     @observable is_cashier_default = true;
+    @observable is_crypto_transactions_visible = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -307,7 +308,17 @@ export default class CashierStore extends BaseStore {
             if (!this.onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
             }
+
+            if (!this.is_crypto_transactions_visible && 
+                window.location.pathname.endsWith(routes.cashier_crypto_transactions)) {
+                this.root_store.common.routeTo(routes.cashier_deposit);
+            }
         }
+    }
+
+    @action.bound
+    setIsCryptoTransactionsVisible(is_visible) {
+        this.is_crypto_transactions_visible = is_visible;
     }
 
     @action.bound

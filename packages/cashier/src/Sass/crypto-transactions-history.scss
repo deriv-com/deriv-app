@@ -16,6 +16,7 @@
     &__back {
         display: flex;
         align-items: center;
+        cursor: pointer;
         .dc-text {
             margin-left: 0.8rem;
             width: max-content;

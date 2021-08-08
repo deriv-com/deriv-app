@@ -21,18 +21,27 @@ const getHeaders = () => [
 const CryptoTransactionsHistory = ({
     crypto_transactions,
     currency,
-    getCryptoTransactions,
     is_loading,
+    onMount,
+    setIsCryptoTransactionsVisible,
 }) => {
     React.useEffect(() => {
-        getCryptoTransactions();
-    }, []);
+        onMount();
+
+        return() => {
+            setIsCryptoTransactionsVisible(false);
+        }
+    }, [onMount]);
+
+    const onClickBack = () => {
+        setIsCryptoTransactionsVisible(false); 
+    };
 
     return (
         <React.Fragment>
             <div className='crypto-transactions-history'>
                 <div className='crypto-transactions-history__header'>
-                    <div className='crypto-transactions-history__back'>
+                    <div className='crypto-transactions-history__back' onClick={onClickBack}>
                         <Icon icon={isMobile() ? 'IcChevronLeftBold' : 'IcArrowLeftBold'} />
                         <Text as='p' size='xs' weight='bold'>
                             <Localize i18n_default_text={` ${currency} transactions history`} />
@@ -74,13 +83,15 @@ const CryptoTransactionsHistory = ({
 CryptoTransactionsHistory.propTypes = {
     crypto_transactions: PropTypes.array,
     currency: PropTypes.currency,
-    getCryptoTransactions: PropTypes.func,
     is_loading: PropTypes.bool,
+    onMount: PropTypes.func,
+    setIsCryptoTransactionsVisible: PropTypes.func,
 };
 
 export default connect(({ client, modules }) => ({
-    crypto_transactions: modules.cashier.crypto_transactions,
+    crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
-    getCryptoTransactions: modules.cashier.getCryptoTransactions,
-    is_loading: modules.cashier.is_loading,
+    is_loading: modules.cashier.transaction_history.is_loading,
+    onMount: modules.cashier.transaction_history.onMountCryptoTransactionsHistory,
+    setIsCryptoTransactionsVisible: modules.cashier.setIsCryptoTransactionsVisible,
 }))(CryptoTransactionsHistory);

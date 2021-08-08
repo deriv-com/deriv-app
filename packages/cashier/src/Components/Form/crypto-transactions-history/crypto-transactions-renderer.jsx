@@ -5,7 +5,7 @@ import { Button, Icon, Popover, Table, Text } from '@deriv/components';
 import { epochToMoment, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { getStatus } from '../../../Constants/crypto-transactions-status';
+import { getStatus } from '../../../Constants/transaction-status';
 
 const CryptoTransactionsRenderer = ({ 
         row: crypto, 
@@ -69,7 +69,7 @@ const CryptoTransactionsRenderer = ({
                                 weight='bold' 
                                 className='crypto-transactions-history__table-type'
                             >
-                                {transaction_type}
+                                <Localize i18n_default_text={transaction_type} />
                             </Text>
                             <div className='crypto-transactions-history__table-status' onClick={onClickStatus}>
                                 <div className= {classNames('crypto-transactions-history__table-status-code',
@@ -158,7 +158,7 @@ const CryptoTransactionsRenderer = ({
                             size='xs' 
                             weight='bold' 
                         >
-                            {transaction_type}
+                            <Localize i18n_default_text={transaction_type} />
                         </Text>
                     </Table.Cell>
                     <Table.Cell className='crypto-transactions-history__table-amount'>
@@ -196,7 +196,7 @@ const CryptoTransactionsRenderer = ({
                             <Popover 
                                 alignment='right' 
                                 className='crypto-transactions-history__table-popover'
-                                message={transaction_url ? localize('View transaction on Blockchain') : ''}
+                                message={localize('View transaction on Blockchain')}
                             >
                                 <a className='crypto-transactions-history__table-link' 
                                     href={transaction_url} 
@@ -269,7 +269,7 @@ CryptoTransactionsRenderer.propTypes = {
 
 export default connect(({ client, modules }) => ({
     currency: client.currency,
-    cancelCryptoTransaction: modules.cashier.cancelCryptoTransaction,
-    showCryptoTransactionsCancelModal: modules.cashier.showCryptoTransactionsCancelModal,
-    showCryptoTransactionsStatusModal: modules.cashier.showCryptoTransactionsStatusModal,
+    cancelCryptoTransaction: modules.cashier.transaction_history.cancelCryptoTransaction,
+    showCryptoTransactionsCancelModal: modules.cashier.transaction_history.showCryptoTransactionsCancelModal,
+    showCryptoTransactionsStatusModal: modules.cashier.transaction_history.showCryptoTransactionsStatusModal,
 }))(CryptoTransactionsRenderer);

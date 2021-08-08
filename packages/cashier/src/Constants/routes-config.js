@@ -76,6 +76,11 @@ const initRoutesConfig = () => [
                 getTitle: () => localize('Fiat onramp'),
                 icon_component: 'IcCashierOnRamp',
             },
+            {
+                path: routes.cashier_crypto_transactions,
+                component: Deposit,
+                is_invisible: true,
+            },
         ],
     },
 ];

@@ -13,6 +13,7 @@ import FundsProtection from '../Components/Error/funds-protection.jsx';
 import MaxTurnover from '../Components/Form/max-turnover-form.jsx';
 // import SideNote from '../Components/side-note.jsx';
 import USDTSideNote from '../Components/usdt-side-note.jsx';
+import CryptoTransactionsHistory from '../Components/Form/crypto-transactions-history/index.jsx';
 
 // const DepositeSideNote = () => {
 //     const notes = [
@@ -41,6 +42,7 @@ import USDTSideNote from '../Components/usdt-side-note.jsx';
 
 const Deposit = ({
     is_cashier_locked,
+    is_crypto_transactions_visible,
     is_deposit_locked,
     is_loading,
     is_switching,
@@ -103,6 +105,10 @@ const Deposit = ({
         return <Error error={error} />;
     }
 
+    if (is_crypto_transactions_visible) {
+        return <CryptoTransactionsHistory />;
+    }
+
     return <CashierContainer iframe_height={iframe_height} iframe_url={iframe_url} is_loading={is_loading} />;
 };
 
@@ -122,6 +128,7 @@ Deposit.propTypes = {
     standpoint: PropTypes.object,
     is_system_maintenance: PropTypes.bool,
     current_currency_type: PropTypes.string,
+    is_crypto_transactions_visible: PropTypes.bool,
 };
 
 export default connect(({ client, modules }) => ({
@@ -140,4 +147,5 @@ export default connect(({ client, modules }) => ({
     standpoint: client.standpoint,
     is_system_maintenance: modules.cashier.is_system_maintenance,
     current_currency_type: client.current_currency_type,
+    is_crypto_transactions_visible: modules.cashier.is_crypto_transactions_visible,
 }))(Deposit);

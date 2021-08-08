@@ -6,7 +6,7 @@ import { connect } from 'Stores/connect';
 
 const CryptoTransactionsStatusModal = ({
         hideCryptoTransactionsStatusModal, 
-        is_crypto_transactions_status_modal_open, 
+        is_status_modal_visible, 
         selected_crypto_status,
         selected_crypto_status_description,
     }) => {
@@ -15,7 +15,7 @@ const CryptoTransactionsStatusModal = ({
             <Modal
                 small
                 title={selected_crypto_status}
-                is_open={is_crypto_transactions_status_modal_open}
+                is_open={is_status_modal_visible}
                 toggleModal={hideCryptoTransactionsStatusModal}
                 has_close_icon={false}
             >
@@ -32,14 +32,14 @@ const CryptoTransactionsStatusModal = ({
 
 CryptoTransactionsStatusModal.propTypes = {
     hideCryptoTransactionsStatusModal: PropTypes.func,
-    is_crypto_transactions_status_modal_open: PropTypes.bool,
+    is_status_modal_visible: PropTypes.bool,
     selected_crypto_status: PropTypes.string,
     selected_crypto_status_description: PropTypes.string,
 };
 
 export default connect(({ modules }) => ({
-    hideCryptoTransactionsStatusModal: modules.cashier.hideCryptoTransactionsStatusModal,
-    is_crypto_transactions_status_modal_open: modules.cashier.is_crypto_transactions_status_modal_open,
-    selected_crypto_status: modules.cashier.selected_crypto_status,
-    selected_crypto_status_description: modules.cashier.selected_crypto_status_description,
+    hideCryptoTransactionsStatusModal: modules.cashier.transaction_history.hideCryptoTransactionsStatusModal,
+    is_status_modal_visible: modules.cashier.transaction_history.is_crypto_transactions_status_modal_visible,
+    selected_crypto_status: modules.cashier.transaction_history.selected_crypto_status,
+    selected_crypto_status_description: modules.cashier.transaction_history.selected_crypto_status_description,
 }))(CryptoTransactionsStatusModal);

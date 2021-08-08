@@ -7,7 +7,7 @@ import { connect } from 'Stores/connect';
 const CryptoTransactionsCancelModal = ({
         cancelCryptoTransaction, 
         hideCryptoTransactionsCancelModal, 
-        is_crypto_transactions_cancel_modal_open, 
+        is_cancel_modal_visible, 
         selected_crypto_transaction_id,
     }) => {
     return (
@@ -15,7 +15,7 @@ const CryptoTransactionsCancelModal = ({
             <Modal
                 small
                 title={localize('Cancel transaction')}
-                is_open={is_crypto_transactions_cancel_modal_open}
+                is_open={is_cancel_modal_visible}
                 toggleModal={hideCryptoTransactionsCancelModal}
                 has_close_icon
             >
@@ -41,13 +41,13 @@ const CryptoTransactionsCancelModal = ({
 CryptoTransactionsCancelModal.propTypes = {
     cancelCryptoTransaction: PropTypes.func,
     hideCryptoTransactionsCancelModal: PropTypes.func,
-    is_crypto_transactions_cancel_modal_open: PropTypes.bool,
+    is_cancel_modal_visible: PropTypes.bool,
     selected_crypto_transaction_id: PropTypes.string,
 };
 
 export default connect(({ modules }) => ({
-    cancelCryptoTransaction: modules.cashier.cancelCryptoTransaction,
-    hideCryptoTransactionsCancelModal: modules.cashier.hideCryptoTransactionsCancelModal,
-    is_crypto_transactions_cancel_modal_open: modules.cashier.is_crypto_transactions_cancel_modal_open,
-    selected_crypto_transaction_id: modules.cashier.selected_crypto_transaction_id,
+    cancelCryptoTransaction: modules.cashier.transaction_history.cancelCryptoTransaction,
+    hideCryptoTransactionsCancelModal: modules.cashier.transaction_history.hideCryptoTransactionsCancelModal,
+    is_cancel_modal_visible: modules.cashier.transaction_history.is_crypto_transactions_cancel_modal_visible,
+    selected_crypto_transaction_id: modules.cashier.transaction_history.selected_crypto_transaction_id,
 }))(CryptoTransactionsCancelModal);

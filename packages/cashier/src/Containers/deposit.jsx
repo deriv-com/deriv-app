@@ -13,6 +13,7 @@ import FundsProtection from '../Components/Error/funds-protection.jsx';
 import MaxTurnover from '../Components/Form/max-turnover-form.jsx';
 // import SideNote from '../Components/side-note.jsx';
 import USDTSideNote from '../Components/usdt-side-note.jsx';
+import CryptoTransactionsHistory from '../Components/Form/crypto-transactions-history';
 
 // const DepositeSideNote = () => {
 //     const notes = [
@@ -41,6 +42,7 @@ import USDTSideNote from '../Components/usdt-side-note.jsx';
 
 const Deposit = ({
     is_cashier_locked,
+    is_crypto_transactions_visible,
     is_deposit_locked,
     is_loading,
     is_switching,
@@ -102,6 +104,9 @@ const Deposit = ({
     if (error.message) {
         return <Error error={error} />;
     }
+    if (is_crypto_transactions_visible) {
+        return <CryptoTransactionsHistory />;
+    }
 
     return <CashierContainer iframe_height={iframe_height} iframe_url={iframe_url} is_loading={is_loading} />;
 };
@@ -110,6 +115,7 @@ Deposit.propTypes = {
     container: PropTypes.string,
     error: PropTypes.object,
     is_cashier_locked: PropTypes.bool,
+    is_crypto_transactions_visible: PropTypes.bool,
     is_deposit_locked: PropTypes.bool,
     iframe_height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     iframe_url: PropTypes.string,
@@ -126,6 +132,7 @@ Deposit.propTypes = {
 
 export default connect(({ client, modules }) => ({
     is_cashier_locked: modules.cashier.is_cashier_locked,
+    is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
     is_deposit_locked: modules.cashier.is_deposit_locked,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,

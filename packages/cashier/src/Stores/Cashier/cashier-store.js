@@ -174,6 +174,10 @@ export default class CashierStore extends BaseStore {
     @observable is_10k_withdrawal_limit_reached = undefined;
     @observable is_deposit = false;
     @observable is_cashier_default = true;
+    @observable crypto_amount = '';
+    @observable fiat_amount = '';
+    @observable insufficient_fund_error = '';
+    @observable is_timer_visible = false;
     @observable is_crypto_transactions_visible = false;
 
     @observable config = {

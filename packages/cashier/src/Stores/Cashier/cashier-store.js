@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import React from 'react';
-import { action, computed, observable, toJS, reaction, when } from 'mobx';
+import { action, computed, observable, toJS, reaction, when, runInAction } from 'mobx';
 import {
     formatMoney,
     isEmptyObject,
@@ -174,6 +174,10 @@ export default class CashierStore extends BaseStore {
     @observable is_10k_withdrawal_limit_reached = undefined;
     @observable is_deposit = false;
     @observable is_cashier_default = true;
+    @observable crypto_amount = '';
+    @observable fiat_amount = '';
+    @observable insufficient_fund_error = '';
+    @observable is_timer_visible = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),

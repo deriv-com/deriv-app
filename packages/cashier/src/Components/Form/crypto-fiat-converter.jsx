@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
-import { Input, Icon, Text } from '@deriv/components';
+import { DesktopWrapper, Input, Icon, MobileWrapper, Text } from '@deriv/components';
 import { getDecimalPlaces, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -134,11 +134,20 @@ const CryptoFiatConverter = ({
                             />
                         )}
                     </Field>
-                    {arrow_icon_direction === 'right' ? (
-                        <Icon icon='IcArrowRightBold' />
-                    ) : (
-                        <Icon icon='IcArrowLeftBold' />
-                    )}
+                    <MobileWrapper>
+                        {arrow_icon_direction === 'right' ? (
+                            <Icon icon='IcArrowDownBold' />
+                        ) : (
+                            <Icon icon='IcArrowUpBold' />
+                        )}
+                    </MobileWrapper>
+                    <DesktopWrapper>
+                        {arrow_icon_direction === 'right' ? (
+                            <Icon icon='IcArrowRightBold' />
+                        ) : (
+                            <Icon icon='IcArrowLeftBold' />
+                        )}
+                    </DesktopWrapper>
                     <Field name='fiat_amount' validate={validateFiatAmount}>
                         {({ field }) => (
                             <InputGroup className='input-group'>

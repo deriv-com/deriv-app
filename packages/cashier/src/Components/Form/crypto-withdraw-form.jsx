@@ -39,8 +39,9 @@ const CryptoWithdrawForm = ({
     blockchain_address,
     crypto_amount,
     crypto_converter_error,
-    fiat_converter_error,
     currency,
+    fiat_converter_error,
+    has_invalid_crypto_address,
     requestWithdraw,
     resetWithrawForm,
     setBlockchainAddress,
@@ -55,6 +56,9 @@ const CryptoWithdrawForm = ({
     const validateAddress = address => {
         if (!address) return localize('This field is required.');
 
+        if (has_invalid_crypto_address) {
+            return localize('Please enter a valid wallet address.');
+        }
         if (address.length < MIN_ADDRESS_LENGTH) {
             return localize('Your wallet address should have 25 characters or more.');
         }
@@ -95,7 +99,13 @@ const CryptoWithdrawForm = ({
                                             }}
                                         />
                                     }
-                                    error={touched.address && errors.address ? errors.address : ''}
+                                    error={
+                                        touched.address && errors.address
+                                            ? errors.address
+                                            : (has_invalid_crypto_address &&
+                                                  localize('Please enter a valid wallet address.')) ||
+                                              ''
+                                    }
                                     required
                                     autoComplete='off'
                                 />
@@ -141,8 +151,9 @@ CryptoWithdrawForm.propTypes = {
     blockchain_address: PropTypes.string,
     crypto_amount: PropTypes.string,
     crypto_converter_error: PropTypes.string,
-    fiat_converter_error: PropTypes.string,
     currency: PropTypes.string,
+    fiat_converter_error: PropTypes.string,
+    has_invalid_crypto_address: PropTypes.bool,
     requestWithdraw: PropTypes.func,
     resetWithrawForm: PropTypes.func,
     setBlockchainAddress: PropTypes.func,
@@ -156,8 +167,9 @@ export default connect(({ client, modules }) => ({
     blockchain_address: modules.cashier.blockchain_address,
     crypto_amount: modules.cashier.crypto_amount,
     crypto_converter_error: modules.cashier.crypto_converter_error,
-    fiat_converter_error: modules.cashier.fiat_converter_error,
     currency: client.currency,
+    fiat_converter_error: modules.cashier.fiat_converter_error,
+    has_invalid_crypto_address: modules.cashier.config.withdraw.has_invalid_crypto_address,
     requestWithdraw: modules.cashier.requestWithdraw,
     resetWithrawForm: modules.cashier.resetWithrawForm,
     setBlockchainAddress: modules.cashier.setBlockchainAddress,

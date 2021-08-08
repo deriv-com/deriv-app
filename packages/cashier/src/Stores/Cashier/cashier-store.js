@@ -142,6 +142,7 @@ class ConfigWithdraw {
     @observable error = new ConfigError();
     @observable verification = new ConfigVerification();
     @observable is_withdraw_confirmed = false;
+    @observable has_invalid_crypto_address = false;
 
     is_session_timeout = true;
     onIframeLoaded = '';
@@ -150,6 +151,11 @@ class ConfigWithdraw {
     @action.bound
     setIsWithdrawConfirmed(value) {
         this.is_withdraw_confirmed = value;
+    }
+
+    @action.bound
+    setInvalidCryptoAddress(value) {
+        this.has_invalid_crypto_address = value;
     }
 }
 
@@ -280,10 +286,14 @@ export default class CashierStore extends BaseStore {
             })
             .then(response => {
                 if (response.error) {
-                    this.setErrorMessage(response.error);
-                    if (verification_code) {
-                        // clear verification code on error
-                        this.clearVerification();
+                    if (response.error.code === 'CryptoInvalidAddress') {
+                        this.config.withdraw.setInvalidCryptoAddress(true);
+                    } else {
+                        this.setErrorMessage(response.error);
+                        if (verification_code) {
+                            // clear verification code on error
+                            this.clearVerification();
+                        }
                     }
                 } else {
                     this.config.withdraw.setIsWithdrawConfirmed(true);
@@ -295,6 +305,7 @@ export default class CashierStore extends BaseStore {
     @action.bound
     resetWithrawForm() {
         this.setBlockchainAddress('');
+        this.config.withdraw.setInvalidCryptoAddress(false);
     }
 
     @action.bound

@@ -13,17 +13,21 @@ import {
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { isDesktop, CFD_PLATFORMS } from '@deriv/shared';
+import { isDesktop, CFD_PLATFORMS, isLandingCompanyEnabled } from '@deriv/shared';
 
 const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
-    const logged_out_types_count = platform === CFD_PLATFORMS.MT5 ? 3 : 2;
-    const account_types_count = is_logged_in
-        ? [
-              landing_companies?.mt_gaming_company?.financial,
-              landing_companies?.mt_financial_company?.financial,
-              landing_companies?.mt_financial_company?.financial_stp && platform === CFD_PLATFORMS.MT5,
-          ].filter(Boolean).length
-        : logged_out_types_count;
+    const getLoggedOutTypesCount = () => (platform === CFD_PLATFORMS.MT5 ? 3 : 2);
+    const getLoggedInTypesCount = () =>
+        (platform === CFD_PLATFORMS.MT5
+            ? [
+                  landing_companies?.mt_gaming_company?.financial,
+                  landing_companies?.mt_financial_company?.financial,
+                  landing_companies?.mt_financial_company?.financial_stp && platform === CFD_PLATFORMS.MT5,
+              ]
+            : [landing_companies?.dxtrade_gaming_company, landing_companies?.dxtrade_financial_company]
+        ).filter(Boolean).length;
+
+    const account_types_count = is_logged_in ? getLoggedInTypesCount() : getLoggedOutTypesCount();
 
     return [
         {
@@ -174,7 +178,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 financial_eu: localize('100%'),
                 financial_stp: localize('100%'),
                 footnote: localize(
-                    'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
+                    'You’ll get a warning, known as margin call, if your account balance drops down close to the stop out level.'
                 ),
             },
             dxtrade: {
@@ -184,7 +188,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 financial_au: localize('100%'),
                 financial_eu: localize('100%'),
                 footnote: localize(
-                    'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
+                    'You’ll get a warning, known as margin call, if your account balance drops down close to the stop out level.'
                 ),
             },
         },
@@ -198,7 +202,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 financial_eu: localize('50%'),
                 financial_stp: localize('50%'),
                 footnote: localize(
-                    'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
+                    "To understand stop out, first you need to learn about margin level, which is  the ratio of your equity (the total balance you would have if you close all your positions at that point) to the margin you're using at the moment. If your margin level drops below our stop out level, your positions may be closed automatically to protect you from further losses."
                 ),
             },
             dxtrade: {
@@ -208,7 +212,7 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 financial_au: localize('50%'),
                 financial_eu: localize('50%'),
                 footnote: localize(
-                    'When the remaining funds in your account is deemed insufficient to cover the leverage or margin requirements, your account will be placed under margin call. To prevent a margin call escalating to a stop out level, you can deposit  additional funds into your account or close any open positions.'
+                    "To understand stop out, first you need to learn about margin level, which is  the ratio of your equity (the total balance you would have if you close all your positions at that point) to the margin you're using at the moment. If your margin level drops below our stop out level, your positions may be closed automatically to protect you from further losses."
                 ),
             },
         },
@@ -258,13 +262,13 @@ const getAccounts = ({ landing_companies, platform, is_logged_in }) => {
                 synthetic: localize('Synthetics'),
                 synthetic_eu: localize('Synthetics'),
                 financial: localize(
-                    'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices'
+                    'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks, and Stock Indices'
                 ),
                 financial_au: localize(
-                    'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices'
+                    'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks, and Stock Indices'
                 ),
                 financial_eu: localize(
-                    'FX-majors (standard), FX-minors, Commodities, Cryptocurrencies, Stocks & Indices'
+                    'FX-majors (standard/micro lots), FX-minors, Commodities, Cryptocurrencies, Stocks, and Stock Indices'
                 ),
                 financial_stp: localize('FX-majors, FX-minors, FX-exotics, Cryptocurrencies'),
                 footnote: null,
@@ -445,15 +449,19 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
         setCols(compareAccountsData({ landing_companies, is_logged_in, platform, show_eu_related, residence }));
 
         if (is_logged_in) {
-            updateColumnsStyle(
-                `1.5fr ${landing_companies?.mt_gaming_company?.financial ? '1fr' : ''} ${
-                    landing_companies?.mt_financial_company?.financial ? '2fr' : ''
-                } ${
-                    landing_companies?.mt_financial_company?.financial_stp && platform === CFD_PLATFORMS.MT5
-                        ? ' 1fr '
-                        : ''
-                }`
-            );
+            if (platform === CFD_PLATFORMS.MT5) {
+                updateColumnsStyle(
+                    `1.5fr ${landing_companies?.mt_gaming_company?.financial ? '1fr' : ''} ${
+                        landing_companies?.mt_financial_company?.financial ? '2fr' : ''
+                    } ${landing_companies?.mt_financial_company?.financial_stp ? ' 1fr ' : ''}`
+                );
+            } else {
+                updateColumnsStyle(
+                    `1.5fr ${landing_companies?.dxtrade_gaming_company ? '1fr' : ''} ${
+                        landing_companies?.dxtrade_financial_company ? '2fr' : ''
+                    }`
+                );
+            }
         }
     }, [
         landing_companies?.mt_financial_company,
@@ -482,10 +490,14 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
                                 <Table.Head />
                                 {is_logged_in ? (
                                     <React.Fragment>
-                                        {landing_companies?.mt_gaming_company?.financial && (
+                                        {isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) && (
                                             <Table.Head>{localize('Synthetic')}</Table.Head>
                                         )}
-                                        {landing_companies?.mt_financial_company?.financial && (
+                                        {isLandingCompanyEnabled({
+                                            landing_companies,
+                                            platform,
+                                            type: 'financial',
+                                        }) && (
                                             <Table.Head>
                                                 {localize('Financial')}
                                                 <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
@@ -493,15 +505,18 @@ const ModalContent = ({ landing_companies, is_logged_in, platform, show_eu_relat
                                                 </Text>
                                             </Table.Head>
                                         )}
-                                        {landing_companies?.mt_financial_company?.financial_stp &&
-                                            platform === CFD_PLATFORMS.MT5 && (
-                                                <Table.Head>
-                                                    {localize('Financial STP')}
-                                                    <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
-                                                        *
-                                                    </Text>
-                                                </Table.Head>
-                                            )}
+                                        {isLandingCompanyEnabled({
+                                            landing_companies,
+                                            platform,
+                                            type: 'financial_stp',
+                                        }) && (
+                                            <Table.Head>
+                                                {localize('Financial STP')}
+                                                <Text size='s' weight='bold' className='cfd-compare-accounts__star'>
+                                                    *
+                                                </Text>
+                                            </Table.Head>
+                                        )}
                                     </React.Fragment>
                                 ) : (
                                     <React.Fragment>

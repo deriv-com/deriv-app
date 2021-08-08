@@ -24,18 +24,19 @@ export default function register() {
     if (/* process.env.NODE_ENV === 'production' && */ 'serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             const sw_url = `${window.location.origin}${getUrlBase('/service-worker.js')}`;
-            navigator.serviceWorker
-                .register(sw_url)
-                .then(registration => {
+            navigator?.serviceWorker
+                ?.register?.(sw_url)
+                ?.then(registration => {
                     interval_id = setInterval(() => {
-                        registration.update().then(refreshOnUpdate);
+                        registration?.update?.()?.then?.(refreshOnUpdate);
                     }, EVERY_HOUR);
 
                     registration.onupdatefound = () => {
-                        const installingWorker = registration.installing;
+                        const installingWorker = registration?.installing;
                         installingWorker.onstatechange = () => {
-                            if (installingWorker.state === 'installed') {
-                                if (navigator.serviceWorker.controller && performance.now() > EVERY_HOUR) {
+                            if (installingWorker?.state === 'installed') {
+                                if (navigator?.serviceWorker?.controller && performance?.now() > EVERY_HOUR) {
+                                    console.log("Yo, I'm inside");
                                     // User's first visit:
                                     // At this point, the old content will have been purged and
                                     // the fresh content will have been added to the cache.

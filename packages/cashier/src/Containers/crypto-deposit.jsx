@@ -54,7 +54,12 @@ const CryptoDeposit = ({
                             <Icon icon='IcAlertWarning' />
                             <Localize i18n_default_text='Our server cannot retrieve an address' />
                         </Text>
-                        <Button text={localize('Refresh')} onClick={() => window.location.reload()} secondary small />
+                        <Button
+                            text={localize('Refresh')}
+                            onClick={() => pollApiForDepositAddress(false)}
+                            secondary
+                            small
+                        />
                     </div>
                 ) : (
                     <>

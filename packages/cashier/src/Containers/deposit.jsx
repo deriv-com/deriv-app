@@ -104,7 +104,6 @@ const Deposit = ({
     if (error.message) {
         return <Error error={error} />;
     }
-
     if (is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;
     }
@@ -116,6 +115,7 @@ Deposit.propTypes = {
     container: PropTypes.string,
     error: PropTypes.object,
     is_cashier_locked: PropTypes.bool,
+    is_crypto_transactions_visible: PropTypes.bool,
     is_deposit_locked: PropTypes.bool,
     iframe_height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     iframe_url: PropTypes.string,
@@ -128,11 +128,11 @@ Deposit.propTypes = {
     standpoint: PropTypes.object,
     is_system_maintenance: PropTypes.bool,
     current_currency_type: PropTypes.string,
-    is_crypto_transactions_visible: PropTypes.bool,
 };
 
 export default connect(({ client, modules }) => ({
     is_cashier_locked: modules.cashier.is_cashier_locked,
+    is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
     is_deposit_locked: modules.cashier.is_deposit_locked,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
@@ -147,5 +147,4 @@ export default connect(({ client, modules }) => ({
     standpoint: client.standpoint,
     is_system_maintenance: modules.cashier.is_system_maintenance,
     current_currency_type: client.current_currency_type,
-    is_crypto_transactions_visible: modules.cashier.is_crypto_transactions_visible,
 }))(Deposit);

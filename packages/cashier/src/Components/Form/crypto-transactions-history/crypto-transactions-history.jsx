@@ -27,14 +27,17 @@ const CryptoTransactionsHistory = ({
 }) => {
     React.useEffect(() => {
         onMount();
-
-        return() => {
-            setIsCryptoTransactionsVisible(false);
-        }
     }, [onMount]);
 
     const onClickBack = () => {
         setIsCryptoTransactionsVisible(false); 
+    };
+
+    const getRowGap = () => {
+        if(isMobile()){
+            return '8';
+        }
+        return '0';
     };
 
     return (
@@ -70,7 +73,7 @@ const CryptoTransactionsHistory = ({
                                 data_source={crypto_transactions}
                                 rowRenderer={row_props => <CryptoTransactionsRenderer {...row_props} />}
                                 keyMapper={row => row.id}
-                                row_gap = { isMobile() ? 8 : 0 }
+                                row_gap = {getRowGap}
                             /> 
                         }
                     </Table.Body>
@@ -82,7 +85,7 @@ const CryptoTransactionsHistory = ({
 
 CryptoTransactionsHistory.propTypes = {
     crypto_transactions: PropTypes.array,
-    currency: PropTypes.currency,
+    currency: PropTypes.string,
     is_loading: PropTypes.bool,
     onMount: PropTypes.func,
     setIsCryptoTransactionsVisible: PropTypes.func,
@@ -93,5 +96,5 @@ export default connect(({ client, modules }) => ({
     currency: client.currency,
     is_loading: modules.cashier.transaction_history.is_loading,
     onMount: modules.cashier.transaction_history.onMountCryptoTransactionsHistory,
-    setIsCryptoTransactionsVisible: modules.cashier.setIsCryptoTransactionsVisible,
+    setIsCryptoTransactionsVisible: modules.cashier.transaction_history.setIsCryptoTransactionsVisible,
 }))(CryptoTransactionsHistory);

@@ -20,6 +20,7 @@ const Cashier = ({
     is_account_transfer_visible,
     is_account_setting_loaded,
     is_crypto_transactions_visible,
+    is_crypto_transactions_history_visible,
     is_logged_in,
     is_logging_in,
     is_onramp_tab_visible,
@@ -71,7 +72,8 @@ const Cashier = ({
                     label: route.getTitle(),
                     value: route.component,
                     path: route.path,
-                    has_side_note: is_crypto_transactions_visible ? false : route.path !== routes.cashier_p2p, // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
+                    has_side_note: (is_crypto_transactions_visible && is_crypto_transactions_history_visible) 
+                            ? false : route.path !== routes.cashier_p2p, // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
                 });
             }
         });
@@ -163,6 +165,7 @@ Cashier.propTypes = {
     is_account_transfer_visible: PropTypes.bool,
     is_account_setting_loaded: PropTypes.bool,
     is_crypto_transactions_visible: PropTypes.bool,
+    is_crypto_transactions_history_visible: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
     is_onramp_tab_visible: PropTypes.bool,
@@ -185,7 +188,8 @@ Cashier.propTypes = {
 export default connect(({ client, common, modules, ui }) => ({
     is_account_transfer_visible: modules.cashier.is_account_transfer_visible,
     is_account_setting_loaded: client.is_account_setting_loaded,
-    is_crypto_transactions_visible: modules.cashier.is_crypto_transactions_visible,
+    is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
+    is_crypto_transactions_history_visible: modules.cashier.is_crypto_transactions_visible,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,

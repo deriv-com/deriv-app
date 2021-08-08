@@ -129,5 +129,5 @@ export default connect(({ modules, client }) => ({
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
     onMount: modules.cashier.transaction_history.onMount,
-    setIsCryptoTransactionsVisible: modules.cashier.setIsCryptoTransactionsVisible,
+    setIsCryptoTransactionsVisible: modules.cashier.transaction_history.setIsCryptoTransactionsVisible,
 }))(RecentTransaction);

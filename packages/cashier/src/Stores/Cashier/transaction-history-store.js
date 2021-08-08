@@ -108,4 +108,9 @@ export default class TransactionHistoryStore {
     setLoading(is_loading) {
         this.is_loading = is_loading;
     }
+
+    @action.bound
+    setIsCryptoTransactionsVisible(is_visible) {
+        this.is_crypto_transactions_visible = is_visible;
+    }
 }

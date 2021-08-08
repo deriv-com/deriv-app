@@ -312,13 +312,9 @@ export default class CashierStore extends BaseStore {
             if (!this.is_crypto_transactions_visible && 
                 window.location.pathname.endsWith(routes.cashier_crypto_transactions)) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
+                this.transaction_history.setIsCryptoTransactionsVisible(true);
             }
         }
-    }
-
-    @action.bound
-    setIsCryptoTransactionsVisible(is_visible) {
-        this.is_crypto_transactions_visible = is_visible;
     }
 
     @action.bound
@@ -1649,6 +1645,11 @@ export default class CashierStore extends BaseStore {
         this.setIsTransferSuccessful(false);
         this.setErrorMessage('');
     };
+
+    @action.bound
+    setIsCryptoTransactionsVisible(is_visible) {
+        this.is_crypto_transactions_visible = is_visible;
+    }
 
     accountSwitcherListener() {
         [this.config.withdraw.container, this.config.payment_agent.container].forEach(container => {

@@ -6,10 +6,8 @@ module.exports = {
         react: {
             version: '16',
         },
-            'import/resolver': {
-            webpack: {
-                config: webpackConfig({})
-            },
+        'import/resolver': {
+            webpack: { config: webpackConfig({}) },
         },
     },
 };

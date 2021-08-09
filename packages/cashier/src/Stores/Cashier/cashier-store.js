@@ -311,6 +311,8 @@ export default class CashierStore extends BaseStore {
             if (!this.onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {
                 this.root_store.common.routeTo(routes.cashier_deposit);
             }
+
+            this.transaction_history.getCryptoTransactions();
         }
     }
 
@@ -783,6 +785,7 @@ export default class CashierStore extends BaseStore {
             const amount = (rate * target.value).toFixed(decimals);
             this.setFiatAmount(amount);
             this.setIsTimerVisible(true);
+            this.setAccountTransferAmount(target.value);
         });
     }
 
@@ -800,6 +803,7 @@ export default class CashierStore extends BaseStore {
                 this.insufficient_fund_error = '';
                 this.setCryptoAmount(amount);
                 this.setIsTimerVisible(true);
+                this.setAccountTransferAmount(amount);
             }
         });
     }
@@ -1660,5 +1664,22 @@ export default class CashierStore extends BaseStore {
         this.onRemount();
 
         return Promise.resolve();
+    }
+
+    @computed
+    get is_crypto() {
+        const { currency } = this.root_store.client;
+        return !!currency && isCryptocurrency(currency);
+    }
+
+    @action.bound
+    setPercentageSelectorResult(amount) {
+        this.setCryptoAmount(amount);
+        this.onChangeCryptoAmount(
+            { target: { value: amount } },
+            this.root_store.client.currency,
+            this.root_store.client.current_fiat_currency
+        );
+        this.setIsTimerVisible(false);
     }
 }

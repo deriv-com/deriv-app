@@ -20,6 +20,7 @@ const AccountTransfer = ({
     has_no_account,
     has_no_accounts_balance,
     is_cashier_locked,
+    is_crypto,
     is_loading,
     is_switching,
     is_transfer_confirm,
@@ -50,7 +51,7 @@ const AccountTransfer = ({
     React.useEffect(() => {
         if (
             typeof setSideNotes === 'function' &&
-            (is_transfer_confirm || is_transfer_successful || has_no_accounts_balance)
+            (!is_crypto && is_transfer_confirm || (!is_crypto && is_transfer_successful) || has_no_accounts_balance)
         ) {
             setSideNotes(null);
         }
@@ -96,6 +97,7 @@ AccountTransfer.propTypes = {
     has_no_account: PropTypes.bool,
     has_no_accounts_balance: PropTypes.bool,
     is_cashier_locked: PropTypes.bool,
+    is_crypto: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_switching: PropTypes.bool,
     is_transfer_confirm: PropTypes.bool,
@@ -110,6 +112,7 @@ AccountTransfer.propTypes = {
 };
 
 export default connect(({ client, modules }) => ({
+    is_crypto: modules.cashier.is_crypto,
     is_virtual: client.is_virtual,
     is_switching: client.is_switching,
     accounts_list: modules.cashier.config.account_transfer.accounts_list,

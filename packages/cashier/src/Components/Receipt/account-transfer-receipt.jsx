@@ -11,6 +11,7 @@ const AccountTransferReceipt = ({
     disableApp,
     enableApp,
     history,
+    is_crypto,
     loginid,
     receipt,
     resetAccountTransfer,
@@ -57,6 +58,85 @@ const AccountTransferReceipt = ({
             toggleSwitchAlert();
         }
     };
+
+    if(is_crypto) {
+        return (
+            <div className='cashier__crypto-account-transfer__receipt'>
+                <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header'>
+                    <Localize i18n_default_text='Your funds have been transferred' />
+                </Text>
+                <div className='cashier__crypto-transferred-amount cashier__text--bold'>
+                    <Text as='p' size='l' weight='bold' color='profit-success'>
+                        <Localize 
+                            i18n_default_text='{{amount}} {{currency}}'
+                            values = {{
+                                amount : formatMoney(selected_from.currency, receipt.amount_transferred, true),
+                                currency: getCurrencyDisplayCode(selected_from.currency),
+                            }}
+                        />
+                    </Text>
+                </div>
+                <div className='cashier__crypto-transferred-details-wrapper'>
+                    <div className='crypto-transfer-from'>
+                        <div className='crypto-transfer-from-details'>
+                            <Icon
+                                icon={selected_from.platform_icon || `IcCurrency-${selected_from.currency?.toLowerCase()}`}
+                                size={32}
+                            />
+                            <Text as='p' size='s' weight='bold'>
+                                <Localize i18n_default_text={selected_from.currency} />
+                            </Text>
+                        </div>
+                        <Text as='p' size='s' color='less-prominent' align='center'>{selected_from.value}</Text>
+                    </div>
+                    <Icon className='crypto-transferred-icon' icon='IcArrowDownBold' />
+                    <div className='crypto-transfer-to'>
+                        <div className='crypto-transfer-to-details'>
+                            <Icon
+                                icon={selected_to.platform_icon || `IcCurrency-${selected_to.currency?.toLowerCase()}`}
+                                size={32}
+                            />
+                            <Text as='p' size='s' weight='bold'>
+                                <Localize i18n_default_text={selected_to.currency} />
+                            </Text>
+                        </div>
+                        <Text as='p' size='s' color='less-prominent' align='center'>{selected_to.value}</Text>
+                    </div>
+                </div>
+                <div className='crypto-transfer__receipt-form-submit'>
+                    <Button
+                        className='account-transfer__button'
+                        has_effect
+                        text={localize('View transaction details')}
+                        onClick={checkAccount}
+                        secondary
+                        large
+                    />
+                </div>
+                <Modal
+                    is_open={is_switch_visible}
+                    toggleModal={toggleSwitchAlert}
+                    enableApp={enableApp}
+                    disableApp={disableApp}
+                    has_close_icon={false}
+                    id='account_transfer_switch_modal'
+                    small
+                    title={localize(`Switch to ${switch_to.currency} account?`)}
+                >
+                    <Modal.Body>
+                        <Localize
+                            i18n_default_text='We’re switching over to your {{currency}} account to view the statement.'
+                            values={{ currency: switch_to.currency }}
+                        />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button has_effect text={localize('Cancel')} onClick={toggleSwitchAlert} secondary large />
+                        <Button has_effect text={localize(`Switch to ${switch_to.currency} account`)} onClick={switchAndRedirect} primary large />
+                    </Modal.Footer>
+                </Modal>
+            </div>
+        );
+    }
 
     return (
         <div className='cashier__wrapper account-transfer__receipt'>
@@ -136,6 +216,7 @@ const AccountTransferReceipt = ({
 AccountTransferReceipt.propTypes = {
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,
+    is_crypto: PropTypes.bool,
     loginid: PropTypes.string,
     receipt: PropTypes.object,
     resetAccountTransfer: PropTypes.func,
@@ -146,6 +227,7 @@ AccountTransferReceipt.propTypes = {
 
 export default withRouter(
     connect(({ client, modules, ui }) => ({
+        is_crypto: modules.cashier.is_crypto,
         loginid: client.loginid,
         switchAccount: client.switchAccount,
         receipt: modules.cashier.config.account_transfer.receipt,

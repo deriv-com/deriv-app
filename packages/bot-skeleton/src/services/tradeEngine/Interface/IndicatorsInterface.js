@@ -1,6 +1,4 @@
 import {
-    simpleMovingAverageArray as smaa,
-    bollingerBands as bb,
     bollingerBandsArray as bba,
     exponentialMovingAverage as ema,
     exponentialMovingAverageArray as emaa,
@@ -9,7 +7,8 @@ import {
     macdArray as macda,
 } from '@deriv/indicators';
 
-import { simpleMovingAverage as sma } from '../indicators/simpleMovingAverage';
+import { simpleMovingAverage as sma, simpleMovingAverageArray as smaa } from '../indicators/simple-moving-average';
+import { bollingerBands as bb } from '../indicators/bollinger-bands';
 
 export default Interface =>
     class extends Interface {

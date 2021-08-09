@@ -278,34 +278,36 @@ export default class CashierStore extends BaseStore {
         this.setLoading(true);
         this.setErrorMessage('');
 
-        await this.WS.authorized
-            .cryptoWithdraw({
-                address: this.blockchain_address,
-                amount: this.crypto_amount,
-                verification_code,
-            })
-            .then(response => {
-                if (response.error) {
-                    if (response.error.code === 'CryptoInvalidAddress') {
-                        this.config.withdraw.setInvalidCryptoAddress(true);
-                    } else {
-                        this.setErrorMessage(response.error);
-                        if (verification_code) {
-                            // clear verification code on error
-                            this.clearVerification();
-                        }
-                    }
+        await this.WS.cryptoWithdraw({
+            address: this.blockchain_address,
+            amount: this.crypto_amount,
+            verification_code,
+        }).then(response => {
+            if (response.error) {
+                if (response.error.code === 'CryptoInvalidAddress') {
+                    this.config.withdraw.setInvalidCryptoAddress(true);
                 } else {
-                    this.config.withdraw.setIsWithdrawConfirmed(true);
+                    this.setErrorMessage(response.error);
+                    if (verification_code) {
+                        // clear verification code on error
+                        this.clearVerification();
+                    }
+                    this.resetWithrawForm();
                 }
-                this.setLoading(false);
-            });
+            } else {
+                this.config.withdraw.setIsWithdrawConfirmed(true);
+            }
+            this.setLoading(false);
+        });
     }
 
     @action.bound
     resetWithrawForm() {
         this.setBlockchainAddress('');
         this.config.withdraw.setInvalidCryptoAddress(false);
+        this.setCryptoAmount('');
+        this.setFiatAmount('');
+        this.clearVerification();
     }
 
     @action.bound
@@ -854,8 +856,6 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     resetTimer() {
-        this.setCryptoAmount('');
-        this.setFiatAmount('');
         this.setIsTimerVisible(false);
     }
 

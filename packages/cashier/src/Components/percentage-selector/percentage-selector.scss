@@ -4,6 +4,7 @@
     flex-direction: row;
     width: fit-content;
     min-width: 38rem;
+    margin-bottom: 0.4rem;
 
     @include mobile {
         min-width: auto;

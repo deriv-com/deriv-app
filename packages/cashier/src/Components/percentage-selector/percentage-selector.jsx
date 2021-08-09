@@ -12,9 +12,9 @@ const PercentageSelector = ({ amount, currency, getCalculatedAmount }) => {
 
         for (let i = 1; i <= 4; i++) {
             if (i <= e.target.id) {
-                document.getElementById(i).style.backgroundColor = '#85ACB0'; // TODO: Change color when design is updated
+                document.getElementById(i).style.backgroundColor = 'var(--status-success)';
             } else {
-                document.getElementById(i).style.backgroundColor = '#f2f3f4';
+                document.getElementById(i).style.backgroundColor = 'var(--general-section-1)';
             }
         }
         getCalculatedAmount((amount * (percent / 100)).toFixed(getDecimalPlaces(currency)));
@@ -48,7 +48,7 @@ const PercentageSelector = ({ amount, currency, getCalculatedAmount }) => {
                     <div id='4' className='percentage-selector-block' onClick={e => calculateAmount(e, 100)} />
                 </div>
             </div>
-            <Text color='less-prominent' size='xxs'>
+            <Text color='less-prominent' size='xxs' line_height='l'>
                 <Localize
                     i18n_default_text={`{{percentage}}% of available balance ({{amount}} {{currency}})`}
                     values={{ percentage, amount, currency }}

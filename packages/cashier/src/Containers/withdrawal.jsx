@@ -17,7 +17,7 @@ import SideNote from '../Components/side-note.jsx';
 import USDTSideNote from '../Components/usdt-side-note.jsx';
 import RecentTransaction from '../Components/recent-transaction.jsx';
 
-const WithdrawalSideNote = ({ has_invalid_crypto_address }) => {
+const WithdrawalSideNote = () => {
     const notes = [
         <Localize
             i18n_default_text='Do not enter an address linked to an ICO purchase or crowdsale. If you do, the ICO tokens will not be credited into your account.'
@@ -25,15 +25,6 @@ const WithdrawalSideNote = ({ has_invalid_crypto_address }) => {
         />,
         <Localize i18n_default_text="We'll send you an email once your transaction has been processed." key={1} />,
     ];
-    if (has_invalid_crypto_address) {
-        notes.push(
-            <Localize
-                i18n_default_text='An invalid wallet address could mean that the entered address is currently processing for a previous transaction. Please wait for 
-        the existing transaction to be completed or provide a new address.'
-                key={2}
-            />
-        );
-    }
     const side_note_title =
         notes?.length > 1 ? <Localize i18n_default_text='Notes' /> : <Localize i18n_default_text='Note' />;
 
@@ -48,7 +39,6 @@ const Withdrawal = ({
     currency,
     current_currency_type,
     error,
-    has_invalid_crypto_address,
     iframe_url,
     is_10k_withdrawal_limit_reached,
     is_cashier_locked,
@@ -83,7 +73,7 @@ const Withdrawal = ({
                     side_notes.push(<RecentTransaction key={2} />);
                 }
                 const side_note = [
-                    <WithdrawalSideNote key={0} has_invalid_crypto_address={has_invalid_crypto_address} />,
+                    <WithdrawalSideNote key={0} />,
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
                     ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
                 ];
@@ -92,7 +82,7 @@ const Withdrawal = ({
             } else setSideNotes(null);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, has_invalid_crypto_address, tab_index]);
+    }, [currency, tab_index]);
 
     if (is_system_maintenance) {
         if (is_cashier_locked || (is_withdrawal_locked && current_currency_type === 'crypto')) {
@@ -108,7 +98,7 @@ const Withdrawal = ({
     if (!is_crypto && (verification_code || iframe_url)) {
         return <Withdraw />;
     }
-    if (verification_code && is_crypto) {
+    if (verification_code && is_crypto && !is_withdraw_confirmed) {
         return <CryptoWithdrawForm />;
     }
     if (is_withdraw_confirmed) {
@@ -146,7 +136,6 @@ Withdrawal.propTypes = {
     crypto_transactions: PropTypes.array,
     current_currency_type: PropTypes.bool,
     error: PropTypes.object,
-    has_invalid_crypto_address: PropTypes.bool,
     iframe_url: PropTypes.string,
     is_cashier_locked: PropTypes.bool,
     is_crypto: PropTypes.bool,
@@ -167,7 +156,6 @@ export default connect(({ client, modules }) => ({
     currency: client.currency,
     current_currency_type: client.current_currency_type,
     error: modules.cashier.config.withdraw.error,
-    has_invalid_crypto_address: modules.cashier.config.withdraw.has_invalid_crypto_address,
     iframe_url: modules.cashier.config.withdraw.iframe_url,
     is_10k_withdrawal_limit_reached: modules.cashier.is_10k_withdrawal_limit_reached,
     is_cashier_locked: modules.cashier.is_cashier_locked,

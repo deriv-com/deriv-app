@@ -61,8 +61,12 @@
             border-radius: $BORDER_RADIUS * 2;
             height: 3.2rem;
             width: fit-content;
-            min-width: 36rem;
+            min-width: 42rem;
             margin-bottom: -0.8rem !important;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
 
             &-icon {
                 margin: 0 0.4rem;
@@ -85,8 +89,8 @@
     &__account-info {
         padding: 1.6rem 0;
         width: fit-content;
-        min-width: 36rem;
-        border: 1px solid var(--general-section-1);
+        min-width: 42rem;
+        border: 1px solid var(--border-normal);
         border-radius: $BORDER_RADIUS * 2;
 
         @include mobile {
@@ -113,6 +117,7 @@
             flex-direction: row;
             justify-content: center;
             align-items: center;
+            margin: 1rem;
         }
     }
 

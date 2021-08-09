@@ -51,15 +51,31 @@ const WalletInformation = ({ account, blockchain_address }) => {
                 <Text color='less-prominent' align='center' className='withdraw__account-info-detail-text'>
                     {blockchain_address}
                 </Text>
-                <Clipboard text_copy={blockchain_address} popoverAlignment='top' />
+                <Clipboard
+                    text_copy={blockchain_address}
+                    info_message={isMobile() ? '' : localize('copy')}
+                    icon='IcCashierClipboard'
+                    success_message={localize('copied!')}
+                    popoverAlignment={isMobile() ? 'left' : 'bottom'}
+                />
             </div>
         </div>
     );
 };
 
-const CryptoWithdrawReceipt = ({ account, amount, blockchain_address, currency, setIsWithdrawConfirmed }) => {
+const CryptoWithdrawReceipt = ({
+    account,
+    blockchain_address,
+    crypto_amount,
+    currency,
+    resetWithrawForm,
+    setIsWithdrawConfirmed,
+}) => {
     React.useEffect(() => {
-        return () => setIsWithdrawConfirmed(false);
+        return () => {
+            setIsWithdrawConfirmed(false);
+            resetWithrawForm();
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -87,7 +103,7 @@ const CryptoWithdrawReceipt = ({ account, amount, blockchain_address, currency, 
                     <Localize
                         i18n_default_text='{{withdraw_amount}} {{currency_symbol}}'
                         values={{
-                            withdraw_amount: amount,
+                            withdraw_amount: crypto_amount,
                             currency_symbol: currency?.toUpperCase(),
                         }}
                     />
@@ -112,12 +128,15 @@ CryptoWithdrawReceipt.propTypes = {
     account: PropTypes.object,
     blockchain_address: PropTypes.string,
     currency: PropTypes.string,
+    resetWithrawForm: PropTypes.func,
     setIsWithdrawConfirmed: PropTypes.func,
 };
 
 export default connect(({ client, modules }) => ({
     account: modules.cashier.config.account_transfer.selected_from,
     blockchain_address: modules.cashier.blockchain_address,
+    crypto_amount: modules.cashier.crypto_amount,
     currency: client.currency,
+    resetWithrawForm: modules.cashier.resetWithrawForm,
     setIsWithdrawConfirmed: modules.cashier.config.withdraw.setIsWithdrawConfirmed,
 }))(CryptoWithdrawReceipt);

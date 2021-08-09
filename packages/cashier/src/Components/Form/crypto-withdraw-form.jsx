@@ -43,22 +43,14 @@ const CryptoWithdrawForm = ({
     fiat_converter_error,
     has_invalid_crypto_address,
     requestWithdraw,
-    resetWithrawForm,
     setBlockchainAddress,
     setPercentageSelectorResult,
     verification_code,
+    setInvalidCryptoAddress,
 }) => {
-    React.useEffect(() => {
-        return () => resetWithrawForm();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     const validateAddress = address => {
         if (!address) return localize('This field is required.');
 
-        if (has_invalid_crypto_address) {
-            return localize('Please enter a valid wallet address.');
-        }
         if (address.length < MIN_ADDRESS_LENGTH) {
             return localize('Your wallet address should have 25 characters or more.');
         }
@@ -75,7 +67,7 @@ const CryptoWithdrawForm = ({
             </div>
             <Formik
                 initialValues={{
-                    address: blockchain_address,
+                    address: '',
                 }}
             >
                 {({ errors, isSubmitting, isValid, touched, setFieldTouched, handleChange }) => (
@@ -88,12 +80,13 @@ const CryptoWithdrawForm = ({
                                         handleChange(e);
                                         setBlockchainAddress(e.target.value);
                                         setFieldTouched('address', true, false);
+                                        setInvalidCryptoAddress(false);
                                     }}
                                     className='cashier__input withdraw__input'
                                     type='text'
                                     label={
                                         <Localize
-                                            i18n_default_text='Your {{currency_symbol}} wallet address.'
+                                            i18n_default_text='Your {{currency_symbol}} wallet address'
                                             values={{
                                                 currency_symbol: currency?.toUpperCase(),
                                             }}
@@ -119,7 +112,7 @@ const CryptoWithdrawForm = ({
                             />
                         </div>
                         <div className='withdraw__crypto-fiat-converter'>
-                            <CryptoFiatConverter />
+                            <CryptoFiatConverter required />
                         </div>
                         <div className='withdraw__form-submit'>
                             <Button
@@ -157,8 +150,8 @@ CryptoWithdrawForm.propTypes = {
     fiat_converter_error: PropTypes.string,
     has_invalid_crypto_address: PropTypes.bool,
     requestWithdraw: PropTypes.func,
-    resetWithrawForm: PropTypes.func,
     setBlockchainAddress: PropTypes.func,
+    setInvalidCryptoAddress: PropTypes.func,
     setPercentageSelectorResult: PropTypes.func,
     verification_code: PropTypes.string,
 };
@@ -173,8 +166,8 @@ export default connect(({ client, modules }) => ({
     fiat_converter_error: modules.cashier.fiat_converter_error,
     has_invalid_crypto_address: modules.cashier.config.withdraw.has_invalid_crypto_address,
     requestWithdraw: modules.cashier.requestWithdraw,
-    resetWithrawForm: modules.cashier.resetWithrawForm,
     setBlockchainAddress: modules.cashier.setBlockchainAddress,
+    setInvalidCryptoAddress: modules.cashier.config.withdraw.setInvalidCryptoAddress,
     setPercentageSelectorResult: modules.cashier.setPercentageSelectorResult,
     verification_code: client.verification_code.payment_withdraw,
 }))(CryptoWithdrawForm);

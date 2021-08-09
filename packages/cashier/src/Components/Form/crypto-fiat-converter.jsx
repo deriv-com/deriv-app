@@ -48,6 +48,7 @@ const CryptoFiatConverter = ({
     is_timer_visible,
     onChangeCryptoAmount,
     onChangeFiatAmount,
+    required,
     resetTimer,
     setCryptoAmount,
     setCryptoConverterError,
@@ -63,11 +64,12 @@ const CryptoFiatConverter = ({
     }, []);
 
     const validateCryptoAmount = amount => {
-        let error_message;
-        if (!amount) {
+        let error_message = '';
+        if (!amount && !crypto_amount && required) {
             error_message = localize('This field is required.');
-        } else {
-            const { is_ok, message } = validNumber(amount, {
+        }
+        if (amount || crypto_amount) {
+            const { is_ok, message } = validNumber(crypto_amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(crypto_currency),
             });
@@ -118,19 +120,19 @@ const CryptoFiatConverter = ({
                                             onChangeCryptoAmount(e, crypto_currency, current_fiat_currency);
                                         }
                                     }
+                                    setFieldError('fiat_amount', '');
                                 }}
                                 onChange={e => {
                                     setIsTimerVisible(false);
                                     handleChange(e);
                                     setCryptoAmount(e.target.value);
-                                    setFieldError('fiat_amount', '');
                                 }}
                                 type='text'
                                 error={touched.crypto_amount && errors.crypto_amount}
                                 label={localize('Amount ({{currency}})', { currency: crypto_currency })}
                                 value={crypto_amount}
                                 autoComplete='off'
-                                required
+                                required={required}
                             />
                         )}
                     </Field>
@@ -165,12 +167,12 @@ const CryptoFiatConverter = ({
                                                 onChangeFiatAmount(e, current_fiat_currency, crypto_currency);
                                             }
                                         }
+                                        setFieldError('crypto_amount', '');
                                     }}
                                     onChange={e => {
                                         setIsTimerVisible(false);
                                         handleChange(e);
                                         setFiatAmount(e.target.value);
-                                        setFieldError('crypto_amount', '');
                                     }}
                                     type='text'
                                     error={(touched.fiat_amount && errors.fiat_amount) || insufficient_fund_error}

@@ -68,11 +68,11 @@ const CryptoWithdrawForm = ({
 
     return (
         <div className='cashier__wrapper withdraw__wrapper'>
+            {isMobile() && <Header currency={currency} />}
             {!isMobile() && <Header currency={currency} />}
             <div className='withdraw__form-icon'>
                 <Icon icon={`IcCurrency-${account_platform_icon.toLowerCase()}`} size={isMobile() ? 64 : 128} />
             </div>
-            {isMobile() && <Header currency={currency} />}
             <Formik
                 initialValues={{
                     address: blockchain_address,
@@ -118,7 +118,9 @@ const CryptoWithdrawForm = ({
                                 getCalculatedAmount={setPercentageSelectorResult}
                             />
                         </div>
-                        <CryptoFiatConverter />
+                        <div className='withdraw__crypto-fiat-converter'>
+                            <CryptoFiatConverter />
+                        </div>
                         <div className='withdraw__form-submit'>
                             <Button
                                 className='cashier__form-submit-button'

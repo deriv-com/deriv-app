@@ -78,7 +78,7 @@ const Withdrawal = ({
         if (verification_code && isDesktop()) {
             if (isCryptocurrency(currency) && typeof setSideNotes === 'function') {
                 const side_notes = [];
-                if (crypto_transactions.lenght) {
+                if (crypto_transactions.length) {
                     side_notes.push(<RecentTransaction key={2} />);
                 } else {
                     const side_note = [

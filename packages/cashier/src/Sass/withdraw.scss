@@ -124,4 +124,12 @@
             width: 100%;
         }
     }
+
+    &__crypto-fiat-converter {
+        width: fit-content;
+
+        @include mobile {
+            width: 100%;
+        }
+    }
 }

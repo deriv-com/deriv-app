@@ -1,5 +1,4 @@
 import {
-    simpleMovingAverage as sma,
     simpleMovingAverageArray as smaa,
     bollingerBands as bb,
     bollingerBandsArray as bba,
@@ -9,6 +8,8 @@ import {
     relativeStrengthIndexArray as rsia,
     macdArray as macda,
 } from '@deriv/indicators';
+
+import { simpleMovingAverage as sma } from '../indicators/simpleMovingAverage';
 
 export default Interface =>
     class extends Interface {

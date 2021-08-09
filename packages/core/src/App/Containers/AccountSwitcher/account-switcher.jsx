@@ -1,27 +1,27 @@
-import {
-    Button,
-    DesktopWrapper,
-    Div100vhContainer,
-    Icon,
-    MobileWrapper,
-    Money,
-    Tabs,
-    Text,
-    ThemedScrollbars,
-    useOnClickOutside,
-} from '@deriv/components';
-import { CFD_PLATFORMS, formatMoney, getAccountTypeFields, getCFDAccount, routes } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Preloader';
-import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
+import {
+    Button,
+    DesktopWrapper,
+    MobileWrapper,
+    Div100vhContainer,
+    Icon,
+    Money,
+    Tabs,
+    ThemedScrollbars,
+    Text,
+    useOnClickOutside,
+} from '@deriv/components';
+import { routes, formatMoney, getCFDAccount, getAccountTypeFields, CFD_PLATFORMS } from '@deriv/shared';
+import { localize, Localize } from '@deriv/translations';
+import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { connect } from 'Stores/connect';
+import { AccountsItemLoader } from 'App/Components/Layout/Header/Components/Preloader';
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
-import { getCFDConfig, getSortedAccountList, getSortedCFDList, isDemo } from './helpers';
+import { getSortedAccountList, getSortedCFDList, isDemo, getCFDConfig } from './helpers';
 
 const AccountSwitcher = props => {
     const [active_tab_index, setActiveTabIndex] = React.useState(

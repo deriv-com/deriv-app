@@ -1,10 +1,10 @@
-import { Button, Checkbox, FormSubmitButton, Icon, Input, Loading, Modal, Text } from '@deriv/components';
-import { PlatformContext, routes, WS } from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import classNames from 'classnames';
-import { Field, Formik } from 'formik';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import classNames from 'classnames';
+import { routes, PlatformContext, WS } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { Formik, Field } from 'formik';
+import { Checkbox, Input, FormSubmitButton, Modal, Icon, Loading, Text, Button } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import AccountHasPendingConditions from './account-has-balance.jsx';
 

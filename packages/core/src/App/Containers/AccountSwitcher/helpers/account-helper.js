@@ -1,4 +1,4 @@
-import { CFD_PLATFORMS, getCFDAccount, getCFDAccountDisplay, getCFDAccountKey, isCryptocurrency } from '@deriv/shared';
+import { isCryptocurrency, getCFDAccountKey, getCFDAccount, getCFDAccountDisplay, CFD_PLATFORMS } from '@deriv/shared';
 
 export const getSortedAccountList = (account_list, accounts) => {
     // sort accounts as follows:

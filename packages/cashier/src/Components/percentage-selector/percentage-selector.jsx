@@ -1,7 +1,7 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import PropTypes from 'prop-types';
-import React from 'react';
 
 const PercentageSelector = ({ amount, currency, getCalculatedAmount }) => {
     const [percentage, setPercentage] = React.useState('0');

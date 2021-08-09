@@ -1,46 +1,46 @@
 // import PropTypes        from 'prop-types';
+import React from 'react';
+import { Formik, Field } from 'formik';
+import classNames from 'classnames';
 import {
     Autocomplete,
-    Button,
     Checkbox,
-    DateOfBirthPicker,
-    DesktopWrapper,
+    Button,
     FormSubmitErrorMessage,
     Input,
+    DesktopWrapper,
     Loading,
     MobileWrapper,
     SelectNative,
+    DateOfBirthPicker,
     Text,
 } from '@deriv/components';
 import {
-    filterObjProperties,
-    getLocation,
-    isMobile,
-    PlatformContext,
-    removeObjProperties,
-    routes,
     toMoment,
+    isMobile,
     validAddress,
-    validLength,
-    validLetterSymbol,
-    validPhone,
     validPostCode,
     validTaxID,
+    validPhone,
+    validLetterSymbol,
+    validLength,
+    getLocation,
+    removeObjProperties,
+    filterObjProperties,
+    PlatformContext,
+    routes,
     WS,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import classNames from 'classnames';
-import FormBody from 'Components/form-body';
-import FormBodySection from 'Components/form-body-section';
-import FormFooter from 'Components/form-footer';
-import FormSubHeader from 'Components/form-sub-header';
-// import { account_opening_reason_list }         from './constants';
-import LeaveConfirm from 'Components/leave-confirm';
-import LoadErrorMessage from 'Components/load-error-message';
-import { Field, Formik } from 'formik';
-import React from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'Stores/connect';
+// import { account_opening_reason_list }         from './constants';
+import LeaveConfirm from 'Components/leave-confirm';
+import FormFooter from 'Components/form-footer';
+import FormBody from 'Components/form-body';
+import FormBodySection from 'Components/form-body-section';
+import FormSubHeader from 'Components/form-sub-header';
+import LoadErrorMessage from 'Components/load-error-message';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {

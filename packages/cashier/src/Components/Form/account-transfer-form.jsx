@@ -18,9 +18,9 @@ import {
 import { getDecimalPlaces, getCurrencyDisplayCode, getCurrencyName, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import CryptoFiatConverter from './crypto-fiat-converter.jsx';
 import FormError from '../Error/form-error.jsx';
 import { getAccountText } from '../../_common/utility';
-import CryptoFiatConverter from './crypto-fiat-converter.jsx';
 import PercentageSelector from '../percentage-selector';
 import RecentTransaction from '../recent-transaction.jsx';
 import '../../Sass/account-transfer.scss';
@@ -269,7 +269,7 @@ const AccountTransferForm = ({
         if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
             if(is_crypto && crypto_transactions?.length) {
                 setSideNotes([
-                    <RecentTransaction />,
+                    <RecentTransaction key={2}/>,
                     <AccountTransferNote
                         transfer_fee={transfer_fee}
                         currency={selected_from.currency}
@@ -436,8 +436,7 @@ const AccountTransferForm = ({
                                         />
                                     </MobileWrapper>
                                 </div>
-                                { is_crypto ? 
-                                    <div>
+                                { is_crypto && <div>
                                         <div className='crypto-account-transfer__percentage-selector'>
                                             <PercentageSelector
                                                 amount={+balance}
@@ -447,8 +446,8 @@ const AccountTransferForm = ({
                                         </div>
                                         <CryptoFiatConverter />
                                     </div>
-                                    :
-                                    <Field name='amount' validate={validateAmount}>
+                                }
+                                { !is_crypto && <Field name='amount' validate={validateAmount}>
                                         {({ field }) => (
                                             <Input
                                                 {...field}
@@ -504,13 +503,15 @@ const AccountTransferForm = ({
                                             />
                                         )}
                                     </Field>
-                                
                                 }
                                 <div className={classNames('cashier__form-submit cashier__form-submit--align-end account-transfer__form-submit', {
-                                    'crypto-account-transfer__form-submit' : is_crypto
+                                    'crypto-account-transfer__form-submit' : is_crypto,
                                 })}>
                                     <Button
-                                        className={is_crypto ? 'cashier__crypto-form-submit-button' :'cashier__form-submit-button'}
+                                        className={classNames({
+                                            'cashier__form-submit-button' : !is_crypto,
+                                            'cashier__crypto-form-submit-button' : is_crypto,
+                                        })}
                                         type='submit'
                                         is_disabled={
                                             !isValid ||

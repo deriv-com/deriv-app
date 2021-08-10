@@ -49,11 +49,18 @@ const CryptoFiatConverter = ({
     is_timer_visible,
     onChangeCryptoAmount,
     onChangeFiatAmount,
+    resetTimer,
     setCryptoAmount,
     setFiatAmount,
     setIsTimerVisible,
 }) => {
     const [arrow_icon_direction, setArrowIconDirection] = React.useState('right');
+
+    React.useEffect(() => {
+        return () => resetTimer();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const validateCryptoAmount = amount => {
         if(amount) {
             const { is_ok, message } = validNumber(amount, {
@@ -182,6 +189,7 @@ CryptoFiatConverter.propTypes = {
     is_timer_visible: PropTypes.bool,
     onChangeCryptoAmount: PropTypes.func,
     onChangeFiatAmount: PropTypes.func,
+    resetTimer: PropTypes.func,
     setCryptoAmount: PropTypes.func,
     setFiatAmount: PropTypes.func,
     setIsTimerVisible: PropTypes.func,
@@ -197,6 +205,7 @@ export default connect(({ client, modules }) => ({
     is_timer_visible: modules.cashier.is_timer_visible,
     onChangeCryptoAmount: modules.cashier.onChangeCryptoAmount,
     onChangeFiatAmount: modules.cashier.onChangeFiatAmount,
+    resetTimer: modules.cashier.resetTimer,
     setCryptoAmount: modules.cashier.setCryptoAmount,
     setFiatAmount: modules.cashier.setFiatAmount,
     setIsTimerVisible: modules.cashier.setIsTimerVisible,

@@ -1673,6 +1673,13 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    resetTimer() {
+        this.setCryptoAmount('');
+        this.setFiatAmount('');
+        this.setIsTimerVisible(false);
+    }
+
+    @action.bound
     setPercentageSelectorResult(amount) {
         this.setCryptoAmount(amount);
         this.onChangeCryptoAmount(

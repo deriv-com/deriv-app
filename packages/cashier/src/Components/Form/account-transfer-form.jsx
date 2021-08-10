@@ -267,28 +267,20 @@ const AccountTransferForm = ({
 
     React.useEffect(() => {
         if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
+            const side_notes = [];
             if(is_crypto && crypto_transactions?.length) {
-                setSideNotes([
-                    <RecentTransaction key={2}/>,
-                    <AccountTransferNote
-                        transfer_fee={transfer_fee}
-                        currency={selected_from.currency}
-                        minimum_fee={minimum_fee}
-                        key={0}
-                        is_dxtrade_allowed={is_dxtrade_allowed}
-                    />,
-                ]);
-            } else {
-                setSideNotes([
-                    <AccountTransferNote
-                        transfer_fee={transfer_fee}
-                        currency={selected_from.currency}
-                        minimum_fee={minimum_fee}
-                        key={0}
-                        is_dxtrade_allowed={is_dxtrade_allowed}
-                    />,
-                ]);
+                side_notes.push(<RecentTransaction key={2}/>); 
             }
+            side_notes.push(
+                <AccountTransferNote
+                    transfer_fee={transfer_fee}
+                    currency={selected_from.currency}
+                    minimum_fee={minimum_fee}
+                    key={0}
+                    is_dxtrade_allowed={is_dxtrade_allowed}
+                />
+            );
+            setSideNotes(side_notes);
             
         }
     }, [transfer_fee, selected_from, minimum_fee, from_accounts, is_dxtrade_allowed]);

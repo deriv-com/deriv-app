@@ -54,6 +54,7 @@ const OnRamp = ({
     setIsOnRampModalOpen,
     should_show_dialog,
     setSideNotes,
+    tab_index,
 }) => {
     const [selected_cashier_path, setSelectedCashierPath] = React.useState(routes.cashier_onramp);
 
@@ -70,7 +71,8 @@ const OnRamp = ({
         }
 
         return () => onUnmountOnramp();
-    }, [onMountOnramp, onUnmountOnramp, is_cashier_default, is_switching]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [onMountOnramp, onUnmountOnramp, is_cashier_default, is_switching, tab_index]);
 
     const getActivePaths = () =>
         (menu_options ?? []).map(menu_option => ({
@@ -149,6 +151,7 @@ OnRamp.propTypes = {
     setIsOnRampModalOpen: PropTypes.func,
     setSideNotes: PropTypes.func,
     should_show_dialog: PropTypes.bool,
+    tab_index: PropTypes.number,
 };
 
 export default connect(({ modules, common, client }) => ({
@@ -165,4 +168,5 @@ export default connect(({ modules, common, client }) => ({
     routeTo: common.routeTo,
     setIsOnRampModalOpen: modules.cashier.onramp.setIsOnRampModalOpen,
     should_show_dialog: modules.cashier.onramp.should_show_dialog,
+    tab_index: modules.cashier.cashier_route_tab_index,
 }))(OnRamp);

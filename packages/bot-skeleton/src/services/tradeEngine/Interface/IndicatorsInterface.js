@@ -1,5 +1,4 @@
-import { macdArray as macda } from '@deriv/indicators';
-
+import { macdArray as macda } from '../indicators/macd';
 import { simpleMovingAverage as sma, simpleMovingAverageArray as smaa } from '../indicators/simple-moving-average';
 import { bollingerBands as bb, bollingerBandsArray as bba } from '../indicators/bollinger-bands';
 import {

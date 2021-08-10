@@ -5,10 +5,8 @@ import { withRouter } from 'react-router';
 import { SentEmailModal } from '@deriv/account';
 import { getMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 import {
-    DesktopWrapper,
     FormSubmitButton,
     Icon,
-    MobileWrapper,
     MobileDialog,
     Modal,
     PasswordInput,

@@ -55,6 +55,11 @@
     .status-dialog {
         margin-top: 3em;
     }
+    .cfd-password-reset {
+        @include mobile {
+            flex: 1;
+        }
+    }
     & .dc-password-meter__container {
         flex-grow: 1;
         margin: auto;

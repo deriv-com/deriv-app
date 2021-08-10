@@ -630,6 +630,10 @@ const CFDPasswordModal = ({
 
     const should_show_sent_email_modal = is_sent_email_modal_open && is_password_modal_exited;
 
+    const should_show_password_modal = should_show_password && (should_set_trading_password ? true : isDesktop());
+
+    const should_show_password_dialog = should_show_password && !should_set_trading_password && isMobile();
+
     const is_real_financial_stp = [account_type.category, account_type.type].join('_') === 'real_financial_stp';
     const is_real_synthetic = [account_type.category, account_type.type].join('_') === 'real_synthetic';
     const should_show_server_form = React.useMemo(() => {
@@ -688,7 +692,7 @@ const CFDPasswordModal = ({
         <Modal
             className='cfd-password-modal'
             has_close_icon={!should_show_server_form || should_set_trading_password}
-            is_open={should_show_password}
+            is_open={should_show_password_modal}
             toggleModal={closeModal}
             should_header_stick_body
             renderTitle={() => (
@@ -713,7 +717,7 @@ const CFDPasswordModal = ({
         <MobileDialog
             has_full_height
             portal_element_id='modal_root'
-            visible={should_show_password}
+            visible={should_show_password_dialog}
             onClose={closeModal}
             wrapper_classname='cfd-password-modal'
         >
@@ -730,12 +734,10 @@ const CFDPasswordModal = ({
         </MobileDialog>
     );
 
-    if (should_set_trading_password) return password_modal;
-
     return (
         <React.Fragment>
-            <DesktopWrapper>{password_modal}</DesktopWrapper>
-            <MobileWrapper>{password_dialog}</MobileWrapper>
+            {password_modal}
+            {password_dialog}
             <SuccessDialog
                 is_open={should_show_success}
                 toggleModal={closeModal}

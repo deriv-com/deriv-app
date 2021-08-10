@@ -182,7 +182,7 @@ const ProofOfIdentityContainer = ({
     if (is_unwelcome && !allow_document_upload) return <Unverified is_description_enabled={is_description_enabled} />;
     if (status === onfido_status_codes.not_required) return <NotRequired />;
     if (!submissions_left_key && is_rejected) return <Limited />;
-    if (has_rejected_reasons && !is_continue_uploading)
+    if (has_rejected_reasons && !is_continue_uploading && status !== 'pending')
         return <RejectedReasons rejected_reasons={rejected_reasons_key} setContinueUploading={setContinueUploading} />;
 
     return (

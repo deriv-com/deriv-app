@@ -1,4 +1,4 @@
-import { simpleMovingAverage, simpleMovingAverageArray } from '../indicators/simple-moving-average';
+import { simpleMovingAverage, simpleMovingAverageArray } from '../../indicators/simple-moving-average';
 
 describe('simpleMovingAverage', () => {
     it('single value with periods of 1 equals the value', () => {

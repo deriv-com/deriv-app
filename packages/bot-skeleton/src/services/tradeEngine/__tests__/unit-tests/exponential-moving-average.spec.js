@@ -1,4 +1,4 @@
-import { exponentialMovingAverage, exponentialMovingAverageArray } from '../indicators/exponential-moving-average';
+import { exponentialMovingAverage, exponentialMovingAverageArray } from '../../indicators/exponential-moving-average';
 
 describe('exponentialMovingAverage', () => {
     it('single value with periods of 1 equals the value', () => {

@@ -1,4 +1,4 @@
-import { bollingerBands, bollingerBandsArray } from '../indicators/bollinger-bands';
+import { bollingerBands, bollingerBandsArray } from '../../indicators/bollinger-bands';
 
 const roundResult = result => [
     Math.round(result[0] * 100) / 100,

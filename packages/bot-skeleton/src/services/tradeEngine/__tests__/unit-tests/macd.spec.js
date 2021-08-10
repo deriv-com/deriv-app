@@ -1,4 +1,4 @@
-import { macdArray } from '../indicators/macd';
+import { macdArray } from '../../indicators/macd';
 import { data, histogram, macd, signal } from '../test_utils/macd-data';
 
 describe('macd', () => {

@@ -1,14 +1,15 @@
 import {
-    bollingerBandsArray as bba,
-    exponentialMovingAverage as ema,
-    exponentialMovingAverageArray as emaa,
     relativeStrengthIndex as rsi,
     relativeStrengthIndexArray as rsia,
     macdArray as macda,
 } from '@deriv/indicators';
 
 import { simpleMovingAverage as sma, simpleMovingAverageArray as smaa } from '../indicators/simple-moving-average';
-import { bollingerBands as bb } from '../indicators/bollinger-bands';
+import { bollingerBands as bb, bollingerBandsArray as bba } from '../indicators/bollinger-bands';
+import {
+    exponentialMovingAverage as ema,
+    exponentialMovingAverageArray as emaa,
+} from '../indicators/exponential-moving-average';
 
 export default Interface =>
     class extends Interface {

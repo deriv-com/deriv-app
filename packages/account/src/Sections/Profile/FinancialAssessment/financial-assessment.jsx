@@ -224,18 +224,19 @@ class FinancialAssessment extends React.Component {
         setStatus({ msg: '' });
         this.setState({ is_btn_loading: true });
         WS.setFinancialAssessment(values).then(data => {
-            this.setState({ is_btn_loading: false });
             if (data.error) {
+                this.setState({ is_btn_loading: false });
                 setStatus({ msg: data.error.message });
             } else {
                 WS.authorized.storage.getFinancialAssessment().then(res_data => {
                     this.setState({
                         ...res_data.get_financial_assessment,
                         is_submit_success: true,
+                        is_btn_loading: false,
                     });
 
                     if (isDesktop()) {
-                        setTimeout(() => this.setState({ is_submit_success: false }), 3000);
+                        setTimeout(() => this.setState({ is_submit_success: false }), 10000);
                     }
 
                     this.props.removeNotificationMessage({ key: 'risk' });
@@ -901,7 +902,12 @@ class FinancialAssessment extends React.Component {
                                                 'dc-btn--green': is_submit_success,
                                             })}
                                             onClick={() => this.onClickSubmit(handleSubmit)}
-                                            is_disabled={isSubmitting || !dirty || Object.keys(errors).length > 0}
+                                            is_disabled={
+                                                isSubmitting ||
+                                                !dirty ||
+                                                is_btn_loading ||
+                                                Object.keys(errors).length > 0
+                                            }
                                             has_effect
                                             is_loading={is_btn_loading}
                                             is_submit_success={is_submit_success}

@@ -82,6 +82,7 @@ const Redirect = ({
             redirected_to_route = true;
             break;
         }
+
         default:
             break;
     }

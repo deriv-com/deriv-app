@@ -50,7 +50,6 @@ export default connect(({ client, ui }) => ({
         fetchResidenceList: client.fetchResidenceList,
         fetchStatesList: client.fetchStatesList,
         fetchFinancialAssessment: client.fetchFinancialAssessment,
-        needs_financial_assessment: client.needs_financial_assessment,
         residence_list: client.residence_list,
         states_list: client.states_list,
         financial_assessment: client.financial_assessment,

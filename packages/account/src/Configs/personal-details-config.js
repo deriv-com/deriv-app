@@ -116,6 +116,18 @@ const personal_details_config = ({ residence_list, account_settings, is_dashboar
             rules: [
                 ['req', localize('Tax Identification Number is required')],
                 [
+                    'length',
+                    localize('Tax Identification Number can be maximum 25 characters long'),
+                    { min: 0, max: 25 },
+                ],
+                [
+                    'regular',
+                    localize('Letters, numbers, spaces, periods, hyphens, slashes only'),
+                    {
+                        regex: /^(?!^$|\s+)[A-Za-z0-9.\/\s-]{0,25}$/,
+                    },
+                ],
+                [
                     (value, options, { tax_residence }) => {
                         return !!tax_residence;
                     },

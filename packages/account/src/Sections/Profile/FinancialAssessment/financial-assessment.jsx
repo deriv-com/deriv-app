@@ -206,6 +206,7 @@ class FinancialAssessment extends React.Component {
 
         if (this.props.is_virtual) {
             this.setState({ is_loading: false });
+            this.props.history.push(routes.personal_details);
         } else {
             WS.authorized.storage.getFinancialAssessment().then(data => {
                 // TODO: Find a better solution for handling no-op instead of using is_mounted flags
@@ -215,20 +216,11 @@ class FinancialAssessment extends React.Component {
                             (this.props.is_financial_account || this.props.is_trading_experience_incomplete) &&
                             !this.props.is_svg;
 
-                        const needs_financial_assessment =
-                            this.props.is_financial_information_incomplete ||
-                            this.props.is_high_risk ||
-                            has_trading_experience ||
-                            this.props.is_financial_account;
                         this.setState({ has_trading_experience });
 
                         if (data.error) {
                             this.setState({ api_initial_load_error: data.error.message });
                             return;
-                        } else if (!needs_financial_assessment) {
-                            // Additional layer of error handling if non high risk user somehow manages to reach FA page
-                            // need to redirect to default route for account to prevent app crash
-                            this.props.history.push(routes.personal_details);
                         }
                         this.setState({ ...data.get_financial_assessment, is_loading: false });
                     });
@@ -245,14 +237,15 @@ class FinancialAssessment extends React.Component {
         setStatus({ msg: '' });
         this.setState({ is_btn_loading: true });
         WS.setFinancialAssessment(values).then(data => {
-            this.setState({ is_btn_loading: false });
             if (data.error) {
+                this.setState({ is_btn_loading: false });
                 setStatus({ msg: data.error.message });
             } else {
                 WS.authorized.storage.getFinancialAssessment().then(res_data => {
                     this.setState({
                         ...res_data.get_financial_assessment,
                         is_submit_success: true,
+                        is_btn_loading: false,
                     });
 
                     if (isDesktop()) {
@@ -922,7 +915,12 @@ class FinancialAssessment extends React.Component {
                                                 'dc-btn--green': is_submit_success,
                                             })}
                                             onClick={() => this.onClickSubmit(handleSubmit)}
-                                            is_disabled={isSubmitting || !dirty || Object.keys(errors).length > 0}
+                                            is_disabled={
+                                                isSubmitting ||
+                                                !dirty ||
+                                                is_btn_loading ||
+                                                Object.keys(errors).length > 0
+                                            }
                                             has_effect
                                             is_loading={is_btn_loading}
                                             is_submit_success={is_submit_success}

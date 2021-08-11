@@ -55,7 +55,7 @@ const copyConfig = base => {
         },
         {
             from: path.resolve(__dirname, '../src/public/.well-known/assetslinks.json'),
-            to: '.well-known/assetslinks.json',
+            to: '.well-known/assetlinks.json',
             toType: 'file',
         },
         {
@@ -65,7 +65,7 @@ const copyConfig = base => {
         },
         {
             from: path.resolve(__dirname, '../src/public/.well-known/assetslinks.json'),
-            to: 'assetslinks.json',
+            to: 'assetlinks.json',
             toType: 'file',
         },
         { from: path.resolve(__dirname, '../src/root_files/404.html'), to: '404.html', toType: 'file' },

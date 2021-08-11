@@ -323,9 +323,11 @@ export default class ClientStore extends BaseStore {
     // note that it will be undefined for logged out and virtual clients
     @computed
     get current_landing_company() {
-        const landing_company = Object.keys(this.landing_companies).find(
-            company => this.landing_companies[company]?.shortcode === this.landing_company_shortcode
-        );
+        const landing_company =
+            this.landing_companies &&
+            Object.keys(this.landing_companies).find(
+                company => this.landing_companies[company]?.shortcode === this.landing_company_shortcode
+            );
         return landing_company ? this.landing_companies[landing_company] : undefined;
     }
 

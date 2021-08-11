@@ -204,16 +204,20 @@ const ContractType = (() => {
         };
     };
 
-    const getComponents = c_type => ({
-        form_components: ['duration', 'amount', ...contract_types[c_type].components].filter(
-            component =>
-                !(
-                    component === 'duration' &&
-                    contract_types[c_type].config &&
-                    contract_types[c_type].config.hide_duration
-                )
-        ),
-    });
+    const getComponents = c_type => {
+        return (
+            contract_types && {
+                form_components: ['duration', 'amount', ...contract_types[c_type].components].filter(
+                    component =>
+                        !(
+                            component === 'duration' &&
+                            contract_types[c_type].config &&
+                            contract_types[c_type].config.hide_duration
+                        )
+                ),
+            }
+        );
+    };
 
     const getDurationUnitsList = (contract_type, contract_start_type) => ({
         duration_units_list:
@@ -273,17 +277,17 @@ const ContractType = (() => {
         const config = getPropertyValue(available_contract_types, [contract_type, 'config']);
         const start_dates_list = [];
 
-        if (config.has_spot) {
+        if (config?.has_spot) {
             // Number(0) refers to 'now'
             start_dates_list.push({ text: localize('Now'), value: Number(0) });
         }
-        if (config.forward_starting_dates) {
+        if (config?.forward_starting_dates) {
             start_dates_list.push(...config.forward_starting_dates);
         }
 
         const start_date = start_dates_list.find(item => item.value === current_start_date)
             ? current_start_date
-            : start_dates_list[0].value;
+            : start_dates_list[0]?.value;
 
         return { start_date, start_dates_list };
     };

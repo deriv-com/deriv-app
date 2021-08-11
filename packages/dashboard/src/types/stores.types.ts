@@ -28,7 +28,6 @@ export type TClientStore = {
     fetchResidenceList?: () => void;
     fetchStatesList?: () => void;
     fetchFinancialAssessment?: () => void;
-    needs_financial_assessment?: () => boolean;
     is_fully_authenticated?: () => boolean;
     realAccountSignup?: () => Promise<void>;
     has_currency?: () => boolean;

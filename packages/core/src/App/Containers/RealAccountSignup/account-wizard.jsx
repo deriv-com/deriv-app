@@ -331,6 +331,5 @@ export default connect(({ client, ui }) => ({
     fetchResidenceList: client.fetchResidenceList,
     refreshNotifications: client.refreshNotifications,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
-    needs_financial_assessment: client.needs_financial_assessment,
     financial_assessment: client.financial_assessment,
 }))(AccountWizard);

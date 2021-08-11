@@ -96,7 +96,7 @@ const CryptoDeposit = ({
                         <Localize i18n_default_text='Use our fiat onramp services to buy and deposit cryptocurrency into your Deriv account.' />
                     </Text>
                 </div>
-                <ButtonLink has_effect to='/cashier/on-ramp'>
+                <ButtonLink className='crypto-deposit__fiat-onramp-button' has_effect to='/cashier/on-ramp'>
                     <Text as='p' weight='bold' color='colored-background' size='xs'>
                         <Localize i18n_default_text='Try our Fiat onramp' />
                     </Text>

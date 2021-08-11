@@ -24,7 +24,6 @@ const AccountList = ({
     sub_account_type,
     platform,
 }) => {
-    if (is_disabled && !currency) return null;
     const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
 
     return (

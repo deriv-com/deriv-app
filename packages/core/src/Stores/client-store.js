@@ -14,6 +14,7 @@ import {
     deriv_urls,
     urlForLanguage,
     CFD_PLATFORMS,
+    routes,
 } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import { requestLogout, WS } from 'Services';
@@ -1129,6 +1130,10 @@ export default class ClientStore extends BaseStore {
      */
     @action.bound
     async init(login_new_user) {
+        const search = window.location.search;
+        const search_params = new URLSearchParams(search);
+        const redirect_url = search_params?.get('redirect_url');
+
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
         this.setDeviceData();
@@ -1168,6 +1173,9 @@ export default class ClientStore extends BaseStore {
             } else {
                 // So it will send an authorize with the accepted token, to be handled by socket-general
                 await BinarySocket.authorize(client.token);
+            }
+            if (redirect_url) {
+                window.location.replace(routes[redirect_url]);
             }
             runInAction(() => {
                 this.is_populating_account_list = false;
@@ -1621,6 +1629,10 @@ export default class ClientStore extends BaseStore {
         const client_object = {};
         let active_loginid;
 
+        if (obj_params.selected_acct) {
+            active_loginid = obj_params.selected_acct;
+        }
+
         account_list.forEach(function (account) {
             Object.keys(account).forEach(function (param) {
                 if (param === 'loginid') {
@@ -2056,17 +2068,6 @@ export default class ClientStore extends BaseStore {
     get is_high_risk() {
         if (isEmptyObject(this.account_status)) return false;
         return this.account_status.risk_classification === 'high';
-    }
-
-    @computed
-    get needs_financial_assessment() {
-        if (this.is_virtual) return false;
-        if (this.is_financial_information_incomplete) return true;
-        if (!this.is_svg) {
-            if (this.is_financial_account || this.is_trading_experience_incomplete) return true;
-        }
-
-        return false;
     }
 
     @computed

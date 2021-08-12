@@ -19,7 +19,11 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
     // IDV country code - Alpha ISO2. Onfido country code - Alpha ISO3
     // Ensures that any form of country code passed here is supported.
     const onfido_country_code =
-        country_code.length < 3 ? countries.alpha2ToAlpha3(country_code.toUpperCase()) : country_code;
+        country_code.length !== 3 ? countries.alpha2ToAlpha3(country_code.toUpperCase()) : country_code;
+
+    // Service Token country code - Alpha ISO2
+    const token_country_code =
+        country_code.length !== 2 ? countries.alpha3ToAlpha2(country_code.toUpperCase()) : country_code;
 
     // Onfido `document_supported` checks are made for an array of string.
     // Ensure that `document_supported` passed respects this no the matter source.
@@ -104,6 +108,7 @@ const OnfidoSdkView = ({ country_code, documents_supported, handleViewComplete, 
                     WS.serviceToken({
                         service_token: 1,
                         service: 'onfido',
+                        country: token_country_code,
                     }).then(response => {
                         if (response.error) {
                             resolve({ error: response.error });

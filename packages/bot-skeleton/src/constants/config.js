@@ -211,17 +211,7 @@ export const config = {
         highlowticks: ['highlowticks'],
         runs: ['runs'],
     },
-    TRADE_TYPE_CATEGORY_NAMES: {
-        callput: localize('Up/Down'),
-        touchnotouch: localize('Touch/No Touch'),
-        inout: localize('In/Out'),
-        asian: localize('Asians'),
-        digits: localize('Digits'),
-        reset: localize('Reset Call/Reset Put'),
-        callputspread: localize('Call Spread/Put Spread'),
-        highlowticks: localize('High/Low Ticks'),
-        runs: localize('Only Ups/Only Downs'),
-    },
+
     BARRIER_CATEGORIES: {
         euro_atm: ['callput', 'callputequal'],
         euro_non_atm: ['endsinout', 'higherlower', 'callputspread'],

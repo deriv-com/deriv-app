@@ -186,7 +186,7 @@ export default class QuickStrategyStore {
         const { contracts_for } = ApiHelpers.instance;
         const market = await contracts_for.getMarketBySymbol(symbol);
         const submarket = await contracts_for.getSubmarketBySymbol(symbol);
-        const trade_type_cat = await contracts_for.getTradeTypeCategoryByTradeType(trade_type);
+        const trade_type_cat = trade_type;
 
         const { strategies } = config;
         const strategy_name = Object.keys(strategies).find(s => strategies[s].index === this.active_index);

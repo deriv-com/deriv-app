@@ -7,6 +7,7 @@ export default class ContractsFor {
         this.contracts_for = {};
         this.ws = ws;
         this.server_time = server_time;
+        this.filtered_contracts = [];
         // Below you can disable specific trade types and trade type categories, you may specify
         // market, submarket, symbol, trade_type, and trade_type_category. If one of
         // the props is left omitted, the rule applies to each of the values of the omitted prop.
@@ -146,22 +147,7 @@ export default class ContractsFor {
         );
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    getTradeTypeCategoryByTradeType(trade_type) {
-        const { TRADE_TYPE_CATEGORIES } = config;
-        const trade_type_category = Object.keys(TRADE_TYPE_CATEGORIES).find(t =>
-            TRADE_TYPE_CATEGORIES[t].includes(trade_type)
-        );
-
-        return trade_type_category || trade_type;
-    }
-
-    getTradeTypeCategoryNameByTradeType(trade_type) {
-        const { TRADE_TYPE_CATEGORY_NAMES } = config;
-        const trade_type_category = this.getTradeTypeCategoryByTradeType(trade_type);
-
-        return TRADE_TYPE_CATEGORY_NAMES[trade_type_category];
-    }
+    getTradeTypeCategoryNameByTradeType = contract => contract.contract_category_display;
 
     // eslint-disable-next-line class-methods-use-this
     getBarrierCategoryByTradeType(trade_type) {
@@ -216,7 +202,7 @@ export default class ContractsFor {
 
             this.retrieving_contracts_for[symbol].resolve();
             delete this.retrieving_contracts_for[symbol];
-
+            this.filtered_contracts = filtered_contracts;
             return filtered_contracts;
         };
 
@@ -368,8 +354,8 @@ export default class ContractsFor {
         for (let i = 0; i < contracts.length; i++) {
             const market = contracts[i].market;
             const submarket = contracts[i].submarket;
-            const trade_type_category = this.getTradeTypeCategoryByTradeType(contracts[i].contract_category);
-            const trade_type_category_name = this.getTradeTypeCategoryNameByTradeType(contracts[i].contract_category);
+            const trade_type_category = contracts[i].contract_category;
+            const trade_type_category_name = this.getTradeTypeCategoryNameByTradeType(contracts[i]);
             // eslint-disable-next-line no-await-in-loop
             const trade_types = await this.getTradeTypeByTradeCategory(market, submarket, symbol, trade_type_category);
 
@@ -423,13 +409,13 @@ export default class ContractsFor {
     }
 
     async getTradeTypeCategories(market, submarket, symbol) {
-        const { TRADE_TYPE_CATEGORY_NAMES, NOT_AVAILABLE_DROPDOWN_OPTIONS } = config;
+        const { NOT_AVAILABLE_DROPDOWN_OPTIONS } = config;
         const contracts = await this.getContractsFor(symbol);
         const trade_type_categories = [];
 
         contracts.forEach(contract => {
-            const trade_type_category = this.getTradeTypeCategoryByTradeType(contract.contract_category);
-            const trade_type_category_name = this.getTradeTypeCategoryNameByTradeType(contract.contract_category);
+            const trade_type_category = contract.contract_category;
+            const trade_type_category_name = this.getTradeTypeCategoryNameByTradeType(contract);
 
             if (trade_type_category_name) {
                 const is_disabled = this.isDisabledOption({
@@ -449,15 +435,9 @@ export default class ContractsFor {
                 }
             }
         });
-
+        // Todo : we need another way to sort the trade type categories
         if (trade_type_categories.length > 0) {
-            const category_names = Object.keys(TRADE_TYPE_CATEGORY_NAMES);
-
-            return trade_type_categories.sort((a, b) => {
-                const index_a = category_names.findIndex(c => c === a[1]);
-                const index_b = category_names.findIndex(c => c === b[1]);
-                return index_a - index_b;
-            });
+            return trade_type_categories;
         }
 
         return NOT_AVAILABLE_DROPDOWN_OPTIONS;

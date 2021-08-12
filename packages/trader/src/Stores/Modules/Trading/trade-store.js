@@ -110,6 +110,7 @@ export default class TradeStore extends BaseStore {
 
     // Chart loader observables
     @observable is_chart_loading;
+    @observable is_active_symbols_loading = false;
 
     // Multiplier trade params
     @observable multiplier;
@@ -225,12 +226,7 @@ export default class TradeStore extends BaseStore {
                 }
             }
         );
-        reaction(
-            () => this.root_store.client.is_logged_in,
-            async () => {
-                await this.setSymbolsAfterLogin();
-            }
-        );
+        reaction(() => this.root_store.client.is_logged_in, this.loadActiveSymbols);
         reaction(
             () => [this.contract_type],
             () => {
@@ -281,26 +277,35 @@ export default class TradeStore extends BaseStore {
     };
 
     @action.bound
+    async loadActiveSymbols(should_set_default_symbol = true) {
+        this.is_active_symbols_loading = true;
+        await this.setActiveSymbols();
+        if (should_set_default_symbol) await this.setDefaultSymbol();
+
+        const r = await WS.storage.contractsFor(this.symbol);
+        if (['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code)) {
+            const symbol_to_update = await pickDefaultSymbol(this.active_symbols);
+            await this.processNewValuesAsync({ symbol: symbol_to_update });
+        }
+
+        runInAction(() => {
+            this.is_active_symbols_loading = false;
+        });
+    }
+
+    @action.bound
     async setDefaultSymbol() {
         if (!this.is_symbol_in_active_symbols) {
+            this.is_trade_enabled = false;
+
             const symbol = await pickDefaultSymbol(this.active_symbols);
             await this.processNewValuesAsync({ symbol });
         }
     }
 
     @action.bound
-    async setSymbolsAfterLogin() {
-        await this.setActiveSymbols();
-        await this.setDefaultSymbol();
-    }
-
-    @action.bound
     async setActiveSymbols() {
-        const { active_symbols, error } = this.should_refresh_active_symbols
-            ? // if SmartCharts has requested active_symbols, we wait for the response
-              await WS.wait('active_symbols')
-            : // else requests new active_symbols
-              await WS.authorized.activeSymbols();
+        const { active_symbols, error } = await WS.authorized.activeSymbols();
         if (error) {
             this.root_store.common.showError({ message: localize('Trading is unavailable at this time.') });
             return;
@@ -319,7 +324,7 @@ export default class TradeStore extends BaseStore {
                 return;
             }
         }
-        this.processNewValuesAsync({ active_symbols });
+        await this.processNewValuesAsync({ active_symbols });
     }
 
     @action.bound
@@ -344,8 +349,8 @@ export default class TradeStore extends BaseStore {
 
         // waits for `website_status` in order to set `stake_default` for the selected currency
         await WS.wait('website_status');
-        runInAction(() => {
-            this.processNewValuesAsync(
+        await runInAction(async () => {
+            await this.processNewValuesAsync(
                 {
                     // fallback to default currency if current logged-in client hasn't selected a currency yet
                     currency: this.root_store.client.currency || this.root_store.client.default_currency,
@@ -356,13 +361,7 @@ export default class TradeStore extends BaseStore {
             );
         });
 
-        await this.setActiveSymbols();
-        const r = await WS.storage.contractsFor(this.symbol);
-        if (['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code)) {
-            const symbol_to_update = await pickDefaultSymbol(this.active_symbols);
-            await this.processNewValuesAsync({ symbol: symbol_to_update });
-        }
-        if (should_set_default_symbol) await this.setDefaultSymbol();
+        await this.loadActiveSymbols(should_set_default_symbol);
         await this.setContractTypes();
         await this.processNewValuesAsync(
             {
@@ -1002,12 +1001,7 @@ export default class TradeStore extends BaseStore {
     @action.bound
     async accountSwitcherListener() {
         if (this.root_store.client.standpoint.maltainvest) {
-            // TODO: optimize this code block once the below mentioned issue is fixed in `deriv-api`
-            // Two `active_symbols` are requested here.
-            // We can call `setActiveSymbols` after setting `should_refresh_active_symbols` to true so that it utilizes `WS.wait('active_symbols')`
-            // But `WS.wait` only works for the first time, when called subsequently it won't wait and will just return the first response.
-            await this.setActiveSymbols();
-            await this.setDefaultSymbol();
+            await this.loadActiveSymbols();
         }
         this.resetErrorServices();
         await this.setContractTypes();
@@ -1175,7 +1169,7 @@ export default class TradeStore extends BaseStore {
             });
         }
         if (req.active_symbols) {
-            return this.should_refresh_active_symbols ? WS.activeSymbols('brief') : WS.wait('active_symbols');
+            return WS.activeSymbols('brief');
         }
         return WS.storage.send(req);
     };
@@ -1218,11 +1212,7 @@ export default class TradeStore extends BaseStore {
         if (this.active_symbols?.length) {
             return findFirstOpenMarket(this.active_symbols, markets_to_search);
         }
-        const { active_symbols, error } = this.should_refresh_active_symbols
-            ? // if SmartCharts has requested active_symbols, we wait for the response
-              await WS.wait('active_symbols')
-            : // else requests new active_symbols
-              await WS.authorized.activeSymbols();
+        const { active_symbols, error } = await WS.authorized.activeSymbols();
         if (error) {
             this.root_store.common.showError({ message: localize('Trading is unavailable at this time.') });
             return undefined;

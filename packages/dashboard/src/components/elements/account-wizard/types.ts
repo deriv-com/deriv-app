@@ -21,7 +21,6 @@ export type TAccountWizard = {
     fetchResidenceList?: () => void;
     fetchStatesList?: () => void;
     fetchFinancialAssessment?: () => void;
-    needs_financial_assessment?: () => boolean;
     has_currency?: () => boolean;
     has_real_account?: () => boolean;
     account_settings?: GetSettings;

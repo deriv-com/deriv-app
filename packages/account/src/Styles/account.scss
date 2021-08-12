@@ -613,7 +613,7 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     .account-management {
         &__container {
-            width: 100%;
+            margin: 0 auto;
             &-dashboard {
                 width: calc(100vw - 33rem);
                 @include mobile {

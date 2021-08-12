@@ -55,7 +55,6 @@ const Deposit = ({
     setSideNotes,
     is_system_maintenance,
     current_currency_type,
-    is_mx,
 }) => {
     React.useEffect(() => {
         setActiveTab(container);
@@ -91,7 +90,7 @@ const Deposit = ({
     if (error.is_ask_uk_funds_protection) {
         return <FundsProtection />;
     }
-    if (error.is_self_exclusion_max_turnover_set && !is_mx) {
+    if (error.is_self_exclusion_max_turnover_set) {
         return <MaxTurnover />;
     }
     if (is_deposit_locked) {
@@ -132,7 +131,6 @@ export default connect(({ client, modules }) => ({
     is_virtual: client.is_virtual,
     container: modules.cashier.config.deposit.container,
     currency: client.currency,
-    is_mx: client.landing_company_shortcode === 'iom',
     error: modules.cashier.config.deposit.error,
     iframe_height: modules.cashier.config.deposit.iframe_height,
     iframe_url: modules.cashier.config.deposit.iframe_url,

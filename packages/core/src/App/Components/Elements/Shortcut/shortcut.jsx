@@ -26,9 +26,11 @@ const Shortcut = () => {
         };
     }, []);
 
-    const handleSelection = ({ value }) => {
-        history.push(value);
-        setShowInput(false);
+    const handleSelection = ({ value, text }) => {
+        if (routes[text]) {
+            history.push(value);
+            setShowInput(false);
+        }
     };
 
     if (show_input) {

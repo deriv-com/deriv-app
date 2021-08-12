@@ -31,6 +31,32 @@ it('Should render autocomplete with route list in it', () => {
     expect(screen.getByText(expected_route)).not.toBe(null);
 });
 
+it('Should not redirect to location if selection is invalid', () => {
+    const history = createBrowserHistory();
+
+    const short_screen = render(
+        <Router history={history}>
+            <Shortcut />
+        </Router>
+    );
+
+    fireEvent.keyDown(short_screen.container, { key: 'r', code: 'KeyR', ctrlKey: true, altKey: true });
+
+    const el_input = screen.getByTestId('short-cut-input');
+
+    fireEvent.click(el_input);
+
+    fireEvent.change(el_input, { target: { value: 'nothing' } });
+    fireEvent.input(el_input);
+
+    const el_route = screen.getByText(/No results/i);
+
+    fireEvent.mouseDown(el_route);
+    fireEvent.blur(el_input);
+
+    expect(history.length).toBe(1);
+});
+
 it('Should redirect to the correct location as per input selection', () => {
     const history = createBrowserHistory();
     const expected_route = 'mt5';

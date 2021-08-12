@@ -1,0 +1,18 @@
+.short-cut {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background: var(--overlay-outside-dialog);
+    z-index: 99999;
+
+    &__wrapper {
+        max-width: 320px;
+        padding: 10px;
+        background: var(--general-main-1);
+    }
+}

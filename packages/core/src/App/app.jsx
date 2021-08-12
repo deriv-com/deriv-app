@@ -22,6 +22,7 @@ import { MobxContentProvider } from 'Stores/connect';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 import AppToastMessages from './Containers/app-toast-messages.jsx';
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
+import Shortcut from './Components/Elements/Shortcut';
 import AppContents from './Containers/Layout/app-contents.jsx';
 import PlatformContainer from './Containers/PlatformContainer/PlatformContainer.jsx';
 import Footer from './Containers/Layout/footer.jsx';
@@ -109,6 +110,7 @@ const App = ({ root_store }) => {
                             <AppModals />
                             <SmartTraderIFrame />
                             <AppToastMessages />
+                            <Shortcut />
                         </PlatformContainer>
                     </MobxContentProvider>
                 </Router>

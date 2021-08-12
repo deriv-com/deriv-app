@@ -1411,8 +1411,12 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
     @include mobile {
-        overflow: hidden;
+        overflow-x: hidden;
         padding: 0 1.6rem;
+        /* iPhone SE screen height fixes due to UI space restrictions */
+        @media only screen and (max-height: 480px) {
+            padding-bottom: 8.5rem;
+        }
 
         &__title {
             margin: 2.4rem 0;

@@ -258,8 +258,8 @@
     &-container {
         position: relative;
         margin-top: 0.8rem;
-        min-width: 15rem;
-        width: 100%;
+        min-width: 43rem;
+        width: fit-content;
 
         // keep <select /> element on top of .dc_dropdown__label
     }

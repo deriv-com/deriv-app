@@ -692,6 +692,7 @@ import './underlying/ic-underlying-WLDAUD.svg';
 import './underlying/ic-underlying-WLDEUR.svg';
 import './underlying/ic-underlying-WLDGBP.svg';
 import './underlying/ic-underlying-WLDUSD.svg';
+import './underlying/ic-underlying-WLDXAU.svg';
 import './wallet/ic-wallet-clear-funds.svg';
 import './wallet/ic-wallet-credit-debit-light.svg';
 import './wallet/ic-wallet-credit.svg';

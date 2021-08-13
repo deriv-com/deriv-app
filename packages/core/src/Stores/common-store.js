@@ -1,4 +1,4 @@
-import { action, computed, observable, reaction } from 'mobx';
+import { action, observable, reaction } from 'mobx';
 import { routes, toMoment, getUrlSmartTrader, isMobile, getAppId } from '@deriv/shared';
 import { getAllowedLanguages } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';

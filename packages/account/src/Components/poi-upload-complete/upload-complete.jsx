@@ -13,7 +13,7 @@ export const UploadComplete = ({ needs_poa, redirect_button, is_from_external })
         return (
             <IconMessageContent
                 message={message}
-                text={localize('Your document is being reviewed, please check back in 1-3 days.')}
+                text={localize('We’ll review your document and notify you of its status within 1 to 2 hours.')}
                 icon={
                     is_dashboard ? (
                         <Icon icon='IcPoiVerifiedDashboard' width={273} height={128} />

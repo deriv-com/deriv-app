@@ -24,7 +24,7 @@ class DataTable extends React.PureComponent {
         }
     };
 
-    rowRenderer = ({ style, index, key }) => {
+    rowRenderer = ({ index, key }) => {
         const {
             className,
             columns,
@@ -59,11 +59,7 @@ class DataTable extends React.PureComponent {
             />
         );
 
-        return (
-            <div key={row_key} style={style}>
-                {content}
-            </div>
-        );
+        return <div key={row_key}>{content}</div>;
     };
 
     render() {

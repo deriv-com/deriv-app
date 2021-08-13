@@ -145,7 +145,7 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
             >
                 <Localize
                     i18n_default_text='{{formatted_opening_time}} (GMT) on {{opening_day}},<0></0> {{opening_date}}.'
-                    components={[<br key={0} />]}
+                    components={[<div key={0} />]}
                     values={{
                         formatted_opening_time,
                         opening_day,

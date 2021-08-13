@@ -11,7 +11,7 @@ import {
     Loading,
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getSelectedRoute, isMobile, routes, WS } from '@deriv/shared';
+import { getSelectedRoute, isMobile, platforms, routes, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import 'Sass/cashier.scss';
 
@@ -21,7 +21,6 @@ const Cashier = ({
     is_account_setting_loaded,
     is_logged_in,
     is_logging_in,
-    is_mobile_platform,
     is_onramp_tab_visible,
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
@@ -31,6 +30,7 @@ const Cashier = ({
     location,
     onMount,
     p2p_notification_count,
+    platform,
     routeBackInApp,
     routes: routes_config,
     setAccountSwitchListener,
@@ -97,7 +97,7 @@ const Cashier = ({
     return (
         <FadeWrapper is_visible={is_visible} className='cashier-page-wrapper' keyname='cashier-page-wrapper'>
             <div className='cashier'>
-                <PageOverlay header={is_mobile_platform ? '' : header_title} onClickClose={onClickClose}>
+                <PageOverlay header={platforms[platform] ? '' : header_title} onClickClose={onClickClose}>
                     <DesktopWrapper>
                         <VerticalTab
                             alignment='center'
@@ -173,6 +173,7 @@ Cashier.propTypes = {
     location: PropTypes.object,
     onMount: PropTypes.func,
     p2p_notification_count: PropTypes.number,
+    platform: PropTypes.string,
     routeBackInApp: PropTypes.func,
     routes: PropTypes.arrayOf(PropTypes.object),
     setAccountSwitchListener: PropTypes.func,
@@ -186,7 +187,6 @@ export default connect(({ client, common, modules, ui }) => ({
     is_account_setting_loaded: client.is_account_setting_loaded,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,
-    is_mobile_platform: common.is_src_mobile_platform,
     is_onramp_tab_visible: modules.cashier.onramp.is_onramp_tab_visible,
     is_p2p_enabled: modules.cashier.is_p2p_enabled,
     is_payment_agent_transfer_visible: modules.cashier.is_payment_agent_transfer_visible,
@@ -195,6 +195,7 @@ export default connect(({ client, common, modules, ui }) => ({
     is_visible: ui.is_cashier_visible,
     onMount: modules.cashier.onMountCommon,
     p2p_notification_count: modules.cashier.p2p_notification_count,
+    platform: common.platform,
     routeBackInApp: common.routeBackInApp,
     setAccountSwitchListener: modules.cashier.setAccountSwitchListener,
     setTabIndex: modules.cashier.setCashierTabIndex,

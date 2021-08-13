@@ -45,6 +45,12 @@ export default class CommonStore extends BaseStore {
     @observable platform = '';
 
     @action.bound
+    init() {
+        this.setPlatform();
+        console.log(this.platform);
+    }
+
+    @action.bound
     checkAppId() {
         if (this.app_id && this.app_id !== getAppId()) {
             BinarySocket.closeAndOpenNewConnection();
@@ -54,7 +60,7 @@ export default class CommonStore extends BaseStore {
 
     @action.bound
     setPlatform() {
-        this.platform = new URL(window.location).searchParams.get('platform');
+        this.platform = new URL(location).searchParams.get('platform');
     }
 
     @action.bound

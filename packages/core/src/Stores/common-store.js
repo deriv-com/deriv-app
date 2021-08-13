@@ -47,7 +47,6 @@ export default class CommonStore extends BaseStore {
     @action.bound
     init() {
         this.setPlatform();
-        console.log(this.platform);
     }
 
     @action.bound
@@ -60,7 +59,7 @@ export default class CommonStore extends BaseStore {
 
     @action.bound
     setPlatform() {
-        this.platform = new URL(location).searchParams.get('platform');
+        this.platform = new URL(window.location).searchParams.get('platform');
     }
 
     @action.bound
@@ -245,11 +244,5 @@ export default class CommonStore extends BaseStore {
         }
 
         history.push(routes.trade);
-    }
-
-    @computed
-    get is_src_mobile_platform() {
-        const mobile_platforms = ['p2p', 'derivgo'];
-        return mobile_platforms.includes(this.platform_src);
     }
 }

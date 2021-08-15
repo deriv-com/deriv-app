@@ -18,18 +18,152 @@ export default class MyAdsStore extends BaseStore {
     @observable contact_info = '';
     @observable default_advert_description = '';
     @observable delete_error_message = '';
+    @observable edit_ad_form_error = '';
     @observable error_message = '';
     @observable has_more_items_to_load = false;
     @observable is_ad_created_modal_visible = false;
     @observable is_api_error_modal_visible = false;
     @observable is_delete_modal_open = false;
+    @observable is_edit_ad_error_modal_visible = false;
     @observable is_form_loading = false;
     @observable is_table_loading = false;
     @observable is_loading = false;
     @observable item_offset = 0;
+    @observable p2p_advert_information = {};
     @observable payment_info = '';
     @observable selected_ad_id = '';
     @observable show_ad_form = false;
+    @observable show_edit_ad_form = false;
+
+    @action.bound
+    setActivateDeactivateErrorMessage(activate_deactivate_error_message) {
+        this.activate_deactivate_error_message = activate_deactivate_error_message;
+    }
+
+    @action.bound
+    setAdverts(adverts) {
+        this.adverts = adverts;
+    }
+
+    @action.bound
+    setAdvertsArchivePeriod(adverts_archive_period) {
+        this.adverts_archive_period = adverts_archive_period;
+    }
+
+    @action.bound
+    setApiError(api_error) {
+        this.api_error = api_error;
+    }
+
+    @action.bound
+    setApiErrorMessage(api_error_message) {
+        this.api_error_message = api_error_message;
+    }
+
+    @action.bound
+    setApiTableErrorMessage(api_table_error_message) {
+        this.api_table_error_message = api_table_error_message;
+    }
+
+    @action.bound
+    setAvailableBalance(available_balance) {
+        this.available_balance = available_balance;
+    }
+
+    @action.bound
+    setContactInfo(contact_info) {
+        this.contact_info = contact_info;
+    }
+
+    @action.bound
+    setDefaultAdvertDescription(default_advert_description) {
+        this.default_advert_description = default_advert_description;
+    }
+
+    @action.bound
+    setDeleteErrorMessage(delete_error_message) {
+        this.delete_error_message = delete_error_message;
+    }
+
+    @action.bound
+    setEditAdFormError(edit_ad_form_error) {
+        this.edit_ad_form_error = edit_ad_form_error;
+    }
+
+    @action.bound
+    setErrorMessage(error_message) {
+        this.error_message = error_message;
+    }
+
+    @action.bound
+    setHasMoreItemsToLoad(has_more_items_to_load) {
+        this.has_more_items_to_load = has_more_items_to_load;
+    }
+
+    @action.bound
+    setIsAdCreatedModalVisible(is_ad_created_modal_visible) {
+        this.is_ad_created_modal_visible = is_ad_created_modal_visible;
+    }
+
+    @action.bound
+    setIsApiErrorModalVisible(is_api_error_modal_visible) {
+        this.is_api_error_modal_visible = is_api_error_modal_visible;
+    }
+
+    @action.bound
+    setIsDeleteModalOpen(is_delete_modal_open) {
+        this.is_delete_modal_open = is_delete_modal_open;
+    }
+
+    @action.bound
+    setIsEditErrorModalVisible(is_edit_ad_error_modal_visible) {
+        this.is_edit_ad_error_modal_visible = is_edit_ad_error_modal_visible;
+    }
+
+    @action.bound
+    setIsFormLoading(is_form_loading) {
+        this.is_form_loading = is_form_loading;
+    }
+
+    @action.bound
+    setIsLoading(is_loading) {
+        this.is_loading = is_loading;
+    }
+
+    @action.bound
+    setIsTableLoading(is_table_loading) {
+        this.is_table_loading = is_table_loading;
+    }
+
+    @action.bound
+    setItemOffset(item_offset) {
+        this.item_offset = item_offset;
+    }
+
+    @action.bound
+    setP2pAdvertInformation(p2p_advert_information) {
+        this.p2p_advert_information = p2p_advert_information;
+    }
+
+    @action.bound
+    setPaymentInfo(payment_info) {
+        this.payment_info = payment_info;
+    }
+
+    @action.bound
+    setSelectedAdId(selected_ad_id) {
+        this.selected_ad_id = selected_ad_id;
+    }
+
+    @action.bound
+    setShowAdForm(show_ad_form) {
+        this.show_ad_form = show_ad_form;
+    }
+
+    @action.bound
+    setShowEditAdForm(show_edit_ad_form) {
+        this.show_edit_ad_form = show_edit_ad_form;
+    }
 
     @action.bound
     getAccountStatus() {
@@ -68,6 +202,25 @@ export default class MyAdsStore extends BaseStore {
                 this.setContactInfo('');
                 this.setDefaultAdvertDescription('');
                 this.setPaymentInfo('');
+            }
+            this.setIsFormLoading(false);
+        });
+    }
+
+    @action.bound
+    getAdvertInfo() {
+        this.setIsFormLoading(true);
+        this.setEditAdFormError('');
+
+        requestWS({
+            p2p_advert_info: 1,
+            id: this.selected_ad_id,
+        }).then(response => {
+            if (!response.error) {
+                const { p2p_advert_info } = response;
+                this.setP2pAdvertInformation(p2p_advert_info);
+            } else {
+                this.setEditAdFormError(response.error.message);
             }
             this.setIsFormLoading(false);
         });
@@ -142,6 +295,37 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
+    loadMoreAds({ startIndex }, is_initial_load = false) {
+        if (is_initial_load) {
+            this.setIsTableLoading(true);
+            this.setApiErrorMessage('');
+        }
+
+        const { list_item_limit } = this.root_store.general_store;
+
+        return new Promise(resolve => {
+            requestWS({
+                p2p_advertiser_adverts: 1,
+                offset: startIndex,
+                limit: list_item_limit,
+            }).then(response => {
+                if (!response.error) {
+                    const { list } = response.p2p_advertiser_adverts;
+                    this.setHasMoreItemsToLoad(list.length >= list_item_limit);
+                    this.setAdverts(this.adverts.concat(list));
+                } else if (response.error.code === 'PermissionDenied') {
+                    this.root_store.general_store.setIsBlocked(true);
+                } else {
+                    this.setApiErrorMessage(response.error.message);
+                }
+
+                this.setIsTableLoading(false);
+                resolve();
+            });
+        });
+    }
+
+    @action.bound
     onClickActivateDeactivate(id, is_ad_active, setIsAdvertActive) {
         requestWS({ p2p_advert_update: 1, id, is_active: is_ad_active ? 0 : 1 }).then(response => {
             if (response.error) {
@@ -185,33 +369,49 @@ export default class MyAdsStore extends BaseStore {
     }
 
     @action.bound
-    loadMoreAds({ startIndex }, is_initial_load = false) {
-        if (is_initial_load) {
-            this.setIsTableLoading(true);
-            this.setApiErrorMessage('');
+    onClickEdit(id) {
+        this.setSelectedAdId(id);
+        this.setShowEditAdForm(true);
+    }
+
+    @action.bound
+    onClickSaveEditAd(values, { setSubmitting }) {
+        this.setEditAdFormError('');
+
+        const is_sell_ad = values.type === buy_sell.SELL;
+
+        const update_advert = {
+            p2p_advert_update: 1,
+            amount: Number(values.offer_amount),
+            max_order_amount: Number(values.max_transaction),
+            min_order_amount: Number(values.min_transaction),
+            // TODO: Allow for other types of payment_method.
+            // payment_method: 'bank_transfer',
+            rate: Number(values.price_rate),
+        };
+
+        if (values.contact_info && is_sell_ad) {
+            update_advert.contact_info = values.contact_info;
         }
 
-        const { list_item_limit } = this.root_store.general_store;
+        if (values.payment_info && is_sell_ad) {
+            update_advert.payment_info = values.payment_info;
+        }
 
-        return new Promise(resolve => {
-            requestWS({
-                p2p_advertiser_adverts: 1,
-                offset: startIndex,
-                limit: list_item_limit,
-            }).then(response => {
-                if (!response.error) {
-                    const { list } = response.p2p_advertiser_adverts;
-                    this.setHasMoreItemsToLoad(list.length >= list_item_limit);
-                    this.setAdverts(this.adverts.concat(list));
-                } else if (response.error.code === 'PermissionDenied') {
-                    this.root_store.general_store.setIsBlocked(true);
-                } else {
-                    this.setApiErrorMessage(response.error.message);
-                }
+        if (values.default_advert_description) {
+            update_advert.description = values.default_advert_description;
+        }
 
-                this.setIsTableLoading(false);
-                resolve();
-            });
+        requestWS(update_advert).then(response => {
+            // If there's an error, let the user submit the form again.
+            // If there's no error, send them back to the list of ads.
+            if (response.error) {
+                this.setEditAdFormError(response.error.message);
+                setSubmitting(false);
+                this.setIsEditErrorModalVisible(true);
+            } else {
+                this.setShowAdForm(false);
+            }
         });
     }
 
@@ -226,116 +426,6 @@ export default class MyAdsStore extends BaseStore {
         }
         handleChange(e);
     };
-
-    @action.bound
-    setActivateDeactivateErrorMessage(activate_deactivate_error_message) {
-        this.activate_deactivate_error_message = activate_deactivate_error_message;
-    }
-
-    @action.bound
-    setAdverts(adverts) {
-        this.adverts = adverts;
-    }
-
-    @action.bound
-    setAdvertsArchivePeriod(adverts_archive_period) {
-        this.adverts_archive_period = adverts_archive_period;
-    }
-
-    @action.bound
-    setApiError(api_error) {
-        this.api_error = api_error;
-    }
-
-    @action.bound
-    setApiErrorMessage(api_error_message) {
-        this.api_error_message = api_error_message;
-    }
-
-    @action.bound
-    setApiTableErrorMessage(api_table_error_message) {
-        this.api_table_error_message = api_table_error_message;
-    }
-
-    @action.bound
-    setAvailableBalance(available_balance) {
-        this.available_balance = available_balance;
-    }
-
-    @action.bound
-    setContactInfo(contact_info) {
-        this.contact_info = contact_info;
-    }
-
-    @action.bound
-    setDefaultAdvertDescription(default_advert_description) {
-        this.default_advert_description = default_advert_description;
-    }
-
-    @action.bound
-    setDeleteErrorMessage(delete_error_message) {
-        this.delete_error_message = delete_error_message;
-    }
-
-    @action.bound
-    setErrorMessage(error_message) {
-        this.error_message = error_message;
-    }
-
-    @action.bound
-    setHasMoreItemsToLoad(has_more_items_to_load) {
-        this.has_more_items_to_load = has_more_items_to_load;
-    }
-
-    @action.bound
-    setIsAdCreatedModalVisible(is_ad_created_modal_visible) {
-        this.is_ad_created_modal_visible = is_ad_created_modal_visible;
-    }
-
-    @action.bound
-    setIsApiErrorModalVisible(is_api_error_modal_visible) {
-        this.is_api_error_modal_visible = is_api_error_modal_visible;
-    }
-
-    @action.bound
-    setIsDeleteModalOpen(is_delete_modal_open) {
-        this.is_delete_modal_open = is_delete_modal_open;
-    }
-
-    @action.bound
-    setIsFormLoading(is_form_loading) {
-        this.is_form_loading = is_form_loading;
-    }
-
-    @action.bound
-    setIsLoading(is_loading) {
-        this.is_loading = is_loading;
-    }
-
-    @action.bound
-    setIsTableLoading(is_table_loading) {
-        this.is_table_loading = is_table_loading;
-    }
-
-    @action.bound
-    setItemOffset(item_offset) {
-        this.item_offset = item_offset;
-    }
-
-    @action.bound
-    setPaymentInfo(payment_info) {
-        this.payment_info = payment_info;
-    }
-
-    @action.bound
-    setSelectedAdId(selected_ad_id) {
-        this.selected_ad_id = selected_ad_id;
-    }
-
-    @action.bound
-    setShowAdForm(show_ad_form) {
-        this.show_ad_form = show_ad_form;
-    }
 
     @action.bound
     validateCreateAdForm(values) {

@@ -44,7 +44,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         });
     };
     const onClickDelete = () => !general_store.is_barred && my_ads_store.onClickDelete(id);
-    const onClickEdit = () => my_ads_store.setShowAdForm(true);
+    const onClickEdit = () => !general_store.is_barred && my_ads_store.onClickEdit(id);
     const onMouseEnter = () => setIsPopoverActionsVisible(true);
     const onMouseLeave = () => setIsPopoverActionsVisible(false);
 

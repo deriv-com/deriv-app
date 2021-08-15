@@ -9,11 +9,11 @@ const copyConfig = base => {
             to: 'bot/css/',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/media/**'),
+            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/media/'),
             to: 'media',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/js/*.*'),
+            from: path.resolve(__dirname, '../node_modules/@deriv/bot-web-ui/dist/bot/js/'),
             to: 'bot/js/',
         },
         {
@@ -21,11 +21,11 @@ const copyConfig = base => {
             to: 'js/smartcharts/',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/account/js/**'),
+            from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/account/js/'),
             to: 'account/js',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/account/css/**'),
+            from: path.resolve(__dirname, '../node_modules/@deriv/account/dist/account/css/'),
             to: 'account/css',
         },
         {
@@ -33,11 +33,11 @@ const copyConfig = base => {
             to: 'cashier/js',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/css/**'),
+            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/css/'),
             to: 'cashier/css',
         },
         {
-            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/public/**'),
+            from: path.resolve(__dirname, '../node_modules/@deriv/cashier/dist/cashier/public/'),
             to: 'public',
             transformPath(context) {
                 return context.split('node_modules/@deriv/cashier/dist/')[1];
@@ -81,14 +81,14 @@ const copyConfig = base => {
             to: 'favicon.ico',
             toType: 'file',
         },
-        { from: path.resolve(__dirname, '../src/public/images/favicons/**') },
+        { from: path.resolve(__dirname, '../src/public/images/favicons/') },
         {
-            from: path.resolve(__dirname, '../src/public/images/common/static_images/**'),
+            from: path.resolve(__dirname, '../src/public/images/common/static_images/'),
             to: 'public/images/common',
         },
         // { from: path.resolve(__dirname, '../src/public/images/common/og_image.gif'), to: 'images/common/og_image.gif' }, // Once the design for og_image is ready, bring this back.
-        { from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/**') },
-        { from: path.resolve(__dirname, '../src/public/images/app/header/**') },
+        { from: path.resolve(__dirname, '../src/public/images/common/logos/platform_logos/') },
+        { from: path.resolve(__dirname, '../src/public/images/app/header/') },
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/components/lib/icon/sprites'),
             to: 'public/sprites',

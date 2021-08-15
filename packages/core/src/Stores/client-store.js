@@ -221,8 +221,8 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get can_change_fiat_currency() {
-        const has_no_mt5 = !this.has_mt5_login;
-        const has_no_dxtrade = !this.has_dxtrade_login;
+        const has_no_mt5 = !this.has_real_mt5_login;
+        const has_no_dxtrade = !this.has_real_dxtrade_login;
         const has_no_transaction = this.statement.count === 0 && this.statement.transactions.length === 0;
         const has_account_criteria = has_no_transaction && has_no_mt5 && has_no_dxtrade;
         return !this.is_virtual && has_account_criteria && this.current_currency_type === 'fiat';
@@ -323,9 +323,11 @@ export default class ClientStore extends BaseStore {
     // note that it will be undefined for logged out and virtual clients
     @computed
     get current_landing_company() {
-        const landing_company = Object.keys(this.landing_companies).find(
-            company => this.landing_companies[company]?.shortcode === this.landing_company_shortcode
-        );
+        const landing_company =
+            this.landing_companies &&
+            Object.keys(this.landing_companies).find(
+                company => this.landing_companies[company]?.shortcode === this.landing_company_shortcode
+            );
         return landing_company ? this.landing_companies[landing_company] : undefined;
     }
 
@@ -335,13 +337,13 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get has_mt5_login() {
-        return this.mt5_login_list.length > 0;
+    get has_real_mt5_login() {
+        return this.mt5_login_list.some(account => account.account_type === 'real');
     }
 
     @computed
-    get has_dxtrade_login() {
-        return this.dxtrade_accounts_list.length > 0;
+    get has_real_dxtrade_login() {
+        return this.dxtrade_accounts_list.some(account => account.account_type === 'real');
     }
 
     getListOfMT5AccountsWithError = account_type => {

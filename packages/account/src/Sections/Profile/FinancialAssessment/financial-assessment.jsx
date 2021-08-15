@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Formik } from 'formik';
-import { useHistory, useLocation, withRouter } from 'react-router';
+import { useHistory, withRouter } from 'react-router';
 import {
     FormSubmitErrorMessage,
     Loading,
@@ -14,7 +14,7 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
-import { routes, isMobile, isDesktop, PlatformContext, WS } from '@deriv/shared';
+import { routes, isMobile, isDesktop, platforms, PlatformContext, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import LeaveConfirm from 'Components/leave-confirm';
@@ -115,40 +115,60 @@ const ConfirmationPage = ({ toggleModal, onSubmit }) => (
     </div>
 );
 
-const SubmittedPage = () => {
+const SubmittedPage = ({ platform }) => {
     const history = useHistory();
-    const location = useLocation();
-
-    // Passing "custom_button_options" object in "location.state" allows
-    // another app/route to determine which button the user will see after
-    // submitting their financial assessment.
-    const button_text = location.state?.custom_button_options
-        ? location.state.custom_button_options.button_text
-        : localize('Continue');
-    const icon_text = location.state?.custom_button_options
-        ? location.state.custom_button_options.icon_text
-        : localize('Let’s continue with providing proofs of address and identity.');
-    const route_to_path = location.state?.custom_button_options
-        ? location.state.custom_button_options.route_to_path
-        : routes.proof_of_address;
 
     const onClickButton = () => {
-        if (location.state?.custom_button_options?.is_hard_redirect) {
-            window.location.href = window.location.origin + route_to_path;
+        if (platforms[platform].is_hard_redirect) {
+            window.location.href = window.location.origin + platforms[platform].route_to_path;
         } else {
-            history.push(route_to_path);
+            history.push(platforms[platform].route_to_path);
         }
     };
+
+    const redirectToPOA = () => {
+        history.push(routes.proof_of_address);
+    };
+
+    if (platform && !!platforms[platform])
+        return (
+            <IconMessageContent
+                className='submit-success'
+                message={localize('Financial assessment submitted successfully')}
+                text={platforms[platform].icon_text}
+                icon={<Icon icon='IcSuccess' width={96} height={90} />}
+            >
+                <div className='account-management-flex-wrapper account-management-submit-success'>
+                    <Button
+                        type='button'
+                        has_effect
+                        text={localize('Back to {{platform_name}}', {
+                            platform_name: platforms[platform].platform_name,
+                        })}
+                        onClick={onClickButton}
+                        primary
+                        large
+                    />
+                </div>
+            </IconMessageContent>
+        );
 
     return (
         <IconMessageContent
             className='submit-success'
             message={localize('Financial assessment submitted successfully')}
-            text={icon_text}
+            text={localize('Let’s continue with providing proofs of address and identity.')}
             icon={<Icon icon='IcSuccess' width={96} height={90} />}
         >
             <div className='account-management-flex-wrapper account-management-submit-success'>
-                <Button type='button' has_effect text={button_text} onClick={onClickButton} primary large />
+                <Button
+                    type='button'
+                    has_effect
+                    text={localize('Continue')}
+                    onClick={() => redirectToPOA()}
+                    primary
+                    large
+                />
             </div>
         </IconMessageContent>
     );
@@ -183,6 +203,7 @@ class FinancialAssessment extends React.Component {
 
     componentDidMount() {
         this.is_mounted = true;
+
         if (this.props.is_virtual) {
             this.setState({ is_loading: false });
             this.props.history.push(routes.personal_details);
@@ -303,7 +324,7 @@ class FinancialAssessment extends React.Component {
         if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (this.props.is_virtual) return <DemoMessage has_demo_icon={is_dashboard} has_button={is_dashboard} />;
-        if (isMobile() && is_submit_success) return <SubmittedPage />;
+        if (isMobile() && is_submit_success) return <SubmittedPage platform={this.props.platform} />;
 
         return (
             <React.Fragment>
@@ -919,7 +940,7 @@ class FinancialAssessment extends React.Component {
 }
 
 // FinancialAssessment.propTypes = {};
-export default connect(({ client, ui }) => ({
+export default connect(({ client, common, ui }) => ({
     account_status: client.account_status,
     is_virtual: client.is_virtual,
     is_high_risk: client.is_high_risk,
@@ -927,6 +948,7 @@ export default connect(({ client, ui }) => ({
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     is_financial_information_incomplete: client.is_financial_information_incomplete,
     is_svg: client.is_svg,
+    platform: common.platform,
     removeNotificationMessage: ui.removeNotificationMessage,
     removeNotificationByKey: ui.removeNotificationByKey,
 }))(withRouter(FinancialAssessment));

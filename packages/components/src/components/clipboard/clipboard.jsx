@@ -7,8 +7,8 @@ import Icon from '../icon';
 
 const Clipboard = ({
     text_copy,
-    icon,
     info_message,
+    icon,
     success_message,
     className,
     popoverClassName,

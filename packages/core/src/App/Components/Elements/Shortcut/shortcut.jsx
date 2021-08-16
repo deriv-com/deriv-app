@@ -40,6 +40,7 @@ const Shortcut = () => {
                     <Autocomplete
                         data-lpignore='true'
                         data-testid='short-cut-input'
+                        autoFocus={true}
                         autoComplete='off' // prevent chrome autocomplete
                         type='text'
                         label={'Enter route'}

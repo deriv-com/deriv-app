@@ -62,6 +62,10 @@
 
             .dc-dropdown__display-text {
                 padding-left: 1.2rem;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                display: inline-block;
             }
         }
         &--has-symbol {
@@ -258,8 +262,8 @@
     &-container {
         position: relative;
         margin-top: 0.8rem;
-        min-width: 43rem;
-        width: fit-content;
+        min-width: 15rem;
+        width: 100%;
 
         // keep <select /> element on top of .dc_dropdown__label
     }
@@ -269,6 +273,11 @@
 
             .dc-dropdown__display-placeholder-text {
                 color: var(--text-less-prominent);
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                display: inline-block;
+                width: 37rem;
             }
             &--clicked {
                 .dc-dropdown__display-placeholder-text {

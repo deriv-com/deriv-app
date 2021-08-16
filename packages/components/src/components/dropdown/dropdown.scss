@@ -277,7 +277,7 @@
                 text-overflow: ellipsis;
                 overflow: hidden;
                 display: inline-block;
-                width: 37rem;
+                max-width: 37rem;
             }
             &--clicked {
                 .dc-dropdown__display-placeholder-text {

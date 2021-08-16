@@ -7,6 +7,7 @@ const ThemedScrollbars = ({
     children,
     className,
     has_horizontal,
+    height,
     is_bypassed,
     is_only_horizontal,
     is_only_horizontal_overlay,
@@ -31,6 +32,7 @@ const ThemedScrollbars = ({
                 'dc-themed-scrollbars--hidden-scrollbar': is_scrollbar_hidden,
             })}
             style={{
+                maxHeight: height || '100%',
                 maxWidth: width || 'none',
                 ...style,
             }}

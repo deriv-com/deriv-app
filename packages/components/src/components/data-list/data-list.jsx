@@ -94,7 +94,7 @@ const DataList = React.memo(
 
             return is_dynamic_height ? (
                 <CellMeasurer cache={cache.current} columnIndex={0} key={row_key} rowIndex={index} parent={parent}>
-                    {({ measure }) => <div>{getContent({ measure })}</div>}
+                    {({ measure }) => <div style={style}>{getContent({ measure })}</div>}
                 </CellMeasurer>
             ) : (
                 <div key={row_key} style={style}>

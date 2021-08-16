@@ -38,8 +38,8 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
     const cancellation_price = getCancellationPrice(contract_info);
 
     const getLabel = () => {
+        if (isEnded(contract_info) && !isUserCancelled(contract_info)) return localize('Deal cancellation');
         if (isUserCancelled(contract_info)) return localize('Deal cancellation (executed)');
-        if (isEnded(contract_info)) return localize('Deal cancellation');
         if (isCancellationExpired(contract_info)) return localize('Deal cancellation (expired)');
         return localize('Deal cancellation (active)');
     };

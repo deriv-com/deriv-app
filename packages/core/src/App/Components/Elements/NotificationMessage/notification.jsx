@@ -11,6 +11,7 @@ import { BinaryLink } from '../../Routes';
 
 const Notification = ({ data, removeNotificationMessage }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
+    const active_timer = sessionStorage.getItem('popup_timer');
     const destroy = is_closed_by_user => {
         removeNotificationMessage(data);
 
@@ -83,7 +84,10 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                     ) : (
                                         <Button
                                             className='notification__cta-button'
-                                            onClick={() => data.action.onClick({ is_dashboard })}
+                                            onClick={() => {
+                                                if (active_timer !== null) sessionStorage.removeItem('popup_timer');
+                                                data.action.onClick({ is_dashboard });
+                                            }}
                                             text={data.action.text}
                                             secondary
                                             renderText={text => (

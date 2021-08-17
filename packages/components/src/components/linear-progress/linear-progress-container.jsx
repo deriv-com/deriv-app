@@ -3,16 +3,18 @@ import PropTypes from 'prop-types';
 import { LinearProgress } from './linear-progress.jsx';
 
 const LinearProgressContainer = ({ timeout, action, render, className }) => {
-    const [timeout_state, setTimeout] = React.useState(timeout / 1000);
-    const [current_tick, setCurrentTick] = React.useState(Math.round(timeout / 1000));
-    const [total_ticks] = React.useState(Math.round(timeout / 1000));
+    const get_popup_timer = sessionStorage.getItem('popup_timer');
+    if (!get_popup_timer) sessionStorage.setItem('popup_timer', timeout / 1000);
+    const popup_timeout = get_popup_timer !== null ? get_popup_timer : timeout / 1000;
 
-    const getProgress = () => 100 - Math.round((current_tick / total_ticks) * 100);
+    const [timeout_state, setTimeout] = React.useState(popup_timeout);
+    const time_past = 100 - timeout_state / 3;
+
+    const getProgress = () => time_past;
 
     const getRemaining = () => (timeout_state > 0 ? timeout_state : 0);
 
     const makeProgress = () => {
-        setCurrentTick(current => current - 1);
         setTimeout(timeout_current => timeout_current - 1);
     };
 
@@ -28,6 +30,12 @@ const LinearProgressContainer = ({ timeout, action, render, className }) => {
             action();
         }
     });
+
+    if (sessionStorage.getItem('popup_timer') <= 0) {
+        sessionStorage.removeItem('popup_timer');
+    } else {
+        sessionStorage.setItem('popup_timer', timeout_state);
+    }
 
     if (!timeout) return null;
 

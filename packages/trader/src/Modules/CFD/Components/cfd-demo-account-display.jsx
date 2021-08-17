@@ -42,7 +42,7 @@ const CFDDemoAccountDisplay = ({
         if (is_eu || is_eu_country) {
             return specifications[platform].eu_real_financial_specs;
         }
-        return specifications[platform].real_synthetic_specs;
+        return specifications[platform].real_financial_specs;
     }, [is_eu, is_eu_country, residence, platform]);
 
     return is_loading ? (

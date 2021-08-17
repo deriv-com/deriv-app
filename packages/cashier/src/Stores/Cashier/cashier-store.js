@@ -242,6 +242,15 @@ export default class CashierStore extends BaseStore {
         this.onSwitchAccount(this.accountSwitcherListener);
     }
 
+    @action.bound
+    setActiveTabIndex(index) {
+        this.config.payment_agent.setActiveTabIndex(index);
+
+        if (index === 1) {
+            this.sendVerificationEmail();
+        }
+    }
+
     // Initialise P2P attributes on app load without mounting the entire cashier
     @action.bound
     init() {
@@ -695,14 +704,18 @@ export default class CashierStore extends BaseStore {
         const response_verify_email = await this.WS.verifyEmail(this.root_store.client.email, withdrawal_type);
         if (response_verify_email.error) {
             this.clearVerification();
-            this.setErrorMessage(
-                response_verify_email.error,
-                () => {
-                    this.setErrorMessage('', null, null, true);
-                },
-                null,
-                true
-            );
+            if (response_verify_email.error.code === 'PaymentAgentWithdrawError') {
+                this.setErrorMessage(response_verify_email.error, this.resetPaymentAgent, null, true);
+            } else {
+                this.setErrorMessage(
+                    response_verify_email.error,
+                    () => {
+                        this.setErrorMessage('', null, null, true);
+                    },
+                    null,
+                    true
+                );
+            }
         } else {
             this.setVerificationEmailSent(true);
             this.setTimeoutVerification();
@@ -1051,6 +1064,7 @@ export default class CashierStore extends BaseStore {
         this.setErrorMessage('');
         this.setIsWithdraw(false);
         this.clearVerification();
+        this.setActiveTabIndex(0);
     };
 
     // possible transfers:

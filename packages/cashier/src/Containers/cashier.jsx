@@ -79,6 +79,16 @@ const Cashier = ({
         return options;
     };
 
+    const getHeaderTitle = () => {
+        if (platforms[platform]) {
+            return '';
+        }
+        if (isMobile()) {
+            return selected_route.getTitle();
+        }
+        return localize('Cashier');
+    };
+
     const selected_route = isMobile() ? getSelectedRoute({ routes: routes_config, pathname: location.pathname }) : null;
     // const should_show_tab_headers_note =
     //     !is_virtual &&
@@ -92,13 +102,10 @@ const Cashier = ({
         return <Loading is_fullscreen />;
     }
 
-    const header_title = isMobile() ? selected_route.getTitle() : localize('Cashier');
-    const is_platform = platforms[platform] ? '' : header_title;
-
     return (
         <FadeWrapper is_visible={is_visible} className='cashier-page-wrapper' keyname='cashier-page-wrapper'>
             <div className='cashier'>
-                <PageOverlay header={is_platform} onClickClose={onClickClose}>
+                <PageOverlay header={getHeaderTitle()} onClickClose={onClickClose}>
                     <DesktopWrapper>
                         <VerticalTab
                             alignment='center'

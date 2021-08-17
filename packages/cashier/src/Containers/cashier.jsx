@@ -93,11 +93,12 @@ const Cashier = ({
     }
 
     const header_title = isMobile() ? selected_route.getTitle() : localize('Cashier');
+    const is_platform = platforms[platform] ? '' : header_title;
 
     return (
         <FadeWrapper is_visible={is_visible} className='cashier-page-wrapper' keyname='cashier-page-wrapper'>
             <div className='cashier'>
-                <PageOverlay header={platforms[platform] ? '' : header_title} onClickClose={onClickClose}>
+                <PageOverlay header={is_platform} onClickClose={onClickClose}>
                     <DesktopWrapper>
                         <VerticalTab
                             alignment='center'

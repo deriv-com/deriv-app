@@ -59,7 +59,11 @@ export default class CommonStore extends BaseStore {
 
     @action.bound
     setPlatform() {
-        this.platform = new URL(window.location).searchParams.get('platform');
+        const search = window.location.search;
+        if (search) {
+            const url_params = new URLSearchParams(search);
+            this.platform = url_params.get('platform') || '';
+        }
     }
 
     @action.bound

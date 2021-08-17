@@ -326,6 +326,7 @@ const RealAccountSignup = ({
                     toggleModal={closeModal}
                     height={getModalHeight()}
                     width={!has_close_icon ? 'auto' : '904px'}
+                    elements_to_ignore={[document.querySelector('.modal-root')]}
                 >
                     {is_real_acc_signup_on && (
                         <ModalContent state_value={state_value} passthrough={state_index} is_loading={is_loading} />

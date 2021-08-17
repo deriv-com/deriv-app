@@ -123,9 +123,7 @@ let dxtrade_accounts_to = [];
 
 const AccountTransferForm = ({
     account_transfer_amount,
-    balance,
     crypto_transactions,
-    currency,
     is_crypto,
     onMount,
     transfer_limit,
@@ -145,6 +143,7 @@ const AccountTransferForm = ({
     setErrorMessage,
     setIsTransferConfirm,
     error,
+    resetTimer,
     setPercentageSelectorResult,
 }) => {
     const [from_accounts, setFromAccounts] = React.useState({});
@@ -334,7 +333,6 @@ const AccountTransferForm = ({
                 {({
                     errors,
                     isSubmitting,
-                    isValid,
                     touched,
                     setFieldValue,
                     setFieldTouched,
@@ -366,6 +364,7 @@ const AccountTransferForm = ({
                                             onChange={e => {
                                                 onChangeTransferFrom(e);
                                                 handleChange(e);
+                                                resetTimer();
                                                 setFieldValue('amount', '');
                                                 setFieldError('amount', '');
                                                 setFieldTouched('amount', false);
@@ -385,6 +384,7 @@ const AccountTransferForm = ({
                                             onChange={e => {
                                                 onChangeTransferFrom(e);
                                                 handleChange(e);
+                                                resetTimer();
                                                 setFieldValue('amount', '');
                                                 setFieldError('amount', '');
                                                 setFieldTouched('amount', false);
@@ -407,7 +407,13 @@ const AccountTransferForm = ({
                                             list_height='404'
                                             name='transfer_to'
                                             value={selected_to.value}
-                                            onChange={onChangeTransferTo}
+                                            onChange={e => {
+                                                onChangeTransferTo(e);
+                                                resetTimer();
+                                                setFieldValue('amount', '');
+                                                setFieldError('amount', '');
+                                                setFieldTouched('amount', false);
+                                            }}
                                             hint={transfer_to_hint}
                                             error={selected_to.error}
                                         />
@@ -422,24 +428,20 @@ const AccountTransferForm = ({
                                             name='transfer_to'
                                             value={selected_to.value}
                                             list_items={to_accounts}
-                                            onChange={onChangeTransferTo}
+                                            onChange={e => {
+                                                onChangeTransferTo(e);
+                                                resetTimer();
+                                                setFieldValue('amount', '');
+                                                setFieldError('amount', '');
+                                                setFieldTouched('amount', false);
+                                            }}
                                             hint={transfer_to_hint}
                                             error={selected_to.error}
                                         />
                                     </MobileWrapper>
                                 </div>
-                                { is_crypto && <div>
-                                        <div className='crypto-account-transfer__percentage-selector'>
-                                            <PercentageSelector
-                                                amount={+balance}
-                                                currency={currency}
-                                                getCalculatedAmount={setPercentageSelectorResult}
-                                            />
-                                        </div>
-                                        <CryptoFiatConverter />
-                                    </div>
-                                }
-                                { !is_crypto && <Field name='amount' validate={validateAmount}>
+                                { selected_from.currency === selected_to.currency ?
+                                    <Field name='amount' validate={validateAmount}>
                                         {({ field }) => (
                                             <Input
                                                 {...field}
@@ -495,18 +497,32 @@ const AccountTransferForm = ({
                                             />
                                         )}
                                     </Field>
+                                    : <div>
+                                        <div className='crypto-account-transfer__percentage-selector'>
+                                            <PercentageSelector
+                                                amount={+selected_from.balance}
+                                                currency={selected_from.currency}
+                                                getCalculatedAmount={setPercentageSelectorResult}
+                                            />
+                                        </div>
+                                        <CryptoFiatConverter 
+                                            crypto_currency={
+                                                selected_from.is_crypto ? selected_from.currency : selected_to.currency
+                                            } 
+                                            fiat_currency={
+                                                selected_from.is_crypto ? selected_to.currency : selected_from.currency
+                                            } 
+                                        />
+                                    </div>
                                 }
-                                <div className={classNames('cashier__form-submit cashier__form-submit--align-end account-transfer__form-submit', {
-                                    'crypto-account-transfer__form-submit' : is_crypto,
-                                })}>
+                                <div className='cashier__form-submit cashier__form-submit--align-end account-transfer__form-submit'>
                                     <Button
                                         className={classNames({
-                                            'cashier__form-submit-button' : !is_crypto,
-                                            'cashier__crypto-form-submit-button' : is_crypto,
+                                            'cashier__form-submit-button' : selected_from.currency === selected_to.currency,
+                                            'cashier__account-transfer__form-submit-button' : selected_from.currency !== selected_to.currency,
                                         })}
                                         type='submit'
                                         is_disabled={
-                                            !isValid ||
                                             isSubmitting ||
                                             !+remaining_transfers ||
                                             !!selected_from.error ||
@@ -539,9 +555,7 @@ const AccountTransferForm = ({
 AccountTransferForm.propTypes = {
     account_limits: PropTypes.object,
     accounts_list: PropTypes.array,
-    balance: PropTypes.number,
     crypto_transactions: PropTypes.array,
-    currency: PropTypes.string,
     is_crypto: PropTypes.bool,
     error: PropTypes.object,
     minimum_fee: PropTypes.string,
@@ -554,15 +568,14 @@ AccountTransferForm.propTypes = {
     setSideNotes: PropTypes.func,
     transfer_fee: PropTypes.number,
     transfer_limit: PropTypes.object,
+    resetTimer: PropTypes.func,
     setPercentageSelectorResult: PropTypes.func,
 };
 
 export default connect(({ client, modules, ui }) => ({
     account_limits: client.account_limits,
     account_transfer_amount: modules.cashier.config.account_transfer.account_transfer_amount,
-    balance: client.balance,
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
-    currency: client.currency,
     is_crypto: modules.cashier.is_crypto,
     onMount: client.getLimits,
     accounts_list: modules.cashier.config.account_transfer.accounts_list,
@@ -579,5 +592,6 @@ export default connect(({ client, modules, ui }) => ({
     setAccountTransferAmount: modules.cashier.setAccountTransferAmount,
     transfer_fee: modules.cashier.config.account_transfer.transfer_fee,
     transfer_limit: modules.cashier.config.account_transfer.transfer_limit,
+    resetTimer: modules.cashier.resetTimer,
     setPercentageSelectorResult: modules.cashier.setPercentageSelectorResult,
 }))(AccountTransferForm);

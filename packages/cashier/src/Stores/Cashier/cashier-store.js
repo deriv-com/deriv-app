@@ -795,15 +795,15 @@ export default class CashierStore extends BaseStore {
         runInAction(() => {
             const decimals = getDecimalPlaces(to_currency);
             const amount = (rate * target.value).toFixed(decimals);
-            const balance = this.root_store.client.balance;
-            if (balance < amount) {
+            const balance = this.config.account_transfer.selected_from.balance;
+            if (+balance < +amount) {
                 this.insufficient_fund_error = localize('Insufficient funds');
                 this.setCryptoAmount('');
             } else {
                 this.insufficient_fund_error = '';
                 this.setCryptoAmount(amount);
                 this.setIsTimerVisible(true);
-                this.setAccountTransferAmount(amount);
+                this.setAccountTransferAmount(target.value);
             }
         });
     }
@@ -1680,13 +1680,27 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setPercentageSelectorResult(amount) {
-        this.setCryptoAmount(amount);
-        this.onChangeCryptoAmount(
-            { target: { value: amount } },
-            this.root_store.client.currency,
-            this.root_store.client.current_fiat_currency
-        );
+    setPercentageSelectorResult(amount, currency) {
+        const selected_from_currency = this.config.account_transfer.selected_from.currency;
+        const selected_to_currency = this.config.account_transfer.selected_to.currency;
+        if(amount > 0) {
+            if(isCryptocurrency(currency)) {
+                this.setCryptoAmount(amount);
+                this.onChangeCryptoAmount(
+                    { target: { value: amount } },
+                    selected_from_currency,
+                    selected_to_currency
+                );
+            } else {
+                this.setFiatAmount(amount);
+                this.onChangeFiatAmount(
+                    { target: { value: amount } },
+                    selected_from_currency,
+                    selected_to_currency
+                );
+            }
+        }
+
         this.setIsTimerVisible(false);
     }
 }

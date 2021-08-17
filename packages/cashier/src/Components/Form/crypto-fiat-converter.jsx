@@ -40,11 +40,10 @@ const InputGroup = ({ children, className }) => {
 };
 
 const CryptoFiatConverter = ({
-    balance,
     crypto_amount,
     crypto_currency,
-    current_fiat_currency,
     fiat_amount,
+    fiat_currency,
     insufficient_fund_error,
     is_timer_visible,
     onChangeCryptoAmount,
@@ -68,8 +67,6 @@ const CryptoFiatConverter = ({
                 decimals: getDecimalPlaces(crypto_currency),
             });
             if (!is_ok) return message; 
-
-            if (+balance < +amount) return localize('Insufficient funds');
         }
 
         return undefined;
@@ -78,7 +75,7 @@ const CryptoFiatConverter = ({
         if(amount) {
             const { is_ok, message } = validNumber(amount, {
                 type: 'float',
-                decimals: getDecimalPlaces(current_fiat_currency),
+                decimals: getDecimalPlaces(fiat_currency),
             });
             if (!is_ok) return message; 
         }
@@ -108,7 +105,7 @@ const CryptoFiatConverter = ({
                                             if(!values.crypto_amount || errors.crypto_amount) {
                                                 setFiatAmount('');
                                             } else {
-                                                onChangeCryptoAmount(e, crypto_currency, current_fiat_currency);
+                                                onChangeCryptoAmount(e, crypto_currency, fiat_currency);
                                             }
                                         } 
                                     }}
@@ -145,7 +142,7 @@ const CryptoFiatConverter = ({
                                                 if(!values.fiat_amount || errors.fiat_amount) {
                                                     setCryptoAmount('');
                                                 } else {
-                                                    onChangeFiatAmount(e, current_fiat_currency, crypto_currency);
+                                                    onChangeFiatAmount(e, fiat_currency, crypto_currency);
                                                 }
                                             }
                                         }}
@@ -157,7 +154,7 @@ const CryptoFiatConverter = ({
                                         }}
                                         type='text'
                                         error={(touched.fiat_amount && errors.fiat_amount) || insufficient_fund_error}
-                                        label={localize('Amount ({{currency}})', {currency: current_fiat_currency})}
+                                        label={localize('Amount ({{currency}})', {currency: fiat_currency})}
                                         value={fiat_amount}
                                     />
                                     {is_timer_visible && <Timer onComplete={() => {
@@ -165,7 +162,7 @@ const CryptoFiatConverter = ({
                                             target: {
                                                 value: crypto_amount,
                                             },
-                                        }, crypto_currency, current_fiat_currency);
+                                        }, crypto_currency, fiat_currency);
                                     }} /> }
                                 </InputGroup>
                             )}
@@ -180,10 +177,9 @@ const CryptoFiatConverter = ({
 };
 
 CryptoFiatConverter.propTypes = {
-    balance: PropTypes.string,
     crypto_amount: PropTypes.string,
     crypto_currency: PropTypes.string,
-    current_fiat_currency: PropTypes.string,
+    fiat_currency: PropTypes.string,
     fiat_amount: PropTypes.string,
     insufficient_fund_error: PropTypes.string,
     is_timer_visible: PropTypes.bool,
@@ -195,11 +191,8 @@ CryptoFiatConverter.propTypes = {
     setIsTimerVisible: PropTypes.func,
 };
 
-export default connect(({ client, modules }) => ({
-    balance: client.balance,
+export default connect(({ modules }) => ({
     crypto_amount: modules.cashier.crypto_amount,
-    crypto_currency: client.currency,
-    current_fiat_currency: client.current_fiat_currency,
     fiat_amount: modules.cashier.fiat_amount,
     insufficient_fund_error: modules.cashier.insufficient_fund_error,
     is_timer_visible: modules.cashier.is_timer_visible,

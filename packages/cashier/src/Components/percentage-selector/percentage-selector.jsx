@@ -7,6 +7,13 @@ import { Localize } from '@deriv/translations';
 const PercentageSelector = ({ amount, currency, getCalculatedAmount }) => {
     const [percentage, setPercentage] = React.useState('0');
 
+    React.useEffect(() => {
+        calculateAmount(
+            { target: { id: 0 } },
+            0
+        );
+    }, [amount]); 
+
     const calculateAmount = (e, percent) => {
         setPercentage(percent);
 
@@ -17,7 +24,7 @@ const PercentageSelector = ({ amount, currency, getCalculatedAmount }) => {
                 document.getElementById(i).style.backgroundColor = 'var(--general-section-1)';
             }
         }
-        getCalculatedAmount((amount * (percent / 100)).toFixed(getDecimalPlaces(currency)));
+        getCalculatedAmount((amount * (percent / 100)).toFixed(getDecimalPlaces(currency)), currency);
     };
 
     return (

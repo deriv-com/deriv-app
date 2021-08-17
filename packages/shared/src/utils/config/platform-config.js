@@ -11,6 +11,6 @@ export const platforms = {
         icon_text: undefined,
         is_hard_redirect: true,
         platform_name: 'Deriv Go',
-        route_to_path: routes.cashier_p2p,
+        route_to_path: '',
     },
 };

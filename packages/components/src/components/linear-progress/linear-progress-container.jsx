@@ -5,7 +5,7 @@ import { LinearProgress } from './linear-progress.jsx';
 const LinearProgressContainer = ({ timeout, action, render, className }) => {
     const get_popup_timer = sessionStorage.getItem('popup_timer');
     if (!get_popup_timer) sessionStorage.setItem('popup_timer', timeout / 1000);
-    const popup_timeout = get_popup_timer !== null ? get_popup_timer : timeout / 1000;
+    const popup_timeout = !get_popup_timer ? timeout / 1000 : get_popup_timer;
 
     const [timeout_state, setTimeout] = React.useState(popup_timeout);
     const time_past = 100 - timeout_state / 3;

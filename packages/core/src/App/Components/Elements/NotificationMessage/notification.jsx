@@ -85,7 +85,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                         <Button
                                             className='notification__cta-button'
                                             onClick={() => {
-                                                if (active_timer !== null) sessionStorage.removeItem('popup_timer');
+                                                if (active_timer) sessionStorage.removeItem('popup_timer');
                                                 data.action.onClick({ is_dashboard });
                                             }}
                                             text={data.action.text}

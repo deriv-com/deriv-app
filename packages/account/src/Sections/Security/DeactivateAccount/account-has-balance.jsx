@@ -216,7 +216,7 @@ const AccountHasPendingConditions = ({
                     </Wrapper>
                 )}
                 {!!dxtrade_open_positions.length && (
-                    <Wrapper title={localize('You have open positions in these Deriv X accounts:')}>
+                    <Wrapper title={localize('Please close your positions in the following Deriv X account(s):')}>
                         {dxtrade_open_positions.map(account => (
                             <Content
                                 key={account.login}
@@ -242,7 +242,7 @@ const AccountHasPendingConditions = ({
                     </Wrapper>
                 )}
                 {!!dxtrade_balance.length && (
-                    <Wrapper title={localize('You have funds in these Deriv X accounts:')}>
+                    <Wrapper title={localize('Please withdraw your funds from the following Deriv X account(s):')}>
                         {dxtrade_balance.map(account => (
                             <Content
                                 key={account.login}

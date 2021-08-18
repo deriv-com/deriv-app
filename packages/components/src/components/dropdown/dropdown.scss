@@ -273,6 +273,8 @@
 
             .dc-dropdown__display-placeholder-text {
                 color: var(--text-less-prominent);
+            }
+            .dc-dropdown__display-placeholder-text-limit-fit {
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 overflow: hidden;

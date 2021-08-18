@@ -37,7 +37,6 @@ const Account = ({
     is_visible,
     location,
     logout,
-    needs_financial_assessment,
     routeBackInApp,
     routes,
     should_allow_authentication,
@@ -65,7 +64,7 @@ const Account = ({
     if (
         !is_loading &&
         !isEmptyObject(account_status) &&
-        ((!needs_financial_assessment && /financial-assessment/.test(selected_content.path)) ||
+        ((is_virtual && /financial-assessment/.test(selected_content.path)) ||
             (!should_allow_authentication && /proof-of-identity|proof-of-address/.test(selected_content.path)))
     )
         routeBackInApp(history);
@@ -73,7 +72,7 @@ const Account = ({
     routes.forEach(menu_item => {
         menu_item.subroutes.forEach(route => {
             if (route.path === shared_routes.financial_assessment) {
-                route.is_disabled = !needs_financial_assessment;
+                route.is_disabled = is_virtual;
             }
 
             if (route.path === shared_routes.proof_of_identity || route.path === shared_routes.proof_of_address) {
@@ -163,7 +162,6 @@ Account.propTypes = {
     is_visible: PropTypes.bool,
     location: PropTypes.object,
     logout: PropTypes.func,
-    needs_financial_assessment: PropTypes.bool,
     routes: PropTypes.arrayOf(PropTypes.object),
     should_allow_authentication: PropTypes.bool,
     toggleAccount: PropTypes.func,
@@ -177,7 +175,6 @@ export default connect(({ client, common, ui }) => ({
     is_virtual: client.is_virtual,
     is_visible: ui.is_account_settings_visible,
     logout: client.logout,
-    needs_financial_assessment: client.needs_financial_assessment,
     routeBackInApp: common.routeBackInApp,
     should_allow_authentication: client.should_allow_authentication,
     toggleAccount: ui.toggleAccountSettings,

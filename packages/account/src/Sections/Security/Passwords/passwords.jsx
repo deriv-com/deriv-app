@@ -41,10 +41,16 @@ const Passwords = ({
                 />
             )}
             {(mt5_login_list?.length > 0 || !is_mt5_password_not_set) && (
-                <PasswordsPlatform email={email} has_mt5_accounts={mt5_login_list?.length > 0} />
+                <PasswordsPlatform
+                    email={email}
+                    has_mt5_accounts={mt5_login_list?.length > 0 || !is_mt5_password_not_set}
+                />
             )}
             {(dxtrade_accounts_list?.length > 0 || !is_dxtrade_password_not_set) && (
-                <PasswordsPlatform email={email} has_dxtrade_accounts={dxtrade_accounts_list?.length > 0} />
+                <PasswordsPlatform
+                    email={email}
+                    has_dxtrade_accounts={dxtrade_accounts_list?.length > 0 || !is_dxtrade_password_not_set}
+                />
             )}
         </div>
     );

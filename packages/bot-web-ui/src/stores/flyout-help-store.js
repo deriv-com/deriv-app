@@ -35,7 +35,7 @@ export default class FlyoutHelpStore {
         const { flyout } = this.root_store;
         this.setExamples(block_type);
         const example_blocks = this.examples.map(example => example.childNodes[0]);
-        flyout.setFlyoutWidth([block_node, ...example_blocks]);
+        setTimeout(() => flyout.setFlyoutWidth([block_node, ...example_blocks]), 50);
 
         runInAction(() => {
             flyout.is_help_content = true;

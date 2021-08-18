@@ -220,6 +220,9 @@ const CFDRealAccountDisplay = ({
                       )}
                       specs={specifications[platform].real_synthetic_specs}
                       onHover={handleHoverCard}
+                      is_virtual={is_virtual}
+                      toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
+                      toggleAccountsDialog={toggleAccountsDialog}
                   />,
               ]);
 
@@ -287,6 +290,9 @@ const CFDRealAccountDisplay = ({
             descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu)}
             specs={financial_specs}
             is_logged_in={is_logged_in}
+            is_virtual={is_virtual}
+            toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
+            toggleAccountsDialog={toggleAccountsDialog}
         />
     );
 

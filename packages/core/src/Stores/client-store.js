@@ -106,7 +106,8 @@ export default class ClientStore extends BaseStore {
 
     @observable financial_assessment = null;
 
-    @observable trading_servers = [];
+    @observable mt5_trading_servers = [];
+    @observable dxtrade_trading_servers = [];
 
     is_mt5_account_list_updated = false;
 
@@ -347,37 +348,31 @@ export default class ClientStore extends BaseStore {
         return this.dxtrade_accounts_list.some(account => account.account_type === 'real');
     }
 
-    getListOfMT5AccountsWithError = account_type => {
+    hasAccountErrorInCFDList = (platform, account_type) => {
         if (!this.is_logged_in) return [];
-        return this.mt5_login_list?.filter(
-            account => !!account.has_error && (!account_type || account.account_type === account_type)
-        );
+
+        const list = platform === CFD_PLATFORMS.MT5 ? this.mt5_login_list : this.dxtrade_accounts_list;
+        return list?.some(account => !!account.has_error && account.account_type === account_type);
     };
 
     @computed
-    get list_of_real_mt5_accounts_with_error() {
-        return this.getListOfMT5AccountsWithError('real');
-    }
-
-    @computed
     get has_account_error_in_mt5_real_list() {
-        return this.list_of_real_mt5_accounts_with_error.length > 0;
-    }
-
-    @computed
-    get list_of_demo_mt5_accounts_with_error() {
-        return this.getListOfMT5AccountsWithError('demo');
+        return this.hasAccountErrorInCFDList(CFD_PLATFORMS.MT5, 'real');
     }
 
     @computed
     get has_account_error_in_mt5_demo_list() {
-        return this.list_of_demo_mt5_accounts_with_error.length > 0;
+        return this.hasAccountErrorInCFDList(CFD_PLATFORMS.MT5, 'demo');
     }
 
     @computed
-    get has_account_error_in_dxtrade_list() {
-        if (!this.is_logged_in) return false;
-        return this.dxtrade_accounts_list?.some(account => !!account.has_error);
+    get has_account_error_in_dxtrade_real_list() {
+        return this.hasAccountErrorInCFDList(CFD_PLATFORMS.DXTRADE, 'real');
+    }
+
+    @computed
+    get has_account_error_in_dxtrade_demo_list() {
+        return this.hasAccountErrorInCFDList(CFD_PLATFORMS.DXTRADE, 'demo');
     }
 
     @computed
@@ -387,7 +382,7 @@ export default class ClientStore extends BaseStore {
                 cur.account_type === 'real' && (cur.market_type === 'synthetic' || cur.market_type === 'gaming');
             return is_included ? acc + 1 : acc;
         }, 0);
-        const number_of_available_synthetic = this.trading_servers.reduce(
+        const number_of_available_synthetic = this.mt5_trading_servers.reduce(
             (acc, cur) => (cur.supported_accounts.includes('gaming') && !cur.disabled ? acc + 1 : acc),
             0
         );
@@ -1222,8 +1217,11 @@ export default class ClientStore extends BaseStore {
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
             WS.storage.mt5LoginList().then(this.responseMt5LoginList);
-            WS.tradingServers().then(this.responseTradingServers);
+            WS.tradingServers(CFD_PLATFORMS.MT5).then(this.responseMT5TradingServers);
+
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
+            WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
+
             this.responseStatement(
                 await BinarySocket.send({
                     statement: 1,
@@ -1945,12 +1943,12 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
-    responseTradingServers(response) {
+    responseMT5TradingServers(response) {
         if (response.error) {
-            this.trading_servers = [];
+            this.mt5_trading_servers = [];
             return;
         }
-        this.trading_servers = response.trading_servers;
+        this.mt5_trading_servers = response.trading_servers;
     }
 
     @action.bound
@@ -1996,6 +1994,24 @@ export default class ClientStore extends BaseStore {
     }
 
     @action.bound
+    responseDxtradeTradingServers(response) {
+        if (response.error) {
+            this.dxtrade_trading_servers = [];
+            return;
+        }
+        this.dxtrade_trading_servers = response.trading_servers;
+
+        this.dxtrade_trading_servers.forEach(trading_server => {
+            const { account_type, disabled } = trading_server;
+            if (disabled) {
+                this.setCFDDisabledSignupTypes(CFD_PLATFORMS.DXTRADE, {
+                    [account_type]: true,
+                });
+            }
+        });
+    }
+
+    @action.bound
     responseTradingPlatformAccountsList(response) {
         const { platform } = response.echo_req || {};
 
@@ -2008,8 +2024,7 @@ export default class ClientStore extends BaseStore {
                     const { account_type, server } = account.error.details;
                     if (platform === CFD_PLATFORMS.DXTRADE) {
                         this.setCFDDisabledSignupTypes(platform, {
-                            real: account_type === 'real',
-                            demo: account_type === 'demo',
+                            [account_type]: true,
                         });
                     }
                     return {

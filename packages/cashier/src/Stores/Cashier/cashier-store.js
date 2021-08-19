@@ -786,6 +786,7 @@ export default class CashierStore extends BaseStore {
             this.setFiatAmount(amount);
             this.setIsTimerVisible(true);
             this.setAccountTransferAmount(target.value);
+            this.insufficient_fund_error = '';
         });
     }
 
@@ -796,14 +797,14 @@ export default class CashierStore extends BaseStore {
             const decimals = getDecimalPlaces(to_currency);
             const amount = (rate * target.value).toFixed(decimals);
             const balance = this.config.account_transfer.selected_from.balance;
-            if (+balance < +amount) {
+            if (+amount === 0 || +balance < +amount) {
                 this.insufficient_fund_error = localize('Insufficient funds');
                 this.setCryptoAmount('');
             } else {
                 this.insufficient_fund_error = '';
                 this.setCryptoAmount(amount);
                 this.setIsTimerVisible(true);
-                this.setAccountTransferAmount(target.value);
+                this.setAccountTransferAmount(amount);
             }
         });
     }
@@ -1680,26 +1681,17 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setPercentageSelectorResult(amount, currency) {
+    setPercentageSelectorResult(amount) {
         const selected_from_currency = this.config.account_transfer.selected_from.currency;
         const selected_to_currency = this.config.account_transfer.selected_to.currency;
         if(amount > 0) {
-            if(isCryptocurrency(currency)) {
-                this.setCryptoAmount(amount);
-                this.onChangeCryptoAmount(
-                    { target: { value: amount } },
-                    selected_from_currency,
-                    selected_to_currency
-                );
-            } else {
-                this.setFiatAmount(amount);
-                this.onChangeFiatAmount(
-                    { target: { value: amount } },
-                    selected_from_currency,
-                    selected_to_currency
-                );
-            }
-        }
+            this.setCryptoAmount(amount);
+            this.onChangeCryptoAmount(
+                { target: { value: amount } },
+                selected_from_currency,
+                selected_to_currency
+            );
+        } 
 
         this.setIsTimerVisible(false);
     }

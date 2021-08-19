@@ -12,7 +12,7 @@ const CashierLocked = ({
     is_deposit_lock, 
     is_system_maintenance, 
     is_withdrawal_lock, 
-    loginid 
+    loginid,
 }) => {
     const { cashier_validation } = account_status;
     const no_residence = cashier_validation.includes('no_residence');

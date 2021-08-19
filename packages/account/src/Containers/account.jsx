@@ -125,8 +125,9 @@ const Account = ({
             <div className='account'>
                 {isMobile() && selected_route ? (
                     <PageOverlay
-                        header={platforms[platform] ? '' : selected_route.getTitle()}
+                        header={selected_route.getTitle()}
                         onClickClose={onClickClose}
+                        is_close_disabled={!!platforms[platform]}
                     >
                         <selected_route.component component_icon={selected_route.icon_component} />
                     </PageOverlay>
@@ -148,7 +149,11 @@ const Account = ({
                         extra_content={is_dashboard && <AccountLogout logout={logout} history={history} />}
                     />
                 ) : (
-                    <PageOverlay header={platforms[platform] ? '' : localize('Settings')} onClickClose={onClickClose}>
+                    <PageOverlay
+                        header={localize('Settings')}
+                        onClickClose={onClickClose}
+                        is_close_disabled={!!platforms[platform]}
+                    >
                         <VerticalTab
                             alignment='center'
                             is_floating

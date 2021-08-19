@@ -79,16 +79,6 @@ const Cashier = ({
         return options;
     };
 
-    const getHeaderTitle = () => {
-        if (platforms[platform]) {
-            return '';
-        }
-        if (isMobile()) {
-            return selected_route.getTitle();
-        }
-        return localize('Cashier');
-    };
-
     const selected_route = isMobile() ? getSelectedRoute({ routes: routes_config, pathname: location.pathname }) : null;
     // const should_show_tab_headers_note =
     //     !is_virtual &&
@@ -105,7 +95,11 @@ const Cashier = ({
     return (
         <FadeWrapper is_visible={is_visible} className='cashier-page-wrapper' keyname='cashier-page-wrapper'>
             <div className='cashier'>
-                <PageOverlay header={getHeaderTitle()} onClickClose={onClickClose}>
+                <PageOverlay
+                    header={isMobile() ? selected_route.getTitle() : localize('Cashier')}
+                    onClickClose={onClickClose}
+                    is_close_disabled={!!platforms[platform]}
+                >
                     <DesktopWrapper>
                         <VerticalTab
                             alignment='center'

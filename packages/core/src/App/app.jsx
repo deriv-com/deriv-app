@@ -32,6 +32,7 @@ import Routes from './Containers/Routes/routes.jsx';
 import initStore from './app';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import { CFD_TEXT } from '../Constants/cfd-text';
+import { getSelectedPlatform, directUser } from '../_common/utility';
 
 // TODO: Lazy load smartchart styles
 import '@deriv/deriv-charts/dist/smartcharts.css';
@@ -91,6 +92,11 @@ const App = ({ root_store }) => {
         root_store,
         WS,
     };
+
+    const platform = getSelectedPlatform();
+    React.useEffect(() => {
+        directUser(platform);
+    }, [platform]);
 
     return (
         <>

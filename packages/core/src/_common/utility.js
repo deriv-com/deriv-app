@@ -95,6 +95,30 @@ const isSyntheticsUnavailable = country => countries_without_synthetics.includes
 const blocked_options_countries = ['au'];
 const isOptionsBlocked = country => blocked_options_countries.includes(country);
 
+// Function that gets the selected platform from URL
+const getSelectedPlatform = () => {
+    const query = new URLSearchParams(window.location.search);
+    const platform = query.get('platform');
+    return platform;
+};
+
+// Fuction to direct user based on the selected platform from deriv-com before login
+const directUser = platform => {
+    const dmt5_url = 'mt5';
+    const dbot_url = 'bot';
+    const derivx_url = 'derivx';
+
+    if (platform === dmt5_url) {
+        window.location = `/${dmt5_url}`;
+    } else if (platform === dbot_url) {
+        window.location = `/${dbot_url}`;
+    } else if (platform === derivx_url) {
+        window.location = `/${derivx_url}`;
+    } else if (platform !== dmt5_url && platform !== dbot_url && platform !== derivx_url && platform !== null) {
+        window.location = `/`;
+    }
+};
+
 module.exports = {
     template,
     createElement,
@@ -104,4 +128,6 @@ module.exports = {
     isOptionsBlocked,
     isSyntheticsUnavailable,
     copyToClipboard,
+    getSelectedPlatform,
+    directUser,
 };

@@ -7,7 +7,7 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CashierLocked from './cashier-locked.jsx';
 
-const WithdrawalLocked = ({ account_status, is_10K_limit, is_withdrawal_lock, is_ask_financial_risk_approval }) => {
+const WithdrawalLocked = ({ account_status, is_10K_limit, is_ask_financial_risk_approval }) => {
     const { document, identity, needs_verification } = account_status.authentication;
 
     const is_poi_needed = needs_verification.includes('identity') || (is_10K_limit && identity.status !== 'verified');
@@ -54,7 +54,7 @@ const WithdrawalLocked = ({ account_status, is_10K_limit, is_withdrawal_lock, is
     ];
     return (
         <React.Fragment>
-            {items.length || is_withdrawal_lock ? (
+            {items.length ? (
                 <div className='cashier-locked'>
                     <Icon icon='IcCashierWithdrawalLock' className='cashier-locked__icon' />
                     <Text as='h2' weight='bold' align='center' className='cashier-locked__title'>
@@ -64,20 +64,14 @@ const WithdrawalLocked = ({ account_status, is_10K_limit, is_withdrawal_lock, is
                               )
                             : localize('Withdrawals are locked')}
                     </Text>
-                    {is_withdrawal_lock ? (
-                        <Text as='p' align='center' size='xs' className='cashier-locked__desc'>
-                            {localize('Please check your email for more details.')}
-                        </Text>
-                    ) : (
-                        <React.Fragment>
-                            {!is_10K_limit && (
-                                <p className='cashier-locked__desc'>
-                                    {localize('To enable this feature you must complete the following:')}
-                                </p>
-                            )}
-                            <Checklist className='cashier-locked__checklist' items={items} />
-                        </React.Fragment>
-                    )}
+                    <React.Fragment>
+                        {!is_10K_limit && (
+                            <p className='cashier-locked__desc'>
+                                {localize('To enable this feature you must complete the following:')}
+                            </p>
+                        )}
+                        <Checklist className='cashier-locked__checklist' items={items} />
+                    </React.Fragment>
                 </div>
             ) : (
                 <CashierLocked />
@@ -89,12 +83,10 @@ const WithdrawalLocked = ({ account_status, is_10K_limit, is_withdrawal_lock, is
 WithdrawalLocked.propTypes = {
     account_status: PropTypes.object,
     is_10K_limit: PropTypes.bool,
-    is_withdrawal_lock: PropTypes.bool,
     is_ask_financial_risk_approval: PropTypes.bool,
 };
 
 export default connect(({ modules, client }) => ({
     account_status: client.account_status,
-    is_withdrawal_lock: client.is_withdrawal_lock,
     is_ask_financial_risk_approval: modules.cashier.config.withdraw.error.is_ask_financial_risk_approval,
 }))(WithdrawalLocked);

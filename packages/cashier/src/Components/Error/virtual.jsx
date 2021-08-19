@@ -7,7 +7,7 @@ import { routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
-const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSignup, toggleAccountsDialog }) => {
+const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSignup }) => {
     const onClickSignup = () => {
         history.push(routes.trade);
         openRealAccountSignup();
@@ -24,7 +24,7 @@ const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSi
                 />
             )}
             <Text as='h2' align='center' weight='bold' color='prominent' className='cashier__virtual-header'>
-                <Localize i18n_default_text={"You're currently using a demo account"} />
+                <Localize i18n_default_text={"You are using a demo account"} />
             </Text>
             {has_real_account ? (
                 <React.Fragment>
@@ -36,15 +36,7 @@ const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSi
                         className='cashier__paragraph cashier__text cashier__text--full-width'
                     >
                         <Localize
-                            i18n_default_text='You need to switch to a real money account to use this feature.<0/>You can do this by selecting a real account from the <1>Account Switcher.</1>'
-                            components={[
-                                <br key={0} />,
-                                <span
-                                    key={1}
-                                    className='cashier__account-switch-text'
-                                    onClick={toggleAccountsDialog}
-                                />,
-                            ]}
+                            i18n_default_text='Please switch to a real account or create one to access Cashier.'
                         />
                     </Text>
                 </React.Fragment>
@@ -76,12 +68,10 @@ Virtual.propTypes = {
     has_real_account: PropTypes.bool,
     history: PropTypes.object,
     openRealAccountSignup: PropTypes.func,
-    toggleAccountsDialog: PropTypes.func,
 };
 
 export default connect(({ client, ui }) => ({
     is_dark_mode_on: ui.is_dark_mode_on,
     has_real_account: client.has_any_real_account,
     openRealAccountSignup: ui.openRealAccountSignup,
-    toggleAccountsDialog: ui.toggleAccountsDialog,
 }))(withRouter(Virtual));

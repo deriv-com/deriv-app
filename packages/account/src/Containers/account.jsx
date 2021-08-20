@@ -59,7 +59,10 @@ const Account = ({
         label: route_group.getTitle(),
         subitems: route_group.subroutes.map(sub => subroutes.indexOf(sub)),
     }));
-    let selected_content = subroutes.filter(route => route.path === location.pathname)[0];
+    let selected_content = subroutes.find(r => {
+        const route_regex = new RegExp(`${r.path}(/.*)?`);
+        return route_regex.test(location.pathname);
+    });
     const onClickClose = React.useCallback(() => routeBackInApp(history), [routeBackInApp, history]);
 
     React.useEffect(() => {

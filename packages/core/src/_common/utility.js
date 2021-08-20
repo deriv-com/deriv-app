@@ -95,13 +95,6 @@ const isSyntheticsUnavailable = country => countries_without_synthetics.includes
 const blocked_options_countries = ['au'];
 const isOptionsBlocked = country => blocked_options_countries.includes(country);
 
-// Function that gets the selected platform from URL
-const getSelectedPlatform = () => {
-    const query = new URLSearchParams(window.location.search);
-    const platform = query.get('platform');
-    return platform;
-};
-
 // Fuction to direct user based on the selected platform from deriv-com before login
 const directUser = platform => {
     const dmt5_url = 'mt5';
@@ -128,6 +121,5 @@ module.exports = {
     isOptionsBlocked,
     isSyntheticsUnavailable,
     copyToClipboard,
-    getSelectedPlatform,
     directUser,
 };

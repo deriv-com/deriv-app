@@ -94,11 +94,6 @@ const App = ({ root_store }) => {
         WS,
     };
 
-    const platform = getSelectedPlatform();
-    React.useEffect(() => {
-        directUser(platform);
-    }, [platform]);
-
     return (
         <>
             {is_translation_loaded ? (

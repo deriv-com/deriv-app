@@ -271,15 +271,17 @@
         .dc-dropdown__display {
             height: 4rem;
 
-            .dc-dropdown__display-placeholder-text {
-                color: var(--text-less-prominent);
-            }
-            .dc-dropdown__display-placeholder-text-limit-fit {
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                display: inline-block;
-                max-width: 37rem;
+            .dc-dropdown__display-placeholder {
+                &-text {
+                    color: var(--text-less-prominent);
+                }
+                &-text-limit-fit {
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    display: inline-block;
+                    max-width: calc(40rem - 3.6rem);
+                }
             }
             &--clicked {
                 .dc-dropdown__display-placeholder-text {

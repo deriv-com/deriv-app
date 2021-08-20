@@ -38,7 +38,7 @@ const DisplayText = ({ className, has_symbol, list, is_align_text_left, placehol
                         color='grey'
                         line_height='unset'
                         className={classNames('dc-dropdown__display-placeholder-text', {
-                            'dc-dropdown__display-placeholder-text-limit-fit': !value && placeholder.length > 48,
+                            'dc-dropdown__display-placeholder-text-limit-fit': !value && placeholder.length > 45,
                         })}
                     >
                         {placeholder}

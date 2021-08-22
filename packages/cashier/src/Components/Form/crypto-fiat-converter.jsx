@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, useFormikContext} from 'formik';
 import { DesktopWrapper, Input, Icon, MobileWrapper, Text } from '@deriv/components';
+import { getDecimalPlaces, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { useInterval } from '@deriv/components/src/hooks';
@@ -53,10 +54,21 @@ const CryptoFiatConverter = ({
     setIsTimerVisible,
     to_currency,
     validateFromAmount,
-    validateToAmount,
 }) => {
     const { errors, values, touched, handleBlur, handleChange, setFieldError } = useFormikContext();
     const [arrow_icon_direction, setArrowIconDirection] = React.useState('right');
+
+    const validateToAmount = amount => {
+        if (amount) {
+            const { is_ok, message } = validNumber(amount, {
+                type: 'float',
+                decimals: getDecimalPlaces(to_currency),
+            });
+            if (!is_ok) return message; 
+        }
+    
+        return undefined;
+    };
 
     React.useEffect(() => {
         return () => resetTimer();
@@ -160,7 +172,6 @@ CryptoFiatConverter.propTypes = {
     setIsTimerVisible: PropTypes.func,
     to_currency: PropTypes.string,
     validateFromAmount: PropTypes.func,
-    validateToAmount: PropTypes.func,
 };
 
 export default connect(({ modules }) => ({

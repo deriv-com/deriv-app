@@ -148,6 +148,7 @@ const AccountTransferForm = ({
     error,
     resetTimer,
     setPercentageSelectorResult,
+    validateCryptoFiatConverter,
 }) => {
     const [from_accounts, setFromAccounts] = React.useState({});
     const [to_accounts, setToAccounts] = React.useState({});
@@ -165,36 +166,6 @@ const AccountTransferForm = ({
         if (!is_ok) return message;
 
         if (+selected_from.balance < +amount) return localize('Insufficient balance');
-
-        return undefined;
-    };
-
-    const validateFromAmount = amount => {
-        if (!amount && !crypto_amount) return localize('This field is required.');
-        
-        if (amount) {
-            const { is_ok, message } = validNumber(amount, {
-                type: 'float',
-                decimals: getDecimalPlaces(selected_from.currency),
-                min: transfer_limit.min,
-                max: transfer_limit.max,
-            });
-            if (!is_ok) return message;
-
-            if (+selected_from.balance < +amount) return localize('Insufficient funds');
-        }
-    
-        return undefined;
-    };
-
-    const validateToAmount = amount => {
-        if (amount) {
-            const { is_ok, message } = validNumber(amount, {
-                type: 'float',
-                decimals: getDecimalPlaces(selected_to.currency),
-            });
-            if (!is_ok) return message; 
-        }
 
         return undefined;
     };
@@ -550,6 +521,8 @@ const AccountTransferForm = ({
                                                 amount={+selected_from.balance}
                                                 currency={selected_from.currency}
                                                 getCalculatedAmount={setPercentageSelectorResult}
+                                                from_account={selected_from.value}
+                                                to_account={selected_to.value}
                                             />
                                         </div>
                                         <CryptoFiatConverter 
@@ -578,8 +551,7 @@ const AccountTransferForm = ({
                                                     ''
                                                 )
                                             }
-                                            validateFromAmount={validateFromAmount}
-                                            validateToAmount={validateToAmount}
+                                            validateFromAmount={validateCryptoFiatConverter}
                                         />
                                     </div>
                                 }
@@ -643,6 +615,7 @@ AccountTransferForm.propTypes = {
     transfer_limit: PropTypes.object,
     resetTimer: PropTypes.func,
     setPercentageSelectorResult: PropTypes.func,
+    validateCryptoFiatConverter: PropTypes.func,
 };
 
 export default connect(({ client, modules, ui }) => ({
@@ -670,4 +643,5 @@ export default connect(({ client, modules, ui }) => ({
     transfer_limit: modules.cashier.config.account_transfer.transfer_limit,
     resetTimer: modules.cashier.resetTimer,
     setPercentageSelectorResult: modules.cashier.setPercentageSelectorResult,
+    validateCryptoFiatConverter: modules.cashier.validateCryptoFiatConverter,
 }))(AccountTransferForm);

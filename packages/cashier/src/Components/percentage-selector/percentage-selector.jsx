@@ -5,7 +5,7 @@ import { getDecimalPlaces } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { useFormikContext} from 'formik';
 
-const PercentageSelector = ({ amount, currency, getCalculatedAmount }) => {
+const PercentageSelector = ({ amount, currency, from_account, getCalculatedAmount, to_account}) => {
     const { setFieldError, setFieldValue } = useFormikContext();
     const [percentage, setPercentage] = React.useState('0');
 
@@ -14,7 +14,8 @@ const PercentageSelector = ({ amount, currency, getCalculatedAmount }) => {
             { target: { id: 0 } },
             0
         );
-    }, [amount]); 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [from_account, to_account]); 
 
     const calculateAmount = (e, percent) => {
         setPercentage(percent);
@@ -26,7 +27,6 @@ const PercentageSelector = ({ amount, currency, getCalculatedAmount }) => {
                 document.getElementById(i).style.backgroundColor = 'var(--general-section-1)';
             }
         }
-
 
         setFieldValue('crypto_amount', ''); 
         setFieldError('crypto_amount', '');

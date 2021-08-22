@@ -55,6 +55,7 @@ export default class CommonStore extends BaseStore {
     @action.bound
     setPlatform() {
         this.platform = new URL(window.location).searchParams.get('platform');
+        window.history.replaceState({}, document.title, window.location.pathname);
     }
 
     @action.bound

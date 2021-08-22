@@ -44,6 +44,13 @@ const BuySellRow = ({ row: advert }) => {
     const is_buy_advert = counterparty_type === buy_sell.BUY;
     const { name: advertiser_name } = advert.advertiser_details;
 
+    const change = () => {
+        // eslint-disable-next-line no-useless-concat
+        const redirect = 'https://app.deriv.com' + '/cashier/p2p';
+
+        window.location.href = redirect;
+    };
+
     if (isMobile()) {
         return (
             <div className='buy-sell-row'>
@@ -87,7 +94,7 @@ const BuySellRow = ({ row: advert }) => {
                         </Text>
                     </div>
                     {!is_my_advert && (
-                        <Button primary large onClick={() => buy_sell_store.setSelectedAdvert(advert)}>
+                        <Button primary large onClick={change}>
                             {is_buy_advert ? (
                                 <Localize i18n_default_text='Buy {{account_currency}}' values={{ account_currency }} />
                             ) : (
@@ -139,12 +146,7 @@ const BuySellRow = ({ row: advert }) => {
                 <Table.Cell />
             ) : (
                 <Table.Cell className='buy-sell__button'>
-                    <Button
-                        is_disabled={general_store.is_barred}
-                        onClick={() => buy_sell_store.setSelectedAdvert(advert)}
-                        primary
-                        small
-                    >
+                    <Button is_disabled={general_store.is_barred} onClick={change} primary small>
                         {is_buy_advert
                             ? localize('Buy {{account_currency}}', { account_currency })
                             : localize('Sell {{account_currency}}', { account_currency })}

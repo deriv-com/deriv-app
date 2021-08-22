@@ -29,7 +29,7 @@ module.exports = function (env, argv) {
         },
         resolve: {
             alias: ALIASES,
-            extensions: ['.js', '.jsx'],
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
         optimization: {
             minimize: IS_RELEASE,

@@ -65,6 +65,8 @@ const ALIASES = {
 };
 
 const rules = (is_test_env = false) => [
+    { test: /\.tsx?$/, loader: 'ts-loader' },
+    { test: /\.js$/, loader: 'source-map-loader' },
     {
         // https://github.com/webpack/webpack/issues/11467
         test: /\.m?js/,

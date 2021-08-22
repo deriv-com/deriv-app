@@ -13,6 +13,7 @@ import {
     getCFDAccount,
     getPropertyValue,
     routes,
+    validNumber,
     CFD_PLATFORMS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -176,7 +177,7 @@ export default class CashierStore extends BaseStore {
     @observable is_cashier_default = true;
     @observable crypto_amount = '';
     @observable fiat_amount = '';
-    @observable insufficient_fund_error = '';
+    @observable crypto_fiat_converter_error = '';
     @observable is_timer_visible = false;
 
     @observable config = {
@@ -778,16 +779,42 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    async setCryptoFiatConverterError(error) {
+        this.crypto_fiat_converter_error = error;
+    }
+
+    @action.bound
+    validateCryptoFiatConverter(amount) {
+        const { is_ok, message } = validNumber(amount, {
+            type: 'float',
+            decimals: getDecimalPlaces(this.config.account_transfer.selected_from.currency),
+            min: this.config.account_transfer.transfer_limit.min,
+            max: this.config.account_transfer.transfer_limit.max,
+        });
+        if (!is_ok) {
+            this.setCryptoFiatConverterError(message);
+        } else if (+this.config.account_transfer.selected_from.balance < +amount) { 
+            this.setCryptoFiatConverterError(localize('Insufficient funds'));
+        } else {
+            this.setCryptoFiatConverterError('');
+        }
+    }
+
+    @action.bound
     async onChangeCryptoAmount({ target }, from_currency, to_currency) {
-        const rate = await this.getExchangeRate(from_currency, to_currency);
-        runInAction(() => {
+        this.validateCryptoFiatConverter(target.value);
+        if (this.crypto_fiat_converter_error) {
+            this.setFiatAmount('');
+            this.setIsTimerVisible(false);
+            this.setAccountTransferAmount('');
+        } else {
+            const rate = await this.getExchangeRate(from_currency, to_currency);
             const decimals = getDecimalPlaces(to_currency);
             const amount = (rate * target.value).toFixed(decimals);
             this.setFiatAmount(amount);
             this.setIsTimerVisible(true);
             this.setAccountTransferAmount(target.value);
-            this.insufficient_fund_error = '';
-        });
+        }
     }
 
     @action.bound
@@ -796,12 +823,12 @@ export default class CashierStore extends BaseStore {
         runInAction(() => {
             const decimals = getDecimalPlaces(to_currency);
             const amount = (rate * target.value).toFixed(decimals);
-            const balance = this.config.account_transfer.selected_from.balance;
-            if (+amount === 0 || +balance < +amount) {
-                this.insufficient_fund_error = localize('Insufficient funds');
-                this.setCryptoAmount('');
+            this.validateCryptoFiatConverter(amount);
+            if (this.crypto_fiat_converter_error) {
+                this.setCryptoAmount(amount);
+                this.setIsTimerVisible(false);
+                this.setAccountTransferAmount('');
             } else {
-                this.insufficient_fund_error = '';
                 this.setCryptoAmount(amount);
                 this.setIsTimerVisible(true);
                 this.setAccountTransferAmount(amount);
@@ -1677,6 +1704,7 @@ export default class CashierStore extends BaseStore {
     resetTimer() {
         this.setCryptoAmount('');
         this.setFiatAmount('');
+        this.setCryptoFiatConverterError('');
         this.setIsTimerVisible(false);
     }
 
@@ -1684,12 +1712,12 @@ export default class CashierStore extends BaseStore {
     setPercentageSelectorResult(amount) {
         const selected_from_currency = this.config.account_transfer.selected_from.currency;
         const selected_to_currency = this.config.account_transfer.selected_to.currency;
-        if(amount > 0) {
+        if (amount > 0) {
             this.setCryptoAmount(amount);
             this.onChangeCryptoAmount(
                 { target: { value: amount } },
                 selected_from_currency,
-                selected_to_currency
+                selected_to_currency,
             );
         } 
 

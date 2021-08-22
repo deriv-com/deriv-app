@@ -16,7 +16,7 @@ const Timer = (props) => {
         }
     }, 1000);
     React.useEffect(() => {
-        if(remaining_time === 0) {
+        if (remaining_time === 0) {
             props.onComplete();
             setRemainingTime(initial_time);
         }
@@ -40,10 +40,10 @@ const InputGroup = ({ children, className }) => {
 
 const CryptoFiatConverter = ({
     crypto_amount,
+    crypto_fiat_converter_error,
     fiat_amount,
     from_currency,
     hint,
-    insufficient_fund_error,
     is_timer_visible,
     onChangeCryptoAmount,
     onChangeFiatAmount,
@@ -55,7 +55,7 @@ const CryptoFiatConverter = ({
     validateFromAmount,
     validateToAmount,
 }) => {
-    const { errors, values, touched, handleBlur, handleChange, setFieldError, setFieldTouched } = useFormikContext();
+    const { errors, values, touched, handleBlur, handleChange, setFieldError } = useFormikContext();
     const [arrow_icon_direction, setArrowIconDirection] = React.useState('right');
 
     React.useEffect(() => {
@@ -74,13 +74,7 @@ const CryptoFiatConverter = ({
                         }}
                         onBlur={e => {
                             handleBlur(e);
-                            if(!is_timer_visible) {
-                                if(!values.crypto_amount || errors.crypto_amount) {
-                                    setFiatAmount('');
-                                } else {
-                                    onChangeCryptoAmount(e, from_currency, to_currency);
-                                }
-                            } 
+                            onChangeCryptoAmount(e, from_currency, to_currency);
                             setFieldError('fiat_amount', '');
                         }}
                         onChange={e => {
@@ -90,7 +84,7 @@ const CryptoFiatConverter = ({
                             setCryptoAmount(e.target.value);   
                         }}
                         type='text'
-                        error={touched.crypto_amount && errors.crypto_amount}
+                        error={touched.crypto_amount && errors.crypto_amount || crypto_fiat_converter_error}
                         label={localize('Amount ({{currency}})', {currency: from_currency})}
                         value={crypto_amount}
                         autoComplete='off'
@@ -115,8 +109,8 @@ const CryptoFiatConverter = ({
                             }}
                             onBlur={e => {
                                 handleBlur(e);
-                                if(!is_timer_visible){
-                                    if(!values.fiat_amount || errors.fiat_amount) {
+                                if (!is_timer_visible){
+                                    if (!values.fiat_amount || errors.fiat_amount) {
                                         setCryptoAmount('');
                                     } else {
                                         onChangeFiatAmount(e, to_currency, from_currency);
@@ -130,7 +124,7 @@ const CryptoFiatConverter = ({
                                 setFiatAmount(e.target.value);       
                             }}
                             type='text'
-                            error={(touched.fiat_amount && errors.fiat_amount) || insufficient_fund_error}
+                            error={touched.fiat_amount && errors.fiat_amount}
                             label={localize('Amount ({{currency}})', {currency: to_currency})}
                             value={fiat_amount}
                             autoComplete='off'
@@ -154,9 +148,9 @@ const CryptoFiatConverter = ({
 
 CryptoFiatConverter.propTypes = {
     crypto_amount: PropTypes.string,
+    crypto_fiat_converter_error: PropTypes.string,
     fiat_amount: PropTypes.string,
     from_currency: PropTypes.string,
-    insufficient_fund_error: PropTypes.string,
     is_timer_visible: PropTypes.bool,
     onChangeCryptoAmount: PropTypes.func,
     onChangeFiatAmount: PropTypes.func,
@@ -171,8 +165,8 @@ CryptoFiatConverter.propTypes = {
 
 export default connect(({ modules }) => ({
     crypto_amount: modules.cashier.crypto_amount,
+    crypto_fiat_converter_error: modules.cashier.crypto_fiat_converter_error,
     fiat_amount: modules.cashier.fiat_amount,
-    insufficient_fund_error: modules.cashier.insufficient_fund_error,
     is_timer_visible: modules.cashier.is_timer_visible,
     onChangeCryptoAmount: modules.cashier.onChangeCryptoAmount,
     onChangeFiatAmount: modules.cashier.onChangeFiatAmount,

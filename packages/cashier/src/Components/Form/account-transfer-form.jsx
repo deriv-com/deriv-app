@@ -125,6 +125,7 @@ const AccountTransferForm = ({
     account_transfer_amount,
     crypto_transactions,
     crypto_amount,
+    crypto_fiat_converter_error,
     fiat_amount,
     is_crypto,
     onMount,
@@ -171,8 +172,8 @@ const AccountTransferForm = ({
     const validateFromAmount = amount => {
         if (!amount && !crypto_amount) return localize('This field is required.');
         
-        if(amount || crypto_amount) {
-            const { is_ok, message } = validNumber(crypto_amount, {
+        if (amount) {
+            const { is_ok, message } = validNumber(amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(selected_from.currency),
                 min: transfer_limit.min,
@@ -180,14 +181,14 @@ const AccountTransferForm = ({
             });
             if (!is_ok) return message;
 
-            if (+selected_from.balance < +amount) return localize('Insufficient balance');
+            if (+selected_from.balance < +amount) return localize('Insufficient funds');
         }
-
+    
         return undefined;
     };
 
     const validateToAmount = amount => {
-        if(amount) {
+        if (amount) {
             const { is_ok, message } = validNumber(amount, {
                 type: 'float',
                 decimals: getDecimalPlaces(selected_to.currency),
@@ -299,7 +300,7 @@ const AccountTransferForm = ({
     React.useEffect(() => {
         if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
             const side_notes = [];
-            if(is_crypto && crypto_transactions?.length) {
+            if (is_crypto && crypto_transactions?.length) {
                 side_notes.push(<RecentTransaction key={2}/>); 
             }
             side_notes.push(
@@ -405,9 +406,6 @@ const AccountTransferForm = ({
                                                 setFieldValue('crypto_amount', '');
                                                 setFieldError('crypto_amount', '');
                                                 setFieldTouched('crypto_amount', false);
-                                                setFieldValue('fiat_amount', '');
-                                                setFieldError('fiat_amount', '');
-                                                setFieldTouched('fiat_amount', false);
                                             }}
                                             error={selected_from.error}
                                         />
@@ -423,7 +421,6 @@ const AccountTransferForm = ({
                                             list_items={from_accounts}
                                             onChange={e => {
                                                 onChangeTransferFrom(e);
-                                                handleChange(e);
                                                 resetTimer();
                                                 setFieldValue('amount', '');
                                                 setFieldError('amount', '');
@@ -431,9 +428,6 @@ const AccountTransferForm = ({
                                                 setFieldValue('crypto_amount', '');
                                                 setFieldError('crypto_amount', '');
                                                 setFieldTouched('crypto_amount', false);
-                                                setFieldValue('fiat_amount', '');
-                                                setFieldError('fiat_amount', '');
-                                                setFieldTouched('fiat_amount', false);
                                             }}
                                             error={selected_from.error}
                                         />
@@ -462,9 +456,6 @@ const AccountTransferForm = ({
                                                 setFieldValue('crypto_amount', '');
                                                 setFieldError('crypto_amount', '');
                                                 setFieldTouched('crypto_amount', false);
-                                                setFieldValue('fiat_amount', '');
-                                                setFieldError('fiat_amount', '');
-                                                setFieldTouched('fiat_amount', false);
                                             }}
                                             hint={transfer_to_hint}
                                             error={selected_to.error}
@@ -482,6 +473,7 @@ const AccountTransferForm = ({
                                             list_items={to_accounts}
                                             onChange={e => {
                                                 onChangeTransferTo(e);
+                                                handleChange(e);
                                                 resetTimer();
                                                 setFieldValue('amount', '');
                                                 setFieldError('amount', '');
@@ -489,9 +481,6 @@ const AccountTransferForm = ({
                                                 setFieldValue('crypto_amount', '');
                                                 setFieldError('crypto_amount', '');
                                                 setFieldTouched('crypto_amount', false);
-                                                setFieldValue('fiat_amount', '');
-                                                setFieldError('fiat_amount', '');
-                                                setFieldTouched('fiat_amount', false);
                                             }}
                                             hint={transfer_to_hint}
                                             error={selected_to.error}
@@ -605,10 +594,9 @@ const AccountTransferForm = ({
                                             isSubmitting ||
                                             !+remaining_transfers ||
                                             !!selected_from.error ||
-                                            !!selected_to.error ||
-                                            !!errors.amount ||
-                                            !!errors.crypto_amount ||
-                                            !!errors.fiat_amount
+                                            !!selected_to.error || 
+                                            !+selected_from.balance ||
+                                            !!crypto_fiat_converter_error
                                         }
                                         primary
                                         large
@@ -639,6 +627,7 @@ AccountTransferForm.propTypes = {
     accounts_list: PropTypes.array,
     crypto_transactions: PropTypes.array,
     crypto_amount: PropTypes.string,
+    crypto_fiat_converter_error: PropTypes.string,
     fiat_amount: PropTypes.string,
     is_crypto: PropTypes.bool,
     error: PropTypes.object,
@@ -661,6 +650,7 @@ export default connect(({ client, modules, ui }) => ({
     account_transfer_amount: modules.cashier.config.account_transfer.account_transfer_amount,
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     crypto_amount: modules.cashier.crypto_amount,
+    crypto_fiat_converter_error: modules.cashier.crypto_fiat_converter_error,
     fiat_amount: modules.cashier.fiat_amount,
     is_crypto: modules.cashier.is_crypto,
     onMount: client.getLimits,

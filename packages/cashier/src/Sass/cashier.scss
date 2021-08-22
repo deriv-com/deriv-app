@@ -740,6 +740,11 @@
             color: var(--text-less-prominent);
         }
     }
+    .dc-input__hint {
+        .dc-text {
+            margin-left: 0;
+        } 
+    }
     .dc-text {
         grid-column: 3;
         margin-left: 1rem;

@@ -14,6 +14,7 @@ import {
     deriv_urls,
     urlForLanguage,
     CFD_PLATFORMS,
+    routes,
 } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
 import { requestLogout, WS } from 'Services';
@@ -90,7 +91,8 @@ export default class ClientStore extends BaseStore {
         reset_password: '',
         payment_withdraw: '',
         payment_agent_withdraw: '',
-        trading_platform_password_reset: '',
+        trading_platform_mt5_password_reset: '',
+        trading_platform_dxtrade_password_reset: '',
     };
     @observable account_limits = {};
 
@@ -220,8 +222,8 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get can_change_fiat_currency() {
-        const has_no_mt5 = !this.has_mt5_login;
-        const has_no_dxtrade = !this.has_dxtrade_login;
+        const has_no_mt5 = !this.has_real_mt5_login;
+        const has_no_dxtrade = !this.has_real_dxtrade_login;
         const has_no_transaction = this.statement.count === 0 && this.statement.transactions.length === 0;
         const has_account_criteria = has_no_transaction && has_no_mt5 && has_no_dxtrade;
         return !this.is_virtual && has_account_criteria && this.current_currency_type === 'fiat';
@@ -322,9 +324,11 @@ export default class ClientStore extends BaseStore {
     // note that it will be undefined for logged out and virtual clients
     @computed
     get current_landing_company() {
-        const landing_company = Object.keys(this.landing_companies).find(
-            company => this.landing_companies[company]?.shortcode === this.landing_company_shortcode
-        );
+        const landing_company =
+            this.landing_companies &&
+            Object.keys(this.landing_companies).find(
+                company => this.landing_companies[company]?.shortcode === this.landing_company_shortcode
+            );
         return landing_company ? this.landing_companies[landing_company] : undefined;
     }
 
@@ -334,13 +338,13 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get has_mt5_login() {
-        return this.mt5_login_list.length > 0;
+    get has_real_mt5_login() {
+        return this.mt5_login_list.some(account => account.account_type === 'real');
     }
 
     @computed
-    get has_dxtrade_login() {
-        return this.dxtrade_accounts_list.length > 0;
+    get has_real_dxtrade_login() {
+        return this.dxtrade_accounts_list.some(account => account.account_type === 'real');
     }
 
     getListOfMT5AccountsWithError = account_type => {
@@ -457,8 +461,13 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get is_trading_password_required() {
-        return this.account_status?.status?.includes('trading_password_required');
+    get is_mt5_password_not_set() {
+        return this.account_status?.status?.includes('mt5_password_not_set');
+    }
+
+    @computed
+    get is_dxtrade_password_not_set() {
+        return this.account_status?.status?.includes('dxtrade_password_not_set');
     }
 
     @computed
@@ -1129,6 +1138,10 @@ export default class ClientStore extends BaseStore {
      */
     @action.bound
     async init(login_new_user) {
+        const search = window.location.search;
+        const search_params = new URLSearchParams(search);
+        const redirect_url = search_params?.get('redirect_url');
+
         this.setIsLoggingIn(true);
         const authorize_response = await this.setUserLogin(login_new_user);
         this.setDeviceData();
@@ -1168,6 +1181,9 @@ export default class ClientStore extends BaseStore {
             } else {
                 // So it will send an authorize with the accepted token, to be handled by socket-general
                 await BinarySocket.authorize(client.token);
+            }
+            if (redirect_url) {
+                window.location.replace(routes[redirect_url]);
             }
             runInAction(() => {
                 this.is_populating_account_list = false;
@@ -1621,6 +1637,10 @@ export default class ClientStore extends BaseStore {
         const client_object = {};
         let active_loginid;
 
+        if (obj_params.selected_acct) {
+            active_loginid = obj_params.selected_acct;
+        }
+
         account_list.forEach(function (account) {
             Object.keys(account).forEach(function (param) {
                 if (param === 'loginid') {
@@ -2056,17 +2076,6 @@ export default class ClientStore extends BaseStore {
     get is_high_risk() {
         if (isEmptyObject(this.account_status)) return false;
         return this.account_status.risk_classification === 'high';
-    }
-
-    @computed
-    get needs_financial_assessment() {
-        if (this.is_virtual) return false;
-        if (this.is_financial_information_incomplete) return true;
-        if (!this.is_svg) {
-            if (this.is_financial_account || this.is_trading_experience_incomplete) return true;
-        }
-
-        return false;
     }
 
     @computed

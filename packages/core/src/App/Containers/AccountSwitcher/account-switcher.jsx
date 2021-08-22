@@ -264,7 +264,7 @@ const AccountSwitcher = props => {
     // };
 
     const canOpenMulti = () => {
-        return props.available_crypto_currencies.length < 1 && !props.has_fiat;
+        return !props.available_crypto_currencies.length && !props.has_fiat;
     };
 
     const is_regulated_able_to_change_currency =
@@ -274,11 +274,7 @@ const AccountSwitcher = props => {
 
     // SVG clients can't upgrade.
     const getRemainingRealAccounts = () => {
-        if (
-            (props.is_virtual && !props.has_fiat) ||
-            canOpenMulti() ||
-            is_regulated_able_to_change_currency
-        ) {
+        if (canUpgrade() || canOpenMulti() || is_regulated_able_to_change_currency) {
             return props.upgradeable_landing_companies;
         }
         return [];

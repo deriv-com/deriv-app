@@ -61,6 +61,7 @@ export const getMarketNamesMap = () => ({
     WLDAUD: localize('AUD Index'),
     WLDEUR: localize('EUR Index'),
     WLDGBP: localize('GBP Index'),
+    WLDXAU: localize('Gold Index'),
     WLDUSD: localize('USD Index'),
     '1HZ10V': localize('Volatility 10 (1s) Index'),
     '1HZ100V': localize('Volatility 100 (1s) Index'),

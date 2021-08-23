@@ -77,4 +77,8 @@ const DeactivateAccountSteps = ({ redirectToReasons, is_dxtrade_allowed }) => {
         </div>
     );
 };
-export default connect(({ client }) => ({ is_dxtrade_allowed: client.is_dxtrade_allowed }))(DeactivateAccountSteps);
+export default connect(() => ({
+    is_dxtrade_allowed: false,
+    // TODO: remove the above line and uncomment when real account is launched
+    // is_dxtrade_allowed: client.is_dxtrade_allowed
+}))(DeactivateAccountSteps);

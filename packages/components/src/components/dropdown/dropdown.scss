@@ -280,7 +280,7 @@
                     text-overflow: ellipsis;
                     overflow: hidden;
                     display: inline-block;
-                    max-width: calc(40rem - 3.6rem);
+                    max-width: calc(40rem - 3.6rem); //3.6rem represents the width of a dropdown arrow
                 }
             }
             &--clicked {

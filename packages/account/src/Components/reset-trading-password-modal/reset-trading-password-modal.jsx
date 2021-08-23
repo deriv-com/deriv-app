@@ -214,7 +214,13 @@ const ResetTradingPasswordModal = ({
     }, [history, is_visible]);
 
     const setDialogTitleFunc = is_invalid_token => {
-        setDialogTitle(is_invalid_token ? localize('Reset trading password') : '');
+        setDialogTitle(
+            is_invalid_token
+                ? localize('Reset {{platform}} password', {
+                      platform: getCFDPlatformLabel(platform),
+                  })
+                : ''
+        );
     };
 
     return (

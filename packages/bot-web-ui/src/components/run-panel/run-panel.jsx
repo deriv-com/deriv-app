@@ -54,7 +54,7 @@ const StatisticsSummary = ({
             <StatisticsTile title={localize('Contracts lost')} alignment='bottom' content={lost_contracts} />
             <StatisticsTile title={localize('Contracts won')} alignment='bottom' content={won_contracts} />
             <StatisticsTile
-                title={localize('Profit/loss')}
+                title={localize('Total profit/loss')}
                 content={<Money amount={total_profit} currency={currency} has_sign show_currency />}
                 alignment='bottom'
                 contentClassName={classNames('run-panel__stat-amount', {
@@ -163,7 +163,7 @@ const StatisticsInfoModal = ({ is_mobile, is_statistics_info_modal_open, toggleS
                             {localize('The number of contracts you have won since you last cleared your stats.')}
                         </Text>
                         <Text as='p' weight='bold' className='statistics__modal-body--content'>
-                            {localize('Profit/loss')}
+                            {localize('Total profit/loss')}
                         </Text>
                         <Text as='p'>
                             {localize(

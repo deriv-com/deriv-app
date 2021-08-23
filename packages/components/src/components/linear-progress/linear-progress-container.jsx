@@ -2,21 +2,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { LinearProgress } from './linear-progress.jsx';
 
-const LinearProgressContainer = ({ timeout, action, render, className }) => {
-    const get_popup_timer = sessionStorage.getItem('popup_timer');
-    if (!get_popup_timer) sessionStorage.setItem('popup_timer', timeout / 1000);
-    const popup_timeout = !get_popup_timer ? timeout / 1000 : get_popup_timer;
+const LinearProgressContainer = ({ timeout, action, render, className, should_store_in_session, session_id }) => {
+    const current_progress_timeout = sessionStorage.getItem(`linear_progress_timeout_${session_id}`);
 
-    const [timeout_state, setTimeout] = React.useState(popup_timeout);
+    const popup_timeout = !current_progress_timeout ? timeout / 1000 : current_progress_timeout;
+    const [timeout_state, setTimeoutState] = React.useState(popup_timeout);
     const time_past = 100 - timeout_state / 3;
 
     const getProgress = () => time_past;
-
     const getRemaining = () => (timeout_state > 0 ? timeout_state : 0);
-
     const makeProgress = () => {
-        setTimeout(timeout_current => timeout_current - 1);
+        setTimeoutState(timeout_current => timeout_current - 1);
     };
+
+    // const progressContainerRef = forwardRef((props, ref) => {
+
+    //     useImperativeHandle(ref, () => {
+
+    //     });
+    // });
+
+    React.useEffect(() => {
+        if (should_store_in_session) {
+            sessionStorage.setItem(`linear_progress_timeout_${session_id}`, timeout_state);
+        }
+    }, [timeout_state]);
 
     React.useEffect(() => {
         const interval = setInterval(makeProgress, 1000);
@@ -31,10 +41,12 @@ const LinearProgressContainer = ({ timeout, action, render, className }) => {
         }
     });
 
-    if (sessionStorage.getItem('popup_timer') <= 0) {
-        sessionStorage.removeItem('popup_timer');
+    if (current_progress_timeout <= 0) {
+        sessionStorage.removeItem(`linear_progress_timeout_${session_id}`);
+    } else if (current_progress_timeout > 0) {
+        sessionStorage.setItem(`linear_progress_timeout_${session_id}`, timeout_state);
     } else {
-        sessionStorage.setItem('popup_timer', timeout_state);
+        return null;
     }
 
     if (!timeout) return null;

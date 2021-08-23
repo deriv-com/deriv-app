@@ -10,8 +10,9 @@ import { default_delay, types } from './constants';
 import { BinaryLink } from '../../Routes';
 
 const Notification = ({ data, removeNotificationMessage }) => {
+    let session_id = 0;
     const { is_dashboard } = React.useContext(PlatformContext);
-    const active_timer = sessionStorage.getItem('popup_timer');
+
     const destroy = is_closed_by_user => {
         removeNotificationMessage(data);
 
@@ -62,6 +63,8 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                 timeout={data.timeout}
                                 action={data.action.onClick}
                                 render={data.timeoutMessage}
+                                should_store_in_session={true}
+                                session_id={(session_id += 1)}
                             />
                         )}
                         <p className='notification__text-body'>{data.message}</p>
@@ -84,10 +87,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                     ) : (
                                         <Button
                                             className='notification__cta-button'
-                                            onClick={() => {
-                                                if (active_timer) sessionStorage.removeItem('popup_timer');
-                                                data.action.onClick({ is_dashboard });
-                                            }}
+                                            onClick={() => data.action.onClick({ is_dashboard })}
                                             text={data.action.text}
                                             secondary
                                             renderText={text => (

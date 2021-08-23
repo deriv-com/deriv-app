@@ -719,6 +719,7 @@ export const icons = {
         'IcUnderlyingWLDEUR',
         'IcUnderlyingWLDGBP',
         'IcUnderlyingWLDUSD',
+        'IcUnderlyingWLDXAU',
     ],
     wallet: [
         'IcWalletClearFunds',

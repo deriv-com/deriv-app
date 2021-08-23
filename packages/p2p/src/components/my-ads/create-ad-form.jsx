@@ -95,6 +95,20 @@ const CreateAdForm = () => {
                 }}
             >
                 {({ errors, handleChange, isSubmitting, isValid, setFieldValue, touched, values }) => {
+                    let invalidAmountError = false;
+
+                    Object.keys(errors).forEach(key => {
+                        // eslint-disable-next-line no-unused-expressions
+                        errors[key] === 'Enter a valid amount' ? (invalidAmountError = true) : undefined;
+                    });
+
+                    if (invalidAmountError) {
+                        Object.keys(errors).forEach(key => {
+                            // eslint-disable-next-line no-unused-expressions
+                            errors[key] === 'Enter a valid amount' ? undefined : (errors[key] = undefined);
+                        });
+                    }
+
                     const is_sell_advert = values.type === buy_sell.SELL;
 
                     return (

@@ -97,9 +97,13 @@ const Dialog = ({
                     })}
                     ref={wrapper_ref}
                 >
-                    <div className='dc-dialog__header-wrapper'>
+                    <div
+                        className={classNames('dc-dialog__header-wrapper', {
+                            'dc-dialog__header-wrapper--end': !title,
+                        })}
+                    >
                         {!!title && (
-                            <Text as='h1' color='prominent' weight='bold' className='dc-dialog__header'>
+                            <Text as='h1' color='prominent' weight='bold' className='dc-dialog__header--title'>
                                 {title}
                             </Text>
                         )}

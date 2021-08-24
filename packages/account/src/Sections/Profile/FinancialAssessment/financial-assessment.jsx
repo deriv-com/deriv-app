@@ -120,9 +120,7 @@ const SubmittedPage = ({ platform }) => {
 
     const onClickButton = () => {
         if (platforms[platform].is_hard_redirect) {
-            // Force hard redirect to url
-            const hard_redirect_url = window.location.origin + platforms[platform].route_to_path;
-            window.location.href = hard_redirect_url;
+            window.location.href = 'deriv://dp2p'; // Works for both Android and iOS
         } else {
             history.push(platforms[platform].route_to_path);
         }

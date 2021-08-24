@@ -2,7 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { LinearProgress } from './linear-progress.jsx';
 
-const LinearProgressContainer = ({ timeout, action, render, className, should_store_in_session, session_id }) => {
+const LinearProgressContainer = ({
+    timeout,
+    action,
+    render,
+    className,
+    should_store_in_session,
+    session_id,
+    linear_progress_container_ref,
+}) => {
     const current_progress_timeout = sessionStorage.getItem(`linear_progress_timeout_${session_id}`);
 
     const popup_timeout = !current_progress_timeout ? timeout / 1000 : current_progress_timeout;
@@ -15,12 +23,11 @@ const LinearProgressContainer = ({ timeout, action, render, className, should_st
         setTimeoutState(timeout_current => timeout_current - 1);
     };
 
-    // const progressContainerRef = forwardRef((props, ref) => {
-
-    //     useImperativeHandle(ref, () => {
-
-    //     });
-    // });
+    React.useImperativeHandle(linear_progress_container_ref, () => ({
+        removeTimeoutSession() {
+            sessionStorage.removeItem(`linear_progress_timeout_${session_id}`);
+        },
+    }));
 
     React.useEffect(() => {
         if (should_store_in_session) {
@@ -65,4 +72,4 @@ LinearProgressContainer.propTypes = {
     render: PropTypes.func.isRequired,
 };
 
-export default LinearProgressContainer;
+export default React.forwardRef(LinearProgressContainer);

@@ -11,6 +11,7 @@ import { BinaryLink } from '../../Routes';
 
 const Notification = ({ data, removeNotificationMessage }) => {
     let session_id = 0;
+    const linear_progress_container_ref = React.useRef(null);
     const { is_dashboard } = React.useContext(PlatformContext);
 
     const destroy = is_closed_by_user => {
@@ -65,6 +66,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                 render={data.timeoutMessage}
                                 should_store_in_session={true}
                                 session_id={(session_id += 1)}
+                                linear_progress_container_ref={linear_progress_container_ref}
                             />
                         )}
                         <p className='notification__text-body'>{data.message}</p>
@@ -87,7 +89,10 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                     ) : (
                                         <Button
                                             className='notification__cta-button'
-                                            onClick={() => data.action.onClick({ is_dashboard })}
+                                            onClick={() => {
+                                                linear_progress_container_ref.current.removeTimeoutSession();
+                                                data.action.onClick({ is_dashboard });
+                                            }}
                                             text={data.action.text}
                                             secondary
                                             renderText={text => (

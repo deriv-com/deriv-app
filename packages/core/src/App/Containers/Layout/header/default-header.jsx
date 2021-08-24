@@ -80,9 +80,6 @@ const DefaultHeader = ({
             }
             return true;
         });
-
-    addNotificationMessage(clientNotifications().new_version_available);
-
     return (
         <header
             className={classNames('header', {

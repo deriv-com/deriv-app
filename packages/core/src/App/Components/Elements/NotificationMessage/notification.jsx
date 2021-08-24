@@ -10,7 +10,6 @@ import { default_delay, types } from './constants';
 import { BinaryLink } from '../../Routes';
 
 const Notification = ({ data, removeNotificationMessage }) => {
-    let session_id = 0;
     const linear_progress_container_ref = React.useRef(null);
     const { is_dashboard } = React.useContext(PlatformContext);
 
@@ -65,7 +64,7 @@ const Notification = ({ data, removeNotificationMessage }) => {
                                 action={data.action.onClick}
                                 render={data.timeoutMessage}
                                 should_store_in_session={true}
-                                session_id={(session_id += 1)}
+                                session_id={data.key}
                                 linear_progress_container_ref={linear_progress_container_ref}
                             />
                         )}

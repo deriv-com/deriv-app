@@ -25,7 +25,9 @@ const LinearProgressContainer = ({
 
     React.useImperativeHandle(linear_progress_container_ref, () => ({
         removeTimeoutSession() {
-            sessionStorage.removeItem(`linear_progress_timeout_${session_id}`);
+            if (should_store_in_session) {
+                sessionStorage.removeItem(`linear_progress_timeout_${session_id}`);
+            }
         },
     }));
 

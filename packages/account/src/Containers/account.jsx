@@ -61,14 +61,6 @@ const Account = ({
         toggleAccount(true);
     }, [should_allow_authentication, toggleAccount]);
 
-    if (
-        !is_loading &&
-        !isEmptyObject(account_status) &&
-        ((is_virtual && /financial-assessment/.test(selected_content.path)) ||
-            (!should_allow_authentication && /proof-of-identity|proof-of-address/.test(selected_content.path)))
-    )
-        routeBackInApp(history);
-
     routes.forEach(menu_item => {
         menu_item.subroutes.forEach(route => {
             if (route.path === shared_routes.financial_assessment) {

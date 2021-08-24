@@ -95,17 +95,11 @@ const CreateAdForm = () => {
                 }}
             >
                 {({ errors, handleChange, isSubmitting, isValid, setFieldValue, touched, values }) => {
-                    let invalidAmountError = false;
-
-                    Object.keys(errors).forEach(key => {
-                        // eslint-disable-next-line no-unused-expressions
-                        errors[key] === 'Enter a valid amount' ? (invalidAmountError = true) : undefined;
-                    });
+                    const invalidAmountError = Object.values(errors).includes('Enter a valid amount');
 
                     if (invalidAmountError) {
-                        Object.keys(errors).forEach(key => {
-                            // eslint-disable-next-line no-unused-expressions
-                            errors[key] === 'Enter a valid amount' ? undefined : (errors[key] = undefined);
+                        Object.entries(errors).forEach(([key, value]) => {
+                            errors[key] = value === 'Enter a valid amount' ? value : undefined;
                         });
                     }
 

@@ -15,7 +15,7 @@ const LinearProgressContainer = ({
 
     const popup_timeout = !current_progress_timeout ? timeout / 1000 : current_progress_timeout;
     const [timeout_state, setTimeoutState] = React.useState(popup_timeout);
-    const time_past = 100 - timeout_state / 3;
+    const time_past = 100 - (timeout_state / (timeout / 1000)) * 100;
 
     const getProgress = () => time_past;
     const getRemaining = () => (timeout_state > 0 ? timeout_state : 0);

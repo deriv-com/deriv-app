@@ -7,6 +7,7 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
+import AddCurrency from './add-currency.jsx';
 import ChangeAccountCurrency from './change-account-currency.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';
 import 'Sass/add-or-manage.scss';
@@ -18,15 +19,16 @@ const AddOrManageAccounts = props => {
         can_change_fiat_currency,
         createCryptoAccount,
         current_currency_type,
+        deposit_target,
         has_fiat,
         is_add_crypto,
+        is_add_currency,
         is_add_fiat,
         is_eu,
         is_loading,
         manage_real_account_tab_index,
         onError,
         onSuccessSetAccountCurrency,
-        openRealAccountSignup,
         resetRealAccountSignupTarget,
         setCurrency,
         setLoading,
@@ -65,7 +67,8 @@ const AddOrManageAccounts = props => {
                         setSubmitting(false);
                         onSuccessSetAccountCurrency(
                             response.passthrough.previous_currency,
-                            response.echo_req.set_account_currency
+                            response.echo_req.set_account_currency,
+                            deposit_target
                         );
                     })
                     .catch(error => {
@@ -76,7 +79,7 @@ const AddOrManageAccounts = props => {
                 // Add Crypto Account
                 createCryptoAccount(value)
                     .then(() => {
-                        onSuccessSetAccountCurrency('', value);
+                        onSuccessSetAccountCurrency('', value, deposit_target);
                         setSubmitting(false);
                         resetRealAccountSignupTarget();
                         setIsDeposit(true);
@@ -91,10 +94,6 @@ const AddOrManageAccounts = props => {
 
     const updateValue = (index, value, setSubmitting) => {
         manageOrChangeAccount(value, setSubmitting);
-    };
-
-    const onClickBack = () => {
-        openRealAccountSignup('choose');
     };
 
     const hasNoAvailableCrypto = () => {
@@ -120,42 +119,18 @@ const AddOrManageAccounts = props => {
         </div>
     );
 
-    if (is_add_crypto)
+    if (is_add_currency || is_add_crypto || is_add_fiat) {
         return (
-            <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
-                <div
-                    className={classNames('add-crypto-currency', {
-                        'account-wizard--disabled': hasNoAvailableCrypto(),
-                    })}
-                >
-                    <AddCryptoCurrency
-                        className='account-wizard__body'
-                        onSubmit={updateValue}
-                        onClickBack={onClickBack}
-                        value={form_value}
-                        form_error={form_error}
-                        should_show_crypto_only
-                        hasNoAvailableCrypto={hasNoAvailableCrypto}
-                    />
-                </div>
-            </ThemedScrollbars>
-        );
-
-    if (is_add_fiat) {
-        return (
-            <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
-                <div className='change-currency'>
-                    <AddCryptoCurrency
-                        className='account-wizard__body'
-                        onSubmit={updateValue}
-                        value={form_value}
-                        form_error={form_error}
-                        should_show_fiat_only
-                        hasNoAvailableCrypto={hasNoAvailableCrypto}
-                        is_add_fiat
-                    />
-                </div>
-            </ThemedScrollbars>
+            <AddCurrency
+                onSubmit={updateValue}
+                value={form_value}
+                form_error={form_error}
+                should_show_crypto_only
+                hasNoAvailableCrypto={hasNoAvailableCrypto}
+                is_add_crypto={is_add_crypto}
+                is_add_fiat={is_add_fiat}
+                is_add_currency={is_add_currency}
+            />
         );
     }
 
@@ -245,7 +220,6 @@ export default connect(({ client, modules, ui }) => ({
     setCurrency: client.setAccountCurrency,
     setShouldShowCancel: ui.setShouldShowCancel,
     createCryptoAccount: client.createCryptoAccount,
-    openRealAccountSignup: ui.openRealAccountSignup,
     resetRealAccountSignupTarget: ui.resetRealAccountSignupTarget,
     setIsDeposit: modules.cashier.setIsDeposit,
 }))(AddOrManageAccounts);

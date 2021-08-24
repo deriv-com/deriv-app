@@ -7,9 +7,11 @@ import { routes, isNavigationFromPlatform } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AccountWizard from './account-wizard.jsx';
+import AddCurrency from './add-currency.jsx';
 import AddOrManageAccounts from './add-or-manage-accounts.jsx';
-import ChooseCryptoCurrency from './choose-crypto-currency.jsx';
+import ChooseCurrency from './choose-currency.jsx';
 import SetCurrency from './set-currency.jsx';
+import FinishedAddCurrency from './finished-add-currency.jsx';
 import FinishedSetCurrency from './finished-set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
@@ -24,6 +26,8 @@ const modal_pages_indices = {
     set_currency: 4,
     signup_error: 5,
     choose_crypto_currency: 6,
+    add_currency: 7,
+    finished_add_currency: 8,
 };
 
 const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_residence, is_belgium_residence }) => {
@@ -104,6 +108,8 @@ const RealAccountSignup = ({
                     onError={showErrorModal}
                     is_add_crypto={local_props.real_account_signup_target === 'add_crypto'}
                     is_add_fiat={local_props.real_account_signup_target === 'add_fiat'}
+                    is_add_currency={local_props.real_account_signup_target === 'add_currency'}
+                    deposit_target={local_props.deposit_target}
                 />
             ),
             title: local_props => {
@@ -165,11 +171,30 @@ const RealAccountSignup = ({
             title: () => localize('Add a real account'),
         },
         {
-            body: () => <ChooseCryptoCurrency className='account-wizard__body' onError={showErrorModal} />,
+            body: () => <ChooseCurrency className='account-wizard__body' onError={showErrorModal} />,
             title: local_props =>
                 local_props.should_show_all_available_currencies
                     ? localize('Choose an account')
                     : localize('Choose a cryptocurrency account'),
+        },
+        {
+            body: () => <AddCurrency className='account-wizard__body' onError={showErrorModal} />,
+            title: () => localize('Create a new account'),
+        },
+        {
+            body: local_props => (
+                <FinishedAddCurrency
+                    prev={local_props.state_value.previous_currency}
+                    current={local_props.state_value.current_currency}
+                    onSubmit={closeModalThenOpenCashier}
+                    deposit_real_account_signup_target={local_props.deposit_real_account_signup_target}
+                    deposit_target={local_props.deposit_target}
+                    closeRealAccountSignup={closeRealAccountSignup}
+                    continueRoute={continueRoute}
+                    setIsDeposit={setIsDeposit}
+                    history={history}
+                />
+            ),
         },
     ]);
 
@@ -181,7 +206,11 @@ const RealAccountSignup = ({
                 // Manage account
                 return '420px'; // Since crypto is disabled for EU clients, lower the height of modal
             }
-            if (getActiveModalIndex() === modal_pages_indices.finished_set_currency) {
+            if (
+                [modal_pages_indices.finished_set_currency, modal_pages_indices.finished_add_currency].includes(
+                    getActiveModalIndex()
+                )
+            ) {
                 return 'auto';
             }
             return '644px'; // Add or manage account modal
@@ -208,11 +237,13 @@ const RealAccountSignup = ({
         history.push(routes.cashier_deposit);
     };
 
-    const showSetCurrencySuccess = (previous_currency, current_currency) => {
+    const showSetCurrencySuccess = (previous_currency, current_currency, target) => {
         setParams({
             previous_currency,
             current_currency,
-            active_modal_index: modal_pages_indices.finished_set_currency,
+            active_modal_index: target
+                ? modal_pages_indices.finished_add_currency
+                : modal_pages_indices.finished_set_currency,
         });
     };
 
@@ -293,7 +324,7 @@ const RealAccountSignup = ({
             active_modal_index_no = modal_pages_indices.choose_crypto_currency;
             return active_modal_index_no;
         }
-        if (['add_crypto', 'add_fiat'].includes(real_account_signup_target)) {
+        if (['add_crypto', 'add_fiat', 'add_currency'].includes(real_account_signup_target)) {
             active_modal_index_no = modal_pages_indices.add_or_manage_account;
             return active_modal_index_no;
         }

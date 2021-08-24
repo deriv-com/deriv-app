@@ -15,10 +15,10 @@ const CashierDefault = ({
     is_eu,
     is_landing_company_loaded,
     is_mobile,
-    is_payment_agent_visible,
+    is_payment_agent_visible_in_onboarding,
     is_switching,
+    onMountCashierDefault,
     openRealAccountSignup,
-    resetIsConfirmed,
     shouldNavigateAfterChooseCrypto,
     shouldNavigateAfterPrompt,
     setIsCashierDefault,
@@ -33,8 +33,7 @@ const CashierDefault = ({
     const user_fiat_currency = accounts_list.filter(x => !x.is_crypto);
 
     React.useEffect(() => {
-        setIsCashierDefault(true);
-        resetIsConfirmed();
+        onMountCashierDefault();
         return () => setIsCashierDefault(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -107,7 +106,7 @@ const CashierDefault = ({
         options.push(Providers.createCashProvider(onClickDepositCash));
         options.push(Providers.createCryptoProvider(onClickDepositCrypto));
         options.push(Providers.createOnrampProvider(onClickOnramp, is_crypto));
-        if (is_payment_agent_visible) {
+        if (is_payment_agent_visible_in_onboarding) {
             options.push(Providers.createPaymentAgentProvider(onClickPaymentAgent));
         }
 
@@ -165,8 +164,9 @@ CashierDefault.propTypes = {
     is_eu: PropTypes.bool,
     is_landing_company_loaded: PropTypes.bool,
     is_mobile: PropTypes.bool,
-    is_payment_agent_visible: PropTypes.bool,
+    is_payment_agent_visible_in_onboarding: PropTypes.bool,
     is_switching: PropTypes.bool,
+    onMountCashierDefault: PropTypes.func,
     openRealAccountSignup: PropTypes.func,
     shouldNavigateAfterChooseCrypto: PropTypes.func,
     shouldNavigateAfterPrompt: PropTypes.func,
@@ -181,10 +181,10 @@ export default connect(({ client, modules, ui }) => ({
     is_eu: client.is_eu,
     is_landing_company_loaded: client.is_landing_company_loaded,
     is_mobile: ui.is_mobile,
-    is_payment_agent_visible: modules.cashier.is_payment_agent_visible,
+    is_payment_agent_visible_in_onboarding: modules.cashier.is_payment_agent_visible_in_onboarding,
     is_switching: client.is_switching,
+    onMountCashierDefault: modules.cashier.onMountCashierDefault,
     openRealAccountSignup: ui.openRealAccountSignup,
-    resetIsConfirmed: modules.cashier.account_prompt_dialog.resetIsConfirmed,
     shouldNavigateAfterChooseCrypto: ui.shouldNavigateAfterChooseCrypto,
     shouldNavigateAfterPrompt: modules.cashier.account_prompt_dialog.shouldNavigateAfterPrompt,
     setIsCashierDefault: modules.cashier.setIsCashierDefault,

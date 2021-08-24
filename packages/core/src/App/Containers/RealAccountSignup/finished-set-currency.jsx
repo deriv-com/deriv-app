@@ -94,7 +94,11 @@ const FinishedSetCurrency = ({
             </div>
             <div className='status-dialog__footer'>
                 <Button
-                    onClick={deposit_real_account_signup_target === 'add_crypto' ? closeModalThenOpenCashier : onSubmit}
+                    onClick={
+                        ['add_crypto', 'add_fiat', 'add_currency'].includes(deposit_real_account_signup_target)
+                            ? closeModalThenOpenCashier
+                            : onSubmit
+                    }
                     text={localize('Deposit now')}
                     primary
                 />

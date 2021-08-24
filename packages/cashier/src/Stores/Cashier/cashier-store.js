@@ -179,6 +179,7 @@ export default class CashierStore extends BaseStore {
     @observable fiat_amount = '';
     @observable insufficient_fund_error = '';
     @observable is_timer_visible = false;
+    @observable all_payment_agent_list = [];
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -212,6 +213,11 @@ export default class CashierStore extends BaseStore {
     }
 
     @computed
+    get is_payment_agent_visible_in_onboarding() {
+        return !!this.all_payment_agent_list?.paymentagent_list?.list?.length;
+    }
+
+    @computed
     get is_payment_agent_transfer_visible() {
         return this.config.payment_agent_transfer.is_payment_agent;
     }
@@ -226,6 +232,19 @@ export default class CashierStore extends BaseStore {
     @computed
     get is_p2p_enabled() {
         return this.is_p2p_visible && !this.root_store.client.is_eu;
+    }
+
+    @action.bound
+    async onMountCashierDefault() {
+        this.setIsCashierDefault(true);
+        this.account_prompt_dialog.resetIsConfirmed();
+
+        this.setLoading(true);
+        if (this.all_payment_agent_list?.paymentagent_list?.list === undefined) {
+            const payment_agent_list = await this.getAllPaymentAgentList();
+            this.setAllPaymentAgentList(payment_agent_list);
+        }
+        this.setLoading(false);
     }
 
     @action.bound
@@ -845,6 +864,16 @@ export default class CashierStore extends BaseStore {
         // TODO: set residence in client-store from authorize so it's faster
         await this.WS.wait('get_settings');
         return this.WS.authorized.paymentAgentList(this.root_store.client.residence, this.root_store.client.currency);
+    }
+
+    async getAllPaymentAgentList() {
+        await this.WS.wait('get_settings');
+        return this.WS.allPaymentAgentList(this.root_store.client.residence);
+    }
+
+    @action.bound
+    setAllPaymentAgentList(list) {
+        this.all_payment_agent_list = list;
     }
 
     @action.bound

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
-import { Input, Icon, Text } from '@deriv/components';
+import { DesktopWrapper, Input, Icon, MobileWrapper, Text } from '@deriv/components';
 import { getDecimalPlaces, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -151,21 +151,48 @@ const CryptoFiatConverter = ({
                                     label={localize('Amount ({{currency}})', { currency: current_fiat_currency })}
                                     value={fiat_amount}
                                 />
-                                {is_timer_visible && (
-                                    <Timer
-                                        onComplete={() => {
-                                            onChangeCryptoAmount(
-                                                {
-                                                    target: {
-                                                        value: crypto_amount,
-                                                    },
-                                                },
-                                                crypto_currency,
-                                                current_fiat_currency
-                                            );
-                                        }}
-                                    />
-                                )}
+                            </InputGroup>
+                        )}
+                    </Field>
+                    <MobileWrapper>
+                        {arrow_icon_direction === 'right' ? (
+                            <Icon icon='IcArrowDownBold' />
+                        ) : (
+                            <Icon icon='IcArrowUpBold' />
+                        )}
+                    </MobileWrapper>
+                    <DesktopWrapper>
+                        {arrow_icon_direction === 'right' ? (
+                            <Icon icon='IcArrowRightBold' />
+                        ) : (
+                            <Icon icon='IcArrowLeftBold' />
+                        )}
+                    </DesktopWrapper>
+                    <Field name='fiat_amount' validate={validateFiatAmount}>
+                        {({ field }) => (
+                            <InputGroup className='input-group'>
+                                <Input
+                                    {...field}
+                                    onFocus={() => {
+                                        setArrowIconDirection('left');
+                                    }}
+                                    onBlur={e => {
+                                        handleBlur(e);
+                                        if (!is_timer_visible) {
+                                            if (!values.fiat_amount || errors.fiat_amount) {
+                                                setCryptoAmount('');
+                                            } else {
+                                                onChangeFiatAmount(e, current_fiat_currency, crypto_currency);
+                                            }
+                                        }
+                                    }}
+                                    onChange={e => {
+                                        setIsTimerVisible(false);
+                                        handleChange(e);
+                                        setFiatAmount(e.target.value);
+                                        setFieldError('crypto_amount', '');
+                                    }}
+                                />
                             </InputGroup>
                         )}
                     </Field>

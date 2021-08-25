@@ -277,8 +277,9 @@ export default class TradeStore extends BaseStore {
     };
 
     @action.bound
-    async loadActiveSymbols(should_set_default_symbol = true) {
-        this.is_active_symbols_loading = true;
+    async loadActiveSymbols(should_set_default_symbol = true, should_show_loading = true) {
+        this.is_active_symbols_loading = should_show_loading;
+
         await this.setActiveSymbols();
         if (should_set_default_symbol) await this.setDefaultSymbol();
 
@@ -1000,9 +1001,8 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async accountSwitcherListener() {
-        if (this.root_store.client.standpoint.maltainvest) {
-            await this.loadActiveSymbols();
-        }
+        await this.loadActiveSymbols(true, false);
+
         this.resetErrorServices();
         await this.setContractTypes();
         runInAction(async () => {

@@ -18,6 +18,7 @@ import {
 import { localize, Localize } from '@deriv/translations';
 import OnRampStore from './on-ramp-store';
 import TransactionHistoryStore from './transaction-history-store';
+import ErrorDialog from '../error-dialog-store';
 import BaseStore from '../base-store';
 import CashierNotifications from '../../Containers/cashier-notifications.jsx';
 
@@ -186,6 +187,7 @@ export default class CashierStore extends BaseStore {
             WS: this.WS,
         });
 
+        this.error_dialog = new ErrorDialog();
         this.transaction_history = new TransactionHistoryStore(this.WS);
 
         this.init();
@@ -269,13 +271,7 @@ export default class CashierStore extends BaseStore {
         this.setIsTimerVisible(false);
     }
 
-    @action.bound
-    async requestWithdraw(verification_code) {
-        if (!this.root_store.client.is_logged_in) {
-            return;
-        }
-
-        this.setLoading(true);
+    async saveWithdraw(verification_code) {
         this.setErrorMessage('');
 
         await this.WS.cryptoWithdraw({
@@ -284,18 +280,36 @@ export default class CashierStore extends BaseStore {
             verification_code,
         }).then(response => {
             if (response.error) {
-                if (response.error.code === 'CryptoInvalidAddress') {
-                    this.config.withdraw.setInvalidCryptoAddress(true);
-                } else {
-                    this.setErrorMessage(response.error);
-                    if (verification_code) {
-                        // clear verification code on error
-                        this.clearVerification();
-                    }
-                    this.resetWithrawForm();
+                this.setErrorMessage(response.error);
+                if (verification_code) {
+                    // clear verification code on error
+                    this.clearVerification();
                 }
+                this.resetWithrawForm();
             } else {
                 this.config.withdraw.setIsWithdrawConfirmed(true);
+            }
+        });
+    }
+
+    @action.bound
+    async requestWithdraw(verification_code) {
+        if (!this.root_store.client.is_logged_in) {
+            return;
+        }
+
+        this.setLoading(true);
+
+        await this.WS.cryptoWithdraw({
+            address: this.blockchain_address,
+            amount: this.crypto_amount,
+            verification_code,
+            dry_run: 1,
+        }).then(response => {
+            if (response.error) {
+                this.error_dialog.setErrorMessage(response.error.message);
+            } else {
+                this.saveWithdraw(verification_code);
             }
             this.setLoading(false);
         });

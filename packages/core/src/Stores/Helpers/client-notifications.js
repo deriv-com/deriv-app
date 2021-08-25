@@ -3,12 +3,12 @@ import {
     formatDate,
     getStaticUrl,
     getUrlBase,
+    isCryptocurrency,
     isEmptyObject,
     isMobile,
     LocalStore,
     routes,
     State,
-    website_name,
     platform_name,
 } from '@deriv/shared';
 import { StaticUrl } from '@deriv/components';
@@ -36,100 +36,67 @@ export const clientNotifications = (ui = {}, client = {}) => {
             type: 'news',
         },
         currency: {
-            action: {
-                text: localize('Set currency'),
-                onClick: () => {
-                    ui.toggleNotificationsModal();
-                    ui.openRealAccountSignup('set_currency');
-                },
-            },
             key: 'currency',
             header: localize('Set account currency'),
-            message: localize('Please set the currency of your account to enable trading.'),
+            message: localize('Please set your account currency to enable deposits and withdrawals.'),
             type: 'danger',
         },
         self_exclusion: excluded_until => {
-            let message, header, action;
-            if (client.is_uk) {
-                header = localize('You’re taking a break from trading');
-                message = (
-                    <Localize
-                        i18n_default_text='You chose to exclude yourself from trading until {{exclusion_end}}. If you want to remove this self-exclusion, you can do so after {{exclusion_end}} by contacting Customer Support at +447723580049.'
-                        values={{
-                            exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
-                            interpolation: { escapeValue: false },
-                        }}
-                    />
-                );
-            } else if (client.is_eu) {
-                action = {
-                    onClick: () => window.LC_API.open_chat_window(),
-                    text: localize('Chat now'),
-                };
-                header = localize('You’re taking a break from trading');
-                message = (
-                    <Localize
-                        i18n_default_text='You chose to exclude yourself from trading until {{exclusion_end}}. If you want to remove this self-exclusion, you can do so at any time by contacting Customer Support via chat.'
-                        values={{
-                            exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
-                            interpolation: { escapeValue: false },
-                        }}
-                    />
-                );
-            } else {
-                header = localize('Self-exclusion detected');
-                message = (
-                    <Localize
-                        i18n_default_text='You have opted to be excluded from {{website_domain}} until {{exclusion_end}}. Please <0>contact us</0> for assistance.'
-                        values={{
-                            website_domain: website_name,
-                            exclusion_end: formatDate(excluded_until, 'DD/MM/YYYY'),
-                            interpolation: { escapeValue: false },
-                        }}
-                        components={[<StaticUrl key={0} className='link' href='contact-us' />]}
-                    />
-                );
-            }
             return {
                 key: 'self_exclusion',
-                header,
-                message,
-                action,
+                header: localize('Self-exclusion detected'),
+                message: (
+                    <Localize
+                        i18n_default_text='You have chosen to exclude yourself from trading on our website until {{exclusion_end}}. If you are unable to place a trade or deposit after your self-exclusion period, please contact us via live chat.'
+                        values={{
+                            exclusion_end: formatDate(excluded_until, 'DD MMM, YYYY'),
+                            interpolation: { escapeValue: false },
+                        }}
+                    />
+                ),
                 type: 'danger',
-            };
-        },
-        authenticate: {
-            action: {
-                route: routes.proof_of_identity,
-                text: localize('Authenticate'),
-            },
-            key: 'authenticate',
-            header: localize('Account authentication'),
-            message: localize('Authenticate your account now to take full advantage of all payment methods available.'),
-            type: 'info',
+            }
         },
         cashier_locked: {
             key: 'cashier_locked',
             header: localize('Cashier disabled'),
             message: localize(
-                'Deposits and withdrawals have been disabled on your account. Please check your email for more details.'
+                'Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.'
             ),
             type: 'warning',
         },
-        system_maintenance: {
-            key: 'system_maintenance',
-            header: localize('System Maintenance'),
+        system_maintenance: (withdrawal_locked, deposit_locked) => {
+            let message, header;
+            if (isCryptocurrency(client.currency)) {
+                if (withdrawal_locked) {
+                    header = localize('Withdrawals are locked');
+                    message = localize('Withdrawals are temporarily unavailable due to system maintenance. You can make your withdrawals when the maintenance is complete.');
+                } else if (deposit_locked) {
+                    header = localize('Deposits are locked');
+                    message = localize('Deposits are temporarily unavailable due to system maintenance. You can make your deposits when the maintenance is complete.');
+                } else {
+                    header = localize('Cashier is locked');
+                    message = localize('Our cryptocurrency cashier is temporarily down due to system maintenance. You can access the Cashier in a few minutes when the maintenance is complete.');
+                }
+            } else {
+                header = localize('Cashier is locked');
+                message = localize('Our cashier is temporarily down due to system maintenance.You can access the Cashier in a few minutes when the maintenance is complete.');
+            }
+            return {
+                key: 'system_maintenance',
+                header,
+                message,
+                type: 'warning',
+            };
+        },
+        authenticate: {
+            key: 'authenticate',
+            header: localize('Withdrawal disabled'),
             message: (
                 <Localize
-                    i18n_default_text='We’re updating our cashier system and it’ll be back online soon. Please see our <0>status page</0> for updates.'
-                    components={[
-                        <a
-                            key={0}
-                            className='link'
-                            rel='noopener noreferrer'
-                            target='_blank'
-                            href='https://deriv.statuspage.io/'
-                        />,
+                    i18n_default_text='Your account has not been authenticated. Please submit your <0>proof of identity</0> and <1>proof of address</1> to authenticate your account and access your cashier.'
+                    components={[<BinaryLink key={0} className='link' to={routes.proof_of_identity} />,
+                        <BinaryLink key={1} className='link' to={routes.proof_of_address} />
                     ]}
                 />
             ),
@@ -139,7 +106,15 @@ export const clientNotifications = (ui = {}, client = {}) => {
             key: 'withdrawal_locked_review',
             header: localize('Withdrawal disabled'),
             message: localize(
-                'Withdrawals have been disabled on your account. Please wait until your uploaded documents are verified.'
+                'Your account has not been authenticated. Please submit your proof of identity and proof of address to authenticate your account and request for withdrawals.'
+            ),
+            type: 'warning',
+        },
+        no_withdrawal_or_trading: {
+            key: 'no_withdrawal_or_trading',
+            header: localize('Withdrawal disabled'),
+            message: localize(
+                'Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.'
             ),
             type: 'warning',
         },
@@ -147,7 +122,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
             key: 'withdrawal_locked',
             header: localize('Withdrawal disabled'),
             message: localize(
-                'Withdrawals have been disabled on your account. Please check your email for more details.'
+                'Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.'
             ),
             type: 'warning',
         },
@@ -156,6 +131,14 @@ export const clientNotifications = (ui = {}, client = {}) => {
             header: localize('MT5 withdrawal disabled'),
             message: localize(
                 'MT5 withdrawals have been disabled on your account. Please check your email for more details.'
+            ),
+            type: 'warning',
+        },
+        ask_financial_risk_approval: {
+            key: 'ask_financial_risk_approval',
+            header: localize('Cashier is locked'),
+            message: localize(
+                'Please complete the Appropriateness Test to access your cashier.'
             ),
             type: 'warning',
         },
@@ -171,23 +154,10 @@ export const clientNotifications = (ui = {}, client = {}) => {
             type: 'warning',
         },
         unwelcome: {
-            ...(isMobile() && {
-                action: {
-                    text: localize('Contact us'),
-                    onClick: ({ is_dashboard }) => {
-                        window.open(getStaticUrl('contact-us', { is_dashboard }));
-                    },
-                },
-            }),
             key: 'unwelcome',
             header: localize('Trading and deposits disabled'),
-            message: isMobile() ? (
-                <Localize i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact customer support for assistance.' />
-            ) : (
-                <Localize
-                    i18n_default_text='Trading and deposits have been disabled on your account. Kindly contact <0>customer support</0> for assistance.'
-                    components={[<StaticUrl key={0} className='link' href='contact-us' />]}
-                />
+            message: (
+                <Localize i18n_default_text='Unfortunately, you can only make withdrawals. Please contact us via live chat to enable deposits.' />
             ),
             type: 'danger',
         },
@@ -196,32 +166,32 @@ export const clientNotifications = (ui = {}, client = {}) => {
             header: localize('Remove deposit limits'),
             message: (
                 <Localize
-                    i18n_default_text='Please set your <0>30-day turnover limit</0> to remove deposit limits.'
-                    components={[<BinaryLink key={0} className='link' to={routes.cashier_deposit} />]}
+                    i18n_default_text='Your access to Cashier has been temporarily disabled as you have not set your 30-day turnover limit. Please go to <0>Self-exclusion</0> and set your 30-day turnover limit.'
+                    components={[<BinaryLink key={0} className='link' to={routes.self_exclusion} />]}
                 />
             ),
             type: 'danger',
         },
         risk: {
-            action: {
-                text: localize('Complete form'),
-                route: routes.financial_assessment,
-            },
             key: 'risk',
             header: localize('Withdrawal and trading limits'),
-            message: localize(
-                'Please complete the Financial Assessment form to lift your withdrawal and trading limits.'
+            message: (
+                <Localize
+                    i18n_default_text='Your cashier is locked. Please complete the <0>financial assessment</0> to unlock it.'
+                    components={[<BinaryLink key={0} className='link' to={routes.financial_assessment} />]}
+                />
             ),
             type: 'warning',
         },
         tax: {
-            action: {
-                route: routes.personal_details,
-                text: localize('Complete details'),
-            },
             key: 'tax',
             header: localize('Complete your personal details'),
-            message: localize('Please complete your Personal Details before you proceed.'),
+            message: (
+                <Localize
+                    i18n_default_text='You have not provided your tax identification number. This information is necessary for legal and regulatory requirements. Please go to <0>Personal details</0> in your account settings, and fill in your latest tax identification number.'
+                    components={[<BinaryLink key={0} className='link' to={routes.personal_details} />]}
+                />
+            ),
             type: 'danger',
         },
         tnc: {
@@ -242,15 +212,36 @@ export const clientNotifications = (ui = {}, client = {}) => {
             ),
             type: 'warning',
         },
-        required_fields: {
-            action: {
-                route: routes.personal_details,
-                text: localize('Complete details'),
-            },
-            key: 'required_fields',
-            header: localize('Complete your personal details'),
-            message: localize('Please complete your Personal Details before you proceed.'),
-            type: 'danger',
+        required_fields: (withdrawal_locked, deposit_locked) => {
+            let message, header;
+            if (withdrawal_locked) {
+                header = localize('Withdrawals are locked');
+                message = localize('Your {{opening_tag}}personal details{{closing_tag}} are incomplete. Please go to your account settings and complete your personal details to enable withdrawals.', {
+                    opening_tag  : '<a href="/account/personal-details" rel="noopener noreferrer" target="_blank" class="link">',
+                    closing_tag  : '</a>',
+                    interpolation: { escapeValue: false },
+                });
+            } else if (deposit_locked) {
+                header = localize('Deposits are locked');
+                message = localize('Your {{opening_tag}}personal details{{closing_tag}} are incomplete. Please go to your account settings and complete your personal details to enable deposits.', {
+                    opening_tag  : '<a href="/account/personal-details" rel="noopener noreferrer" target="_blank" class="link">',
+                    closing_tag  : '</a>',
+                    interpolation: { escapeValue: false },
+                });
+            } else {
+                header = localize('Cashier is locked');
+                message = localize('Your {{opening_tag}}personal details{{closing_tag}} are incomplete. Please go to your account settings and complete your personal details to enable deposits and withdrawals.', {
+                    opening_tag  : '<a href="/account/personal-details" rel="noopener noreferrer" target="_blank" class="link">',
+                    closing_tag  : '</a>',
+                    interpolation: { escapeValue: false },
+                });
+            }
+            return {
+                key: 'required_fields',
+                header,
+                message,
+                type: 'danger',
+            };
         },
         you_are_offline: {
             key: 'you_are_offline',
@@ -328,32 +319,10 @@ export const clientNotifications = (ui = {}, client = {}) => {
             ),
             type: 'danger',
         },
-        poa_expired: {
-            action: {
-                route: routes.proof_of_address,
-                text: localize('Proof of address'),
-            },
-            key: 'poa_expired',
-            header: localize('Document expired'),
-            message: localize('Your documents for proof of address is expired. Please submit again.'),
-            type: 'danger',
-        },
-        poa_rejected: {
-            key: 'poa_rejected',
-            header: localize('We could not verify your proof of address'),
-            message: (
-                <Localize i18n_default_text='We have disabled trading, deposits and withdrawals for this account.' />
-            ),
-            type: 'danger',
-        },
-        poi_expired: {
-            action: {
-                route: routes.proof_of_identity,
-                text: localize('Proof of identity'),
-            },
+        documents_expired: {
             key: 'poi_expired',
-            header: localize('Proof of identity expired'),
-            message: localize('Your proof of identity document has expired. Please submit a new one.'),
+            header: localize('Document expired'),
+            message: localize('The identification documents you submitted have expired. Please submit valid identity documents to unlock Cashier.'),
             type: 'danger',
         },
         new_version_available: {
@@ -380,6 +349,17 @@ export const clientNotifications = (ui = {}, client = {}) => {
             type: 'announce',
             should_hide_close_btn: false,
         },
+        ask_uk_funds_protection: {
+            key: 'ask_uk_funds_protection',
+            header: localize('Cashier is locked'),
+            message: (
+                <Localize
+                    i18n_default_text='Your cashier is locked. See <0>how we protect your funds</0> before you proceed.'
+                    components={[<BinaryLink key={0} className='link' to={routes.cashier_deposit} />]}
+                />
+            ),
+            type: 'warning',
+        }
     };
     return notifications;
 };
@@ -457,63 +437,92 @@ const checkAccountStatus = (
     addNotificationMessage,
     loginid,
     getRiskAssessment,
-    shouldCompleteTax
+    isAccountOfType
 ) => {
     if (isEmptyObject(account_status)) return {};
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
     const {
         authentication: { document, identity, needs_verification },
-        prompt_client_to_authenticate,
         risk_classification,
         status,
         cashier_validation,
     } = account_status;
 
     const {
-        authenticated,
         cashier_locked,
         withdrawal_locked,
+        deposit_locked,
         mt5_withdrawal_locked,
         document_needs_action,
-        unwelcome,
         max_turnover_limit_not_set,
-        allow_document_upload,
     } = getStatusValidations(status);
 
-    const { system_maintenance } = cashier_validation ? getCashierValidations(cashier_validation) : {};
+    const { 
+        system_maintenance,
+        documents_expired,
+        unwelcome_status,
+        no_withdrawal_or_trading_status,
+        withdrawal_locked_status,
+        cashier_locked_status,
+        FinancialAssessmentRequired,
+        SelfExclusion,
+        ASK_CURRENCY,
+        ASK_AUTHENTICATE,
+        ASK_FINANCIAL_RISK_APPROVAL,
+        ASK_TIN_INFORMATION,
+        ASK_SELF_EXCLUSION_MAX_TURNOVER_SET,
+        ASK_FIX_DETAILS,
+        ASK_UK_FUNDS_PROTECTION,
+    } = cashier_validation ? getCashierValidations(cashier_validation) : {};
 
     addVerificationNotifications(identity, document, addNotificationMessage);
-
     const should_show_max_turnover = client.landing_company_shortcode === 'iom' && max_turnover_limit_not_set;
-
-    const needs_authentication = needs_verification.length || allow_document_upload;
     const has_risk_assessment = getRiskAssessment(account_status);
-    const needs_poa =
-        needs_authentication &&
-        needs_verification.includes('document') &&
-        (document?.status !== 'expired' || document?.status !== 'pending');
-    const needs_poi =
-        needs_authentication &&
-        needs_verification.includes('identity') &&
-        (identity?.status !== 'expired' || identity?.status !== 'pending');
-
-    if (needs_poa && !(document.status === 'expired')) addNotificationMessage(clientNotifications().needs_poa);
-    if (needs_poi && !(identity.status === 'expired')) addNotificationMessage(clientNotifications().needs_poi);
-    if (system_maintenance) addNotificationMessage(clientNotifications().system_maintenance);
-    else if (cashier_locked) addNotificationMessage(clientNotifications().cashier_locked);
-    else if (withdrawal_locked) {
+    if (system_maintenance) {
+        addNotificationMessage(clientNotifications({}, client).system_maintenance(withdrawal_locked, deposit_locked));
+    } else if (cashier_locked) {
+        if(documents_expired) {
+            addNotificationMessage(clientNotifications().documents_expired);
+        } else if (cashier_locked_status) {
+            addNotificationMessage(clientNotifications().cashier_locked);
+        } else if (FinancialAssessmentRequired) {
+            addNotificationMessage(clientNotifications().risk);
+        } else if (ASK_CURRENCY) {
+            addNotificationMessage(clientNotifications().currency);
+        } else if (isAccountOfType('financial') && ASK_AUTHENTICATE) {
+            addNotificationMessage(clientNotifications().authenticate);
+        } else if (isAccountOfType('financial') && ASK_FINANCIAL_RISK_APPROVAL) {
+            addNotificationMessage(clientNotifications().ask_financial_risk_approval);
+        } else if (isAccountOfType('financial') && ASK_TIN_INFORMATION) {
+            addNotificationMessage(clientNotifications().tax);
+        } else if (ASK_SELF_EXCLUSION_MAX_TURNOVER_SET) {
+            addNotificationMessage(clientNotifications().max_turnover_limit_not_set);
+        } else if (ASK_FIX_DETAILS) {
+            addNotificationMessage(clientNotifications().required_fields(withdrawal_locked, deposit_locked));
+        } else if (ASK_UK_FUNDS_PROTECTION) {
+            addNotificationMessage(clientNotifications().ask_uk_funds_protection);
+        } 
+    } else if (withdrawal_locked) {
         // if client is withdrawal locked but it's because they need to authenticate
         // and they have submitted verification documents,
         // we should wait for review of documents to be done and show a different message
         const is_high_risk = risk_classification === 'high';
-        const should_authenticate = !authenticated || prompt_client_to_authenticate;
-        const doc_is_under_review = document.status === 'pending';
-        if (is_high_risk && should_authenticate && doc_is_under_review) {
+        if (is_high_risk && ASK_AUTHENTICATE) {
             addNotificationMessage(clientNotifications().withdrawal_locked_review);
-        } else {
+        } else if (no_withdrawal_or_trading_status) {
+            addNotificationMessage(clientNotifications().no_withdrawal_or_trading);
+        } else if (withdrawal_locked_status) {
             addNotificationMessage(clientNotifications().withdrawal_locked);
-        }
+        } else if (ASK_FIX_DETAILS) {
+            addNotificationMessage(clientNotifications().required_fields(withdrawal_locked, deposit_locked));
+        } 
+    } else if (deposit_locked) {
+        if (SelfExclusion) {
+            addNotificationMessage(clientNotifications().self_exclusion(client.excluded_until));
+        } else if (ASK_FIX_DETAILS) {
+            addNotificationMessage(clientNotifications().required_fields(withdrawal_locked, deposit_locked));
+        } 
     }
     if (mt5_withdrawal_locked) addNotificationMessage(clientNotifications().mt5_withdrawal_locked);
     if (document_needs_action) addNotificationMessage(clientNotifications().document_needs_action);
@@ -524,14 +533,9 @@ const checkAccountStatus = (
         /^pending|expired$/.test(document.status) ||
         /^pending|expired$/.test(identity.status);
 
-    if (unwelcome && !should_show_max_turnover && !should_hide_unwelcome) {
+    if (deposit_locked && unwelcome_status && !should_show_max_turnover && !should_hide_unwelcome) {
         addNotificationMessage(clientNotifications().unwelcome);
     }
-
-    if (has_risk_assessment) addNotificationMessage(clientNotifications().risk);
-    if (shouldCompleteTax(account_status)) addNotificationMessage(clientNotifications().tax);
-
-    if (should_show_max_turnover) addNotificationMessage(clientNotifications().max_turnover_limit_not_set);
 
     return {
         has_risk_assessment,
@@ -551,7 +555,6 @@ export const excluded_notifications = isMobile()
       ];
 
 export const handleClientNotifications = (client, client_store, ui_store, cashier_store) => {
-    const { currency, excluded_until } = client;
     const {
         loginid,
         account_status,
@@ -559,16 +562,11 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         getRiskAssessment,
         is_tnc_needed,
         isAccountOfType,
-        shouldCompleteTax,
     } = client_store;
     const { addNotificationMessage, removeNotificationMessageByKey } = ui_store;
     const { is_p2p_visible } = cashier_store;
 
     if (loginid !== LocalStore.get('active_loginid')) return {};
-    if (!currency) addNotificationMessage(clientNotifications(ui_store).currency);
-    if (excluded_until) {
-        addNotificationMessage(clientNotifications(ui_store, client_store).self_exclusion(excluded_until));
-    }
 
     const { has_risk_assessment } = checkAccountStatus(
         account_status,
@@ -576,7 +574,7 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         addNotificationMessage,
         loginid,
         getRiskAssessment,
-        shouldCompleteTax
+        isAccountOfType
     );
     if (is_p2p_visible) {
         addNotificationMessage(clientNotifications().dp2p);
@@ -587,10 +585,6 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
     if (is_tnc_needed) addNotificationMessage(clientNotifications(ui_store).tnc);
 
     const has_missing_required_field = hasMissingRequiredField(account_settings, client, isAccountOfType);
-    if (has_missing_required_field) {
-        addNotificationMessage(clientNotifications(ui_store).required_fields);
-    }
-
     return {
         has_missing_required_field,
         has_risk_assessment,

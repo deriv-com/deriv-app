@@ -579,7 +579,6 @@ export default class CashierStore extends BaseStore {
                     is_ask_authentication: true,
                 };
                 break;
-            case 'FinancialAssessmentRequired':
             case 'ASK_FINANCIAL_RISK_APPROVAL':
                 this.config[this.active_container].error = {
                     is_ask_financial_risk_approval: true,

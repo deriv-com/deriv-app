@@ -63,13 +63,23 @@
     &__account-transfer__form-submit-button {
         margin: 0.4rem 0 2.4rem 2.4rem;
     }
+    .account-transfer {
+        &__drop-down-wrapper {
+            @include mobile {
+                margin-top: 1.2rem;
+                .dc-dropdown__display {
+                    min-height: 4rem;
+                }
+            }
+        }
+    }
     .crypto-transfer__receipt-form-submit {
         @include mobile {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            margin-top: 2rem;
+            margin: 2rem 0;
             .dc-btn {
                 &--primary {
                     margin: 0 auto;

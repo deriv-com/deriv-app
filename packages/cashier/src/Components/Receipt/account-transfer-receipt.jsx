@@ -130,7 +130,7 @@ const AccountTransferReceipt = ({
             >
                 <Modal.Body>
                     <Localize
-                        i18n_default_text='We’re switching over to your {{currency}} account to view the statement.'
+                        i18n_default_text='We’re switching over to your {{currency}} account to view the transaction.'
                         values={{ currency: switch_to.currency }}
                     />
                 </Modal.Body>

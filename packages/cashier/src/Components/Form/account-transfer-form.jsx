@@ -353,110 +353,59 @@ const AccountTransferForm = ({
                         ) : (
                             <Form>
                                 <div className='cashier__drop-down-wrapper account-transfer__drop-down-wrapper'>
-                                    <DesktopWrapper>
-                                        <Dropdown
-                                            id='transfer_from'
-                                            className='cashier__drop-down account-transfer__drop-down'
-                                            classNameDisplay='cashier__drop-down-display'
-                                            classNameDisplaySpan='cashier__drop-down-display-span'
-                                            classNameItems='cashier__drop-down-items'
-                                            classNameLabel='cashier__drop-down-label'
-                                            is_large
-                                            label={localize('From')}
-                                            list={from_accounts}
-                                            list_height='404'
-                                            name='transfer_from'
-                                            value={selected_from.value}
-                                            onChange={e => {
-                                                onChangeTransferFrom(e);
-                                                handleChange(e);
-                                                resetTimer();
-                                                setFieldValue('amount', '');
-                                                setFieldError('amount', '');
-                                                setFieldTouched('amount', false);
-                                                setFieldValue('crypto_amount', '');
-                                                setFieldError('crypto_amount', '');
-                                                setFieldTouched('crypto_amount', false);
-                                            }}
-                                            error={selected_from.error}
-                                        />
-                                    </DesktopWrapper>
-                                    <MobileWrapper>
-                                        <SelectNative
-                                            placeholder={localize('Please select')}
-                                            className='account-transfer__transfer-from'
-                                            classNameDisplay='cashier__drop-down-display'
-                                            name='transfer_from'
-                                            label={localize('From')}
-                                            value={selected_from.value}
-                                            list_items={from_accounts}
-                                            onChange={e => {
-                                                onChangeTransferFrom(e);
-                                                resetTimer();
-                                                setFieldValue('amount', '');
-                                                setFieldError('amount', '');
-                                                setFieldTouched('amount', false);
-                                                setFieldValue('crypto_amount', '');
-                                                setFieldError('crypto_amount', '');
-                                                setFieldTouched('crypto_amount', false);
-                                            }}
-                                            error={selected_from.error}
-                                        />
-                                    </MobileWrapper>
-                                    <DesktopWrapper>
-                                        <Dropdown
-                                            id='transfer_to'
-                                            className='cashier__drop-down account-transfer__drop-down account-transfer__drop-down--to-dropdown'
-                                            classNameDisplay='cashier__drop-down-display'
-                                            classNameDisplaySpan='cashier__drop-down-display-span'
-                                            classNameItems='cashier__drop-down-items'
-                                            classNameLabel='cashier__drop-down-label'
-                                            classNameHint='cashier__hint'
-                                            is_large
-                                            label={localize('To')}
-                                            list={to_accounts}
-                                            list_height='404'
-                                            name='transfer_to'
-                                            value={selected_to.value}
-                                            onChange={e => {
-                                                onChangeTransferTo(e);
-                                                resetTimer();
-                                                setFieldValue('amount', '');
-                                                setFieldError('amount', '');
-                                                setFieldTouched('amount', false);
-                                                setFieldValue('crypto_amount', '');
-                                                setFieldError('crypto_amount', '');
-                                                setFieldTouched('crypto_amount', false);
-                                            }}
-                                            hint={transfer_to_hint}
-                                            error={selected_to.error}
-                                        />
-                                    </DesktopWrapper>
-                                    <MobileWrapper>
-                                        <SelectNative
-                                            placeholder={localize('Please select')}
-                                            className='account-transfer__transfer-to'
-                                            classNameDisplay='cashier__drop-down-display'
-                                            classNameHint='cashier__hint'
-                                            label={localize('To')}
-                                            name='transfer_to'
-                                            value={selected_to.value}
-                                            list_items={to_accounts}
-                                            onChange={e => {
-                                                onChangeTransferTo(e);
-                                                handleChange(e);
-                                                resetTimer();
-                                                setFieldValue('amount', '');
-                                                setFieldError('amount', '');
-                                                setFieldTouched('amount', false);
-                                                setFieldValue('crypto_amount', '', false);
-                                                setFieldError('crypto_amount', '');
-                                                setFieldTouched('crypto_amount', false, false);
-                                            }}
-                                            hint={transfer_to_hint}
-                                            error={selected_to.error}
-                                        />
-                                    </MobileWrapper>
+                                    <Dropdown
+                                        id='transfer_from'
+                                        className='cashier__drop-down account-transfer__drop-down'
+                                        classNameDisplay='cashier__drop-down-display'
+                                        classNameDisplaySpan='cashier__drop-down-display-span'
+                                        classNameItems='cashier__drop-down-items'
+                                        classNameLabel='cashier__drop-down-label'
+                                        is_large
+                                        label={localize('From')}
+                                        list={from_accounts}
+                                        list_height='404'
+                                        name='transfer_from'
+                                        value={selected_from.value}
+                                        onChange={e => {
+                                            onChangeTransferFrom(e);
+                                            handleChange(e);
+                                            resetTimer();
+                                            setFieldValue('amount', '');
+                                            setFieldError('amount', '');
+                                            setFieldTouched('amount', false);
+                                            setFieldValue('crypto_amount', '');
+                                            setFieldError('crypto_amount', '');
+                                            setFieldTouched('crypto_amount', false);
+                                        }}
+                                        error={selected_from.error}
+                                    />
+                                    <Dropdown
+                                        id='transfer_to'
+                                        className='cashier__drop-down account-transfer__drop-down account-transfer__drop-down--to-dropdown'
+                                        classNameDisplay='cashier__drop-down-display'
+                                        classNameDisplaySpan='cashier__drop-down-display-span'
+                                        classNameItems='cashier__drop-down-items'
+                                        classNameLabel='cashier__drop-down-label'
+                                        classNameHint='cashier__hint'
+                                        is_large
+                                        label={localize('To')}
+                                        list={to_accounts}
+                                        list_height='404'
+                                        name='transfer_to'
+                                        value={selected_to.value}
+                                        onChange={e => {
+                                            onChangeTransferTo(e);
+                                            resetTimer();
+                                            setFieldValue('amount', '');
+                                            setFieldError('amount', '');
+                                            setFieldTouched('amount', false);
+                                            setFieldValue('crypto_amount', '');
+                                            setFieldError('crypto_amount', '');
+                                            setFieldTouched('crypto_amount', false);
+                                        }}
+                                        hint={transfer_to_hint}
+                                        error={selected_to.error}
+                                    />
                                 </div>
                                 { selected_from.currency === selected_to.currency ?
                                     <Field name='amount' validate={validateAmount}>

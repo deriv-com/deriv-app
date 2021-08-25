@@ -128,7 +128,7 @@ const CryptoFiatConverter = ({
                                     setCryptoAmount(e.target.value);
                                 }}
                                 type='text'
-                                error={touched.crypto_amount && errors.crypto_amount}
+                                error={touched.crypto_amount && errors.crypto_amount && insufficient_fund_error}
                                 label={localize('Amount ({{currency}})', { currency: crypto_currency })}
                                 value={crypto_amount}
                                 autoComplete='off'

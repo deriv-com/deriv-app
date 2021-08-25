@@ -58,6 +58,8 @@ const App = ({ root_store }) => {
         initFormErrorMessages(FORM_ERROR_MESSAGES);
         setSharedCFDText(CFD_TEXT);
         handleResize();
+        root_store.common.setPlatform();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleResize = React.useCallback(() => {

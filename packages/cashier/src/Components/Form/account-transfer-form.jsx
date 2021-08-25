@@ -12,7 +12,6 @@ import {
     Money,
     DesktopWrapper,
     MobileWrapper,
-    SelectNative,
     Text,
 } from '@deriv/components';
 import { getDecimalPlaces, getCurrencyDisplayCode, getCurrencyName, validNumber } from '@deriv/shared';

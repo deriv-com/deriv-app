@@ -211,7 +211,7 @@ export default class RunPanelStore {
 
     @action.bound
     showStopMultiplierContractDialog() {
-        const { summary_card, core } = this.root_store;
+        const { summary_card, core, transactions } = this.root_store;
         const { ui } = core;
 
         this.onOkButtonClick = () => {
@@ -219,6 +219,9 @@ export default class RunPanelStore {
             this.dbot.terminateBot();
             this.onCloseDialog();
             summary_card.clear();
+            if (transactions.elements.length) {
+                transactions.recoverPendingContracts();
+            }
         };
         this.onCancelButtonClick = () => {
             this.onClickSell();

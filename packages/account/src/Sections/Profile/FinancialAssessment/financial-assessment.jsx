@@ -119,11 +119,7 @@ const SubmittedPage = ({ platform }) => {
     const history = useHistory();
 
     const onClickButton = () => {
-        if (platforms[platform].is_hard_redirect) {
-            window.location.href = 'https://app.deriv.com/cashier/p2p';
-        } else {
-            history.push(platforms[platform].route_to_path);
-        }
+        history.push(platforms[platform].route_to_path);
     };
 
     const redirectToPOA = () => {
@@ -139,16 +135,30 @@ const SubmittedPage = ({ platform }) => {
                 icon={<Icon icon='IcSuccess' width={96} height={90} />}
             >
                 <div className='account-management-flex-wrapper account-management-submit-success'>
-                    <Button
-                        type='button'
-                        has_effect
-                        text={localize('Back to {{platform_name}}', {
-                            platform_name: platforms[platform].platform_name,
-                        })}
-                        onClick={onClickButton}
-                        primary
-                        large
-                    />
+                    {platforms[platform].is_hard_redirect ? (
+                        <a href='https://app.deriv.com/cashier/p2p' target='_blank' rel='noreferrer'>
+                            <Button
+                                type='button'
+                                has_effect
+                                text={localize('Back to {{platform_name}}', {
+                                    platform_name: platforms[platform].platform_name,
+                                })}
+                                primary
+                                large
+                            />
+                        </a>
+                    ) : (
+                        <Button
+                            type='button'
+                            has_effect
+                            text={localize('Back to {{platform_name}}', {
+                                platform_name: platforms[platform].platform_name,
+                            })}
+                            onClick={onClickButton}
+                            primary
+                            large
+                        />
+                    )}
                 </div>
             </IconMessageContent>
         );

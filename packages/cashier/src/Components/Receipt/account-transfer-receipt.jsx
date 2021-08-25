@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { Button, Modal, Icon, Text } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
@@ -123,7 +123,7 @@ const AccountTransferReceipt = ({
                 toggleModal={toggleSwitchAlert}
                 enableApp={enableApp}
                 disableApp={disableApp}
-                has_close_icon={isMobile()}
+                has_close_icon={false}
                 id='account_transfer_switch_modal'
                 small
                 title={localize(`Switch to ${switch_to.currency} account?`)}

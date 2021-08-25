@@ -449,9 +449,9 @@ const AccountTransferForm = ({
                                                 setFieldValue('amount', '');
                                                 setFieldError('amount', '');
                                                 setFieldTouched('amount', false);
-                                                setFieldValue('crypto_amount', '');
+                                                setFieldValue('crypto_amount', '', false);
                                                 setFieldError('crypto_amount', '');
-                                                setFieldTouched('crypto_amount', false);
+                                                setFieldTouched('crypto_amount', false, false);
                                             }}
                                             hint={transfer_to_hint}
                                             error={selected_to.error}

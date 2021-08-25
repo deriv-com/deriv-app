@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import { Text } from '@deriv/components';
 import { getDecimalPlaces } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { useFormikContext} from 'formik';
 
 const PercentageSelector = ({ amount, currency, from_account, getCalculatedAmount, to_account}) => {
-    const { setFieldError, setFieldValue } = useFormikContext();
     const [percentage, setPercentage] = React.useState('0');
 
     React.useEffect(() => {
@@ -28,8 +26,6 @@ const PercentageSelector = ({ amount, currency, from_account, getCalculatedAmoun
             }
         }
 
-        setFieldValue('crypto_amount', ''); 
-        setFieldError('crypto_amount', '');
         getCalculatedAmount((amount * (percent / 100)).toFixed(getDecimalPlaces(currency)));
     };
 

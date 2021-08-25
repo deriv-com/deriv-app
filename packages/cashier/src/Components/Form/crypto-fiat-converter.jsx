@@ -54,7 +54,7 @@ const CryptoFiatConverter = ({
     to_currency,
     validateFromAmount,
 }) => {
-    const { errors, values, touched, handleBlur, handleChange, setFieldError } = useFormikContext();
+    const { errors, touched, handleBlur, handleChange, setFieldError } = useFormikContext();
     const [arrow_icon_direction, setArrowIconDirection] = React.useState('right');
 
     const validateToAmount = amount => {
@@ -73,6 +73,11 @@ const CryptoFiatConverter = ({
         return () => resetTimer();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        setArrowIconDirection('right');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [from_currency]);
 
     return (
         <div className='crypto-fiat-converter-form'>
@@ -120,16 +125,11 @@ const CryptoFiatConverter = ({
                             }}
                             onBlur={e => {
                                 handleBlur(e);
-                                if (!is_timer_visible){
-                                    if (!values.fiat_amount || errors.fiat_amount) {
-                                        setCryptoAmount('');
-                                    } else {
-                                        onChangeFiatAmount(e, to_currency, from_currency);
-                                    }
-                                }
+                                onChangeFiatAmount(e, to_currency, from_currency);
                                 setFieldError('crypto_amount', '');    
                             }}
                             onChange={e => {
+                                setFieldError('fiat_amount', '');
                                 setIsTimerVisible(false);
                                 handleChange(e);
                                 setFiatAmount(e.target.value);       

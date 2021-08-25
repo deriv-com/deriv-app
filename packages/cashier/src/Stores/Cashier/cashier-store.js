@@ -785,16 +785,20 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     validateCryptoFiatConverter(amount) {
-        const { is_ok, message } = validNumber(amount, {
-            type: 'float',
-            decimals: getDecimalPlaces(this.config.account_transfer.selected_from.currency),
-            min: this.config.account_transfer.transfer_limit.min,
-            max: this.config.account_transfer.transfer_limit.max,
-        });
-        if (!is_ok) {
-            this.setCryptoFiatConverterError(message);
-        } else if (+this.config.account_transfer.selected_from.balance < +amount) { 
-            this.setCryptoFiatConverterError(localize('Insufficient funds'));
+        if(amount) {
+            const { is_ok, message } = validNumber(amount, {
+                type: 'float',
+                decimals: getDecimalPlaces(this.config.account_transfer.selected_from.currency),
+                min: this.config.account_transfer.transfer_limit.min,
+                max: this.config.account_transfer.transfer_limit.max,
+            });
+            if (!is_ok) {
+                this.setCryptoFiatConverterError(message);
+            } else if (+this.config.account_transfer.selected_from.balance < +amount) { 
+                this.setCryptoFiatConverterError(localize('Insufficient funds'));
+            } else {
+                this.setCryptoFiatConverterError('');
+            }
         } else {
             this.setCryptoFiatConverterError('');
         }

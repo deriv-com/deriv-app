@@ -120,7 +120,7 @@ const SubmittedPage = ({ platform }) => {
 
     const onClickButton = () => {
         if (platforms[platform].is_hard_redirect) {
-            window.location.href = 'deriv://dp2p'; // Works for both Android and iOS
+            window.location.href = 'https://app.deriv.com/cashier/p2p';
         } else {
             history.push(platforms[platform].route_to_path);
         }

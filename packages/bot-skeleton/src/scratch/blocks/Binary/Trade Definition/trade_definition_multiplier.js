@@ -246,8 +246,12 @@ Blockly.JavaScript.trade_definition_multiplier = block => {
     const { currency } = DBotStore.instance.client;
     const { setContractUpdateConfig } = DBotStore.instance;
     const multiplier_value = block.getFieldValue('MULTIPLIERTYPE_LIST') || '1';
-    const stop_loss = block.childValueToCode('multiplier_stop_loss', 'AMOUNT');
-    const take_profit = block.childValueToCode('multiplier_take_profit', 'AMOUNT');
+    const stop_loss =
+        !block.getChildByType('multiplier_stop_loss')?.disabled &&
+        block.childValueToCode('multiplier_stop_loss', 'AMOUNT');
+    const take_profit =
+        !block.getChildByType('multiplier_take_profit')?.disabled &&
+        block.childValueToCode('multiplier_take_profit', 'AMOUNT');
     const limit_order = {};
     limit_order.take_profit = take_profit ? +take_profit : undefined;
     limit_order.stop_loss = stop_loss ? +stop_loss : undefined;

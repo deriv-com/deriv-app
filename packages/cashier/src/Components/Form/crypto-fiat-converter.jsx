@@ -111,47 +111,10 @@ const CryptoFiatConverter = ({
                                     setFieldError('fiat_amount', '');
                                 }}
                                 type='text'
-                                error={touched.crypto_amount && errors.crypto_amount}
+                                error={touched.crypto_amount && errors.crypto_amount && insufficient_fund_error}
                                 label={localize('Amount ({{currency}})', { currency: crypto_currency })}
                                 value={crypto_amount}
                             />
-                        )}
-                    </Field>
-                    {arrow_icon_direction === 'right' ? (
-                        <Icon icon='IcArrowRightBold' />
-                    ) : (
-                        <Icon icon='IcArrowLeftBold' />
-                    )}
-                    <Field name='fiat_amount' validate={validateFiatAmount}>
-                        {({ field }) => (
-                            <InputGroup className='input-group'>
-                                <Input
-                                    {...field}
-                                    onFocus={() => {
-                                        setArrowIconDirection('left');
-                                    }}
-                                    onBlur={e => {
-                                        handleBlur(e);
-                                        if (!is_timer_visible) {
-                                            if (!values.fiat_amount || errors.fiat_amount) {
-                                                setCryptoAmount('');
-                                            } else {
-                                                onChangeFiatAmount(e, current_fiat_currency, crypto_currency);
-                                            }
-                                        }
-                                    }}
-                                    onChange={e => {
-                                        setIsTimerVisible(false);
-                                        handleChange(e);
-                                        setFiatAmount(e.target.value);
-                                        setFieldError('crypto_amount', '');
-                                    }}
-                                    type='text'
-                                    error={(touched.fiat_amount && errors.fiat_amount) || insufficient_fund_error}
-                                    label={localize('Amount ({{currency}})', { currency: current_fiat_currency })}
-                                    value={fiat_amount}
-                                />
-                            </InputGroup>
                         )}
                     </Field>
                     <MobileWrapper>
@@ -192,7 +155,26 @@ const CryptoFiatConverter = ({
                                         setFiatAmount(e.target.value);
                                         setFieldError('crypto_amount', '');
                                     }}
+                                    type='text'
+                                    error={touched.fiat_amount && errors.fiat_amount}
+                                    label={localize('Amount ({{currency}})', { currency: current_fiat_currency })}
+                                    value={fiat_amount}
                                 />
+                                {is_timer_visible && (
+                                    <Timer
+                                        onComplete={() => {
+                                            onChangeCryptoAmount(
+                                                {
+                                                    target: {
+                                                        value: crypto_amount,
+                                                    },
+                                                },
+                                                crypto_currency,
+                                                current_fiat_currency
+                                            );
+                                        }}
+                                    />
+                                )}
                             </InputGroup>
                         )}
                     </Field>

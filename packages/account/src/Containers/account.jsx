@@ -54,7 +54,7 @@ const Account = ({
 
     React.useEffect(() => {
         toggleAccount(true);
-    }, [should_allow_authentication, toggleAccount]);
+    }, [toggleAccount]);
 
     routes.forEach(menu_item => {
         menu_item.subroutes.forEach(route => {

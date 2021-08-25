@@ -7,10 +7,10 @@ import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { useInterval } from '@deriv/components/src/hooks';
 
-const Timer = (props) => {
+const Timer = props => {
     const initial_time = 60;
     const [remaining_time, setRemainingTime] = React.useState(initial_time);
-   
+
     useInterval(() => {
         if (remaining_time > 0) {
             setRemainingTime(remaining_time - 1);
@@ -25,8 +25,7 @@ const Timer = (props) => {
 
     return (
         <Text as='p' size='xs' className='timer'>
-            <Localize i18n_default_text='{{remaining_time}}s'
-                values={{ remaining_time }}/>
+            <Localize i18n_default_text='{{remaining_time}}s' values={{ remaining_time }} />
         </Text>
     );
 };
@@ -64,7 +63,7 @@ const CryptoFiatConverter = ({
                 type: 'float',
                 decimals: getDecimalPlaces(to_currency),
             });
-            if (!is_ok) return message; 
+            if (!is_ok) return message;
         }
     
         return undefined;

@@ -42,6 +42,7 @@ export const icons = {
         'IcCashierChangellyRowLight',
         'IcCashierChangelly',
         'IcCashierCimbNiaga',
+        'IcCashierClipboard',
         'IcCashierDepositLock',
         'IcCashierDeposit',
         'IcCashierDirectaDark',
@@ -425,6 +426,7 @@ export const icons = {
         'IcDxtradeDeviceTablet',
         'IcDxtradeFinancialPlatform',
         'IcDxtradeFinancial',
+        'IcDxtradeOnePassword',
         'IcDxtradeSyntheticPlatform',
         'IcDxtradeSynthetic',
     ],
@@ -720,6 +722,7 @@ export const icons = {
         'IcUnderlyingWLDEUR',
         'IcUnderlyingWLDGBP',
         'IcUnderlyingWLDUSD',
+        'IcUnderlyingWLDXAU',
     ],
     wallet: [
         'IcWalletClearFunds',

@@ -114,7 +114,9 @@ export default class ContractStore extends BaseStore {
 
     @action.bound
     populateContractUpdateHistory({ contract_update_history }) {
-        this.root_store.modules.contract_replay.contract_store.contract_update_history = contract_update_history;
+        this.root_store.modules.contract_replay.contract_store.contract_update_history = contract_update_history.sort(
+            (a, b) => b.order_date - a.order_date
+        );
     }
 
     updateBarriersArray(contract_info, is_dark_mode) {

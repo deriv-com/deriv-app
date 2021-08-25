@@ -110,7 +110,7 @@ export default class TradeStore extends BaseStore {
 
     // Chart loader observables
     @observable is_chart_loading;
-    @observable is_active_symbols_loading = false;
+    @observable should_show_active_symbols_loading = false;
 
     // Multiplier trade params
     @observable multiplier;
@@ -278,7 +278,7 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async loadActiveSymbols(should_set_default_symbol = true, should_show_loading = true) {
-        this.is_active_symbols_loading = should_show_loading;
+        this.should_show_active_symbols_loading = should_show_loading;
 
         await this.setActiveSymbols();
         if (should_set_default_symbol) await this.setDefaultSymbol();
@@ -290,7 +290,7 @@ export default class TradeStore extends BaseStore {
         }
 
         runInAction(() => {
-            this.is_active_symbols_loading = false;
+            this.should_show_active_symbols_loading = false;
         });
     }
 

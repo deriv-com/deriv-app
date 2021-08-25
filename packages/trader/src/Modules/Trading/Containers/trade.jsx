@@ -31,7 +31,7 @@ const Trade = ({
     contract_type,
     form_components,
     getFirstOpenMarket,
-    is_active_symbols_loading,
+    should_show_active_symbols_loading,
     is_chart_loading,
     is_dark_theme,
     is_eu,
@@ -148,7 +148,7 @@ const Trade = ({
                 >
                     <DesktopWrapper>
                         <div className='chart-container__wrapper'>
-                            <ChartLoader is_visible={is_chart_loading || is_active_symbols_loading} />
+                            <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
                             <ChartTrade
                                 try_synthetic_indices={try_synthetic_indices}
                                 try_open_markets={try_open_markets}
@@ -160,7 +160,7 @@ const Trade = ({
                         <ChartLoader
                             is_visible={
                                 is_chart_loading ||
-                                is_active_symbols_loading ||
+                                should_show_active_symbols_loading ||
                                 (isDigitTradeType(contract_type) && !digits[0])
                             }
                         />
@@ -171,7 +171,7 @@ const Trade = ({
                                 !is_trade_enabled ||
                                 form_components.length === 0 ||
                                 is_chart_loading ||
-                                is_active_symbols_loading
+                                should_show_active_symbols_loading
                             }
                         >
                             {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
@@ -218,7 +218,7 @@ export default connect(({ client, common, modules, ui }) => ({
     network_status: common.network_status,
     contract_type: modules.trade.contract_type,
     form_components: modules.trade.form_components,
-    is_active_symbols_loading: modules.trade.is_active_symbols_loading,
+    should_show_active_symbols_loading: modules.trade.should_show_active_symbols_loading,
     is_chart_loading: modules.trade.is_chart_loading,
     is_market_closed: modules.trade.is_market_closed,
     show_digits_stats: modules.trade.show_digits_stats,

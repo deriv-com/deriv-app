@@ -8,7 +8,7 @@ import NotificationStatusIcons from './notification-status-icons.jsx';
 import NotificationBanner from './notification-banner.jsx';
 import { default_delay, types } from './constants';
 import { BinaryLink } from '../../Routes';
-// restarting circleci
+
 const Notification = ({ data, removeNotificationMessage }) => {
     const linear_progress_container_ref = React.useRef(null);
     const { is_dashboard } = React.useContext(PlatformContext);

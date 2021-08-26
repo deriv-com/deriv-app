@@ -40,9 +40,11 @@ const InputGroup = ({ children, className }) => {
 
 const CryptoFiatConverter = ({
     balance,
+    calculatePercentage,
     crypto_amount,
     crypto_currency,
     current_fiat_currency,
+    percentageSelectorSelectionStatus,
     fiat_amount,
     insufficient_fund_error,
     is_timer_visible,
@@ -69,9 +71,9 @@ const CryptoFiatConverter = ({
             error_message = localize('This field is required.');
         }
         if (amount || crypto_amount) {
-            const { is_ok, message } = validNumber(amount, {
+            const { is_ok, message } = validNumber(amount || crypto_amount, {
                 type: 'float',
-                decimals: getDecimalPlaces(amount),
+                decimals: getDecimalPlaces(crypto_currency),
             });
             if (!is_ok) error_message = message;
 
@@ -126,6 +128,8 @@ const CryptoFiatConverter = ({
                                     setIsTimerVisible(false);
                                     handleChange(e);
                                     setCryptoAmount(e.target.value);
+                                    percentageSelectorSelectionStatus(true);
+                                    calculatePercentage();
                                 }}
                                 type='number'
                                 error={(touched.crypto_amount && errors.crypto_amount) || insufficient_fund_error}
@@ -173,6 +177,8 @@ const CryptoFiatConverter = ({
                                         setIsTimerVisible(false);
                                         handleChange(e);
                                         setFiatAmount(e.target.value);
+                                        percentageSelectorSelectionStatus(true);
+                                        calculatePercentage();
                                     }}
                                     type='number'
                                     error={touched.fiat_amount && errors.fiat_amount}
@@ -209,9 +215,11 @@ const CryptoFiatConverter = ({
 
 CryptoFiatConverter.propTypes = {
     balance: PropTypes.string,
+    calculatePercentage: PropTypes.func,
     crypto_amount: PropTypes.string,
     crypto_currency: PropTypes.string,
     current_fiat_currency: PropTypes.string,
+    percentageSelectorSelectionStatus: PropTypes.func,
     fiat_amount: PropTypes.string,
     insufficient_fund_error: PropTypes.string,
     is_timer_visible: PropTypes.bool,
@@ -227,9 +235,11 @@ CryptoFiatConverter.propTypes = {
 
 export default connect(({ client, modules }) => ({
     balance: client.balance,
+    calculatePercentage: modules.cashier.calculatePercentage,
     crypto_amount: modules.cashier.crypto_amount,
     crypto_currency: client.currency,
     current_fiat_currency: client.current_fiat_currency,
+    percentageSelectorSelectionStatus: modules.cashier.percentageSelectorSelectionStatus,
     fiat_amount: modules.cashier.fiat_amount,
     insufficient_fund_error: modules.cashier.insufficient_fund_error,
     is_timer_visible: modules.cashier.is_timer_visible,

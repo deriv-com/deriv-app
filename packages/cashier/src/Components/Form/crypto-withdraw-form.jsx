@@ -43,11 +43,19 @@ const CryptoWithdrawForm = ({
     fiat_converter_error,
     has_invalid_crypto_address,
     requestWithdraw,
+    percentage,
+    percentageSelectorSelectionStatus,
     setBlockchainAddress,
     setPercentageSelectorResult,
     verification_code,
     setInvalidCryptoAddress,
+    should_percentage_reset,
 }) => {
+    React.useEffect(() => {
+        return () => percentageSelectorSelectionStatus(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const validateAddress = address => {
         if (!address) return localize('This field is required.');
 
@@ -60,11 +68,11 @@ const CryptoWithdrawForm = ({
 
     return (
         <div className='cashier__wrapper withdraw__wrapper'>
-            {isMobile() && <Header currency={currency} />}
             {!isMobile() && <Header currency={currency} />}
             <div className='withdraw__form-icon'>
                 <Icon icon={`IcCurrency-${account_platform_icon.toLowerCase()}`} size={isMobile() ? 64 : 128} />
             </div>
+            {isMobile() && <Header currency={currency} />}
             <Formik
                 initialValues={{
                     address: '',
@@ -109,6 +117,8 @@ const CryptoWithdrawForm = ({
                                 amount={+balance}
                                 currency={currency}
                                 getCalculatedAmount={setPercentageSelectorResult}
+                                percentage={percentage}
+                                should_percentage_reset={should_percentage_reset}
                             />
                         </div>
                         <div className='withdraw__crypto-fiat-converter'>
@@ -149,10 +159,13 @@ CryptoWithdrawForm.propTypes = {
     currency: PropTypes.string,
     fiat_converter_error: PropTypes.string,
     has_invalid_crypto_address: PropTypes.bool,
+    percentage: PropTypes.number,
+    percentageSelectorSelectionStatus: PropTypes.func,
     requestWithdraw: PropTypes.func,
     setBlockchainAddress: PropTypes.func,
     setInvalidCryptoAddress: PropTypes.func,
     setPercentageSelectorResult: PropTypes.func,
+    should_percentage_reset: PropTypes.bool,
     verification_code: PropTypes.string,
 };
 
@@ -165,9 +178,12 @@ export default connect(({ client, modules }) => ({
     currency: client.currency,
     fiat_converter_error: modules.cashier.fiat_converter_error,
     has_invalid_crypto_address: modules.cashier.config.withdraw.has_invalid_crypto_address,
+    percentage: modules.cashier.percentage,
+    percentageSelectorSelectionStatus: modules.cashier.percentageSelectorSelectionStatus,
     requestWithdraw: modules.cashier.requestWithdraw,
     setBlockchainAddress: modules.cashier.setBlockchainAddress,
     setInvalidCryptoAddress: modules.cashier.config.withdraw.setInvalidCryptoAddress,
     setPercentageSelectorResult: modules.cashier.setPercentageSelectorResult,
+    should_percentage_reset: modules.cashier.should_percentage_reset,
     verification_code: client.verification_code.payment_withdraw,
 }))(CryptoWithdrawForm);

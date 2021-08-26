@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Clipboard, Icon, Text } from '@deriv/components';
-import { isMobile, routes } from '@deriv/shared';
+import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getAccountText } from '../../_common/utility';
@@ -143,7 +143,7 @@ const CryptoWithdrawReceipt = ({
                     className='withdraw__receipt-button'
                     has_effect
                     text={localize('Make a new withdraw')}
-                    onClick={() => history.push(routes.withdraw)}
+                    onClick={() => setIsWithdrawConfirmed(false)}
                     primary
                 />
             </div>

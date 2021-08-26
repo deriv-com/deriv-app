@@ -208,6 +208,8 @@ export default class CashierStore extends BaseStore {
     @observable fiat_converter_error = '';
     @observable blockchain_address = '';
     @observable percentage_selector_result = 0;
+    @observable should_percentage_reset = false;
+    @observable percentage = 0;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -260,6 +262,20 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    calculatePercentage() {
+        this.percentage = ((this.crypto_amount / +this.root_store.client.balance) * 100).toFixed(0);
+    }
+
+    @action.bound
+    percentageSelectorSelectionStatus(status) {
+        this.should_percentage_reset = status;
+
+        if (status) {
+            this.percentage = 0;
+        }
+    }
+
+    @action.bound
     setPercentageSelectorResult(amount) {
         this.percentage_selector_result = amount;
         this.setCryptoAmount(amount);
@@ -269,6 +285,7 @@ export default class CashierStore extends BaseStore {
             this.root_store.client.current_fiat_currency
         );
         this.setIsTimerVisible(false);
+        this.percentageSelectorSelectionStatus(false);
     }
 
     async saveWithdraw(verification_code) {
@@ -419,6 +436,13 @@ export default class CashierStore extends BaseStore {
     @action.bound
     setCashierTabIndex(index) {
         this.cashier_route_tab_index = index;
+    }
+
+    @action.bound
+    onMountWithdraw(verification_code) {
+        if (verification_code) {
+            this.clearVerification();
+        }
     }
 
     @action.bound

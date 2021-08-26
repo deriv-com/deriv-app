@@ -34,10 +34,7 @@ const ProofOfIdentityContainer = ({
     const should_show_redirect_btn = from_platform.name === 'P2P';
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
-
-    const handleRequireSubmission = () => {
-        setHasRequireSubmission(true);
-    };
+    const handleRequireSubmission = () => setHasRequireSubmission(true);
 
     React.useEffect(() => {
         // only re-mount logic when switching is done

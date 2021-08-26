@@ -2,7 +2,6 @@ import { getUrlBase } from '@deriv/shared';
 
 export const getRegex = target_regex => {
     const output_regex = regex.find(r => r.regex_string === target_regex);
-    console.log(output_regex);
     if (output_regex) {
         return new RegExp(output_regex.value, output_regex.flags);
     }

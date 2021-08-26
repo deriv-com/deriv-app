@@ -56,6 +56,11 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                                         label={localize('Next')}
                                         onCancel={onCancel}
                                         form_error={form_error}
+                                        onClick={() => {
+                                            if (!is_next_btn_disabled) {
+                                                onSubmit(index, { poi_state }, false);
+                                            }
+                                        }}
                                     />
                                 </Modal.Footer>
                             </div>

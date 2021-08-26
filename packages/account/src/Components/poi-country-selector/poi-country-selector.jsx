@@ -39,8 +39,7 @@ const CountrySelector = ({ handleSelectionNext, residence_list, selected_country
     };
 
     React.useEffect(() => {
-        const enabled_countries = residence_list.filter(r => !r.disabled);
-        setCountryList(enabled_countries);
+        setCountryList(residence_list);
     }, [residence_list]);
 
     return (

@@ -121,7 +121,7 @@ export default class AppStore {
 
         this.disposeLandingCompanyChangeReaction = reaction(
             () => client.landing_company_shortcode,
-            landing_company_shortcode => {
+            () => {
                 if (client.is_options_blocked) {
                     showDigitalOptionsUnavailableError(common.showError, {
                         text: localize(

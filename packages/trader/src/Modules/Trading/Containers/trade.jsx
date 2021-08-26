@@ -282,11 +282,9 @@ const Chart = props => {
         is_socket_opened,
         main_barrier,
         refToAddTick,
-        resetRefresh,
         setChartStatus,
         settings,
         show_digits_stats,
-        should_refresh,
         symbol,
         wsForget,
         wsForgetStream,
@@ -297,9 +295,6 @@ const Chart = props => {
     const charts_ref = React.useRef();
     const props_ref = React.useRef();
     props_ref.current = props;
-
-    const prev_should_refresh = usePrevious(should_refresh);
-    if (prev_should_refresh) resetRefresh();
 
     const bottomWidgets = React.useCallback(
         ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />,
@@ -348,6 +343,9 @@ const Chart = props => {
     return (
         <SmartChartWithRef
             ref={charts_ref}
+            initialData={{
+                activeSymbols: active_symbols,
+            }}
             chartData={{
                 activeSymbols: active_symbols,
             }}
@@ -446,8 +444,6 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
     wsSendRequest: modules.trade.wsSendRequest,
     wsSubscribe: modules.trade.wsSubscribe,
     active_symbols: modules.trade.active_symbols,
-    should_refresh: modules.trade.should_refresh_active_symbols,
-    resetRefresh: modules.trade.resetRefresh,
     has_alternative_source: modules.trade.has_alternative_source,
     refToAddTick: modules.trade.refToAddTick,
 }))(Chart);

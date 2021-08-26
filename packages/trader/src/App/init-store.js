@@ -14,8 +14,6 @@ const initStore = (core_store, websocket) => {
     setWebsocket(websocket);
     root_store = new RootStore(core_store);
 
-    root_store.modules.trade.init();
-
     return root_store;
 };
 

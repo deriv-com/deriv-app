@@ -51,7 +51,6 @@ export default class TradeStore extends BaseStore {
     @observable is_market_closed = false;
     @observable previous_symbol = '';
     @observable active_symbols = [];
-    @observable should_refresh_active_symbols = false;
 
     @observable form_components = [];
 
@@ -141,19 +140,6 @@ export default class TradeStore extends BaseStore {
 
     @observable should_skip_prepost_lifecycle = false;
 
-    @action.bound
-    init = async () => {
-        // To be sure that the website_status response has been received before processing trading page.
-        await WS.wait('authorize', 'website_status');
-        // This is to wait when the client is logging in via OAuth redirect
-        await when(() => !this.root_store.client.is_populating_account_list);
-        WS.storage.activeSymbols('brief').then(({ active_symbols }) => {
-            runInAction(() => {
-                this.active_symbols = active_symbols;
-            });
-        });
-    };
-
     constructor({ root_store }) {
         const local_storage_properties = [
             'amount',
@@ -225,10 +211,6 @@ export default class TradeStore extends BaseStore {
                     this.validation_errors.take_profit = [];
                 }
             }
-        );
-        reaction(
-            () => this.root_store.client.is_logged_in,
-            () => this.loadActiveSymbols()
         );
         reaction(
             () => [this.contract_type],
@@ -1028,10 +1010,10 @@ export default class TradeStore extends BaseStore {
 
     @action.bound
     async logoutListener() {
-        this.should_refresh_active_symbols = true;
         this.clearContracts();
         this.refresh();
         this.resetErrorServices();
+        await this.loadActiveSymbols();
         await this.setContractTypes();
         this.debouncedProposal();
     }
@@ -1176,11 +1158,6 @@ export default class TradeStore extends BaseStore {
         }
         return WS.storage.send(req);
     };
-
-    @action.bound
-    resetRefresh() {
-        this.should_refresh_active_symbols = false;
-    }
 
     @action.bound
     chartStateChange(state, option) {

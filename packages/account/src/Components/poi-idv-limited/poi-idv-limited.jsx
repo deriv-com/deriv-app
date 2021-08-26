@@ -12,7 +12,9 @@ const IdvNoSubmissions = ({ handleRequireSubmission }) => {
                 {isMobile() ? localize('ID verification failed') : localize('Verification of document number failed')}
             </Text>
             <Text className='proof-of-identity__text btm-spacer' align='center' size='xs'>
-                {localize('We were unable to verify your identity based on the details you entered. ')}
+                {isMobile()
+                    ? localize('We were unable to verify your identity based on the details you entered. ')
+                    : localize('We were unable to verify your ID with the details you provided. ')}
                 {!isMobile() && <br />}
                 {localize('Please upload your identity document.')}
             </Text>

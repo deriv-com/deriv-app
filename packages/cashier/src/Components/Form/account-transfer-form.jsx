@@ -74,7 +74,7 @@ const AccountTransferBullet = ({ children }) => (
     </div>
 );
 
-const AccountTransferNote = ({ currency, transfer_fee, minimum_fee, is_dxtrade_allowed }) => (
+const AccountTransferNote = ({ currency, transfer_fee, minimum_fee }) => (
     <div className='account-transfer__notes'>
         <DesktopWrapper>
             <Text as='h2' color='prominent' weight='bold' className='cashier__header account-transfer__notes-header'>
@@ -95,11 +95,12 @@ const AccountTransferNote = ({ currency, transfer_fee, minimum_fee, is_dxtrade_a
             />
         </AccountTransferBullet>
         <AccountTransferBullet>
-            {is_dxtrade_allowed ? (
+            {/* TODO: Uncomment when real account is launched */}
+            {/* {is_dxtrade_allowed ? (
                 <Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts, your Deriv account and Deriv MT5 (DMT5) account, or your Deriv account and Deriv X account.' />
-            ) : (
-                <Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts, or your Deriv account and Deriv MT5 (DMT5) account.' />
-            )}
+            ) : ( */}
+            <Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts, or your Deriv account and Deriv MT5 (DMT5) account.' />
+            {/* )} */}
         </AccountTransferBullet>
         <AccountTransferBullet>
             <Localize i18n_default_text='Transfers may be unavailable when the market is closed (weekends or holidays), periods of high volatility, or when there are technical issues.' />

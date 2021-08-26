@@ -69,9 +69,9 @@ const CryptoFiatConverter = ({
             error_message = localize('This field is required.');
         }
         if (amount || crypto_amount) {
-            const { is_ok, message } = validNumber(crypto_amount, {
+            const { is_ok, message } = validNumber(amount, {
                 type: 'float',
-                decimals: getDecimalPlaces(crypto_currency),
+                decimals: getDecimalPlaces(amount),
             });
             if (!is_ok) error_message = message;
 
@@ -127,8 +127,8 @@ const CryptoFiatConverter = ({
                                     handleChange(e);
                                     setCryptoAmount(e.target.value);
                                 }}
-                                type='text'
-                                error={touched.crypto_amount && errors.crypto_amount && insufficient_fund_error}
+                                type='number'
+                                error={(touched.crypto_amount && errors.crypto_amount) || insufficient_fund_error}
                                 label={localize('Amount ({{currency}})', { currency: crypto_currency })}
                                 value={crypto_amount}
                                 autoComplete='off'
@@ -174,8 +174,8 @@ const CryptoFiatConverter = ({
                                         handleChange(e);
                                         setFiatAmount(e.target.value);
                                     }}
-                                    type='text'
-                                    error={(touched.fiat_amount && errors.fiat_amount) || insufficient_fund_error}
+                                    type='number'
+                                    error={touched.fiat_amount && errors.fiat_amount}
                                     label={localize('Amount ({{currency}})', { currency: current_fiat_currency })}
                                     value={fiat_amount}
                                     autoComplete='off'

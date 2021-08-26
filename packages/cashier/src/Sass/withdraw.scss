@@ -50,6 +50,17 @@
 
         &-button {
             margin-top: 3rem;
+            height: 4rem;
+
+            &-left {
+                margin-right: 0.8rem;
+            }
+
+            &-wrapper {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
         }
 
         &-icon {
@@ -61,7 +72,7 @@
             border-radius: $BORDER_RADIUS * 2;
             height: 3.2rem;
             width: fit-content;
-            min-width: 42rem;
+            min-width: 36rem;
             margin-bottom: -0.8rem !important;
             display: flex;
             flex-direction: row;
@@ -87,9 +98,9 @@
     }
 
     &__account-info {
-        padding: 1.6rem 0;
+        padding: 1rem 0;
         width: fit-content;
-        min-width: 42rem;
+        min-width: 36rem;
         border: 1px solid var(--border-normal);
         border-radius: $BORDER_RADIUS * 2;
 
@@ -108,7 +119,9 @@
             margin: 0.8rem;
 
             &-text {
-                margin: 0 0.8rem;
+                margin: 0 0.4rem;
+                word-break: break-word;
+                max-width: 37rem;
             }
         }
 
@@ -117,7 +130,7 @@
             flex-direction: row;
             justify-content: center;
             align-items: center;
-            margin: 1rem;
+            margin: 0.4rem;
         }
     }
 

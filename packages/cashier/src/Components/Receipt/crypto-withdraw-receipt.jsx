@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Clipboard, Icon, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getAccountText } from '../../_common/utility';
@@ -21,11 +21,22 @@ const AcountInformation = ({ account }) => {
         <div className='withdraw__account-info'>
             <div className='withdraw__account-info-detail'>
                 <Icon icon={account?.platform_icon || `IcCurrency-${account?.currency?.toLowerCase()}`} size={32} />
-                <Text color='prominent' weight='bold' align='center' className='withdraw__account-info-detail-text'>
+                <Text
+                    color='prominent'
+                    weight='bold'
+                    size={isMobile() ? 'xxs' : 's'}
+                    align='center'
+                    className='withdraw__account-info-detail-text'
+                >
                     {getAccountText(account)}
                 </Text>
             </div>
-            <Text color='less-prominent' align='center' className='withdraw__account-info-detail-text'>
+            <Text
+                color='less-prominent'
+                size={isMobile() ? 'xs' : 's'}
+                align='center'
+                className='withdraw__account-info-detail-text'
+            >
                 {account?.value}
             </Text>
         </div>
@@ -48,7 +59,13 @@ const WalletInformation = ({ account, blockchain_address }) => {
                 </Text>
             </div>
             <div className='withdraw__account-info-address'>
-                <Text color='less-prominent' align='center' className='withdraw__account-info-detail-text'>
+                <Text
+                    color='less-prominent'
+                    as='p'
+                    size={isMobile() ? 'xxs' : 'xs'}
+                    align='center'
+                    className='withdraw__account-info-detail-text'
+                >
                     {blockchain_address}
                 </Text>
                 <Clipboard
@@ -97,7 +114,7 @@ const CryptoWithdrawReceipt = ({
                     color='prominent'
                     weight='bold'
                     align='center'
-                    size='l'
+                    size={isMobile() ? 'm' : 'l'}
                     className='withdraw__receipt-crypto'
                 >
                     <Localize
@@ -112,12 +129,22 @@ const CryptoWithdrawReceipt = ({
                 <AcountInformation account={account} />
                 <Icon className='withdraw__receipt-icon' icon='IcArrowDown' size={30} />
                 <WalletInformation account={account} blockchain_address={blockchain_address} />
+            </div>
+            <div className='wthdraw__receipt-botton-wrapper'>
                 <Button
-                    id='cashier_learn_more'
-                    className='withdraw__receipt-button'
+                    id='withdraw_transaction'
+                    className='withdraw__receipt-button withdraw__receipt-button-left'
                     text={localize('View transaction history')}
                     // onClick={() => window.open(getStaticUrl('/payment-methods'))}
                     secondary
+                />
+                <Button
+                    id='withdraw_receipt'
+                    className='withdraw__receipt-button'
+                    has_effect
+                    text={localize('Make a new withdraw')}
+                    onClick={() => history.push(routes.withdraw)}
+                    primary
                 />
             </div>
         </div>

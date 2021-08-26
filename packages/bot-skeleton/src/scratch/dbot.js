@@ -240,21 +240,11 @@ class DBot {
 
         top_blocks.forEach(block => {
             if (!block.isMainBlock() && !block.isIndependentBlock()) {
-                this.disableBlocksRecursively(block);
+                block.setDisabled(true);
             }
         });
 
         return true;
-    }
-
-    /**
-     * Disable blocks and their optional children.
-     */
-    disableBlocksRecursively(block) {
-        block.setDisabled(true);
-        if (block.nextConnection?.targetConnection) {
-            this.disableBlocksRecursively(block.nextConnection.targetConnection.sourceBlock_);
-        }
     }
 
     /**

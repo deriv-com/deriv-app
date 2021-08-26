@@ -1,5 +1,14 @@
 import { getUrlBase } from '@deriv/shared';
 
+export const getRegex = target_regex => {
+    const output_regex = regex.find(r => r.regex_string === target_regex);
+    console.log(output_regex);
+    if (output_regex) {
+        return new RegExp(output_regex.value, output_regex.flags);
+    }
+    return new RegExp(target_regex);
+};
+
 export const getDocumentData = (country_code, document_type) => {
     if (Object.keys(idv_document_data).includes(country_code)) {
         return idv_document_data[country_code][document_type];
@@ -22,6 +31,15 @@ export const formatInput = (example_format, input_string, separator) => {
 const getCharCount = (target_string, char) => target_string.match(new RegExp(`${char}`, 'g'))?.length || 0;
 
 const getImageLocation = image_name => getUrlBase(`/public/images/common/${image_name}`);
+
+// Unsupported Regex List
+const regex = [
+    {
+        regex_string: '^(?i)G[a-zA-Z0-9]{7,9}$',
+        value: '^G[a-zA-Z0-9]{7,9}$',
+        flags: 'i',
+    },
+];
 
 // Note: Ensure that the object keys matches BE API's keys. This is simply a mapping for FE templates
 const idv_document_data = {

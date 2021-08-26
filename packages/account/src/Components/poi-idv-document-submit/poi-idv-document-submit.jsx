@@ -4,7 +4,7 @@ import { Formik, Field } from 'formik';
 import { localize } from '@deriv/translations';
 import { WS } from '@deriv/shared';
 import FormFooter from 'Components/form-footer';
-import { formatInput, getDocumentData } from './utils';
+import { formatInput, getDocumentData, getRegex } from './utils';
 import BackButtonIcon from '../../Assets/ic-poi-back-btn.svg';
 import DocumentSubmitLogo from '../../Assets/ic-document-submit-icon.svg';
 
@@ -82,7 +82,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
             errors.document_number =
                 localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
         } else {
-            const format_regex = new RegExp(document_type.value);
+            const format_regex = getRegex(document_type.value);
             if (!format_regex.test(document_number)) {
                 errors.document_number =
                     localize('Please enter the correct format. ') + getExampleFormat(document_type.example_format);

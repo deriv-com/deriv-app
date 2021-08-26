@@ -226,7 +226,10 @@ export default class TradeStore extends BaseStore {
                 }
             }
         );
-        reaction(() => this.root_store.client.is_logged_in, this.loadActiveSymbols);
+        reaction(
+            () => this.root_store.client.is_logged_in,
+            () => this.loadActiveSymbols()
+        );
         reaction(
             () => [this.contract_type],
             () => {

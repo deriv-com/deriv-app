@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper, usePrevious } from '@deriv/components';
+import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';

@@ -72,7 +72,15 @@ const ProofOfIdentityContainer = ({
     }
 
     const verification_status = populateVerificationStatus(account_status);
-    const { idv, onfido, manual, identity_status, identity_last_attempt, needs_poa } = verification_status;
+    const {
+        idv,
+        onfido,
+        manual,
+        identity_status,
+        identity_last_attempt,
+        needs_poa,
+        is_idv_disallowed,
+    } = verification_status;
     const redirect_button = should_show_redirect_btn && (
         <Button primary className='proof-of-identity__redirect' onClick={() => routeBackTo(from_platform.route)}>
             <Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name: from_platform.name }} />
@@ -94,6 +102,7 @@ const ProofOfIdentityContainer = ({
                 manual={manual}
                 refreshNotifications={refreshNotifications}
                 redirect_button={redirect_button}
+                is_idv_disallowed={is_idv_disallowed}
             />
         );
     }

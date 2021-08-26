@@ -15,6 +15,7 @@ const POISubmission = ({
     identity_last_attempt,
     idv,
     is_from_external,
+    is_idv_disallowed,
     needs_poa,
     onfido,
     onStateChange,
@@ -33,7 +34,7 @@ const POISubmission = ({
             const is_idv_supported = selected_country.identity.services.idv.is_country_supported;
             const is_onfido_supported = selected_country.identity.services.onfido.is_country_supported;
 
-            if (is_idv_supported && Number(idv_submissions_left) > 0) {
+            if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed) {
                 setSubmissionService(service_code.idv);
             } else if (onfido_submissions_left && is_onfido_supported) {
                 setSubmissionService(service_code.onfido);
@@ -61,7 +62,7 @@ const POISubmission = ({
         if (has_require_submission) {
             switch (identity_last_attempt.service) {
                 case service_code.idv: {
-                    if (Number(idv.submissions_left) > 0) {
+                    if (Number(idv.submissions_left) > 0 && !is_idv_disallowed) {
                         setSubmissionStatus(submission_status_code.selecting);
                     } else if (onfido.is_country_supported) {
                         const country_code = countries.alpha3ToAlpha2(onfido.country_code.toUpperCase());

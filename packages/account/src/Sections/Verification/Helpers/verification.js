@@ -6,6 +6,7 @@ export const populateVerificationStatus = account_status => {
     const needs_poi = needs_verification.length && needs_verification.includes('identity');
 
     const allow_document_upload = account_status.status.some(status => status === 'allow_document_upload');
+    const is_idv_disallowed = account_status.status.some(status => status === 'idv_disallowed');
     const identity_status = identity.status;
 
     const { idv, onfido, manual } = identity.services;
@@ -23,5 +24,6 @@ export const populateVerificationStatus = account_status => {
         manual,
         identity_status,
         identity_last_attempt,
+        is_idv_disallowed,
     };
 };

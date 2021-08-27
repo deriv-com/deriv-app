@@ -309,20 +309,20 @@ export class PersonalDetailsForm extends React.Component {
 
     setWarningMessage = values => {
         const warnings = {};
-        const errors_active = this.state.errors;
-        const account_info = this.props;
-        const residence_list = Object.values(account_info.residence_list);
+        const active_errors = this.state.errors;
+        const account_object = this.props;
+        const residence_list_array = Object.values(account_object.residence_list);
 
-        const filter_country_tax_number_regex = residence_list.filter(residence => {
+        const filter_tin_regex = residence_list_array.filter(residence => {
             return residence.text === values.tax_residence && residence.tin_format;
         });
 
-        const country_tax_number_regex = filter_country_tax_number_regex[0]?.tin_format?.[0];
-        const test_country_tax_number = new RegExp(country_tax_number_regex).test(values.tax_identification_number);
+        const tin_regex = filter_tin_regex[0]?.tin_format?.[0];
+        const test_tin = new RegExp(tin_regex).test(values.tax_identification_number);
 
-        if (!errors_active) {
+        if (!active_errors) {
             if (values.tax_identification_number) {
-                const valid_country_tin = country_tax_number_regex ? test_country_tax_number : true;
+                const valid_country_tin = tin_regex ? test_tin : true;
                 if (!valid_country_tin) {
                     const warning_message =
                         'This Tax Identification Number (TIN) is invalid. You may continue using it, but to facilitate future payment processes, valid tax information will be required.';

@@ -319,10 +319,10 @@ export class PersonalDetailsForm extends React.Component {
 
         const tin_regex = filter_tin_regex[0]?.tin_format?.[0];
         const test_tin = new RegExp(tin_regex).test(values.tax_identification_number);
+        const valid_country_tin = tin_regex ? test_tin : true;
 
         if (!active_errors) {
             if (values.tax_identification_number) {
-                const valid_country_tin = tin_regex ? test_tin : true;
                 if (!valid_country_tin) {
                     const warning_message =
                         'This Tax Identification Number (TIN) is invalid. You may continue using it, but to facilitate future payment processes, valid tax information will be required.';

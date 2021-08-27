@@ -325,7 +325,7 @@ export class PersonalDetailsForm extends React.Component {
                 const valid_country_tin = country_tax_number_regex ? test_country_tax_number : true;
                 if (!valid_country_tin) {
                     const warning_message =
-                        'This Tax Identification Number (TIN) is invalid. You may continue with account creation, but to facilitate future payment processes, valid tax information will be required.';
+                        'This Tax Identification Number (TIN) is invalid. You may continue using it, but to facilitate future payment processes, valid tax information will be required.';
                     warnings.tax_identification_number = localize(warning_message);
                 }
             }

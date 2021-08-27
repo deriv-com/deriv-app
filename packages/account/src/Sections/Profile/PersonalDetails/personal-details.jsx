@@ -98,7 +98,7 @@ const TaxResidenceSelect = ({ field, touched, errors, setFieldValue, values, is_
 export class PersonalDetailsForm extends React.Component {
     static contextType = PlatformContext;
 
-    state = { is_loading: true, is_state_loading: false, show_form: true };
+    state = { is_loading: true, is_state_loading: false, show_form: true, errors: false };
 
     onSubmit = async (values, { setStatus, setSubmitting }) => {
         setStatus({ msg: '' });
@@ -298,7 +298,39 @@ export class PersonalDetailsForm extends React.Component {
             }
         }
 
+        if (Object.keys(errors).length > 0) {
+            this.setState({ errors: true });
+        } else {
+            this.setState({ errors: false });
+        }
+
         return errors;
+    };
+
+    setWarningMessage = values => {
+        const warnings = {};
+        const errors_active = this.state.errors;
+        const account_info = this.props;
+        const residence_list = Object.values(account_info.residence_list);
+
+        const filter_country_tax_number_regex = residence_list.filter(residence => {
+            return residence.text === values.tax_residence && residence.tin_format;
+        });
+
+        const country_tax_number_regex = filter_country_tax_number_regex[0]?.tin_format?.[0];
+        const test_country_tax_number = new RegExp(country_tax_number_regex).test(values.tax_identification_number);
+
+        if (!errors_active) {
+            if (values.tax_identification_number) {
+                const valid_country_tin = country_tax_number_regex ? test_country_tax_number : true;
+                if (!valid_country_tin) {
+                    const warning_message =
+                        'This Tax Identification Number (TIN) is invalid. You may continue with account creation, but to facilitate future payment processes, valid tax information will be required.';
+                    warnings.tax_identification_number = localize(warning_message);
+                }
+            }
+        }
+        return warnings;
     };
 
     showForm = show_form => this.setState({ show_form });
@@ -861,6 +893,10 @@ export class PersonalDetailsForm extends React.Component {
                                                                 value={values.tax_identification_number}
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
+                                                                warn={
+                                                                    this.setWarningMessage(values)
+                                                                        .tax_identification_number
+                                                                }
                                                                 error={
                                                                     touched.tax_identification_number &&
                                                                     errors.tax_identification_number

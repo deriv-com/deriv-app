@@ -182,6 +182,9 @@ $MIN_HEIGHT_FLOATING: calc(
                     text-transform: unset;
                 }
             }
+            & .account-form__header.address {
+                margin-top: 3rem;
+            }
             @include mobile {
                 padding: 0 1.6rem;
                 overflow-x: hidden;
@@ -192,6 +195,9 @@ $MIN_HEIGHT_FLOATING: calc(
                     &:first-child {
                         padding-top: 2.4rem;
                         margin-bottom: 3.2rem;
+                    }
+                    &.address {
+                        margin-top: 3rem;
                     }
                 }
             }

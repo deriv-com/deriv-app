@@ -95,6 +95,9 @@ const CreateAdForm = () => {
                 }}
             >
                 {({ errors, handleChange, isSubmitting, isValid, setFieldValue, touched, values }) => {
+                    if (isNaN(values.offer_amount)) {
+                        errors.offer_amount = 'Enter a valid amount';
+                    }
                     const invalidAmountError = Object.values(errors).includes('Enter a valid amount');
 
                     if (invalidAmountError) {

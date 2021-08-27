@@ -307,7 +307,7 @@ export class PersonalDetailsForm extends React.Component {
         return errors;
     };
 
-    setWarningMessage = values => {
+    getWarningMessages = values => {
         const warnings = {};
         const active_errors = this.state.errors;
         const account_object = this.props;
@@ -894,7 +894,7 @@ export class PersonalDetailsForm extends React.Component {
                                                                 onChange={handleChange}
                                                                 onBlur={handleBlur}
                                                                 warn={
-                                                                    this.setWarningMessage(values)
+                                                                    this.getWarningMessages(values)
                                                                         .tax_identification_number
                                                                 }
                                                                 error={

@@ -88,7 +88,6 @@ CardFooter.propTypes = {
     onClickCancel: PropTypes.func,
     onClickSell: PropTypes.func,
     onFooterEntered: PropTypes.func,
-    server_time: PropTypes.object,
     should_show_transition: PropTypes.bool,
 };
 

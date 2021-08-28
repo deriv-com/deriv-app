@@ -1262,6 +1262,9 @@
             display: inline-flex;
             justify-content: flex-end;
             width: 45%;
+            @include mobile {
+                margin-top: 8px;
+            }
         }
         @include mobile {
             position: relative;

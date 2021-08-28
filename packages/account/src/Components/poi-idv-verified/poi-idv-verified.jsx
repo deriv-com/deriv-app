@@ -6,7 +6,7 @@ import PoaButton from 'Components/poa-button';
 import IdvDocumentVerified from '../../Assets/ic-idv-verified.svg';
 
 const IdvVerified = ({ needs_poa, is_from_external }) => {
-    const mobile_header_text = needs_poa
+    const header_Text = needs_poa
         ? localize('Your ID is verified. You will also need to submit proof of your address.')
         : localize('ID verification passed');
 
@@ -14,7 +14,7 @@ const IdvVerified = ({ needs_poa, is_from_external }) => {
         <div className='proof-of-identity__container'>
             <IdvDocumentVerified className='icon' />
             <Text className='proof-of-identity__text btm-spacer' align='center' weight='bold'>
-                {isMobile() ? mobile_header_text : localize('Your document number has been verified')}
+                {header_Text}
             </Text>
             {!!needs_poa && (
                 <React.Fragment>

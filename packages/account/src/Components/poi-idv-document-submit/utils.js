@@ -61,24 +61,24 @@ const idv_document_data = {
     },
     za: {
         national_id: {
-            new_display_name: '',
+            new_display_name: 'National ID',
             example_format: '1234567890123',
             sample_image: getImageLocation('za_national_identity_card.png'),
         },
         national_id_no_photo: {
-            new_display_name: '',
+            new_display_name: 'National ID (No Photo)',
             example_format: '1234567890123',
             sample_image: '',
         },
     },
     ng: {
         bvn: {
-            new_display_name: 'Bank verification number',
+            new_display_name: 'Bank Verification Number',
             example_format: '12345678901',
             sample_image: '',
         },
         cac: {
-            new_display_name: 'Corporate affairs commission',
+            new_display_name: 'Corporate Affairs Commission',
             example_format: '12345678',
             sample_image: '',
         },
@@ -88,12 +88,12 @@ const idv_document_data = {
             sample_image: getImageLocation('ng_drivers_license.png'),
         },
         nin: {
-            new_display_name: 'National identity number',
+            new_display_name: 'National Identity Number',
             example_format: '12345678901',
             sample_image: '',
         },
         nin_slip: {
-            new_display_name: 'National identity number slip',
+            new_display_name: 'National Identity Number Slip',
             example_format: '12345678901',
             sample_image: getImageLocation('ng_nin_slip.png'),
         },

@@ -336,6 +336,10 @@ $MIN_HEIGHT_FLOATING: calc(
 
             .back-btn {
                 margin-right: 8px;
+                span {
+                    display: inline-flex;
+                    align-items: center;
+                }
             }
             &-note {
                 color: var(--text-prominent);

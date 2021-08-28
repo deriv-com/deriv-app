@@ -132,7 +132,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                         {localize('Verify your identity')}
                     </Text>
                     <Text className='proof-of-identity__text btm-spacer' size='xs'>
-                        {localize('Please select the document type and enter the document number.')}
+                        {localize('Please select the document type and enter the ID number.')}
                     </Text>
                     <div className='proof-of-identity__inner-container'>
                         <div className='proof-of-identity__fieldset-container'>
@@ -233,7 +233,9 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                         </div>
                         {document_image && (
                             <div className='proof-of-identity__sample-container'>
-                                <Text weight='bold'>{localize('Sample:')}</Text>
+                                <Text size='xxs' weight='bold'>
+                                    {localize('Sample:')}
+                                </Text>
                                 <div className='proof-of-identity__image-container'>
                                     <img
                                         className='proof-of-identity__image'

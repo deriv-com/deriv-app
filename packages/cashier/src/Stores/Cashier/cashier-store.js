@@ -149,13 +149,23 @@ export default class CashierStore extends BaseStore {
     constructor({ root_store, WS }) {
         super({ root_store });
         this.WS = WS;
+
+        const has_set_currency = this.root_store.client.account_list
+            .filter(account => !account.is_virtual)
+            .some(account => account.title !== 'Real');
+
         this.root_store.menu.attach({
             id: 'dt_cashier_tab',
             icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
             text: () => localize('Cashier'),
-            link_to: routes.cashier,
+            link_to: has_set_currency && routes.cashier,
+            onClick: !has_set_currency && this.root_store.ui.toggleSetCurrencyModal,
             login_only: true,
         });
+
+        if (!has_set_currency) {
+            this.changeSetCurrencyModalTitle();
+        }
 
         this.onramp = new OnRampStore({
             root_store: this.root_store,
@@ -180,6 +190,7 @@ export default class CashierStore extends BaseStore {
     @observable insufficient_fund_error = '';
     @observable is_timer_visible = false;
     @observable all_payment_agent_list = [];
+    @observable should_set_currency_modal_title_change = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -232,6 +243,11 @@ export default class CashierStore extends BaseStore {
     @computed
     get is_p2p_enabled() {
         return this.is_p2p_visible && !this.root_store.client.is_eu;
+    }
+
+    @action.bound
+    changeSetCurrencyModalTitle() {
+        this.should_set_currency_modal_title_change = true;
     }
 
     @action.bound

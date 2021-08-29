@@ -51,16 +51,16 @@ const CFDPOA = ({ onSave, onCancel, index, onSubmit, refreshNotifications, ...pr
 
         const validations = {
             address_line_1: [v => !!v && !v.match(/^\s*$/), v => validAddress(v), v => validLength(v, { max: 70 })],
-            address_line_2: [v => !v || validAddress(v), v => !v || validLength(v, { max: 70 })],
+            address_line_2: [v => !v || validAddress(v), v => validLength(v, { max: 70 })],
             address_city: [
                 v => !!v && !v.match(/^\s*$/),
                 v => validLength(v, { min: 1, max: 35 }),
                 v => validLetterSymbol(v),
             ],
-            address_state: [v => !!v && !v.match(/^\s*$/), v => !v || validLength(v, { min: 1, max: 35 })],
+            address_state: [v => !!v && !v.match(/^\s*$/), v => validLength(v, { min: 1, max: 35 })],
             address_postcode: [
                 v => !!v && !v.match(/^\s*$/),
-                v => !!v && validLength(v, { min: 1, max: 20 }),
+                v => validLength(v, { min: 1, max: 20 }),
                 v => validPostCode(v),
             ],
         };

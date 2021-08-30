@@ -32,6 +32,7 @@ const CurrencySelector = ({
     has_wallet_account,
     is_dxtrade_allowed,
     is_mt5_allowed,
+    available_crypto_currencies,
     ...props
 }) => {
     const { is_dashboard } = React.useContext(PlatformContext);
@@ -187,6 +188,11 @@ const CurrencySelector = ({
                                                     <Field
                                                         key={currency.value}
                                                         component={RadioButton}
+                                                        selected={
+                                                            available_crypto_currencies?.filter(
+                                                                ({ value }) => value === currency.value
+                                                            )?.length === 0
+                                                        }
                                                         name='currency'
                                                         id={currency.value}
                                                         label={currency.name}

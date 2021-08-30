@@ -14,4 +14,5 @@ export default connect(({ client, ui }) => ({
     real_account_signup_target: ui.real_account_signup_target,
     is_dxtrade_allowed: client.is_dxtrade_allowed,
     is_mt5_allowed: client.is_mt5_allowed,
+    has_fiat: client.has_fiat,
 }))(CurrencySelector);

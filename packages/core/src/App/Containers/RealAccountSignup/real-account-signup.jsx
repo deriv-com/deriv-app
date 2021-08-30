@@ -117,6 +117,8 @@ const RealAccountSignup = ({
                     return localize('Create a cryptocurrency account');
                 } else if (local_props.real_account_signup_target === 'add_fiat') {
                     return localize('Add a Deriv real account');
+                } else if (local_props.real_account_signup_target === 'add_currency') {
+                    return localize('Create a new account');
                 } else if (local_props.has_fiat && local_props.available_crypto_currencies?.length === 0) {
                     return localize('Manage account');
                 }

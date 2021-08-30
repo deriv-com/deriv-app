@@ -11,20 +11,23 @@ import CashierDefaultDetails from 'Components/CashierDefault/cashier-default-det
 const CashierDefault = ({
     accounts_list,
     currency,
+    has_set_currency,
     is_dark_mode_on,
-    is_eu,
     is_landing_company_loaded,
     is_mobile,
     is_payment_agent_visible_in_onboarding,
     is_switching,
+    is_virtual,
     onMountCashierDefault,
     openRealAccountSignup,
+    p2p_advertiser_error,
     shouldNavigateAfterChooseCrypto,
     shouldNavigateAfterPrompt,
     setIsCashierDefault,
     setIsDeposit,
     setDepositTarget,
     setShouldShowAllAvailableCurrencies,
+    toggleSetCurrencyModal,
 }) => {
     const history = useHistory();
     const is_crypto = !!currency && isCryptocurrency(currency);
@@ -34,7 +37,13 @@ const CashierDefault = ({
 
     React.useEffect(() => {
         onMountCashierDefault();
-        return () => setIsCashierDefault(false);
+        return () => {
+            setIsCashierDefault(false);
+            if (!has_set_currency && window.location.pathname.includes(routes.cashier)) {
+                history.push(routes.trade);
+                toggleSetCurrencyModal();
+            }
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -95,7 +104,12 @@ const CashierDefault = ({
     };
 
     const show_p2p = () => {
-        if (is_eu || (user_fiat_currency?.length && user_fiat_currency[0]?.currency !== 'USD')) {
+        const is_p2p_restricted = p2p_advertiser_error === 'RestrictedCountry';
+        if (
+            is_p2p_restricted ||
+            is_virtual ||
+            (user_fiat_currency?.length && user_fiat_currency[0]?.currency !== 'USD')
+        ) {
             return false;
         }
         return true;
@@ -161,11 +175,12 @@ CashierDefault.propTypes = {
     accounts_list: PropTypes.array,
     currency: PropTypes.string,
     is_dark_mode_on: PropTypes.bool,
-    is_eu: PropTypes.bool,
     is_landing_company_loaded: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_payment_agent_visible_in_onboarding: PropTypes.bool,
     is_switching: PropTypes.bool,
+    is_virtual: PropTypes.bool,
+    p2p_advertiser_error: PropTypes.string,
     onMountCashierDefault: PropTypes.func,
     openRealAccountSignup: PropTypes.func,
     shouldNavigateAfterChooseCrypto: PropTypes.func,
@@ -177,18 +192,21 @@ CashierDefault.propTypes = {
 export default connect(({ client, modules, ui }) => ({
     accounts_list: modules.cashier.config.account_transfer.accounts_list,
     currency: client.currency,
+    has_set_currency: modules.cashier.has_set_currency,
     is_dark_mode_on: ui.is_dark_mode_on,
-    is_eu: client.is_eu,
     is_landing_company_loaded: client.is_landing_company_loaded,
     is_mobile: ui.is_mobile,
     is_payment_agent_visible_in_onboarding: modules.cashier.is_payment_agent_visible_in_onboarding,
     is_switching: client.is_switching,
+    is_virtual: client.is_virtual,
     onMountCashierDefault: modules.cashier.onMountCashierDefault,
     openRealAccountSignup: ui.openRealAccountSignup,
+    p2p_advertiser_error: modules.cashier.p2p_advertiser_error,
     shouldNavigateAfterChooseCrypto: ui.shouldNavigateAfterChooseCrypto,
     shouldNavigateAfterPrompt: modules.cashier.account_prompt_dialog.shouldNavigateAfterPrompt,
     setIsCashierDefault: modules.cashier.setIsCashierDefault,
     setIsDeposit: modules.cashier.setIsDeposit,
     setDepositTarget: modules.cashier.setDepositTarget,
     setShouldShowAllAvailableCurrencies: modules.cashier.setShouldShowAllAvailableCurrencies,
+    toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
 }))(CashierDefault);

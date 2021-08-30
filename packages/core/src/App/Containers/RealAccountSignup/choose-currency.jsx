@@ -76,7 +76,8 @@ const ChooseCurrency = ({
             reorderCryptoCurrencies.push({
                 value: 'plus',
                 name: localize('Add new'),
-                second_line_label: localize('crypto account'),
+                second_line_label:
+                    deposit_target === routes.cashier_pa ? localize('account') : localize('crypto account'),
                 icon: 'IcAddAccount',
                 onClick: () => addNewCryptoAccount(),
                 has_payment_agent: true,

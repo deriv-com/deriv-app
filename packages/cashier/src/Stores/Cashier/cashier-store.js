@@ -150,27 +150,23 @@ export default class CashierStore extends BaseStore {
         super({ root_store });
         this.WS = WS;
 
-        let has_set_currency;
-
         when(
             () => this.root_store.client.is_logged_in,
             () => {
-                has_set_currency = this.root_store.client.account_list
-                    .filter(account => !account.is_virtual)
-                    .some(account => account.title !== 'Real');
+                this.setHasSetCurrency();
 
                 this.root_store.menu.attach({
                     id: 'dt_cashier_tab',
                     icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
                     text: () => localize('Cashier'),
-                    link_to: has_set_currency && routes.cashier,
-                    onClick: !has_set_currency && this.root_store.ui.toggleSetCurrencyModal,
+                    link_to: this.has_set_currency && routes.cashier,
+                    onClick: !this.has_set_currency && this.root_store.ui.toggleSetCurrencyModal,
                     login_only: true,
                 });
             }
         );
 
-        if (!has_set_currency) {
+        if (!this.has_set_currency) {
             this.changeSetCurrencyModalTitle();
         }
 
@@ -198,6 +194,8 @@ export default class CashierStore extends BaseStore {
     @observable is_timer_visible = false;
     @observable all_payment_agent_list = [];
     @observable should_set_currency_modal_title_change = false;
+    @observable p2p_advertiser_error = undefined;
+    @observable has_set_currency = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -250,6 +248,13 @@ export default class CashierStore extends BaseStore {
     @computed
     get is_p2p_enabled() {
         return this.is_p2p_visible && !this.root_store.client.is_eu;
+    }
+
+    @action.bound
+    setHasSetCurrency() {
+        this.has_set_currency = this.root_store.client.account_list
+            .filter(account => !account.is_virtual)
+            .some(account => account.title !== 'Real');
     }
 
     @action.bound
@@ -310,7 +315,8 @@ export default class CashierStore extends BaseStore {
         when(
             () => this.root_store.client.is_logged_in,
             async () => {
-                await this.checkP2pStatus();
+                await this.getAdvertizerError();
+                this.checkP2pStatus();
             }
         );
         reaction(
@@ -324,7 +330,8 @@ export default class CashierStore extends BaseStore {
                 await this.WS.wait('get_settings');
 
                 if (this.root_store.client.is_logged_in) {
-                    await this.checkP2pStatus();
+                    await this.getAdvertizerError();
+                    this.checkP2pStatus();
                     await this.filterPaymentAgentList();
                     this.account_prompt_dialog.resetLastLocation();
                 }
@@ -333,9 +340,14 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async checkP2pStatus() {
+    async getAdvertizerError() {
         const advertiser_info = await this.WS.authorized.p2pAdvertiserInfo();
-        const advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
+        this.p2p_advertiser_error = getPropertyValue(advertiser_info, ['error', 'code']);
+    }
+
+    @action.bound
+    checkP2pStatus() {
+        const advertiser_error = this.p2p_advertiser_error;
         const is_p2p_restricted = advertiser_error === 'RestrictedCountry' || advertiser_error === 'RestrictedCurrency';
         this.setIsP2pVisible(!(is_p2p_restricted || this.root_store.client.is_virtual));
     }
@@ -451,7 +463,11 @@ export default class CashierStore extends BaseStore {
         this.onRemount = this.onMount;
         await this.onMountCommon();
 
-        if (this.containers.indexOf(this.active_container) === -1 && !this.root_store.client.is_switching) {
+        if (
+            this.containers.indexOf(this.active_container) === -1 &&
+            !this.root_store.client.is_switching &&
+            this.active_container !== this.config.payment_agent.container
+        ) {
             throw new Error('Cashier Store onMount requires a valid container name.');
         }
         this.onMountDeposit(verification_code);

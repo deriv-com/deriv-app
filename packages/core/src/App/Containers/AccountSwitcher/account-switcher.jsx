@@ -264,7 +264,8 @@ const AccountSwitcher = props => {
     // };
 
     const canOpenMulti = () => {
-        return !props.available_crypto_currencies.length && !props.has_fiat;
+        if (props.available_crypto_currencies.length < 1 && !props.has_fiat) return true;
+        return !props.is_virtual;
     };
 
     const is_regulated_able_to_change_currency =
@@ -274,7 +275,7 @@ const AccountSwitcher = props => {
 
     // SVG clients can't upgrade.
     const getRemainingRealAccounts = () => {
-        if (canUpgrade() || canOpenMulti() || is_regulated_able_to_change_currency) {
+        if (props.is_eu || props.is_virtual || !canOpenMulti() || is_regulated_able_to_change_currency) {
             return props.upgradeable_landing_companies;
         }
         return [];
@@ -285,7 +286,7 @@ const AccountSwitcher = props => {
     };
 
     const canUpgrade = () => {
-        return !!(props.is_virtual && props.can_upgrade_to && !props.has_fiat);
+        return !!(props.is_virtual && props.can_upgrade_to);
     };
 
     const getTotalBalance = (accounts, is_demo = true) => {
@@ -587,7 +588,7 @@ const AccountSwitcher = props => {
                         </div>
                     ))}
                     {!canUpgrade() &&
-                        !canOpenMulti() &&
+                        canOpenMulti() &&
                         (!props.is_eu || (props.is_eu && props.can_change_fiat_currency)) && (
                             <Button
                                 className='acc-switcher__btn'

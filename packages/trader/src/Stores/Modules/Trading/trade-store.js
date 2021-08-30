@@ -772,6 +772,11 @@ export default class TradeStore extends BaseStore {
     }
 
     @computed
+    get is_synthetics_available() {
+        return !!this.active_symbols?.find(item => item.market === 'synthetic_index');
+    }
+
+    @computed
     get show_digits_stats() {
         return isDigitTradeType(this.contract_type);
     }

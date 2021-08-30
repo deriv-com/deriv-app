@@ -764,7 +764,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     async getExchangeRate(from_currency, to_currency) {
-        const {exchange_rates} = await this.WS.send({
+        const { exchange_rates } = await this.WS.send({
             exchange_rates: 1,
             base_currency: from_currency,
         });
@@ -772,7 +772,7 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async onChangeCryptoAmount({target}, from_currency, to_currency) {
+    async onChangeCryptoAmount({ target }, from_currency, to_currency) {
         const rate = await this.getExchangeRate(from_currency, to_currency);
         runInAction(() => {
             const decimals = getDecimalPlaces(to_currency);
@@ -783,13 +783,13 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    async onChangeFiatAmount({target}, from_currency, to_currency) {
+    async onChangeFiatAmount({ target }, from_currency, to_currency) {
         const rate = await this.getExchangeRate(from_currency, to_currency);
         runInAction(() => {
             const decimals = getDecimalPlaces(to_currency);
             const amount = (rate * target.value).toFixed(decimals);
             const balance = this.root_store.client.balance;
-            if(balance < amount) {
+            if (balance < amount) {
                 this.insufficient_fund_error = localize('Insufficient funds');
                 this.setCryptoAmount('');
             } else {

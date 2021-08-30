@@ -49,6 +49,7 @@ class ProofOfIdentityForm extends React.PureComponent {
                                             height={height}
                                             onStateChange={this.onStateChange}
                                             is_from_external={true}
+                                            is_description_enabled={false}
                                         />
                                     </Div100vhContainer>
                                     <FormSubmitButton

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper, usePrevious } from '@deriv/components';
+import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
@@ -31,6 +31,7 @@ const Trade = ({
     contract_type,
     form_components,
     getFirstOpenMarket,
+    should_show_active_symbols_loading,
     is_chart_loading,
     is_dark_theme,
     is_eu,
@@ -145,7 +146,7 @@ const Trade = ({
                 >
                     <DesktopWrapper>
                         <div className='chart-container__wrapper'>
-                            <ChartLoader is_visible={is_chart_loading} />
+                            <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
                             <ChartTrade
                                 try_synthetic_indices={try_synthetic_indices}
                                 try_open_markets={try_open_markets}
@@ -154,14 +155,21 @@ const Trade = ({
                         </div>
                     </DesktopWrapper>
                     <MobileWrapper>
-                        <ChartLoader is_visible={is_chart_loading || (isDigitTradeType(contract_type) && !digits[0])} />
+                        <ChartLoader
+                            is_visible={
+                                is_chart_loading ||
+                                should_show_active_symbols_loading ||
+                                (isDigitTradeType(contract_type) && !digits[0])
+                            }
+                        />
                         <SwipeableWrapper
                             onChange={onChangeSwipeableIndex}
                             is_disabled={
                                 !show_digits_stats ||
                                 !is_trade_enabled ||
                                 form_components.length === 0 ||
-                                is_chart_loading
+                                is_chart_loading ||
+                                should_show_active_symbols_loading
                             }
                         >
                             {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
@@ -208,6 +216,7 @@ export default connect(({ client, common, modules, ui }) => ({
     network_status: common.network_status,
     contract_type: modules.trade.contract_type,
     form_components: modules.trade.form_components,
+    should_show_active_symbols_loading: modules.trade.should_show_active_symbols_loading,
     is_chart_loading: modules.trade.is_chart_loading,
     is_market_closed: modules.trade.is_market_closed,
     show_digits_stats: modules.trade.show_digits_stats,
@@ -271,11 +280,9 @@ const Chart = props => {
         is_socket_opened,
         main_barrier,
         refToAddTick,
-        resetRefresh,
         setChartStatus,
         settings,
         show_digits_stats,
-        should_refresh,
         symbol,
         wsForget,
         wsForgetStream,
@@ -286,9 +293,6 @@ const Chart = props => {
     const charts_ref = React.useRef();
     const props_ref = React.useRef();
     props_ref.current = props;
-
-    const prev_should_refresh = usePrevious(should_refresh);
-    if (prev_should_refresh) resetRefresh();
 
     const bottomWidgets = React.useCallback(
         ({ digits, tick }) => <ChartBottomWidgets digits={digits} tick={tick} />,
@@ -338,6 +342,12 @@ const Chart = props => {
     return (
         <SmartChartWithRef
             ref={charts_ref}
+            initialData={{
+                activeSymbols: active_symbols,
+            }}
+            chartData={{
+                activeSymbols: active_symbols,
+            }}
             barriers={barriers}
             bottomWidgets={show_digits_stats && isDesktop() ? bottomWidgets : props.bottomWidgets}
             crosshair={isMobile() ? 0 : undefined}
@@ -375,7 +385,6 @@ const Chart = props => {
             importedLayout={chart_layout}
             onExportLayout={exportLayout}
             shouldFetchTradingTimes={!end_epoch}
-            refreshActiveSymbols={should_refresh}
             hasAlternativeSource={has_alternative_source}
             refToAddTick={refToAddTick}
             getMarketsOrder={getMarketsOrder}
@@ -443,8 +452,6 @@ const ChartTrade = connect(({ modules, ui, common }) => ({
     wsSendRequest: modules.trade.wsSendRequest,
     wsSubscribe: modules.trade.wsSubscribe,
     active_symbols: modules.trade.active_symbols,
-    should_refresh: modules.trade.should_refresh_active_symbols,
-    resetRefresh: modules.trade.resetRefresh,
     has_alternative_source: modules.trade.has_alternative_source,
     refToAddTick: modules.trade.refToAddTick,
 }))(Chart);

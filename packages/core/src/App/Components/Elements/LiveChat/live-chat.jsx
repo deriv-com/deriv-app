@@ -60,22 +60,22 @@ const LiveChat = ({ is_mobile_drawer, has_cookie_account }) => {
                 const { loginid, email, landing_company_shortcode, currency, residence, first_name, last_name } =
                     client_information || {};
 
-                client_first_name = first_name ?? '';
-                client_last_name = last_name ?? '';
+                client_first_name = first_name ?? ' ';
+                client_last_name = last_name ?? ' ';
 
                 /* the session variables are sent to CS team dashboard to notify user has logged in
                 and also acts as custom variables to trigger targeted engagement */
                 if (window.LiveChatWidget) {
                     const session_variables = {
                         is_logged_in: !!is_logged_in,
-                        loginid: loginid ?? '',
-                        landing_company_shortcode: landing_company_shortcode ?? '',
-                        currency: currency ?? '',
-                        residence: residence ?? '',
-                        email: email ?? '',
-                        utm_source: utm_source ?? '',
-                        utm_medium: utm_medium ?? '',
-                        utm_campaign: utm_campaign ?? '',
+                        loginid: loginid ?? ' ',
+                        landing_company_shortcode: landing_company_shortcode ?? ' ',
+                        currency: currency ?? ' ',
+                        residence: residence ?? ' ',
+                        email: email ?? ' ',
+                        utm_source: utm_source ?? ' ',
+                        utm_medium: utm_medium ?? ' ',
+                        utm_campaign: utm_campaign ?? ' ',
                     };
                     window.LiveChatWidget.call('set_session_variables', session_variables);
 

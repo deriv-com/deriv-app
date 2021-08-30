@@ -535,7 +535,7 @@ const CFDPasswordModal = ({
     const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
     const has_mt5_account = Boolean(mt5_login_list?.length);
     const should_set_trading_password =
-        Array.isArray(account_status.status) &&
+        Array.isArray(account_status?.status) &&
         account_status.status.includes(
             platform === CFD_PLATFORMS.MT5 ? 'mt5_password_not_set' : 'dxtrade_password_not_set'
         );

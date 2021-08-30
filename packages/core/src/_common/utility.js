@@ -97,18 +97,10 @@ const isOptionsBlocked = country => blocked_options_countries.includes(country);
 
 // Fuction to direct user based on the selected platform from deriv-com before login
 const directUser = platform => {
-    const dmt5_url = 'mt5';
-    const dbot_url = 'bot';
-    const derivx_url = 'derivx';
+    const supported_platforms = ['mt5', 'bot', 'derivx'];
 
-    if (platform === dmt5_url) {
-        window.location = `/${dmt5_url}`;
-    } else if (platform === dbot_url) {
-        window.location = `/${dbot_url}`;
-    } else if (platform === derivx_url) {
-        window.location = `/${derivx_url}`;
-    } else if (platform !== dmt5_url && platform !== dbot_url && platform !== derivx_url && platform !== null) {
-        window.location = `/`;
+    if (platform && supported_platforms.includes(platform)) {
+        window.location = `/${supported_platforms[supported_platforms.indexOf(platform)]}`;
     }
 };
 

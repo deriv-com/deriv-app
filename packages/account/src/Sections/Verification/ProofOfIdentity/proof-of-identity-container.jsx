@@ -6,6 +6,10 @@ import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
 import NotRequired from 'Components/poi-not-required';
 import Unsupported from 'Components/poi-unsupported';
+import Verified from 'Components/poi-verified';
+import Limited from 'Components/poi-limited';
+import Expired from 'Components/poi-expired';
+import UploadComplete from 'Components/poi-upload-complete';
 import POISubmission from './proof-of-identity-submission.jsx';
 import Onfido from './onfido.jsx';
 import IdvContainer from './idv.jsx';
@@ -103,6 +107,39 @@ const ProofOfIdentityContainer = ({
                 is_idv_disallowed={is_idv_disallowed}
             />
         );
+        // Clients modified from BO does not get their latest attempts populated
+    } else if (!identity_last_attempt) {
+        switch (identity_status) {
+            case identity_status_codes.pending:
+                return (
+                    <UploadComplete
+                        is_from_external={is_from_external}
+                        needs_poa={needs_poa}
+                        redirect_button={redirect_button}
+                    />
+                );
+            case identity_status_codes.verified:
+                return (
+                    <Verified
+                        is_from_external={is_from_external}
+                        needs_poa={needs_poa}
+                        redirect_button={redirect_button}
+                    />
+                );
+            case identity_status_codes.expired:
+                return (
+                    <Expired
+                        is_from_external={is_from_external}
+                        redirect_button={redirect_button}
+                        handleRequireSubmission={handleRequireSubmission}
+                    />
+                );
+            case identity_status_codes.rejected:
+            case identity_status_codes.suspected:
+                return <Limited handleRequireSubmission={handleRequireSubmission} />;
+            default:
+                break;
+        }
     }
 
     switch (identity_last_attempt.service) {

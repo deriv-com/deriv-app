@@ -8,4 +8,10 @@ export const platforms = {
         route_to_path: routes.cashier_p2p,
         url: 'https://app.deriv.com/cashier/p2p',
     },
+    derivgo: {
+        icon_text: undefined,
+        is_hard_redirect: true,
+        platform_name: 'Deriv Go',
+        route_to_path: '',
+    },
 };

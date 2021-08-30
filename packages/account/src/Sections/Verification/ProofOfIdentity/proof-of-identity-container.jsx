@@ -6,7 +6,6 @@ import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
 import NotRequired from 'Components/poi-not-required';
 import Unsupported from 'Components/poi-unsupported';
-import Unverified from 'Components/poi-unverified';
 import POISubmission from './proof-of-identity-submission.jsx';
 import Onfido from './onfido.jsx';
 import IdvContainer from './idv.jsx';
@@ -18,7 +17,6 @@ const ProofOfIdentityContainer = ({
     app_routing_history,
     fetchResidenceList,
     height,
-    is_description_enabled = true,
     is_from_external,
     is_switching,
     is_virtual,
@@ -79,11 +77,7 @@ const ProofOfIdentityContainer = ({
         identity_last_attempt,
         needs_poa,
         is_idv_disallowed,
-        is_unwelcome,
-        allow_document_upload,
     } = verification_status;
-
-    if (is_unwelcome && !allow_document_upload) return <Unverified is_description_enabled={is_description_enabled} />;
 
     const redirect_button = should_show_redirect_btn && (
         <Button primary className='proof-of-identity__redirect' onClick={() => routeBackTo(from_platform.route)}>

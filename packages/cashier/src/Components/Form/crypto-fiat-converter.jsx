@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, useFormikContext} from 'formik';
 import { DesktopWrapper, Input, Icon, MobileWrapper, Text } from '@deriv/components';
-import { getDecimalPlaces, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { useInterval } from '@deriv/components/src/hooks';
@@ -39,38 +38,30 @@ const InputGroup = ({ children, className }) => {
 };
 
 const CryptoFiatConverter = ({
-    crypto_amount,
-    crypto_fiat_converter_error,
-    fiat_amount,
+    converter_from_amount,
+    converter_from_error,
+    converter_to_error,
+    converter_to_amount,
     from_currency,
     hint,
     is_timer_visible,
-    onChangeCryptoAmount,
-    onChangeFiatAmount,
-    resetTimer,
-    setCryptoAmount,
-    setFiatAmount,
+    onChangeConverterFromAmount,
+    onChangeConverterToAmount,
+    resetConverter,
+    setConverterFromAmount,
+    setConverterToAmount,
     setIsTimerVisible,
     to_currency,
     validateFromAmount,
+    validateToAmount,
 }) => {
-    const { errors, touched, handleBlur, handleChange, setFieldError } = useFormikContext();
+    const { handleBlur, handleChange } = useFormikContext();
     const [arrow_icon_direction, setArrowIconDirection] = React.useState('right');
-
-    const validateToAmount = amount => {
-        if (amount) {
-            const { is_ok, message } = validNumber(amount, {
-                type: 'float',
-                decimals: getDecimalPlaces(to_currency),
-            });
-            if (!is_ok) return message;
-        }
-    
-        return undefined;
-    };
+    const [has_from_amount_changed, setHasFromAmountChanged] = React.useState(false);
+    const [has_to_amount_changed, setHasToAmountChanged] = React.useState(false);
 
     React.useEffect(() => {
-        return () => resetTimer();
+        return () => resetConverter();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -81,28 +72,30 @@ const CryptoFiatConverter = ({
 
     return (
         <div className='crypto-fiat-converter-form'>
-            <Field name='crypto_amount' validate={validateFromAmount}>
+            <Field name='converter_from_amount' validate={validateFromAmount}>
                 {({ field }) => (
                     <Input
                         {...field}
-                        onFocus={() =>{
-                            setArrowIconDirection('right'); 
+                        onFocus={() => {
+                            setArrowIconDirection('right');
                         }}
                         onBlur={e => {
                             handleBlur(e);
-                            onChangeCryptoAmount(e, from_currency, to_currency);
-                            setFieldError('fiat_amount', '');
+                            if (has_from_amount_changed) {
+                                onChangeConverterFromAmount(e, from_currency, to_currency);
+                            }  
+                            setHasFromAmountChanged(false);
                         }}
                         onChange={e => {
-                            setFieldError('crypto_amount', '');
+                            setHasFromAmountChanged(true);
                             setIsTimerVisible(false);
+                            setConverterFromAmount(e.target.value);   
                             handleChange(e);
-                            setCryptoAmount(e.target.value);   
                         }}
                         type='text'
-                        error={touched.crypto_amount && errors.crypto_amount || crypto_fiat_converter_error}
+                        error={converter_from_error}
                         label={localize('Amount ({{currency}})', {currency: from_currency})}
-                        value={crypto_amount}
+                        value={converter_from_amount}
                         autoComplete='off'
                         required
                         hint={hint}
@@ -115,7 +108,7 @@ const CryptoFiatConverter = ({
             <DesktopWrapper>
                 {arrow_icon_direction === 'right' ? <Icon icon='IcArrowRightBold' /> : <Icon icon='IcArrowLeftBold' />}
             </DesktopWrapper>
-            <Field name='fiat_amount' validate={validateToAmount}>
+            <Field name='converter_to_amount' validate={validateToAmount}>
                 {({ field }) => (
                     <InputGroup className='input-group'>
                         <Input
@@ -125,63 +118,66 @@ const CryptoFiatConverter = ({
                             }}
                             onBlur={e => {
                                 handleBlur(e);
-                                onChangeFiatAmount(e, to_currency, from_currency);
-                                setFieldError('crypto_amount', '');    
+                                if(has_to_amount_changed) {
+                                    onChangeConverterToAmount(e, to_currency, from_currency);
+                                } 
+                                setHasToAmountChanged(false); 
                             }}
                             onChange={e => {
-                                setFieldError('fiat_amount', '');
+                                setHasToAmountChanged(true);
                                 setIsTimerVisible(false);
+                                setConverterToAmount(e.target.value);   
                                 handleChange(e);
-                                setFiatAmount(e.target.value);       
                             }}
                             type='text'
-                            error={touched.fiat_amount && errors.fiat_amount}
+                            error={converter_to_error}
                             label={localize('Amount ({{currency}})', {currency: to_currency})}
-                            value={fiat_amount}
+                            value={converter_to_amount}
                             autoComplete='off'
+                            hint={localize('Approximate value')}
                         />
                         {is_timer_visible && <Timer onComplete={() => {
-                            onChangeCryptoAmount({
+                            onChangeConverterFromAmount({
                                 target: {
-                                    value: crypto_amount,
+                                    value: converter_from_amount,
                                 },
                             }, from_currency, to_currency);
                         }} /> }
                     </InputGroup>
                 )}
             </Field>
-            <Text as='p' size='xxs' className='crypto-fiat-converter-form__text'>
-                <Localize i18n_default_text='Approximate value' />
-            </Text>
         </div>
     );
 };
 
 CryptoFiatConverter.propTypes = {
-    crypto_amount: PropTypes.string,
-    crypto_fiat_converter_error: PropTypes.string,
-    fiat_amount: PropTypes.string,
+    converter_from_amount: PropTypes.string,
+    converter_from_error: PropTypes.string,
+    converter_to_error: PropTypes.string,
+    converter_to_amount: PropTypes.string,
     from_currency: PropTypes.string,
     is_timer_visible: PropTypes.bool,
-    onChangeCryptoAmount: PropTypes.func,
-    onChangeFiatAmount: PropTypes.func,
-    resetTimer: PropTypes.func,
-    setCryptoAmount: PropTypes.func,
-    setFiatAmount: PropTypes.func,
+    onChangeConverterFromAmount: PropTypes.func,
+    onChangeConverterToAmount: PropTypes.func,
+    resetConverter: PropTypes.func,
+    setConverterFromAmount: PropTypes.func,
+    setConverterToAmount: PropTypes.func,
     setIsTimerVisible: PropTypes.func,
     to_currency: PropTypes.string,
     validateFromAmount: PropTypes.func,
+    validateToAmount: PropTypes.func,
 };
 
 export default connect(({ modules }) => ({
-    crypto_amount: modules.cashier.crypto_amount,
-    crypto_fiat_converter_error: modules.cashier.crypto_fiat_converter_error,
-    fiat_amount: modules.cashier.fiat_amount,
+    converter_from_amount: modules.cashier.converter_from_amount,
+    converter_from_error: modules.cashier.converter_from_error,
+    converter_to_error: modules.cashier.converter_to_error,
+    converter_to_amount: modules.cashier.converter_to_amount,
     is_timer_visible: modules.cashier.is_timer_visible,
-    onChangeCryptoAmount: modules.cashier.onChangeCryptoAmount,
-    onChangeFiatAmount: modules.cashier.onChangeFiatAmount,
-    resetTimer: modules.cashier.resetTimer,
-    setCryptoAmount: modules.cashier.setCryptoAmount,
-    setFiatAmount: modules.cashier.setFiatAmount,
+    onChangeConverterFromAmount: modules.cashier.onChangeConverterFromAmount,
+    onChangeConverterToAmount: modules.cashier.onChangeConverterToAmount,
+    resetConverter: modules.cashier.resetConverter,
+    setConverterFromAmount: modules.cashier.setConverterFromAmount,
+    setConverterToAmount: modules.cashier.setConverterToAmount,
     setIsTimerVisible: modules.cashier.setIsTimerVisible,
 }))(CryptoFiatConverter);

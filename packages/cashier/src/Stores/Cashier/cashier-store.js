@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import React from 'react';
-import { action, computed, observable, toJS, reaction, when, runInAction } from 'mobx';
+import { action, computed, observable, toJS, reaction, when } from 'mobx';
 import {
     formatMoney,
     isEmptyObject,
@@ -175,9 +175,10 @@ export default class CashierStore extends BaseStore {
     @observable is_10k_withdrawal_limit_reached = undefined;
     @observable is_deposit = false;
     @observable is_cashier_default = true;
-    @observable crypto_amount = '';
-    @observable fiat_amount = '';
-    @observable crypto_fiat_converter_error = '';
+    @observable converter_from_amount = '';
+    @observable converter_to_amount = '';
+    @observable converter_from_error = '';
+    @observable converter_to_error = '';
     @observable is_timer_visible = false;
 
     @observable config = {
@@ -752,92 +753,6 @@ export default class CashierStore extends BaseStore {
         this.setVerificationResendTimeout(60, container);
         this.setErrorMessage('', null, null, true);
         this.root_store.client.setVerificationCode('', this.map_action[container]);
-    }
-
-    @action.bound
-    setCryptoAmount(amount) {
-        this.crypto_amount = amount;
-    }
-
-    @action.bound
-    setFiatAmount(amount) {
-        this.fiat_amount = amount;
-    }
-
-    @action.bound
-    setIsTimerVisible(is_timer_visible) {
-        this.is_timer_visible = is_timer_visible;
-    }
-
-    @action.bound
-    async getExchangeRate(from_currency, to_currency) {
-        const { exchange_rates } = await this.WS.send({
-            exchange_rates: 1,
-            base_currency: from_currency,
-        });
-        return exchange_rates.rates[to_currency];
-    }
-
-    @action.bound
-    async setCryptoFiatConverterError(error) {
-        this.crypto_fiat_converter_error = error;
-    }
-
-    @action.bound
-    validateCryptoFiatConverter(amount) {
-        if(amount) {
-            const { is_ok, message } = validNumber(amount, {
-                type: 'float',
-                decimals: getDecimalPlaces(this.config.account_transfer.selected_from.currency),
-                min: this.config.account_transfer.transfer_limit.min,
-                max: this.config.account_transfer.transfer_limit.max,
-            });
-            if (!is_ok) {
-                this.setCryptoFiatConverterError(message);
-            } else if (+this.config.account_transfer.selected_from.balance < +amount) { 
-                this.setCryptoFiatConverterError(localize('Insufficient funds'));
-            } else {
-                this.setCryptoFiatConverterError('');
-            }
-        } else {
-            this.setCryptoFiatConverterError('');
-        }
-    }
-
-    @action.bound
-    async onChangeCryptoAmount({ target }, from_currency, to_currency) {
-        this.validateCryptoFiatConverter(target.value);
-        if (this.crypto_fiat_converter_error) {
-            this.setFiatAmount('');
-            this.setIsTimerVisible(false);
-            this.setAccountTransferAmount('');
-        } else {
-            const rate = await this.getExchangeRate(from_currency, to_currency);
-            const decimals = getDecimalPlaces(to_currency);
-            const amount = (rate * target.value).toFixed(decimals);
-            this.setFiatAmount(amount);
-            this.setIsTimerVisible(true);
-            this.setAccountTransferAmount(target.value);
-        }
-    }
-
-    @action.bound
-    async onChangeFiatAmount({ target }, from_currency, to_currency) {
-        const rate = await this.getExchangeRate(from_currency, to_currency);
-        runInAction(() => {
-            const decimals = getDecimalPlaces(to_currency);
-            const amount = (rate * target.value).toFixed(decimals);
-            this.validateCryptoFiatConverter(amount);
-            if (this.crypto_fiat_converter_error) {
-                this.setCryptoAmount(amount);
-                this.setIsTimerVisible(false);
-                this.setAccountTransferAmount('');
-            } else {
-                this.setCryptoAmount(amount);
-                this.setIsTimerVisible(true);
-                this.setAccountTransferAmount(amount);
-            }
-        });
     }
 
     @action.bound
@@ -1705,10 +1620,133 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    resetTimer() {
-        this.setCryptoAmount('');
-        this.setFiatAmount('');
-        this.setCryptoFiatConverterError('');
+    setIsTimerVisible(is_timer_visible) {
+        this.is_timer_visible = is_timer_visible;
+    }
+
+    @action.bound
+    setConverterFromAmount(amount) {
+        this.converter_from_amount = amount;
+    }
+
+    @action.bound
+    setConverterToAmount(amount) {
+        this.converter_to_amount = amount;
+    }
+
+    @action.bound
+    setConverterFromError(error) {
+        this.converter_from_error = error;
+    }
+
+    @action.bound
+    setConverterToError(error) {
+        this.converter_to_error = error;
+    }
+
+    @action.bound
+    async getExchangeRate(from_currency, to_currency) {
+        const { exchange_rates } = await this.WS.send({
+            exchange_rates: 1,
+            base_currency: from_currency,
+        });
+        return exchange_rates.rates[to_currency];
+    }
+
+    @action.bound
+    validateTransferFrom(amount) {
+        if(amount) {
+            const { is_ok, message } = validNumber(amount, {
+                type: 'float',
+                decimals: getDecimalPlaces(this.config.account_transfer.selected_from.currency),
+                min: this.config.account_transfer.transfer_limit.min,
+                max: this.config.account_transfer.transfer_limit.max,
+            });
+            if (!is_ok) {
+                this.setConverterFromError(message);
+            } else if (+this.config.account_transfer.selected_from.balance < +amount) { 
+                this.setConverterFromError(localize('Insufficient funds'));
+            } else { 
+                this.setConverterFromError('');
+            }
+        }
+    }
+
+    @action.bound
+    validateTransferTo(amount) {
+        if(amount) {
+            const currency = this.config.account_transfer.selected_to.currency;
+            const { is_ok, message } = validNumber(amount, {
+                type: 'float',
+                decimals: getDecimalPlaces(currency),
+            });
+            if (!is_ok) {
+                this.setConverterToError(message);
+            } else {
+                this.setConverterToError('');
+            }
+        }
+    }
+
+    @action.bound
+    async onChangeConverterFromAmount({ target }, from_currency, to_currency) {
+        if(target.value) {
+            if (this.converter_from_error) {
+                this.setConverterFromAmount(target.value);
+                this.setConverterToAmount('');
+                this.setConverterToError('');
+                this.setIsTimerVisible(false);
+                this.setAccountTransferAmount('');
+            } else {
+                const rate = await this.getExchangeRate(from_currency, to_currency);
+                const decimals = getDecimalPlaces(to_currency);
+                const amount = (rate * target.value).toFixed(decimals);
+                this.setConverterFromAmount(target.value);
+                this.setConverterToAmount(amount);
+                this.setConverterToError('');
+                this.setIsTimerVisible(true);
+                this.setAccountTransferAmount(target.value);
+            }
+        } else {
+            this.resetConverter();
+        }
+    }
+
+    @action.bound
+    async onChangeConverterToAmount({ target }, from_currency, to_currency) { 
+        if(target.value) {
+            if (this.converter_to_error) {
+                this.setConverterFromAmount('');
+                this.setConverterFromError('');
+                this.setIsTimerVisible(false);
+                this.setAccountTransferAmount('');
+            } else {
+                const rate = await this.getExchangeRate(from_currency, to_currency);
+                const decimals = getDecimalPlaces(to_currency);
+                const amount = (rate * target.value).toFixed(decimals);
+                this.validateTransferFrom(amount);
+                if(this.converter_from_error) {
+                    this.setConverterFromAmount(amount);
+                    this.setIsTimerVisible(false);
+                    this.setAccountTransferAmount('');
+                } else {
+                    this.setConverterFromAmount(amount);
+                    this.setConverterFromError('');
+                    this.setIsTimerVisible(true);
+                    this.setAccountTransferAmount(amount);
+                }
+            }
+        } else {
+            this.resetConverter();
+        }
+    }
+
+    @action.bound
+    resetConverter() {
+        this.setConverterFromAmount('');
+        this.setConverterToAmount('');
+        this.setConverterFromError('');
+        this.setConverterToError('');
         this.setIsTimerVisible(false);
     }
 
@@ -1716,15 +1754,14 @@ export default class CashierStore extends BaseStore {
     setPercentageSelectorResult(amount) {
         const selected_from_currency = this.config.account_transfer.selected_from.currency;
         const selected_to_currency = this.config.account_transfer.selected_to.currency;
-        if (amount > 0) {
-            this.setCryptoAmount(amount);
-            this.onChangeCryptoAmount(
+        if (amount > 0) { 
+            this.resetConverter();
+            this.validateTransferFrom(amount);
+            this.onChangeConverterFromAmount(
                 { target: { value: amount } },
                 selected_from_currency,
-                selected_to_currency,
+                selected_to_currency
             );
         } 
-
-        this.setIsTimerVisible(false);
     }
 }

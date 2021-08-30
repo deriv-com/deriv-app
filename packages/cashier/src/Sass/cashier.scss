@@ -714,7 +714,10 @@
     align-items: center;
     @include desktop {
         max-width: 36rem;
-        margin: auto;
+        margin: 0 auto 2.4rem;
+        .dc-input {
+            margin-bottom: unset;
+        }
     }
     @include mobile {
         display: flex;
@@ -723,14 +726,12 @@
         fieldset {
             width: 100%;
         }
+        .dc-input {
+            margin-bottom: 1rem;
+        }
     }
-
     &__text {
         margin-top: 0.6rem;
-    }
-
-    .dc-input {
-        margin-bottom: 1rem;
     }
     .input-group {
         display: flex;

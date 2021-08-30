@@ -13,7 +13,7 @@ const getHeaders = () => [
     { text: localize('Amount') },
     { text: localize('Address') },
     { text: localize('Transaction hash') },
-    { text: localize('Date & time') },
+    { text: localize('Time') },
     { text: localize('Status') },
     { text: localize('Action') },
 ];
@@ -70,7 +70,7 @@ const CryptoTransactionsHistory = ({
                             /> 
                         }
                     </Table.Body>
-                </Table>
+                </Table> 
             </div>
         </React.Fragment>
     );

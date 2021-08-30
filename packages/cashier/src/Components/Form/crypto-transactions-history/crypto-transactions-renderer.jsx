@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Button, Icon, Popover, Table, Text } from '@deriv/components';
-import { epochToMoment, isMobile } from '@deriv/shared';
+import { Button, Icon, Money, Popover, Table, Text } from '@deriv/components';
+import { epochToMoment, formatMoney, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { getStatus } from '../../../Constants/transaction-status';
@@ -86,9 +86,14 @@ const CryptoTransactionsRenderer = ({
                                 as='p' 
                                 size='xxs'
                                 weight='bold' 
-                                color={transaction_type === 'withdrawal' ? 'red' : 'profit-success'} 
+                                color={status.renderer === 'successful' ? 'profit-success' : 'red'}
                             >
-                                {`${formatted_amount} ${currency}`}
+                                <Money
+                                    currency={currency}
+                                    amount={formatMoney(currency, formatted_amount, true)}
+                                    should_format={false}
+                                    show_currency
+                                />
                             </Text>
                         </Table.Cell>
                         <Table.Cell>
@@ -166,9 +171,14 @@ const CryptoTransactionsRenderer = ({
                             as='p' 
                             size='xs'
                             weight='bold' 
-                            color={transaction_type === 'withdrawal' ? 'red' : 'profit-success'} 
+                            color={status.renderer === 'successful' ? 'profit-success' : 'red'} 
                         >
-                            {`${formatted_amount} ${currency}`}
+                            <Money
+                                currency={currency}
+                                amount={formatMoney(currency, formatted_amount, true)}
+                                should_format={false}
+                                show_currency
+                            />
                         </Text>
                     </Table.Cell>
                     <Table.Cell className='crypto-transactions-history__table-hash'>

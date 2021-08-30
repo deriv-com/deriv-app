@@ -4,6 +4,7 @@ import { Loading } from '@deriv/components';
 // import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import CryptoDeposit from './crypto-deposit.jsx';
 import CashierContainer from '../Components/cashier-container.jsx';
 import Error from '../Components/Error/error.jsx';
 import Virtual from '../Components/Error/virtual.jsx';
@@ -106,6 +107,9 @@ const Deposit = ({
     }
     if (is_crypto_transactions_visible) {
         return <CryptoTransactionsHistory />;
+    }
+    if (isCryptocurrency(currency)) {
+        return <CryptoDeposit />;
     }
 
     return <CashierContainer iframe_height={iframe_height} iframe_url={iframe_url} is_loading={is_loading} />;

@@ -35,7 +35,7 @@ class DBot {
                     if (is_mobile) {
                         workspaceScale = 0.7;
                     } else {
-                        const scratch_div_width = document.getElementById('scratch_div').offsetWidth;
+                        const scratch_div_width = document.getElementById('scratch_div')?.offsetWidth;
                         const zoom_scale = scratch_div_width / window_width / 1.5;
                         workspaceScale = zoom_scale;
                     }

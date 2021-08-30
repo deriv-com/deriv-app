@@ -42,6 +42,12 @@ export default class CommonStore extends BaseStore {
     @observable app_routing_history = [];
     @observable app_router = { history: null };
     @observable app_id = undefined;
+    @observable platform = '';
+
+    @action.bound
+    init() {
+        this.setPlatform();
+    }
 
     @action.bound
     checkAppId() {
@@ -49,6 +55,15 @@ export default class CommonStore extends BaseStore {
             BinarySocket.closeAndOpenNewConnection();
         }
         this.app_id = getAppId();
+    }
+
+    @action.bound
+    setPlatform() {
+        const search = window.location.search;
+        if (search) {
+            const url_params = new URLSearchParams(search);
+            this.platform = url_params.get('platform') || '';
+        }
     }
 
     @action.bound

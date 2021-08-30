@@ -1225,6 +1225,9 @@
             flex-direction: column;
             align-items: center;
             width: 45%;
+            @include mobile {
+                width: 95%;
+            }
 
             .icon {
                 margin: 1.6rem 0 2.4rem 0;
@@ -1263,6 +1266,7 @@
             justify-content: flex-end;
             width: 45%;
             @include mobile {
+                width: 95%;
                 margin-top: 8px;
             }
         }

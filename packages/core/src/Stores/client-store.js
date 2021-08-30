@@ -349,7 +349,7 @@ export default class ClientStore extends BaseStore {
     }
 
     hasAccountErrorInCFDList = (platform, account_type) => {
-        if (!this.is_logged_in) return [];
+        if (!this.is_logged_in) return false;
 
         const list = platform === CFD_PLATFORMS.MT5 ? this.mt5_login_list : this.dxtrade_accounts_list;
         return list?.some(account => !!account.has_error && account.account_type === account_type);
@@ -2016,6 +2016,7 @@ export default class ClientStore extends BaseStore {
         const { platform } = response.echo_req || {};
 
         this[`is_populating_${platform}_account_list`] = false;
+        this[`${platform}_accounts_list_error`] = null;
 
         if (!response.error) {
             this[`${platform}_accounts_list`] = response.trading_platform_accounts.map(account => {

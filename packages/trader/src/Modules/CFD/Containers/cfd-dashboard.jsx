@@ -194,7 +194,9 @@ class CFDDashboard extends React.Component {
             : has_dxtrade_real_account_error || dxtrade_disabled_signup_types.real;
 
         const has_cfd_account_error =
-            platform === CFD_PLATFORMS.MT5 ? has_mt5_account_error : has_dxtrade_account_error;
+            platform === CFD_PLATFORMS.MT5
+                ? has_mt5_account_error
+                : has_dxtrade_account_error || !!dxtrade_accounts_list_error;
 
         const verification_code = platform === CFD_PLATFORMS.MT5 ? mt5_verification_code : dxtrade_verification_code;
 
@@ -217,7 +219,7 @@ class CFDDashboard extends React.Component {
                                     {general_messages.getWelcomeHeader(is_logged_in, platform)}
                                 </h1>
                             </div>
-                            {has_cfd_account_error && (
+                            {is_logged_in && has_cfd_account_error && (
                                 <div className='cfd-dashboard__accounts-error'>
                                     <Text
                                         as='p'

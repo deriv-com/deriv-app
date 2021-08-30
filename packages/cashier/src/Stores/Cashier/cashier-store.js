@@ -150,18 +150,25 @@ export default class CashierStore extends BaseStore {
         super({ root_store });
         this.WS = WS;
 
-        const has_set_currency = this.root_store.client.account_list
-            .filter(account => !account.is_virtual)
-            .some(account => account.title !== 'Real');
+        let has_set_currency;
 
-        this.root_store.menu.attach({
-            id: 'dt_cashier_tab',
-            icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
-            text: () => localize('Cashier'),
-            link_to: has_set_currency && routes.cashier,
-            onClick: !has_set_currency && this.root_store.ui.toggleSetCurrencyModal,
-            login_only: true,
-        });
+        when(
+            () => this.root_store.client.is_logged_in,
+            () => {
+                has_set_currency = this.root_store.client.account_list
+                    .filter(account => !account.is_virtual)
+                    .some(account => account.title !== 'Real');
+
+                this.root_store.menu.attach({
+                    id: 'dt_cashier_tab',
+                    icon: <CashierNotifications p2p_notification_count={this.p2p_notification_count} />,
+                    text: () => localize('Cashier'),
+                    link_to: has_set_currency && routes.cashier,
+                    onClick: !has_set_currency && this.root_store.ui.toggleSetCurrencyModal,
+                    login_only: true,
+                });
+            }
+        );
 
         if (!has_set_currency) {
             this.changeSetCurrencyModalTitle();

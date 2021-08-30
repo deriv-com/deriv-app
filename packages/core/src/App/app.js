@@ -11,8 +11,8 @@ const setStorageEvents = root_store => {
         switch (evt.key) {
             case 'client.accounts': {
                 const active_loginid = root_store.client.loginid;
-                const new_currency = JSON.parse(evt.newValue)[active_loginid]?.currency;
-                const old_currency = JSON.parse(evt.oldValue)[active_loginid]?.currency;
+                const new_currency = JSON.parse(evt.newValue)?.[active_loginid]?.currency;
+                const old_currency = JSON.parse(evt.oldValue)?.[active_loginid]?.currency;
 
                 if (document.hidden && new_currency && old_currency !== new_currency) {
                     root_store.client.updateAccountCurrency(new_currency, false);
@@ -59,6 +59,7 @@ const initStore = notification_messages => {
     // OutdatedBrowser.init(root_store);!
     root_store.client.init();
     root_store.ui.init(notification_messages);
+    root_store.common.init();
     root_store.pushwoosh.init();
 
     return root_store;

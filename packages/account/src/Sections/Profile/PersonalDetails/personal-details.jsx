@@ -1055,7 +1055,7 @@ export class PersonalDetailsForm extends React.Component {
                                                 id='email_consent'
                                                 defaultChecked={!!values.email_consent}
                                                 disabled={!this.isChangeableField('email_consent') && !is_virtual}
-                                                className={is_dashboard && 'dc-checkbox-blue'}
+                                                className={is_dashboard ? 'dc-checkbox-blue' : ''}
                                             />
                                         </fieldset>
                                     </FormBodySection>

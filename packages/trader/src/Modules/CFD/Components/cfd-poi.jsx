@@ -43,7 +43,7 @@ const CFDPOI = ({ authentication_status, form_error, index, onCancel, onSubmit, 
                                     <ProofOfIdentityContainer
                                         height={height}
                                         is_from_external={true}
-                                        onStateChange={({ status }) => setPOIState(status)}
+                                        onStateChange={status => setPOIState(status)}
                                         {...props}
                                     />
                                 </Div100vhContainer>

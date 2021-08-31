@@ -50,7 +50,7 @@ const idv_document_data = {
         },
         national_id: {
             new_display_name: '',
-            example_format: '123456789',
+            example_format: '12345678',
             sample_image: getImageLocation('ke_national_identity_card.png'),
         },
         passport: {
@@ -62,12 +62,12 @@ const idv_document_data = {
     za: {
         national_id: {
             new_display_name: 'National ID',
-            example_format: '1234567890123',
+            example_format: '123456789012',
             sample_image: getImageLocation('za_national_identity_card.png'),
         },
         national_id_no_photo: {
             new_display_name: 'National ID (No Photo)',
-            example_format: '1234567890123',
+            example_format: '123456789012',
             sample_image: '',
         },
     },
@@ -84,7 +84,7 @@ const idv_document_data = {
         },
         drivers_license: {
             new_display_name: '',
-            example_format: 'ABC123456789012',
+            example_format: 'ABC123456789',
             sample_image: getImageLocation('ng_drivers_license.png'),
         },
         nin: {
@@ -104,7 +104,7 @@ const idv_document_data = {
         },
         voter_id: {
             new_display_name: 'Voter ID',
-            example_format: '123456789012345',
+            example_format: '1234567890123456789',
             sample_image: getImageLocation('ng_voter_id.png'),
         },
     },

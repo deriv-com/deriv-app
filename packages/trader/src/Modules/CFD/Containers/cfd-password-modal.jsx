@@ -37,13 +37,8 @@ const PasswordModalHeader = ({
     should_show_server_form,
     account_title,
     is_password_reset_error,
-    has_mt5_account,
     platform,
 }) => {
-    if (should_set_trading_password && has_mt5_account) {
-        return null;
-    }
-
     const element = isMobile() ? 'p' : 'span';
     const alignment = 'center';
     const font_size = 's';
@@ -698,7 +693,6 @@ const CFDPasswordModal = ({
                     should_show_server_form={should_show_server_form}
                     should_set_trading_password={should_set_trading_password}
                     account_title={account_title}
-                    has_mt5_account={has_mt5_account}
                     is_password_reset_error={is_password_reset}
                     platform={platform}
                 />

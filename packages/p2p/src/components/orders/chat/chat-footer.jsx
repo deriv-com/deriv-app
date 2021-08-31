@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Input } from '@deriv/components';
+import { Input, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
-import { localize } from 'Components/i18next';
+import { localize, Localize } from 'Components/i18next';
 import ChatFooterIcon from 'Components/orders/chat/chat-footer-icon.jsx';
 import { useStores } from 'Stores';
 import ChatMessage from 'Utils/chat-message';
@@ -76,6 +76,14 @@ const ChatFooter = observer(() => {
 
     const should_show_attachment_icon = character_count === 0;
     const max_characters = 5000;
+
+    if (sendbird_store.is_chat_frozen) {
+        return (
+            <Text align='center' className='order-chat__footer--frozen' color='prominent' line_height='s' size='xs'>
+                <Localize i18n_default_text='This conversation is closed.' />
+            </Text>
+        );
+    }
 
     return (
         <div

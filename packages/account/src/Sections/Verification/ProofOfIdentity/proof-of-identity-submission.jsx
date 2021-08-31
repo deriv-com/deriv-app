@@ -1,5 +1,4 @@
 import React from 'react';
-import countries from 'i18n-iso-countries';
 import { WS } from '@deriv/shared';
 import CountrySelector from 'Components/poi-country-selector';
 import IdvDocumentSubmit from 'Components/poi-idv-document-submit';
@@ -62,13 +61,11 @@ const POISubmission = ({
         if (has_require_submission) {
             switch (identity_last_attempt.service) {
                 case service_code.idv: {
-                    if (Number(idv.submissions_left) > 0 && !is_idv_disallowed) {
+                    if (
+                        (Number(idv.submissions_left) > 0 || Number(onfido.submissions_left) > 0) &&
+                        !is_idv_disallowed
+                    ) {
                         setSubmissionStatus(submission_status_code.selecting);
-                    } else if (onfido.is_country_supported) {
-                        const country_code = countries.alpha3ToAlpha2(onfido.country_code.toUpperCase());
-                        setSelectedCountry(getCountryFromResidence(country_code.toLowerCase()));
-                        setSubmissionService(service_code.onfido);
-                        setSubmissionStatus(submission_status_code.submitting);
                     } else {
                         setSubmissionService(service_code.manual);
                         setSubmissionStatus(submission_status_code.submitting);
@@ -76,10 +73,8 @@ const POISubmission = ({
                     break;
                 }
                 case service_code.onfido: {
-                    setSelectedCountry(getCountryFromResidence(identity_last_attempt.country_code));
-                    setSubmissionStatus(submission_status_code.submitting);
                     if (Number(onfido.submissions_left) > 0) {
-                        setSubmissionService(service_code.onfido);
+                        setSubmissionStatus(submission_status_code.selecting);
                     } else {
                         setSubmissionService(service_code.manual);
                     }

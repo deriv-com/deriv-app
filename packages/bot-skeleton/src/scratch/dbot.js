@@ -35,12 +35,15 @@ class DBot {
                     if (is_mobile) {
                         workspaceScale = 0.7;
                     } else {
-                        const scratch_div_width = document.getElementById('scratch_div').offsetWidth;
+                        const scratch_div_width = document.getElementById('scratch_div')?.offsetWidth;
                         const zoom_scale = scratch_div_width / window_width / 1.5;
                         workspaceScale = zoom_scale;
                     }
                 }
                 const el_scratch_div = document.getElementById('scratch_div');
+                if (!el_scratch_div) {
+                    return;
+                }
                 this.workspace = Blockly.inject(el_scratch_div, {
                     grid: { spacing: 40, length: 11, colour: '#f3f3f3' },
                     media: `${__webpack_public_path__}media/`,
@@ -240,21 +243,11 @@ class DBot {
 
         top_blocks.forEach(block => {
             if (!block.isMainBlock() && !block.isIndependentBlock()) {
-                this.disableBlocksRecursively(block);
+                block.setDisabled(true);
             }
         });
 
         return true;
-    }
-
-    /**
-     * Disable blocks and their optional children.
-     */
-    disableBlocksRecursively(block) {
-        block.setDisabled(true);
-        if (block.nextConnection?.targetConnection) {
-            this.disableBlocksRecursively(block.nextConnection.targetConnection.sourceBlock_);
-        }
     }
 
     /**

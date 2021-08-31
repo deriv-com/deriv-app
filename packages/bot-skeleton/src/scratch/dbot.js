@@ -41,6 +41,9 @@ class DBot {
                     }
                 }
                 const el_scratch_div = document.getElementById('scratch_div');
+                if (!el_scratch_div) {
+                    return;
+                }
                 this.workspace = Blockly.inject(el_scratch_div, {
                     grid: { spacing: 40, length: 11, colour: '#f3f3f3' },
                     media: `${__webpack_public_path__}media/`,

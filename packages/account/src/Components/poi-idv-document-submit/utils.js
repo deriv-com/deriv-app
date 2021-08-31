@@ -104,7 +104,7 @@ const idv_document_data = {
         },
         voter_id: {
             new_display_name: 'Voter ID',
-            example_format: '1234567890123456789',
+            example_format: '123456789012345',
             sample_image: getImageLocation('ng_voter_id.png'),
         },
     },

@@ -46,8 +46,8 @@ const POISubmission = ({
     };
 
     const handleViewComplete = () => {
+        if (onStateChange && typeof onStateChange === 'function') onStateChange(identity_status_codes.pending);
         setSubmissionStatus(submission_status_code.complete);
-        if (onStateChange) onStateChange(identity_status_codes.pending);
 
         WS.authorized.getAccountStatus().then(() => {
             refreshNotifications();

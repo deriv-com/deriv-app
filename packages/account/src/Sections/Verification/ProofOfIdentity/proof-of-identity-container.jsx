@@ -92,22 +92,22 @@ const ProofOfIdentityContainer = ({
     if (identity_status === identity_status_codes.none || has_require_submission) {
         return (
             <POISubmission
-                residence_list={residence_list}
-                height={height ?? null}
-                is_from_external={!!is_from_external}
-                identity_last_attempt={identity_last_attempt}
                 has_require_submission={has_require_submission}
+                height={height ?? null}
+                identity_last_attempt={identity_last_attempt}
                 idv={idv}
+                is_from_external={!!is_from_external}
+                is_idv_disallowed={is_idv_disallowed}
+                manual={manual}
+                needs_poa={needs_poa}
                 onfido={onfido}
                 onStateChange={onStateChange}
-                needs_poa={needs_poa}
-                manual={manual}
-                refreshNotifications={refreshNotifications}
                 redirect_button={redirect_button}
-                is_idv_disallowed={is_idv_disallowed}
+                refreshNotifications={refreshNotifications}
+                residence_list={residence_list}
             />
         );
-        // Clients modified from BO does not get their latest attempts populated
+        // Client status modified from BO does not get their latest attempts populated
     } else if (!identity_last_attempt) {
         switch (identity_status) {
             case identity_status_codes.pending:
@@ -146,25 +146,21 @@ const ProofOfIdentityContainer = ({
         case service_code.idv:
             return (
                 <IdvContainer
-                    is_from_external={!!is_from_external}
-                    redirect_button={redirect_button}
-                    idv={idv}
-                    residence_list={residence_list}
                     handleRequireSubmission={handleRequireSubmission}
-                    refreshNotifications={refreshNotifications}
-                    verification_status={verification_status}
+                    idv={idv}
+                    is_from_external={!!is_from_external}
+                    needs_poa={needs_poa}
+                    redirect_button={redirect_button}
                 />
             );
         case service_code.onfido:
             return (
                 <Onfido
-                    is_from_external={!!is_from_external}
-                    redirect_button={redirect_button}
-                    verification_status={verification_status}
                     handleRequireSubmission={handleRequireSubmission}
-                    residence_list={residence_list}
+                    is_from_external={!!is_from_external}
+                    needs_poa={needs_poa}
                     onfido={onfido}
-                    onStateChange={onStateChange}
+                    redirect_button={redirect_button}
                 />
             );
         case service_code.manual:

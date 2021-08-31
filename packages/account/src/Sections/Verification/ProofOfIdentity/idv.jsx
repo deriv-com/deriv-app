@@ -6,9 +6,8 @@ import IdvRejected from 'Components/poi-idv-rejected';
 import IdvNoSubmissions from 'Components/poi-idv-limited';
 import { identity_status_codes } from './proof-of-identity-utils';
 
-const Idv = ({ handleRequireSubmission, idv, redirect_button, verification_status, is_from_external }) => {
+const Idv = ({ handleRequireSubmission, idv, is_from_external, needs_poa, redirect_button }) => {
     const { status, submissions_left } = idv;
-    const { needs_poa } = verification_status;
 
     switch (status) {
         case identity_status_codes.pending:

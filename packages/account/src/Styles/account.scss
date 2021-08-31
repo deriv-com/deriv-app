@@ -1732,10 +1732,14 @@ $MIN_HEIGHT_FLOATING: calc(
         }
 
         .icon {
+            width: 128px;
+            height: 128px;
             margin-top: 5.2rem;
             margin-bottom: 2.6rem;
 
             @include mobile {
+                width: 72px;
+                height: 72px;
                 margin-top: 2.6rem;
             }
         }

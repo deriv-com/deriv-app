@@ -576,6 +576,27 @@ export default class ClientStore extends BaseStore {
         return this.residence === 'gb';
     }
 
+    @computed
+    get country_standpoint() {
+        const result = {
+            is_uk: this.is_uk,
+            is_france: this.residence === 'fr',
+            is_belgium: this.residence === 'be',
+            // Other EU countries: Germany, Spain, Italy, Luxembourg and Greece
+            is_other_eu:
+                this.residence === 'de' ||
+                this.residence === 'es' ||
+                this.residence === 'it' ||
+                this.residence === 'lu' ||
+                this.residence === 'gr',
+        };
+
+        result.is_rest_of_eu =
+            this.is_eu && !result.is_uk && !result.is_france && !result.is_belgium && !result.is_other_eu;
+
+        return result;
+    }
+
     // this is true when a user needs to have a active real account for trading
     @computed
     get should_have_real_account() {

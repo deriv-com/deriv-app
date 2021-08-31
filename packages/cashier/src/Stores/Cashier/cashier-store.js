@@ -1410,10 +1410,6 @@ export default class CashierStore extends BaseStore {
                 account => !account.is_mt && !account.is_dxtrade
             );
             this.onChangeTransferTo({ target: { value: first_non_cfd.value } });
-        } else if (selected_from.is_crypto && this.config.account_transfer.selected_to.is_crypto) {
-            // not allowed to transfer crypto to crypto
-            const first_fiat = this.config.account_transfer.accounts_list.find(account => !account.is_crypto);
-            this.onChangeTransferTo({ target: { value: first_fiat.value } });
         }
 
         if (hasTransferNotAllowedLoginid(selected_from.value)) {

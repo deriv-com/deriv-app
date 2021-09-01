@@ -1718,12 +1718,14 @@ $MIN_HEIGHT_FLOATING: calc(
     &__main-container {
         max-width: 67.2rem;
     }
+    .min-height {
+        min-height: 50vh;
+    }
     &__container {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-        min-height: 50vh;
 
         @include mobile {
             min-height: unset;
@@ -1774,6 +1776,14 @@ $MIN_HEIGHT_FLOATING: calc(
         @include mobile {
             margin: 2.4rem 0 0.8rem;
         }
+    }
+    &__footer.external-footer {
+        padding: unset;
+        position: unset;
+        top: unset;
+        bottom: unset;
+        border: none;
+        height: fit-content;
     }
     &__footer {
         @include mobile {

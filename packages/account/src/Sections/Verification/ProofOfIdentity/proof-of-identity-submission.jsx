@@ -100,6 +100,7 @@ const POISubmission = ({
                     selected_country={selected_country}
                     setSelectedCountry={setSelectedCountry}
                     handleSelectionNext={handleSelectionNext}
+                    is_from_external={is_from_external}
                 />
             );
         case submission_status_code.submitting: {

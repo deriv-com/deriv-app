@@ -2,10 +2,16 @@ import React from 'react';
 import { Autocomplete, Button, DesktopWrapper, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize } from '@deriv/translations';
-
+import classNames from 'classnames';
 import FormFooter from 'Components/form-footer';
 
-const CountrySelector = ({ handleSelectionNext, residence_list, selected_country, setSelectedCountry }) => {
+const CountrySelector = ({
+    handleSelectionNext,
+    is_from_external,
+    residence_list,
+    selected_country,
+    setSelectedCountry,
+}) => {
     const [country_list, setCountryList] = React.useState([]);
 
     const initial_form_values = {
@@ -57,7 +63,11 @@ const CountrySelector = ({ handleSelectionNext, residence_list, selected_country
                 values,
             }) => (
                 <React.Fragment>
-                    <div className='proof-of-identity__container'>
+                    <div
+                        className={classNames('proof-of-identity__container', {
+                            'min-height': !is_from_external,
+                        })}
+                    >
                         <Text className='proof-of-identity__header' align='center' weight='bold'>
                             {localize('Proof of identity')}
                         </Text>
@@ -121,7 +131,9 @@ const CountrySelector = ({ handleSelectionNext, residence_list, selected_country
                             </Field>
                         </fieldset>
                     </div>
-                    <FormFooter className='proof-of-identity__footer'>
+                    <FormFooter
+                        className={classNames('proof-of-identity__footer', { 'external-footer': is_from_external })}
+                    >
                         <Button
                             className='proof-of-identity__submit-button'
                             type='submit'

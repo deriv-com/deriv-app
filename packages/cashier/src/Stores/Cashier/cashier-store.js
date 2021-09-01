@@ -319,6 +319,10 @@ export default class CashierStore extends BaseStore {
                 this.checkP2pStatus();
             }
         );
+        when(
+            () => this.is_payment_agent_visible,
+            () => this.filterPaymentAgentList()
+        );
         reaction(
             () => [
                 this.root_store.client.switched,
@@ -332,7 +336,6 @@ export default class CashierStore extends BaseStore {
                 if (this.root_store.client.is_logged_in) {
                     await this.getAdvertizerError();
                     this.checkP2pStatus();
-                    await this.filterPaymentAgentList();
                     this.account_prompt_dialog.resetLastLocation();
                 }
             }

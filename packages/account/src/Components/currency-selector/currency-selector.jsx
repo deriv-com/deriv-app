@@ -144,7 +144,7 @@ const CurrencySelector = ({
                                 height_offset={getHeightOffset()}
                                 is_disabled={isDesktop()}
                             >
-                                <ThemedScrollbars is_bypassed={isMobile()} height={height}>
+                                <ThemedScrollbars height={height}>
                                     {!!reorderCurrencies(fiat)?.length && (
                                         <React.Fragment>
                                             <RadioButtonGroup

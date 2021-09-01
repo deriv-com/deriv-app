@@ -169,8 +169,8 @@
 
         &-wrapper {
             width: 100%;
-            position: absolute;
-            bottom: 8rem;
+            display: flex;
+            align-self: flex-end;
         }
     }
     &__wizard-header {

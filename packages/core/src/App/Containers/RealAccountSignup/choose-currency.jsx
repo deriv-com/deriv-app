@@ -75,7 +75,7 @@ const ChooseCurrency = ({
         if (show_add_button) {
             reorderCryptoCurrencies.push({
                 value: 'plus',
-                name: localize('Add new'),
+                name: deposit_target === routes.cashier_pa ? localize('Add a new') : localize('Add new'),
                 second_line_label:
                     deposit_target === routes.cashier_pa ? localize('account') : localize('crypto account'),
                 icon: 'IcAddAccount',
@@ -117,7 +117,9 @@ const ChooseCurrency = ({
             {({ handleSubmit, values, isSubmitting }) => (
                 <form onSubmit={handleSubmit}>
                     <Text as='h1' color='prominent' align='center' weight='bold' className='add-crypto-currency__title'>
-                        {localize('Choose one of your accounts or add a new cryptocurrency account')}
+                        {deposit_target === routes.cashier_pa
+                            ? localize('Choose an account or add a new one')
+                            : localize('Choose one of your accounts or add a new cryptocurrency account')}
                     </Text>
                     <ThemedScrollbars>
                         <CurrencyRadioButtonGroup
@@ -142,13 +144,6 @@ const ChooseCurrency = ({
                             ))}
                         </CurrencyRadioButtonGroup>
                     </ThemedScrollbars>
-                    {deposit_target === routes.cashier_pa && (
-                        <div className='add-currency__note-wrapper'>
-                            <Text as='p' color='prominent' align='center' size='xxs' className='add-currency__note'>
-                                {localize('Some currencies may not be supported by payment agents in your country.')}
-                            </Text>
-                        </div>
-                    )}
                     <FormSubmitButton
                         className='currency-selector__button'
                         is_disabled={isSubmitting || !values.currency}

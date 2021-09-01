@@ -132,7 +132,7 @@ const AddCurrency = ({
 
     if (is_add_crypto)
         return (
-            <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
+            <ThemedScrollbars autohide={false}>
                 <div
                     className={classNames('add-crypto-currency', {
                         'account-wizard--disabled': hasNoAvailableCrypto(),
@@ -153,7 +153,7 @@ const AddCurrency = ({
 
     if (is_add_fiat) {
         return (
-            <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
+            <ThemedScrollbars autohide={false}>
                 <div className='change-currency'>
                     <AddCryptoCurrency
                         className='account-wizard__body'
@@ -180,13 +180,22 @@ const AddCurrency = ({
         >
             {({ handleSubmit, values, isSubmitting }) => (
                 <form onSubmit={handleSubmit}>
-                    <Text as='p' color='prominent' weight='bold' align='center' className='add-currency__wizard-header'>
-                        {localize('Choose your currency')}
-                    </Text>
-                    <ThemedScrollbars is_bypassed={isMobile()} autohide={false}>
-                        <AddFiat />
-                        <div className='add-currency__underline' />
-                        <AddCrypto />
+                    <ThemedScrollbars height={isMobile() ? window.innerHeight - 190 : '460px'}>
+                        <div>
+                            <Text
+                                as='p'
+                                color='prominent'
+                                weight='bold'
+                                align='center'
+                                className='add-currency__wizard-header'
+                            >
+                                {localize('Choose your currency')}
+                            </Text>
+
+                            <AddFiat />
+                            <div className='add-currency__underline' />
+                            <AddCrypto />
+                        </div>
                     </ThemedScrollbars>
                     <div className='add-currency__note-wrapper'>
                         <Text as='p' color='prominent' align='center' size='xxs' className='add-currency__note'>

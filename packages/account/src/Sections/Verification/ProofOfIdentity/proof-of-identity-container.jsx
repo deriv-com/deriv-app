@@ -81,6 +81,7 @@ const ProofOfIdentityContainer = ({
         identity_last_attempt,
         needs_poa,
         is_idv_disallowed,
+        allow_poi_resubmission,
     } = verification_status;
 
     const redirect_button = should_show_redirect_btn && (
@@ -89,9 +90,10 @@ const ProofOfIdentityContainer = ({
         </Button>
     );
 
-    if (identity_status === identity_status_codes.none || has_require_submission) {
+    if (identity_status === identity_status_codes.none || has_require_submission || allow_poi_resubmission) {
         return (
             <POISubmission
+                allow_poi_resubmission={allow_poi_resubmission}
                 has_require_submission={has_require_submission}
                 height={height ?? null}
                 identity_last_attempt={identity_last_attempt}

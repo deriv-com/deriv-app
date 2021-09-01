@@ -9,6 +9,7 @@ import OnfidoUpload from './onfido-sdk-view.jsx';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
 
 const POISubmission = ({
+    allow_poi_resubmission,
     has_require_submission,
     height,
     identity_last_attempt,
@@ -58,7 +59,7 @@ const POISubmission = ({
     const getCountryFromResidence = country_code => residence_list.find(residence => residence.value === country_code);
 
     React.useEffect(() => {
-        if (has_require_submission) {
+        if (has_require_submission || allow_poi_resubmission) {
             switch (identity_last_attempt.service) {
                 case service_code.idv: {
                     if (

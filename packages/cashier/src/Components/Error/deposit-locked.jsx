@@ -28,12 +28,6 @@ const DepositsLocked = ({
               'We were unable to verify your information automatically. To enable this function, you must complete the following:'
           )
         : localize('To enable this feature you must complete the following:');
-    const poi_text = has_poi_submitted
-        ? localize('Check proof of identity document verification status')
-        : localize('Upload an ID document to verify your identity');
-    const poa_text = has_poa_submitted
-        ? localize('Check proof of address document verification status')
-        : localize('Upload a proof of address to verify your address');
     const history = useHistory();
 
     // handle TnC
@@ -45,19 +39,19 @@ const DepositsLocked = ({
 
     // handle all deposits lock status
     const items = [
-        ...(is_poi_needed
+        ...(is_poi_needed && has_poi_submitted
             ? [
                   {
-                      content: poi_text,
+                      content: localize('Check proof of identity document verification status'),
                       status: 'action',
                       onClick: () => history.push(routes.proof_of_identity),
                   },
               ]
             : []),
-        ...(is_poa_needed
+        ...(is_poa_needed && has_poa_submitted
             ? [
                   {
-                      content: poa_text,
+                      content: localize('Check proof of address document verification status'),
                       status: 'action',
                       onClick: () => history.push(routes.proof_of_address),
                   },

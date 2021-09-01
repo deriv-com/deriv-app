@@ -31,6 +31,7 @@ const CashierLocked = ({
     const ask_self_exclusion_max_turnover_set = cashier_validation && cashier_validation.includes('ASK_SELF_EXCLUSION_MAX_TURNOVER_SET');
     const ask_fix_details = cashier_validation && cashier_validation.includes('ASK_FIX_DETAILS');
     const ask_uk_funds_protection = cashier_validation && cashier_validation.includes('ASK_UK_FUNDS_PROTECTION');
+    let icon = 'IcCashierLocked';
     let title = localize('Cashier is locked');
     let message = localize('Please check your email for details');
 
@@ -48,105 +49,173 @@ const CashierLocked = ({
         } else {
             message = localize('Our cashier is temporarily down due to system maintenance.You can access the Cashier in a few minutes when the maintenance is complete.');
         }
-    } else {
-        if (is_deposit_lock && unwelcome_status) {
-            message = localize('Unfortunately, you can only make withdrawals. Please contact us via live chat to enable deposits.');
-        }
-    
-        if (is_deposit_lock && self_exclusion) {
-            let excluded_until = accounts[loginid].excluded_until;
-            excluded_until = formatDate(excluded_until, 'DD MMM, YYYY');
-            message = localize('You have chosen to exclude yourself from trading on our website until {{exclude_until}}. If you are unable to place a trade or deposit after your self-exclusion period, please contact us via live chat.', {
-                exclude_until : excluded_until,
-            });
-        }
-        if (is_withdrawal_lock && no_withdrawal_or_trading_status) {
-            message = localize('Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.');
-        }
-        if (is_withdrawal_lock && withdrawal_locked_status) {
-            message = localize('Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.');
-        }
-        if (no_residence) {
-            message = localize('You’ve not set your country of residence. To access Cashier, please update your country of residence in the Personal details section in your account settings.');
-        }
-        if (documents_expired) {
-            message = localize('The identification documents you submitted have expired. Please submit valid identity documents to unlock Cashier. ');
-        }
-        if (cashier_locked_status) {
-            message = localize('Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.');
-        }
-        if (disabled_status) {
-            message = localize('Your account is temporarily disabled. Please contact us via live chat to enable deposits and withdrawals again.');
-        }
-        if (financial_assessment_required) {
+    } else if (no_residence) {
+        message = localize('You’ve not set your country of residence. To access Cashier, please update your country of residence in the Personal details section in your account settings.');
+    } else if (is_deposit_lock && unwelcome_status) { 
+        icon = 'IcCashierDepositLock';
+        title = localize('Deposits are locked');
+        message = localize('Unfortunately, you can only make withdrawals. Please contact us via live chat to enable deposits.');
+    } else if (is_deposit_lock && self_exclusion) {
+        icon = 'IcCashierDepositLock';
+        title = localize('Deposits are locked');
+        message = localize('You have chosen to exclude yourself from trading on our website until {{exclude_until}}. If you are unable to place a trade or deposit after your self-exclusion period, please contact us via live chat.', {
+            exclude_until : formatDate(accounts[loginid].excluded_until, 'DD MMM, YYYY'),
+        });
+    } else if (is_withdrawal_lock && no_withdrawal_or_trading_status) {
+        icon = 'IcCashierWithdrawalLock';
+        title = localize('Withdrawals are locked');
+        message = localize('Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.');
+    } else if (is_withdrawal_lock && withdrawal_locked_status) {
+        icon = 'IcCashierWithdrawalLock';
+        title = localize('Withdrawals are locked');
+        message = localize('Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.');
+    } else if (documents_expired) {
+        message = localize('The identification documents you submitted have expired. Please submit valid identity documents to unlock Cashier. ');
+    } else if (cashier_locked_status) {
+        message = localize('Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.');
+    } else if (disabled_status) {
+        message = localize('Your account is temporarily disabled. Please contact us via live chat to enable deposits and withdrawals again.');
+    } else if (financial_assessment_required) {
+        message = (
+            <Localize
+                i18n_default_text='Your cashier is locked. Please complete the <0>financial assessment</0> to unlock it.'
+                components={[
+                    <a
+                        key={0}
+                        className='link'
+                        rel='noopener noreferrer'
+                        href={'/account/financial-assessment'}
+                    />,
+                ]}
+            />
+        );
+    } else if (ask_currency) {
+        message = localize('Please set your account currency to enable deposits and withdrawals.');
+    } else if (ask_authenticate) { 
+        if (is_withdrawal_lock) {
+            icon = 'IcCashierWithdrawalLock';
+            title = localize('Withdrawals are locked');
             message = (
                 <Localize
-                    i18n_default_text='Your cashier is locked. Please complete the <0>financial assessment</0> to unlock it.'
+                    i18n_default_text='Your account has not been authenticated. Please submit your <0>proof of identity</0> and <1>proof of address</1> to authenticate your account and request for withdrawals.'
                     components={[
                         <a
                             key={0}
                             className='link'
                             rel='noopener noreferrer'
-                            href={'/account/financial-assessment'}
+                            href={'/account/proof-of-identity'}
+                        />,
+                        <a
+                            key={1}
+                            className='link'
+                            rel='noopener noreferrer'
+                            href={'/account/proof-of-address'}
                         />,
                     ]}
                 />
             );
-            message = localize('Your cashier is locked. Please complete the financial assessment to unlock it.');
-        }
-        if (ask_currency) {
-            message = localize('Please set your account currency to enable deposits and withdrawals.');
-        }
-        if (ask_authenticate) {
-            if (is_withdrawal_lock) {
-                message = (
-                    <Localize
-                        i18n_default_text='Your account has not been authenticated. Please submit your <0>proof of identity</0> and <1>proof of address</1> to authenticate your account and request for withdrawals.'
-                        components={[
-                            <a
-                                key={0}
-                                className='link'
-                                rel='noopener noreferrer'
-                                href={'/account/proof-of-identity'}
-                            />,
-                            <a
-                                key={1}
-                                className='link'
-                                rel='noopener noreferrer'
-                                href={'/account/proof-of-address'}
-                            />,
-                        ]}
-                    />
-                );
-            } else {
-                message = (
-                    <Localize
-                        i18n_default_text='Your account has not been authenticated. Please submit your <0>proof of identity</0> and <1>proof of address</1> to authenticate your account and access your cashier.'
-                        components={[
-                            <a
-                                key={0}
-                                className='link'
-                                rel='noopener noreferrer'
-                                href={'/account/proof-of-identity'}
-                            />,
-                            <a
-                                key={1}
-                                className='link'
-                                rel='noopener noreferrer'
-                                href={'/account/proof-of-address'}
-                            />,
-                        ]}
-                    />
-                );
-            }
-        }
-        if (ask_financial_risk_approval) {
-            message = localize('Please complete the Appropriateness Test to access your cashier.');
-        }
-        if (ask_tin_information) {
+        } else {
             message = (
                 <Localize
-                    i18n_default_text='You have not provided your tax identification number. This information is necessary for legal and regulatory requirements. Please go to <0>Personal details</0> in your account settings, and fill in your latest tax identification number.'
+                    i18n_default_text='Your account has not been authenticated. Please submit your <0>proof of identity</0> and <1>proof of address</1> to authenticate your account and access your cashier.'
+                    components={[
+                        <a
+                            key={0}
+                            className='link'
+                            rel='noopener noreferrer'
+                            href={'/account/proof-of-identity'}
+                        />,
+                        <a
+                            key={1}
+                            className='link'
+                            rel='noopener noreferrer'
+                            href={'/account/proof-of-address'}
+                        />,
+                    ]}
+                />
+            );
+        }
+    } else if (ask_financial_risk_approval) {
+        message = localize('Please complete the Appropriateness Test to access your cashier.');
+    } else if (ask_tin_information) {
+        message = (
+            <Localize
+                i18n_default_text='You have not provided your tax identification number. This information is necessary for legal and regulatory requirements. Please go to <0>Personal details</0> in your account settings, and fill in your latest tax identification number.'
+                components={[
+                    <a
+                        key={0}
+                        className='link'
+                        rel='noopener noreferrer'
+                        href={'/account/personal-details'}
+                    />,
+                ]}
+            />
+        );
+    } else if (ask_uk_funds_protection) {
+        message = (
+            <Localize
+                i18n_default_text='Your cashier is locked. See <0>how we protect your funds</0> before you proceed.'
+                components={[
+                    <a
+                        key={0}
+                        className='link'
+                        rel='noopener noreferrer'
+                        href={'/cashier/deposit'}
+                    />,
+                ]}
+            />
+        );
+    } else if (ask_self_exclusion_max_turnover_set) {
+        message = (
+            <Localize
+                i18n_default_text='Your access to Cashier has been temporarily disabled as you have not set your 30-day turnover limit. Please go to <0>Self-exclusion</0> and set your 30-day turnover limit.'
+                components={[
+                    <a
+                        key={0}
+                        className='link'
+                        rel='noopener noreferrer'
+                        href={'/account/self-exclusion'}
+                    />,
+                ]}
+            />
+        );
+    } else if (ask_fix_details) {
+        if (is_deposit_lock) {
+            icon = 'IcCashierDepositLock';
+            title = localize('Deposits are locked');
+            message = (
+                <Localize
+                    i18n_default_text='Your <0>personal details</0> are incomplete. Please go to your account settings and complete your personal details to enable deposits.'
+                    components={[
+                        <a
+                            key={0}
+                            className='link'
+                            rel='noopener noreferrer'
+                            href={'/account/personal-details'}
+                        />,
+                    ]}
+                />
+            );
+        } else if (is_withdrawal_lock) {
+            icon = 'IcCashierWithdrawalLock';
+            title = localize('Withdrawals are locked');
+            message = (
+                <Localize
+                    i18n_default_text='Your <0>personal details</0> are incomplete. Please go to your account settings and complete your personal details to enable withdrawals.'
+                    components={[
+                        <a
+                            key={0}
+                            className='link'
+                            rel='noopener noreferrer'
+                            href={'/account/personal-details'}
+                        />,
+                    ]}
+                />
+            );
+        } else {
+            message = (
+                <Localize
+                    i18n_default_text='Your <0>personal details</0> are incomplete. Please go to your account settings and complete your personal details to enable deposits and withdrawals.'
                     components={[
                         <a
                             key={0}
@@ -158,74 +227,11 @@ const CashierLocked = ({
                 />
             );
         }
-        if (ask_self_exclusion_max_turnover_set) {
-            message = localize('Your access to Cashier has been temporarily disabled as you have not set your 30-day turnover limit. Please go to Self-exclusion and set your 30-day turnover limit.');
-        }
-        if (ask_fix_details) {
-            if (is_deposit_lock) {
-                message = (
-                    <Localize
-                        i18n_default_text='Your <0>personal details</0> are incomplete. Please go to your account settings and complete your personal details to enable deposits.'
-                        components={[
-                            <a
-                                key={0}
-                                className='link'
-                                rel='noopener noreferrer'
-                                href={'/account/personal-details'}
-                            />,
-                        ]}
-                    />
-                );
-            } else if (is_withdrawal_lock) {
-                message = (
-                    <Localize
-                        i18n_default_text='Your <0>personal details</0> are incomplete. Please go to your account settings and complete your personal details to enable withdrawals.'
-                        components={[
-                            <a
-                                key={0}
-                                className='link'
-                                rel='noopener noreferrer'
-                                href={'/account/personal-details'}
-                            />,
-                        ]}
-                    />
-                );
-            } else {
-                message = (
-                    <Localize
-                        i18n_default_text='Your <0>personal details</0> are incomplete. Please go to your account settings and complete your personal details to enable deposits and withdrawals.'
-                        components={[
-                            <a
-                                key={0}
-                                className='link'
-                                rel='noopener noreferrer'
-                                href={'/account/personal-details'}
-                            />,
-                        ]}
-                    />
-                );
-            }
-        }
-        if (ask_uk_funds_protection) {
-            message = (
-                <Localize
-                    i18n_default_text='Your cashier is locked. See <0>how we protect your funds</0> before you proceed.'
-                    components={[
-                        <a
-                            key={0}
-                            className='link'
-                            rel='noopener noreferrer'
-                            href={'/cashier/deposit'}
-                        />,
-                    ]}
-                />
-            );
-        }
     }
 
     return (
         <div className='cashier-locked'>
-            <Icon icon='IcCashierLocked' className='cashier-locked__icon' />
+            <Icon icon={icon} className='cashier-locked__icon' />
             <Text as='h2' weight='bold' align='center' className='cashier-locked__title'>
                 {title}
             </Text>

@@ -10,7 +10,6 @@ import Virtual from '../Components/Error/virtual.jsx';
 import CashierLocked from '../Components/Error/cashier-locked.jsx';
 import DepositsLocked from '../Components/Error/deposit-locked.jsx';
 import FundsProtection from '../Components/Error/funds-protection.jsx';
-import MaxTurnover from '../Components/Form/max-turnover-form.jsx';
 // import SideNote from '../Components/side-note.jsx';
 import USDTSideNote from '../Components/usdt-side-note.jsx';
 
@@ -89,9 +88,6 @@ const Deposit = ({
     }
     if (error.is_ask_uk_funds_protection) {
         return <FundsProtection />;
-    }
-    if (error.is_self_exclusion_max_turnover_set) {
-        return <MaxTurnover />;
     }
     if (is_deposit_locked) {
         return <DepositsLocked />;

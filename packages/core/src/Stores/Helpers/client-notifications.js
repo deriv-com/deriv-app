@@ -113,7 +113,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 <Localize
                     i18n_default_text='Please submit your <0>proof of identity</0> and <1>proof of address</1> to verify your account and access your cashier.'
                     components={[<BinaryLink key={0} className='link' to={routes.proof_of_identity} />,
-                        <BinaryLink key={1} className='link' to={routes.proof_of_address} />
+                        <BinaryLink key={1} className='link' to={routes.proof_of_address} />,
                     ]}
                 />
             ),
@@ -126,7 +126,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 <Localize
                     i18n_default_text='Please submit your <0>proof of identity</0> and <1>proof of address</1> to verify your account in your account settings to access the cashier.'
                     components={[<BinaryLink key={0} className='link' to={routes.proof_of_identity} />,
-                        <BinaryLink key={1} className='link' to={routes.proof_of_address} />
+                        <BinaryLink key={1} className='link' to={routes.proof_of_address} />,
                     ]}
                 />
             ),
@@ -380,7 +380,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 />
             ),
             type: 'warning',
-        }
+        },
     };
     return notifications;
 };
@@ -464,19 +464,17 @@ const checkAccountStatus = (
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
     const {
-        authentication: { document, identity, needs_verification },
+        authentication: { document, identity },
         risk_classification,
         status,
         cashier_validation,
     } = account_status;
 
     const {
-        cashier_locked,
         withdrawal_locked,
         deposit_locked,
         mt5_withdrawal_locked,
         document_needs_action,
-        max_turnover_limit_not_set,
     } = getStatusValidations(status);
 
     const { 

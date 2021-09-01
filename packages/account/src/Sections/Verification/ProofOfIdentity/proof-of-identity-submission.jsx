@@ -46,7 +46,9 @@ const POISubmission = ({
     };
 
     const handleViewComplete = () => {
-        if (onStateChange && typeof onStateChange === 'function') onStateChange(identity_status_codes.pending);
+        if (onStateChange && typeof onStateChange === 'function') {
+            onStateChange(identity_status_codes.pending);
+        }
         setSubmissionStatus(submission_status_code.complete);
 
         WS.authorized.getAccountStatus().then(() => {
@@ -71,8 +73,10 @@ const POISubmission = ({
                     break;
                 }
                 case service_code.onfido: {
+                    setSelectedCountry(getCountryFromResidence(identity_last_attempt.country_code));
+                    setSubmissionStatus(submission_status_code.submitting);
                     if (Number(onfido.submissions_left) > 0) {
-                        setSubmissionStatus(submission_status_code.selecting);
+                        setSubmissionService(service_code.onfido);
                     } else {
                         setSubmissionService(service_code.manual);
                     }

@@ -62,10 +62,7 @@ const POISubmission = ({
         if (has_require_submission || allow_poi_resubmission) {
             switch (identity_last_attempt.service) {
                 case service_code.idv: {
-                    if (
-                        (Number(idv.submissions_left) > 0 || Number(onfido.submissions_left) > 0) &&
-                        !is_idv_disallowed
-                    ) {
+                    if (Number(idv.submissions_left) > 0 || Number(onfido.submissions_left) > 0) {
                         setSubmissionStatus(submission_status_code.selecting);
                     } else {
                         setSubmissionService(service_code.manual);

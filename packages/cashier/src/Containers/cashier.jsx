@@ -12,7 +12,7 @@ import {
     Loading,
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getSelectedRoute, getStaticUrl, isMobile, platforms, routes, WS } from '@deriv/shared';
+import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import AccountPromptDialog from '../Components/account-prompt-dialog.jsx';
 import 'Sass/cashier.scss';
@@ -33,7 +33,6 @@ const Cashier = ({
     location,
     onMount,
     p2p_notification_count,
-    platform,
     routeBackInApp,
     routes: routes_config,
     setAccountSwitchListener,
@@ -94,7 +93,6 @@ const Cashier = ({
     if ((!is_logged_in && is_logging_in) || !is_account_setting_loaded) {
         return <Loading is_fullscreen />;
     }
-
     return (
         <FadeWrapper is_visible={is_visible} className='cashier-page-wrapper' keyname='cashier-page-wrapper'>
             <AccountPromptDialog />
@@ -102,7 +100,6 @@ const Cashier = ({
                 <PageOverlay
                     header={isMobile() && !is_cashier_default ? selected_route.getTitle() : localize('Cashier')}
                     onClickClose={onClickClose}
-                    is_close_disabled={!!platforms[platform]}
                 >
                     <DesktopWrapper>
                         <VerticalTab
@@ -179,7 +176,6 @@ Cashier.propTypes = {
     location: PropTypes.object,
     onMount: PropTypes.func,
     p2p_notification_count: PropTypes.number,
-    platform: PropTypes.string,
     routeBackInApp: PropTypes.func,
     routes: PropTypes.arrayOf(PropTypes.object),
     setAccountSwitchListener: PropTypes.func,
@@ -202,7 +198,6 @@ export default connect(({ client, common, modules, ui }) => ({
     is_visible: ui.is_cashier_visible,
     onMount: modules.cashier.onMountCommon,
     p2p_notification_count: modules.cashier.p2p_notification_count,
-    platform: common.platform,
     routeBackInApp: common.routeBackInApp,
     setAccountSwitchListener: modules.cashier.setAccountSwitchListener,
     setTabIndex: modules.cashier.setCashierTabIndex,

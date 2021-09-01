@@ -5,7 +5,9 @@ export const populateVerificationStatus = account_status => {
     const needs_poa = needs_verification.length && needs_verification.includes('document');
     const needs_poi = needs_verification.length && needs_verification.includes('identity');
 
-    const allow_document_upload = account_status.status.some(status => status === 'allow_document_upload');
+    const allow_document_upload = account_status.status.some(
+        status => status === 'allow_document_upload' || status === 'allow_poi_resubmission'
+    );
     const is_idv_disallowed = account_status.status.some(status => status === 'idv_disallowed');
 
     const identity_status = identity.status;

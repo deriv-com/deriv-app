@@ -436,7 +436,9 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get should_allow_authentication() {
-        return this.account_status?.status?.some(status => status === 'allow_document_upload');
+        return this.account_status?.status?.some(
+            status => status === 'allow_document_upload' || status === 'allow_poi_resubmission'
+        );
     }
 
     @computed

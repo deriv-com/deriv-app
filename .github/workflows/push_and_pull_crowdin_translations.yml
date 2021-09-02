@@ -17,7 +17,7 @@ jobs:
       # We checkout the master branch so we can run the translations
       # script on the latest changes.
       - name: Checkout master branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.1
         with:
           repository: "binary-com/deriv-app"
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}

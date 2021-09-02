@@ -1,10 +1,14 @@
 /** @define send-email-template */
 .send-email-template {
-    padding: 0 8px;
+    padding: 0 16px;
 
     &__title,
     &__subtitle {
         margin-bottom: 1.6rem;
+
+        &-platform {
+            white-space: nowrap;
+        }
     }
     &__close {
         display: flex;

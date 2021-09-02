@@ -50,7 +50,6 @@ const App = ({ root_store }) => {
     const [is_translation_loaded] = useOnLoadTranslation();
     React.useEffect(initCashierStore, []);
     React.useEffect(() => {
-        checkAndSetEndpointFromUrl();
         initializeTranslations();
 
         // TODO: [translation-to-shared]: add translation implemnentation in shared

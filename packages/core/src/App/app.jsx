@@ -7,7 +7,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import debounce from 'lodash.debounce';
 import { DesktopWrapper } from '@deriv/components';
 import {
-    checkAndSetEndpointFromUrl,
     setUrlLanguage,
     isMobile,
     isTouchDevice,

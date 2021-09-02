@@ -74,39 +74,90 @@ const AccountTransferBullet = ({ children }) => (
     </div>
 );
 
-const AccountTransferNote = ({ currency, transfer_fee, minimum_fee }) => (
-    <div className='account-transfer__notes'>
-        <DesktopWrapper>
-            <Text as='h2' color='prominent' weight='bold' className='cashier__header account-transfer__notes-header'>
-                <Localize i18n_default_text='Notes' />
-            </Text>
-        </DesktopWrapper>
-        <AccountTransferBullet>
-            <Localize i18n_default_text='Transfer limits may vary depending on changes in exchange rates.' />
-        </AccountTransferBullet>
-        <AccountTransferBullet>
-            <Localize
-                i18n_default_text='Transfers are subject to a {{transfer_fee}}% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher.'
-                values={{
-                    transfer_fee,
-                    minimum_fee,
-                    currency: getCurrencyDisplayCode(currency),
-                }}
-            />
-        </AccountTransferBullet>
-        <AccountTransferBullet>
-            {/* TODO: Uncomment when real account is launched */}
-            {/* {is_dxtrade_allowed ? (
-                <Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts, your Deriv account and Deriv MT5 (DMT5) account, or your Deriv account and Deriv X account.' />
-            ) : ( */}
-            <Localize i18n_default_text='Transfers are possible only between your fiat and cryptocurrency accounts, or your Deriv account and Deriv MT5 (DMT5) account.' />
-            {/* )} */}
-        </AccountTransferBullet>
-        <AccountTransferBullet>
-            <Localize i18n_default_text='Transfers may be unavailable when the market is closed (weekends or holidays), periods of high volatility, or when there are technical issues.' />
-        </AccountTransferBullet>
-    </div>
-);
+const AccountTransferNote = ({ currency, is_crypto_to_crypto_transfer, is_mt_transfer, transfer_fee, minimum_fee }) => {
+    // TODO: Check with content team on the latest version of the below side notes for Deriv X when real account is launched
+    const get_transfer_fee_note = () => {
+        if (transfer_fee === 0) {
+            return (
+                <Localize i18n_default_text="We don't charge fees for transfers that involve the same currency between your Deriv fiat and DMT5 accounts and transfers made via payment agents (PA)." />
+            );
+        } else if (transfer_fee === 1) {
+            return (
+                <Localize
+                    i18n_default_text='We charge a 1% transfer fee or {{minimum_fee}} {{currency}} for transfers that involve different currencies between your Deriv fiat and DMT5 accounts.'
+                    values={{
+                        minimum_fee,
+                        currency: getCurrencyDisplayCode(currency),
+                    }}
+                />
+            );
+        } else if (transfer_fee === 2 && is_crypto_to_crypto_transfer) {
+            return (
+                <Localize
+                    i18n_default_text='We charge a 2% transfer fee or {{minimum_fee}} {{currency}} for transfers between cryptocurrencies accounts.'
+                    values={{
+                        minimum_fee,
+                        currency: getCurrencyDisplayCode(currency),
+                    }}
+                />
+            );
+        } else if (transfer_fee === 2 && is_mt_transfer) {
+            return (
+                <Localize
+                    i18n_default_text='We charge a 2% transfer fee or {{minimum_fee}} {{currency}} for transfers that involve different currencies between your Deriv cryptocurrency and DMT5 accounts.'
+                    values={{
+                        minimum_fee,
+                        currency: getCurrencyDisplayCode(currency),
+                    }}
+                />
+            );
+        } else if (transfer_fee === 2 && !is_mt_transfer) {
+            return (
+                <Localize
+                    i18n_default_text='We charge a 2% transfer fee or {{minimum_fee}} {{currency}} for transfers between fiat and cryptocurrencies accounts.'
+                    values={{
+                        minimum_fee,
+                        currency: getCurrencyDisplayCode(currency),
+                    }}
+                />
+            );
+        }
+        return null;
+    };
+
+    return (
+        <div className='account-transfer__notes'>
+            <DesktopWrapper>
+                <Text
+                    as='h2'
+                    color='prominent'
+                    weight='bold'
+                    className='cashier__header account-transfer__notes-header'
+                >
+                    <Localize i18n_default_text='Notes' />
+                </Text>
+            </DesktopWrapper>
+            <AccountTransferBullet>
+                <Localize i18n_default_text='There is a daily transfer limit of 4 transfers between your Deriv accounts and 12 transfers between your Deriv and DMT5 accounts.' />
+            </AccountTransferBullet>
+            <AccountTransferBullet>
+                <Localize i18n_default_text='Transfer limits may vary depending on the exchange rates.' />
+            </AccountTransferBullet>
+            <AccountTransferBullet>{get_transfer_fee_note()}</AccountTransferBullet>
+            <AccountTransferBullet>
+                {/* TODO: Uncomment and check with content team on the latest version of the side note when real account is launched */}
+                {/* {is_dxtrade_allowed ? (
+                    <Localize i18n_default_text='You may transfer between your fiat and cryptocurrency accounts, between your Deriv and DMT5 accounts, and between your Deriv and Deriv X account.' />
+                ) : ( */}
+                <Localize i18n_default_text='You may transfer between your fiat and cryptocurrency accounts and between your Deriv and DMT5 accounts.' />
+                {/* )} */}
+            </AccountTransferBullet>
+            <AccountTransferBullet>
+                <Localize i18n_default_text='Transfers may be unavailable due to high volatility or technical issues and when the exchange markets are closed.' />
+            </AccountTransferBullet>
+        </div>
+    );
+};
 
 let remaining_transfers;
 
@@ -264,7 +315,9 @@ const AccountTransferForm = ({
                     currency={selected_from.currency}
                     minimum_fee={minimum_fee}
                     key={0}
+                    is_crypto_to_crypto_transfer={selected_from.is_crypto && selected_to.is_crypto}
                     is_dxtrade_allowed={is_dxtrade_allowed}
+                    is_mt_transfer={selected_from.is_mt || selected_to.is_mt}
                 />,
             ]);
         }

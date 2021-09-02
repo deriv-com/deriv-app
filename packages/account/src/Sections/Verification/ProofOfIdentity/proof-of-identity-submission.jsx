@@ -73,10 +73,8 @@ const POISubmission = ({
                     break;
                 }
                 case service_code.onfido: {
-                    setSelectedCountry(getCountryFromResidence(identity_last_attempt.country_code));
-                    setSubmissionStatus(submission_status_code.submitting);
                     if (Number(onfido.submissions_left) > 0) {
-                        setSubmissionService(service_code.onfido);
+                        setSubmissionStatus(submission_status_code.selecting);
                     } else {
                         setSubmissionService(service_code.manual);
                     }

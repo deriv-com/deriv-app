@@ -14,7 +14,7 @@ const IdvSubmitComplete = ({ needs_poa, is_from_external }) => {
                 {localize('Your ID number was submitted successfully')}
             </Text>
             <Text className='text' size='xs' align='center'>
-                {localize("We'll process your details within a few minutes and notify its' status via email.")}
+                {localize("We'll process your details within a few minutes and notify its status via email.")}
             </Text>
             {!!needs_poa && (
                 <React.Fragment>

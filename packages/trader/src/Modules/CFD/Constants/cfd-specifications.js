@@ -5,13 +5,13 @@ const mt5 = {
         [localize('Leverage')]: localize('Up to 1:1000'),
         [localize('Margin call')]: localize('100%'),
         [localize('Stop out level')]: localize('50%'),
-        [localize('Number of assets')]: localize('10+'),
+        [localize('Number of assets')]: localize('20+'),
     },
     real_financial_specs: {
         [localize('Leverage')]: localize('Up to 1:1000'),
         [localize('Margin call')]: localize('100%'),
         [localize('Stop out level')]: localize('50%'),
-        [localize('Number of assets')]: localize('50+'),
+        [localize('Number of assets')]: localize('150+'),
     },
     eu_real_financial_specs: {
         [localize('Leverage')]: localize('Up to 1:30'),
@@ -23,7 +23,7 @@ const mt5 = {
         [localize('Leverage')]: localize('Up to 1:100'),
         [localize('Margin call')]: localize('100%'),
         [localize('Stop out level')]: localize('50%'),
-        [localize('Number of assets')]: localize('50+'),
+        [localize('Number of assets')]: localize('70+'),
     },
     au_real_financial_specs: {
         [localize('Leverage')]: localize('Up to 1:30'),
@@ -44,19 +44,19 @@ const dxtrade = {
         [localize('Leverage')]: localize('Up to 1:1000'),
         [localize('Margin call')]: localize('100%'),
         [localize('Stop out level')]: localize('50%'),
-        [localize('Number of assets')]: localize('100+'),
+        [localize('Number of assets')]: localize('90+'),
     },
     eu_real_financial_specs: {
         [localize('Leverage')]: localize('Up to 1:30'),
         [localize('Margin call')]: localize('100%'),
         [localize('Stop out level')]: localize('50%'),
-        [localize('Number of assets')]: localize('100+'),
+        [localize('Number of assets')]: localize('90+'),
     },
     au_real_financial_specs: {
         [localize('Leverage')]: localize('Up to 1:30'),
         [localize('Margin call')]: localize('100%'),
         [localize('Stop out level')]: localize('50%'),
-        [localize('Number of assets')]: localize('100+'),
+        [localize('Number of assets')]: localize('90+'),
     },
 };
 

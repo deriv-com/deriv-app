@@ -18,9 +18,6 @@ jobs:
       # script on the latest changes.
       - name: Checkout master branch
         uses: actions/checkout@v2
-        with:
-          repository: "binary-com/deriv-app"
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
       # In this step we're doing a couple things:
       # - We generate a new messages.json

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { routes, isMobile, getDecimalPlaces, getPlatformInformation, platforms } from '@deriv/shared';
+import { routes, isMobile, getDecimalPlaces, getPlatformInformation } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
@@ -19,6 +19,7 @@ const DefaultHeader = ({
     acc_switcher_disabled_message,
     account_status,
     addNotificationMessage,
+    should_allow_authentication,
     app_routing_history,
     balance,
     currency,
@@ -26,20 +27,19 @@ const DefaultHeader = ({
     enableApp,
     header_extension,
     history,
+    is_mf,
     is_acc_switcher_disabled,
     is_acc_switcher_on,
     is_app_disabled,
     is_dark_mode,
-    is_dxtrade_allowed,
     is_logged_in,
     is_logging_in,
-    is_mf,
     is_mt5_allowed,
+    is_dxtrade_allowed,
     is_notifications_visible,
-    is_onramp_tab_visible,
-    is_options_blocked,
     is_p2p_enabled,
     is_payment_agent_transfer_visible,
+    is_onramp_tab_visible,
     is_payment_agent_visible,
     is_route_modal_on,
     is_virtual,
@@ -48,10 +48,9 @@ const DefaultHeader = ({
     menu_items,
     notifications_count,
     openRealAccountSignup,
-    platform,
+    is_options_blocked,
     removeNotificationMessage,
     setDarkMode,
-    should_allow_authentication,
     toggleAccountsDialog,
     toggleNotifications,
 }) => {
@@ -84,15 +83,9 @@ const DefaultHeader = ({
 
     return (
         <header
-            className={classNames(
-                'header',
-                {
-                    'header--is-disabled': is_app_disabled || is_route_modal_on,
-                },
-                {
-                    'header--is-hidden': platforms[platform],
-                }
-            )}
+            className={classNames('header', {
+                'header--is-disabled': is_app_disabled || is_route_modal_on,
+            })}
         >
             <div className='header__menu-items'>
                 <div className='header__menu-left'>
@@ -209,7 +202,6 @@ DefaultHeader.propTypes = {
     logoutClient: PropTypes.func,
     notifications_count: PropTypes.number,
     openRealAccountSignup: PropTypes.func,
-    platform: PropTypes.string,
     removeNotificationMessage: PropTypes.func,
     setDarkMode: PropTypes.func,
     toggleAccountsDialog: PropTypes.func,
@@ -249,7 +241,6 @@ export default connect(({ client, common, ui, menu, modules }) => ({
     notifications_count: ui.filtered_notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
     is_options_blocked: client.is_options_blocked,
-    platform: common.platform,
     removeNotificationMessage: ui.removeNotificationMessage,
     setDarkMode: ui.setDarkMode,
     toggleAccountsDialog: ui.toggleAccountsDialog,

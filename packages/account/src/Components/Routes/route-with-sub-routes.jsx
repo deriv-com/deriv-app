@@ -6,7 +6,6 @@ import { getLanguage } from '@deriv/translations';
 const RouteWithSubRoutes = route => {
     const renderFactory = props => {
         let result = null;
-
         if (route.component === Redirect) {
             let to = route.to;
 
@@ -19,15 +18,9 @@ const RouteWithSubRoutes = route => {
         } else if (route.is_authenticated && !route.is_logged_in && !route.is_logging_in) {
             redirectToLogin(route.is_logged_in, getLanguage());
         } else {
-            const sub_paths = [];
-            if (route.routes) {
-                route.routes.map(r => r.subroutes.forEach(p => sub_paths.push(p)));
-            }
-
-            const default_subroute = sub_paths ? sub_paths.find(r => r.default) : {};
+            const default_subroute = route.routes ? route.routes.find(r => r.default) : {};
             const has_default_subroute = !isEmptyObject(default_subroute);
             const pathname = removeBranchName(location.pathname);
-
             result = (
                 <React.Fragment>
                     {has_default_subroute && pathname === route.path && <Redirect to={default_subroute.path} />}

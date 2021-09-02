@@ -8,7 +8,8 @@ import { connect } from 'Stores/connect';
 const CashierLocked = ({ 
     account_status, 
     accounts, 
-    current_currency_type, 
+    current_currency_type,
+    error,
     is_deposit_lock, 
     is_system_maintenance, 
     is_withdrawal_lock, 
@@ -47,48 +48,16 @@ const CashierLocked = ({
                 message = localize('Our cryptocurrency cashier is temporarily down due to system maintenance. You can access the Cashier in a few minutes when the maintenance is complete.');
             }
         } else {
-            message = localize('Our cashier is temporarily down due to system maintenance.You can access the Cashier in a few minutes when the maintenance is complete.');
+            message = localize('Our cashier is temporarily down due to system maintenance. You can access the Cashier in a few minutes when the maintenance is complete.');
         }
     } else if (no_residence) {
         message = localize('You’ve not set your country of residence. To access Cashier, please update your country of residence in the Personal details section in your account settings.');
-    } else if (is_deposit_lock && unwelcome_status) { 
-        icon = 'IcCashierDepositLock';
-        title = localize('Deposits are locked');
-        message = localize('Unfortunately, you can only make withdrawals. Please contact us via live chat to enable deposits.');
-    } else if (is_deposit_lock && self_exclusion) {
-        icon = 'IcCashierDepositLock';
-        title = localize('Deposits are locked');
-        message = localize('You have chosen to exclude yourself from trading on our website until {{exclude_until}}. If you are unable to place a trade or deposit after your self-exclusion period, please contact us via live chat.', {
-            exclude_until : formatDate(accounts[loginid].excluded_until, 'DD MMM, YYYY'),
-        });
-    } else if (is_withdrawal_lock && no_withdrawal_or_trading_status) {
-        icon = 'IcCashierWithdrawalLock';
-        title = localize('Withdrawals are locked');
-        message = localize('Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.');
-    } else if (is_withdrawal_lock && withdrawal_locked_status) {
-        icon = 'IcCashierWithdrawalLock';
-        title = localize('Withdrawals are locked');
-        message = localize('Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.');
     } else if (documents_expired) {
         message = localize('The identification documents you submitted have expired. Please submit valid identity documents to unlock Cashier. ');
     } else if (cashier_locked_status) {
         message = localize('Your cashier is currently locked. Please contact us via live chat to find out how to unlock it.');
     } else if (disabled_status) {
         message = localize('Your account is temporarily disabled. Please contact us via live chat to enable deposits and withdrawals again.');
-    } else if (financial_assessment_required) {
-        message = (
-            <Localize
-                i18n_default_text='Your cashier is locked. Please complete the <0>financial assessment</0> to unlock it.'
-                components={[
-                    <a
-                        key={0}
-                        className='link'
-                        rel='noopener noreferrer'
-                        href={'/account/financial-assessment'}
-                    />,
-                ]}
-            />
-        );
     } else if (ask_currency) {
         message = localize('Please set your account currency to enable deposits and withdrawals.');
     } else if (ask_authenticate) { 
@@ -136,7 +105,33 @@ const CashierLocked = ({
             );
         }
     } else if (ask_financial_risk_approval) {
-        message = localize('Please complete the Appropriateness Test to access your cashier.');
+        message = (
+            <Localize
+                i18n_default_text='Please complete the <0>Appropriateness Test</0> to access your cashier.'
+                components={[
+                    <a
+                        key={0}
+                        className='link'
+                        rel='noopener noreferrer'
+                        href={'/account/financial-assessment'}
+                    />,
+                ]}
+            />
+        );
+    }  else if (financial_assessment_required) {
+        message = (
+            <Localize
+                i18n_default_text='Your cashier is locked. Please complete the <0>financial assessment</0> to unlock it.'
+                components={[
+                    <a
+                        key={0}
+                        className='link'
+                        rel='noopener noreferrer'
+                        href={'/account/financial-assessment'}
+                    />,
+                ]}
+            />
+        );
     } else if (ask_tin_information) {
         message = (
             <Localize
@@ -151,7 +146,7 @@ const CashierLocked = ({
                 ]}
             />
         );
-    } else if (ask_uk_funds_protection) {
+    } else if (error.is_ask_uk_funds_protection && ask_uk_funds_protection) {
         message = (
             <Localize
                 i18n_default_text='Your cashier is locked. See <0>how we protect your funds</0> before you proceed.'
@@ -227,6 +222,24 @@ const CashierLocked = ({
                 />
             );
         }
+    } else if (is_deposit_lock && unwelcome_status) { 
+        icon = 'IcCashierDepositLock';
+        title = localize('Deposits are locked');
+        message = localize('Unfortunately, you can only make withdrawals. Please contact us via live chat to enable deposits.');
+    } else if (is_deposit_lock && self_exclusion) {
+        icon = 'IcCashierDepositLock';
+        title = localize('Deposits are locked');
+        message = localize('You have chosen to exclude yourself from trading on our website until {{exclude_until}}. If you are unable to place a trade or deposit after your self-exclusion period, please contact us via live chat.', {
+            exclude_until : formatDate(accounts[loginid].excluded_until, 'DD MMM, YYYY'),
+        });
+    } else if (is_withdrawal_lock && no_withdrawal_or_trading_status) {
+        icon = 'IcCashierWithdrawalLock';
+        title = localize('Withdrawals are locked');
+        message = localize('Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.');
+    } else if (is_withdrawal_lock && withdrawal_locked_status) {
+        icon = 'IcCashierWithdrawalLock';
+        title = localize('Withdrawals are locked');
+        message = localize('Unfortunately, you can only make deposits. Please contact us via live chat to enable withdrawals.');
     }
 
     return (
@@ -246,6 +259,7 @@ CashierLocked.propTypes = {
     account_status: PropTypes.object,
     accounts: PropTypes.object,
     current_currency_type: PropTypes.string,
+    error: PropTypes.object,
     is_deposit_lock: PropTypes.bool,
     is_system_maintenance: PropTypes.bool,
     is_withdrawal_lock: PropTypes.bool,
@@ -256,6 +270,7 @@ export default connect(({ client, modules }) => ({
     account_status: client.account_status,
     accounts: client.accounts,
     current_currency_type: client.current_currency_type,
+    error: modules.cashier.config.deposit.error,
     is_deposit_lock: client.is_deposit_lock,
     is_system_maintenance: modules.cashier.is_system_maintenance,
     is_withdrawal_lock: client.is_withdrawal_lock,

@@ -44,20 +44,23 @@ export const clientNotifications = (ui = {}, client = {}) => {
         no_residence: {
             key: 'no_residence',
             header: localize('You have not selected your country of residence'),
-            message: (
-                <Localize
-                    i18n_default_text='Please set your country of residence in your <0>account settings</0> to access the cashier.'
-                    components={[
-                        <BinaryLink key={0} className='link' to={routes.personal_details} />,
-                    ]}
-                />
-            ),
+            message: localize('Please set your country of residence in your account settings to access the cashier.'),
+            action: {
+                route: routes.personal_details,
+                text: localize('Go to my account settings'),
+            },
             type: 'warning',
         },
         currency: {
             key: 'currency',
             header: localize('You have not selected your account currency'),
             message: localize('Please set your account currency to enable deposits and withdrawals.'),
+            action: {
+                onClick: () => {
+                    ui.openRealAccountSignup('set_currency');
+                },
+                text: localize('Set my account currency'),
+            },
             type: 'danger',
         },
         self_exclusion: excluded_until => {
@@ -73,6 +76,12 @@ export const clientNotifications = (ui = {}, client = {}) => {
                         }}
                     />
                 ),
+                action: {
+                    onClick: () => {
+                        window.LC_API.open_chat_window();
+                    },
+                    text: localize('Go to live chat'),
+                },
                 type: 'danger',
             }
         },
@@ -80,6 +89,12 @@ export const clientNotifications = (ui = {}, client = {}) => {
             key: 'cashier_locked',
             header: localize('Your cashier is currently locked'),
             message: localize('Please contact us via live chat to unlock it.'),
+            action: {
+                onClick: () => {
+                    window.LC_API.open_chat_window();
+                },
+                text: localize('Go to live chat'),
+            },
             type: 'warning',
         },
         system_maintenance: (withdrawal_locked, deposit_locked) => {
@@ -87,10 +102,10 @@ export const clientNotifications = (ui = {}, client = {}) => {
             if (isCryptocurrency(client.currency)) {
                 if (withdrawal_locked) {
                     header = localize('Unable to process withdrawals in the moment');
-                    message = localize('Withdrawals are temporarily unavailable due to system maintenance. You can make your withdrawals when the maintenance is complete.');
+                    message = localize('Withdrawals are temporarily unavailable due to system maintenance. You can make withdrawals when the maintenance is complete.');
                 } else if (deposit_locked) {
                     header = localize('Unable to process deposit in the moment');
-                    message = localize('Deposits are temporarily unavailable due to system maintenance. You can make your deposits when the maintenance is complete.');
+                    message = localize('Deposits are temporarily unavailable due to system maintenance. You can make deposits when the maintenance is complete.');
                 } else {
                     header = localize('Scheduled cashier system maintenance');
                     message = localize('Our cryptocurrency cashier is temporarily down due to system maintenance. You can make cryptocurrency deposits and withdrawals in a few minutes when the maintenance is complete.');
@@ -109,39 +124,45 @@ export const clientNotifications = (ui = {}, client = {}) => {
         authenticate: {
             key: 'authenticate',
             header: localize('Your account has not been verified'),
-            message: (
-                <Localize
-                    i18n_default_text='Please submit your <0>proof of identity</0> and <1>proof of address</1> to verify your account and access your cashier.'
-                    components={[<BinaryLink key={0} className='link' to={routes.proof_of_identity} />,
-                        <BinaryLink key={1} className='link' to={routes.proof_of_address} />,
-                    ]}
-                />
-            ),
+            message: localize('Please submit your proof of identity and proof of address to verify your account in your account settings to access the cashier.'),
+            action: {
+                route: routes.proof_of_identity,
+                text: localize('Go to my account settings'),
+            },
             type: 'warning',
         },
         withdrawal_locked_review: {
             key: 'withdrawal_locked_review',
             header: localize('Your account has not been verified'),
-            message: localize(
-                <Localize
-                    i18n_default_text='Please submit your <0>proof of identity</0> and <1>proof of address</1> to verify your account in your account settings to access the cashier.'
-                    components={[<BinaryLink key={0} className='link' to={routes.proof_of_identity} />,
-                        <BinaryLink key={1} className='link' to={routes.proof_of_address} />,
-                    ]}
-                />
-            ),
+            message: localize('Please submit your proof of identity and proof of address to verify your account in your account settings to access the cashier.'),
+            action: {
+                route: routes.proof_of_identity,
+                text: localize('Go to my account settings'),
+            },
             type: 'warning',
         },
         no_withdrawal_or_trading: {
             key: 'no_withdrawal_or_trading',
             header: localize('You are only allowed to make deposits'),
             message: localize('Please contact us via live chat to enable withdrawals.'),
+            action: {
+                onClick: () => {
+                    window.LC_API.open_chat_window();
+                },
+                text: localize('Go to live chat'),
+            },
             type: 'warning',
         },
         withdrawal_locked: {
             key: 'withdrawal_locked',
             header: localize('You are only allowed to make deposits'),
             message: localize('Please contact us via live chat to enable withdrawals.'),
+            action: {
+                onClick: () => {
+                    window.LC_API.open_chat_window();
+                },
+                text: localize('Go to live chat'),
+            },
             type: 'warning',
         },
         mt5_withdrawal_locked: {
@@ -155,9 +176,11 @@ export const clientNotifications = (ui = {}, client = {}) => {
         ask_financial_risk_approval: {
             key: 'ask_financial_risk_approval',
             header: localize('Complete your Appropriateness Test'),
-            message: localize(
-                'Please complete the Appropriateness Test to access your cashier.'
-            ),
+            message: localize('Please click the following link to complete your Appropriateness Test.'),
+            action: {
+                route: routes.financial_assessment,
+                text: localize('Click here'),
+            },
             type: 'warning',
         },
         document_needs_action: {
@@ -174,42 +197,43 @@ export const clientNotifications = (ui = {}, client = {}) => {
         unwelcome: {
             key: 'unwelcome',
             header: localize('You are only allowed to make withdrawals'),
-            message: (
-                <Localize i18n_default_text='Please contact us via live chat to enable deposits.' />
-            ),
+            message: localize('Please contact us via live chat to enable deposits.'),
+            action: {
+                onClick: () => {
+                    window.LC_API.open_chat_window();
+                },
+                text: localize('Go to live chat'),
+            },
             type: 'danger',
         },
         max_turnover_limit_not_set: {
             key: 'max_turnover_limit_not_set',
             header: localize('You’ve not set your 30-day turnover limit'),
-            message: (
-                <Localize
-                    i18n_default_text='Your access to the cashier has been temporarily disabled as you have not set your 30-day turnover limit. Please go to <0>Self-exclusion</0> and set the limit.'
-                    components={[<BinaryLink key={0} className='link' to={routes.self_exclusion} />]}
-                />
-            ),
+            message: localize('Your access to the cashier has been temporarily disabled as you have not set your 30-day turnover limit. Please go to Self-exclusion and set the limit.'),
+            action: {
+                route: routes.self_exclusion,
+                text: localize('Go to Self-exclusion'),
+            },
             type: 'danger',
         },
         risk: {
             key: 'risk',
             header: localize('Your cashier is locked'),
-            message: (
-                <Localize
-                    i18n_default_text='Please complete the <0>financial assessment</0> in your account settings to unlock it.'
-                    components={[<BinaryLink key={0} className='link' to={routes.financial_assessment} />]}
-                />
-            ),
+            message: localize('Please complete the financial assessment in your account settings to unlock it.'),
+            action: {
+                route: routes.financial_assessment,
+                text: localize('Go to my account settings'),
+            },
             type: 'warning',
         },
         tax: {
             key: 'tax',
             header: localize('You have not provided your tax identification number'),
-            message: (
-                <Localize
-                    i18n_default_text='This information is necessary for legal and regulatory requirements. Please go to your <0>account settings</0>, and fill in your latest tax identification number.'
-                    components={[<BinaryLink key={0} className='link' to={routes.personal_details} />]}
-                />
-            ),
+            message: localize('This information is necessary for legal and regulatory requirements. Please go to your account settings, and fill in your latest tax identification number.'),
+            action: {
+                route: routes.personal_details,
+                text: localize('Go to my account settings'),
+            },
             type: 'danger',
         },
         tnc: {
@@ -231,37 +255,23 @@ export const clientNotifications = (ui = {}, client = {}) => {
             type: 'warning',
         },
         required_fields: (withdrawal_locked, deposit_locked) => {
-            let message, header;
+            let message;
             if (withdrawal_locked) {
-                header = localize('Your personal details are incomplete');
-                message = (
-                    <Localize
-                        i18n_default_text='Please go to your account settings and complete your <0>personal details</0> to enable withdrawals.'
-                        components={[<BinaryLink key={0} className='link' to={routes.personal_details} />]}
-                    />
-                );
+                message = localize('Please go to your account settings and complete your personal details to enable withdrawals.');
             } else if (deposit_locked) {
-                header = localize('Your personal details are incomplete');
-                message = (
-                    <Localize
-                        i18n_default_text='Please go to your account settings and complete your <0>personal details</0> to enable deposits.'
-                        components={[<BinaryLink key={0} className='link' to={routes.personal_details} />]}
-                    />
-                );
+                message = localize('Please go to your account settings and complete your personal details to enable deposits.');
             } else {
-                header = localize('Your personal details are incomplete');
-                message = (
-                    <Localize
-                        i18n_default_text='Please go to your account settings and complete your <0>personal details</0> to enable deposits and withdrawals.'
-                        components={[<BinaryLink key={0} className='link' to={routes.personal_details} />]}
-                    />
-                );
+                message = localize('Please go to your account settings and complete your personal details to enable deposits and withdrawals.');
             }
             return {
                 key: 'required_fields',
-                header,
+                header: localize('Your personal details are incomplete'),
                 message,
                 type: 'danger',
+                action: {
+                    route: routes.personal_details,
+                    text: localize('Go to my account settings'),
+                },
             };
         },
         you_are_offline: {
@@ -344,6 +354,10 @@ export const clientNotifications = (ui = {}, client = {}) => {
             key: 'poi_expired',
             header: localize('You submitted expired identification documents'),
             message: localize('Please submit valid identity documents to unlock the cashier.'),
+            action: {
+                route: routes.proof_of_identity,
+                text: localize('Submit identity documents'),
+            },
             type: 'danger',
         },
         new_version_available: {
@@ -373,12 +387,11 @@ export const clientNotifications = (ui = {}, client = {}) => {
         ask_uk_funds_protection: {
             key: 'ask_uk_funds_protection',
             header: localize('Your cashier is locked'),
-            message: (
-                <Localize
-                    i18n_default_text='See <0>how we protect your funds</0> to unlock the cashier.'
-                    components={[<BinaryLink key={0} className='link' to={routes.cashier_deposit} />]}
-                />
-            ),
+            message: localize('See how we protect your funds to unlock the cashier.'),
+            action: {
+                route: routes.cashier_deposit,
+                text: localize('Find out more'),
+            },
             type: 'warning',
         },
     };
@@ -458,19 +471,20 @@ const checkAccountStatus = (
     addNotificationMessage,
     loginid,
     getRiskAssessment,
-    isAccountOfType
+    isAccountOfType,
+    ui_store
 ) => {
     if (isEmptyObject(account_status)) return {};
     if (loginid !== LocalStore.get('active_loginid')) return {};
 
     const {
         authentication: { document, identity },
-        risk_classification,
         status,
         cashier_validation,
     } = account_status;
 
     const {
+        cashier_locked,
         withdrawal_locked,
         deposit_locked,
         mt5_withdrawal_locked,
@@ -501,29 +515,10 @@ const checkAccountStatus = (
     const has_risk_assessment = getRiskAssessment(account_status);
     if (system_maintenance) {
         addNotificationMessage(clientNotifications({}, client).system_maintenance(withdrawal_locked, deposit_locked));
-    } else {
-        // if client is withdrawal locked but it's because they need to authenticate
-        // and they have submitted verification documents,
-        // we should wait for review of documents to be done and show a different message
-        const is_high_risk = risk_classification === 'high';
-        if (withdrawal_locked && is_high_risk && ASK_AUTHENTICATE) {
-            addNotificationMessage(clientNotifications().withdrawal_locked_review);
-        }
-        if (withdrawal_locked && no_withdrawal_or_trading_status) {
-            addNotificationMessage(clientNotifications().no_withdrawal_or_trading);
-        }
-        if (withdrawal_locked && withdrawal_locked_status) {
-            addNotificationMessage(clientNotifications().withdrawal_locked);
-        }
-        if (deposit_locked && unwelcome_status) {
-            addNotificationMessage(clientNotifications().unwelcome);
-        }
-        if (deposit_locked && SelfExclusion) {
-            addNotificationMessage(clientNotifications().self_exclusion(client.excluded_until));
-        }
+    } else if(cashier_locked) {
         if (is_virtual) {
             addNotificationMessage(clientNotifications().is_virtual);
-        }
+        } 
         if (no_residence) {
             addNotificationMessage(clientNotifications().no_residence);
         }
@@ -533,14 +528,14 @@ const checkAccountStatus = (
         if (cashier_locked_status) {
             addNotificationMessage(clientNotifications().cashier_locked);
         }
+        if (ASK_CURRENCY) {
+            addNotificationMessage(clientNotifications(ui_store).currency);
+        }
+        if (ASK_AUTHENTICATE) {
+            addNotificationMessage(clientNotifications().authenticate);
+        }
         if (FinancialAssessmentRequired) {
             addNotificationMessage(clientNotifications().risk);
-        }
-        if (ASK_CURRENCY) {
-            addNotificationMessage(clientNotifications().currency);
-        }
-        if (isAccountOfType('financial') && ASK_AUTHENTICATE) {
-            addNotificationMessage(clientNotifications().authenticate);
         }
         if (isAccountOfType('financial') && ASK_FINANCIAL_RISK_APPROVAL) {
             addNotificationMessage(clientNotifications().ask_financial_risk_approval);
@@ -557,6 +552,22 @@ const checkAccountStatus = (
         if (ASK_UK_FUNDS_PROTECTION) {
             addNotificationMessage(clientNotifications().ask_uk_funds_protection);
         } 
+    } else {
+        if (withdrawal_locked && ASK_AUTHENTICATE) {
+            addNotificationMessage(clientNotifications().withdrawal_locked_review);
+        }
+        if (withdrawal_locked && no_withdrawal_or_trading_status) {
+            addNotificationMessage(clientNotifications().no_withdrawal_or_trading);
+        }
+        if (withdrawal_locked && withdrawal_locked_status) {
+            addNotificationMessage(clientNotifications().withdrawal_locked);
+        }
+        if (deposit_locked && unwelcome_status) {
+            addNotificationMessage(clientNotifications().unwelcome);
+        }
+        if (deposit_locked && SelfExclusion) {
+            addNotificationMessage(clientNotifications().self_exclusion(client.excluded_until));
+        }
     }
     if (mt5_withdrawal_locked) addNotificationMessage(clientNotifications().mt5_withdrawal_locked);
     if (document_needs_action) addNotificationMessage(clientNotifications().document_needs_action);
@@ -598,7 +609,8 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
         addNotificationMessage,
         loginid,
         getRiskAssessment,
-        isAccountOfType
+        isAccountOfType,
+        ui_store,
     );
     if (is_p2p_visible) {
         addNotificationMessage(clientNotifications().dp2p);

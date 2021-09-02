@@ -99,7 +99,7 @@ const Withdrawal = ({
     if (is_virtual) {
         return <Virtual />;
     }
-    if (!+balance) {
+    if (!is_cashier_locked && !+balance) {
         return <NoBalance />;
     }
     if (is_cashier_locked) {

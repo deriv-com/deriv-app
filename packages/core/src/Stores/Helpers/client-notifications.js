@@ -518,54 +518,40 @@ const checkAccountStatus = (
     } else if(cashier_locked) {
         if (is_virtual) {
             addNotificationMessage(clientNotifications().is_virtual);
-        } 
-        if (no_residence) {
+        } else if (no_residence) {
             addNotificationMessage(clientNotifications().no_residence);
-        }
-        if (documents_expired) {
+        } else if (documents_expired) {
             addNotificationMessage(clientNotifications().documents_expired);
-        }
-        if (cashier_locked_status) {
+        } else if (cashier_locked_status) {
             addNotificationMessage(clientNotifications().cashier_locked);
-        }
-        if (ASK_CURRENCY) {
+        } else if (ASK_CURRENCY) {
             addNotificationMessage(clientNotifications(ui_store).currency);
-        }
-        if (ASK_AUTHENTICATE) {
+        } else if (ASK_AUTHENTICATE) {
             addNotificationMessage(clientNotifications().authenticate);
-        }
-        if (FinancialAssessmentRequired) {
-            addNotificationMessage(clientNotifications().risk);
-        }
-        if (isAccountOfType('financial') && ASK_FINANCIAL_RISK_APPROVAL) {
+        } else if (isAccountOfType('financial') && ASK_FINANCIAL_RISK_APPROVAL) {
             addNotificationMessage(clientNotifications().ask_financial_risk_approval);
-        }
-        if (isAccountOfType('financial') && ASK_TIN_INFORMATION) {
+        } else if (FinancialAssessmentRequired) {
+            addNotificationMessage(clientNotifications().risk);
+        } else if (isAccountOfType('financial') && ASK_TIN_INFORMATION) {
             addNotificationMessage(clientNotifications().tax);
-        }
-        if (ASK_SELF_EXCLUSION_MAX_TURNOVER_SET) {
+        }  else if (ASK_UK_FUNDS_PROTECTION) {
+            addNotificationMessage(clientNotifications().ask_uk_funds_protection);
+        } else if (ASK_SELF_EXCLUSION_MAX_TURNOVER_SET) {
             addNotificationMessage(clientNotifications().max_turnover_limit_not_set);
-        }
-        if (ASK_FIX_DETAILS) {
+        } else if (ASK_FIX_DETAILS) {
             addNotificationMessage(clientNotifications().required_fields(withdrawal_locked, deposit_locked));
         }
-        if (ASK_UK_FUNDS_PROTECTION) {
-            addNotificationMessage(clientNotifications().ask_uk_funds_protection);
-        } 
     } else {
         if (withdrawal_locked && ASK_AUTHENTICATE) {
             addNotificationMessage(clientNotifications().withdrawal_locked_review);
-        }
-        if (withdrawal_locked && no_withdrawal_or_trading_status) {
+        } else if (withdrawal_locked && no_withdrawal_or_trading_status) {
             addNotificationMessage(clientNotifications().no_withdrawal_or_trading);
-        }
-        if (withdrawal_locked && withdrawal_locked_status) {
+        } else if (withdrawal_locked && withdrawal_locked_status) {
             addNotificationMessage(clientNotifications().withdrawal_locked);
         }
         if (deposit_locked && unwelcome_status) {
             addNotificationMessage(clientNotifications().unwelcome);
-        }
-        if (deposit_locked && SelfExclusion) {
+        } else if (deposit_locked && SelfExclusion) {
             addNotificationMessage(clientNotifications().self_exclusion(client.excluded_until));
         }
     }

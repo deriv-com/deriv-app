@@ -608,10 +608,7 @@ export default class CashierStore extends BaseStore {
             if (response.error) {
                 this.setErrorConfig('message', response.error.message);
             } else {
-                this.setErrorConfig('is_ask_uk_funds_protection', false);
-                this.onMount();
-                this.root_store.ui.removeNotificationByKey({ key: 'ask_uk_funds_protection' });
-                this.root_store.ui.removeNotificationMessageByKey({ key: 'ask_uk_funds_protection' });
+                location.reload();
             }
         });
     }

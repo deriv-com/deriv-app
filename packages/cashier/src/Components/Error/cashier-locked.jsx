@@ -9,7 +9,6 @@ const CashierLocked = ({
     account_status, 
     accounts, 
     current_currency_type,
-    error,
     is_deposit_lock, 
     is_system_maintenance, 
     is_withdrawal_lock, 
@@ -146,7 +145,7 @@ const CashierLocked = ({
                 ]}
             />
         );
-    } else if (error.is_ask_uk_funds_protection && ask_uk_funds_protection) {
+    } else if (ask_uk_funds_protection) {
         message = (
             <Localize
                 i18n_default_text='Your cashier is locked. See <0>how we protect your funds</0> before you proceed.'
@@ -259,7 +258,6 @@ CashierLocked.propTypes = {
     account_status: PropTypes.object,
     accounts: PropTypes.object,
     current_currency_type: PropTypes.string,
-    error: PropTypes.object,
     is_deposit_lock: PropTypes.bool,
     is_system_maintenance: PropTypes.bool,
     is_withdrawal_lock: PropTypes.bool,
@@ -270,7 +268,6 @@ export default connect(({ client, modules }) => ({
     account_status: client.account_status,
     accounts: client.accounts,
     current_currency_type: client.current_currency_type,
-    error: modules.cashier.config.deposit.error,
     is_deposit_lock: client.is_deposit_lock,
     is_system_maintenance: modules.cashier.is_system_maintenance,
     is_withdrawal_lock: client.is_withdrawal_lock,

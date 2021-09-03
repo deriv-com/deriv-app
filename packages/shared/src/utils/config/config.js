@@ -104,7 +104,11 @@ export const checkAndSetEndpointFromUrl = () => {
         location.href = `${location.protocol}//${location.hostname}${location.pathname}${params ? `?${params}` : ''}${
             hash || ''
         }`;
+
+        return true;
     }
+
+    return false;
 };
 
 export const getDebugServiceWorker = () => {

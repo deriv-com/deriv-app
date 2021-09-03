@@ -279,7 +279,6 @@ $MIN_HEIGHT_FLOATING: calc(
             max-width: 400px;
             margin-top: 9px;
             margin-bottom: 18px;
-            z-index: 6;
 
             &--2-cols {
                 display: grid;
@@ -1789,7 +1788,7 @@ $MIN_HEIGHT_FLOATING: calc(
         bottom: unset;
         border: none;
         height: fit-content;
-        z-index: 5;
+        z-index: 4;
     }
     &__footer {
         @include mobile {

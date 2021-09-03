@@ -128,7 +128,7 @@ jobs:
             git push --set-upstream origin "$branch_name" -f
 
             sudo apt install gh
-            gh auth login --with-token <<< ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+            gh auth login --with-token <<< ${{ github.token }}
             gh pr close "$branch_name" || true
             gh pr create --fill --base "master" --head "binary-com:$branch_name"
           fi

@@ -113,7 +113,6 @@ const CountrySelector = ({
                                                     {...field}
                                                     name='country_input'
                                                     error={touched.country_input && errors.country_input}
-                                                    placeholder={localize('Place of birth')}
                                                     label={localize('Country')}
                                                     list_items={country_list}
                                                     value={values.country_input}

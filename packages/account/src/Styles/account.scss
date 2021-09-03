@@ -1721,6 +1721,10 @@ $MIN_HEIGHT_FLOATING: calc(
     }
     .min-height {
         min-height: 50vh;
+
+        @include mobile {
+            min-height: unset;
+        }
     }
     &__container {
         display: flex;

@@ -1784,6 +1784,7 @@ $MIN_HEIGHT_FLOATING: calc(
         bottom: unset;
         border: none;
         height: fit-content;
+        z-index: -1;
     }
     &__footer {
         @include mobile {

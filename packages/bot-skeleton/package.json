@@ -34,7 +34,7 @@
         "deep-diff": "^1.0.2"
     },
     "dependencies": {
-        "@deriv/deriv-api": "^1.0.7",
+        "@deriv/deriv-api": "^1.0.8",
         "@deriv/indicators": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/translations": "^1.0.0",

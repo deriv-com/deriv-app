@@ -536,13 +536,12 @@
                 display: flex;
                 flex-direction: row;
                 align-items: center;
-                gap: 1.2rem;
                 margin-right: 1.2rem;
             }
             &__icon {
+                margin-right: 1.2rem;
                 @include mobile {
                     display: inline-block;
-                    margin-right: 1.2rem;
                 }
             }
         }

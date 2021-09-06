@@ -180,8 +180,8 @@ const BinarySocketBase = (() => {
 
     const cashier = (action, parameters = {}) => deriv_api.send({ cashier: action, ...parameters });
 
-    const cashierPayments = (provider, transaction_type) =>
-        deriv_api.send({ cashier_payments: 1, provider, transaction_type, subscribe: 1 });
+    const cashierPayments = (provider, transaction_type, subscribe) => 
+        deriv_api.send({ cashier_payments: 1, provider, transaction_type, ...(subscribe && { subscribe }) });
 
     const cancelCryptoTransaction = (transaction_id) =>
         deriv_api.send({ cashier_withdrawal_cancel: 1, id: transaction_id });

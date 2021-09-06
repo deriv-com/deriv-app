@@ -12,13 +12,18 @@ export default class TransactionHistoryStore {
     @observable selected_crypto_transaction_id = '';
     @observable selected_crypto_status = '';
     @observable selected_crypto_status_description = '';
+    @observable subscribe = 1;
 
+    @action.bound
+    setSubscribe(subscribe = null) {
+        this.subscribe = subscribe;
+    }
     @action.bound setCryptoTransactionsHistory(transactions) {
         this.crypto_transactions = transactions;
     }
     @action.bound
     async getCryptoTransactions() {
-        await this.WS.cashierPayments('crypto', 'all').then(response => {
+        await this.WS.cashierPayments('crypto', 'all', this.subscribe).then(response => {
             if (!response.error) {
                 const { crypto } = response.cashier_payments;
                 this.setCryptoTransactionsHistory(crypto);
@@ -26,6 +31,9 @@ export default class TransactionHistoryStore {
             }
             return Promise.reject(response.error);
         });
+        if(this.subscribe) {
+            this.setSubscribe();
+        }
     }
     @action.bound
     onMount() {

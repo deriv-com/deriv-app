@@ -21,7 +21,7 @@ import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
 import BinarySocket from '_common/base/socket_base';
 import * as SocketCache from '_common/base/socket_cache';
-import { isEuCountry, isOptionsBlocked, isSyntheticsUnavailable } from '_common/utility';
+import { isEuCountry, isOptionsBlocked } from '_common/utility';
 import BaseStore from './base-store';
 import { getClientAccountType, getAccountTitle } from './Helpers/client';
 import { setDeviceDataCookie } from './Helpers/device';
@@ -91,7 +91,8 @@ export default class ClientStore extends BaseStore {
         reset_password: '',
         payment_withdraw: '',
         payment_agent_withdraw: '',
-        trading_platform_password_reset: '',
+        trading_platform_mt5_password_reset: '',
+        trading_platform_dxtrade_password_reset: '',
     };
     @observable account_limits = {};
 
@@ -441,7 +442,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_authentication_needed() {
-        return this.account_status?.authentication?.needs_verification?.length;
+        return !this.is_fully_authenticated && !!this.account_status?.authentication?.needs_verification?.length;
     }
 
     @computed
@@ -460,8 +461,13 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
-    get is_trading_password_required() {
-        return this.account_status?.status?.includes('trading_password_required');
+    get is_mt5_password_not_set() {
+        return this.account_status?.status?.includes('mt5_password_not_set');
+    }
+
+    @computed
+    get is_dxtrade_password_not_set() {
+        return this.account_status?.status?.includes('dxtrade_password_not_set');
     }
 
     @computed
@@ -673,13 +679,6 @@ export default class ClientStore extends BaseStore {
         const country = this.website_status.clients_country;
         if (country) return isEuCountry(country);
         return false;
-    }
-
-    @computed
-    get is_synthetics_unavailable() {
-        return this.is_logged_in
-            ? isSyntheticsUnavailable(this.residence)
-            : isSyntheticsUnavailable(this.website_status.clients_country);
     }
 
     @computed

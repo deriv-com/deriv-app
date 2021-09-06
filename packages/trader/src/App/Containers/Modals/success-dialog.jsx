@@ -25,6 +25,7 @@ const SuccessDialog = ({
     title,
     has_close_icon,
     width = undefined,
+    is_medium_button,
 }) => {
     return (
         <Modal
@@ -62,10 +63,18 @@ const SuccessDialog = ({
                         has_effect
                         text={text_cancel || localize('Maybe later')}
                         secondary
-                        large
+                        {...(is_medium_button ? { medium: true } : { large: true })}
                     />
                 )}
-                {has_submit && <Button has_effect onClick={onSubmit} text={text_submit} primary large />}
+                {has_submit && (
+                    <Button
+                        has_effect
+                        onClick={onSubmit}
+                        text={text_submit}
+                        primary
+                        {...(is_medium_button ? { medium: true } : { large: true })}
+                    />
+                )}
             </Modal.Footer>
         </Modal>
     );

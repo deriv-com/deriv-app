@@ -352,7 +352,6 @@ const AccountWizardWrapper: React.FC = () => {
         fetchResidenceList,
         fetchStatesList,
         fetchFinancialAssessment,
-        needs_financial_assessment,
         financial_assessment,
         has_wallet_account,
     } = client_store;
@@ -377,7 +376,6 @@ const AccountWizardWrapper: React.FC = () => {
                 fetchResidenceList={fetchResidenceList}
                 fetchStatesList={fetchStatesList}
                 fetchFinancialAssessment={fetchFinancialAssessment}
-                needs_financial_assessment={needs_financial_assessment}
                 financial_assessment={financial_assessment}
                 has_wallet_account={has_wallet_account}
                 onCancel={() => setIsCancelVisisible(true)}

@@ -1749,6 +1749,12 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-top: 2.6rem;
             }
         }
+
+        .external-dropdown {
+            .dc-dropdown-list {
+                z-index: 5;
+            }
+        }
     }
     &__country-text {
         margin-bottom: 1.6rem;

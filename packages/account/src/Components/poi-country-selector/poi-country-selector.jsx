@@ -80,6 +80,7 @@ const CountrySelector = ({
                                     <React.Fragment>
                                         <DesktopWrapper>
                                             <Autocomplete
+                                                className={classNames({ 'external-dropdown': is_from_external })}
                                                 {...field}
                                                 name='country_input'
                                                 data-lpignore='true'

@@ -496,6 +496,11 @@ $MIN_HEIGHT_FLOATING: calc(
             .dc-dropdown__display-text {
                 line-height: 1.6rem;
                 text-align: left;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                display: inline-block;
+                max-width: 40rem;
             }
         }
     }
@@ -598,10 +603,13 @@ $MIN_HEIGHT_FLOATING: calc(
         color: var(--text-general);
     }
     .account-management {
-        &__container-dashboard {
-            width: calc(100vw - 33rem);
-            @include mobile {
-                width: 100%;
+        &__container {
+            margin: 0 auto;
+            &-dashboard {
+                width: calc(100vw - 33rem);
+                @include mobile {
+                    width: 100%;
+                }
             }
         }
         &__list {
@@ -1326,6 +1334,7 @@ $MIN_HEIGHT_FLOATING: calc(
     .revoke_access {
         padding-left: 8px;
         padding-right: 8px;
+        left: -5%;
     }
 
     &__loading {
@@ -1347,7 +1356,9 @@ $MIN_HEIGHT_FLOATING: calc(
         text-align: left;
 
         .table__cell {
-            height: 56px;
+            min-height: 5.6rem;
+            white-space: pre-wrap;
+            padding: 0;
 
             .name {
                 &__content {
@@ -1376,10 +1387,10 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
     }
+    .table__body .table__row {
+        border-bottom: 1px solid var(--general-section-1);
+    }
     @include desktop {
-        .table__body .table__row:last-child {
-            border-bottom: 1px solid var(--general-section-1);
-        }
         &__row {
             padding: 0;
         }
@@ -1394,8 +1405,12 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
     @include mobile {
-        overflow: hidden;
+        overflow-x: hidden;
         padding: 0 1.6rem;
+        /* iPhone SE screen height fixes due to UI space restrictions */
+        @media only screen and (max-height: 480px) {
+            padding-bottom: 8.5rem;
+        }
 
         &__title {
             margin: 2.4rem 0;
@@ -1434,6 +1449,10 @@ $MIN_HEIGHT_FLOATING: calc(
                     &--small {
                         max-width: 99px;
 
+                        .data-list__row-content .dc-btn {
+                            left: 50%;
+                            transform: translateX(-53%);
+                        }
                         .last_used__row-title {
                             line-height: 1.5;
                         }

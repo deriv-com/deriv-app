@@ -265,9 +265,10 @@ const RealAccountSignup = ({
             if (has_real_account && currency && getIsManageTarget()) {
                 active_modal_index_no = modal_pages_indices.add_or_manage_account;
             } else {
-                active_modal_index_no = !currency
-                    ? modal_pages_indices.set_currency
-                    : modal_pages_indices.account_wizard;
+                active_modal_index_no =
+                    !currency && real_account_signup_target !== 'maltainvest'
+                        ? modal_pages_indices.set_currency
+                        : modal_pages_indices.account_wizard;
             }
         } else {
             active_modal_index_no = state_value.active_modal_index;
@@ -325,6 +326,7 @@ const RealAccountSignup = ({
                     toggleModal={closeModal}
                     height={getModalHeight()}
                     width={!has_close_icon ? 'auto' : '904px'}
+                    elements_to_ignore={[document.querySelector('.modal-root')]}
                 >
                     {is_real_acc_signup_on && (
                         <ModalContent state_value={state_value} passthrough={state_index} is_loading={is_loading} />

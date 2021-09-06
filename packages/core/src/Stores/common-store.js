@@ -1,8 +1,9 @@
 import { action, observable, reaction } from 'mobx';
 import { routes, toMoment, getUrlSmartTrader, isMobile, getAppId } from '@deriv/shared';
+import { getAllowedLanguages } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
 import ServerTime from '_common/base/server_time';
-import { currentLanguage, getAllowedLanguages } from 'Utils/Language/index';
+import { currentLanguage } from 'Utils/Language/index';
 import BaseStore from './base-store';
 import { clientNotifications } from './Helpers/client-notifications';
 
@@ -41,6 +42,7 @@ export default class CommonStore extends BaseStore {
     @observable app_routing_history = [];
     @observable app_router = { history: null };
     @observable app_id = undefined;
+    @observable platform = '';
 
     @action.bound
     checkAppId() {
@@ -48,6 +50,11 @@ export default class CommonStore extends BaseStore {
             BinarySocket.closeAndOpenNewConnection();
         }
         this.app_id = getAppId();
+    }
+
+    @action.bound
+    setPlatform() {
+        this.platform = new URL(window.location).searchParams.get('platform');
     }
 
     @action.bound

@@ -2,7 +2,13 @@ import React from 'react';
 import classNames from 'classnames';
 import { localize, Localize } from '@deriv/translations';
 import { DesktopWrapper, MobileWrapper, Carousel } from '@deriv/components';
-import { getAccountTypeFields, getAccountListKey, getCFDAccountKey, CFD_PLATFORMS } from '@deriv/shared';
+import {
+    getAccountTypeFields,
+    getAccountListKey,
+    getCFDAccountKey,
+    CFD_PLATFORMS,
+    isLandingCompanyEnabled,
+} from '@deriv/shared';
 import specifications from 'Modules/CFD/Constants/cfd-specifications';
 import { CFDAccountCard } from './cfd-account-card.jsx';
 import { general_messages } from '../Constants/cfd-shared-strings';
@@ -152,7 +158,7 @@ const CFDRealAccountDisplay = ({
     };
 
     const synthetic_account_items =
-        (landing_companies?.mt_gaming_company?.financial || !is_logged_in) &&
+        (isLandingCompanyEnabled({ landing_companies, platform, type: 'gaming' }) || !is_logged_in) &&
         (Object.keys(current_list).some(key => key.startsWith(`${platform}.real.synthetic`))
             ? Object.keys(current_list)
                   .filter(key => key.startsWith(`${platform}.real.synthetic`))
@@ -214,6 +220,9 @@ const CFDRealAccountDisplay = ({
                       )}
                       specs={specifications[platform].real_synthetic_specs}
                       onHover={handleHoverCard}
+                      is_virtual={is_virtual}
+                      toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
+                      toggleAccountsDialog={toggleAccountsDialog}
                   />,
               ]);
 
@@ -254,7 +263,12 @@ const CFDRealAccountDisplay = ({
             />
         );
 
-    const financial_account = (landing_companies?.mt_financial_company?.financial || !is_logged_in) && (
+    const financial_account = (isLandingCompanyEnabled({
+        landing_companies,
+        platform,
+        type: 'financial',
+    }) ||
+        !is_logged_in) && (
         <CFDAccountCard
             key='real.financial'
             has_cfd_account={has_cfd_account}
@@ -273,9 +287,12 @@ const CFDRealAccountDisplay = ({
             onPasswordManager={openPasswordManager}
             onClickFund={onClickFundReal}
             platform={platform}
-            descriptor={general_messages.getFinancialAccountDescriptor(platform)}
+            descriptor={general_messages.getFinancialAccountDescriptor(platform, is_eu)}
             specs={financial_specs}
             is_logged_in={is_logged_in}
+            is_virtual={is_virtual}
+            toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
+            toggleAccountsDialog={toggleAccountsDialog}
         />
     );
 

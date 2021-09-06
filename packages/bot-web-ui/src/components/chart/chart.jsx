@@ -130,6 +130,4 @@ export default connect(({ chart_store, common, ui }) => ({
     wsSendRequest: chart_store.wsSendRequest,
     wsSubscribe: chart_store.wsSubscribe,
     getMarketsOrder: chart_store.getMarketsOrder,
-    // should_refresh   : modules.trade.should_refresh_active_symbols,
-    // resetRefresh     : modules.trade.resetRefresh,
 }))(Chart);

@@ -3,9 +3,10 @@ export const help_content_types = {
     VIDEO: 'video',
     IMAGE: 'image',
     BLOCK: 'block',
+    EXAMPLE: 'example',
 };
 
-const { TEXT, IMAGE, BLOCK } = help_content_types;
+const { TEXT, IMAGE, BLOCK, EXAMPLE } = help_content_types;
 
 export const help_content_config = public_path => {
     __webpack_public_path__ = public_path; // eslint-disable-line no-global-assign
@@ -15,7 +16,7 @@ export const help_content_config = public_path => {
             { type: TEXT },
             { type: BLOCK },
             { type: TEXT },
-            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/if-return.png` },
+            { type: EXAMPLE, example_id: 'if-return' },
         ],
         //= ================= Math ==================
         math_arithmetic: [
@@ -44,7 +45,7 @@ export const help_content_config = public_path => {
             { type: BLOCK },
             { type: TEXT },
             { type: TEXT },
-            { type: IMAGE, width: '60%', url: `${__webpack_public_path__}media/constrain.png` },
+            { type: EXAMPLE, example_id: 'constrain' },
         ],
         // math_number: [
         //     { type: VIDEO, url: 'https://www.youtube.com/embed/Bb0HnaYNUx4' },
@@ -86,35 +87,25 @@ export const help_content_config = public_path => {
             { type: TEXT },
             { type: TEXT },
             { type: TEXT },
-            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/in_candle_list_read.png` },
+            { type: EXAMPLE, example_id: 'in_candle_list_read' },
         ],
         read_ohlc_obj: [
             { type: TEXT },
             { type: BLOCK },
             { type: TEXT },
             { type: TEXT },
-            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/read_candle_value.png` },
+            { type: EXAMPLE, example_id: 'read_candle_value' },
         ],
         check_direction: [{ type: TEXT }, { type: BLOCK }, { type: TEXT }, { type: TEXT }, { type: TEXT }],
         get_ohlc: [
             { type: TEXT },
             { type: BLOCK },
             { type: TEXT },
-            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/get_candle.png` },
+            { type: EXAMPLE, example_id: 'get_candle' },
             { type: TEXT },
         ],
-        ohlc: [
-            { type: TEXT },
-            { type: BLOCK },
-            { type: TEXT },
-            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/candle_list_1.png` },
-        ],
-        ohlc_values: [
-            { type: TEXT },
-            { type: BLOCK },
-            { type: TEXT },
-            { type: IMAGE, url: `${__webpack_public_path__}media/candle_list.png` },
-        ],
+        ohlc: [{ type: TEXT }, { type: BLOCK }, { type: TEXT }, { type: EXAMPLE, example_id: 'candle_list_1' }],
+        ohlc_values: [{ type: TEXT }, { type: BLOCK }, { type: TEXT }, { type: EXAMPLE, example_id: 'candle_list' }],
         is_candle_black: [
             { type: TEXT },
             { type: BLOCK },
@@ -135,7 +126,7 @@ export const help_content_config = public_path => {
             { type: BLOCK },
             { type: TEXT },
             { type: TEXT },
-            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/candle_list_1.png` },
+            { type: EXAMPLE, example_id: 'candle_list_1' },
         ],
         //= ================= Variables ==================
         variables_gets: [
@@ -168,20 +159,20 @@ export const help_content_config = public_path => {
             { type: TEXT },
             { type: TEXT },
             { type: TEXT },
-            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/epoch.png` },
+            { type: EXAMPLE, example_id: 'epoch' },
         ],
         todatetime: [
             { type: TEXT },
             { type: BLOCK },
             { type: TEXT },
-            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/todatetime.png` },
+            { type: EXAMPLE, example_id: 'todatetime' },
             { type: TEXT },
         ],
         totimestamp: [
             { type: TEXT },
             { type: BLOCK },
             { type: TEXT },
-            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/totimestamp.png` },
+            { type: EXAMPLE, example_id: 'totimestamp' },
             { type: TEXT },
         ],
         // =============== Notifications blocks ============
@@ -197,7 +188,7 @@ export const help_content_config = public_path => {
             { type: TEXT },
             { type: TEXT },
             { type: TEXT },
-            { type: IMAGE, url: `${__webpack_public_path__}media/notify_telegram.png` },
+            { type: EXAMPLE, example_id: 'notify_telegram' },
         ],
         // =============== Misc blocks ============
         console: [{ type: TEXT }, { type: TEXT }, { type: TEXT }, { type: TEXT }, { type: TEXT }, { type: TEXT }],
@@ -228,13 +219,13 @@ export const help_content_config = public_path => {
             { type: TEXT },
             { type: TEXT },
             { type: TEXT },
-            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_block_example.png` },
+            { type: EXAMPLE, example_id: 'sma_block_example' },
             { type: TEXT },
             { type: TEXT },
-            { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/sma_block_example_1.png` },
+            { type: EXAMPLE, example_id: 'sma_block_example_1' },
             { type: TEXT },
             { type: TEXT },
-            { type: IMAGE, width: '100%', url: `${__webpack_public_path__}media/sma_array.png` },
+            { type: EXAMPLE, example_id: 'sma_array' },
             { type: TEXT },
             { type: TEXT },
             { type: TEXT },
@@ -267,43 +258,34 @@ export const help_content_config = public_path => {
             { type: TEXT },
             { type: BLOCK },
             { type: TEXT },
-            { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/sell_available.png` },
+            { type: EXAMPLE, example_id: 'sell_available' },
         ],
         sell_at_market: [
             { type: TEXT },
             { type: BLOCK },
             { type: TEXT },
-            { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/sell_available.png` },
+            { type: EXAMPLE, example_id: 'sell_available' },
         ],
         after_purchase: [{ type: TEXT }, { type: BLOCK }, { type: TEXT }],
-        trade_again: [
-            { type: TEXT },
-            { type: BLOCK },
-            { type: TEXT },
-            { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/trade_again.png` },
-        ],
+        trade_again: [{ type: TEXT }, { type: BLOCK }, { type: TEXT }, { type: EXAMPLE, example_id: 'trade_again' }],
         // =============== Contract ============
         contract_check_result: [
             { type: TEXT },
             { type: BLOCK },
             { type: TEXT },
             { type: TEXT },
-            { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/check_result.png` },
+            { type: EXAMPLE, example_id: 'check_result' },
         ],
-        sell_price: [
-            { type: TEXT },
-            { type: BLOCK },
-            { type: TEXT },
-            { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/sell_pl.png` },
-        ],
+        sell_price: [{ type: TEXT }, { type: BLOCK }, { type: TEXT }, { type: EXAMPLE, example_id: 'sell_pl' }],
         // =============== Logic ============
         controls_if: [
             { type: TEXT },
             { type: BLOCK },
             { type: TEXT },
-            { type: IMAGE, width: '70%', url: `${__webpack_public_path__}media/controls_if.png` },
+            { type: EXAMPLE, example_id: 'controls_if' },
             { type: TEXT },
-            { type: IMAGE, width: '40%', url: `${__webpack_public_path__}media/compare_logic.png` },
+            { type: EXAMPLE, example_id: 'compare_logic' },
+            { type: EXAMPLE, example_id: 'compare_logic_1' },
         ],
         logic_operation: [
             { type: TEXT },
@@ -312,21 +294,21 @@ export const help_content_config = public_path => {
             { type: TEXT },
             { type: IMAGE, width: '40%', url: `${__webpack_public_path__}media/logic.png` },
         ],
-        // =============== Logic ============
+        // =============== Loops ============
         controls_whileUntil: [
             { type: TEXT },
             { type: BLOCK },
             { type: TEXT },
             { type: TEXT },
-            { type: IMAGE, width: '80%', url: `${__webpack_public_path__}media/repeat_while.png` },
+            { type: EXAMPLE, example_id: 'repeat_while' },
             { type: TEXT },
-            { type: IMAGE, width: '80%', url: `${__webpack_public_path__}media/repeat_until.png` },
+            { type: EXAMPLE, example_id: 'repeat_until' },
         ],
         controls_for: [
             { type: TEXT },
             { type: BLOCK },
             { type: TEXT },
-            { type: IMAGE, width: '80%', url: `${__webpack_public_path__}media/controls_for.png` },
+            { type: EXAMPLE, example_id: 'controls_for' },
             { type: TEXT },
             { type: TEXT },
         ],
@@ -334,7 +316,7 @@ export const help_content_config = public_path => {
             { type: TEXT },
             { type: BLOCK },
             { type: TEXT },
-            { type: IMAGE, width: '80%', url: `${__webpack_public_path__}media/controls_forEach.png` },
+            { type: EXAMPLE, example_id: 'controls_forEach' },
             { type: TEXT },
             { type: TEXT },
             { type: TEXT },
@@ -344,9 +326,9 @@ export const help_content_config = public_path => {
             { type: BLOCK },
             { type: TEXT },
             { type: TEXT },
-            { type: IMAGE, width: '80%', url: `${__webpack_public_path__}media/break_out.png` },
+            { type: EXAMPLE, example_id: 'break_out' },
             { type: TEXT },
-            { type: IMAGE, width: '80%', url: `${__webpack_public_path__}media/continue.png` },
+            { type: EXAMPLE, example_id: 'continue' },
         ],
     };
 };

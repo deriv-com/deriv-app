@@ -368,6 +368,7 @@ class FinancialAssessment extends React.Component {
                         handleBlur,
                         handleSubmit,
                         isSubmitting,
+                        setFieldTouched,
                         dirty,
                     }) => (
                         <>
@@ -419,7 +420,10 @@ class FinancialAssessment extends React.Component {
                                                         list_items={getIncomeSourceList()}
                                                         value={values.income_source}
                                                         error={touched.income_source && errors.income_source}
-                                                        onChange={handleChange}
+                                                        onChange={e => {
+                                                            setFieldTouched('income_source', true);
+                                                            handleChange(e);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -444,7 +448,10 @@ class FinancialAssessment extends React.Component {
                                                         list_items={getEmploymentStatusList()}
                                                         value={values.employment_status}
                                                         error={touched.employment_status && errors.employment_status}
-                                                        onChange={handleChange}
+                                                        onChange={e => {
+                                                            setFieldTouched('employment_status', true);
+                                                            handleChange(e);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -473,7 +480,10 @@ class FinancialAssessment extends React.Component {
                                                         error={
                                                             touched.employment_industry && errors.employment_industry
                                                         }
-                                                        onChange={handleChange}
+                                                        onChange={e => {
+                                                            setFieldTouched('employment_industry', true);
+                                                            handleChange(e);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -499,7 +509,10 @@ class FinancialAssessment extends React.Component {
                                                         list_items={getOccupationList()}
                                                         value={values.occupation}
                                                         error={touched.occupation && errors.occupation}
-                                                        onChange={handleChange}
+                                                        onChange={e => {
+                                                            setFieldTouched('occupation', true);
+                                                            handleChange(e);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -524,7 +537,10 @@ class FinancialAssessment extends React.Component {
                                                         list_items={getSourceOfWealthList()}
                                                         value={values.source_of_wealth}
                                                         error={touched.source_of_wealth && errors.source_of_wealth}
-                                                        onChange={handleChange}
+                                                        onChange={e => {
+                                                            setFieldTouched('source_of_wealth', true);
+                                                            handleChange(e);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -549,7 +565,10 @@ class FinancialAssessment extends React.Component {
                                                         list_items={getEducationLevelList()}
                                                         value={values.education_level}
                                                         error={touched.education_level && errors.education_level}
-                                                        onChange={handleChange}
+                                                        onChange={e => {
+                                                            setFieldTouched('education_level', true);
+                                                            handleChange(e);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -574,7 +593,10 @@ class FinancialAssessment extends React.Component {
                                                         list_items={getNetIncomeList()}
                                                         value={values.net_income}
                                                         error={touched.net_income && errors.net_income}
-                                                        onChange={handleChange}
+                                                        onChange={e => {
+                                                            setFieldTouched('net_income', true);
+                                                            handleChange(e);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -600,7 +622,10 @@ class FinancialAssessment extends React.Component {
                                                         list_items={getEstimatedWorthList()}
                                                         value={values.estimated_worth}
                                                         error={touched.estimated_worth && errors.estimated_worth}
-                                                        onChange={handleChange}
+                                                        onChange={e => {
+                                                            setFieldTouched('estimated_worth', true);
+                                                            handleChange(e);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -626,7 +651,10 @@ class FinancialAssessment extends React.Component {
                                                         list_items={getAccountTurnoverList()}
                                                         value={values.account_turnover}
                                                         error={touched.account_turnover && errors.account_turnover}
-                                                        onChange={handleChange}
+                                                        onChange={e => {
+                                                            setFieldTouched('account_turnover', true);
+                                                            handleChange(e);
+                                                        }}
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
@@ -669,7 +697,10 @@ class FinancialAssessment extends React.Component {
                                                                     touched.forex_trading_experience &&
                                                                     errors.forex_trading_experience
                                                                 }
-                                                                onChange={handleChange}
+                                                                onChange={e => {
+                                                                    setFieldTouched('forex_trading_experience', true);
+                                                                    handleChange(e);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -700,7 +731,10 @@ class FinancialAssessment extends React.Component {
                                                                     touched.forex_trading_frequency &&
                                                                     errors.forex_trading_frequency
                                                                 }
-                                                                onChange={handleChange}
+                                                                onChange={e => {
+                                                                    setFieldTouched('forex_trading_frequency', true);
+                                                                    handleChange(e);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -733,7 +767,13 @@ class FinancialAssessment extends React.Component {
                                                                     touched.binary_options_trading_experience &&
                                                                     errors.binary_options_trading_experience
                                                                 }
-                                                                onChange={handleChange}
+                                                                onChange={e => {
+                                                                    setFieldTouched(
+                                                                        'binary_options_trading_experience',
+                                                                        true
+                                                                    );
+                                                                    handleChange(e);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -766,7 +806,13 @@ class FinancialAssessment extends React.Component {
                                                                     touched.binary_options_trading_frequency &&
                                                                     errors.binary_options_trading_frequency
                                                                 }
-                                                                onChange={handleChange}
+                                                                onChange={e => {
+                                                                    setFieldTouched(
+                                                                        'binary_options_trading_frequency',
+                                                                        true
+                                                                    );
+                                                                    handleChange(e);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -797,7 +843,10 @@ class FinancialAssessment extends React.Component {
                                                                     touched.cfd_trading_experience &&
                                                                     errors.cfd_trading_experience
                                                                 }
-                                                                onChange={handleChange}
+                                                                onChange={e => {
+                                                                    setFieldTouched('cfd_trading_experience', true);
+                                                                    handleChange(e);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -828,7 +877,10 @@ class FinancialAssessment extends React.Component {
                                                                     touched.cfd_trading_frequency &&
                                                                     errors.cfd_trading_frequency
                                                                 }
-                                                                onChange={handleChange}
+                                                                onChange={e => {
+                                                                    setFieldTouched('cfd_trading_frequency', true);
+                                                                    handleChange(e);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -861,7 +913,13 @@ class FinancialAssessment extends React.Component {
                                                                     touched.other_instruments_trading_experience &&
                                                                     errors.other_instruments_trading_experience
                                                                 }
-                                                                onChange={handleChange}
+                                                                onChange={e => {
+                                                                    setFieldTouched(
+                                                                        'other_instruments_trading_experience',
+                                                                        true
+                                                                    );
+                                                                    handleChange(e);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>
@@ -895,7 +953,13 @@ class FinancialAssessment extends React.Component {
                                                                     touched.other_instruments_trading_frequency &&
                                                                     errors.other_instruments_trading_frequency
                                                                 }
-                                                                onChange={handleChange}
+                                                                onChange={e => {
+                                                                    setFieldTouched(
+                                                                        'other_instruments_trading_frequency',
+                                                                        true
+                                                                    );
+                                                                    handleChange(e);
+                                                                }}
                                                             />
                                                         </MobileWrapper>
                                                     </fieldset>

@@ -115,7 +115,7 @@ const ConfirmationPage = ({ toggleModal, onSubmit }) => (
     </div>
 );
 
-const SubmittedPage = ({ platform, routeBackInApp }) => {
+const SubmittedPage = ({ platform }) => {
     const history = useHistory();
 
     const onClickButton = () => {
@@ -123,10 +123,8 @@ const SubmittedPage = ({ platform, routeBackInApp }) => {
             // Force hard redirect to url
             const hard_redirect_url = window.location.origin + platforms[platform].route_to_path;
             window.location.href = hard_redirect_url;
-        } else if (platforms[platform].route_to_path) {
-            history.push(platforms[platform].route_to_path);
         } else {
-            routeBackInApp(history);
+            history.push(platforms[platform].route_to_path);
         }
     };
 
@@ -328,8 +326,7 @@ class FinancialAssessment extends React.Component {
         if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
         if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (this.props.is_virtual) return <DemoMessage has_demo_icon={is_dashboard} has_button={is_dashboard} />;
-        if (isMobile() && is_submit_success)
-            return <SubmittedPage platform={this.props.platform} route={this.props.routeBackInApp} />;
+        if (isMobile() && is_submit_success) return <SubmittedPage platform={this.props.platform} />;
 
         return (
             <React.Fragment>
@@ -1018,7 +1015,6 @@ export default connect(({ client, common, ui }) => ({
     is_financial_information_incomplete: client.is_financial_information_incomplete,
     is_svg: client.is_svg,
     platform: common.platform,
-    routeBackInApp: common.routeBackInApp,
     removeNotificationMessage: ui.removeNotificationMessage,
     removeNotificationByKey: ui.removeNotificationByKey,
 }))(withRouter(FinancialAssessment));

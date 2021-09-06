@@ -2,6 +2,9 @@
     display: flex;
     justify-content: space-around;
     width: 36rem;
+    @include mobile {
+        width: 100%;
+    }
 
     &-block {
         cursor: pointer;
@@ -9,11 +12,17 @@
         background-color: var(--general-section-1);
         height: 2.4rem;
         width: 8.7rem;
+        @include mobile {
+            width: 95%;
+        }
     }
 
     &__block-container {
         align-items: center;
         display: flex;
         flex-direction: column;
+        @include mobile {
+            flex: 1;
+        }
     }
 }

@@ -1,22 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text } from '@deriv/components';
+import { getDecimalPlaces } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
-const PercentageSelector = ({ amount, currency, getCalculatedAmount }) => {
+const PercentageSelector = ({ amount, currency, from_account, getCalculatedAmount, to_account}) => {
     const [percentage, setPercentage] = React.useState('0');
+
+    React.useEffect(() => {
+        calculateAmount(
+            { target: { id: 0 } },
+            0
+        );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [from_account, to_account]); 
 
     const calculateAmount = (e, percent) => {
         setPercentage(percent);
 
         for (let i = 1; i <= 4; i++) {
             if (i <= e.target.id) {
-                document.getElementById(i).style.backgroundColor = 'blue'; // TODO: Change color when design is updated
+                document.getElementById(i).style.backgroundColor = 'var(--status-success)';
             } else {
-                document.getElementById(i).style.backgroundColor = '#f2f3f4';
+                document.getElementById(i).style.backgroundColor = 'var(--general-section-1)';
             }
         }
-        getCalculatedAmount(amount * (percentage / 100));
+
+        getCalculatedAmount((amount * (percent / 100)).toFixed(getDecimalPlaces(currency)));
     };
 
     return (
@@ -47,7 +57,7 @@ const PercentageSelector = ({ amount, currency, getCalculatedAmount }) => {
                     <div id='4' className='percentage-selector-block' onClick={e => calculateAmount(e, 100)} />
                 </div>
             </div>
-            <Text color='less-prominent' size='s'>
+            <Text color='less-prominent' size='xxs'>
                 <Localize
                     i18n_default_text={`{{percentage}}% of available balance ({{amount}} {{currency}})`}
                     values={{ percentage, amount, currency }}
@@ -60,7 +70,7 @@ const PercentageSelector = ({ amount, currency, getCalculatedAmount }) => {
 PercentageSelector.propTypes = {
     amount: PropTypes.number,
     currency: PropTypes.string,
-    total_amount: PropTypes.number,
+    getCalculatedAmount: PropTypes.func,
 };
 
 export default PercentageSelector;

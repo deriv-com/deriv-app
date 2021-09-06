@@ -54,27 +54,27 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
     switch (landing_company_shortcode) {
         case 'iom':
         case 'malta': {
-            texts.push(
-                <Localize
-                    key={0}
-                    i18n_default_text='If you are not satisfied with the outcome, you can escalate your complaint to the <0>Independent Betting Adjudication Service (IBAS)</0> by filling the IBAS adjudication form. Please note that IBAS only deals with disputes that result from transactions.'
-                    components={[
-                        <a
-                            key={0}
-                            className='link link--orange'
-                            rel='noopener noreferrer'
-                            target='_blank'
-                            href='https://www.ibas-uk.com/'
-                        />,
-                    ]}
-                />
-            );
             if (landing_company_shortcode === 'iom') {
                 texts.push(
                     <Localize
                         key={texts.length}
                         i18n_default_text='<0/><1/>If your complaint relates to our data processing practices, you can submit a formal complaint to your local supervisory authority.'
                         components={[<br key={0} />, <br key={1} />]}
+                    />
+                );
+                texts.push(
+                    <Localize
+                        key={0}
+                        i18n_default_text='If you are not satisfied with the outcome, you can escalate your complaint to the <0>Independent Betting Adjudication Service (IBAS)</0> by filling the IBAS adjudication form. Please note that IBAS only deals with disputes that result from transactions.'
+                        components={[
+                            <a
+                                key={0}
+                                className='link link--orange'
+                                rel='noopener noreferrer'
+                                target='_blank'
+                                href='https://www.ibas-uk.com/'
+                            />,
+                        ]}
                     />
                 );
             } else {

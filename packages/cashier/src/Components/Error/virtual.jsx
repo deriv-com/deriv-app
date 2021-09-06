@@ -39,7 +39,6 @@ const Virtual = ({ has_real_account, history, is_dark_mode_on, openRealAccountSi
                                 <br key={0} />,
                                 <span
                                     key={1}
-                                    key={0}
                                     className='cashier__account-switch-text'
                                     onClick={toggleAccountsDialog}
                                 />,

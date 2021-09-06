@@ -587,9 +587,11 @@ const AccountSwitcher = props => {
                         <div key={index} className='acc-switcher__new-account'>
                             <Icon icon='IcDeriv' size={24} />
                             <Text size='xs' color='general' className='acc-switcher__new-account-text'>
-                                {getAccountTitle(account, {
-                                    account_residence: props.client_residence,
-                                })}
+                                {getAccountTitle(
+                                    account,
+                                    { account_residence: props.client_residence },
+                                    props.country_standpoint
+                                )}
                             </Text>
                             <Button
                                 id='dt_core_account-switcher_add-new-account'
@@ -898,6 +900,7 @@ const account_switcher = withRouter(
         account_list: client.account_list,
         can_upgrade_to: client.can_upgrade_to,
         client_residence: client.residence,
+        country_standpoint: client.country_standpoint,
         is_dark_mode_on: ui.is_dark_mode_on,
         is_eu: client.is_eu,
         is_fully_authenticated: client.is_fully_authenticated,

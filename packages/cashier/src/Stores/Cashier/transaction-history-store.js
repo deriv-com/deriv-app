@@ -23,16 +23,25 @@ export default class TransactionHistoryStore {
     }
     @action.bound
     async getCryptoTransactions() {
-        await this.WS.cashierPayments('crypto', 'all', this.subscribe).then(response => {
-            if (!response.error) {
-                const { crypto } = response.cashier_payments;
-                this.setCryptoTransactionsHistory(crypto);
-                return Promise.resolve(response);
-            }
-            return Promise.reject(response.error);
-        });
         if(this.subscribe) {
+            await this.WS.subscribeCashierPayments('crypto', 'all').then(response => {
+                if (!response.error) {
+                    const { crypto } = response.cashier_payments;
+                    this.setCryptoTransactionsHistory(crypto);
+                    return Promise.resolve(response);
+                }
+                return Promise.reject(response.error);
+            });
             this.setSubscribe();
+        } else {
+            await this.WS.cashierPayments('crypto', 'all').then(response => {
+                if (!response.error) {
+                    const { crypto } = response.cashier_payments;
+                    this.setCryptoTransactionsHistory(crypto);
+                    return Promise.resolve(response);
+                }
+                return Promise.reject(response.error);
+            });
         }
     }
     @action.bound

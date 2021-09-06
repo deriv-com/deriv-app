@@ -23,14 +23,14 @@ export default class TransactionHistoryStore {
     }
     @action.bound
     async getCryptoTransactions() {
-        let values = { 
+        const values = { 
             cashier_payments: 1, 
             provider: 'crypto', 
             transaction_type: 'all',
         };
 
-        if(this.subscribe) {
-            values['subscribe'] = this.subscribe;
+        if (this.subscribe) {
+            values.subscribe = this.subscribe;
             this.setSubscribe();
         }
         await this.WS.cashierPayments(values).then(response => {

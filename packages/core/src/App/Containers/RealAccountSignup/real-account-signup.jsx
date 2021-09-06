@@ -24,19 +24,27 @@ const modal_pages_indices = {
     signup_error: 5,
 };
 
-const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_residence, is_belgium_residence }) => {
-    if (!currency && real_account_signup_target !== 'maltainvest') {
+const WizardHeading = ({
+    real_account_signup_target,
+    currency,
+    is_isle_of_man_residence,
+    is_belgium_residence,
+    country_standpoint,
+}) => {
+    const maltainvest_signup = real_account_signup_target === 'maltainvest';
+    const malta_signup = real_account_signup_target === 'malta';
+    const iom_signup = real_account_signup_target === 'iom';
+    const deposit_cash_signup = real_account_signup_target === 'deposit_cash';
+
+    if (!maltainvest_signup && !currency) {
         return <Localize i18n_default_text='Set a currency for your real account' />;
     }
 
-    if (
-        (real_account_signup_target === 'malta' && is_belgium_residence) ||
-        real_account_signup_target === 'deposit_cash'
-    ) {
+    if ((malta_signup && is_belgium_residence) || deposit_cash_signup) {
         return <Localize i18n_default_text='Add a Deriv Synthetic account' />;
     }
 
-    if (real_account_signup_target === 'iom' && is_isle_of_man_residence) {
+    if (iom_signup && is_isle_of_man_residence) {
         return <Localize i18n_default_text='Add a Deriv account' />;
     }
     switch (real_account_signup_target) {
@@ -44,6 +52,14 @@ const WizardHeading = ({ real_account_signup_target, currency, is_isle_of_man_re
         case 'iom':
             return <Localize i18n_default_text='Add a Deriv Synthetic Indices account' />;
         case 'maltainvest':
+            if (
+                country_standpoint.is_united_kingdom ||
+                country_standpoint.is_france ||
+                country_standpoint.is_other_eu ||
+                country_standpoint.is_rest_of_eu
+            ) {
+                return <Localize i18n_default_text='Add a real Deriv Multipliers account' />;
+            }
             return <Localize i18n_default_text='Add a Deriv Financial account' />;
         case 'samoa':
             return <Localize i18n_default_text='Terms of use' />;
@@ -56,6 +72,7 @@ const RealAccountSignup = ({
     closeRealAccountSignup,
     currency,
     has_real_account,
+    country_standpoint,
     history,
     is_belgium_residence,
     is_isle_of_man_residence,
@@ -317,6 +334,7 @@ const RealAccountSignup = ({
                                     is_eu={is_eu}
                                     has_fiat={has_fiat}
                                     available_crypto_currencies={available_crypto_currencies}
+                                    country_standpoint={country_standpoint}
                                 />
                             );
                         }
@@ -347,6 +365,7 @@ const RealAccountSignup = ({
                                     currency={currency}
                                     is_isle_of_man_residence={is_isle_of_man_residence}
                                     is_belgium_residence={is_belgium_residence}
+                                    country_standpoint={country_standpoint}
                                 />
                             );
                         }
@@ -366,6 +385,7 @@ export default connect(({ ui, client, common }) => ({
     has_real_account: client.has_active_real_account,
     currency: client.currency,
     is_eu: client.is_eu,
+    country_standpoint: client.country_standpoint,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     real_account_signup_target: ui.real_account_signup_target,
     closeRealAccountSignup: ui.closeRealAccountSignup,

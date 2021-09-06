@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { PropTypes } from 'prop-types';
 import { Icon } from '@deriv/components';
 import { PlatformContext } from '@deriv/shared';
@@ -13,12 +14,16 @@ export const Verified = ({ needs_poi, is_description_enabled = true }) => {
     const message = localize('Your proof of address is verified');
     if (needs_poi) {
         return (
-            <div className={is_dashboard && 'account-management__container-dashboard'}>
+            <div
+                className={classNames('account-management__container', {
+                    'account-management__container-dashboard': is_dashboard,
+                })}
+            >
                 <IconMessageContent
                     message={message}
                     text={localize('To continue trading, you must also submit a proof of identity.')}
                     icon={<Icon icon='IcPoaVerified' size={128} />}
-                    className={is_dashboard && 'paaccount-management-dashboard'}
+                    className={is_dashboard && 'account-management-dashboard'}
                 >
                     <PoiButton />
                 </IconMessageContent>
@@ -26,7 +31,11 @@ export const Verified = ({ needs_poi, is_description_enabled = true }) => {
         );
     }
     return (
-        <div className={is_dashboard && 'account-management__container-dashboard'}>
+        <div
+            className={classNames('account-management__container', {
+                'account-management__container-dashboard': is_dashboard,
+            })}
+        >
             <IconMessageContent
                 message={message}
                 icon={

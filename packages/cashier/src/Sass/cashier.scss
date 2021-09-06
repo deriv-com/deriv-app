@@ -996,6 +996,11 @@
             margin: 3.2rem 0;
         }
     }
+    &__receipt {
+        & .cashier__form-submit {
+            text-align: center;
+        }
+    }
     @include mobile {
         &__accordion {
             & .dc-accordion {
@@ -1400,6 +1405,7 @@ div.payment-agent-transfer {
             &__form-submit {
                 flex-flow: row;
                 justify-content: center;
+                text-align: center;
 
                 &-button {
                     margin: 0;

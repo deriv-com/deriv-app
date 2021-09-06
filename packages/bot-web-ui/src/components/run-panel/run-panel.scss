@@ -28,7 +28,7 @@
         height: 100%;
 
         &-title {
-            height: 18px;
+            min-height: 1.8rem;
             margin-bottom: 4px;
             @include typeface(--small-center-bold-black, none);
         }

@@ -62,7 +62,11 @@ const ErrorCTA = ({ code, onConfirm }) => {
             return null;
         default:
             return (
-                <StaticUrl href='help-centre' type='button' className='dc-btn dc-btn--primary'>
+                <StaticUrl
+                    href={`help-centre/${code === 'InvalidAccount' ? 'account#who-can-open-an-account' : ''}`}
+                    type='button'
+                    className='dc-btn dc-btn--primary'
+                >
                     <Text weight='bold' color='white' size='xxs'>
                         <Localize i18n_default_text='OK' />
                     </Text>

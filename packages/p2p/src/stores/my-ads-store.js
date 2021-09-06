@@ -363,7 +363,7 @@ export default class MyAdsStore extends BaseStore {
             ],
             offer_amount: [
                 v => !!v,
-                v => (values.type === buy_sell.SELL ? v <= this.available_balance : !!v),
+                v => (values.type === buy_sell.SELL && !isNaN(values.offer_amount) ? v <= this.available_balance : !!v),
                 v => !isNaN(v),
                 v =>
                     v > 0 &&

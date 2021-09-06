@@ -396,7 +396,7 @@ export default class CashierStore extends BaseStore {
 
     @computed
     get is_cashier_locked() {
-        if (!this.root_store.client.account_status.status) return false;
+        if (!this.root_store.client.account_status?.status) return false;
         const { status } = this.root_store.client.account_status;
 
         return status.some(status_name => status_name === 'cashier_locked');
@@ -404,7 +404,7 @@ export default class CashierStore extends BaseStore {
 
     @computed
     get is_system_maintenance() {
-        if (!this.root_store.client.account_status.cashier_validation) return false;
+        if (!this.root_store.client.account_status?.cashier_validation) return false;
         const { cashier_validation } = this.root_store.client.account_status;
 
         return cashier_validation.some(validation => validation === 'system_maintenance');
@@ -423,7 +423,7 @@ export default class CashierStore extends BaseStore {
             mt5_login_list,
             is_deposit_lock,
         } = this.root_store.client;
-        if (!account_status.status) return false;
+        if (!account_status?.status) return false;
 
         const need_authentication =
             this.config.deposit.error.is_ask_authentication || (is_authentication_needed && is_eu);
@@ -448,7 +448,7 @@ export default class CashierStore extends BaseStore {
 
     @computed
     get is_withdrawal_locked() {
-        if (!this.root_store.client.account_status.status) return false;
+        if (!this.root_store.client.account_status?.status) return false;
         const { authentication } = this.root_store.client.account_status;
         const need_poi = authentication.needs_verification.includes('identity');
 
@@ -470,7 +470,7 @@ export default class CashierStore extends BaseStore {
             account_status,
         } = this.root_store.client;
 
-        if (!account_status.status) return false;
+        if (!account_status?.status) return false;
 
         const need_financial_assessment =
             is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);

@@ -94,14 +94,16 @@ const AccountSwitcher = props => {
 
     useOnClickOutside(wrapper_ref, closeAccountsDialog, validateClickOutside);
 
-    const redirectToMt5 = account_type => {
+    const redirectToMt5 = async account_type => {
         closeAccountsDialog();
-        props.history.push(`${routes.mt5}#${account_type}`);
+        await props.history.push(routes.mt5);
+        window.location.hash = account_type;
     };
 
-    const redirectToDXTrade = account_type => {
+    const redirectToDXTrade = async account_type => {
         closeAccountsDialog();
-        props.history.push(`${routes.dxtrade}#${account_type}`);
+        await props.history.push(routes.dxtrade);
+        window.location.hash = account_type;
     };
 
     const hasRequiredCredentials = () => {
@@ -132,8 +134,21 @@ const AccountSwitcher = props => {
         }
     };
 
-    const redirectToMt5Real = () => {
-        redirectToMt5('real');
+    const redirectToMt5Real = (market_type, server) => {
+        const synthetic_server_region = server ? server.server_info?.geolocation.region : '';
+        const synthetic_server_environment = server ? (server.server_info?.environment).toLowerCase() : '';
+
+        const serverElementName = () => {
+            let filter_server_number = '';
+            let synthetic_region_string = '';
+            if (market_type === 'synthetic') {
+                filter_server_number = synthetic_server_environment.split('server')[1];
+                synthetic_region_string = `-${synthetic_server_region.toLowerCase()}`;
+            }
+            return `-${market_type}${synthetic_region_string}${filter_server_number}`;
+        };
+
+        redirectToMt5(`real${market_type ? serverElementName() : ''}`);
     };
 
     // TODO: Uncomment when real account is launched
@@ -157,12 +172,14 @@ const AccountSwitcher = props => {
     //     redirectToDXTradeReal();
     // };
 
-    const redirectToMt5Demo = () => {
-        redirectToMt5('demo');
+    const redirectToMt5Demo = market_type => {
+        const hash_id = market_type ? `-${market_type}` : '';
+        redirectToMt5(`demo${hash_id}`);
     };
 
-    const redirectToDXTradeDemo = () => {
-        redirectToDXTrade('demo');
+    const redirectToDXTradeDemo = market_type => {
+        const hash_id = market_type ? `-${market_type}` : '';
+        redirectToDXTrade(`demo${hash_id}`);
     };
 
     const setAccountCurrency = () => {
@@ -407,7 +424,7 @@ const AccountSwitcher = props => {
                                 is_disabled={account.is_disabled}
                                 is_virtual={account.is_virtual}
                                 loginid={account.loginid}
-                                onClickAccount={account.is_disabled ? undefined : () => doSwitch(account.loginid)}
+                                redirectAccount={account.is_disabled ? undefined : () => doSwitch(account.loginid)}
                                 onClickResetVirtualBalance={resetBalance}
                                 selected_loginid={props.account_loginid}
                             />
@@ -448,7 +465,7 @@ const AccountSwitcher = props => {
                                                 has_balance={'balance' in account}
                                                 has_error={account.has_error}
                                                 loginid={account.display_login}
-                                                onClickAccount={redirectToMt5Demo}
+                                                redirectAccount={() => redirectToMt5Demo(account.market_type)}
                                                 platform={CFD_PLATFORMS.MT5}
                                             />
                                         ))}
@@ -500,7 +517,7 @@ const AccountSwitcher = props => {
                                         })}`}
                                         has_balance={'balance' in account}
                                         loginid={account.display_login}
-                                        onClickAccount={redirectToDXTradeDemo}
+                                        redirectAccount={() => redirectToDXTradeDemo(account.market_type)}
                                         platform={CFD_PLATFORMS.DXTRADE}
                                     />
                                 ))}
@@ -558,7 +575,7 @@ const AccountSwitcher = props => {
                                         is_virtual={account.is_virtual}
                                         is_eu={props.is_eu}
                                         loginid={account.loginid}
-                                        onClickAccount={
+                                        redirectAccount={
                                             account.is_disabled ? undefined : () => doSwitch(account.loginid)
                                         }
                                         selected_loginid={props.account_loginid}
@@ -638,7 +655,12 @@ const AccountSwitcher = props => {
                                                 has_balance={'balance' in account}
                                                 has_error={account.has_error}
                                                 loginid={account.display_login}
-                                                onClickAccount={redirectToMt5Real}
+                                                redirectAccount={() => {
+                                                    redirectToMt5Real(
+                                                        account.market_type,
+                                                        findServerForAccount(account)
+                                                    );
+                                                }}
                                                 server={findServerForAccount(account)}
                                                 platform={CFD_PLATFORMS.MT5}
                                             />
@@ -710,7 +732,7 @@ const AccountSwitcher = props => {
                                                 has_balance={'balance' in account}
                                                 has_error={account.has_error}
                                                 loginid={account.display_login}
-                                                onClickAccount={redirectToDXTradeReal}
+                                                redirectAccount={() => redirectToDXTradeReal(account.market_type}
                                                 platform={CFD_PLATFORMS.DXTRADE}
                                             />
                                         ))}

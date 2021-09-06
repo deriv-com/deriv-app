@@ -165,5 +165,5 @@ export default connect(({ client, modules }) => ({
     crypto_amount: modules.cashier.crypto_amount,
     currency: client.currency,
     resetWithrawForm: modules.cashier.resetWithrawForm,
-    setIsWithdrawConfirmed: modules.cashier.config.withdraw.setIsWithdrawConfirmed,
+    setIsWithdrawConfirmed: modules.cashier.setIsWithdrawConfirmed,
 }))(CryptoWithdrawReceipt);

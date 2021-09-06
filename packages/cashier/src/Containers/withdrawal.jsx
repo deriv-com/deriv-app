@@ -53,7 +53,7 @@ const Withdrawal = ({
     tab_index,
     verify_error,
     verification_code,
-    onMountWithdraw,
+    willMountWithdraw,
 }) => {
     React.useEffect(() => {
         setActiveTab(container);
@@ -67,9 +67,9 @@ const Withdrawal = ({
     }, [check10kLimit]);
 
     React.useEffect(() => {
-        return () => onMountWithdraw(verification_code);
+        return () => willMountWithdraw(verification_code);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [onMountWithdraw]);
+    }, [willMountWithdraw]);
 
     React.useEffect(() => {
         if (isDesktop()) {
@@ -168,12 +168,12 @@ export default connect(({ client, modules }) => ({
     is_crypto: modules.cashier.is_crypto,
     is_system_maintenance: modules.cashier.is_system_maintenance,
     is_virtual: client.is_virtual,
-    is_withdraw_confirmed: modules.cashier.config.withdraw.is_withdraw_confirmed,
+    is_withdraw_confirmed: modules.cashier.is_withdraw_confirmed,
     is_withdrawal_locked: modules.cashier.is_withdrawal_locked,
     setActiveTab: modules.cashier.setActiveTab,
     setErrorMessage: modules.cashier.setErrorMessage,
     tab_index: modules.cashier.cashier_route_tab_index,
     verification_code: client.verification_code.payment_withdraw,
     verify_error: modules.cashier.config.withdraw.verification.error,
-    onMountWithdraw: modules.cashier.onMountWithdraw,
+    willMountWithdraw: modules.cashier.willMountWithdraw,
 }))(Withdrawal);

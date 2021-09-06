@@ -142,17 +142,11 @@ class ConfigWithdraw {
     @observable iframe_url = '';
     @observable error = new ConfigError();
     @observable verification = new ConfigVerification();
-    @observable is_withdraw_confirmed = false;
     @observable has_invalid_crypto_address = false;
 
     is_session_timeout = true;
     onIframeLoaded = '';
     timeout_session = '';
-
-    @action.bound
-    setIsWithdrawConfirmed(value) {
-        this.is_withdraw_confirmed = value;
-    }
 
     @action.bound
     setInvalidCryptoAddress(value) {
@@ -210,6 +204,7 @@ export default class CashierStore extends BaseStore {
     @observable percentage_selector_result = 0;
     @observable should_percentage_reset = false;
     @observable percentage = 0;
+    @observable is_withdraw_confirmed = false;
 
     @observable config = {
         account_transfer: new ConfigAccountTransfer(),
@@ -262,6 +257,12 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
+    setIsWithdrawConfirmed(value) {
+        this.is_withdraw_confirmed = value;
+        if (!value) this.clearVerification();
+    }
+
+    @action.bound
     calculatePercentage() {
         this.percentage = ((this.crypto_amount / +this.root_store.client.balance) * 100).toFixed(0);
     }
@@ -290,7 +291,6 @@ export default class CashierStore extends BaseStore {
 
     async saveWithdraw(verification_code) {
         this.setErrorMessage('');
-
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
             amount: this.crypto_amount,
@@ -304,7 +304,7 @@ export default class CashierStore extends BaseStore {
                 }
                 this.resetWithrawForm();
             } else {
-                this.config.withdraw.setIsWithdrawConfirmed(true);
+                this.setIsWithdrawConfirmed(true);
             }
         });
     }
@@ -439,9 +439,38 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    onMountWithdraw(verification_code) {
+    willMountWithdraw(verification_code) {
         if (verification_code) {
             this.clearVerification();
+        }
+    }
+
+    @action.bound
+    async onMountWithdraw(verification_code) {
+        this.setLoading(true);
+
+        const response_cashier = await this.WS.cryptoWithdraw({
+            address: this.blockchain_address,
+            amount: +this.crypto_amount,
+            verification_code,
+            dry_run: 1,
+        });
+
+        if (response_cashier.error.code === 'InvalidToken') {
+            this.handleCashierError(response_cashier.error);
+            this.setLoading(false);
+            this.setSessionTimeout(true);
+            this.clearTimeoutCashierUrl();
+            if (verification_code) {
+                // clear verification code on error
+                this.clearVerification();
+            }
+            this.setErrorMessage(this.config.withdraw.error, this.onMountWithdraw);
+        } else {
+            this.setLoading(false);
+        }
+        if (this.config.withdraw.error) {
+            this.setErrorMessage(this.config.withdraw.error, this.onMountWithdraw);
         }
     }
 

@@ -837,8 +837,8 @@
         &-line {
             border-bottom: 1px solid var(--general-section-1);
             position: relative;
-            width: 88%;
-            margin-left: 12%;
+            width: 83%;
+            margin-left: 17%;
             top: -28px;
         }
         @include mobile {
@@ -986,6 +986,11 @@
     &__withdrawal {
         &-header {
             margin: 3.2rem 0;
+        }
+    }
+    &__receipt {
+        & .cashier__form-submit {
+            text-align: center;
         }
     }
     @include mobile {
@@ -1392,6 +1397,7 @@ div.payment-agent-transfer {
             &__form-submit {
                 flex-flow: row;
                 justify-content: center;
+                text-align: center;
 
                 &-button {
                     margin: 0;

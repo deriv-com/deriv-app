@@ -124,7 +124,7 @@ export class PersonalDetailsForm extends React.Component {
                 this.setState({ is_submit_success: false }, () => {
                     setSubmitting(false);
                 });
-            }, 3000);
+            }, 10000);
             // redirection back based on 'from' param in query string
             const url_query_string = window.location.search;
             const url_params = new URLSearchParams(url_query_string);
@@ -214,11 +214,11 @@ export class PersonalDetailsForm extends React.Component {
         validateValues(validateResidence, residence_fields, true);
 
         const min_tax_identification_number = 0;
-        const max_tax_identification_number = 20;
+        const max_tax_identification_number = 25;
         if (values.tax_identification_number) {
             if (!validTaxID(values.tax_identification_number.trim())) {
                 errors.tax_identification_number = localize(
-                    'Should start with letter or number, and may contain hyphen and underscore.'
+                    'Should start with letter or number and may contain a hyphen, dot and slash.'
                 );
             } else if (
                 !validLength(values.tax_identification_number.trim(), {
@@ -226,7 +226,7 @@ export class PersonalDetailsForm extends React.Component {
                     max: max_tax_identification_number,
                 })
             ) {
-                errors.tax_identification_number = localize('You should enter 0-20 characters.');
+                errors.tax_identification_number = localize('You should enter 0-25 characters.');
             }
         }
 

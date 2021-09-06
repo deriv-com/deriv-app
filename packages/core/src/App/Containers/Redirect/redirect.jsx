@@ -40,7 +40,35 @@ const Redirect = ({
             toggleResetPasswordModal(true);
             break;
         }
-        case 'trading_platform_password_reset': {
+        case 'trading_platform_mt5_password_reset':
+        case 'trading_platform_dxtrade_password_reset': {
+            const redirect_to = url_params.get('redirect_to');
+
+            if (redirect_to) {
+                let pathname = '';
+                switch (redirect_to) {
+                    case '1':
+                        pathname = routes.mt5;
+                        break;
+                    case '2':
+                        pathname = routes.dxtrade;
+                        break;
+                    case '3':
+                        pathname = routes.passwords;
+                        break;
+                    default:
+                        break;
+                }
+
+                if (pathname) {
+                    history.push({
+                        pathname,
+                        search: url_query_string,
+                    });
+                    redirected_to_route = true;
+                }
+            }
+
             setResetTradingPasswordModalOpen(true);
             break;
         }
@@ -82,6 +110,7 @@ const Redirect = ({
             redirected_to_route = true;
             break;
         }
+
         default:
             break;
     }

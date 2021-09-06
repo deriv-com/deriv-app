@@ -222,7 +222,6 @@ const AccountSwitcher = props => {
             props.trading_servers,
             platform
         );
-
         return [...gaming_config, ...financial_config];
     };
 

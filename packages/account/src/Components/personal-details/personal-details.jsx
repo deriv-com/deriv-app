@@ -18,8 +18,9 @@ import {
     ThemedScrollbars,
     Text,
 } from '@deriv/components';
+import { Link } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, isMobile, toMoment, PlatformContext } from '@deriv/shared';
+import { isDesktop, isMobile, toMoment, PlatformContext, routes } from '@deriv/shared';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import FormSubHeader from '../form-sub-header';
 
@@ -164,10 +165,27 @@ const PersonalDetails = ({
                                             </Text>
                                         </div>
                                     )}
+
                                     <div
                                         className='details-form__elements'
                                         style={{ paddingBottom: isDesktop() ? 'unset' : null }}
                                     >
+                                        {'salutation' in props.value && (
+                                            <div>
+                                                <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
+                                                    <Localize
+                                                        i18n_default_text='Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your <0>account settings</0>.'
+                                                        components={[
+                                                            <Link
+                                                                to={routes.personal_details}
+                                                                key={0}
+                                                                className='link'
+                                                            />,
+                                                        ]}
+                                                    />
+                                                </Text>
+                                            </div>
+                                        )}
                                         {!is_dashboard && (
                                             <FormSubHeader
                                                 title={

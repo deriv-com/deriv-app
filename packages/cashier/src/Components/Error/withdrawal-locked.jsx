@@ -7,10 +7,32 @@ import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import CashierLocked from './cashier-locked.jsx';
 
-const WithdrawalLocked = ({ is_10K_limit, is_ask_financial_risk_approval }) => {
+const WithdrawalLocked = ({ account_status, is_10K_limit, is_ask_financial_risk_approval }) => {
+    const { identity, needs_verification } = account_status.authentication;
+    const is_poi_needed = is_10K_limit && identity.status !== 'verified';
+    const is_poa_needed = is_10K_limit && needs_verification.includes('document');
+    const is_ask_financial_risk_approval_needed = is_10K_limit && is_ask_financial_risk_approval;
     const history = useHistory();
     const items = [
-        ...(is_ask_financial_risk_approval
+        ...(is_poi_needed
+            ? [
+                  {
+                      content: localize('Upload a proof of identity to verify your identity'),
+                      status: 'action',
+                      onClick: () => history.push(routes.proof_of_identity),
+                  },
+              ]
+            : []),
+        ...(is_poa_needed
+            ? [
+                  {
+                      content: localize('Upload a proof of address to verify your address'),
+                      status: 'action',
+                      onClick: () => history.push(routes.proof_of_address),
+                  },
+              ]
+            : []),
+        ...(is_ask_financial_risk_approval_needed
             ? [
                   {
                       content: localize('Complete the financial assessment form'),
@@ -26,18 +48,11 @@ const WithdrawalLocked = ({ is_10K_limit, is_ask_financial_risk_approval }) => {
                 <div className='cashier-locked'>
                     <Icon icon='IcCashierWithdrawalLock' className='cashier-locked__icon' />
                     <Text as='h2' weight='bold' align='center' className='cashier-locked__title'>
-                        {is_10K_limit
-                            ? localize(
-                                  'You have reached the withdrawal limit. Please upload your proof of identity and address to lift your withdrawal limit and proceed with your withdrawal.'
-                              )
-                            : localize('Withdrawals are locked')}
+                        <Localize
+                            i18n_default_text='You have reached the withdrawal limit. Please upload your proof of identity and address to lift your withdrawal limit and proceed with your withdrawal.'
+                        />
                     </Text>
                     <React.Fragment>
-                        {!is_10K_limit && (
-                            <p className='cashier-locked__desc'>
-                                {localize('To enable this feature you must complete the following:')}
-                            </p>
-                        )}
                         <Checklist className='cashier-locked__checklist' items={items} />
                     </React.Fragment>
                 </div>

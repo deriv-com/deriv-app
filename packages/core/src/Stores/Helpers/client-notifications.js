@@ -112,7 +112,7 @@ export const clientNotifications = (ui = {}, client = {}) => {
                 }
             } else {
                 header = localize('Scheduled cashier system maintenance');
-                message = localize('Our cashier is temporarily down due to system maintenance.You can access the cashier in a few minutes when the maintenance is complete.');
+                message = localize('Our cashier is temporarily down due to system maintenance. You can access the cashier in a few minutes when the maintenance is complete.');
             }
             return {
                 key: 'system_maintenance',
@@ -548,6 +548,8 @@ const checkAccountStatus = (
             addNotificationMessage(clientNotifications().no_withdrawal_or_trading);
         } else if (withdrawal_locked && withdrawal_locked_status) {
             addNotificationMessage(clientNotifications().withdrawal_locked);
+        } else if (withdrawal_locked && ASK_FIX_DETAILS) {
+            addNotificationMessage(clientNotifications().required_fields(withdrawal_locked, deposit_locked));
         }
         if (deposit_locked && unwelcome_status) {
             addNotificationMessage(clientNotifications().unwelcome);

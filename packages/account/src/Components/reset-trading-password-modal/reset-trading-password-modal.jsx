@@ -23,6 +23,7 @@ const ResetTradingPassword = ({ setDialogTitleFunc, toggleResetTradingPasswordMo
             } else {
                 actions.resetForm({ password: '' });
                 actions.setStatus({ reset_complete: true });
+                WS.getAccountStatus();
             }
             actions.setSubmitting(false);
         });
@@ -214,7 +215,13 @@ const ResetTradingPasswordModal = ({
     }, [history, is_visible]);
 
     const setDialogTitleFunc = is_invalid_token => {
-        setDialogTitle(is_invalid_token ? localize('Reset trading password') : '');
+        setDialogTitle(
+            is_invalid_token
+                ? localize('Reset {{platform}} password', {
+                      platform: getCFDPlatformLabel(platform),
+                  })
+                : ''
+        );
     };
 
     return (

@@ -57,6 +57,17 @@ const AccountTransferReceipt = ({
         }
     };
 
+    const getAccountText = account => {
+        let account_text = '';
+        if (account.is_dxtrade || account.is_mt) {
+            account_text = account.text;
+        } else {
+            account_text = account.currency;
+        }
+    
+        return account_text;
+    };
+
     return (
         <div className='cashier__crypto-account-transfer__receipt'>
             <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header'>
@@ -81,7 +92,7 @@ const AccountTransferReceipt = ({
                             size={32}
                         />
                         <Text as='p' size='s' weight='bold'>
-                            <Localize i18n_default_text={selected_from.currency} />
+                            <Localize i18n_default_text={getAccountText(selected_from)} />
                         </Text>
                     </div>
                     <Text as='p' size='s' color='less-prominent' align='center'>{selected_from.value}</Text>
@@ -94,7 +105,7 @@ const AccountTransferReceipt = ({
                             size={32}
                         />
                         <Text as='p' size='s' weight='bold'>
-                            <Localize i18n_default_text={selected_to.currency} />
+                            <Localize i18n_default_text={getAccountText(selected_to)} />
                         </Text>
                     </div>
                     <Text as='p' size='s' color='less-prominent' align='center'>{selected_to.value}</Text>

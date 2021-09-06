@@ -33,7 +33,14 @@ const DisplayText = ({ className, has_symbol, list, is_align_text_left, placehol
                         'dc-dropdown__display-placeholder--is-left-text': is_align_text_left,
                     })}
                 >
-                    <Text size='xs' color='grey' line_height='unset' className='dc-dropdown__display-placeholder-text'>
+                    <Text
+                        size='xs'
+                        color='grey'
+                        line_height='unset'
+                        className={classNames('dc-dropdown__display-placeholder-text', {
+                            'dc-dropdown__display-placeholder-text-limit-fit': !value && placeholder.length > 45,
+                        })}
+                    >
                         {placeholder}
                     </Text>
                 </div>

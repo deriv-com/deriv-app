@@ -1,21 +1,17 @@
 .cashier-recent-transaction-wrapper {
-    max-width: 25.6rem;
-    @include mobile {
-        max-width: 32.8rem;
-        margin: 0 auto;
+    @include desktop {
+        max-width: 25.6rem;
     }
 
     .cashier-recent-transaction {
         overflow: auto;
-        margin-bottom: 1rem;
-        min-width: 25.6rem;
-        padding: 1.6rem 2.4rem;
-        border-radius: $BORDER_RADIUS * 2;
-        background-color: var(--general-section-1);
-        white-space: nowrap;
-
         @include mobile {
-            min-width: 32.8rem;
+            margin-bottom: 1rem;
+            min-width: 25.6rem;
+            padding: 1.6rem 2.4rem;
+            border-radius: $BORDER_RADIUS * 2;
+            background-color: var(--general-section-1);
+            white-space: nowrap;
         }
 
         &__data-wrapper {
@@ -24,6 +20,9 @@
             padding: 0.8rem 0 1.2rem;
             border-top: 1px solid var(--general-active);
             border-bottom: 1px solid var(--general-active);
+            & > div {
+                flex: 1;
+            }
         }
 
         &__icon {

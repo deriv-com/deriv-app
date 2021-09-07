@@ -14,7 +14,14 @@ export default class TransactionHistoryStore {
     @observable selected_crypto_status_description = '';
 
     @action.bound setCryptoTransactionsHistory(transactions) {
-        this.crypto_transactions = transactions;
+        transactions.forEach(transaction => {
+            const index = this.crypto_transactions.findIndex(crypto => crypto.id === transaction.id);
+            if (index === -1) {
+                this.crypto_transactions.push(transaction);
+            } else {
+                Object.assign(this.crypto_transactions[index], transaction);
+            }
+        });
     }
     @action.bound
     async getCryptoTransactions() {

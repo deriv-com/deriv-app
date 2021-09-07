@@ -73,7 +73,7 @@ const CryptoTransactionsRenderer = ({
                             </Text>
                             <div className='crypto-transactions-history__table-status' onClick={onClickStatus}>
                                 <div className= {classNames('crypto-transactions-history__table-status-code',
-                                    `crypto-transactions-history__table-status-code-{status.renderer}`
+                                    `crypto-transactions-history__table-status-code-${status.renderer}`
                                 )} />
                                 <Text as='p' size='xxs'>{status.name}</Text>
                             </div>
@@ -236,7 +236,7 @@ const CryptoTransactionsRenderer = ({
                                 message={status.description}
                             >
                                  <div className= {classNames('crypto-transactions-history__table-status-code',
-                                    `crypto-transactions-history__table-status-code-{status.renderer}`
+                                    `crypto-transactions-history__table-status-code-${status.renderer}`
                                 )} />
                                 <Text as='p' size='xs'>{status.name}</Text>
                             </Popover>

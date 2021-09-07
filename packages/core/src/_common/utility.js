@@ -96,12 +96,36 @@ const blocked_options_countries = ['au'];
 const isOptionsBlocked = country => blocked_options_countries.includes(country);
 
 // Fuction to direct user based on the selected platform from deriv-com before login
-const directUser = platform => {
+const getPlatform = url_params => {
     const supported_platforms = ['mt5', 'bot', 'derivx'];
+    const platform = url_params.get('platform');
+
+    url_params.delete('platform');
 
     if (platform && supported_platforms.includes(platform)) {
-        window.location = `/${supported_platforms[supported_platforms.indexOf(platform)]}`;
+        localStorage.setItem('platform', platform);
+
+        return `/${platform}`;
     }
+
+    return null;
+};
+
+const checkUserRedirection = () => {
+    const url_params = new URLSearchParams(location.search.slice(1));
+    // at the moment we are only checking platform, but can be extended further when there is a new logic
+    const redirection_url = getPlatform(url_params);
+
+    const params = url_params.toString();
+    const hash = location.hash;
+
+    if (redirection_url) {
+        window.location.href = `${redirection_url}/${params ? `?${params}` : ''}${hash || ''}`;
+
+        return true;
+    }
+
+    return false;
 };
 
 module.exports = {
@@ -113,5 +137,5 @@ module.exports = {
     isOptionsBlocked,
     isSyntheticsUnavailable,
     copyToClipboard,
-    directUser,
+    checkUserRedirection,
 };

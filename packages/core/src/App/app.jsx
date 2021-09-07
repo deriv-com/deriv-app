@@ -32,7 +32,7 @@ import Routes from './Containers/Routes/routes.jsx';
 import initStore from './app';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import { CFD_TEXT } from '../Constants/cfd-text';
-import { directUser } from '../_common/utility';
+import { checkUserRedirection } from '../_common/utility';
 
 // TODO: Lazy load smartchart styles
 import '@deriv/deriv-charts/dist/smartcharts.css';
@@ -40,11 +40,11 @@ import '@deriv/deriv-charts/dist/smartcharts.css';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
 
-const initCashierStore = () => {
-    root_store.modules.attachModule('cashier', new CashierStore({ root_store, WS }));
-};
-
 const App = ({ root_store }) => {
+    const initCashierStore = () => {
+        root_store.modules.attachModule('cashier', new CashierStore({ root_store, WS }));
+    };
+
     const l = window.location;
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);
@@ -59,8 +59,6 @@ const App = ({ root_store }) => {
         initFormErrorMessages(FORM_ERROR_MESSAGES);
         setSharedCFDText(CFD_TEXT);
         handleResize();
-        root_store.common.setPlatform();
-        directUser(root_store.common.platform);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -129,8 +127,12 @@ App.propTypes = {
 
 export default App;
 
-const root_store = initStore(AppNotificationMessages);
+const check_user_redirection = checkUserRedirection();
 
-const wrapper = document.getElementById('deriv_app');
-// eslint-disable-next-line no-unused-expressions
-wrapper ? ReactDOM.render(<App root_store={root_store} />, wrapper) : false;
+if (!check_user_redirection) {
+    const root_store = initStore(AppNotificationMessages);
+
+    const wrapper = document.getElementById('deriv_app');
+    // eslint-disable-next-line no-unused-expressions
+    wrapper ? ReactDOM.render(<App root_store={root_store} />, wrapper) : false;
+}

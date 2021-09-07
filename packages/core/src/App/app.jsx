@@ -32,7 +32,7 @@ import Routes from './Containers/Routes/routes.jsx';
 import initStore from './app';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import { CFD_TEXT } from '../Constants/cfd-text';
-import { directUser } from '../_common/utility';
+import { checkUserRedirection } from '../_common/utility';
 
 // TODO: Lazy load smartchart styles
 import '@deriv/deriv-charts/dist/smartcharts.css';
@@ -59,8 +59,6 @@ const App = ({ root_store }) => {
         initFormErrorMessages(FORM_ERROR_MESSAGES);
         setSharedCFDText(CFD_TEXT);
         handleResize();
-        root_store.common.setPlatform();
-        directUser(root_store.common.platform);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -129,10 +127,9 @@ App.propTypes = {
 
 export default App;
 
-const has_endpoint_url = checkAndSetEndpointFromUrl();
+const check_user_redirection = checkUserRedirection();
 
-// if has endpoint url, APP will be redirected
-if (!has_endpoint_url) {
+if (!check_user_redirection) {
     const root_store = initStore(AppNotificationMessages);
 
     const wrapper = document.getElementById('deriv_app');

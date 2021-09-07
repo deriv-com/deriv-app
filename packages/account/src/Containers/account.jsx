@@ -2,7 +2,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text } from '@deriv/components';
-import { routes as shared_routes, isMobile, getSelectedRoute, platforms, PlatformContext } from '@deriv/shared';
+import {
+    routes as shared_routes,
+    isMobile,
+    matchRoute,
+    getSelectedRoute,
+    platforms,
+    PlatformContext,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { flatten } from '../Helpers/flatten';
@@ -50,7 +57,7 @@ const Account = ({
         label: route_group.getTitle(),
         subitems: route_group.subroutes.map(sub => subroutes.indexOf(sub)),
     }));
-    let selected_content = subroutes.find(r => new RegExp(`${r.path}(/$)?((?!-).)*$`).test(location.pathname));
+    let selected_content = subroutes.find(r => matchRoute(r, location.pathname));
     const onClickClose = React.useCallback(() => routeBackInApp(history), [routeBackInApp, history]);
 
     React.useEffect(() => {

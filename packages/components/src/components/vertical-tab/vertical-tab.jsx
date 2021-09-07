@@ -16,10 +16,7 @@ const setSelectedIndex = ({ current_path, list, is_routed, selected_index, setCu
     if (typeof selected_index === 'undefined') {
         index = is_routed
             ? Math.max(
-                  list.indexOf(
-                      list.find(item => new RegExp(`${item.path}(/$)?((?!-).)*$`).test(current_path)) ||
-                          list.find(item => item.default)
-                  ),
+                  list.indexOf(list.find(item => matchRoute(item, current_path)) || list.find(item => item.default)),
                   0
               )
             : 0;

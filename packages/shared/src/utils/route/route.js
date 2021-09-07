@@ -1,5 +1,8 @@
+// Checks if pathname matches route. (Works even with query string /?)
+export const matchRoute = (route, pathname) => new RegExp(`${route.path}(/$)?((?!-).)*$`).test(pathname);
+
 export const getSelectedRoute = ({ routes, pathname }) => {
-    const matching_route = routes.find(route => new RegExp(`${route.path}(/$)?((?!-).)*$`).test(pathname));
+    const matching_route = routes.find(route => matchRoute(route, pathname));
     if (!matching_route) {
         return routes.find(route => route.default) || routes[0] || null;
     }

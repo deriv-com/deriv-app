@@ -47,11 +47,12 @@ const address_details_config = ({ account_settings, is_svg }) => {
             default_value: account_settings.address_city ?? '',
             rules: [
                 ['req', localize('City is required')],
+                ['length', localize('This should not exceed {{max}} characters.', { max: 99 }), { max: 99 }],
                 [
                     'regular',
                     localize('Letters, numbers, spaces, periods, hyphens, apostrophes only'),
                     {
-                        regex: /^[A-Za-z0-9\s'.\-]{1,35}$/,
+                        regex: /^\p{L}[\p{L}\s'.-]{0,99}$/u,
                     },
                 ],
             ],

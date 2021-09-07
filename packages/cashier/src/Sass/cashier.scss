@@ -658,10 +658,6 @@
 
     &__verify-button {
         margin: 3.2rem auto;
-
-        @include mobile {
-            width: 100%;
-        }
     }
     &__icon {
         margin-top: 8rem;
@@ -705,6 +701,12 @@
             }
         }
     }
+
+    &__send-email {
+        &--space {
+            margin-bottom: 1rem;
+        }
+    }
 }
 
 .crypto-fiat-converter-form {
@@ -744,7 +746,7 @@
     .dc-input__hint {
         .dc-text {
             margin-left: 0;
-        } 
+        }
     }
     .dc-text {
         grid-column: 3;
@@ -1166,6 +1168,7 @@
 
         &-wrapper {
             display: flex;
+            margin-bottom: 1.1rem;
         }
     }
 }

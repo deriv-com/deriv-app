@@ -3,17 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Field, Formik, Form } from 'formik';
-import {
-    Button,
-    Dropdown,
-    Icon,
-    Input,
-    Loading,
-    Money,
-    DesktopWrapper,
-    MobileWrapper,
-    Text,
-} from '@deriv/components';
+import { Button, Dropdown, Icon, Input, Loading, Money, DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { getDecimalPlaces, getCurrencyDisplayCode, getCurrencyName, validNumber } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -273,7 +263,7 @@ const AccountTransferForm = ({
         if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
             const side_notes = [];
             if (is_crypto && crypto_transactions?.length) {
-                side_notes.push(<RecentTransaction key={2}/>); 
+                side_notes.push(<RecentTransaction key={2} />);
             }
             side_notes.push(
                 <AccountTransferNote
@@ -285,7 +275,6 @@ const AccountTransferForm = ({
                 />
             );
             setSideNotes(side_notes);
-            
         }
     }, [transfer_fee, selected_from, minimum_fee, from_accounts, is_dxtrade_allowed]);
 
@@ -340,15 +329,7 @@ const AccountTransferForm = ({
                 validateOnBlur={false}
                 enableReinitialize
             >
-                {({
-                    errors,
-                    handleChange,
-                    isSubmitting,
-                    touched,
-                    setFieldValue,
-                    setFieldTouched,
-                    setFieldError,
-                }) => (
+                {({ errors, handleChange, isSubmitting, touched, setFieldValue, setFieldTouched, setFieldError }) => (
                     <React.Fragment>
                         {isSubmitting || accounts_list.length === 0 ? (
                             <div className='cashier__loader-wrapper'>
@@ -403,7 +384,7 @@ const AccountTransferForm = ({
                                         error={selected_to.error}
                                     />
                                 </div>
-                                { selected_from.currency === selected_to.currency ?
+                                {selected_from.currency === selected_to.currency ? (
                                     <Field name='amount' validate={validateAmount}>
                                         {({ field }) => (
                                             <Input
@@ -460,7 +441,8 @@ const AccountTransferForm = ({
                                             />
                                         )}
                                     </Field>
-                                    : <div>
+                                ) : (
+                                    <div>
                                         <div className='crypto-account-transfer__percentage-selector'>
                                             <PercentageSelector
                                                 amount={+selected_from.balance}
@@ -470,9 +452,9 @@ const AccountTransferForm = ({
                                                 to_account={selected_to.value}
                                             />
                                         </div>
-                                        <CryptoFiatConverter 
-                                            from_currency={selected_from.currency} 
-                                            to_currency={selected_to.currency} 
+                                        <CryptoFiatConverter
+                                            from_currency={selected_from.currency}
+                                            to_currency={selected_to.currency}
                                             hint={
                                                 transfer_limit.max ? (
                                                     <Localize
@@ -500,19 +482,21 @@ const AccountTransferForm = ({
                                             validateToAmount={validateTransferTo}
                                         />
                                     </div>
-                                }
+                                )}
                                 <div className='cashier__form-submit cashier__form-submit--align-end account-transfer__form-submit'>
                                     <Button
                                         className={classNames({
-                                            'cashier__form-submit-button' : selected_from.currency === selected_to.currency,
-                                            'cashier__account-transfer__form-submit-button' : selected_from.currency !== selected_to.currency,
+                                            'cashier__form-submit-button':
+                                                selected_from.currency === selected_to.currency,
+                                            'cashier__account-transfer__form-submit-button':
+                                                selected_from.currency !== selected_to.currency,
                                         })}
                                         type='submit'
                                         is_disabled={
                                             isSubmitting ||
                                             !+remaining_transfers ||
                                             !!selected_from.error ||
-                                            !!selected_to.error || 
+                                            !!selected_to.error ||
                                             !+selected_from.balance ||
                                             !!converter_from_error ||
                                             !!converter_to_error

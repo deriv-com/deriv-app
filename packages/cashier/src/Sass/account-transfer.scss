@@ -36,7 +36,7 @@
                         margin: 3.2rem 0;
                     }
                     &-transfer {
-                        &-from, 
+                        &-from,
                         &-to {
                             border: 1px solid var(--border-normal);
                             border-radius: $BORDER_RADIUS * 2;
@@ -99,7 +99,7 @@
 #account_transfer {
     @include mobile() {
         &_switch_modal {
-            .dc-modal{
+            .dc-modal {
                 &-header__close {
                     margin: 2.4rem 1.6rem 0;
                 }

@@ -142,16 +142,10 @@ class ConfigWithdraw {
     @observable iframe_url = '';
     @observable error = new ConfigError();
     @observable verification = new ConfigVerification();
-    @observable has_invalid_crypto_address = false;
 
     is_session_timeout = true;
     onIframeLoaded = '';
     timeout_session = '';
-
-    @action.bound
-    setInvalidCryptoAddress(value) {
-        this.has_invalid_crypto_address = value;
-    }
 }
 
 class ConfigVerification {
@@ -315,8 +309,6 @@ export default class CashierStore extends BaseStore {
             return;
         }
 
-        this.setLoading(true);
-
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
             amount: this.crypto_amount,
@@ -328,14 +320,12 @@ export default class CashierStore extends BaseStore {
             } else {
                 this.saveWithdraw(verification_code);
             }
-            this.setLoading(false);
         });
     }
 
     @action.bound
     resetWithrawForm() {
         this.setBlockchainAddress('');
-        this.config.withdraw.setInvalidCryptoAddress(false);
         this.setCryptoAmount('');
         this.setFiatAmount('');
         this.clearVerification();

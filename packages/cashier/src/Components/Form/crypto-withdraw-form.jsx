@@ -41,7 +41,6 @@ const CryptoWithdrawForm = ({
     crypto_converter_error,
     currency,
     fiat_converter_error,
-    has_invalid_crypto_address,
     is_loading,
     requestWithdraw,
     onMountWithdraw,
@@ -50,7 +49,6 @@ const CryptoWithdrawForm = ({
     setBlockchainAddress,
     setPercentageSelectorResult,
     verification_code,
-    setInvalidCryptoAddress,
     should_percentage_reset,
 }) => {
     React.useEffect(() => {
@@ -93,7 +91,6 @@ const CryptoWithdrawForm = ({
                                         handleChange(e);
                                         setBlockchainAddress(e.target.value);
                                         setFieldTouched('address', true, false);
-                                        setInvalidCryptoAddress(false);
                                     }}
                                     className='cashier__input withdraw__input'
                                     type='text'
@@ -105,13 +102,7 @@ const CryptoWithdrawForm = ({
                                             }}
                                         />
                                     }
-                                    error={
-                                        touched.address && errors.address
-                                            ? errors.address
-                                            : (has_invalid_crypto_address &&
-                                                  localize('Please enter a valid wallet address.')) ||
-                                              ''
-                                    }
+                                    error={touched.address && errors.address}
                                     required
                                     autoComplete='off'
                                 />
@@ -163,14 +154,12 @@ CryptoWithdrawForm.propTypes = {
     crypto_converter_error: PropTypes.string,
     currency: PropTypes.string,
     fiat_converter_error: PropTypes.string,
-    has_invalid_crypto_address: PropTypes.bool,
     is_loading: PropTypes.bool,
     onMountWithdraw: PropTypes.func,
     percentage: PropTypes.number,
     percentageSelectorSelectionStatus: PropTypes.func,
     requestWithdraw: PropTypes.func,
     setBlockchainAddress: PropTypes.func,
-    setInvalidCryptoAddress: PropTypes.func,
     setPercentageSelectorResult: PropTypes.func,
     should_percentage_reset: PropTypes.bool,
     verification_code: PropTypes.string,
@@ -184,14 +173,12 @@ export default connect(({ client, modules }) => ({
     crypto_converter_error: modules.cashier.crypto_converter_error,
     currency: client.currency,
     fiat_converter_error: modules.cashier.fiat_converter_error,
-    has_invalid_crypto_address: modules.cashier.config.withdraw.has_invalid_crypto_address,
     is_loading: modules.cashier.is_loading,
     onMountWithdraw: modules.cashier.onMountWithdraw,
     percentage: modules.cashier.percentage,
     percentageSelectorSelectionStatus: modules.cashier.percentageSelectorSelectionStatus,
     requestWithdraw: modules.cashier.requestWithdraw,
     setBlockchainAddress: modules.cashier.setBlockchainAddress,
-    setInvalidCryptoAddress: modules.cashier.config.withdraw.setInvalidCryptoAddress,
     setPercentageSelectorResult: modules.cashier.setPercentageSelectorResult,
     should_percentage_reset: modules.cashier.should_percentage_reset,
     verification_code: client.verification_code.payment_withdraw,

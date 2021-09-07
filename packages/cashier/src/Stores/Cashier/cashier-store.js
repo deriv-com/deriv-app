@@ -1,6 +1,6 @@
 /* eslint-disable max-classes-per-file */
 import React from 'react';
-import { action, computed, observable, toJS, reaction, when, runInAction } from 'mobx';
+import { action, computed, observable, toJS, reaction, when } from 'mobx';
 import {
     formatMoney,
     isEmptyObject,
@@ -13,6 +13,7 @@ import {
     getCFDAccount,
     getPropertyValue,
     routes,
+    validNumber,
     CFD_PLATFORMS,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -174,9 +175,10 @@ export default class CashierStore extends BaseStore {
     @observable is_10k_withdrawal_limit_reached = undefined;
     @observable is_deposit = false;
     @observable is_cashier_default = true;
-    @observable crypto_amount = '';
-    @observable fiat_amount = '';
-    @observable insufficient_fund_error = '';
+    @observable converter_from_amount = '';
+    @observable converter_to_amount = '';
+    @observable converter_from_error = '';
+    @observable converter_to_error = '';
     @observable is_timer_visible = false;
     @observable is_crypto_transactions_visible = false;
 
@@ -245,6 +247,15 @@ export default class CashierStore extends BaseStore {
         // so we don't have any unmount function here and everything gets reset on switch instead
         this.disposeSwitchAccount();
         this.onSwitchAccount(this.accountSwitcherListener);
+    }
+
+    @action.bound
+    setActiveTabIndex(index) {
+        this.config.payment_agent.setActiveTabIndex(index);
+
+        if (index === 1) {
+            this.sendVerificationEmail();
+        }
     }
 
     // Initialise P2P attributes on app load without mounting the entire cashier
@@ -412,7 +423,7 @@ export default class CashierStore extends BaseStore {
 
     @computed
     get is_cashier_locked() {
-        if (!this.root_store.client.account_status.status) return false;
+        if (!this.root_store.client.account_status?.status) return false;
         const { status } = this.root_store.client.account_status;
 
         return status.some(status_name => status_name === 'cashier_locked');
@@ -420,7 +431,7 @@ export default class CashierStore extends BaseStore {
 
     @computed
     get is_system_maintenance() {
-        if (!this.root_store.client.account_status.cashier_validation) return false;
+        if (!this.root_store.client.account_status?.cashier_validation) return false;
         const { cashier_validation } = this.root_store.client.account_status;
 
         return cashier_validation.some(validation => validation === 'system_maintenance');
@@ -439,7 +450,7 @@ export default class CashierStore extends BaseStore {
             mt5_login_list,
             is_deposit_lock,
         } = this.root_store.client;
-        if (!account_status.status) return false;
+        if (!account_status?.status) return false;
 
         const need_authentication =
             this.config.deposit.error.is_ask_authentication || (is_authentication_needed && is_eu);
@@ -464,7 +475,7 @@ export default class CashierStore extends BaseStore {
 
     @computed
     get is_withdrawal_locked() {
-        if (!this.root_store.client.account_status.status) return false;
+        if (!this.root_store.client.account_status?.status) return false;
         const { authentication } = this.root_store.client.account_status;
         const need_poi = authentication.needs_verification.includes('identity');
 
@@ -486,7 +497,7 @@ export default class CashierStore extends BaseStore {
             account_status,
         } = this.root_store.client;
 
-        if (!account_status.status) return false;
+        if (!account_status?.status) return false;
 
         const need_financial_assessment =
             is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
@@ -711,14 +722,18 @@ export default class CashierStore extends BaseStore {
         const response_verify_email = await this.WS.verifyEmail(this.root_store.client.email, withdrawal_type);
         if (response_verify_email.error) {
             this.clearVerification();
-            this.setErrorMessage(
-                response_verify_email.error,
-                () => {
-                    this.setErrorMessage('', null, null, true);
-                },
-                null,
-                true
-            );
+            if (response_verify_email.error.code === 'PaymentAgentWithdrawError') {
+                this.setErrorMessage(response_verify_email.error, this.resetPaymentAgent, null, true);
+            } else {
+                this.setErrorMessage(
+                    response_verify_email.error,
+                    () => {
+                        this.setErrorMessage('', null, null, true);
+                    },
+                    null,
+                    true
+                );
+            }
         } else {
             this.setVerificationEmailSent(true);
             this.setTimeoutVerification();
@@ -761,59 +776,6 @@ export default class CashierStore extends BaseStore {
         this.setVerificationResendTimeout(60, container);
         this.setErrorMessage('', null, null, true);
         this.root_store.client.setVerificationCode('', this.map_action[container]);
-    }
-
-    @action.bound
-    setCryptoAmount(amount) {
-        this.crypto_amount = amount;
-    }
-
-    @action.bound
-    setFiatAmount(amount) {
-        this.fiat_amount = amount;
-    }
-
-    @action.bound
-    setIsTimerVisible(is_timer_visible) {
-        this.is_timer_visible = is_timer_visible;
-    }
-
-    @action.bound
-    async getExchangeRate(from_currency, to_currency) {
-        const { exchange_rates } = await this.WS.send({
-            exchange_rates: 1,
-            base_currency: from_currency,
-        });
-        return exchange_rates.rates[to_currency];
-    }
-
-    @action.bound
-    async onChangeCryptoAmount({ target }, from_currency, to_currency) {
-        const rate = await this.getExchangeRate(from_currency, to_currency);
-        runInAction(() => {
-            const decimals = getDecimalPlaces(to_currency);
-            const amount = (rate * target.value).toFixed(decimals);
-            this.setFiatAmount(amount);
-            this.setIsTimerVisible(true);
-        });
-    }
-
-    @action.bound
-    async onChangeFiatAmount({ target }, from_currency, to_currency) {
-        const rate = await this.getExchangeRate(from_currency, to_currency);
-        runInAction(() => {
-            const decimals = getDecimalPlaces(to_currency);
-            const amount = (rate * target.value).toFixed(decimals);
-            const balance = this.root_store.client.balance;
-            if (balance < amount) {
-                this.insufficient_fund_error = localize('Insufficient funds');
-                this.setCryptoAmount('');
-            } else {
-                this.insufficient_fund_error = '';
-                this.setCryptoAmount(amount);
-                this.setIsTimerVisible(true);
-            }
-        });
     }
 
     @action.bound
@@ -1067,6 +1029,7 @@ export default class CashierStore extends BaseStore {
         this.setErrorMessage('');
         this.setIsWithdraw(false);
         this.clearVerification();
+        this.setActiveTabIndex(0);
     };
 
     // possible transfers:
@@ -1672,5 +1635,157 @@ export default class CashierStore extends BaseStore {
         this.onRemount();
 
         return Promise.resolve();
+    }
+
+    @computed
+    get is_crypto() {
+        const { currency } = this.root_store.client;
+        return !!currency && isCryptocurrency(currency);
+    }
+
+    @action.bound
+    setIsTimerVisible(is_timer_visible) {
+        this.is_timer_visible = is_timer_visible;
+    }
+
+    @action.bound
+    setConverterFromAmount(amount) {
+        this.converter_from_amount = amount;
+    }
+
+    @action.bound
+    setConverterToAmount(amount) {
+        this.converter_to_amount = amount;
+    }
+
+    @action.bound
+    setConverterFromError(error) {
+        this.converter_from_error = error;
+    }
+
+    @action.bound
+    setConverterToError(error) {
+        this.converter_to_error = error;
+    }
+
+    @action.bound
+    async getExchangeRate(from_currency, to_currency) {
+        const { exchange_rates } = await this.WS.send({
+            exchange_rates: 1,
+            base_currency: from_currency,
+        });
+        return exchange_rates.rates[to_currency];
+    }
+
+    @action.bound
+    validateTransferFrom(amount) {
+        if(amount) {
+            const { is_ok, message } = validNumber(amount, {
+                type: 'float',
+                decimals: getDecimalPlaces(this.config.account_transfer.selected_from.currency),
+                min: this.config.account_transfer.transfer_limit.min,
+                max: this.config.account_transfer.transfer_limit.max,
+            });
+            if (!is_ok) {
+                this.setConverterFromError(message);
+            } else if (+this.config.account_transfer.selected_from.balance < +amount) { 
+                this.setConverterFromError(localize('Insufficient funds'));
+            } else { 
+                this.setConverterFromError('');
+            }
+        }
+    }
+
+    @action.bound
+    validateTransferTo(amount) {
+        if(amount) {
+            const currency = this.config.account_transfer.selected_to.currency;
+            const { is_ok, message } = validNumber(amount, {
+                type: 'float',
+                decimals: getDecimalPlaces(currency),
+            });
+            if (!is_ok) {
+                this.setConverterToError(message);
+            } else {
+                this.setConverterToError('');
+            }
+        }
+    }
+
+    @action.bound
+    async onChangeConverterFromAmount({ target }, from_currency, to_currency) {
+        if(target.value) {
+            if (this.converter_from_error) {
+                this.setConverterFromAmount(target.value);
+                this.setConverterToAmount('');
+                this.setConverterToError('');
+                this.setIsTimerVisible(false);
+                this.setAccountTransferAmount('');
+            } else {
+                const rate = await this.getExchangeRate(from_currency, to_currency);
+                const decimals = getDecimalPlaces(to_currency);
+                const amount = (rate * target.value).toFixed(decimals);
+                this.setConverterFromAmount(target.value);
+                this.setConverterToAmount(amount);
+                this.setConverterToError('');
+                this.setIsTimerVisible(true);
+                this.setAccountTransferAmount(target.value);
+            }
+        } else {
+            this.resetConverter();
+        }
+    }
+
+    @action.bound
+    async onChangeConverterToAmount({ target }, from_currency, to_currency) { 
+        if(target.value) {
+            if (this.converter_to_error) {
+                this.setConverterFromAmount('');
+                this.setConverterFromError('');
+                this.setIsTimerVisible(false);
+                this.setAccountTransferAmount('');
+            } else {
+                const rate = await this.getExchangeRate(from_currency, to_currency);
+                const decimals = getDecimalPlaces(to_currency);
+                const amount = (rate * target.value).toFixed(decimals);
+                this.validateTransferFrom(amount);
+                if(this.converter_from_error) {
+                    this.setConverterFromAmount(amount);
+                    this.setIsTimerVisible(false);
+                    this.setAccountTransferAmount('');
+                } else {
+                    this.setConverterFromAmount(amount);
+                    this.setConverterFromError('');
+                    this.setIsTimerVisible(true);
+                    this.setAccountTransferAmount(amount);
+                }
+            }
+        } else {
+            this.resetConverter();
+        }
+    }
+
+    @action.bound
+    resetConverter() {
+        this.setConverterFromAmount('');
+        this.setConverterToAmount('');
+        this.setConverterFromError('');
+        this.setConverterToError('');
+        this.setIsTimerVisible(false);
+    }
+
+    @action.bound
+    setPercentageSelectorResult(amount) {
+        const selected_from_currency = this.config.account_transfer.selected_from.currency;
+        const selected_to_currency = this.config.account_transfer.selected_to.currency;
+        if (amount > 0) { 
+            this.resetConverter();
+            this.validateTransferFrom(amount);
+            this.onChangeConverterFromAmount(
+                { target: { value: amount } },
+                selected_from_currency,
+                selected_to_currency
+            );
+        } 
     }
 }

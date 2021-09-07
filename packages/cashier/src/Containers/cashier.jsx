@@ -41,16 +41,19 @@ const Cashier = ({
     React.useEffect(() => {
         toggleCashier();
         // we still need to populate the tabs shown on cashier
-        (async () => {
-            await WS.wait('authorize');
-            onMount();
-            setAccountSwitchListener();
-        })();
-
         return () => {
             toggleCashier();
         };
     }, []);
+    React.useEffect(() => {
+        (async () => {
+            await WS.wait('authorize');
+            if (is_logged_in) {
+                onMount();
+                setAccountSwitchListener();
+            }
+        })();
+    }, [is_logged_in]);
 
     const onClickClose = () => routeBackInApp(history);
     const getMenuOptions = () => {

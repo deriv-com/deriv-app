@@ -167,4 +167,14 @@
         margin-bottom: 0.2rem;
         display: inline-block;
     }
+    &__empty-text {
+        position: absolute;
+        top: 20%;
+        left: 10%;
+        width: 50%;
+        margin: auto;
+        @include mobile {
+            position: static;
+        }
+    }
 }

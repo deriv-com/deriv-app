@@ -79,22 +79,16 @@ const AccountTransferNote = ({ currency, is_crypto_to_crypto_transfer, is_mt_tra
     const get_transfer_fee_note = () => {
         if (transfer_fee === 0) {
             return (
-                <Localize i18n_default_text="We don't charge fees for transfers that involve the same currency between your Deriv fiat and DMT5 accounts and transfers made via payment agents (PA)." />
+                <Localize i18n_default_text="We don't charge fees for transfers that involve the same currency between your Deriv fiat and DMT5 accounts." />
             );
         } else if (transfer_fee === 1) {
             return (
-                <Localize
-                    i18n_default_text='We charge a 1% transfer fee or {{minimum_fee}} {{currency}} for transfers that involve different currencies between your Deriv fiat and DMT5 accounts.'
-                    values={{
-                        minimum_fee,
-                        currency: getCurrencyDisplayCode(currency),
-                    }}
-                />
+                <Localize i18n_default_text='We charge a 1% transfer fee for transfers that involve different currencies between your Deriv fiat and DMT5 accounts.' />
             );
         } else if (transfer_fee === 2 && is_crypto_to_crypto_transfer) {
             return (
                 <Localize
-                    i18n_default_text='We charge a 2% transfer fee or {{minimum_fee}} {{currency}} for transfers between cryptocurrencies accounts.'
+                    i18n_default_text='We charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your cryptocurrency accounts.'
                     values={{
                         minimum_fee,
                         currency: getCurrencyDisplayCode(currency),
@@ -104,7 +98,7 @@ const AccountTransferNote = ({ currency, is_crypto_to_crypto_transfer, is_mt_tra
         } else if (transfer_fee === 2 && is_mt_transfer) {
             return (
                 <Localize
-                    i18n_default_text='We charge a 2% transfer fee or {{minimum_fee}} {{currency}} for transfers that involve different currencies between your Deriv cryptocurrency and DMT5 accounts.'
+                    i18n_default_text='We charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers that involve different currencies between your Deriv cryptocurrency and DMT5 accounts.'
                     values={{
                         minimum_fee,
                         currency: getCurrencyDisplayCode(currency),
@@ -114,7 +108,7 @@ const AccountTransferNote = ({ currency, is_crypto_to_crypto_transfer, is_mt_tra
         } else if (transfer_fee === 2 && !is_mt_transfer) {
             return (
                 <Localize
-                    i18n_default_text='We charge a 2% transfer fee or {{minimum_fee}} {{currency}} for transfers between fiat and cryptocurrencies accounts.'
+                    i18n_default_text='We charge a 2% transfer fee or {{minimum_fee}} {{currency}}, whichever is higher, for transfers between your Deriv fiat and cryptocurrency accounts.'
                     values={{
                         minimum_fee,
                         currency: getCurrencyDisplayCode(currency),

@@ -1176,9 +1176,7 @@ export default class CashierStore extends BaseStore {
     setMinimumFee() {
         const decimals = getDecimalPlaces(this.config.account_transfer.selected_from.currency);
         // we need .toFixed() so that it doesn't display in scientific notation, e.g. 1e-8 for currencies with 8 decimal places
-        this.config.account_transfer.minimum_fee = (
-            this.config.account_transfer.transfer_fee / Math.pow(10, decimals)
-        ).toFixed(decimals);
+        this.config.account_transfer.minimum_fee = (1 / Math.pow(10, decimals)).toFixed(decimals);
     }
 
     @action.bound

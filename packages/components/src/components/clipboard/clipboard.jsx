@@ -73,6 +73,7 @@ const Clipboard = ({
 };
 Clipboard.propTypes = {
     text_copy: PropTypes.string,
+    icon: PropTypes.string,
     info_message: PropTypes.string,
     success_message: PropTypes.string,
     className: PropTypes.string,

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Field, useFormikContext} from 'formik';
+import { Field, useFormikContext } from 'formik';
 import { DesktopWrapper, Input, Icon, MobileWrapper, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -38,6 +38,7 @@ const InputGroup = ({ children, className }) => {
 };
 
 const CryptoFiatConverter = ({
+    calculatePercentage,
     converter_from_amount,
     converter_from_error,
     converter_to_error,
@@ -47,6 +48,7 @@ const CryptoFiatConverter = ({
     is_timer_visible,
     onChangeConverterFromAmount,
     onChangeConverterToAmount,
+    percentageSelectorSelectionStatus,
     resetConverter,
     setConverterFromAmount,
     setConverterToAmount,
@@ -83,18 +85,20 @@ const CryptoFiatConverter = ({
                             handleBlur(e);
                             if (has_from_amount_changed) {
                                 onChangeConverterFromAmount(e, from_currency, to_currency);
-                            }  
+                            }
                             setHasFromAmountChanged(false);
                         }}
                         onChange={e => {
                             setHasFromAmountChanged(true);
                             setIsTimerVisible(false);
-                            setConverterFromAmount(e.target.value);   
+                            setConverterFromAmount(e.target.value);
                             handleChange(e);
+                            percentageSelectorSelectionStatus(true);
+                            calculatePercentage();
                         }}
-                        type='text'
+                        type='number'
                         error={converter_from_error}
-                        label={localize('Amount ({{currency}})', {currency: from_currency})}
+                        label={localize('Amount ({{currency}})', { currency: from_currency })}
                         value={converter_from_amount}
                         autoComplete='off'
                         required
@@ -113,36 +117,46 @@ const CryptoFiatConverter = ({
                     <InputGroup className='input-group'>
                         <Input
                             {...field}
-                            onFocus={() =>{
-                                setArrowIconDirection('left'); 
+                            onFocus={() => {
+                                setArrowIconDirection('left');
                             }}
                             onBlur={e => {
                                 handleBlur(e);
-                                if(has_to_amount_changed) {
+                                if (has_to_amount_changed) {
                                     onChangeConverterToAmount(e, to_currency, from_currency);
-                                } 
-                                setHasToAmountChanged(false); 
+                                }
+                                setHasToAmountChanged(false);
                             }}
                             onChange={e => {
                                 setHasToAmountChanged(true);
                                 setIsTimerVisible(false);
-                                setConverterToAmount(e.target.value);   
+                                setConverterToAmount(e.target.value);
                                 handleChange(e);
+                                percentageSelectorSelectionStatus(true);
+                                calculatePercentage();
                             }}
-                            type='text'
+                            type='number'
                             error={converter_to_error}
-                            label={localize('Amount ({{currency}})', {currency: to_currency})}
+                            label={localize('Amount ({{currency}})', { currency: to_currency })}
                             value={converter_to_amount}
                             autoComplete='off'
                             hint={localize('Approximate value')}
                         />
-                        {is_timer_visible && <Timer onComplete={() => {
-                            onChangeConverterFromAmount({
-                                target: {
-                                    value: converter_from_amount,
-                                },
-                            }, from_currency, to_currency);
-                        }} /> }
+                        {is_timer_visible && (
+                            <Timer
+                                onComplete={() => {
+                                    onChangeConverterFromAmount(
+                                        {
+                                            target: {
+                                                value: converter_from_amount,
+                                            },
+                                        },
+                                        from_currency,
+                                        to_currency
+                                    );
+                                }}
+                            />
+                        )}
                     </InputGroup>
                 )}
             </Field>
@@ -151,6 +165,7 @@ const CryptoFiatConverter = ({
 };
 
 CryptoFiatConverter.propTypes = {
+    calculatePercentage: PropTypes.func,
     converter_from_amount: PropTypes.string,
     converter_from_error: PropTypes.string,
     converter_to_error: PropTypes.string,
@@ -159,6 +174,7 @@ CryptoFiatConverter.propTypes = {
     is_timer_visible: PropTypes.bool,
     onChangeConverterFromAmount: PropTypes.func,
     onChangeConverterToAmount: PropTypes.func,
+    percentageSelectorSelectionStatus: PropTypes.func,
     resetConverter: PropTypes.func,
     setConverterFromAmount: PropTypes.func,
     setConverterToAmount: PropTypes.func,
@@ -169,6 +185,7 @@ CryptoFiatConverter.propTypes = {
 };
 
 export default connect(({ modules }) => ({
+    calculatePercentage: modules.cashier.calculatePercentage,
     converter_from_amount: modules.cashier.converter_from_amount,
     converter_from_error: modules.cashier.converter_from_error,
     converter_to_error: modules.cashier.converter_to_error,
@@ -176,6 +193,7 @@ export default connect(({ modules }) => ({
     is_timer_visible: modules.cashier.is_timer_visible,
     onChangeConverterFromAmount: modules.cashier.onChangeConverterFromAmount,
     onChangeConverterToAmount: modules.cashier.onChangeConverterToAmount,
+    percentageSelectorSelectionStatus: modules.cashier.percentageSelectorSelectionStatus,
     resetConverter: modules.cashier.resetConverter,
     setConverterFromAmount: modules.cashier.setConverterFromAmount,
     setConverterToAmount: modules.cashier.setConverterToAmount,

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text } from '@deriv/components';
-import { routes as shared_routes, isMobile, getSelectedRoute, PlatformContext } from '@deriv/shared';
+import { routes as shared_routes, isMobile, getSelectedRoute, platforms, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { flatten } from '../Helpers/flatten';

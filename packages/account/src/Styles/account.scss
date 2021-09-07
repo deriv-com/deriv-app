@@ -503,6 +503,11 @@ $MIN_HEIGHT_FLOATING: calc(
             .dc-dropdown__display-text {
                 line-height: 1.6rem;
                 text-align: left;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                display: inline-block;
+                max-width: 40rem;
             }
         }
     }

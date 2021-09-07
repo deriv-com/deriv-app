@@ -443,7 +443,7 @@ export default class ClientStore extends BaseStore {
 
     @computed
     get is_authentication_needed() {
-        return this.account_status?.authentication?.needs_verification?.length;
+        return !this.is_fully_authenticated && !!this.account_status?.authentication?.needs_verification?.length;
     }
 
     @computed

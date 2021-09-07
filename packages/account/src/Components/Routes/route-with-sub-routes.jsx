@@ -19,14 +19,10 @@ const RouteWithSubRoutes = route => {
         } else if (route.is_authenticated && !route.is_logged_in && !route.is_logging_in) {
             redirectToLogin(route.is_logged_in, getLanguage());
         } else {
-            let default_subroute = {};
-            route.routes?.forEach(r =>
-                r.subroutes.forEach(subroute => {
-                    if (subroute.default) {
-                        default_subroute = subroute;
-                    }
-                })
-            );
+            let default_subroute =  (route.routes ?? []).reduce((acc, cur) => ({
+                ...acc, 
+                ...cur.subroutes.find(subroute => subroute.default)
+            }), {})
             const has_default_subroute = !isEmptyObject(default_subroute);
             const pathname = removeBranchName(location.pathname);
 

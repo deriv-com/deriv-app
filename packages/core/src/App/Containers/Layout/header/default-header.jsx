@@ -80,6 +80,7 @@ const DefaultHeader = ({
             }
             return true;
         });
+
     return (
         <header
             className={classNames('header', {

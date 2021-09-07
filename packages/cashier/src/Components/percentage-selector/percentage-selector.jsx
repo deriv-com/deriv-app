@@ -19,14 +19,6 @@ const PercentageSelector = ({ amount, currency, getCalculatedAmount, percentage,
         setPercente(percentage);
     }, [percentage]);
 
-    // React.useEffect(() => {
-    //     calculateAmount(
-    //         { target: { id: 0 } },
-    //         0
-    //     );
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [from_account, to_account]);
-
     const calculateAmount = (e, percent) => {
         setPercente(percent);
         getCalculatedAmount((amount * (percent / 100)).toFixed(getDecimalPlaces(currency)));

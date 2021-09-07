@@ -23,7 +23,6 @@ const ResetTradingPassword = ({ setDialogTitleFunc, toggleResetTradingPasswordMo
             } else {
                 actions.resetForm({ password: '' });
                 actions.setStatus({ reset_complete: true });
-                WS.getAccountStatus();
             }
             actions.setSubmitting(false);
         });

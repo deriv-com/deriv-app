@@ -91,7 +91,7 @@ commands:
     steps:
       - run:
           name: "Bootstrap for deriv storybook"
-          command: npm run build:travis
+          command: npm run bootstrap
       - run:
           name: "Build all packages for deriv storybook"
           command: npm run build:storybook

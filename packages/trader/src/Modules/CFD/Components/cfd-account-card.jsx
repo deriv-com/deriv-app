@@ -171,10 +171,6 @@ const CFDAccountCard = ({
         type.type === 'synthetic' &&
         existing_data?.server_info;
 
-    const is_real_synthetic_account = type.type === 'synthetic' && type.category === 'real' && type.platform === 'mt5';
-    const get_server_region = existing_data?.server_info?.geolocation.region;
-    const get_server_environment = existing_data?.server_info?.environment;
-
     const ref = React.useRef();
     const wrapper_ref = React.useRef();
     const button_ref = React.useRef();
@@ -199,31 +195,15 @@ const CFDAccountCard = ({
     const getServerName = React.useCallback(
         server => {
             if (server) {
-                const server_region = server.server_info?.geolocation.region;
-                if (server_region) {
-                    return `${server_region} ${
-                        server.server_info.geolocation.sequence === 1 ? '' : server.server_info.geolocation.sequence
-                    }`;
-                }
+                return `${server.server_info.geolocation.region} ${
+                    server.server_info.geolocation.sequence === 1 ? '' : server.server_info.geolocation.sequence
+                }`;
             }
+
             return '';
         },
         [existing_data]
     );
-
-    const createFullServerNames = () => {
-        let region_string = '';
-        let server_number = '';
-        const server_environment = get_server_environment ? get_server_environment.toLowerCase() : '';
-
-        if (is_real_synthetic_account && get_server_region) {
-            region_string = `-${get_server_region.toLowerCase()}`;
-        }
-        if (server_environment !== '' && is_real_synthetic_account) {
-            server_number = server_environment.split('server')[1];
-        }
-        return `${type.category}-${type.type}${region_string}${server_number}`;
-    };
 
     const handleClickSwitchAccount = () => {
         toggleShouldShowRealAccountsList(true);
@@ -239,12 +219,12 @@ const CFDAccountCard = ({
     };
 
     const is_web_terminal_unsupported = isMobile() && platform === CFD_PLATFORMS.DXTRADE;
+
     return (
         <div ref={wrapper_ref} className='cfd-account-card__wrapper'>
             <div
                 className={classNames('cfd-account-card', { 'cfd-account-card__logged-out': !is_logged_in })}
                 ref={ref}
-                id={createFullServerNames()}
             >
                 {has_popular_banner && (
                     <div className='cfd-account-card__banner'>

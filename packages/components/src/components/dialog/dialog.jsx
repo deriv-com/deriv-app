@@ -16,6 +16,7 @@ const Dialog = ({
     is_closed_on_confirm,
     is_visible,
     onCancel,
+    onClose,
     onConfirm,
     ...other_props
 }) => {
@@ -40,9 +41,19 @@ const Dialog = ({
         onConfirm();
     };
 
+    const handleClose = () => {
+        if (onClose) {
+            onClose();
+        } else if (onCancel) {
+            handleCancel();
+        } else {
+            handleConfirm();
+        }
+    };
+
     const validateClickOutside = () => dismissable || (has_close_icon && is_visible && is_closed_on_cancel);
 
-    useOnClickOutside(wrapper_ref, onCancel ? handleCancel : handleConfirm, validateClickOutside);
+    useOnClickOutside(wrapper_ref, handleClose, validateClickOutside);
 
     const {
         cancel_button_text,
@@ -86,27 +97,22 @@ const Dialog = ({
                     })}
                     ref={wrapper_ref}
                 >
-                    {(title || has_close_icon) && (
-                        <div
-                            className={classNames('dc-dialog__header-wrapper', {
-                                'dc-dialog__header-wrapper--end': !title,
-                            })}
-                        >
-                            {!!title && (
-                                <Text as='h1' color='prominent' weight='bold' className='dc-dialog__header--title'>
-                                    {title}
-                                </Text>
-                            )}
-                            {has_close_icon && (
-                                <div
-                                    onClick={onCancel ? handleCancel : handleConfirm}
-                                    className='dc-dialog__header--close'
-                                >
-                                    <Icon icon='IcCross' />
-                                </div>
-                            )}
-                        </div>
-                    )}
+                    <div
+                        className={classNames('dc-dialog__header-wrapper', {
+                            'dc-dialog__header-wrapper--end': !title,
+                        })}
+                    >
+                        {!!title && (
+                            <Text as='h1' color='prominent' weight='bold' className='dc-dialog__header--title'>
+                                {title}
+                            </Text>
+                        )}
+                        {has_close_icon && (
+                            <div onClick={handleClose} className='dc-dialog__header--close'>
+                                <Icon icon='IcCross' />
+                            </div>
+                        )}
+                    </div>
                     {is_text ? (
                         <Text as='p' size='xs' styles={{ lineHeight: '1.43' }} className={content_classes}>
                             {children}

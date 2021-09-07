@@ -8,7 +8,7 @@ import MarketCountdownTimer from './market-countdown-timer.jsx';
 const MarketIsClosedOverlay = ({
     is_eu,
     is_market_available,
-    is_synthetics_available,
+    is_synthetics_unavailable,
     onClick,
     onMarketOpen,
     symbol,
@@ -20,7 +20,7 @@ const MarketIsClosedOverlay = ({
     );
     let btn_lbl = localize('Try Synthetic Indices');
 
-    if (!is_synthetics_available) {
+    if (is_eu || is_synthetics_unavailable) {
         message = null;
         btn_lbl = localize('See open markets');
     }
@@ -55,7 +55,7 @@ const MarketIsClosedOverlay = ({
 MarketIsClosedOverlay.propTypes = {
     is_eu: PropTypes.bool,
     is_market_available: PropTypes.bool,
-    is_synthetics_available: PropTypes.bool,
+    is_synthetics_unavailable: PropTypes.bool,
     onClick: PropTypes.func,
     onMarketOpen: PropTypes.func,
     symbol: PropTypes.string,

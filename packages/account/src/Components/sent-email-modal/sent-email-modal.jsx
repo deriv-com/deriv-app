@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { Div100vhContainer, Icon, MobileDialog, Modal, SendEmailTemplate, Text } from '@deriv/components';
 import { CFD_PLATFORMS, isMobile, isDesktop } from '@deriv/shared';
 
@@ -33,12 +33,7 @@ const SentEmailModal = ({ identifier_title, is_open, onClose, onClickSendEmail }
         let subtitle = '';
         switch (identifier_title) {
             case CFD_PLATFORMS.DXTRADE:
-                subtitle = (
-                    <Localize
-                        i18n_default_text='Please click on the link in the email to change your <0>Deriv X</0> password.'
-                        components={[<span className='send-email-template__subtitle-platform' key={0} />]}
-                    />
-                );
+                subtitle = localize('Please click on the link in the email to change your Deriv X password.');
                 break;
             case CFD_PLATFORMS.MT5:
                 subtitle = localize('Please click on the link in the email to change your DMT5 password.');

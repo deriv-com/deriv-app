@@ -48,10 +48,13 @@ const AccountTransfer = ({
     }, []);
 
     React.useEffect(() => {
-        if (typeof setSideNotes === 'function' && has_no_accounts_balance) {
+        if (
+            typeof setSideNotes === 'function' &&
+            (is_transfer_confirm || is_transfer_successful || has_no_accounts_balance)
+        ) {
             setSideNotes(null);
         }
-    }, [setSideNotes, has_no_accounts_balance]);
+    }, [setSideNotes, is_transfer_confirm, is_transfer_successful, has_no_accounts_balance]);
 
     if (is_virtual) {
         return <Virtual />;

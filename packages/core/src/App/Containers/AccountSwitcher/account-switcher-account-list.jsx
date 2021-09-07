@@ -16,7 +16,7 @@ const AccountList = ({
     is_virtual,
     loginid,
     market_type,
-    redirectAccount,
+    onClickAccount,
     onClickResetVirtualBalance,
     selected_loginid,
     server,
@@ -25,6 +25,7 @@ const AccountList = ({
     platform,
 }) => {
     const currency_badge = currency ? currency_icon : 'IcCurrencyUnknown';
+
     return (
         <React.Fragment>
             <div
@@ -33,9 +34,7 @@ const AccountList = ({
                     'acc-switcher__account--selected': loginid === selected_loginid,
                     'acc-switcher__account--disabled': is_disabled,
                 })}
-                onClick={() => {
-                    if (!is_disabled) redirectAccount();
-                }}
+                onClick={is_disabled ? undefined : onClickAccount}
             >
                 <span className='acc-switcher__id'>
                     <Icon

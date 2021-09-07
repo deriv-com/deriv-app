@@ -39,18 +39,18 @@ import '@deriv/deriv-charts/dist/smartcharts.css';
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
 
+const initCashierStore = () => {
+    root_store.modules.attachModule('cashier', new CashierStore({ root_store, WS }));
+};
+
 const App = ({ root_store }) => {
     const l = window.location;
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);
     const [is_translation_loaded] = useOnLoadTranslation();
-    const initCashierStore = () => {
-        root_store.modules.attachModule('cashier', new CashierStore({ root_store, WS }));
-    };
-    // TODO: investigate the order of cashier store initialization
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(initCashierStore, []);
     React.useEffect(() => {
+        checkAndSetEndpointFromUrl();
         initializeTranslations();
 
         // TODO: [translation-to-shared]: add translation implemnentation in shared
@@ -127,13 +127,8 @@ App.propTypes = {
 
 export default App;
 
-const has_endpoint_url = checkAndSetEndpointFromUrl();
+const root_store = initStore(AppNotificationMessages);
 
-// if has endpoint url, APP will be redirected
-if (!has_endpoint_url) {
-    const root_store = initStore(AppNotificationMessages);
-
-    const wrapper = document.getElementById('deriv_app');
-    // eslint-disable-next-line no-unused-expressions
-    wrapper ? ReactDOM.render(<App root_store={root_store} />, wrapper) : false;
-}
+const wrapper = document.getElementById('deriv_app');
+// eslint-disable-next-line no-unused-expressions
+wrapper ? ReactDOM.render(<App root_store={root_store} />, wrapper) : false;

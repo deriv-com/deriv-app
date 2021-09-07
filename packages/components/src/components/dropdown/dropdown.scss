@@ -62,10 +62,6 @@
 
             .dc-dropdown__display-text {
                 padding-left: 1.2rem;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                display: inline-block;
             }
         }
         &--has-symbol {
@@ -271,17 +267,8 @@
         .dc-dropdown__display {
             height: 4rem;
 
-            .dc-dropdown__display-placeholder {
-                &-text {
-                    color: var(--text-less-prominent);
-                }
-                &-text-limit-fit {
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                    display: inline-block;
-                    max-width: calc(40rem - 3.6rem); //3.6rem represents the width of a dropdown arrow
-                }
+            .dc-dropdown__display-placeholder-text {
+                color: var(--text-less-prominent);
             }
             &--clicked {
                 .dc-dropdown__display-placeholder-text {

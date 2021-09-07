@@ -13,7 +13,6 @@ export default class ToolboxStore {
     @observable is_search_focus = false;
     @observable sub_category_index = [];
     @observable toolbox_dom = null;
-    @observable toolbox_examples = null;
 
     @action.bound
     onMount(toolbox_ref) {
@@ -22,7 +21,6 @@ export default class ToolboxStore {
 
         if (!isMobile()) {
             this.toolbox_dom = Blockly.Xml.textToDom(toolbox_ref?.current);
-            this.toolbox_examples = [...this.toolbox_dom.childNodes].find(el => el.tagName === 'examples');
             this.setWorkspaceOptions();
             this.disposeToolboxToggleReaction = reaction(
                 () => this.is_toolbox_open,

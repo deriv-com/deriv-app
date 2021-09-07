@@ -194,10 +194,7 @@ export default class CashierStore extends BaseStore {
     @observable converter_from_error = '';
     @observable converter_to_error = '';
     @observable is_timer_visible = false;
-    @observable crypto_converter_error = '';
-    @observable fiat_converter_error = '';
     @observable blockchain_address = '';
-    @observable percentage_selector_result = 0;
     @observable should_percentage_reset = false;
     @observable percentage = 0;
     @observable is_withdraw_confirmed = false;
@@ -260,7 +257,7 @@ export default class CashierStore extends BaseStore {
 
     @action.bound
     calculatePercentage() {
-        this.percentage = ((this.crypto_amount / +this.root_store.client.balance) * 100).toFixed(0);
+        this.percentage = ((this.converter_from_amount / +this.root_store.client.balance) * 100).toFixed(0);
     }
 
     @action.bound
@@ -276,7 +273,7 @@ export default class CashierStore extends BaseStore {
         this.setErrorMessage('');
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
-            amount: this.crypto_amount,
+            amount: this.converter_from_amount,
             verification_code,
         }).then(response => {
             if (response.error) {
@@ -300,7 +297,7 @@ export default class CashierStore extends BaseStore {
 
         await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
-            amount: this.crypto_amount,
+            amount: this.converter_from_amount,
             verification_code,
             dry_run: 1,
         }).then(response => {
@@ -315,8 +312,8 @@ export default class CashierStore extends BaseStore {
     @action.bound
     resetWithrawForm() {
         this.setBlockchainAddress('');
-        this.setCryptoAmount('');
-        this.setFiatAmount('');
+        this.setConverterFromAmount('');
+        this.setConverterToAmount('');
         this.clearVerification();
     }
 
@@ -441,7 +438,7 @@ export default class CashierStore extends BaseStore {
 
         const response_cashier = await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
-            amount: +this.crypto_amount,
+            amount: +this.converter_from_amount,
             verification_code,
             dry_run: 1,
         });
@@ -901,16 +898,6 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setCryptoAmount(amount) {
-        this.crypto_amount = amount;
-    }
-
-    @action.bound
-    setFiatAmount(amount) {
-        this.fiat_amount = amount;
-    }
-
-    @action.bound
     setIsTimerVisible(is_timer_visible) {
         this.is_timer_visible = is_timer_visible;
     }
@@ -921,51 +908,12 @@ export default class CashierStore extends BaseStore {
     }
 
     @action.bound
-    setCryptoConverterError(message) {
-        this.crypto_converter_error = message;
-    }
-
-    @action.bound
-    setFiatConverterError(message) {
-        this.fiat_converter_error = message;
-    }
-
-    @action.bound
     async getExchangeRate(from_currency, to_currency) {
         const { exchange_rates } = await this.WS.send({
             exchange_rates: 1,
             base_currency: from_currency,
         });
         return exchange_rates.rates[to_currency];
-    }
-
-    @action.bound
-    async onChangeCryptoAmount({ target }, from_currency, to_currency) {
-        const rate = await this.getExchangeRate(from_currency, to_currency);
-        runInAction(() => {
-            const decimals = getDecimalPlaces(to_currency);
-            const amount = (rate * (target?.value ?? target)).toFixed(decimals);
-            this.setFiatAmount(amount);
-            this.setIsTimerVisible(true);
-        });
-    }
-
-    @action.bound
-    async onChangeFiatAmount({ target }, from_currency, to_currency) {
-        const rate = await this.getExchangeRate(from_currency, to_currency);
-        runInAction(() => {
-            const decimals = getDecimalPlaces(to_currency);
-            const amount = (rate * target.value).toFixed(decimals);
-            const balance = this.root_store.client.balance;
-            if (balance < amount) {
-                this.insufficient_fund_error = localize('Insufficient funds');
-                this.setCryptoAmount('');
-            } else {
-                this.insufficient_fund_error = '';
-                this.setCryptoAmount(amount);
-                this.setIsTimerVisible(true);
-            }
-        });
     }
 
     @action.bound
@@ -1967,4 +1915,56 @@ export default class CashierStore extends BaseStore {
             );
         }
     }
+
+    @action.bound
+    setWithdrawPercentageSelectorResult(amount) {
+        if (amount > 0) {
+            this.setConverterFromAmount(amount);
+            this.validateCryptoAmount(amount);
+            this.onChangeConverterFromAmount(
+                { target: { value: amount } },
+                this.root_store.client.currency,
+                this.root_store.client.current_fiat_currency
+            );
+        }
+        this.setIsTimerVisible(false);
+        this.percentageSelectorSelectionStatus(false);
+    }
+
+    @action.bound
+    validateCryptoAmount = amount => {
+        let error_message = '';
+        const { balance, currency } = this.root_store.client;
+        if (!amount && !this.converter_from_amount) {
+            error_message = localize('This field is required.');
+        }
+        if (amount || this.converter_from_amount) {
+            const { is_ok, message } = validNumber(amount || this.converter_from_amount, {
+                type: 'float',
+                decimals: getDecimalPlaces(currency),
+            });
+            if (!is_ok) error_message = message;
+
+            if (+balance < +amount) error_message = localize('Insufficient funds');
+        }
+        this.setConverterFromError(error_message);
+        return error_message ?? undefined;
+    };
+
+    @action.bound
+    validateFiatAmount = amount => {
+        let error_message;
+        const { current_fiat_currency } = this.root_store.client;
+
+        if (amount) {
+            const { is_ok, message } = validNumber(amount, {
+                type: 'float',
+                decimals: getDecimalPlaces(current_fiat_currency),
+            });
+            if (!is_ok) error_message = message;
+        }
+
+        this.setConverterToError(error_message);
+        return error_message ?? undefined;
+    };
 }

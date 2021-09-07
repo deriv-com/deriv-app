@@ -2,7 +2,7 @@
     &__wrapper .withdraw__input {
         margin: 2.4rem 0 !important;
         width: fit-content;
-        min-width: 38rem;
+        min-width: 36rem;
 
         @include mobile {
             width: 100%;
@@ -139,6 +139,9 @@
         width: fit-content;
 
         @include mobile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             width: 100%;
         }
     }

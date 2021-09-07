@@ -4,7 +4,15 @@ import { Text } from '@deriv/components';
 import { formatMoney, getDecimalPlaces } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
-const PercentageSelector = ({ amount, currency, getCalculatedAmount, percentage, should_percentage_reset }) => {
+const PercentageSelector = ({
+    amount,
+    currency,
+    from_account,
+    getCalculatedAmount,
+    percentage,
+    should_percentage_reset,
+    to_account,
+}) => {
     const [percente, setPercente] = React.useState('0');
 
     React.useEffect(() => {
@@ -19,13 +27,10 @@ const PercentageSelector = ({ amount, currency, getCalculatedAmount, percentage,
         setPercente(percentage);
     }, [percentage]);
 
-    // React.useEffect(() => {
-    //     calculateAmount(
-    //         { target: { id: 0 } },
-    //         0
-    //     );
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [from_account, to_account]);
+    React.useEffect(() => {
+        calculateAmount({ target: { id: 0 } }, 0);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [from_account, to_account]);
 
     const calculateAmount = (e, percent) => {
         setPercente(percent);

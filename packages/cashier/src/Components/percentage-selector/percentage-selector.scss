@@ -1,39 +1,27 @@
 .percentage-selector {
     display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    width: fit-content;
-    min-width: 38rem;
-    margin-bottom: 0.4rem;
-
+    justify-content: space-around;
+    width: 36rem;
     @include mobile {
-        min-width: auto;
-        // justify-content: space-around;
-        // width: 36rem;
-        // @include mobile {
-        //     width: 100%;
+        width: 100%;
     }
 
     &-block {
         cursor: pointer;
         background-color: var(--general-section-1);
         height: 2.4rem;
-        min-width: 8.7rem;
-
+        width: 8.7rem;
         @include mobile {
-            min-width: 7.9rem;
-            // width: 8.7rem;
-            // @include mobile {
-            //     width: 95%;
+            width: 95%;
         }
     }
 
     &__block-container {
         align-items: center;
-        // display: flex;
-        // flex-direction: column;
-        // @include mobile {
-        //     flex: 1;
-        // }
+        display: flex;
+        flex-direction: column;
+        @include mobile {
+            flex: 1;
+        }
     }
 }

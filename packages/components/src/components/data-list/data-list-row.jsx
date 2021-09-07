@@ -17,7 +17,9 @@ const DataListRow = ({
 
     React.useEffect(() => {
         setTimeout(() => {
-            measure?.();
+            if (is_dynamic_height) {
+                measure?.();
+            }
         });
     }, [show_desc]);
     return (

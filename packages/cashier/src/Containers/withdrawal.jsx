@@ -122,7 +122,7 @@ const Withdrawal = ({
     if (is_withdrawal_locked) {
         return <WithdrawalLocked />;
     }
-    if (error.message) {
+    if (verification_code && error.message) {
         return <Error error={error} container='withdraw' />;
     }
     if (verify_error.message) {

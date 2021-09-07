@@ -359,6 +359,7 @@ export default class CashierStore extends BaseStore {
                 await this.checkP2pStatus();
             }
         );
+
         reaction(
             () => [
                 this.root_store.client.switched,
@@ -373,6 +374,13 @@ export default class CashierStore extends BaseStore {
                     await this.checkP2pStatus();
                     await this.filterPaymentAgentList();
                 }
+            }
+        );
+
+        reaction(
+            () => [this.root_store.client.currency],
+            () => {
+                this.setIsWithdrawConfirmed(false);
             }
         );
     }
@@ -435,7 +443,6 @@ export default class CashierStore extends BaseStore {
     @action.bound
     async onMountWithdraw(verification_code) {
         this.setLoading(true);
-
         const response_cashier = await this.WS.cryptoWithdraw({
             address: this.blockchain_address,
             amount: +this.converter_from_amount,

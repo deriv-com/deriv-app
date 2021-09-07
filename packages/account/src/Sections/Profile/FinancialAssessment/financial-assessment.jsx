@@ -120,11 +120,7 @@ const SubmittedPage = ({ platform, routeBackInApp }) => {
 
     const onClickButton = () => {
         if (platforms[platform].is_hard_redirect) {
-            // Force hard redirect to url
-            const hard_redirect_url = window.location.origin + platforms[platform].route_to_path;
-            window.location.href = hard_redirect_url;
-        } else if (platforms[platform].route_to_path) {
-            history.push(platforms[platform].route_to_path);
+            window.location.href = platforms[platform].url;
         } else {
             routeBackInApp(history);
         }

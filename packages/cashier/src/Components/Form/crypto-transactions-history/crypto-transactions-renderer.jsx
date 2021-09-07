@@ -46,6 +46,7 @@ const CryptoTransactionsRenderer = ({
             setTransactionClicked(false);
         };
         const cancelTransaction = () => {
+            setTransactionClicked(false);
             cancelCryptoTransaction(id);
         };
         const onClickCancelTransaction = () => {

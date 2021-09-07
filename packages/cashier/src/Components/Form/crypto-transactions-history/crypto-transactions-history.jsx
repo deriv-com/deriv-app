@@ -23,6 +23,7 @@ const CryptoTransactionsHistory = ({
     currency,
     is_loading,
     onMount,
+    pollApiForDepositAddress,
     setIsCryptoTransactionsVisible,
 }) => {
     React.useEffect(() => {
@@ -31,6 +32,7 @@ const CryptoTransactionsHistory = ({
 
     const onClickBack = () => {
         setIsCryptoTransactionsVisible(false); 
+        pollApiForDepositAddress(false);
     };
 
     return (
@@ -88,6 +90,7 @@ CryptoTransactionsHistory.propTypes = {
     currency: PropTypes.string,
     is_loading: PropTypes.bool,
     onMount: PropTypes.func,
+    pollApiForDepositAddress: PropTypes.func,
     setIsCryptoTransactionsVisible: PropTypes.func,
 };
 
@@ -96,5 +99,6 @@ export default connect(({ client, modules }) => ({
     currency: client.currency,
     is_loading: modules.cashier.transaction_history.is_loading,
     onMount: modules.cashier.transaction_history.onMountCryptoTransactionsHistory,
+    pollApiForDepositAddress: modules.cashier.onramp.pollApiForDepositAddress,
     setIsCryptoTransactionsVisible: modules.cashier.transaction_history.setIsCryptoTransactionsVisible,
 }))(CryptoTransactionsHistory);

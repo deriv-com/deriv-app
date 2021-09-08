@@ -14,7 +14,7 @@ export default class TransactionHistoryStore {
     @observable selected_crypto_status_description = '';
 
     @action.bound 
-    setCryptoTransactionsHistory(transactions) {
+    updateCryptoTransactions(transactions) {
         transactions.forEach(transaction => {
             const index = this.crypto_transactions.findIndex(crypto => crypto.id === transaction.id);
             if (index === -1) {
@@ -26,12 +26,16 @@ export default class TransactionHistoryStore {
         this.crypto_transactions
         .sort((a, b) => (a.submit_date - b.submit_date));
     }
+    @action.bound 
+    setCryptoTransactionsHistory(transactions) {
+        this.crypto_transactions = transactions;
+    }
     @action.bound
     async getCryptoTransactions() {
-        await this.WS.cashierPayments((response) => {
+        await this.WS.subscribeCashierPayments((response) => {
             if (!response.error) {
                 const { crypto } = response.cashier_payments;
-                this.setCryptoTransactionsHistory(crypto);
+                this.updateCryptoTransactions(crypto);
             }
         });
     }
@@ -43,8 +47,19 @@ export default class TransactionHistoryStore {
     @action.bound
     async onMountCryptoTransactionsHistory() {
         this.setLoading(true);
+        await this.unsubscribeCryptoTransactions();
         await this.getCryptoTransactions();
         this.setLoading(false);
+    }
+
+    @action.bound
+    async unsubscribeCryptoTransactions() {
+        await this.WS.cashierPayments({provider: 'crypto', transaction_type: 'all'}).then((response) => {
+            if (!response.error) {
+                const { crypto } = response.cashier_payments;
+                this.setCryptoTransactionsHistory(crypto);
+            }
+        });
     }
 
     @action.bound

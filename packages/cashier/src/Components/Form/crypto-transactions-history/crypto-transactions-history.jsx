@@ -28,7 +28,8 @@ const CryptoTransactionsHistory = ({
 }) => {
     React.useEffect(() => {
         onMount();
-    }, [onMount]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const onClickBack = () => {
         setIsCryptoTransactionsVisible(false); 

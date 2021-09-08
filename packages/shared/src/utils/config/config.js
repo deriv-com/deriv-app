@@ -79,33 +79,35 @@ export const getSocketURL = () => {
 };
 
 export const checkAndSetEndpointFromUrl = () => {
-    const url_params = new URLSearchParams(location.search.slice(1));
+    if (isTestLink()) {
+        const url_params = new URLSearchParams(location.search.slice(1));
 
-    if (url_params.has('qa_server') && url_params.has('app_id')) {
-        const qa_server = url_params.get('qa_server');
-        const app_id = url_params.get('app_id');
+        if (url_params.has('qa_server') && url_params.has('app_id')) {
+            const qa_server = url_params.get('qa_server');
+            const app_id = url_params.get('app_id');
 
-        url_params.delete('qa_server');
-        url_params.delete('app_id');
+            url_params.delete('qa_server');
+            url_params.delete('app_id');
 
-        if (
-            /^((www\.)?binaryqa[0-9]{1,2}\.com|^(www\.)?qa[0-9]{1,2}\.deriv.dev|(.*)\.binaryws\.com)$/.test(
-                qa_server
-            ) &&
-            /^[0-9]+$/.test(app_id)
-        ) {
-            localStorage.setItem('config.app_id', app_id);
-            localStorage.setItem('config.server_url', qa_server);
+            if (
+                /^((www\.)?binaryqa[0-9]{1,2}\.com|^(www\.)?qa[0-9]{1,2}\.deriv.dev|(.*)\.binaryws\.com)$/.test(
+                    qa_server
+                ) &&
+                /^[0-9]+$/.test(app_id)
+            ) {
+                localStorage.setItem('config.app_id', app_id);
+                localStorage.setItem('config.server_url', qa_server);
+            }
+
+            const params = url_params.toString();
+            const hash = location.hash;
+
+            location.href = `${location.protocol}//${location.hostname}${location.pathname}${
+                params ? `?${params}` : ''
+            }${hash || ''}`;
+
+            return true;
         }
-
-        const params = url_params.toString();
-        const hash = location.hash;
-
-        location.href = `${location.protocol}//${location.hostname}${location.pathname}${params ? `?${params}` : ''}${
-            hash || ''
-        }`;
-
-        return true;
     }
 
     return false;

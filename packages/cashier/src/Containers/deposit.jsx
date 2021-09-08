@@ -15,6 +15,7 @@ import MaxTurnover from '../Components/Form/max-turnover-form.jsx';
 // import SideNote from '../Components/side-note.jsx';
 import USDTSideNote from '../Components/usdt-side-note.jsx';
 import CryptoTransactionsHistory from '../Components/Form/crypto-transactions-history';
+import RecentTransaction from '../Components/recent-transaction.jsx';
 
 // const DepositeSideNote = () => {
 //     const notes = [
@@ -42,22 +43,23 @@ import CryptoTransactionsHistory from '../Components/Form/crypto-transactions-hi
 // };
 
 const Deposit = ({
+    crypto_transactions,
+    container,
+    currency,
+    current_currency_type,
+    error,
     is_cashier_locked,
     is_crypto_transactions_visible,
     is_deposit_locked,
-    is_loading,
-    is_switching,
-    is_virtual,
-    error,
     iframe_height,
     iframe_url,
-    setActiveTab,
-    onMount,
-    container,
-    currency,
-    setSideNotes,
+    is_loading,
+    is_switching,
     is_system_maintenance,
-    current_currency_type,
+    is_virtual,
+    onMount,
+    setActiveTab,
+    setSideNotes,
 }) => {
     React.useEffect(() => {
         setActiveTab(container);
@@ -68,11 +70,17 @@ const Deposit = ({
     React.useEffect(() => {
         if (iframe_height && isDesktop()) {
             if (isCryptocurrency(currency) && typeof setSideNotes === 'function' && !is_switching) {
-                const side_notes = [
+                const side_notes = [];
+                if (crypto_transactions.length) {
+                    side_notes.push(<RecentTransaction key={2} />);
+                }
+                const side_note = [
                     // <DepositeSideNote key={0} />,
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
                     ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
                 ];
+
+                if (side_note.length) side_notes.push(side_note);
                 setSideNotes(side_notes);
             } else setSideNotes(null);
         }
@@ -116,7 +124,9 @@ const Deposit = ({
 };
 
 Deposit.propTypes = {
+    crypto_transactions: PropTypes.array,
     container: PropTypes.string,
+    current_currency_type: PropTypes.string,
     error: PropTypes.object,
     is_cashier_locked: PropTypes.bool,
     is_crypto_transactions_visible: PropTypes.bool,
@@ -125,30 +135,30 @@ Deposit.propTypes = {
     iframe_url: PropTypes.string,
     is_loading: PropTypes.bool,
     is_switching: PropTypes.bool,
+    is_system_maintenance: PropTypes.bool,
     is_virtual: PropTypes.bool,
     onMount: PropTypes.func,
     setActiveTab: PropTypes.func,
     setSideNotes: PropTypes.func,
     standpoint: PropTypes.object,
-    is_system_maintenance: PropTypes.bool,
-    current_currency_type: PropTypes.string,
 };
 
 export default connect(({ client, modules }) => ({
+    crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
+    container: modules.cashier.config.deposit.container,
+    currency: client.currency,
+    current_currency_type: client.current_currency_type,
+    error: modules.cashier.config.deposit.error,
     is_cashier_locked: modules.cashier.is_cashier_locked,
     is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
     is_deposit_locked: modules.cashier.is_deposit_locked,
-    is_switching: client.is_switching,
-    is_virtual: client.is_virtual,
-    container: modules.cashier.config.deposit.container,
-    currency: client.currency,
-    error: modules.cashier.config.deposit.error,
     iframe_height: modules.cashier.config.deposit.iframe_height,
     iframe_url: modules.cashier.config.deposit.iframe_url,
     is_loading: modules.cashier.is_loading,
+    is_system_maintenance: modules.cashier.is_system_maintenance,
+    is_switching: client.is_switching,
+    is_virtual: client.is_virtual,
     onMount: modules.cashier.onMount,
     setActiveTab: modules.cashier.setActiveTab,
     standpoint: client.standpoint,
-    is_system_maintenance: modules.cashier.is_system_maintenance,
-    current_currency_type: client.current_currency_type,
 }))(Deposit);

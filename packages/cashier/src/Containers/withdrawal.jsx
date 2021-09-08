@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { isCryptocurrency, isDesktop, isMobile } from '@deriv/shared';
+import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CryptoWithdrawForm from '../Components/Form/crypto-withdraw-form.jsx';
 import CryptoWithdrawReceipt from '../Components/Receipt/crypto-withdraw-receipt.jsx';
@@ -15,6 +15,7 @@ import WithdrawalLocked from '../Components/Error/withdrawal-locked.jsx';
 import CashierLocked from '../Components/Error/cashier-locked.jsx';
 import SideNote from '../Components/side-note.jsx';
 import USDTSideNote from '../Components/usdt-side-note.jsx';
+import CryptoTransactionsHistory from '../Components/Form/crypto-transactions-history';
 import RecentTransaction from '../Components/recent-transaction.jsx';
 
 const WithdrawalSideNote = () => {
@@ -43,6 +44,7 @@ const Withdrawal = ({
     is_10k_withdrawal_limit_reached,
     is_cashier_locked,
     is_crypto,
+    is_crypto_transactions_visible,
     is_system_maintenance,
     is_virtual,
     is_withdraw_confirmed,
@@ -75,9 +77,9 @@ const Withdrawal = ({
         if (isDesktop()) {
             if (isCryptocurrency(currency) && typeof setSideNotes === 'function') {
                 const side_notes = [];
-                if (crypto_transactions.length) {
-                    side_notes.push(<RecentTransaction key={2} />);
-                }
+                // if (crypto_transactions.length) {
+                side_notes.push(<RecentTransaction key={2} />);
+                // }
                 const side_note = [
                     <WithdrawalSideNote key={0} />,
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
@@ -122,18 +124,16 @@ const Withdrawal = ({
     if (is_withdrawal_locked) {
         return <WithdrawalLocked />;
     }
-    if (verification_code && error.message) {
+    if (((is_crypto && verification_code) || !is_crypto) && error.message) {
         return <Error error={error} container='withdraw' />;
     }
     if (verify_error.message) {
         return <Error error={verify_error} container='withdraw' />;
     }
-    return (
-        <React.Fragment>
-            <SendEmail />
-            {isMobile() && is_crypto && crypto_transactions.length && <RecentTransaction />}
-        </React.Fragment>
-    );
+    if (is_crypto_transactions_visible) {
+        return <CryptoTransactionsHistory />;
+    }
+    return <SendEmail />;
 };
 
 Withdrawal.propTypes = {
@@ -145,6 +145,7 @@ Withdrawal.propTypes = {
     iframe_url: PropTypes.string,
     is_cashier_locked: PropTypes.bool,
     is_crypto: PropTypes.bool,
+    is_crypto_transactions_visible: PropTypes.bool,
     is_system_maintenance: PropTypes.bool,
     is_virtual: PropTypes.bool,
     is_withdraw_confirmed: PropTypes.bool,
@@ -166,6 +167,7 @@ export default connect(({ client, modules }) => ({
     is_10k_withdrawal_limit_reached: modules.cashier.is_10k_withdrawal_limit_reached,
     is_cashier_locked: modules.cashier.is_cashier_locked,
     is_crypto: modules.cashier.is_crypto,
+    is_crypto_transactions_visible: modules.cashier.transaction_history.is_crypto_transactions_visible,
     is_system_maintenance: modules.cashier.is_system_maintenance,
     is_virtual: client.is_virtual,
     is_withdraw_confirmed: modules.cashier.is_withdraw_confirmed,

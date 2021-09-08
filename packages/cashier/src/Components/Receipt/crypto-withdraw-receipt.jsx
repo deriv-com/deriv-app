@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Clipboard, Icon, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import RecentTransaction from 'Components/recent-transaction.jsx';
 import { getAccountText } from '../../_common/utility';
 import '../../Sass/withdraw.scss';
 
@@ -84,8 +85,10 @@ const CryptoWithdrawReceipt = ({
     account,
     blockchain_address,
     crypto_amount,
+    crypto_transactions,
     currency,
     resetWithrawForm,
+    setIsCryptoTransactionsVisible,
     setIsWithdrawConfirmed,
 }) => {
     React.useEffect(() => {
@@ -130,12 +133,12 @@ const CryptoWithdrawReceipt = ({
                 <Icon className='withdraw__receipt-icon' icon='IcArrowDown' size={30} />
                 <WalletInformation account={account} blockchain_address={blockchain_address} />
             </div>
-            <div className='wthdraw__receipt-botton-wrapper'>
+            <div className='withdraw__receipt-button-wrapper'>
                 <Button
                     id='withdraw_transaction'
                     className='withdraw__receipt-button withdraw__receipt-button-left'
                     text={localize('View transaction history')}
-                    // onClick={() => window.open(getStaticUrl('/payment-methods'))}
+                    onClick={() => setIsCryptoTransactionsVisible(true)}
                     secondary
                 />
                 <Button
@@ -147,15 +150,18 @@ const CryptoWithdrawReceipt = ({
                     primary
                 />
             </div>
+            {isMobile() && isCryptocurrency(currency) && crypto_transactions.length && <RecentTransaction />}
         </div>
     );
 };
 
 CryptoWithdrawReceipt.propTypes = {
     account: PropTypes.object,
+    crypto_transactions: PropTypes.array,
     blockchain_address: PropTypes.string,
     currency: PropTypes.string,
     resetWithrawForm: PropTypes.func,
+    setIsCryptoTransactionsVisible: PropTypes.func,
     setIsWithdrawConfirmed: PropTypes.func,
 };
 
@@ -163,7 +169,9 @@ export default connect(({ client, modules }) => ({
     account: modules.cashier.config.account_transfer.selected_from,
     blockchain_address: modules.cashier.blockchain_address,
     crypto_amount: modules.cashier.crypto_amount,
+    crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
     resetWithrawForm: modules.cashier.resetWithrawForm,
+    setIsCryptoTransactionsVisible: modules.cashier.transaction_history.setIsCryptoTransactionsVisible,
     setIsWithdrawConfirmed: modules.cashier.setIsWithdrawConfirmed,
 }))(CryptoWithdrawReceipt);

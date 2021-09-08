@@ -61,7 +61,7 @@ const POISubmission = ({
     const getCountryFromResidence = country_code => residence_list.find(residence => residence.value === country_code);
 
     React.useEffect(() => {
-        if (has_require_submission || allow_poi_resubmission) {
+        if ((has_require_submission || allow_poi_resubmission) && identity_last_attempt) {
             switch (identity_last_attempt.service) {
                 case service_code.idv: {
                     if (Number(idv.submissions_left) > 0 || Number(onfido.submissions_left) > 0) {

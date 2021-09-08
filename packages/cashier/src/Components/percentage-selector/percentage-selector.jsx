@@ -1,22 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Text } from '@deriv/components';
-import { getDecimalPlaces } from '@deriv/shared';
+import { formatMoney, getDecimalPlaces } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
-const PercentageSelector = ({ amount, currency, from_account, getCalculatedAmount, to_account}) => {
-    const [percentage, setPercentage] = React.useState('0');
+const PercentageSelector = ({
+    amount,
+    currency,
+    from_account,
+    getCalculatedAmount,
+    percentage,
+    should_percentage_reset,
+    to_account,
+}) => {
+    const [percente, setPercente] = React.useState('0');
 
     React.useEffect(() => {
-        calculateAmount(
-            { target: { id: 0 } },
-            0
-        );
+        if (should_percentage_reset) {
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(i).style.backgroundColor = 'var(--general-section-1)';
+            }
+        }
+    }, [should_percentage_reset]);
+
+    React.useEffect(() => {
+        setPercente(percentage);
+    }, [percentage]);
+
+    React.useEffect(() => {
+        calculateAmount({ target: { id: 0 } }, 0);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [from_account, to_account]); 
+    }, [from_account, to_account]);
 
     const calculateAmount = (e, percent) => {
-        setPercentage(percent);
+        setPercente(percent);
+        getCalculatedAmount((amount * (percent / 100)).toFixed(getDecimalPlaces(currency)));
 
         for (let i = 1; i <= 4; i++) {
             if (i <= e.target.id) {
@@ -25,10 +43,8 @@ const PercentageSelector = ({ amount, currency, from_account, getCalculatedAmoun
                 document.getElementById(i).style.backgroundColor = 'var(--general-section-1)';
             }
         }
-
-        getCalculatedAmount((amount * (percent / 100)).toFixed(getDecimalPlaces(currency)));
     };
-
+    const format_amount = formatMoney(currency, amount, true);
     return (
         <React.Fragment>
             <div className='percentage-selector'>
@@ -57,10 +73,10 @@ const PercentageSelector = ({ amount, currency, from_account, getCalculatedAmoun
                     <div id='4' className='percentage-selector-block' onClick={e => calculateAmount(e, 100)} />
                 </div>
             </div>
-            <Text color='less-prominent' size='xxs'>
+            <Text color='less-prominent' size='xxs' line_height='l'>
                 <Localize
-                    i18n_default_text={`{{percentage}}% of available balance ({{amount}} {{currency}})`}
-                    values={{ percentage, amount, currency }}
+                    i18n_default_text={`{{percente}}% of available balance ({{format_amount}} {{currency}})`}
+                    values={{ percente, format_amount, currency }}
                 />
             </Text>
         </React.Fragment>
@@ -71,6 +87,7 @@ PercentageSelector.propTypes = {
     amount: PropTypes.number,
     currency: PropTypes.string,
     getCalculatedAmount: PropTypes.func,
+    should_percentage_reset: PropTypes.bool,
 };
 
 export default PercentageSelector;

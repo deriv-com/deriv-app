@@ -13,6 +13,7 @@ import {
 import { localize } from '@deriv/translations';
 import { getSelectedRoute, isMobile, routes, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
+import ErrorDialog from 'Components/error-dialog.jsx';
 import 'Sass/cashier.scss';
 
 const Cashier = ({
@@ -96,6 +97,7 @@ const Cashier = ({
     }
     return (
         <FadeWrapper is_visible={is_visible} className='cashier-page-wrapper' keyname='cashier-page-wrapper'>
+            <ErrorDialog />
             <div className='cashier'>
                 <PageOverlay
                     header={isMobile() ? selected_route.getTitle() : localize('Cashier')}

@@ -64,7 +64,7 @@ const AccountTransferReceipt = ({
         } else {
             account_text = account.currency;
         }
-    
+
         return account_text;
     };
 
@@ -75,10 +75,10 @@ const AccountTransferReceipt = ({
             </Text>
             <div className='cashier__crypto-transferred-amount cashier__text--bold'>
                 <Text as='p' size='l' weight='bold' color='profit-success'>
-                    <Localize 
+                    <Localize
                         i18n_default_text='{{amount}} {{currency}}'
-                        values = {{
-                            amount : formatMoney(selected_from.currency, receipt.amount_transferred, true),
+                        values={{
+                            amount: formatMoney(selected_from.currency, receipt.amount_transferred, true),
                             currency: getCurrencyDisplayCode(selected_from.currency),
                         }}
                     />
@@ -95,7 +95,9 @@ const AccountTransferReceipt = ({
                             <Localize i18n_default_text={getAccountText(selected_from)} />
                         </Text>
                     </div>
-                    <Text as='p' size='s' color='less-prominent' align='center'>{selected_from.value}</Text>
+                    <Text as='p' size='s' color='less-prominent' align='center'>
+                        {selected_from.value}
+                    </Text>
                 </div>
                 <Icon className='crypto-transferred-icon' icon='IcArrowDownBold' />
                 <div className='crypto-transfer-to'>
@@ -108,7 +110,9 @@ const AccountTransferReceipt = ({
                             <Localize i18n_default_text={getAccountText(selected_to)} />
                         </Text>
                     </div>
-                    <Text as='p' size='s' color='less-prominent' align='center'>{selected_to.value}</Text>
+                    <Text as='p' size='s' color='less-prominent' align='center'>
+                        {selected_to.value}
+                    </Text>
                 </div>
             </div>
             <div className='crypto-transfer__receipt-form-submit'>
@@ -147,7 +151,13 @@ const AccountTransferReceipt = ({
                 </Modal.Body>
                 <Modal.Footer>
                     <Button has_effect text={localize('Cancel')} onClick={toggleSwitchAlert} secondary large />
-                    <Button has_effect text={localize(`Switch to ${switch_to.currency} account`)} onClick={switchAndRedirect} primary large />
+                    <Button
+                        has_effect
+                        text={localize(`Switch to ${switch_to.currency} account`)}
+                        onClick={switchAndRedirect}
+                        primary
+                        large
+                    />
                 </Modal.Footer>
             </Modal>
         </div>

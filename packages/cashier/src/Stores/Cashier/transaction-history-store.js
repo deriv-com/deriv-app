@@ -13,7 +13,8 @@ export default class TransactionHistoryStore {
     @observable selected_crypto_status = '';
     @observable selected_crypto_status_description = '';
 
-    @action.bound setCryptoTransactionsHistory(transactions) {
+    @action.bound 
+    setCryptoTransactionsHistory(transactions) {
         transactions.forEach(transaction => {
             const index = this.crypto_transactions.findIndex(crypto => crypto.id === transaction.id);
             if (index === -1) {
@@ -22,6 +23,8 @@ export default class TransactionHistoryStore {
                 Object.assign(this.crypto_transactions[index], transaction);
             }
         });
+        this.crypto_transactions
+        .sort((a, b) => (a.submit_date - b.submit_date));
     }
     @action.bound
     async getCryptoTransactions() {

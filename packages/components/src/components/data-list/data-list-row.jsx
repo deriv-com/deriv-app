@@ -35,7 +35,7 @@ const DataListRow = ({
                         },
                     }}
                 >
-                    <div className='data-list__item'>{rowRenderer({ ...other_props })}</div>
+                    <div className='data-list__item'>{rowRenderer({ measure, ...other_props })}</div>
                 </NavLink>
             ) : (
                 <div
@@ -50,11 +50,11 @@ const DataListRow = ({
                                     {action_desc.component && <div>{action_desc.component}</div>}
                                 </div>
                             ) : (
-                                rowRenderer({ ...other_props })
+                                rowRenderer({ measure, ...other_props })
                             )}
                         </div>
                     ) : (
-                        <div className='data-list__item'>{rowRenderer({ ...other_props })}</div>
+                        <div className='data-list__item'>{rowRenderer({ measure, ...other_props })}</div>
                     )}
                 </div>
             )}

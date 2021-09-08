@@ -194,6 +194,7 @@ export default class CashierStore extends BaseStore {
     @observable converter_from_error = '';
     @observable converter_to_error = '';
     @observable is_timer_visible = false;
+    @observable is_crypto_transactions_visible = false;
     @observable blockchain_address = '';
     @observable should_percentage_reset = false;
     @observable percentage = 0;
@@ -424,8 +425,17 @@ export default class CashierStore extends BaseStore {
                 this.root_store.common.routeTo(routes.cashier_deposit);
             }
 
-            this.transaction_history.getCryptoTransactions();
+            if (!this.is_crypto_transactions_visible && 
+                window.location.pathname.endsWith(routes.cashier_crypto_transactions)) {
+                this.root_store.common.routeTo(routes.cashier_deposit);
+                this.transaction_history.setIsCryptoTransactionsVisible(true);
+            }
         }
+    }
+
+    @action.bound
+    setIsCryptoTransactionsVisible(is_visible) {
+        this.is_crypto_transactions_visible = is_visible;
     }
 
     @action.bound

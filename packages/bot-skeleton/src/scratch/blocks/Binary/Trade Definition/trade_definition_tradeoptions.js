@@ -231,44 +231,59 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         });
     },
     updateDurationInput(should_use_default_unit, should_update_value) {
+        const { currency, landing_company_shortcode } = DBotStore.instance.client;
         const { contracts_for } = ApiHelpers.instance;
 
-        contracts_for.getDurations(this.selected_symbol, this.selected_trade_type).then(durations => {
-            // Keep duration in memory so we can later reference them for validation
-            this.durations = durations;
+        contracts_for
+            .getDurations(
+                {
+                    symbol: this.selected_symbol,
+                    landing_company: landing_company_shortcode,
+                    currency,
+                },
+                this.selected_trade_type
+            )
+            .then(durations => {
+                // Keep duration in memory so we can later reference them for validation
+                this.durations = durations;
 
-            const duration_field_dropdown = this.getField('DURATIONTYPE_LIST');
-            const duration_input = this.getInput('DURATION');
-            const duration_options = durations.map(duration => [duration.display, duration.unit]);
+                const duration_field_dropdown = this.getField('DURATIONTYPE_LIST');
+                const duration_input = this.getInput('DURATION');
+                const duration_options = durations.map(duration => [duration.display, duration.unit]);
 
-            if (duration_field_dropdown) {
-                duration_field_dropdown.updateOptions(duration_options, {
-                    default_value: should_use_default_unit ? undefined : duration_field_dropdown.getValue(),
-                });
-            }
+                if (duration_field_dropdown) {
+                    duration_field_dropdown.updateOptions(duration_options, {
+                        default_value: should_use_default_unit ? undefined : duration_field_dropdown.getValue(),
+                    });
+                }
 
-            if (should_update_value && duration_input && duration_input.connection) {
-                const target_block = duration_input.connection.targetBlock();
+                if (should_update_value && duration_input && duration_input.connection) {
+                    const target_block = duration_input.connection.targetBlock();
 
-                if (target_block && target_block.isShadow()) {
-                    const min_duration = durations.find(d => d.unit === this.selected_duration);
+                    if (target_block && target_block.isShadow()) {
+                        const min_duration = durations.find(d => d.unit === this.selected_duration);
 
-                    if (min_duration) {
-                        runIrreversibleEvents(() => {
-                            target_block.setFieldValue(min_duration.min, 'NUM');
-                        });
+                        if (min_duration) {
+                            runIrreversibleEvents(() => {
+                                target_block.setFieldValue(min_duration.min, 'NUM');
+                            });
+                        }
                     }
                 }
-            }
-        });
+            });
     },
     updateBarrierInputs(should_use_default_type, should_use_default_values) {
+        const { currency, landing_company_shortcode } = DBotStore.instance.client;
         const { contracts_for } = ApiHelpers.instance;
         const { BARRIER_TYPES } = config;
 
         contracts_for
             .getBarriers(
-                this.selected_symbol,
+                {
+                    symbol: this.selected_symbol,
+                    landing_company: landing_company_shortcode,
+                    currency,
+                },
                 this.selected_trade_type,
                 this.selected_duration,
                 this.selected_barrier_types
@@ -321,28 +336,38 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             });
     },
     updatePredictionInput(should_use_default_value) {
+        const { currency, landing_company_shortcode } = DBotStore.instance.client;
         const { contracts_for } = ApiHelpers.instance;
 
-        contracts_for.getPredictionRange(this.selected_symbol, this.selected_trade_type).then(prediction_range => {
-            this.createPredictionInput(prediction_range);
+        contracts_for
+            .getPredictionRange(
+                {
+                    symbol: this.selected_symbol,
+                    landing_company: landing_company_shortcode,
+                    currency,
+                },
+                this.selected_trade_type
+            )
+            .then(prediction_range => {
+                this.createPredictionInput(prediction_range);
 
-            if (prediction_range.length > 0) {
-                const prediction_input = this.getInput('PREDICTION');
-                const { connection } = prediction_input;
+                if (prediction_range.length > 0) {
+                    const prediction_input = this.getInput('PREDICTION');
+                    const { connection } = prediction_input;
 
-                if (should_use_default_value && connection) {
-                    const target_block = connection.targetBlock();
+                    if (should_use_default_value && connection) {
+                        const target_block = connection.targetBlock();
 
-                    if (target_block && target_block.isShadow()) {
-                        const initial_prediction = Math.max(1, prediction_range[0]);
+                        if (target_block && target_block.isShadow()) {
+                            const initial_prediction = Math.max(1, prediction_range[0]);
 
-                        runIrreversibleEvents(() => {
-                            target_block.setFieldValue(initial_prediction, 'NUM');
-                        });
+                            runIrreversibleEvents(() => {
+                                target_block.setFieldValue(initial_prediction, 'NUM');
+                            });
+                        }
                     }
                 }
-            }
-        });
+            });
     },
     enforceSingleBarrierType(barrier_input_name, should_force_distinct) {
         const new_value = this.getFieldValue(barrier_input_name);

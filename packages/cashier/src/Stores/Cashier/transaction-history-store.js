@@ -23,12 +23,17 @@ export default class TransactionHistoryStore {
                 Object.assign(this.crypto_transactions[index], transaction);
             }
         });
-        this.crypto_transactions
-        .sort((a, b) => (a.submit_date - b.submit_date));
+        this.sortCryptoTransactions();
     }
     @action.bound 
     setCryptoTransactionsHistory(transactions) {
         this.crypto_transactions = transactions;
+        this.sortCryptoTransactions();
+    }
+    @action.bound 
+    sortCryptoTransactions() {
+        this.crypto_transactions
+        .sort((a, b) => (a.submit_date - b.submit_date));
     }
     @action.bound
     async getCryptoTransactions() {

@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { useIsMounted } from '@deriv/shared';
 
 const DataListRow = ({
     action_desc,
@@ -14,10 +15,11 @@ const DataListRow = ({
     ...other_props
 }) => {
     const [show_desc, setShowDesc] = React.useState(false);
+    const isMounted = useIsMounted();
 
     React.useEffect(() => {
         setTimeout(() => {
-            if (is_dynamic_height) {
+            if (isMounted() && is_dynamic_height) {
                 measure?.();
             }
         });

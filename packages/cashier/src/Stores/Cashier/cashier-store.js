@@ -1169,7 +1169,7 @@ export default class CashierStore extends BaseStore {
             'fees',
             this.config.account_transfer.selected_to.currency,
         ]);
-        this.config.account_transfer.transfer_fee = typeof transfer_fee === 'undefined' ? 0 : +transfer_fee;
+        this.config.account_transfer.transfer_fee = Number(transfer_fee || 0);
     }
 
     @action.bound

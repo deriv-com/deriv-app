@@ -83,6 +83,7 @@ class DataTable extends React.PureComponent {
                 row_obj={item}
                 show_preloader={typeof preloaderCheck === 'function' ? preloaderCheck(item) : false}
                 to={typeof action === 'string' ? action : undefined}
+                is_dynamic_height={this.is_dynamic_height}
             />
         );
 

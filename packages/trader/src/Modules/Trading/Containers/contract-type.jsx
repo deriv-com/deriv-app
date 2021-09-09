@@ -21,7 +21,6 @@ const Contract = ({
     is_equal,
     is_logged_in,
     onChange,
-    removeNotificationByKey,
     removeNotificationMessageByKey,
     symbol,
 }) => {
@@ -35,16 +34,9 @@ const Contract = ({
         if (isMultiplierContract(contract_type) && current_language === 'EN' && is_logged_in) {
             addNotificationMessageByKey('deriv_go');
         } else {
-            removeNotificationByKey({ key: 'deriv_go' });
             removeNotificationMessageByKey({ key: 'deriv_go' });
         }
-    }, [
-        addNotificationMessageByKey,
-        contract_type,
-        current_language,
-        removeNotificationByKey,
-        removeNotificationMessageByKey,
-    ]);
+    }, [addNotificationMessageByKey, contract_type, current_language, is_logged_in, removeNotificationMessageByKey]);
 
     return (
         <React.Fragment>

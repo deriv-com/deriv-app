@@ -262,9 +262,9 @@ const AccountTransferForm = ({
     React.useEffect(() => {
         if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
             const side_notes = [];
-            if (is_crypto && crypto_transactions?.length) {
-                side_notes.push(<RecentTransaction key={2} />);
-            }
+            // if (is_crypto && crypto_transactions?.length) {
+            side_notes.push(<RecentTransaction key={2} />);
+            // }
             side_notes.push(
                 <AccountTransferNote
                     transfer_fee={transfer_fee}

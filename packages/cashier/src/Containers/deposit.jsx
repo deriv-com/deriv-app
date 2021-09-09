@@ -60,20 +60,20 @@ const Deposit = ({
     onMount,
     setActiveTab,
     setSideNotes,
+    tab_index,
 }) => {
     React.useEffect(() => {
         setActiveTab(container);
         onMount();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [setActiveTab, onMount, container]);
 
     React.useEffect(() => {
-        if (iframe_height && isDesktop()) {
+        if (isDesktop()) {
             if (isCryptocurrency(currency) && typeof setSideNotes === 'function' && !is_switching) {
                 const side_notes = [];
-                if (crypto_transactions.length) {
-                    side_notes.push(<RecentTransaction key={2} />);
-                }
+                // if (crypto_transactions.length) {
+                side_notes.push(<RecentTransaction key={2} />);
+                // }
                 const side_note = [
                     // <DepositeSideNote key={0} />,
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
@@ -85,9 +85,9 @@ const Deposit = ({
             } else setSideNotes(null);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, iframe_height, is_switching]);
+    }, [currency, tab_index, is_switching]);
 
-    if (is_switching || (is_loading && !iframe_url)) {
+    if ((is_switching || (is_loading && !iframe_url)) && !is_crypto_transactions_visible) {
         return <Loading is_fullscreen={false} />;
     }
     if (is_virtual) {
@@ -141,6 +141,7 @@ Deposit.propTypes = {
     setActiveTab: PropTypes.func,
     setSideNotes: PropTypes.func,
     standpoint: PropTypes.object,
+    tab_index: PropTypes.number,
 };
 
 export default connect(({ client, modules }) => ({
@@ -161,4 +162,5 @@ export default connect(({ client, modules }) => ({
     onMount: modules.cashier.onMount,
     setActiveTab: modules.cashier.setActiveTab,
     standpoint: client.standpoint,
+    tab_index: modules.cashier.cashier_route_tab_index,
 }))(Deposit);

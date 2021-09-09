@@ -28,11 +28,11 @@ const CryptoTransactionsHistory = ({
 }) => {
     React.useEffect(() => {
         onMount();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        return () => setIsCryptoTransactionsVisible(false);
+    }, [onMount, setIsCryptoTransactionsVisible, currency]);
 
     const onClickBack = () => {
-        setIsCryptoTransactionsVisible(false); 
+        setIsCryptoTransactionsVisible(false);
         pollApiForDepositAddress(false);
     };
 
@@ -48,39 +48,41 @@ const CryptoTransactionsHistory = ({
                     </div>
                 </div>
                 <MobileWrapper>
-                    <CryptoTransactionsCancelModal /> 
+                    <CryptoTransactionsCancelModal />
                     <CryptoTransactionsStatusModal />
                 </MobileWrapper>
-                {crypto_transactions.length > 0 ? 
-                    <Table 
-                        className='crypto-transactions-history__table'
-                    >
-                        {isDesktop() && <Table.Header className='crypto-transactions-history__table-header'>
+                {crypto_transactions.length > 0 ? (
+                    <Table className='crypto-transactions-history__table'>
+                        {isDesktop() && (
+                            <Table.Header className='crypto-transactions-history__table-header'>
                                 <Table.Row className='crypto-transactions-history__table-row'>
                                     {getHeaders().map(header => (
                                         <Table.Head key={header.text}>{header.text}</Table.Head>
                                     ))}
                                 </Table.Row>
                             </Table.Header>
-                        }
+                        )}
                         <Table.Body className='crypto-transactions-history__table-body'>
-                            { is_loading ? <Loading is_fullscreen={false} /> :
+                            {is_loading ? (
+                                <Loading is_fullscreen={false} />
+                            ) : (
                                 <DataList
                                     data_list_className='crypto-transactions-history__data-list'
                                     data_source={crypto_transactions}
                                     rowRenderer={row_props => <CryptoTransactionsRenderer {...row_props} />}
                                     keyMapper={row => row.id}
-                                    row_gap = {isMobile() ? 8 : 0}
-                                /> 
-                            }
+                                    row_gap={isMobile() ? 8 : 0}
+                                />
+                            )}
                         </Table.Body>
-                    </Table> :
+                    </Table>
+                ) : (
                     <div className='crypto-transactions-history__empty-text'>
                         <Text as='p' size='xs' color='disabled' align='center'>
                             <Localize i18n_default_text='No current transactions available' />
                         </Text>
                     </div>
-                }
+                )}
             </div>
         </React.Fragment>
     );

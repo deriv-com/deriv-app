@@ -565,6 +565,13 @@ export default class TradeStore extends BaseStore {
                                 type: response.msg_type,
                                 ...response.error,
                             });
+
+                            if (isMobile() && this.root_store.common?.services_error?.type === 'buy') {
+                                setTimeout(() => {
+                                    this.clearPurchaseInfo();
+                                    this.requestProposal();
+                                }, 3500);
+                            }
                         }
                     } else if (response.buy) {
                         if (this.proposal_info[type] && this.proposal_info[type].id !== proposal_id) {

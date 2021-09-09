@@ -20,6 +20,8 @@ const Contract = ({
     onChange,
     symbol,
     addNotificationMessageByKey,
+    removeNotificationByKey,
+    removeNotificationMessageByKey,
 }) => {
     const list = getAvailableContractTypes(contract_types_list, unsupported_contract_types_list);
 

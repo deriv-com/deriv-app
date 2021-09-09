@@ -564,11 +564,7 @@ export const excluded_notifications = isMobile()
       ];
 
 export const handleClientNotifications = (client, client_store, ui_store, cashier_store) => {
-    console.log(client);
     const { currency, excluded_until } = client;
-    console.log(client_store);
-    // console.log(client_store.modules.trade.contract_type);
-
     const {
         loginid,
         account_status,
@@ -607,7 +603,6 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
     if (has_missing_required_field) {
         addNotificationMessage(clientNotifications(ui_store).required_fields);
     }
-    const isEng = window.localStorage.getItem('i18n_language') && window.localStorage.getItem('i18n_language') === 'EN';
 
     return {
         has_missing_required_field,

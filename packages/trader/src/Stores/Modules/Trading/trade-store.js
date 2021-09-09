@@ -566,6 +566,7 @@ export default class TradeStore extends BaseStore {
                                 ...response.error,
                             });
 
+                            // Clear purchase info on mobile after toast box error disappears (mobile_toast_timeout = 3500)
                             if (isMobile() && this.root_store.common?.services_error?.type === 'buy') {
                                 setTimeout(() => {
                                     this.clearPurchaseInfo();

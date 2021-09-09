@@ -81,10 +81,10 @@ const getYourDecisionText = (is_uk, landing_company_shortcode) => {
                 texts.push(
                     <Localize
                         key={texts.length}
-                        i18n_default_text="<0/><1/>You can send your complaint to the <2>European Commission's Online Dispute Resolution (ODR)</2> platform. This is not applicable to UK clients."
+                        i18n_default_text="You can send your complaint to the <0>European Commission's Online Dispute Resolution (ODR)</0> platform. This is not applicable to UK clients."
                         components={[
                             <a
-                                key={2}
+                                key={0}
                                 className='link link--orange'
                                 rel='noopener noreferrer'
                                 target='_blank'

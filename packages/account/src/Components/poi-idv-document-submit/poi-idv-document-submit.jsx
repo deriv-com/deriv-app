@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-    Autocomplete,
-    Button,
-    DesktopWrapper,
-    Input,
-    MobileWrapper,
-    Text,
-    SelectNative,
-    StaticUrl,
-} from '@deriv/components';
+import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize, Localize } from '@deriv/translations';
 import { WS } from '@deriv/shared';
@@ -148,7 +139,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                         <Text className='proof-of-identity__text btm-spacer' align='center' size='xs'>
                             <Localize
                                 i18n_default_text='Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to <0>account settings</0>.'
-                                components={[<StaticUrl key={0} className='link' href='/account/personal-details' />]}
+                                components={[<a key={0} className='link' href='/account/personal-details' />]}
                             />
                         </Text>
                     )}

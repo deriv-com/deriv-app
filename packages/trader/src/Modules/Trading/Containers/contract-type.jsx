@@ -34,7 +34,7 @@ const Contract = ({
     console.log(isMultiplierContract(contract_type), isEng);
     if (isMultiplierContract(contract_type) && isEng) {
         console.log('here');
-        // addNotificationMessage(clientNotifications().deriv_go);
+        addNotificationMessageByKey('deriv_go');
     } else {
         console.log('Not condition');
         removeNotificationByKey({ key: 'deriv_go' });

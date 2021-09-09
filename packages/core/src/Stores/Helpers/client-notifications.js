@@ -380,6 +380,19 @@ export const clientNotifications = (ui = {}, client = {}) => {
             type: 'announce',
             should_hide_close_btn: false,
         },
+        deriv_go: {
+            key: 'deriv_go',
+            message: localize('Get a faster mobile trading experience with the Deriv GO app!'),
+            primary_btn: {
+                text: localize('Learn more'),
+                onClick: () => {
+                    window.open(getStaticUrl('/p2p/v1'), '_blank');
+                },
+            },
+            img_src: getUrlBase('/public/images/common/dp2p_banner.png'),
+            img_alt: 'deriv_go',
+            type: 'news',
+        },
     };
     return notifications;
 };
@@ -551,7 +564,11 @@ export const excluded_notifications = isMobile()
       ];
 
 export const handleClientNotifications = (client, client_store, ui_store, cashier_store) => {
+    console.log(client);
     const { currency, excluded_until } = client;
+    console.log(client_store);
+    // console.log(client_store.modules.trade.contract_type);
+
     const {
         loginid,
         account_status,
@@ -590,6 +607,7 @@ export const handleClientNotifications = (client, client_store, ui_store, cashie
     if (has_missing_required_field) {
         addNotificationMessage(clientNotifications(ui_store).required_fields);
     }
+    const isEng = window.localStorage.getItem('i18n_language') && window.localStorage.getItem('i18n_language') === 'EN';
 
     return {
         has_missing_required_field,

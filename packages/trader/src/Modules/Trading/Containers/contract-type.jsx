@@ -6,22 +6,23 @@ import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import { localize } from '@deriv/translations';
 import { unsupported_contract_types_list } from 'Stores/Modules/Trading/Constants/contract';
 import { ToastPopup } from 'Modules/Trading/Containers/toast-popup.jsx';
+import { isMultiplierContract } from '@deriv/shared';
 import { getMarketNamesMap } from '../../../Constants';
 import ContractTypeWidget from '../Components/Form/ContractType';
 import { getAvailableContractTypes } from '../Helpers/contract-type';
-import { isMultiplierContract } from '@deriv/shared';
 // import { clientNotifications } from 'Stores/Helpers/client-notifications';
 
 const Contract = ({
+    addNotificationMessageByKey,
     contract_type,
     contract_types_list,
     is_digit_view,
     is_equal,
     onChange,
-    symbol,
-    addNotificationMessageByKey,
+    preferred_language,
     removeNotificationByKey,
     removeNotificationMessageByKey,
+    symbol,
 }) => {
     const list = getAvailableContractTypes(contract_types_list, unsupported_contract_types_list);
 
@@ -29,17 +30,22 @@ const Contract = ({
         underlying_name: getMarketNamesMap()[symbol.toUpperCase()],
     });
 
-    console.log(contract_type);
-    const isEng = window.localStorage.getItem('i18n_language') && window.localStorage.getItem('i18n_language') === 'EN';
-    console.log(isMultiplierContract(contract_type), isEng);
-    if (isMultiplierContract(contract_type) && isEng) {
-        console.log('here');
-        addNotificationMessageByKey('deriv_go');
-    } else {
-        console.log('Not condition');
-        removeNotificationByKey({ key: 'deriv_go' });
-        removeNotificationMessageByKey({ key: 'deriv_go' });
-    }
+    React.useEffect(() => {
+        console.log(preferred_language);
+        if (isMultiplierContract(contract_type) && preferred_language === 'EN') {
+            addNotificationMessageByKey('deriv_go');
+        } else {
+            removeNotificationByKey({ key: 'deriv_go' });
+            removeNotificationMessageByKey({ key: 'deriv_go' });
+        }
+    }, [
+        addNotificationMessageByKey,
+        contract_type,
+        preferred_language,
+        removeNotificationByKey,
+        removeNotificationMessageByKey,
+    ]);
+
     return (
         <React.Fragment>
             <MobileWrapper>
@@ -71,14 +77,15 @@ Contract.propTypes = {
     removeNotificationMessageByKey: PropTypes.func,
 };
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ client, modules, ui }) => ({
+    addNotificationMessageByKey: ui.addNotificationMessageByKey,
     contract_type: modules.trade.contract_type,
     contract_types_list: modules.trade.contract_types_list,
     is_digit_view: modules.trade.is_mobile_digit_view_selected,
     is_equal: modules.trade.is_equal,
     onChange: modules.trade.onChange,
-    symbol: modules.trade.symbol,
-    addNotificationMessageByKey: ui.addNotificationMessageByKey,
+    preferred_language: client.preferred_language,
     removeNotificationByKey: ui.removeNotificationByKey,
     removeNotificationMessageByKey: ui.removeNotificationMessageByKey,
+    symbol: modules.trade.symbol,
 }))(Contract);

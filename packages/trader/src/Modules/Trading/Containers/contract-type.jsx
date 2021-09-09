@@ -19,6 +19,7 @@ const Contract = ({
     current_language,
     is_digit_view,
     is_equal,
+    is_logged_in,
     onChange,
     removeNotificationByKey,
     removeNotificationMessageByKey,
@@ -31,8 +32,7 @@ const Contract = ({
     });
 
     React.useEffect(() => {
-        console.log(current_language);
-        if (isMultiplierContract(contract_type) && current_language === 'EN') {
+        if (isMultiplierContract(contract_type) && current_language === 'EN' && is_logged_in) {
             addNotificationMessageByKey('deriv_go');
         } else {
             removeNotificationByKey({ key: 'deriv_go' });
@@ -77,13 +77,14 @@ Contract.propTypes = {
     removeNotificationMessageByKey: PropTypes.func,
 };
 
-export default connect(({ common, modules, ui }) => ({
+export default connect(({ client, common, modules, ui }) => ({
     addNotificationMessageByKey: ui.addNotificationMessageByKey,
     contract_type: modules.trade.contract_type,
     contract_types_list: modules.trade.contract_types_list,
     current_language: common.current_language,
     is_digit_view: modules.trade.is_mobile_digit_view_selected,
     is_equal: modules.trade.is_equal,
+    is_logged_in: client.is_logged_in,
     onChange: modules.trade.onChange,
     removeNotificationByKey: ui.removeNotificationByKey,
     removeNotificationMessageByKey: ui.removeNotificationMessageByKey,

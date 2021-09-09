@@ -381,6 +381,11 @@ export default class ClientStore extends BaseStore {
     }
 
     @computed
+    get can_create_new_mt5_account() {
+        return this.landing_company_shortcode !== 'malta';
+    }
+
+    @computed
     get active_accounts() {
         return this.accounts instanceof Object
             ? Object.values(this.accounts).filter(account => !account.is_disabled)

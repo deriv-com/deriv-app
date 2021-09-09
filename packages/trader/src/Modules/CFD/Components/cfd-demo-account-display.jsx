@@ -21,6 +21,7 @@ const CFDDemoAccountDisplay = ({
     platform,
     current_list,
     has_cfd_account,
+    can_create_new_account,
     openPasswordManager,
     residence,
 }) => {

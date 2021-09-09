@@ -27,6 +27,7 @@ const AccountInfoIcon = ({ is_virtual, currency }) => (
 
 const AccountInfo = ({
     acc_switcher_disabled_message,
+    account_type,
     balance,
     currency,
     disableApp,
@@ -37,6 +38,15 @@ const AccountInfo = ({
     is_disabled,
 }) => {
     const currency_lower = currency.toLowerCase();
+    const displayAccountType = () => {
+        let type;
+        if (account_type === 'financial') {
+            type = <p>Multipliers</p>;
+        } else if (account_type === 'gaming') {
+            type = <p>Options</p>;
+        }
+        return type;
+    };
     return (
         <div className='acc-info__wrapper'>
             <div className='acc-info__separator' />
@@ -61,17 +71,20 @@ const AccountInfo = ({
                         </MobileWrapper>
                     </span>
                     {(typeof balance !== 'undefined' || !currency) && (
-                        <p
-                            className={classNames('acc-info__balance', {
-                                'acc-info__balance--no-currency': !currency && !is_virtual,
-                            })}
-                        >
-                            {!currency ? (
-                                <Localize i18n_default_text='No currency assigned' />
-                            ) : (
-                                `${balance} ${getCurrencyDisplayCode(currency)}`
-                            )}
-                        </p>
+                        <div className='acc-info__account-type-and-balance'>
+                            <p
+                                className={classNames('acc-info__balance', {
+                                    'acc-info__balance--no-currency': !currency && !is_virtual,
+                                })}
+                            >
+                                {!currency ? (
+                                    <Localize i18n_default_text='No currency assigned' />
+                                ) : (
+                                    `${balance} ${getCurrencyDisplayCode(currency)}`
+                                )}
+                            </p>
+                            {displayAccountType()}
+                        </div>
                     )}
                     {is_disabled ? (
                         <Icon icon='IcLock' />

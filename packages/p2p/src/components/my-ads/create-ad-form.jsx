@@ -97,13 +97,6 @@ const CreateAdForm = () => {
                 {({ errors, handleChange, isSubmitting, isValid, setFieldValue, touched, values }) => {
                     const is_sell_advert = values.type === buy_sell.SELL;
 
-                    const invalidAmountError = Object.values(errors).includes('Enter a valid amount');
-                    if (invalidAmountError) {
-                        Object.entries(errors).forEach(([key, value]) => {
-                            errors[key] = value === 'Enter a valid amount' ? value : undefined;
-                        });
-                    }
-
                     return (
                         <div className='p2p-my-ads__form'>
                             <Form

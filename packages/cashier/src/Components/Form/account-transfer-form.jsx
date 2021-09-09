@@ -137,6 +137,7 @@ const AccountTransferForm = ({
     setIsTransferConfirm,
     error,
     resetConverter,
+    recentTransactionOnMount,
     setPercentageSelectorResult,
     validateTransferFrom,
     validateTransferTo,
@@ -144,6 +145,10 @@ const AccountTransferForm = ({
     const [from_accounts, setFromAccounts] = React.useState({});
     const [to_accounts, setToAccounts] = React.useState({});
     const [transfer_to_hint, setTransferToHint] = React.useState();
+
+    React.useEffect(() => {
+        recentTransactionOnMount();
+    }, [recentTransactionOnMount]);
 
     const validateAmount = amount => {
         if (!amount) return localize('This field is required.');
@@ -276,7 +281,7 @@ const AccountTransferForm = ({
             );
             setSideNotes(side_notes);
         }
-    }, [transfer_fee, selected_from, minimum_fee, from_accounts, is_dxtrade_allowed]);
+    }, [transfer_fee, selected_from, minimum_fee, from_accounts, is_dxtrade_allowed, crypto_transactions]);
 
     React.useEffect(() => {
         const { daily_transfers } = account_limits;
@@ -546,6 +551,7 @@ AccountTransferForm.propTypes = {
     transfer_fee: PropTypes.number,
     transfer_limit: PropTypes.object,
     resetConverter: PropTypes.func,
+    recentTransactionOnMount: PropTypes.func,
     setPercentageSelectorResult: PropTypes.func,
     validateTransferFrom: PropTypes.func,
     validateTransferTo: PropTypes.func,
@@ -576,6 +582,7 @@ export default connect(({ client, modules, ui }) => ({
     transfer_fee: modules.cashier.config.account_transfer.transfer_fee,
     transfer_limit: modules.cashier.config.account_transfer.transfer_limit,
     resetConverter: modules.cashier.resetConverter,
+    recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setPercentageSelectorResult: modules.cashier.setPercentageSelectorResult,
     validateTransferFrom: modules.cashier.validateTransferFrom,
     validateTransferTo: modules.cashier.validateTransferTo,

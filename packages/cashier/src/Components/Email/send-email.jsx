@@ -1,12 +1,25 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { Button, Icon, MobileWrapper, Text } from '@deriv/components';
+import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
+import RecentTransaction from 'Components/recent-transaction.jsx';
 import EmailSent from './email-sent.jsx';
 
-const SendEmail = ({ is_email_sent, is_resend_clicked, resend_timeout, sendVerificationEmail }) => {
+const SendEmail = ({
+    crypto_transactions,
+    currency,
+    is_email_sent,
+    is_resend_clicked,
+    resend_timeout,
+    recentTransactionOnMount,
+    sendVerificationEmail,
+}) => {
+    React.useEffect(() => {
+        recentTransactionOnMount();
+    }, [recentTransactionOnMount]);
+
     return (
         <div className='cashier__wrapper'>
             {is_email_sent ? (
@@ -42,6 +55,9 @@ const SendEmail = ({ is_email_sent, is_resend_clicked, resend_timeout, sendVerif
                         primary
                         large
                     />
+                    <MobileWrapper>
+                        {isCryptocurrency(currency) && crypto_transactions?.length && <RecentTransaction />}
+                    </MobileWrapper>
                 </React.Fragment>
             )}
         </div>
@@ -49,15 +65,20 @@ const SendEmail = ({ is_email_sent, is_resend_clicked, resend_timeout, sendVerif
 };
 
 SendEmail.propTypes = {
+    crypto_transactions: PropTypes.array,
     is_email_sent: PropTypes.bool,
     is_resend_clicked: PropTypes.bool,
     resend_timeout: PropTypes.number,
+    recentTransactionOnMount: PropTypes.func,
     sendVerificationEmail: PropTypes.func,
 };
 
-export default connect(({ modules }) => ({
+export default connect(({ client, modules }) => ({
+    crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
+    currency: client.currency,
     is_email_sent: modules.cashier.config.withdraw.verification.is_email_sent,
     is_resend_clicked: modules.cashier.config.withdraw.verification.is_resend_clicked,
     resend_timeout: modules.cashier.config.withdraw.verification.resend_timeout,
+    recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     sendVerificationEmail: modules.cashier.sendVerificationEmail,
 }))(SendEmail);

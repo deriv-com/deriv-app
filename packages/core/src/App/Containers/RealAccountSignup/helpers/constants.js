@@ -40,6 +40,13 @@ export const getAccountTitle = (landing_company_shortcode, { account_residence =
             return localize('Deriv account');
         case 'iom':
         case 'malta':
+            if (
+                country_standpoint.is_united_kingdom ||
+                country_standpoint.is_rest_of_eu ||
+                country_standpoint.is_belgium
+            ) {
+                return localize('Options');
+            }
             return localize('Deriv Synthetic');
         case 'maltainvest':
             if (

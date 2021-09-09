@@ -132,13 +132,6 @@ const AccountTransferNote = ({ currency, is_crypto_to_crypto_transfer, is_mt_tra
                 </Text>
             </DesktopWrapper>
             <AccountTransferBullet>
-                <Localize i18n_default_text='There is a daily transfer limit of 4 transfers between your Deriv accounts and 12 transfers between your Deriv and DMT5 accounts.' />
-            </AccountTransferBullet>
-            <AccountTransferBullet>
-                <Localize i18n_default_text='Transfer limits may vary depending on the exchange rates.' />
-            </AccountTransferBullet>
-            <AccountTransferBullet>{get_transfer_fee_note()}</AccountTransferBullet>
-            <AccountTransferBullet>
                 {/* TODO: Uncomment and check with content team on the latest version of the side note when real account is launched */}
                 {/* {is_dxtrade_allowed ? (
                     <Localize i18n_default_text='You may transfer between your fiat and cryptocurrency accounts, between your Deriv and DMT5 accounts, and between your Deriv and Deriv X account.' />
@@ -146,6 +139,13 @@ const AccountTransferNote = ({ currency, is_crypto_to_crypto_transfer, is_mt_tra
                 <Localize i18n_default_text='You may transfer between your fiat and cryptocurrency accounts and between your Deriv and DMT5 accounts.' />
                 {/* )} */}
             </AccountTransferBullet>
+            <AccountTransferBullet>
+                <Localize i18n_default_text='There is a daily transfer limit of 4 transfers between your Deriv accounts and 12 transfers between your Deriv and DMT5 accounts.' />
+            </AccountTransferBullet>
+            <AccountTransferBullet>
+                <Localize i18n_default_text='Transfer limits may vary depending on the exchange rates.' />
+            </AccountTransferBullet>
+            <AccountTransferBullet>{get_transfer_fee_note()}</AccountTransferBullet>
             <AccountTransferBullet>
                 <Localize i18n_default_text='Transfers may be unavailable due to high volatility or technical issues and when the exchange markets are closed.' />
             </AccountTransferBullet>

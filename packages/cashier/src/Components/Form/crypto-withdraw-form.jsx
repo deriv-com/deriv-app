@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon, Input, Loading, Text } from '@deriv/components';
-import { CryptoConfig, isMobile } from '@deriv/shared';
+import { Button, Icon, Input, Loading, MobileWrapper, Text } from '@deriv/components';
+import { CryptoConfig, isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Field, Formik } from 'formik';
 import { connect } from 'Stores/connect';
+import RecentTransaction from 'Components/recent-transaction.jsx';
 import CryptoFiatConverter from './crypto-fiat-converter.jsx';
 import PercentageSelector from '../percentage-selector';
 import '../../Sass/withdraw.scss';
@@ -39,6 +40,7 @@ const CryptoWithdrawForm = ({
     blockchain_address,
     converter_from_amount,
     crypto_currency,
+    crypto_transactions,
     converter_from_error,
     converter_to_error,
     currency,
@@ -48,6 +50,7 @@ const CryptoWithdrawForm = ({
     onMountWithdraw,
     percentage,
     percentageSelectorSelectionStatus,
+    recentTransactionOnMount,
     setBlockchainAddress,
     setWithdrawPercentageSelectorResult,
     should_percentage_reset,
@@ -55,6 +58,10 @@ const CryptoWithdrawForm = ({
     validateFiatAmount,
     verification_code,
 }) => {
+    React.useEffect(() => {
+        recentTransactionOnMount();
+    }, [recentTransactionOnMount]);
+
     React.useEffect(() => {
         onMountWithdraw(verification_code);
         return () => percentageSelectorSelectionStatus(false);
@@ -150,6 +157,9 @@ const CryptoWithdrawForm = ({
                     </div>
                 )}
             </Formik>
+            <MobileWrapper>
+                {isCryptocurrency(currency) && crypto_transactions?.length && <RecentTransaction />}
+            </MobileWrapper>
         </div>
     );
 };
@@ -160,6 +170,7 @@ CryptoWithdrawForm.propTypes = {
     blockchain_address: PropTypes.string,
     converter_from_amount: PropTypes.string,
     crypto_currency: PropTypes.string,
+    crypto_transactions: PropTypes.array,
     converter_from_error: PropTypes.string,
     converter_to_error: PropTypes.string,
     currency: PropTypes.string,
@@ -169,6 +180,7 @@ CryptoWithdrawForm.propTypes = {
     percentage: PropTypes.number,
     percentageSelectorSelectionStatus: PropTypes.func,
     requestWithdraw: PropTypes.func,
+    recentTransactionOnMount: PropTypes.func,
     setBlockchainAddress: PropTypes.func,
     setWithdrawPercentageSelectorResult: PropTypes.func,
     should_percentage_reset: PropTypes.bool,
@@ -183,6 +195,7 @@ export default connect(({ client, modules }) => ({
     converter_from_error: modules.cashier.converter_from_error,
     converter_to_error: modules.cashier.converter_to_error,
     crypto_currency: client.currency,
+    crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
     current_fiat_currency: client.current_fiat_currency,
     is_loading: modules.cashier.is_loading,
@@ -190,6 +203,7 @@ export default connect(({ client, modules }) => ({
     percentage: modules.cashier.percentage,
     percentageSelectorSelectionStatus: modules.cashier.percentageSelectorSelectionStatus,
     requestWithdraw: modules.cashier.requestWithdraw,
+    recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setBlockchainAddress: modules.cashier.setBlockchainAddress,
     setWithdrawPercentageSelectorResult: modules.cashier.setWithdrawPercentageSelectorResult,
     should_percentage_reset: modules.cashier.should_percentage_reset,

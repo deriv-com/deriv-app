@@ -13,8 +13,13 @@ const SendEmail = ({
     is_email_sent,
     is_resend_clicked,
     resend_timeout,
+    recentTransactionOnMount,
     sendVerificationEmail,
 }) => {
+    React.useEffect(() => {
+        recentTransactionOnMount();
+    }, [recentTransactionOnMount]);
+
     return (
         <div className='cashier__wrapper'>
             {is_email_sent ? (
@@ -51,7 +56,7 @@ const SendEmail = ({
                         large
                     />
                     <MobileWrapper>
-                        {isCryptocurrency(currency) && crypto_transactions.length && <RecentTransaction />}
+                        {isCryptocurrency(currency) && crypto_transactions?.length && <RecentTransaction />}
                     </MobileWrapper>
                 </React.Fragment>
             )}
@@ -64,6 +69,7 @@ SendEmail.propTypes = {
     is_email_sent: PropTypes.bool,
     is_resend_clicked: PropTypes.bool,
     resend_timeout: PropTypes.number,
+    recentTransactionOnMount: PropTypes.func,
     sendVerificationEmail: PropTypes.func,
 };
 
@@ -73,5 +79,6 @@ export default connect(({ client, modules }) => ({
     is_email_sent: modules.cashier.config.withdraw.verification.is_email_sent,
     is_resend_clicked: modules.cashier.config.withdraw.verification.is_resend_clicked,
     resend_timeout: modules.cashier.config.withdraw.verification.resend_timeout,
+    recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     sendVerificationEmail: modules.cashier.sendVerificationEmail,
 }))(SendEmail);

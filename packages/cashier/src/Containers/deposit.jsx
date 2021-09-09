@@ -58,10 +58,15 @@ const Deposit = ({
     is_system_maintenance,
     is_virtual,
     onMount,
+    recentTransactionOnMount,
     setActiveTab,
     setSideNotes,
     tab_index,
 }) => {
+    React.useEffect(() => {
+        recentTransactionOnMount();
+    }, [recentTransactionOnMount]);
+
     React.useEffect(() => {
         setActiveTab(container);
         onMount();
@@ -71,9 +76,9 @@ const Deposit = ({
         if (isDesktop()) {
             if (isCryptocurrency(currency) && typeof setSideNotes === 'function' && !is_switching) {
                 const side_notes = [];
-                // if (crypto_transactions.length) {
-                side_notes.push(<RecentTransaction key={2} />);
-                // }
+                if (crypto_transactions.length) {
+                    side_notes.push(<RecentTransaction key={2} />);
+                }
                 const side_note = [
                     // <DepositeSideNote key={0} />,
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
@@ -85,7 +90,7 @@ const Deposit = ({
             } else setSideNotes(null);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, tab_index, is_switching]);
+    }, [currency, tab_index, is_switching, crypto_transactions]);
 
     if ((is_switching || (is_loading && !iframe_url)) && !is_crypto_transactions_visible) {
         return <Loading is_fullscreen={false} />;
@@ -138,6 +143,7 @@ Deposit.propTypes = {
     is_system_maintenance: PropTypes.bool,
     is_virtual: PropTypes.bool,
     onMount: PropTypes.func,
+    recentTransactionOnMount: PropTypes.func,
     setActiveTab: PropTypes.func,
     setSideNotes: PropTypes.func,
     standpoint: PropTypes.object,
@@ -160,6 +166,7 @@ export default connect(({ client, modules }) => ({
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
     onMount: modules.cashier.onMount,
+    recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setActiveTab: modules.cashier.setActiveTab,
     standpoint: client.standpoint,
     tab_index: modules.cashier.cashier_route_tab_index,

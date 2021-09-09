@@ -50,6 +50,7 @@ const CryptoWithdrawForm = ({
     onMountWithdraw,
     percentage,
     percentageSelectorSelectionStatus,
+    recentTransactionOnMount,
     setBlockchainAddress,
     setWithdrawPercentageSelectorResult,
     should_percentage_reset,
@@ -57,6 +58,10 @@ const CryptoWithdrawForm = ({
     validateFiatAmount,
     verification_code,
 }) => {
+    React.useEffect(() => {
+        recentTransactionOnMount();
+    }, [recentTransactionOnMount]);
+
     React.useEffect(() => {
         onMountWithdraw(verification_code);
         return () => percentageSelectorSelectionStatus(false);
@@ -153,7 +158,7 @@ const CryptoWithdrawForm = ({
                 )}
             </Formik>
             <MobileWrapper>
-                {isCryptocurrency(currency) && crypto_transactions.length && <RecentTransaction />}
+                {isCryptocurrency(currency) && crypto_transactions?.length && <RecentTransaction />}
             </MobileWrapper>
         </div>
     );
@@ -175,6 +180,7 @@ CryptoWithdrawForm.propTypes = {
     percentage: PropTypes.number,
     percentageSelectorSelectionStatus: PropTypes.func,
     requestWithdraw: PropTypes.func,
+    recentTransactionOnMount: PropTypes.func,
     setBlockchainAddress: PropTypes.func,
     setWithdrawPercentageSelectorResult: PropTypes.func,
     should_percentage_reset: PropTypes.bool,
@@ -197,6 +203,7 @@ export default connect(({ client, modules }) => ({
     percentage: modules.cashier.percentage,
     percentageSelectorSelectionStatus: modules.cashier.percentageSelectorSelectionStatus,
     requestWithdraw: modules.cashier.requestWithdraw,
+    recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setBlockchainAddress: modules.cashier.setBlockchainAddress,
     setWithdrawPercentageSelectorResult: modules.cashier.setWithdrawPercentageSelectorResult,
     should_percentage_reset: modules.cashier.should_percentage_reset,

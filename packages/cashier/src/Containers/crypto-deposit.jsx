@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, ButtonLink, Clipboard, Loading, Text, Icon, MobileWrapper } from '@deriv/components';
+import { Button, ButtonLink, Clipboard, Loading, Text, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { CryptoConfig, isCryptocurrency, isMobile } from '@deriv/shared';
 import QRCode from 'qrcode.react';
@@ -14,8 +14,13 @@ const CryptoDeposit = ({
     crypto_transactions,
     deposit_address,
     is_deposit_address_loading,
+    recentTransactionOnMount,
     pollApiForDepositAddress,
 }) => {
+    React.useEffect(() => {
+        recentTransactionOnMount();
+    }, [recentTransactionOnMount]);
+
     React.useEffect(() => {
         return () => pollApiForDepositAddress(false);
     }, [pollApiForDepositAddress]);
@@ -104,9 +109,7 @@ const CryptoDeposit = ({
                     </Text>
                 </ButtonLink>
             </div>
-            <MobileWrapper>
-                {isCryptocurrency(currency) && crypto_transactions.length && <RecentTransaction />}
-            </MobileWrapper>
+            {isMobile() && isCryptocurrency(currency) && crypto_transactions?.length && <RecentTransaction />}
         </div>
     );
 };
@@ -117,6 +120,7 @@ CryptoDeposit.propTypes = {
     currency: PropTypes.string,
     deposit_address: PropTypes.string,
     is_deposit_address_loading: PropTypes.bool,
+    recentTransactionOnMount: PropTypes.func,
     pollApiForDepositAddress: PropTypes.func,
 };
 
@@ -126,5 +130,6 @@ export default connect(({ modules, client }) => ({
     currency: client.currency,
     deposit_address: modules.cashier.onramp.deposit_address,
     is_deposit_address_loading: modules.cashier.onramp.is_deposit_address_loading,
+    recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     pollApiForDepositAddress: modules.cashier.onramp.pollApiForDepositAddress,
 }))(CryptoDeposit);

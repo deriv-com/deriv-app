@@ -88,9 +88,14 @@ const CryptoWithdrawReceipt = ({
     crypto_transactions,
     currency,
     resetWithrawForm,
+    recentTransactionOnMount,
     setIsCryptoTransactionsVisible,
     setIsWithdrawConfirmed,
 }) => {
+    React.useEffect(() => {
+        recentTransactionOnMount();
+    }, [recentTransactionOnMount]);
+
     React.useEffect(() => {
         return () => {
             setIsWithdrawConfirmed(false);
@@ -150,7 +155,7 @@ const CryptoWithdrawReceipt = ({
                     primary
                 />
             </div>
-            {isMobile() && isCryptocurrency(currency) && crypto_transactions.length && <RecentTransaction />}
+            {isMobile() && isCryptocurrency(currency) && crypto_transactions?.length && <RecentTransaction />}
         </div>
     );
 };
@@ -161,6 +166,7 @@ CryptoWithdrawReceipt.propTypes = {
     blockchain_address: PropTypes.string,
     currency: PropTypes.string,
     resetWithrawForm: PropTypes.func,
+    recentTransactionOnMount: PropTypes.func,
     setIsCryptoTransactionsVisible: PropTypes.func,
     setIsWithdrawConfirmed: PropTypes.func,
 };
@@ -172,6 +178,7 @@ export default connect(({ client, modules }) => ({
     crypto_transactions: modules.cashier.transaction_history.crypto_transactions,
     currency: client.currency,
     resetWithrawForm: modules.cashier.resetWithrawForm,
+    recentTransactionOnMount: modules.cashier.transaction_history.onMount,
     setIsCryptoTransactionsVisible: modules.cashier.transaction_history.setIsCryptoTransactionsVisible,
     setIsWithdrawConfirmed: modules.cashier.setIsWithdrawConfirmed,
 }))(CryptoWithdrawReceipt);

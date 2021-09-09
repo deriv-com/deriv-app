@@ -1,7 +1,16 @@
 import React from 'react';
-import { Autocomplete, Button, DesktopWrapper, Input, MobileWrapper, Text, SelectNative } from '@deriv/components';
+import {
+    Autocomplete,
+    Button,
+    DesktopWrapper,
+    Input,
+    MobileWrapper,
+    Text,
+    SelectNative,
+    StaticUrl,
+} from '@deriv/components';
 import { Formik, Field } from 'formik';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { WS } from '@deriv/shared';
 import FormFooter from 'Components/form-footer';
 import { formatInput, getDocumentData, getRegex } from './utils';
@@ -12,6 +21,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
     const [document_list, setDocumentList] = React.useState([]);
     const [document_image, setDocumentImage] = React.useState(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
+    const [is_doc_selected, setDocSelected] = React.useState(false);
 
     const document_data = selected_country.identity.services.idv.documents_supported;
     const {
@@ -134,6 +144,14 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                     <Text className='proof-of-identity__text btm-spacer' size='xs'>
                         {localize('Please select the document type and enter the ID number.')}
                     </Text>
+                    {is_doc_selected && (
+                        <Text className='proof-of-identity__text btm-spacer' align='center' size='xs'>
+                            <Localize
+                                i18n_default_text='Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to <0>account settings</0>.'
+                                components={[<StaticUrl key={0} className='link' href='/account/personal-details' />]}
+                            />
+                        </Text>
+                    )}
                     <div className='proof-of-identity__inner-container'>
                         <div className='proof-of-identity__fieldset-container'>
                             <fieldset className='proof-of-identity__fieldset'>
@@ -161,9 +179,11 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                                         onChange={handleChange}
                                                         onItemSelection={item => {
                                                             if (item.text === 'No results found' || !item.text) {
+                                                                setDocSelected(false);
                                                                 resetDocumentItemSelected(setFieldValue);
                                                             } else {
                                                                 setFieldValue('document_type', item, true);
+                                                                setDocSelected(true);
                                                                 if (has_visual_sample) {
                                                                     setDocumentImage(item.sample_image || '');
                                                                 }
@@ -185,6 +205,7 @@ const IdvDocumentSubmit = ({ handleBack, handleViewComplete, selected_country })
                                                         handleChange(e);
                                                         const selected_document = getDocument(e.target.value);
                                                         if (selected_document) {
+                                                            setDocSelected(true);
                                                             setFieldValue('document_type', selected_document, true);
                                                             if (has_visual_sample) {
                                                                 setDocumentImage(selected_document.sample_image);

@@ -25,6 +25,15 @@ const AccountInfoIcon = ({ is_virtual, currency }) => (
     />
 );
 
+const DisplayAccountType = ({ account_type }) => {
+    if (account_type === 'financial') {
+        return <Localize i18n_default_text='Multipliers' />;
+    } else if (account_type === 'gaming') {
+        return <Localize i18n_default_text='Options' />;
+    }
+    return null;
+};
+
 const AccountInfo = ({
     acc_switcher_disabled_message,
     account_type,
@@ -38,15 +47,6 @@ const AccountInfo = ({
     is_disabled,
 }) => {
     const currency_lower = currency.toLowerCase();
-    const displayAccountType = () => {
-        let type;
-        if (account_type === 'financial') {
-            type = <p>Multipliers</p>;
-        } else if (account_type === 'gaming') {
-            type = <p>Options</p>;
-        }
-        return type;
-    };
     return (
         <div className='acc-info__wrapper'>
             <div className='acc-info__separator' />
@@ -83,7 +83,7 @@ const AccountInfo = ({
                                     `${balance} ${getCurrencyDisplayCode(currency)}`
                                 )}
                             </p>
-                            {displayAccountType()}
+                            <DisplayAccountType account_type={account_type} />
                         </div>
                     )}
                     {is_disabled ? (

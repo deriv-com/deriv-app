@@ -382,7 +382,12 @@ export const clientNotifications = (ui = {}, client = {}) => {
         },
         deriv_go: {
             key: 'deriv_go',
-            message: localize('Get a faster mobile trading experience with the Deriv GO app!'),
+            message: (
+                <Localize
+                    i18n_default_text='Get a faster mobile trading experience with the <0>Deriv GO</0> app!'
+                    components={[<StaticUrl key={0} className='link dark' href='/landing/deriv-go' />]}
+                />
+            ),
             cta_btn: {
                 text: localize('Learn more'),
                 onClick: () => {

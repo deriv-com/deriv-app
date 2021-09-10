@@ -16,9 +16,7 @@ const NotificationPromo = ({ cta_btn, img_alt, img_src, message, onClose }) => {
                         </Button>
                     )}
                 </div>
-                <div className='notification-promo--right'>
-                    <Icon className='notification-promo__close-icon' icon='IcCloseLight' onClick={onClose} />
-                </div>
+                <Icon className='notification-promo__close-icon' icon='IcCloseLight' onClick={onClose} />
             </div>
         </div>
     );

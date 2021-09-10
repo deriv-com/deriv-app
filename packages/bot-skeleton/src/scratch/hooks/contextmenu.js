@@ -204,15 +204,6 @@ Blockly.ContextMenu.blockDetachOption = function (block) {
 };
 
 /**
- * Function to check if block enabled or disabled.
- */
-const checkIsEnabled = block => {
-    let isEnabled = !block.disabled;
-    if (!block?.nextConnection?.targetConnection || isEnabled) return isEnabled;
-    checkIsEnabled(block.nextConnection.targetConnection);
-};
-
-/**
  * Make a context menu option for disabling stack of blocks.
  * deriv-bot: Use Blockly’s implementation.
  * @param {!Blockly.BlockSvg} block The block where the right-click originated.
@@ -220,12 +211,19 @@ const checkIsEnabled = block => {
  * @package
  */
 Blockly.ContextMenu.blockDisableStack = function (block) {
-    const enabled = checkIsEnabled(block);
+    const checkAreSomeEnabled = (block_, enabledArr = []) => {
+        enabledArr.push(!block_.disabled);
+        return block_.nextConnection?.targetConnection
+            ? checkAreSomeEnabled(block_.nextConnection?.targetConnection.sourceBlock_, enabledArr)
+            : enabledArr.includes(true);
+    };
+    const enabled = checkAreSomeEnabled(block);
 
-    const disableBlocksRecursively = block => {
-        block.setDisabled(true);
-        block.nextConnection?.targetConnection &&
-            disableBlocksRecursively(block.nextConnection.targetConnection.sourceBlock_);
+    const disableBlocksRecursively = block_ => {
+        block_.setDisabled(true);
+        if (block_.nextConnection?.targetConnection) {
+            disableBlocksRecursively(block_.nextConnection?.targetConnection.sourceBlock_);
+        }
     };
 
     const disableStack_option = {
@@ -246,12 +244,19 @@ Blockly.ContextMenu.blockDisableStack = function (block) {
  * @package
  */
 Blockly.ContextMenu.blockEnableStack = function (block) {
-    const enabled = !checkIsEnabled(block);
+    const checkAreSomeDisabled = (block_, disabledArr = []) => {
+        disabledArr.push(block_.disabled);
+        return block_.nextConnection?.targetConnection
+            ? checkAreSomeDisabled(block_.nextConnection?.targetConnection.sourceBlock_, disabledArr)
+            : disabledArr.includes(true);
+    };
+    const enabled = checkAreSomeDisabled(block);
 
-    const enableBlocksRecursively = block => {
-        block.setDisabled(false);
-        block.nextConnection?.targetConnection &&
-            enableBlocksRecursively(block.nextConnection.targetConnection.sourceBlock_);
+    const enableBlocksRecursively = block_ => {
+        block_.setDisabled(false);
+        if (block_.nextConnection?.targetConnection) {
+            enableBlocksRecursively(block_.nextConnection?.targetConnection.sourceBlock_);
+        }
     };
 
     const enableStack_option = {

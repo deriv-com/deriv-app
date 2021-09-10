@@ -123,8 +123,6 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
         };
         menu_options.push(disable_option);
     }
-    menu_options.push(Blockly.ContextMenu.blockEnableStack(block, e));
-    menu_options.push(Blockly.ContextMenu.blockDisableStack(block, e));
 
     // Option to download block.
     if (this.isMovable()) {
@@ -156,6 +154,13 @@ Blockly.BlockSvg.prototype.showContextMenu_ = function (e) {
             });
         }
     }
+
+    // Disable/Enable stack buttons. If target - last block in stack buttons will be hidden.
+    if (block.nextConnection?.targetConnection) {
+        menu_options.push(Blockly.ContextMenu.blockEnableStack(block, e));
+        menu_options.push(Blockly.ContextMenu.blockDisableStack(block, e));
+    }
+
     // Allow the block to add or modify menu_options.
     if (this.customContextMenu) {
         this.customContextMenu(menu_options);

@@ -50,7 +50,7 @@ const address_details_config = ({ account_settings, is_svg }) => {
                 ['length', localize('This should not exceed {{max}} characters.', { max: 99 }), { max: 99 }],
                 [
                     'regular',
-                    localize('Letters, numbers, spaces, periods, hyphens, apostrophes only'),
+                    localize('Only letters, numbers, spaces, periods, hyphens, and apostrophes allowed'),
                     {
                         regex: /^\p{L}[\p{L}\s'.-]{0,99}$/u,
                     },
